@@ -115,7 +115,8 @@ to advertise events and news for the community.
 The Egeria content is managed in GitHub under https://github.com/odpi/egeria.
 It may be developed using patches, branches from master, or forks/git pull requests.
 Each change should have either a Jira or Git issue explaining why the change is being made.
-The new or updated content should follow the Egeria [developer guidelines]().
+The new or updated content should follow the Egeria
+[developer guidelines](https://github.com/odpi/egeria/blob/master/developer-resources/Developer-Guidelines.md).
 
 The [ODPi Jira system](https://jira.odpi.org/projects/EGERIA) can be used to describe and manage large
 enhancements to Egeria since it has support for epics and user stories and tasks.
