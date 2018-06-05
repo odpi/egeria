@@ -47,7 +47,7 @@ because they are covered by Javadoc.
 
 ### Javadoc
 
-Javadoc (https://docs.oracle.com/javase/7/docs/technotes/tools/solaris/javadoc.html)
+[Javadoc](https://docs.oracle.com/javase/7/docs/technotes/tools/solaris/javadoc.html)
 is used to build a code reference for our public site.  It is generated
 as part of the build.  There are three places where Javadoc should be provided
 by the developer of Java code.
