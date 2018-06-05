@@ -39,7 +39,7 @@ The agenda and minutes of our meetings are publicly available on the egeria wiki
 
 A member may make contributions to the Egeria content by submitting a
 Git change (Patch or a Git Pull Request) to the Egeria maintainers.
-See the [Community Guide](https://github.com/odpi/egeria/CONTRIBUTING.md).
+See the [Community Guide](https://github.com/odpi/egeria/blob/master/CONTRIBUTING.md).
 
 ### Egeria project maintainers
 
@@ -57,7 +57,7 @@ working on the project (~1.25 business days per week).
 #### How to become a maintainer
 
 New maintainers are voted onto the maintainers list by the existing maintainers - see
-[maintainer list](https://github.com/odpi/egeria/MAINTAINERS.md).
+[maintainer list](https://github.com/odpi/egeria/blob/master/MAINTAINERS.md).
 
 A person wishing to become a maintainer sends a note to the existing maintainers **(need dist list here)**
 listing their Egeria contributions to date and requesting to be made a maintainer.
