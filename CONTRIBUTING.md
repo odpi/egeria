@@ -7,7 +7,7 @@ willing to follow the simple processes outlined below, as well as adhere to the
 
 ## Steps to contribute
 
-* Review the [coding guidelines](https://github.com/odpi/egeria/developer-resources/Developer-Guidelines.md)
+* Review the [developer guidelines](https://github.com/odpi/egeria/blob/master/developer-resources/Developer-Guidelines.md)
 * Open an issue on JIRA to cover the proposed change (see "Getting a Jira account and submitting an issue")
 * Clone the repository and prepare your contribution in a new git branch (see "Using git to prepare a contribution").
 * As you commit your changes, make sure they are signed (see "Why the DCO?")
@@ -53,7 +53,30 @@ Now you can add your changes to the content.  Once this is complete,
 issue the <code>git status</code> to verify all of your changes are
 included.  This will list any files that have been changed, but not included
 to the patch.  Use <code>git add</code> to add all of the files you want included
-and then use <code>git commit -s</code> to commit the changes.
+and then use <code>git commit -s</code> to commit the changes.  Finally,
+<code>git push</code> will push the code to the ODPi repository.
+
+```
+$ git status
+On branch example-branch
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	new-file.java
+
+$ git add new-file.java
+$ git status
+On branch example-branch
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	new file:   new-file.java
+
+$ git commit -s
+$ git push --set-upstream origin example-branch
+$
+```
+
 
 The easiest way to create a pull request is from the [GitHub](https://github.com/odpi/egeria)
 browser interface.  
@@ -63,7 +86,7 @@ browser interface.
 
 1. If you haven't already, create a [Linux Foundation account](https://identity.linuxfoundation.org). 
 Note the username and password you selected.
-2. Login to the [ODPi JIRA](https://jira.odpi.org) with the Linux Foundation username and password you selected above.
+2. Login to the [ODPi JIRA](https://jira.odpi.org/projects/EGERIA/issues/) with the Linux Foundation username and password you selected above.
 3. In the menu bar, click 'Create'. The Create dialog will come up
 4. The screen that comes up, you'll need to fill out the following items:
  * Project: 'Egeria' ( should be the default option )
