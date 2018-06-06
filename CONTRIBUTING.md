@@ -133,6 +133,7 @@ Note the username and password you selected.
   
   On an ongoing basis you should issue pull requests FROM odpi/egeria back to your local fork to keep in sync with current developments
   
-  For some useful tips & additinoal git tips on this process see also
-   * Github forking - user contributed (https://gist.github.com/Chaser324/ce0505fbed06b947d962)
+  For some useful tips & additional git tips on this process see also
+   * Github forking, summary - user contributed (https://gist.github.com/Chaser324/ce0505fbed06b947d962)
    * When to rebase vs merge (https://www.atlassian.com/git/tutorials/merging-vs-rebasing)
+   * Full git documentation on collaboration using pull requests (https://help.github.com/categories/collaborating-with-issues-and-pull-requests/)
