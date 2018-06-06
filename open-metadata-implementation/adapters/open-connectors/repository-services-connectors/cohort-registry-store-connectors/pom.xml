@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <artifactId>repository-services-connectors</artifactId>
+        <groupId>org.odpi.egeria</groupId>
+        <version>0.1-SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <name>Cohort Registry Store Connectors</name>
+    <description>
+        The cohort registry store connectors are connectors that store the
+        cohort membership details used and maintained by the cohort registry.
+        There is a cohort registry (and hence a cohort registry store)
+        for each open metadata repository server.
+    </description>
+
+    <artifactId>cohort-registry-store-connectors</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>cohort-registry-file-store-connector</module>
+    </modules>
+
+</project>

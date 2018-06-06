@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <artifactId>open-metadata-implementation</artifactId>
+        <groupId>org.odpi.egeria</groupId>
+        <version>0.1-SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <name>Open Metadata User Interfaces</name>
+    <description>
+        Implementation of the supplied user interfaces that work with the open metadata standard clients and
+        interfaces.
+    </description>
+
+    <artifactId>user-interfaces</artifactId>
+
+    <packaging>pom</packaging>
+    <modules>
+        <module>access-services-user-interface</module>
+        <module>server-configuration-user-interface</module>
+    </modules>
+
+
+</project>

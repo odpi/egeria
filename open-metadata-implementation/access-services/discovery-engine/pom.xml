@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <artifactId>access-services</artifactId>
+        <groupId>org.odpi.egeria</groupId>
+        <version>0.1-SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <name>Discovery Engine OMAS</name>
+    <description>
+        The Discovery Engine Open Metadata Access Service (OMAS) provides APIs and events for metadata discovery tools
+        that are surveying the data landscape and recording information in the
+        open metadata repositories.
+    </description>
+
+    <artifactId>discovery-engine</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>discovery-engine-client</module>
+        <module>discovery-engine-server</module>
+    </modules>
+
+
+</project>

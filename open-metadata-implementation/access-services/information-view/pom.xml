@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <artifactId>access-services</artifactId>
+        <groupId>org.odpi.egeria</groupId>
+        <version>0.1-SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <name>Information View OMAS</name>
+    <description>
+        The Information View Open Metadata Access Service (OMAS) configures and manages metadata for data tools that
+        create virtual views over data - such as business intelligence tools and
+        data virtualization platforms.
+    </description>
+
+    <artifactId>information-view</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>information-view-client</module>
+        <module>information-view-server</module>
+    </modules>
+
+
+</project>

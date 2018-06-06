@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <artifactId>user-interfaces</artifactId>
+        <groupId>org.odpi.egeria</groupId>
+        <version>0.1-SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <name>Access Services User Interface</name>
+    <description>
+        The Access Services User Interface provides a user interface that supports
+        the user-facing open metadata access services.  It is a role-based UI that
+        offers different capabilities based on the end user's role.  This makes it
+        useful for demonstrations.
+    </description>
+
+    <artifactId>access-services-ui</artifactId>
+
+
+</project>

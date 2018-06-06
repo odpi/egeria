@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <artifactId>adapters</artifactId>
+        <groupId>org.odpi.egeria</groupId>
+        <version>0.1-SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <name>Open Connectors</name>
+    <description>
+        Open Connectors are connectors that support the
+        Open Connector Framework (OCF)   see the open-connector-framework module.
+        This is the principle (preferred) mechanism for supporting pluggable
+        components in the open metadata implementation.
+    </description>
+
+    <artifactId>open-connectors</artifactId>
+
+    <packaging>pom</packaging>
+    <modules>
+        <module>event-bus-connectors</module>
+        <module>repository-services-connectors</module>
+        <module>access-services-connectors</module>
+        <module>data-store-connectors</module>
+        <module>governance-daemon-connectors</module>
+        <module>configuration-store-connectors</module>
+        <module>connector-configuration-factory</module>
+    </modules>
+
+
+</project>

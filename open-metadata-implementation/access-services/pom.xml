@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <artifactId>open-metadata-implementation</artifactId>
+        <groupId>org.odpi.egeria</groupId>
+        <version>0.1-SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <name>Open Metadata Access Services (OMAS)</name>
+    <description>
+        Domain-specific interfaces for data tools, engines and platforms to integrate with open metadata.
+    </description>
+
+    <artifactId>access-services</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>asset-catalog</module>
+        <module>asset-consumer</module>
+        <module>asset-owner</module>
+        <module>community-profile</module>
+        <module>connected-asset</module>
+        <module>data-architecture</module>
+        <module>data-infrastructure</module>
+        <module>data-platform</module>
+        <module>data-process</module>
+        <module>data-protection</module>
+        <module>data-science</module>
+        <module>dev-ops</module>
+        <module>discovery-engine</module>
+        <module>governance-engine</module>
+        <module>governance-program</module>
+        <module>information-view</module>
+        <module>project-management</module>
+        <module>software-developer</module>
+        <module>stewardship-action</module>
+        <module>subject-area</module>
+        <module>data-privacy</module>
+
+    </modules>
+
+    <!-- These are the standard dependencies needed by all access services -->
+    <dependencies>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-connector-framework</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>repository-services-apis</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>admin-services-api</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+    </dependencies>
+</project>
