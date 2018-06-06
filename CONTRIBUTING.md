@@ -129,6 +129,6 @@ Note the username and password you selected.
     * make the file change via the command line or IDE
     * commit and sign the change
     * push the commit back up to YOUR personal repository
-  * Create a full request of your change back to odpi/egeria
+  * Create a pull request of your change back to odpi/egeria
   
   On an ongoing basis you should issue pull requests FROM odpi/egeria back to your local fork to keep in sync with current developments
