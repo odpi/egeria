@@ -7,6 +7,6 @@ The current Egeria maintainers are:
 | -------------- | -----------------
 | Mandy Chessell | mandy_chessell@uk.ibm.com |
 | Nigel Jones    | jonesn@uk.ibm.com         |
-
+| David Radley   | david_radley@uk.ibm.com   |
 
 
