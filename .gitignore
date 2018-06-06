@@ -63,3 +63,11 @@ maven-eclipse.xml
 *#
 *~
 
+# Mac OS
+__MACOSX
+
+# other files
+.DS_Store
+*.swp
+
+
