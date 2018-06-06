@@ -1,3 +1,8 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# Link to help info - https://git-scm.com/docs/gitignore
+#
+
 # Compiled class file
 *.class
 
@@ -21,3 +26,40 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+# Maven
+target*
+dependency-reduced-pom.xml
+core*.dmp
+pom.xml.releaseBackup
+
+# IntelliJ
+*.iml
+*.ipr
+*.iws
+.idea
+
+# Eclipse
+.cache
+.classpath
+.project
+.checkstyle
+
+.settings
+.externalToolBuilders
+maven-eclipse.xml
+
+#Python
+*.pyc
+
+# review board
+.reviewboardrc
+
+# Scala-IDE specific
+.cache-main
+.cache-tests
+
+# emacs files
+*#
+*~
+
