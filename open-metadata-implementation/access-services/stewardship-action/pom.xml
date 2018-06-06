@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <artifactId>access-services</artifactId>
+        <groupId>org.odpi.egeria</groupId>
+        <version>0.1-SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <name>Stewardship Action OMAS</name>
+    <description>
+        The Stewardship Action Open Metadata Access Service (OMAS) provides
+        Support for metadata changes that need to be made as part of a data stewards work to improve the
+        quality and accessibility of the data landscape.
+    </description>
+
+    <artifactId>stewardship-action</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>stewardship-action-client</module>
+        <module>stewardship-action-server</module>
+    </modules>
+
+</project>

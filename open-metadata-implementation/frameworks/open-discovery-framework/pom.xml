@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <artifactId>frameworks</artifactId>
+        <groupId>org.odpi.egeria</groupId>
+        <version>0.1-SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <name>Open Discovery Framework (ODF)</name>
+    <description>
+        The Open Discovery Framework (ODF) provides the interfaces and base implementations for components
+        (called discovery services) that access data-related assets and extract characteristics
+        about the data that can be stored in an open metadata repository.
+    </description>
+
+    <artifactId>open-discovery-framework</artifactId>
+
+
+</project>
