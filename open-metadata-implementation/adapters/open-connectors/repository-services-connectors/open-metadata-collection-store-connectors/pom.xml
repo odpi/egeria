@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <artifactId>repository-services-connectors</artifactId>
+        <groupId>org.odpi.egeria</groupId>
+        <version>0.1-SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <name>Open Metadata Collection Stores Connectors</name>
+    <description>
+        The open metadata collection store connectors contain connectors that
+        support mappings to different vendor's metadata repositories.
+        Each repository needs an open metadata repository connector and
+        and an optional open metadata repository event mapper.
+    </description>
+
+    <artifactId>open-metadata-collection-store-connectors</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>graph-repository-connector</module>
+        <module>inmemory-repository-connector</module>
+        <module>omrs-rest-repository-connector</module>
+    </modules>
+
+</project>

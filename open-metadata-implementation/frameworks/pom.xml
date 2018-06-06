@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <artifactId>open-metadata-implementation</artifactId>
+        <groupId>org.odpi.egeria</groupId>
+        <version>0.1-SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <name>Open Metadata Frameworks</name>
+    <description>
+        The open metadata and governance frameworks define the interfaces for pluggable components.  These
+        components provide much of the customization offered by the open metadata and governance
+        implementation.
+    </description>
+
+    <artifactId>frameworks</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>open-connector-framework</module>
+        <module>open-discovery-framework</module>
+        <module>governance-action-framework</module>
+    </modules>
+
+
+</project>

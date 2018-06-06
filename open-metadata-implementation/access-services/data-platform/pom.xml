@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <artifactId>access-services</artifactId>
+        <groupId>org.odpi.egeria</groupId>
+        <version>0.1-SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <name>Data Platform OMAS</name>
+    <description>
+        The Data Platform Open Metadata Access Service (OMAS)
+        provides APIs for tools and applications wishing to register
+        new data assets.  It provides the ability to register the host,
+        platform and location of the
+        data platform itself along with the data assets it hosts.
+    </description>
+
+    <artifactId>data-platform</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>data-platform-client</module>
+        <module>data-platform-server</module>
+    </modules>
+
+
+</project>
