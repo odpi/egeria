@@ -39,7 +39,7 @@ The agenda and minutes of our meetings are publicly available on the egeria wiki
 
 A member may make contributions to the Egeria content by submitting a
 Git change (Patch or a Git Pull Request) to the Egeria maintainers.
-See the [Community Guide](https://github.com/odpi/egeria/blob/master/CONTRIBUTING.md).
+See the [Community Guide](https://odpi.github.io/egeria/CONTRIBUTING).
 
 ### Egeria project maintainers
 
@@ -57,7 +57,7 @@ working on the project (~1.25 business days per week).
 #### How to become a maintainer
 
 New maintainers are voted onto the maintainers list by the existing maintainers - see
-[maintainer list](https://github.com/odpi/egeria/blob/master/MAINTAINERS.md).
+[maintainer list](https://odpi.github.io/egeria/MAINTAINERS).
 
 A person wishing to become a maintainer sends a note to the existing maintainers **(need dist list here)**
 listing their Egeria contributions to date and requesting to be made a maintainer.
@@ -116,7 +116,7 @@ The Egeria content is managed in GitHub under https://github.com/odpi/egeria.
 It may be developed using patches, branches from master, or forks/git pull requests.
 Each change should have either a Jira or Git issue explaining why the change is being made.
 The new or updated content should follow the Egeria
-[developer guidelines](https://github.com/odpi/egeria/blob/master/developer-resources/Developer-Guidelines.md).
+[developer guidelines](https://odpi.github.io/egeria/developer-resources/Developer-Guidelines).
 
 The [ODPi Jira system](https://jira.odpi.org/projects/EGERIA) can be used to describe and manage large
 enhancements to Egeria since it has support for epics and user stories and tasks.
