@@ -118,3 +118,24 @@ Note the username and password you selected.
  By signing your work, you are confirming that the origin of the content
  makes it suitable to add to this project.  See
  [Developer Certificate of Origin (DCO)](https://developercertificate.org/).
+ 
+ The recommended way of submitting the patch is to create a 'git pull' request (https://help.github.com/articles/creating-a-pull-request/). In essence you will need to:
+   * fork the existing egeria repository so that you have a working copy you can modify
+   * Either
+     * modify the file directly via the web UI
+     * commit the change making sure to include the Signed-off-by statement above
+   * Or
+     * clone your personal egeria repository
+     * create a local branch for each unit of work, and check it out
+     * make the file change via the command line or IDE
+     * commit and sign the change
+     * push the commit back up to YOUR personal repository
+   * Create a pull request of your change back to odpi/egeria
+   
+   On an ongoing basis you should issue pull requests FROM odpi/egeria back to your local fork to keep in sync with current developments
+   
+   For some useful tips & additional git tips on this process see also
+    * Github forking, summary - user contributed (https://gist.github.com/Chaser324/ce0505fbed06b947d962)
+    * When to rebase vs merge (https://www.atlassian.com/git/tutorials/merging-vs-rebasing)
+    * overview of the dev process and how to use branches (https://homes.cs.washington.edu/~mernst/advice/github-pull-request.html)
+    * Full git documentation on collaboration using pull requests (https://help.github.com/categories/collaborating-with-issues-and-pull-requests/)
