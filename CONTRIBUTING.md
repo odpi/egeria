@@ -7,7 +7,7 @@ willing to follow the simple processes outlined below, as well as adhere to the
 
 ## Steps to contribute
 
-* Review the [developer guidelines](https://github.com/odpi/egeria/blob/master/developer-resources/Developer-Guidelines.md)
+* Review the [developer guidelines](https://odpi.github.io/egeria/developer-resources/Developer-Guidelines)
 * Open an issue on JIRA to cover the proposed change (see "Getting a Jira account and submitting an issue")
 * Clone the repository and prepare your contribution in a new git branch (see "Using git to prepare a contribution").
 * As you commit your changes, make sure they are signed (see "Why the DCO?")
