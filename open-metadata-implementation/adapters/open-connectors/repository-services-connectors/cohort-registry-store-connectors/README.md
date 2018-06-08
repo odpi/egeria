@@ -7,5 +7,5 @@ cohort membership details used and maintained by the cohort registry.
 There is a cohort registry (and hence a cohort registry store)
 for each open metadata repository server.
 
-* **cohort-registry-file-store** - provides the means to store
+* **[cohort-registry-file-store-connector](cohort-registry-file-store-connector)** - provides the means to store
 the cohort registry membership details as a JSON file.
