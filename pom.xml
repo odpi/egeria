@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <name>Egeria</name>
+    <description>
+        Top-level package providing the standards, frameworks, reference implementations and
+        compliance tests for open metadata and governance.
+    </description>
+
+    <groupId>org.odpi.egeria</groupId>
+    <artifactId>egeria</artifactId>
+    <version>0.1-SNAPSHOT</version>
+
+    <url>https://odpi.github.io/Egeria</url>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <organization>
+        <name>ODPi</name>
+        <url>http://www.odpi.org</url>
+    </organization>
+
+    <issueManagement>
+        <system>JIRA</system>
+        <url>https://jira.odpi.org/browse/EGERIA</url>
+    </issueManagement>
+
+    <inceptionYear>2017</inceptionYear>
+
+    <mailingLists>
+        <mailingList>
+            <name>odpi-pmc-datagovernance</name>
+            <subscribe>https://lists.odpi.org/g/odpi-pmc-datagovernance</subscribe>
+            <unsubscribe>odpi-pmc-datagovernance+unsubscribe@lists.odpi.org</unsubscribe>
+            <post>odpi-pmc-datagovernance@lists.odpi.org</post>
+        </mailingList>
+    </mailingLists>
+
+    <developers>
+        <developer>
+            <id>mandychessell</id>
+            <name>Mandy Chessell</name>
+            <email>mandy_chessell@uk.ibm.com</email>
+            <timezone>Europe/London</timezone>
+            <roles>
+                <role>PMC Leader</role>
+                <role>maintainer</role>
+            </roles>
+            <organization>IBM Corporation</organization>
+        </developer>
+    </developers>
+
+    <!-- POM packaging means that this module has sub-modules -->
+    <packaging>pom</packaging>
+
+    <modules>
+
+        <module>developer-resources</module>
+        <module>open-metadata-implementation</module>
+        <module>open-metadata-compliance-suite</module>
+        <module>open-metadata-distribution</module>
+        <module>open-metadata-publication</module>
+        <module>open-metadata-resources</module>
+
+    </modules>
+
+    <prerequisites>
+        <maven>3.0.4</maven>
+    </prerequisites>
+
+    <properties>
+        <open-metadata.version>0.1-SNAPSHOT</open-metadata.version>
+
+        <!-- Level of Java  -->
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+
+
+        <!-- Platform encoding  -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+
+        <!-- Versions of dependent libraries -->
+        <log4j.version>1.2.17</log4j.version>
+        <jackson.version>2.9.2</jackson.version>
+        <spring.version>1.5.7.RELEASE</spring.version>
+        <commons-io.version>2.4</commons-io.version>
+        <commons-collections.version>3.2.2</commons-collections.version>
+        <testng.version>6.9.4</testng.version>
+        <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
+
+    </properties>
+
+    <dependencies>
+
+        <!-- Logging -->
+
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>${log4j.version}</version>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.sun.jdmk</groupId>
+                    <artifactId>jmxtools</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sun.jmx</groupId>
+                    <artifactId>jmxri</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>javax.mail</groupId>
+                    <artifactId>mail</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>javax.jms</groupId>
+                    <artifactId>jmx</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>javax.jms</groupId>
+                    <artifactId>jms</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- Jackson for JSON to Java processing -->
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <!-- API documentation  -->
+
+        <dependency>
+            <groupId>com.webcohesion.enunciate</groupId>
+            <artifactId>enunciate-core-annotations</artifactId>
+            <version>${enunciate-maven-plugin.version}</version>
+        </dependency>
+
+        <!-- Test framework -->
+
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>${testng.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+            </plugin>
+            <!-- Validates maven & java versions -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.0.0-M1</version>
+                <executions>
+                    <execution>
+                        <id>enforce-versions</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireMavenVersion>
+                                    <version>[3.5.0,)</version>
+                                    <message>** MAVEN VERSION ERROR ** Maven 3.5.0 or above is required. See
+                                        https://maven.apache.org/install.html
+                                    </message>
+                                </requireMavenVersion>
+                                <requireJavaVersion>
+                                    <level>ERROR</level>
+                                    <version>[1.8.0-151,)</version>
+                                    <message>** JAVA VERSION ERROR ** Java 8 (Update 151) or above is required.
+                                    </message>
+                                </requireJavaVersion>
+                                <requireJavaVersion>
+                                    <level>WARN</level>
+                                    <version>(,1.9]</version>
+                                    <message>** JAVA VERSION WARNING ** Java 9 and above has not been tested.
+                                    </message>
+                                </requireJavaVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <artifactId>access-services</artifactId>
+        <groupId>org.odpi.egeria</groupId>
+        <version>0.1-SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <name>Software Developer OMAS</name>
+    <description>
+        The Software Developer Open Metadata Access Service (OMAS) provides APIs and events for software developer
+        tools and applications that help developers make good use of the
+        standards and best practices defined for the data landscape.
+    </description>
+
+    <artifactId>software-developer</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>software-developer-client</module>
+        <module>software-developer-server</module>
+    </modules>
+
+
+</project>

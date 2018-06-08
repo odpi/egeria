@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <artifactId>access-services</artifactId>
+        <groupId>org.odpi.egeria</groupId>
+        <version>0.1-SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <name>Asset Owner OMAS</name>
+    <description>
+        The Asset Owner Open Metadata Access Service (OMAS)
+        provides APIs and notifications for tools and applications supporting
+        the work of asset owners in protecting and enhancing their assets.
+    </description>
+
+    <artifactId>asset-owner</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>asset-owner-client</module>
+        <module>asset-owner-server</module>
+    </modules>
+
+    <!-- Asset Owner consumes Connected Asset -->
+    <dependencies>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>connected-asset-client</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+    </dependencies>
+
+</project>
