@@ -49,7 +49,7 @@ public enum CommentType implements Serializable
     /**
      * Return the code for this enum instance
      *
-     * @return int - comment type code
+     * @return int comment type code
      */
     public int getCommentTypeCode()
     {
@@ -60,7 +60,7 @@ public enum CommentType implements Serializable
     /**
      * Return the default type name for this enum instance.
      *
-     * @return String - default type name
+     * @return String default type name
      */
     public String getCommentType()
     {
@@ -71,7 +71,7 @@ public enum CommentType implements Serializable
     /**
      * Return the default description for the star rating for this enum instance.
      *
-     * @return String - default description
+     * @return String default description
      */
     public String getCommentTypeDescription()
     {

@@ -24,14 +24,14 @@ public class Referenceable extends ElementHeader
     /**
      * Typical Constructor
      *
-     * @param parentAsset - descriptor for parent asset
-     * @param type - details of the metadata type for this properties object
-     * @param guid - String - unique id
-     * @param url - String - URL
-     * @param classifications - enumeration of classifications
-     * @param qualifiedName - unique name
-     * @param additionalProperties - additional properties for the referenceable object.
-     * @param meanings - list of glossary terms (summary)
+     * @param parentAsset descriptor for parent asset
+     * @param type details of the metadata type for this properties object
+     * @param guid String unique id
+     * @param url String URL
+     * @param classifications enumeration of classifications
+     * @param qualifiedName unique name
+     * @param additionalProperties additional properties for the referenceable object.
+     * @param meanings list of glossary terms (summary)
      */
     public Referenceable(AssetDescriptor parentAsset,
                          ElementType type,
@@ -53,8 +53,8 @@ public class Referenceable extends ElementHeader
     /**
      * Copy/clone constructor.
      *
-     * @param parentAsset - descriptor for parent asset
-     * @param templateReferenceable - element to copy
+     * @param parentAsset descriptor for parent asset
+     * @param templateReferenceable element to copy
      */
     public Referenceable(AssetDescriptor parentAsset, Referenceable templateReferenceable)
     {

@@ -25,14 +25,14 @@ public class Rating extends ElementHeader
     /**
      * Typical Constructor
      *
-     * @param parentAsset - descriptor for parent asset
-     * @param type - details of the metadata type for this properties object
-     * @param guid - String - unique id
-     * @param url - String - URL
-     * @param classifications - enumeration of classifications
-     * @param starRating - StarRating enum - the star value for the rating.
-     * @param review - String - review comments
-     * @param user - String - user id of person providing the rating
+     * @param parentAsset descriptor for parent asset
+     * @param type details of the metadata type for this properties object
+     * @param guid String unique id
+     * @param url String URL
+     * @param classifications enumeration of classifications
+     * @param starRating StarRating enum the star value for the rating.
+     * @param review String review comments
+     * @param user String user id of person providing the rating
      */
     public Rating(AssetDescriptor parentAsset,
                   ElementType     type,
@@ -53,8 +53,8 @@ public class Rating extends ElementHeader
     /**
      * Copy/clone constructor.
      *
-     * @param parentAsset - descriptor for parent asset
-     * @param templateRating - element to copy
+     * @param parentAsset descriptor for parent asset
+     * @param templateRating element to copy
      */
     public Rating(AssetDescriptor parentAsset, Rating templateRating)
     {
@@ -78,7 +78,7 @@ public class Rating extends ElementHeader
     /**
      * Return the user id of the person who created the rating.  Null means the user id is not known.
      *
-     * @return String - user
+     * @return String user
      */
     public String getUser() {
         return user;
@@ -88,7 +88,7 @@ public class Rating extends ElementHeader
     /**
      * Return the stars for the rating.
      *
-     * @return StarRating - starRating
+     * @return StarRating starRating
      */
     public StarRating getStarRating() {
         return starRating;
@@ -98,7 +98,7 @@ public class Rating extends ElementHeader
     /**
      * Return the review comments - null means no review is available.
      *
-     * @return String - review comments
+     * @return String review comments
      */
     public String getReview()
     {

@@ -40,8 +40,8 @@ public abstract class RelatedAssetProperties extends PropertyBase
     /**
      * Typical constructor.
      *
-     * @param connectedAsset - original top-level asset
-     * @param relatedAsset - asset to extract the full set of properties.
+     * @param connectedAsset original top-level asset
+     * @param relatedAsset asset to extract the full set of properties.
      */
     public RelatedAssetProperties(AssetDescriptor  connectedAsset, RelatedAsset  relatedAsset)
     {
@@ -56,7 +56,7 @@ public abstract class RelatedAssetProperties extends PropertyBase
     /**
      * Copy/clone constructor*
      *
-     * @param templateProperties - template to copy
+     * @param templateProperties template to copy
      */
     public RelatedAssetProperties(RelatedAssetProperties templateProperties)
     {
@@ -76,7 +76,7 @@ public abstract class RelatedAssetProperties extends PropertyBase
     /**
      * Returns the summary information organized in the assetSummary structure.
      *
-     * @return AssetSummary - summary object
+     * @return AssetSummary summary object
      */
     public AssetSummary getAssetSummary() { return assetProperties; }
 
@@ -85,7 +85,7 @@ public abstract class RelatedAssetProperties extends PropertyBase
     /**
      * Returns detailed information about the asset organized in the assetDetail structure.
      *
-     * @return AssetDetail - detail object
+     * @return AssetDetail detail object
      */
     public AssetDetail getAssetDetail() { return assetProperties; }
 
@@ -94,7 +94,7 @@ public abstract class RelatedAssetProperties extends PropertyBase
      * Returns all of the detail of the asset and information connected to it in organized in the assetUniverse
      * structure.
      *
-     * @return AssetUniverse - universe object
+     * @return AssetUniverse universe object
      */
     public AssetUniverse getAssetUniverse() { return assetProperties; }
 

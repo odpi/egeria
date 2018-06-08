@@ -66,9 +66,9 @@ public enum ElementOrigin implements Serializable
     /**
      * Constructor for the enum.
      *
-     * @param originCode - code number for origin
-     * @param originName - name for origin
-     * @param originDescription - description for origin
+     * @param originCode code number for origin
+     * @param originName name for origin
+     * @param originDescription description for origin
      */
     ElementOrigin(int originCode, String originName, String originDescription)
     {

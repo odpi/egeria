@@ -51,7 +51,7 @@ public enum AnnotationStatus implements Serializable
     /**
      * Return the status code for this enum instance
      *
-     * @return int - status code
+     * @return int status code
      */
     public int getStatusCode()
     {
@@ -62,7 +62,7 @@ public enum AnnotationStatus implements Serializable
     /**
      * Return the default name for the status for this enum instance.
      *
-     * @return String - default status name
+     * @return String default status name
      */
     public String getStatusName()
     {
@@ -73,7 +73,7 @@ public enum AnnotationStatus implements Serializable
     /**
      * REturn the default description for the status for this enum instance.
      *
-     * @return String - default status description
+     * @return String default status description
      */
     public String getStatusDescription()
     {

@@ -25,18 +25,18 @@ public class RelatedAsset extends Referenceable
     /**
      * Typical constructor
      *
-     * @param parentAsset - descriptor for parent asset
-     * @param type - details of the metadata type for this properties object
-     * @param guid - String - unique id
-     * @param url - String - URL
-     * @param classifications - enumeration of classifications
-     * @param qualifiedName - unique name
-     * @param additionalProperties - additional properties for the referenceable object.
-     * @param meanings - list of glossary terms (summary)
-     * @param displayName - consumable name
-     * @param description - description property stored for the related asset.
-     * @param owner - the owner details for this related asset.
-     * @param relatedAssetProperties - detailed properties of the asset.
+     * @param parentAsset descriptor for parent asset
+     * @param type details of the metadata type for this properties object
+     * @param guid String unique id
+     * @param url String URL
+     * @param classifications enumeration of classifications
+     * @param qualifiedName unique name
+     * @param additionalProperties additional properties for the referenceable object.
+     * @param meanings list of glossary terms (summary)
+     * @param displayName consumable name
+     * @param description description property stored for the related asset.
+     * @param owner the owner details for this related asset.
+     * @param relatedAssetProperties detailed properties of the asset.
      */
     public RelatedAsset(AssetDescriptor parentAsset,
                         ElementType type,
@@ -63,8 +63,8 @@ public class RelatedAsset extends Referenceable
     /**
      * Copy/clone constructor
      *
-     * @param parentAsset - description of the asset that this related asset is attached to.
-     * @param templateRelatedAsset - template object to copy.
+     * @param parentAsset description of the asset that this related asset is attached to.
+     * @param templateRelatedAsset template object to copy.
      */
     public RelatedAsset(AssetDescriptor parentAsset, RelatedAsset templateRelatedAsset)
     {

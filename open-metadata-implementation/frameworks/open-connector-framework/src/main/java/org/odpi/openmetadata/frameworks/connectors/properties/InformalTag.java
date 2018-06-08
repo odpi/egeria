@@ -31,17 +31,17 @@ public class InformalTag extends ElementHeader
     /**
      * Typical Constructor
      *
-     * @param parentAsset - descriptor for parent asset
-     * @param type - details of the metadata type for this properties object
-     * @param guid - String - unique id
-     * @param url - String - URL
-     * @param classifications - enumeration of classifications
-     * @param isPrivateTag - boolean flag to say whether the tag is private or not.
+     * @param parentAsset descriptor for parent asset
+     * @param type details of the metadata type for this properties object
+     * @param guid String unique id
+     * @param url String URL
+     * @param classifications enumeration of classifications
+     * @param isPrivateTag boolean flag to say whether the tag is private or not.
      *                     A private tag is only seen by the person who set it up.
      *                     Public tags are visible to everyone how can sse the asset description.
-     * @param name - name of the tag.  It is not valid to have a tag with no name.
-     * @param description - tag description
-     * @param user - the user id of the person who created the tag. Null means the user id is not known.
+     * @param name name of the tag.  It is not valid to have a tag with no name.
+     * @param description tag description
+     * @param user the user id of the person who created the tag. Null means the user id is not known.
      */
     public InformalTag(AssetDescriptor parentAsset,
                        ElementType type,
@@ -83,8 +83,8 @@ public class InformalTag extends ElementHeader
     /**
      * Copy/clone constructor.
      *
-     * @param parentAsset - descriptor for parent asset
-     * @param templateInformalTag - element to copy
+     * @param parentAsset descriptor for parent asset
+     * @param templateInformalTag element to copy
      */
     public InformalTag(AssetDescriptor parentAsset, InformalTag templateInformalTag)
     {
@@ -110,7 +110,7 @@ public class InformalTag extends ElementHeader
      * Return boolean flag to say whether the tag is private or not.  A private tag is only seen by the
      * person who set it up.  Public tags are visible to everyone who can see the asset description.
      *
-     * @return boolean - is private flag
+     * @return boolean is private flag
      */
     public boolean isPrivateTag() {
         return isPrivateTag;
@@ -120,7 +120,7 @@ public class InformalTag extends ElementHeader
     /**
      * Return the user id of the person who created the tag.  Null means the user id is not known.
      *
-     * @return String - tagging user
+     * @return String tagging user
      */
     public String getUser() {
         return user;
@@ -131,7 +131,7 @@ public class InformalTag extends ElementHeader
      * Return the name of the tag.  It is not valid to have a tag with no name.  However, there is a point where
      * the tag object is created and the tag name not set, so null is a possible response.
      *
-     * @return String - tag name
+     * @return String tag name
      */
     public String getName() {
         return name;
@@ -139,9 +139,9 @@ public class InformalTag extends ElementHeader
 
 
     /**
-     * Return the tag description - null means no description is available.
+     * Return the tag description null means no description is available.
      *
-     * @return String - tag description
+     * @return String tag description
      */
     public String getDescription()
     {
@@ -150,9 +150,9 @@ public class InformalTag extends ElementHeader
 
 
     /**
-     * Set up the tag description - null means no description is available.
+     * Set up the tag description null means no description is available.
      *
-     * @param tagDescription  - tag description
+     * @param tagDescription  tag description
      */
     public void setDescription(String tagDescription) {
         this.description = tagDescription;

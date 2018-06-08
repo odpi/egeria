@@ -32,9 +32,9 @@ public enum SchemaType implements Serializable
     /**
      * Constructor to set up the instance of this enum.
      *
-     * @param schemaTypeCode - code number
-     * @param schemaTypeName - default name
-     * @param schemaTypeDescription - default description
+     * @param schemaTypeCode code number
+     * @param schemaTypeName default name
+     * @param schemaTypeDescription default description
      */
     SchemaType(int schemaTypeCode, String schemaTypeName, String schemaTypeDescription)
     {

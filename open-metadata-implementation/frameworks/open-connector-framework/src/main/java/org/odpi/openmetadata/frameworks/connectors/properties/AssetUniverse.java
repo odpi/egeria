@@ -29,30 +29,30 @@ public class AssetUniverse extends AssetDetail
     /**
      * Typical Constructor
      *
-     * @param type - details of the metadata type for this asset
-     * @param guid - guid property
-     * @param url - element URL used to access its properties in the metadata repository.
-     * @param qualifiedName - unique name
-     * @param displayName - consumable name
-     * @param description - description of the asset
-     * @param shortDescription - short description from relationship with Connection
-     * @param owner - owner name
-     * @param classifications - enumeration of classifications
-     * @param assetProperties - AdditionalProperties object
-     * @param externalIdentifiers - ExternalIdentifiers enumeration
-     * @param relatedMediaReferences - RelatedMediaReferences enumeration
-     * @param noteLogs - NoteLogs iterator
-     * @param externalReferences - ExternalReferences iterator
-     * @param connections - List of connections attached to the asset
-     * @param licenses - List of licenses
-     * @param certifications - Certifications - list of certifications
-     * @param meanings - Meanings - list of glossary definitions.
-     * @param schema - Schema object to query schema and related glossary definitions.
-     * @param analysis - Annotations from metadata discovery.
-     * @param feedback - Feedback object to query the feedback.
-     * @param knownLocations - Locations list
-     * @param lineage - lineage object to query the origin of the asset.
-     * @param relatedAssets - RelatedAssets list
+     * @param type details of the metadata type for this asset
+     * @param guid guid property
+     * @param url element URL used to access its properties in the metadata repository.
+     * @param qualifiedName unique name
+     * @param displayName consumable name
+     * @param description description of the asset
+     * @param shortDescription short description from relationship with Connection
+     * @param owner owner name
+     * @param classifications enumeration of classifications
+     * @param assetProperties AdditionalProperties object
+     * @param externalIdentifiers ExternalIdentifiers enumeration
+     * @param relatedMediaReferences RelatedMediaReferences enumeration
+     * @param noteLogs NoteLogs iterator
+     * @param externalReferences ExternalReferences iterator
+     * @param connections List of connections attached to the asset
+     * @param licenses List of licenses
+     * @param certifications Certifications list of certifications
+     * @param meanings Meanings list of glossary definitions.
+     * @param schema Schema object to query schema and related glossary definitions.
+     * @param analysis Annotations from metadata discovery.
+     * @param feedback Feedback object to query the feedback.
+     * @param knownLocations Locations list
+     * @param lineage lineage object to query the origin of the asset.
+     * @param relatedAssets RelatedAssets list
      */
     public AssetUniverse(ElementType            type,
                          String                 guid,
@@ -107,9 +107,9 @@ public class AssetUniverse extends AssetDetail
     }
 
     /**
-     * Copy/clone Constructor - note this is a deep copy
+     * Copy/clone Constructor note this is a deep copy
      *
-     * @param templateAssetUniverse - template to copy
+     * @param templateAssetUniverse template to copy
      */
     public AssetUniverse(AssetUniverse templateAssetUniverse)
     {
@@ -177,7 +177,7 @@ public class AssetUniverse extends AssetDetail
     /**
      * Return the list of glossary definitions assigned directly to this asset.
      *
-     * @return Meanings - list of glossary definitions.
+     * @return Meanings list of glossary definitions.
      */
     public Meanings getMeanings()
     {
@@ -195,7 +195,7 @@ public class AssetUniverse extends AssetDetail
     /**
      * Return details of the schema associated with the asset.
      *
-     * @return SchemaElement - schema object to query the schema associated with the connected asset.
+     * @return SchemaElement schema object to query the schema associated with the connected asset.
      */
     public SchemaElement getSchema()
     {
@@ -213,7 +213,7 @@ public class AssetUniverse extends AssetDetail
     /**
      * Return details of the metadata discovery analysis for the asset.
      *
-     * @return Annotations - List of annotations from metadata discovery
+     * @return Annotations List of annotations from metadata discovery
      */
     public Annotations getAnalysis()
     {
@@ -231,7 +231,7 @@ public class AssetUniverse extends AssetDetail
     /**
      * Return details of the people, products and feedback that are connected to the asset.
      *
-     * @return Feedback - feedback object to query the feedback on the asset.
+     * @return Feedback feedback object to query the feedback on the asset.
      */
     public Feedback getFeedback()
     {
@@ -249,7 +249,7 @@ public class AssetUniverse extends AssetDetail
     /**
      * Return the list of locations for the asset.
      *
-     * @return Locations - list of locations.
+     * @return Locations list of locations.
      */
     public Locations getKnownLocations()
     {
@@ -267,7 +267,7 @@ public class AssetUniverse extends AssetDetail
     /**
      * Return details of the lineage for the asset.
      *
-     * @return Lineage  - lineage object that allows queries about the lineage of the asset.
+     * @return Lineage  lineage object that allows queries about the lineage of the asset.
      */
     public Lineage getLineage()
     {

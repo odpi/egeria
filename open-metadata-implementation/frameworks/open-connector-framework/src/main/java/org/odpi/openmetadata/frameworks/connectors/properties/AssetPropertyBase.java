@@ -12,7 +12,7 @@ public abstract class AssetPropertyBase extends PropertyBase
     /**
      * Typical constructor that sets the link to the connected asset to null
      *
-     * @param parentAsset - descriptor of asset that his property relates to.
+     * @param parentAsset descriptor of asset that his property relates to.
      */
     protected AssetPropertyBase(AssetDescriptor     parentAsset)
     {
@@ -25,10 +25,10 @@ public abstract class AssetPropertyBase extends PropertyBase
 
 
     /**
-     * Copy/clone constructor - sets up details of the parent asset from the template
+     * Copy/clone constructor sets up details of the parent asset from the template
      *
-     * @param parentAsset - descriptor of asset that his property relates to.
-     * @param  template - AssetPropertyBase to copy
+     * @param parentAsset descriptor of asset that his property relates to.
+     * @param  template AssetPropertyBase to copy
      */
     protected AssetPropertyBase(AssetDescriptor     parentAsset, AssetPropertyBase template)
     {
@@ -87,7 +87,7 @@ public abstract class AssetPropertyBase extends PropertyBase
     /**
      * An equals() method for subclasses to check they are connected to the same parent asset.
      *
-     * @param testObject - object to test
+     * @param testObject object to test
      * @return boolean indicating whether this object is connected to equivalent parent assets.
      */
     @Override

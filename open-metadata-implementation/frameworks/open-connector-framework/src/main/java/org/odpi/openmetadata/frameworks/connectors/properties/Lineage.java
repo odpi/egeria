@@ -17,7 +17,7 @@ public class Lineage extends AssetPropertyBase
     /**
      * Typical constructor.
      *
-     * @param parentAsset - description of the asset that this lineage is attached to.
+     * @param parentAsset description of the asset that this lineage is attached to.
      */
     public Lineage(AssetDescriptor  parentAsset)
     {
@@ -29,12 +29,12 @@ public class Lineage extends AssetPropertyBase
 
 
     /**
-     * Copy/clone constructor - - the parentAsset is passed separately to the template because it is also
+     * Copy/clone constructor - the parentAsset is passed separately to the template because it is also
      * likely to be being cloned in the same operation and we want the lineage clone to point to the
      * asset clone and not the original asset.
      *
-     * @param parentAsset - description of the asset that this lineage is attached to.
-     * @param templateLineage - lineage object to copy.
+     * @param parentAsset description of the asset that this lineage is attached to.
+     * @param templateLineage lineage object to copy.
      */
     public Lineage(AssetDescriptor  parentAsset, Lineage templateLineage)
     {
