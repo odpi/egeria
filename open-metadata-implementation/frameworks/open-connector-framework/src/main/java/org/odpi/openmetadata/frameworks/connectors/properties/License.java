@@ -34,26 +34,26 @@ public class License extends Referenceable
     /**
      * Typical constructor.
      *
-     * @param parentAsset - descriptor for parent asset
-     * @param type - details of the metadata type for this properties object
-     * @param guid - String - unique id
-     * @param url - String - URL
-     * @param classifications - enumeration of classifications
-     * @param qualifiedName - unique name
-     * @param additionalProperties - additional properties for the referenceable object.
-     * @param meanings - list of glossary terms (summary)
-     * @param licenseTypeGUID - license type GUID
-     * @param licenseTypeName - the name of the type of the license.
-     * @param licensee - name of the organization or person that issued the license
-     * @param summary - a brief summary of the license.
-     * @param link - ExternalReference for full text of the license
-     * @param startDate - start date for the license.
-     * @param endDate - the end date for the license - null if license does not expire.
-     * @param licenseConditions  - any special conditions that apply to the license - such as endorsements.
-     * @param createdBy - String name of the person or organization that set up the license agreement for this asset.
-     * @param custodian - the name of the person or organization that is responsible for the correct management
+     * @param parentAsset descriptor for parent asset
+     * @param type details of the metadata type for this properties object
+     * @param guid String unique id
+     * @param url String URL
+     * @param classifications enumeration of classifications
+     * @param qualifiedName unique name
+     * @param additionalProperties additional properties for the referenceable object.
+     * @param meanings list of glossary terms (summary)
+     * @param licenseTypeGUID license type GUID
+     * @param licenseTypeName the name of the type of the license.
+     * @param licensee name of the organization or person that issued the license
+     * @param summary a brief summary of the license.
+     * @param link ExternalReference for full text of the license
+     * @param startDate start date for the license.
+     * @param endDate the end date for the license null if license does not expire.
+     * @param licenseConditions  any special conditions that apply to the license such as endorsements.
+     * @param createdBy String name of the person or organization that set up the license agreement for this asset.
+     * @param custodian the name of the person or organization that is responsible for the correct management
      *                  of the asset according to the license.
-     * @param notes - the notes from the custodian.
+     * @param notes the notes from the custodian.
      */
     public License(AssetDescriptor      parentAsset,
                    ElementType type,
@@ -93,8 +93,8 @@ public class License extends Referenceable
     /**
      * Copy/clone constructor.
      *
-     * @param parentAsset - descriptor for parent asset
-     * @param templateLicense - element to copy
+     * @param parentAsset descriptor for parent asset
+     * @param templateLicense element to copy
      */
     public License(AssetDescriptor   parentAsset, License templateLicense)
     {

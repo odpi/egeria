@@ -24,11 +24,11 @@ public abstract class ElementHeader extends AssetPropertyBase
     /**
      * Typical Constructor
      *
-     * @param parentAsset - descriptor for parent asset
-     * @param type - details of the metadata type for this properties object
-     * @param guid - String - unique id
-     * @param url - String - URL
-     * @param classifications - enumeration of classifications
+     * @param parentAsset descriptor for parent asset
+     * @param type details of the metadata type for this properties object
+     * @param guid String unique id
+     * @param url String URL
+     * @param classifications enumeration of classifications
      */
     public ElementHeader(AssetDescriptor parentAsset,
                          ElementType type,
@@ -48,8 +48,8 @@ public abstract class ElementHeader extends AssetPropertyBase
     /**
      * Copy/clone constructor.
      *
-     * @param parentAsset - descriptor for parent asset
-     * @param templateHeader - element to copy
+     * @param parentAsset descriptor for parent asset
+     * @param templateHeader element to copy
      */
     public ElementHeader(AssetDescriptor parentAsset, ElementHeader templateHeader)
     {
@@ -80,7 +80,7 @@ public abstract class ElementHeader extends AssetPropertyBase
      * Return the element type properties for this properties object.  These values are set up by the metadata repository
      * and define details to the metadata entity used to represent this element.
      *
-     * @return ElementType - type information.
+     * @return ElementType type information.
      */
     public ElementType getType() {
         return type;
@@ -90,7 +90,7 @@ public abstract class ElementHeader extends AssetPropertyBase
     /**
      * Return the unique id for the properties object.  Null means no guid is assigned.
      *
-     * @return String - unique id
+     * @return String unique id
      */
     public String getGUID() {
         return guid;
@@ -101,7 +101,7 @@ public abstract class ElementHeader extends AssetPropertyBase
      * Returns the URL to access the properties object in the metadata repository.
      * If no url is available then null is returned.
      *
-     * @return String - URL
+     * @return String URL
      */
     public String getURL() {
         return url;
@@ -112,7 +112,7 @@ public abstract class ElementHeader extends AssetPropertyBase
      * Return the list of classifications associated with the asset.   This is an enumeration and the
      * pointers are set to the start of the list of classifications
      *
-     * @return Classifications - enumeration of classifications
+     * @return Classifications enumeration of classifications
      */
     public Classifications getClassifications()
     {

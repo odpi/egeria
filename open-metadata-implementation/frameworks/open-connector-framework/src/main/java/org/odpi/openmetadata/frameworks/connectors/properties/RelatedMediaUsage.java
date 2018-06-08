@@ -49,7 +49,7 @@ public enum RelatedMediaUsage implements Serializable
     /**
      * Return the code for this enum instance
      *
-     * @return int - media usage code
+     * @return int media usage code
      */
     public int getMediaUsageCode()
     {
@@ -60,7 +60,7 @@ public enum RelatedMediaUsage implements Serializable
     /**
      * Return the default name for this enum instance.
      *
-     * @return String - default name
+     * @return String default name
      */
     public String getMediaUsageName()
     {
@@ -71,7 +71,7 @@ public enum RelatedMediaUsage implements Serializable
     /**
      * Return the default description for the media usage pattern for this enum instance.
      *
-     * @return String - default description
+     * @return String default description
      */
     public String getMediaUsageDescription()
     {

@@ -51,7 +51,7 @@ public enum KeyPattern implements Serializable
     /**
      * Return the code for this enum instance
      *
-     * @return int - key pattern code
+     * @return int key pattern code
      */
     public int getKeyPatternCode()
     {
@@ -62,7 +62,7 @@ public enum KeyPattern implements Serializable
     /**
      * Return the default name for this enum instance.
      *
-     * @return String - default name
+     * @return String default name
      */
     public String getKeyPatternName()
     {
@@ -73,7 +73,7 @@ public enum KeyPattern implements Serializable
     /**
      * Return the default description for the key pattern for this enum instance.
      *
-     * @return String - default description
+     * @return String default description
      */
     public String getKeyPatternDescription()
     {

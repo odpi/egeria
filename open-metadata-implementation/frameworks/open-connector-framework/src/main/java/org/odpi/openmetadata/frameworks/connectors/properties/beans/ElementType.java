@@ -31,7 +31,7 @@ public class ElementType extends org.odpi.openmetadata.frameworks.connectors.pro
     /**
      * Copy/clone constructor
      *
-     * @param templateType - type to clone
+     * @param templateType type to clone
      */
     public ElementType(ElementType templateType)
     {
@@ -42,7 +42,7 @@ public class ElementType extends org.odpi.openmetadata.frameworks.connectors.pro
     /**
      * Set up the unique identifier for the element's type.
      *
-     * @param elementTypeId - String identifier
+     * @param elementTypeId String identifier
      */
     public void setElementTypeId(String elementTypeId)
     {
@@ -53,7 +53,7 @@ public class ElementType extends org.odpi.openmetadata.frameworks.connectors.pro
     /**
      * Set up the name of this element's type
      *
-     * @param elementTypeName - String name
+     * @param elementTypeName String name
      */
     public void setElementTypeName(String elementTypeName)
     {
@@ -64,7 +64,7 @@ public class ElementType extends org.odpi.openmetadata.frameworks.connectors.pro
     /**
      * Set up the version number for this element's type
      *
-     * @param elementTypeVersion - version number for the element type.
+     * @param elementTypeVersion version number for the element type.
      */
     public void setElementTypeVersion(long elementTypeVersion)
     {
@@ -74,7 +74,7 @@ public class ElementType extends org.odpi.openmetadata.frameworks.connectors.pro
 
     /**
      *
-     * @param elementTypeDescription - set up the description for this element's type
+     * @param elementTypeDescription set up the description for this element's type
      */
     public void setElementTypeDescription(String elementTypeDescription)
     {
@@ -86,7 +86,7 @@ public class ElementType extends org.odpi.openmetadata.frameworks.connectors.pro
      * the URL of the server where the element was retrieved from.  Typically this is
      * a server where the OMAS interfaces are activated.  If no URL is known for the server then null is returned.
      *
-     * @param elementAccessServiceURL - URL of the server
+     * @param elementAccessServiceURL URL of the server
      */
     public void setElementAccessServiceURL(String elementAccessServiceURL)
     {
@@ -97,7 +97,7 @@ public class ElementType extends org.odpi.openmetadata.frameworks.connectors.pro
     /**
      * Set up the details of this element's origin.
      *
-     * @param elementOrigin - see ElementOrigin enum
+     * @param elementOrigin see ElementOrigin enum
      */
     public void setElementOrigin(ElementOrigin elementOrigin)
     {
@@ -109,7 +109,7 @@ public class ElementType extends org.odpi.openmetadata.frameworks.connectors.pro
      * Set up the OMRS identifier for the metadata collection that is managed by the repository
      * where the element originates (its home repository).
      *
-     * @param elementHomeMetadataCollectionId - String unique identifier for the home metadata repository
+     * @param elementHomeMetadataCollectionId String unique identifier for the home metadata repository
      */
     public void setElementHomeMetadataCollectionId(String elementHomeMetadataCollectionId)
     {

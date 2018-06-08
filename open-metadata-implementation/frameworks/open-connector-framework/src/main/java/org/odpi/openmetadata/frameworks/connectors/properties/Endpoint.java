@@ -66,18 +66,18 @@ public class Endpoint extends Referenceable
      * Admin Constructor - used when Endpoint is inside a Connection that is not part of the connected asset
      * properties.  In this case there is no parent asset.
      *
-     * @param type - details of the metadata type for this properties object
-     * @param guid - String - unique id
-     * @param url - String - URL
-     * @param classifications - enumeration of classifications
-     * @param qualifiedName - unique name
-     * @param additionalProperties - additional properties for the referenceable object.
-     * @param meanings - list of glossary terms (summary)
-     * @param displayName - simple name for the endpoint
-     * @param description - String description for the endpoint
-     * @param address - network url for the server/resource
-     * @param protocol - endpoint protocol
-     * @param encryptionMethod - encryption mechanism in use by the endpoint
+     * @param type details of the metadata type for this properties object
+     * @param guid String unique id
+     * @param url String URL
+     * @param classifications enumeration of classifications
+     * @param qualifiedName unique name
+     * @param additionalProperties additional properties for the referenceable object.
+     * @param meanings list of glossary terms (summary)
+     * @param displayName simple name for the endpoint
+     * @param description String description for the endpoint
+     * @param address network url for the server/resource
+     * @param protocol endpoint protocol
+     * @param encryptionMethod encryption mechanism in use by the endpoint
      */
     public Endpoint(ElementType type,
                     String               guid,
@@ -111,19 +111,19 @@ public class Endpoint extends Referenceable
     /**
      * Typical Constructor for a new endpoint that is connected to an asset (either directly or indirectly.)
      *
-     * @param parentAsset - descriptor for parent asset
-     * @param type - details of the metadata type for this properties object
-     * @param guid - String - unique id
-     * @param url - String - URL
-     * @param classifications - enumeration of classifications
-     * @param qualifiedName - unique name
-     * @param additionalProperties - additional properties for the referenceable object.
-     * @param meanings - list of glossary terms (summary)
-     * @param displayName - simple name for the endpoint
-     * @param description - String description for the endpoint
-     * @param address - network url for the server/resource
-     * @param protocol - endpoint protocol
-     * @param encryptionMethod - encryption mechanism in use by the endpoint
+     * @param parentAsset descriptor for parent asset
+     * @param type details of the metadata type for this properties object
+     * @param guid String unique id
+     * @param url String URL
+     * @param classifications enumeration of classifications
+     * @param qualifiedName unique name
+     * @param additionalProperties additional properties for the referenceable object.
+     * @param meanings list of glossary terms (summary)
+     * @param displayName simple name for the endpoint
+     * @param description String description for the endpoint
+     * @param address network url for the server/resource
+     * @param protocol endpoint protocol
+     * @param encryptionMethod encryption mechanism in use by the endpoint
      */
     public Endpoint(AssetDescriptor parentAsset,
                     ElementType type,
@@ -152,7 +152,7 @@ public class Endpoint extends Referenceable
     /**
      * Copy/clone constructor for an Endpoint not connected to an asset.
      *
-     * @param templateEndpoint - template object to copy.
+     * @param templateEndpoint template object to copy.
      */
     public Endpoint(Endpoint templateEndpoint)
     {
@@ -163,8 +163,8 @@ public class Endpoint extends Referenceable
     /**
      * Copy/clone constructor for an Endpoint that is connected to an Asset (either directly or indirectly).
      *
-     * @param parentAsset - description of the asset that this endpoint is attached to.
-     * @param templateEndpoint - template object to copy.
+     * @param parentAsset description of the asset that this endpoint is attached to.
+     * @param templateEndpoint template object to copy.
      */
     public Endpoint(AssetDescriptor parentAsset, Endpoint templateEndpoint)
     {

@@ -17,20 +17,20 @@ public class VirtualConnection extends Connection
     /**
      * Typical Constructor
      *
-     * @param parentAsset - descriptor for parent asset
-     * @param type - details of the metadata type for this properties object
-     * @param guid - String - unique id
-     * @param url - String - URL
-     * @param classifications - enumeration of classifications
-     * @param qualifiedName - unique name
-     * @param additionalProperties - additional properties for the referenceable object
-     * @param meanings - list of glossary terms (summary)
-     * @param displayName - consumable name
-     * @param description - stored description property for the connection.
-     * @param connectorType - connector type to copy
-     * @param endpoint - endpoint properties
-     * @param securedProperties - typically user credentials for the connection
-     * @param embeddedConnections - the embedded connections for this virtual connection.
+     * @param parentAsset descriptor for parent asset
+     * @param type details of the metadata type for this properties object
+     * @param guid String unique id
+     * @param url String URL
+     * @param classifications enumeration of classifications
+     * @param qualifiedName unique name
+     * @param additionalProperties additional properties for the referenceable object
+     * @param meanings list of glossary terms (summary)
+     * @param displayName consumable name
+     * @param description stored description property for the connection.
+     * @param connectorType connector type to copy
+     * @param endpoint endpoint properties
+     * @param securedProperties typically user credentials for the connection
+     * @param embeddedConnections the embedded connections for this virtual connection.
      */
     public VirtualConnection(AssetDescriptor parentAsset,
                              ElementType type,
@@ -67,8 +67,8 @@ public class VirtualConnection extends Connection
     /**
      * Copy/clone constructor.
      *
-     * @param parentAsset - descriptor for parent asset
-     * @param templateVirtualConnection - element to copy
+     * @param parentAsset descriptor for parent asset
+     * @param templateVirtualConnection element to copy
      */
     public VirtualConnection(AssetDescriptor parentAsset, VirtualConnection templateVirtualConnection)
     {

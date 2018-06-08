@@ -24,13 +24,13 @@ public class SchemaAttribute extends AssetPropertyBase
     /**
      * Typical Constructor
      *
-     * @param parentAsset - description of the asset that this schema attribute is attached to.
-     * @param attributeName - the name of this attribute
-     * @param elementPosition -  position in schema - 0 means first
-     * @param cardinality -  cardinality defined for this schema attribute.
-     * @param defaultValueOverride - default value for this attribute that would override the default defined in the
+     * @param parentAsset description of the asset that this schema attribute is attached to.
+     * @param attributeName the name of this attribute
+     * @param elementPosition  position in schema 0 means first
+     * @param cardinality  cardinality defined for this schema attribute.
+     * @param defaultValueOverride default value for this attribute that would override the default defined in the
      * schema element for this attribute's type (note only used is type is primitive).
-     * @param attributeType - the SchemaElement that relates to the type of this attribute.
+     * @param attributeType the SchemaElement that relates to the type of this attribute.
      */
     public SchemaAttribute(AssetDescriptor parentAsset,
                            String          attributeName,
@@ -51,8 +51,8 @@ public class SchemaAttribute extends AssetPropertyBase
     /**
      * Copy/clone constructor.
      *
-     * @param parentAsset - description of the asset that this schema attribute is attached to.
-     * @param template - template schema attribute to copy.
+     * @param parentAsset description of the asset that this schema attribute is attached to.
+     * @param template template schema attribute to copy.
      */
     public SchemaAttribute(AssetDescriptor   parentAsset, SchemaAttribute template)
     {
@@ -90,7 +90,7 @@ public class SchemaAttribute extends AssetPropertyBase
     /**
      * Return the position of this schema attribute in its parent schema.
      *
-     * @return int position in schema - 0 means first
+     * @return int position in schema 0 means first
      */
     public int getElementPosition() { return elementPosition; }
 

@@ -14,9 +14,9 @@ public abstract class Certifications extends AssetPropertyIteratorBase implement
     /**
      * Typical Constructor creates an iterator with the supplied list of elements.
      *
-     * @param parentAsset - descriptor of parent asset
-     * @param totalElementCount - the total number of elements to process.  A negative value is converted to 0.
-     * @param maxCacheSize - maximum number of elements that should be retrieved from the property server and
+     * @param parentAsset descriptor of parent asset
+     * @param totalElementCount the total number of elements to process.  A negative value is converted to 0.
+     * @param maxCacheSize maximum number of elements that should be retrieved from the property server and
      *                     cached in the element list at any one time.  If a number less than one is supplied, 1 is used.
      */
     public Certifications(AssetDescriptor parentAsset,
@@ -30,8 +30,8 @@ public abstract class Certifications extends AssetPropertyIteratorBase implement
     /**
      * Copy/clone constructor.  Used to reset iterator element pointer to 0;
      *
-     * @param parentAsset - descriptor of parent asset
-     * @param template - type-specific iterator to copy; null to create an empty iterator
+     * @param parentAsset descriptor of parent asset
+     * @param template type-specific iterator to copy; null to create an empty iterator
      */
     public Certifications(AssetDescriptor parentAsset, Certifications template)
     {
@@ -42,8 +42,8 @@ public abstract class Certifications extends AssetPropertyIteratorBase implement
     /**
      * Provides a concrete implementation of cloneElement for the specific iterator type.
      *
-     * @param parentAsset - descriptor of parent asset
-     * @param template - object to clone
+     * @param parentAsset descriptor of parent asset
+     * @param template object to clone
      * @return new cloned object.
      */
     protected Certification cloneElement(AssetDescriptor parentAsset, AssetPropertyBase template)
@@ -55,7 +55,7 @@ public abstract class Certifications extends AssetPropertyIteratorBase implement
     /**
      * Clones this iterator.
      *
-     * @param parentAsset - descriptor of parent asset
+     * @param parentAsset descriptor of parent asset
      * @return new cloned object.
      */
     protected  abstract Certifications cloneIterator(AssetDescriptor parentAsset);
@@ -77,7 +77,7 @@ public abstract class Certifications extends AssetPropertyIteratorBase implement
     /**
      * Return the next element in the iteration.
      *
-     * @return Certification - next element object that has been cloned.
+     * @return Certification next element object that has been cloned.
      */
     @Override
     public Certification next()

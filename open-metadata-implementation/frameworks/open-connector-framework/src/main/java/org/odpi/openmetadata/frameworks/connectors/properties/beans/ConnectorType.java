@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.List;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -29,7 +31,7 @@ public class ConnectorType extends org.odpi.openmetadata.frameworks.connectors.p
     /**
      * Copy/clone constructor for a connectorType that is not connected to an asset (either directly or indirectly).
      *
-     * @param templateConnectorType - template object to copy.
+     * @param templateConnectorType template object to copy.
      */
     public ConnectorType(ConnectorType templateConnectorType)
     {
@@ -40,7 +42,7 @@ public class ConnectorType extends org.odpi.openmetadata.frameworks.connectors.p
     /**
      * Set up the type of this element.
      *
-     * @param type - element type proprerties
+     * @param type element type proprerties
      */
     public void setType(ElementType type)
     {
@@ -51,7 +53,7 @@ public class ConnectorType extends org.odpi.openmetadata.frameworks.connectors.p
     /**
      * Set up the guid for the element.
      *
-     * @param guid - String unique identifier
+     * @param guid String unique identifier
      */
     public void setGUID(String guid)
     {
@@ -62,7 +64,7 @@ public class ConnectorType extends org.odpi.openmetadata.frameworks.connectors.p
     /**
      * Set up the URL of this element.
      *
-     * @param url - String
+     * @param url String
      */
     public void setURL(String url)
     {
@@ -73,7 +75,7 @@ public class ConnectorType extends org.odpi.openmetadata.frameworks.connectors.p
     /**
      * Set up the fully qualified name.
      *
-     * @param qualifiedName - String name
+     * @param qualifiedName String name
      */
     public void setQualifiedName(String qualifiedName)
     {
@@ -84,7 +86,7 @@ public class ConnectorType extends org.odpi.openmetadata.frameworks.connectors.p
     /**
      * Set up additional properties.
      *
-     * @param additionalProperties - Additional properties object
+     * @param additionalProperties Additional properties object
      */
     public void setAdditionalProperties(AdditionalProperties additionalProperties)
     {
@@ -95,7 +97,7 @@ public class ConnectorType extends org.odpi.openmetadata.frameworks.connectors.p
     /**
      * Set up the display name for UIs and reports.
      *
-     * @param displayName - String name
+     * @param displayName String name
      */
     public void setDisplayName(String displayName)
     {
@@ -106,7 +108,7 @@ public class ConnectorType extends org.odpi.openmetadata.frameworks.connectors.p
     /**
      * Set up description of the element.
      *
-     * @param description - String
+     * @param description String
      */
     public void setDescription(String description)
     {
@@ -117,11 +119,34 @@ public class ConnectorType extends org.odpi.openmetadata.frameworks.connectors.p
     /**
      * The name of the connector provider class name.
      *
-     * @param connectorProviderClassName - String class name
+     * @param connectorProviderClassName String class name
      */
     public void setConnectorProviderClassName(String connectorProviderClassName)
     {
         super.connectorProviderClassName = connectorProviderClassName;
     }
 
+
+    /**
+     * Set up the list of property names that this connector/connector provider implementation looks for
+     * in the Connection object's additionalProperties.
+     *
+     * @param recognizedAdditionalProperties  list of property names
+     */
+    public void setRecognizedAdditionalProperties(List<String>   recognizedAdditionalProperties)
+    {
+        super.recognizedAdditionalProperties = recognizedAdditionalProperties;
+    }
+
+
+    /**
+     * Set up the list of property names that this connector/connector provider implementation looks for
+     * in the Connection object's securedProperties.
+     *
+     * @param recognizedSecuredProperties  list of property names
+     */
+    public void  setRecognizedSecuredProperties(List<String>  recognizedSecuredProperties)
+    {
+        super.recognizedSecuredProperties = recognizedSecuredProperties;
+    }
 }

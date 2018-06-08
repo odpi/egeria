@@ -21,21 +21,21 @@ public class ExternalReference extends Referenceable
     /**
      * Typical Constructor
      *
-     * @param parentAsset - descriptor for parent asset
-     * @param type - details of the metadata type for this properties object
-     * @param guid - String - unique id
-     * @param url - String - URL
-     * @param classifications - enumeration of classifications
-     * @param qualifiedName - unique name
-     * @param additionalProperties - additional properties for the referenceable object.
-     * @param meanings - list of glossary terms (summary)
+     * @param parentAsset descriptor for parent asset
+     * @param type details of the metadata type for this properties object
+     * @param guid String unique id
+     * @param url String URL
+     * @param classifications enumeration of classifications
+     * @param qualifiedName unique name
+     * @param additionalProperties additional properties for the referenceable object.
+     * @param meanings list of glossary terms (summary)
      * @param referenceId the reference identifier for this asset's reference.
-     * @param linkDescription - description of the reference (with respect to this asset).
-     * @param displayName - display name for this external reference.
-     * @param uri - the URI used to retrieve the resource that this external reference represents.
-     * @param resourceDescription - the description of the resource that this external reference represents.
-     * @param version - the version of the resource that this external reference represents.
-     * @param organization - the name of the organization that owns the resource that this external reference represents.
+     * @param linkDescription description of the reference (with respect to this asset).
+     * @param displayName display name for this external reference.
+     * @param uri the URI used to retrieve the resource that this external reference represents.
+     * @param resourceDescription the description of the resource that this external reference represents.
+     * @param version the version of the resource that this external reference represents.
+     * @param organization the name of the organization that owns the resource that this external reference represents.
      */
     public ExternalReference(AssetDescriptor parentAsset,
                              ElementType type,
@@ -67,8 +67,8 @@ public class ExternalReference extends Referenceable
     /**
      * Copy/clone constructor.
      *
-     * @param parentAsset - descriptor for parent asset
-     * @param templateExternalReference - element to copy
+     * @param parentAsset descriptor for parent asset
+     * @param templateExternalReference element to copy
      */
     public ExternalReference(AssetDescriptor parentAsset, ExternalReference templateExternalReference)
     {
