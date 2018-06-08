@@ -1,3 +1,5 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+
 # Egeria Maintainers
 
 The current Egeria maintainers are:
