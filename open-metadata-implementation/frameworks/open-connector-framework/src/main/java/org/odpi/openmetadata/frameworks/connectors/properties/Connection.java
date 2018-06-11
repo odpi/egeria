@@ -73,18 +73,18 @@ public class Connection extends Referenceable
     /**
      * Typical Constructor - for constructing a new, independent populated Connection.
      *
-     * @param type - details of the metadata type for this properties object
-     * @param guid - String - unique id
-     * @param url - String - URL
-     * @param classifications - enumeration of classifications
-     * @param qualifiedName - unique name
-     * @param additionalProperties - additional properties for the referenceable object.
-     * @param meanings - list of glossary terms (summary)
-     * @param displayName - consumable name
-     * @param description - stored description property for the connection.
-     * @param connectorType - connector type to copy
-     * @param endpoint - endpoint properties
-     * @param securedProperties - typically user credentials for the connection
+     * @param type details of the metadata type for this properties object
+     * @param guid String unique id
+     * @param url String URL
+     * @param classifications enumeration of classifications
+     * @param qualifiedName unique name
+     * @param additionalProperties additional properties for the referenceable object.
+     * @param meanings list of glossary terms (summary)
+     * @param displayName consumable name
+     * @param description stored description property for the connection.
+     * @param connectorType connector type to copy
+     * @param endpoint endpoint properties
+     * @param securedProperties typically user credentials for the connection
      */
     public Connection(ElementType          type,
                       String               guid,
@@ -110,21 +110,21 @@ public class Connection extends Referenceable
 
 
     /**
-     * Typical Constructor - for constructing a new, populated Connection as part of connected asset properties.
+     * Typical Constructor for constructing a new, populated Connection as part of connected asset properties.
      *
-     * @param parentAsset - descriptor for parent asset
-     * @param type - details of the metadata type for this properties object
-     * @param guid - String - unique id
-     * @param url - String - URL
-     * @param classifications - enumeration of classifications
-     * @param qualifiedName - unique name
-     * @param additionalProperties - additional properties for the referenceable object
-     * @param meanings - list of glossary terms (summary)
-     * @param displayName - consumable name
-     * @param description - stored description property for the connection.
-     * @param connectorType - connector type to copy
-     * @param endpoint - endpoint properties
-     * @param securedProperties - typically user credentials for the connection
+     * @param parentAsset descriptor for parent asset
+     * @param type details of the metadata type for this properties object
+     * @param guid String unique id
+     * @param url String URL
+     * @param classifications enumeration of classifications
+     * @param qualifiedName unique name
+     * @param additionalProperties additional properties for the referenceable object
+     * @param meanings list of glossary terms (summary)
+     * @param displayName consumable name
+     * @param description stored description property for the connection.
+     * @param connectorType connector type to copy
+     * @param endpoint endpoint properties
+     * @param securedProperties typically user credentials for the connection
      */
     public Connection(AssetDescriptor      parentAsset,
                       ElementType          type,
@@ -153,7 +153,7 @@ public class Connection extends Referenceable
     /**
      * Copy/clone Constructor to return a copy of a connection object that is not connected to an asset.
      *
-     * @param templateConnection - Connection to copy
+     * @param templateConnection Connection to copy
      */
     public Connection(Connection templateConnection)
     {
@@ -166,8 +166,8 @@ public class Connection extends Referenceable
     /**
      * Copy/clone Constructor to return a copy of a connection object that is connected to an asset.
      *
-     * @param parentAsset - description of the asset that this connection is attached to.
-     * @param templateConnection - template object to copy.
+     * @param parentAsset description of the asset that this connection is attached to.
+     * @param templateConnection template object to copy.
      */
     public Connection(AssetDescriptor  parentAsset, Connection templateConnection)
     {
@@ -308,7 +308,7 @@ public class Connection extends Referenceable
      * This method is protected so only OCF (or subclasses) can access them.  When Connector is passed to calling
      * OMAS, the secured properties are not available.
      *
-     * @return secured properties - typically user credentials for the connection
+     * @return secured properties typically user credentials for the connection
      */
     protected AdditionalProperties getSecuredProperties()
     {

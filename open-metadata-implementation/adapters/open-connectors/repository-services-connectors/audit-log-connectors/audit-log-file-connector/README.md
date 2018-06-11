@@ -2,4 +2,5 @@
   
 # Audit Log File Connector
 
-The audit log file connector supports a directory of JSON files
+The audit log file connector supports a directory of JSON files that each contain
+an audit log record.

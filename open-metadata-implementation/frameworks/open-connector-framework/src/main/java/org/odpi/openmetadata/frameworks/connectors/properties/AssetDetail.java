@@ -28,25 +28,25 @@ public class AssetDetail extends AssetSummary
 
 
     /**
-     * Typical constructor - initialize superclasses
+     * Typical constructor initialize superclasses
      *
-     * @param type - details of the metadata type for this asset
-     * @param guid - guid property
-     * @param url - element URL used to access its properties in the metadata repository.
-     * @param qualifiedName - unique name
-     * @param displayName - consumable name
-     * @param description - description of the asset
-     * @param shortDescription - short description from relationship with Connection
-     * @param owner - owner name
-     * @param classifications - enumeration of classifications
-     * @param assetProperties - AdditionalProperties object
-     * @param externalIdentifiers - ExternalIdentifiers enumeration
-     * @param relatedMediaReferences - RelatedMediaReferences enumeration
-     * @param noteLogs - NoteLogs iterator
-     * @param externalReferences - ExternalReferences iterator
-     * @param connections - List of connections attached to the asset
-     * @param licenses - List of licenses
-     * @param certifications - Certifications - list of certifications
+     * @param type details of the metadata type for this asset
+     * @param guid guid property
+     * @param url element URL used to access its properties in the metadata repository.
+     * @param qualifiedName unique name
+     * @param displayName consumable name
+     * @param description description of the asset
+     * @param shortDescription short description from relationship with Connection
+     * @param owner owner name
+     * @param classifications enumeration of classifications
+     * @param assetProperties AdditionalProperties object
+     * @param externalIdentifiers ExternalIdentifiers enumeration
+     * @param relatedMediaReferences RelatedMediaReferences enumeration
+     * @param noteLogs NoteLogs iterator
+     * @param externalReferences ExternalReferences iterator
+     * @param connections List of connections attached to the asset
+     * @param licenses List of licenses
+     * @param certifications Certifications list of certifications
      */
     public AssetDetail(ElementType type,
                        String                 guid,
@@ -89,7 +89,7 @@ public class AssetDetail extends AssetSummary
     /**
      * Copy/clone constructor.  Note, this is a deep copy
      *
-     * @param templateAssetDetail - template to copy
+     * @param templateAssetDetail template to copy
      */
     public AssetDetail(AssetDetail templateAssetDetail)
     {
@@ -152,7 +152,7 @@ public class AssetDetail extends AssetSummary
      * Return the set of properties that are specific to the particular type of asset.  The caller is given their
      * own copy of the property object.  The properties are named entityName.attributeName. The values are all strings.
      *
-     * @return AdditionalProperties - asset properties using the name of attributes from the model.
+     * @return AdditionalProperties asset properties using the name of attributes from the model.
      */
     public AdditionalProperties getAssetProperties()
     {
@@ -278,7 +278,7 @@ public class AssetDetail extends AssetSummary
     /**
      * Return the list of certifications awarded to the asset.
      *
-     * @return Certifications - list of certifications
+     * @return Certifications list of certifications
      */
     public Certifications getCertifications()
     {

@@ -17,16 +17,16 @@ public class Location extends Referenceable
     /**
      * Typical constructor
      *
-     * @param parentAsset - descriptor for parent asset
-     * @param type - details of the metadata type for this properties object
-     * @param guid - String - unique id
-     * @param url - String - URL
-     * @param classifications - enumeration of classifications
-     * @param qualifiedName - unique name
-     * @param additionalProperties - additional properties for the referenceable object.
-     * @param meanings - list of glossary terms (summary)
-     * @param displayName - consumable name
-     * @param description - description property stored for the location.
+     * @param parentAsset descriptor for parent asset
+     * @param type details of the metadata type for this properties object
+     * @param guid String unique id
+     * @param url String URL
+     * @param classifications enumeration of classifications
+     * @param qualifiedName unique name
+     * @param additionalProperties additional properties for the referenceable object.
+     * @param meanings list of glossary terms (summary)
+     * @param displayName consumable name
+     * @param description description property stored for the location.
      */
     public Location(AssetDescriptor      parentAsset,
                     ElementType          type,
@@ -48,8 +48,8 @@ public class Location extends Referenceable
     /**
      * Copy/clone constructor
      *
-     * @param parentAsset - description of the asset that this location is attached to.
-     * @param templateLocation - template object to copy.
+     * @param parentAsset description of the asset that this location is attached to.
+     * @param templateLocation template object to copy.
      */
     public Location(AssetDescriptor  parentAsset, Location templateLocation)
     {

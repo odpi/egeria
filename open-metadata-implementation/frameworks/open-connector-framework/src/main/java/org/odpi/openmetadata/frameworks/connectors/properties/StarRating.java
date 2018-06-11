@@ -50,7 +50,7 @@ public enum StarRating implements Serializable
     /**
      * Return the code for this enum instance
      *
-     * @return int - star rating code
+     * @return int star rating code
      */
     public int getStarRatingCode()
     {
@@ -61,7 +61,7 @@ public enum StarRating implements Serializable
     /**
      * Return the default symbol for this enum instance.
      *
-     * @return String - default symbol
+     * @return String default symbol
      */
     public String getStarRatingSymbol()
     {
@@ -72,7 +72,7 @@ public enum StarRating implements Serializable
     /**
      * Return the default description for the star rating for this enum instance.
      *
-     * @return String - default description
+     * @return String default description
      */
     public String getStarRatingDescription()
     {

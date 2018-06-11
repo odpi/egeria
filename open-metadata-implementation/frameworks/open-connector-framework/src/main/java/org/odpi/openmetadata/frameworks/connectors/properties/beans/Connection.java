@@ -29,7 +29,7 @@ public class Connection extends org.odpi.openmetadata.frameworks.connectors.prop
     /**
      * Copy/clone Constructor to return a copy of a connection object that is not connected to an asset.
      *
-     * @param templateConnection - Connection to copy
+     * @param templateConnection Connection to copy
      */
     public Connection(Connection templateConnection)
     {
@@ -43,7 +43,7 @@ public class Connection extends org.odpi.openmetadata.frameworks.connectors.prop
     /**
      * Copy/clone Constructor to return a copy of a connection object that is not connected to an asset.
      *
-     * @param templateConnection - Connection to copy
+     * @param templateConnection Connection to copy
      */
     public Connection(org.odpi.openmetadata.frameworks.connectors.properties.Connection templateConnection)
     {
@@ -57,7 +57,7 @@ public class Connection extends org.odpi.openmetadata.frameworks.connectors.prop
     /**
      * Set up the type of this element.
      *
-     * @param type - element type proprerties
+     * @param type element type proprerties
      */
     public void setType(ElementType type)
     {
@@ -68,7 +68,7 @@ public class Connection extends org.odpi.openmetadata.frameworks.connectors.prop
     /**
      * Set up the guid for the element.
      *
-     * @param guid - String unique identifier
+     * @param guid String unique identifier
      */
     public void setGUID(String guid)
     {
@@ -79,7 +79,7 @@ public class Connection extends org.odpi.openmetadata.frameworks.connectors.prop
     /**
      * Set up the URL of this element.
      *
-     * @param url - String
+     * @param url String
      */
     public void setURL(String url)
     {
@@ -90,7 +90,7 @@ public class Connection extends org.odpi.openmetadata.frameworks.connectors.prop
     /**
      * Set up the fully qualified name.
      *
-     * @param qualifiedName - String name
+     * @param qualifiedName String name
      */
     public void setQualifiedName(String qualifiedName)
     {
@@ -101,7 +101,7 @@ public class Connection extends org.odpi.openmetadata.frameworks.connectors.prop
     /**
      * Set up additional properties.
      *
-     * @param additionalProperties - Additional properties object
+     * @param additionalProperties Additional properties object
      */
     public void setAdditionalProperties(AdditionalProperties additionalProperties)
     {
@@ -112,7 +112,7 @@ public class Connection extends org.odpi.openmetadata.frameworks.connectors.prop
     /**
      * Set up the display name for UIs and reports.
      *
-     * @param displayName - String name
+     * @param displayName String name
      */
     public void setDisplayName(String displayName)
     {
@@ -123,7 +123,7 @@ public class Connection extends org.odpi.openmetadata.frameworks.connectors.prop
     /**
      * Set up description of the element.
      *
-     * @param description - String
+     * @param description String
      */
     public void setDescription(String description)
     {
@@ -134,7 +134,7 @@ public class Connection extends org.odpi.openmetadata.frameworks.connectors.prop
     /**
      * Set up the connector type properties for this Connection.
      *
-     * @param connectorType - ConnectorType properties object
+     * @param connectorType ConnectorType properties object
      */
     public void setConnectorType(ConnectorType connectorType)
     {
@@ -145,7 +145,7 @@ public class Connection extends org.odpi.openmetadata.frameworks.connectors.prop
     /**
      * Set up the endpoint properties for this Connection.
      *
-     * @param endpoint - Endpoint properties object
+     * @param endpoint Endpoint properties object
      */
     public void setEndpoint(Endpoint endpoint)
     {
@@ -156,7 +156,7 @@ public class Connection extends org.odpi.openmetadata.frameworks.connectors.prop
     /**
      * Set up the secured properties for this Connection.
      *
-     * @param securedProperties - properties that contain secret information such as log on information.
+     * @param securedProperties properties that contain secret information such as log on information.
      */
     public void setSecuredProperties(AdditionalProperties securedProperties)
     {

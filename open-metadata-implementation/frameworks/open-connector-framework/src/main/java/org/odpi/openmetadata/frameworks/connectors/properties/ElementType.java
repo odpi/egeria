@@ -21,13 +21,13 @@ public class ElementType extends PropertyBase
     /**
      * Typical Constructor
      *
-     * @param elementTypeId - identifier for the element's type
-     * @param elementTypeName - element type name
-     * @param elementTypeVersion - version number for the element type
-     * @param elementTypeDescription - description of element type
-     * @param elementSourceServer - url of the OMAS server
-     * @param elementOrigin - enum describing type of origin
-     * @param elementHomeMetadataCollectionId - metadata collection id
+     * @param elementTypeId identifier for the element's type
+     * @param elementTypeName element type name
+     * @param elementTypeVersion version number for the element type
+     * @param elementTypeDescription description of element type
+     * @param elementSourceServer url of the OMAS server
+     * @param elementOrigin enum describing type of origin
+     * @param elementHomeMetadataCollectionId metadata collection id
      */
     public ElementType(String         elementTypeId,
                        String         elementTypeName,
@@ -52,7 +52,7 @@ public class ElementType extends PropertyBase
     /**
      * Copy/clone constructor
      *
-     * @param templateType - type to clone
+     * @param templateType type to clone
      */
     public ElementType(ElementType templateType)
     {
@@ -88,7 +88,7 @@ public class ElementType extends PropertyBase
     /**
      * Return name of element's type.
      *
-     * @return - elementTypeName
+     * @return elementTypeName
      */
     public String getElementTypeName()
     {
@@ -99,7 +99,7 @@ public class ElementType extends PropertyBase
     /**
      * Return the version number for this element's type.
      *
-     * @return elementTypeVersion - version number for the element type.
+     * @return elementTypeVersion version number for the element type.
      */
     public long getElementTypeVersion()
     {
@@ -110,7 +110,7 @@ public class ElementType extends PropertyBase
     /**
      * Return the description for this element's type.
      *
-     * @return elementTypeDescription - String description for the element type
+     * @return elementTypeDescription String description for the element type
      */
     public String getElementTypeDescription()
     {
@@ -122,7 +122,7 @@ public class ElementType extends PropertyBase
      * Return the URL of the server where the element was retrieved from.  Typically this is
      * a server where the OMAS interfaces are activated.  If no URL is known for the server then null is returned.
      *
-     * @return elementSourceServerURL - the url of the server where the element came from
+     * @return elementSourceServerURL the url of the server where the element came from
      */
     public String getElementSourceServer()
     {

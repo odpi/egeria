@@ -12,7 +12,7 @@ import java.util.Arrays;
  *
  * The 5 fields in the enum are:
  * <ul>
- *     <li>HTTP Error Code - for translating between REST and JAVA - Typically the numbers used are:</li>
+ *     <li>HTTP Error Code for translating between REST and JAVA - Typically the numbers used are:</li>
  *     <li><ul>
  *         <li>500 - internal error</li>
  *         <li>400 - invalid parameters</li>

@@ -13,14 +13,14 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Enforcement Engine Plugins</name>
+    <name>Governance Engine Plugins</name>
     <description>
         Governance Engines Plugins support plugins to governance engines
         to enable them to use open metadata settings in their validation
         and enforcement decisions they make and the resulting actions they take.
     </description>
 
-    <artifactId>enforcement-engines</artifactId>
+    <artifactId>governance-engines-plugins</artifactId>
 
 
 </project>
