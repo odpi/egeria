@@ -2,6 +2,8 @@
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
 
+import java.util.List;
+
 /**
  * The ConnectorType describe the implementation details of a particular type of OCF connector.
  * The properties for a connector type are defined in model 0201.
@@ -47,24 +49,26 @@ public class ConnectorType extends Referenceable
     /*
      * Attributes of a connector type
      */
-    protected   String                 displayName = null;
-    protected   String                 description = null;
-    protected   String                 connectorProviderClassName = null;
+    protected String       displayName                    = null;
+    protected String       description                    = null;
+    protected String       connectorProviderClassName     = null;
+    protected List<String> recognizedAdditionalProperties = null;
+    protected List<String> recognizedSecuredProperties    = null;
 
     /**
      * Typical Constructor - used when Connector Type is used inside a connection object which is itself
      * not yet connected to an asset.  In this case the ParentAsset is null.
      *
-     * @param type - details of the metadata type for this properties object
-     * @param guid - String - unique id
-     * @param url - String - URL
-     * @param classifications - enumeration of classifications
-     * @param qualifiedName - unique name
-     * @param additionalProperties - additional properties for the referenceable object.
-     * @param meanings - list of glossary terms (summary)
-     * @param displayName - consumable name property stored for the connector type.
-     * @param description - description property stored for the connector type.
-     * @param connectorProviderClassName - class name (including package name)
+     * @param type details of the metadata type for this properties object
+     * @param guid String unique id
+     * @param url String URL
+     * @param classifications enumeration of classifications
+     * @param qualifiedName unique name
+     * @param additionalProperties additional properties for the referenceable object.
+     * @param meanings list of glossary terms (summary)
+     * @param displayName consumable name property stored for the connector type.
+     * @param description description property stored for the connector type.
+     * @param connectorProviderClassName class name (including package name)
      */
     public ConnectorType(ElementType type,
                          String               guid,
@@ -88,17 +92,17 @@ public class ConnectorType extends Referenceable
     /**
      * Typical constructor for creating a connectorType linked to an asset.
      *
-     * @param parentAsset - descriptor for parent asset
-     * @param type - details of the metadata type for this properties object
-     * @param guid - String - unique id
-     * @param url - String - URL
-     * @param classifications - enumeration of classifications
-     * @param qualifiedName - unique name
-     * @param additionalProperties - additional properties for the referenceable object.
-     * @param meanings - list of glossary terms (summary)
-     * @param displayName - consumable name property stored for the connector type.
-     * @param description - description property stored for the connector type.
-     * @param connectorProviderClassName - class name (including package name)
+     * @param parentAsset descriptor for parent asset
+     * @param type details of the metadata type for this properties object
+     * @param guid String unique id
+     * @param url String URL
+     * @param classifications enumeration of classifications
+     * @param qualifiedName unique name
+     * @param additionalProperties additional properties for the referenceable object.
+     * @param meanings list of glossary terms (summary)
+     * @param displayName consumable name property stored for the connector type.
+     * @param description description property stored for the connector type.
+     * @param connectorProviderClassName class name (including package name)
      */
     public ConnectorType(AssetDescriptor parentAsset, ElementType type, String guid, String url, Classifications classifications, String qualifiedName, AdditionalProperties additionalProperties, Meanings meanings, String displayName, String description, String connectorProviderClassName)
     {
@@ -112,7 +116,7 @@ public class ConnectorType extends Referenceable
     /**
      * Copy/clone constructor for a connectorType that is not connected to an asset (either directly or indirectly).
      *
-     * @param templateConnectorType - template object to copy.
+     * @param templateConnectorType template object to copy.
      */
     public ConnectorType(ConnectorType templateConnectorType)
     {
@@ -123,8 +127,8 @@ public class ConnectorType extends Referenceable
     /**
      * Copy/clone constructor for a connectorType that is connected to an asset (either directly or indirectly).
      *
-     * @param parentAsset - description of the asset that this connector type is attached to.
-     * @param templateConnectorType - template object to copy.
+     * @param parentAsset description of the asset that this connector type is attached to.
+     * @param templateConnectorType template object to copy.
      */
     public ConnectorType(AssetDescriptor parentAsset, ConnectorType templateConnectorType)
     {
@@ -174,11 +178,35 @@ public class ConnectorType extends Referenceable
      * Returns the stored connectorProviderClassName property for the connector type.
      * If no connectorProviderClassName is available then null is returned.
      *
-     * @return connectorProviderClassName - class name (including package name)
+     * @return connectorProviderClassName class name (including package name)
      */
     public String getConnectorProviderClassName()
     {
         return connectorProviderClassName;
+    }
+
+
+    /**
+     * Return the list of property names that this connector/connector provider implementation looks for
+     * in the Connection object's additionalProperties.
+     *
+     * @return list of property names
+     */
+    public List<String> getRecognizedAdditionalProperties()
+    {
+        return recognizedAdditionalProperties;
+    }
+
+
+    /**
+     * Return the list of property names that this connector/connector provider implementation looks for
+     * in the Connection object's securedProperties.
+     *
+     * @return list of property names
+     */
+    public List<String> getRecognizedSecuredProperties()
+    {
+        return recognizedSecuredProperties;
     }
 
 
@@ -194,12 +222,15 @@ public class ConnectorType extends Referenceable
                 "displayName='" + displayName + '\'' +
                 ", description='" + description + '\'' +
                 ", connectorProviderClassName='" + connectorProviderClassName + '\'' +
+                ", recognizedAdditionalProperties=" + recognizedAdditionalProperties +
+                ", recognizedSecuredProperties=" + recognizedSecuredProperties +
                 ", qualifiedName='" + qualifiedName + '\'' +
                 ", additionalProperties=" + additionalProperties +
                 ", meanings=" + meanings +
                 ", type=" + type +
                 ", guid='" + guid + '\'' +
                 ", url='" + url + '\'' +
+                ", classifications=" + classifications +
                 '}';
     }
 }

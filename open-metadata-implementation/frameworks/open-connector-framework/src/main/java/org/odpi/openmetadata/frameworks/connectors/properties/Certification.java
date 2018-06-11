@@ -38,26 +38,26 @@ public class Certification extends Referenceable
     /**
      * Typical constructor.
      *
-     * @param parentAsset - descriptor for parent asset
-     * @param type - details of the metadata type for this properties object
-     * @param guid - unique id
-     * @param url - URL of the certification in the metadata repository
-     * @param classifications - enumeration of classifications
-     * @param qualifiedName - unique name
-     * @param additionalProperties - additional properties for the referenceable object
-     * @param meanings - list of glossary terms (summary)
-     * @param certificationTypeGUID - certification type GUID
-     * @param certificationTypeName - certification type name
-     * @param examiner - name of the organization or person that issued the certification
-     * @param summary - brief summary of the certification
-     * @param link - external reference for full text of the certification.
-     * @param startDate - start date for the certification.  Null means unknown or not relevant.
-     * @param endDate - end date for the certification.  Null means it does not expire.
-     * @param certificationConditions - any special conditions that apply to the certification - such as endorsements
-     * @param createdBy - name of the person or organization that set up the certification for this asset
-     * @param custodian - String name of the person or organization that is responsible for the correct management
+     * @param parentAsset descriptor for parent asset
+     * @param type details of the metadata type for this properties object
+     * @param guid unique id
+     * @param url URL of the certification in the metadata repository
+     * @param classifications enumeration of classifications
+     * @param qualifiedName unique name
+     * @param additionalProperties additional properties for the referenceable object
+     * @param meanings list of glossary terms (summary)
+     * @param certificationTypeGUID certification type GUID
+     * @param certificationTypeName certification type name
+     * @param examiner name of the organization or person that issued the certification
+     * @param summary brief summary of the certification
+     * @param link external reference for full text of the certification.
+     * @param startDate start date for the certification.  Null means unknown or not relevant.
+     * @param endDate end date for the certification.  Null means it does not expire.
+     * @param certificationConditions any special conditions that apply to the certification such as endorsements
+     * @param createdBy name of the person or organization that set up the certification for this asset
+     * @param custodian String name of the person or organization that is responsible for the correct management
      *                  of the asset according to the certification
-     * @param notes - String notes from the custodian
+     * @param notes String notes from the custodian
      */
     public Certification(AssetDescriptor parentAsset,
                          ElementType type,
@@ -97,8 +97,8 @@ public class Certification extends Referenceable
     /**
      * Copy/clone constructor.
      *
-     * @param parentAsset - descriptor for parent asset
-     * @param templateCertification - element to copy
+     * @param parentAsset descriptor for parent asset
+     * @param templateCertification element to copy
      */
     public Certification(AssetDescriptor parentAsset, Certification templateCertification)
     {
@@ -190,7 +190,7 @@ public class Certification extends Referenceable
     /**
      * Return the start date for the certification.  Null means unknown or not relevant.
      *
-     * @return Date - start date for the certification
+     * @return Date start date for the certification
      */
     public Date getStartDate()
     {
@@ -208,7 +208,7 @@ public class Certification extends Referenceable
     /**
      * Return the end date for the certification.   Null means it does not expire.
      *
-     * @return Date - end date for the certification
+     * @return Date end date for the certification
      */
     public Date getEndDate()
     {

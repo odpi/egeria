@@ -15,22 +15,22 @@ public class MapSchemaElement extends SchemaElement
     /**
      * Typical constructor
      *
-     * @param parentAsset - descriptor for parent asset
-     * @param type - details of the metadata type for this properties object
-     * @param guid - String - unique id
-     * @param url - String - URL
-     * @param classifications - enumeration of classifications
-     * @param qualifiedName - unique name
-     * @param additionalProperties - additional properties for the referenceable object.
-     * @param meanings - list of glossary terms (summary)
-     * @param versionNumber - the version number of the schema element - null means no version number.
-     * @param author - the name of the author of the schema element. Null means the author is unknown.
-     * @param usage - the usage guidance for this schema element.  Null means no guidance available.
-     * @param encodingStandard - encoding standard used for this schema.  It may be XML, JSON, SQL DDL or something else.
+     * @param parentAsset descriptor for parent asset
+     * @param type details of the metadata type for this properties object
+     * @param guid String unique id
+     * @param url String URL
+     * @param classifications enumeration of classifications
+     * @param qualifiedName unique name
+     * @param additionalProperties additional properties for the referenceable object.
+     * @param meanings list of glossary terms (summary)
+     * @param versionNumber the version number of the schema element null means no version number.
+     * @param author the name of the author of the schema element. Null means the author is unknown.
+     * @param usage the usage guidance for this schema element.  Null means no guidance available.
+     * @param encodingStandard encoding standard used for this schema.  It may be XML, JSON, SQL DDL or something else.
      *                           Null means the encoding standard is unknown or there are many choices.
-     * @param mapFromElement - the type of schema element that represents the key or property name for the map.
+     * @param mapFromElement the type of schema element that represents the key or property name for the map.
      *                          This is also called the domain of the map.
-     * @param mapToElement - the type of schema element that represents the property value for the map.
+     * @param mapToElement the type of schema element that represents the property value for the map.
      *                       This is also called the range of the map.
      */
     public MapSchemaElement(AssetDescriptor      parentAsset,
@@ -66,12 +66,12 @@ public class MapSchemaElement extends SchemaElement
     }
 
     /**
-     * Copy/clone Constructor - the parentAsset is passed separately to the template because it is also
+     * Copy/clone Constructor the parentAsset is passed separately to the template because it is also
      * likely to be being cloned in the same operation and we want the definitions clone to point to the
      * asset clone and not the original asset.
      *
-     * @param parentAsset - description of the asset that this map is attached to.
-     * @param templateSchema - template object to copy.
+     * @param parentAsset description of the asset that this map is attached to.
+     * @param templateSchema template object to copy.
      */
     public MapSchemaElement(AssetDescriptor  parentAsset, MapSchemaElement templateSchema)
     {
@@ -122,7 +122,7 @@ public class MapSchemaElement extends SchemaElement
     /**
      * Returns a clone of this object as the abstract SchemaElement class.
      *
-     * @param parentAsset - description of the asset that this schema element is attached to.
+     * @param parentAsset description of the asset that this schema element is attached to.
      * @return SchemaElement
      */
     @Override

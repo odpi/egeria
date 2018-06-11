@@ -37,15 +37,15 @@ public class AssetSummary extends AssetDescriptor
     /**
      * Typical constructor with parameters to fill properties.
      *
-     * @param type - details of the metadata type for this asset
-     * @param guid - guid property
-     * @param url - element URL used to access its properties in the metadata repository.
-     * @param qualifiedName - unique name
-     * @param displayName - consumable name
-     * @param description - description of the asset
-     * @param shortDescription - short description from relationship with Connection
-     * @param owner - owner name
-     * @param classifications - enumeration of classifications
+     * @param type details of the metadata type for this asset
+     * @param guid guid property
+     * @param url element URL used to access its properties in the metadata repository.
+     * @param qualifiedName unique name
+     * @param displayName consumable name
+     * @param description description of the asset
+     * @param shortDescription short description from relationship with Connection
+     * @param owner owner name
+     * @param classifications enumeration of classifications
      */
     public AssetSummary(ElementType     type,
                         String          guid,
@@ -97,7 +97,7 @@ public class AssetSummary extends AssetDescriptor
     /**
      * Copy/clone constructor.  Note, this is a deep copy
      *
-     * @param templateAssetSummary - template values for asset summary
+     * @param templateAssetSummary template values for asset summary
      */
     public AssetSummary(AssetSummary templateAssetSummary)
     {
@@ -131,7 +131,7 @@ public class AssetSummary extends AssetDescriptor
      * Return the element type properties for this asset.  These values are set up by the metadata repository
      * and define details to the metadata entity used to represent this element.
      *
-     * @return ElementType - type information.
+     * @return ElementType type information.
      */
     public ElementType getType()
     {
@@ -199,7 +199,7 @@ public class AssetSummary extends AssetDescriptor
      * Return the list of classifications associated with the asset.   This is an enumeration and the
      * pointers are set to the start of the list of classifications
      *
-     * @return Classifications - enumeration of classifications
+     * @return Classifications enumeration of classifications
      */
     public Classifications getClassifications()
     {

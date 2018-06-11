@@ -27,15 +27,15 @@ public class Comment extends ElementHeader
     /**
      * Typical Constructor
      *
-     * @param parentAsset     - descriptor for parent asset
-     * @param type            - details of the metadata type for this properties object
-     * @param guid            - String - unique id
-     * @param url             - String - URL
-     * @param classifications - list of classifications
-     * @param commentType     - enum describing the type of the comment
-     * @param commentText     - comment text String
-     * @param user            - String - user id of the person who created the comment. Null means the user id is not known.
-     * @param commentReplies  - Nested list of comments replies
+     * @param parentAsset     descriptor for parent asset
+     * @param type            details of the metadata type for this properties object
+     * @param guid            String unique id
+     * @param url             String URL
+     * @param classifications list of classifications
+     * @param commentType     enum describing the type of the comment
+     * @param commentText     comment text String
+     * @param user            String user id of the person who created the comment. Null means the user id is not known.
+     * @param commentReplies  Nested list of comments replies
      */
     public Comment(AssetDescriptor parentAsset,
                    ElementType     type,
@@ -58,8 +58,8 @@ public class Comment extends ElementHeader
     /**
      * Copy/clone constructor.
      *
-     * @param parentAsset     - descriptor for parent asset
-     * @param templateComment - element to copy
+     * @param parentAsset     descriptor for parent asset
+     * @param templateComment element to copy
      */
     public Comment(AssetDescriptor parentAsset, Comment templateComment)
     {
@@ -103,7 +103,7 @@ public class Comment extends ElementHeader
     /**
      * Return the user id of the person who created the comment.  Null means the user id is not known.
      *
-     * @return String - commenting user
+     * @return String commenting user
      */
     public String getUser()
     {
@@ -114,7 +114,7 @@ public class Comment extends ElementHeader
     /**
      * Return the comment text.
      *
-     * @return String - commentText
+     * @return String commentText
      */
     public String getCommentText()
     {
@@ -125,7 +125,7 @@ public class Comment extends ElementHeader
     /**
      * Return an iterator of the replies to this comment - null means no replies are available.
      *
-     * @return Comments - comment replies iterator
+     * @return Comments comment replies iterator
      */
     public Comments getCommentReplies()
     {

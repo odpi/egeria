@@ -18,7 +18,7 @@ public class Classification extends AssetPropertyBase
     /**
      * A private validation method used by the constructors.
      *
-     * @param name - name to check
+     * @param name name to check
      * @return validated name
      */
     private String validateName(String   name)
@@ -31,7 +31,7 @@ public class Classification extends AssetPropertyBase
         if (name == null || name.equals(""))
         {
             /*
-             * Build and throw exception.  This should not happen - likely to be a problem in the
+             * Build and throw exception.  This should not happen likely to be a problem in the
              * repository connector.
              */
             OCFErrorCode errorCode = OCFErrorCode.NULL_CLASSIFICATION_NAME;
@@ -54,11 +54,11 @@ public class Classification extends AssetPropertyBase
 
 
     /**
-     * Typical constructor - verifies and saves parameters.
+     * Typical constructor verifies and saves parameters.
      *
-     * @param parentAsset - name and type of related asset
-     * @param name - name of the classification
-     * @param properties - additional properties for the classification
+     * @param parentAsset name and type of related asset
+     * @param name name of the classification
+     * @param properties additional properties for the classification
      */
     public Classification(AssetDescriptor      parentAsset,
                           String               name,
@@ -72,10 +72,10 @@ public class Classification extends AssetPropertyBase
 
 
     /**
-     * Copy/clone Constructor - sets up new classification using values from the template
+     * Copy/clone Constructor sets up new classification using values from the template
      *
-     * @param parentAsset - details of the asset that this classification is linked to.
-     * @param templateClassification - object to copy
+     * @param parentAsset details of the asset that this classification is linked to.
+     * @param templateClassification object to copy
      */
     public Classification(AssetDescriptor parentAsset, Classification templateClassification)
     {
@@ -88,7 +88,7 @@ public class Classification extends AssetPropertyBase
         if (templateClassification == null)
         {
             /*
-             * Build and throw exception.  This should not happen - likely to be a problem in the
+             * Build and throw exception.  This should not happen likely to be a problem in the
              * repository connector.
              */
             OCFErrorCode errorCode = OCFErrorCode.NULL_CLASSIFICATION_NAME;

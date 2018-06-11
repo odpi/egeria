@@ -27,23 +27,23 @@ public class RelatedMediaReference extends Referenceable
     /**
      * Typical Constructor
      *
-     * @param parentAsset - descriptor for parent asset
-     * @param type - details of the metadata type for this properties object
-     * @param guid - String - unique id
-     * @param url - String - URL
-     * @param classifications - enumeration of classifications
-     * @param qualifiedName - unique name
-     * @param additionalProperties - additional properties for the referenceable object.
-     * @param meanings - list of glossary terms (summary)
+     * @param parentAsset descriptor for parent asset
+     * @param type details of the metadata type for this properties object
+     * @param guid String unique id
+     * @param url String URL
+     * @param classifications enumeration of classifications
+     * @param qualifiedName unique name
+     * @param additionalProperties additional properties for the referenceable object.
+     * @param meanings list of glossary terms (summary)
      * @param mediaId the reference identifier for this asset's related media.
-     * @param linkDescription - description of the reference (with respect to this asset).
-     * @param displayName - consumable name
-     * @param uri - the URI used to retrieve the resource for this media reference.
-     * @param resourceDescription - the description of this external media.
-     * @param version - the version of the resource that this external reference represents.
-     * @param organization - the name of the organization that owns the resource that this external reference represents.
-     * @param mediaType - the type of media referenced
-     * @param mediaUsageList - List of ways the media may be used
+     * @param linkDescription description of the reference (with respect to this asset).
+     * @param displayName consumable name
+     * @param uri the URI used to retrieve the resource for this media reference.
+     * @param resourceDescription the description of this external media.
+     * @param version the version of the resource that this external reference represents.
+     * @param organization the name of the organization that owns the resource that this external reference represents.
+     * @param mediaType the type of media referenced
+     * @param mediaUsageList List of ways the media may be used
      */
     public RelatedMediaReference(AssetDescriptor              parentAsset,
                                  ElementType                  type,
@@ -78,8 +78,8 @@ public class RelatedMediaReference extends Referenceable
     /**
      * Copy/clone constructor.
      *
-     * @param parentAsset - descriptor for parent asset
-     * @param templateRelatedMediaReference - element to copy
+     * @param parentAsset descriptor for parent asset
+     * @param templateRelatedMediaReference element to copy
      */
     public RelatedMediaReference(AssetDescriptor       parentAsset,
                                  RelatedMediaReference templateRelatedMediaReference)

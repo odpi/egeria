@@ -27,10 +27,10 @@ public abstract class PropertyBase implements Serializable
 
 
     /**
-     * Copy/clone Constructor - the resulting object will return true if tested with this.equals(template) as
+     * Copy/clone Constructor the resulting object will return true if tested with this.equals(template) as
      * long as the template object is not null;
      *
-     * @param template - object being copied
+     * @param template object being copied
      */
     public PropertyBase(PropertyBase template)
     {
@@ -61,7 +61,7 @@ public abstract class PropertyBase implements Serializable
      * is randomly assigned and so its hashCode is as good as anything to evaluate the equality of the properties
      * object.
      *
-     * @param object - object to test
+     * @param object object to test
      * @return boolean flag
      */
     @Override

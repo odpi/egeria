@@ -55,7 +55,7 @@ public enum RelatedMediaType implements Serializable
     /**
      * Return the code for this enum instance
      *
-     * @return int - media type code
+     * @return int media type code
      */
     public int getMediaUsageCode()
     {
@@ -66,7 +66,7 @@ public enum RelatedMediaType implements Serializable
     /**
      * Return the default name for this enum instance.
      *
-     * @return String - default name
+     * @return String default name
      */
     public String getMediaUsageName()
     {
@@ -77,7 +77,7 @@ public enum RelatedMediaType implements Serializable
     /**
      * Return the default description for this enum instance.
      *
-     * @return String - default description
+     * @return String default description
      */
     public String getMediaTypeDescription()
     {

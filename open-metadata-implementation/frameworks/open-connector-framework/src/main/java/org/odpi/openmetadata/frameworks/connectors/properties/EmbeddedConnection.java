@@ -17,9 +17,9 @@ public class EmbeddedConnection extends AssetPropertyBase
     /**
      * Typical Constructor
      *
-     * @param parentAsset - descriptor for parent asset
-     * @param embeddedConnectionProperties - Additional properties
-     * @param embeddedConnection - Connection
+     * @param parentAsset descriptor for parent asset
+     * @param embeddedConnectionProperties Additional properties
+     * @param embeddedConnection Connection
      */
     public EmbeddedConnection(AssetDescriptor      parentAsset,
                               AdditionalProperties embeddedConnectionProperties,
@@ -34,8 +34,8 @@ public class EmbeddedConnection extends AssetPropertyBase
     /**
      * Copy/clone constructor.
      *
-     * @param parentAsset - descriptor for parent asset
-     * @param templateEmbeddedConnection - element to copy
+     * @param parentAsset descriptor for parent asset
+     * @param templateEmbeddedConnection element to copy
      */
     public EmbeddedConnection(AssetDescriptor parentAsset, EmbeddedConnection templateEmbeddedConnection)
     {

@@ -15,15 +15,15 @@ public class SchemaImplementationQuery extends AssetPropertyBase
 
 
     /**
-     * Typical Constructor - sets attributes to null.
+     * Typical Constructor sets attributes to null.
      *
-     * @param parentAsset - description of the asset that this schema query is attached to.
-     * @param queryId - int query identifier - this is used to identify where the results of this query should be plugged into
+     * @param parentAsset description of the asset that this schema query is attached to.
+     * @param queryId int query identifier this is used to identify where the results of this query should be plugged into
      *                 the other queries or the formula for the parent derived schema element.
-     * @param query - query string for this element.  The query string may have placeholders for values returned
+     * @param query query string for this element.  The query string may have placeholders for values returned
      *                by queries that have a lower queryId than this element.
-     * @param queryType - the name of the query language used in the query.
-     * @param queryTargetElement - the SchemaAttribute that describes the type of the data source that
+     * @param queryType the name of the query language used in the query.
+     * @param queryTargetElement the SchemaAttribute that describes the type of the data source that
      *                           will be queried to get the derived value.
      */
     public SchemaImplementationQuery(AssetDescriptor parentAsset, int queryId, String query, String queryType, SchemaAttribute queryTargetElement)
@@ -40,8 +40,8 @@ public class SchemaImplementationQuery extends AssetPropertyBase
     /**
      * Copy/clone constructor.
      *
-     * @param parentAsset - description of the asset that this schema query is attached to.
-     * @param template - template schema query to copy.
+     * @param parentAsset description of the asset that this schema query is attached to.
+     * @param template template schema query to copy.
      */
     public SchemaImplementationQuery(AssetDescriptor   parentAsset, SchemaImplementationQuery template)
     {

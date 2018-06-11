@@ -46,28 +46,28 @@ public class Annotation extends ElementHeader
     /**
      * Typical Constructor
      *
-     * @param parentAsset - description of the asset that this annotation is attached to.
-     * @param type - details of the metadata type for this properties object
-     * @param guid - String - unique id
-     * @param url - String - URL
-     * @param classifications - List of classifications
-     * @param reportName - report name string
-     * @param reportDescription - String for the report description
-     * @param creationDate - Date that annotation was created.
-     * @param analysisParameters - Properties that hold the parameters used to drive the discovery service's analysis.
-     * @param annotationType - String for annotation type
-     * @param summary - String for summary
-     * @param confidenceLevel - int for confidence level
-     * @param expression - String for the expression that represent the relationship between the annotation and the asset.
-     * @param explanation - String for the explanation for the annotation
-     * @param analysisStep - String describing the analysis step that the discovery service was in when it created the annotation.
-     * @param jsonProperties String - JSON properties associated with the annotation
-     * @param annotationStatus - AnnotationStatus enum
-     * @param reviewDate - date that this annotation was reviewed.  If no review has taken place then this property is null.
+     * @param parentAsset description of the asset that this annotation is attached to.
+     * @param type details of the metadata type for this properties object
+     * @param guid String unique id
+     * @param url String URL
+     * @param classifications List of classifications
+     * @param reportName report name string
+     * @param reportDescription String for the report description
+     * @param creationDate Date that annotation was created.
+     * @param analysisParameters Properties that hold the parameters used to drive the discovery service's analysis.
+     * @param annotationType String for annotation type
+     * @param summary String for summary
+     * @param confidenceLevel int for confidence level
+     * @param expression String for the expression that represent the relationship between the annotation and the asset.
+     * @param explanation String for the explanation for the annotation
+     * @param analysisStep String describing the analysis step that the discovery service was in when it created the annotation.
+     * @param jsonProperties String JSON properties associated with the annotation
+     * @param annotationStatus AnnotationStatus enum
+     * @param reviewDate date that this annotation was reviewed.  If no review has taken place then this property is null.
      * @param steward String name of steward that reviewed the annotation.
-     * @param reviewComment - string comment made by the steward as part of the review of the annotation. The comment covers the
+     * @param reviewComment string comment made by the steward as part of the review of the annotation. The comment covers the
      * whole review which may have looked at multiple annotations so the comment may not necessarily refer only to this annotation.
-     * @param additionalProperties - additional properties object for annotation.  These are a combination of the additional
+     * @param additionalProperties additional properties object for annotation.  These are a combination of the additional
      * properties from the Annotation entity and any properties introduced by the subtypes of annotation.
      * The naming convention for subtype property names is entityName.attributeName.value.  If the property
      * is a map then the map contents are named entityName.attributeName.propertyName.propertyValue.
@@ -119,8 +119,8 @@ public class Annotation extends ElementHeader
     /**
      * Copy/clone Constructor
      *
-     * @param parentAsset - description of the asset that this annotation is attached to.
-     * @param templateAnnotation - template object to copy.
+     * @param parentAsset description of the asset that this annotation is attached to.
+     * @param templateAnnotation template object to copy.
      */
     public Annotation(AssetDescriptor    parentAsset, Annotation templateAnnotation)
     {
@@ -157,7 +157,7 @@ public class Annotation extends ElementHeader
     /**
      * Return the name of the discovery analysis report that created this annotation.
      *
-     * @return String - report name
+     * @return String report name
      */
     public String getReportName()
     {
@@ -168,7 +168,7 @@ public class Annotation extends ElementHeader
     /**
      * Return the discovery analysis report description that this annotation is a part of.
      *
-     * @return String - report description
+     * @return String report description
      */
     public String getReportDescription()
     {
@@ -189,7 +189,7 @@ public class Annotation extends ElementHeader
     /**
      * Return the properties that hold the parameters used to drive the discovery service's analysis.
      *
-     * @return AdditionalProperties - object storing the analysis parameters
+     * @return AdditionalProperties object storing the analysis parameters
      */
     public AdditionalProperties getAnalysisParameters()
     {
@@ -200,7 +200,7 @@ public class Annotation extends ElementHeader
     /**
      * Return the informal name for the type of annotation.
      *
-     * @return String - annotation type
+     * @return String annotation type
      */
     public String getAnnotationType()
     {
@@ -211,7 +211,7 @@ public class Annotation extends ElementHeader
     /**
      * Return the summary description for the annotation.
      *
-     * @return String - summary of annotation
+     * @return String summary of annotation
      */
     public String getSummary()
     {
@@ -222,7 +222,7 @@ public class Annotation extends ElementHeader
     /**
      * Return the confidence level of the discovery service that the annotation is correct.
      *
-     * @return int - confidence level
+     * @return int confidence level
      */
     public int getConfidenceLevel()
     {
@@ -233,7 +233,7 @@ public class Annotation extends ElementHeader
     /**
      * Return the expression that represent the relationship between the annotation and the asset.
      *
-     * @return String - expression
+     * @return String expression
      */
     public String getExpression()
     {
@@ -244,7 +244,7 @@ public class Annotation extends ElementHeader
     /**
      * Return the explanation for the annotation.
      *
-     * @return String - explanation
+     * @return String explanation
      */
     public String getExplanation() {
         return explanation;
@@ -254,7 +254,7 @@ public class Annotation extends ElementHeader
     /**
      * Return a description of the analysis step that the discovery service was in when it created the annotation.
      *
-     * @return String - analysis step
+     * @return String analysis step
      */
     public String getAnalysisStep()
     {
@@ -265,7 +265,7 @@ public class Annotation extends ElementHeader
     /**
      * Return the JSON properties associated with the annotation.
      *
-     * @return String - JSON properties of annotation
+     * @return String JSON properties of annotation
      */
     public String getJsonProperties()
     {
@@ -276,7 +276,7 @@ public class Annotation extends ElementHeader
     /**
      * Return the current status of the annotation.
      *
-     * @return AnnotationStatus - current status of annotation
+     * @return AnnotationStatus current status of annotation
      */
     public AnnotationStatus getAnnotationStatus()
     {
@@ -287,7 +287,7 @@ public class Annotation extends ElementHeader
     /**
      * Return the date that this annotation was reviewed.  If no review has taken place then this property is null.
      *
-     * @return Date - review date
+     * @return Date review date
      */
     public Date getReviewDate()
     {
@@ -298,7 +298,7 @@ public class Annotation extends ElementHeader
     /**
      * Return the name of the steward that reviewed the annotation.
      *
-     * @return String - steward's name.
+     * @return String steward's name.
      */
     public String getSteward()
     {
@@ -309,7 +309,7 @@ public class Annotation extends ElementHeader
     /**
      * Return any comments made by the steward during the review.
      *
-     * @return String - review comment
+     * @return String review comment
      */
     public String getReviewComment()
     {
@@ -320,7 +320,7 @@ public class Annotation extends ElementHeader
     /**
      * Return the additional properties for the Annotation.
      *
-     * @return AdditionalProperties - additional properties object
+     * @return AdditionalProperties additional properties object
      */
     public AdditionalProperties getAdditionalProperties()
     {

@@ -13,10 +13,10 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
  *
  * The ConnectedAssetProperties returns metadata about the asset at three levels of detail:
  * <ul>
- *     <li><b>assetSummary</b> - used for displaying details of the asset in summary lists or hover text</li>
- *     <li><b>assetDetail</b> - used to display all of the information known about the asset with summaries
+ *     <li><b>assetSummary</b> used for displaying details of the asset in summary lists or hover text</li>
+ *     <li><b>assetDetail</b> used to display all of the information known about the asset with summaries
  *     of the relationships to other metadata entities</li>
- *     <li><b>assetUniverse</b> - used to define the broader context for the asset</li>
+ *     <li><b>assetUniverse</b> used to define the broader context for the asset</li>
  * </ul>
  *
  * ConnectedAssetProperties is a base class for the connector's metadata API that returns null,
@@ -52,7 +52,7 @@ public abstract class ConnectedAssetProperties extends PropertyBase
     /**
      * Copy/clone constructor.
      *
-     * @param templateProperties - template to copy.
+     * @param templateProperties template to copy.
      */
     public ConnectedAssetProperties(ConnectedAssetProperties templateProperties)
     {
@@ -72,7 +72,7 @@ public abstract class ConnectedAssetProperties extends PropertyBase
     /**
      * Returns the summary information organized in the assetSummary structure.
      *
-     * @return AssetSummary - summary object
+     * @return AssetSummary summary object
      */
     public AssetSummary getAssetSummary() { return assetProperties; }
 
@@ -81,7 +81,7 @@ public abstract class ConnectedAssetProperties extends PropertyBase
     /**
      * Returns detailed information about the asset organized in the assetDetail structure.
      *
-     * @return AssetDetail - detail object
+     * @return AssetDetail detail object
      */
     public AssetDetail getAssetDetail() { return assetProperties; }
 
@@ -90,7 +90,7 @@ public abstract class ConnectedAssetProperties extends PropertyBase
      * Returns all of the detail of the asset and information connected to it in organized in the assetUniverse
      * structure.
      *
-     * @return AssetUniverse - universe object
+     * @return AssetUniverse universe object
      */
     public AssetUniverse getAssetUniverse() { return assetProperties; }
 

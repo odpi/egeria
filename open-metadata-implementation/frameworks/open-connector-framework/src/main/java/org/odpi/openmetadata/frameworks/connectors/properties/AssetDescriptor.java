@@ -42,8 +42,8 @@ public abstract class AssetDescriptor extends PropertyBase
     /**
      * Explicit constructor - the asset descriptor is explicitly given the url for the asset.
      *
-     * @param guid - unique id for the asset
-     * @param url - URL for the asset in the metadata repository
+     * @param guid unique id for the asset
+     * @param url URL for the asset in the metadata repository
      */
     public AssetDescriptor(String guid, String  url)
     {
@@ -57,7 +57,7 @@ public abstract class AssetDescriptor extends PropertyBase
     /**
      * Copy/clone Constructor - used to copy the asset descriptor for a new consumer.
      *
-     * @param templateAssetDescriptor - template asset descriptor to copy.
+     * @param templateAssetDescriptor template asset descriptor to copy.
      */
     public AssetDescriptor(AssetDescriptor templateAssetDescriptor)
     {
@@ -73,7 +73,7 @@ public abstract class AssetDescriptor extends PropertyBase
     /**
      * Method to enable a subclass to set up the asset name.
      *
-     * @param assetName - String - name of asset for messages etc
+     * @param assetName String name of asset for messages etc
      */
     protected void setAssetName(String     assetName)
     {
@@ -84,7 +84,7 @@ public abstract class AssetDescriptor extends PropertyBase
     /**
      * Method to enable a subclass to set up the asset type name.
      *
-     * @param assetTypeName - String - new type name
+     * @param assetTypeName String new type name
      */
     protected void setAssetTypeName(String    assetTypeName)
     {
@@ -95,7 +95,7 @@ public abstract class AssetDescriptor extends PropertyBase
     /**
      * Return the unique id for this element.
      *
-     * @return guid - unique id
+     * @return guid unique id
      */
     public String getGUID() {
         return guid;
@@ -105,7 +105,7 @@ public abstract class AssetDescriptor extends PropertyBase
     /**
      * Return the name of the asset - for use in messages and other diagnostics.
      *
-     * @return String - asset name
+     * @return String asset name
      */
     public String getAssetName()
     {
@@ -116,7 +116,7 @@ public abstract class AssetDescriptor extends PropertyBase
     /**
      * Return the name of the asset's type - for use in messages and other diagnostics.
      *
-     * @return String - asset type name
+     * @return String asset type name
      */
     public String getAssetTypeName()
     {
@@ -127,7 +127,7 @@ public abstract class AssetDescriptor extends PropertyBase
     /**
      * Return the URL of the asset in the metadata repository if supported.
      *
-     * @return String - URL
+     * @return String URL
      */
     public String getURL() { return url; }
 

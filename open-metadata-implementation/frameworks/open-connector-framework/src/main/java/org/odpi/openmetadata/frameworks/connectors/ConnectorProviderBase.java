@@ -58,7 +58,7 @@ public abstract class ConnectorProviderBase extends ConnectorProvider
     /**
      * Return the class name for the connector that the connector provider generates.
      *
-     * @return connectorClassName - will be null initially.
+     * @return connectorClassName will be null initially.
      */
     public  String   getConnectorClassName()
     {

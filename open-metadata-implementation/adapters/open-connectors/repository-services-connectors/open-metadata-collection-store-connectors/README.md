@@ -10,15 +10,12 @@ and an optional open metadata repository event mapper.
 These connectors are then installed as the local repository in the
 Open Metadata Repository Services (OMRS).
 
-## Graph Repository Connector
+* **[graph-repository-connector](graph-repository-connector)** -
+provides a local repository that uses a graph store as its persistence store.
 
-Graph Repository Connector provides a local repository that uses a graph store as its persistence store.
-
-## In Memory Repository Connector
-
-In Memory Repository Connector provides a local repository that is entirely in memory.  Its is useful for
+* **[inmemory-repository-connector](inmemory-repository-connector)** -
+provides a local repository that is entirely in memory.  Its is useful for
 testing/developing OMASs and demos.
 
-## OMRS REST API Connector
-
-Uses the OMRS REST API to call an open metadata compliant repository.
+* **[omrs-rest-repository-connector](omrs-rest-repository-connector)** -
+uses the OMRS REST API to call an open metadata compliant repository.

@@ -59,10 +59,10 @@ public class PagingIterator extends AssetPropertyBase implements Iterator<AssetP
     /**
      * Typical Constructor creates an iterator with the supplied list of comments.
      *
-     * @param parentAsset - descriptor of parent asset.
-     * @param iterator - type-specific iterator that wraps this paging iterator.
-     * @param totalElementCount - the total number of elements to process.  A negative value is converted to 0.
-     * @param maxCacheSize - maximum number of elements that should be retrieved from the property server and
+     * @param parentAsset descriptor of parent asset.
+     * @param iterator type-specific iterator that wraps this paging iterator.
+     * @param totalElementCount the total number of elements to process.  A negative value is converted to 0.
+     * @param maxCacheSize maximum number of elements that should be retrieved from the property server and
      *                     cached in the element list at any one time.  If a number less than one is supplied, 1 is used.
      */
     public PagingIterator(AssetDescriptor parentAsset,
@@ -72,13 +72,9 @@ public class PagingIterator extends AssetPropertyBase implements Iterator<AssetP
     {
         super(parentAsset);
 
-        if (log.isDebugEnabled())
-        {
-            log.debug("New PagingIterator:");
-            log.debug("==> totalElementCount: " + totalElementCount);
-            log.debug("==> maxCacheSize: " + maxCacheSize);
-        }
-
+        log.debug("New PagingIterator:");
+        log.debug("==> totalElementCount: " + totalElementCount);
+        log.debug("==> maxCacheSize: " + maxCacheSize);
 
         if (totalElementCount > 0)
         {
@@ -118,9 +114,9 @@ public class PagingIterator extends AssetPropertyBase implements Iterator<AssetP
     /**
      * Copy/clone constructor.  Used to reset iterator element pointer to 0;
      *
-     * @param parentAsset - descriptor of parent asset
-     * @param iterator - type-specific iterator that wraps this paging iterator.
-     * @param templateIterator - template to copy; null to create an empty iterator
+     * @param parentAsset descriptor of parent asset
+     * @param iterator type-specific iterator that wraps this paging iterator.
+     * @param templateIterator template to copy; null to create an empty iterator
      */
     public PagingIterator(AssetDescriptor parentAsset,
                           AssetPropertyIteratorBase iterator,
@@ -197,7 +193,7 @@ public class PagingIterator extends AssetPropertyBase implements Iterator<AssetP
     /**
      * Return the next element in the list
      *
-     * @return AssetPropertyBase - next element.
+     * @return AssetPropertyBase next element.
      * @throws OCFRuntimeException if there are no more elements in the list or there are problems retrieving
      *                             elements from the property (metadata) server.
      */

@@ -1,3 +1,5 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+
 # Egeria Maintainers
 
 The current Egeria maintainers are:
@@ -7,6 +9,7 @@ The current Egeria maintainers are:
 | -------------- | -----------------
 | Mandy Chessell | mandy_chessell@uk.ibm.com |
 | Nigel Jones    | jonesn@uk.ibm.com         |
-
-
+| Kees van de Fliert | keesvandefliert@gmail.com |
+| Guy Ackermans | guy.ackermans92@gmail.com |
+| Maryna Strelchuk | maryna.strelchuk@gmail.com |
 

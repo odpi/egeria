@@ -32,7 +32,7 @@ public class AdditionalProperties extends org.odpi.openmetadata.frameworks.conne
     /**
      * Set up the additional properties.
      *
-     * @param additionalProperties - property map
+     * @param additionalProperties property map
      */
     public void setAdditionalProperties(Map<String, Object> additionalProperties)
     {
@@ -43,7 +43,7 @@ public class AdditionalProperties extends org.odpi.openmetadata.frameworks.conne
     /**
      * Copy/clone Constructor for additional properties that are connected to an asset.
      *
-     * @param templateProperties - template object to copy.
+     * @param templateProperties template object to copy.
      */
     public AdditionalProperties(AdditionalProperties templateProperties)
     {

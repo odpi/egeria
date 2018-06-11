@@ -15,21 +15,21 @@ public class PrimitiveSchemaElement extends SchemaElement
     /**
      * Typical constructor
      *
-     * @param parentAsset - descriptor for parent asset
-     * @param type - details of the metadata type for this properties object
-     * @param guid - String - unique id
-     * @param url - String - URL
-     * @param classifications - enumeration of classifications
-     * @param qualifiedName - unique name
-     * @param additionalProperties - additional properties for the referenceable object.
-     * @param meanings - list of glossary terms (summary)
-     * @param versionNumber - the version number of the schema element - null means no version number.
-     * @param author - the name of the author of the schema element. Null means the author is unknown.
-     * @param usage - the usage guidance for this schema element.  Null means no guidance available.
-     * @param encodingStandard - encoding standard used for this schema.  It may be XML, JSON, SQL DDL or something else.
+     * @param parentAsset descriptor for parent asset
+     * @param type details of the metadata type for this properties object
+     * @param guid String unique id
+     * @param url String URL
+     * @param classifications enumeration of classifications
+     * @param qualifiedName unique name
+     * @param additionalProperties additional properties for the referenceable object.
+     * @param meanings list of glossary terms (summary)
+     * @param versionNumber the version number of the schema element null means no version number.
+     * @param author the name of the author of the schema element. Null means the author is unknown.
+     * @param usage the usage guidance for this schema element.  Null means no guidance available.
+     * @param encodingStandard encoding standard used for this schema.  It may be XML, JSON, SQL DDL or something else.
      *                           Null means the encoding standard is unknown or there are many choices.
-     * @param dataType - the name of the data type for this element.  Null means unknown data type.
-     * @param defaultValue - String containing default value for the element
+     * @param dataType the name of the data type for this element.  Null means unknown data type.
+     * @param defaultValue String containing default value for the element
      */
     public PrimitiveSchemaElement(AssetDescriptor parentAsset,
                                   ElementType type,
@@ -64,12 +64,12 @@ public class PrimitiveSchemaElement extends SchemaElement
     }
 
     /**
-     * Copy/clone Constructor - the parentAsset is passed separately to the template because it is also
+     * Copy/clone Constructor the parentAsset is passed separately to the template because it is also
      * likely to be being cloned in the same operation and we want the definitions clone to point to the
      * asset clone and not the original asset.
      *
-     * @param parentAsset - description of the asset that this schema element is attached to.
-     * @param templateSchemaElement - template object to copy.
+     * @param parentAsset description of the asset that this schema element is attached to.
+     * @param templateSchemaElement template object to copy.
      */
     public PrimitiveSchemaElement(AssetDescriptor parentAsset, PrimitiveSchemaElement templateSchemaElement)
     {
@@ -102,7 +102,7 @@ public class PrimitiveSchemaElement extends SchemaElement
     /**
      * Returns a clone of this object as the abstract SchemaElement class.
      *
-     * @param parentAsset - description of the asset that this schema element is attached to.
+     * @param parentAsset description of the asset that this schema element is attached to.
      * @return PrimitiveSchemaElement object
      */
     @Override

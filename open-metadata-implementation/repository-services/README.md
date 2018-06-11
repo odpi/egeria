@@ -28,10 +28,10 @@ vendors that support the OMRS integration interfaces.
 
 The code for OMRS is organized into three modules:
 
-* **repository-services-apis** contains the Java interfaces and event structures for
+* **[repository-services-apis](repository-services-apis)** contains the Java interfaces and event structures for
 the repository services.
 
-* **repository-services-implementation** contains the support for the peer-to-peer
+* **[repository-services-implementation](repository-services-implementation)** contains the support for the peer-to-peer
 metadata exchange and federation.
 
-* **repository-services-spring** uses spring to create the OMRS REST services.
+* **[repository-services-spring](repository-services-spring)** uses spring to create the OMRS REST services.

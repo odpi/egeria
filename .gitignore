@@ -35,6 +35,7 @@ pom.xml.releaseBackup
 
 # IntelliJ
 *.iml
+**.iml
 *.ipr
 *.iws
 .idea

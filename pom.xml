@@ -170,6 +170,42 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
             </plugin>
+            <!-- Validates maven & java versions -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.0.0-M1</version>
+                <executions>
+                    <execution>
+                        <id>enforce-versions</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireMavenVersion>
+                                    <version>[3.5.0,)</version>
+                                    <message>** MAVEN VERSION ERROR ** Maven 3.5.0 or above is required. See
+                                        https://maven.apache.org/install.html
+                                    </message>
+                                </requireMavenVersion>
+                                <requireJavaVersion>
+                                    <level>ERROR</level>
+                                    <version>[1.8.0-151,)</version>
+                                    <message>** JAVA VERSION ERROR ** Java 8 (Update 151) or above is required.
+                                    </message>
+                                </requireJavaVersion>
+                                <requireJavaVersion>
+                                    <level>WARN</level>
+                                    <version>(,1.9]</version>
+                                    <message>** JAVA VERSION WARNING ** Java 9 and above has not been tested.
+                                    </message>
+                                </requireJavaVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 

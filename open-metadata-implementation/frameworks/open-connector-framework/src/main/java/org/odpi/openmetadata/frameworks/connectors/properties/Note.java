@@ -19,17 +19,17 @@ public class Note extends Referenceable
     /**
      * Typical Constructor
      *
-     * @param parentAsset - descriptor for parent asset
-     * @param type - details of the metadata type for this properties object
-     * @param guid - String - unique id
-     * @param url - String - URL
-     * @param classifications - enumeration of classifications
-     * @param qualifiedName - unique name
-     * @param additionalProperties - additional properties for the referenceable object.
-     * @param meanings - list of glossary terms (summary)
-     * @param text - the text of the note
-     * @param lastUpdate - the last update date for the note.
-     * @param user - the user id of the person who created the note
+     * @param parentAsset descriptor for parent asset
+     * @param type details of the metadata type for this properties object
+     * @param guid String unique id
+     * @param url String URL
+     * @param classifications enumeration of classifications
+     * @param qualifiedName unique name
+     * @param additionalProperties additional properties for the referenceable object.
+     * @param meanings list of glossary terms (summary)
+     * @param text the text of the note
+     * @param lastUpdate the last update date for the note.
+     * @param user the user id of the person who created the note
      */
     public Note(AssetDescriptor      parentAsset,
                 ElementType          type,
@@ -53,8 +53,8 @@ public class Note extends Referenceable
     /**
      * Copy/clone constructor.
      *
-     * @param parentAsset - descriptor for parent asset
-     * @param templateNote - note to copy
+     * @param parentAsset descriptor for parent asset
+     * @param templateNote note to copy
      */
     public Note(AssetDescriptor parentAsset, Note templateNote)
     {
@@ -109,7 +109,7 @@ public class Note extends Referenceable
     /**
      * Return the user id of the person who created the note.  Null means the user id is not known.
      *
-     * @return String - liking user
+     * @return String liking user
      */
     public String getUser() {
         return user;
