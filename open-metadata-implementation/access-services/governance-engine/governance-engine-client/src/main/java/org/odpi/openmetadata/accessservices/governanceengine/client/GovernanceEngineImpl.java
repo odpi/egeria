@@ -4,11 +4,12 @@ package org.odpi.openmetadata.accessservices.governanceengine.client;
 
 
 import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.errorcode.GovernanceEngineErrorCode;
-import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.exceptions.PropertyServerException;
+import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.exceptions.MetadataServerException;
 import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.exceptions.UserNotAuthorizedException;
 import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.exceptions.RootClassificationNotFoundException;
 import org.odpi.openmetadata.accessservices.governanceengine.common.objects.*;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -38,7 +39,7 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
      */
     public List<GovernedAssetComponent> getGovernedAssetComponentList(String userId, String rootClassificationType,
     String rootType) throws InvalidParameterException,
-            UserNotAuthorizedException, PropertyServerException, RootClassificationNotFoundException {
+            UserNotAuthorizedException, MetadataServerException, RootClassificationNotFoundException {
         final String methodName = "getGovernedAssetComponentList";
         final String urlTemplate = "/{0}/govAssets"; //TODO: Need to figure out path for getting assets
 
@@ -66,7 +67,7 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
      * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public List<GovernanceClassificationDefinition> getGovernanceClassificationDefinitionList(String userId, String rootClassificationType) throws InvalidParameterException,
-            UserNotAuthorizedException, PropertyServerException, RootClassificationNotFoundException {
+            UserNotAuthorizedException, MetadataServerException, RootClassificationNotFoundException {
         final String methodName = "getGovernanceClassificationDefinitionList";
         final String urlTemplate = "/{0}/govclassdefs?rootClassification={1}"; //TODO: Need to allow for root classification to be speced and do validation
 
@@ -93,7 +94,7 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
      * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public GovernedAssetComponent getGovernedAssetComponent(String userId, String assetGuid) throws InvalidParameterException,
-            UserNotAuthorizedException, PropertyServerException, RootClassificationNotFoundException {
+            UserNotAuthorizedException, MetadataServerException, RootClassificationNotFoundException {
         final String methodName = "getGovernedAssetComponentList";
         final String urlTemplate = "/{0}/govAssets/{1}"; //TODO: Need to figure out path for getting assets
 
@@ -120,7 +121,7 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
      * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public GovernanceClassificationDefinition getGovernanceClassificationDefinition(String userId, String tagGuid) throws InvalidParameterException,
-            UserNotAuthorizedException, PropertyServerException, RootClassificationNotFoundException {
+            UserNotAuthorizedException, MetadataServerException, RootClassificationNotFoundException {
         final String methodName = "getGovernanceClassificationDefinitionList";
         final String urlTemplate = "/{0}/govclassdefs?rootClassification={1}?rootType={2}"; //TODO: Need to allow for root classification to be speced and do validation
 
@@ -140,15 +141,15 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
     }
 
 
-    private void validateOMASServerURL(String methodName) throws PropertyServerException {
-        if (omasServerURL == null) {
+    private void validateOMASServerURL(String methodName) throws InvalidParameterException {
+        if (StringUtils.isEmpty(omasServerURL))  {
             /*
              * It is not possible to retrieve anything without knowledge of where the OMAS Server is located.
              */
             GovernanceEngineErrorCode errorCode = GovernanceEngineErrorCode.SERVER_URL_NOT_SPECIFIED;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
 
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
                     this.getClass().getName(),
                     methodName,
                     errorMessage,
@@ -191,11 +192,11 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
      * @param urlTemplate - template of the URL for the REST API call with place-holders for the parameters
      * @param params      - a list of parameters that are slotted into the url template
      * @return GovernanceClassificationDefinitionAPIResponse
-     * @throws PropertyServerException - something went wrong with the REST call stack.
+     * @throws MetadataServerException - something went wrong with the REST call stack.
      */
     private GovernanceClassificationDefinitionListAPIResponse callGovernanceEngineClassificationDefinitionListRESTCall(String methodName,
                                                                                    String urlTemplate,
-                                                                                   Object... params) throws PropertyServerException {
+                                                                                   Object... params) throws MetadataServerException {
         GovernanceClassificationDefinitionListAPIResponse restResult = new GovernanceClassificationDefinitionListAPIResponse();
 
         /*
@@ -211,7 +212,7 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
                     omasServerURL,
                     error.getMessage());
 
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+            throw new MetadataServerException(errorCode.getHTTPErrorCode(),
                     this.getClass().getName(),
                     methodName,
                     errorMessage,
@@ -230,11 +231,11 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
      * @param urlTemplate - template of the URL for the REST API call with place-holders for the parameters
      * @param params      - a list of parameters that are slotted into the url template
      * @return GovernanceClassificationDefinitionAPIResponse
-     * @throws PropertyServerException - something went wrong with the REST call stack.
+     * @throws MetadataServerException - something went wrong with the REST call stack.
      */
     private GovernanceClassificationDefinitionAPIResponse callGovernanceEngineClassificationDefinitionRESTCall(String methodName,
                                                                          String urlTemplate,
-                                                                         Object... params) throws PropertyServerException {
+                                                                         Object... params) throws MetadataServerException {
         GovernanceClassificationDefinitionAPIResponse restResult = new GovernanceClassificationDefinitionAPIResponse();
 
         /*
@@ -250,7 +251,7 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
                     omasServerURL,
                     error.getMessage());
 
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+            throw new MetadataServerException(errorCode.getHTTPErrorCode(),
                     this.getClass().getName(),
                     methodName,
                     errorMessage,
@@ -269,11 +270,11 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
      * @param urlTemplate - template of the URL for the REST API call with place-holders for the parameters
      * @param params      - a list of parameters that are slotted into the url template
      * @return GovernanceClassificationDefinitionAPIResponse
-     * @throws PropertyServerException - something went wrong with the REST call stack.
+     * @throws MetadataServerException - something went wrong with the REST call stack.
      */
     private GovernedAssetComponentListAPIResponse callGovernanceEngineGovernedAssetComponentListRESTCall(String methodName,
                                                                                                                        String urlTemplate,
-                                                                                                                       Object... params) throws PropertyServerException {
+                                                                                                                       Object... params) throws MetadataServerException {
         GovernedAssetComponentListAPIResponse restResult = new GovernedAssetComponentListAPIResponse();
 
         /*
@@ -289,7 +290,7 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
                     omasServerURL,
                     error.getMessage());
 
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+            throw new MetadataServerException(errorCode.getHTTPErrorCode(),
                     this.getClass().getName(),
                     methodName,
                     errorMessage,
@@ -308,11 +309,11 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
      * @param urlTemplate - template of the URL for the REST API call with place-holders for the parameters
      * @param params      - a list of parameters that are slotted into the url template
      * @return GovernanceClassificationDefinitionAPIResponse
-     * @throws PropertyServerException - something went wrong with the REST call stack.
+     * @throws MetadataServerException - something went wrong with the REST call stack.
      */
     private GovernedAssetComponentAPIResponse callGovernanceEngineGovernedAssetComponentRESTCall(String methodName,
                                                                                        String urlTemplate,
-                                                                                       Object... params) throws PropertyServerException {
+                                                                                       Object... params) throws MetadataServerException {
         GovernedAssetComponentAPIResponse restResult = new GovernedAssetComponentAPIResponse();
 
         /*
@@ -328,7 +329,7 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
                     omasServerURL,
                     error.getMessage());
 
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+            throw new MetadataServerException(errorCode.getHTTPErrorCode(),
                     this.getClass().getName(),
                     methodName,
                     errorMessage,
@@ -362,18 +363,18 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
 
 
     /**
-     * Throw an PropertyServerException if it is encoded in the REST response.
+     * Throw an MetadataServerException if it is encoded in the REST response.
      *
      * @param methodName - name of the method called
      * @param restResult - response from the rest call.  This generated in the remote server.
-     * @throws PropertyServerException - encoded exception from the server
+     * @throws MetadataServerException - encoded exception from the server
      */
     private void detectAndThrowPropertyServerException(String methodName,
-                                                       GovernanceEngineOMASAPIResponse restResult) throws PropertyServerException {
-        final String exceptionClassName = PropertyServerException.class.getName();
+                                                       GovernanceEngineOMASAPIResponse restResult) throws MetadataServerException {
+        final String exceptionClassName = MetadataServerException.class.getName();
 
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName()))) {
-            throw new PropertyServerException(restResult.getRelatedHTTPCode(),
+            throw new MetadataServerException(restResult.getRelatedHTTPCode(),
                     this.getClass().getName(),
                     methodName,
                     restResult.getExceptionErrorMessage(),

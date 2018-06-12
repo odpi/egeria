@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.governanceengine.client;
 
 
-import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.exceptions.PropertyServerException;
+import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.exceptions.MetadataServerException;
 import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.exceptions.RootClassificationNotFoundException;
 import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.exceptions.UserNotAuthorizedException;
 import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.exceptions.InvalidParameterException;
@@ -26,7 +26,7 @@ public interface GovernanceEngineClient {
      * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     List<GovernedAssetComponent> getGovernedAssetComponentList(String userId, String rootClassificationType, String rootType) throws InvalidParameterException,
-            UserNotAuthorizedException, RootClassificationNotFoundException, PropertyServerException;
+            UserNotAuthorizedException, RootClassificationNotFoundException, MetadataServerException;
 
     /**
      * @param userId                 - String - userId of user making request.
@@ -36,7 +36,7 @@ public interface GovernanceEngineClient {
      * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     GovernedAssetComponent getGovernedAssetComponent(String userId, String assetComponentGuid) throws InvalidParameterException,
-            UserNotAuthorizedException, RootClassificationNotFoundException, PropertyServerException;
+            UserNotAuthorizedException, RootClassificationNotFoundException, MetadataServerException;
     /**
      * @param userId                 - String - userId of user making request.
      * @param rootClassificationType - String - name of base classification type
@@ -45,7 +45,7 @@ public interface GovernanceEngineClient {
      * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     List<GovernanceClassificationDefinition> getGovernanceClassificationDefinitionList(String userId, String rootClassificationType) throws InvalidParameterException,
-            UserNotAuthorizedException, RootClassificationNotFoundException, PropertyServerException;
+            UserNotAuthorizedException, RootClassificationNotFoundException, MetadataServerException;
 
     /**
      * @param userId                 - String - userId of user making request.
@@ -55,7 +55,7 @@ public interface GovernanceEngineClient {
      * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     GovernanceClassificationDefinition getGovernanceClassificationDefinition(String userId, String govClassGuid) throws InvalidParameterException,
-            UserNotAuthorizedException, RootClassificationNotFoundException, PropertyServerException;
+            UserNotAuthorizedException, RootClassificationNotFoundException, MetadataServerException;
 
 
 }

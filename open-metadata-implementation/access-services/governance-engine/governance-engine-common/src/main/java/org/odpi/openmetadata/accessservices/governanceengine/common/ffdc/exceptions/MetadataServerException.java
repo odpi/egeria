@@ -6,12 +6,12 @@ package org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.except
 import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.exceptions.GovernanceEngineCheckedExceptionBase;
 
 /**
- * The PropertyServerException is thrown by the GovernanceEngine OMAS when it is not able to communicate with the
+ * The MetadataServerException is thrown by the GovernanceEngine OMAS when it is not able to communicate with the
  * property server.
  */
-public class PropertyServerException extends GovernanceEngineCheckedExceptionBase {
+public class MetadataServerException extends GovernanceEngineCheckedExceptionBase {
     /**
-     * This is the typical constructor used for creating a PropertyServerException.
+     * This is the typical constructor used for creating a MetadataServerException.
      *
      * @param httpCode          - http response code to use if this exception flows over a rest call
      * @param className         - name of class reporting error
@@ -20,13 +20,13 @@ public class PropertyServerException extends GovernanceEngineCheckedExceptionBas
      * @param systemAction      - actions of the system as a result of the error
      * @param userAction        - instructions for correcting the error
      */
-    public PropertyServerException(int httpCode, String className, String actionDescription, String errorMessage, String systemAction, String userAction) {
+    public MetadataServerException(int httpCode, String className, String actionDescription, String errorMessage, String systemAction, String userAction) {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction);
     }
 
 
     /**
-     * This is the constructor used for creating a PropertyServerException that resulted from a previous error.
+     * This is the constructor used for creating a MetadataServerException that resulted from a previous error.
      *
      * @param httpCode          - http response code to use if this exception flows over a rest call
      * @param className         - name of class reporting error
@@ -36,7 +36,7 @@ public class PropertyServerException extends GovernanceEngineCheckedExceptionBas
      * @param userAction        - instructions for correcting the error
      * @param caughtError       - the error that resulted in this exception.
      */
-    public PropertyServerException(int httpCode, String className, String actionDescription, String errorMessage, String systemAction, String userAction, Throwable caughtError) {
+    public MetadataServerException(int httpCode, String className, String actionDescription, String errorMessage, String systemAction, String userAction, Throwable caughtError) {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
     }
 }
