@@ -20,6 +20,11 @@ import java.util.List;
 public class GovernanceEngineImpl implements GovernanceEngineClient {
     private String omasServerURL;  /* Initialized in constructor */
 
+
+    // https://stackoverflow.com/questions/42406625/how-to-mock-resttemplate-in-java-spring
+    // class member to aid in mocking
+    RestTemplate restTemplate = new RestTemplate();
+
     /**
      * Create a new GovernanceEngine client.
      *
@@ -203,7 +208,8 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
          * Issue the request
          */
         try {
-            RestTemplate restTemplate = new RestTemplate();
+
+            // - (Class member to support mocking) RestTemplate restTemplate = new RestTemplate();
 
             restResult = restTemplate.getForObject(urlTemplate, restResult.getClass(), params);
         } catch (Throwable error) {
@@ -242,7 +248,7 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
          * Issue the request
          */
         try {
-            RestTemplate restTemplate = new RestTemplate();
+            // - (Class member to support mocking) RestTemplate restTemplate = new RestTemplate();
 
             restResult = restTemplate.getForObject(urlTemplate, restResult.getClass(), params);
         } catch (Throwable error) {
@@ -281,7 +287,7 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
          * Issue the request
          */
         try {
-            RestTemplate restTemplate = new RestTemplate();
+            // - (Class member to support mocking) RestTemplate restTemplate = new RestTemplate();
 
             restResult = restTemplate.getForObject(urlTemplate, restResult.getClass(), params);
         } catch (Throwable error) {
@@ -320,7 +326,9 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
          * Issue the request
          */
         try {
-            RestTemplate restTemplate = new RestTemplate();
+
+            // move to class member to support mocking - https://stackoverflow.com/questions/42406625/how-to-mock-resttemplate-in-java-spring
+            // RestTemplate restTemplate = new RestTemplate();
 
             restResult = restTemplate.getForObject(urlTemplate, restResult.getClass(), params);
         } catch (Throwable error) {

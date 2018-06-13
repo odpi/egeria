@@ -1,10 +1,8 @@
 package org.odpi.openmetadata.accessservices.governanceengine.client;
 
 import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.exceptions.InvalidParameterException;
-import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.exceptions.MetadataServerException;
 import org.odpi.openmetadata.accessservices.governanceengine.common.objects.GovernanceClassificationDefinition;
 import org.odpi.openmetadata.accessservices.governanceengine.common.objects.GovernedAssetComponent;
-import org.omg.CORBA.DynAnyPackage.Invalid;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -32,19 +30,12 @@ public class GovernanceEngineImplTest {
         // exception!
     }
 
-    // Check with correct constructor that we have the right URL set
-    @Test
-    public void testGetGovernedAssetComponentListGoodConstructor() throws Exception {
-        GovernanceEngineImpl governanceEngineImpl = new GovernanceEngineImpl("localhost:12345");
-
-        List<GovernedAssetComponent> result = governanceEngineImpl.getGovernedAssetComponentList("", "rootClassificationType", "rootType");
-        // exception!
-    }
 
     // Tests for GetGoverenedAssetComponents
     // TODO: Can we test for messages in the exception?
     @Test (expectedExceptions = InvalidParameterException.class)
     public void testGetGovernedAssetComponentListNullParmsUser() throws Exception {
+        
         GovernanceEngineImpl governanceEngineImpl = new GovernanceEngineImpl("http://localhost:12345");
 
         List<GovernedAssetComponent> result = governanceEngineImpl.getGovernedAssetComponentList("", "rootClassificationType", "rootType");
