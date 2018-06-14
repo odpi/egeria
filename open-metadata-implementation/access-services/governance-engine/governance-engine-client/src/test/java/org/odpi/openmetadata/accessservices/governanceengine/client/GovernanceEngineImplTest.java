@@ -1,61 +1,87 @@
 package org.odpi.openmetadata.accessservices.governanceengine.client;
 
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
+import org.junit.platform.suite.api.SuiteDisplayName;
+import org.junit.runner.RunWith;
 import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.governanceengine.common.objects.GovernanceClassificationDefinition;
 import org.odpi.openmetadata.accessservices.governanceengine.common.objects.GovernedAssetComponent;
-import org.testng.Assert;
-import org.testng.annotations.Test;
 
-import java.util.Arrays;
+
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+@SuiteDisplayName("Governance Engine Client Implementation")
 public class GovernanceEngineImplTest {
+
+    private Throwable thrown;
+
 
     // Do not initialize implementation class here as we want to check with different constructors
 
     // Test with a bad constructor - empty URL - just do this for one method
-    @Test (expectedExceptions = InvalidParameterException.class)
-    public void testGetGovernedAssetComponentListBadConstructorEmpty() throws Exception {
+    @Test
+    @DisplayName("Check empty server URL")
+     void testGetGovernedAssetComponentListBadConstructorEmpty() {
+
         GovernanceEngineImpl governanceEngineImpl = new GovernanceEngineImpl("");
 
-        List<GovernedAssetComponent> result = governanceEngineImpl.getGovernedAssetComponentList("", "rootClassificationType", "rootType");
-        // exception!
+        thrown = assertThrows(InvalidParameterException.class, () ->
+        {
+            List<GovernedAssetComponent> result = governanceEngineImpl.getGovernedAssetComponentList("", "rootClassificationType", "rootType");
+            // exception!
+        });
+
     }
 
-    @Test (expectedExceptions = InvalidParameterException.class)
-    public void testGetGovernedAssetComponentListBadConstructorNull() throws Exception {
+    @Test
+    @DisplayName("Check null server URL")
+    void testGetGovernedAssetComponentListBadConstructorNull() {
         GovernanceEngineImpl governanceEngineImpl = new GovernanceEngineImpl(null);
 
-        List<GovernedAssetComponent> result = governanceEngineImpl.getGovernedAssetComponentList("", "rootClassificationType", "rootType");
-        // exception!
+        thrown = assertThrows(InvalidParameterException.class, () ->
+        {
+            List<GovernedAssetComponent> result = governanceEngineImpl.getGovernedAssetComponentList("", "rootClassificationType", "rootType");
+            // exception!
+        });
     }
 
 
-    // Tests for GetGoverenedAssetComponents
+    // Tests for GetGovernedAssetComponents
     // TODO: Can we test for messages in the exception?
-    @Test (expectedExceptions = InvalidParameterException.class)
-    public void testGetGovernedAssetComponentListNullParmsUser() throws Exception {
-        
+    @Test
+    @DisplayName("Check null userid")
+    void testGetGovernedAssetComponentListNullParmsUser() {
         GovernanceEngineImpl governanceEngineImpl = new GovernanceEngineImpl("http://localhost:12345");
 
-        List<GovernedAssetComponent> result = governanceEngineImpl.getGovernedAssetComponentList("", "rootClassificationType", "rootType");
-        // exception!
+        thrown = assertThrows(InvalidParameterException.class, () -> //TODO check exception
+        {
+            List<GovernedAssetComponent> result = governanceEngineImpl.getGovernedAssetComponentList("", "rootClassificationType", "rootType");
+            // exception!
+        });
     }
 
-    @Test (expectedExceptions = InvalidParameterException.class)
-    public void testGetGovernedAssetComponentListNullParmsRootClassification() throws Exception {
-        GovernanceEngineImpl governanceEngineImpl = new GovernanceEngineImpl("http://localhost:12345");
+    @Test
+    void testGetGovernedAssetComponentListNullParmsRootClassification() {
+        thrown = assertThrows(InvalidParameterException.class, () ->
+        {
+            GovernanceEngineImpl governanceEngineImpl = new GovernanceEngineImpl("http://localhost:12345");
 
-        List<GovernedAssetComponent> result = governanceEngineImpl.getGovernedAssetComponentList("userId", "", "rootType");
-        Assert.assertEquals(result, Arrays.<GovernedAssetComponent>asList(new GovernedAssetComponent()));
+            List<GovernedAssetComponent> result = governanceEngineImpl.getGovernedAssetComponentList("userId", "", "rootType");
+        });
     }
 
-    @Test (expectedExceptions = InvalidParameterException.class)
-    public void testGetGovernedAssetComponentListNullParmsRootType() throws Exception {
-        GovernanceEngineImpl governanceEngineImpl = new GovernanceEngineImpl("http://localhost:12345");
+    @Test
+    void testGetGovernedAssetComponentListNullParmsRootType() {
+        thrown = assertThrows(InvalidParameterException.class, () ->
+        {
+            GovernanceEngineImpl governanceEngineImpl = new GovernanceEngineImpl("http://localhost:12345");
 
-        List<GovernedAssetComponent> result = governanceEngineImpl.getGovernedAssetComponentList("userId", "", "");
-        Assert.assertEquals(result, Arrays.<GovernedAssetComponent>asList(new GovernedAssetComponent()));
+            List<GovernedAssetComponent> result = governanceEngineImpl.getGovernedAssetComponentList("userId", "", "");
+        });
     }
 
 
@@ -63,20 +89,24 @@ public class GovernanceEngineImplTest {
 
     // Tests on GetGovernanceClassificationDefinitionList
 
-    @Test (expectedExceptions = InvalidParameterException.class)
-    public void testGetGovernanceClassificationDefinitionListNullParmsUserid() throws Exception {
-        GovernanceEngineImpl governanceEngineImpl = new GovernanceEngineImpl("http://localhost:12345");
+    @Test
+    void testGetGovernanceClassificationDefinitionListNullParmsUserid() {
+        thrown = assertThrows(InvalidParameterException.class, () ->
+        {
+            GovernanceEngineImpl governanceEngineImpl = new GovernanceEngineImpl("http://localhost:12345");
 
-        List<GovernanceClassificationDefinition> result = governanceEngineImpl.getGovernanceClassificationDefinitionList("", "rootClassificationType");
-        Assert.assertEquals(result, Arrays.<GovernanceClassificationDefinition>asList(new GovernanceClassificationDefinition()));
+            List<GovernanceClassificationDefinition> result = governanceEngineImpl.getGovernanceClassificationDefinitionList("", "rootClassificationType");
+        });
     }
 
-    @Test (expectedExceptions = InvalidParameterException.class)
-    public void testGetGovernanceClassificationDefinitionListNullParmsRoot() throws Exception {
-        GovernanceEngineImpl governanceEngineImpl = new GovernanceEngineImpl("http://localhost:12345");
+    @Test
+    void testGetGovernanceClassificationDefinitionListNullParmsRoot() {
+        thrown = assertThrows(InvalidParameterException.class, () ->
+        {
+            GovernanceEngineImpl governanceEngineImpl = new GovernanceEngineImpl("http://localhost:12345");
 
-        List<GovernanceClassificationDefinition> result = governanceEngineImpl.getGovernanceClassificationDefinitionList("userid", "");
-        Assert.assertEquals(result, Arrays.<GovernanceClassificationDefinition>asList(new GovernanceClassificationDefinition()));
+            List<GovernanceClassificationDefinition> result = governanceEngineImpl.getGovernanceClassificationDefinitionList("userid", "");
+        });
     }
 
     // End
@@ -84,39 +114,47 @@ public class GovernanceEngineImplTest {
     // Tests on GetGoverenedAssetComponent
 
 
-    @Test (expectedExceptions = InvalidParameterException.class)
-    public void testGetGovernedAssetComponentNullParmsUserid() throws Exception{
-        GovernanceEngineImpl governanceEngineImpl = new GovernanceEngineImpl("http://localhost:12345");
+    @Test
+    void testGetGovernedAssetComponentNullParmsUserid() {
+        thrown = assertThrows(InvalidParameterException.class, () ->
+        {
+            GovernanceEngineImpl governanceEngineImpl = new GovernanceEngineImpl("http://localhost:12345");
 
-        GovernedAssetComponent result = governanceEngineImpl.getGovernedAssetComponent("", "assetGuid");
-        Assert.assertEquals(result, new GovernedAssetComponent());
+            GovernedAssetComponent result = governanceEngineImpl.getGovernedAssetComponent("", "assetGuid");
+        });
     }
 
-    @Test (expectedExceptions = InvalidParameterException.class)
-    public void testGetGovernedAssetComponentNullParmsGuid() throws Exception{
-        GovernanceEngineImpl governanceEngineImpl = new GovernanceEngineImpl("http://localhost:12345");
+    @Test
+    void testGetGovernedAssetComponentNullParmsGuid() {
+        thrown = assertThrows(InvalidParameterException.class, () ->
 
-        GovernedAssetComponent result = governanceEngineImpl.getGovernedAssetComponent("userId", "");
-        Assert.assertEquals(result, new GovernedAssetComponent());
+        {
+            GovernanceEngineImpl governanceEngineImpl = new GovernanceEngineImpl("http://localhost:12345");
+
+            GovernedAssetComponent result = governanceEngineImpl.getGovernedAssetComponent("userId", "");
+        });
     }
 
 
-    @Test (expectedExceptions = InvalidParameterException.class)
-    public void testGetGovernanceClassificationDefinitionNullParmsUserid() throws Exception {
-        GovernanceEngineImpl governanceEngineImpl = new GovernanceEngineImpl("http://localhost:12345");
+    @Test
+    void testGetGovernanceClassificationDefinitionNullParmsUserid() {
+        thrown = assertThrows(InvalidParameterException.class, () ->
+        {
+            GovernanceEngineImpl governanceEngineImpl = new GovernanceEngineImpl("http://localhost:12345");
 
-        GovernanceClassificationDefinition result = governanceEngineImpl.getGovernanceClassificationDefinition("", "tagGuid");
-        Assert.assertEquals(result, new GovernanceClassificationDefinition());
+            GovernanceClassificationDefinition result = governanceEngineImpl.getGovernanceClassificationDefinition("", "tagGuid");
+        });
     }
 
-    @Test (expectedExceptions = InvalidParameterException.class)
-    public void testGetGovernanceClassificationDefinitionNullParmsGuid() throws Exception {
-        GovernanceEngineImpl governanceEngineImpl = new GovernanceEngineImpl("http://localhost:12345");
+    @Test
+    void testGetGovernanceClassificationDefinitionNullParmsGuid() {
+        thrown = assertThrows(InvalidParameterException.class, () ->
+        {
+            GovernanceEngineImpl governanceEngineImpl = new GovernanceEngineImpl("http://localhost:12345");
 
-        GovernanceClassificationDefinition result = governanceEngineImpl.getGovernanceClassificationDefinition("userId", "");
-        Assert.assertEquals(result, new GovernanceClassificationDefinition());
+            GovernanceClassificationDefinition result = governanceEngineImpl.getGovernanceClassificationDefinition("userId", "");
+        });
     }
-
 
 
 }
