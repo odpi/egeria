@@ -12,6 +12,7 @@ import org.odpi.openmetadata.accessservices.governanceengine.common.objects.*;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -21,8 +22,8 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
     private String omasServerURL;  /* Initialized in constructor */
 
 
-    // https://stackoverflow.com/questions/42406625/how-to-mock-resttemplate-in-java-spring
-    // class member to aid in mocking
+    // Use Dependency Injection to aid in testing
+
     RestTemplate restTemplate = new RestTemplate();
 
     /**
