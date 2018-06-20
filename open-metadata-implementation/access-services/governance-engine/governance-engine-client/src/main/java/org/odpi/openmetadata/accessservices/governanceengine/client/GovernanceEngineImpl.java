@@ -24,7 +24,7 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
 
     // Use Dependency Injection to aid in testing
 
-    RestTemplate restTemplate = new RestTemplate();
+    RestTemplate restTemplate;// = new RestTemplate();
 
     /**
      * Create a new GovernanceEngine client.
@@ -33,6 +33,7 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
      */
     public GovernanceEngineImpl(String newServerURL) {
         omasServerURL = newServerURL;
+        restTemplate = new RestTemplate();
     }
 
     /**
@@ -46,10 +47,13 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
     public List<GovernedAssetComponent> getGovernedAssetComponentList(String userId, String rootClassificationType,
     String rootType) throws InvalidParameterException,
             UserNotAuthorizedException, MetadataServerException, RootClassificationNotFoundException {
+
         final String methodName = "getGovernedAssetComponentList";
         final String urlTemplate = "/{0}/govAssets"; //TODO: Need to figure out path for getting assets
 
         validateOMASServerURL(methodName);
+        validateUserId(userId,methodName); // cannot be null
+        // No validation for other parms -- optional. Managed server-side
 
         GovernedAssetComponentListAPIResponse restResult = callGovernanceEngineGovernedAssetComponentListRESTCall(methodName,
                 omasServerURL + urlTemplate,
@@ -174,7 +178,7 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
      */
     private void validateUserId(String userId,
                                 String methodName) throws InvalidParameterException {
-        if (userId == null) {
+        if (StringUtils.isEmpty(userId)) {
             GovernanceEngineErrorCode errorCode = GovernanceEngineErrorCode.NULL_USER_ID;
             String errorMessage = errorCode.getErrorMessageId()
                     + errorCode.getFormattedErrorMessage(methodName);
@@ -288,6 +292,7 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
          * Issue the request
          */
         try {
+
             // - (Class member to support mocking) RestTemplate restTemplate = new RestTemplate();
 
             restResult = restTemplate.getForObject(urlTemplate, restResult.getClass(), params);

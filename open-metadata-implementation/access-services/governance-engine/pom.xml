@@ -37,7 +37,7 @@
         <junit.jupiter.version>5.2.0</junit.jupiter.version>
         <surefire.plugin.version>2.20.1</surefire.plugin.version>
         <junit.surefire.version>1.2.0</junit.surefire.version>
-        <mockito.junit.version>2.18.3</mockito.junit.version>
+        <mockito.junit.version>2.19.0</mockito.junit.version>
     </properties>
     <dependencies>
         <dependency>
@@ -58,7 +58,12 @@
             <version>${mockito.junit.version}</version>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-inline</artifactId>
+            <version>${mockito.junit.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -81,6 +86,12 @@
                     <groupId>org.junit.jupiter</groupId>
                     <artifactId>junit-jupiter-engine</artifactId>
                     <version>${junit.jupiter.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.mockito</groupId>
+                        <artifactId>mockito-inline</artifactId>
+                        <version>${mockito.junit.version}</version>
+                        <scope>test</scope>
                     </dependency>
                 </dependencies>
             </plugin>

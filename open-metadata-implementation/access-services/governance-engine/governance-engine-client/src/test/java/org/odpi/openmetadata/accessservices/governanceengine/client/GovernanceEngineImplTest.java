@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.governanceengine.client;
 import org.junit.Assert;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.exceptions.MetadataServerException;
@@ -12,6 +11,8 @@ import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.excepti
 import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.exceptions.UserNotAuthorizedException;
 import org.odpi.openmetadata.accessservices.governanceengine.common.objects.GovernanceClassificationDefinition;
 import org.odpi.openmetadata.accessservices.governanceengine.common.objects.GovernedAssetComponent;
+
+import java.io.IOException;
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
@@ -23,11 +24,15 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @SuiteDisplayName("Governance Engine Client Implementation")
 
@@ -37,12 +42,33 @@ import static org.mockito.Mockito.when;
 
 public class GovernanceEngineImplTest {
 
+    // Dependency used for REST calls in Governance Engine Client - we want a mocked verion of this
+    // to avoid calling the back end!
     @Mock
     private RestTemplate restTemplate;
 
-    @InjectMocks
-    private GovernanceEngineImpl governanceEngineImpl;
+    // Mock for the constructor parameter (alternative - add setter to implementation)
+    // @Mock (name="newServerURL")
+    // private String serverURLmock;
 
+    // If only that works -- but it doesn't as we can't mock a non-default constructor that takes string
+    // as an argument (we can with other types) so
+
+    static final String defaultOMASServerURL = "http://localhost:12345";
+    static final String defaultUserId = "zebra91";
+    //private class GovernanceEngineImplWithDefaultConstructor extends GovernanceEngineImpl
+    //{
+     //   public GovernanceEngineImplWithDefaultConstructor()
+    //    {
+    //        super(defaultOMASServerURL);
+    //    }
+    //}
+
+    // Now inject into our test class (note we don't use this in our constructor tests below)
+    @InjectMocks
+    private GovernanceEngineImpl governanceEngineImpl = new GovernanceEngineImpl(defaultOMASServerURL);
+
+    // For exception test cases
     private Throwable thrown;
 
 
@@ -77,47 +103,55 @@ public class GovernanceEngineImplTest {
         });
     }
 
+    @Test
+    @DisplayName("Check null userid")
+    void testGetGovernedAssetComponentListNullParmsUser() {
+
+        GovernanceEngineImpl governanceEngineImplalt = new GovernanceEngineImpl(defaultOMASServerURL);
+
+        thrown = assertThrows(InvalidParameterException.class, () ->
+        {
+            List<GovernedAssetComponent> result = governanceEngineImplalt.getGovernedAssetComponentList("", "rootClassificationType", "rootType");
+            // exception!
+        });
+    }
+
+
+    // -- Beginning of tests that need mocking
 
     @Test
     @DisplayName("Check client REST exception")
     void testGetGovernedAssetComponentListClientAPIException() {
 
 
-        // Setup - Build the mocked return object
-        GovernedAssetComponent mockedResult = new GovernedAssetComponent();
 
-        // The client raises an exception if there's an issue with making the call - so this should be a generic rest api error
-        when (restTemplate.getForObject(ArgumentMatchers.anyString(),ArgumentMatchers.any(Class.class),ArgumentMatchers.anyString())).thenThrow(new RuntimeException());
+        // Whatever we call this with throw a RTE (simulates a client REST API errr)
+        // ResourceAccessException (spring) is thrown if, for example, the client cannot
+        // connect to the endpoint
 
-        // when
-        thrown = assertThrows(InvalidParameterException.class, () ->
+        // The argument matchers types need to match exactly - any is used for varargs...
+        when (restTemplate.getForObject(ArgumentMatchers.anyString(),ArgumentMatchers.any(Class.class),ArgumentMatchers.<Object>any())).thenThrow(new ResourceAccessException("error"));
+
+        // test we get the exception expected
+        thrown = assertThrows(MetadataServerException.class, () ->
         {
 
-            List<GovernedAssetComponent> result = governanceEngineImpl.getGovernedAssetComponentList("", "rootClassificationType", "rootType");
+            List<GovernedAssetComponent> result = governanceEngineImpl.getGovernedAssetComponentList(defaultUserId, "rootClassificationType", "rootType");
         });
 
-        // then
-        //assertEquals(mockedResult,result.get(0))
+        // verify we actually used the mocked rest template once
+        verify(restTemplate,times(1)).getForObject(ArgumentMatchers.anyString(),ArgumentMatchers.any(Class.class),ArgumentMatchers.<Object>any());
+        // assert (in addition to exception assertion!)
+
+        // Checking we at least get a sensible GE OMAS Errorcode (we won't go
+        // too specific
+        assertTrue(thrown.getMessage().contains("OMAS-GOVERNANCEENGINE-503"));
     }
 
-    @Test
-    @DisplayName("Check null userid")
-    void testGetGovernedAssetComponentListNullParmsUser() {
 
-
-        // Setup - Build the mocked return object
-        GovernedAssetComponent mockedResult = new GovernedAssetComponent();
-        thrown = assertThrows(InvalidParameterException.class, () ->
-        {
-
-        // when
-            List<GovernedAssetComponent> result = governanceEngineImpl.getGovernedAssetComponentList("", "rootClassificationType", "rootType");
-    });
-        // then
-            //assertEquals(mockedResult,result.get(0))
-    }
 
     @Test
+
     void testGetGovernedAssetComponentListNullParmsRootClassification() {
         thrown = assertThrows(InvalidParameterException.class, () ->
         {
