@@ -130,6 +130,8 @@ public class GovernanceEngineImplTest {
         // connect to the endpoint
 
         // The argument matchers types need to match exactly - any is used for varargs...
+
+        // For this generic API issue we won't be specific on the parms
         when (restTemplate.getForObject(ArgumentMatchers.anyString(),ArgumentMatchers.any(Class.class),ArgumentMatchers.<Object>any())).thenThrow(new ResourceAccessException("error"));
 
         // test we get the exception expected
@@ -153,12 +155,25 @@ public class GovernanceEngineImplTest {
     @Test
 
     void testGetGovernedAssetComponentListNullParmsRootClassification() {
-        thrown = assertThrows(InvalidParameterException.class, () ->
-        {
-            GovernanceEngineImpl governanceEngineImpl = new GovernanceEngineImpl("http://localhost:12345");
 
-            List<GovernedAssetComponent> result = governanceEngineImpl.getGovernedAssetComponentList("userId", "", "rootType");
+
+        // The argument matchers types need to match exactly - any is used for varargs...
+        when (restTemplate.getForObject(ArgumentMatchers.anyString(),ArgumentMatchers.any(Class.class),ArgumentMatchers.<Object>any())).thenThrow(new ResourceAccessException("error"));
+
+        // test we get the exception expected
+        thrown = assertThrows(MetadataServerException.class, () ->
+        {
+
+            List<GovernedAssetComponent> result = governanceEngineImpl.getGovernedAssetComponentList(defaultUserId, "rootClassificationType", "rootType");
         });
+
+        // verify we actually used the mocked rest template once
+        verify(restTemplate,times(1)).getForObject(ArgumentMatchers.anyString(),ArgumentMatchers.any(Class.class),ArgumentMatchers.<Object>any());
+        // assert (in addition to exception assertion!)
+
+        // Checking we at least get a sensible GE OMAS Errorcode (we won't go
+        // too specific
+        assertTrue(thrown.getMessage().contains("OMAS-GOVERNANCEENGINE-503"));
     }
 
     @Test
