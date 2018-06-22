@@ -16,6 +16,17 @@ willing to follow the simple processes outlined below, as well as adhere to the
 * Issue a git pull request from [GitHub](https://github.com/odpi/egeria)to initiate the review.
 * Wait for a maintainer to review and approve the commit.
 
+## Important Additional setup for Windows Users
+If using git on windows, it is **essential** to configure long pathname support, since otherwise the git clone, and other
+git operations on egeria **will** fail.
+
+Ensure you have a current version of git installed (for example 2.17 or above), and in an Elevated command prompt run:
+```
+git config --system core.longpaths true
+```
+For more detail see [this article](https://github.com/msysgit/msysgit/wiki/Git-cannot-create-a-file-or-directory-with-a-long-path)
+
+This is not required on MacOS or Linux.
 
 ## Using git to prepare a contribution
 
@@ -25,7 +36,6 @@ To create a copy of the code on your machine enter the following in a new direct
 ```
 $ git clone https://github.com/odpi/egeria.git
 $ cd egeria
-$
 ```
 
 The git clone command creates a new directory called <code>egeria</code> containing the egeria content.
@@ -35,7 +45,6 @@ you can use the following command from the top-level egeria directory to ensure 
 
 ```
 $ git pull origin master
-$ 
 ```
 
 The git pull request does a <code>git fetch</code> followed by a <code>git merge</code>.
@@ -46,7 +55,6 @@ egeria repository.  The commands below set up a branch called "example-branch" b
 ```
 $ git checkout -b example-branch master
 $ git push origin example-branch
-$
 ```
 
 When you create your own branch, use a name that describes that the branch is for.
@@ -76,7 +84,6 @@ Changes to be committed:
 
 $ git commit -s
 $ git push --set-upstream origin example-branch
-$
 ```
 
 
