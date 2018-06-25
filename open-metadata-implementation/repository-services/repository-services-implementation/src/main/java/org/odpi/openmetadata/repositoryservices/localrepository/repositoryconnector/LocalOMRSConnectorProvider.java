@@ -6,7 +6,9 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypeProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryeventmapper.OMRSRepositoryEventMapperConnector;
 import org.odpi.openmetadata.repositoryservices.eventmanagement.OMRSRepositoryEventExchangeRule;
@@ -30,7 +32,7 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
     private OMRSRepositoryContentManager       repositoryContentManager        = null;
     private OMRSRepositoryEventExchangeRule    saveExchangeRule                = null;
     private LocalOMRSRepositoryConnector       localRepositoryConnector        = null;
-
+    private ConnectorTypeProperties            connectorTypeProperties         = null;
 
 
     /**
@@ -71,6 +73,18 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
 
 
     /**
+     * Returns the properties about the type of connector that this Connector Provider supports.
+     *
+     * @return properties including the name of the connector type, the connector provider class
+     * and any specific connection properties that are recognized by this connector.
+     */
+    public ConnectorTypeProperties getConnectorTypeProperties()
+    {
+        return connectorTypeProperties;
+    }
+
+
+    /**
      * Creates a new instance of a connector based on the information in the supplied connection.
      *
      * @param realLocalConnection - connection that should have all of the properties needed by the Connector Provider
@@ -79,8 +93,23 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
      * @throws ConnectionCheckedException if there are missing or invalid properties in the connection
      * @throws ConnectorCheckedException if there are issues instantiating or initializing the connector
      */
-    public synchronized Connector getConnector(Connection realLocalConnection) throws ConnectionCheckedException,
-                                                                                      ConnectorCheckedException
+    public synchronized Connector getConnector(Connection realLocalConnection) throws ConnectionCheckedException, ConnectorCheckedException
+    {
+        return this.getConnector(new ConnectionProperties(realLocalConnection));
+    }
+
+
+    /**
+     * Creates a new instance of a connector based on the information in the supplied connection.
+     *
+     * @param realLocalConnection - connection that should have all of the properties needed by the Connector Provider
+     *                              to create a connector instance.
+     * @return Connector - instance of the LocalOMRSRepositoryConnector wrapping the real local connector.
+     * @throws ConnectionCheckedException if there are missing or invalid properties in the connection
+     * @throws ConnectorCheckedException if there are issues instantiating or initializing the connector
+     */
+    public synchronized Connector getConnector(ConnectionProperties realLocalConnection) throws ConnectionCheckedException,
+                                                                                                ConnectorCheckedException
     {
         String methodName = "getConnector";
 
@@ -148,7 +177,8 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
                                                                         outboundRepositoryEventManager,
                                                                         repositoryContentManager,
                                                                         saveExchangeRule);
-            localRepositoryConnector.initialize(this.getNewConnectorGUID(), localRepositoryRemoteConnection);
+            localRepositoryConnector.initialize(this.getNewConnectorGUID(),
+                                                new ConnectionProperties(localRepositoryRemoteConnection));
         }
 
         return localRepositoryConnector;

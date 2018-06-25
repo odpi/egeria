@@ -61,7 +61,7 @@ public abstract class OMRSEvent
      * Inbound event constructor that takes the object created by the Jackson JSON mapper and unpacks the
      * properties into the internal OMRSEvent object.
      *
-     * @param inboundEvent - incoming Event.
+     * @param inboundEvent incoming Event.
      */
     public OMRSEvent(OMRSEventV1 inboundEvent)
     {
@@ -98,7 +98,7 @@ public abstract class OMRSEvent
     /**
      * Outbound event constructor used when there is no error.
      *
-     * @param eventCategory - category of event.
+     * @param eventCategory category of event.
      */
     public OMRSEvent(OMRSEventCategory    eventCategory)
     {
@@ -111,11 +111,11 @@ public abstract class OMRSEvent
     /**
      * Outbound event constructor used for registry error events.
      *
-     * @param eventCategory - category of event.
-     * @param genericErrorCode - code for the error
-     * @param errorMessage - detailed error message for remote audit log
-     * @param targetMetadataCollectionId - identifier of the metadata collection in error.
-     * @param targetRemoteConnection - connection used to create the connector to access metadata in the
+     * @param eventCategory category of event.
+     * @param genericErrorCode code for the error
+     * @param errorMessage detailed error message for remote audit log
+     * @param targetMetadataCollectionId identifier of the metadata collection in error.
+     * @param targetRemoteConnection connection used to create the connector to access metadata in the
      *                               remote repository.
      */
     public OMRSEvent(OMRSEventCategory  eventCategory,
@@ -138,12 +138,12 @@ public abstract class OMRSEvent
     /**
      * Outbound constructor used for TypeDef conflict events.
      *
-     * @param eventCategory - category of event.
-     * @param genericErrorCode - code for the error
-     * @param errorMessage - detailed error message for remote audit log
-     * @param targetMetadataCollectionId - identifier of the metadata collection required to change TypeDef.
-     * @param targetTypeDefSummary - details of TypeDef to change.
-     * @param otherTypeDefSummary - description of conflicting TypeDef that will not change.
+     * @param eventCategory category of event.
+     * @param genericErrorCode code for the error
+     * @param errorMessage detailed error message for remote audit log
+     * @param targetMetadataCollectionId identifier of the metadata collection required to change TypeDef.
+     * @param targetTypeDefSummary details of TypeDef to change.
+     * @param otherTypeDefSummary description of conflicting TypeDef that will not change.
      */
     public OMRSEvent(OMRSEventCategory  eventCategory,
                      OMRSEventErrorCode genericErrorCode,
@@ -167,12 +167,12 @@ public abstract class OMRSEvent
     /**
      * Outbound constructor used for AttributeTypeDef conflict events.
      *
-     * @param eventCategory - category of event.
-     * @param genericErrorCode - code for the error
-     * @param errorMessage - detailed error message for remote audit log
-     * @param targetMetadataCollectionId - identifier of the metadata collection required to change TypeDef.
-     * @param targetAttributeTypeDef - details of AttrbuteTypeDef to change.
-     * @param otherAttributeTypeDef - description of conflicting AttributeTypeDef that will not change.
+     * @param eventCategory category of event.
+     * @param genericErrorCode code for the error
+     * @param errorMessage detailed error message for remote audit log
+     * @param targetMetadataCollectionId identifier of the metadata collection required to change TypeDef.
+     * @param targetAttributeTypeDef details of AttrbuteTypeDef to change.
+     * @param otherAttributeTypeDef description of conflicting AttributeTypeDef that will not change.
      */
     public OMRSEvent(OMRSEventCategory  eventCategory,
                      OMRSEventErrorCode genericErrorCode,
@@ -196,12 +196,12 @@ public abstract class OMRSEvent
     /**
      * Outbound event constructor for a TypeDef patch mismatch warning.
      *
-     * @param eventCategory - category of event.
-     * @param genericErrorCode - code for the error.
-     * @param errorMessage - detailed error message for remote audit log
-     * @param targetMetadataCollectionId - identifier of the remote metadata collection with mismatched TypeDef.
-     * @param targetTypeDefSummary - description of TypeDef.
-     * @param otherTypeDef - details of local TypeDef
+     * @param eventCategory category of event.
+     * @param genericErrorCode code for the error.
+     * @param errorMessage detailed error message for remote audit log
+     * @param targetMetadataCollectionId identifier of the remote metadata collection with mismatched TypeDef.
+     * @param targetTypeDefSummary description of TypeDef.
+     * @param otherTypeDef details of local TypeDef
      */
     public OMRSEvent(OMRSEventCategory  eventCategory,
                      OMRSEventErrorCode genericErrorCode,
@@ -224,16 +224,16 @@ public abstract class OMRSEvent
     /**
      * Outbound constructor used for metadata instance conflict events.
      *
-     * @param eventCategory - category of event.
-     * @param genericErrorCode - code for the error
-     * @param errorMessage - detailed error message for remote audit log
-     * @param targetMetadataCollectionId - metadata collection id of other repository with the conflicting instance
-     * @param targetTypeDefSummary - description of the target instance's TypeDef
-     * @param targetInstanceGUID - unique identifier for the source instance
-     * @param otherOrigin - origin of the other (older) metadata instance
-     * @param otherMetadataCollectionId - metadata collection of the other (older) metadata instance
-     * @param otherTypeDefSummary - details of the other (older) instance's TypeDef
-     * @param otherInstanceGUID - unique identifier for the other (older) instance
+     * @param eventCategory category of event.
+     * @param genericErrorCode code for the error
+     * @param errorMessage detailed error message for remote audit log
+     * @param targetMetadataCollectionId metadata collection id of other repository with the conflicting instance
+     * @param targetTypeDefSummary description of the target instance's TypeDef
+     * @param targetInstanceGUID unique identifier for the source instance
+     * @param otherOrigin origin of the other (older) metadata instance
+     * @param otherMetadataCollectionId metadata collection of the other (older) metadata instance
+     * @param otherTypeDefSummary details of the other (older) instance's TypeDef
+     * @param otherInstanceGUID unique identifier for the other (older) instance
      */
     public OMRSEvent(OMRSEventCategory      eventCategory,
                      OMRSEventErrorCode     genericErrorCode,
@@ -264,13 +264,13 @@ public abstract class OMRSEvent
     /**
      * Outbound constructor used for metadata instance type conflict events.
      *
-     * @param eventCategory - category of event.
-     * @param genericErrorCode - code for the error
-     * @param errorMessage - detailed error message for remote audit log
-     * @param targetMetadataCollectionId - metadata collection id of other repository with the conflicting instance
-     * @param targetTypeDefSummary - details of the target instance's TypeDef
-     * @param targetInstanceGUID - unique identifier for the source instance
-     * @param otherTypeDefSummary - details of the local TypeDef
+     * @param eventCategory category of event.
+     * @param genericErrorCode code for the error
+     * @param errorMessage detailed error message for remote audit log
+     * @param targetMetadataCollectionId metadata collection id of other repository with the conflicting instance
+     * @param targetTypeDefSummary details of the target instance's TypeDef
+     * @param targetInstanceGUID unique identifier for the source instance
+     * @param otherTypeDefSummary details of the local TypeDef
      */
     public OMRSEvent(OMRSEventCategory      eventCategory,
                      OMRSEventErrorCode     genericErrorCode,
@@ -294,9 +294,9 @@ public abstract class OMRSEvent
 
 
     /**
-     * Set up details of the event originator - used by the event publisher for outbound events.
+     * Set up details of the event originator used by the event publisher for outbound events.
      *
-     * @param eventOriginator  - details of the originator of the event including the id of the local
+     * @param eventOriginator  details of the originator of the event including the id of the local
      *                         metadata collection.
      */
     public void setEventOriginator(OMRSEventOriginator eventOriginator)

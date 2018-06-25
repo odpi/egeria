@@ -123,20 +123,34 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
      */
     public void addTypeDef(String  sourceName, TypeDef      newTypeDef)
     {
+        this.cacheTypeDef(sourceName, newTypeDef,true);
+    }
+
+
+    /**
+     * Cache a definition of a TypeDef.
+     *
+     * @param sourceName source of the request (used for logging)
+     * @param newTypeDef TypeDef structure describing the new TypeDef.
+     * @param isLocallySupported indicates whether the TypeDef is supported by the local repository.
+     */
+    private void cacheTypeDef(String  sourceName, TypeDef      newTypeDef, boolean isLocallySupported)
+    {
         if (this.validTypeDef(sourceName, newTypeDef))
         {
             knownTypeDefGUIDs.put(newTypeDef.getGUID(), newTypeDef);
             knownTypeDefNames.put(newTypeDef.getName(), newTypeDef);
 
-            if (localRepositoryConnector != null)
+            if (isLocallySupported)
             {
                 activeTypeDefGUIDs.put(newTypeDef.getGUID(), newTypeDef);
                 activeTypeDefNames.put(newTypeDef.getName(), newTypeDef);
 
-                if (log.isDebugEnabled())
-                {
-                    log.debug("New Active Type " + newTypeDef.getName() + " from " + sourceName + ". Full TypeDef: " + newTypeDef);
-                }
+                log.debug("New Active Type " + newTypeDef.getName() + " from " + sourceName + ". Full TypeDef: " + newTypeDef);
+            }
+            else
+            {
+                log.debug("New Known Type " + newTypeDef.getName() + " from " + sourceName + ". Full TypeDef: " + newTypeDef);
             }
         }
     }
@@ -150,12 +164,27 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
      */
     public void addAttributeTypeDef(String  sourceName, AttributeTypeDef newAttributeTypeDef)
     {
+        this.cacheAttributeTypeDef(sourceName, newAttributeTypeDef, true);
+    }
+
+
+    /**
+     * Cache a definition of a new AttributeTypeDef.
+     *
+     * @param sourceName - source of the request (used for logging)
+     * @param newAttributeTypeDef - AttributeTypeDef structure describing the new TypeDef.
+     * @param isLocallySupported indicates whether the TypeDef is supported by the local repository.
+     */
+    private void cacheAttributeTypeDef(String           sourceName,
+                                       AttributeTypeDef newAttributeTypeDef,
+                                       boolean          isLocallySupported)
+    {
         if (this.validAttributeTypeDef(sourceName, newAttributeTypeDef))
         {
             knownAttributeTypeDefGUIDs.put(newAttributeTypeDef.getGUID(), newAttributeTypeDef);
             knownAttributeTypeDefNames.put(newAttributeTypeDef.getName(), newAttributeTypeDef);
 
-            if (localRepositoryConnector != null)
+            if (isLocallySupported)
             {
                 activeAttributeTypeDefGUIDs.put(newAttributeTypeDef.getGUID(), newAttributeTypeDef);
                 activeAttributeTypeDefNames.put(newAttributeTypeDef.getName(), newAttributeTypeDef);
@@ -163,6 +192,10 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
                 if (log.isDebugEnabled())
                 {
                     log.debug("New Active Attribute Type " + newAttributeTypeDef.getName() + " from " + sourceName+ ". Full AttributeTypeDef: " + newAttributeTypeDef);
+                }
+                else
+                {
+                    log.debug("New Known Attribute Type " + newAttributeTypeDef.getName() + " from " + sourceName+ ". Full AttributeTypeDef: " + newAttributeTypeDef);
                 }
             }
         }
@@ -1840,11 +1873,6 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
                 {
                     metadataCollection.addTypeDef(sourceName, typeDef);
 
-                    /*
-                     * Update the active TypeDefs as this new TypeDef has been accepted by the local repository.
-                     */
-                    activeTypeDefNames.put(typeDef.getName(), typeDef);
-
                     OMRSAuditCode auditCode = OMRSAuditCode.NEW_TYPE_ADDED;
                     auditLog.logRecord(actionDescription,
                                        auditCode.getLogMessageId(),
@@ -1857,10 +1885,22 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
                                        auditCode.getSystemAction(),
                                        auditCode.getUserAction());
                 }
+
+                /*
+                 * Either the repository already supports the type, or it has just added it.
+                 * Cache information about the type in the repository content manager's maps.
+                 */
+                this.cacheTypeDef(sourceName, typeDef, true);
             }
         }
         catch (TypeDefNotSupportedException fixedTypeSystemResponse)
         {
+            /*
+             * Adds information about the type to the repository content manager for
+             * use by the enterprise repository services (but not local repository).
+             */
+            this.cacheTypeDef(sourceName, typeDef, false);
+
             OMRSAuditCode auditCode = OMRSAuditCode.NEW_TYPE_NOT_SUPPORTED;
             auditLog.logRecord(actionDescription,
                                auditCode.getLogMessageId(),
@@ -1872,22 +1912,23 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
                                auditCode.getSystemAction(),
                                auditCode.getUserAction());
 
-            if (log.isDebugEnabled())
-            {
-                log.debug("TypeDef not added because repository does not support dynamic type definitions: " + typeDef);
-                log.debug("TypeDefNotSupportedException:", fixedTypeSystemResponse);
-
-            }
+            log.debug("TypeDef not added because repository does not support dynamic type definitions: " + typeDef);
+            log.debug("TypeDefNotSupportedException:", fixedTypeSystemResponse);
         }
         catch (RepositoryErrorException error)
         {
+            /*
+             * Adds information about the type to the repository content manager for
+             * use by the enterprise repository services (but not local repository).
+             */
+            this.cacheTypeDef(sourceName, typeDef, false);
+
             log.error("TypeDef " + typeDef.getName() + " not added because repository is not available: " + typeDef);
             log.error("RepositoryErrorException:", error);
         }
         catch (TypeDefConflictException error)
         {
             // TODO log an error to say that the TypeDef conflicts with a TypeDef already stored.
-
 
             log.error("TypeDef not added because it conflicts with another TypeDef already in the repository: " + typeDef);
             log.error("TypeDefConflictException:", error);
@@ -1906,32 +1947,22 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
         {
             // TODO log an error to say that the TypeDef contains bad values.
 
-            if (log.isDebugEnabled())
-            {
-                log.debug("TypeDef not added because repository is not available: " + typeDef);
-                log.debug("InvalidTypeDefException: " + error);
-            }
+            log.error("TypeDef not added because repository thinks it is invalid: " + typeDef);
+            log.error("InvalidTypeDefException: " + error);
         }
         catch (TypeDefKnownException error)
         {
             // TODO log an error to say that a logic error has occurred
 
-            if (log.isDebugEnabled())
-            {
-                log.debug("TypeDef not added because repository has a logic error: " + typeDef);
-                log.debug("TypeDefKnownException: " + error);
-
-            }
+            log.error("TypeDef not added because repository has a logic error: " + typeDef);
+            log.error("TypeDefKnownException: " + error);
         }
         catch (Throwable  error)
         {
             // TODO log an error to say that an unexpected error has occurred
 
-            if (log.isDebugEnabled())
-            {
-                log.debug("TypeDef not added because repository has an unexpected error: " + typeDef);
-                log.debug("Throwable: " + error);
-            }
+            log.error("TypeDef not added because repository has an unexpected error: " + typeDef);
+            log.error("Throwable: " + error);
         }
     }
 
@@ -1995,10 +2026,22 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
                                        auditCode.getSystemAction(),
                                        auditCode.getUserAction());
                 }
+
+                /*
+                 * Either the repository already supports the type, or it has just added it.
+                 * Cache information about the type in the repository content manager's maps.
+                 */
+                this.cacheAttributeTypeDef(sourceName, attributeTypeDef, true);
             }
         }
         catch (TypeDefNotSupportedException fixedTypeSystemResponse)
         {
+            /*
+             * Adds information about the type to the repository content manager for
+             * use by the enterprise repository services (but not local repository).
+             */
+            this.cacheAttributeTypeDef(sourceName, attributeTypeDef, false);
+
             OMRSAuditCode auditCode = OMRSAuditCode.NEW_TYPE_NOT_SUPPORTED;
             auditLog.logRecord(actionDescription,
                                auditCode.getLogMessageId(),
@@ -2010,15 +2053,17 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
                                auditCode.getSystemAction(),
                                auditCode.getUserAction());
 
-            if (log.isDebugEnabled())
-            {
-                log.debug("TypeDef not added because repository does not support dynamic type definitions: " + attributeTypeDef);
-                log.debug("TypeDefNotSupportedException:", fixedTypeSystemResponse);
-
-            }
+            log.debug("TypeDef not added because repository does not support dynamic type definitions: " + attributeTypeDef);
+            log.debug("TypeDefNotSupportedException:", fixedTypeSystemResponse);
         }
         catch (RepositoryErrorException error)
         {
+            /*
+             * Adds information about the type to the repository content manager for
+             * use by the enterprise repository services (but not local repository).
+             */
+            this.cacheAttributeTypeDef(sourceName, attributeTypeDef, false);
+
             log.error("TypeDef " + attributeTypeDef.getName() + " not added because repository is not available: " + attributeTypeDef);
             log.error("RepositoryErrorException:", error);
         }
@@ -2044,32 +2089,22 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
         {
             // TODO log an error to say that the TypeDef contains bad values.
 
-            if (log.isDebugEnabled())
-            {
-                log.debug("TypeDef not added because repository is not available: " + attributeTypeDef);
-                log.debug("InvalidTypeDefException: " + error);
-            }
+            log.error("TypeDef not added because repository thinks it is invalid: " + attributeTypeDef);
+            log.error("InvalidTypeDefException: " + error);
         }
         catch (TypeDefKnownException error)
         {
             // TODO log an error to say that a logic error has occurred
 
-            if (log.isDebugEnabled())
-            {
-                log.debug("TypeDef not added because repository has a logic error: " + attributeTypeDef);
-                log.debug("TypeDefKnownException: " + error);
-
-            }
+            log.error("TypeDef not added because repository has a logic error: " + attributeTypeDef);
+            log.error("TypeDefKnownException: " + error);
         }
         catch (Throwable  error)
         {
             // TODO log an error to say that an unexpected error has occurred
 
-            if (log.isDebugEnabled())
-            {
-                log.debug("TypeDef not added because repository has an unexpected error: " + attributeTypeDef);
-                log.debug("Throwable: " + error);
-            }
+            log.error("TypeDef not added because repository has an unexpected error: " + attributeTypeDef);
+            log.error("Throwable: " + error);
         }
     }
 

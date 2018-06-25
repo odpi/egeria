@@ -55,7 +55,7 @@ public class OMRSInstanceEvent extends OMRSEvent
      * Inbound event constructor that takes the object created by the Jackson JSON mapper and unpacks the
      * properties into the instance event.
      *
-     * @param inboundEvent - incoming event to parse.
+     * @param inboundEvent incoming event to parse.
      */
     public OMRSInstanceEvent(OMRSEventV1 inboundEvent)
     {
@@ -104,8 +104,8 @@ public class OMRSInstanceEvent extends OMRSEvent
     /**
      * Constructor for instance events related to a change to an entity.
      *
-     * @param instanceEventType - type of event
-     * @param entity - new values for entity that changed
+     * @param instanceEventType type of event
+     * @param entity new values for entity that changed
      */
     public OMRSInstanceEvent(OMRSInstanceEventType instanceEventType, EntityDetail entity)
     {
@@ -119,9 +119,9 @@ public class OMRSInstanceEvent extends OMRSEvent
     /**
      * Constructor for instance events related to a change to an entity where the old version is supplied.
      *
-     * @param instanceEventType - type of event
-     * @param originalEntity - original value of the entity
-     * @param newEntity - new values for entity that changed
+     * @param instanceEventType type of event
+     * @param originalEntity original value of the entity
+     * @param newEntity new values for entity that changed
      */
     public OMRSInstanceEvent(OMRSInstanceEventType instanceEventType, EntityDetail originalEntity, EntityDetail newEntity)
     {
@@ -136,8 +136,8 @@ public class OMRSInstanceEvent extends OMRSEvent
     /**
      * Constructor for instance events related to a change to a relationship.
      *
-     * @param instanceEventType - type of event
-     * @param relationship - new values for relationship that changed
+     * @param instanceEventType type of event
+     * @param relationship new values for relationship that changed
      */
     public OMRSInstanceEvent(OMRSInstanceEventType instanceEventType, Relationship relationship)
     {
@@ -151,9 +151,9 @@ public class OMRSInstanceEvent extends OMRSEvent
     /**
      * Constructor for instance events related to a change to a relationship where the original values are also sent.
      *
-     * @param instanceEventType - type of event
-     * @param originalRelationship - original values of relationship
-     * @param newRelationship - new values for relationship that changed
+     * @param instanceEventType type of event
+     * @param originalRelationship original values of relationship
+     * @param newRelationship new values for relationship that changed
      */
     public OMRSInstanceEvent(OMRSInstanceEventType instanceEventType,
                              Relationship          originalRelationship,
@@ -171,10 +171,10 @@ public class OMRSInstanceEvent extends OMRSEvent
      * Constructor for instance events related to a delete or purge of an instance - or a request to refresh
      * an instance.
      *
-     * @param instanceEventType - type of event
-     * @param typeDefGUID - unique identifier for this entity's TypeDef
-     * @param typeDefName - name of this entity's TypeDef
-     * @param instanceGUID - unique identifier for the entity
+     * @param instanceEventType type of event
+     * @param typeDefGUID unique identifier for this entity's TypeDef
+     * @param typeDefName name of this entity's TypeDef
+     * @param instanceGUID unique identifier for the entity
      */
     public OMRSInstanceEvent(OMRSInstanceEventType instanceEventType,
                              String                typeDefGUID,
@@ -193,15 +193,15 @@ public class OMRSInstanceEvent extends OMRSEvent
     /**
      * Constructor for instance conflict events.
      *
-     * @param errorCode - error code
-     * @param errorMessage - description of the error
-     * @param targetMetadataCollectionId - metadata collection id of other repository with the conflicting instance
-     * @param targetTypeDefSummary - details of the target instance's TypeDef
-     * @param targetInstanceGUID - unique identifier for the source instance
-     * @param otherMetadataCollectionId - local metadata collection id
-     * @param otherOrigin - provenance information of the local instance
-     * @param otherTypeDefSummary - TypeDef details of the local instance
-     * @param otherInstanceGUID - GUID of the local instance
+     * @param errorCode error code
+     * @param errorMessage description of the error
+     * @param targetMetadataCollectionId metadata collection id of other repository with the conflicting instance
+     * @param targetTypeDefSummary details of the target instance's TypeDef
+     * @param targetInstanceGUID unique identifier for the source instance
+     * @param otherMetadataCollectionId local metadata collection id
+     * @param otherOrigin provenance information of the local instance
+     * @param otherTypeDefSummary TypeDef details of the local instance
+     * @param otherInstanceGUID GUID of the local instance
      */
     public OMRSInstanceEvent(OMRSInstanceEventErrorCode errorCode,
                              String                     errorMessage,
@@ -231,12 +231,12 @@ public class OMRSInstanceEvent extends OMRSEvent
     /**
      * Instance type conflict event.
      *
-     * @param errorCode - error code
-     * @param errorMessage - description of the error
-     * @param targetMetadataCollectionId - metadata collection id of other repository with the conflicting instance
-     * @param targetTypeDefSummary - details of the target instance's TypeDef
-     * @param targetInstanceGUID - unique identifier for the source instance
-     * @param otherTypeDefSummary - details of the other TypeDef
+     * @param errorCode error code
+     * @param errorMessage description of the error
+     * @param targetMetadataCollectionId metadata collection id of other repository with the conflicting instance
+     * @param targetTypeDefSummary details of the target instance's TypeDef
+     * @param targetInstanceGUID unique identifier for the source instance
+     * @param otherTypeDefSummary details of the other TypeDef
      */
     public OMRSInstanceEvent(OMRSInstanceEventErrorCode errorCode,
                              String                     errorMessage,
@@ -260,7 +260,7 @@ public class OMRSInstanceEvent extends OMRSEvent
      * Set up the home metadata collection Id - used for when a repository is requesting a refresh of an instance's
      * details.
      *
-     * @param homeMetadataCollectionId - unique id of the metadata collection where this instance comes from.
+     * @param homeMetadataCollectionId unique id of the metadata collection where this instance comes from.
      */
     public void setHomeMetadataCollectionId(String homeMetadataCollectionId)
     {
@@ -283,7 +283,7 @@ public class OMRSInstanceEvent extends OMRSEvent
     /**
      * Set up the details of the original TypeDef of a metadata instance that has just been reTyped.
      *
-     * @param originalTypeDefSummary - details of original TypeDef
+     * @param originalTypeDefSummary details of original TypeDef
      */
     public void setOriginalTypeDefSummary(TypeDefSummary originalTypeDefSummary)
     {
@@ -295,7 +295,7 @@ public class OMRSInstanceEvent extends OMRSEvent
      * Set up the original unique id (guid) of an instance that has just been re-identified (ie it has
      * had a new guid assigned.
      *
-     * @param originalInstanceGUID - original guid of an instance
+     * @param originalInstanceGUID original guid of an instance
      */
     public void setOriginalInstanceGUID(String originalInstanceGUID)
     {

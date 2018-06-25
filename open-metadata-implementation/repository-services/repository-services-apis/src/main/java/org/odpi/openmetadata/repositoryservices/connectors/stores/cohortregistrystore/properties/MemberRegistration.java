@@ -49,7 +49,7 @@ public class MemberRegistration implements Serializable
     /**
      * Copy/clone constructor - copy registration information from the template.
      *
-     * @param template - MemberRegistration properties to copy
+     * @param template MemberRegistration properties to copy
      */
     public MemberRegistration(MemberRegistration template)
     {
@@ -77,13 +77,13 @@ public class MemberRegistration implements Serializable
     /**
      * Set up the unique identifier of the repository's metadata collection id.
      *
-     * @param metadataCollectionId - String guid
+     * @param metadataCollectionId String guid
      */
     public void setMetadataCollectionId(String metadataCollectionId) { this.metadataCollectionId = metadataCollectionId; }
 
 
     /**
-     * Return the display name for the server.  It is not guaranteed to be unique - just confusing for
+     * Return the display name for the server.  It is not guaranteed to be unique just confusing for
      * administrators if it is different.  The display name can change over time with no loss of data integrity.
      *
      * @return String display name
@@ -95,10 +95,10 @@ public class MemberRegistration implements Serializable
 
 
     /**
-     * Set up the display name for the server.  It is not guaranteed to be unique - just confusing for
+     * Set up the display name for the server.  It is not guaranteed to be unique just confusing for
      * administrators if it is different.  The display name can change over time with no loss of data integrity.
      *
-     * @param serverName - String display name
+     * @param serverName String display name
      */
     public void setServerName(String serverName)
     {
@@ -120,7 +120,7 @@ public class MemberRegistration implements Serializable
     /**
      * Set up the type of server.
      *
-     * @param serverType - String server type
+     * @param serverType String server type
      */
     public void setServerType(String serverType)
     {
@@ -142,7 +142,7 @@ public class MemberRegistration implements Serializable
     /**
      * Set up the name of the organization.
      *
-     * @param organizationName - String name of the organization
+     * @param organizationName String name of the organization
      */
     public void setOrganizationName(String organizationName)
     {
@@ -164,7 +164,7 @@ public class MemberRegistration implements Serializable
     /**
      * Set up the time that this repository registered with the cluster. (Or null if it has not yet registered.)
      *
-     * @param registrationTime - Date object representing the registration time stamp
+     * @param registrationTime Date object representing the registration time stamp
      */
     public void setRegistrationTime(Date registrationTime) { this.registrationTime = registrationTime; }
 
@@ -190,7 +190,7 @@ public class MemberRegistration implements Serializable
     /**
      * Set up the connection information for a connector that enables remote calls to the repository server.
      *
-     * @param repositoryConnection - Connection object containing the properties of the connection
+     * @param repositoryConnection Connection object containing the properties of the connection
      */
     public void setRepositoryConnection(Connection repositoryConnection)
     {

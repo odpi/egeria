@@ -43,7 +43,7 @@ public class Relationship extends InstanceHeader
     /**
      * Copy/clone constructor - builds a relationship from the supplied template.
      *
-     * @param templateElement - template relationship to copy
+     * @param templateElement template relationship to copy
      */
     public Relationship(Relationship templateElement)
     {
@@ -63,7 +63,7 @@ public class Relationship extends InstanceHeader
     /**
      * Test to determine if the supplied entity is linked by this relationship.
      *
-     * @param entityGUID - unique identifier for the entity to test.
+     * @param entityGUID unique identifier for the entity to test.
      * @return boolean indicate whether the supplied entity is linked by this relationship
      */
     public boolean relatedToEntity(String  entityGUID)
@@ -96,7 +96,7 @@ public class Relationship extends InstanceHeader
     /**
      * Return the GUID at the other end of the relationship to the supplied entity.
      *
-     * @param entityGUID - unique identifier for the entity to test.
+     * @param entityGUID unique identifier for the entity to test.
      * @return String guid for the entity at the other end of the relationship.  Null if no matching entity found.
      */
     public String getLinkedEntity(String  entityGUID)
@@ -180,7 +180,7 @@ public class Relationship extends InstanceHeader
     /**
      * Set up the properties for this relationship.
      *
-     * @param newProperties - InstanceProperties object
+     * @param newProperties InstanceProperties object
      */
     public void setProperties(InstanceProperties  newProperties)
     {
@@ -192,7 +192,7 @@ public class Relationship extends InstanceHeader
      * Return the name of the property for the relationship from the perspective of the entity at the first end of the
      * relationship.
      *
-     * @return entityOnePropertyName - String property name
+     * @return entityOnePropertyName String property name
      */
     public String getEntityOnePropertyName() {
         return entityOnePropertyName;
@@ -203,7 +203,7 @@ public class Relationship extends InstanceHeader
      * Set up the property name for the relationship from the perspective of the entity at the first end of the
      * relationship.
      *
-     * @param entityOnePropertyName - String property name
+     * @param entityOnePropertyName String property name
      */
     public void setEntityOnePropertyName(String entityOnePropertyName)
     {
@@ -214,7 +214,7 @@ public class Relationship extends InstanceHeader
     /**
      * Return details of the entity at the first end of the relationship.
      *
-     * @return entityOneProxy - EntityProxy object for the first end of the relationship.
+     * @return entityOneProxy EntityProxy object for the first end of the relationship.
      */
     public EntityProxy getEntityOneProxy()
     {
@@ -232,7 +232,7 @@ public class Relationship extends InstanceHeader
     /**
      * Set up details of the entity at the first end of the relationship.
      *
-     * @param entityOneProxy - EntityProxy object for the first end of the relationship.
+     * @param entityOneProxy EntityProxy object for the first end of the relationship.
      */
     public void setEntityOneProxy(EntityProxy entityOneProxy) { this.entityOneProxy = entityOneProxy; }
 
@@ -250,7 +250,7 @@ public class Relationship extends InstanceHeader
      * Set up the property name for the relationship from the perspective of the entity at the second end of the
      * relationship.
      *
-     * @param entityTwoPropertyName - String property name
+     * @param entityTwoPropertyName String property name
      */
     public void setEntityTwoPropertyName(String entityTwoPropertyName) { this.entityTwoPropertyName = entityTwoPropertyName; }
 
@@ -276,7 +276,7 @@ public class Relationship extends InstanceHeader
     /**
      * Set up the identity of the proxy at the other end of the relationship.
      *
-     * @param entityTwoProxy - EntityProxy
+     * @param entityTwoProxy EntityProxy
      */
     public void setEntityTwoProxy(EntityProxy entityTwoProxy) { this.entityTwoProxy = entityTwoProxy; }
 

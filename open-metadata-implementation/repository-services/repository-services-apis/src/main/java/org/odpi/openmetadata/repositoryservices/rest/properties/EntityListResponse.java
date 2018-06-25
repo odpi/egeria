@@ -45,7 +45,7 @@ public class EntityListResponse extends OMRSRESTAPIPagedResponse
     /**
      * Set up the list of entities.
      *
-     * @param entities - entity list
+     * @param entities entity list
      */
     public void setEntities(List<EntityDetail> entities)
     {

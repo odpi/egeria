@@ -48,7 +48,7 @@ public class CohortMembership implements Serializable
     /**
      * Set up the description of the local server's registration with the cohort.
      *
-     * @param localRegistration - local registration object
+     * @param localRegistration local registration object
      */
     public void setLocalRegistration(MemberRegistration localRegistration)
     {
@@ -77,7 +77,7 @@ public class CohortMembership implements Serializable
     /**
      * Set up details of each of the remote repositories registered with this cohort.
      *
-     * @param remoteRegistrations - details about the remote members of the cohort
+     * @param remoteRegistrations details about the remote members of the cohort
      */
     public void setRemoteRegistrations(List<MemberRegistration> remoteRegistrations)
     {

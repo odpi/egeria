@@ -35,7 +35,7 @@ public interface OMRSRepositoryHelper
 
     /**
      * Return the TypeDef identified by the name supplied by the caller.  This is used in the connectors when
-     * validating the actual types of the repository with the known open metadata types - looking specifically
+     * validating the actual types of the repository with the known open metadata types looking specifically
      * for types of the same name but with different content.
      *
      * @param sourceName  source of the request (used for logging)
@@ -48,7 +48,7 @@ public interface OMRSRepositoryHelper
 
     /**
      * Return the AttributeTypeDef identified by the name supplied by the caller.  This is used in the connectors when
-     * validating the actual types of the repository with the known open metadata types - looking specifically
+     * validating the actual types of the repository with the known open metadata types looking specifically
      * for types of the same name but with different content.
      *
      * @param sourceName            source of the request (used for logging)
@@ -169,7 +169,7 @@ public interface OMRSRepositoryHelper
      * @param provenanceType        origin of the entity
      * @param userName              name of the creator
      * @param typeName              name of the type
-     * @return partially filled out entity - needs classifications and properties
+     * @return partially filled out entity needs classifications and properties
      * @throws TypeErrorException  the type name is not recognized.
      */
     EntityDetail getSkeletonEntity(String                 sourceName,
@@ -187,7 +187,7 @@ public interface OMRSRepositoryHelper
      * @param userName                name of the creator
      * @param classificationTypeName  name of the classification type
      * @param entityTypeName          name of the type for the entity that this classification is to be attached to.
-     * @return partially filled out classification - needs properties and possibly origin information
+     * @return partially filled out classification needs properties and possibly origin information
      * @throws TypeErrorException  the type name is not recognized as a classification type.
      */
     Classification getSkeletonClassification(String sourceName,
@@ -205,7 +205,7 @@ public interface OMRSRepositoryHelper
      * @param provenanceType        origin type of the relationship
      * @param userName              name of the creator
      * @param typeName              name of the relationship's type
-     * @return partially filled out relationship - needs properties
+     * @return partially filled out relationship needs properties
      * @throws TypeErrorException  the type name is not recognized as a relationship type.
      */
     Relationship getSkeletonRelationship(String                 sourceName,
@@ -281,7 +281,7 @@ public interface OMRSRepositoryHelper
      * @param classificationOrigin     is this explicitly assigned or propagated
      * @param classificationOriginGUID  if propagated this the GUID of the origin
      * @param properties      properties for the classification
-     * @return partially filled out classification - needs properties and possibly origin information
+     * @return partially filled out classification needs properties and possibly origin information
      * @throws TypeErrorException  the type name is not recognized as a classification type.
      */
     Classification getNewClassification(String               sourceName,
@@ -415,7 +415,7 @@ public interface OMRSRepositoryHelper
      * @param sourceName  source of the request (used for logging)
      * @param entity      entity instance
      * @return  new entity proxy
-     * @throws RepositoryErrorException  logic error in the repository - corrupted entity
+     * @throws RepositoryErrorException  logic error in the repository corrupted entity
      */
     EntityProxy getNewEntityProxy(String       sourceName,
                                   EntityDetail entity) throws RepositoryErrorException;
@@ -503,7 +503,7 @@ public interface OMRSRepositoryHelper
      * supplied is null, a new instance properties object is created.
      *
      * @param sourceName  name of caller
-     * @param properties  properties object to add property to - may be null.
+     * @param properties  properties object to add property to may be null.
      * @param propertyName  name of property
      * @param propertyValue  value of property
      * @param methodName  calling method name
@@ -521,7 +521,7 @@ public interface OMRSRepositoryHelper
      * supplied is null, a new instance properties object is created.
      *
      * @param sourceName  name of caller
-     * @param properties  properties object to add property to - may be null.
+     * @param properties  properties object to add property to may be null.
      * @param propertyName  name of property
      * @param propertyValue  value of property
      * @param methodName  calling method name
@@ -539,7 +539,7 @@ public interface OMRSRepositoryHelper
      * supplied is null, a new instance properties object is created.
      *
      * @param sourceName  name of caller
-     * @param properties  properties object to add property to - may be null.
+     * @param properties  properties object to add property to may be null.
      * @param propertyName  name of property
      * @param propertyValue  value of property
      * @param methodName  calling method name
@@ -557,7 +557,7 @@ public interface OMRSRepositoryHelper
      * supplied is null, a new instance properties object is created.
      *
      * @param sourceName  name of caller
-     * @param properties  properties object to add property to - may be null.
+     * @param properties  properties object to add property to may be null.
      * @param propertyName  name of property
      * @param ordinal  numeric value of property
      * @param symbolicName  String value of property

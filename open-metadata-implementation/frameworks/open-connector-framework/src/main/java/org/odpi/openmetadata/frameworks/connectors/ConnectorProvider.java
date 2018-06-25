@@ -3,7 +3,9 @@ package org.odpi.openmetadata.frameworks.connectors;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypeProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
 /**
  * The ConnectorProvider is a formal plug-in interface for the Open Connector Framework (OCF).  It provides a factory
@@ -21,6 +23,25 @@ import org.odpi.openmetadata.frameworks.connectors.properties.Connection;
 public abstract class ConnectorProvider
 {
     /**
+     * Returns the properties about the type of connector that this Connector Provider supports.
+     *
+     * @return properties including the name of the connector type, the connector provider class
+     * and any specific connection properties that are recognized by this connector.
+     */
+    public abstract ConnectorTypeProperties getConnectorTypeProperties();
+
+    /**
+     * Creates a new instance of a connector using the name of the connector provider in the supplied connection.
+     *
+     * @param connection   properties for the connector and connector provider.
+     * @return new connector instance.
+     * @throws ConnectionCheckedException an error with the connection.
+     * @throws ConnectorCheckedException an error initializing the connector.
+     */
+    public abstract Connector getConnector(Connection connection) throws ConnectionCheckedException, ConnectorCheckedException;
+
+
+    /**
      * Creates a new instance of a connector based on the information in the supplied connection.
      *
      * @param connection   connection that should have all of the properties needed by the Connector Provider
@@ -29,5 +50,5 @@ public abstract class ConnectorProvider
      * @throws ConnectionCheckedException if there are missing or invalid properties in the connection
      * @throws ConnectorCheckedException if there are issues instantiating or initializing the connector
      */
-    public abstract Connector getConnector(Connection connection) throws ConnectionCheckedException, ConnectorCheckedException;
+    public abstract Connector getConnector(ConnectionProperties connection) throws ConnectionCheckedException, ConnectorCheckedException;
 }

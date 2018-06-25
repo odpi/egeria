@@ -34,7 +34,7 @@ public class TypeDefGallery
     /**
      * Copy/clone constructor
      *
-     * @param template - template to copy
+     * @param template template to copy
      */
     public TypeDefGallery(TypeDefGallery    template)
     {
@@ -70,7 +70,7 @@ public class TypeDefGallery
     /**
      * Set up the list of attribute type definitions from the gallery.
      *
-     * @param attributeTypeDefs - list of attribute type definitions
+     * @param attributeTypeDefs list of attribute type definitions
      */
     public void setAttributeTypeDefs(List<AttributeTypeDef> attributeTypeDefs)
     {
@@ -106,7 +106,7 @@ public class TypeDefGallery
     /**
      * Set up the list of type definitions from the gallery.
      *
-     * @param typeDefs - list of type definitions
+     * @param typeDefs list of type definitions
      */
     public void setTypeDefs(List<TypeDef> typeDefs)
     {

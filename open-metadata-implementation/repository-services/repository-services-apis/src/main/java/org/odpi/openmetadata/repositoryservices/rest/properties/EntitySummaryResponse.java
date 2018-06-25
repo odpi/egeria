@@ -42,7 +42,7 @@ public class EntitySummaryResponse extends OMRSRESTAPIResponse
     /**
      * Set up the resulting entity object.
      *
-     * @param entity - entity object
+     * @param entity entity object
      */
     public void setEntity(EntitySummary entity)
     {

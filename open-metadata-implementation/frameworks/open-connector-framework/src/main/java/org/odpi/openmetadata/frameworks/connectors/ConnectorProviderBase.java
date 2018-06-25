@@ -5,7 +5,9 @@ import org.apache.log4j.Logger;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFErrorCode;
-import org.odpi.openmetadata.frameworks.connectors.properties.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypeProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
 import java.util.UUID;
 
@@ -23,7 +25,8 @@ import java.util.UUID;
  */
 public abstract class ConnectorProviderBase extends ConnectorProvider
 {
-    private String                connectorClassName = null;
+    private String                  connectorClassName = null;
+    private ConnectorTypeProperties connectorTypeProperties = null;
 
     private final int             hashCode = UUID.randomUUID().hashCode();
 
@@ -74,12 +77,48 @@ public abstract class ConnectorProviderBase extends ConnectorProvider
      */
     public  void setConnectorClassName(String   newConnectorClassName)
     {
-        if (log.isDebugEnabled())
-        {
-            log.debug("Connector class name set: " + newConnectorClassName);
-        }
+        log.debug("Connector class name set: " + newConnectorClassName);
 
         connectorClassName = newConnectorClassName;
+    }
+
+
+    /**
+     * Returns the properties about the type of connector that this Connector Provider supports.
+     *
+     * @return properties including the name of the connector type, the connector provider class
+     * and any specific connection properties that are recognized by this connector.
+     */
+    public ConnectorTypeProperties getConnectorTypeProperties()
+    {
+        return connectorTypeProperties;
+    }
+
+
+    /**
+     * Setter method to enable a subclass to set up the connector type properties that are
+     * added to a connection properties object.  The connector type properties guide the
+     * ConnectorBroker and ConnectorProvider on how to create and configure a Connector instance.
+     *
+     * @param connectorTypeProperties default properties for this type of connector
+     */
+    protected void setConnectorTypeProperties(ConnectorTypeProperties  connectorTypeProperties)
+    {
+        this.connectorTypeProperties = connectorTypeProperties;
+    }
+
+
+    /**
+     * Creates a new instance of a connector using the name of the connector provider in the supplied connection.
+     *
+     * @param connection   properties for the connector and connector provider.
+     * @return new connector instance.
+     * @throws ConnectionCheckedException an error with the connection.
+     * @throws ConnectorCheckedException an error initializing the connector.
+     */
+    public Connector getConnector(Connection connection) throws ConnectionCheckedException, ConnectorCheckedException
+    {
+        return this.getConnector(new ConnectionProperties(connection));
     }
 
 
@@ -92,15 +131,12 @@ public abstract class ConnectorProviderBase extends ConnectorProvider
      * @throws ConnectionCheckedException if there are missing or invalid properties in the connection
      * @throws ConnectorCheckedException if there are issues instantiating or initializing the connector
      */
-    public Connector getConnector(Connection connection) throws ConnectionCheckedException, ConnectorCheckedException
+    public Connector getConnector(ConnectionProperties connection) throws ConnectionCheckedException, ConnectorCheckedException
     {
-        Connector                connector = null;
-        String                   guid = null;
+        Connector                connector;
+        String                   guid;
 
-        if (log.isDebugEnabled())
-        {
-            log.debug("getConnector called");
-        }
+        log.debug("getConnector called");
 
         if (connection == null)
         {
@@ -175,24 +211,6 @@ public abstract class ConnectorProviderBase extends ConnectorProvider
                                                  errorCode.getUserAction(),
                                                  classException);
         }
-        catch (LinkageError   linkageError)
-        {
-            /*
-             * Wrap linkage error in an exception
-             */
-            OCFErrorCode  errorCode = OCFErrorCode.INCOMPLETE_CONNECTOR;
-            String        connectionName = connection.getConnectionName();
-            String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(connectorClassName, connectionName);
-
-            throw new ConnectionCheckedException(errorCode.getHTTPErrorCode(),
-                                                 this.getClass().getName(),
-                                                 "getConnector",
-                                                 errorMessage,
-                                                 errorCode.getSystemAction(),
-                                                 errorCode.getUserAction(),
-                                                 linkageError);
-        }
         catch (ClassCastException  castException)
         {
             /*
@@ -236,10 +254,7 @@ public abstract class ConnectorProviderBase extends ConnectorProvider
          * Return the initialized connector ready for use.
          */
 
-        if (log.isDebugEnabled())
-        {
-            log.debug("getConnector returns: " + connector.getConnectorInstanceId() + ", " + connection.getConnectionName());
-        }
+        log.debug("getConnector returns: " + connector.getConnectorInstanceId() + ", " + connection.getConnectionName());
 
         return connector;
     }
@@ -280,12 +295,7 @@ public abstract class ConnectorProviderBase extends ConnectorProvider
 
         ConnectorProviderBase that = (ConnectorProviderBase) object;
 
-        if (hashCode != that.hashCode)
-        {
-            return false;
-        }
-
-        return connectorClassName != null ? connectorClassName.equals(that.connectorClassName) : that.connectorClassName == null;
+        return (hashCode == that.hashCode);
     }
 
 

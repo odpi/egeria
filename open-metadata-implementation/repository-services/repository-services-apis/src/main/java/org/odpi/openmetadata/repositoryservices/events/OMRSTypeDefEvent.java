@@ -47,7 +47,7 @@ public class OMRSTypeDefEvent extends OMRSEvent
      * Inbound event constructor that takes the object created by the Jackson JSON mapper and unpacks the
      * properties into the instance event.
      *
-     * @param inboundEvent - incoming Event.
+     * @param inboundEvent incoming Event.
      */
     public OMRSTypeDefEvent(OMRSEventV1 inboundEvent)
     {
@@ -92,8 +92,8 @@ public class OMRSTypeDefEvent extends OMRSEvent
     /**
      * Outbound event constructor for events such as newTypeDef.
      *
-     * @param typeDefEventType - type of event
-     * @param typeDef - Complete details of the TypeDef that is the subject of the event.
+     * @param typeDefEventType type of event
+     * @param typeDef Complete details of the TypeDef that is the subject of the event.
      */
     public OMRSTypeDefEvent(OMRSTypeDefEventType typeDefEventType,
                             TypeDef              typeDef)
@@ -108,8 +108,8 @@ public class OMRSTypeDefEvent extends OMRSEvent
     /**
      * Outbound event constructor for events such as newAttributeTypeDef.
      *
-     * @param typeDefEventType - type of event
-     * @param attributeTypeDef - Complete details of the AttributeTypeDef that is the subject of the event.
+     * @param typeDefEventType type of event
+     * @param attributeTypeDef Complete details of the AttributeTypeDef that is the subject of the event.
      */
     public OMRSTypeDefEvent(OMRSTypeDefEventType typeDefEventType,
                             AttributeTypeDef     attributeTypeDef)
@@ -124,8 +124,8 @@ public class OMRSTypeDefEvent extends OMRSEvent
     /**
      * Outbound event constructor for events such as updates.
      *
-     * @param typeDefEventType - type of event
-     * @param typeDefPatch - Complete details of the TypeDef that is the subject of the event.
+     * @param typeDefEventType type of event
+     * @param typeDefPatch Complete details of the TypeDef that is the subject of the event.
      */
     public OMRSTypeDefEvent(OMRSTypeDefEventType typeDefEventType,
                             TypeDefPatch         typeDefPatch)
@@ -140,9 +140,9 @@ public class OMRSTypeDefEvent extends OMRSEvent
     /**
      * Outbound event constructor for events such as deletes.
      *
-     * @param typeDefEventType - type of event
-     * @param typeDefGUID - Unique identifier of the TypeDef that is the subject of the event.
-     * @param typeDefName - Unique name of the TypeDef that is the subject of the event.
+     * @param typeDefEventType type of event
+     * @param typeDefGUID Unique identifier of the TypeDef that is the subject of the event.
+     * @param typeDefName Unique name of the TypeDef that is the subject of the event.
      */
     public OMRSTypeDefEvent(OMRSTypeDefEventType typeDefEventType,
                             String               typeDefGUID,
@@ -159,9 +159,9 @@ public class OMRSTypeDefEvent extends OMRSEvent
     /**
      * Outbound event constructor for changing the identifiers associated with TypeDefs.
      *
-     * @param typeDefEventType - type of event
-     * @param originalTypeDefSummary - description of the original TypeDef that is the subject of the event.
-     * @param typeDef - updated TypeDef with new identifiers
+     * @param typeDefEventType type of event
+     * @param originalTypeDefSummary description of the original TypeDef that is the subject of the event.
+     * @param typeDef updated TypeDef with new identifiers
      */
     public OMRSTypeDefEvent(OMRSTypeDefEventType typeDefEventType,
                             TypeDefSummary       originalTypeDefSummary,
@@ -178,9 +178,9 @@ public class OMRSTypeDefEvent extends OMRSEvent
     /**
      * Outbound event constructor for changing the identifiers associated with AttributeTypeDefs.
      *
-     * @param typeDefEventType - type of event
-     * @param originalAttributeTypeDef - description of the original AttributeTypeDef that is the subject of the event.
-     * @param attributeTypeDef - updated AttributeTypeDef with new identifiers
+     * @param typeDefEventType type of event
+     * @param originalAttributeTypeDef description of the original AttributeTypeDef that is the subject of the event.
+     * @param attributeTypeDef updated AttributeTypeDef with new identifiers
      */
     public OMRSTypeDefEvent(OMRSTypeDefEventType typeDefEventType,
                             AttributeTypeDef     originalAttributeTypeDef,
@@ -197,11 +197,11 @@ public class OMRSTypeDefEvent extends OMRSEvent
     /**
      * Outbound event constructor for conflicting typedef errors.
      *
-     * @param errorCode - code enum indicating the cause of the error.
-     * @param errorMessage - descriptive message about the error.
-     * @param targetMetadataCollectionId - identifier of the cohort member that issued the event in error.
-     * @param targetTypeDefSummary - details of the TypeDef in the remote repository.
-     * @param otherTypeDefSummary - details of the TypeDef in the local repository.
+     * @param errorCode code enum indicating the cause of the error.
+     * @param errorMessage descriptive message about the error.
+     * @param targetMetadataCollectionId identifier of the cohort member that issued the event in error.
+     * @param targetTypeDefSummary details of the TypeDef in the remote repository.
+     * @param otherTypeDefSummary details of the TypeDef in the local repository.
      */
     public OMRSTypeDefEvent(OMRSTypeDefEventErrorCode errorCode,
                             String                    errorMessage,
@@ -223,11 +223,11 @@ public class OMRSTypeDefEvent extends OMRSEvent
     /**
      * Outbound event constructor for conflicting attribute typedef errors.
      *
-     * @param errorCode - code enum indicating the cause of the error.
-     * @param errorMessage - descriptive message about the error.
-     * @param targetMetadataCollectionId - identifier of the cohort member that issued the event in error.
-     * @param targetAttributeTypeDef - details of the TypeDef in the remote repository.
-     * @param otherAttributeTypeDef - details of the TypeDef in the local repository.
+     * @param errorCode code enum indicating the cause of the error.
+     * @param errorMessage descriptive message about the error.
+     * @param targetMetadataCollectionId identifier of the cohort member that issued the event in error.
+     * @param targetAttributeTypeDef details of the TypeDef in the remote repository.
+     * @param otherAttributeTypeDef details of the TypeDef in the local repository.
      */
     public OMRSTypeDefEvent(OMRSTypeDefEventErrorCode errorCode,
                             String                    errorMessage,
@@ -250,11 +250,11 @@ public class OMRSTypeDefEvent extends OMRSEvent
     /**
      * Outbound event constructor for typedef mismatch errors.
      *
-     * @param errorCode - code enum indicating the cause of the error.
-     * @param errorMessage - descriptive message about the error.
-     * @param targetMetadataCollectionId - identifier of the cohort member that issued the event in error.
-     * @param targetTypeDefSummary - details of the TypeDef in the remote repository.
-     * @param otherTypeDef - details of the TypeDef in the local repository.
+     * @param errorCode code enum indicating the cause of the error.
+     * @param errorMessage descriptive message about the error.
+     * @param targetMetadataCollectionId identifier of the cohort member that issued the event in error.
+     * @param targetTypeDefSummary details of the TypeDef in the remote repository.
+     * @param otherTypeDef details of the TypeDef in the local repository.
      */
     public OMRSTypeDefEvent(OMRSTypeDefEventErrorCode errorCode,
                             String                    errorMessage,

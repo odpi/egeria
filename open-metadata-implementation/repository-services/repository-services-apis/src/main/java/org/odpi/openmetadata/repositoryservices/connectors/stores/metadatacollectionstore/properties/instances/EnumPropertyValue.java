@@ -33,7 +33,7 @@ public class EnumPropertyValue extends InstancePropertyValue
     /**
      * Copy/clone constructor initializes the enum with the values from the template.
      *
-     * @param template - EnumPropertyValue to copy
+     * @param template EnumPropertyValue to copy
      */
     public EnumPropertyValue(EnumPropertyValue template)
     {
@@ -59,7 +59,7 @@ public class EnumPropertyValue extends InstancePropertyValue
     /**
      * Set the integer ordinal for this enum.
      *
-     * @param ordinal - int
+     * @param ordinal int
      */
     public void setOrdinal(int ordinal) { this.ordinal = ordinal; }
 
@@ -75,7 +75,7 @@ public class EnumPropertyValue extends InstancePropertyValue
     /**
      * Set up the symbolic name for this enum value.
      *
-     * @param symbolicName - String symbolic name
+     * @param symbolicName String symbolic name
      */
     public void setSymbolicName(String symbolicName) { this.symbolicName = symbolicName; }
 
@@ -91,7 +91,7 @@ public class EnumPropertyValue extends InstancePropertyValue
     /**
      * Set up the description for this enum.
      *
-     * @param description - String description
+     * @param description String description
      */
     public void setDescription(String description) { this.description = description; }
 

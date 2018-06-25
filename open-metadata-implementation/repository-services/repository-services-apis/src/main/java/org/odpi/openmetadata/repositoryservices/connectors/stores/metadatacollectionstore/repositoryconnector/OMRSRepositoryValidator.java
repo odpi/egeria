@@ -146,10 +146,10 @@ public interface OMRSRepositoryValidator
     /**
      * Return boolean indicating whether the AttributeTypeDef identifiers are from a single known type or not.
      *
-     * @param sourceName - source of the request (used for logging)
-     * @param attributeTypeDefGUID - unique identifier of the AttributeTypeDef
-     * @param attributeTypeDefName - unique name of the AttributeTypeDef
-     * @param category - category for the AttributeTypeDef
+     * @param sourceName source of the request (used for logging)
+     * @param attributeTypeDefGUID unique identifier of the AttributeTypeDef
+     * @param attributeTypeDefName unique name of the AttributeTypeDef
+     * @param category category for the AttributeTypeDef
      * @return boolean result
      */
     boolean validAttributeTypeDefId(String                   sourceName,
@@ -489,7 +489,7 @@ public interface OMRSRepositoryValidator
      * @param typeDef  unique identifier for a type or an instance passed on the request
      * @param methodName  method receiving the call
      * @throws TypeDefKnownException  the TypeDef is already defined
-     * @throws TypeDefConflictException  the TypeDef is already defined - but differently
+     * @throws TypeDefConflictException  the TypeDef is already defined but differently
      */
     void validateUnknownTypeDef(String  sourceName,
                                 String  parameterName,
@@ -507,7 +507,7 @@ public interface OMRSRepositoryValidator
      * @param attributeTypeDef  unique identifier for an attribute type or an instance passed on the request
      * @param methodName  method receiving the call
      * @throws TypeDefKnownException  the TypeDef is already defined
-     * @throws TypeDefConflictException  the TypeDef is already defined - but differently
+     * @throws TypeDefConflictException  the TypeDef is already defined but differently
      */
     void validateUnknownAttributeTypeDef(String           sourceName,
                                          String           parameterName,
@@ -588,9 +588,9 @@ public interface OMRSRepositoryValidator
      * Validate that the type's name is not null.
      *
      * @param sourceName  source of the request (used for logging)
-     * @param standard  name of the standard - null means any.
-     * @param organization  name of the organization - null means any.
-     * @param identifier  identifier of the element in the standard - null means any.
+     * @param standard  name of the standard null means any.
+     * @param organization  name of the organization null means any.
+     * @param identifier  identifier of the element in the standard null means any.
      * @param methodName  method receiving the call
      * @throws InvalidParameterException  no name provided
      */
@@ -876,7 +876,7 @@ public interface OMRSRepositoryValidator
      * @param entity  the retrieved entity (or null)
      * @param methodName  method receiving the call
      * @throws EntityNotKnownException  No entity found
-     * @throws RepositoryErrorException  logic error in the repository - corrupted instance
+     * @throws RepositoryErrorException  logic error in the repository corrupted instance
      */
     void validateEntityFromStore(String           sourceName,
                                  String           guid,
@@ -893,7 +893,7 @@ public interface OMRSRepositoryValidator
      * @param entity  the retrieved entity (or null)
      * @param methodName  method receiving the call
      * @throws EntityNotKnownException  No entity found
-     * @throws RepositoryErrorException  logic error in the repository - corrupted instance
+     * @throws RepositoryErrorException  logic error in the repository corrupted instance
      */
     void validateEntityFromStore(String           sourceName,
                                  String           guid,
@@ -910,7 +910,7 @@ public interface OMRSRepositoryValidator
      * @param relationship  the retrieved relationship (or null)
      * @param methodName  method receiving the call
      * @throws RelationshipNotKnownException  No relationship found
-     * @throws RepositoryErrorException  logic error in the repository - corrupted instance
+     * @throws RepositoryErrorException  logic error in the repository corrupted instance
      */
     void validateRelationshipFromStore(String       sourceName,
                                        String       guid,
@@ -924,7 +924,7 @@ public interface OMRSRepositoryValidator
      *
      * @param sourceName  source of the request (used for logging)
      * @param instance  the retrieved instance
-     * @throws RepositoryErrorException  logic error in the repository - corrupted instance
+     * @throws RepositoryErrorException  logic error in the repository corrupted instance
      */
     void validateInstanceType(String           sourceName,
                               InstanceHeader   instance) throws RepositoryErrorException;
@@ -958,7 +958,7 @@ public interface OMRSRepositoryValidator
      * @param typeNameParameterName  name of parameter for TypeDefName
      * @param expectedTypeGUID  expected GUID of InstanceType
      * @param expectedTypeName  expected name of InstanceType
-     * @throws RepositoryErrorException  logic error in the repository - corrupted instance
+     * @throws RepositoryErrorException  logic error in the repository corrupted instance
      * @throws TypeErrorException  problem with type
      * @throws InvalidParameterException  invalid parameter
      */
@@ -975,7 +975,7 @@ public interface OMRSRepositoryValidator
     /**
      * Verify that the supplied instance is in one of the supplied statuses.
      *
-     * @param validStatuses  list of statuses - the instance should be in any one of them
+     * @param validStatuses  list of statuses the instance should be in any one of them
      * @param instance  instance to test
      * @return boolean result
      */
@@ -1081,7 +1081,7 @@ public interface OMRSRepositoryValidator
      * Return a boolean indicating whether the supplied entity is classified with one or more of the supplied
      * classifications.
      *
-     * @param requiredClassifications  list of required classification - null means that there are no specific
+     * @param requiredClassifications  list of required classification null means that there are no specific
      *                                classification requirements and so results in a true response.
      * @param entity  entity to test.
      * @return boolean result

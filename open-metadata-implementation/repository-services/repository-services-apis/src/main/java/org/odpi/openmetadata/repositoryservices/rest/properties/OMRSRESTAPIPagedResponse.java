@@ -43,7 +43,7 @@ public class OMRSRESTAPIPagedResponse extends OMRSRESTAPIResponse
     /**
      * Set up the url that can be used to retrieve the next page.
      *
-     * @param nextPageURL - url string
+     * @param nextPageURL url string
      */
     public void setNextPageURL(String nextPageURL)
     {
@@ -55,7 +55,7 @@ public class OMRSRESTAPIPagedResponse extends OMRSRESTAPIResponse
      * Return the starting element number for this set of results.  This is used when retrieving elements
      * beyond the first page of results. Zero means the results start from the first element.
      *
-     * @return - offset number
+     * @return offset number
      */
     public int getOffset()
     {
@@ -67,7 +67,7 @@ public class OMRSRESTAPIPagedResponse extends OMRSRESTAPIResponse
      * Set up the starting element number for this set of results.  This is used when retrieving elements
      * beyond the first page of results. Zero means the results start from the first element.
      *
-     * @param offset - offset number
+     * @param offset offset number
      */
     public void setOffset(int offset)
     {
@@ -89,7 +89,7 @@ public class OMRSRESTAPIPagedResponse extends OMRSRESTAPIResponse
     /**
      * Set up the maximum number of elements that can be returned on this request.
      *
-     * @param pageSize - integer number
+     * @param pageSize integer number
      */
     public void setPageSize(int pageSize)
     {

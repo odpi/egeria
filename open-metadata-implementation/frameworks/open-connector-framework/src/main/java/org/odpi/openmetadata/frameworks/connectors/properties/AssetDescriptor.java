@@ -1,13 +1,18 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
+
 /**
  * This is the base class for a connected asset.  It is passed to all of the embedded property objects so the name
  * and type can be used for error messages and other diagnostics.  It also carries the URL of the asset in the
  * metadata repository where this is known to enable properties to be retrieved on request.
  */
-public abstract class AssetDescriptor extends PropertyBase
+public abstract class AssetDescriptor extends AssetPropertyElementBase
 {
+    protected   Asset     assetBean;
+
     /*
      * Derived name and type for use by nested property object for messages/debug.  If these default values
      * are seen it is a sign that the asset properties are not being populated from the metadata repository.
@@ -15,42 +20,57 @@ public abstract class AssetDescriptor extends PropertyBase
     private String assetName = "<Unknown>";
     private String assetTypeName = "<Unknown>";
 
-    /*
-     * URL where the metadata about the asset is located.  It remains null if no repository is known.
-     */
-    private String url = null;
-
-    /*
-     * Unique id for the asset.
-     */
-    private String guid = null;
-
 
     /**
-     * Typical constructor - the asset descriptor is effectively empty - and the protected
+     * Bean constructor - the asset descriptor is effectively empty - and the protected
      * set methods need to be called to add useful content to it.
      */
-    public AssetDescriptor()
-    {
-        /*
-         * Nothing to do except call superclass
-         */
-        super();
-    }
-
-
-    /**
-     * Explicit constructor - the asset descriptor is explicitly given the url for the asset.
-     *
-     * @param guid unique id for the asset
-     * @param url URL for the asset in the metadata repository
-     */
-    public AssetDescriptor(String guid, String  url)
+    public AssetDescriptor(Asset assetBean)
     {
         super();
 
-        this.guid = guid;
-        this.url = url;
+        if (assetBean == null)
+        {
+            this.assetBean = new Asset();
+        }
+        else
+        {
+            this.assetBean = assetBean;
+
+            String qualifiedName = assetBean.getQualifiedName();
+            String displayName = assetBean.getDisplayName();
+
+            /*
+             * Use the qualified name as the asset name if it is not null or the empty string.
+             * Otherwise use display name (unless it is null or the empty string).
+             */
+            if ((qualifiedName == null) || (qualifiedName.equals("")))
+            {
+                if ((displayName != null) && (!displayName.equals("")))
+                {
+                    /*
+                     * Good display name
+                     */
+                    assetName = displayName;
+                }
+            }
+            else /* good qualified name */
+            {
+                assetName = qualifiedName;
+            }
+
+            ElementType  elementType = assetBean.getType();
+
+            if (elementType != null)
+            {
+                String typeName = elementType.getElementTypeName();
+
+                if ((typeName != null) && (! typeName.equals("")))
+                {
+                    assetTypeName = typeName;
+                }
+            }
+        }
     }
 
 
@@ -63,42 +83,27 @@ public abstract class AssetDescriptor extends PropertyBase
     {
         super();
 
-        this.guid = templateAssetDescriptor.getGUID();
-        this.assetName = templateAssetDescriptor.getAssetName();
-        this.assetTypeName = templateAssetDescriptor.getAssetTypeName();
-        this.url = templateAssetDescriptor.getURL();
+        if (templateAssetDescriptor != null)
+        {
+            this.assetBean = templateAssetDescriptor.getAssetBean();
+            this.assetName = templateAssetDescriptor.getAssetName();
+            this.assetTypeName = templateAssetDescriptor.getAssetTypeName();
+        }
+        else
+        {
+            this.assetBean = new Asset();
+        }
     }
 
 
     /**
-     * Method to enable a subclass to set up the asset name.
+     * Return the asset bean for this element.
      *
-     * @param assetName String name of asset for messages etc
+     * @return Asset bean
      */
-    protected void setAssetName(String     assetName)
+    protected Asset getAssetBean()
     {
-        this.assetName = assetName;
-    }
-
-
-    /**
-     * Method to enable a subclass to set up the asset type name.
-     *
-     * @param assetTypeName String new type name
-     */
-    protected void setAssetTypeName(String    assetTypeName)
-    {
-        this.assetTypeName = assetTypeName;
-    }
-
-
-    /**
-     * Return the unique id for this element.
-     *
-     * @return guid unique id
-     */
-    public String getGUID() {
-        return guid;
+        return assetBean;
     }
 
 
@@ -121,30 +126,5 @@ public abstract class AssetDescriptor extends PropertyBase
     public String getAssetTypeName()
     {
         return assetTypeName;
-    }
-
-
-    /**
-     * Return the URL of the asset in the metadata repository if supported.
-     *
-     * @return String URL
-     */
-    public String getURL() { return url; }
-
-
-    /**
-     * Standard toString method.
-     *
-     * @return print out of variables in a JSON-style
-     */
-    @Override
-    public String toString()
-    {
-        return "AssetDescriptor{" +
-                "assetName='" + assetName + '\'' +
-                ", assetTypeName='" + assetTypeName + '\'' +
-                ", url='" + url + '\'' +
-                ", guid='" + guid + '\'' +
-                '}';
     }
 }

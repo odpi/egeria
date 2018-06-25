@@ -2,60 +2,66 @@
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
+
+import java.util.Objects;
 
 /**
  * RelatedAsset describes assets that are related to this asset.  For example, if the asset is a data store, the
  * related assets could be its supported data sets.
  */
-public class RelatedAsset extends Referenceable
+public class RelatedAsset extends AssetReferenceable
 {
-    /*
-     * Properties that make up the summary properties of the related asset.
-     */
-    private String    displayName = null;
-    private String    description = null;
-    private String    owner = null;
-
-    /*
-     * The detailed properties that are retrieved from the server
-     */
-    private RelatedAssetProperties relatedAssetProperties = null;
+    protected Asset                  assetBean;
+    protected RelatedAssetProperties relatedAssetProperties;
 
 
     /**
-     * Typical constructor
+     * Bean constructor
+     *
+     * @param assetBean bean containing basic properties
+     * @param relatedAssetProperties client for retrieving properties from the server
+     */
+    protected RelatedAsset(Asset                  assetBean,
+                           RelatedAssetProperties relatedAssetProperties)
+    {
+        super(assetBean);
+
+        if (assetBean == null)
+        {
+            this.assetBean = new Asset();
+        }
+        else
+        {
+            this.assetBean = new Asset(assetBean);
+        }
+
+        this.relatedAssetProperties = relatedAssetProperties;
+    }
+
+
+    /**
+     * Bean constructor with parent asset
      *
      * @param parentAsset descriptor for parent asset
-     * @param type details of the metadata type for this properties object
-     * @param guid String unique id
-     * @param url String URL
-     * @param classifications enumeration of classifications
-     * @param qualifiedName unique name
-     * @param additionalProperties additional properties for the referenceable object.
-     * @param meanings list of glossary terms (summary)
-     * @param displayName consumable name
-     * @param description description property stored for the related asset.
-     * @param owner the owner details for this related asset.
-     * @param relatedAssetProperties detailed properties of the asset.
+     * @param assetBean bean containing basic properties
+     * @param relatedAssetProperties client for retrieving properties from the server
      */
-    public RelatedAsset(AssetDescriptor parentAsset,
-                        ElementType type,
-                        String                  guid,
-                        String                  url,
-                        Classifications classifications,
-                        String                  qualifiedName,
-                        AdditionalProperties additionalProperties,
-                        Meanings meanings,
-                        String                  displayName,
-                        String                  description,
-                        String                  owner,
-                        RelatedAssetProperties relatedAssetProperties)
+    protected RelatedAsset(AssetDescriptor        parentAsset,
+                           Asset                  assetBean,
+                           RelatedAssetProperties relatedAssetProperties)
     {
-        super(parentAsset, type, guid, url, classifications, qualifiedName, additionalProperties, meanings);
+        super(assetBean);
 
-        this.displayName = displayName;
-        this.description = description;
-        this.owner = owner;
+        if (assetBean == null)
+        {
+            this.assetBean = new Asset();
+        }
+        else
+        {
+            this.assetBean = new Asset(assetBean);
+        }
+
         this.relatedAssetProperties = relatedAssetProperties;
     }
 
@@ -69,12 +75,27 @@ public class RelatedAsset extends Referenceable
     public RelatedAsset(AssetDescriptor parentAsset, RelatedAsset templateRelatedAsset)
     {
         super(parentAsset, templateRelatedAsset);
-        if (templateRelatedAsset != null)
+        if (templateRelatedAsset == null)
         {
-            displayName = templateRelatedAsset.getDisplayName();
-            description = templateRelatedAsset.getDescription();
-            owner = templateRelatedAsset.getOwner();
+            this.assetBean = new Asset();
+            this.relatedAssetProperties = null;
         }
+        else
+        {
+            this.assetBean = templateRelatedAsset.getAssetBean();
+            this.relatedAssetProperties = templateRelatedAsset.relatedAssetProperties;
+        }
+    }
+
+
+    /**
+     * Return the bean with basic information about the asset.
+     *
+     * @return assetBean
+     */
+    protected Asset  getAssetBean()
+    {
+        return assetBean;
     }
 
 
@@ -84,10 +105,16 @@ public class RelatedAsset extends Referenceable
      *
      * @return displayName
      */
-    public String getDisplayName()
-    {
-        return displayName;
-    }
+    public String getDisplayName() { return assetBean.getDisplayName(); }
+
+
+    /**
+     * Returns the summary description property for the related asset.
+     * If no description is provided then null is returned.
+     *
+     * @return summary description
+     */
+    public String getShortDescription() { return assetBean.getShortDescription(); }
 
 
     /**
@@ -96,10 +123,7 @@ public class RelatedAsset extends Referenceable
      *
      * @return description
      */
-    public String getDescription()
-    {
-        return description;
-    }
+    public String getDescription() { return assetBean.getDescription(); }
 
 
     /**
@@ -107,7 +131,7 @@ public class RelatedAsset extends Referenceable
      *
      * @return String owner
      */
-    public String getOwner() { return owner; }
+    public String getOwner() { return assetBean.getOwner(); }
 
 
     /**
@@ -135,17 +159,32 @@ public class RelatedAsset extends Referenceable
     @Override
     public String toString()
     {
-        return "RelatedAsset{" +
-                "displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                ", owner='" + owner + '\'' +
-                ", relatedAssetProperties=" + relatedAssetProperties +
-                ", qualifiedName='" + qualifiedName + '\'' +
-                ", additionalProperties=" + additionalProperties +
-                ", meanings=" + meanings +
-                ", type=" + type +
-                ", guid='" + guid + '\'' +
-                ", url='" + url + '\'' +
-                '}';
+        return assetBean.toString();
+    }
+
+
+    /**
+     * Compare the values of the supplied object with those stored in the current object.
+     *
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (!(objectToCompare instanceof RelatedAsset))
+        {
+            return false;
+        }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        RelatedAsset that = (RelatedAsset) objectToCompare;
+        return Objects.equals(getAssetBean(), that.getAssetBean());
     }
 }

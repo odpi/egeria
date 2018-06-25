@@ -16,7 +16,7 @@ public interface OMRSMetadataCollectionManager
     /**
      * Set up a repository helper object for the repository connector to use.
      *
-     * @param repositoryHelper - helper object for building TypeDefs and metadata instances.
+     * @param repositoryHelper helper object for building TypeDefs and metadata instances.
      */
     void setRepositoryHelper(OMRSRepositoryHelper   repositoryHelper);
 
@@ -24,7 +24,7 @@ public interface OMRSMetadataCollectionManager
     /**
      * Set up a repository validator for the repository connector to use.
      *
-     * @param repositoryValidator - validator object to check the validity of TypeDefs and metadata instances.
+     * @param repositoryValidator validator object to check the validity of TypeDefs and metadata instances.
      */
     void setRepositoryValidator(OMRSRepositoryValidator  repositoryValidator);
 
@@ -40,7 +40,7 @@ public interface OMRSMetadataCollectionManager
     /**
      * Set up the name of the repository where the metadata collection resides.
      *
-     * @param repositoryName - String name
+     * @param repositoryName String name
      */
     void  setRepositoryName(String      repositoryName);
 
@@ -56,7 +56,7 @@ public interface OMRSMetadataCollectionManager
     /**
      * Set up the name of the server where the metadata collection resides.
      *
-     * @param serverName - String name
+     * @param serverName String name
      */
     void  setServerName(String      serverName);
 
@@ -74,7 +74,7 @@ public interface OMRSMetadataCollectionManager
      * Set up the descriptive string describing the type of the server.  This might be the
      * name of the product, or similar identifier.
      *
-     * @param serverType - String server type
+     * @param serverType String server type
      */
     void setServerType(String serverType);
 
@@ -90,7 +90,7 @@ public interface OMRSMetadataCollectionManager
     /**
      * Set up the name of the organization that runs/owns the server used to access the repository.
      *
-     * @param organizationName - String organization name
+     * @param organizationName String organization name
      */
     void setOrganizationName(String organizationName);
 
@@ -106,7 +106,7 @@ public interface OMRSMetadataCollectionManager
     /**
      * Set up the maximum PageSize
      *
-     * @param maxPageSize - maximum number of elements that can be retrieved on a request.
+     * @param maxPageSize maximum number of elements that can be retrieved on a request.
      */
     void setMaxPageSize(int    maxPageSize);
 
@@ -122,7 +122,7 @@ public interface OMRSMetadataCollectionManager
     /**
      * Set up the unique Id for this metadata collection.
      *
-     * @param metadataCollectionId - String unique Id
+     * @param metadataCollectionId String unique Id
      */
     void setMetadataCollectionId(String         metadataCollectionId);
 
@@ -131,7 +131,7 @@ public interface OMRSMetadataCollectionManager
      * Returns the metadata collection object that provides an OMRS abstraction of the metadata within
      * a metadata repository.
      *
-     * @return OMRSMetadataInstanceStore - metadata TypeDefs and instances retrieved from the metadata repository.
+     * @return OMRSMetadataInstanceStore metadata TypeDefs and instances retrieved from the metadata repository.
      * @throws RepositoryErrorException no metadata collection
      */
     OMRSMetadataCollection getMetadataCollection() throws RepositoryErrorException;

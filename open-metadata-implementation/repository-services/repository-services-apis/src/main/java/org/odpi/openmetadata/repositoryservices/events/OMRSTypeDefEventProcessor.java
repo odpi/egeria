@@ -80,7 +80,7 @@ public interface OMRSTypeDefEventProcessor
      *
      * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.

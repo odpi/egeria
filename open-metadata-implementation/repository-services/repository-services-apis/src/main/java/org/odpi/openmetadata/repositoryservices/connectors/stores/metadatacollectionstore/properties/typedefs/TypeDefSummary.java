@@ -35,11 +35,11 @@ public class TypeDefSummary extends TypeDefLink
     /**
      * Typical constructor is passed the properties of the typedef being constructed.
      *
-     * @param category    - category of this TypeDef
-     * @param guid        - unique id for the TypeDef
-     * @param name        - unique name for the TypeDef
-     * @param version     - active version number for the TypeDef
-     * @param versionName - active version name for the TypeDef
+     * @param category    category of this TypeDef
+     * @param guid        unique id for the TypeDef
+     * @param name        unique name for the TypeDef
+     * @param version     active version number for the TypeDef
+     * @param versionName active version name for the TypeDef
      */
     public TypeDefSummary(TypeDefCategory category,
                           String          guid,
@@ -88,7 +88,7 @@ public class TypeDefSummary extends TypeDefLink
     /**
      * Set up the category of the TypeDef.
      *
-     * @param category - TypeDefCategory enum
+     * @param category TypeDefCategory enum
      */
     public void setCategory(TypeDefCategory category)
     {
@@ -111,7 +111,7 @@ public class TypeDefSummary extends TypeDefLink
      * Set up the version of the TypeDef.  Versions are created when a TypeDef's properties are changed.  If
      * a description is updated, then this does not create a new version.
      *
-     * @param version - long version number
+     * @param version long version number
      */
     public void setVersion(long version)
     {
@@ -135,7 +135,7 @@ public class TypeDefSummary extends TypeDefLink
      * Set up the version name is more of a human readable form of the version number.  It can be used to show whether the
      * change is a minor or major update.
      *
-     * @param versionName - String version name
+     * @param versionName String version name
      */
     public void setVersionName(String versionName)
     {

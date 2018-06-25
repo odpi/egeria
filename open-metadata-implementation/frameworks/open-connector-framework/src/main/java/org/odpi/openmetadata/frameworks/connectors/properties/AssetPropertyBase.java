@@ -5,9 +5,10 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
  * The AssetPropertyBase class is a base class for all properties that link off of the connected asset.
  * It manages the information about the parent asset.
  */
-public abstract class AssetPropertyBase extends PropertyBase
+public abstract class AssetPropertyBase extends AssetPropertyElementBase
 {
-    private AssetDescriptor     parentAsset = null;
+    protected AssetDescriptor     parentAsset;
+
 
     /**
      * Typical constructor that sets the link to the connected asset to null
@@ -87,37 +88,23 @@ public abstract class AssetPropertyBase extends PropertyBase
     /**
      * An equals() method for subclasses to check they are connected to the same parent asset.
      *
-     * @param testObject object to test
+     * @param objectToCompare object to test
      * @return boolean indicating whether this object is connected to equivalent parent assets.
      */
     @Override
-    public boolean equals(Object testObject)
+    public boolean equals(Object objectToCompare)
     {
-        if (this == testObject)
+        if (this == objectToCompare)
         {
             return true;
         }
-        if (testObject == null || getClass() != testObject.getClass())
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
 
-        AssetPropertyBase that = (AssetPropertyBase) testObject;
+        AssetPropertyBase that = (AssetPropertyBase) objectToCompare;
 
         return parentAsset != null ? parentAsset.equals(that.parentAsset) : that.parentAsset == null;
-    }
-
-
-    /**
-     * Standard toString method.
-     *
-     * @return print out of variables in a JSON-style
-     */
-    @Override
-    public String toString()
-    {
-        return "AssetPropertyBase{" +
-                "parentAsset=" + parentAsset +
-                '}';
     }
 }

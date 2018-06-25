@@ -516,11 +516,11 @@ public enum OMRSAuditCode
      *
      * This will expand out to the 4 parameters shown below.
      *
-     * @param messageId - unique Id for the message
-     * @param severity - severity of the message
-     * @param message - text for the message
-     * @param systemAction - description of the action taken by the system when the condition happened
-     * @param userAction - instructions for resolving the situation, if any
+     * @param messageId unique Id for the message
+     * @param severity severity of the message
+     * @param message text for the message
+     * @param systemAction description of the action taken by the system when the condition happened
+     * @param userAction instructions for resolving the situation, if any
      */
     OMRSAuditCode(String                     messageId,
                   OMRSAuditLogRecordSeverity severity,
@@ -560,7 +560,7 @@ public enum OMRSAuditCode
     /**
      * Returns the log message with the placeholders filled out with the supplied parameters.
      *
-     * @param params - strings that plug into the placeholders in the logMessage
+     * @param params strings that plug into the placeholders in the logMessage
      * @return logMessage (formatted with supplied parameters)
      */
     public String getFormattedLogMessage(String... params)

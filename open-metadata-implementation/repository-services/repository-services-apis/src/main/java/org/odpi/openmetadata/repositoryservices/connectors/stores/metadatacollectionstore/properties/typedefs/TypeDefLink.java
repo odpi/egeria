@@ -42,8 +42,8 @@ public class TypeDefLink extends TypeDefElementHeader
     /**
      * Typical constructor is passed the unique identifier and name of the typedef being constructed.
      *
-     * @param guid - unique id for the TypeDef
-     * @param name - unique name for the TypeDef
+     * @param guid unique id for the TypeDef
+     * @param name unique name for the TypeDef
      */
     public TypeDefLink(String            guid,
                        String            name)
@@ -85,7 +85,7 @@ public class TypeDefLink extends TypeDefElementHeader
     /**
      * Set up the unique identifier for this TypeDef.
      *
-     * @param guid - String guid
+     * @param guid String guid
      */
     public void setGUID(String guid)
     {
@@ -110,7 +110,7 @@ public class TypeDefLink extends TypeDefElementHeader
      * repositories from different vendors are in operation it is possible that 2 types may have a name clash.  The
      * GUID is the reliable unique identifier.
      *
-     * @param name - String name
+     * @param name String name
      */
     public void setName(String name)
     {

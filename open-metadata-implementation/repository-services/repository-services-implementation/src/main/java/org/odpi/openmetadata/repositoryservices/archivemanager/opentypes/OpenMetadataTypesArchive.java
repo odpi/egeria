@@ -591,7 +591,8 @@ public class OpenMetadataTypesArchive
      */
     private void add0015LinkedMediaTypes()
     {
-        this.archiveBuilder.addEnumDef(getMediaUsageTypeEnum());
+        this.archiveBuilder.addEnumDef(getMediaTypeEnum());
+        this.archiveBuilder.addEnumDef(getMediaUsageEnum());
 
         this.archiveBuilder.addEntityDef(getExternalReferenceEntity());
         this.archiveBuilder.addEntityDef(getRelatedMediaEntity());
@@ -602,10 +603,83 @@ public class OpenMetadataTypesArchive
     }
 
 
-    private EnumDef getMediaUsageTypeEnum()
+    private EnumDef getMediaTypeEnum()
+    {
+        final String guid            = "9548390c-69f5-4dc6-950d-6fdffb257b56";
+        final String name            = "MediaType";
+        final String description     = "Defines the type of media.";
+        final String descriptionGUID = null;
+
+        EnumDef enumDef = archiveHelper.getEmptyEnumDef(guid, name, description, descriptionGUID);
+
+        List<EnumElementDef> elementDefs = new ArrayList<>();
+        EnumElementDef       elementDef;
+
+        final int    element1Ordinal         = 0;
+        final String element1Value           = "Image";
+        final String element1Description     = "The media is an image.";
+        final String element1DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
+                                                     element1Value,
+                                                     element1Description,
+                                                     element1DescriptionGUID);
+        elementDefs.add(elementDef);
+
+        final int    element2Ordinal         = 1;
+        final String element2Value           = "Audio";
+        final String element2Description     = "The media is an audio recording.";
+        final String element2DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
+                                                     element2Value,
+                                                     element2Description,
+                                                     element2DescriptionGUID);
+        elementDefs.add(elementDef);
+
+        final int    element3Ordinal         = 2;
+        final String element3Value           = "Document";
+        final String element3Description     = "The media is a text document - probably rich text.";
+        final String element3DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element3Ordinal,
+                                                     element3Value,
+                                                     element3Description,
+                                                     element3DescriptionGUID);
+        elementDefs.add(elementDef);
+
+        final int    element4Ordinal         = 3;
+        final String element4Value           = "Video";
+        final String element4Description     = "The media is a video recording.";
+        final String element4DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element4Ordinal,
+                                                     element4Value,
+                                                     element4Description,
+                                                     element4DescriptionGUID);
+        elementDefs.add(elementDef);
+
+        final int    element5Ordinal         = 99;
+        final String element5Value           = "Other";
+        final String element5Description     = "Another type of media - probably not supported.";
+        final String element5DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element5Ordinal,
+                                                     element5Value,
+                                                     element5Description,
+                                                     element5DescriptionGUID);
+        elementDefs.add(elementDef);
+
+        enumDef.setElementDefs(elementDefs);
+
+        return enumDef;
+    }
+
+
+    private EnumDef getMediaUsageEnum()
     {
         final String guid            = "c6861a72-7485-48c9-8040-876f6c342b61";
-        final String name            = "MediaUsageType";
+        final String name            = "MediaUsage";
         final String description     = "Defines how a related media reference should be used.";
         final String descriptionGUID = null;
 
@@ -708,6 +782,9 @@ public class OpenMetadataTypesArchive
         final String attribute4Name            = "description";
         final String attribute4Description     = "Description of the external reference.";
         final String attribute4DescriptionGUID = null;
+        final String attribute5Name            = "organization";
+        final String attribute5Description     = "Organization supplying the reference.";
+        final String attribute5DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -724,6 +801,10 @@ public class OpenMetadataTypesArchive
         property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
                                                            attribute4Description,
                                                            attribute4DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute5Name,
+                                                           attribute5Description,
+                                                           attribute5DescriptionGUID);
         properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);
@@ -756,17 +837,18 @@ public class OpenMetadataTypesArchive
         final String attribute1Name            = "mediaUsage";
         final String attribute1Description     = "Type of recommended media usage.";
         final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "guidance";
-        final String attribute2Description     = "Advice on how the media should be used in this context.";
+        final String attribute2Name            = "mediaType";
+        final String attribute2Description     = "Type of media.";
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getArrayIntTypeDefAttribute(attribute1Name,
                                                              attribute1Description,
                                                              attribute1DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
+        property = archiveHelper.getEnumTypeDefAttribute("MediaType",
+                                                         attribute2Name,
+                                                         attribute2Description,
+                                                         attribute2DescriptionGUID);
         properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);
@@ -16900,9 +16982,9 @@ public class OpenMetadataTypesArchive
         this.archiveBuilder.addEntityDef(getDerivedRelationalColumnEntity());
 
         this.archiveBuilder.addClassificationDef(getPrimaryKeyClassification());
-        this.archiveBuilder.addClassificationDef(getForeignKeyClassification());
         this.archiveBuilder.addClassificationDef(getRelationalViewClassification());
 
+        this.archiveBuilder.addRelationshipDef(getForeignKeyRelationship());
     }
 
 
@@ -17048,25 +17130,6 @@ public class OpenMetadataTypesArchive
     }
 
 
-    private ClassificationDef getForeignKeyClassification()
-    {
-        final String guid            = "3cd4e0e7-fdbf-47a6-ae88-d4b3205e0c07";
-        final String name            = "ForeignKey";
-        final String description     = "The primary key for another column is stored in this relational column.";
-        final String descriptionGUID = null;
-
-        final String linkedToEntity = "RelationalColumn";
-
-        return archiveHelper.getClassificationDef(guid,
-                                                  name,
-                                                  null,
-                                                  description,
-                                                  descriptionGUID,
-                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
-                                                  false);
-    }
-
-
     private ClassificationDef getRelationalViewClassification()
     {
         final String guid            = "4814bec8-482d-463d-8376-160b0358e129";
@@ -17083,6 +17146,98 @@ public class OpenMetadataTypesArchive
                                                   descriptionGUID,
                                                   this.archiveBuilder.getEntityDef(linkedToEntity),
                                                   false);
+    }
+
+
+    private RelationshipDef getForeignKeyRelationship()
+    {
+        final String guid            = "3cd4e0e7-fdbf-47a6-ae88-d4b3205e0c07";
+        final String name            = "ForeignKey";
+        final String description     = "The primary key for another column is stored in a relational column from another table to enable them to be joined.";
+        final String descriptionGUID = null;
+
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
+
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
+                                                                                name,
+                                                                                null,
+                                                                                description,
+                                                                                descriptionGUID,
+                                                                                classificationPropagationRule);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = "RelationalColumn";
+        final String                     end1AttributeName            = "primaryKey";
+        final String                     end1AttributeDescription     = "Relational column holding the primary key.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 end1Cardinality);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "RelationalColumn";
+        final String                     end2AttributeName            = "foreignKey";
+        final String                     end2AttributeDescription     = "Use of primary key from another table to enable table joins.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 end2Cardinality);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "description";
+        final String attribute1Description     = "Description of the relationship.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "confidence";
+        final String attribute2Description     = "Level of confidence in the correctness of the relationship.";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "steward";
+        final String attribute3Description     = "Person responsible for the relationship.";
+        final String attribute3DescriptionGUID = null;
+        final String attribute4Name            = "source";
+        final String attribute4Description     = "Person, organization or automated process that created the relationship.";
+        final String attribute4DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getIntTypeDefAttribute(attribute2Name,
+                                                        attribute2Description,
+                                                        attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                                                           attribute3Description,
+                                                           attribute3DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
+                                                           attribute4Description,
+                                                           attribute4DescriptionGUID);
+        properties.add(property);
+
+        relationshipDef.setPropertiesDefinition(properties);
+
+        return relationshipDef;
     }
 
     /*

@@ -46,9 +46,9 @@ public enum InstanceStatus implements Serializable
     /**
      * Default constructor sets up the specific values for an enum instance.
      *
-     * @param ordinal - int enum value ordinal
-     * @param statusName - String name
-     * @param statusDescription - String description
+     * @param ordinal int enum value ordinal
+     * @param statusName String name
+     * @param statusDescription String description
      */
     InstanceStatus(int     ordinal,
                    String  statusName,

@@ -47,7 +47,7 @@ public class InstanceGraphResponse extends OMRSRESTAPIResponse
     /**
      * Return the list of relationships that are part of this instance graph.
      *
-     * @return - list of relationships
+     * @return list of relationships
      */
     public List<Relationship> getRelationshipElementList()
     {
@@ -58,7 +58,7 @@ public class InstanceGraphResponse extends OMRSRESTAPIResponse
     /**
      * Set up the list of relationships that are part of this instance graph.
      *
-     * @param relationshipElementList - list of relationships
+     * @param relationshipElementList list of relationships
      */
     public void setRelationshipElementList(List<Relationship> relationshipElementList)
     {

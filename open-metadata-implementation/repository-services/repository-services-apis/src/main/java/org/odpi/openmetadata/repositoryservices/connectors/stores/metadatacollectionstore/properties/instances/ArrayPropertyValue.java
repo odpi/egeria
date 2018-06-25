@@ -38,7 +38,7 @@ public class ArrayPropertyValue extends InstancePropertyValue
     /**
      * Copy/clone constructor set up the array using the supplied template.
      *
-     * @param template - ArrayPropertyValue
+     * @param template ArrayPropertyValue
      */
     public ArrayPropertyValue(ArrayPropertyValue   template)
     {
@@ -55,7 +55,7 @@ public class ArrayPropertyValue extends InstancePropertyValue
     /**
      * Return the number of elements in the array.
      *
-     * @return int - array size
+     * @return int array size
      */
     public int getArrayCount() { return arrayCount; }
 
@@ -63,7 +63,7 @@ public class ArrayPropertyValue extends InstancePropertyValue
     /**
      * Set up the number of elements in the array.
      *
-     * @param arrayCount - int - array size
+     * @param arrayCount int array size
      */
     public void setArrayCount(int arrayCount) { this.arrayCount = arrayCount; }
 
@@ -89,8 +89,8 @@ public class ArrayPropertyValue extends InstancePropertyValue
     /**
      * Add or update an element in the array.
      *
-     * @param elementNumber - index number of the element in the array
-     * @param propertyValue - value to store
+     * @param elementNumber index number of the element in the array
+     * @param propertyValue value to store
      */
     public void setArrayValue(int  elementNumber, InstancePropertyValue  propertyValue)
     {
@@ -126,7 +126,7 @@ public class ArrayPropertyValue extends InstancePropertyValue
     /**
      * Set up the array elements in one call.
      *
-     * @param arrayValues - InstanceProperties containing the array elements
+     * @param arrayValues InstanceProperties containing the array elements
      */
     public void setArrayValues(InstanceProperties arrayValues) { this.arrayValues = arrayValues; }
 

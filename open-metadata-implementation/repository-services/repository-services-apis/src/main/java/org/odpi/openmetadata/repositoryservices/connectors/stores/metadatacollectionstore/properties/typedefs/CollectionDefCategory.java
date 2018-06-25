@@ -41,10 +41,10 @@ public enum CollectionDefCategory implements Serializable
     /**
      * Constructor to set up a single instances of the enum.
      *
-     * @param code - code for the enum
-     * @param name - String name for the enum before it is configured with primitive types
-     * @param argumentCount - number of arguments needed to configure the collection type
-     * @param javaClassName - Java class used to manage this type of collection
+     * @param code code for the enum
+     * @param name String name for the enum before it is configured with primitive types
+     * @param argumentCount number of arguments needed to configure the collection type
+     * @param javaClassName Java class used to manage this type of collection
      */
     CollectionDefCategory(int   code, String name, int argumentCount, String javaClassName)
     {

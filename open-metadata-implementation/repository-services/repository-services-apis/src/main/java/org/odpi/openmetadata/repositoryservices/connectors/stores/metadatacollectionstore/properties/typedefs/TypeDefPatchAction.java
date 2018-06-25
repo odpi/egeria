@@ -50,9 +50,9 @@ public enum TypeDefPatchAction
     /**
      * Constructor to set up a single instances of the enum.
      *
-     * @param patchActionCode - numeric code for the patch action
-     * @param patchActionName - descriptive name for the patch action
-     * @param patchActionDescription - description of the patch action
+     * @param patchActionCode numeric code for the patch action
+     * @param patchActionName descriptive name for the patch action
+     * @param patchActionDescription description of the patch action
      */
     TypeDefPatchAction(int patchActionCode, String patchActionName, String patchActionDescription)
     {

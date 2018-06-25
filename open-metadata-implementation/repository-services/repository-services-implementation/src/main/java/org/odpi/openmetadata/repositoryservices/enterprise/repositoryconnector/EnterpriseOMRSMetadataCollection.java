@@ -95,7 +95,7 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
      * metadata repository with the metadata repository cohort.  It is also the identifier used to
      * identify the home repository of a metadata instance.
      *
-     * @return String - metadata collection id.
+     * @return String metadata collection id.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
      */
     public String      getMetadataCollectionId() throws RepositoryErrorException
@@ -125,8 +125,8 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
      * type definitions.  Full type definitions (TypeDefs) describe types for entities, relationships
      * and classifications.
      *
-     * @param userId - unique identifier for requesting user.
-     * @return TypeDefs - List of different categories of TypeDefs.
+     * @param userId  unique identifier for requesting user.
+     * @return TypeDefs  List of different categories of TypeDefs.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
@@ -228,8 +228,8 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
      * method allows wildcard character to be included in the name.  These are * (asterisk) for an
      * arbitrary string of characters and ampersand for an arbitrary character.
      *
-     * @param userId - unique identifier for requesting user.
-     * @param name - name of the TypeDefs to return (including wildcard characters).
+     * @param userId unique identifier for requesting user.
+     * @param name name of the TypeDefs to return (including wildcard characters).
      * @return TypeDefs list.
      * @throws InvalidParameterException the name of the TypeDef is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
@@ -335,8 +335,8 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
     /**
      * Returns all of the TypeDefs for a specific category.
      *
-     * @param userId - unique identifier for requesting user.
-     * @param category - enum value for the category of TypeDef to return.
+     * @param userId unique identifier for requesting user.
+     * @param category enum value for the category of TypeDef to return.
      * @return TypeDefs list.
      * @throws InvalidParameterException the TypeDefCategory is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
@@ -371,7 +371,7 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
          * Some repositories may produce exceptions.  These exceptions are saved and will be returned if
          * there are no results from any repository.
          */
-        Map<String, TypeDef>   combinedResults            = new HashMap<>();
+        Map<String, TypeDef>       combinedResults            = new HashMap<>();
         UserNotAuthorizedException userNotAuthorizedException = null;
         RepositoryErrorException   repositoryErrorException   = null;
         Throwable                  anotherException           = null;
@@ -430,8 +430,8 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
     /**
      * Returns all of the AttributeTypeDefs for a specific category.
      *
-     * @param userId - unique identifier for requesting user.
-     * @param category - enum value for the category of an AttributeTypeDef to return.
+     * @param userId unique identifier for requesting user.
+     * @param category enum value for the category of an AttributeTypeDef to return.
      * @return TypeDefs list.
      * @throws InvalidParameterException the TypeDefCategory is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
@@ -526,8 +526,8 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
     /**
      * Return the TypeDefs that have the properties matching the supplied match criteria.
      *
-     * @param userId - unique identifier for requesting user.
-     * @param matchCriteria - TypeDefProperties - a list of property names and values.
+     * @param userId  unique identifier for requesting user.
+     * @param matchCriteria  TypeDefProperties - a list of property names and values.
      * @return TypeDefs list.
      * @throws InvalidParameterException the matchCriteria is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
@@ -621,10 +621,10 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
     /**
      * Return the types that are linked to the elements from the specified standard.
      *
-     * @param userId - unique identifier for requesting user.
-     * @param standard - name of the standard - null means any.
-     * @param organization - name of the organization - null means any.
-     * @param identifier - identifier of the element in the standard - null means any.
+     * @param userId  unique identifier for requesting user.
+     * @param standard  name of the standard - null means any.
+     * @param organization  name of the organization - null means any.
+     * @param identifier  identifier of the element in the standard - null means any.
      * @return TypeDefs list - each entry in the list contains a typedef.  This is is a structure
      * describing the TypeDef's category and properties.
      * @throws InvalidParameterException all attributes of the external Id are null.
@@ -720,8 +720,8 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
     /**
      * Return the TypeDefs that match the search criteria.
      *
-     * @param userId - unique identifier for requesting user.
-     * @param searchCriteria - String - search criteria.
+     * @param userId  unique identifier for requesting user.
+     * @param searchCriteria  String - search criteria.
      * @return TypeDefs list - each entry in the list contains a typedef.  This is is a structure
      * describing the TypeDef's category and properties.
      * @throws InvalidParameterException the searchCriteria is null.
@@ -816,8 +816,8 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
     /**
      * Return the TypeDef identified by the GUID.
      *
-     * @param userId - unique identifier for requesting user.
-     * @param guid - String unique Id of the TypeDef
+     * @param userId  unique identifier for requesting user.
+     * @param guid  String unique Id of the TypeDef
      * @return TypeDef structure describing its category and properties.
      * @throws InvalidParameterException the guid is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
@@ -909,8 +909,8 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
     /**
      * Return the AttributeTypeDef identified by the GUID.
      *
-     * @param userId - unique identifier for requesting user.
-     * @param guid - String unique id of the TypeDef
+     * @param userId  unique identifier for requesting user.
+     * @param guid  String unique id of the TypeDef
      * @return TypeDef structure describing its category and properties.
      * @throws InvalidParameterException the guid is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
@@ -1006,8 +1006,8 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
     /**
      * Return the TypeDef identified by the unique name.
      *
-     * @param userId - unique identifier for requesting user.
-     * @param name - String name of the TypeDef.
+     * @param userId  unique identifier for requesting user.
+     * @param name  String name of the TypeDef.
      * @return TypeDef structure describing its category and properties.
      * @throws InvalidParameterException the name is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
@@ -1098,8 +1098,8 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
     /**
      * Return the AttributeTypeDef identified by the unique name.
      *
-     * @param userId - unique identifier for requesting user.
-     * @param name - String name of the TypeDef.
+     * @param userId  unique identifier for requesting user.
+     * @param name  String name of the TypeDef.
      * @return TypeDef structure describing its category and properties.
      * @throws InvalidParameterException the name is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
@@ -1191,8 +1191,8 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
     /**
      * Create a collection of related types.
      *
-     * @param userId - unique identifier for requesting user.
-     * @param newTypes - TypeDefGalleryResponse structure describing the new AttributeTypeDefs and TypeDefs.
+     * @param userId  unique identifier for requesting user.
+     * @param newTypes  TypeDefGalleryResponse structure describing the new AttributeTypeDefs and TypeDefs.
      * @throws FunctionNotSupportedException the repository does not support this call.
      */
     public  void addTypeDefGallery(String          userId,
@@ -1209,8 +1209,8 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
      * Create a definition of a new TypeDef.   This new TypeDef is pushed to each repository that will accept it.
      * An exception is passed to the caller if the TypeDef is invalid, or if none of the repositories accept it.
      *
-     * @param userId - unique identifier for requesting user.
-     * @param newTypeDef - TypeDef structure describing the new TypeDef.
+     * @param userId  unique identifier for requesting user.
+     * @param newTypeDef  TypeDef structure describing the new TypeDef.
      * @throws FunctionNotSupportedException the repository does not support this call.
      */
     public void addTypeDef(String       userId,
@@ -1225,8 +1225,8 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
     /**
      * Create a definition of a new AttributeTypeDef.
      *
-     * @param userId - unique identifier for requesting user.
-     * @param newAttributeTypeDef - TypeDef structure describing the new TypeDef.
+     * @param userId  unique identifier for requesting user.
+     * @param newAttributeTypeDef  TypeDef structure describing the new TypeDef.
      * @throws FunctionNotSupportedException the repository does not support this call.
      */
     public  void addAttributeTypeDef(String             userId,
@@ -1241,8 +1241,8 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
     /**
      * Verify that a definition of a TypeDef is either new - or matches the definition already stored.
      *
-     * @param userId - unique identifier for requesting user.
-     * @param typeDef - TypeDef structure describing the TypeDef to test.
+     * @param userId  unique identifier for requesting user.
+     * @param typeDef  TypeDef structure describing the TypeDef to test.
      * @return boolean - true means the TypeDef matches the local definition - false means the TypeDef is not known.
      * @throws InvalidParameterException the TypeDef is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
@@ -1339,8 +1339,8 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
     /**
      * Verify that a definition of an AttributeTypeDef is either new - or matches the definition already stored.
      *
-     * @param userId - unique identifier for requesting user.
-     * @param attributeTypeDef - TypeDef structure describing the TypeDef to test.
+     * @param userId  unique identifier for requesting user.
+     * @param attributeTypeDef  TypeDef structure describing the TypeDef to test.
      * @return boolean - true means the TypeDef matches the local definition - false means the TypeDef is not known.
      * @throws InvalidParameterException the TypeDef is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
@@ -1438,8 +1438,8 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
      * Update one or more properties of the TypeDef.  The TypeDefPatch controls what types of updates
      * are safe to make to the TypeDef.
      *
-     * @param userId - unique identifier for requesting user.
-     * @param typeDefPatch - TypeDef patch describing change to TypeDef.
+     * @param userId  unique identifier for requesting user.
+     * @param typeDefPatch  TypeDef patch describing change to TypeDef.
      * @return updated TypeDef
      * @throws FunctionNotSupportedException the repository does not support this call.
 
@@ -1459,9 +1459,9 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
      * Delete the TypeDef.  This is only possible if the TypeDef has never been used to create instances or any
      * instances of this TypeDef have been purged from the metadata collection.
      *
-     * @param userId - unique identifier for requesting user.
-     * @param obsoleteTypeDefGUID - String unique identifier for the TypeDef.
-     * @param obsoleteTypeDefName - String unique name for the TypeDef.
+     * @param userId  unique identifier for requesting user.
+     * @param obsoleteTypeDefGUID  String unique identifier for the TypeDef.
+     * @param obsoleteTypeDefName  String unique name for the TypeDef.
      * @throws FunctionNotSupportedException the repository does not support this call.
      */
     public void deleteTypeDef(String    userId,
@@ -1478,9 +1478,9 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
      * Delete an AttributeTypeDef.  This is only possible if the AttributeTypeDef has never been used to create
      * instances or any instances of this AttributeTypeDef have been purged from the metadata collection.
      *
-     * @param userId - unique identifier for requesting user.
-     * @param obsoleteTypeDefGUID - String unique identifier for the AttributeTypeDef.
-     * @param obsoleteTypeDefName - String unique name for the AttributeTypeDef.
+     * @param userId  unique identifier for requesting user.
+     * @param obsoleteTypeDefGUID  String unique identifier for the AttributeTypeDef.
+     * @param obsoleteTypeDefName  String unique name for the AttributeTypeDef.
      * @throws FunctionNotSupportedException the repository does not support this call.
      */
     public void deleteAttributeTypeDef(String    userId,
@@ -1498,12 +1498,12 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
      * TypeDefs are discovered to have the same guid.  This is extremely unlikely but not impossible so
      * the open metadata protocol has provision for this.
      *
-     * @param userId - unique identifier for requesting user.
-     * @param originalTypeDefGUID - the original guid of the TypeDef.
-     * @param originalTypeDefName - the original name of the TypeDef.
-     * @param newTypeDefGUID - the new identifier for the TypeDef.
-     * @param newTypeDefName - new name for this TypeDef.
-     * @return typeDef - new values for this TypeDef, including the new guid/name.
+     * @param userId  unique identifier for requesting user.
+     * @param originalTypeDefGUID  the original guid of the TypeDef.
+     * @param originalTypeDefName  the original name of the TypeDef.
+     * @param newTypeDefGUID  the new identifier for the TypeDef.
+     * @param newTypeDefName  new name for this TypeDef.
+     * @return typeDef  new values for this TypeDef, including the new guid/name.
      * @throws FunctionNotSupportedException the repository does not support this call.
      */
     public  TypeDef reIdentifyTypeDef(String     userId,
@@ -1525,12 +1525,12 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
      * TypeDefs are discovered to have the same guid.  This is extremely unlikely but not impossible so
      * the open metadata protocol has provision for this.
      *
-     * @param userId - unique identifier for requesting user.
-     * @param originalAttributeTypeDefGUID - the original guid of the AttributeTypeDef.
-     * @param originalAttributeTypeDefName - the original name of the AttributeTypeDef.
-     * @param newAttributeTypeDefGUID - the new identifier for the AttributeTypeDef.
-     * @param newAttributeTypeDefName - new name for this AttributeTypeDef.
-     * @return attributeTypeDef - new values for this AttributeTypeDef, including the new guid/name.
+     * @param userId  unique identifier for requesting user.
+     * @param originalAttributeTypeDefGUID  the original guid of the AttributeTypeDef.
+     * @param originalAttributeTypeDefName  the original name of the AttributeTypeDef.
+     * @param newAttributeTypeDefGUID  the new identifier for the AttributeTypeDef.
+     * @param newAttributeTypeDefName  new name for this AttributeTypeDef.
+     * @return attributeTypeDef  new values for this AttributeTypeDef, including the new guid/name.
      * @throws FunctionNotSupportedException the repository does not support this call.
      */
     public  AttributeTypeDef reIdentifyAttributeTypeDef(String     userId,
@@ -1553,11 +1553,10 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
 
 
     /**
-     * Returns a boolean indicating if the entity is stored in the metadata collection.  This entity may be a full
-     * entity object, or an entity proxy.
+     * Returns the entity if the entity is stored in the metadata collection, otherwise null.
      *
-     * @param userId - unique identifier for requesting user.
-     * @param guid - String unique identifier for the entity
+     * @param userId  unique identifier for requesting user.
+     * @param guid  String unique identifier for the entity
      * @return the entity details if the entity is found in the metadata collection; otherwise return null
      * @throws InvalidParameterException the guid is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
@@ -1613,11 +1612,7 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
                     /*
                      * Issue the request and return if it succeeds
                      */
-                    EntityDetail     entity = this.isEntityKnown(userId, guid);
-
-                    repositoryValidator.validateEntityFromStore(repositoryName, guid, entity, methodName);
-
-                    return entity;
+                    return metadataCollection.isEntityKnown(userId, guid);
                 }
 
                 catch (RepositoryErrorException error)
@@ -1647,8 +1642,8 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
      * Return the header and classifications for a specific entity.  The returned entity summary may be from
      * a full entity object or an entity proxy.
      *
-     * @param userId - unique identifier for requesting user.
-     * @param guid - String unique identifier for the entity
+     * @param userId  unique identifier for requesting user.
+     * @param guid  String unique identifier for the entity
      * @return EntitySummary structure
      * @throws InvalidParameterException the guid is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
@@ -1707,7 +1702,7 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
                     /*
                      * Issue the request and return if it succeeds
                      */
-                    EntitySummary     entity = this.getEntitySummary(userId, guid);
+                    EntitySummary     entity = metadataCollection.getEntitySummary(userId, guid);
 
                     repositoryValidator.validateEntityFromStore(repositoryName, guid, entity, methodName);
 
@@ -1744,8 +1739,8 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
     /**
      * Return the header, classifications and properties of a specific entity.
      *
-     * @param userId - unique identifier for requesting user.
-     * @param guid - String unique identifier for the entity.
+     * @param userId  unique identifier for requesting user.
+     * @param guid  String unique identifier for the entity.
      * @return EntityDetail structure.
      * @throws InvalidParameterException the guid is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
@@ -1807,7 +1802,7 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
                     /*
                      * Issue the request and return if it succeeds
                      */
-                    EntityDetail     entity = this.getEntityDetail(userId, guid);
+                    EntityDetail     entity = metadataCollection.getEntityDetail(userId, guid);
 
                     repositoryValidator.validateEntityFromStore(repositoryName, guid, entity, methodName);
 
@@ -1849,9 +1844,9 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
     /**
      * Return a historical version of an entity - includes the header, classifications and properties of the entity.
      *
-     * @param userId - unique identifier for requesting user.
-     * @param guid - String unique identifier for the entity.
-     * @param asOfTime - the time used to determine which version of the entity that is desired.
+     * @param userId unique identifier for requesting user.
+     * @param guid  String unique identifier for the entity.
+     * @param asOfTime  the time used to determine which version of the entity that is desired.
      * @return EntityDetail structure.
      * @throws InvalidParameterException the guid or date is null or the date is for a future time.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
@@ -1920,7 +1915,7 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
                     /*
                      * Issue the request and return if it succeeds
                      */
-                    EntityDetail     entity = this.getEntityDetail(userId, guid, asOfTime);
+                    EntityDetail     entity = metadataCollection.getEntityDetail(userId, guid, asOfTime);
 
                     repositoryValidator.validateEntityFromStore(repositoryName, guid, entity, methodName);
 
@@ -6307,7 +6302,7 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
 
 
     /**
-     * Throw a EntityNotKnownException if it was returned by one of the calls to a cohort connector.
+     * Throw a EntityProxyOnlyException if it was returned by one of the calls to a cohort connector.
      *
      * @param exception captured exception
      * @throws EntityProxyOnlyException only entity proxies have been found in the available federated repositories
@@ -6318,6 +6313,9 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
         {
             throw exception;
         }
+
+        // todo add audit log call as this exception may indicate one of the repositories in the
+        // todo may be in trouble.
     }
 
 

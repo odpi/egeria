@@ -99,7 +99,7 @@ public class OpenMetadataArchiveProperties
     /**
      * Set up the descriptive name for this open metadata archive.
      *
-     * @param archiveName - String name
+     * @param archiveName String name
      */
     public void setArchiveName(String archiveName)
     {
@@ -121,7 +121,7 @@ public class OpenMetadataArchiveProperties
     /**
      * Set up the description for this open metadata archive.
      *
-     * @param archiveDescription - String description
+     * @param archiveDescription String description
      */
     public void setArchiveDescription(String archiveDescription)
     {
@@ -143,7 +143,7 @@ public class OpenMetadataArchiveProperties
     /**
      * Set up the type of this open metadata archive.
      *
-     * @param archiveType - OpenMetadataArchiveType enum
+     * @param archiveType OpenMetadataArchiveType enum
      */
     public void setArchiveType(OpenMetadataArchiveType archiveType)
     {
@@ -167,7 +167,7 @@ public class OpenMetadataArchiveProperties
      * Set up the name of the originator of this open metadata archive.  This will be used as the name of the
      * creator for each element in the archive.
      *
-     * @param originatorName - String name
+     * @param originatorName String name
      */
     public void setOriginatorName(String originatorName)
     {
@@ -188,7 +188,7 @@ public class OpenMetadataArchiveProperties
     /**
      * Set up the name of the organization that provided this archive.
      *
-     * @param originatorOrganization - String name
+     * @param originatorOrganization String name
      */
     public void setOriginatorOrganization(String originatorOrganization)
     {
@@ -210,7 +210,7 @@ public class OpenMetadataArchiveProperties
     /**
      * Set up the date that this open metadata archive was created.
      *
-     * @param creationDate - Date object
+     * @param creationDate Date object
      */
     public void setCreationDate(Date creationDate)
     {
@@ -239,7 +239,7 @@ public class OpenMetadataArchiveProperties
     /**
      * Set up the list of GUIDs for open metadata archives that need to be loaded before this one.
      *
-     * @param dependsOnArchives - list of guids
+     * @param dependsOnArchives list of guids
      */
     public void setDependsOnArchives(List<String> dependsOnArchives)
     {

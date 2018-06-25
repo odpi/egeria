@@ -34,7 +34,7 @@ public class TypeDefListResponse extends OMRSRESTAPIResponse
     /**
      * Return the list of typeDefs
      *
-     * @return - list of typeDefs
+     * @return list of typeDefs
      */
     public List<TypeDef> getTypeDefs()
     {
@@ -45,7 +45,7 @@ public class TypeDefListResponse extends OMRSRESTAPIResponse
     /**
      * Set up the list of typeDefs
      *
-     * @param typeDefs - list of typeDefs
+     * @param typeDefs list of typeDefs
      */
     public void setTypeDefs(List<TypeDef> typeDefs)
     {

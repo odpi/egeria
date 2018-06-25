@@ -120,10 +120,10 @@ public enum OMRSAuditingComponent
     /**
      * Set up the values of the enum.
      *
-     * @param componentId - code number for the component.
-     * @param componentName - name of the component used in the audit log record.
-     * @param componentDescription - short description of the component.
-     * @param componentWikiURL - URL link to the description of the component.
+     * @param componentId code number for the component.
+     * @param componentName name of the component used in the audit log record.
+     * @param componentDescription short description of the component.
+     * @param componentWikiURL URL link to the description of the component.
      */
     OMRSAuditingComponent(int    componentId,
                           String componentName,

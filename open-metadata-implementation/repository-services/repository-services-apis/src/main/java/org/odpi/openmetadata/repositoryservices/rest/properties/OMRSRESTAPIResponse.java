@@ -46,7 +46,7 @@ public abstract class OMRSRESTAPIResponse
     /**
      * Set up the HTTP Code to use if forwarding response to HTTP client.
      *
-     * @param relatedHTTPCode - integer HTTP status code
+     * @param relatedHTTPCode integer HTTP status code
      */
     public void setRelatedHTTPCode(int relatedHTTPCode)
     {
@@ -68,7 +68,7 @@ public abstract class OMRSRESTAPIResponse
     /**
      * Set up the name of the Java class name to use to recreate the exception.
      *
-     * @param exceptionClassName - String name of the fully-qualified java class name
+     * @param exceptionClassName String name of the fully-qualified java class name
      */
     public void setExceptionClassName(String exceptionClassName)
     {
@@ -90,7 +90,7 @@ public abstract class OMRSRESTAPIResponse
     /**
      * Set up the error message associated with the exception.
      *
-     * @param exceptionErrorMessage - string error message
+     * @param exceptionErrorMessage string error message
      */
     public void setExceptionErrorMessage(String exceptionErrorMessage)
     {
@@ -101,7 +101,7 @@ public abstract class OMRSRESTAPIResponse
     /**
      * Return the description of the action taken by the system as a result of the exception.
      *
-     * @return - string description of the action taken
+     * @return string description of the action taken
      */
     public String getExceptionSystemAction()
     {
@@ -112,7 +112,7 @@ public abstract class OMRSRESTAPIResponse
     /**
      * Set up the description of the action taken by the system as a result of the exception.
      *
-     * @param exceptionSystemAction - string description of the action taken
+     * @param exceptionSystemAction string description of the action taken
      */
     public void setExceptionSystemAction(String exceptionSystemAction)
     {
@@ -134,7 +134,7 @@ public abstract class OMRSRESTAPIResponse
     /**
      * Set up the action that a user should take to resolve the problem.
      *
-     * @param exceptionUserAction - string instructions
+     * @param exceptionUserAction string instructions
      */
     public void setExceptionUserAction(String exceptionUserAction)
     {

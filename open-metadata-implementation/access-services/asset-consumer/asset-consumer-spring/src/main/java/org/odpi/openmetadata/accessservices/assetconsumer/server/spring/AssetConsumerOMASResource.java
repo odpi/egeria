@@ -3,8 +3,8 @@ package org.odpi.openmetadata.accessservices.assetconsumer.server.spring;
 
 import org.odpi.openmetadata.accessservices.assetconsumer.server.properties.ConnectionResponse;
 import org.odpi.openmetadata.accessservices.assetconsumer.server.properties.VoidResponse;
-import org.odpi.openmetadata.frameworks.connectors.properties.CommentType;
-import org.odpi.openmetadata.frameworks.connectors.properties.StarRating;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.CommentType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.StarRating;
 import org.odpi.openmetadata.accessservices.assetconsumer.server.AssetConsumerRESTServices;
 import org.odpi.openmetadata.accessservices.assetconsumer.server.properties.GUIDResponse;
 import org.springframework.web.bind.annotation.*;

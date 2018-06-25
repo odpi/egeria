@@ -69,9 +69,9 @@ public enum SequencingOrder implements Serializable
     /**
      * Constructor to set up a single instances of the enum.
      *
-     * @param ordinal - numerical representation of the sequencing order
-     * @param name - default string name of the sequencing order
-     * @param description - default string description of the sequencing order
+     * @param ordinal numerical representation of the sequencing order
+     * @param name default string name of the sequencing order
+     * @param description default string description of the sequencing order
      */
     SequencingOrder(int  ordinal, String name, String description)
     {

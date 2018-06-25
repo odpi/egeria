@@ -67,7 +67,7 @@ public class InstanceProperties extends InstanceElementHeader
     /**
      * Copy/clone Constructor.
      *
-     * @param templateProperties - template object to copy.
+     * @param templateProperties template object to copy.
      */
     public InstanceProperties(InstanceProperties templateProperties)
     {
@@ -111,7 +111,7 @@ public class InstanceProperties extends InstanceElementHeader
     /**
      * Set up the instance properties map.
      *
-     * @param instanceProperties - map of name valued properties
+     * @param instanceProperties map of name valued properties
      */
     public void setInstanceProperties(Map<String, InstancePropertyValue> instanceProperties)
     {
@@ -134,7 +134,7 @@ public class InstanceProperties extends InstanceElementHeader
      * Returns the requested instance property for the element.
      * If no stored property with that name is present then null is returned.
      *
-     * @param name - String name of the property to return.
+     * @param name String name of the property to return.
      * @return requested property value.
      */
     public InstancePropertyValue getPropertyValue(String name)
@@ -148,8 +148,8 @@ public class InstanceProperties extends InstanceElementHeader
      * If a null is supplied for the property name, an OMRS runtime exception is thrown.
      * If a null is supplied for the property value, the property is removed.
      *
-     * @param  newPropertyName - name
-     * @param  newPropertyValue - value
+     * @param  newPropertyName name
+     * @param  newPropertyValue value
      */
     public void setProperty(String newPropertyName, InstancePropertyValue newPropertyValue)
     {

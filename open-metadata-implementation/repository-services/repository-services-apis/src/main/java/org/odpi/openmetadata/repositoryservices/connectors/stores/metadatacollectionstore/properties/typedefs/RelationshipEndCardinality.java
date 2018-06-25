@@ -47,9 +47,9 @@ public enum RelationshipEndCardinality implements Serializable
     /**
      * Constructor to set up a single instances of the enum.
      *
-     * @param ordinal - numerical representation of the cardinality
-     * @param name - default string name of the cardinality
-     * @param description - default string description of the cardinality
+     * @param ordinal numerical representation of the cardinality
+     * @param name default string name of the cardinality
+     * @param description default string description of the cardinality
      */
     RelationshipEndCardinality(int  ordinal, String name, String description)
     {

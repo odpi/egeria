@@ -46,7 +46,7 @@ public class RelationshipListResponse extends OMRSRESTAPIPagedResponse
     /**
      * Set up the list of relationships for this response.
      *
-     * @param relationships - list of relationship objects
+     * @param relationships list of relationship objects
      */
     public void setRelationships(List<Relationship> relationships)
     {

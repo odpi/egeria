@@ -1,6 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
+
+import java.util.Objects;
+
 /**
  * AssetDetail extends AssetSummary to provide all of the properties related to this asset.  It includes:
  * <ul>
@@ -17,66 +21,38 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
  */
 public class AssetDetail extends AssetSummary
 {
-    private AdditionalProperties   assetProperties        = null;
-    private ExternalIdentifiers    externalIdentifiers    = null;
-    private RelatedMediaReferences relatedMediaReferences = null;
-    private NoteLogs               noteLogs               = null;
-    private ExternalReferences     externalReferences     = null;
-    private Connections            connections            = null;
-    private Licenses               licenses               = null;
-    private Certifications         certifications         = null;
+    protected AssetExternalIdentifiers    externalIdentifiers    = null;
+    protected AssetRelatedMediaReferences relatedMediaReferences = null;
+    protected AssetNoteLogs               noteLogs               = null;
+    protected AssetExternalReferences     externalReferences     = null;
+    protected AssetConnections            connections            = null;
+    protected AssetLicenses               licenses               = null;
+    protected AssetCertifications         certifications         = null;
 
 
     /**
      * Typical constructor initialize superclasses
      *
-     * @param type details of the metadata type for this asset
-     * @param guid guid property
-     * @param url element URL used to access its properties in the metadata repository.
-     * @param qualifiedName unique name
-     * @param displayName consumable name
-     * @param description description of the asset
-     * @param shortDescription short description from relationship with Connection
-     * @param owner owner name
-     * @param classifications enumeration of classifications
-     * @param assetProperties AdditionalProperties object
-     * @param externalIdentifiers ExternalIdentifiers enumeration
-     * @param relatedMediaReferences RelatedMediaReferences enumeration
+     * @param assetBean details of this asset
+     * @param externalIdentifiers ExternalIdentifiers iterator
+     * @param relatedMediaReferences RelatedMediaReferences iterator
      * @param noteLogs NoteLogs iterator
      * @param externalReferences ExternalReferences iterator
-     * @param connections List of connections attached to the asset
-     * @param licenses List of licenses
-     * @param certifications Certifications list of certifications
+     * @param connections Iterator of connections attached to the asset
+     * @param licenses Iterator of licenses for this asset
+     * @param certifications Iterator of certifications for this asset
      */
-    public AssetDetail(ElementType type,
-                       String                 guid,
-                       String                 url,
-                       String                 qualifiedName,
-                       String                 displayName,
-                       String                 shortDescription,
-                       String                 description,
-                       String                 owner,
-                       Classifications classifications,
-                       AdditionalProperties assetProperties,
-                       ExternalIdentifiers externalIdentifiers,
-                       RelatedMediaReferences relatedMediaReferences,
-                       NoteLogs noteLogs,
-                       ExternalReferences externalReferences,
-                       Connections            connections,
-                       Licenses licenses,
-                       Certifications certifications)
+    public AssetDetail(Asset                       assetBean,
+                       AssetExternalIdentifiers    externalIdentifiers,
+                       AssetRelatedMediaReferences relatedMediaReferences,
+                       AssetNoteLogs               noteLogs,
+                       AssetExternalReferences     externalReferences,
+                       AssetConnections            connections,
+                       AssetLicenses               licenses,
+                       AssetCertifications         certifications)
     {
-        super(type,
-              guid,
-              url,
-              qualifiedName,
-              displayName,
-              shortDescription,
-              description,
-              owner,
-              classifications);
+        super(assetBean);
 
-        this.assetProperties = assetProperties;
         this.externalIdentifiers = externalIdentifiers;
         this.relatedMediaReferences = relatedMediaReferences;
         this.noteLogs = noteLogs;
@@ -85,6 +61,7 @@ public class AssetDetail extends AssetSummary
         this.licenses = licenses;
         this.certifications = certifications;
     }
+
 
     /**
      * Copy/clone constructor.  Note, this is a deep copy
@@ -103,19 +80,15 @@ public class AssetDetail extends AssetSummary
          */
         if (templateAssetDetail != null)
         {
-            AdditionalProperties   templateAssetProperties        = templateAssetDetail.getAssetProperties();
-            ExternalIdentifiers    templateExternalIdentifiers    = templateAssetDetail.getExternalIdentifiers();
-            RelatedMediaReferences templateRelatedMediaReferences = templateAssetDetail.getRelatedMediaReferences();
-            NoteLogs               templateNoteLogs               = templateAssetDetail.getNoteLogs();
-            ExternalReferences     templateExternalReferences     = templateAssetDetail.getExternalReferences();
-            Connections            templateConnections            = templateAssetDetail.getConnections();
-            Licenses               templateLicenses               = templateAssetDetail.getLicenses();
-            Certifications         templateCertifications         = templateAssetDetail.getCertifications();
+            AssetExternalIdentifiers    templateExternalIdentifiers    = templateAssetDetail.getExternalIdentifiers();
+            AssetRelatedMediaReferences templateRelatedMediaReferences = templateAssetDetail.getRelatedMediaReferences();
+            AssetNoteLogs               templateNoteLogs               = templateAssetDetail.getNoteLogs();
+            AssetExternalReferences     templateExternalReferences     = templateAssetDetail.getExternalReferences();
+            AssetConnections            templateConnections            = templateAssetDetail.getConnections();
+            AssetLicenses               templateLicenses               = templateAssetDetail.getLicenses();
+            AssetCertifications      templateCertifications         = templateAssetDetail.getCertifications();
 
-            if (templateAssetProperties != null)
-            {
-                assetProperties = new AdditionalProperties(this, templateAssetProperties);
-            }
+
             if (templateExternalIdentifiers != null)
             {
                 externalIdentifiers = templateExternalIdentifiers.cloneIterator(this);
@@ -149,30 +122,11 @@ public class AssetDetail extends AssetSummary
 
 
     /**
-     * Return the set of properties that are specific to the particular type of asset.  The caller is given their
-     * own copy of the property object.  The properties are named entityName.attributeName. The values are all strings.
+     * Return an  list of the external identifiers for this asset (or null if none).
      *
-     * @return AdditionalProperties asset properties using the name of attributes from the model.
+     * @return ExternalIdentifiers  list
      */
-    public AdditionalProperties getAssetProperties()
-    {
-        if (assetProperties == null)
-        {
-            return assetProperties;
-        }
-        else
-        {
-            return new AdditionalProperties(this, assetProperties);
-        }
-    }
-
-
-    /**
-     * Return an enumeration of the external identifiers for this asset (or null if none).
-     *
-     * @return ExternalIdentifiers enumeration
-     */
-    public ExternalIdentifiers getExternalIdentifiers()
+    public AssetExternalIdentifiers getExternalIdentifiers()
     {
         if (externalIdentifiers == null)
         {
@@ -186,11 +140,11 @@ public class AssetDetail extends AssetSummary
 
 
     /**
-     * Return an enumeration of references to the related media associated with this asset.
+     * Return an  list of references to the related media associated with this asset.
      *
-     * @return RelatedMediaReferences enumeration
+     * @return RelatedMediaReferences  list
      */
-    public RelatedMediaReferences getRelatedMediaReferences()
+    public AssetRelatedMediaReferences getRelatedMediaReferences()
     {
         if (relatedMediaReferences == null)
         {
@@ -204,11 +158,11 @@ public class AssetDetail extends AssetSummary
 
 
     /**
-     * Return an enumeration of NoteLogs linked to this asset.
+     * Return an  list of NoteLogs linked to this asset.
      *
      * @return Notelogs iterator
      */
-    public NoteLogs getNoteLogs()
+    public AssetNoteLogs getNoteLogs()
     {
         if (noteLogs == null)
         {
@@ -222,11 +176,11 @@ public class AssetDetail extends AssetSummary
 
 
     /**
-     * Return the enumeration of external references associated with this asset.
+     * Return the  list of external references associated with this asset.
      *
      * @return ExternalReferences iterator
      */
-    public ExternalReferences getExternalReferences()
+    public AssetExternalReferences getExternalReferences()
     {
         if (externalReferences == null)
         {
@@ -240,11 +194,11 @@ public class AssetDetail extends AssetSummary
 
 
     /**
-     * Return an enumeration of the connections defined for this asset.
+     * Return an  list of the connections defined for this asset.
      *
-     * @return Connections enumeration
+     * @return Connections  list
      */
-    public Connections getConnections()
+    public AssetConnections getConnections()
     {
         if (connections == null)
         {
@@ -262,7 +216,7 @@ public class AssetDetail extends AssetSummary
      *
      * @return Licenses
      */
-    public Licenses getLicenses()
+    public AssetLicenses getLicenses()
     {
         if (licenses == null)
         {
@@ -280,7 +234,7 @@ public class AssetDetail extends AssetSummary
      *
      * @return Certifications list of certifications
      */
-    public Certifications getCertifications()
+    public AssetCertifications getCertifications()
     {
         if (certifications == null)
         {
@@ -302,7 +256,7 @@ public class AssetDetail extends AssetSummary
     public String toString()
     {
         return "AssetDetail{" +
-                "assetProperties=" + assetProperties +
+                "assetBean=" + assetBean +
                 ", externalIdentifiers=" + externalIdentifiers +
                 ", relatedMediaReferences=" + relatedMediaReferences +
                 ", noteLogs=" + noteLogs +
@@ -311,5 +265,37 @@ public class AssetDetail extends AssetSummary
                 ", licenses=" + licenses +
                 ", certifications=" + certifications +
                 '}';
+    }
+
+
+    /**
+     * Compare the values of the supplied object with those stored in the current object.
+     *
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (!(objectToCompare instanceof AssetDetail))
+        {
+            return false;
+        }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        AssetDetail that = (AssetDetail) objectToCompare;
+        return Objects.equals(getExternalIdentifiers(), that.getExternalIdentifiers()) &&
+                Objects.equals(getRelatedMediaReferences(), that.getRelatedMediaReferences()) &&
+                Objects.equals(getNoteLogs(), that.getNoteLogs()) &&
+                Objects.equals(getExternalReferences(), that.getExternalReferences()) &&
+                Objects.equals(getConnections(), that.getConnections()) &&
+                Objects.equals(getLicenses(), that.getLicenses()) &&
+                Objects.equals(getCertifications(), that.getCertifications());
     }
 }

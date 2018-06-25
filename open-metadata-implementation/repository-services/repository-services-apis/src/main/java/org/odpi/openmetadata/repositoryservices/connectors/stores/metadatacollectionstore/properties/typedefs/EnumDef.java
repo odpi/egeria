@@ -72,7 +72,7 @@ public class EnumDef extends AttributeTypeDef
     /**
      * Set up the list of defined Enum values for this EnumDef.
      *
-     * @param elementDefs - EnumElementDefs list
+     * @param elementDefs EnumElementDefs list
      */
     public void setElementDefs(List<EnumElementDef> elementDefs) { this.elementDefs = new ArrayList<>(elementDefs); }
 
@@ -88,7 +88,7 @@ public class EnumDef extends AttributeTypeDef
     /**
      * Set up the default value for the EnumDef.
      *
-     * @param defaultValue - EnumElementDef representing the default value
+     * @param defaultValue EnumElementDef representing the default value
      */
     public void setDefaultValue(EnumElementDef defaultValue) { this.defaultValue = defaultValue; }
 

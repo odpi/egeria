@@ -31,7 +31,7 @@ public class EntityDetail extends EntitySummary
     /**
      * Copy/clone constructor - properties copied from template.
      *
-     * @param templateElement - element to copy.
+     * @param templateElement element to copy.
      */
     public EntityDetail(EntityDetail   templateElement)
     {
@@ -65,7 +65,7 @@ public class EntityDetail extends EntitySummary
     /**
      * Set up the properties for this entity.
      *
-     * @param newProperties - InstanceProperties object
+     * @param newProperties InstanceProperties object
      */
     public void setProperties(InstanceProperties  newProperties)
     {

@@ -42,7 +42,7 @@ public class BooleanResponse extends OMRSRESTAPIResponse
     /**
      * set up the boolean result.
      *
-     * @param flag - boolean
+     * @param flag boolean
      */
     public void setFlag(boolean flag)
     {

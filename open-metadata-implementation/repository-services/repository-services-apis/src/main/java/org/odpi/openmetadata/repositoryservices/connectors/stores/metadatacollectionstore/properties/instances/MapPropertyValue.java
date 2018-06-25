@@ -35,7 +35,7 @@ public class MapPropertyValue extends InstancePropertyValue
     /**
      * Copy/clone constructor set up the map using the supplied template.
      *
-     * @param template - ArrayPropertyValue
+     * @param template ArrayPropertyValue
      */
     public MapPropertyValue(MapPropertyValue template)
     {
@@ -51,7 +51,7 @@ public class MapPropertyValue extends InstancePropertyValue
     /**
      * Return the number of elements in the map.
      *
-     * @return int - map size
+     * @return int map size
      */
     public int getMapElementCount()
     {
@@ -89,8 +89,8 @@ public class MapPropertyValue extends InstancePropertyValue
      * If a null is supplied for the property name, an OMRS runtime exception is thrown.
      * If a null is supplied for the property value, the property is removed.
      *
-     * @param propertyName - String name
-     * @param propertyValue - InstancePropertyValue - value to store
+     * @param propertyName String name
+     * @param propertyValue InstancePropertyValue value to store
      */
     public void setMapValue(String  propertyName, InstancePropertyValue  propertyValue)
     {
@@ -105,7 +105,7 @@ public class MapPropertyValue extends InstancePropertyValue
     /**
      * Set up the map elements in one call.
      *
-     * @param mapValues - InstanceProperties containing the array elements
+     * @param mapValues InstanceProperties containing the array elements
      */
     public void setMapValues(InstanceProperties mapValues) { this.mapValues = mapValues; }
 
