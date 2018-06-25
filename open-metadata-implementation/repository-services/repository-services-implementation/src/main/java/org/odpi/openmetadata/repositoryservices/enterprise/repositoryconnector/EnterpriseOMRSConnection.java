@@ -1,32 +1,26 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector;
 
-import org.odpi.openmetadata.frameworks.connectors.properties.Connection;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorType;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 
 /**
  * EnterpriseOMRSConnection provides a valid connection for the EnterpriseOMRSConnector.
  */
-public class EnterpriseOMRSConnection extends Connection
+public class EnterpriseOMRSConnection extends ConnectionProperties
 {
-    final ConnectorType enterpriseConnectorType = new ConnectorType(null,
-                                                                    null,
-                                                                    null,
-                                                                    null,
-                                                                    null,
-                                                                    null,
-                                                                    null,
-                                                                    null,
-                                                                    null,
-                                                                    EnterpriseOMRSConnectorProvider.class.getName());
-
-
     /**
      * Default Constructor that sets up the connector
      */
     public EnterpriseOMRSConnection()
     {
-        super(null);
-        super.connectorType = enterpriseConnectorType;
+        super(new Connection());
+
+        Connection    connectionBean = super.getConnectionBean();
+        ConnectorType connectorType = new ConnectorType();
+
+        connectorType.setConnectorProviderClassName(EnterpriseOMRSConnectorProvider.class.getName());
+        connectionBean.setConnectorType(connectorType);
     }
 }

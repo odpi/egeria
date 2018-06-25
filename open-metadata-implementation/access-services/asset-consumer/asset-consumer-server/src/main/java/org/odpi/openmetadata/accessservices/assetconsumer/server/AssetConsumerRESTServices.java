@@ -9,13 +9,13 @@ import org.odpi.openmetadata.accessservices.assetconsumer.server.properties.Asse
 import org.odpi.openmetadata.accessservices.assetconsumer.server.properties.ConnectionResponse;
 import org.odpi.openmetadata.accessservices.assetconsumer.server.properties.VoidResponse;
 import org.odpi.openmetadata.adminservices.OMAGAccessServiceRegistration;
-import org.odpi.openmetadata.frameworks.connectors.properties.CommentType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.CommentType;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceOperationalStatus;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
 import org.odpi.openmetadata.accessservices.assetconsumer.admin.AssetConsumerAdmin;
 import org.odpi.openmetadata.accessservices.assetconsumer.server.properties.GUIDResponse;
-import org.odpi.openmetadata.frameworks.connectors.properties.StarRating;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.StarRating;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 

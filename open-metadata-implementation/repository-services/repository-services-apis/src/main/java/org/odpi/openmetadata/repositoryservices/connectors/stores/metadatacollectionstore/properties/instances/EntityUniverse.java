@@ -35,7 +35,7 @@ public class EntityUniverse extends EntityDetail
     /**
      * Copy/clone constructor.
      *
-     * @param templateElement - template to copy.  If null passed, the EntityUniverse is initialized as empty.
+     * @param templateElement template to copy.  If null passed, the EntityUniverse is initialized as empty.
      */
     public EntityUniverse(EntityUniverse   templateElement)
     {
@@ -51,7 +51,7 @@ public class EntityUniverse extends EntityDetail
     /**
      * Copy/clone constructor from an EntityDetail.
      *
-     * @param templateElement - template to copy.  If null passed, the EntityUniverse is initialized as empty.
+     * @param templateElement template to copy.  If null passed, the EntityUniverse is initialized as empty.
      */
     public EntityUniverse(EntityDetail   templateElement)
     {
@@ -80,7 +80,7 @@ public class EntityUniverse extends EntityDetail
     /**
      * Set up the list of relationships for this entity.
      *
-     * @param entityRelationships - Relationships list
+     * @param entityRelationships Relationships list
      */
     public void setEntityRelationships(List<Relationship> entityRelationships)
     {

@@ -1,0 +1,46 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+package org.odpi.openmetadata.frameworks.connectors.properties;
+
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable;
+
+/**
+ * Mock asset provides a concrete class to test AssetDescriptor
+ */
+public class MockAssetReferenceable extends AssetReferenceable
+{
+    /**
+     * Bean constructor
+     *
+     * @param referenceableBean - asset bean with all the properties
+     */
+    public MockAssetReferenceable(Referenceable referenceableBean)
+    {
+        super(referenceableBean);
+    }
+
+
+    /**
+     * Bean constructor with parent asset
+     *
+     * @param parentAsset descriptor for parent asset
+     * @param referenceableBean bean containing properties
+     */
+    protected MockAssetReferenceable(AssetDescriptor      parentAsset,
+                                     Referenceable        referenceableBean)
+    {
+        super(parentAsset, referenceableBean);
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param parentAsset descriptor for parent asset
+     * @param template template to copy
+     */
+    public MockAssetReferenceable(AssetDescriptor        parentAsset,
+                                  MockAssetReferenceable template)
+    {
+        super(parentAsset, template);
+    }
+}

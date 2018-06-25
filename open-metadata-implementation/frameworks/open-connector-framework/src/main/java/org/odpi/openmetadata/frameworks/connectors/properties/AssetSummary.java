@@ -1,11 +1,20 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Classification;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
 /**
  * AssetSummary holds asset properties that are used for displaying details of
  * an asset in summary lists or hover text.  It includes the following properties:
  * <ul>
- *     <li>type - metadata type information for the asset properties</li>
+ *     <li>type - metadata type information for the asset</li>
  *     <li>guid - globally unique identifier for the asset</li>
  *     <li>url - external link for the asset</li>
  *     <li>qualifiedName - The official (unique) name for the asset. This is often defined by the IT systems
@@ -25,72 +34,14 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
  */
 public class AssetSummary extends AssetDescriptor
 {
-    private ElementType     type             = null;
-    private String          qualifiedName    = null;
-    private String          displayName      = null;
-    private String          shortDescription = null;
-    private String          description      = null;
-    private String          owner            = null;
-    private Classifications classifications  = null;
-
-
     /**
-     * Typical constructor with parameters to fill properties.
+     * Bean constructor - initializes AssetSummary using a bean returned by the REST interface.
      *
-     * @param type details of the metadata type for this asset
-     * @param guid guid property
-     * @param url element URL used to access its properties in the metadata repository.
-     * @param qualifiedName unique name
-     * @param displayName consumable name
-     * @param description description of the asset
-     * @param shortDescription short description from relationship with Connection
-     * @param owner owner name
-     * @param classifications enumeration of classifications
+     * @param assetBean asset properties bean
      */
-    public AssetSummary(ElementType     type,
-                        String          guid,
-                        String          url,
-                        String          qualifiedName,
-                        String          displayName,
-                        String          shortDescription,
-                        String          description,
-                        String          owner,
-                        Classifications classifications)
+    public AssetSummary(Asset    assetBean)
     {
-        super(guid, url);
-
-        this.type = type;
-        if (type != null)
-        {
-            super.setAssetTypeName(type.getElementTypeName());
-        }
-
-        this.qualifiedName = qualifiedName;
-        this.displayName = displayName;
-
-        /*
-         * Use the qualified name as the asset name if it is not null or the empty string.
-         * Otherwise use display name (unless it is null or the empty string).
-         */
-        if ((qualifiedName == null) || (qualifiedName.equals("")))
-        {
-            if ((displayName != null) && (!displayName.equals("")))
-            {
-                /*
-                 * Good display name
-                 */
-                super.setAssetName(displayName);
-            }
-        }
-        else /* good qualified name */
-        {
-            super.setAssetName(qualifiedName);
-        }
-
-        this.shortDescription = shortDescription;
-        this.description = description;
-        this.owner = owner;
-        this.classifications = classifications;
+        super(assetBean);
     }
 
 
@@ -105,25 +56,6 @@ public class AssetSummary extends AssetDescriptor
          * Initialize super class
          */
         super(templateAssetSummary);
-
-        /*
-         * Copy relevant values from the template
-         */
-        if (templateAssetSummary != null)
-        {
-            type = templateAssetSummary.getType();
-            qualifiedName = templateAssetSummary.getQualifiedName();
-            displayName = templateAssetSummary.getDisplayName();
-            shortDescription = templateAssetSummary.getShortDescription();
-            description = templateAssetSummary.getDescription();
-            owner = templateAssetSummary.getOwner();
-
-            Classifications templateClassifications = templateAssetSummary.getClassifications();
-            if (templateClassifications != null)
-            {
-                classifications = templateClassifications.cloneIterator(this);
-            }
-        }
     }
 
 
@@ -131,11 +63,43 @@ public class AssetSummary extends AssetDescriptor
      * Return the element type properties for this asset.  These values are set up by the metadata repository
      * and define details to the metadata entity used to represent this element.
      *
-     * @return ElementType type information.
+     * @return AssetElementType type information.
      */
-    public ElementType getType()
+    public AssetElementType getType()
     {
-        return type;
+        ElementType elementType = assetBean.getType();
+
+        if (elementType == null)
+        {
+            return null;
+        }
+        else
+        {
+            return new AssetElementType(elementType);
+        }
+    }
+
+
+    /**
+     * Return the unique id for the properties object.  Null means no guid is assigned.
+     *
+     * @return String unique id
+     */
+    public String getGUID()
+    {
+        return assetBean.getGUID();
+    }
+
+
+    /**
+     * Returns the URL to access the properties object in the metadata repository.
+     * If no url is available then null is returned.
+     *
+     * @return String URL
+     */
+    public String getURL()
+    {
+        return assetBean.getURL();
     }
 
 
@@ -145,8 +109,9 @@ public class AssetSummary extends AssetDescriptor
      *
      * @return qualifiedName
      */
-    public String getQualifiedName() {
-        return qualifiedName;
+    public String getQualifiedName()
+    {
+        return assetBean.getQualifiedName();
     }
 
 
@@ -158,7 +123,7 @@ public class AssetSummary extends AssetDescriptor
      */
     public String getDisplayName()
     {
-        return displayName;
+        return assetBean.getDisplayName();
     }
 
 
@@ -169,7 +134,7 @@ public class AssetSummary extends AssetDescriptor
      */
     public String getShortDescription()
     {
-        return shortDescription;
+        return assetBean.getShortDescription();
     }
 
 
@@ -181,7 +146,7 @@ public class AssetSummary extends AssetDescriptor
      */
     public String getDescription()
     {
-        return description;
+        return assetBean.getDescription();
     }
 
 
@@ -190,26 +155,90 @@ public class AssetSummary extends AssetDescriptor
      *
      * @return owner String
      */
-    public String getOwner() {
-        return owner;
+    public String getOwner()
+    {
+        return assetBean.getOwner();
     }
 
 
     /**
-     * Return the list of classifications associated with the asset.   This is an enumeration and the
-     * pointers are set to the start of the list of classifications
+     * Return the list of classifications associated with the asset.
      *
-     * @return Classifications enumeration of classifications
+     * @return list of classifications
      */
-    public Classifications getClassifications()
+    public List<AssetClassification> getAssetClassifications()
     {
+        List<Classification> classifications = assetBean.getClassifications();
+
         if (classifications == null)
         {
-            return classifications;
+            return null;
         }
         else
         {
-            return classifications.cloneIterator(this);
+            List<AssetClassification>    assetClassifications = new ArrayList<>();
+
+            for (Classification classification : classifications)
+            {
+                if (classification != null)
+                {
+                    assetClassifications.add(new AssetClassification(this, classification));
+                }
+            }
+
+            if (assetClassifications.isEmpty())
+            {
+                return null;
+            }
+            else
+            {
+                return assetClassifications;
+            }
+        }
+    }
+
+
+    /**
+     * Return the set of properties that are specific to the particular type of asset.  The caller is given their
+     * own copy of the property object.  The properties are named entityName.attributeName. The values are all strings.
+     *
+     * @return AdditionalProperties asset properties using the name of attributes from the model.
+     */
+    public AdditionalProperties getAssetProperties()
+    {
+        Map<String, Object>   assetProperties = assetBean.getAssetProperties();
+
+        if (assetProperties == null)
+        {
+            return null;
+        }
+        else
+        {
+            return new AdditionalProperties(this, assetProperties);
+        }
+    }
+
+
+    /**
+     * Return the set of additional properties.
+     *
+     * @return AdditionalProperties object.
+     */
+    public AdditionalProperties getAdditionalProperties()
+    {
+        Map<String, Object>   additionalProperties = assetBean.getAdditionalProperties();
+
+        if (additionalProperties == null)
+        {
+            return null;
+        }
+        else if (additionalProperties.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new AdditionalProperties(this, additionalProperties);
         }
     }
 
@@ -222,14 +251,41 @@ public class AssetSummary extends AssetDescriptor
     @Override
     public String toString()
     {
-        return "AssetSummary{" +
-                "type=" + type +
-                ", qualifiedName='" + qualifiedName + '\'' +
-                ", displayName='" + displayName + '\'' +
-                ", shortDescription='" + shortDescription + '\'' +
-                ", description='" + description + '\'' +
-                ", owner='" + owner + '\'' +
-                ", classifications=" + classifications +
-                '}';
+        return assetBean.toString();
+    }
+
+
+    /**
+     * Compare the values of the supplied object with those stored in the current object.
+     *
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (!(objectToCompare instanceof AssetSummary))
+        {
+            return false;
+        }
+
+        AssetSummary that = (AssetSummary) objectToCompare;
+        return assetBean.equals(that.getAssetBean());
+    }
+
+
+    /**
+     * Create a hash code for this element type.
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return assetBean.hashCode();
     }
 }

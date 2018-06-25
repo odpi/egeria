@@ -1,6 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
+
+import java.util.Objects;
+
+
 /**
  * AssetUniverse extends AssetDetail which extend AssetSummary.  AssetUniverse adds information about the
  * common open metadata entities related to this asset.
@@ -17,30 +23,21 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
  */
 public class AssetUniverse extends AssetDetail
 {
-    private Meanings      meanings       = null;
-    private SchemaElement schema         = null;
-    private Annotations   analysis       = null;
-    private Feedback      feedback       = null;
-    private Locations     knownLocations = null;
-    private Lineage       lineage        = null;
-    private RelatedAssets relatedAssets  = null;
+    protected AssetMeanings      meanings       = null;
+    protected AssetSchemaElement schema         = null;
+    protected AssetAnnotations   analysis       = null;
+    protected AssetFeedback      feedback       = null;
+    protected AssetLocations     knownLocations = null;
+    protected AssetLineage       lineage        = null;
+    protected RelatedAssets      relatedAssets  = null;
 
 
     /**
      * Typical Constructor
      *
-     * @param type details of the metadata type for this asset
-     * @param guid guid property
-     * @param url element URL used to access its properties in the metadata repository.
-     * @param qualifiedName unique name
-     * @param displayName consumable name
-     * @param description description of the asset
-     * @param shortDescription short description from relationship with Connection
-     * @param owner owner name
-     * @param classifications enumeration of classifications
-     * @param assetProperties AdditionalProperties object
-     * @param externalIdentifiers ExternalIdentifiers enumeration
-     * @param relatedMediaReferences RelatedMediaReferences enumeration
+     * @param assetBean details of this asset
+     * @param externalIdentifiers ExternalIdentifiers  list
+     * @param relatedMediaReferences RelatedMediaReferences  list
      * @param noteLogs NoteLogs iterator
      * @param externalReferences ExternalReferences iterator
      * @param connections List of connections attached to the asset
@@ -54,41 +51,23 @@ public class AssetUniverse extends AssetDetail
      * @param lineage lineage object to query the origin of the asset.
      * @param relatedAssets RelatedAssets list
      */
-    public AssetUniverse(ElementType            type,
-                         String                 guid,
-                         String                 url,
-                         String                 qualifiedName,
-                         String                 displayName,
-                         String                 shortDescription,
-                         String                 description,
-                         String                 owner,
-                         Classifications classifications,
-                         AdditionalProperties assetProperties,
-                         ExternalIdentifiers    externalIdentifiers,
-                         RelatedMediaReferences relatedMediaReferences,
-                         NoteLogs noteLogs,
-                         ExternalReferences     externalReferences,
-                         Connections            connections,
-                         Licenses               licenses,
-                         Certifications         certifications,
-                         Meanings meanings,
-                         SchemaElement          schema,
-                         Annotations            analysis,
-                         Feedback               feedback,
-                         Locations knownLocations,
-                         Lineage                lineage,
-                         RelatedAssets relatedAssets)
+    public AssetUniverse(Asset                       assetBean,
+                         AssetExternalIdentifiers    externalIdentifiers,
+                         AssetRelatedMediaReferences relatedMediaReferences,
+                         AssetNoteLogs               noteLogs,
+                         AssetExternalReferences     externalReferences,
+                         AssetConnections            connections,
+                         AssetLicenses               licenses,
+                         AssetCertifications         certifications,
+                         AssetMeanings               meanings,
+                         AssetSchemaElement          schema,
+                         AssetAnnotations            analysis,
+                         AssetFeedback               feedback,
+                         AssetLocations              knownLocations,
+                         AssetLineage                lineage,
+                         RelatedAssets               relatedAssets)
     {
-        super(type,
-              guid,
-              url,
-              qualifiedName,
-              displayName,
-              shortDescription,
-              description,
-              owner,
-              classifications,
-              assetProperties,
+        super(assetBean,
               externalIdentifiers,
               relatedMediaReferences,
               noteLogs,
@@ -106,6 +85,7 @@ public class AssetUniverse extends AssetDetail
         this.relatedAssets = relatedAssets;
     }
 
+
     /**
      * Copy/clone Constructor note this is a deep copy
      *
@@ -113,27 +93,21 @@ public class AssetUniverse extends AssetDetail
      */
     public AssetUniverse(AssetUniverse templateAssetUniverse)
     {
-        /*
-         * Initialize the super classes
-         */
         super(templateAssetUniverse);
 
-        /*
-         * Set up the universe private variables.
-         */
         if (templateAssetUniverse != null)
         {
             /*
              * Create the top-level property objects for this new asset using the values from the template.
              * The get methods create clones of the returned objects so no need to duplicate objects here.
              */
-            Meanings      templateMeanings      = templateAssetUniverse.getMeanings();
-            SchemaElement templateSchema        = templateAssetUniverse.getSchema();
-            Annotations   templateAnalysis      = templateAssetUniverse.getAnalysis();
-            Feedback      templateFeedback      = templateAssetUniverse.getFeedback();
-            Locations     templateLocations     = templateAssetUniverse.getKnownLocations();
-            Lineage       templateLineage       = templateAssetUniverse.getLineage();
-            RelatedAssets templateRelatedAssets = templateAssetUniverse.getRelatedAssets();
+            AssetMeanings      templateMeanings      = templateAssetUniverse.getMeanings();
+            AssetSchemaElement templateSchema        = templateAssetUniverse.getSchema();
+            AssetAnnotations   templateAnalysis      = templateAssetUniverse.getAnalysis();
+            AssetFeedback      templateFeedback      = templateAssetUniverse.getFeedback();
+            AssetLocations     templateLocations     = templateAssetUniverse.getKnownLocations();
+            AssetLineage       templateLineage       = templateAssetUniverse.getLineage();
+            RelatedAssets      templateRelatedAssets = templateAssetUniverse.getRelatedAssets();
 
             if (templateMeanings != null)
             {
@@ -141,14 +115,7 @@ public class AssetUniverse extends AssetDetail
             }
             if (templateSchema != null)
             {
-                if (templateSchema.getType().equals("Schema"))
-                {
-                    schema = new Schema(this, (Schema) templateSchema);
-                }
-                else
-                {
-                    schema = new PrimitiveSchemaElement(this, (PrimitiveSchemaElement) templateSchema);
-                }
+                templateSchema.cloneAssetSchemaElement(this);
             }
             if (templateAnalysis != null)
             {
@@ -156,7 +123,7 @@ public class AssetUniverse extends AssetDetail
             }
             if (templateFeedback != null)
             {
-                feedback = new Feedback(this, templateFeedback);
+                feedback = new AssetFeedback(this, templateFeedback);
             }
             if (templateLocations != null)
             {
@@ -164,7 +131,7 @@ public class AssetUniverse extends AssetDetail
             }
             if (templateLineage != null)
             {
-                lineage = new Lineage(this, templateLineage);
+                lineage = new AssetLineage(this, templateLineage);
             }
             if (templateRelatedAssets != null)
             {
@@ -179,7 +146,7 @@ public class AssetUniverse extends AssetDetail
      *
      * @return Meanings list of glossary definitions.
      */
-    public Meanings getMeanings()
+    public AssetMeanings getMeanings()
     {
         if (meanings == null)
         {
@@ -197,7 +164,7 @@ public class AssetUniverse extends AssetDetail
      *
      * @return SchemaElement schema object to query the schema associated with the connected asset.
      */
-    public SchemaElement getSchema()
+    public AssetSchemaElement getSchema()
     {
         if (schema == null)
         {
@@ -205,7 +172,7 @@ public class AssetUniverse extends AssetDetail
         }
         else
         {
-            return schema.cloneSchemaElement(this);
+            return schema.cloneAssetSchemaElement(this);
         }
     }
 
@@ -215,7 +182,7 @@ public class AssetUniverse extends AssetDetail
      *
      * @return Annotations List of annotations from metadata discovery
      */
-    public Annotations getAnalysis()
+    public AssetAnnotations getAnalysis()
     {
         if (analysis == null)
         {
@@ -233,7 +200,7 @@ public class AssetUniverse extends AssetDetail
      *
      * @return Feedback feedback object to query the feedback on the asset.
      */
-    public Feedback getFeedback()
+    public AssetFeedback getFeedback()
     {
         if (feedback == null)
         {
@@ -241,7 +208,7 @@ public class AssetUniverse extends AssetDetail
         }
         else
         {
-            return new Feedback(this, feedback);
+            return new AssetFeedback(this, feedback);
         }
     }
 
@@ -251,7 +218,7 @@ public class AssetUniverse extends AssetDetail
      *
      * @return Locations list of locations.
      */
-    public Locations getKnownLocations()
+    public AssetLocations getKnownLocations()
     {
         if (knownLocations == null)
         {
@@ -269,7 +236,7 @@ public class AssetUniverse extends AssetDetail
      *
      * @return Lineage  lineage object that allows queries about the lineage of the asset.
      */
-    public Lineage getLineage()
+    public AssetLineage getLineage()
     {
         if (lineage == null)
         {
@@ -277,7 +244,7 @@ public class AssetUniverse extends AssetDetail
         }
         else
         {
-            return new Lineage(this, lineage);
+            return new AssetLineage(this, lineage);
         }
     }
 
@@ -309,13 +276,52 @@ public class AssetUniverse extends AssetDetail
     public String toString()
     {
         return "AssetUniverse{" +
-                "meanings=" + meanings +
+                "assetBean=" + assetBean +
+                ", assetMeanings=" + meanings +
                 ", schema=" + schema +
                 ", analysis=" + analysis +
                 ", feedback=" + feedback +
                 ", knownLocations=" + knownLocations +
                 ", lineage=" + lineage +
                 ", relatedAssets=" + relatedAssets +
+                ", externalIdentifiers=" + externalIdentifiers +
+                ", relatedMediaReferences=" + relatedMediaReferences +
+                ", noteLogs=" + noteLogs +
+                ", externalReferences=" + externalReferences +
+                ", connections=" + connections +
+                ", licenses=" + licenses +
+                ", certifications=" + certifications +
                 '}';
+    }
+
+    /**
+     * Compare the values of the supplied object with those stored in the current object.
+     *
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (!(objectToCompare instanceof AssetUniverse))
+        {
+            return false;
+        }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        AssetUniverse that = (AssetUniverse) objectToCompare;
+        return Objects.equals(getMeanings(), that.getMeanings()) &&
+                Objects.equals(getSchema(), that.getSchema()) &&
+                Objects.equals(getAnalysis(), that.getAnalysis()) &&
+                Objects.equals(getFeedback(), that.getFeedback()) &&
+                Objects.equals(getKnownLocations(), that.getKnownLocations()) &&
+                Objects.equals(getLineage(), that.getLineage()) &&
+                Objects.equals(getRelatedAssets(), that.getRelatedAssets());
     }
 }

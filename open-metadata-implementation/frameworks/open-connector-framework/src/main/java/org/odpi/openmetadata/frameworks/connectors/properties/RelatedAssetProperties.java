@@ -22,7 +22,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
  * for the asset's properties.  Metadata repository implementations extend this class to add their
  * implementation of the refresh() method that calls to the metadata repository to populate the metadata properties.
  */
-public abstract class RelatedAssetProperties extends PropertyBase
+public abstract class RelatedAssetProperties extends AssetPropertyElementBase
 {
     /*
      * AssetUniverse extends AssetDetails which extends AssetSummary.  The interaction with the metadata repository
@@ -35,6 +35,15 @@ public abstract class RelatedAssetProperties extends PropertyBase
     protected  AssetUniverse     assetProperties = null;
     protected  AssetDescriptor   connectedAsset = null;
     protected  RelatedAsset      relatedAsset = null;
+
+
+    /**
+     * Default constructor used by subclasses
+     */
+    protected RelatedAssetProperties()
+    {
+        super();
+    }
 
 
     /**

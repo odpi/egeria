@@ -35,7 +35,7 @@ public class StructPropertyValue extends InstancePropertyValue
     /**
      * Copy/clone constructor sets up the values based on the template.
      *
-     * @param template - StructPropertyValue to copy.
+     * @param template StructPropertyValue to copy.
      */
     public StructPropertyValue(StructPropertyValue template)
     {
@@ -51,7 +51,7 @@ public class StructPropertyValue extends InstancePropertyValue
     /**
      * Return the attributes that make up the fields of the struct.
      *
-     * @return attributes - InstanceProperties iterator
+     * @return attributes InstanceProperties iterator
      */
     public InstanceProperties getAttributes()
     {
@@ -68,7 +68,7 @@ public class StructPropertyValue extends InstancePropertyValue
     /**
      * Set up the attributes that make up the fields of the struct.
      *
-     * @param attributes - InstanceProperties iterator
+     * @param attributes InstanceProperties iterator
      */
     public void setAttributes(InstanceProperties attributes) { this.attributes = attributes; }
 

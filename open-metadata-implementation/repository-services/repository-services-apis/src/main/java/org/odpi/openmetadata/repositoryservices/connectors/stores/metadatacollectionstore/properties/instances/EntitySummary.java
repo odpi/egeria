@@ -42,7 +42,7 @@ public class EntitySummary extends InstanceHeader
     /**
      * Copy/clone constructor.
      *
-     * @param templateElement - template to copy.
+     * @param templateElement template to copy.
      */
     public EntitySummary(EntitySummary   templateElement)
     {
@@ -77,7 +77,7 @@ public class EntitySummary extends InstanceHeader
     /**
      * Set up the classifications for an entity.  This is stored as an iterator.
      *
-     * @param classifications - Classifications list
+     * @param classifications Classifications list
      */
     public void setClassifications(List<Classification> classifications)
     {

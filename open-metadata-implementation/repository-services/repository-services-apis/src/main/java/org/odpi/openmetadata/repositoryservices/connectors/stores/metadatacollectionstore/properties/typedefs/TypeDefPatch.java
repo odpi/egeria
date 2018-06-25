@@ -63,7 +63,7 @@ public class TypeDefPatch extends TypeDefElementHeader
     /**
      * Set up the type of action that this patch requires.
      *
-     * @param action - TypeDefPatchAction enum
+     * @param action TypeDefPatchAction enum
      */
     public void setAction(TypeDefPatchAction action) {
         this.action = action;
@@ -84,7 +84,7 @@ public class TypeDefPatch extends TypeDefElementHeader
     /**
      * Set up the unique identifier for the affected TypeDef.
      *
-     * @param typeDefGUID - String guid
+     * @param typeDefGUID String guid
      */
     public void setTypeDefGUID(String typeDefGUID)
     {
@@ -105,7 +105,7 @@ public class TypeDefPatch extends TypeDefElementHeader
     /**
      * Set up the unique name for the affected TypeDef.
      *
-     * @param typeName - String name
+     * @param typeName String name
      */
     public void setTypeName(String typeName) {
         this.typeName = typeName;
@@ -125,7 +125,7 @@ public class TypeDefPatch extends TypeDefElementHeader
     /**
      * Set up the version number of the TypeDef that this patch applies to.
      *
-     * @param applyToVersion - long version number
+     * @param applyToVersion long version number
      */
     public void setApplyToVersion(long applyToVersion) {
         this.applyToVersion = applyToVersion;
@@ -166,7 +166,7 @@ public class TypeDefPatch extends TypeDefElementHeader
     /**
      * Set up the new version name ot use once the patch is applied.
      *
-     * @param newVersionName - String version name
+     * @param newVersionName String version name
      */
     public void setNewVersionName(String newVersionName)
     {
@@ -188,7 +188,7 @@ public class TypeDefPatch extends TypeDefElementHeader
     /**
      * Set up the new description for the TypeDef
      *
-     * @param description - String description
+     * @param description String description
      */
     public void setDescription(String description)
     {
@@ -210,7 +210,7 @@ public class TypeDefPatch extends TypeDefElementHeader
     /**
      * Set up the unique identifier for the new glossary term that describes the TypeDef.
      *
-     * @param descriptionGUID - String unique identifier
+     * @param descriptionGUID String unique identifier
      */
     public void setDescriptionGUID(String descriptionGUID)
     {
@@ -239,7 +239,7 @@ public class TypeDefPatch extends TypeDefElementHeader
     /**
      * Set up the list of typeDefAttributes that are either new or changing.
      *
-     * @param typeDefAttributes - list of AttributeDefs
+     * @param typeDefAttributes list of AttributeDefs
      */
     public void setTypeDefAttributes(List<TypeDefAttribute> typeDefAttributes)
     {
@@ -268,7 +268,7 @@ public class TypeDefPatch extends TypeDefElementHeader
     /**
      * Set up the TypeDef options for the patch.
      *
-     * @param typeDefOptions - map of TypeDef Options that are new or changing.
+     * @param typeDefOptions map of TypeDef Options that are new or changing.
      */
     public void setTypeDefOptions(Map<String, String> typeDefOptions)
     {
@@ -333,7 +333,7 @@ public class TypeDefPatch extends TypeDefElementHeader
     /**
      * Set up the list of valid statuses for an instance of this TypeDef.
      *
-     * @param validInstanceStatusList - list of valid statuses
+     * @param validInstanceStatusList list of valid statuses
      */
     public void setValidInstanceStatusList(List<InstanceStatus> validInstanceStatusList)
     {

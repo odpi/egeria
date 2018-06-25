@@ -38,10 +38,10 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
     private OMRSTypeDefEventProcessor          incomingTypeDefEventProcessor;
     private OMRSInstanceEventProcessor         incomingInstanceEventProcessor   = null;
     private OMRSRepositoryEventProcessor       outboundRepositoryEventProcessor = null;
-    private OMRSRepositoryEventManager         outboundRepositoryEventManager   = null;
-    private OMRSRepositoryEventExchangeRule    saveExchangeRule                 = null;
-    private OMRSRepositoryConnector            realLocalConnector               = null;
-    private OMRSRepositoryEventMapperConnector realEventMapper                  = null;
+    private OMRSRepositoryEventManager         outboundRepositoryEventManager;
+    private OMRSRepositoryEventExchangeRule    saveExchangeRule;
+    private OMRSRepositoryConnector            realLocalConnector;
+    private OMRSRepositoryEventMapperConnector realEventMapper;
 
 
     /**
@@ -392,7 +392,7 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
      */
     public Connection getLocalRepositoryRemoteConnection()
     {
-        return new Connection(super.connection);
+        return new Connection(super.connectionBean);
     }
 
 

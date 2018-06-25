@@ -4,7 +4,7 @@ package org.odpi.openmetadata.frameworks.connectors;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProperties;
-import org.odpi.openmetadata.frameworks.connectors.properties.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 
 /**
@@ -50,8 +50,8 @@ public abstract class Connector
      * @param connectorInstanceId   unique id for the connector instance   useful for messages etc
      * @param connection   POJO for the configuration used to create the connector.
      */
-    public abstract void initialize(String                    connectorInstanceId,
-                                    Connection connection);
+    public abstract void initialize(String     connectorInstanceId,
+                                    ConnectionProperties connection);
 
 
     /**
@@ -68,9 +68,9 @@ public abstract class Connector
      * during the lifetime of a connector instance even if the connection information is updated or removed from
      * the originating metadata repository.
      *
-     * @return connection object
+     * @return connection properties object
      */
-    public abstract Connection getConnection();
+    public abstract ConnectionProperties getConnection();
 
 
     /**

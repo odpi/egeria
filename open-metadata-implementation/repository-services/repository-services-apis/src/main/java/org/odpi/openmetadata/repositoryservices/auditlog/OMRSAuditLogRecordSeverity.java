@@ -57,9 +57,9 @@ public enum OMRSAuditLogRecordSeverity
     /**
      * Typical constructor sets up the selected enum value.
      *
-     * @param severityCode - numeric of this enum.
-     * @param severityName - name of enum.
-     * @param severityDescription - default description of enum..
+     * @param severityCode numeric of this enum.
+     * @param severityName name of enum.
+     * @param severityDescription default description of enum..
      */
     OMRSAuditLogRecordSeverity(int      severityCode,
                                String   severityName,

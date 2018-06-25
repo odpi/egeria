@@ -27,7 +27,7 @@ public interface OMRSCohortRegistryStore
      * registration with the metadata repository cohort.
      * Any previous local registration information is overwritten.
      *
-     * @param localRegistration - details of the local repository's registration with the metadata cohort.
+     * @param localRegistration details of the local repository's registration with the metadata cohort.
      */
     void saveLocalRegistration(MemberRegistration localRegistration);
 
@@ -53,7 +53,7 @@ public interface OMRSCohortRegistryStore
      * Save details of a remote registration.  This contains details of one of the other repositories in the
      * metadata repository cohort.  If a remote registration already exists, it is over-written.
      *
-     * @param remoteRegistration - details of a remote repository in the metadata repository cohort.
+     * @param remoteRegistration details of a remote repository in the metadata repository cohort.
      */
     void saveRemoteRegistration(MemberRegistration  remoteRegistration);
 
@@ -70,7 +70,7 @@ public interface OMRSCohortRegistryStore
      * Return the registration information for a specific metadata repository, identified by its repository's
      * metadata collection Id.   If the metadata collection Id is not recognized then null is returned.
      *
-     * @param metadataCollectionId - unique identifier for the repository's metadata collection.
+     * @param metadataCollectionId unique identifier for the repository's metadata collection.
      * @return MemberRegistration object containing details of the remote metadata repository.
      */
     MemberRegistration retrieveRemoteRegistration(String    metadataCollectionId);
@@ -79,7 +79,7 @@ public interface OMRSCohortRegistryStore
     /**
      * Remove details of the requested remote repository's registration from the store.
      *
-     * @param metadataCollectionId - unique identifier for the repository's metadata collection
+     * @param metadataCollectionId unique identifier for the repository's metadata collection
      */
     void removeRemoteRegistration(String    metadataCollectionId);
 

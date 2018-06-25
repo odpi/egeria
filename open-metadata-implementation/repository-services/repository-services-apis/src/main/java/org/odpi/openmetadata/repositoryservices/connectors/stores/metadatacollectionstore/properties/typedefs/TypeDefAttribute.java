@@ -46,7 +46,7 @@ public class TypeDefAttribute extends TypeDefElementHeader
     /**
      * Copy/clone constructor initialized with the values from the supplied template.
      *
-     * @param template - TypeDefAttribute to copy
+     * @param template TypeDefAttribute to copy
      */
     public TypeDefAttribute(TypeDefAttribute template)
     {
@@ -83,7 +83,7 @@ public class TypeDefAttribute extends TypeDefElementHeader
     /**
      * Set up the name of this attribute.
      *
-     * @param attributeName - String name
+     * @param attributeName String name
      */
     public void setAttributeName(String attributeName)
     {
@@ -94,7 +94,7 @@ public class TypeDefAttribute extends TypeDefElementHeader
     /**
      * Return the name of the type for the value in this attribute.
      *
-     * @return AttributeTypeDef - definition of attribute type
+     * @return AttributeTypeDef definition of attribute type
      */
     public AttributeTypeDef getAttributeType() { return attributeType; }
 
@@ -121,7 +121,7 @@ public class TypeDefAttribute extends TypeDefElementHeader
     /**
      * Set up the short description of the attribute.
      *
-     * @param attributeDescription - String description
+     * @param attributeDescription String description
      */
     public void setAttributeDescription(String attributeDescription)
     {
@@ -145,7 +145,7 @@ public class TypeDefAttribute extends TypeDefElementHeader
      * Set up the unique id of the glossary term that describes this attribute (or null if
      * no attribute defined).
      *
-     * @param attributeDescriptionGUID - String guid
+     * @param attributeDescriptionGUID String guid
      */
     public void setAttributeDescriptionGUID(String attributeDescriptionGUID)
     {
@@ -274,7 +274,7 @@ public class TypeDefAttribute extends TypeDefElementHeader
     /**
      * Set up the list of mappings to external standards.
      *
-     * @param externalStandardMappings - ExternalStandardMappings list
+     * @param externalStandardMappings ExternalStandardMappings list
      */
     public void setExternalStandardMappings(List<ExternalStandardMapping> externalStandardMappings)
     {

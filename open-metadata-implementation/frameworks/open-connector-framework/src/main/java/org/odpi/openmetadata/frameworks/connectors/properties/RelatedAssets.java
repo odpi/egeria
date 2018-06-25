@@ -1,6 +1,9 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
+import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFErrorCode;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
+
 import java.util.Iterator;
 
 /**
@@ -92,7 +95,18 @@ public abstract class RelatedAssets extends AssetPropertyIteratorBase implements
     @Override
     public void remove()
     {
-        super.pagingIterator.remove();
+        OCFErrorCode errorCode = OCFErrorCode.UNABLE_TO_REMOVE;
+        String       errorMessage = errorCode.getErrorMessageId()
+                                  + errorCode.getFormattedErrorMessage(this.getParentAssetTypeName(),
+                                                                       this.getParentAssetName(),
+                                                                       this.getClass().getName());
+
+        throw new OCFRuntimeException(errorCode.getHTTPErrorCode(),
+                                      this.getClass().getName(),
+                                      "remove",
+                                      errorMessage,
+                                      errorCode.getSystemAction(),
+                                      errorCode.getUserAction());
     }
 
 

@@ -1,10 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservices.connectedasset.client;
 
-import org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions.InvalidParameterException;
-import org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions.PropertyServerException;
-import org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions.UnrecognizedConnectionGUIDException;
-import org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions.UserNotAuthorizedException;
+import org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.connectedasset.ConnectedAssetInterface;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
 
@@ -46,13 +43,13 @@ public class ConnectedAsset implements ConnectedAssetInterface
      *
      * @return AssetUniverse - a comprehensive collection of properties about the asset.
 
-     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UnrecognizedAssetGUIDException the GUID is null or invalid.
      * @throws PropertyServerException There is a problem retrieving the asset properties from
      *                                   the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public AssetUniverse getAssetProperties(String   userId,
-                                            String   assetGUID) throws InvalidParameterException,
+                                            String   assetGUID) throws UnrecognizedAssetGUIDException,
                                                                        PropertyServerException,
                                                                        UserNotAuthorizedException
     {

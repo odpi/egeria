@@ -45,7 +45,7 @@ public class AttributeTypeDefResponse extends OMRSRESTAPIResponse
     /**
      * Set up the resulting AttributeTypeDef object.
      *
-     * @param attributeTypeDef - AttributeTypeDef object
+     * @param attributeTypeDef AttributeTypeDef object
      */
     public void setAttributeTypeDef(AttributeTypeDef attributeTypeDef)
     {

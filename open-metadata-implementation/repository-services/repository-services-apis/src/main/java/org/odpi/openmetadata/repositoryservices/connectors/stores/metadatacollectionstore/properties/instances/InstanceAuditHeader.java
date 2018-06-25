@@ -54,7 +54,7 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
     /**
      * Copy/clone constructor set the value to those supplied in the template.
      *
-     * @param template - Instance header
+     * @param template Instance header
      */
     public InstanceAuditHeader(InstanceAuditHeader template)
     {
@@ -95,7 +95,7 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
     /**
      * Set up the type of this instance.  This identifies the type definition (TypeDef) that determines its properties.
      *
-     * @param type - InstanceType object
+     * @param type InstanceType object
      */
     public void setType(InstanceType type)
     {
@@ -114,7 +114,7 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
     /**
      * Set up the status of this instance (UNKNOWN, PROPOSED, DRAFT, ACTIVE, DELETED).
      *
-     * @param newStatus - InstanceStatus
+     * @param newStatus InstanceStatus
      */
     public void setStatus(InstanceStatus newStatus) { this.currentStatus = newStatus; }
 
@@ -146,7 +146,7 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
     /**
      * Set up the name of the user that last updated this instance.
      *
-     * @param updatedBy - String user name
+     * @param updatedBy String user name
      */
     public void setUpdatedBy(String updatedBy) { this.updatedBy = updatedBy; }
 
@@ -180,7 +180,7 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
     /**
      * Return what was the late time this instance was updated.
      *
-     * @return Date - last update time
+     * @return Date last update time
      */
     public Date getUpdateTime()
     {
@@ -198,7 +198,7 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
     /**
      * Set up the last update time for this instance.
      *
-     * @param updateTime - Date - last update time
+     * @param updateTime Date last update time
      */
     public void setUpdateTime(Date updateTime) { this.updateTime = updateTime; }
 
@@ -214,7 +214,7 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
     /**
      * Set up the version number for this instance.
      *
-     * @param version - Long version number
+     * @param version Long version number
      */
     public void setVersion(long version) { this.version = version; }
 
@@ -232,7 +232,7 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
      * Set up the status to use when a deleted instance is restored.  UNKNOWN is used whenever the instance is
      * not in DELETED status.
      *
-     * @param statusOnDelete - InstanceStatus Enum
+     * @param statusOnDelete InstanceStatus Enum
      */
     public void setStatusOnDelete(InstanceStatus statusOnDelete) { this.statusOnDelete = statusOnDelete; }
 

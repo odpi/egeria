@@ -42,15 +42,15 @@ public class InstanceType extends InstanceElementHeader
     /**
      * Typical constructor that set all of the properties at once.
      *
-     * @param typeDefCategory - the category of the type
-     * @param typeDefGUID - unique identifier of the type
-     * @param typeDefName - unique name of the type
-     * @param typeDefVersion - version number of the type
-     * @param typeDefDescription - short description of the type
-     * @param typeDefDescriptionGUID - unique identifier of the glossary term describing this type.
-     * @param typeDefSuperTypes - full list of super types for this type
-     * @param validStatusList - list of statuses that this instance can have
-     * @param validInstanceProperties - full list of valid property names that can be put in the instance (including
+     * @param typeDefCategory the category of the type
+     * @param typeDefGUID unique identifier of the type
+     * @param typeDefName unique name of the type
+     * @param typeDefVersion version number of the type
+     * @param typeDefDescription short description of the type
+     * @param typeDefDescriptionGUID unique identifier of the glossary term describing this type.
+     * @param typeDefSuperTypes full list of super types for this type
+     * @param validStatusList list of statuses that this instance can have
+     * @param validInstanceProperties full list of valid property names that can be put in the instance (including
      *                                properties from the super types)
      */
     public InstanceType(TypeDefCategory           typeDefCategory,
@@ -78,7 +78,7 @@ public class InstanceType extends InstanceElementHeader
     /**
      * Copy/clone constructor
      *
-     * @param template - instance type to copy
+     * @param template instance type to copy
      */
     public InstanceType(InstanceType    template)
     {
@@ -126,7 +126,7 @@ public class InstanceType extends InstanceElementHeader
     /**
      * Set up the unique identifier for the type of this instance.
      *
-     * @param typeDefGUID - String unique identifier
+     * @param typeDefGUID String unique identifier
      */
     public void setTypeDefGUID(String typeDefGUID) { this.typeDefGUID = typeDefGUID; }
 
@@ -142,7 +142,7 @@ public class InstanceType extends InstanceElementHeader
     /**
      * Set up the name of this instance's type.
      *
-     * @param typeDefName - String type name
+     * @param typeDefName String type name
      */
     public void setTypeDefName(String typeDefName) { this.typeDefName = typeDefName; }
 
@@ -161,7 +161,7 @@ public class InstanceType extends InstanceElementHeader
     /**
      * Set up the version for the TypeDef.
      *
-     * @param typeDefVersion - long version number
+     * @param typeDefVersion long version number
      */
     public void setTypeDefVersion(long typeDefVersion)
     {
@@ -190,7 +190,7 @@ public class InstanceType extends InstanceElementHeader
     /**
      * Set up the full list of defined super-types for this TypeDef working up the type hierarchy.
      *
-     * @param typeDefSuperTypes - list of type names
+     * @param typeDefSuperTypes list of type names
      */
     public void setTypeDefSuperTypes(List<TypeDefLink> typeDefSuperTypes)
     {
@@ -208,7 +208,7 @@ public class InstanceType extends InstanceElementHeader
     /**
      * Return the description for the TypeDef.
      *
-     * @return - String description
+     * @return String description
      */
     public String getTypeDefDescription()
     {
@@ -219,7 +219,7 @@ public class InstanceType extends InstanceElementHeader
     /**
      * Set up the description for the TypeDef.
      *
-     * @param typeDefDescription - String description
+     * @param typeDefDescription String description
      */
     public void setTypeDefDescription(String typeDefDescription)
     {
@@ -241,7 +241,7 @@ public class InstanceType extends InstanceElementHeader
     /**
      * Set up the unique identifier of the glossary term that describes this TypeDef (null if no term defined).
      *
-     * @param typeDefDescriptionGUID - String unique identifier
+     * @param typeDefDescriptionGUID String unique identifier
      */
     public void setTypeDefDescriptionGUID(String typeDefDescriptionGUID)
     {
@@ -270,7 +270,7 @@ public class InstanceType extends InstanceElementHeader
     /**
      * Set up the list of valid instance statuses supported by this instance.
      *
-     * @param validStatusList - InstanceStatus Array
+     * @param validStatusList InstanceStatus Array
      */
     public void setValidStatusList(List<InstanceStatus> validStatusList)
     {
@@ -306,7 +306,7 @@ public class InstanceType extends InstanceElementHeader
     /**
      * Set up the set of valid property names that can be stored in this instance.
      *
-     * @param validInstanceProperties - array of property names.
+     * @param validInstanceProperties array of property names.
      */
     public void setValidInstanceProperties(List<String> validInstanceProperties)
     {

@@ -50,7 +50,7 @@ public class OMRSRegistryEvent extends OMRSEvent
      * Inbound event constructor that takes the object created by the Jackson JSON mapper and unpacks the
      * properties into the registry event.
      *
-     * @param inboundEvent - incoming Event.
+     * @param inboundEvent incoming Event.
      */
     public OMRSRegistryEvent(OMRSEventV1 inboundEvent)
     {
@@ -88,9 +88,9 @@ public class OMRSRegistryEvent extends OMRSEvent
      * Constructor for a normal outbound event.  It sets the event type and the other parameters
      * used in a registry event payload.
      *
-     * @param registryEventType - type of event (REGISTRATION_EVENT, REFRESH_REGISTRATION_REQUEST, RE_REGISTRATION_EVENT)
-     * @param registrationTimestamp - time that the local repository registered.
-     * @param remoteConnection - remote connection to this local repository.
+     * @param registryEventType type of event (REGISTRATION_EVENT, REFRESH_REGISTRATION_REQUEST, RE_REGISTRATION_EVENT)
+     * @param registrationTimestamp time that the local repository registered.
+     * @param remoteConnection remote connection to this local repository.
      */
     public OMRSRegistryEvent(OMRSRegistryEventType          registryEventType,
                              Date                           registrationTimestamp,
@@ -107,7 +107,7 @@ public class OMRSRegistryEvent extends OMRSEvent
     /**
      * Constructor for an UnRegistration Event.
      *
-     * @param registryEventType - the type of event
+     * @param registryEventType the type of event
      */
     public OMRSRegistryEvent(OMRSRegistryEventType          registryEventType)
     {
@@ -120,10 +120,10 @@ public class OMRSRegistryEvent extends OMRSEvent
     /**
      * Constructor for the REGISTRATION_ERROR_EVENT outbound event.
      *
-     * @param errorCode - detailed error code
-     * @param errorMessage - Optional error message
-     * @param targetMetadataCollectionId - the identifier of the server that sent bad information.
-     * @param remoteConnection - remote connection to the target repository. (Optional - only supplied if
+     * @param errorCode detailed error code
+     * @param errorMessage Optional error message
+     * @param targetMetadataCollectionId the identifier of the server that sent bad information.
+     * @param remoteConnection remote connection to the target repository. (Optional only supplied if
      *                              relevant to the reported error; otherwise null.)
      */
     public OMRSRegistryEvent(OMRSRegistryEventErrorCode errorCode,

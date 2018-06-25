@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.assetconsumer.server;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.AssetConsumerErrorCode;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
-import org.odpi.openmetadata.frameworks.connectors.properties.ElementOrigin;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOrigin;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -454,7 +454,7 @@ public class ConnectionHandler
 
 
     /**
-     * Create an ElementType by extracting relevant information from the supplied instance.
+     * Create an AssetElementType by extracting relevant information from the supplied instance.
      *
      * @param instance - instance to extract properties from
      * @return resulting elementType
@@ -472,7 +472,7 @@ public class ConnectionHandler
             elementType.setElementTypeName(instanceType.getTypeDefName());
             elementType.setElementTypeDescription(instanceType.getTypeDefDescription());
             elementType.setElementTypeVersion(instanceType.getTypeDefVersion());
-            elementType.setElementAccessServiceURL(serverName);
+            elementType.setElementSourceServer(serverName);
             elementType.setElementHomeMetadataCollectionId(instance.getMetadataCollectionId());
 
             switch (instance.getInstanceProvenanceType())
@@ -511,9 +511,9 @@ public class ConnectionHandler
      * @param methodName - calling method
      * @return an AdditionalProperties object or null
      */
-    private AdditionalProperties getAdditionalPropertiesFromEntity(String              propertyName,
-                                                                   InstanceProperties  properties,
-                                                                   String              methodName)
+    private Map<String, Object> getAdditionalPropertiesFromEntity(String              propertyName,
+                                                                  InstanceProperties  properties,
+                                                                  String              methodName)
     {
         /*
          * Extract the map property
@@ -555,12 +555,13 @@ public class ConnectionHandler
                     }
                 }
 
-                if (! additionalPropertiesMap.isEmpty())
+                if (additionalPropertiesMap.isEmpty())
                 {
-                    AdditionalProperties additionalProperties = new AdditionalProperties();
-
-                    additionalProperties.setAdditionalProperties(additionalPropertiesMap);
-                    return additionalProperties;
+                    return null;
+                }
+                else
+                {
+                    return additionalPropertiesMap;
                 }
             }
         }

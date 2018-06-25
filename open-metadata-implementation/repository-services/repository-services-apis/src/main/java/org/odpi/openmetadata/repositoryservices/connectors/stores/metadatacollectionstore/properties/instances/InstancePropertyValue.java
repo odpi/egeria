@@ -43,7 +43,7 @@ public class InstancePropertyValue extends InstanceElementHeader
     /**
      * Typical constructor initializes the instance property value to nulls.
      *
-     * @param instancePropertyCategory - InstancePropertyCategory Enum
+     * @param instancePropertyCategory InstancePropertyCategory Enum
      */
     public InstancePropertyValue(InstancePropertyCategory   instancePropertyCategory)
     {
@@ -89,7 +89,7 @@ public class InstancePropertyValue extends InstanceElementHeader
     /**
      * Set up the unique GUID of the type.
      *
-     * @param typeGUID - String unique identifier
+     * @param typeGUID String unique identifier
      */
     public void setTypeGUID(String typeGUID) { this.typeGUID = typeGUID; }
 
@@ -105,7 +105,7 @@ public class InstancePropertyValue extends InstanceElementHeader
     /**
      * Set up the name of the type.
      *
-     * @param typeName - String type name
+     * @param typeName String type name
      */
     public void setTypeName(String typeName) { this.typeName = typeName; }
 

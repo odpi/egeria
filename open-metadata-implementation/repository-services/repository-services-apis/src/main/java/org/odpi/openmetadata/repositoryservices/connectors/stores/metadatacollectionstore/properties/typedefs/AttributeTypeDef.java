@@ -51,7 +51,7 @@ public class AttributeTypeDef extends TypeDefElementHeader
     /**
      * Minimal constructor is passed the category of the attribute type
      *
-     * @param category - category of this TypeDef
+     * @param category category of this TypeDef
      */
     public AttributeTypeDef(AttributeTypeDefCategory   category)
     {
@@ -62,9 +62,9 @@ public class AttributeTypeDef extends TypeDefElementHeader
     /**
      * Typical constructor is passed the values that describe the type.
      *
-     * @param category - category of this TypeDef
-     * @param guid - unique id for the TypeDef
-     * @param name - unique name for the TypeDef
+     * @param category category of this TypeDef
+     * @param guid unique id for the TypeDef
+     * @param name unique name for the TypeDef
      */
     public AttributeTypeDef(AttributeTypeDefCategory   category,
                             String                     guid,
@@ -116,7 +116,7 @@ public class AttributeTypeDef extends TypeDefElementHeader
      * Set up the version of the AttributeTypeDef.  Versions are created when an AttributeTypeDef's properties
      * are changed.  If a description is updated, then this does not create a new version.
      *
-     * @param version - long version number
+     * @param version long version number
      */
     public void setVersion(long version)
     {
@@ -140,7 +140,7 @@ public class AttributeTypeDef extends TypeDefElementHeader
      * Set up the version name, which is a more of a human readable form of the version number.
      * It can be used to show whether the change is a minor or major update.
      *
-     * @param versionName - String version name
+     * @param versionName String version name
      */
     public void setVersionName(String versionName)
     {
@@ -159,7 +159,7 @@ public class AttributeTypeDef extends TypeDefElementHeader
     /**
      * Set up the category of the TypeDef.
      *
-     * @param category - AttributeTypeDefCategory enum
+     * @param category AttributeTypeDefCategory enum
      */
     public void setCategory(AttributeTypeDefCategory category) { this.category = category; }
 
@@ -175,7 +175,7 @@ public class AttributeTypeDef extends TypeDefElementHeader
     /**
      * Set up the unique identifier for this TypeDef.
      *
-     * @param guid - String guid
+     * @param guid String guid
      */
     public void setGUID(String guid) { this.guid = guid; }
 
@@ -195,7 +195,7 @@ public class AttributeTypeDef extends TypeDefElementHeader
      * repositories from different vendors are in operation it is possible that 2 types may have a name clash.  The
      * GUID is the reliable unique identifier.
      *
-     * @param name - String name
+     * @param name String name
      */
     public void setName(String name) { this.name = name; }
 
@@ -203,7 +203,7 @@ public class AttributeTypeDef extends TypeDefElementHeader
     /**
      * Return the short description of this AttributeTypeDef.
      *
-     * @return - String description
+     * @return String description
      */
     public String getDescription()
     {
@@ -214,7 +214,7 @@ public class AttributeTypeDef extends TypeDefElementHeader
     /**
      * Set up the short description of this AttributeTypeDef.
      *
-     * @param description - String description
+     * @param description String description
      */
     public void setDescription(String description)
     {
@@ -238,7 +238,7 @@ public class AttributeTypeDef extends TypeDefElementHeader
      * Set up the unique identifier of the glossary term that describes this AttributeTypeDef.  Null means there
      * is no known glossary term.
      *
-     * @param descriptionGUID - String guid
+     * @param descriptionGUID String guid
      */
     public void setDescriptionGUID(String descriptionGUID)
     {

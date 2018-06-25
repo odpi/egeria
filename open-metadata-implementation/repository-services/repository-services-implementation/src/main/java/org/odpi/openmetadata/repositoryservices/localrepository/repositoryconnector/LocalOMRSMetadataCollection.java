@@ -1189,8 +1189,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
 
 
     /**
-     * Returns a boolean indicating if the entity is stored in the metadata collection.  This entity may be a full
-     * entity object, or an entity proxy.
+     * Returns the entity if the entity is stored in the metadata collection, otherwise null.
      *
      * @param userId - unique identifier for requesting user.
      * @param guid - String unique identifier for the entity

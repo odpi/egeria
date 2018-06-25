@@ -4,6 +4,7 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Objects;
 
 
 /**
@@ -106,24 +107,26 @@ public class AdditionalProperties extends AssetPropertyBase
     /**
      * Test whether the supplied object is equal to this object.
      *
-     * @param testObject   object to test
+     * @param objectToCompare   object to test
      * @return boolean indicating if the supplied object represents the same content as this object.
      */
     @Override
-    public boolean equals(Object testObject)
+    public boolean equals(Object objectToCompare)
     {
-        if (this == testObject)
+        if (this == objectToCompare)
         {
             return true;
         }
-        if (testObject == null || getClass() != testObject.getClass())
+        if (!(objectToCompare instanceof AdditionalProperties))
         {
             return false;
         }
-
-        AdditionalProperties that = (AdditionalProperties) testObject;
-
-        return additionalProperties != null ? additionalProperties.equals(that.additionalProperties) : that.additionalProperties == null;
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        AdditionalProperties that = (AdditionalProperties) objectToCompare;
+        return Objects.equals(additionalProperties, that.additionalProperties);
     }
 
 
@@ -137,6 +140,7 @@ public class AdditionalProperties extends AssetPropertyBase
     {
         return "AdditionalProperties{" +
                 "additionalProperties=" + additionalProperties +
+                ", parentAsset=" + parentAsset +
                 '}';
     }
 }

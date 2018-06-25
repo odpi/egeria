@@ -2,8 +2,8 @@
 package org.odpi.openmetadata.accessservices.assetconsumer.outtopic;
 
 import org.apache.log4j.Logger;
-import org.odpi.openmetadata.frameworks.connectors.properties.Connection;
 import org.odpi.openmetadata.accessservices.assetconsumer.properties.Asset;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
@@ -38,7 +38,7 @@ public class AssetConsumerPublisher
      * @param repositoryValidator - provides validation of metadata instance
      * @param componentName - name of component
      */
-    public AssetConsumerPublisher(Connection              assetConsumerOutTopic,
+    public AssetConsumerPublisher(Connection               assetConsumerOutTopic,
                                   OMRSRepositoryHelper    repositoryHelper,
                                   OMRSRepositoryValidator repositoryValidator,
                                   String                  componentName)

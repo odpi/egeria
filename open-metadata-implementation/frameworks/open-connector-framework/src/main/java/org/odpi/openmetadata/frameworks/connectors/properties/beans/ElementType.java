@@ -4,27 +4,35 @@ package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.connectors.properties.ElementOrigin;
+
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * The ElementType bean extends the ElementType from the properties package with a default constructor and
- * setter methods.  This means it can be used for REST calls and other JSON based functions.
+ * The ElementType bean provides details of the type information associated with a metadata element.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ElementType extends org.odpi.openmetadata.frameworks.connectors.properties.ElementType
+public class ElementType extends PropertyBase
 {
+    protected String        elementTypeId                   = null;
+    protected String        elementTypeName                 = null;
+    protected long          elementTypeVersion              = 0;
+    protected String        elementTypeDescription          = null;
+    protected String        elementSourceServer             = null;
+    protected ElementOrigin elementOrigin                   = ElementOrigin.CONFIGURATION;;
+    protected String        elementHomeMetadataCollectionId = null;
+
+
     /**
      * Default constructor
      */
     public ElementType()
     {
-        super(null);
-        elementOrigin = ElementOrigin.CONFIGURATION;
+        super();
     }
 
 
@@ -36,6 +44,17 @@ public class ElementType extends org.odpi.openmetadata.frameworks.connectors.pro
     public ElementType(ElementType templateType)
     {
         super(templateType);
+
+        if (templateType != null)
+        {
+            elementTypeId = templateType.getElementTypeId();
+            elementTypeName = templateType.getElementTypeName();
+            elementTypeVersion = templateType.getElementTypeVersion();
+            elementTypeDescription = templateType.getElementTypeDescription();
+            elementSourceServer = templateType.getElementSourceServer();
+            elementOrigin = templateType.getElementOrigin();
+            elementHomeMetadataCollectionId = templateType.getElementHomeMetadataCollectionId();
+        }
     }
 
 
@@ -46,7 +65,18 @@ public class ElementType extends org.odpi.openmetadata.frameworks.connectors.pro
      */
     public void setElementTypeId(String elementTypeId)
     {
-        super.elementTypeId = elementTypeId;
+        this.elementTypeId = elementTypeId;
+    }
+
+
+    /**
+     * Return unique identifier for the element's type.
+     *
+     * @return element type id
+     */
+    public String getElementTypeId()
+    {
+        return elementTypeId;
     }
 
 
@@ -57,7 +87,18 @@ public class ElementType extends org.odpi.openmetadata.frameworks.connectors.pro
      */
     public void setElementTypeName(String elementTypeName)
     {
-        super.elementTypeName = elementTypeName;
+        this.elementTypeName = elementTypeName;
+    }
+
+
+    /**
+     * Return name of element's type.
+     *
+     * @return elementTypeName
+     */
+    public String getElementTypeName()
+    {
+        return elementTypeName;
     }
 
 
@@ -68,7 +109,18 @@ public class ElementType extends org.odpi.openmetadata.frameworks.connectors.pro
      */
     public void setElementTypeVersion(long elementTypeVersion)
     {
-        super.elementTypeVersion = elementTypeVersion;
+        this.elementTypeVersion = elementTypeVersion;
+    }
+
+
+    /**
+     * Return the version number for this element's type.
+     *
+     * @return elementTypeVersion version number for the element type.
+     */
+    public long getElementTypeVersion()
+    {
+        return elementTypeVersion;
     }
 
 
@@ -78,7 +130,18 @@ public class ElementType extends org.odpi.openmetadata.frameworks.connectors.pro
      */
     public void setElementTypeDescription(String elementTypeDescription)
     {
-        super.elementTypeDescription = elementTypeDescription;
+        this.elementTypeDescription = elementTypeDescription;
+    }
+
+
+    /**
+     * Return the description for this element's type.
+     *
+     * @return elementTypeDescription String description for the element type
+     */
+    public String getElementTypeDescription()
+    {
+        return elementTypeDescription;
     }
 
 
@@ -86,11 +149,24 @@ public class ElementType extends org.odpi.openmetadata.frameworks.connectors.pro
      * the URL of the server where the element was retrieved from.  Typically this is
      * a server where the OMAS interfaces are activated.  If no URL is known for the server then null is returned.
      *
-     * @param elementAccessServiceURL URL of the server
+     * @param elementSourceServer URL of the server
      */
-    public void setElementAccessServiceURL(String elementAccessServiceURL)
+    public void setElementSourceServer(String elementSourceServer)
     {
-        super.elementSourceServer = elementAccessServiceURL;
+        this.elementSourceServer = elementSourceServer;
+    }
+
+
+
+    /**
+     * Return the URL of the server where the element was retrieved from.  Typically this is
+     * a server where the OMAS interfaces are activated.  If no URL is known for the server then null is returned.
+     *
+     * @return elementSourceServerURL the url of the server where the element came from
+     */
+    public String getElementSourceServer()
+    {
+        return elementSourceServer;
     }
 
 
@@ -101,7 +177,27 @@ public class ElementType extends org.odpi.openmetadata.frameworks.connectors.pro
      */
     public void setElementOrigin(ElementOrigin elementOrigin)
     {
-        super.elementOrigin = elementOrigin;
+        this.elementOrigin = elementOrigin;
+    }
+
+
+    /**
+     * Return the origin of the metadata element.
+     *
+     * @return ElementOrigin enum
+     */
+    public ElementOrigin getElementOrigin() { return elementOrigin; }
+
+
+    /**
+     * Returns the OMRS identifier for the metadata collection that is managed by the repository
+     * where the element originates (its home repository).
+     *
+     * @return String metadata collection id
+     */
+    public String getElementHomeMetadataCollectionId()
+    {
+        return elementHomeMetadataCollectionId;
     }
 
 
@@ -113,6 +209,66 @@ public class ElementType extends org.odpi.openmetadata.frameworks.connectors.pro
      */
     public void setElementHomeMetadataCollectionId(String elementHomeMetadataCollectionId)
     {
-        super.elementHomeMetadataCollectionId = elementHomeMetadataCollectionId;
+        this.elementHomeMetadataCollectionId = elementHomeMetadataCollectionId;
+    }
+
+
+    /**
+     * Standard toString method.
+     *
+     * @return print out of variables in a JSON-style
+     */
+    @Override
+    public String toString()
+    {
+        return "ElementType{" +
+                "elementTypeId='" + elementTypeId + '\'' +
+                ", elementTypeName='" + elementTypeName + '\'' +
+                ", elementTypeVersion=" + elementTypeVersion +
+                ", elementTypeDescription='" + elementTypeDescription + '\'' +
+                ", elementSourceServer='" + elementSourceServer + '\'' +
+                ", elementOrigin=" + elementOrigin +
+                ", elementHomeMetadataCollectionId='" + elementHomeMetadataCollectionId + '\'' +
+                '}';
+    }
+
+
+    /**
+     * Compare the values of the supplied object with those stored in the current object.
+     *
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (!(objectToCompare instanceof ElementType))
+        {
+            return false;
+        }
+        ElementType that = (ElementType) objectToCompare;
+        return getElementTypeVersion() == that.getElementTypeVersion() &&
+                Objects.equals(getElementTypeId(), that.getElementTypeId()) &&
+                Objects.equals(getElementTypeName(), that.getElementTypeName()) &&
+                Objects.equals(getElementTypeDescription(), that.getElementTypeDescription()) &&
+                Objects.equals(getElementSourceServer(), that.getElementSourceServer()) &&
+                getElementOrigin() == that.getElementOrigin() &&
+                Objects.equals(getElementHomeMetadataCollectionId(), that.getElementHomeMetadataCollectionId());
+    }
+
+
+    /**
+     * Create a hash code for this element type.
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(getElementTypeId(), getElementHomeMetadataCollectionId());
     }
 }

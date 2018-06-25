@@ -38,9 +38,9 @@ public enum ClassificationOrigin implements Serializable
     /**
      * Default constructor for the classification origin.
      *
-     * @param ordinal - numerical representation of the classification origin
-     * @param name - default string name of the classification origin
-     * @param description - default string description of the classification origin
+     * @param ordinal numerical representation of the classification origin
+     * @param name default string name of the classification origin
+     * @param description default string description of the classification origin
      */
     ClassificationOrigin(int  ordinal, String name, String description)
     {

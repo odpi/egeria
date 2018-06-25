@@ -2,7 +2,7 @@
 package org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector;
 
 import org.apache.log4j.Logger;
-import org.odpi.openmetadata.frameworks.connectors.properties.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
@@ -99,7 +99,7 @@ public class LocalOMRSInstanceEventProcessor implements OMRSInstanceEventProcess
 
         this.verifyEventProcessor(methodName);
 
-        Connection connection = this.realLocalConnector.getConnection();
+        ConnectionProperties connection = this.realLocalConnector.getConnection();
         if (connection != null)
         {
             this.realRepositoryName = connection.getConnectionName();

@@ -4,13 +4,13 @@ package org.odpi.openmetadata.accessservices.connectedasset.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.connectors.properties.ElementOrigin;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOrigin;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * The ElementType provide details of the type information associated with the element.  Most consumers
+ * The AssetElementType provide details of the type information associated with the element.  Most consumers
  * of the properties do not need this information.  It is provided to asset consumers primarily as diagnostic
  * information.
  */

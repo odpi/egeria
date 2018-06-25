@@ -72,7 +72,7 @@ public abstract class ElementHeader extends PropertyBase
      * Return the element type properties for this properties object.  These values are set up by the metadata repository
      * and define details to the metadata entity used to represent this element.
      *
-     * @return ElementType - type information.
+     * @return AssetElementType - type information.
      */
     public ElementType getType() {
         return type;

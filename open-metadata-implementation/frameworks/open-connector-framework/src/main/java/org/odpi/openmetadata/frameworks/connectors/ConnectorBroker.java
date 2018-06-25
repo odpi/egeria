@@ -6,8 +6,9 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedExcepti
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
-import org.odpi.openmetadata.frameworks.connectors.properties.Connection;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorType;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypeProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
 import java.util.UUID;
 
@@ -41,13 +42,31 @@ public class ConnectorBroker
      */
     public Connector getConnector(Connection connection) throws ConnectionCheckedException, ConnectorCheckedException
     {
-        ConnectorProvider    connectorProvider = null;
-        Connector            connectorInstance = null;
-
-        if (log.isDebugEnabled())
+        if (connection == null)
         {
-            log.debug("==> ConnectorBroker.getConnector()");
+            return this.getConnector((ConnectionProperties)null);
         }
+        else
+        {
+            return this.getConnector(new ConnectionProperties(connection));
+        }
+    }
+
+
+    /**
+     * Creates a new instance of a connector using the name of the connector provider in the supplied connection.
+     *
+     * @param connection   properties for the connector and connector provider.
+     * @return new connector instance.
+     * @throws ConnectionCheckedException an error with the connection.
+     * @throws ConnectorCheckedException an error initializing the connector.
+     */
+    public Connector getConnector(ConnectionProperties connection) throws ConnectionCheckedException, ConnectorCheckedException
+    {
+        ConnectorProvider    connectorProvider;
+        Connector            connectorInstance;
+
+        log.debug("==> ConnectorBroker.getConnector()");
 
         if (connection == null)
         {
@@ -70,7 +89,7 @@ public class ConnectorBroker
          * Within the connection is a structure called the connector type.  This defines the factory for a new
          * connector instance.  This factory is called the Connector Provider.
          */
-        ConnectorType requestedConnectorType = connection.getConnectorType();
+        ConnectorTypeProperties requestedConnectorType = connection.getConnectorType();
 
         if (requestedConnectorType == null)
         {
@@ -150,24 +169,6 @@ public class ConnectorBroker
                                                  errorCode.getSystemAction(),
                                                  errorCode.getUserAction(),
                                                  classException);
-        }
-        catch (LinkageError   linkageError)
-        {
-            /*
-             * Wrap linkage error in an exception
-             */
-            OCFErrorCode  errorCode = OCFErrorCode.INCOMPLETE_CONNECTOR_PROVIDER;
-            String        connectionName = connection.getConnectionName();
-            String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(connectorProviderClassName, connectionName);
-
-            throw new ConnectionCheckedException(errorCode.getHTTPErrorCode(),
-                                                 this.getClass().getName(),
-                                                 "getConnector",
-                                                 errorMessage,
-                                                 errorCode.getSystemAction(),
-                                                 errorCode.getUserAction(),
-                                                 linkageError);
         }
         catch (ClassCastException  castException)
         {
@@ -266,7 +267,7 @@ public class ConnectorBroker
              */
             OCFErrorCode errorCode = OCFErrorCode.NULL_CONNECTOR;
             String       errorMessage = errorCode.getErrorMessageId()
-                                      + errorCode.getFormattedErrorMessage(connection.getConnectionName());
+                                      + errorCode.getFormattedErrorMessage(connectorProviderClassName, connection.getConnectionName());
 
             throw new OCFRuntimeException(errorCode.getHTTPErrorCode(),
                                           this.getClass().getName(),
@@ -280,12 +281,9 @@ public class ConnectorBroker
          * If we reach this point the connector provider has returned a connector that can be passed to the caller.
          */
 
-        if (log.isDebugEnabled())
-        {
-            log.debug("New connector returned: " + connectorInstance.getConnectorInstanceId());
-            log.debug("Using Connection: " + connectorInstance.getConnection().getQualifiedName() + "(" + connectorInstance.getConnection().getDisplayName() + ")");
-            log.debug("<== ConnectorBroker.getConnector()");
-        }
+        log.debug("New connector returned: " + connectorInstance.getConnectorInstanceId());
+        log.debug("Using Connection: " + connectorInstance.getConnection().getQualifiedName() + "(" + connectorInstance.getConnection().getDisplayName() + ")");
+        log.debug("<== ConnectorBroker.getConnector()");
 
         return connectorInstance;
     }

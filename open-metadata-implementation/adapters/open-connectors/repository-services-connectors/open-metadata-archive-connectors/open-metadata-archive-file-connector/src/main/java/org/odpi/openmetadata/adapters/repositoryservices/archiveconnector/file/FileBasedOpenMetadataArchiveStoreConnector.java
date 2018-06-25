@@ -4,8 +4,8 @@ package org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.file;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.Connection;
-import org.odpi.openmetadata.frameworks.connectors.properties.Endpoint;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.apache.commons.io.FileUtils;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveStoreConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -40,11 +40,11 @@ public class FileBasedOpenMetadataArchiveStoreConnector extends OpenMetadataArch
 
 
     @Override
-    public void initialize(String connectorInstanceId, Connection connection)
+    public void initialize(String connectorInstanceId, ConnectionProperties connectionProperties)
     {
-        super.initialize(connectorInstanceId, connection);
+        super.initialize(connectorInstanceId, connectionProperties);
 
-        Endpoint endpoint = connection.getEndpoint();
+        EndpointProperties endpoint = connectionProperties.getEndpoint();
 
         if (endpoint != null)
         {

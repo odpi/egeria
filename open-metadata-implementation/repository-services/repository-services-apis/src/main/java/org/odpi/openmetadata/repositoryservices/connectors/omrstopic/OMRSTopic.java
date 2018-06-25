@@ -12,7 +12,7 @@ public interface OMRSTopic
      * Register a listener object.  This object will be supplied with all of the events
      * received on the topic.
      *
-     * @param newListener - object implementing the OMRSTopicListener interface
+     * @param newListener object implementing the OMRSTopicListener interface
      */
     void registerListener(OMRSTopicListener  newListener);
 
@@ -20,7 +20,7 @@ public interface OMRSTopic
     /**
      * Sends the supplied event to the topic.
      *
-     * @param event - OMRSEvent object containing the event properties.
+     * @param event OMRSEvent object containing the event properties.
      */
     void sendEvent(OMRSEventV1 event);
 }

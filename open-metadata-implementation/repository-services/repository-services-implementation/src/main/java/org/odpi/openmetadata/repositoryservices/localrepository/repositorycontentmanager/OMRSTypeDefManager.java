@@ -17,8 +17,8 @@ public interface OMRSTypeDefManager
     /**
      * Cache a definition of a new TypeDef.
      *
-     * @param sourceName - source of the request (used for logging)
-     * @param newTypeDef - TypeDef structure describing the new TypeDef.
+     * @param sourceName source of the request (used for logging)
+     * @param newTypeDef TypeDef structure describing the new TypeDef.
      */
     void addTypeDef(String  sourceName, TypeDef newTypeDef);
 
@@ -26,8 +26,8 @@ public interface OMRSTypeDefManager
     /**
      * Cache a definition of a new AttributeTypeDef.
      *
-     * @param sourceName - source of the request (used for logging)
-     * @param newAttributeTypeDef - AttributeTypeDef structure describing the new TypeDef.
+     * @param sourceName source of the request (used for logging)
+     * @param newAttributeTypeDef AttributeTypeDef structure describing the new TypeDef.
      */
     void addAttributeTypeDef(String  sourceName, AttributeTypeDef newAttributeTypeDef);
 
@@ -35,8 +35,8 @@ public interface OMRSTypeDefManager
     /**
      * Update one or more properties of a cached TypeDef.
      *
-     * @param sourceName - source of the request (used for logging)
-     * @param typeDef - TypeDef structure.
+     * @param sourceName source of the request (used for logging)
+     * @param typeDef TypeDef structure.
      */
     void updateTypeDef(String  sourceName, TypeDef   typeDef);
 
@@ -44,9 +44,9 @@ public interface OMRSTypeDefManager
     /**
      * Delete a cached TypeDef.
      *
-     * @param sourceName - source of the request (used for logging)
-     * @param obsoleteTypeDefGUID - String unique identifier for the TypeDef.
-     * @param obsoleteTypeDefName - String unique name for the TypeDef.
+     * @param sourceName source of the request (used for logging)
+     * @param obsoleteTypeDefGUID String unique identifier for the TypeDef.
+     * @param obsoleteTypeDefName String unique name for the TypeDef.
      */
     void deleteTypeDef(String    sourceName,
                        String    obsoleteTypeDefGUID,
@@ -56,9 +56,9 @@ public interface OMRSTypeDefManager
     /**
      * Delete a cached AttributeTypeDef.
      *
-     * @param sourceName - source of the request (used for logging)
-     * @param obsoleteAttributeTypeDefGUID - String unique identifier for the AttributeTypeDef.
-     * @param obsoleteAttributeTypeDefName - String unique name for the AttributeTypeDef.
+     * @param sourceName source of the request (used for logging)
+     * @param obsoleteAttributeTypeDefGUID String unique identifier for the AttributeTypeDef.
+     * @param obsoleteAttributeTypeDefName String unique name for the AttributeTypeDef.
      */
     void deleteAttributeTypeDef(String    sourceName,
                                 String    obsoleteAttributeTypeDefGUID,
@@ -68,10 +68,10 @@ public interface OMRSTypeDefManager
     /**
      * Change the identifiers for a TypeDef.
      *
-     * @param sourceName - source of the request (used for logging).
-     * @param originalTypeDefGUID - TypeDef's original unique identifier.
-     * @param originalTypeDefName - TypeDef's original unique name.
-     * @param newTypeDef - updated TypeDef with new identifiers.
+     * @param sourceName source of the request (used for logging).
+     * @param originalTypeDefGUID TypeDef's original unique identifier.
+     * @param originalTypeDefName TypeDef's original unique name.
+     * @param newTypeDef updated TypeDef with new identifiers.
      */
     void reIdentifyTypeDef(String   sourceName,
                            String   originalTypeDefGUID,
@@ -82,8 +82,8 @@ public interface OMRSTypeDefManager
     /**
      * Change the identifiers for an AttributeTypeDef.
      *
-     * @param sourceName - source of the request (used for logging).
-     * @param originalAttributeTypeDefGUID - AttributeTypeDef's original unique identifier.
+     * @param sourceName source of the request (used for logging).
+     * @param originalAttributeTypeDefGUID AttributeTypeDef's original unique identifier.
      * @param originalAttributeTypeDefName - AttributeTypeDef's original unique name.
      * @param newAttributeTypeDef - updated AttributeTypeDef with new identifiers
      */

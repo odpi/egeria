@@ -5,7 +5,7 @@ import org.apache.log4j.Logger;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnectorProviderBase;
 import org.odpi.openmetadata.repositoryservices.enterprise.connectormanager.OMRSConnectorManager;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
@@ -96,7 +96,7 @@ public class EnterpriseOMRSConnectorProvider extends OMRSRepositoryConnectorProv
      * @throws ConnectionCheckedException if there are missing or invalid properties in the connection
      * @throws ConnectorCheckedException if there are issues instantiating or initializing the connector
      */
-    public Connector getConnector(Connection connection) throws ConnectionCheckedException, ConnectorCheckedException
+    public Connector getConnector(ConnectionProperties connection) throws ConnectionCheckedException, ConnectorCheckedException
     {
         String   methodName = "getConnector()";
 

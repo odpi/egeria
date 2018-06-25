@@ -9,6 +9,15 @@ public class MockConnector extends ConnectorBase
     private final String   testConnectorData = new String("This is from the mock connector");
 
     /**
+     * Default constructor
+     */
+    public MockConnector()
+    {
+        super();
+    }
+
+
+    /**
      * Returns the data string.
      *
      * @return String data
@@ -16,14 +25,5 @@ public class MockConnector extends ConnectorBase
     public  String getMockConnectorData()
     {
         return testConnectorData;
-    }
-
-
-    /**
-     * Disconnect all resources (nothing to do).
-     */
-    public void disconnect()
-    {
-
     }
 }

@@ -50,9 +50,9 @@ public enum OMRSTypeDefEventType implements Serializable
     /**
      * Default Constructor - sets up the specific values for this instance of the enum.
      *
-     * @param eventTypeCode - int identifier used for indexing based on the enum.
-     * @param eventTypeName - string name used for messages that include the enum.
-     * @param eventTypeDescription - default description for the enum value - used when natural resource
+     * @param eventTypeCode int identifier used for indexing based on the enum.
+     * @param eventTypeName string name used for messages that include the enum.
+     * @param eventTypeDescription default description for the enum value used when natural resource
      *                                     bundle is not available.
      */
     OMRSTypeDefEventType(int eventTypeCode, String eventTypeName, String eventTypeDescription)

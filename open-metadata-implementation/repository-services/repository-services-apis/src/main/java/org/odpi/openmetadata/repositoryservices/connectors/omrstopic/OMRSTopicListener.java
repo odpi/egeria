@@ -13,7 +13,7 @@ public interface OMRSTopicListener
     /**
      * Method to pass an event received on topic.
      *
-     * @param event - inbound event
+     * @param event inbound event
      */
     void processEvent(OMRSEventV1 event);
 }

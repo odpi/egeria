@@ -37,9 +37,9 @@ public enum MatchCriteria implements Serializable
     /**
      * Constructor to set up a single instances of the enum.
      *
-     * @param ordinal - numerical representation of the match criteria
-     * @param name - default string name of the match criteria
-     * @param description - default string description of the match criteria
+     * @param ordinal numerical representation of the match criteria
+     * @param name default string name of the match criteria
+     * @param description default string description of the match criteria
      */
     MatchCriteria(int  ordinal, String name, String description)
     {

@@ -26,7 +26,7 @@ public abstract class OMRSRepositoryConnector extends ConnectorBase implements O
 
 
     /**
-     * Default constructor - nothing to do
+     * Default constructor nothing to do
      */
     public OMRSRepositoryConnector()
     {
@@ -36,7 +36,7 @@ public abstract class OMRSRepositoryConnector extends ConnectorBase implements O
     /**
      * Set up a repository helper object for the repository connector to use.
      *
-     * @param repositoryHelper - helper object for building and querying TypeDefs and metadata instances.
+     * @param repositoryHelper helper object for building and querying TypeDefs and metadata instances.
      */
     public void setRepositoryHelper(OMRSRepositoryHelper repositoryHelper)
     {
@@ -58,7 +58,7 @@ public abstract class OMRSRepositoryConnector extends ConnectorBase implements O
     /**
      * Set up a repository validator for the repository connector to use.
      *
-     * @param repositoryValidator - validator object to check the validity of TypeDefs and metadata instances.
+     * @param repositoryValidator validator object to check the validity of TypeDefs and metadata instances.
      */
     public void setRepositoryValidator(OMRSRepositoryValidator repositoryValidator)
     {
@@ -91,7 +91,7 @@ public abstract class OMRSRepositoryConnector extends ConnectorBase implements O
     /**
      * Set up the name of the repository where the metadata collection resides.
      *
-     * @param repositoryName - String name
+     * @param repositoryName String name
      */
     public void  setRepositoryName(String      repositoryName)
     {
@@ -110,7 +110,7 @@ public abstract class OMRSRepositoryConnector extends ConnectorBase implements O
     /**
      * Set up the name of the server where the metadata collection resides.
      *
-     * @param serverName - String name
+     * @param serverName String name
      */
     public void  setServerName(String      serverName)
     {
@@ -131,7 +131,7 @@ public abstract class OMRSRepositoryConnector extends ConnectorBase implements O
      * Set up the descriptive string describing the type of the server.  This might be the
      * name of the product, or similar identifier.
      *
-     * @param serverType - String server type
+     * @param serverType String server type
      */
     public void setServerType(String serverType)
     {
@@ -150,7 +150,7 @@ public abstract class OMRSRepositoryConnector extends ConnectorBase implements O
     /**
      * Set up the name of the organization that runs/owns the server used to access the repository.
      *
-     * @param organizationName - String organization name
+     * @param organizationName String organization name
      */
     public void setOrganizationName(String organizationName)
     {
@@ -172,7 +172,7 @@ public abstract class OMRSRepositoryConnector extends ConnectorBase implements O
     /**
      * Set up the unique Id for this metadata collection.
      *
-     * @param metadataCollectionId - String unique Id
+     * @param metadataCollectionId String unique Id
      */
     public void setMetadataCollectionId(String         metadataCollectionId)
     {
@@ -194,7 +194,7 @@ public abstract class OMRSRepositoryConnector extends ConnectorBase implements O
     /**
      * Set up the maximum PageSize
      *
-     * @param maxPageSize - maximum number of elements that can be retrieved on a request.
+     * @param maxPageSize maximum number of elements that can be retrieved on a request.
      */
     public void setMaxPageSize(int    maxPageSize)
     {
@@ -205,7 +205,7 @@ public abstract class OMRSRepositoryConnector extends ConnectorBase implements O
     /**
      * Throw a RepositoryErrorException if the connector is not active.
      *
-     * @param methodName - name of calling method
+     * @param methodName name of calling method
      * @throws RepositoryErrorException repository connector has not started or has been disconnected.
      */
     public void validateRepositoryIsActive(String  methodName) throws RepositoryErrorException
@@ -230,7 +230,7 @@ public abstract class OMRSRepositoryConnector extends ConnectorBase implements O
      * Returns the metadata collection object that provides an OMRS abstraction of the metadata within
      * a metadata repository.
      *
-     * @return OMRSMetadataInstanceStore - metadata information retrieved from the metadata repository.
+     * @return OMRSMetadataInstanceStore metadata information retrieved from the metadata repository.
      ** @throws RepositoryErrorException no metadata collection
      */
     public OMRSMetadataCollection getMetadataCollection() throws RepositoryErrorException

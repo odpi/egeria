@@ -44,9 +44,9 @@ public enum ClassificationPropagationRule implements Serializable
     /**
      * Constructor to set up a single instances of the enum.
      *
-     * @param ordinal - numerical representation of the propagation rule
-     * @param name - default string name of the propagation rule
-     * @param description - default string description of the propagation rule
+     * @param ordinal numerical representation of the propagation rule
+     * @param name default string name of the propagation rule
+     * @param description default string description of the propagation rule
      */
     ClassificationPropagationRule(int  ordinal, String name, String description)
     {

@@ -3,8 +3,8 @@ package org.odpi.openmetadata.adapters.repositoryservices.cohortregistrystore.fi
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
-import org.odpi.openmetadata.frameworks.connectors.properties.Connection;
-import org.odpi.openmetadata.frameworks.connectors.properties.Endpoint;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
@@ -59,14 +59,14 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
      * Initialize the connector.
      *
      * @param connectorInstanceId - unique id for the connector instance - useful for messages etc
-     * @param connection - POJO for the configuration used to create the connector.
+     * @param connectionProperties - POJO for the configuration used to create the connector.
      */
     @Override
-    public void initialize(String connectorInstanceId, Connection connection)
+    public void initialize(String connectorInstanceId, ConnectionProperties connectionProperties)
     {
-        super.initialize(connectorInstanceId, connection);
+        super.initialize(connectorInstanceId, connectionProperties);
 
-        Endpoint endpoint = connection.getEndpoint();
+        EndpointProperties endpoint = connectionProperties.getEndpoint();
 
         if (endpoint != null)
         {

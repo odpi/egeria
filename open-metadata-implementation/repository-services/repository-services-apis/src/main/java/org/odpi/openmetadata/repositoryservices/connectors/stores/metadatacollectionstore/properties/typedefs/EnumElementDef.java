@@ -113,7 +113,7 @@ public class EnumElementDef extends TypeDefElementHeader
     /**
      * Set up the unique identifier (guid) of the glossary term that describes this EnumElementDef.
      *
-     * @param descriptionGUID - String guid
+     * @param descriptionGUID String guid
      */
     public void setDescriptionGUID(String descriptionGUID)
     {

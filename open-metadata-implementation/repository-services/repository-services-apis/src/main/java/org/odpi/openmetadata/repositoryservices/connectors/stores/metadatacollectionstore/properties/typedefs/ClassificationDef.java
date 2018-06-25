@@ -38,11 +38,11 @@ public class ClassificationDef extends TypeDef
     /**
      * Typical constructor is passed the properties of the typedef's super class being constructed.
      *
-     * @param category    - category of this TypeDef
-     * @param guid        - unique id for the TypeDef
-     * @param name        - unique name for the TypeDef
-     * @param version     - active version number for the TypeDef
-     * @param versionName - name for active version of the TypeDef
+     * @param category    category of this TypeDef
+     * @param guid        unique id for the TypeDef
+     * @param name        unique name for the TypeDef
+     * @param version     active version number for the TypeDef
+     * @param versionName name for active version of the TypeDef
      */
     public ClassificationDef(TypeDefCategory category,
                              String          guid,
@@ -57,7 +57,7 @@ public class ClassificationDef extends TypeDef
     /**
      * Copy/clone constructor copies values from the supplied template.
      *
-     * @param template - template to copy
+     * @param template template to copy
      */
     public ClassificationDef(ClassificationDef   template)
     {
@@ -93,7 +93,7 @@ public class ClassificationDef extends TypeDef
     /**
      * Set up the list of identifiers for the types of entities that this type of Classification can be connected to.
      *
-     * @param validEntityDefs - List of entity type identifiers
+     * @param validEntityDefs List of entity type identifiers
      */
     public void setValidEntityDefs(List<TypeDefLink> validEntityDefs)
     {
@@ -124,7 +124,7 @@ public class ClassificationDef extends TypeDef
      * Sets up whether this classification should propagate to other entities if the relationship linking them
      * allows classification propagation.
      *
-     * @param propagatable - boolean flag
+     * @param propagatable boolean flag
      */
     public void setPropagatable(boolean propagatable)
     {

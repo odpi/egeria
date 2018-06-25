@@ -139,9 +139,9 @@ public class OMRSArchiveManager
      * Unpack and process the contents an open metadata archive , passing its contents to the local
      * repository (if it exists).
      *
-     * @param archiveStore - open metadata archive  to process
-     * @param typeDefProcessor - receiver of new TypeDefs
-     * @param instanceProcessor - receiver of new instances
+     * @param archiveStore open metadata archive  to process
+     * @param typeDefProcessor receiver of new TypeDefs
+     * @param instanceProcessor receiver of new instances
      */
     private void processOpenMetadataArchiveStore(OpenMetadataArchiveStoreConnector    archiveStore,
                                                  OMRSTypeDefEventProcessor            typeDefProcessor,
@@ -180,7 +180,7 @@ public class OMRSArchiveManager
      * Step through the content of an open metadata archive, passing its contents to the local repository (if it
      * exists).
      *
-     * @param archiveContent - open metadata archive to process
+     * @param archiveContent open metadata archive to process
      */
     private void processOpenMetadataArchive(OpenMetadataArchive          archiveContent,
                                             OMRSTypeDefEventProcessor    typeDefProcessor,
@@ -251,8 +251,8 @@ public class OMRSArchiveManager
      * and so any duplicates detected are ignored.  However, conflicting TypeDefs are detected.
      * Any problems found in applying the archive contents are recorded on the audit log.
      *
-     * @param archiveProperties - properties of the archive used for logging
-     * @param archiveTypeStore - TypeStore from the archive
+     * @param archiveProperties properties of the archive used for logging
+     * @param archiveTypeStore TypeStore from the archive
      * @return type count
      */
     private int  processTypeDefStore(OpenMetadataArchiveProperties    archiveProperties,
@@ -349,7 +349,7 @@ public class OMRSArchiveManager
      * and so any duplicates detected are ignored.  However, conflicting instances are detected.
      * Any problems found in applying the archive contents are recorded on the audit log.
      *
-     * @param archiveProperties - properties describing the archive used in logging
+     * @param archiveProperties properties describing the archive used in logging
      * @param archiveInstanceStore - the instance store to process
      * @param instanceProcessor - the processor to add the instances to the local repository.  It may be null
      *                          if there is no local repository configured for this server.

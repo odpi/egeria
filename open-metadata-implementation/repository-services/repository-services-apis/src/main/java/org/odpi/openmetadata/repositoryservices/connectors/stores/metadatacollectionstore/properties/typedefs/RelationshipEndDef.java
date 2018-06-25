@@ -35,7 +35,7 @@ public class RelationshipEndDef extends TypeDefElementHeader
     /**
      * Copy/clone constructor - copy the supplied template into the new end.
      *
-     * @param template - RelationshipEndDef
+     * @param template RelationshipEndDef
      */
     public RelationshipEndDef(RelationshipEndDef template)
     {
@@ -72,7 +72,7 @@ public class RelationshipEndDef extends TypeDefElementHeader
     /**
      * Set up the guid of the EntityDef describing the type of entity on this end of the relationship.
      *
-     * @param entityType - TypeDefLink unique identifiers for the entity's type
+     * @param entityType TypeDefLink unique identifiers for the entity's type
      */
     public void setEntityType(TypeDefLink entityType)
     {
@@ -94,7 +94,7 @@ public class RelationshipEndDef extends TypeDefElementHeader
     /**
      * Set up the attribute name used to describe this end of the relationship.
      *
-     * @param attributeName - String name for the attribute
+     * @param attributeName String name for the attribute
      */
     public void setAttributeName(String attributeName)
     {
@@ -116,7 +116,7 @@ public class RelationshipEndDef extends TypeDefElementHeader
     /**
      * Set up the cardinality for this end of the relationship.
      *
-     * @param attributeCardinality - RelationshipEndCardinality Enum
+     * @param attributeCardinality RelationshipEndCardinality Enum
      */
     public void setAttributeCardinality(RelationshipEndCardinality attributeCardinality)
     {
@@ -138,7 +138,7 @@ public class RelationshipEndDef extends TypeDefElementHeader
     /**
      * Set up the attributeDescription for this end of the relationship.
      *
-     * @param attributeDescription - String
+     * @param attributeDescription String
      */
     public void setAttributeDescription(String attributeDescription)
     {
@@ -160,7 +160,7 @@ public class RelationshipEndDef extends TypeDefElementHeader
     /**
      * Set up the unique identifier (guid) of the glossary term that describes this RelationshipEndDef.
      *
-     * @param attributeDescriptionGUID - String guid
+     * @param attributeDescriptionGUID String guid
      */
     public void setAttributeDescriptionGUID(String attributeDescriptionGUID)
     {

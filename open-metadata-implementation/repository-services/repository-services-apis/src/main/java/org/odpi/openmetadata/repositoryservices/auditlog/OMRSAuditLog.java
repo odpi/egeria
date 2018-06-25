@@ -34,10 +34,10 @@ public class OMRSAuditLog
      * Initialize the static values used in all log records.  These values help to pin-point the source of messages
      * when audit log records from many servers are consolidated into centralized operational tooling.
      *
-     * @param localServerName - name of the local server
-     * @param localServerType - type of the local server
-     * @param localOrganizationName - name of the organization that owns the local server
-     * @param auditLogStores - list of destinations for the audit log records
+     * @param localServerName name of the local server
+     * @param localServerType type of the local server
+     * @param localOrganizationName name of the organization that owns the local server
+     * @param auditLogStores list of destinations for the audit log records
      */
     public static void  initialize(String                  localServerName,
                                    String                  localServerType,
@@ -58,7 +58,7 @@ public class OMRSAuditLog
     /**
      * Set up the local metadata collection Id.  This is null if there is no local repository.
      *
-     * @param localMetadataCollectionId - String unique identifier for the metadata collection
+     * @param localMetadataCollectionId String unique identifier for the metadata collection
      */
     public static void setLocalMetadataCollectionId(String              localMetadataCollectionId)
     {
@@ -70,10 +70,10 @@ public class OMRSAuditLog
      * Typical constructor - Each component using the Audit log will create their own OMRSAuditLog instance and
      * will push log records to it.
      *
-     * @param componentId - numerical identifier for the component.
-     * @param componentName - display name for the component.
-     * @param componentDescription - description of the component.
-     * @param componentWikiURL - link to more information.
+     * @param componentId numerical identifier for the component.
+     * @param componentName display name for the component.
+     * @param componentDescription description of the component.
+     * @param componentWikiURL link to more information.
      */
     public OMRSAuditLog(int    componentId,
                         String componentName,
@@ -90,7 +90,7 @@ public class OMRSAuditLog
     /**
      * External constructor - used to create an audit log for a component outside of OMRS
      *
-     * @param reportingComponent - information about the component that will use this instance of the audit log.
+     * @param reportingComponent information about the component that will use this instance of the audit log.
      */
     public OMRSAuditLog(OMRSAuditingComponent reportingComponent)
     {
@@ -104,13 +104,13 @@ public class OMRSAuditLog
     /**
      * Log an audit log record for an event, decision, error, or exception detected by the OMRS.
      *
-     * @param actionDescription - description of the activity creating the audit log record
-     * @param logMessageId - id for the audit log record
-     * @param severity - is this an event, decision, error or exception?
-     * @param logMessage - description of the audit log record including specific resources involved
-     * @param additionalInformation - additional data to help resolve issues of verify behavior
-     * @param systemAction - the related action taken by the OMRS.
-     * @param userAction - details of any action that an administrator needs to take.
+     * @param actionDescription description of the activity creating the audit log record
+     * @param logMessageId id for the audit log record
+     * @param severity is this an event, decision, error or exception?
+     * @param logMessage description of the audit log record including specific resources involved
+     * @param additionalInformation additional data to help resolve issues of verify behavior
+     * @param systemAction the related action taken by the OMRS.
+     * @param userAction details of any action that an administrator needs to take.
      */
     public void logRecord(String                      actionDescription,
                           String                      logMessageId,
@@ -178,13 +178,13 @@ public class OMRSAuditLog
      * important that they are investigated and the cause corrected since the local repository is not able to operate
      * as a proper peer in the metadata repository cluster whilst these conditions persist.
      *
-     * @param actionDescription - description of the activity in progress when the error occurred
-     * @param logMessageId - id for the type of exception caught
-     * @param severity - severity of the error
-     * @param logMessage - description of the exception including specific resources involved
-     * @param additionalInformation - additional data to help resolve issues of verify behavior
-     * @param systemAction - the action taken by the OMRS in response to the error.
-     * @param userAction - details of any action that an administrator needs to take.
+     * @param actionDescription description of the activity in progress when the error occurred
+     * @param logMessageId id for the type of exception caught
+     * @param severity severity of the error
+     * @param logMessage description of the exception including specific resources involved
+     * @param additionalInformation additional data to help resolve issues of verify behavior
+     * @param systemAction the action taken by the OMRS in response to the error.
+     * @param userAction details of any action that an administrator needs to take.
      * @param caughtException the original exception.
      */
     public void logException(String                      actionDescription,

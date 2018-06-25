@@ -200,7 +200,7 @@ public class Annotation extends ElementHeader
 
     /**
      * Set up the informal name for the type of annotation.  The formal name in the model is given in the
-     * ElementType.
+     * AssetElementType.
      *
      * @param annotationType - String for annotation type
      */

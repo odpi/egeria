@@ -21,15 +21,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "type")
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = EntityDef.class, name = "EntityDef"),
-        @JsonSubTypes.Type(value = RelationshipDef.class, name = "RelationshipDef"),
-        @JsonSubTypes.Type(value = ClassificationDef.class, name = "ClassificationDef"),
-})
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+              include = JsonTypeInfo.As.PROPERTY,
+              property = "type")
+@JsonSubTypes(
+        {
+                @JsonSubTypes.Type(value = EntityDef.class, name = "EntityDef"),
+                @JsonSubTypes.Type(value = RelationshipDef.class, name = "RelationshipDef"),
+                @JsonSubTypes.Type(value = ClassificationDef.class, name = "ClassificationDef"),
+        })
 public class TypeDef extends TypeDefSummary
 {
     protected TypeDefLink                        superType                = null;
@@ -59,7 +59,7 @@ public class TypeDef extends TypeDefSummary
      * Minimal constructor is passed the category of the typedef being constructed.
      * The rest of the properties are null.
      *
-     * @param category - TypeDefCategory enum
+     * @param category TypeDefCategory enum
      */
     public TypeDef(TypeDefCategory category)
     {
@@ -71,11 +71,11 @@ public class TypeDef extends TypeDefSummary
     /**
      * Typical constructor is passed the properties of the typedef's super class being constructed.
      *
-     * @param category    - category of this TypeDef
-     * @param guid        - unique id for the TypeDef
-     * @param name        - unique name for the TypeDef
-     * @param version     - active version number for the TypeDef
-     * @param versionName - name for the active version of the TypeDef
+     * @param category    category of this TypeDef
+     * @param guid        unique id for the TypeDef
+     * @param name        unique name for the TypeDef
+     * @param version     active version number for the TypeDef
+     * @param versionName name for the active version of the TypeDef
      */
     public TypeDef(TypeDefCategory category,
                    String          guid,
@@ -170,7 +170,7 @@ public class TypeDef extends TypeDefSummary
     /**
      * Set up the unique identifier (guid) of the glossary term that describes this TypeDef.
      *
-     * @param descriptionGUID - String guid
+     * @param descriptionGUID String guid
      */
     public void setDescriptionGUID(String descriptionGUID)
     {
@@ -192,7 +192,7 @@ public class TypeDef extends TypeDefSummary
     /**
      * Set up the unique identifier for metadata collection Id where this TypeDef came from.
      *
-     * @param origin - String guid
+     * @param origin String guid
      */
     public void setOrigin(String origin)
     {
@@ -304,7 +304,7 @@ public class TypeDef extends TypeDefSummary
      * Set up the options for this TypeDef.  These are private properties used by the processors of this TypeDef
      * and ignored by the OMRS.
      *
-     * @param options - Map from String to String
+     * @param options Map from String to String
      */
     public void setOptions(Map<String, String> options)
     {
@@ -333,7 +333,7 @@ public class TypeDef extends TypeDefSummary
     /**
      * Set up the list of mappings to external standards.
      *
-     * @param externalStandardMappings - ExternalStandardMappings list
+     * @param externalStandardMappings ExternalStandardMappings list
      */
     public void setExternalStandardMappings(List<ExternalStandardMapping> externalStandardMappings)
     {
@@ -369,7 +369,7 @@ public class TypeDef extends TypeDefSummary
     /**
      * Set up the list of valid instance statuses supported by this TypeDef.
      *
-     * @param validInstanceStatusList - InstanceStatus Array
+     * @param validInstanceStatusList InstanceStatus Array
      */
     public void setValidInstanceStatusList(List<InstanceStatus> validInstanceStatusList)
     {
@@ -398,7 +398,7 @@ public class TypeDef extends TypeDefSummary
     /**
      * Set up the initial status setting for an instance of this type.
      *
-     * @param initialStatus - InstanceStatus enum
+     * @param initialStatus InstanceStatus enum
      */
     public void setInitialStatus(InstanceStatus initialStatus)
     {
@@ -427,7 +427,7 @@ public class TypeDef extends TypeDefSummary
     /**
      * Set up the list of AttributeDefs that define the valid properties for this type of classification.
      *
-     * @param propertiesDefinition - AttributeDefs list
+     * @param propertiesDefinition AttributeDefs list
      */
     public void setPropertiesDefinition(List<TypeDefAttribute> propertiesDefinition)
     {

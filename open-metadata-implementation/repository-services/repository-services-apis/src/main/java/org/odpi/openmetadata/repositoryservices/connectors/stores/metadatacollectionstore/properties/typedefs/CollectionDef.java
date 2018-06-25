@@ -29,7 +29,7 @@ public class CollectionDef extends AttributeTypeDef
     /**
      * Typical constructor initializes the CollectionDef based on the supplied category.
      *
-     * @param collectionDefCategory - CollectionDefCategory Enum
+     * @param collectionDefCategory CollectionDefCategory Enum
      */
     public CollectionDef(CollectionDefCategory  collectionDefCategory)
     {
@@ -107,7 +107,7 @@ public class CollectionDef extends AttributeTypeDef
     /**
      * Set up the list of argument types.
      *
-     * @param argumentTypes - list of argument types
+     * @param argumentTypes list of argument types
      */
     public void setArgumentTypes(List<PrimitiveDefCategory> argumentTypes)
     {
