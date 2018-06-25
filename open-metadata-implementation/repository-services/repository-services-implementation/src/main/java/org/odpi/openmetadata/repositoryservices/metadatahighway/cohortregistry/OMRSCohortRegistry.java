@@ -557,7 +557,7 @@ public class OMRSCohortRegistry implements OMRSRegistryEventProcessor
                                    auditCode.getLogMessageId(),
                                    auditCode.getSeverity(),
                                    auditCode.getFormattedLogMessage(cohortName,
-                                                                    remoteRepositoryConnection.getConnectionName(),
+                                                                    remoteRepositoryConnection.getQualifiedName(),
                                                                     remoteServerName,
                                                                     remoteMetadataCollectionId),
                                    error.getErrorMessage(),
@@ -579,7 +579,7 @@ public class OMRSCohortRegistry implements OMRSRegistryEventProcessor
             catch (Throwable  error)
             {
                 String     formattedLogMessage = auditCode.getFormattedLogMessage(cohortName,
-                                                                                  remoteRepositoryConnection.getConnectionName(),
+                                                                                  remoteRepositoryConnection.getQualifiedName(),
                                                                                   remoteServerName,
                                                                                   remoteMetadataCollectionId);
                 auditLog.logRecord(actionDescription,
@@ -994,7 +994,7 @@ public class OMRSCohortRegistry implements OMRSRegistryEventProcessor
                                    auditCode.getFormattedLogMessage(cohortName,
                                                                     originatorServerName,
                                                                     originatorMetadataCollectionId,
-                                                                    remoteRepositoryConnection.getConnectionName()),
+                                                                    remoteRepositoryConnection.getQualifiedName()),
                                    remoteRepositoryConnection.toString(),
                                    auditCode.getSystemAction(),
                                    auditCode.getUserAction());

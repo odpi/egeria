@@ -37,11 +37,11 @@ public class RelationshipDef extends TypeDef
     /**
      * Typical constructor is passed the properties of the typedef's super class being constructed.
      *
-     * @param category    - category of this TypeDef
-     * @param guid        - unique id for the TypeDef
-     * @param name        - unique name for the TypeDef
-     * @param version     - active version number for the TypeDef
-     * @param versionName - name for the active version of the TypeDef
+     * @param category    category of this TypeDef
+     * @param guid        unique id for the TypeDef
+     * @param name        unique name for the TypeDef
+     * @param version     active version number for the TypeDef
+     * @param versionName name for the active version of the TypeDef
      */
     public RelationshipDef(TypeDefCategory category,
                            String          guid,
@@ -56,7 +56,7 @@ public class RelationshipDef extends TypeDef
     /**
      * Copy/clone constructor creates a copy of the supplied template.
      *
-     * @param templateTypeDef - template to copy
+     * @param templateTypeDef template to copy
      */
     public RelationshipDef(RelationshipDef templateTypeDef)
     {
@@ -82,7 +82,7 @@ public class RelationshipDef extends TypeDef
     /**
      * Set up the rule that determines if classifications are propagated across this relationship.
      *
-     * @param propagationRule - ClassificationPropagationRule Enum
+     * @param propagationRule ClassificationPropagationRule Enum
      */
     public void setPropagationRule(ClassificationPropagationRule propagationRule)
     {

@@ -59,7 +59,7 @@ public class OMRSEventOriginator
     /**
      * Sets up the unique identifier (guid) of the originating repository.
      *
-     * @param metadataCollectionId - String guid
+     * @param metadataCollectionId String guid
      */
     public void setMetadataCollectionId(String metadataCollectionId)
     {
@@ -83,7 +83,7 @@ public class OMRSEventOriginator
      * Set up the display name for the server that is used in events, messages and UIs to
      * make it easier for people to understand the origin of metadata.
      *
-     * @param serverName - String server name
+     * @param serverName String server name
      */
     public void setServerName(String serverName)
     {
@@ -107,7 +107,7 @@ public class OMRSEventOriginator
      * Set up the descriptive string describing the type of the server.  This might be the
      * name of the product, or similar identifier.
      *
-     * @param serverType - String server type
+     * @param serverType String server type
      */
     public void setServerType(String serverType)
     {
@@ -129,7 +129,7 @@ public class OMRSEventOriginator
     /**
      * Set up the name of the organization that runs/owns the server.
      *
-     * @param organizationName - String organization name
+     * @param organizationName String organization name
      */
     public void setOrganizationName(String organizationName)
     {

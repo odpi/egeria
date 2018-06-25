@@ -39,7 +39,7 @@ public class ExternalStandardMapping extends TypeDefElementHeader
     /**
      * Copy/clone constructor - copies values from supplied template.
      *
-     * @param templateElement - template to copy.
+     * @param templateElement template to copy.
      */
     public ExternalStandardMapping(ExternalStandardMapping  templateElement)
     {
@@ -70,7 +70,7 @@ public class ExternalStandardMapping extends TypeDefElementHeader
     /**
      * Set up the name of the standard that this mapping relates to.
      *
-     * @param standardName - String standard name
+     * @param standardName String standard name
      */
     public void setStandardName(String standardName) {
         this.standardName = standardName;
@@ -90,7 +90,7 @@ public class ExternalStandardMapping extends TypeDefElementHeader
     /**
      * Set up the name of the organization that owns the standard that this mapping refers to.
      *
-     * @param standardOrganization - String organization name
+     * @param standardOrganization String organization name
      */
     public void setStandardOrganization(String standardOrganization)
     {
@@ -111,7 +111,7 @@ public class ExternalStandardMapping extends TypeDefElementHeader
     /**
      * Set up the name of the type from the standard that is equivalent to the linked open metadata type.
      *
-     * @param standardTypeName - String type name from standard
+     * @param standardTypeName String type name from standard
      */
     public void setStandardTypeName(String standardTypeName) {
         this.standardTypeName = standardTypeName;

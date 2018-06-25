@@ -4,8 +4,8 @@ package org.odpi.openmetadata.adapters.adminservices.configurationstore.file;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
 import org.odpi.openmetadata.adminservices.store.OMAGServerConfigStoreConnectorBase;
-import org.odpi.openmetadata.frameworks.connectors.properties.Connection;
-import org.odpi.openmetadata.frameworks.connectors.properties.Endpoint;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.apache.commons.io.FileUtils;
 
@@ -39,11 +39,11 @@ public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreCo
 
 
     @Override
-    public void initialize(String connectorInstanceId, Connection connection)
+    public void initialize(String connectorInstanceId, ConnectionProperties connectionProperties)
     {
-        super.initialize(connectorInstanceId, connection);
+        super.initialize(connectorInstanceId, connectionProperties);
 
-        Endpoint endpoint = connection.getEndpoint();
+        EndpointProperties endpoint = connectionProperties.getEndpoint();
 
         if (endpoint != null)
         {

@@ -68,9 +68,9 @@ public enum OMRSRegistryEventType implements Serializable
     /**
      * Default Constructor - sets up the specific values for this instance of the enum.
      *
-     * @param registryEventTypeCode - int identifier used for indexing based on the enum.
-     * @param registryEventTypeName - string name used for messages that include the enum.
-     * @param registryEventTypeDescription - default description for the enum value - used when natural resource
+     * @param registryEventTypeCode int identifier used for indexing based on the enum.
+     * @param registryEventTypeName string name used for messages that include the enum.
+     * @param registryEventTypeDescription default description for the enum value used when natural resource
      *                                     bundle is not available.
      */
     OMRSRegistryEventType(int registryEventTypeCode, String registryEventTypeName, String registryEventTypeDescription)

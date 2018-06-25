@@ -66,9 +66,9 @@ public enum InstanceProvenanceType implements Serializable
     /**
      * Default constructor for the instance provenance type.
      *
-     * @param ordinal - numerical representation of the instance provenance type
-     * @param name - default string name of the instance provenance type
-     * @param description - default string description of the instance provenance type
+     * @param ordinal numerical representation of the instance provenance type
+     * @param name default string name of the instance provenance type
+     * @param description default string description of the instance provenance type
      */
     InstanceProvenanceType(int  ordinal, String name, String description)
     {

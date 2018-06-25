@@ -51,10 +51,6 @@ public enum OCFErrorCode
             "Class {0} passed in connection {1} is not a Connector Provider",
             "The system is unable to create the requested connector instance because the Connector Provider's class does not implement org.odpi.openmetadata.ConnectorProvider. ",
             "Update the connection configuration to include a valid Java class name for the connector provider in the connectorProviderClassName property of the connection's connectorType. Then retry the request."),
-    INCOMPLETE_CONNECTOR_PROVIDER(400, "OCF-CONNECTION-400-007 ",
-            "Unable to load Connector Provider class {0} passed in connection {1}",
-            "The system is unable to create the requested connector instance because the Connector Provider's class is failing to load in the JVM.  This has resulted in an exception in the class loader.",
-            "Verify that the Connector Provider and Connector jar files are properly configured in the process.  Update the connection configuration to include a valid Java class name for the connector provider in the connectorProviderClassName property of the connection's connectorType. Then retry the request."),
     INVALID_CONNECTOR_PROVIDER(400, "OCF-CONNECTION-400-008 ",
             "Invalid Connector Provider class {0} passed in connection {1}",
             "The system is unable to create the requested connector instance because the Connector Provider's class is failing to initialize in the JVM.  This has resulted in an exception in the class loader.",
@@ -75,7 +71,7 @@ public enum OCFErrorCode
             "Non-string property names stored in entity {0} of type {1}",
             "A request to retrieve additional properties failed because the properties have become corrupted.",
             "Debug the calls to the properties object."),
-    NULL_SECURED_PROPERTY_NAME(400, "OCF-CONNECTION-400-013 ",
+    NULL_SECURED_PROPERTY_NAME(400, "OCF-PROPERTIES-400-013 ",
             "Null securedProperty name passed to connection {0})",
             "A request to set a secured property failed because the property name passed was null",
             "Recode the call to the connection object with a valid property name and retry."),
@@ -95,6 +91,10 @@ public enum OCFErrorCode
             "No tag name for entity {0} of type {1}",
             "A tag with a null name is assigned to an entity.   This value should come from a metadata repository, and always be filled in.",
             "Look for other error messages to identify the source of the problem.  Identify the metadata repository where the asset came from.  Correct the cause of the error and then retry."),
+    UNABLE_TO_REMOVE(400, "OCF-PROPERTIES-400-018 ",
+            "Unable to remove {0} asset type properties for asset {1} through iterator {2}",
+            "The caller has called the remove() method on one of the iterators from Connected Asset Properties.  This is not supported.",
+            "Remove the call to the remove() method and retry."),
     UNKNOWN_ENDPOINT(404, "OCF-CONNECTOR-404-001 ",
             "Endpoint {0} in connection {1} for connector instance {2} is either unknown or unavailable",
             "The requested action is not able to complete because the remote endpoint where the assets are located is not responding.  It may be unavailable or unknown.",
@@ -199,17 +199,6 @@ public enum OCFErrorCode
 
 
     /**
-     * Returns the error message with placeholders for specific details.
-     *
-     * @return errorMessage (unformatted)
-     */
-    public String getUnformattedErrorMessage()
-    {
-        return errorMessage;
-    }
-
-
-    /**
      * Returns the error message with the placeholders filled out with the supplied parameters.
      *
      * @param params   strings that plug into the placeholders in the errorMessage
@@ -220,10 +209,7 @@ public enum OCFErrorCode
         MessageFormat mf = new MessageFormat(errorMessage);
         String result = mf.format(params);
 
-        if (log.isDebugEnabled())
-        {
-            log.debug(String.format("OCFErrorCode.getMessage(%s): %s", Arrays.toString(params), result));
-        }
+        log.debug(String.format("OCFErrorCode.getMessage(%s): %s", Arrays.toString(params), result));
 
         return result;
     }

@@ -42,7 +42,7 @@ public class TypeDefResponse extends OMRSRESTAPIResponse
     /**
      * Set up the response Typedef object
      *
-     * @param typeDef - Typedef object
+     * @param typeDef Typedef object
      */
     public void setTypeDef(TypeDef typeDef)
     {

@@ -7,7 +7,8 @@ import java.util.List;
 
 public abstract class AssetPropertyIteratorBase extends AssetPropertyBase
 {
-    protected PagingIterator pagingIterator = null;
+    protected AssetPagingIterator pagingIterator = null;
+
 
     /**
      * Typical Constructor creates an iterator with the supplied list of comments.
@@ -21,12 +22,9 @@ public abstract class AssetPropertyIteratorBase extends AssetPropertyBase
                                         int                          totalElementCount,
                                         int                          maxCacheSize)
     {
-        /*
-         * Initialize superclass.
-         */
         super(parentAsset);
 
-        pagingIterator = new PagingIterator(parentAsset, this, totalElementCount, maxCacheSize);
+        pagingIterator = new AssetPagingIterator(parentAsset, this, totalElementCount, maxCacheSize);
     }
 
 
@@ -38,14 +36,11 @@ public abstract class AssetPropertyIteratorBase extends AssetPropertyBase
      */
     protected AssetPropertyIteratorBase(AssetDescriptor     parentAsset, AssetPropertyIteratorBase template)
     {
-        /*
-         * Initialize superclass.
-         */
         super(parentAsset, template);
 
         if (template != null)
         {
-            pagingIterator = new PagingIterator(parentAsset, this, template.pagingIterator);
+            pagingIterator = new AssetPagingIterator(parentAsset, this, template.pagingIterator);
         }
     }
 

@@ -3,7 +3,7 @@ package org.odpi.openmetadata.repositoryservices.enterprise.connectormanager;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
 /**
  * OMRSConnectionConsumer provides the interfaces for a connection consumer.  This is a component that needs to

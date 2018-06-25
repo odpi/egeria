@@ -1,11 +1,9 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservices.connectedasset;
 
-import org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions.InvalidParameterException;
-import org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions.PropertyServerException;
-import org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions.UnrecognizedConnectionGUIDException;
-import org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions.UserNotAuthorizedException;
+import org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Comment;
 
 /**
  * ConnectedAssetInterface is the OMAS client interface of the Connected Asset OMAS.
@@ -27,7 +25,7 @@ public interface ConnectedAssetInterface
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     AssetUniverse getAssetProperties(String   userId,
-                                     String   assetGUID) throws InvalidParameterException,
+                                     String   assetGUID) throws UnrecognizedAssetGUIDException,
                                                                 PropertyServerException,
                                                                 UserNotAuthorizedException;
 
@@ -47,4 +45,15 @@ public interface ConnectedAssetInterface
                                                   String   connectionGUID) throws InvalidParameterException,
                                                                                   UnrecognizedConnectionGUIDException,
                                                                                   PropertyServerException;
+
+
+    /*
+     * Feedback
+
+
+    Comment getCommentsForAsset(String    userId,
+                                String    assetGUID,
+                                int       startComment,
+                                int       pageSize);
+                                */
 }

@@ -10,7 +10,7 @@ import org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositoryconn
 import org.odpi.openmetadata.adapters.repositoryservices.omrstopicconnector.inmemory.InMemoryOMRSTopicProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.omrstopicconnector.kafka.KafkaOMRSTopicProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.rest.repositoryconnector.OMRSRESTRepositoryConnectorProvider;
-import org.odpi.openmetadata.frameworks.connectors.properties.ElementOrigin;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOrigin;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
@@ -708,7 +708,7 @@ public class ConnectorConfigurationFactory
     /**
      * Return the standard type for an endpoint.
      *
-     * @return ElementType object
+     * @return AssetElementType object
      */
     private ElementType getEndpointType()
     {
@@ -726,7 +726,7 @@ public class ConnectorConfigurationFactory
         elementType.setElementTypeName(elementTypeName);
         elementType.setElementTypeVersion(elementTypeVersion);
         elementType.setElementTypeDescription(elementTypeDescription);
-        elementType.setElementAccessServiceURL(elementAccessServiceURL);
+        elementType.setElementSourceServer(elementAccessServiceURL);
         elementType.setElementOrigin(elementOrigin);
         elementType.setElementHomeMetadataCollectionId(elementHomeMetadataCollectionId);
 
@@ -737,7 +737,7 @@ public class ConnectorConfigurationFactory
     /**
      * Return the standard type for a connector type.
      *
-     * @return ElementType object
+     * @return AssetElementType object
      */
     private ElementType getConnectorTypeType()
     {
@@ -755,7 +755,7 @@ public class ConnectorConfigurationFactory
         elementType.setElementTypeName(elementTypeName);
         elementType.setElementTypeVersion(elementTypeVersion);
         elementType.setElementTypeDescription(elementTypeDescription);
-        elementType.setElementAccessServiceURL(elementAccessServiceURL);
+        elementType.setElementSourceServer(elementAccessServiceURL);
         elementType.setElementOrigin(elementOrigin);
         elementType.setElementHomeMetadataCollectionId(elementHomeMetadataCollectionId);
 
@@ -766,7 +766,7 @@ public class ConnectorConfigurationFactory
     /**
      * Return the standard type for a connection type.
      *
-     * @return ElementType object
+     * @return AssetElementType object
      */
     private ElementType getConnectionType()
     {
@@ -784,7 +784,7 @@ public class ConnectorConfigurationFactory
         elementType.setElementTypeName(elementTypeName);
         elementType.setElementTypeVersion(elementTypeVersion);
         elementType.setElementTypeDescription(elementTypeDescription);
-        elementType.setElementAccessServiceURL(elementAccessServiceURL);
+        elementType.setElementSourceServer(elementAccessServiceURL);
         elementType.setElementOrigin(elementOrigin);
         elementType.setElementHomeMetadataCollectionId(elementHomeMetadataCollectionId);
 

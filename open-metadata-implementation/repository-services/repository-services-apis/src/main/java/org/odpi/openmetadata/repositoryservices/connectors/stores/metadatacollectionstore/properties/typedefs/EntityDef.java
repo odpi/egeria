@@ -29,11 +29,11 @@ public class EntityDef extends TypeDef
     /**
      * Typical constructor is passed the properties of the typedef's super class being constructed.
      *
-     * @param category    - category of this TypeDef
-     * @param guid        - unique id for the TypeDef
-     * @param name        - unique name for the TypeDef
-     * @param version     - active version number for the TypeDef
-     * @param versionName - name for the active version of the TypeDef
+     * @param category    category of this TypeDef
+     * @param guid        unique id for the TypeDef
+     * @param name        unique name for the TypeDef
+     * @param version     active version number for the TypeDef
+     * @param versionName name for the active version of the TypeDef
      */
     public EntityDef(TypeDefCategory category,
                      String          guid,

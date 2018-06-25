@@ -4,7 +4,7 @@ package org.odpi.openmetadata.repositoryservices.connectors.omrstopic;
 import org.apache.log4j.Logger;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.Endpoint;
+import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
@@ -121,7 +121,7 @@ public abstract class OMRSTopicConnector extends ConnectorBase implements OMRSTo
     /**
      * Pass an event that has been received on the topic to each of the registered listeners.
      *
-     * @param event - OMRSEvent to distribute
+     * @param event OMRSEvent to distribute
      */
     protected void distributeEvent(OMRSEventV1 event)
     {
@@ -162,7 +162,7 @@ public abstract class OMRSTopicConnector extends ConnectorBase implements OMRSTo
     /**
      * Register a listener object.  This object will be supplied with all of the events received on the topic.
      *
-     * @param topicListener - object implementing the OMRSTopicListener interface
+     * @param topicListener object implementing the OMRSTopicListener interface
      */
     public void registerListener(OMRSTopicListener  topicListener)
     {
@@ -184,9 +184,9 @@ public abstract class OMRSTopicConnector extends ConnectorBase implements OMRSTo
 
         keepRunning = true;
 
-        if (super.connection != null)
+        if (super.connectionProperties != null)
         {
-            Endpoint endpoint = super.connection.getEndpoint();
+            EndpointProperties endpoint = super.connectionProperties.getEndpoint();
 
             if (endpoint != null)
             {

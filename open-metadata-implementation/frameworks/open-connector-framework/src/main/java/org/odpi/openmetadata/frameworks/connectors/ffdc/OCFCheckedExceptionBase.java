@@ -2,6 +2,7 @@
 package org.odpi.openmetadata.frameworks.connectors.ffdc;
 
 
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -14,17 +15,15 @@ import java.util.UUID;
  */
 public class OCFCheckedExceptionBase extends Exception
 {
-    private static final int      hashCode = UUID.randomUUID().hashCode();
-
     /*
      * These default values are only seen if this exception is initialized using one of its superclass constructors.
      */
-    private int       reportedHTTPCode = 500;
-    private String    reportingClassName = "<Unknown>";
-    private String    reportingActionDescription = "<Unknown>";
-    private String    reportedErrorMessage = "<Unknown>";
-    private String    reportedSystemAction = "<Unknown>";
-    private String    reportedUserAction = "<Unknown>";
+    private int       reportedHTTPCode;
+    private String    reportingClassName;
+    private String    reportingActionDescription;
+    private String    reportedErrorMessage;
+    private String    reportedSystemAction;
+    private String    reportedUserAction;
     private Throwable reportedCaughtException = null;
 
 
@@ -151,12 +150,69 @@ public class OCFCheckedExceptionBase extends Exception
 
 
     /**
-     * Provide a common implementation of hashCode for all OCF properties objects.  The UUID is unique and
-     * is randomly assigned and so its hashCode is as good as anything to describe the hash code of the properties
-     * object.
+     * Compare the values of the supplied object with those stored in the current object.
+     *
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
      */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (!(objectToCompare instanceof OCFCheckedExceptionBase))
+        {
+            return false;
+        }
+        OCFCheckedExceptionBase that = (OCFCheckedExceptionBase) objectToCompare;
+        return getReportedHTTPCode() == that.getReportedHTTPCode() &&
+                Objects.equals(getReportingClassName(), that.getReportingClassName()) &&
+                Objects.equals(getReportingActionDescription(), that.getReportingActionDescription()) &&
+                Objects.equals(reportedErrorMessage, that.reportedErrorMessage) &&
+                Objects.equals(getReportedSystemAction(), that.getReportedSystemAction()) &&
+                Objects.equals(getReportedUserAction(), that.getReportedUserAction()) &&
+                Objects.equals(getReportedCaughtException(), that.getReportedCaughtException());
+    }
+
+
+    /**
+     * Provide a common implementation of hashCode for all OCF Exception objects.
+     *
+     * @return integer hash code based on the values in the attributes
+     */
+    @Override
     public int hashCode()
     {
-        return hashCode;
+
+        return Objects.hash(getReportedHTTPCode(),
+                            getReportingClassName(),
+                            getReportingActionDescription(),
+                            reportedErrorMessage,
+                            getReportedSystemAction(),
+                            getReportedUserAction(),
+                            getReportedCaughtException());
+    }
+
+
+    /**
+     * Standard toString method.
+     *
+     * @return print out of variables in a JSON-style
+     */
+    @Override
+    public String toString()
+    {
+        return "OCFCheckedExceptionBase{" +
+                ", reportedHTTPCode=" + reportedHTTPCode +
+                ", reportingClassName='" + reportingClassName + '\'' +
+                ", reportingActionDescription='" + reportingActionDescription + '\'' +
+                ", reportedErrorMessage='" + reportedErrorMessage + '\'' +
+                ", reportedSystemAction='" + reportedSystemAction + '\'' +
+                ", reportedUserAction='" + reportedUserAction + '\'' +
+                ", reportedCaughtException=" + reportedCaughtException +
+                ", errorMessage='" + getErrorMessage() + '\'' +
+                '}';
     }
 }

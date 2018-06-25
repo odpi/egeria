@@ -5,9 +5,11 @@ import org.apache.log4j.Logger;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.AdditionalProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProperties;
-import org.odpi.openmetadata.frameworks.connectors.properties.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -33,7 +35,8 @@ import java.util.UUID;
 public abstract class ConnectorBase extends Connector
 {
     protected String                   connectorInstanceId      = null;
-    protected Connection               connection               = null;
+    protected ConnectionProperties     connectionProperties     = null;
+    protected Connection               connectionBean           = null;
     protected ConnectedAssetProperties connectedAssetProperties = null;
     protected boolean                  isActive                 = false;
 
@@ -43,8 +46,9 @@ public abstract class ConnectorBase extends Connector
      */
     protected AdditionalProperties securedProperties = null;
 
-    private static final int      hashCode = UUID.randomUUID().hashCode();
     private static final Logger   log = Logger.getLogger(ConnectorBase.class);
+
+    private        final int      hashCode = UUID.randomUUID().hashCode();
 
     /**
      * Typical Constructor Connectors should always have a constructor requiring no parameters and perform
@@ -58,11 +62,7 @@ public abstract class ConnectorBase extends Connector
          * instantiation of arbitrary connector instances without needing to know the specifics of their constructor
          * methods
          */
-
-        if (log.isDebugEnabled())
-        {
-            log.debug("New Connector Requested");
-        }
+        log.debug("New Connector Requested");
     }
 
 
@@ -70,24 +70,22 @@ public abstract class ConnectorBase extends Connector
      * Call made by the ConnectorProvider to initialize the Connector with the base services.
      *
      * @param connectorInstanceId   unique id for the connector instance   useful for messages etc
-     * @param connection   POJO for the configuration used to create the connector.
+     * @param connectionProperties   POJO for the configuration used to create the connector.
      */
-    public void initialize(String                    connectorInstanceId,
-                           Connection                connection)
+    public void initialize(String               connectorInstanceId,
+                           ConnectionProperties connectionProperties)
     {
         this.connectorInstanceId = connectorInstanceId;
-        this.connection = connection;
+        this.connectionProperties = connectionProperties;
 
         /*
-         * Set up the secured properties
+         * Set up the secured properties and the connection bean
          */
-        ProtectedConnection  protectedConnection = new ProtectedConnection(connection);
+        ProtectedConnection  protectedConnection = new ProtectedConnection(connectionProperties);
         this.securedProperties = protectedConnection.getSecuredProperties();
+        this.connectionBean = protectedConnection.getConnectionBean();
 
-        if (log.isDebugEnabled())
-        {
-            log.debug("New Connector initialized: " + connectorInstanceId + ", " + connection.getConnectionName());
-        }
+        log.debug("New Connector initialized: " + connectorInstanceId + ", " + connectionProperties.getQualifiedName() + "," + connectionProperties.getDisplayName());
     }
 
 
@@ -108,11 +106,11 @@ public abstract class ConnectorBase extends Connector
      * during the lifetime of the connector instance, even if the connection information is updated or removed
      * from the originating metadata repository.
      *
-     * @return connection object
+     * @return connection properties object
      */
-    public Connection  getConnection()
+    public ConnectionProperties getConnection()
     {
-        return connection;
+        return connectionProperties;
     }
 
 
@@ -140,10 +138,7 @@ public abstract class ConnectorBase extends Connector
      */
     public ConnectedAssetProperties getConnectedAssetProperties() throws PropertyServerException
     {
-        if (log.isDebugEnabled())
-        {
-            log.debug("ConnectedAssetProperties requested: " + connectorInstanceId + ", " + connection.getConnectionName());
-        }
+        log.debug("ConnectedAssetProperties requested: " + connectorInstanceId + ", " + connectionProperties.getQualifiedName() + "," + connectionProperties.getDisplayName());
 
         if (connectedAssetProperties != null)
         {
@@ -223,15 +218,7 @@ public abstract class ConnectorBase extends Connector
 
         ConnectorBase that = (ConnectorBase) object;
 
-        if (connectorInstanceId != null ? !connectorInstanceId.equals(that.connectorInstanceId) : that.connectorInstanceId != null)
-        {
-            return false;
-        }
-        if (connection != null ? !connection.equals(that.connection) : that.connection != null)
-        {
-            return false;
-        }
-        return connectedAssetProperties != null ? connectedAssetProperties.equals(that.connectedAssetProperties) : that.connectedAssetProperties == null;
+        return (hashCode == that.hashCode);
     }
 
 
@@ -245,14 +232,19 @@ public abstract class ConnectorBase extends Connector
     {
         return "ConnectorBase{" +
                 "connectorInstanceId='" + connectorInstanceId + '\'' +
-                ", connection=" + connection +
+                ", connectionProperties=" + connectionProperties +
                 ", connectedAssetProperties=" + connectedAssetProperties +
                 '}';
     }
 
-    private class ProtectedConnection extends Connection
+
+    /**
+     * ProtectedConnection provides a subclass to Connection in order to extract protected values from the
+     * connection in order to supply them to the Connector implementation.
+     */
+    private class ProtectedConnection extends ConnectionProperties
     {
-        private ProtectedConnection(Connection templateConnection)
+        private ProtectedConnection(ConnectionProperties templateConnection)
         {
             super(templateConnection);
         }
@@ -266,14 +258,26 @@ public abstract class ConnectorBase extends Connector
          */
         protected AdditionalProperties getSecuredProperties()
         {
-            if (super.securedProperties == null)
+            Map<String, Object>  securedProperties = super.getConnectionBean().getSecuredProperties();
+            if (securedProperties == null)
             {
-                return securedProperties;
+                return null;
             }
             else
             {
                 return new AdditionalProperties(super.getParentAsset(), securedProperties);
             }
+        }
+
+
+        /**
+         * Return a copy of the ConnectionBean.
+         *
+         * @return Connection bean
+         */
+        protected Connection getConnectionBean()
+        {
+            return super.getConnectionBean();
         }
     }
 }

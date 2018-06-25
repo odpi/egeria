@@ -48,11 +48,11 @@ public enum OMRSRegistryEventErrorCode implements Serializable
     /**
      * Typical constructor sets up the values for this enum instance.
      *
-     * @param errorCodeId - int identifier for the enum, used for indexing arrays etc with the enum.
-     * @param errorCodeName - String name for the enum, used for message content.
-     * @param errorCodeDescription - String default description for the enum, used when there is not natural
+     * @param errorCodeId int identifier for the enum, used for indexing arrays etc with the enum.
+     * @param errorCodeName String name for the enum, used for message content.
+     * @param errorCodeDescription String default description for the enum, used when there is not natural
      *                             language resource bundle available.
-     * @param errorCodeEncoding - code value to use in OMRSEvents
+     * @param errorCodeEncoding code value to use in OMRSEvents
      */
     OMRSRegistryEventErrorCode(int                  errorCodeId,
                                String               errorCodeName,

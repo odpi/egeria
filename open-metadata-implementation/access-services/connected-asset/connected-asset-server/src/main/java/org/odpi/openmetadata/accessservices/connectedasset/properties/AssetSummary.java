@@ -117,7 +117,7 @@ public class AssetSummary extends AssetDescriptor
      * Return the element type properties for this asset.  These values are set up by the metadata repository
      * and define details to the metadata entity used to represent this element.
      *
-     * @return ElementType - type information.
+     * @return AssetElementType - type information.
      */
     public ElementType getType()
     {

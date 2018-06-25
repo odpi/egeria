@@ -38,9 +38,9 @@ public enum OMRSEventCategory implements Serializable
     /**
      * Default constructor.
      *
-     * @param categoryCode - int category code number
-     * @param categoryName - String category name
-     * @param categoryDescription - String category description
+     * @param categoryCode int category code number
+     * @param categoryName String category name
+     * @param categoryDescription String category description
      */
     OMRSEventCategory(int      categoryCode,
                       String   categoryName,

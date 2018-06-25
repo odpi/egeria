@@ -66,10 +66,10 @@ public class Classification extends InstanceAuditHeader
     /**
      * Typical constructor - verifies and saves parameters.
      *
-     * @param name - name of the classification
-     * @param properties - additional properties for the classification
-     * @param origin - the origin of the classification
-     * @param originGUID - the guid of the entity of the classification origin was propagated.
+     * @param name name of the classification
+     * @param properties additional properties for the classification
+     * @param origin the origin of the classification
+     * @param originGUID the guid of the entity of the classification origin was propagated.
      */
     public Classification(String               name,
                           InstanceProperties   properties,
@@ -95,7 +95,7 @@ public class Classification extends InstanceAuditHeader
     /**
      * Copy/clone Constructor - sets up new classification using values from the template
      *
-     * @param templateClassification - object to copy
+     * @param templateClassification object to copy
      */
     public Classification(Classification templateClassification)
     {
@@ -147,7 +147,7 @@ public class Classification extends InstanceAuditHeader
     /**
      * Set up the name of the classification.
      *
-     * @param classificationName - String name
+     * @param classificationName String name
      */
     public void setName(String classificationName)
     {
@@ -177,7 +177,7 @@ public class Classification extends InstanceAuditHeader
     /**
      * Set up a collection of the additional stored properties for the classification.
      *
-     * @param classificationProperties - properties object
+     * @param classificationProperties properties object
      */
     public void setProperties(InstanceProperties classificationProperties)
     {
@@ -199,7 +199,7 @@ public class Classification extends InstanceAuditHeader
     /**
      * Set up the origin of the classification.
      *
-     * @param classificationOrigin - ClassificationOrigin enum
+     * @param classificationOrigin ClassificationOrigin enum
      */
     public void setClassificationOrigin(ClassificationOrigin classificationOrigin)
     {
@@ -221,7 +221,7 @@ public class Classification extends InstanceAuditHeader
     /**
      * Set up the guid of the entity where a propagate classification came from.
      *
-     * @param classificationOriginGUID - unique identifier of the classification's origin
+     * @param classificationOriginGUID unique identifier of the classification's origin
      */
     public void setClassificationOriginGUID(String classificationOriginGUID)
     {

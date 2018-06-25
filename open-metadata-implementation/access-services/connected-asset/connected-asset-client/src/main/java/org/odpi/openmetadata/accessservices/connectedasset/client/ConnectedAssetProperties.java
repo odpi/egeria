@@ -3,10 +3,7 @@ package org.odpi.openmetadata.accessservices.connectedasset.client;
 
 import org.apache.log4j.Logger;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
-import org.odpi.openmetadata.frameworks.connectors.properties.Classifications;
-import org.odpi.openmetadata.frameworks.connectors.properties.ElementType;
-import org.odpi.openmetadata.frameworks.connectors.properties.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 
 
 /**
@@ -30,27 +27,27 @@ import org.odpi.openmetadata.frameworks.connectors.properties.Connection;
  */
 public class ConnectedAssetProperties extends org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProperties
 {
-    private String        omasServerURL;
-    private String        connectorInstanceId;
-    private Connection    connection;
-    private String        userId;
+    private String               omasServerURL = null;
+    private String               connectorInstanceId = null;
+    private ConnectionProperties connection = null;
+    private String               userId = null;
 
-    private ConnectedAsset connectedAsset;
+    private ConnectedAsset       connectedAsset;
 
     private static final Logger log = Logger.getLogger(ConnectedAssetProperties.class);
 
     /**
      * Typical constructor.
      *
-     * @param userId - identifier of calling user
-     * @param omasServerURL - url of server
-     * @param connectorInstanceId - unique identifier of connector.
-     * @param connection - connection information for connector.
+     * @param userId  identifier of calling user
+     * @param omasServerURL  url of server
+     * @param connectorInstanceId  unique identifier of connector.
+     * @param connection  connection information for connector.
      */
-    public ConnectedAssetProperties(String      userId,
-                                    String      omasServerURL,
-                                    String      connectorInstanceId,
-                                    Connection  connection)
+    public ConnectedAssetProperties(String               userId,
+                                    String               omasServerURL,
+                                    String               connectorInstanceId,
+                                    ConnectionProperties connection)
     {
         super();
 
@@ -66,16 +63,19 @@ public class ConnectedAssetProperties extends org.odpi.openmetadata.frameworks.c
     /**
      * Copy/clone constructor.
      *
-     * @param templateProperties - template to copy.
+     * @param templateProperties  template to copy.
      */
     public ConnectedAssetProperties(ConnectedAssetProperties   templateProperties)
     {
         super(templateProperties);
 
-        this.connection = templateProperties.connection;
-        this.connectorInstanceId = templateProperties.connectorInstanceId;
-        this.omasServerURL = templateProperties.omasServerURL;
-        this.userId = templateProperties.userId;
+        if (templateProperties != null)
+        {
+            this.connection = templateProperties.connection;
+            this.connectorInstanceId = templateProperties.connectorInstanceId;
+            this.omasServerURL = templateProperties.omasServerURL;
+            this.userId = templateProperties.userId;
+        }
 
         this.connectedAsset = new ConnectedAsset(omasServerURL);
     }
@@ -90,11 +90,9 @@ public class ConnectedAssetProperties extends org.odpi.openmetadata.frameworks.c
 
     public void refresh() throws PropertyServerException
     {
-        AssetUniverse assetUniverse = null;
-
         try
         {
-            assetUniverse = connectedAsset.getAssetPropertiesByConnection(connection.getGUID());
+            assetProperties = connectedAsset.getAssetPropertiesByConnection(connection.getGUID());
         }
         catch (Throwable  error)
         {
@@ -102,56 +100,5 @@ public class ConnectedAssetProperties extends org.odpi.openmetadata.frameworks.c
              * Construct PropertyErrorException
              */
         }
-
-        if (assetUniverse == null)
-        {
-            super.assetProperties = null;
-            return;
-        }
-
-        ElementType       elementType = null;
-        Classifications   classifications = null;
-
-
-        if (assetUniverse.getType() != null)
-        {
-            elementType = new ElementType(assetUniverse.getType().getElementTypeId(),
-                                          assetUniverse.getType().getElementTypeName(),
-                                          assetUniverse.getType().getElementTypeVersion(),
-                                          assetUniverse.getType().getElementTypeDescription(),
-                                          assetUniverse.getType().getElementSourceServer(),
-                                          assetUniverse.getType().getElementOrigin(),
-                                          assetUniverse.getType().getElementHomeMetadataCollectionId());
-        }
-
-
-        if (assetUniverse.getClassifications() != null)
-        {
-
-        }
-        super.assetProperties = new AssetUniverse(elementType,
-                                                  assetUniverse.getGUID(),
-                                                  assetUniverse.getURL(),
-                                                  assetUniverse.getQualifiedName(),
-                                                  assetUniverse.getDisplayName(),
-                                                  assetUniverse.getShortDescription(),
-                                                  assetUniverse.getDescription(),
-                                                  assetUniverse.getOwner(),
-                                                  classifications,
-                                                  null,
-                                                  null,
-                                                  null,
-                                                  null,
-                                                  null,
-                                                  null,
-                                                  null,
-                                                  null,
-                                                  null,
-                                                  null,
-                                                  null,
-                                                  null,
-                                                  null,
-                                                  null,
-                                                  null);
     }
 }

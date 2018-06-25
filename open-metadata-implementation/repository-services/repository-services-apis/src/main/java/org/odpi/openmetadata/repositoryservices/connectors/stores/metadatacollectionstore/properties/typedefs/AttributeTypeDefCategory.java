@@ -47,7 +47,7 @@ public enum AttributeTypeDefCategory implements Serializable
     /**
      * Return the code for this enum instance
      *
-     * @return int - type code
+     * @return int type code
      */
     public int getTypeCode()
     {
@@ -58,7 +58,7 @@ public enum AttributeTypeDefCategory implements Serializable
     /**
      * Return the default name for this enum instance.
      *
-     * @return String - default name
+     * @return String default name
      */
     public String getTypeName()
     {
@@ -69,7 +69,7 @@ public enum AttributeTypeDefCategory implements Serializable
     /**
      * Return the default description for the type for this enum instance.
      *
-     * @return String - default description
+     * @return String default description
      */
     public String getTypeDescription()
     {

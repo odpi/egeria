@@ -39,9 +39,9 @@ public class PrimitivePropertyValue extends InstancePropertyValue
 
 
     /**
-     * Copy/clone constructor - copies the values from the supplied template.
+     * Copy/clone constructor copies the values from the supplied template.
      *
-     * @param template - PrimitivePropertyValue
+     * @param template PrimitivePropertyValue
      */
     public PrimitivePropertyValue(PrimitivePropertyValue   template)
     {
@@ -68,7 +68,7 @@ public class PrimitivePropertyValue extends InstancePropertyValue
      * Set up the category of the primitive type.  This sets the name and Java Class used for
      * the primitive value.
      *
-     * @param primitiveDefCategory - PrimitiveDefCategory enum
+     * @param primitiveDefCategory PrimitiveDefCategory enum
      */
     public void setPrimitiveDefCategory(PrimitiveDefCategory primitiveDefCategory)
     {
@@ -97,7 +97,7 @@ public class PrimitivePropertyValue extends InstancePropertyValue
      * Set up the primitive value.   Although it is passed in as a java.lang.Object, it should be the correct
      * type as defined by the PrimitiveDefCategory.
      *
-     * @param primitiveValue - object contain the primitive value
+     * @param primitiveValue object contain the primitive value
      */
     public void setPrimitiveValue(Object primitiveValue)
     {
@@ -156,8 +156,8 @@ public class PrimitivePropertyValue extends InstancePropertyValue
     /**
      * Ensure that the type and value supplied are compatible.
      *
-     * @param primitiveDefCategory - category to test
-     * @param primitiveValue - value to test
+     * @param primitiveDefCategory category to test
+     * @param primitiveValue value to test
      */
     private void validateValueAgainstType(PrimitiveDefCategory   primitiveDefCategory,
                                           Object                 primitiveValue)

@@ -87,11 +87,11 @@ public class OMRSOperationalServices
     /**
      * Constructor used at server startup.
      *
-     * @param localServerName - name of the local server
-     * @param localServerType - type of the local server
-     * @param organizationName - name of the organization that owns the local server
-     * @param localServerURL - URL root for this server.
-     * @param maxPageSize - maximum number of records that can be requested on the pageSize parameter
+     * @param localServerName name of the local server
+     * @param localServerType type of the local server
+     * @param organizationName name of the organization that owns the local server
+     * @param localServerURL URL root for this server.
+     * @param maxPageSize maximum number of records that can be requested on the pageSize parameter
      */
     public OMRSOperationalServices(String                   localServerName,
                                    String                   localServerType,
@@ -124,7 +124,7 @@ public class OMRSOperationalServices
     /**
      * Create repository connector for an access service.
      *
-     * @param accessServiceName - name of the access service name.
+     * @param accessServiceName name of the access service name.
      * @return a repository connector that is able to retrieve and maintain information from all connected repositories.
      */
     public OMRSRepositoryConnector getEnterpriseOMRSRepositoryConnector(String   accessServiceName)
@@ -174,10 +174,10 @@ public class OMRSOperationalServices
     /**
      * Create an audit log for an external component.
      *
-     * @param componentId - numerical identifier for the component.
-     * @param componentName - display name for the component.
-     * @param componentDescription - description of the component.
-     * @param componentWikiURL - link to more information.
+     * @param componentId numerical identifier for the component.
+     * @param componentName display name for the component.
+     * @param componentDescription description of the component.
+     * @param componentWikiURL link to more information.
      * @return new audit log object
      */
     public OMRSAuditLog  getAuditLog(int    componentId,
@@ -193,7 +193,7 @@ public class OMRSOperationalServices
      * Initialize the OMRS component for the Open Metadata Repository Services (OMRS).  The configuration
      * is taken as is.  Any configuration errors are reported as exceptions.
      *
-     * @param repositoryServicesConfig - current configuration values
+     * @param repositoryServicesConfig current configuration values
      */
     public void initialize(RepositoryServicesConfig repositoryServicesConfig)
     {
@@ -415,7 +415,7 @@ public class OMRSOperationalServices
      * Return the connector to the Enterprise OMRS Topic.  If null is returned it means the Enterprise OMRS Topic
      * is not needed.  A configuration error exception is thrown if there is a problem with the connection properties
      *
-     * @param enterpriseAccessConfig - configuration from the OMAG server
+     * @param enterpriseAccessConfig configuration from the OMAG server
      * @return connector to the Enterprise OMRS Topic or null
      */
     private OMRSTopicConnector  initializeEnterpriseOMRSTopicConnector(EnterpriseAccessConfig  enterpriseAccessConfig)
@@ -443,7 +443,7 @@ public class OMRSOperationalServices
      * connector manager is still initialized to pass the local repository information to the Enterprise
      * OMRS repository connectors.
      *
-     * @param enterpriseAccessConfig - enterprise access configuration from the OMAG server
+     * @param enterpriseAccessConfig enterprise access configuration from the OMAG server
      * @return initialized OMRSEnterpriseConnectorManager object
      */
     private OMRSEnterpriseConnectorManager initializeEnterpriseConnectorManager(EnterpriseAccessConfig  enterpriseAccessConfig,
@@ -512,7 +512,7 @@ public class OMRSOperationalServices
      * for remote access to the local repository and an optional connection for a locally optimized connector to use
      * within the local server.
      *
-     * @param localRepositoryConfig - local repository config.
+     * @param localRepositoryConfig local repository config.
      * @return wrapped OMRS Repository Connector
      */
     private LocalOMRSRepositoryConnector  initializeLocalRepository(LocalRepositoryConfig  localRepositoryConfig)
@@ -567,7 +567,7 @@ public class OMRSOperationalServices
     /**
      * Return an OMRS archive manager configured with the list of Open Metadata Archive Stores to use.
      *
-     * @param openMetadataArchiveConnections - connections to the open metadata archive stores
+     * @param openMetadataArchiveConnections connections to the open metadata archive stores
      * @return OMRS archive manager
      */
     private OMRSArchiveManager initializeOpenMetadataArchives(List<Connection>    openMetadataArchiveConnections)
@@ -600,14 +600,14 @@ public class OMRSOperationalServices
      * members of a cohort is event-based.  The parameters provide supplied to the metadata highway manager
      * include values need to send compliant OMRS Events.
      *
-     * @param localServerName - the name of the local server. This value flows in OMRS Events.
-     * @param localServerType - the type of the local server. This value flows in OMRS Events.
-     * @param localOrganizationName - the name of the organization that owns this server.
+     * @param localServerName the name of the local server. This value flows in OMRS Events.
+     * @param localServerType the type of the local server. This value flows in OMRS Events.
+     * @param localOrganizationName the name of the organization that owns this server.
      *                              This value flows in OMRS Events.
-     * @param localRepositoryConnector - the local repository connector is supplied if there is a local repository
+     * @param localRepositoryConnector the local repository connector is supplied if there is a local repository
      *                                 for this server.
-     * @param localRepositoryContentManager - repository content manager for this server
-     * @param connectionConsumer - the connection consumer is from the enterprise repository services.  It
+     * @param localRepositoryContentManager repository content manager for this server
+     * @param connectionConsumer the connection consumer is from the enterprise repository services.  It
      *                           receives connection information about the other members of the cohort(s)
      *                           to enable enterprise access.
      * @param enterpriseTopicConnector - connector to the enterprise repository services Topic Connector.
@@ -976,7 +976,7 @@ public class OMRSOperationalServices
              * of the Connector to OMRSRepositoryConnector.  This could occur if the connector configured is a valid
              * OCF Connector but not an OMRSRepositoryConnector.
              */
-            String  connectionName = connection.getConnectionName();
+            String  connectionName = connection.getQualifiedName();
 
             OMRSErrorCode errorCode = OMRSErrorCode.INVALID_OMRS_CONNECTION;
             String errorMessage = errorCode.getErrorMessageId()

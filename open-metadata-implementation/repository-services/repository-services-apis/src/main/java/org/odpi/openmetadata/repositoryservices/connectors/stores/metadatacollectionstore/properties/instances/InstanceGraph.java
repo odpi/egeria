@@ -37,8 +37,8 @@ public class InstanceGraph extends InstanceElementHeader
      * Typical Constructor creates a graph with the supplied list of elements.  It assumes the caller has supplied
      * elements that do link together.  However, this graph supports graph fragments.
      *
-     * @param entityElementList - list of entity elements to add to the list
-     * @param relationshipElementList - list of relationship elements to add to the list
+     * @param entityElementList list of entity elements to add to the list
+     * @param relationshipElementList list of relationship elements to add to the list
      */
     public InstanceGraph(List<EntityDetail> entityElementList,
                          List<Relationship> relationshipElementList)
@@ -66,7 +66,7 @@ public class InstanceGraph extends InstanceElementHeader
     /**
      * Copy/clone constructor.
      *
-     * @param templateGraph - graph to copy; null to create an empty graph
+     * @param templateGraph graph to copy; null to create an empty graph
      */
     public InstanceGraph(InstanceGraph templateGraph)
     {
@@ -81,7 +81,7 @@ public class InstanceGraph extends InstanceElementHeader
     /**
      * Return the list of all of the entities (vertices/nodes) in the instance graph.  Null means empty graph.
      *
-     * @return EntityDetails - entity list
+     * @return EntityDetails entity list
      */
     public List<EntityDetail> getEntities()
     {
@@ -99,7 +99,7 @@ public class InstanceGraph extends InstanceElementHeader
     /**
      * Set up the list of entities for this instance graph.
      *
-     * @param entityElementList - list of entities
+     * @param entityElementList list of entities
      */
     public void setEntities(List<EntityDetail> entityElementList)
     {
@@ -118,7 +118,7 @@ public class InstanceGraph extends InstanceElementHeader
     /**
      * Return the list of all relationships (edges/links) in the instance graph. Null means a disconnected/empty graph.
      *
-     * @return Relationships - relationship list
+     * @return Relationships relationship list
      */
     public List<Relationship> getRelationships()
     {
@@ -136,7 +136,7 @@ public class InstanceGraph extends InstanceElementHeader
     /**
      * Set up the list of relationships in this instance graph.
      *
-     * @param relationshipElementList - list of relationships
+     * @param relationshipElementList list of relationships
      */
     public void setRelationships(List<Relationship> relationshipElementList)
     {
@@ -154,8 +154,8 @@ public class InstanceGraph extends InstanceElementHeader
     /**
      * Return a list of relationships that are connected to a specific entity.
      *
-     * @param anchorEntityGUID - unique identifier for an entity
-     * @return Relationships - relationship iterator
+     * @param anchorEntityGUID unique identifier for an entity
+     * @return Relationships relationship iterator
      */
     public List<Relationship> getRelationshipsForEntity(String  anchorEntityGUID)
     {
@@ -192,9 +192,9 @@ public class InstanceGraph extends InstanceElementHeader
     /**
      * Return the entity connected at the far end of an entity's relationship.
      *
-     * @param anchorEntityGUID - unique id for the known entity.
-     * @param linkingRelationshipGUID - the relationship to traverse.
-     * @return EntityDetail - the requested entity at the far end of the relationship.
+     * @param anchorEntityGUID unique id for the known entity.
+     * @param linkingRelationshipGUID the relationship to traverse.
+     * @return EntityDetail the requested entity at the far end of the relationship.
      * Null if the relationship or entity is not found.
      */
     public EntityDetail getLinkedEntity(String  anchorEntityGUID, String linkingRelationshipGUID)

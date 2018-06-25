@@ -1,8 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.adapters.repositoryservices.rest.repositoryconnector;
 
-import org.odpi.openmetadata.frameworks.connectors.properties.Connection;
-import org.odpi.openmetadata.frameworks.connectors.properties.Endpoint;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
@@ -57,12 +57,12 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         /*
          * The name of the repository comes from the connection
          */
-        Connection connection      = parentConnector.getConnection();
-        String     endpointAddress = null;
+        ConnectionProperties connection      = parentConnector.getConnection();
+        String               endpointAddress = null;
 
         if (connection != null)
         {
-            Endpoint  endpoint = connection.getEndpoint();
+            EndpointProperties endpoint = connection.getEndpoint();
 
             if (endpoint != null)
             {
@@ -984,8 +984,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
 
 
     /**
-     * Returns a boolean indicating if the entity is stored in the metadata collection.  This entity may be a full
-     * entity object, or an entity proxy.
+     * Returns the entity if the entity is stored in the metadata collection, otherwise null.
      *
      * @param userId - unique identifier for requesting user.
      * @param guid - String unique identifier for the entity

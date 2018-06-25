@@ -36,7 +36,7 @@ public abstract class InstanceElementHeader implements Serializable
     /**
      * Copy/clone constructor set values from the template
      *
-     * @param template - InstanceElementHeader to copy
+     * @param template InstanceElementHeader to copy
      */
     public InstanceElementHeader(InstanceElementHeader   template)
     {

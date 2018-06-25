@@ -51,10 +51,10 @@ public class OMRSCohortManager
      * The constructor defines the minimum information necessary to connect to a cohort.  If these values
      * are not correctly configured, the constructor will throw an exception.
      *
-     * @param cohortName - name of the cohort.  This is a local name used for messages.
-     * @param localMetadataCollectionId - configured value for the local metadata collection id
-     * @param localServerName - the name of the local server. It is a descriptive name for informational purposes.
-     * @param localServerType - the type of the local server.  It is a descriptive name for informational purposes.
+     * @param cohortName name of the cohort.  This is a local name used for messages.
+     * @param localMetadataCollectionId configured value for the local metadata collection id
+     * @param localServerName the name of the local server. It is a descriptive name for informational purposes.
+     * @param localServerType the type of the local server.  It is a descriptive name for informational purposes.
      * @param localOrganizationName - the name of the organization that owns the local server/repository.
      *                              It is a descriptive name for informational purposes.
      * @param localRepository - link to the local repository - may be null.

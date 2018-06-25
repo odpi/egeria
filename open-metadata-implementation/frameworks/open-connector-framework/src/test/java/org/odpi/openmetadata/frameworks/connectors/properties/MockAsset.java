@@ -1,0 +1,31 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+package org.odpi.openmetadata.frameworks.connectors.properties;
+
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
+
+/**
+ * Mock asset provides a concrete class to test AssetDescriptor
+ */
+public class MockAsset extends AssetDescriptor
+{
+    /**
+     * Bean constructor
+     *
+     * @param assetBean - asset bean with all the properties
+     */
+    public MockAsset(Asset assetBean)
+    {
+        super(assetBean);
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param templateAssetDescriptor template to copy
+     */
+    public MockAsset(AssetDescriptor templateAssetDescriptor)
+    {
+        super(templateAssetDescriptor);
+    }
+}

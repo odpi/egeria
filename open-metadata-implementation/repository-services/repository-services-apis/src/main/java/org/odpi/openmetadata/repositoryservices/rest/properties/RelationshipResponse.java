@@ -43,7 +43,7 @@ public class RelationshipResponse extends OMRSRESTAPIResponse
     /**
      * Set up the returned relationship.
      *
-     * @param relationship - relationship object
+     * @param relationship relationship object
      */
     public void setRelationship(Relationship relationship)
     {

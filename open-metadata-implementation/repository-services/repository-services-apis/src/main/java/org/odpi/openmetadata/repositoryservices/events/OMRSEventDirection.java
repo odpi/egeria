@@ -24,9 +24,9 @@ public enum OMRSEventDirection implements Serializable
     /**
      * Default constructor - sets up the specific values for this enum instance.
      *
-     * @param eventDirectionCode - int identifier for the enum, used for indexing arrays etc with the enum.
-     * @param eventDirectionName - String name for the enum, used for message content.
-     * @param eventDirectionDescription - String default description for the enum, used when there is not natural
+     * @param eventDirectionCode int identifier for the enum, used for indexing arrays etc with the enum.
+     * @param eventDirectionName String name for the enum, used for message content.
+     * @param eventDirectionDescription String default description for the enum, used when there is not natural
      *                             language resource bundle available.
      */
     OMRSEventDirection(int eventDirectionCode, String eventDirectionName, String eventDirectionDescription)

@@ -6,7 +6,7 @@ import org.apache.log4j.Logger;
 import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationFactory;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
-import org.odpi.openmetadata.frameworks.connectors.properties.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.repositoryservices.archivemanager.opentypes.OpenMetadataTypesArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveStore;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -30,10 +30,10 @@ public class OMRSArchiveWriter
     /**
      * Opens up an open metadata archive store connector.
      *
-     * @param connection - connection information for the open metadata archive.
+     * @param connection connection information for the open metadata archive.
      * @return open metadata archive store connector
      */
-    private OpenMetadataArchiveStore getOpenMetadataArchive(Connection   connection)
+    private OpenMetadataArchiveStore getOpenMetadataArchive(ConnectionProperties connection)
     {
         OpenMetadataArchiveStore  openMetadataArchiveStore = null;
 
@@ -63,7 +63,7 @@ public class OMRSArchiveWriter
     private void writeOpenMetadataArchiveTypes()
     {
         ConnectorConfigurationFactory configurationFactory = new ConnectorConfigurationFactory();
-        Connection                    connection           = configurationFactory.getOpenMetadataTypesConnection();
+        ConnectionProperties          connection           = new ConnectionProperties(configurationFactory.getOpenMetadataTypesConnection());
 
         OpenMetadataArchiveStore openMetadataArchiveStore = this.getOpenMetadataArchive(connection);
         OpenMetadataTypesArchive openMetadataTypesArchive = new OpenMetadataTypesArchive();
@@ -76,7 +76,7 @@ public class OMRSArchiveWriter
     /**
      * Main program to control the archive writer.
      *
-     * @param args - ignored arguments
+     * @param args ignored arguments
      */
     public static void main(String[] args)
     {

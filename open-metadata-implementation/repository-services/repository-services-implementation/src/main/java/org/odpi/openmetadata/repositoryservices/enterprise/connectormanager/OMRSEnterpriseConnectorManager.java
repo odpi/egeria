@@ -5,7 +5,7 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSRuntimeException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
@@ -451,7 +451,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
              * of the Connector to OMRSRepositoryConnector.  This could occur if the connector configured is a valid
              * OCF Connector but not an OMRSRepositoryConnector.
              */
-            String  connectionName = connection.getConnectionName();
+            String  connectionName = connection.getQualifiedName();
 
             OMRSErrorCode errorCode = OMRSErrorCode.INVALID_OMRS_CONNECTION;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(connectionName);
@@ -579,8 +579,8 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
      */
     private class RegisteredConnectorConsumer
     {
-        private String                   connectorConsumerId  = null;
-        private OMRSConnectorConsumer    connectorConsumer = null;
+        private String                   connectorConsumerId;
+        private OMRSConnectorConsumer    connectorConsumer;
 
 
         /**

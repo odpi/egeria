@@ -544,10 +544,10 @@ public interface OMRSInstanceEventProcessor
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param typeDefGUID - unique identifier for this instance's TypeDef
-     * @param typeDefName - name of this relationship's TypeDef
-     * @param instanceGUID - unique identifier for the instance
-     * @param homeMetadataCollectionId - metadata collection id for the home of this instance.
+     * @param typeDefGUID unique identifier for this instance's TypeDef
+     * @param typeDefName name of this relationship's TypeDef
+     * @param instanceGUID unique identifier for the instance
+     * @param homeMetadataCollectionId metadata collection id for the home of this instance.
      */
     void processRefreshRelationshipRequest(String       sourceName,
                                            String       originatorMetadataCollectionId,
@@ -564,14 +564,14 @@ public interface OMRSInstanceEventProcessor
      * An open metadata repository is refreshing the information about a relationship for the other
      * repositories in the cohort.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param relationship - relationship details
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param relationship relationship details
      */
     void processRefreshRelationshipEvent(String       sourceName,
                                          String       originatorMetadataCollectionId,
@@ -588,20 +588,20 @@ public interface OMRSInstanceEventProcessor
      * at least one of the instances has its GUID changed in its respective home repository.  The updated instance(s)
      * are redistributed around the cohort.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - metadata collection id of the repository reporting the conflicting instance
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param targetMetadataCollectionId - metadata collection id of other repository with the conflicting instance
-     * @param targetTypeDef - details of the target instance's TypeDef
-     * @param targetInstanceGUID - unique identifier for the source instance
-     * @param otherOrigin - origin of the other (older) metadata instance
-     * @param otherMetadataCollectionId - metadata collection of the other (older) metadata instance
-     * @param otherTypeDef - details of the other (older) instance's TypeDef
-     * @param otherInstanceGUID - unique identifier for the other (older) instance
-     * @param errorMessage - description of the error.
+     * @param originatorMetadataCollectionId metadata collection id of the repository reporting the conflicting instance
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param targetMetadataCollectionId metadata collection id of other repository with the conflicting instance
+     * @param targetTypeDef details of the target instance's TypeDef
+     * @param targetInstanceGUID unique identifier for the source instance
+     * @param otherOrigin origin of the other (older) metadata instance
+     * @param otherMetadataCollectionId metadata collection of the other (older) metadata instance
+     * @param otherTypeDef details of the other (older) instance's TypeDef
+     * @param otherInstanceGUID unique identifier for the other (older) instance
+     * @param errorMessage description of the error.
      */
     void processConflictingInstancesEvent(String                 sourceName,
                                           String                 originatorMetadataCollectionId,
@@ -622,17 +622,17 @@ public interface OMRSInstanceEventProcessor
      * An open metadata repository has detected an inconsistency in the version number of the type used in an updated metadata
      * instance compared to its stored version.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - metadata collection id of the repository reporting the conflicting instance
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param targetMetadataCollectionId - metadata collection id of other repository with the conflicting instance
-     * @param targetTypeDef - description of the target instance's TypeDef
-     * @param targetInstanceGUID - unique identifier for the source instance
-     * @param otherTypeDef - details of the other (older) instance's TypeDef
-     * @param errorMessage - description of the error.
+     * @param originatorMetadataCollectionId metadata collection id of the repository reporting the conflicting instance
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param targetMetadataCollectionId metadata collection id of other repository with the conflicting instance
+     * @param targetTypeDef description of the target instance's TypeDef
+     * @param targetInstanceGUID unique identifier for the source instance
+     * @param otherTypeDef details of the other (older) instance's TypeDef
+     * @param errorMessage description of the error.
      */
     void processConflictingTypeEvent(String                 sourceName,
                                      String                 originatorMetadataCollectionId,

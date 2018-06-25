@@ -47,7 +47,7 @@ public class TypeDefGalleryResponse extends OMRSRESTAPIResponse
     /**
      * Set up the list of attribute type definitions from this gallery.
      *
-     * @param attributeTypeDefs - list of AttributeTypeDefs
+     * @param attributeTypeDefs list of AttributeTypeDefs
      */
     public void setAttributeTypeDefs(List<AttributeTypeDef> attributeTypeDefs)
     {
@@ -69,7 +69,7 @@ public class TypeDefGalleryResponse extends OMRSRESTAPIResponse
     /**
      * Set up the list of type definitions for this gallery.
      *
-     * @param typeDefs - list of type definitions
+     * @param typeDefs list of type definitions
      */
     public void setTypeDefs(List<TypeDef> typeDefs)
     {

@@ -38,7 +38,7 @@ public class TypeDefProperties extends TypeDefElementHeader
     /**
      * Copy/clone Constructor.
      *
-     * @param templateProperties - template object to copy.
+     * @param templateProperties template object to copy.
      */
     public TypeDefProperties(TypeDefProperties templateProperties)
     {
@@ -73,7 +73,7 @@ public class TypeDefProperties extends TypeDefElementHeader
     /**
      * Set up the list of property names.
      *
-     * @param typeDefProperties - list of property names
+     * @param typeDefProperties list of property names
      */
     public void setTypeDefProperties(List<String> typeDefProperties)
     {

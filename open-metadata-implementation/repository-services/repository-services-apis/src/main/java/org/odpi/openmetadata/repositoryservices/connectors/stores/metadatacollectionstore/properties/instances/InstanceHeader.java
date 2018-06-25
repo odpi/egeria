@@ -46,7 +46,7 @@ public abstract class InstanceHeader extends InstanceAuditHeader
     /**
      * Copy/clone constructor set the value to those supplied in the template.
      *
-     * @param template - Instance header
+     * @param template Instance header
      */
     public InstanceHeader(InstanceHeader    template)
     {
@@ -75,7 +75,7 @@ public abstract class InstanceHeader extends InstanceAuditHeader
      * Set up the type of the provenance for this instance (UNKNOWN, LOCAL_COHORT, EXPORT_ARCHIVE, CONTENT_PACK,
      * DEREGISTERED_REPOSITORY, CONFIGURATION).
      *
-     * @param instanceProvenanceType - InstanceProvenanceType enum
+     * @param instanceProvenanceType InstanceProvenanceType enum
      */
     public void setInstanceProvenanceType(InstanceProvenanceType instanceProvenanceType)
     {
@@ -87,7 +87,7 @@ public abstract class InstanceHeader extends InstanceAuditHeader
      * Return the unique identifier for the metadata collection that is the home for this instance.
      * If the metadataCollectionId is null it means this instance belongs to the local metadata collection.
      *
-     * @return metadataCollectionId - String unique identifier for the repository
+     * @return metadataCollectionId String unique identifier for the repository
      */
     public String getMetadataCollectionId() { return metadataCollectionId; }
 
@@ -96,7 +96,7 @@ public abstract class InstanceHeader extends InstanceAuditHeader
      * Set up the unique identifier for the home metadata collection for this instance.
      * If the metadataCollectionId is null it means this instance belongs to the local metadata collection.
      *
-     * @param metadataCollectionId - String unique identifier for the repository
+     * @param metadataCollectionId String unique identifier for the repository
      */
     public void setMetadataCollectionId(String metadataCollectionId) { this.metadataCollectionId = metadataCollectionId; }
 
@@ -115,7 +115,7 @@ public abstract class InstanceHeader extends InstanceAuditHeader
     /**
      * Set up the URL for this instance (or null if the metadata repository does not support instance URLs).
      *
-     * @param instanceURL - String URL
+     * @param instanceURL String URL
      */
     public void setInstanceURL(String instanceURL)
     {
@@ -126,7 +126,7 @@ public abstract class InstanceHeader extends InstanceAuditHeader
     /**
      * Return the unique identifier for this instance.
      *
-     * @return guid - String unique identifier
+     * @return guid String unique identifier
      */
     public String getGUID() { return guid; }
 
@@ -134,7 +134,7 @@ public abstract class InstanceHeader extends InstanceAuditHeader
     /**
      * Set up the unique identifier for this instance.
      *
-     * @param guid - String unique identifier
+     * @param guid String unique identifier
      */
     public void setGUID(String guid) { this.guid = guid; }
 

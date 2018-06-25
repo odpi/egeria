@@ -21,7 +21,7 @@ public class EntityProxy extends EntitySummary
 
 
     /**
-     * Default constructor - sets up an empty entity proxy.
+     * Default constructor sets up an empty entity proxy.
      */
     public  EntityProxy()
     {
@@ -32,7 +32,7 @@ public class EntityProxy extends EntitySummary
     /**
      * Copy/clone constructor for the entity proxy.
      *
-     * @param template - entity proxy to copy
+     * @param template entity proxy to copy
      */
     public EntityProxy(EntityProxy   template)
     {
@@ -48,7 +48,7 @@ public class EntityProxy extends EntitySummary
     /**
      * Copy/clone constructor for the entity proxy.
      *
-     * @param template - entity summary to copy
+     * @param template entity summary to copy
      */
     public EntityProxy(EntitySummary   template)
     {
@@ -78,7 +78,7 @@ public class EntityProxy extends EntitySummary
      * Set up the list of unique properties for this entity proxy. These attributes provide properties such
      * as unique names etc that are useful to display.
      *
-     * @param uniqueAttributes - InstanceProperties iterator
+     * @param uniqueAttributes InstanceProperties iterator
      */
     public void setUniqueProperties(InstanceProperties uniqueAttributes) { this.uniqueProperties = uniqueAttributes; }
 

@@ -23,7 +23,7 @@ public class PrimitiveDef extends AttributeTypeDef
     /**
      * Default constructor initializes the PrimitiveDef based on the supplied category.
      *
-     * @param primitiveDefCategory - PrimitiveDefCategory Enum
+     * @param primitiveDefCategory PrimitiveDefCategory Enum
      */
     public PrimitiveDef(PrimitiveDefCategory  primitiveDefCategory)
     {

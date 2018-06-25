@@ -34,7 +34,7 @@ public class TypeDefElementHeader implements Serializable
     /**
      * Copy/clone constructor set TypeDef to value in template.
      *
-     * @param template - TypeDefElementHeader
+     * @param template TypeDefElementHeader
      */
     public TypeDefElementHeader(TypeDefElementHeader  template)
     {
