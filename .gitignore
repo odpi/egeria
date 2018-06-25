@@ -70,5 +70,4 @@ __MACOSX
 # other files
 .DS_Store
 *.swp
-
-
+.java-version
