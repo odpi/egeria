@@ -1,0 +1,485 @@
+/**
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.odpi.openmetadata.accessservices.subjectarea.generated.server;
+
+import java.util.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.*;
+
+//omrs
+import org.odpi.openmetadata.repositoryservices.rest.properties.*;
+import org.odpi.openmetadata.repositoryservices.archivemanager.opentypes.OpenMetadataTypesArchive;
+
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
+
+//omas
+import org.odpi.openmetadata.accessservices.subjectarea.common.*;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
+import org.odpi.openmetadata.accessservices.subjectarea.common.Classification;
+import org.odpi.openmetadata.accessservices.subjectarea.common.Reference;
+import org.odpi.openmetadata.accessservices.subjectarea.validators.RestValidator;
+import org.odpi.openmetadata.accessservices.subjectarea.constraints.SubjectAreaConstraintsFactory;
+import org.odpi.openmetadata.accessservices.subjectarea.constraints.SubjectAreaConstraint;
+import org.odpi.openmetadata.accessservices.subjectarea.server.properties.line.Line;
+
+// omas entity specific imports
+<$$$
+import org.odpi.openmetadata.accessservices.subjectarea.generated.entities.<$$uEntityName$$>.<$$uEntityName$$>;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.entities.<$$uEntityName$$>.<$$uEntityName$$>References;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.entities.<$$uEntityName$$>.<$$uEntityName$$>Mapper;
+$$$>
+// omas relationship specific imports
+<$$RELATIONSHIP$
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.<$$uRelationshipName$$>.<$$uRelationshipName$$>;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.<$$uRelationshipName$$>.<$$uRelationshipName$$>Mapper;
+$$RELATIONSHIP$>
+
+/**
+ * REST for the Subject Area OMAS. Exposes Rest endpoints for entities including Golossary, Term and Category.
+ *
+ * The Subject Area OMAS should not have dependancies on Atlas (apart from its package name)- so that it can call other non-Atlas resource services
+ * and it will be in OMAG packages without Atlas.
+ *
+ */
+
+@RestController
+@RequestMapping("access-services/subject-area")
+public class SubjectAreaOmasREST  {
+
+    private static final Logger log = LoggerFactory.getLogger(SubjectAreaOmasREST.class);
+    private static final String className = SubjectAreaOmasREST.class.getName();
+
+    // The OMRSAPIHelper allows the junits to mock out the omrs layer.
+    private OMRSAPIHelper oMRSAPIHelper =new OMRSAPIHelper();
+
+    public SubjectAreaOmasREST() {
+    }
+    public void setOMRSAPIHelper(OMRSAPIHelper oMRSAPIHelper) {
+        this.oMRSAPIHelper=oMRSAPIHelper;
+    }
+
+<$$$
+    /**
+     * Fetch complete definition of an <$$EntityName$$> given its GUID.
+     * The limit and offset paging parameters limit the number elements returned in each of the <$$lowerCasePluralEntityName$$> relationships.
+     * @param entityGuid GUID for the entity
+     * @return <$$uEntityName$$>
+     * @throws UserNotAuthorizedException, RepositoryErrorException, InvalidParameterException,
+     * exceptions on call
+     * ConnectorCheckedException, ConnectionCheckedException, EntityProxyOnlyException
+     */
+
+ 
+    @RequestMapping(method = RequestMethod.GET, path = "users/{userId}/<$$lowerCasePluralEntityName$$>/guid/{entityGuid}")
+    public <$$uEntityName$$> get<$$uEntityName$$>ById(@PathVariable String userId,@PathVariable String entityGuid)
+        throws PropertyServerException, UserNotAuthorizedException, InvalidParameterException, UnrecognizedGUIDException
+    {
+        final String methodName = "get<$$uEntityName$$>ById";
+        if (log.isDebugEnabled()) {
+          log.debug("==> Method: " + methodName + ",userId="+userId+",guid="+entityGuid);
+        }
+        RestValidator.validateUserIdNotNull(className,methodName,userId);
+        RestValidator.validateGUIDNotNull(className,methodName,entityGuid,"entityGuid");
+
+        EntityDetail omrsEntityDetail = oMRSAPIHelper.callOMRSGetEntityByGuid(userId,entityGuid);
+            
+        <$$uEntityName$$> got<$$EntityName$$> = <$$uEntityName$$>Mapper.mapOmrsEntityDetailTo<$$uEntityName$$>(omrsEntityDetail);
+        if (log.isDebugEnabled()) {
+         
+             log.debug("<== successful method : " + methodName + ",userId="+userId+",guid="+entityGuid+",entity="+ got<$$EntityName$$> );
+        }
+        return got<$$EntityName$$>;
+
+    }
+    /**
+     * Create new <$$EntityName$$> in Atlas.
+     * @param <$$EntityName$$>
+     * @return <$$uEntityName$$>
+     * @throws UserNotAuthorizedException, RepositoryErrorException, InvalidParameterException,
+     * exceptions on call
+     * ConnectorCheckedException, ConnectionCheckedException, EntityProxyOnlyException
+     */
+
+    @RequestMapping(method = RequestMethod.POST, path = "users/{userId}/<$$lowerCasePluralEntityName$$>")
+    public <$$uEntityName$$> create<$$uEntityName$$>(@PathVariable String userId,<$$uEntityName$$> <$$EntityName$$>)
+          throws PropertyServerException, UserNotAuthorizedException, InvalidParameterException, ClassificationException, StatusNotSupportedException, TypeException
+    {
+
+        final String methodName = "create<$$uEntityName$$>ById";
+        if (log.isDebugEnabled()) {
+           log.debug("==> Method: " + methodName + ",userId=" + userId);
+        }
+        RestValidator.validateUserIdNotNull(className,methodName,userId);
+
+        SubjectAreaConstraint constraint = SubjectAreaConstraintsFactory.getSubjectAreaConstraint("<$$uEntityName$$>");
+        if (constraint!=null) {
+             constraint.preCreate(<$$EntityName$$>);
+        }
+
+        EntityDetail entityDetail = <$$uEntityName$$>Mapper.map<$$uEntityName$$>ToOmrsEntityDetail(<$$EntityName$$>);
+        EntityDetail addedOMRSEntityDetail = oMRSAPIHelper.callOMRSAddEntity(userId,entityDetail);
+
+        <$$uEntityName$$> created<$$uEntityName$$> =  <$$uEntityName$$>Mapper.mapOmrsEntityDetailTo<$$uEntityName$$>(addedOMRSEntityDetail);
+        if (log.isDebugEnabled()) {
+              log.debug("<== successful method : " + methodName + ",userId="+userId+", created <$$uEntityName$$>="+ created<$$uEntityName$$> );
+        }
+        return created<$$uEntityName$$>;
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, path = "users/{userId}/<$$lowerCasePluralEntityName$$>/guid/{<$$EntityName$$>Guid}")
+    public <$$uEntityName$$> update<$$uEntityName$$>(@PathVariable String userId,@PathVariable String entityGuid, <$$uEntityName$$> <$$EntityName$$>)
+         throws PropertyServerException, UserNotAuthorizedException, InvalidParameterException,UnrecognizedGUIDException
+    {
+
+            final String methodName = "update<$$uEntityName$$>ById";
+            if (log.isDebugEnabled()) {
+                log.debug("==> Method: " + methodName + ",userId=" + userId);
+            }
+            RestValidator.validateUserIdNotNull(className,methodName,userId);
+            RestValidator.validateGUIDNotNull(className,methodName,entityGuid,"entityGuid");
+
+            EntityDetail entityDetail = <$$uEntityName$$>Mapper.map<$$uEntityName$$>ToOmrsEntityDetail(<$$EntityName$$>);
+            // TODO the type guid needs to be set in the supplied entityDetail
+
+            EntityDetail updatedOMRSEntityDetail = oMRSAPIHelper.callOMRSUpdateEntity(userId,entityDetail);
+
+            <$$uEntityName$$> updated<$$uEntityName$$> =  <$$uEntityName$$>Mapper.mapOmrsEntityDetailTo<$$uEntityName$$>(updatedOMRSEntityDetail);
+            if (log.isDebugEnabled()) {
+                    log.debug("<== successful method: " + methodName + ",userId=" + userId + ",updated <$$uEntityName$$>="+ updated<$$uEntityName$$> );
+            }
+            return updated<$$uEntityName$$>;
+        }
+
+    /**
+     * Delete an <$$EntityName$$> identified by its GUID. Delete is a soft delete, this means that the <$$EntityName$$> has its status changed to
+     * deleted. Soft deletion support os optional, so this call may fail. Soft deletes can be undone using the restore call.
+     * If it is required that an entity is really deleted (a hard delete) then the purge call should be used.
+     *
+     * @param  entityGuid GUID for the <$$EntityName$$>
+     * @return <$$uEntityName$$>
+     */
+
+    @RequestMapping(method = RequestMethod.DELETE, path = "users/{userId}/<$$lowerCasePluralEntityName$$>/guid/{<$$EntityName$$>Guid}")
+
+    public void delete<$$uEntityName$$>ByGuid(@PathVariable String userId,@PathVariable final String entityGuid)
+         throws PropertyServerException, UserNotAuthorizedException,  FunctionNotSupportedException, InvalidParameterException, UnrecognizedGUIDException
+    {
+         final String methodName = "delete<$$uEntityName$$>ByGuid";
+         if (log.isDebugEnabled()) {
+              log.debug("==> Method: " + methodName + ",userId="+userId+",guid="+entityGuid);
+         }
+         RestValidator.validateUserIdNotNull(className,methodName,userId);
+         RestValidator.validateGUIDNotNull(className,methodName,entityGuid,"entityGuid");
+
+         EntityDetail omrsEntityDetail = oMRSAPIHelper.callOMRSGetEntityByGuid(userId,entityGuid);
+         String typeName = omrsEntityDetail.getType().getTypeDefName();
+         String typeGuid = omrsEntityDetail.getType().getTypeDefGUID();
+         oMRSAPIHelper.callOMRSDeleteEntity(userId,typeName,typeGuid,entityGuid);
+         if (log.isDebugEnabled()) {
+             log.debug("<== successful Method: " + methodName + ",userId="+userId+",guid="+entityGuid);
+         }
+    }
+
+    public void purge<$$uEntityName$$>ByGuid(@PathVariable String userId,@PathVariable final String entityGuid)
+           throws PropertyServerException, UserNotAuthorizedException, InvalidParameterException, UnrecognizedGUIDException, EntityNotDeletedException, GUIDNotPurgedException {
+        final String methodName = "purge<$$uEntityName$$>ByGuid";
+         if (log.isDebugEnabled()) {
+              log.debug("==> Method: " + methodName + ",userId="+userId+",guid="+entityGuid);
+         }
+         RestValidator.validateUserIdNotNull(className,methodName,userId);
+         RestValidator.validateGUIDNotNull(className,methodName,entityGuid,"entityGuid");
+
+         EntityDetail omrsEntityDetail = oMRSAPIHelper.callOMRSGetEntityByGuid(userId,entityGuid);
+         String typeName = omrsEntityDetail.getType().getTypeDefName();
+         String typeGuid = omrsEntityDetail.getType().getTypeDefGUID();
+         oMRSAPIHelper.callOMRSPurgeEntity(userId,typeName,typeGuid,entityGuid);
+         if (log.isDebugEnabled()) {
+             log.debug("<== successful Method: " + methodName + ",userId="+userId+",guid="+entityGuid);
+         }
+    }
+
+    /**
+     * Add classifications to the supplied <$$EntityName$$>
+     * @param entityGuid
+     * @param classifications
+     * @throws UserNotAuthorizedException, RepositoryErrorException, InvalidParameterException,
+            // exceptions on call
+            ConnectorCheckedException, ConnectionCheckedException, EntityProxyOnlyException
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "users/{userId}/<$$lowerCasePluralEntityName$$>/{<$$EntityName$$>Guid}/classifications")
+    public <$$uEntityName$$> add<$$uEntityName$$>Classifications(@PathVariable String userId,@PathVariable final String entityGuid, List<Classification> classifications)
+           throws PropertyServerException, UserNotAuthorizedException, InvalidParameterException, ClassificationException, UnrecognizedGUIDException {
+        final String methodName = "add<$$uEntityName$$>Classifications";
+         if (log.isDebugEnabled()) {
+             log.debug("==> Method: " + methodName + ",userId="+userId+",guid="+entityGuid);
+         }
+         RestValidator.validateUserIdNotNull(className,methodName,userId);
+
+
+         for (Classification classification:classifications) {
+             InstanceProperties instanceProperties = classification.obtainInstanceProperties();
+             String name =classification.getClassificationName();
+             RestValidator.validateNameNotNull(className,methodName,name,"classifications");
+             oMRSAPIHelper.callOMRSClassifyEntity(userId,
+                 entityGuid,
+                 name,
+                 instanceProperties);
+         }
+
+         EntityDetail omrsEntityDetail = oMRSAPIHelper.callOMRSGetEntityByGuid(userId,entityGuid);
+
+         <$$uEntityName$$> <$$EntityName$$>Classifications = <$$uEntityName$$>Mapper.mapOmrsEntityDetailTo<$$uEntityName$$>(omrsEntityDetail);
+         if (log.isDebugEnabled()) {
+             log.debug("<== successful Method: " + methodName + ",userId="+userId+",guid="+entityGuid+",classified <$$uEntityName$$>=" +  <$$EntityName$$>Classifications);
+         }
+         return  <$$EntityName$$>Classifications;
+    }
+
+    /**
+     * Updates classifications to an existing <$$EntityName$$> represented by a guid.
+     * @param  entityGuid globally unique identifier for the <$$EntityName$$>
+     * @return classification for the given <$$EntityName$$> guid
+     */
+
+    @RequestMapping(method = RequestMethod.PUT, path = "users/{userId}/<$$lowerCasePluralEntityName$$>/{<$$EntityName$$>Guid}/classification")
+
+    public <$$uEntityName$$> update<$$uEntityName$$>Classification(@PathVariable("userId") String userId,@PathVariable("<$$EntityName$$>Guid") final String entityGuid, List<Classification> classificationsToUpdate)
+        throws PropertyServerException, UserNotAuthorizedException, InvalidParameterException, ClassificationException,  UnrecognizedGUIDException {
+
+        final String methodName = "update<$$uEntityName$$>Classifications";
+        if (log.isDebugEnabled()) {
+            log.debug("==> Method: " + methodName + ",userId="+userId+",guid="+entityGuid);
+        }
+        RestValidator.validateUserIdNotNull(className,methodName,userId);
+        RestValidator.validateGUIDNotNull(className,methodName,entityGuid,"entityGuid");
+
+            EntityDetail omrsEntityDetail = oMRSAPIHelper.callOMRSGetEntityByGuid(userId,entityGuid);
+
+            List<String> existingClassificationNames = new ArrayList();
+            for (org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification existingClassification:omrsEntityDetail.getClassifications()) {
+                 String name = existingClassification.getName();
+            }
+            for (Classification classification:classificationsToUpdate) {
+                 String name = classification.getClassificationName();
+                 // Only allow updates of classifications that already exist.
+                 if (!existingClassificationNames.contains(name)) {
+                     SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.UPDATE_REQUESTED_ON_A_NON_EXISTENT_CLASSIFICATION;
+                     String errorMessage = errorCode.getErrorMessageId()
+                            + errorCode.getFormattedErrorMessage(
+                               name,
+                              "classificationsToUpdate",
+                              methodName,
+                             entityGuid
+                             );
+                      log.error(errorMessage);
+                      throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                                          className,
+                                          methodName,
+                                          errorMessage,
+                                          errorCode.getSystemAction(),
+                                          errorCode.getUserAction());
+                 }
+            }
+            for (Classification classification:classificationsToUpdate) {
+                 InstanceProperties instanceProperties = classification.obtainInstanceProperties();
+                 String name =classification.getClassificationName();
+                 //remove existing classification
+                 oMRSAPIHelper.callOMRSDeClassifyEntity(userId,
+                     entityGuid,
+                     name);
+                 // re-add with the new properties.
+                 oMRSAPIHelper.callOMRSClassifyEntity(userId,
+                     entityGuid,
+                     name,
+                     instanceProperties);
+            }
+
+            EntityDetail updatedOMRSEntityDetail = oMRSAPIHelper.callOMRSGetEntityByGuid(userId,entityGuid);
+           <$$uEntityName$$>  <$$EntityName$$>Classifications = <$$uEntityName$$>Mapper.mapOmrsEntityDetailTo<$$uEntityName$$>(updatedOMRSEntityDetail);
+
+            if (log.isDebugEnabled()) {
+                   log.debug("<== Method: " + methodName + ",userId="+userId+",guid="+entityGuid);
+            }
+             return  <$$EntityName$$>Classifications;
+    }
+
+    /**
+     * Deletes a given classification from an existing <$$EntityName$$> represented by a guid.
+     * @param entityGuid  globally unique identifier for the <$$EntityName$$>
+     * @param name name of the classification
+     */
+    @RequestMapping(method = RequestMethod.DELETE, path = "users/{userId}/<$$lowerCasePluralEntityName$$>/{<$$EntityName$$>Guid}/classification/{name}")
+    public <$$uEntityName$$> delete<$$uEntityName$$>Classification(@PathVariable("userId") String userId,@PathVariable("<$$EntityName$$>Guid") String entityGuid,
+            @PathVariable("name") final String name)
+        throws PropertyServerException, UserNotAuthorizedException, org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException, ClassificationException,  UnrecognizedGUIDException {
+
+       final String methodName = "delete<$$uEntityName$$>Classification";
+       if (log.isDebugEnabled()) {
+           log.debug("==> Method: " + methodName + ",userId="+userId+",guid="+entityGuid+",name="+name);
+       }
+       RestValidator.validateUserIdNotNull(className,methodName,userId);
+       RestValidator.validateGUIDNotNull(className,methodName,entityGuid,"entityGuid");
+
+
+       oMRSAPIHelper.callOMRSDeClassifyEntity(userId, entityGuid,name);
+       EntityDetail omrsEntityDetail = oMRSAPIHelper.callOMRSGetEntityByGuid(userId,entityGuid);
+       <$$uEntityName$$> declassified<$$uEntityName$$> =  <$$uEntityName$$>Mapper.mapOmrsEntityDetailTo<$$uEntityName$$>(omrsEntityDetail);
+       if (log.isDebugEnabled()) {
+           log.debug("<== successful Method: " + methodName + ",userId="+userId+",guid="+entityGuid+",name="+name);
+       }
+       return declassified<$$uEntityName$$>;
+    }
+
+    /**
+      * Get the relationships associated with entity <$$EntityName$$> represented by a guid.
+      * @param entityGuid  globally unique identifier for the <$$EntityName$$>
+      */
+    @RequestMapping(method = RequestMethod.GET, path = "users/{userId}/<$$lowerCasePluralEntityName$$>/guid/{entityGuid}/relationships")
+    public List<Line> get<$$uEntityName$$>Relationships(@PathVariable String userId,@PathVariable String entityGuid)
+         throws PropertyServerException, UserNotAuthorizedException, InvalidParameterException, TypeException, FunctionNotSupportedException, PagingException, UnrecognizedGUIDException {
+        final String methodName = "get<$$uEntityName$$>Relationships";
+        if (log.isDebugEnabled()) {
+            log.debug("==> Method: " + methodName + ",userId="+userId+",guid="+entityGuid);
+        }
+        RestValidator.validateUserIdNotNull(className,methodName,userId);
+        RestValidator.validateGUIDNotNull(className,methodName,entityGuid,"entityGuid");
+
+        List<Line> lines = new ArrayList<>();
+
+        List<Relationship> omrsRelationships = oMRSAPIHelper.callGetRelationshipsForEntity( userId,entityGuid);
+        for (Relationship omrsRelationship:omrsRelationships){
+           String name = omrsRelationship.getType().getTypeDefName();
+            if (name.equals("AcceptedAnswer")) {
+                AcceptedAnswer acceptedAnswer= AcceptedAnswerMapper.mapOmrsRelationshipToAcceptedAnswer(omrsRelationship);
+                lines.add(acceptedAnswer);
+            }
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId="+userId+",guid="+entityGuid);
+        }
+        return lines;
+    }
+    $$$>
+     // Relationships
+
+     <$$RELATIONSHIP$
+
+    @RequestMapping(method = RequestMethod.POST, path = "users/{userId}/relationships/<$$lowerCasePluralRelationshipName$$>")
+
+    public <$$uRelationshipName$$> create<$$uRelationshipName$$>Relationship(@PathVariable("userId") String userId,<$$uRelationshipName$$> relationship)
+          throws PropertyServerException, UserNotAuthorizedException, InvalidParameterException,  TypeException, UnrecognizedGUIDException {
+        final String methodName = "create<$$uRelationshipName$$>Relationship";
+        if (log.isDebugEnabled()) {
+            log.debug("==> Method: " + methodName + ",userId="+userId+",relationship="+relationship);
+        }
+        RestValidator.validateUserIdNotNull(className,methodName,userId);
+
+        Relationship omrsRelationship = <$$uRelationshipName$$>Mapper.map<$$uRelationshipName$$>ToOmrsRelationship(relationship);
+        Relationship returnedRelationship = oMRSAPIHelper.callOMRSAddRelationship(userId,omrsRelationship);
+        <$$uRelationshipName$$> reclassified<$$uRelationshipName$$> =  <$$uRelationshipName$$>Mapper.mapOmrsRelationshipTo<$$uRelationshipName$$>(returnedRelationship);
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful Method: " + methodName + ",userId="+userId+",relationship="+relationship);
+        }
+        return reclassified<$$uRelationshipName$$>;
+    }
+    @RequestMapping(method = RequestMethod.GET, path = "users/{userId}/relationships/<$$lowerCasePluralRelationshipName$$>")
+
+    public <$$uRelationshipName$$> get<$$uRelationshipName$$>RelationshipByGuid(@PathVariable("userId") String userId, String relationshipGuid)
+         throws PropertyServerException, UserNotAuthorizedException, InvalidParameterException, UnrecognizedGUIDException {
+            final String methodName = "get<$$uRelationshipName$$>RelationshipByGuid";
+            if (log.isDebugEnabled()) {
+                log.debug("==> Method: " + methodName + ",userId="+userId+",relationshipGuid="+relationshipGuid);
+            }
+            RestValidator.validateUserIdNotNull(className,methodName,userId);
+            RestValidator.validateGUIDNotNull(className,methodName,relationshipGuid,"relationshipGuid");
+
+            Relationship returnedRelationship = oMRSAPIHelper.callOMRSGetRelationshipByGuid(userId,relationshipGuid);
+            <$$uRelationshipName$$> got<$$uRelationshipName$$> = <$$uRelationshipName$$>Mapper.mapOmrsRelationshipTo<$$uRelationshipName$$>(returnedRelationship);
+            if (log.isDebugEnabled()) {
+                log.debug("<== successful Method: " + methodName + ",userId="+userId+",relationshipGuid="+relationshipGuid);
+            }
+            return got<$$uRelationshipName$$>;
+        }
+    @RequestMapping(method = RequestMethod.PUT, path = "users/{userId}/relationships/<$$lowerCasePluralRelationshipName$$>")
+    public <$$uRelationshipName$$> update<$$uRelationshipName$$>Relationship(@PathVariable("userId") String userId,<$$uRelationshipName$$> <$$RelationshipName$$>)
+            throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException, StatusNotSupportedException, UnrecognizedGUIDException {
+        final String methodName = "update<$$uRelationshipName$$>Relationship";
+        if (log.isDebugEnabled()) {
+           log.debug("==> Method: " + methodName + ",userId="+userId);
+        }
+        RestValidator.validateUserIdNotNull(className,methodName,userId);
+
+
+        Relationship omrsRelationship = <$$uRelationshipName$$>Mapper.map<$$uRelationshipName$$>ToOmrsRelationship(<$$RelationshipName$$>);
+        Relationship returnedRelationship = oMRSAPIHelper.callOMRSUpdateRelationship(userId,omrsRelationship);
+        <$$uRelationshipName$$> updated<$$uRelationshipName$$> = <$$uRelationshipName$$>Mapper.mapOmrsRelationshipTo<$$uRelationshipName$$>(returnedRelationship);
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful Method: " + methodName + ",userId="+userId);
+        }
+        return updated<$$uRelationshipName$$>;
+    }
+
+     public void delete<$$uRelationshipName$$>RelationshipById(@PathVariable String userId,@PathVariable String relationshipGuid)
+              throws PropertyServerException, UserNotAuthorizedException, InvalidParameterException, FunctionNotSupportedException, UnrecognizedGUIDException {
+            final String methodName = "delete<$$uRelationshipName$$>RelationshipById";
+            if (log.isDebugEnabled()) {
+                log.debug("==> Method: " + methodName + ",userId="+userId+",guid="+relationshipGuid);
+            }
+             RestValidator.validateUserIdNotNull(className,methodName,userId);
+             RestValidator.validateGUIDNotNull(className,methodName,relationshipGuid,"relationshipGuid");
+
+             Relationship relationship =  oMRSAPIHelper.callOMRSGetRelationshipByGuid(userId,relationshipGuid);
+             String typeGuid = relationship.getType().getTypeDefGUID();
+             String typeName = relationship.getType().getTypeDefName();
+             if (typeName.equals("<$$uRelationshipName$$>")) {
+                oMRSAPIHelper.callOMRSDeleteRelationship(userId, typeGuid, typeName, relationshipGuid);
+                if (log.isDebugEnabled()) {
+                    log.debug("<== successful Method: " + methodName + ",userId="+userId+",guid="+relationshipGuid);
+                 }
+             } else {
+                 // error guid supplied is not for a relationship of type <$$RelationshipName$$>
+             }
+     }
+     public void purge<$$uRelationshipName$$>RelationshipById(@PathVariable String userId,@PathVariable String relationshipGuid)
+                  throws PropertyServerException, UserNotAuthorizedException, InvalidParameterException, UnrecognizedGUIDException, RelationshipNotDeletedException, GUIDNotPurgedException {
+                 final String methodName = "purge<$$uRelationshipName$$>RelationshipById";
+                 if (log.isDebugEnabled()) {
+                     log.debug("==> Method: " + methodName + ",userId="+userId+",guid="+relationshipGuid);
+                 }
+                  RestValidator.validateUserIdNotNull(className,methodName,userId);
+                  RestValidator.validateGUIDNotNull(className,methodName,relationshipGuid,"relationshipGuid");
+
+                  Relationship relationship =  oMRSAPIHelper.callOMRSGetRelationshipByGuid(userId,relationshipGuid);
+                  String typeGuid = relationship.getType().getTypeDefGUID();
+                  String typeName = relationship.getType().getTypeDefName();
+                  if (typeName.equals("<$$uRelationshipName$$>")) {
+                     oMRSAPIHelper.callOMRSPurgeRelationship(userId, typeGuid, typeName, relationshipGuid);
+                     if (log.isDebugEnabled()) {
+                         log.debug("<== successful Method: " + methodName + ",userId="+userId+",guid="+relationshipGuid);
+                      }
+                  } else {
+                      // error guid supplied is not for a relationship of type <$$RelationshipName$$>
+                  }
+          }
+    $$RELATIONSHIP$>
+
+}
