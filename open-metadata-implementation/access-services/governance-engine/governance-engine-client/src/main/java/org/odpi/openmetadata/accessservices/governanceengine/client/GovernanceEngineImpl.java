@@ -53,6 +53,8 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
 
         validateOMASServerURL(methodName);
         validateUserId(userId,methodName); // cannot be null
+
+
         // No validation for other parms -- optional. Managed server-side
 
         GovernedAssetComponentListAPIResponse restResult = callGovernanceEngineGovernedAssetComponentListRESTCall(methodName,
@@ -169,6 +171,7 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
     }
 
 
+
     /**
      * Throw an exception if the supplied userId is null
      *
@@ -179,7 +182,7 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
     private void validateUserId(String userId,
                                 String methodName) throws InvalidParameterException {
         if (StringUtils.isEmpty(userId)) {
-            GovernanceEngineErrorCode errorCode = GovernanceEngineErrorCode.NULL_USER_ID;
+            GovernanceEngineErrorCode errorCode = GovernanceEngineErrorCode.EMPTY_USER_ID;
             String errorMessage = errorCode.getErrorMessageId()
                     + errorCode.getFormattedErrorMessage(methodName);
 
@@ -191,8 +194,6 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
                     errorCode.getUserAction());
         }
     }
-
-
 
 
     /**

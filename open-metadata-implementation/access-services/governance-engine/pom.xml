@@ -91,7 +91,6 @@
                         <groupId>org.mockito</groupId>
                         <artifactId>mockito-inline</artifactId>
                         <version>${mockito.junit.version}</version>
-                        <scope>test</scope>
                     </dependency>
                 </dependencies>
             </plugin>
