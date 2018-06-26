@@ -23,16 +23,16 @@ import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicLi
  */
 public class OMRSEventListener implements OMRSTopicListener
 {
-    private String cohortName                = null;
-    private String localMetadataCollectionId = null;
+    private String cohortName;
+    private String localMetadataCollectionId;
 
     /*
      * There is an event processor for each category of event.  The OMRSEventListener passes appropriate events to these
      * objects depending on the settings of its configuration.
      */
-    private OMRSRegistryEventProcessor registryEventProcessor = null;
-    private OMRSTypeDefEventProcessor  typeDefEventProcessor  = null;
-    private OMRSInstanceEventProcessor instanceEventProcessor = null;
+    private OMRSRegistryEventProcessor registryEventProcessor;
+    private OMRSTypeDefEventProcessor  typeDefEventProcessor;
+    private OMRSInstanceEventProcessor instanceEventProcessor;
 
     /*
      * The audit log is used for recording events, decisions, errors and exceptions
@@ -44,13 +44,13 @@ public class OMRSEventListener implements OMRSTopicListener
 
 
     /**
-     * Default Constructor - saves configuration parameters.
+     * Default Constructor saves configuration parameters.
      *
-     * @param cohortName - name of the cohort that this event listener belongs to
-     * @param localMetadataCollectionId - unique identifier for the local metadata collection
-     * @param registryEventProcessor - processor for registry events
-     * @param typeDefEventProcessor - processor for TypeDef synchronization events
-     * @param instanceEventProcessor - processor for metadata instance replication
+     * @param cohortName name of the cohort that this event listener belongs to
+     * @param localMetadataCollectionId unique identifier for the local metadata collection
+     * @param registryEventProcessor processor for registry events
+     * @param typeDefEventProcessor processor for TypeDef synchronization events
+     * @param instanceEventProcessor processor for metadata instance replication
      */
     public OMRSEventListener(String                                cohortName,
                              String                                localMetadataCollectionId,
@@ -83,15 +83,12 @@ public class OMRSEventListener implements OMRSTopicListener
         if (event != null)
         {
             /*
-             *  If the event came from this server - then ignore it.
+             *  If the event came from this server then ignore it.
              */
             if ((localMetadataCollectionId != null) &&
                     (localMetadataCollectionId.equals(event.getOriginator().getMetadataCollectionId())))
             {
-                if (log.isDebugEnabled())
-                {
-                    log.debug("Ignoring event that this server originated");
-                }
+                log.debug("Ignoring event that this server originated");
             }
             else
             {
@@ -128,18 +125,14 @@ public class OMRSEventListener implements OMRSTopicListener
                                            auditCode.getSystemAction(),
                                            auditCode.getUserAction());
 
-                        if (log.isDebugEnabled())
-                        {
-                            log.debug("Unknown event received :|");
-                        }
-
+                        log.debug("Unknown event received :|");
                 }
             }
         }
         else
         {
             /*
-             * A null event was passed - probably should not happen so log audit record.
+             * A null event was passed, this probably should not happen so log audit record.
              */
             OMRSAuditCode auditCode = OMRSAuditCode.NULL_OMRS_EVENT_RECEIVED;
 
@@ -151,10 +144,7 @@ public class OMRSEventListener implements OMRSTopicListener
                                auditCode.getSystemAction(),
                                auditCode.getUserAction());
 
-            if (log.isDebugEnabled())
-            {
-                log.debug("Null OMRS Event received :(");
-            }
+            log.debug("Null OMRS Event received :(");
         }
     }
 
@@ -174,17 +164,11 @@ public class OMRSEventListener implements OMRSTopicListener
 
         if (registryEvent == null)
         {
-            if (log.isDebugEnabled())
-            {
-                log.debug("Null registry event - ignoring event");
-            }
+            log.debug("Null registry event; ignoring event");
         }
         else if (registryEventProcessor == null)
         {
-            if (log.isDebugEnabled())
-            {
-                log.debug("No registry event processor - ignoring event ");
-            }
+            log.debug("No registry event processor; ignoring event ");
         }
         else /* process registry event */
         {
@@ -259,39 +243,27 @@ public class OMRSEventListener implements OMRSTopicListener
                                     break;
 
                                 default:
-                                    if (log.isDebugEnabled())
-                                    {
-                                        log.debug("Unknown registry event error code - ignoring event");
-                                    }
+                                    log.debug("Unknown registry event error code; ignoring event");
                                     break;
                             }
                         }
                         else
                         {
-                            if (log.isDebugEnabled())
-                            {
-                                log.debug("Null registry event error code - ignoring event");
-                            }
+                            log.debug("Null registry event error code, ignoring event");
                         }
                         break;
 
                     default:
                         /*
-                         * New type of registry event that this server does not understand - ignore it
+                         * New type of registry event that this server does not understand ignore it
                          */
-                        if (log.isDebugEnabled())
-                        {
-                            log.debug("Unknown registry event: " + registryEvent.toString());
-                        }
+                        log.debug("Unknown registry event: " + registryEvent.toString());
                         break;
                 }
             }
             else
             {
-                if (log.isDebugEnabled())
-                {
-                    log.debug("Ignored registry event: " + registryEvent.toString());
-                }
+                log.debug("Ignored registry event: " + registryEvent.toString());
             }
         }
     }
@@ -300,23 +272,17 @@ public class OMRSEventListener implements OMRSTopicListener
     /**
      * Unpack and deliver a TypeDef event to the TypeDefEventProcessor
      *
-     * @param typeDefEvent - event to unpack
+     * @param typeDefEvent event to unpack
      */
     private void processTypeDefEvent(OMRSTypeDefEvent   typeDefEvent)
     {
         if (typeDefEvent == null)
         {
-            if (log.isDebugEnabled())
-            {
-                log.debug("Null TypeDef event - ignoring event");
-            }
+            log.debug("Null TypeDef event; ignoring event");
         }
         else if (typeDefEventProcessor == null)
         {
-            if (log.isDebugEnabled())
-            {
-                log.debug("No TypeDef event processor - ignoring event");
-            }
+            log.debug("No TypeDef event processor; ignoring event");
         }
         else
         {
@@ -436,27 +402,18 @@ public class OMRSEventListener implements OMRSTopicListener
                                     break;
 
                                 default:
-                                    if (log.isDebugEnabled())
-                                    {
-                                        log.debug("Unknown TypeDef event error code - ignoring event");
-                                    }
+                                    log.debug("Unknown TypeDef event error code; ignoring event");
                                     break;
                             }
                         }
                         else
                         {
-                            if (log.isDebugEnabled())
-                            {
-                                log.debug("Ignored TypeDef event - null error code");
-                            }
+                            log.debug("Ignored TypeDef event; null error code");
                         }
                         break;
 
                     default:
-                        if (log.isDebugEnabled())
-                        {
-                            log.debug("Ignored TypeDef event - unknown type");
-                        }
+                        log.debug("Ignored TypeDef event; unknown type");
                         break;
                 }
             }
@@ -467,21 +424,15 @@ public class OMRSEventListener implements OMRSTopicListener
     /**
      * Unpack and deliver an instance event to the InstanceEventProcessor
      *
-     * @param instanceEvent - event to unpack
+     * @param instanceEvent event to unpack
      */
     private void processInstanceEvent(OMRSInstanceEvent  instanceEvent)
     {
-        if (log.isDebugEnabled())
-        {
-            log.debug("Processing instance event: " + instanceEvent);
-        }
+        log.debug("Processing instance event: " + instanceEvent);
 
         if (instanceEvent == null)
         {
-            if (log.isDebugEnabled())
-            {
-                log.debug("Null instance event - ignoring event");
-            }
+            log.debug("Null instance event ignoring event");
         }
         else
         {
@@ -772,36 +723,24 @@ public class OMRSEventListener implements OMRSTopicListener
                                     break;
 
                                 default:
-                                    if (log.isDebugEnabled())
-                                    {
-                                        log.debug("Unknown instance event error code - ignoring event");
-                                    }
+                                    log.debug("Unknown instance event error code, ignoring event");
                                     break;
                             }
                         }
                         else
                         {
-                            if (log.isDebugEnabled())
-                            {
-                                log.debug("Ignored Instance event - null error code");
-                            }
+                            log.debug("Ignored Instance event, null error code");
                         }
                         break;
 
                     default:
-                        if (log.isDebugEnabled())
-                        {
-                            log.debug("Ignored Instance event - unknown type");
-                        }
+                        log.debug("Ignored Instance event, unknown type");
                         break;
                 }
             }
             else
             {
-                if (log.isDebugEnabled())
-                {
-                    log.debug("Ignored instance event - null type");
-                }
+                log.debug("Ignored instance event, null type");
             }
         }
     }

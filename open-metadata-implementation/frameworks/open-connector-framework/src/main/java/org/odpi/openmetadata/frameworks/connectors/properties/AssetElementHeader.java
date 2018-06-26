@@ -20,6 +20,8 @@ public abstract class AssetElementHeader extends AssetPropertyBase
 
     /**
      * Bean constructor
+     *
+     * @param elementHeaderBean bean containing all to the properties
      */
     protected AssetElementHeader(ElementHeader   elementHeaderBean)
     {

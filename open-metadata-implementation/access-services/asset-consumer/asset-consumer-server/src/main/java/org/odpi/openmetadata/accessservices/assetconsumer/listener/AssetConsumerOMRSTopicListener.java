@@ -2,7 +2,6 @@
 package org.odpi.openmetadata.accessservices.assetconsumer.listener;
 
 import org.apache.log4j.Logger;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.accessservices.assetconsumer.outtopic.AssetConsumerPublisher;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListener;

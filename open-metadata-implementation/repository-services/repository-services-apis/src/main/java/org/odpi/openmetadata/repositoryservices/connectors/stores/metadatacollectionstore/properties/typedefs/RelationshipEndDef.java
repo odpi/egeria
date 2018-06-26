@@ -24,7 +24,7 @@ public class RelationshipEndDef extends TypeDefElementHeader
 
 
     /**
-     * Default constructor - create an empty end
+     * Default constructor creates an empty end
      */
     public RelationshipEndDef()
     {
@@ -33,7 +33,7 @@ public class RelationshipEndDef extends TypeDefElementHeader
 
 
     /**
-     * Copy/clone constructor - copy the supplied template into the new end.
+     * Copy/clone constructor copies the supplied template into the new end.
      *
      * @param template RelationshipEndDef
      */

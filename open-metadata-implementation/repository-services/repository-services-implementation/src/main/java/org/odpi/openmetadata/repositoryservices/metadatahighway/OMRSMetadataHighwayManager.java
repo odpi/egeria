@@ -46,15 +46,15 @@ public class OMRSMetadataHighwayManager
     /**
      * Constructor taking the values that are used in every cohort.  Any of these values may be null.
      *
-     * @param localServerName - name of the local server.
-     * @param localServerType - descriptive type of the local server.
-     * @param localOrganizationName - name of the organization that owns the local server.
-     * @param localRepository - link to local repository - may be null.
-     * @param localRepositoryContentManager - repository content manager associated with this server's operation
+     * @param localServerName name of the local server.
+     * @param localServerType descriptive type of the local server.
+     * @param localOrganizationName name of the organization that owns the local server.
+     * @param localRepository link to local repository may be null.
+     * @param localRepositoryContentManager repository content manager associated with this server's operation
      *                                        and used in evaluating the type definitions (TypeDefs)
      *                                        passed around the cohort.
-     * @param enterpriseAccessConnectionConsumer - connection consumer for managing the connections of enterprise access.
-     * @param enterpriseAccessTopicConnector - connector for the OMRS Topic for enterprise access.
+     * @param enterpriseAccessConnectionConsumer connection consumer for managing the connections of enterprise access.
+     * @param enterpriseAccessTopicConnector connector for the OMRS Topic for enterprise access.
      */
     public OMRSMetadataHighwayManager(String                          localServerName,
                                       String                          localServerType,
@@ -78,7 +78,7 @@ public class OMRSMetadataHighwayManager
      * Initialize each cohort manager in turn.  Configuration errors will result in an exception and the initialization
      * process will halt.
      *
-     * @param cohortConfigList - list of cohorts to initialize
+     * @param cohortConfigList list of cohorts to initialize
      */
     public void initialize(List<CohortConfig>   cohortConfigList)
     {
@@ -98,7 +98,7 @@ public class OMRSMetadataHighwayManager
     /**
      * Initialize the components to connect the local repository to a cohort.
      *
-     * @param cohortConfig - description of cohort.
+     * @param cohortConfig description of cohort.
      * @return the status of the cohort
      */
     public  CohortConnectionStatus connectToCohort(CohortConfig         cohortConfig)
@@ -219,7 +219,7 @@ public class OMRSMetadataHighwayManager
      * Return the status of the named cohort.
      *
      * @param cohortName name of cohort
-     * @return connection status - if the cohort manager is not running then "NOT_INITIALIZED" is returned
+     * @return connection status if the cohort manager is not running then "NOT_INITIALIZED" is returned
      */
     public CohortConnectionStatus getCohortConnectionStatus(String   cohortName)
     {
@@ -260,8 +260,8 @@ public class OMRSMetadataHighwayManager
     /**
      * Disconnect communications from a specific cohort.
      *
-     * @param cohortName - name of cohort
-     * @param permanent - is the local server permanently disconnecting from the cohort - causes an unregistration
+     * @param cohortName name of cohort
+     * @param permanent is the local server permanently disconnecting from the cohort causes an unregistration
      *                  event to be sent to the other members.
      * @return boolean flag to indicate success.
      */
@@ -302,7 +302,7 @@ public class OMRSMetadataHighwayManager
     /**
      * Disconnect from all cohorts.
      *
-     * @param permanent - indicates whether the cohort registry should unregister from the cohort
+     * @param permanent indicates whether the cohort registry should unregister from the cohort
      *                  and clear its registry store or just disconnect from the event topic.
      */
     public void disconnect(boolean  permanent)
@@ -333,8 +333,8 @@ public class OMRSMetadataHighwayManager
      * Create a connector to the cohort registry store. If there is a problem with the connection information
      * that means a connector can not be created, an exception is thrown.
      *
-     * @param cohortName - name of the cohort that this registry store is for
-     * @param cohortRegistryConnection - connection to the cluster registry store.
+     * @param cohortName name of the cohort that this registry store is for
+     * @param cohortRegistryConnection connection to the cluster registry store.
      * @return OMRSCohortRegistryStore connector
      */
     private OMRSCohortRegistryStore getCohortRegistryStore(String     cohortName,
@@ -379,8 +379,8 @@ public class OMRSMetadataHighwayManager
      * different event/messaging infrastructure.   If there is a problem with the connection information
      * that means a connector can not be created, an exception is thrown.
      *
-     * @param cohortName - name of the cohort that this registry store is for
-     * @param topicConnection - connection parameters
+     * @param cohortName name of the cohort that this registry store is for
+     * @param topicConnection connection parameters
      * @return OMRSTopicConnector for managing communications with the event/messaging infrastructure.
      */
     private OMRSTopicConnector getTopicConnector(String     cohortName,

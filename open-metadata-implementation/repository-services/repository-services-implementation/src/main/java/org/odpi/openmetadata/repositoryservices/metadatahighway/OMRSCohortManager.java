@@ -55,19 +55,19 @@ public class OMRSCohortManager
      * @param localMetadataCollectionId configured value for the local metadata collection id
      * @param localServerName the name of the local server. It is a descriptive name for informational purposes.
      * @param localServerType the type of the local server.  It is a descriptive name for informational purposes.
-     * @param localOrganizationName - the name of the organization that owns the local server/repository.
+     * @param localOrganizationName the name of the organization that owns the local server/repository.
      *                              It is a descriptive name for informational purposes.
-     * @param localRepository - link to the local repository - may be null.
-     * @param localRepositoryContentManager - the content manager that stores information about the known types
-     * @param connectionConsumer - The connection consumer is a component interested in maintaining details of the
+     * @param localRepository link to the local repository may be null.
+     * @param localRepositoryContentManager the content manager that stores information about the known types
+     * @param connectionConsumer The connection consumer is a component interested in maintaining details of the
      *                           connections to each of the members of the open metadata repository cohort.  If it is
      *                           null, the cohort registry does not publish connections for members of the open
      *                           metadata repository cohort.
-     * @param cohortRegistryStore - the cohort registry store where details of members of the cohort are kept
-     * @param cohortTopicConnector - Connector to the cohort's OMRS Topic.
-     * @param enterpriseTopicConnector - Connector to the federated OMRS Topic.
-     * @param eventProtocolVersion - Protocol to use for events to the cohort.
-     * @param inboundEventExchangeRule - rule for processing inbound events.
+     * @param cohortRegistryStore the cohort registry store where details of members of the cohort are kept
+     * @param cohortTopicConnector Connector to the cohort's OMRS Topic.
+     * @param enterpriseTopicConnector Connector to the federated OMRS Topic.
+     * @param eventProtocolVersion Protocol to use for events to the cohort.
+     * @param inboundEventExchangeRule rule for processing inbound events.
      */
     public void initialize(String                           cohortName,
                            String                           localMetadataCollectionId,
@@ -284,7 +284,7 @@ public class OMRSCohortManager
     /**
      * Disconnect from the cohort.
      *
-     * @param permanent - flag indicating if the local repository should unregister from the cohort because it is
+     * @param permanent flag indicating if the local repository should unregister from the cohort because it is
      *                  not going ot connect again.
      */
     public synchronized void  disconnect(boolean   permanent)

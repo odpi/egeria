@@ -7,24 +7,24 @@ package org.odpi.openmetadata.repositoryservices.events;
  * that originated the event.  These properties are as follows:
  * <ul>
  *     <li>
- *         metadataCollectionId - the unique identifier of the metadata collection in the
+ *         metadataCollectionId: the unique identifier of the metadata collection in the
  *         originating server. This is a mandatory property.
  *     </li>
  *     <li>
- *         ServerName - this is a display name for the server that is used in events, messages and UIs to
+ *         ServerName: this is a display name for the server that is used in events, messages and UIs to
  *         make it easier for people to understand the origin of metadata.  It is optional.
  *     </li>
  *     <li>
- *         ServerType - this is a descriptive string describing the type of the server.  This might be the
+ *         ServerType: this is a descriptive string describing the type of the server.  This might be the
  *         name of the product, or similar identifier. This is an optional property.
  *     </li>
  *     <li>
- *         OrganizationName - this is a descriptive name for the organization that runs/owns the server.  For
+ *         OrganizationName: this is a descriptive name for the organization that runs/owns the server.  For
  *         an enterprise, it may be the name of a department, geography or division.  If the cluster covers a group
  *         of business partners then it may be their respective company names.  This is an optional field.
  *     </li>
  *     <li>
- *         ProtocolVersion - this is an enumeration that identifies which version of the OMRS event structure
+ *         ProtocolVersion: this is an enumeration that identifies which version of the OMRS event structure
  *         should be used.  In general it should be set to the highest level that all servers in the cohort
  *         can support.
  *     </li>

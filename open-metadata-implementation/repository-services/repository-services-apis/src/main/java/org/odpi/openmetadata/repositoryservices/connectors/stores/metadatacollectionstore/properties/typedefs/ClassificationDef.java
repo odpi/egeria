@@ -27,7 +27,7 @@ public class ClassificationDef extends TypeDef
 
 
     /**
-     * Minimal constructor - sets up an empty ClassificationDef.
+     * Minimal constructor sets up an empty ClassificationDef.
      */
     public ClassificationDef()
     {

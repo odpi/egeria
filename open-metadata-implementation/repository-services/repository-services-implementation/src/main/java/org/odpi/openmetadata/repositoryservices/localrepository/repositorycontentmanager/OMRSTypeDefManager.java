@@ -84,8 +84,8 @@ public interface OMRSTypeDefManager
      *
      * @param sourceName source of the request (used for logging).
      * @param originalAttributeTypeDefGUID AttributeTypeDef's original unique identifier.
-     * @param originalAttributeTypeDefName - AttributeTypeDef's original unique name.
-     * @param newAttributeTypeDef - updated AttributeTypeDef with new identifiers
+     * @param originalAttributeTypeDefName AttributeTypeDef's original unique name.
+     * @param newAttributeTypeDef updated AttributeTypeDef with new identifiers
      */
     void reIdentifyAttributeTypeDef(String            sourceName,
                                     String            originalAttributeTypeDefGUID,
@@ -96,11 +96,11 @@ public interface OMRSTypeDefManager
     /**
      * Return a boolean indicating that the type name matches the category.
      *
-     * @param sourceName - source of the request (used for logging)
-     * @param category - TypeDefCategory enum value to test
-     * @param typeName - type name to test
-     * @param methodName - name of calling method.
-     * @return - boolean flag indicating that the type name is of the specified category
+     * @param sourceName source of the request (used for logging)
+     * @param category TypeDefCategory enum value to test
+     * @param typeName type name to test
+     * @param methodName name of calling method.
+     * @return boolean flag indicating that the type name is of the specified category
      * @throws TypeErrorException the type name is not a recognized type or the category is incorrect or there
      *                              is an error in the type definition (TypeDef) cached.
      */
@@ -114,10 +114,10 @@ public interface OMRSTypeDefManager
      * Return boolean indicating if a classification type can be applied to a specified entity.  This
      * uses the list of valid entity types located in the ClassificationDef.
      *
-     * @param sourceName - source of the request (used for logging)
-     * @param classificationTypeName - name of the classification's type (ClassificationDef)
-     * @param entityTypeName - name of the entity's type (EntityDef)
-     * @param methodName - name of calling method.
+     * @param sourceName source of the request (used for logging)
+     * @param classificationTypeName name of the classification's type (ClassificationDef)
+     * @param entityTypeName name of the entity's type (EntityDef)
+     * @param methodName name of calling method.
      * @return boolean indicating if the classification is valid for the entity.
      * @throws TypeErrorException the type name is not a recognized type or the category is incorrect or there
      *                              is an error in the type definition (TypeDef) cached.
@@ -132,10 +132,10 @@ public interface OMRSTypeDefManager
      * Return identifiers for the TypeDef that matches the supplied type name.  If the type name is not recognized,
      * null is returned.
      *
-     * @param sourceName - source of the request (used for logging)
-     * @param category - category of type
-     * @param typeName - String type name - the type name is not recognized or of the wrong category.
-     * @param methodName - name of calling method.
+     * @param sourceName source of the request (used for logging)
+     * @param category category of type
+     * @param typeName String type name the type name is not recognized or of the wrong category.
+     * @param methodName name of calling method.
      * @return InstanceType object containing TypeDef unique identifier (guid), typeDef name and version
      * @throws TypeErrorException the type name is not a recognized type or the category is incorrect or there
      *                              is an error in the type definition (TypeDef) cached.
@@ -149,9 +149,9 @@ public interface OMRSTypeDefManager
     /**
      * Return the initial status set up for the instance.
      *
-     * @param sourceName - source of the request (used for logging)
-     * @param typeName - name of the type to extract the initial status from.
-     * @param methodName - calling method
+     * @param sourceName source of the request (used for logging)
+     * @param typeName name of the type to extract the initial status from.
+     * @param methodName calling method
      * @return InstanceStatus enum
      * @throws TypeErrorException the type name is not recognized.
      */
@@ -163,8 +163,8 @@ public interface OMRSTypeDefManager
     /**
      * Return the URL string to use for direct access to the metadata instance.
      *
-     * @param sourceName - source of the request (used for logging)
-     * @param guid - unique identifier for the instance.
+     * @param sourceName source of the request (used for logging)
+     * @param guid unique identifier for the instance.
      * @return String URL with placeholder for variables such as userId.
      */
     String getEntityURL(String sourceName, String guid);
@@ -173,8 +173,8 @@ public interface OMRSTypeDefManager
     /**
      * Return the URL string to use for direct access to the metadata instance.
      *
-     * @param sourceName - source of the request (used for logging)
-     * @param guid - unique identifier for the instance.
+     * @param sourceName source of the request (used for logging)
+     * @param guid unique identifier for the instance.
      * @return String URL with placeholder for variables such as userId.
      */
     String getRelationshipURL(String sourceName, String guid);

@@ -13,7 +13,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * The TypeDefHolds holds basic identifying information used to link one TypeDef to another.  It is used in
- * the definition of types - ie in the TypeDefs themselves.  Examples include linking a classification to an
+ * the definition of types, ie in the TypeDefs themselves.  Examples include linking a classification to an
  * entity, identifying super types and defining the entities at either end of a relationship.
  * <p>
  *     TypeDefs are identified using both the guid and the type name.  Both should be unique and most processing is
@@ -157,7 +157,7 @@ public class TypeDefLink extends TypeDefElementHeader
     }
 
     /**
-     * Using the GUID as a hashcode - it should be unique if all connected metadata repositories are behaving properly.
+     * Using the GUID as a hashcode. It should be unique if all connected metadata repositories are behaving properly.
      *
      * @return int hash code
      */

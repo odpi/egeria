@@ -18,10 +18,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *     The propagation rule defines the direction of propagation:
  * </p>
  * <ul>
- *     <li>NONE - no propagation of classifications across the relationship.</li>
- *     <li>ONE_TO_TWO - from entity at end 1 of the relationship to the entity at end 2 of the relationship.</li>
- *     <li>TWO_TO_ONE - from entity at end 2 of the relationship to the entity at end 1 of the relationship.</li>
- *     <li>BOTH - two way propagation.</li>
+ *     <li>NONE: no propagation of classifications across the relationship.</li>
+ *     <li>ONE_TO_TWO: from entity at end 1 of the relationship to the entity at end 2 of the relationship.</li>
+ *     <li>TWO_TO_ONE: from entity at end 2 of the relationship to the entity at end 1 of the relationship.</li>
+ *     <li>BOTH: two way propagation.</li>
  * </ul>
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)

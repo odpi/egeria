@@ -86,7 +86,7 @@ public enum OMRSInstanceEventType implements Serializable
 
 
     /**
-     * Default Constructor - sets up the specific values for this instance of the enum.
+     * Default Constructor sets up the specific values for this instance of the enum.
      *
      * @param eventTypeCode int identifier used for indexing based on the enum.
      * @param eventTypeName string name used for messages that include the enum.
@@ -124,7 +124,7 @@ public enum OMRSInstanceEventType implements Serializable
 
 
     /**
-     * Return the default description for the enum value - used when natural resource
+     * Return the default description for the enum value.  This is used when natural resource
      * bundle is not available.
      *
      * @return String default description

@@ -7,15 +7,15 @@ import java.io.Serializable;
  * OMRSEventCategory defines the different categories of events that pass through the OMRS Topic.
  * <ul>
  *     <li>
- *         UNKNOWN - this is either an uninitialized event, or the incoming event is not supported by the
+ *         UNKNOWN: this is either an uninitialized event, or the incoming event is not supported by the
  *         local server.
  *     </li>
  *     <li>
- *         REGISTRY - this is an event used by the cohort registries to manage the membership
+ *         REGISTRY: this is an event used by the cohort registries to manage the membership
  *         of the cohort.
  *     </li>
  *     <li>
- *         TYPEDEF - this is an event used by the metadata repository connectors to synchronize the metadata types
+ *         TYPEDEF: this is an event used by the metadata repository connectors to synchronize the metadata types
  *         (stored in TypeDefs) across the metadata repository cohort.
  *     </li>
  * </ul>
@@ -26,7 +26,7 @@ public enum OMRSEventCategory implements Serializable
     REGISTRY(1, "Registry Event", "Event used to manage the membership of the metadata repository cohort"),
     TYPEDEF (2, "TypeDef Event",  "Event used to manage the synchronization of TypeDefs within the metadata repository cohort"),
     INSTANCE(3, "Instance Event", "Event used to manage the replication of metadata instances within the metadata repository cohort"),
-    GENERIC (99, "Generic Event", "Event used for sending generic messages - typically error messages.");
+    GENERIC (99, "Generic Event", "Event used for sending generic messages, typically error messages.");
 
     private static final long serialVersionUID = 1L;
 

@@ -15,12 +15,12 @@ public interface OMRSConnectionConsumer
      * Pass details of the connection for one of the remote repositories registered in a connected
      * open metadata repository cohort.
      *
-     * @param cohortName - name of the cohort adding the remote connection.
-     * @param remoteServerName - name of the remote server for this connection.
-     * @param remoteServerType - type of the remote server.
-     * @param owningOrganizationName - name of the organization the owns the remote server.
-     * @param metadataCollectionId - Unique identifier for the metadata collection
-     * @param remoteConnection - Connection object providing properties necessary to create an
+     * @param cohortName name of the cohort adding the remote connection.
+     * @param remoteServerName name of the remote server for this connection.
+     * @param remoteServerType type of the remote server.
+     * @param owningOrganizationName name of the organization the owns the remote server.
+     * @param metadataCollectionId Unique identifier for the metadata collection
+     * @param remoteConnection Connection object providing properties necessary to create an
      *                         OMRSRepositoryConnector for the remote repository.
      * @throws ConnectionCheckedException there are invalid properties in the Connection
      * @throws ConnectorCheckedException there is a problem initializing the Connector
@@ -36,8 +36,8 @@ public interface OMRSConnectionConsumer
     /**
      * Pass details of the connection for the repository that has left one of the open metadata repository cohorts.
      *
-     * @param cohortName - name of the cohort removing the remote connection.
-     * @param metadataCollectionId - Unique identifier for the metadata collection.
+     * @param cohortName name of the cohort removing the remote connection.
+     * @param metadataCollectionId Unique identifier for the metadata collection.
      */
     void removeRemoteConnection(String         cohortName,
                                 String         metadataCollectionId);
@@ -46,7 +46,7 @@ public interface OMRSConnectionConsumer
     /**
      * Remove all of the remote connections for the requested open metadata repository cohort.
      *
-     * @param cohortName - name of the cohort
+     * @param cohortName name of the cohort
      */
     void removeCohort(String   cohortName);
 }

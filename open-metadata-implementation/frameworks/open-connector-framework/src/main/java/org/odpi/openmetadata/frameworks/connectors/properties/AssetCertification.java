@@ -28,6 +28,8 @@ public class AssetCertification extends AssetReferenceable
 
     /**
      * Bean constructor
+     *
+     * @param certificationBean bean containing all of the parameters
      */
     public AssetCertification(Certification certificationBean)
     {

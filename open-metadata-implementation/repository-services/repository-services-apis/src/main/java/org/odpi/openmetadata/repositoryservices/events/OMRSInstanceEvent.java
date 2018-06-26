@@ -168,7 +168,7 @@ public class OMRSInstanceEvent extends OMRSEvent
 
 
     /**
-     * Constructor for instance events related to a delete or purge of an instance - or a request to refresh
+     * Constructor for instance events related to a delete or purge of an instance or a request to refresh
      * an instance.
      *
      * @param instanceEventType type of event
@@ -257,7 +257,7 @@ public class OMRSInstanceEvent extends OMRSEvent
     }
 
     /**
-     * Set up the home metadata collection Id - used for when a repository is requesting a refresh of an instance's
+     * Set up the home metadata collection Id.  This is used for when a repository is requesting a refresh of an instance's
      * details.
      *
      * @param homeMetadataCollectionId unique id of the metadata collection where this instance comes from.

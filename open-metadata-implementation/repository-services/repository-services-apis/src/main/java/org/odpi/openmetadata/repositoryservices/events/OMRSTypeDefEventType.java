@@ -8,22 +8,22 @@ import java.io.Serializable;
  * protocol:
  * <ul>
  *     <li>
- *         UNKNOWN_TYPEDEF_EVENT - the event is not recognized by this local server, probably because it is back-level
+ *         UNKNOWN_TYPEDEF_EVENT: the event is not recognized by this local server, probably because it is back-level
  *         from other servers in the cluster.  It is logged in the audit log and then ignored.  The metadata exchange
  *         protocol should evolve so that new message types can be ignored by back-level servers without damage
  *         to the cluster's integrity.
  *     </li>
  *     <li>
- *         NEW_TYPEDEF - A new TypeDef has been defined.
+ *         NEW_TYPEDEF: A new TypeDef has been defined.
  *     </li>
  *     <li>
- *         UPDATED_TYPEDEF - An existing TypeDef has been updated.
+ *         UPDATED_TYPEDEF: An existing TypeDef has been updated.
  *     </li>
  *     <li>
- *         DELETED_TYPEDEF_EVENT - An existing TypeDef has been deleted.
+ *         DELETED_TYPEDEF_EVENT: An existing TypeDef has been deleted.
  *     </li>
  *     <li>
- *         RE_IDENTIFIED_TYPEDEF_EVENT - the guid has been changed for a TypeDef.
+ *         RE_IDENTIFIED_TYPEDEF_EVENT: the guid has been changed for a TypeDef.
  *     </li>
  * </ul>
  */
@@ -48,7 +48,7 @@ public enum OMRSTypeDefEventType implements Serializable
 
 
     /**
-     * Default Constructor - sets up the specific values for this instance of the enum.
+     * Default Constructor sets up the specific values for this instance of the enum.
      *
      * @param eventTypeCode int identifier used for indexing based on the enum.
      * @param eventTypeName string name used for messages that include the enum.
@@ -86,7 +86,7 @@ public enum OMRSTypeDefEventType implements Serializable
 
 
     /**
-     * Return the default description for the enum value - used when natural resource
+     * Return the default description for the enum value.  This is used when natural resource
      * bundle is not available.
      *
      * @return String default description

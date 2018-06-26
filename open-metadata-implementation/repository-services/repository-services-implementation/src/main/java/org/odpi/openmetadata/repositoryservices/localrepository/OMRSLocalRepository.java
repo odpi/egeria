@@ -57,7 +57,7 @@ public interface OMRSLocalRepository
 
 
     /**
-     * Return the local server name - used for outbound events.
+     * Return the local server name.  This is used for outbound events.
      *
      * @return String name
      */
@@ -65,7 +65,7 @@ public interface OMRSLocalRepository
 
 
     /**
-     * Return the local server type - used for outbound events.
+     * Return the local server type.  This is used for outbound events.
      *
      * @return String name
      */

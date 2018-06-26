@@ -24,7 +24,7 @@ public class EntityUniverse extends EntityDetail
 
 
     /**
-     * Default constructor - initializes entity's universe as empty.
+     * Default constructor initializes entity's universe as empty.
      */
     public EntityUniverse()
     {

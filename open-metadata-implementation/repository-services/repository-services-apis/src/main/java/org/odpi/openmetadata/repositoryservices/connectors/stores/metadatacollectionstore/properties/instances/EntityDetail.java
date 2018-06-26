@@ -20,7 +20,7 @@ public class EntityDetail extends EntitySummary
     private   InstanceProperties    entityProperties = null;
 
     /**
-     * Default Constructor - no properties established
+     * Default Constructor no properties established
      */
     public EntityDetail()
     {
@@ -29,7 +29,7 @@ public class EntityDetail extends EntitySummary
 
 
     /**
-     * Copy/clone constructor - properties copied from template.
+     * Copy/clone constructor properties copied from template.
      *
      * @param templateElement element to copy.
      */

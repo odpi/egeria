@@ -14,22 +14,22 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * ElementOrigin defines where the metadata comes from and, hence if it can be updated.
  * <ul>
  *     <li>
- *         LOCAL_COHORT - the element is being maintained within the local cohort.
+ *         LOCAL_COHORT: the element is being maintained within the local cohort.
  *         The metadata collection id is for one of the repositories in the cohort.
  *         This metadata collection id identifies the home repository for this element.
  *     </li>
  *     <li>
- *         EXPORT_ARCHIVE - the element was created from an export archive.
+ *         EXPORT_ARCHIVE: the element was created from an export archive.
  *         The metadata collection id for the element is the metadata collection id of the originating server.
  *         If the originating server later joins the cohort with the same metadata collection id then these
  *         elements will be refreshed from the originating server’s current repository.
  *     </li>
  *     <li>
- *         CONTENT_PACK - the element comes from an open metadata content pack.
+ *         CONTENT_PACK: the element comes from an open metadata content pack.
  *         The metadata collection id of the elements is set to the GUID of the pack.
  *     </li>
  *     <li>
- *         DEREGISTERED_REPOSITORY - the element comes from a metadata repository that used to be a part
+ *         DEREGISTERED_REPOSITORY: the element comes from a metadata repository that used to be a part
  *         of the repository cohort but has been deregistered. The metadata collection id remains the same.
  *         If the repository rejoins the cohort then these elements can be refreshed from the rejoining repository.
  *     </li>
