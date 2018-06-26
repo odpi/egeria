@@ -16,6 +16,17 @@ willing to follow the simple processes outlined below, as well as adhere to the
 * Issue a git pull request from [GitHub](https://github.com/odpi/egeria) to initiate the review.
 * Wait for a maintainer to review and approve the commit.
 
+## Important Additional setup for Windows Users
+If using git on windows, it is **essential** to configure long pathname support, since otherwise the git clone, and other
+git operations on egeria **will** fail.
+
+Ensure you have a current version of git installed (for example 2.17 or above), and in an Elevated command prompt run:
+```
+git config --system core.longpaths true
+```
+For more detail see [this article](https://github.com/msysgit/msysgit/wiki/Git-cannot-create-a-file-or-directory-with-a-long-path)
+
+This is not required on MacOS or Linux.
 
 ## Using git to prepare a contribution
 
@@ -69,7 +80,6 @@ Once you have the latest code on your machine, create a branch for your changes.
 ```
 $ git checkout -b example-branch master
 $ git push origin example-branch
-$
 ```
 When you create your own branch, use a name that describes that the branch is for as you'll use it for all changes you are collecting together to push as one group to egeria
 
