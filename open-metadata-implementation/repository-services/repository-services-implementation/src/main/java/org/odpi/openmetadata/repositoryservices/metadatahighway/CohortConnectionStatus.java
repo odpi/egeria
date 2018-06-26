@@ -7,33 +7,33 @@ package org.odpi.openmetadata.repositoryservices.metadatahighway;
  * a specific cohort.
  * <ul>
  *     <li>
- *         NOT_INITIALIZED - the local components for communicating with other members of the cohort are not initialized.
+ *         NOT_INITIALIZED: the local components for communicating with other members of the cohort are not initialized.
  *         This should never been seen on the adminservices console since it is the value for the cohort manager used on the
  *         variable declaration.
  *     </li>
  *     <li>
- *         INITIALIZING - the local components for communicating with the other members of the cohort are initializing.
+ *         INITIALIZING: the local components for communicating with the other members of the cohort are initializing.
  *         It the server is working properly this status is only set for a split-second.
- *         If it is seen on the adminservices console it probably means one of the underlying connectors is hanging during its
+ *         If it is seen on the admin services console it probably means one of the underlying connectors is hanging during its
  *         initialization.
  *     </li>
  *     <li>
- *         NEW - the local components for the cohort are initialized but they have not yet exchanged messages with the other
+ *         NEW: the local components for the cohort are initialized but they have not yet exchanged messages with the other
  *         members of the cohort.  At this point, the local metadata collection id may be changed.
  *     </li>
  *     <li>
- *         CONFIGURATION_ERROR - means there is an error in the configuration and connection is not possible.
+ *         CONFIGURATION_ERROR: means there is an error in the configuration and connection is not possible.
  *         The administrator needs to either fix the config or fix the system's infrastructure around the server.
  *     </li>
  *     <li>
- *         CONNECTED - means the server is connected to the metadata highway for this cohort and is exchanging messages.
+ *         CONNECTED: means the server is connected to the metadata highway for this cohort and is exchanging messages.
  *     </li>
  *     <li>
- *         DISCONNECTING - means the server is disconnecting from the metadata highway and is in the process of shutting
+ *         DISCONNECTING: means the server is disconnecting from the metadata highway and is in the process of shutting
  *         down the local components that manage communication with the other members of this cohort.
  *     </li>
  *     <li>
- *         DISCONNECTED - means the server is disconnected from the metadata highway for this cohort.  This may be because the
+ *         DISCONNECTED: means the server is disconnected from the metadata highway for this cohort.  This may be because the
  *         local server is shutting down or the configuration is being adjusted.
  *     </li>
  * </ul>
@@ -60,9 +60,9 @@ public enum CohortConnectionStatus
     /**
      * Create an instance of the enum.
      *
-     * @param statusCode - numeric code
-     * @param statusName - name
-     * @param statusDescription - description
+     * @param statusCode numeric code
+     * @param statusName name
+     * @param statusDescription description
      */
     CohortConnectionStatus(int statusCode, String statusName, String statusDescription)
     {

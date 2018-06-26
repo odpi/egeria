@@ -54,13 +54,13 @@ public class OMRSArchiveBuilder
     /**
      * Typical constructor passes parameters used to build the open metadata archive's property header.
      *
-     * @param archiveGUID - unique identifier for this open metadata archive.
-     * @param archiveName - name of the open metadata archive.
-     * @param archiveDescription - description of the open metadata archive.
-     * @param archiveType - enum describing the type of archive this is.
-     * @param originatorName - name of the originator (person or organization) of the archive.
-     * @param creationDate - data that this archive was created.
-     * @param dependsOnArchives - list of GUIDs for archives that this archive depends on (null for no dependencies).
+     * @param archiveGUID unique identifier for this open metadata archive.
+     * @param archiveName name of the open metadata archive.
+     * @param archiveDescription description of the open metadata archive.
+     * @param archiveType enum describing the type of archive this is.
+     * @param originatorName name of the originator (person or organization) of the archive.
+     * @param creationDate data that this archive was created.
+     * @param dependsOnArchives list of GUIDs for archives that this archive depends on (null for no dependencies).
      */
     public OMRSArchiveBuilder(String                  archiveGUID,
                               String                  archiveName,
@@ -85,7 +85,7 @@ public class OMRSArchiveBuilder
     /**
      * Add a new PrimitiveDef to the archive.
      *
-     * @param primitiveDef - type to add - nulls are ignored
+     * @param primitiveDef type to add nulls are ignored
      */
     public void addPrimitiveDef(PrimitiveDef   primitiveDef)
     {
@@ -159,7 +159,7 @@ public class OMRSArchiveBuilder
     /**
      * Retrieve a PrimitiveDef from the archive.
      *
-     * @param primitiveDefName - primitive to retrieve
+     * @param primitiveDefName primitive to retrieve
      * @return PrimitiveDef type
      */
     public PrimitiveDef getPrimitiveDef(String   primitiveDefName)
@@ -208,7 +208,7 @@ public class OMRSArchiveBuilder
     /**
      * Add a new CollectionDef to the archive.
      *
-     * @param collectionDef - type to add
+     * @param collectionDef type to add
      */
     public void addCollectionDef(CollectionDef  collectionDef)
     {
@@ -283,7 +283,7 @@ public class OMRSArchiveBuilder
     /**
      * Retrieve a CollectionDef from the archive.
      *
-     * @param collectionDefName - type to retrieve
+     * @param collectionDefName type to retrieve
      * @return CollectionDef type
      */
     public CollectionDef getCollectionDef(String  collectionDefName)
@@ -332,7 +332,7 @@ public class OMRSArchiveBuilder
     /**
      * Add a new EnumDef to the archive.
      *
-     * @param enumDef - type to add
+     * @param enumDef type to add
      */
     public void addEnumDef(EnumDef    enumDef)
     {
@@ -407,7 +407,7 @@ public class OMRSArchiveBuilder
     /**
      * Get an existing EnumDef from the archive.
      *
-     * @param enumDefName - type to retrieve
+     * @param enumDefName type to retrieve
      * @return EnumDef object
      */
     public EnumDef getEnumDef(String    enumDefName)
@@ -456,7 +456,7 @@ public class OMRSArchiveBuilder
     /**
      * Add a new ClassificationDef to the archive.
      *
-     * @param classificationDef - type to add
+     * @param classificationDef type to add
      */
     public void addClassificationDef(ClassificationDef   classificationDef)
     {
@@ -558,7 +558,7 @@ public class OMRSArchiveBuilder
     /**
      * Add a new EntityDef to the archive.
      *
-     * @param entityDef - type to add
+     * @param entityDef type to add
      */
     public void addEntityDef(EntityDef    entityDef)
     {
@@ -657,9 +657,9 @@ public class OMRSArchiveBuilder
 
 
     /**
-     * Retrieve the entityDef - or null if it is not defined.
+     * Retrieve the entityDef or null if it is not defined.
      *
-     * @param entityDefName - name of the entity
+     * @param entityDefName name of the entity
      * @return the retrieved Entity def
      */
     public EntityDef  getEntityDef(String   entityDefName)
@@ -708,7 +708,7 @@ public class OMRSArchiveBuilder
     /**
      * Add a new RelationshipDef to the archive.
      *
-     * @param relationshipDef - type to add
+     * @param relationshipDef type to add
      */
     public void addRelationshipDef(RelationshipDef   relationshipDef)
     {
@@ -808,7 +808,7 @@ public class OMRSArchiveBuilder
     /**
      * Check whether the relationshipDef supplies any attributes that already exist.
      *
-     * @param relationshipDef - definition to test
+     * @param relationshipDef definition to test
      * @throws OMRSLogicErrorException duplicate entry
      */
     private void checkRelationshipDefDuplicateAttributes(RelationshipDef relationshipDef) throws OMRSLogicErrorException
@@ -1001,7 +1001,7 @@ public class OMRSArchiveBuilder
     /**
      * Add a new entity to the archive.
      *
-     * @param entity - instance to add
+     * @param entity instance to add
      */
     public void addEntity(EntityDetail   entity)
     {
@@ -1056,7 +1056,7 @@ public class OMRSArchiveBuilder
     /**
      * Add a new relationship to the archive.
      *
-     * @param relationship - instance to add
+     * @param relationship instance to add
      */
     public void addRelationship(Relationship  relationship)
     {
@@ -1223,7 +1223,7 @@ public class OMRSArchiveBuilder
     /**
      * Ensure that a type definition name does not have blanks in it.
      * 
-     * @param typeName - name to test
+     * @param typeName name to test
      */
     private void checkForBlanksInTypeName(String typeName)
     {

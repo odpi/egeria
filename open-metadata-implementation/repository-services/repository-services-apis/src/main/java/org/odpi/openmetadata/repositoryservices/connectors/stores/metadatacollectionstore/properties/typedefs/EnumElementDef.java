@@ -24,7 +24,7 @@ public class EnumElementDef extends TypeDefElementHeader
 
 
     /**
-     * Default constructor - sets up an empty EnumElementDef
+     * Default constructor sets up an empty EnumElementDef
      */
     public EnumElementDef()
     {
@@ -33,7 +33,7 @@ public class EnumElementDef extends TypeDefElementHeader
 
 
     /**
-     * Copy/clone constructor - sets up an EnumElementDef based on the values supplied in the template.
+     * Copy/clone constructor sets up an EnumElementDef based on the values supplied in the template.
      *
      * @param template EnumElementDef
      */

@@ -66,7 +66,7 @@ public enum CollectionDefCategory implements Serializable
 
 
     /**
-     * Return the name of type - which can be used for text-based interchange formats such as JSON or XML.
+     * Return the name of type that can be used for text-based interchange formats such as JSON or XML.
      *
      * @return String type name
      */

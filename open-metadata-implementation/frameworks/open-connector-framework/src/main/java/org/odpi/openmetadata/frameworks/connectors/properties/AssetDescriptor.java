@@ -24,6 +24,8 @@ public abstract class AssetDescriptor extends AssetPropertyElementBase
     /**
      * Bean constructor - the asset descriptor is effectively empty - and the protected
      * set methods need to be called to add useful content to it.
+     *
+     * @param assetBean bean containing all of the properties
      */
     public AssetDescriptor(Asset assetBean)
     {

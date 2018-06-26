@@ -5,28 +5,28 @@ package org.odpi.openmetadata.repositoryservices.auditlog;
  * OMRSAuditLogRecordSeverity defines the different levels of severity for log records stored in the OMRSAuditLogRecord.
  * <ul>
  *     <li>
- *         UNKNOWN - Uninitialized Severity - if this is seen then there is a logic error in the audit log processing.
+ *         UNKNOWN: Uninitialized Severity. If this is seen then there is a logic error in the audit log processing.
  *     </li>
  *     <li>
- *         INFO - An activity occurred as part of the normal operation of the open metadata repository.
+ *         INFO: An activity occurred as part of the normal operation of the open metadata repository.
  *     </li>
  *     <li>
- *         EVENT - An OMRS Event was sent to or received from members of an open metadata repository cohort.
+ *         EVENT: An OMRS Event was sent to or received from members of an open metadata repository cohort.
  *     </li>
  *     <li>
- *         DECISION - A decision has been made related to the interaction of the local metadata repository and the
+ *         DECISION: A decision has been made related to the interaction of the local metadata repository and the
  *         rest of the open metadata repository cohort.
  *     </li>
  *     <li>
- *         ACTION - A situation has been detected that requires administrator intervention.
+ *         ACTION: A situation has been detected that requires administrator intervention.
  *     </li>
  *     <li>
- *         ERROR - An unexpected error occurred, possibly caused by an incompatibility between the local metadata repository
+ *         ERROR: An unexpected error occurred, possibly caused by an incompatibility between the local metadata repository
  *         and one of the remote repositories.  The local repository may restrict some of the metadata interchange
  *         functions as a result.
  *     </li>
  *     <li>
- *         Exception Unexpected exception occurred.  This means that the local repository needs some administration
+ *         EXCEPTION: Unexpected exception occurred.  This means that the local repository needs some administration
  *         attention to correct configuration or fix a logic error because it is not operating as a proper peer in the
  *         metadata repository cluster.
  *     </li>

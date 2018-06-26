@@ -426,7 +426,7 @@ public class TypeDefPatch extends TypeDefElementHeader
     }
 
     /**
-     * Using the GUID as a hashcode - it should be unique if all connected metadata repositories are behaving properly.
+     * Using the GUID as a hashcode.  It should be unique if all connected metadata repositories are behaving properly.
      *
      * @return int hash code
      */

@@ -18,30 +18,30 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * The sequencing order values are:
  * <ul>
  *     <li>
- *         ANY - return the results in any order.  This is default.
+ *         ANY: return the results in any order.  This is default.
  *     </li>
  *     <li>
- *         GUID - return in GUID sequence.  This is used when the caller just needs a consistent order in the
+ *         GUID: return in GUID sequence.  This is used when the caller just needs a consistent order in the
  *         order that results are returned.
  *     </li>
  *     <li>
- *         CREATION_DATE_RECENT - return in the order that the elements were created - the most recent ones first.
+ *         CREATION_DATE_RECENT: return in the order that the elements were created with the most recent ones first.
  *     </li>
  *     <li>
- *         CREATION_DATE_OLDEST - return in the order that the elements were created - the oldest ones first.
+ *         CREATION_DATE_OLDEST: return in the order that the elements were created with the oldest ones first.
  *     </li>
  *     <li>
- *         LAST_UPDATE_RECENT - return in the order of the latest update - the most recent first.
+ *         LAST_UPDATE_RECENT: return in the order of the latest update with the most recent first.
  *     </li>
  *     <li>
- *         LAST_UPDATE_OLDEST - return in the order of the latest update - the oldest first.
+ *         LAST_UPDATE_OLDEST: return in the order of the latest update with the oldest first.
  *     </li>
  *     <li>
- *         PROPERTY_ASCENDING - return in ascending order of the values in a sequencing property.  The sequencing
+ *         PROPERTY_ASCENDING: return in ascending order of the values in a sequencing property.  The sequencing
  *         property will be supplied as a parameter.
  *     </li>
  *     <li>
- *         PROPERTY_DESCENDING - return in descending order of the values in a sequencing property.  The sequencing
+ *         PROPERTY_DESCENDING: return in descending order of the values in a sequencing property.  The sequencing
  *         property will be supplied as a parameter.
  *     </li>
  * </ul>

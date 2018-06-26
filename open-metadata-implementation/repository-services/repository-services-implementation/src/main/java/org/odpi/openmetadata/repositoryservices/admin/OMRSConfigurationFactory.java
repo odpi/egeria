@@ -127,8 +127,8 @@ public class OMRSConfigurationFactory
     /**
      * Returns the basic configuration for a local repository.
      *
-     * @param localServerName - name of the local server
-     * @param localServerURL - URL root of local server used for REST calls
+     * @param localServerName name of the local server
+     * @param localServerURL URL root of local server used for REST calls
      * @return LocalRepositoryConfig object
      */
     private LocalRepositoryConfig getDefaultLocalRepositoryConfig(String localServerName,
@@ -154,8 +154,8 @@ public class OMRSConfigurationFactory
     /**
      * Return the configuration for an in-memory local repository.
      *
-     * @param localServerName - name of the local server
-     * @param localServerURL  - URL root of local server used for REST calls
+     * @param localServerName name of the local server
+     * @param localServerURL  URL root of local server used for REST calls
      * @return LocalRepositoryConfig object
      */
     public LocalRepositoryConfig getInMemoryLocalRepositoryConfig(String localServerName, String localServerURL)
@@ -173,8 +173,8 @@ public class OMRSConfigurationFactory
     /**
      * Return the configuration for a local repository that is using the built-in graph repository.
      *
-     * @param localServerName - name of local server
-     * @param localServerURL  - URL root of local server used for REST calls
+     * @param localServerName name of local server
+     * @param localServerURL  URL root of local server used for REST calls
      * @return LocalRepositoryConfig object
      */
     public LocalRepositoryConfig getLocalGraphLocalRepositoryConfig(String localServerName, String localServerURL)
@@ -192,8 +192,8 @@ public class OMRSConfigurationFactory
     /**
      * Return the local repository configuration for a repository proxy.
      *
-     * @param localServerName - name of local server
-     * @param localServerURL - url used to call local server
+     * @param localServerName name of local server
+     * @param localServerURL url used to call local server
      * @return LocalRepositoryConfig object
      */
     public LocalRepositoryConfig getRepositoryProxyLocalRepositoryConfig(String localServerName, String localServerURL)
@@ -210,7 +210,7 @@ public class OMRSConfigurationFactory
     /**
      * Return the default settings for the enterprise repository services' configuration.
      *
-     * @param localServerName - name of the local server
+     * @param localServerName name of the local server
      * @return EnterpriseAccessConfig parameters
      */
     public EnterpriseAccessConfig getDefaultEnterpriseAccessConfig(String localServerName)
@@ -230,8 +230,8 @@ public class OMRSConfigurationFactory
     /**
      * Return a CohortConfig object that is pre-configured with default values.
      *
-     * @param localServerName - name of the local server
-     * @param cohortName      - name of the cohort
+     * @param localServerName name of the local server
+     * @param cohortName      name of the cohort
      * @return default values in a CohortConfig object
      */
     public CohortConfig getDefaultCohortConfig(String localServerName, String cohortName)
@@ -258,7 +258,7 @@ public class OMRSConfigurationFactory
     /**
      * Returns a repository services config with the audit log set up.
      *
-     * @param localServerName - name of the local server
+     * @param localServerName name of the local server
      * @return minimally configured repository services config
      */
     public RepositoryServicesConfig getDefaultRepositoryServicesConfig(String localServerName)

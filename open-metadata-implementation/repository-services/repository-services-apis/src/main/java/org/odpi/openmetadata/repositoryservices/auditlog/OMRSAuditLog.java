@@ -67,7 +67,7 @@ public class OMRSAuditLog
 
 
     /**
-     * Typical constructor - Each component using the Audit log will create their own OMRSAuditLog instance and
+     * Typical constructor: each component using the Audit log will create their own OMRSAuditLog instance and
      * will push log records to it.
      *
      * @param componentId numerical identifier for the component.
@@ -88,7 +88,7 @@ public class OMRSAuditLog
 
 
     /**
-     * External constructor - used to create an audit log for a component outside of OMRS
+     * External constructor is used to create an audit log for a component outside of OMRS
      *
      * @param reportingComponent information about the component that will use this instance of the audit log.
      */

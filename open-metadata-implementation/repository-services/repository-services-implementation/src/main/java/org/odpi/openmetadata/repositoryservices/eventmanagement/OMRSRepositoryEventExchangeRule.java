@@ -29,10 +29,10 @@ public class OMRSRepositoryEventExchangeRule
     /**
      * Constructor provides all of the objects used in the event exchange decision.
      *
-     * @param sourceName - name of the caller
-     * @param repositoryContentManager - local manager of the type definitions (TypeDefs) used by the local repository.
-     * @param exchangeRule - enum detailing the types of events to process.
-     * @param selectedTypesToProcess - supplementary list to support selective processing of events.
+     * @param sourceName name of the caller
+     * @param repositoryContentManager local manager of the type definitions (TypeDefs) used by the local repository.
+     * @param exchangeRule enum detailing the types of events to process.
+     * @param selectedTypesToProcess supplementary list to support selective processing of events.
      */
     public OMRSRepositoryEventExchangeRule(String                       sourceName,
                                            OMRSRepositoryContentManager repositoryContentManager,
@@ -133,8 +133,8 @@ public class OMRSRepositoryEventExchangeRule
     /**
      * Determine from the type of the instance if an instance event should be processed.
      *
-     * @param typeDefGUID - unique identifier of the type
-     * @param typeDefName - unique name of the type
+     * @param typeDefGUID unique identifier of the type
+     * @param typeDefName unique name of the type
      * @return boolean flag
      */
     public boolean processInstanceEvent(String   typeDefGUID, String   typeDefName)
@@ -157,7 +157,7 @@ public class OMRSRepositoryEventExchangeRule
         else if ((typeDefGUID == null) || (typeDefName == null))
         {
             /*
-             * The instance is invalid - this will be logged elsewhere.
+             * The instance is invalid this will be logged elsewhere.
              */
             return false;
         }
@@ -178,7 +178,7 @@ public class OMRSRepositoryEventExchangeRule
                 else
                 {
                     /*
-                     * The exchange rule is either SELECTED_TYPES or LEARNED_TYPES - for either, the instance
+                     * The exchange rule is either SELECTED_TYPES or LEARNED_TYPES. For either, the instance
                      * is processed if its type is in the selectedTypesToProcess list.
                      */
                     if (selectedTypesToProcess.get(typeDefGUID) != null)
@@ -196,7 +196,7 @@ public class OMRSRepositoryEventExchangeRule
     /**
      * Determine from the type of the instance if an instance event should be processed.
      *
-     * @param typeDefSummary - details of the type
+     * @param typeDefSummary details of the type
      * @return boolean flag
      */
     public boolean processInstanceEvent(TypeDefSummary   typeDefSummary)
@@ -219,7 +219,7 @@ public class OMRSRepositoryEventExchangeRule
     /**
      * Determine from the type of the instance if an instance event should be processed.
      *
-     * @param instance - details of the instance to test
+     * @param instance details of the instance to test
      * @return boolean flag
      */
     public boolean processInstanceEvent(InstanceHeader instance)
@@ -256,8 +256,8 @@ public class OMRSRepositoryEventExchangeRule
      * Any errors discovered in the types, of this rule's set up result in a false result.  No diagnostics are
      * created because this method is called very frequently and the errors will be trapped and logged elsewhere.
      *
-     * @param instance - details of the instance to test
-     * @return boolean flag - true if the instance should be saved as a learned instance.
+     * @param instance details of the instance to test
+     * @return boolean flag true if the instance should be saved as a learned instance.
      */
     public boolean learnInstanceEvent(InstanceHeader instance)
     {

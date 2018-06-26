@@ -45,14 +45,14 @@ public class EnterpriseOMRSConnectorProvider extends OMRSRepositoryConnectorProv
      * produces connectors or not.  An EnterpriseOMRSRepositoryConnector needs the connector manager to maintain the
      * list of connectors to the repositories in the cohort.
      *
-     * @param connectorManager - manager of the list of connectors to remote repositories.
-     * @param repositoryContentManager - manager of lists of active and known types with associated helper methods
-     * @param localServerName - name of the local server for this connection.
-     * @param localServerType - type of the local server.
-     * @param owningOrganizationName - name of the organization the owns the remote server.
-     * @param enterpriseMetadataCollectionId - unique identifier for the combined metadata collection covered by the
+     * @param connectorManager manager of the list of connectors to remote repositories.
+     * @param repositoryContentManager manager of lists of active and known types with associated helper methods
+     * @param localServerName name of the local server for this connection.
+     * @param localServerType type of the local server.
+     * @param owningOrganizationName name of the organization the owns the remote server.
+     * @param enterpriseMetadataCollectionId unique identifier for the combined metadata collection covered by the
      *                                      connected open metadata repositories.
-     * @param enterpriseMetadataCollectionName - name of the combined metadata collection covered by the connected open
+     * @param enterpriseMetadataCollectionName name of the combined metadata collection covered by the connected open
      *                                        metadata repositories.  Used for messages.
      */
     public synchronized static void initialize(OMRSConnectorManager         connectorManager,
@@ -90,9 +90,9 @@ public class EnterpriseOMRSConnectorProvider extends OMRSRepositoryConnectorProv
     /**
      * Creates a new instance of an EnterpriseOMRSRepositoryConnector based on the information in the supplied connection.
      *
-     * @param connection - connection that should have all of the properties needed by the Connector Provider
+     * @param connection connection that should have all of the properties needed by the Connector Provider
      *                   to create a connector instance.
-     * @return Connector - instance of the connector.
+     * @return Connector instance of the connector.
      * @throws ConnectionCheckedException if there are missing or invalid properties in the connection
      * @throws ConnectorCheckedException if there are issues instantiating or initializing the connector
      */

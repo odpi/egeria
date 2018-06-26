@@ -29,12 +29,12 @@ public class EntitySummary extends InstanceHeader
 
 
     /**
-     * Default constructor - creates an empty entity
+     * Default constructor creates an empty entity
      */
     public EntitySummary()
     {
         /*
-         * Nothing to do - everything already initialized
+         * Nothing to do as everything already initialized
          */
         super();
     }

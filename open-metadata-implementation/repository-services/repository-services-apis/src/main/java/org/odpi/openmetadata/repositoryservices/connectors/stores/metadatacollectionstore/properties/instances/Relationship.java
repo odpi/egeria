@@ -27,21 +27,21 @@ public class Relationship extends InstanceHeader
 
 
     /**
-     * Default constructor - empty relationship linked to nothing.
+     * Default constructor creates an empty relationship linked to nothing.
      */
     public Relationship()
     {
         super();
 
         /*
-         * Nothing else to do - already initialized to null.
+         * Nothing else to do as already initialized to null.
          */
 
     }
 
 
     /**
-     * Copy/clone constructor - builds a relationship from the supplied template.
+     * Copy/clone constructor builds a relationship from the supplied template.
      *
      * @param templateElement template relationship to copy
      */

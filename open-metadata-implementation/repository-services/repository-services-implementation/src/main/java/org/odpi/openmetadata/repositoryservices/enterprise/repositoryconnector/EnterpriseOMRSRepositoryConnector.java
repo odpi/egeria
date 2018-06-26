@@ -51,7 +51,7 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
     /**
      * Constructor used by the EnterpriseOMRSConnectorProvider.
      *
-     * @param connectorManager - provides notifications as repositories register and unregister with the
+     * @param connectorManager provides notifications as repositories register and unregister with the
      *                         cohorts.
      */
     public EnterpriseOMRSRepositoryConnector(OMRSConnectorManager connectorManager)
@@ -84,7 +84,7 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
     /**
      * Set up the unique Id for this metadata collection.
      *
-     * @param metadataCollectionId - String unique Id
+     * @param metadataCollectionId String unique Id
      */
     public void setMetadataCollectionId(String     metadataCollectionId)
     {
@@ -116,7 +116,7 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
     /**
      * Set up the name of the access service using this connector.
      *
-     * @param accessServiceName - string name
+     * @param accessServiceName string name
      */
     public void setAccessServiceName(String accessServiceName)
     {
@@ -177,10 +177,10 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
 
 
     /**
-     * Returns the connector to the repository where the supplied instance can be updated - ie its home repository.
+     * Returns the connector to the repository where the supplied instance can be updated, ie its home repository.
      *
-     * @param instance - instance to test
-     * @param methodName - name of method making the request (used for logging)
+     * @param instance instance to test
+     * @param methodName name of method making the request (used for logging)
      * @return repository connector
      * @throws RepositoryErrorException home metadata collection is null
      */
@@ -219,7 +219,7 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
      * This method is used by this connector's metadata collection object on each request it processes.  This
      * means it always has the most up to date list of connectors to work with.
      *
-     * @param methodName - name of method making the request (used for logging)
+     * @param methodName name of method making the request (used for logging)
      * @return OMRSRepositoryConnector List
      * @throws RepositoryErrorException the enterprise services are not available
      */
@@ -268,8 +268,8 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
     /**
      * Save the connector to the local repository.  This is passed from the OMRSConnectorManager.
      *
-     * @param metadataCollectionId - Unique identifier for the metadata collection.
-     * @param localConnector - OMRSRepositoryConnector object for the local repository.
+     * @param metadataCollectionId Unique identifier for the metadata collection.
+     * @param localConnector OMRSRepositoryConnector object for the local repository.
      */
     public void setLocalConnector(String                  metadataCollectionId,
                                   OMRSRepositoryConnector localConnector)
@@ -288,8 +288,8 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
     /**
      * Pass the connector to one of the remote repositories in the metadata repository cohort.
      *
-     * @param metadataCollectionId - Unique identifier for the metadata collection.
-     * @param remoteConnector - OMRSRepositoryConnector object providing access to the remote repository.
+     * @param metadataCollectionId Unique identifier for the metadata collection.
+     * @param remoteConnector OMRSRepositoryConnector object providing access to the remote repository.
      */
     public void addRemoteConnector(String                  metadataCollectionId,
                                    OMRSRepositoryConnector remoteConnector)
@@ -304,7 +304,7 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
     /**
      * Pass the metadata collection id for a repository that has just left the metadata repository cohort.
      *
-     * @param metadataCollectionId - identifier of the metadata collection that is no longer available.
+     * @param metadataCollectionId identifier of the metadata collection that is no longer available.
      */
     public void removeRemoteConnector(String  metadataCollectionId)
     {
@@ -360,7 +360,7 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
     /**
      * Issue a disconnect call on the supplied connector.
      *
-     * @param federatedConnector - connector to disconnect.
+     * @param federatedConnector connector to disconnect.
      */
     private void disconnectConnector(FederatedConnector  federatedConnector)
     {
@@ -397,8 +397,8 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
         /**
          * Constructor to set up the details of a federated connector.
          *
-         * @param metadataCollectionId - unique identifier for the metadata collection accessed through the connector
-         * @param connector - connector for the repository
+         * @param metadataCollectionId unique identifier for the metadata collection accessed through the connector
+         * @param connector connector for the repository
          */
         public FederatedConnector(String metadataCollectionId, OMRSRepositoryConnector connector)
         {

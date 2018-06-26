@@ -42,7 +42,7 @@ public class Classification extends InstanceAuditHeader
         if (name == null || name.equals(""))
         {
             /*
-             * Build and throw exception.  This should not happen - likely to be a problem in the
+             * Build and throw exception.  This should not happen and it is likely to be a problem in the
              * repository connector.
              */
             OMRSErrorCode errorCode = OMRSErrorCode.NULL_CLASSIFICATION_PROPERTY_NAME;
@@ -64,7 +64,7 @@ public class Classification extends InstanceAuditHeader
 
 
     /**
-     * Typical constructor - verifies and saves parameters.
+     * Typical constructor verifies and saves parameters.
      *
      * @param name name of the classification
      * @param properties additional properties for the classification
@@ -93,7 +93,7 @@ public class Classification extends InstanceAuditHeader
 
 
     /**
-     * Copy/clone Constructor - sets up new classification using values from the template
+     * Copy/clone Constructor sets up new classification using values from the template
      *
      * @param templateClassification object to copy
      */
@@ -106,7 +106,7 @@ public class Classification extends InstanceAuditHeader
         if (templateClassification == null)
         {
             /*
-             * Build and throw exception.  This should not happen - likely to be a problem in the
+             * Build and throw exception.  This should not happen and this is likely to be a problem in the
              * repository connector.
              */
             OMRSErrorCode errorCode = OMRSErrorCode.NULL_CLASSIFICATION_PROPERTY_NAME;

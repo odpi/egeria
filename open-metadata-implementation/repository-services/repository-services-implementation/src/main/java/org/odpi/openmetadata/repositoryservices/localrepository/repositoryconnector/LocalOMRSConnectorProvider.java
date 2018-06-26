@@ -36,16 +36,16 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
 
 
     /**
-     * Constructor used by OMRSOperationalServices during server start-up - it
+     * Constructor used by OMRSOperationalServices during server start-up. It
      * provides the configuration information about the local server that is used to set up the
      * local repository connector.
      *
-     * @param localMetadataCollectionId - metadata collection Id for the local repository
-     * @param localRepositoryRemoteConnection - connection object for creating a remote connector to this repository.
-     * @param realEventMapper - optional event mapper for local repository
-     * @param outboundRepositoryEventManager - event manager to call for outbound events.
-     * @param repositoryContentManager - repositoryContentManager for supporting OMRS in managing TypeDefs.
-     * @param saveExchangeRule - rule to determine what events to save to the local repository.
+     * @param localMetadataCollectionId metadata collection Id for the local repository
+     * @param localRepositoryRemoteConnection connection object for creating a remote connector to this repository.
+     * @param realEventMapper optional event mapper for local repository
+     * @param outboundRepositoryEventManager event manager to call for outbound events.
+     * @param repositoryContentManager repositoryContentManager for supporting OMRS in managing TypeDefs.
+     * @param saveExchangeRule rule to determine what events to save to the local repository.
      */
     public LocalOMRSConnectorProvider(String                             localMetadataCollectionId,
                                       Connection                         localRepositoryRemoteConnection,
@@ -87,9 +87,9 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
     /**
      * Creates a new instance of a connector based on the information in the supplied connection.
      *
-     * @param realLocalConnection - connection that should have all of the properties needed by the Connector Provider
+     * @param realLocalConnection connection that should have all of the properties needed by the Connector Provider
      *                              to create a connector instance.
-     * @return Connector - instance of the LocalOMRSRepositoryConnector wrapping the real local connector.
+     * @return Connector instance of the LocalOMRSRepositoryConnector wrapping the real local connector.
      * @throws ConnectionCheckedException if there are missing or invalid properties in the connection
      * @throws ConnectorCheckedException if there are issues instantiating or initializing the connector
      */
@@ -102,9 +102,9 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
     /**
      * Creates a new instance of a connector based on the information in the supplied connection.
      *
-     * @param realLocalConnection - connection that should have all of the properties needed by the Connector Provider
+     * @param realLocalConnection connection that should have all of the properties needed by the Connector Provider
      *                              to create a connector instance.
-     * @return Connector - instance of the LocalOMRSRepositoryConnector wrapping the real local connector.
+     * @return Connector instance of the LocalOMRSRepositoryConnector wrapping the real local connector.
      * @throws ConnectionCheckedException if there are missing or invalid properties in the connection
      * @throws ConnectorCheckedException if there are issues instantiating or initializing the connector
      */

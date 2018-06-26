@@ -25,7 +25,7 @@ public class ExternalStandardMapping extends TypeDefElementHeader
 
 
     /**
-     * Default Constructor - initializes to null.
+     * Default Constructor initializes to null.
      */
     public ExternalStandardMapping()
     {
@@ -37,7 +37,7 @@ public class ExternalStandardMapping extends TypeDefElementHeader
 
 
     /**
-     * Copy/clone constructor - copies values from supplied template.
+     * Copy/clone constructor copies values from supplied template.
      *
      * @param templateElement template to copy.
      */

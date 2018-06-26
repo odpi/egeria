@@ -40,7 +40,7 @@ public class CollectionDef extends AttributeTypeDef
         this.argumentTypes = new ArrayList<>();
 
         /*
-         * Set up the type of the elements stored in the collection as "unknown" - like an initialized Java generic.
+         * Set up the type of the elements stored in the collection as "unknown".  This is like an initialized Java generic.
          */
         for (int i=0; i<argumentCount; i++)
         {

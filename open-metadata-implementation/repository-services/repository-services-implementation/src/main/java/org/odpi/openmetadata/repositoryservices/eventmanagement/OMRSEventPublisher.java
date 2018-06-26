@@ -41,10 +41,10 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
     /**
      * Typical constructor sets up the local metadata collection id for events.
      *
-     * @param publisherName - name of the cohort (or enterprise virtual repository) that this event publisher
+     * @param publisherName name of the cohort (or enterprise virtual repository) that this event publisher
      *                      is sending events to.
-     * @param localProtocolVersion - protocol version to use
-     * @param topicConnector - OMRS Topic to send requests on
+     * @param localProtocolVersion protocol version to use
+     * @param topicConnector OMRS Topic to send requests on
      */
     public OMRSEventPublisher(String                           publisherName,
                               OpenMetadataEventProtocolVersion localProtocolVersion,
@@ -94,7 +94,7 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
     /**
      * Send the registry event to the OMRS Topic connector and manage errors
      *
-     * @param registryEvent - properties of the event to send
+     * @param registryEvent  properties of the event to send
      * @return boolean flag to report if the call succeeded or not.
      */
     private boolean sendRegistryEvent(OMRSRegistryEvent registryEvent)
@@ -144,7 +144,7 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
     /**
      * Send the TypeDef event to the OMRS Topic connector (providing TypeDef Events are enabled).
      *
-     * @param typeDefEvent - properties of the event to send
+     * @param typeDefEvent  properties of the event to send
      * @return boolean flag to report if the call succeeded or not.
      */
     private boolean sendTypeDefEvent(OMRSTypeDefEvent typeDefEvent)
@@ -195,7 +195,7 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
      * Set the instance event to the OMRS Topic connector if the instance
      * event is of the permitted type.
      *
-     * @param instanceEvent - properties of the event to send
+     * @param instanceEvent  properties of the event to send
      * @return boolean flag to report if the call succeeded or not.
      * */
     private boolean sendInstanceEvent(OMRSInstanceEvent instanceEvent)
@@ -245,14 +245,14 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
     /**
      * Introduces the local server/repository to the metadata repository cohort.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param metadataCollectionId - unique identifier for the metadata collection that is registering with the cohort.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param registrationTimestamp - the time that the server/repository issued the registration request.
-     * @param remoteConnection - the Connection properties for the connector used to call the registering server.
+     * @param metadataCollectionId  unique identifier for the metadata collection that is registering with the cohort.
+     * @param originatorServerName  name of the server that the event came from.
+     * @param originatorServerType  type of server that the event came from.
+     * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
+     * @param registrationTimestamp  the time that the server/repository issued the registration request.
+     * @param remoteConnection  the Connection properties for the connector used to call the registering server.
      */
     public boolean processRegistrationEvent(String                    sourceName,
                                             String                    metadataCollectionId,
@@ -282,11 +282,11 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
     /**
      * Requests that the other servers in the cohort send re-registration events.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
+     * @param originatorServerName  name of the server that the event came from.
+     * @param originatorServerType  type of server that the event came from.
+     * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      */
     public boolean processRegistrationRefreshRequest(String                    sourceName,
                                                      String                    originatorServerName,
@@ -310,14 +310,14 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
     /**
      * Refreshes the other servers in the cohort with the local server's registration.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param metadataCollectionId - unique identifier for the metadata collection that is registering with the cohort.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param registrationTimestamp - the time that the server/repository first registered with the cohort.
-     * @param remoteConnection - the Connection properties for the connector used to call the registering server.
+     * @param metadataCollectionId  unique identifier for the metadata collection that is registering with the cohort.
+     * @param originatorServerName  name of the server that the event came from.
+     * @param originatorServerType  type of server that the event came from.
+     * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
+     * @param registrationTimestamp  the time that the server/repository first registered with the cohort.
+     * @param remoteConnection  the Connection properties for the connector used to call the registering server.
      */
     public boolean processReRegistrationEvent(String                    sourceName,
                                               String                    metadataCollectionId,
@@ -347,12 +347,12 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
     /**
      * A server/repository is being removed from the metadata repository cohort.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param metadataCollectionId - unique identifier for the metadata collection that is registering with the cohort.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
+     * @param metadataCollectionId  unique identifier for the metadata collection that is registering with the cohort.
+     * @param originatorServerName  name of the server that the event came from.
+     * @param originatorServerType  type of server that the event came from.
+     * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      */
     public boolean processUnRegistrationEvent(String       sourceName,
                                               String       metadataCollectionId,
@@ -380,16 +380,16 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
      * collection Id.  This means that their metadata instances can be updated in more than one server and there
      * is a potential for data integrity issues.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param conflictingMetadataCollectionId - unique identifier for the remote metadata collection that is
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param conflictingMetadataCollectionId unique identifier for the remote metadata collection that is
      *                                        registering with the cohort.
-     * @param errorMessage - details of the conflict
+     * @param errorMessage details of the conflict
      */
     public void    processConflictingCollectionIdEvent(String       sourceName,
                                                        String       originatorMetadataCollectionId,
@@ -420,16 +420,16 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
     /**
      * A connection to one of the members of the open metadata repository cohort is not usable by one of the members.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param targetMetadataCollectionId - Id for the repository with the bad remote connection.
-     * @param remoteConnection - the Connection properties for the connector used to call the registering server.
-     * @param errorMessage - details of the error that occurs when the connection is used.
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param targetMetadataCollectionId Id for the repository with the bad remote connection.
+     * @param remoteConnection the Connection properties for the connector used to call the registering server.
+     * @param errorMessage details of the error that occurs when the connection is used.
      */
     public void processBadConnectionEvent(String       sourceName,
                                           String       originatorMetadataCollectionId,
@@ -461,14 +461,14 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
     /**
      * A new TypeDef has been defined.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param typeDef - details of the new TypeDef
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param typeDef details of the new TypeDef
      */
     public void processNewTypeDefEvent(String       sourceName,
                                        String       originatorMetadataCollectionId,
@@ -494,14 +494,14 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
     /**
      * A new AttributeTypeDef has been defined in an open metadata repository.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param attributeTypeDef - details of the new AttributeTypeDef.
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param attributeTypeDef details of the new AttributeTypeDef.
      */
     public void processNewAttributeTypeDefEvent(String           sourceName,
                                                 String           originatorMetadataCollectionId,
@@ -528,14 +528,14 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
     /**
      * An existing TypeDef has been updated.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param typeDefPatch - details of the new version of the TypeDef
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param typeDefPatch details of the new version of the TypeDef
      */
     public void processUpdatedTypeDefEvent(String       sourceName,
                                            String       originatorMetadataCollectionId,
@@ -563,15 +563,15 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
      * An existing TypeDef has been deleted.  Both the name and the GUID are provided to ensure the right TypeDef is
      * deleted in remote repositories.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param typeDefGUID - unique identifier of the TypeDef
-     * @param typeDefName - unique name of the TypeDef
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param typeDefGUID unique identifier of the TypeDef
+     * @param typeDefName unique name of the TypeDef
      */
     public void processDeletedTypeDefEvent(String       sourceName,
                                            String       originatorMetadataCollectionId,
@@ -602,15 +602,15 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
      * An existing AttributeTypeDef has been deleted in an open metadata repository.  Both the name and the
      * GUID are provided to ensure the right AttributeTypeDef is deleted in other cohort member repositories.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param attributeTypeDefGUID - unique identifier of the AttributeTypeDef
-     * @param attributeTypeDefName - unique name of the AttributeTypeDef
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param attributeTypeDefGUID unique identifier of the AttributeTypeDef
+     * @param attributeTypeDefName unique name of the AttributeTypeDef
      */
     public void processDeletedAttributeTypeDefEvent(String      sourceName,
                                                     String      originatorMetadataCollectionId,
@@ -642,15 +642,15 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
      * Typedefs are discovered to have either the same guid or, most likely, the same name.  This type of conflict
      * is rare but typically occurs when a new repository joins the cohort.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param originalTypeDefSummary - the details for the original TypeDef.
-     * @param typeDef - updated TypeDef with new identifiers
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param originalTypeDefSummary the details for the original TypeDef.
+     * @param typeDef updated TypeDef with new identifiers
      */
     public void processReIdentifiedTypeDefEvent(String         sourceName,
                                                 String         originatorMetadataCollectionId,
@@ -681,15 +681,15 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
      * Process an event that changes either the name or guid of an AttributeTypeDef.
      * It is resolving a Conflicting AttributeTypeDef Error.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param originalAttributeTypeDef - description of original AttributeTypeDef
-     * @param attributeTypeDef - updated AttributeTypeDef with new identifiers inside.
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param originalAttributeTypeDef description of original AttributeTypeDef
+     * @param attributeTypeDef updated AttributeTypeDef with new identifiers inside.
      */
     public void processReIdentifiedAttributeTypeDefEvent(String           sourceName,
                                                          String           originatorMetadataCollectionId,
@@ -720,17 +720,17 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
     /**
      * Process a detected conflict in type definitions (TypeDefs) used in the cohort.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param originatorTypeDefSummary - details of the TypeDef in the event originator
-     * @param otherMetadataCollectionId - the metadataCollection using the conflicting TypeDef
-     * @param conflictingTypeDefSummary - the details of the TypeDef in the other metadata collection
-     * @param errorMessage - details of the error that occurs when the connection is used.
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param originatorTypeDefSummary details of the TypeDef in the event originator
+     * @param otherMetadataCollectionId the metadataCollection using the conflicting TypeDef
+     * @param conflictingTypeDefSummary the details of the TypeDef in the other metadata collection
+     * @param errorMessage details of the error that occurs when the connection is used.
      */
     public void processTypeDefConflictEvent(String         sourceName,
                                             String         originatorMetadataCollectionId,
@@ -765,17 +765,17 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
     /**
      * Process a detected conflict in the attribute type definitions (AttributeTypeDefs) used in the cohort.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
      * @param originatorAttributeTypeDef- description of the AttributeTypeDef in the event originator.
-     * @param otherMetadataCollectionId - the metadataCollection using the conflicting AttributeTypeDef.
-     * @param conflictingAttributeTypeDef - description of the AttributeTypeDef in the other metadata collection.
-     * @param errorMessage - details of the error that occurs when the connection is used.
+     * @param otherMetadataCollectionId the metadataCollection using the conflicting AttributeTypeDef.
+     * @param conflictingAttributeTypeDef description of the AttributeTypeDef in the other metadata collection.
+     * @param errorMessage details of the error that occurs when the connection is used.
      */
     public void processAttributeTypeDefConflictEvent(String           sourceName,
                                                      String           originatorMetadataCollectionId,
@@ -811,17 +811,17 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
      * create some inconsistencies in the different copies of instances of this type in different members of the
      * cohort.  The recommended action is to update all TypeDefs to the latest version.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param targetMetadataCollectionId - identifier of the metadata collection that is reporting a TypeDef at a
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param targetMetadataCollectionId identifier of the metadata collection that is reporting a TypeDef at a
      *                                   different level to the local repository.
-     * @param targetTypeDefSummary - details of the TypeDef being patched
-     * @param otherTypeDef - details of the TypeDef in the local repository.
+     * @param targetTypeDefSummary details of the TypeDef being patched
+     * @param otherTypeDef details of the TypeDef in the local repository.
      */
     public void processTypeDefPatchMismatchEvent(String         sourceName,
                                                  String         originatorMetadataCollectionId,
@@ -857,14 +857,14 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
     /**
      * A new entity has been created.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param entity - details of the new entity
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param entity details of the new entity
      */
     public void processNewEntityEvent(String       sourceName,
                                       String       originatorMetadataCollectionId,
@@ -893,15 +893,15 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
     /**
      * An existing entity has been updated.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param oldEntity  - original values for the entity.
-     * @param newEntity - details of the new version of the entity.
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param oldEntity  original values for the entity.
+     * @param newEntity details of the new version of the entity.
      */
     public void processUpdatedEntityEvent(String       sourceName,
                                           String       originatorMetadataCollectionId,
@@ -932,14 +932,14 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
     /**
      * An update to an entity has been undone.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param entity - details of the version of the entity that has been restored.
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param entity details of the version of the entity that has been restored.
      */
     public void processUndoneEntityEvent(String       sourceName,
                                          String       originatorMetadataCollectionId,
@@ -968,14 +968,14 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
     /**
      * A new classification has been added to an entity.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param entity - details of the entity with the new classification added.
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param entity details of the entity with the new classification added.
      */
     public void processClassifiedEntityEvent(String       sourceName,
                                              String       originatorMetadataCollectionId,
@@ -1004,14 +1004,14 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
     /**
      * A classification has been removed from an entity.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param entity - details of the entity after the classification has been removed.
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param entity details of the entity after the classification has been removed.
      */
     public void processDeclassifiedEntityEvent(String       sourceName,
                                                String       originatorMetadataCollectionId,
@@ -1040,14 +1040,14 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
     /**
      * An existing classification has been changed on an entity.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param entity - details of the entity after the classification has been changed.
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param entity details of the entity after the classification has been changed.
      */
     public void processReclassifiedEntityEvent(String       sourceName,
                                                String       originatorMetadataCollectionId,
@@ -1083,14 +1083,14 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
      * Details of the TypeDef are included with the entity's unique id (guid) to ensure the right entity is deleted in
      * the remote repositories.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param entity - deleted entity
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param entity deleted entity
      */
     public void processDeletedEntityEvent(String       sourceName,
                                           String       originatorMetadataCollectionId,
@@ -1121,16 +1121,16 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
      * Details of the TypeDef are included with the entity's unique id (guid) to ensure the right entity is purged in
      * the remote repositories.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param typeDefGUID - unique identifier for this entity's TypeDef
-     * @param typeDefName - name of this entity's TypeDef
-     * @param instanceGUID - unique identifier for the entity
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param typeDefGUID unique identifier for this entity's TypeDef
+     * @param typeDefName name of this entity's TypeDef
+     * @param instanceGUID unique identifier for the entity
      */
     public void processPurgedEntityEvent(String       sourceName,
                                          String       originatorMetadataCollectionId,
@@ -1162,14 +1162,14 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
     /**
      * A deleted entity has been restored to the state it was before it was deleted.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param entity - details of the version of the entity that has been restored.
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param entity details of the version of the entity that has been restored.
      */
     public void processRestoredEntityEvent(String       sourceName,
                                            String       originatorMetadataCollectionId,
@@ -1200,15 +1200,15 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
      * entities are discovered to have the same guid.  This is extremely unlikely but not impossible so
      * the open metadata protocol has provision for this.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param originalEntityGUID - the existing identifier for the entity.
-     * @param entity - new values for this entity, including the new guid.
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param originalEntityGUID the existing identifier for the entity.
+     * @param entity new values for this entity, including the new guid.
      */
     public void processReIdentifiedEntityEvent(String       sourceName,
                                                String       originatorMetadataCollectionId,
@@ -1240,15 +1240,15 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
      * type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
      * added.)  However, the type can be changed to any compatible type.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param originalTypeDefSummary - original details for this entity's TypeDef.
-     * @param entity - new values for this entity, including the new type information.
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param originalTypeDefSummary original details for this entity's TypeDef.
+     * @param entity new values for this entity, including the new type information.
      */
     public void processReTypedEntityEvent(String         sourceName,
                                           String         originatorMetadataCollectionId,
@@ -1280,15 +1280,15 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
      * becomes permanently unavailable, or if the user community updating this entity move to working
      * from a different repository in the open metadata repository cohort.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param originalHomeMetadataCollectionId - unique identifier for the original home repository.
-     * @param entity - new values for this entity, including the new home information.
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param originalHomeMetadataCollectionId unique identifier for the original home repository.
+     * @param entity new values for this entity, including the new home information.
      */
     public void processReHomedEntityEvent(String       sourceName,
                                           String       originatorMetadataCollectionId,
@@ -1319,17 +1319,17 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
      * The local repository is requesting that an entity from another repository's metadata collection is
      * refreshed so the local repository can create a reference copy.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param typeDefGUID - - unique identifier for this entity's TypeDef
-     * @param typeDefName - name of this entity's TypeDef
-     * @param instanceGUID - unique identifier for the entity
-     * @param homeMetadataCollectionId - metadata collection id for the home of this instance.
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param typeDefGUID unique identifier for this entity's TypeDef
+     * @param typeDefName name of this entity's TypeDef
+     * @param instanceGUID unique identifier for the entity
+     * @param homeMetadataCollectionId metadata collection id for the home of this instance.
      */
     public void processRefreshEntityRequested(String       sourceName,
                                               String       originatorMetadataCollectionId,
@@ -1363,14 +1363,14 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
     /**
      * A remote repository in the cohort has sent entity details in response to a refresh request.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param entity - details of the requested entity
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param entity details of the requested entity
      */
     public void processRefreshEntityEvent(String       sourceName,
                                           String       originatorMetadataCollectionId,
@@ -1398,14 +1398,14 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
     /**
      * A new relationship has been created.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param relationship - details of the new relationship
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param relationship details of the new relationship
      */
     public void processNewRelationshipEvent(String       sourceName,
                                             String       originatorMetadataCollectionId,
@@ -1433,15 +1433,15 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
     /**
      * An existing relationship has been updated.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param oldRelationship - original details of the relationship.
-     * @param newRelationship - details of the new version of the relationship.
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param oldRelationship original details of the relationship.
+     * @param newRelationship details of the new version of the relationship.
      */
     public void processUpdatedRelationshipEvent(String       sourceName,
                                                 String       originatorMetadataCollectionId,
@@ -1471,14 +1471,14 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
     /**
      * An update to a relationship has been undone.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param relationship - details of the version of the relationship that has been restored.
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param relationship details of the version of the relationship that has been restored.
      */
     public void processUndoneRelationshipEvent(String       sourceName,
                                                String       originatorMetadataCollectionId,
@@ -1509,14 +1509,14 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
      * Details of the TypeDef are included with the relationship's unique id (guid) to ensure the right
      * relationship is deleted in the remote repositories.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param relationship - deleted relationship
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param relationship deleted relationship
      */
     public void processDeletedRelationshipEvent(String       sourceName,
                                                 String       originatorMetadataCollectionId,
@@ -1547,16 +1547,16 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
      * Details of the TypeDef are included with the relationship's unique id (guid) to ensure the right
      * relationship is purged in the remote repositories.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param typeDefGUID - unique identifier for this relationship's TypeDef.
-     * @param typeDefName - name of this relationship's TypeDef.
-     * @param instanceGUID - unique identifier for the relationship.
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param typeDefGUID unique identifier for this relationship's TypeDef.
+     * @param typeDefName name of this relationship's TypeDef.
+     * @param instanceGUID unique identifier for the relationship.
      */
     public void processPurgedRelationshipEvent(String       sourceName,
                                                String       originatorMetadataCollectionId,
@@ -1588,14 +1588,14 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
     /**
      * A deleted relationship has been restored to the state it was before it was deleted.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param relationship - details of the version of the relationship that has been restored.
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param relationship details of the version of the relationship that has been restored.
      */
     public void processRestoredRelationshipEvent(String       sourceName,
                                                  String       originatorMetadataCollectionId,
@@ -1625,15 +1625,15 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
      * relationships are discovered to have the same guid.  This is extremely unlikely but not impossible so
      * the open metadata protocol has provision for this.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param originalRelationshipGUID - the existing identifier for the relationship.
-     * @param relationship - new values for this relationship, including the new guid.
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param originalRelationshipGUID the existing identifier for the relationship.
+     * @param relationship new values for this relationship, including the new guid.
      */
     public void processReIdentifiedRelationshipEvent(String       sourceName,
                                                      String       originatorMetadataCollectionId,
@@ -1665,15 +1665,15 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
      * type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
      * added.)  However, the type can be changed to any compatible type.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param originalTypeDefSummary - original details of this relationship's TypeDef.
-     * @param relationship - new values for this relationship, including the new type information.
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param originalTypeDefSummary original details of this relationship's TypeDef.
+     * @param relationship new values for this relationship, including the new type information.
      */
     public void processReTypedRelationshipEvent(String         sourceName,
                                                 String         originatorMetadataCollectionId,
@@ -1705,15 +1705,15 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
      * becomes permanently unavailable, or if the user community updating this relationship move to working
      * from a different repository in the open metadata repository cohort.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param originalHomeMetadataCollection - unique identifier for the original home repository.
-     * @param relationship - new values for this relationship, including the new home information.
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param originalHomeMetadataCollection unique identifier for the original home repository.
+     * @param relationship new values for this relationship, including the new home information.
      */
     public void processReHomedRelationshipEvent(String       sourceName,
                                                 String       originatorMetadataCollectionId,
@@ -1744,17 +1744,17 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
      * A repository has requested the home repository of a relationship send details of the relationship so
      * the local repository can create a reference copy of the instance.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param typeDefGUID - unique identifier for this instance's TypeDef
-     * @param typeDefName - name of this relationship's TypeDef
-     * @param instanceGUID - unique identifier for the instance
-     * @param homeMetadataCollectionId - metadata collection id for the home of this instance.
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param typeDefGUID unique identifier for this instance's TypeDef
+     * @param typeDefName name of this relationship's TypeDef
+     * @param instanceGUID unique identifier for the instance
+     * @param homeMetadataCollectionId metadata collection id for the home of this instance.
      */
     public void processRefreshRelationshipRequest(String       sourceName,
                                                   String       originatorMetadataCollectionId,
@@ -1789,14 +1789,14 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
      * The local repository is refreshing the information about a relationship for the other
      * repositories in the cohort.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param relationship - relationship details
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param relationship relationship details
      */
     public void processRefreshRelationshipEvent(String       sourceName,
                                                 String       originatorMetadataCollectionId,
@@ -1844,21 +1844,21 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
      * a conflictingInstancesDetected() notification requesting that the repository that loaded the newer instance
      * manage the resolution since the newer archive need fixing.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param targetMetadataCollectionId - metadata collection id of other repository with the conflicting instance
-     * @param targetTypeDefSummary - details of the target instance's TypeDef
-     * @param targetInstanceGUID - unique identifier for the source instance
-     * @param otherOrigin - origin of the other (older) metadata instance
-     * @param otherMetadataCollectionId - metadata collection of the other (older) metadata instance
-     * @param otherTypeDefSummary - details of the other (older) instance's TypeDef
-     * @param otherInstanceGUID - unique identifier for the other (older) instance
-     * @param errorMessage - description of the error
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param targetMetadataCollectionId metadata collection id of other repository with the conflicting instance
+     * @param targetTypeDefSummary details of the target instance's TypeDef
+     * @param targetInstanceGUID unique identifier for the source instance
+     * @param otherOrigin origin of the other (older) metadata instance
+     * @param otherMetadataCollectionId metadata collection of the other (older) metadata instance
+     * @param otherTypeDefSummary details of the other (older) instance's TypeDef
+     * @param otherInstanceGUID unique identifier for the other (older) instance
+     * @param errorMessage description of the error
      */
     public void processConflictingInstancesEvent(String                 sourceName,
                                                  String                 originatorMetadataCollectionId,
@@ -1901,17 +1901,17 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
      * An open metadata repository has detected an inconsistency in the version of the type used in an updated metadata
      * instance compared to its stored version.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - metadata collection id of the repository reporting the conflicting instance
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param targetMetadataCollectionId - metadata collection id of other repository with the conflicting instance
-     * @param targetTypeDefSummary - details of the target instance's TypeDef
-     * @param targetInstanceGUID - unique identifier for the source instance
-     * @param otherTypeDefSummary - details of the originator's TypeDef
-     * @param errorMessage - description of the error.
+     * @param originatorMetadataCollectionId metadata collection id of the repository reporting the conflicting instance
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param targetMetadataCollectionId metadata collection id of other repository with the conflicting instance
+     * @param targetTypeDefSummary details of the target instance's TypeDef
+     * @param targetInstanceGUID unique identifier for the source instance
+     * @param otherTypeDefSummary details of the originator's TypeDef
+     * @param errorMessage description of the error.
      */
     public void processConflictingTypeEvent(String                 sourceName,
                                             String                 originatorMetadataCollectionId,

@@ -25,12 +25,12 @@ public class OMRSArchiveHelper
     /**
      * Constructor receives information about the archive being built.
      *
-     * @param archiveBuilder - archive builder with the archive contents in it.
-     * @param archiveGUID - unique identifier for the archive.
-     * @param originatorName - name of the person / process creating the archive.
-     * @param creationDate - date that the archive was first built.
-     * @param versionNumber - version number of the archive.
-     * @param versionName - version name for the archive.
+     * @param archiveBuilder archive builder with the archive contents in it.
+     * @param archiveGUID unique identifier for the archive.
+     * @param originatorName name of the person / process creating the archive.
+     * @param creationDate date that the archive was first built.
+     * @param versionNumber version number of the archive.
+     * @param versionName version name for the archive.
      */
     public OMRSArchiveHelper(OMRSArchiveBuilder     archiveBuilder,
                              String                 archiveGUID,
@@ -51,7 +51,7 @@ public class OMRSArchiveHelper
     /**
      * Set up an individual primitive definition
      *
-     * @param primitiveDefCategory - category of the primitive def defines the unique
+     * @param primitiveDefCategory category of the primitive def defines the unique
      *                             information about this primitive type.
      * @return initialized PrimitiveDef object ready for the archive
      */
@@ -73,10 +73,10 @@ public class OMRSArchiveHelper
      * used to initialize the collection.  Each CollectionDef has its own unique identifier (guid) and
      * its name is a combination of the collection type and the primitives use to initialize it.
      *
-     * @param guid - unique identifier for the CollectionDef
-     * @param description - short default description of the enum type
-     * @param descriptionGUID - guid of the glossary term describing this collection type
-     * @param arrayType - type of the array.
+     * @param guid unique identifier for the CollectionDef
+     * @param description short default description of the enum type
+     * @param descriptionGUID guid of the glossary term describing this collection type
+     * @param arrayType type of the array.
      * @return Filled out CollectionDef
      */
     public CollectionDef getArrayCollectionDef(String                guid,
@@ -104,11 +104,11 @@ public class OMRSArchiveHelper
      * used to initialize the collection.  Each CollectionDef has its own unique identifier (guid) and
      * its name is a combination of the collection type and the primitives use to initialize it.
      *
-     * @param guid - unique identifier for the CollectionDef
-     * @param description - short default description of the enum type
-     * @param descriptionGUID - guid of the glossary term describing this collection type
-     * @param propertyKeyType - type of the key for the map.
-     * @param propertyValueType  - type of map value.
+     * @param guid unique identifier for the CollectionDef
+     * @param description short default description of the enum type
+     * @param descriptionGUID guid of the glossary term describing this collection type
+     * @param propertyKeyType type of the key for the map.
+     * @param propertyValueType  type of map value.
      * @return Filled out CollectionDef
      */
     public CollectionDef getMapCollectionDef(String                guid,
@@ -138,10 +138,10 @@ public class OMRSArchiveHelper
     /**
      * Create an EnumDef that has no valid values defined.  These are added by the caller.
      *
-     * @param guid - unique identifier for the CollectionDef
-     * @param name - unique name for the CollectionDef
-     * @param description - short default description of the enum type
-     * @param descriptionGUID - guid of the glossary term describing this enum type
+     * @param guid unique identifier for the CollectionDef
+     * @param name unique name for the CollectionDef
+     * @param description short default description of the enum type
+     * @param descriptionGUID guid of the glossary term describing this enum type
      * @return basic EnumDef without valid values
      */
     public EnumDef getEmptyEnumDef(String                guid,
@@ -166,10 +166,10 @@ public class OMRSArchiveHelper
     /**
      * Create an EnumElementDef that carries one of the valid values for an Enum.
      *
-     * @param ordinal - code number
-     * @param value - name
-     * @param description - short description
-     * @param descriptionGUID - guid of the glossary term describing this enum element
+     * @param ordinal code number
+     * @param value name
+     * @param description short description
+     * @param descriptionGUID guid of the glossary term describing this enum element
      * @return Fully filled out EnumElementDef
      */
     public EnumElementDef  getEnumElementDef(int     ordinal,
@@ -192,11 +192,11 @@ public class OMRSArchiveHelper
      * Sets up a default EntityDef.  Calling methods can override the default values.  This EntityDef
      * has no attribute defined.
      *
-     * @param guid - unique identifier for the entity
-     * @param name - name of the entity
-     * @param superType - Super type for this entity (null for top-level)
-     * @param description - short description of the entity
-     * @param descriptionGUID - guid of the glossary term describing this entity type
+     * @param guid unique identifier for the entity
+     * @param name name of the entity
+     * @param superType Super type for this entity (null for top-level)
+     * @param description short description of the entity
+     * @param descriptionGUID guid of the glossary term describing this entity type
      * @return Initialized EntityDef
      */
     public EntityDef  getDefaultEntityDef(String                  guid,
@@ -243,9 +243,9 @@ public class OMRSArchiveHelper
      * These are the typical values used for most open metadata attribute.
      * They can be changed by the caller once the TypeDefAttribute is returned.
      *
-     * @param attributeName - name of the attribute
-     * @param attributeDescription - short description for the attribute
-     * @param attributeDescriptionGUID - guid of the glossary term that describes this attribute.
+     * @param attributeName name of the attribute
+     * @param attributeDescription short description for the attribute
+     * @param attributeDescriptionGUID guid of the glossary term that describes this attribute.
      * @return  TypeDefAttribute of type string
      */
     public TypeDefAttribute  getStringTypeDefAttribute(String      attributeName,
@@ -276,9 +276,9 @@ public class OMRSArchiveHelper
      * These are the typical values used for most open metadata attribute.
      * They can be changed by the caller once the TypeDefAttribute is returned.
      *
-     * @param attributeName - name of the attribute
-     * @param attributeDescription - short description for the attribute
-     * @param attributeDescriptionGUID - guid of the glossary term that describes this attribute.
+     * @param attributeName name of the attribute
+     * @param attributeDescription short description for the attribute
+     * @param attributeDescriptionGUID guid of the glossary term that describes this attribute.
      * @return  TypeDefAttribute of type string
      */
     public TypeDefAttribute  getIntTypeDefAttribute(String      attributeName,
@@ -309,9 +309,9 @@ public class OMRSArchiveHelper
      * These are the typical values used for most open metadata attribute.
      * They can be changed by the caller once the TypeDefAttribute is returned.
      *
-     * @param attributeName - name of the attribute
-     * @param attributeDescription - short description for the attribute
-     * @param attributeDescriptionGUID - guid of the glossary term that describes this attribute.
+     * @param attributeName name of the attribute
+     * @param attributeDescription short description for the attribute
+     * @param attributeDescriptionGUID guid of the glossary term that describes this attribute.
      * @return  TypeDefAttribute of type string
      */
     public TypeDefAttribute  getDateTypeDefAttribute(String      attributeName,
@@ -343,9 +343,9 @@ public class OMRSArchiveHelper
      * These are the typical values used for most open metadata attribute.
      * They can be changed by the caller once the TypeDefAttribute is returned.
      *
-     * @param attributeName - name of the attribute
-     * @param attributeDescription - short description for the attribute
-     * @param attributeDescriptionGUID - guid of the glossary term that describes this attribute.
+     * @param attributeName name of the attribute
+     * @param attributeDescription short description for the attribute
+     * @param attributeDescriptionGUID guid of the glossary term that describes this attribute.
      * @return  TypeDefAttribute of type string
      */
     public TypeDefAttribute  getArrayStringTypeDefAttribute(String      attributeName,
@@ -377,9 +377,9 @@ public class OMRSArchiveHelper
      * These are the typical values used for most open metadata attribute.
      * They can be changed by the caller once the TypeDefAttribute is returned.
      *
-     * @param attributeName - name of the attribute
-     * @param attributeDescription - short description for the attribute
-     * @param attributeDescriptionGUID - guid of the glossary term that describes this attribute.
+     * @param attributeName name of the attribute
+     * @param attributeDescription short description for the attribute
+     * @param attributeDescriptionGUID guid of the glossary term that describes this attribute.
      * @return  TypeDefAttribute of type string
      */
     public TypeDefAttribute  getArrayIntTypeDefAttribute(String      attributeName,
@@ -411,9 +411,9 @@ public class OMRSArchiveHelper
      * These are the typical values used for most open metadata attribute.
      * They can be changed by the caller once the TypeDefAttribute is returned.
      *
-     * @param attributeName - name of the attribute
-     * @param attributeDescription - short description for the attribute
-     * @param attributeDescriptionGUID - guid of the glossary term that describes this attribute.
+     * @param attributeName name of the attribute
+     * @param attributeDescription short description for the attribute
+     * @param attributeDescriptionGUID guid of the glossary term that describes this attribute.
      * @return  TypeDefAttribute of type string
      */
     public TypeDefAttribute  getMapStringStringTypeDefAttribute(String      attributeName,
@@ -444,10 +444,10 @@ public class OMRSArchiveHelper
      * These are the typical values used for most open metadata attribute.
      * They can be changed by the caller once the TypeDefAttribute is returned.
      *
-     * @param enumTypeName - name of the enum type for this attribute
-     * @param attributeName - name of the attribute
-     * @param attributeDescription - short description for the attribute
-     * @param attributeDescriptionGUID - guid of the glossary term that describes this attribute.
+     * @param enumTypeName name of the enum type for this attribute
+     * @param attributeName name of the attribute
+     * @param attributeDescription short description for the attribute
+     * @param attributeDescriptionGUID guid of the glossary term that describes this attribute.
      * @return  TypeDefAttribute of type string
      */
     public TypeDefAttribute  getEnumTypeDefAttribute(String     enumTypeName,
@@ -479,10 +479,10 @@ public class OMRSArchiveHelper
      * These are the typical values used for most open metadata attribute.
      * They can be changed by the caller once the TypeDefAttribute is returned.
      *
-     * @param enumArrayTypeName - name of the enum type for this attribute
-     * @param attributeName - name of the attribute
-     * @param attributeDescription - short description for the attribute
-     * @param attributeDescriptionGUID - guid of the glossary term that describes this attribute.
+     * @param enumArrayTypeName name of the enum type for this attribute
+     * @param attributeName name of the attribute
+     * @param attributeDescription short description for the attribute
+     * @param attributeDescriptionGUID guid of the glossary term that describes this attribute.
      * @return  TypeDefAttribute of type string
      */
     public TypeDefAttribute  getArrayEnumTypeDefAttribute(String     enumArrayTypeName,
@@ -512,12 +512,12 @@ public class OMRSArchiveHelper
      * Returns a basic RelationshipDef without any attributes or ends set up.
      * The caller is responsible for adding the attributes and ends definition.
      *
-     * @param guid - unique identifier for the relationship
-     * @param name - name of the relationship
-     * @param superType - Super type for this relationship (null for top-level)
-     * @param description - short default description of the relationship
-     * @param descriptionGUID - guid of the glossary term that describes this relationship
-     * @param propagationRule - should classifications propagate over this relationship?
+     * @param guid unique identifier for the relationship
+     * @param name name of the relationship
+     * @param superType Super type for this relationship (null for top-level)
+     * @param description short default description of the relationship
+     * @param descriptionGUID guid of the glossary term that describes this relationship
+     * @param propagationRule should classifications propagate over this relationship?
      * @return RelationshipDef with no ends defined.
      */
     public RelationshipDef getBasicRelationshipDef(String                        guid,
@@ -567,11 +567,11 @@ public class OMRSArchiveHelper
     /**
      * Returns a RelationshipEndDef object that sets up details of an entity at one end of a relationship.
      *
-     * @param entityType - details of the type of entity connected to this end.
-     * @param attributeName - name of the attribute that the entity at the other end uses to refer to this entity.
-     * @param attributeDescription - description of this attribute
-     * @param attributeDescriptionGUID - unique identifier of the glossary term describing this attribute.
-     * @param attributeCardinality - cardinality of this end of the relationship.
+     * @param entityType details of the type of entity connected to this end.
+     * @param attributeName name of the attribute that the entity at the other end uses to refer to this entity.
+     * @param attributeDescription description of this attribute
+     * @param attributeDescriptionGUID unique identifier of the glossary term describing this attribute.
+     * @param attributeCardinality cardinality of this end of the relationship.
      * @return the definition of one end of a Relationship.
      */
     public RelationshipEndDef  getRelationshipEndDef(TypeDefLink                entityType,
@@ -596,13 +596,13 @@ public class OMRSArchiveHelper
      * Returns a basic ClassificationDef without any attributes.   The caller is responsible for adding the
      * attribute definitions.
      *
-     * @param guid - unique identifier for the classification
-     * @param name - name of the classification
-     * @param superType - Super type for this classification (null for top-level)
-     * @param description - short description of the classification
-     * @param descriptionGUID - unique identifier of the glossary term that describes this classification.
-     * @param validEntityDef - which entities can this classification be linked to.
-     * @param propagatable - can the classification propagate over relationships?
+     * @param guid unique identifier for the classification
+     * @param name name of the classification
+     * @param superType Super type for this classification (null for top-level)
+     * @param description short description of the classification
+     * @param descriptionGUID unique identifier of the glossary term that describes this classification.
+     * @param validEntityDef which entities can this classification be linked to.
+     * @param propagatable can the classification propagate over relationships?
      * @return ClassificationDef with no attributes defined.
      */
     public ClassificationDef getClassificationDef(String                        guid,

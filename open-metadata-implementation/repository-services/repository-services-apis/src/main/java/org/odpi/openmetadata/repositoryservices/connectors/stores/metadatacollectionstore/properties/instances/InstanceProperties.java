@@ -23,23 +23,23 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * the type of the property:
  * <ul>
  *     <li>
- *         PrimitivePropertyValue - for primitives such as strings and numbers.  The full list of primitives are
+ *         PrimitivePropertyValue: for primitives such as strings and numbers.  The full list of primitives are
  *         given in PrimitiveDefCategory.
  *     </li>
  *     <li>
- *         EnumPropertyValue - for properties with a type consisting of an enumeration of valid values.  Each
+ *         EnumPropertyValue: for properties with a type consisting of an enumeration of valid values.  Each
  *     </li>
  *     <li>
- *         StructPropertyValue - for properties that have a type of a complex structure (aka struct).
+ *         StructPropertyValue: for properties that have a type of a complex structure (aka struct).
  *         The Struct can be thought of as a list of related properties.
  *     </li>
  *     <li>
- *         MapPropertyValue - for properties that have a type of map.
+ *         MapPropertyValue: for properties that have a type of map.
  *         The map holds an unordered list of name-value pairs.  The pairs are of the same type and the name for
  *         the pair is unique within the map.
  *     </li>
  *     <li>
- *         ArrayPropertyValue - for properties that have a type of Array.
+ *         ArrayPropertyValue: for properties that have a type of Array.
  *         This is an ordered list of values of the same type.
  *     </li>
  * </ul>
