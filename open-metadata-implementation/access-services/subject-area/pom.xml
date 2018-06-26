@@ -25,6 +25,8 @@
     <modules>
         <module>subject-area-client</module>
         <module>subject-area-server</module>
+        <module>subject-area-spring</module>
+        <module>subject-area-tools</module>
     </modules>
 
 </project>
