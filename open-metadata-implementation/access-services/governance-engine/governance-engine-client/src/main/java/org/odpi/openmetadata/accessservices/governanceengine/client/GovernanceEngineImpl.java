@@ -84,6 +84,8 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
         final String urlTemplate = "/{0}/govclassdefs?rootClassification={1}"; //TODO: Need to allow for root classification to be speced and do validation
 
         validateOMASServerURL(methodName);
+        validateUserId(userId,methodName); // cannot be null
+
 
         GovernanceClassificationDefinitionListAPIResponse restResult = callGovernanceEngineClassificationDefinitionListRESTCall(methodName,
                 omasServerURL + urlTemplate,
@@ -111,6 +113,10 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
         final String urlTemplate = "/{0}/govAssets/{1}"; //TODO: Need to figure out path for getting assets
 
         validateOMASServerURL(methodName);
+        validateUserId(userId,methodName); // cannot be null
+
+        validateGuid(assetGuid,methodName); // cannot be null
+
 
         GovernedAssetComponentAPIResponse restResult = callGovernanceEngineGovernedAssetComponentRESTCall(methodName,
                 omasServerURL + urlTemplate,
@@ -134,10 +140,14 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
      */
     public GovernanceClassificationDefinition getGovernanceClassificationDefinition(String userId, String tagGuid) throws InvalidParameterException,
             UserNotAuthorizedException, MetadataServerException, RootClassificationNotFoundException {
-        final String methodName = "getGovernanceClassificationDefinitionList";
+        final String methodName = "getGovernanceClassificationDefinition";
         final String urlTemplate = "/{0}/govclassdefs?rootClassification={1}?rootType={2}"; //TODO: Need to allow for root classification to be speced and do validation
 
         validateOMASServerURL(methodName);
+        validateUserId(userId,methodName); // cannot be null
+
+        validateGuid(tagGuid,methodName); // cannot be null
+
 
         GovernanceClassificationDefinitionAPIResponse restResult = callGovernanceEngineClassificationDefinitionRESTCall(methodName,
                 omasServerURL + urlTemplate,
@@ -195,6 +205,28 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
         }
     }
 
+    /**
+     * Throw an exception if the supplied guid is null
+     *
+     * @param guid     - user name to validate
+     * @param methodName - name of the method making the call.
+     * @throws InvalidParameterException - the userId is null
+     */
+    private void validateGuid(String guid,
+                                String methodName) throws InvalidParameterException {
+        if (StringUtils.isEmpty(guid)) {
+            GovernanceEngineErrorCode errorCode = GovernanceEngineErrorCode.NULL_GUID;
+            String errorMessage = errorCode.getErrorMessageId()
+                    + errorCode.getFormattedErrorMessage(methodName);
+
+            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+    }
 
     /**
      * Issue a GET REST call that returns a GovernedAssetList object.

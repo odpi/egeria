@@ -364,5 +364,326 @@ try {
         // too specific
     }
 
+    // --> more
+
+    // -> getGovernedAssetComponentList
+    @Test
+    @DisplayName("getGovernedAssetComponent - null userid")
+    void testGetGovernedAssetComponentNullUserid() {
+
+        thrown = assertThrows(InvalidParameterException.class, () ->
+        {
+            GovernedAssetComponent result = governanceEngineImpl.getGovernedAssetComponent(null, defaultGUID);
+            // exception!
+        });
+
+        // Check we do not call the backend server - should be checked locally
+        verify(restTemplate,never()).getForObject(ArgumentMatchers.anyString(),ArgumentMatchers.any(Class.class),ArgumentMatchers.<Object>any());
+    }
+
+    @Test
+    @DisplayName("getGovernedAssetComponent - empty userid")
+    void testGetGovernedAssetComponentEmptyUserid() {
+
+        thrown = assertThrows(InvalidParameterException.class, () ->
+        {
+            GovernedAssetComponent result = governanceEngineImpl.getGovernedAssetComponent("", defaultGUID);
+            // exception!
+        });
+        // Check we do not call the backend server - should be checked locally
+        verify(restTemplate,never()).getForObject(ArgumentMatchers.anyString(),ArgumentMatchers.any(Class.class),ArgumentMatchers.<Object>any());
+        // TODO - verify we get the correct error code. Currently hitting error with lambda expression
+        //assertEquals(result.get);
+    }
+
+
+    // -> getGovernedAssetComponentList
+    @Test
+    @DisplayName("getGovernedAssetComponent - null guid")
+    void testGetGovernedAssetComponentNullGuid() {
+
+        thrown = assertThrows(InvalidParameterException.class, () ->
+        {
+            GovernedAssetComponent result = governanceEngineImpl.getGovernedAssetComponent(defaultUserId, null);
+            // exception!
+        });
+
+        // Check we do not call the backend server - should be checked locally
+        verify(restTemplate,never()).getForObject(ArgumentMatchers.anyString(),ArgumentMatchers.any(Class.class),ArgumentMatchers.<Object>any());
+    }
+
+    @Test
+    @DisplayName("getGovernedAssetComponent - empty guid")
+    void testGetGovernedAssetComponentEmptyGuid() {
+
+        thrown = assertThrows(InvalidParameterException.class, () ->
+        {
+            GovernedAssetComponent result = governanceEngineImpl.getGovernedAssetComponent(defaultUserId, "");
+            // exception!
+        });
+        // Check we do not call the backend server - should be checked locally
+        verify(restTemplate,never()).getForObject(ArgumentMatchers.anyString(),ArgumentMatchers.any(Class.class),ArgumentMatchers.<Object>any());
+        // TODO - verify we get the correct error code. Currently hitting error with lambda expression
+        //assertEquals(result.get);
+    }
+
+
+
+
+    // -- Beginning of tests that need mocking
+
+    @Test
+    @DisplayName("getGovernedAssetComponent - client REST exception")
+    void testGetGovernedAssetComponentClientAPIException() {
+
+
+
+        // Whatever we call this with throw a RTE (simulates a client REST API errr)
+        // ResourceAccessException (spring) is thrown if, for example, the client cannot
+        // connect to the endpoint
+
+        // The argument matchers types need to match exactly - any is used for varargs...
+
+        // For this generic API issue we won't be specific on the parms
+        when (restTemplate.getForObject(ArgumentMatchers.anyString(),ArgumentMatchers.any(Class.class),ArgumentMatchers.<Object>any())).thenThrow(new ResourceAccessException("Test Exception from REST client error"));
+
+        // test we get the exception expected
+        thrown = assertThrows(MetadataServerException.class, () ->
+        {
+
+            GovernedAssetComponent result = governanceEngineImpl.getGovernedAssetComponent(defaultUserId, defaultGUID);
+        });
+
+        // verify we actually used the mocked rest template once
+        verify(restTemplate,times(1)).getForObject(ArgumentMatchers.anyString(),ArgumentMatchers.any(Class.class),ArgumentMatchers.<Object>any());
+        // assert (in addition to exception assertion!)
+
+        // Checking we at least get a sensible GE OMAS Errorcode (we won't go
+        // too specific
+        assertTrue(thrown.getMessage().contains("OMAS-GOVERNANCEENGINE-503")); //TODO verify test case check for error
+    }
+
+
+
+    // This is an initial test of a server generated exception -- but testing the exact list is more a server testing
+    // concern. However we will check for one other than a client rest api error, as the behaviour could be different in the client layer
+    @Test
+    @DisplayName("getGovernedAssetComponent - server side exception")
+    void testGetGovernedAssetComponentRemoteInvalidParmException() {
+
+        // Construct the response we want to emulate in the mocked library
+        //GovernedAssetComponentAPIResponse expectedResponse = new GovernedAssetComponentAPIResponse();
+        //expectedResponse.setRelatedHTTPCode();
+        // For now rely on InvalidArgumentException when this occurs
+        // The argument matchers types need to match exactly - any is used for varargs...
+        GovernedAssetComponentAPIResponse expectedResponse = new GovernedAssetComponentAPIResponse();
+        expectedResponse.setRelatedHTTPCode(404);
+        when(restTemplate.getForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(Class.class), ArgumentMatchers.<Object>any())).thenReturn(expectedResponse);
+
+        // test we get the exception expected
+        try {
+            GovernedAssetComponent result = governanceEngineImpl.getGovernedAssetComponent(defaultUserId, defaultGUID);
+        } catch (Exception e) {};
+
+        // verify we actually used the mocked rest template once
+        verify(restTemplate,times(1)).getForObject(ArgumentMatchers.anyString(),ArgumentMatchers.any(Class.class),ArgumentMatchers.<Object>any());
+        // assert (in addition to exception assertion!)
+
+        // Checking we at least get a sensible GE OMAS Errorcode (we won't go
+        // too specific
+        // TODO Need to validate the response here
+    }
+
+
+    // Now check a good return
+    @Test
+    @DisplayName("getGovernedAssetComponent - good result")
+    void testGetGovernedAssetComponentGoodData() {
+
+        // Construct the response we want to emulate in the mocked library
+        //GovernedAssetComponentAPIResponse expectedResponse = new GovernedAssetComponentAPIResponse();
+        //expectedResponse.setRelatedHTTPCode();
+        // For now rely on InvalidArgumentException when this occurs
+        // The argument matchers types need to match exactly - any is used for varargs
+
+        GovernedAssetComponentAPIResponse expectedResponse = new GovernedAssetComponentAPIResponse();
+        expectedResponse.setRelatedHTTPCode(200);
+        when (restTemplate.getForObject(ArgumentMatchers.anyString(),ArgumentMatchers.any(Class.class),ArgumentMatchers.<Object>any())).thenReturn(expectedResponse);
+
+
+        try {
+            GovernedAssetComponent result = governanceEngineImpl.getGovernedAssetComponent(defaultUserId, defaultGUID);
+        } catch (Exception e) {};
+
+        // verify we actually used the mocked rest template once
+        verify(restTemplate,times(1)).getForObject(ArgumentMatchers.anyString(),ArgumentMatchers.any(Class.class),ArgumentMatchers.<Object>any());
+
+        //TODO: Verify the content in the list. tbd.
+        // assert (in addition to exception assertion!)
+
+        // Checking we at least get a sensible GE OMAS Errorcode (we won't go
+        // too specific
+    }
+
+    // -> getGovernanceClassificationDefinitionList
+    @Test
+    @DisplayName("getGovernanceClassificationDefinition - null userid")
+    void testGetGovernanceClassificationDefinitionNullUserid() {
+
+        thrown = assertThrows(InvalidParameterException.class, () ->
+        {
+            GovernanceClassificationDefinition result = governanceEngineImpl.getGovernanceClassificationDefinition(null, defaultGUID);
+            // exception!
+        });
+
+        // Check we do not call the backend server - should be checked locally
+        verify(restTemplate,never()).getForObject(ArgumentMatchers.anyString(),ArgumentMatchers.any(Class.class),ArgumentMatchers.<Object>any());
+    }
+
+    @Test
+    @DisplayName("getGovernanceClassificationDefinition - empty userid")
+    void testGetGovernanceClassificationDefinitionEmptyUserid() {
+
+        thrown = assertThrows(InvalidParameterException.class, () ->
+        {
+            GovernanceClassificationDefinition result = governanceEngineImpl.getGovernanceClassificationDefinition("", defaultGUID);
+            // exception!
+        });
+        // Check we do not call the backend server - should be checked locally
+        verify(restTemplate,never()).getForObject(ArgumentMatchers.anyString(),ArgumentMatchers.any(Class.class),ArgumentMatchers.<Object>any());
+        // TODO - verify we get the correct error code. Currently hitting error with lambda expression
+        //assertEquals(result.get);
+    }
+
+
+    // -> getGovernanceClassificationDefinitionList
+    @Test
+    @DisplayName("getGovernanceClassificationDefinition - null guid")
+    void testGetGovernanceClassificationDefinitionNullGuid() {
+
+        thrown = assertThrows(InvalidParameterException.class, () ->
+        {
+            GovernanceClassificationDefinition result = governanceEngineImpl.getGovernanceClassificationDefinition(defaultUserId, null);
+            // exception!
+        });
+
+        // Check we do not call the backend server - should be checked locally
+        verify(restTemplate,never()).getForObject(ArgumentMatchers.anyString(),ArgumentMatchers.any(Class.class),ArgumentMatchers.<Object>any());
+    }
+
+    @Test
+    @DisplayName("getGovernanceClassificationDefinition - empty guid")
+    void testGetGovernanceClassificationDefinitionEmptyGuid() {
+
+        thrown = assertThrows(InvalidParameterException.class, () ->
+        {
+            GovernanceClassificationDefinition result = governanceEngineImpl.getGovernanceClassificationDefinition(defaultUserId, "");
+            // exception!
+        });
+        // Check we do not call the backend server - should be checked locally
+        verify(restTemplate,never()).getForObject(ArgumentMatchers.anyString(),ArgumentMatchers.any(Class.class),ArgumentMatchers.<Object>any());
+        // TODO - verify we get the correct error code. Currently hitting error with lambda expression
+        //assertEquals(result.get);
+    }
+
+
+
+
+    // -- Beginning of tests that need mocking
+
+    @Test
+    @DisplayName("getGovernanceClassificationDefinition - client REST exception")
+    void testGetGovernanceClassificationDefinitionClientAPIException() {
+
+
+
+        // Whatever we call this with throw a RTE (simulates a client REST API errr)
+        // ResourceAccessException (spring) is thrown if, for example, the client cannot
+        // connect to the endpoint
+
+        // The argument matchers types need to match exactly - any is used for varargs...
+
+        // For this generic API issue we won't be specific on the parms
+        when (restTemplate.getForObject(ArgumentMatchers.anyString(),ArgumentMatchers.any(Class.class),ArgumentMatchers.<Object>any())).thenThrow(new ResourceAccessException("Test Exception from REST client error"));
+
+        // test we get the exception expected
+        thrown = assertThrows(MetadataServerException.class, () ->
+        {
+
+            GovernanceClassificationDefinition result = governanceEngineImpl.getGovernanceClassificationDefinition(defaultUserId, defaultGUID);
+        });
+
+        // verify we actually used the mocked rest template once
+        verify(restTemplate,times(1)).getForObject(ArgumentMatchers.anyString(),ArgumentMatchers.any(Class.class),ArgumentMatchers.<Object>any());
+        // assert (in addition to exception assertion!)
+
+        // Checking we at least get a sensible GE OMAS Errorcode (we won't go
+        // too specific
+        assertTrue(thrown.getMessage().contains("OMAS-GOVERNANCEENGINE-503"));
+    }
+
+
+
+    // This is an initial test of a server generated exception -- but testing the exact list is more a server testing
+    // concern. However we will check for one other than a client rest api error, as the behaviour could be different in the client layer
+    @Test
+    @DisplayName("getGovernanceClassificationDefinition - server side exception")
+    void testGetGovernanceClassificationDefinitionServerException() {
+
+        // Construct the response we want to emulate in the mocked library
+        //GovernedAssetComponentAPIResponse expectedResponse = new GovernedAssetComponentAPIResponse();
+        //expectedResponse.setRelatedHTTPCode();
+        // For now rely on InvalidArgumentException when this occurs
+        // The argument matchers types need to match exactly - any is used for varargs...
+        GovernanceClassificationDefinitionAPIResponse expectedResponse = new GovernanceClassificationDefinitionAPIResponse();
+        expectedResponse.setRelatedHTTPCode(404);
+        when(restTemplate.getForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(Class.class), ArgumentMatchers.<Object>any())).thenReturn(expectedResponse);
+
+        // test we get the exception expected
+        try {
+            GovernanceClassificationDefinition result = governanceEngineImpl.getGovernanceClassificationDefinition(defaultUserId, defaultGUID);
+        } catch (Exception e) {};
+
+        // verify we actually used the mocked rest template once
+        verify(restTemplate,times(1)).getForObject(ArgumentMatchers.anyString(),ArgumentMatchers.any(Class.class),ArgumentMatchers.<Object>any());
+        // assert (in addition to exception assertion!)
+
+        // Checking we at least get a sensible GE OMAS Errorcode (we won't go
+        // too specific
+        // TODO Need to validate the response here
+    }
+
+
+    // Now check a good return
+    @Test
+    @DisplayName("getGovernedAssetComponent - good result")
+    void testGetGovernanceClassificationDefinitionGoodData() {
+
+        // Construct the response we want to emulate in the mocked library
+        //GovernedAssetComponentAPIResponse expectedResponse = new GovernedAssetComponentAPIResponse();
+        //expectedResponse.setRelatedHTTPCode();
+        // For now rely on InvalidArgumentException when this occurs
+        // The argument matchers types need to match exactly - any is used for varargs
+
+        GovernanceClassificationDefinitionAPIResponse expectedResponse = new GovernanceClassificationDefinitionAPIResponse();
+        expectedResponse.setRelatedHTTPCode(200);
+        when (restTemplate.getForObject(ArgumentMatchers.anyString(),ArgumentMatchers.any(Class.class),ArgumentMatchers.<Object>any())).thenReturn(expectedResponse);
+
+
+        try {
+            GovernanceClassificationDefinition result = governanceEngineImpl.getGovernanceClassificationDefinition(defaultUserId, defaultGUID);
+        } catch (Exception e) {};
+
+        // verify we actually used the mocked rest template once
+        verify(restTemplate,times(1)).getForObject(ArgumentMatchers.anyString(),ArgumentMatchers.any(Class.class),ArgumentMatchers.<Object>any());
+
+        //TODO: Verify the content in the list. tbd.
+        // assert (in addition to exception assertion!)
+
+        // Checking we at least get a sensible GE OMAS Errorcode (we won't go
+        // too specific
+    }
+
+
 }
 
