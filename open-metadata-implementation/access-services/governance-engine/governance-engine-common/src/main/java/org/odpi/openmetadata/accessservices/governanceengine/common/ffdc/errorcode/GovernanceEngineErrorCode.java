@@ -31,7 +31,7 @@ import java.util.Arrays;
 //TODO Update descriptions for error codes with more information
 public enum GovernanceEngineErrorCode {
     SERVER_URL_NOT_SPECIFIED(400, "OMAS-GOVERNANCEENGINE-400-001 ",
-            "The OMAS Server URL is null",
+            "The OMAS Server URL is empty or null",
             "The system is unable to connect to the Access Services Server to retrieve metadata objects.",
             "Ensure a valid OMAS Server URL is passed to the GovernanceEngineClient when it is created."),
     EMPTY_USER_ID(400, "OMAS-GOVERNANCEENGINE-400-003 ",
