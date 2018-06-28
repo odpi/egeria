@@ -12,21 +12,21 @@ import java.util.Arrays;
  *
  * The 5 fields in the enum are:
  * <ul>
- *     <li>HTTP Error Code - for translating between REST and JAVA - Typically the numbers used are:</li>
+ *     <li>HTTP Error Code for translating between REST and JAVA. Typically the numbers used are:</li>
  *     <li><ul>
- *         <li>500 - internal error</li>
- *         <li>501 - not implemented </li>
- *         <li>503 - Service not available</li>
- *         <li>400 - invalid parameters</li>
- *         <li>401 - unauthorized</li>
- *         <li>404 - not found</li>
- *         <li>405 - method not allowed</li>
- *         <li>409 - data conflict errors - eg item already defined</li>
+ *         <li>500: internal error</li>
+ *         <li>501: not implemented </li>
+ *         <li>503: Service not available</li>
+ *         <li>400: invalid parameters</li>
+ *         <li>401: unauthorized</li>
+ *         <li>404: not found</li>
+ *         <li>405: method not allowed</li>
+ *         <li>409: data conflict errors, for example an item is already defined</li>
  *     </ul></li>
- *     <li>Error Message Id - to uniquely identify the message</li>
- *     <li>Error Message Text - includes placeholder to allow additional values to be captured</li>
- *     <li>SystemAction - describes the result of the error</li>
- *     <li>UserAction - describes how a user should correct the error</li>
+ *     <li>Error Message Id: to uniquely identify the message</li>
+ *     <li>Error Message Text: includes placeholder to allow additional values to be captured</li>
+ *     <li>SystemAction: describes the result of the error</li>
+ *     <li>UserAction: describes how a user should correct the error</li>
  * </ul>
  */
 public enum OMRSErrorCode
@@ -561,7 +561,7 @@ public enum OMRSErrorCode
             "Raise a Jira to get this fixed."),
     BAD_CATEGORY_FOR_TYPEDEF_ATTRIBUTE(500, "OMRS-CONTENT-MANAGER-500-004 ",
             "Source {0} has requested type {1} with an incompatible category of {2} from repository content manager.",
-            "There is an error in the Open Metadata Repository Services (OMRS) operation - probably in the source component.",
+            "There is an error in the Open Metadata Repository Services (OMRS) operation, probably in the source component.",
             "Raise a Jira to get this fixed."),
     ARCHIVE_UNAVAILABLE(500, "OMRS-OPEN-METADATA-TYPES-500-001 ",
             "The archive builder failed to initialize.",

@@ -610,10 +610,10 @@ public class OMRSOperationalServices
      * @param connectionConsumer the connection consumer is from the enterprise repository services.  It
      *                           receives connection information about the other members of the cohort(s)
      *                           to enable enterprise access.
-     * @param enterpriseTopicConnector - connector to the enterprise repository services Topic Connector.
+     * @param enterpriseTopicConnector connector to the enterprise repository services Topic Connector.
      *                                 The cohorts replicate their events to the enterprise OMRS Topic so
      *                                 the Open Metadata Access Services (OMASs) can monitor changing metadata.
-     * @param cohortConfigList - list of cohorts to connect to (and the configuration to do it)
+     * @param cohortConfigList list of cohorts to connect to (and the configuration to do it)
      * @return newly created and initialized metadata highway manager.
      */
     private OMRSMetadataHighwayManager  initializeCohorts(String                          localServerName,
@@ -648,7 +648,7 @@ public class OMRSOperationalServices
     /**
      * Shutdown the Open Metadata Repository Services.
      *
-     * @param permanent - boolean flag indicating whether this server permanently shutting down or not
+     * @param permanent boolean flag indicating whether this server permanently shutting down or not
      * @return boolean indicated whether the disconnect was successful.
      */
     public boolean disconnect(boolean   permanent)
@@ -693,7 +693,7 @@ public class OMRSOperationalServices
         }
 
         /*
-         * This will disconnect all repository connectors - both local and remote.
+         * This will disconnect all repository connectors, both local and remote.
          */
         if (enterpriseConnectorManager != null)
         {
@@ -722,7 +722,7 @@ public class OMRSOperationalServices
      * Return the connectors to the AuditLog store using the connection information supplied.  If there is a
      * problem with the connection information that means a connector can not be created, an exception is thrown.
      *
-     * @param auditLogStoreConnections - properties for the audit log stores
+     * @param auditLogStoreConnections properties for the audit log stores
      * @return audit log store connector
      */
     private List<OMRSAuditLogStore>  getAuditLogStores(List<Connection> auditLogStoreConnections)
@@ -748,7 +748,7 @@ public class OMRSOperationalServices
     /**
      * Return a connector to an audit log store.
      *
-     * @param auditLogStoreConnection - connection with the parameters of the audit log store
+     * @param auditLogStoreConnection connection with the parameters of the audit log store
      * @return connector for audit log store.
      */
     private OMRSAuditLogStore getAuditLogStore(Connection   auditLogStoreConnection)
@@ -762,7 +762,7 @@ public class OMRSOperationalServices
         }
         catch (Throwable   error)
         {
-            String methodName = "getAuditLogStore()";
+            String methodName = "getAuditLogStore";
 
             if (log.isDebugEnabled())
             {
@@ -793,8 +793,8 @@ public class OMRSOperationalServices
      * different event/messaging infrastructure.   If there is a problem with the connection information
      * that means a connector can not be created, an exception is thrown.
      *
-     * @param sourceName - name of the user of this topic
-     * @param topicConnection - connection parameters
+     * @param sourceName name of the user of this topic
+     * @param topicConnection connection parameters
      * @return OMRSTopicConnector for managing communications with the event/messaging infrastructure.
      */
     private OMRSTopicConnector getTopicConnector(String     sourceName,
@@ -809,7 +809,7 @@ public class OMRSOperationalServices
         }
         catch (Throwable   error)
         {
-            String methodName = "getTopicConnector()";
+            String methodName = "getTopicConnector";
 
             if (log.isDebugEnabled())
             {
@@ -837,7 +837,7 @@ public class OMRSOperationalServices
      * open metadata archive.  If there is a problem with the connection information
      * that means a connector can not be created, an exception is thrown.
      *
-     * @param openMetadataArchiveStoreConnection - properties used to create the connection
+     * @param openMetadataArchiveStoreConnection properties used to create the connection
      * @return open metadata archive connector
      */
     private OpenMetadataArchiveStoreConnector  getOpenMetadataArchiveStore(Connection   openMetadataArchiveStoreConnection)
@@ -881,7 +881,7 @@ public class OMRSOperationalServices
      * An event mapper is implemented as an OMRSRepositoryEventMapper Connector and it is initialized through the
      * OCF Connector Broker using an OCF connection.
      *
-     * @param localRepositoryEventMapperConnection - connection to the local repository's event mapper.
+     * @param localRepositoryEventMapperConnection connection to the local repository's event mapper.
      * @return local repository's event mapper
      */
     private OMRSRepositoryEventMapperConnector getLocalRepositoryEventMapper(Connection   localRepositoryEventMapperConnection)
@@ -939,8 +939,8 @@ public class OMRSOperationalServices
      * The supplied connection is for the real local connector.  LocalOMRSRepositoryConnector will create the
      * real local connector and ensure all requests it receives are passed to it.
      *
-     * @param connection - Connection properties for the real local connection
-     * @param connectorProvider - connector provider to create the repository connector
+     * @param connection Connection properties for the real local connection
+     * @param connectorProvider connector provider to create the repository connector
      * @return LocalOMRSRepositoryConnector wrapping the real local connector
      */
     private LocalOMRSRepositoryConnector getLocalOMRSConnector(Connection                       connection,

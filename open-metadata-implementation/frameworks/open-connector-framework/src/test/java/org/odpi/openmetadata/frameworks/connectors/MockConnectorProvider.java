@@ -21,6 +21,8 @@ public class MockConnectorProvider extends ConnectorProviderBase
 
     /**
      * The constructor sets up the name of the connector class.
+     *
+     * @param connectorClassName name of class for connector
      */
     public MockConnectorProvider(String     connectorClassName)
     {
@@ -31,7 +33,7 @@ public class MockConnectorProvider extends ConnectorProviderBase
     /**
      * Pass the supplied ConnectorTypeProperties object to the super class.
      *
-     * @param connectorTypeProperties
+     * @param connectorTypeProperties properties from metadata repository
      */
     public void setTestConnectorTypeProperties(ConnectorTypeProperties connectorTypeProperties)
     {

@@ -8,7 +8,7 @@ import java.io.Serializable;
  * instance replication process that is used by the repository connectors within the open metadata repository cluster.
  * <ul>
  *     <li>
- *         NOT_IN_USE - There has been no error detected and so the error code is not in use.
+ *         NOT_IN_USE: There has been no error detected and so the error code is not in use.
  *     </li>
  * </ul>
  */

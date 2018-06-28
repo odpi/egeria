@@ -229,7 +229,7 @@ public class OpenMetadataTypesArchive
 
     /*
      * ========================================
-     * AREA 0 - common types and infrastructure
+     * AREA 0: common types and infrastructure
      */
 
     /**
@@ -639,7 +639,7 @@ public class OpenMetadataTypesArchive
 
         final int    element3Ordinal         = 2;
         final String element3Value           = "Document";
-        final String element3Description     = "The media is a text document - probably rich text.";
+        final String element3Description     = "The media is a text document, probably rich text.";
         final String element3DescriptionGUID = null;
 
         elementDef = archiveHelper.getEnumElementDef(element3Ordinal,
@@ -661,7 +661,7 @@ public class OpenMetadataTypesArchive
 
         final int    element5Ordinal         = 99;
         final String element5Value           = "Other";
-        final String element5Description     = "Another type of media - probably not supported.";
+        final String element5Description     = "Another type of media, probably not supported.";
         final String element5DescriptionGUID = null;
 
         elementDef = archiveHelper.getEnumElementDef(element5Ordinal,
@@ -3247,7 +3247,7 @@ public class OpenMetadataTypesArchive
 
     /*
      * ========================================
-     * AREA 1 - collaboration
+     * AREA 1: collaboration
      */
 
     private void addArea1Types()
@@ -6285,7 +6285,7 @@ public class OpenMetadataTypesArchive
 
     /*
      * ========================================
-     * AREA 2 - connectors and assets
+     * AREA 2: connectors and assets
      */
 
     /**
@@ -9000,7 +9000,7 @@ public class OpenMetadataTypesArchive
 
     /*
      * ========================================
-     * AREA 3 - glossary
+     * AREA 3: glossary
      */
 
     /**
@@ -11762,7 +11762,7 @@ public class OpenMetadataTypesArchive
 
     /*
      * ========================================
-     * AREA 4 - governance
+     * AREA 4: governance
      */
 
     /**
@@ -15489,7 +15489,7 @@ public class OpenMetadataTypesArchive
 
     /*
      * ========================================
-     * AREA 5 - standards
+     * AREA 5: standards
      */
 
 
@@ -15529,7 +15529,7 @@ public class OpenMetadataTypesArchive
 
 
     /**
-     * 0501 Schema Elements - the structure of data is described by a schema.  Schemas are nested structures
+     * 0501 Schema Elements define the structure of data is described by a schema.  Schemas are nested structures
      * of schema elements.
      */
     private void add0501SchemaElements()
@@ -17762,7 +17762,7 @@ public class OpenMetadataTypesArchive
 
     /*
      * ========================================
-     * AREA 6 - metadata discovery
+     * AREA 6: metadata discovery
      */
 
     /**
@@ -18099,7 +18099,7 @@ public class OpenMetadataTypesArchive
 
     /*
      * ========================================
-     * AREA 7 - lineage
+     * AREA 7: lineage
      */
 
     /**

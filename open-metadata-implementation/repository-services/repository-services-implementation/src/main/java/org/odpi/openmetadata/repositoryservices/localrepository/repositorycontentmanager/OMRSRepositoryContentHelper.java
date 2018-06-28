@@ -29,7 +29,7 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * definitions and rules to provide helpers and validators for TypeDefs and instances that are
      * exchanged amongst the open metadata repositories and open metadata access services (OMAS).
      *
-     * @param repositoryContentManager - link to repository content manager.
+     * @param repositoryContentManager link to repository content manager.
      */
     public static synchronized void setRepositoryContentManager(OMRSRepositoryContentManager repositoryContentManager)
     {
@@ -51,7 +51,7 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
     /**
      * Creates a repository helper linked to the supplied repository content manager.
      *
-     * @param repositoryContentManager - object associated with the local repository.
+     * @param repositoryContentManager object associated with the local repository.
      */
     public OMRSRepositoryContentHelper(OMRSRepositoryContentManager repositoryContentManager)
     {
@@ -91,11 +91,11 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 
     /**
      * Return the TypeDef identified by the name supplied by the caller.  This is used in the connectors when
-     * validating the actual types of the repository with the known open metadata types - looking specifically
+     * validating the actual types of the repository with the known open metadata types. It is looking specifically
      * for types of the same name but with different content.
      *
-     * @param sourceName  - source of the request (used for logging)
-     * @param typeDefName - unique name for the TypeDef
+     * @param sourceName  source of the request (used for logging)
+     * @param typeDefName unique name for the TypeDef
      * @return TypeDef object or null if TypeDef is not known.
      */
     public TypeDef getTypeDefByName(String sourceName,
@@ -111,11 +111,11 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 
     /**
      * Return the AttributeTypeDef identified by the name supplied by the caller.  This is used in the connectors when
-     * validating the actual types of the repository with the known open metadata types - looking specifically
+     * validating the actual types of the repository with the known open metadata types.  It is looking specifically
      * for types of the same name but with different content.
      *
-     * @param sourceName           - source of the request (used for logging)
-     * @param attributeTypeDefName - unique name for the TypeDef
+     * @param sourceName           source of the request (used for logging)
+     * @param attributeTypeDefName unique name for the TypeDef
      * @return AttributeTypeDef object or null if AttributeTypeDef is not known.
      */
     public AttributeTypeDef getAttributeTypeDefByName(String sourceName,
@@ -133,8 +133,8 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * Return the TypeDefs identified by the name supplied by the caller.  The TypeDef name may have wild
      * card characters in it which is why the results are returned in a list.
      *
-     * @param sourceName  - source of the request (used for logging)
-     * @param typeDefName - unique name for the TypeDef
+     * @param sourceName  source of the request (used for logging)
+     * @param typeDefName unique name for the TypeDef
      * @return TypeDef object or null if TypeDef is not known.
      */
     public TypeDefGallery getActiveTypesByWildCardName(String sourceName,
@@ -152,10 +152,10 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * Return the TypeDef identified by the guid supplied by the caller.  This call is used when
      * retrieving a type that only the guid is known.
      *
-     * @param sourceName  - source of the request (used for logging)
-     * @param parameterName - name of guid parameter
-     * @param typeDefGUID - unique identifier for the TypeDef
-     * @param methodName - calling method
+     * @param sourceName  source of the request (used for logging)
+     * @param parameterName name of guid parameter
+     * @param typeDefGUID unique identifier for the TypeDef
+     * @param methodName calling method
      * @return TypeDef object
      * @throws TypeErrorException unknown or invalid type
      */
@@ -174,8 +174,8 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * Return the AttributeTypeDef identified by the guid and name supplied by the caller.  This call is used when
      * retrieving a type that only the guid is known.
      *
-     * @param sourceName           - source of the request (used for logging)
-     * @param attributeTypeDefGUID - unique identifier for the AttributeTypeDef
+     * @param sourceName           source of the request (used for logging)
+     * @param attributeTypeDefGUID unique identifier for the AttributeTypeDef
      * @return TypeDef object
      * @throws TypeErrorException unknown or invalid type
      */
@@ -193,12 +193,12 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * Return the TypeDef identified by the guid and name supplied by the caller.  This call is used when
      * retrieving a type that should exist.  For example, retrieving the type of a metadata instance.
      *
-     * @param sourceName  - source of the request (used for logging)
-     * @param guidParameterName - name of guid parameter
-     * @param nameParameterName - name of type name parameter
-     * @param typeDefGUID - unique identifier for the TypeDef
-     * @param typeDefName - unique name for the TypeDef
-     * @param methodName  - calling method
+     * @param sourceName  source of the request (used for logging)
+     * @param guidParameterName name of guid parameter
+     * @param nameParameterName name of type name parameter
+     * @param typeDefGUID unique identifier for the TypeDef
+     * @param typeDefName unique name for the TypeDef
+     * @param methodName  calling method
      * @return TypeDef object
      * @throws TypeErrorException unknown or invalid type
      */
@@ -225,10 +225,10 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * retrieving a type that should exist.  For example, retrieving the type definition of a metadata instance's
      * property.
      *
-     * @param sourceName           - source of the request (used for logging)
-     * @param attributeTypeDefGUID - unique identifier for the AttributeTypeDef
-     * @param attributeTypeDefName - unique name for the AttributeTypeDef
-     * @param methodName - calling method
+     * @param sourceName           source of the request (used for logging)
+     * @param attributeTypeDefGUID unique identifier for the AttributeTypeDef
+     * @param attributeTypeDefName unique name for the AttributeTypeDef
+     * @param methodName calling method
      * @return TypeDef object
      * @throws TypeErrorException unknown or invalid type
      */
@@ -251,11 +251,11 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * the patch is incompatible with the original TypeDef.  For example, if there is a mismatch between
      * the type or version that either represents.
      *
-     * @param sourceName      - source of the TypeDef (used for logging)
-     * @param typeDefPatch    - patch to apply
-     * @param originalTypeDef - typeDef to patch
+     * @param sourceName      source of the TypeDef (used for logging)
+     * @param typeDefPatch    patch to apply
+     * @param originalTypeDef typeDef to patch
      * @return updated TypeDef
-     * @throws PatchErrorException       - the patch is either badly formatted, or does not apply to the supplied TypeDef
+     * @throws PatchErrorException       the patch is either badly formatted, or does not apply to the supplied TypeDef
      * @throws InvalidParameterException the TypeDefPatch is null.
      */
     public TypeDef applyPatch(String       sourceName,
@@ -306,7 +306,7 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
         TypeDefCategory category = originalTypeDef.getCategory();
         if (category == null)
         {
-            // TODO Throw PatchError - base type is messed up
+            // TODO Throw PatchError as base type is messed up
         }
 
         try
@@ -328,11 +328,11 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
         }
         catch (ClassCastException castError)
         {
-            // TODO Throw PatchError - base type is messed up
+            // TODO Throw PatchError as base type is messed up
         }
 
         /*
-         * Now we have a new TypeDef - just need to make the changes.  The Action
+         * Now we have a new TypeDef, just need to make the changes.  The Action
          */
         if (clonedTypeDef != null)
         {
@@ -395,8 +395,8 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
     /**
      * Add the supplied attributes to the properties definition for the cloned typedef.
      *
-     * @param clonedTypeDef     - TypeDef object to update
-     * @param typeDefAttributes - new attributes to add.
+     * @param clonedTypeDef     TypeDef object to update
+     * @param typeDefAttributes new attributes to add.
      * @return updated TypeDef
      * @throws PatchErrorException problem adding attributes
      */
@@ -421,7 +421,7 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
                 {
                     if (propertyDefinitions.contains(newAttribute))
                     {
-                        // TODO Patch error - Duplicate Attribute
+                        // TODO Patch error as Duplicate Attribute
                     }
                     else
                     {
@@ -430,7 +430,7 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
                 }
                 else
                 {
-                    // TODO Patch Error - Invalid Attribute in patch
+                    // TODO Patch Error as Invalid Attribute in patch
                 }
             }
         }
@@ -449,8 +449,8 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 
 
     /**
-     * @param clonedTypeDef  - TypeDef object to update
-     * @param typeDefOptions - new options to add
+     * @param clonedTypeDef  TypeDef object to update
+     * @param typeDefOptions new options to add
      * @return updated TypeDef
      * @throws PatchErrorException problem adding options
      */
@@ -463,8 +463,8 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 
 
     /**
-     * @param clonedTypeDef  - TypeDef object to update
-     * @param typeDefOptions - options to update
+     * @param clonedTypeDef  TypeDef object to update
+     * @param typeDefOptions options to update
      * @return updated TypeDef
      * @throws PatchErrorException problem updating options
      */
@@ -477,8 +477,8 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 
 
     /**
-     * @param clonedTypeDef  - TypeDef object to update
-     * @param typeDefOptions - options to delete
+     * @param clonedTypeDef  TypeDef object to update
+     * @param typeDefOptions options to delete
      * @return updated TypeDef
      * @throws PatchErrorException problem deleting options
      */
@@ -493,8 +493,8 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
     /**
      * Add new mappings to external standards to the TypeDef.
      *
-     * @param clonedTypeDef            - TypeDef object to update
-     * @param externalStandardMappings - new mappings to add
+     * @param clonedTypeDef            TypeDef object to update
+     * @param externalStandardMappings new mappings to add
      * @return updated TypeDef
      * @throws PatchErrorException problem adding mapping(s)
      */
@@ -510,8 +510,8 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
     /**
      * Update the supplied mappings from the TypeDef.
      *
-     * @param clonedTypeDef            - TypeDef object to update
-     * @param externalStandardMappings - mappings to update
+     * @param clonedTypeDef            TypeDef object to update
+     * @param externalStandardMappings mappings to update
      * @return updated TypeDef
      * @throws PatchErrorException problem updating mapping(s)
      */
@@ -527,8 +527,8 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
     /**
      * Delete the supplied mappings from the TypeDef.
      *
-     * @param clonedTypeDef            - TypeDef object to update
-     * @param externalStandardMappings - list of mappings to delete
+     * @param clonedTypeDef            TypeDef object to update
+     * @param externalStandardMappings list of mappings to delete
      * @return updated TypeDef
      * @throws PatchErrorException problem deleting mapping(s)
      */
@@ -543,11 +543,11 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 
     /**
      * Update the descriptions for the TypeDef or any of its attributes.  If the description values are null, they are
-     * not changes in the TypeDef.  This means there is no way to clear a description - just update it for a better one.
+     * not changes in the TypeDef.  This means there is no way to clear a description, just update it for a better one.
      *
-     * @param clonedTypeDef   - TypeDef object to update
-     * @param description     - new description
-     * @param descriptionGUID - new unique identifier for glossary term that provides detailed description of TypeDef
+     * @param clonedTypeDef   TypeDef object to update
+     * @param description     new description
+     * @param descriptionGUID new unique identifier for glossary term that provides detailed description of TypeDef
      * @return updated TypeDef
      * @throws PatchErrorException problem adding new description
      */
@@ -571,7 +571,7 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 
             if (propertiesDefinition == null)
             {
-                // TODO throw patch error - attempting to Patch TypeDef with no properties
+                // TODO throw patch error as attempting to Patch TypeDef with no properties
             }
 
             for (TypeDefAttribute patchTypeDefAttribute : typeDefAttributes)
@@ -616,9 +616,9 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
     /**
      * Return the names of all of the properties in the supplied TypeDef and all of its super-types.
      *
-     * @param sourceName - name of caller.
-     * @param typeDef - TypeDef to query.
-     * @param methodName - calling method.
+     * @param sourceName name of caller.
+     * @param typeDef TypeDef to query.
+     * @param methodName calling method.
      * @return list of property names.
      */
     public List<TypeDefAttribute> getAllPropertiesForTypeDef(String  sourceName,
@@ -635,12 +635,12 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * Return an entity with the header and type information filled out.  The caller only needs to add properties
      * and classifications to complete the set up of the entity.
      *
-     * @param sourceName           - source of the request (used for logging)
-     * @param metadataCollectionId - unique identifier for the home metadata collection
-     * @param provenanceType       - origin of the entity
-     * @param userName             - name of the creator
-     * @param typeName             - name of the type
-     * @return partially filled out entity - needs classifications and properties
+     * @param sourceName           source of the request (used for logging)
+     * @param metadataCollectionId unique identifier for the home metadata collection
+     * @param provenanceType       origin of the entity
+     * @param userName             name of the creator
+     * @param typeName             name of the type
+     * @return partially filled out entity needs classifications and properties
      * @throws TypeErrorException the type name is not recognized.
      */
     public EntityDetail getSkeletonEntity(String sourceName,
@@ -675,11 +675,11 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * Return a classification with the header and type information filled out.  The caller only needs to add properties
      * and possibility origin information if it is propagated to complete the set up of the classification.
      *
-     * @param sourceName             - source of the request (used for logging)
-     * @param userName               - name of the creator
-     * @param classificationTypeName - name of the classification type
-     * @param entityTypeName         - name of the type for the entity that this classification is to be attached to.
-     * @return partially filled out classification - needs properties and possibly origin information
+     * @param sourceName             source of the request (used for logging)
+     * @param userName               name of the creator
+     * @param classificationTypeName name of the classification type
+     * @param entityTypeName         name of the type for the entity that this classification is to be attached to.
+     * @return partially filled out classification needs properties and possibly origin information
      * @throws TypeErrorException the type name is not recognized as a classification type.
      */
     public Classification getSkeletonClassification(String sourceName,
@@ -752,12 +752,12 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * Return a relationship with the header and type information filled out.  The caller only needs to add properties
      * to complete the set up of the relationship.
      *
-     * @param sourceName           - source of the request (used for logging)
-     * @param metadataCollectionId - unique identifier for the home metadata collection
-     * @param provenanceType       - origin type of the relationship
-     * @param userName             - name of the creator
-     * @param typeName             - name of the relationship's type
-     * @return partially filled out relationship - needs properties
+     * @param sourceName           source of the request (used for logging)
+     * @param metadataCollectionId unique identifier for the home metadata collection
+     * @param provenanceType       origin type of the relationship
+     * @param userName             name of the creator
+     * @param typeName             name of the relationship's type
+     * @return partially filled out relationship needs properties
      * @throws TypeErrorException the type name is not recognized as a relationship type.
      */
     public Relationship getSkeletonRelationship(String sourceName,
@@ -795,8 +795,8 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * Return a relationship with the header and type information filled out.  The caller only needs to add properties
      * to complete the set up of the relationship.
      *
-     * @param sourceName     - source of the request (used for logging)
-     * @param typeDefSummary - details of the new type
+     * @param sourceName     source of the request (used for logging)
+     * @param typeDefSummary details of the new type
      * @return instance type
      * @throws TypeErrorException the type name is not recognized as a relationship type.
      */
@@ -817,13 +817,13 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
     /**
      * Return a filled out entity.  It just needs to add the classifications.
      *
-     * @param sourceName           - source of the request (used for logging)
-     * @param metadataCollectionId - unique identifier for the home metadata collection
-     * @param provenanceType       - origin of the entity
-     * @param userName             - name of the creator
-     * @param typeName             - name of the type
-     * @param properties           - properties for the entity
-     * @param classifications      - list of classifications for the entity
+     * @param sourceName           source of the request (used for logging)
+     * @param metadataCollectionId unique identifier for the home metadata collection
+     * @param provenanceType       origin of the entity
+     * @param userName             name of the creator
+     * @param typeName             name of the type
+     * @param properties           properties for the entity
+     * @param classifications      list of classifications for the entity
      * @return an entity that is filled out
      * @throws TypeErrorException the type name is not recognized as an entity type
      */
@@ -849,14 +849,14 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 
 
     /**
-     * Return a filled out relationship - just needs the entity proxies added.
+     * Return a filled out relationship, caller just needs the entity proxies added.
      *
-     * @param sourceName           - source of the request (used for logging)
-     * @param metadataCollectionId - unique identifier for the home metadata collection
-     * @param provenanceType       - origin of the relationship
-     * @param userName             - name of the creator
-     * @param typeName             - name of the type
-     * @param properties           - properties for the relationship
+     * @param sourceName           source of the request (used for logging)
+     * @param metadataCollectionId unique identifier for the home metadata collection
+     * @param provenanceType       origin of the relationship
+     * @param userName             name of the creator
+     * @param typeName             name of the type
+     * @param properties           properties for the relationship
      * @return a relationship that is filled out
      * @throws TypeErrorException the type name is not recognized as a relationship type
      */
@@ -883,12 +883,12 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * Return a classification with the header and type information filled out.  The caller only needs to add properties
      * to complete the set up of the classification.
      *
-     * @param sourceName     - source of the request (used for logging)
-     * @param userName       - name of the creator
-     * @param typeName       - name of the type
-     * @param entityTypeName - name of the type for the entity that this classification is to be attached to.
-     * @param properties     - properties for the classification
-     * @return partially filled out classification - needs properties and possibly origin information
+     * @param sourceName     source of the request (used for logging)
+     * @param userName       name of the creator
+     * @param typeName       name of the type
+     * @param entityTypeName name of the type for the entity that this classification is to be attached to.
+     * @param properties     properties for the classification
+     * @return partially filled out classification needs properties and possibly origin information
      * @throws TypeErrorException the type name is not recognized as a classification type.
      */
     public Classification getNewClassification(String sourceName,
@@ -915,10 +915,10 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
     /**
      * Add a classification to an existing entity.
      *
-     * @param sourceName        - source of the request (used for logging)
-     * @param entity            - entity to update
-     * @param newClassification - classification to update
-     * @param methodName        - calling method
+     * @param sourceName        source of the request (used for logging)
+     * @param entity            entity to update
+     * @param newClassification classification to update
+     * @param methodName        calling method
      * @return updated entity
      */
     public EntityDetail addClassificationToEntity(String sourceName,
@@ -984,10 +984,10 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
     /**
      * Return the names classification from an existing entity.
      *
-     * @param sourceName         - source of the request (used for logging)
-     * @param entity             - entity to update
-     * @param classificationName - classification to retrieve
-     * @param methodName         - calling method
+     * @param sourceName         source of the request (used for logging)
+     * @param entity             entity to update
+     * @param classificationName classification to retrieve
+     * @param methodName         calling method
      * @return located classification
      * @throws ClassificationErrorException the classification is not attached to the entity
      */
@@ -1043,11 +1043,11 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
     /**
      * Replace an existing classification with a new one
      *
-     * @param sourceName        - source of the request (used for logging)
-     * @param userName          - name of the editor
-     * @param entity            - entity to update
-     * @param newClassification - classification to update
-     * @param methodName        - calling method
+     * @param sourceName        source of the request (used for logging)
+     * @param userName          name of the editor
+     * @param entity            entity to update
+     * @param newClassification classification to update
+     * @param methodName        calling method
      * @return updated entity
      */
     public EntityDetail updateClassificationInEntity(String sourceName,
@@ -1087,10 +1087,10 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * Return a oldClassification with the header and type information filled out.  The caller only needs to add properties
      * to complete the set up of the oldClassification.
      *
-     * @param sourceName            - source of the request (used for logging)
-     * @param entity                - entity to update
-     * @param oldClassificationName - classification to remove
-     * @param methodName            - calling method
+     * @param sourceName            source of the request (used for logging)
+     * @param entity                entity to update
+     * @param oldClassificationName classification to remove
+     * @param methodName            calling method
      * @return updated entity
      * @throws ClassificationErrorException the entity was not classified with this classification
      */
@@ -1172,9 +1172,9 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
     /**
      * Merge two sets of instance properties.
      *
-     * @param sourceName         - source of the request (used for logging)
-     * @param existingProperties - current set of properties
-     * @param newProperties      - properties to add/update
+     * @param sourceName         source of the request (used for logging)
+     * @param existingProperties current set of properties
+     * @param newProperties      properties to add/update
      * @return merged properties
      */
     public InstanceProperties mergeInstanceProperties(String             sourceName,
@@ -1211,9 +1211,9 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
     /**
      * Changes the control information to reflect an update in an instance.
      *
-     * @param userId           - user making the change.
-     * @param originalInstance - original instance before the change
-     * @param updatedInstance  - new version of the instance that needs updating
+     * @param userId           user making the change.
+     * @param originalInstance original instance before the change
+     * @param updatedInstance  new version of the instance that needs updating
      * @return updated instance
      */
     public Relationship incrementVersion(String              userId,
@@ -1233,9 +1233,9 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
     /**
      * Changes the control information to reflect an update in an instance.
      *
-     * @param userId           - user making the change.
-     * @param originalInstance - original instance before the change
-     * @param updatedInstance  - new version of the instance that needs updating
+     * @param userId           user making the change.
+     * @param originalInstance original instance before the change
+     * @param updatedInstance  new version of the instance that needs updating
      * @return updated instance
      */
     public Classification incrementVersion(String              userId,
@@ -1255,9 +1255,9 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
     /**
      * Changes the control information to reflect an update in an instance.
      *
-     * @param userId           - user making the change.
-     * @param originalInstance - original instance before the change
-     * @param updatedInstance  - new version of the instance that needs updating
+     * @param userId           user making the change.
+     * @param originalInstance original instance before the change
+     * @param updatedInstance  new version of the instance that needs updating
      * @return updated instance
      */
     public EntityDetail incrementVersion(String              userId,
@@ -1277,10 +1277,10 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
     /**
      * Generate an entity proxy from an entity and its TypeDef.
      *
-     * @param sourceName - source of the request (used for logging)
-     * @param entity     - entity instance
-     * @return - new entity proxy
-     * @throws RepositoryErrorException logic error in the repository - corrupted entity
+     * @param sourceName source of the request (used for logging)
+     * @param entity     entity instance
+     * @return new entity proxy
+     * @throws RepositoryErrorException logic error in the repository corrupted entity
      */
     public EntityProxy getNewEntityProxy(String       sourceName,
                                          EntityDetail entity) throws RepositoryErrorException
@@ -1359,9 +1359,9 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
     /**
      * Return boolean true if entity is linked by this relationship.
      *
-     * @param sourceName   - name of source requesting help
-     * @param entityGUID   - unique identifier of entity
-     * @param relationship - relationship to test
+     * @param sourceName   name of source requesting help
+     * @param entityGUID   unique identifier of entity
+     * @param relationship relationship to test
      * @return boolean indicating whether the entity is mentioned in the relationship
      */
     public boolean relatedEntity(String sourceName,
@@ -1398,10 +1398,10 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * Return the requested property or null if property is not found.  If the property is not
      * a string property then a logic exception is thrown
      *
-     * @param sourceName - source of call
-     * @param propertyName - name of requested property
-     * @param properties - properties from the instance.
-     * @param methodName - method of caller
+     * @param sourceName source of call
+     * @param propertyName name of requested property
+     * @param properties properties from the instance.
+     * @param methodName method of caller
      * @return string property value or null
      */
     public String getStringProperty(String             sourceName,
@@ -1441,10 +1441,10 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * Return the requested property or null if property is not found.  If the property is not
      * a string property then a logic exception is thrown
      *
-     * @param sourceName - source of call
-     * @param propertyName - name of requested property
-     * @param properties - properties from the instance.
-     * @param methodName - method of caller
+     * @param sourceName source of call
+     * @param propertyName name of requested property
+     * @param properties properties from the instance.
+     * @param methodName method of caller
      * @return string property value or null
      */
     public InstanceProperties getMapProperty(String             sourceName,
@@ -1481,10 +1481,10 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * Return the requested property or 0 if property is not found.  If the property is not
      * a int property then a logic exception is thrown
      *
-     * @param sourceName - source of call
-     * @param propertyName - name of requested property
-     * @param properties - properties from the instance.
-     * @param methodName - method of caller
+     * @param sourceName source of call
+     * @param propertyName name of requested property
+     * @param properties properties from the instance.
+     * @param methodName method of caller
      * @return string property value or null
      */
     public int    getIntProperty(String             sourceName,
@@ -1524,10 +1524,10 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * Return the requested property or false if property is not found.  If the property is not
      * a boolean property then a logic exception is thrown
      *
-     * @param sourceName - source of call
-     * @param propertyName - name of requested property
-     * @param properties - properties from the instance.
-     * @param methodName - method of caller
+     * @param sourceName source of call
+     * @param propertyName name of requested property
+     * @param properties properties from the instance.
+     * @param methodName method of caller
      * @return string property value or null
      */
     public boolean getBooleanProperty(String             sourceName,
@@ -1567,11 +1567,11 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * Add the supplied property to an instance properties object.  If the instance property object
      * supplied is null, a new instance properties object is created.
      *
-     * @param sourceName - name of caller
-     * @param properties - properties object to add property to - may be null.
-     * @param propertyName - name of property
-     * @param propertyValue - value of property
-     * @param methodName - calling method name
+     * @param sourceName name of caller
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param propertyValue value of property
+     * @param methodName calling method name
      * @return instance properties object.
      */
     public InstanceProperties addStringPropertyToInstance(String             sourceName,
@@ -1607,11 +1607,11 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * Add the supplied property to an instance properties object.  If the instance property object
      * supplied is null, a new instance properties object is created.
      *
-     * @param sourceName - name of caller
-     * @param properties - properties object to add property to - may be null.
-     * @param propertyName - name of property
-     * @param propertyValue - value of property
-     * @param methodName - calling method name
+     * @param sourceName name of caller
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param propertyValue value of property
+     * @param methodName calling method name
      * @return instance properties object.
      */
     public InstanceProperties addIntPropertyToInstance(String             sourceName,
@@ -1647,11 +1647,11 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * Add the supplied property to an instance properties object.  If the instance property object
      * supplied is null, a new instance properties object is created.
      *
-     * @param sourceName - name of caller
-     * @param properties - properties object to add property to - may be null.
-     * @param propertyName - name of property
-     * @param propertyValue - value of property
-     * @param methodName - calling method name
+     * @param sourceName name of caller
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param propertyValue value of property
+     * @param methodName calling method name
      * @return instance properties object.
      */
     public InstanceProperties addBooleanPropertyToInstance(String             sourceName,
@@ -1687,13 +1687,13 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * Add the supplied property to an instance properties object.  If the instance property object
      * supplied is null, a new instance properties object is created.
      *
-     * @param sourceName - name of caller
-     * @param properties - properties object to add property to - may be null.
-     * @param propertyName - name of property
-     * @param ordinal - numeric value of property
-     * @param symbolicName - String value of property
-     * @param description - String description of property value
-     * @param methodName - calling method name
+     * @param sourceName name of caller
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param ordinal numeric value of property
+     * @param symbolicName String value of property
+     * @param description String description of property value
+     * @param methodName calling method name
      * @return instance properties object.
      */
     public InstanceProperties addEnumPropertyToInstance(String             sourceName,
@@ -1732,9 +1732,9 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * Throws a logic error exception when the repository helper is called with invalid parameters.
      * Normally this means the repository helper methods have been called in the wrong order.
      *
-     * @param sourceName - name of the calling repository or service
-     * @param originatingMethodName - method that called the repository validator
-     * @param localMethodName - local method that deleted the error
+     * @param sourceName name of the calling repository or service
+     * @param originatingMethodName method that called the repository validator
+     * @param localMethodName local method that deleted the error
      */
     private void throwHelperLogicError(String     sourceName,
                                        String     originatingMethodName,
@@ -1759,7 +1759,7 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * This would occur if if is being used in an environment where the OMRS has not been properly
      * initialized.
      *
-     * @param methodName - name of calling method.
+     * @param methodName name of calling method.
      */
     private void validateRepositoryContentManager(String   methodName)
     {

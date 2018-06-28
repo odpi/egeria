@@ -36,7 +36,7 @@ public class MemberRegistration implements Serializable
 
 
     /**
-     * Default constructor - initialize registration information to null.
+     * Default constructor initializes registration information to null.
      */
     public MemberRegistration()
     {
@@ -47,7 +47,7 @@ public class MemberRegistration implements Serializable
 
 
     /**
-     * Copy/clone constructor - copy registration information from the template.
+     * Copy/clone constructor copies registration information from the template.
      *
      * @param template MemberRegistration properties to copy
      */

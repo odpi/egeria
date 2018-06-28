@@ -18,7 +18,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class EntityDef extends TypeDef
 {
     /**
-     * Minimal constructor - initializes the superclass as an Entity
+     * Minimal constructor initializes the superclass as an Entity
      */
     public EntityDef()
     {
@@ -46,7 +46,7 @@ public class EntityDef extends TypeDef
 
 
     /**
-     * Copy/clone constructor - copies the values from the supplied template.
+     * Copy/clone constructor copies the values from the supplied template.
      *
      * @param template EntityDef
      */

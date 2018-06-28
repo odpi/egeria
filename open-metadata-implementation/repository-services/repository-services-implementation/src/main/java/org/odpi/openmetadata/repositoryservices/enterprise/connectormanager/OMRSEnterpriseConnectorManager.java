@@ -78,11 +78,11 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
     /**
      * Constructor for the enterprise connector manager.
      *
-     * @param enterpriseAccessEnabled - boolean indicating whether the connector consumers should be
+     * @param enterpriseAccessEnabled boolean indicating whether the connector consumers should be
      *                                 informed of remote connectors.  If enterpriseAccessEnabled = true
      *                                 the connector consumers will be informed of remote connectors; otherwise
      *                                 they will not.
-     * @param maxPageSize - the maximum number of elements that can be requested on a page.
+     * @param maxPageSize the maximum number of elements that can be requested on a page.
      */
     public OMRSEnterpriseConnectorManager(boolean enterpriseAccessEnabled,
                                           int     maxPageSize)
@@ -111,8 +111,8 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
     /**
      * Pass details of the connection for the local repository to the connection consumer.
      *
-     * @param localMetadataCollectionId - Unique identifier for the metadata collection
-     * @param localRepositoryConnector - connector to the local repository
+     * @param localMetadataCollectionId Unique identifier for the metadata collection
+     * @param localRepositoryConnector connector to the local repository
      */
     public void setLocalConnector(String                     localMetadataCollectionId,
                                   OMRSRepositoryConnector    localRepositoryConnector)
@@ -139,12 +139,12 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
      * Pass details of the connection for one of the remote repositories registered in a connected
      * open metadata repository cohort.
      *
-     * @param cohortName - name of the cohort adding the remote connection.
-     * @param remoteServerName - name of the remote server for this connection.
-     * @param remoteServerType - type of the remote server.
-     * @param owningOrganizationName - name of the organization the owns the remote server.
-     * @param metadataCollectionId - Unique identifier for the metadata collection
-     * @param remoteConnection - Connection object providing properties necessary to create an
+     * @param cohortName name of the cohort adding the remote connection.
+     * @param remoteServerName name of the remote server for this connection.
+     * @param remoteServerType type of the remote server.
+     * @param owningOrganizationName name of the organization the owns the remote server.
+     * @param metadataCollectionId Unique identifier for the metadata collection
+     * @param remoteConnection Connection object providing properties necessary to create an
      *                         OMRSRepositoryConnector for the remote repository.
      * @throws ConnectionCheckedException there are invalid properties in the Connection
      * @throws ConnectorCheckedException there is a problem initializing the Connector
@@ -242,8 +242,8 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
      * Since any repository may be a member of multiple cohorts, we only remove it from the list if it is
      * the last connector for this repository to be removed.
      *
-     * @param cohortName - name of the cohort removing the remote connection.
-     * @param metadataCollectionId - Unique identifier for the metadata collection.
+     * @param cohortName name of the cohort removing the remote connection.
+     * @param metadataCollectionId Unique identifier for the metadata collection.
      */
     public synchronized void removeRemoteConnection(String         cohortName,
                                                     String         metadataCollectionId)
@@ -262,7 +262,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
             if (registeredRemoteConnector.getMetadataCollectionId().equals(metadataCollectionId))
             {
                 /*
-                 * Found a match for this repository - if the cohort matches too, remove it.  If the
+                 * Found a match for this repository. If the cohort matches too, remove it.  If the
                  * cohort does not match then increment the count of registrations that still exist.
                  */
                 if (registeredRemoteConnector.getSource().equals(cohortName))
@@ -295,7 +295,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
      * Care must be taken to only remove the remote connectors from the registered connector consumers if the
      * remote connection is only registered with this cohort.
      *
-     * @param cohortName - name of the cohort
+     * @param cohortName name of the cohort
      */
     public synchronized void removeCohort(String   cohortName)
     {
@@ -334,7 +334,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
      *
      * @param connectorConsumer OMRSConnectorConsumer interested in details of the connectors to
      *                           all repositories registered in the metadata repository cluster.
-     * @return String identifier for the connectorConsumer - used for the unregister call.
+     * @return String identifier for the connectorConsumer used for the unregister call.
      */
     public synchronized String registerConnectorConsumer(OMRSConnectorConsumer    connectorConsumer)
     {
@@ -410,11 +410,11 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
      * may have come from a third party.   Thus the official OCF protocol is followed to create the connector.
      * Any failure to create the connector is returned as an exception.
      *
-     * @param connection - Connection properties
-     * @param serverName - name of the server for this connection.
-     * @param serverType - type of the remote server.
-     * @param owningOrganizationName - name of the organization the owns the remote server.
-     * @param metadataCollectionId - metadata collection Id for this repository
+     * @param connection Connection properties
+     * @param serverName name of the server for this connection.
+     * @param serverType type of the remote server.
+     * @param owningOrganizationName name of the organization the owns the remote server.
+     * @param metadataCollectionId metadata collection Id for this repository
      * @return OMRSRepositoryConnector for the connection
      */
     private OMRSRepositoryConnector getOMRSRepositoryConnector(Connection connection,
@@ -484,12 +484,12 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
         /**
          * Constructor to set up registered connector.
          *
-         * @param source - name of the source of the connector.
-         * @param serverName - name of the server for this connection.
-         * @param serverType - type of the remote server.
-         * @param owningOrganizationName - name of the organization the owns the remote server.
-         * @param metadataCollectionId - unique identifier for the metadata collection that this connector accesses.
-         * @param connection - connection used to generate the connector
+         * @param source name of the source of the connector.
+         * @param serverName name of the server for this connection.
+         * @param serverType type of the remote server.
+         * @param owningOrganizationName name of the organization the owns the remote server.
+         * @param metadataCollectionId unique identifier for the metadata collection that this connector accesses.
+         * @param connection connection used to generate the connector
          */
         public RegisteredConnector(String     source,
                                    String     serverName,
@@ -586,8 +586,8 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
         /**
          * Constructor when the identifier of the connector consumer is known.
          *
-         * @param connectorConsumerId - unique identifier of the connection consumer
-         * @param connectorConsumer - connector consumer itself
+         * @param connectorConsumerId unique identifier of the connection consumer
+         * @param connectorConsumer connector consumer itself
          */
         public RegisteredConnectorConsumer(String connectorConsumerId, OMRSConnectorConsumer connectorConsumer)
         {
@@ -599,7 +599,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
         /**
          * Constructor when the identifier for the connector consumer needs to be allocated.
          *
-         * @param connectorConsumer - connector consumer itself
+         * @param connectorConsumer connector consumer itself
          */
         public RegisteredConnectorConsumer(OMRSConnectorConsumer connectorConsumer)
         {
@@ -622,7 +622,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
         /**
          * Return the registered connector consumer.
          *
-         * @return - connector consumer object ref
+         * @return connector consumer object ref
          */
         public OMRSConnectorConsumer getConnectorConsumer()
         {

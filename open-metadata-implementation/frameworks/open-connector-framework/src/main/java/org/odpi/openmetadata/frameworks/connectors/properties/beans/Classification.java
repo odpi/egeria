@@ -35,6 +35,8 @@ public class Classification extends PropertyBase
 
     /**
      * Copy/clone constructor
+     *
+     * @param templateClassification template to copy
      */
     public Classification(Classification    templateClassification)
     {

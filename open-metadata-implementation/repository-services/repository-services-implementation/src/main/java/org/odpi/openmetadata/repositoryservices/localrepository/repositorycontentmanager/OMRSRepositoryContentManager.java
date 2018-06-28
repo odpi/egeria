@@ -30,13 +30,13 @@ import java.util.*;
  * to each of these components that is specialized to their needs.
  * <ul>
  *     <li>
- *         OMRSTypeDefEventProcessor - processes inbound events from remote members of the open metadata
+ *         OMRSTypeDefEventProcessor: processes inbound events from remote members of the open metadata
  *         repository cohorts that the local repository is connected to.  These incoming TypeDef events need to
  *         be validated against the types used locally and either saved or discarded depending on the exchange rule
  *         setting.
  *     </li>
  *     <li>
- *         OMRSTypeDefManager - provides maintenance methods for managing the TypeDefs in the local cache.
+ *         OMRSTypeDefManager: provides maintenance methods for managing the TypeDefs in the local cache.
  *     </li>
  * </ul>
  */
@@ -79,10 +79,10 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
     /**
      * Saves all of the information necessary to process incoming TypeDef events.
      *
-     * @param localRepositoryConnector - connector to the local repository
-     * @param realLocalConnector - connector to the real local repository - used for processing TypeDef events
-     * @param saveExchangeRule - rule that determines which events to process.
-     * @param outboundRepositoryEventManager - event manager to call for outbound events - used to send out reports
+     * @param localRepositoryConnector connector to the local repository
+     * @param realLocalConnector connector to the real local repository used for processing TypeDef events
+     * @param saveExchangeRule rule that determines which events to process.
+     * @param outboundRepositoryEventManager event manager to call for outbound events used to send out reports
      *                                       of conflicting TypeDefs
      */
     public void setupEventProcessor(LocalOMRSRepositoryConnector      localRepositoryConnector,
@@ -101,7 +101,7 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
      * Save the unique identifier of the open metadata archive.  This is stored in the origin property of
      * all of the open metadata types.  It is needed to support the isOpenType() method.
      *
-     * @param openMetadataTypesGUID - unique identifier for the open metadata type's archive
+     * @param openMetadataTypesGUID unique identifier for the open metadata type's archive
      */
     public void setOpenMetadataTypesOriginGUID(String openMetadataTypesGUID)
     {
@@ -118,8 +118,8 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
      * Cache a definition of a new TypeDef.  This method assumes the TypeDef has been successfully added to the
      * local repository already and all that is needed is to maintain the cached list of types
      *
-     * @param sourceName - source of the request (used for logging)
-     * @param newTypeDef - TypeDef structure describing the new TypeDef.
+     * @param sourceName source of the request (used for logging)
+     * @param newTypeDef TypeDef structure describing the new TypeDef.
      */
     public void addTypeDef(String  sourceName, TypeDef      newTypeDef)
     {
@@ -159,8 +159,8 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
     /**
      * Cache a definition of a new AttributeTypeDef.
      *
-     * @param sourceName - source of the request (used for logging)
-     * @param newAttributeTypeDef - AttributeTypeDef structure describing the new TypeDef.
+     * @param sourceName source of the request (used for logging)
+     * @param newAttributeTypeDef AttributeTypeDef structure describing the new TypeDef.
      */
     public void addAttributeTypeDef(String  sourceName, AttributeTypeDef newAttributeTypeDef)
     {
@@ -171,8 +171,8 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
     /**
      * Cache a definition of a new AttributeTypeDef.
      *
-     * @param sourceName - source of the request (used for logging)
-     * @param newAttributeTypeDef - AttributeTypeDef structure describing the new TypeDef.
+     * @param sourceName source of the request (used for logging)
+     * @param newAttributeTypeDef AttributeTypeDef structure describing the new TypeDef.
      * @param isLocallySupported indicates whether the TypeDef is supported by the local repository.
      */
     private void cacheAttributeTypeDef(String           sourceName,
@@ -206,8 +206,8 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
      * Update one or more properties of a cached TypeDef.  This method assumes the TypeDef has been successfully
      * updated in the local repository already and all that is needed is to maintain the cached list of types
      *
-     * @param sourceName - source of the request (used for logging)
-     * @param typeDef - TypeDef structure.
+     * @param sourceName source of the request (used for logging)
+     * @param typeDef TypeDef structure.
      */
     public void updateTypeDef(String  sourceName, TypeDef   typeDef)
     {
@@ -233,9 +233,9 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
     /**
      * Delete a cached TypeDef.
      *
-     * @param sourceName - source of the request (used for logging)
-     * @param obsoleteTypeDefGUID - String unique identifier for the TypeDef.
-     * @param obsoleteTypeDefName - String unique name for the TypeDef.
+     * @param sourceName source of the request (used for logging)
+     * @param obsoleteTypeDefGUID String unique identifier for the TypeDef.
+     * @param obsoleteTypeDefName String unique name for the TypeDef.
      */
     public void deleteTypeDef(String    sourceName,
                               String    obsoleteTypeDefGUID,
@@ -263,9 +263,9 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
     /**
      * Delete a cached AttributeTypeDef.
      *
-     * @param sourceName - source of the request (used for logging)
-     * @param obsoleteAttributeTypeDefGUID - String unique identifier for the AttributeTypeDef.
-     * @param obsoleteAttributeTypeDefName - String unique name for the AttributeTypeDef.
+     * @param sourceName source of the request (used for logging)
+     * @param obsoleteAttributeTypeDefGUID String unique identifier for the AttributeTypeDef.
+     * @param obsoleteAttributeTypeDefName String unique name for the AttributeTypeDef.
      */
     public void deleteAttributeTypeDef(String    sourceName,
                                        String    obsoleteAttributeTypeDefGUID,
@@ -293,10 +293,10 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
     /**
      * Change the identifiers for a TypeDef.
      *
-     * @param sourceName - source of the request (used for logging).
-     * @param originalTypeDefGUID - TypeDef's original unique identifier.
-     * @param originalTypeDefName - TypeDef's original unique name.
-     * @param newTypeDef - updated TypeDef with new identifiers.
+     * @param sourceName source of the request (used for logging).
+     * @param originalTypeDefGUID TypeDef's original unique identifier.
+     * @param originalTypeDefName TypeDef's original unique name.
+     * @param newTypeDef updated TypeDef with new identifiers.
      */
     public void reIdentifyTypeDef(String   sourceName,
                                   String   originalTypeDefGUID,
@@ -311,10 +311,10 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
     /**
      * Change the identifiers for an AttributeTypeDef.
      *
-     * @param sourceName - source of the request (used for logging).
-     * @param originalAttributeTypeDefGUID - AttributeTypeDef's original unique identifier.
-     * @param originalAttributeTypeDefName - AttributeTypeDef's original unique name.
-     * @param newAttributeTypeDef - updated AttributeTypeDef with new identifiers
+     * @param sourceName source of the request (used for logging).
+     * @param originalAttributeTypeDefGUID AttributeTypeDef's original unique identifier.
+     * @param originalAttributeTypeDefName AttributeTypeDef's original unique name.
+     * @param newAttributeTypeDef updated AttributeTypeDef with new identifiers
      */
     public void reIdentifyAttributeTypeDef(String            sourceName,
                                            String            originalAttributeTypeDefGUID,
@@ -329,8 +329,8 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
     /**
      * Return the list of property names defined for this TypeDef.
      *
-     * @param sourceName - source of the request (used for logging)
-     * @param typeDef - type definition to work with.
+     * @param sourceName source of the request (used for logging)
+     * @param typeDef type definition to work with.
      * @return list of String property names
      * @throws TypeErrorException there is an issue with the TypeDef.
      */
@@ -421,10 +421,10 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
      * Return identifiers for the TypeDef that matches the supplied type name.  If the type name is not recognized,
      * null is returned.
      *
-     * @param sourceName - source of the request (used for logging)
-     * @param category - category of the instance type required.
-     * @param typeName - String type name.
-     * @param methodName - name of calling method.
+     * @param sourceName source of the request (used for logging)
+     * @param category category of the instance type required.
+     * @param typeName String type name.
+     * @param methodName name of calling method.
      * @return InstanceType object containing TypeDef properties such as unique identifier (guid),
      *                             typeDef name and version name
      * @throws TypeErrorException the type name is not a recognized type or is of the wrong category or there is
@@ -520,7 +520,7 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
                     else
                     {
                         /*
-                         * Super type is invalid - corrupted cache
+                         * Super type is invalid, suggests a corrupted cache
                          */
                         log.error("Corrupted TypeDef cache");
                         throwContentManagerLogicError(sourceName, methodName, thisMethodName);
@@ -570,10 +570,10 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
     /**
      * Return a boolean indicating that the type name matches the category.
      *
-     * @param sourceName - source of the request (used for logging)
-     * @param category - TypeDefCategory enum value to test
-     * @param typeName - type name to test
-     * @return - boolean flag indicating that the type name is of the specified category
+     * @param sourceName source of the request (used for logging)
+     * @param category TypeDefCategory enum value to test
+     * @param typeName type name to test
+     * @return boolean flag indicating that the type name is of the specified category
      * @throws TypeErrorException the type name is not a recognized type or there is
      *                              a problem with the cached TypeDef.
      */
@@ -636,10 +636,10 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
      * Return boolean indicating if a classification type can be applied to a specified entity.  This
      * uses the list of valid entity types located in the ClassificationDef.
      *
-     * @param sourceName - source of the request (used for logging)
-     * @param classificationTypeName - name of the classification's type (ClassificationDef)
-     * @param entityTypeName - name of the entity's type (EntityDef)
-     * @param methodName - name of calling method.
+     * @param sourceName source of the request (used for logging)
+     * @param classificationTypeName name of the classification's type (ClassificationDef)
+     * @param entityTypeName name of the entity's type (EntityDef)
+     * @param methodName name of calling method.
      * @return boolean indicating if the classification is valid for the entity.
      */
     public boolean    isValidClassificationForEntity(String  sourceName,
@@ -714,10 +714,10 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
     /**
      * Return the requested type.
      *
-     * @param sourceName - source of the request (used for logging)
-     * @param typeName - name of the type
-     * @param thisMethodName - name of calling method.
-     * @param originalMethodName - name of original calling method.
+     * @param sourceName source of the request (used for logging)
+     * @param typeName name of the type
+     * @param thisMethodName name of calling method.
+     * @param originalMethodName name of original calling method.
      * @return list of InstanceStatus enums
      * @throws TypeErrorException the type name is not recognized.
      */
@@ -754,9 +754,9 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
     /**
      * Return the list of valid InstanceStatus states that instances of this type can handle.
      *
-     * @param sourceName - source of the request (used for logging)
-     * @param typeName - name of the type
-     * @param methodName - name of calling method.
+     * @param sourceName source of the request (used for logging)
+     * @param typeName name of the type
+     * @param methodName name of calling method.
      * @return list of InstanceStatus enums
      * @throws TypeErrorException the type name is not recognized.
      */
@@ -775,9 +775,9 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
     /**
      * Return the initial status value to use for an instance of the supplied type.
      *
-     * @param sourceName - source of the request (used for logging)
-     * @param typeName - name of the type to extract the initial status from.
-     * @param methodName - calling method
+     * @param sourceName source of the request (used for logging)
+     * @param typeName name of the type to extract the initial status from.
+     * @param methodName calling method
      * @return InstanceStatus enum
      * @throws TypeErrorException the type name is not recognized.
      */
@@ -796,8 +796,8 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
     /**
      * Return the URL string to use for direct access to the metadata instance.
      *
-     * @param sourceName - source of the request (used for logging)
-     * @param guid - unique identifier for the instance.
+     * @param sourceName source of the request (used for logging)
+     * @param guid unique identifier for the instance.
      * @return String URL with placeholder for variables such as userId.
      */
     public String getEntityURL(String  sourceName, String guid)
@@ -809,8 +809,8 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
     /**
      * Return the URL string to use for direct access to the metadata instance.
      *
-     * @param sourceName - source of the request (used for logging)
-     * @param guid - unique identifier for the instance.
+     * @param sourceName source of the request (used for logging)
+     * @param guid unique identifier for the instance.
      * @return String URL with placeholder for variables such as userId.
      */
     public String getRelationshipURL(String  sourceName, String guid)
@@ -867,11 +867,11 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
 
     /**
      * Return the TypeDef identified by the name supplied by the caller.  This is used in the connectors when
-     * validating the actual types of the repository with the known open metadata types - looking specifically
+     * validating the actual types of the repository with the known open metadata types.  It is looking specifically
      * for types of the same name but with different content.
      *
-     * @param sourceName - source of the request (used for logging)
-     * @param typeDefName - unique name for the TypeDef
+     * @param sourceName source of the request (used for logging)
+     * @param typeDefName unique name for the TypeDef
      * @return TypeDef object or null if TypeDef is not known.
      */
     public TypeDef  getTypeDefByName (String    sourceName,
@@ -883,11 +883,11 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
 
     /**
      * Return the AttributeTypeDef identified by the name supplied by the caller.  This is used in the connectors when
-     * validating the actual types of the repository with the known open metadata types - looking specifically
+     * validating the actual types of the repository with the known open metadata types.  It is looking specifically
      * for types of the same name but with different content.
      *
-     * @param sourceName - source of the request (used for logging)
-     * @param attributeTypeDefName - unique name for the TypeDef
+     * @param sourceName source of the request (used for logging)
+     * @param attributeTypeDefName unique name for the TypeDef
      * @return AttributeTypeDef object or null if AttributeTypeDef is not known.
      */
     public AttributeTypeDef getAttributeTypeDefByName (String    sourceName,
@@ -901,8 +901,8 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
      * Return the TypeDefs identified by the name supplied by the caller.  The TypeDef name may have wild
      * card characters in it which is why the results are returned in a list.
      *
-     * @param sourceName - source of the request (used for logging)
-     * @param typeDefName - unique name for the TypeDef
+     * @param sourceName source of the request (used for logging)
+     * @param typeDefName unique name for the TypeDef
      * @return TypeDef object or null if TypeDef is not known.
      */
     public TypeDefGallery getActiveTypesByWildCardName (String    sourceName,
@@ -972,10 +972,10 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
      * Return the TypeDef identified by the guid supplied by the caller.  This call is used when
      * retrieving a type that only the guid is known.
      *
-     * @param sourceName - source of the request (used for logging)
-     * @param guidParameterName - name of parameter that supplied the GUID
-     * @param typeDefGUID - unique identifier for the TypeDef
-     * @param methodName - calling method
+     * @param sourceName source of the request (used for logging)
+     * @param guidParameterName name of parameter that supplied the GUID
+     * @param typeDefGUID unique identifier for the TypeDef
+     * @param methodName calling method
      * @return TypeDef object
      * @throws TypeErrorException unknown or invalid type
      */
@@ -1018,9 +1018,9 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
      * Return the AttributeTypeDef identified by the guid and name supplied by the caller.  This call is used when
      * retrieving a type that only the guid is known.
      *
-     * @param sourceName - source of the request (used for logging)
-     * @param attributeTypeDefGUID - unique identifier for the AttributeTypeDef
-     * @param methodName - calling method
+     * @param sourceName source of the request (used for logging)
+     * @param attributeTypeDefGUID unique identifier for the AttributeTypeDef
+     * @param methodName calling method
      * @return TypeDef object
      * @throws TypeErrorException unknown or invalid type
      */
@@ -1058,12 +1058,12 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
      * Return the TypeDef identified by the guid and name supplied by the caller.  This call is used when
      * retrieving a type that should exist.  For example, retrieving the type of a metadata instance.
      *
-     * @param sourceName - source of the request (used for logging)
-     * @param guidParameterName - name of parameter that supplied the GUID
-     * @param nameParameterName - name of parameter that supplied the name
-     * @param typeDefGUID - unique identifier for the TypeDef
-     * @param typeDefName - unique name for the TypeDef
-     * @param methodName - calling method
+     * @param sourceName source of the request (used for logging)
+     * @param guidParameterName name of parameter that supplied the GUID
+     * @param nameParameterName name of parameter that supplied the name
+     * @param typeDefGUID unique identifier for the TypeDef
+     * @param typeDefName unique name for the TypeDef
+     * @param methodName calling method
      * @return TypeDef object or null if the
      * @throws TypeErrorException invalid type
      */
@@ -1098,10 +1098,10 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
      * retrieving a type that should exist.  For example, retrieving the type definition of a metadata instance's
      * property.
      *
-     * @param sourceName - source of the request (used for logging)
-     * @param attributeTypeDefGUID - unique identifier for the AttributeTypeDef
-     * @param attributeTypeDefName - unique name for the AttributeTypeDef
-     * @param methodName - calling method
+     * @param sourceName source of the request (used for logging)
+     * @param attributeTypeDefGUID unique identifier for the AttributeTypeDef
+     * @param attributeTypeDefName unique name for the AttributeTypeDef
+     * @param methodName calling method
      * @return TypeDef object
      * @throws TypeErrorException unknown or invalid type
      */
@@ -1132,9 +1132,9 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
     /**
      * Return the names of all of the properties in the supplied TypeDef and all of its super-types.
      *
-     * @param sourceName - name of caller.
-     * @param typeDef - TypeDef to query.
-     * @param methodName - calling method.
+     * @param sourceName name of caller.
+     * @param typeDef TypeDef to query.
+     * @param methodName calling method.
      * @return list of property definitions.
      */
     public List<TypeDefAttribute> getAllPropertiesForTypeDef(String  sourceName,
@@ -1188,9 +1188,9 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
      * A valid TypeDef is one that matches name, GUID and version to the full list of TypeDefs.
      * If a new TypeDef is present, it is added to the enterprise list.
      *
-     * @param sourceName - source of the TypeDef (used for logging)
-     * @param typeDefs - list of TypeDefs.
-     * @param methodName - name of calling method
+     * @param sourceName source of the TypeDef (used for logging)
+     * @param typeDefs list of TypeDefs.
+     * @param methodName name of calling method
      * @throws RepositoryErrorException a conflicting or invalid TypeDef has been returned
      */
     public void   validateEnterpriseTypeDefs(String        sourceName,
@@ -1229,9 +1229,9 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
      * A valid TypeDef is one that matches name, GUID and version to the full list of TypeDefs.
      * If a new TypeDef is present, it is added to the enterprise list.
      *
-     * @param sourceName - source of the TypeDef (used for logging)
-     * @param attributeTypeDefs - list of AttributeTypeDefs.
-     * @param methodName - name of calling method
+     * @param sourceName source of the TypeDef (used for logging)
+     * @param attributeTypeDefs list of AttributeTypeDefs.
+     * @param methodName name of calling method
      * @throws RepositoryErrorException a conflicting or invalid AttributeTypeDef has been returned
      */
     public void   validateEnterpriseAttributeTypeDefs(String                 sourceName,
@@ -1266,9 +1266,9 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
     /**
      * Return boolean indicating whether the TypeDef is one of the standard open metadata types.
      *
-     * @param sourceName - source of the TypeDef (used for logging)
-     * @param typeGUID - unique identifier of the type
-     * @param typeName - unique name of the type
+     * @param sourceName source of the TypeDef (used for logging)
+     * @param typeGUID unique identifier of the type
+     * @param typeName unique name of the type
      * @return boolean result
      */
     public boolean isOpenType(String sourceName, String typeGUID, String typeName)
@@ -1303,8 +1303,8 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
     /**
      * Return boolean indicating whether the TypeDef is one of the standard open metadata types.
      *
-     * @param sourceName - source of the request (used for logging)
-     * @param typeGUID - unique identifier of the type
+     * @param sourceName source of the request (used for logging)
+     * @param typeGUID unique identifier of the type
      * @return boolean result
      */
     public boolean isOpenTypeId(String  sourceName, String   typeGUID)
@@ -1334,9 +1334,9 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
      * Return boolean indicating whether the (AttributeTypeDef/TypeDef is known, either as an open type, or one defined
      * by one or more of the members of the cohort.
      *
-     * @param sourceName - source of the TypeDef (used for logging)
-     * @param typeGUID - unique identifier of the type
-     * @param typeName - unique name of the type
+     * @param sourceName source of the TypeDef (used for logging)
+     * @param typeGUID unique identifier of the type
+     * @param typeName unique name of the type
      * @return boolean result
      */
     public boolean isKnownType(String sourceName, String typeGUID, String typeName)
@@ -1379,8 +1379,8 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
      * Return boolean indicating whether the TypeDef/AttributeTypeDef is known, either as an open type, or one defined
      * by one or more of the members of the cohort.
      *
-     * @param sourceName - source of the request (used for logging)
-     * @param typeGUID - unique identifier of the type
+     * @param sourceName source of the request (used for logging)
+     * @param typeGUID unique identifier of the type
      * @return boolean result
      */
     public boolean isKnownTypeId(String  sourceName, String   typeGUID)
@@ -1405,9 +1405,9 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
     /**
      * Return boolean indicating whether the TypeDef is in use in the repository.
      *
-     * @param sourceName - source of the TypeDef (used for logging)
-     * @param typeGUID - unique identifier of the type
-     * @param typeName - unique name of the type
+     * @param sourceName source of the TypeDef (used for logging)
+     * @param typeGUID unique identifier of the type
+     * @param typeName unique name of the type
      * @return boolean result
      */
     public boolean isActiveType(String sourceName, String typeGUID, String typeName)
@@ -1449,8 +1449,8 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
     /**
      * Return boolean indicating whether the TypeDef/AttributeTypeDef is in use in the local repository.
      *
-     * @param sourceName - source of the request (used for logging)
-     * @param typeGUID - unique identifier of the type
+     * @param sourceName source of the request (used for logging)
+     * @param typeGUID unique identifier of the type
      * @return boolean result
      */
     public boolean isActiveTypeId(String  sourceName, String   typeGUID)
@@ -1474,9 +1474,9 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
     /**
      * Return boolean indicating whether the (Attribute)TypeDef identifiers are valid or not.
      *
-     * @param sourceName - source of the TypeDef (used for logging)
-     * @param typeGUID - unique identifier of the TypeDef
-     * @param typeName - unique name of the TypeDef
+     * @param sourceName source of the TypeDef (used for logging)
+     * @param typeGUID unique identifier of the TypeDef
+     * @param typeName unique name of the TypeDef
      * @return boolean result
      */
     public boolean validTypeId(String          sourceName,
@@ -1552,10 +1552,10 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
     /**
      * Return boolean indicating whether the TypeDef identifiers are valid or not.
      *
-     * @param sourceName - source of the TypeDef (used for logging)
-     * @param typeDefGUID - unique identifier of the TypeDef
-     * @param typeDefName - unique name of the TypeDef
-     * @param category - category of TypeDef
+     * @param sourceName source of the TypeDef (used for logging)
+     * @param typeDefGUID unique identifier of the TypeDef
+     * @param typeDefName unique name of the TypeDef
+     * @param category category of TypeDef
      * @return boolean result
      */
     public boolean validTypeDefId(String          sourceName,
@@ -1597,10 +1597,10 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
     /**
      * Return boolean indicating whether the AttributeTypeDef identifiers are from a single known type or not.
      *
-     * @param sourceName - source of the request (used for logging)
-     * @param attributeTypeDefGUID - unique identifier of the AttributeTypeDef
-     * @param attributeTypeDefName - unique name of the AttributeTypeDef
-     * @param category - category for the AttributeTypeDef
+     * @param sourceName source of the request (used for logging)
+     * @param attributeTypeDefGUID unique identifier of the AttributeTypeDef
+     * @param attributeTypeDefName unique name of the AttributeTypeDef
+     * @param category category for the AttributeTypeDef
      * @return boolean result
      */
     public boolean validAttributeTypeDefId(String                   sourceName,
@@ -1642,11 +1642,11 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
     /**
      * Return boolean indicating whether the TypeDef identifiers are valid or not.
      *
-     * @param sourceName - source of the TypeDef (used for logging)
-     * @param typeDefGUID - unique identifier of the TypeDef
-     * @param typeDefName - unique name of the TypeDef
-     * @param typeDefVersion - version of the type
-     * @param typeDefCategory - category of the instance described by this TypeDef.
+     * @param sourceName source of the TypeDef (used for logging)
+     * @param typeDefGUID unique identifier of the TypeDef
+     * @param typeDefName unique name of the TypeDef
+     * @param typeDefVersion version of the type
+     * @param typeDefCategory category of the instance described by this TypeDef.
      * @return boolean result
      */
     public boolean validTypeDefId(String          sourceName,
@@ -1685,11 +1685,11 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
     /**
      * Return boolean indicating whether the TypeDef identifiers are from a single known type or not.
      *
-     * @param sourceName - source of the request (used for logging)
-     * @param attributeTypeDefGUID - unique identifier of the TypeDef
-     * @param attributeTypeDefName - unique name of the TypeDef
-     * @param attributeTypeDefVersion - version of the type
-     * @param category - category for the TypeDef
+     * @param sourceName source of the request (used for logging)
+     * @param attributeTypeDefGUID unique identifier of the TypeDef
+     * @param attributeTypeDefName unique name of the TypeDef
+     * @param attributeTypeDefVersion version of the type
+     * @param category category for the TypeDef
      * @return boolean result
      */
     public boolean validAttributeTypeDefId(String                   sourceName,
@@ -1728,8 +1728,8 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
     /**
      * Return boolean indicating whether the supplied TypeDef is valid or not.
      *
-     * @param sourceName - source of the TypeDef (used for logging)
-     * @param typeDef - TypeDef to test
+     * @param sourceName source of the TypeDef (used for logging)
+     * @param typeDef TypeDef to test
      * @return boolean result
      */
     public boolean validTypeDef(String         sourceName,
@@ -1761,8 +1761,8 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
     /**
      * Return boolean indicating whether the supplied AttributeTypeDef is valid or not.
      *
-     * @param sourceName - source of the request (used for logging)
-     * @param attributeTypeDef - TypeDef to test
+     * @param sourceName source of the request (used for logging)
+     * @param attributeTypeDef TypeDef to test
      * @return boolean result
      */
     public boolean validAttributeTypeDef(String           sourceName,
@@ -1793,8 +1793,8 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
     /**
      * Return boolean indicating whether the supplied TypeDefSummary is valid or not.
      *
-     * @param sourceName - source of the TypeDefSummary (used for logging)
-     * @param typeDefSummary - TypeDefSummary to test.
+     * @param sourceName source of the TypeDefSummary (used for logging)
+     * @param typeDefSummary TypeDefSummary to test.
      * @return boolean result.
      */
     public boolean validTypeDefSummary(String                sourceName,
@@ -1834,14 +1834,14 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
      * This new TypeDef can be added to the repository if it does not clash with an existing typeDef and the local
      * repository supports dynamic type definitions.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param typeDef - details of the new TypeDef
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param typeDef details of the new TypeDef
      */
     public void processNewTypeDefEvent(String       sourceName,
                                        String       originatorMetadataCollectionId,
@@ -1970,14 +1970,14 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
     /**
      * A new AttributeTypeDef has been defined in an open metadata repository.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param attributeTypeDef - details of the new AttributeTypeDef.
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param attributeTypeDef details of the new AttributeTypeDef.
      */
     public void processNewAttributeTypeDefEvent(String           sourceName,
                                                 String           originatorMetadataCollectionId,
@@ -2112,14 +2112,14 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
     /**
      * An existing TypeDef has been updated in a remote metadata repository.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param typeDefPatch - details of the new version of the TypeDef
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param typeDefPatch details of the new version of the TypeDef
      */
     public void processUpdatedTypeDefEvent(String       sourceName,
                                            String       originatorMetadataCollectionId,
@@ -2190,15 +2190,15 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
      * An existing TypeDef has been deleted in a remote metadata repository.  Both the name and the
      * GUID are provided to ensure the right TypeDef is deleted in other cohort member repositories.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param typeDefGUID - unique identifier of the TypeDef
-     * @param typeDefName - unique name of the TypeDef
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param typeDefGUID unique identifier of the TypeDef
+     * @param typeDefName unique name of the TypeDef
      */
     public void processDeletedTypeDefEvent(String      sourceName,
                                            String      originatorMetadataCollectionId,
@@ -2216,15 +2216,15 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
      * An existing AttributeTypeDef has been deleted in an open metadata repository.  Both the name and the
      * GUID are provided to ensure the right AttributeTypeDef is deleted in other cohort member repositories.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param attributeTypeDefGUID - unique identifier of the AttributeTypeDef
-     * @param attributeTypeDefName - unique name of the AttributeTypeDef
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param attributeTypeDefGUID unique identifier of the AttributeTypeDef
+     * @param attributeTypeDefName unique name of the AttributeTypeDef
      */
     public void processDeletedAttributeTypeDefEvent(String      sourceName,
                                                     String      originatorMetadataCollectionId,
@@ -2241,15 +2241,15 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
     /**
      * Process an event that changes either the name or guid of a TypeDef.  It is resolving a Conflicting TypeDef Error.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param originalTypeDefSummary - details of the original TypeDef
-     * @param typeDef - updated TypeDef with new identifiers inside.
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param originalTypeDefSummary details of the original TypeDef
+     * @param typeDef updated TypeDef with new identifiers inside.
      */
     public void processReIdentifiedTypeDefEvent(String         sourceName,
                                                 String         originatorMetadataCollectionId,
@@ -2267,15 +2267,15 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
      * Process an event that changes either the name or guid of an AttributeTypeDef.
      * It is resolving a Conflicting AttributeTypeDef Error.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param originalAttributeTypeDef - description of original AttributeTypeDef
-     * @param attributeTypeDef - updated AttributeTypeDef with new identifiers inside.
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param originalAttributeTypeDef description of original AttributeTypeDef
+     * @param attributeTypeDef updated AttributeTypeDef with new identifiers inside.
      */
     public void processReIdentifiedAttributeTypeDefEvent(String           sourceName,
                                                          String           originatorMetadataCollectionId,
@@ -2292,17 +2292,17 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
     /**
      * Process a detected conflict in type definitions (TypeDefs) used in the cohort.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param originatorTypeDefSummary - details of the TypeDef in the event originator
-     * @param otherMetadataCollectionId - the metadataCollection using the conflicting TypeDef
-     * @param conflictingTypeDefSummary - the details of the TypeDef in the other metadata collection
-     * @param errorMessage - details of the error that occurs when the connection is used.
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param originatorTypeDefSummary details of the TypeDef in the event originator
+     * @param otherMetadataCollectionId the metadataCollection using the conflicting TypeDef
+     * @param conflictingTypeDefSummary the details of the TypeDef in the other metadata collection
+     * @param errorMessage details of the error that occurs when the connection is used.
      */
     public void processTypeDefConflictEvent(String         sourceName,
                                             String         originatorMetadataCollectionId,
@@ -2321,17 +2321,17 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
     /**
      * Process a detected conflict in the attribute type definitions (AttributeTypeDefs) used in the cohort.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
      * @param originatorAttributeTypeDef- description of the AttributeTypeDef in the event originator.
-     * @param otherMetadataCollectionId - the metadataCollection using the conflicting AttributeTypeDef.
-     * @param conflictingAttributeTypeDef - description of the AttributeTypeDef in the other metadata collection.
-     * @param errorMessage - details of the error that occurs when the connection is used.
+     * @param otherMetadataCollectionId the metadataCollection using the conflicting AttributeTypeDef.
+     * @param conflictingAttributeTypeDef description of the AttributeTypeDef in the other metadata collection.
+     * @param errorMessage details of the error that occurs when the connection is used.
      */
     public void processAttributeTypeDefConflictEvent(String           sourceName,
                                                      String           originatorMetadataCollectionId,
@@ -2352,17 +2352,17 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
      * create some inconsistencies in the different copies of instances of this type in different members of the
      * cohort.  The recommended action is to update all TypeDefs to the latest version.
      *
-     * @param sourceName - name of the source of the event.  It may be the cohort name for incoming events or the
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId - unique identifier for the metadata collection hosted by the server that
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName - name of the server that the event came from.
-     * @param originatorServerType - type of server that the event came from.
-     * @param originatorOrganizationName - name of the organization that owns the server that sent the event.
-     * @param targetMetadataCollectionId - identifier of the metadata collection that is reporting a TypeDef at a
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param targetMetadataCollectionId identifier of the metadata collection that is reporting a TypeDef at a
      *                                   different level to the local repository.
-     * @param targetTypeDefSummary - details of the target TypeDef
-     * @param otherTypeDef - details of the TypeDef in the local repository.
+     * @param targetTypeDefSummary details of the target TypeDef
+     * @param otherTypeDef details of the TypeDef in the local repository.
      */
     public void processTypeDefPatchMismatchEvent(String         sourceName,
                                                  String         originatorMetadataCollectionId,
@@ -2387,9 +2387,9 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
      * Throws a logic error exception when the repository content manager is called with invalid parameters.
      * Normally this means the repository content manager methods have been called in the wrong order.
      *
-     * @param sourceName - source of the request (used for logging)
-     * @param originatingMethodName - method that called the repository validator
-     * @param localMethodName - local method that deleted the error
+     * @param sourceName source of the request (used for logging)
+     * @param originatingMethodName method that called the repository validator
+     * @param localMethodName local method that deleted the error
      */
     private void throwContentManagerLogicError(String     sourceName,
                                                String     originatingMethodName,

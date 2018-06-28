@@ -18,6 +18,8 @@ public class AssetReferenceable extends AssetElementHeader
 
     /**
      * Bean constructor
+     *
+     * @param referenceableBean bean containing all of the properties
      */
     protected AssetReferenceable(Referenceable referenceableBean)
     {

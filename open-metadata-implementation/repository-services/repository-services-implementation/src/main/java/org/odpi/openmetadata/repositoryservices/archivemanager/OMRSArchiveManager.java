@@ -344,14 +344,14 @@ public class OMRSArchiveManager
 
 
     /**
-     * The InstanceStore is in two parts - an optional list of entities followed by an optional list
+     * The InstanceStore is in two parts: an optional list of entities followed by an optional list
      * of relationships.  It is possible that this archive has been processed before
      * and so any duplicates detected are ignored.  However, conflicting instances are detected.
      * Any problems found in applying the archive contents are recorded on the audit log.
      *
      * @param archiveProperties properties describing the archive used in logging
-     * @param archiveInstanceStore - the instance store to process
-     * @param instanceProcessor - the processor to add the instances to the local repository.  It may be null
+     * @param archiveInstanceStore the instance store to process
+     * @param instanceProcessor the processor to add the instances to the local repository.  It may be null
      *                          if there is no local repository configured for this server.
      * @return instance count
      */

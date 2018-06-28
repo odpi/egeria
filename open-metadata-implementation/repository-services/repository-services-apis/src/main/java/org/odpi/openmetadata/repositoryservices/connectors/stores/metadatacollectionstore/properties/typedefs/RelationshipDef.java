@@ -11,9 +11,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * RelationshipDef describes the type of a relationship.  A relationships links two entities together.
- * The RelationshipDef defines the types of those entities in the RelationshipEndDefs.  It
- * defines if this relationship allows classifications to propagate through it and also it defines the type of
- * relationship - such as association, composition and aggregation.
+ * The RelationshipDef defines the types of those entities in the RelationshipEndDefs.  It also
+ * defines if this relationship allows classifications to propagate through it.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)

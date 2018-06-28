@@ -15,14 +15,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * can be connected to an entity instance.:
  * <ul>
  *     <li>
- *         UNKNOWN - uninitialized cardinality
+ *         UNKNOWN: uninitialized cardinality
  *     </li>
  *     <li>
- *         AT_MOST_ONE - means there can be zero or one instances of this relationship connected
+ *         AT_MOST_ONE: means there can be zero or one instances of this relationship connected
  *                       to an instance of the EntityDef.  This relationship is written as 0..1 in UML.
  *     </li>
  *     <li>
- *         ANY_NUMBER - means there can be none, one or many instances of this relationship connected
+ *         ANY_NUMBER: means there can be none, one or many instances of this relationship connected
  *                      to an instance of the EntityDef.
  *                      This relationship is often written as 0..* or * in UML.
  *     </li>
@@ -34,8 +34,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public enum RelationshipEndCardinality implements Serializable
 {
     UNKNOWN      (0, "<Unknown>",    "Unknown or uninitialized cardinality"),
-    AT_MOST_ONE  (1, "At Most One",  "0..1 - Zero or one instances. 0..1."),
-    ANY_NUMBER   (2, "Any Number",   "0..* or * - Any number of instances");
+    AT_MOST_ONE  (1, "At Most One",  "0..1 for zero or one instances. 0..1."),
+    ANY_NUMBER   (2, "Any Number",   "0..* or * for any number of instances");
 
     private static final long serialVersionUID = 1L;
 

@@ -9,13 +9,13 @@ import java.io.Serializable;
  * process that is used by the cluster registries when managing the membership of the open metadata repository cluster.
  * <ul>
  *     <li>
- *         NOT_IN_USE - There has been no error detected and so the error code is not in use.
+ *         NOT_IN_USE: There has been no error detected and so the error code is not in use.
  *     </li>
  *     <li>
- *         CONFLICTING_REPOSITORY_ID - Remote server/repository is using the same metadata collection id as the local server.
+ *         CONFLICTING_REPOSITORY_ID: Remote server/repository is using the same metadata collection id as the local server.
  *     </li>
  *     <li>
- *         CONFLICTING_TYPEDEFS - There are conflicting type definitions (TypeDefs) detected between two repositories
+ *         CONFLICTING_TYPEDEFS: There are conflicting type definitions (TypeDefs) detected between two repositories
  *         in the open metadata repository cluster.
  *     </li>
  * </ul>

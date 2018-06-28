@@ -8,35 +8,35 @@ import java.io.Serializable;
  * protocol.  There are 4 basic values.
  * <ul>
  *     <li>
- *         UNKNOWN_REGISTRY_EVENT - the event is not recognized by this local server, probably because it is back-level
+ *         UNKNOWN_REGISTRY_EVENT: the event is not recognized by this local server, probably because it is back-level
  *         from other servers in the cohort.  It is logged in the audit log and then ignored.  The registration
  *         protocol should evolve so that new message types can be ignored by back-level servers without damage
  *         to the cohort's integrity.
  *     </li>
  *     <li>
- *         REGISTRATION_EVENT - this event is a server's first contact with the cohort.  It publicises the id of the
+ *         REGISTRATION_EVENT: this event is a server's first contact with the cohort.  It publicises the id of the
  *         local repository, the connection information needed to connect remotely to this local server's
  *         repository (localServerRemoteConnection) plus a list of typedef names and GUIDs.  Other servers in the
  *         cohort will respond either with a RE_REGISTRATION_EVENT if all is ok or REGISTRATION_ERROR if there
  *         is a problem with any information in the REGISTRATION_EVENT.
  *     </li>
  *     <li>
- *         REFRESH_REGISTRATION_EVENT - this event is used after a local server has experienced configuration issues
+ *         REFRESH_REGISTRATION_EVENT: this event is used after a local server has experienced configuration issues
  *         and needs to receive the registration information from other members of the cohort again.
  *     </li>
  *     <li>
- *         RE_REGISTRATION_EVENT - this event is used by a previously registered server to broadcast its current
+ *         RE_REGISTRATION_EVENT: this event is used by a previously registered server to broadcast its current
  *         configuration.  It is used in response to a REGISTRATION_EVENT and a REFRESH_REGISTRATION_EVENT to
  *         let the other servers know about its configuration, or whenever its configuration may have changed
  *         (such as after a server restart or administrator action).
  *     </li>
  *     <li>
- *         UN_REGISTRATION_EVENT - this event is used when a server is being removed from the cohort.  The other
+ *         UN_REGISTRATION_EVENT: this event is used when a server is being removed from the cohort.  The other
  *         servers can choose whether to remove its replicated metadata from their repository, or mark it as
  *         deregistered repository's metadata.
  *     </li>
  *     <li>
- *         REGISTRATION_ERROR_EVENT - ths event is used to report anomalies in the registration information being
+ *         REGISTRATION_ERROR_EVENT: ths event is used to report anomalies in the registration information being
  *         passed between the repositories and the actions taken.  Each of these errors should be investigated
  *         since they should not occur.
  *     </li>
@@ -66,7 +66,7 @@ public enum OMRSRegistryEventType implements Serializable
 
 
     /**
-     * Default Constructor - sets up the specific values for this instance of the enum.
+     * Default Constructor sets up the specific values for this instance of the enum.
      *
      * @param registryEventTypeCode int identifier used for indexing based on the enum.
      * @param registryEventTypeName string name used for messages that include the enum.
@@ -104,7 +104,7 @@ public enum OMRSRegistryEventType implements Serializable
 
 
     /**
-     * Return the default description for the enum value - used when natural resource
+     * Return the default description for the enum value.  This is used when natural resource
      * bundle is not available.
      *
      * @return String default description

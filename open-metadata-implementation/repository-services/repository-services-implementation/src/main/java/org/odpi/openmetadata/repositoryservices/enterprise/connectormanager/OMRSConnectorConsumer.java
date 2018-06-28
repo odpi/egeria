@@ -13,8 +13,8 @@ public interface OMRSConnectorConsumer
     /**
      * Pass the connector for the local repository to the connector consumer.
      *
-     * @param metadataCollectionId - Unique identifier for the metadata collection
-     * @param localConnector - OMRSRepositoryConnector object for the local repository.
+     * @param metadataCollectionId Unique identifier for the metadata collection
+     * @param localConnector OMRSRepositoryConnector object for the local repository.
      */
     void setLocalConnector(String                  metadataCollectionId,
                            OMRSRepositoryConnector localConnector);
@@ -23,8 +23,8 @@ public interface OMRSConnectorConsumer
     /**
      * Pass the connector to one of the remote repositories in the metadata repository cohort.
      *
-     * @param metadataCollectionId - Unique identifier for the metadata collection
-     * @param remoteConnector - OMRSRepositoryConnector object providing access to the remote repository.
+     * @param metadataCollectionId Unique identifier for the metadata collection
+     * @param remoteConnector OMRSRepositoryConnector object providing access to the remote repository.
      */
     void addRemoteConnector(String                  metadataCollectionId,
                             OMRSRepositoryConnector remoteConnector);
@@ -33,7 +33,7 @@ public interface OMRSConnectorConsumer
     /**
      * Pass the metadata collection id for a repository that has just left the metadata repository cohort.
      *
-     * @param metadataCollectionId - identifier of the metadata collection that is no longer available.
+     * @param metadataCollectionId identifier of the metadata collection that is no longer available.
      */
     void removeRemoteConnector(String  metadataCollectionId);
 

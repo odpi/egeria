@@ -19,7 +19,7 @@ public interface ConnectedAssetInterface
      *
      * @return AssetUniverse   a comprehensive collection of properties about the asset.
 
-     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UnrecognizedAssetGUIDException the GUID is null or invalid.
      * @throws PropertyServerException There is a problem retrieving the asset properties from
      *                                   the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.

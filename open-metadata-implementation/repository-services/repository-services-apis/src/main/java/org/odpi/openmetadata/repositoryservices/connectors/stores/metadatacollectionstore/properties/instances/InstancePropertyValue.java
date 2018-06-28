@@ -26,7 +26,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class InstancePropertyValue extends InstanceElementHeader
 {
     /*
-     * Common type information - this is augmented by the subclasses
+     * Common type information that is this is augmented by the subclasses
      */
     private   InstancePropertyCategory   instancePropertyCategory = InstancePropertyCategory.UNKNOWN;
     private   String                     typeGUID  = null;
@@ -53,7 +53,7 @@ public class InstancePropertyValue extends InstanceElementHeader
 
 
     /**
-     * Copy/clone constructor - initializes the instance property value from the supplied template.
+     * Copy/clone constructor initializes the instance property value from the supplied template.
      *
      * @param template InstancePropertyValue
      */

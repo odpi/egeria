@@ -74,7 +74,7 @@ public class Rating extends ElementHeader
     /**
      * Set up the user id of the person who created the rating.  Null means the user id is not known.
      *
-     * @param user
+     * @param user string
      */
     public void setUser(String user)
     {

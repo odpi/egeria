@@ -22,7 +22,7 @@ public enum OMRSEventDirection implements Serializable
 
 
     /**
-     * Default constructor - sets up the specific values for this enum instance.
+     * Default constructor sets up the specific values for this enum instance.
      *
      * @param eventDirectionCode int identifier for the enum, used for indexing arrays etc with the enum.
      * @param eventDirectionName String name for the enum, used for message content.
