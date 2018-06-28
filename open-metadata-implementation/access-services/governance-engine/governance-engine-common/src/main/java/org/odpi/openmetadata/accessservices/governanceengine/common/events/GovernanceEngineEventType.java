@@ -22,12 +22,9 @@ public enum GovernanceEngineEventType implements Serializable {
     NEW_TAG_EVENT(1, "NewTag", "A new tag has been defined."),
     UPDATED_TAG_EVENT(2, "UpdatedTag", "An existing tag has been updated."),
     DELETED_TAG_EVENT(3, "DeletedTag", "An existing tag has been deleted."),
-
-    NEW_GOVERNEDASSET_EVENT(101, "NewGovernedAsset", "An asset has been linked to a tag."),
-
-    UPDATED_GOVERNEDASSET_EVENT(102, "UpdatedGovernedAsset", "An assets link to a tag has changed."),
-
-    DELETED_GOVERNEDASSET_EVENT(103, "DeletedGovernedAsset", "An asset has had it's tag removed");
+    NEW_GOVERNEDASSETCOMP_EVENT(101, "NewGovernedAssetComponent", "An asset componenthas been linked to a tag."),
+    UPDATED_GOVERNEDASSETCOMP_EVENT(102, "UpdatedGovernedAssetComponent", "An asset component's link to a tag has changed."),
+    DELETED_GOVERNEDASSETOMP_EVENT(103, "DeletedGovernedAssetComponent", "An asset component has had it's tag removed");
 
 
     private static final long serialVersionUID = 1L;

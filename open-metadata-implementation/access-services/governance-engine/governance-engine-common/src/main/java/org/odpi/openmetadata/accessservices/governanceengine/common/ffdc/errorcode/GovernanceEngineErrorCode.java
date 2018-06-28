@@ -42,7 +42,10 @@ public enum GovernanceEngineErrorCode {
             "The unique identifier (guid) passed on the {0} parameter of the {1} operation is null",
             "The system is unable to process the request without a guid.",
             "Correct the code in the caller to provide the guid."),
-
+    INVALID_EVENT_FORMAT(400, "OMAS-GOVERNANCEENGINE-400-006 ",
+            "Invalid event format ",
+            "The access service has received an event that it can not interpret",
+            "Look for errors in the local server's console to understand and correct the source of the error."),
     USER_NOT_AUTHORIZED(400, "OMAS-GOVERNANCEENGINE-400-008 ",
             "User {0} is not authorized to issue the {1} request for Access Service {3} on server {4}",
             "The system is unable to process the request.",
@@ -51,7 +54,6 @@ public enum GovernanceEngineErrorCode {
             "An unexpected error with message \'{0}\' was returned by the property server during {1} request for open metadata access service {2} on server {3}",
             "The system is unable to process the request.",
             "Verify the access rights of the user."),
-
     NULL_TEXT(400, "OMAS-GOVERNANCEENGINE-400-011 ",
             "The text field value passed on the {0} parameter of the {1} operation is null",
             "The system is unable to process the request without this text field value.",
@@ -78,10 +80,7 @@ public enum GovernanceEngineErrorCode {
             "The access service has not been initialized and can not support REST API call {0}",
             "The server has received a call to one of its Open Metadata Access Services but is unable to process it because the access service is not active.",
             "If the server is supposed to have this access service activated, correct the server configuration and restart the server."),
-    INVALID_EVENT_FORMAT(400, "OMAS-GOVERNANCEENGINE-400-006 ",
-            "Invalid event format ",
-            "The access service has received an event that it can not interpret",
-            "Look for errors in the local server's console to understand and correct the source of the error."),;
+    ;
 
 
     private int httpErrorCode;
