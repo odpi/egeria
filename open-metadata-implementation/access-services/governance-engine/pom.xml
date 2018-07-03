@@ -28,6 +28,8 @@
         <module>governance-engine-common</module>
         <module>governance-engine-client</module>
         <module>governance-engine-server</module>
+        <module>governance-engine-spring</module>
+
     </modules>
 
     <!-- Temporarily add additional dependencies for test here  - promote to top level later -->
