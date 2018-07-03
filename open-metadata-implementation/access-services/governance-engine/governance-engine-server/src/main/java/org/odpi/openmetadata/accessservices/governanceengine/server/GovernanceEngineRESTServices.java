@@ -15,7 +15,6 @@ import org.odpi.openmetadata.adminservices.configuration.registration.AccessServ
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceOperationalStatus;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
-import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -43,8 +42,7 @@ import java.util.List;
  * The result is a fairly simple object being made available to the engine, which will evolve as work is done on enhancing
  * the interaction (for example capturing information back from the engine), and as we interconnect with new governance engines
  **/
-@RestController
-@RequestMapping("/omag/omas/governance-engine")
+
 public class GovernanceEngineRESTServices {
     static private String accessServiceName = null;
     static private OMRSRepositoryConnector repositoryConnector = null;
@@ -67,7 +65,7 @@ public class GovernanceEngineRESTServices {
      * Default constructor
      */
     public GovernanceEngineRESTServices() {
-        AccessServiceDescription myDescription = AccessServiceDescription.GOVERNANCE_ENGINE_OMAS;
+        AccessServiceDescription myDescription = AccessServiceDescription.GOVERNANCE_ENGINE_OMAS.GOVERNANCE_ENGINE_OMAS;
         AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription.getAccessServiceCode(),
                 myDescription.getAccessServiceName(),
                 myDescription.getAccessServiceDescription(),
@@ -104,9 +102,7 @@ public class GovernanceEngineRESTServices {
      * PropertyServerException - there is a problem retrieving information from the property (metadata) handlers.
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/{userId}/govclasdefs")
-    public GovernanceClassificationDefinitionListAPIResponse getGovernanceClassificationDefinitions(@PathVariable String userId,
-                                                                                                    @RequestParam(value = "rootClassification", required = false) List<String> rootClassification
+    public GovernanceClassificationDefinitionListAPIResponse getGovernanceClassificationDefinitions(String userId, List<String> rootClassification
     ) {
         final String methodName = "getGovernanceClassificationDefinitions";
 
@@ -160,9 +156,9 @@ public class GovernanceEngineRESTServices {
      * PropertyServerException - there is a problem retrieving information from the property (metadata) handlers.
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/{userId}/govclasdefs/{tagguid}")
-    GovernanceClassificationDefinitionAPIResponse getTags(@PathVariable String userId, @PathVariable String tagguid) {
-        final String methodName = "getGovernanceClassificationDefinition";
+
+    public GovernanceClassificationDefinitionAPIResponse getTags(String userId, String tagguid) {
+        final String methodName = "getTags";
 
 
         if (log.isDebugEnabled()) {
@@ -210,10 +206,9 @@ public class GovernanceEngineRESTServices {
      * PropertyServerException - there is a problem retrieving information from the property (metadata) handlers.
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/{userId}/govAssets")
-    GovernedAssetComponentListAPIResponse getGovernedAssetComponents(@PathVariable String userId,
-                                                                     @RequestParam(value = "rootClassification", required = false) List<String> rootClassification,
-                                                                     @RequestParam(value = "rootType", required = false) List<String> rootType) {
+    public GovernedAssetComponentListAPIResponse getGovernedAssetComponents(String userId,
+                                                                            List<String> rootClassification,
+                                                                            List<String> rootType) {
         final String methodName = "getGovernedAssetComponents";
 
 
@@ -264,9 +259,9 @@ public class GovernanceEngineRESTServices {
      * PropertyServerException - there is a problem retrieving information from the property (metadata) handlers.
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/{userId}/governedAssets/{assetComponentGuid}")
-    GovernedAssetComponentAPIResponse getGovernedAssetComponent(@PathVariable String userId,
-                                                                @PathVariable String assetComponentGuid) {
+
+    public GovernedAssetComponentAPIResponse getGovernedAssetComponent(String userId,
+                                                                       String assetComponentGuid) {
         final String methodName = "getGovernedAssetComponent";
 
 
