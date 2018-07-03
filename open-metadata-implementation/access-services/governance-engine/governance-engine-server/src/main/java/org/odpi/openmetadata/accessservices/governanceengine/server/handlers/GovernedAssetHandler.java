@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.governanceengine.server.handlers;
 
 import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.governanceengine.common.objects.GovernedAssetComponent;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -46,12 +45,12 @@ public class GovernedAssetHandler {
     /**
      * Returns the list of governed assets with associated tags
      *
-     * @param userId - String - userId of user making request.
-     * @param rootClassification   - this may be the qualifiedName or displayName of the connection.
+     * @param userId             - String - userId of user making request.
+     * @param rootClassification - this may be the qualifiedName or displayName of the connection.
      * @return Connection retrieved from property handlers
      * @throws InvalidParameterException           - one of the parameters is null or invalid.
      * @throws RootClassificationNotFoundException - there is no connection defined for this name.
-     * @throws RootAssetTypeNotFoundException - there is no connection defined for this name.
+     * @throws RootAssetTypeNotFoundException      - there is no connection defined for this name.
      * @throws PropertyServerException             - there is a problem retrieving information from the property (metadata) handlers.
      * @throws UserNotAuthorizedException          - the requesting user is not authorized to issue this request.
      */
@@ -129,16 +128,15 @@ public class GovernedAssetHandler {
     }
 
 
-
     /**
      * Returns the list of governed assets with associated tags
      *
-     * @param userId - String - userId of user making request.
-     * @param assetGuid   - guid of the asset component.
+     * @param userId    - String - userId of user making request.
+     * @param assetGuid - guid of the asset component.
      * @return Connection retrieved from property handlers
      * @throws InvalidParameterException           - one of the parameters is null or invalid.
      * @throws RootClassificationNotFoundException - there is no connection defined for this name.
-     * @throws RootAssetTypeNotFoundException - there is no connection defined for this name.
+     * @throws RootAssetTypeNotFoundException      - there is no connection defined for this name.
      * @throws PropertyServerException             - there is a problem retrieving information from the property (metadata) handlers.
      * @throws UserNotAuthorizedException          - the requesting user is not authorized to issue this request.
      */

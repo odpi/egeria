@@ -22,7 +22,6 @@ public class Validator {
     private static final Logger log = Logger.getLogger(Validator.class);
 
 
-
     /**
      * Typical constructor providing access to the repository connector for this access service.
      *
@@ -86,9 +85,9 @@ public class Validator {
     /**
      * Throw an exception if the supplied unique identifier is null
      *
-     * @param rootClassification          - unique identifier to validate
-     * @param parameterName - name of the parameter that passed the guid.
-     * @param methodName    - name of the method making the call.
+     * @param rootClassification - unique identifier to validate
+     * @param parameterName      - name of the parameter that passed the guid.
+     * @param methodName         - name of the method making the call.
      * @throws InvalidParameterException - the guid is null
      */
     public void validateRootClassification(List<String> rootClassification,
@@ -102,14 +101,14 @@ public class Validator {
     /**
      * Throw an exception if the supplied unique identifier is null
      *
-     * @param rootAssetType          - unique identifier to validate
+     * @param rootAssetType - unique identifier to validate
      * @param parameterName - name of the parameter that passed the guid.
      * @param methodName    - name of the method making the call.
      * @throws InvalidParameterException - the guid is null
      */
     public void validateRootAssetType(List<String> rootAssetType,
-                                           String parameterName,
-                                           String methodName) throws InvalidParameterException {
+                                      String parameterName,
+                                      String methodName) throws InvalidParameterException {
         // NULL is valid, so no further checks for now
         return;
     }
@@ -249,7 +248,6 @@ public class Validator {
                 errorCode.getUserAction());
 
     }
-
 
 
 }

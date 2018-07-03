@@ -16,7 +16,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 public class GovernanceEngineAdmin implements AccessServiceAdmin {
 
-    private static final org.apache.log4j.Logger log      = Logger.getLogger(GovernanceEngineAdmin.class);
+    private static final org.apache.log4j.Logger log = Logger.getLogger(GovernanceEngineAdmin.class);
 
     private AccessServiceConfig accessServiceConfig = null;
     private OMRSAuditLog auditLog = null;
@@ -41,7 +41,7 @@ public class GovernanceEngineAdmin implements AccessServiceAdmin {
      * @param enterpriseOMRSRepositoryConnector    - connector for querying the cohort repositories
      * @param auditLog                             - audit log component for logging messages.
      * @param serverUserName                       - user id to use on OMRS calls where there is no end user.
-     * @throws OMAGConfigurationErrorException     - invalid parameters in the configuration properties.
+     * @throws OMAGConfigurationErrorException - invalid parameters in the configuration properties.
      */
     public void initialize(AccessServiceConfig accessServiceConfigurationProperties,
                            OMRSTopicConnector enterpriseOMRSTopicConnector,
@@ -105,7 +105,6 @@ public class GovernanceEngineAdmin implements AccessServiceAdmin {
 
 
     }
-
 
 
     /**

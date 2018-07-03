@@ -3,16 +3,14 @@
 package org.odpi.openmetadata.accessservices.governanceengine.server.handlers;
 
 
-
 import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.exceptions.InvalidParameterException;
+import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.exceptions.PropertyServerException;
 import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.exceptions.RootClassificationNotFoundException;
 import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.exceptions.UserNotAuthorizedException;
-import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.exceptions.PropertyServerException;
 import org.odpi.openmetadata.accessservices.governanceengine.common.objects.GovernanceClassificationDefinition;
 import org.odpi.openmetadata.accessservices.governanceengine.common.objects.GovernanceClassificationDefinitionAPIResponse;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -53,8 +51,8 @@ public class GovernanceClassificationDefinitionHandler {
     /**
      * Returns the list of tag definitions.
      *
-     * @param userId - String - userId of user making request.
-     * @param rootClassification   - this may be the qualifiedName or displayName of the connection.
+     * @param userId             - String - userId of user making request.
+     * @param rootClassification - this may be the qualifiedName or displayName of the connection.
      * @return Connection retrieved from property handlers
      * @throws InvalidParameterException           - one of the parameters is null or invalid.
      * @throws RootClassificationNotFoundException - there is no connection defined for this name.
@@ -83,15 +81,15 @@ public class GovernanceClassificationDefinitionHandler {
 
     /**
      * Returns a single tag definitions.
-     *
+     * <p>
      * NOTE: Currently am returning the same type (list) to keep API return consistent
      *
-     * @param userId - String - userId of user making request.
-     * @param tagguid   - tag guid
+     * @param userId  - String - userId of user making request.
+     * @param tagguid - tag guid
      * @return Connection retrieved from property handlers
-     * @throws InvalidParameterException           - one of the parameters is null or invalid.
-     * @throws PropertyServerException             - there is a problem retrieving information from the property (metadata) handlers.
-     * @throws UserNotAuthorizedException          - the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  - one of the parameters is null or invalid.
+     * @throws PropertyServerException    - there is a problem retrieving information from the property (metadata) handlers.
+     * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public GovernanceClassificationDefinition getGovernanceClassificationDefinition(String userId,
                                                                                     String tagguid) throws InvalidParameterException,
@@ -100,13 +98,14 @@ public class GovernanceClassificationDefinitionHandler {
         final String methodName = "getGovernanceClassificationDefinition";
 
         errorHandler.validateUserId(userId, methodName);
-        errorHandler.validateGUID(tagguid,"tagguid",methodName);
+        errorHandler.validateGUID(tagguid, "tagguid", methodName);
 
         //OMRSMetadataCollection metadataCollection = errorHandler.validateRepositoryConnector(methodName);
 
         //TODO Implement query
         return null;
     }
+
     GovernanceClassificationDefinitionAPIResponse getTagsFromRepository(String name, OMRSMetadataCollection metadataCollection, EntityDetail entity) {
         //TODO: Needs implementing & signature changed as this needs to reformat the set - we can't return NULL...
         return null;

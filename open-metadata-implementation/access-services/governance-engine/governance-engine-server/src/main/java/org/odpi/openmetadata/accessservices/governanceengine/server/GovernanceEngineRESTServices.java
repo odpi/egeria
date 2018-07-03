@@ -1,20 +1,5 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- * <p/>
- * http://www.apache.org/licenses/LICENSE-2.0
- * <p/>
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/* SPDX-License-Identifier: Apache-2.0 */
+
 package org.odpi.openmetadata.accessservices.governanceengine.server;
 
 
@@ -37,27 +22,26 @@ import java.util.List;
 /**
  * The GovernanceEngineRESTServices provides the handlers-side implementation of the GovernanceEngine Open Metadata
  * Access Service (OMAS).
- *
+ * <p>
  * This package deals with supporting the REST API from within the OMAG Server
- *
+ * <p>
  * Governance engines such as Apache Ranger are interested in the classification of resources that they provide
  * access to. They are unlikely to be interested in all the nitty gritty properties of that resource, only knowing that
  * it is PI or SPI & perhaps masking or preventing access.
- *
+ * <p>
  * They tend to use this information in two ways
  * > At policy authoring time - where knowing what tags are available is interesting to help in that definition process
  * > At data access time - where we need to know if resource X is protected in some way due to it's metadata ie classification
- *
+ * <p>
  * Initially this OMAS api will provide information on those
  * > classifiers - we'll call them 'tags' here
  * > Managed assets - those resources - and in effect any tags associated with them. Details on the assets themselves are
- *   better supported through the AssetConsumer OMAS API, and additionally the governance engine is not interested currently in HOW
- *   the assets get classified - ie through the association of a classification directly to an asset, or via business terms,
- *   so effectively flatten this
- *
+ * better supported through the AssetConsumer OMAS API, and additionally the governance engine is not interested currently in HOW
+ * the assets get classified - ie through the association of a classification directly to an asset, or via business terms,
+ * so effectively flatten this
+ * <p>
  * The result is a fairly simple object being made available to the engine, which will evolve as work is done on enhancing
  * the interaction (for example capturing information back from the engine), and as we interconnect with new governance engines
- *
  **/
 @RestController
 @RequestMapping("/omag/omas/governance-engine")
@@ -104,16 +88,15 @@ public class GovernanceEngineRESTServices {
      */
     /**
      * Returns the list of governance tags for the enforcement engine
-     *
+     * <p>
      * These are the definitions - so tell us the name, guid, attributes
      * associated with the tag. The security engine will want to know about
      * these tags to assist in policy authoring/validation, as well as know
      * when they change, since any existing assets classified with the tags
      * are affected
      *
-     *
-     * @param userId - String - userId of user making request.
-     * @param rootClassification   - this may be the qualifiedName or displayName of the connection.
+     * @param userId             - String - userId of user making request.
+     * @param rootClassification - this may be the qualifiedName or displayName of the connection.
      * @return GovernanceClassificationDefinitionList or
      * InvalidParameterException - one of the parameters is null or invalid.
      * UnrecognizedConnectionNameException - there is no connection defined for this name.
@@ -123,8 +106,8 @@ public class GovernanceEngineRESTServices {
      */
     @RequestMapping(method = RequestMethod.GET, path = "/{userId}/govclasdefs")
     public GovernanceClassificationDefinitionListAPIResponse getGovernanceClassificationDefinitions(@PathVariable String userId,
-                                                                                                    @RequestParam(value="rootClassification",required=false) List<String> rootClassification
-                                         ) {
+                                                                                                    @RequestParam(value = "rootClassification", required = false) List<String> rootClassification
+    ) {
         final String methodName = "getGovernanceClassificationDefinitions";
 
 
@@ -161,16 +144,15 @@ public class GovernanceEngineRESTServices {
 
     /**
      * Returns a single governance tag for the enforcement engine
-     *
+     * <p>
      * These are the definitions - so tell us the name, guid, attributes
      * associated with the tag. The security engine will want to know about
      * these tags to assist in policy authoring/validation, as well as know
      * when they change, since any existing assets classified with the tags
      * are affected
      *
-     *
-     * @param userId - String - userId of user making request.
-     * @param tagguid   - guid of the definition to retrieve
+     * @param userId  - String - userId of user making request.
+     * @param tagguid - guid of the definition to retrieve
      * @return GovernanceClassificationDefinition or
      * InvalidParameterException - one of the parameters is null or invalid.
      * UnrecognizedConnectionNameException - there is no connection defined for this name.
@@ -215,12 +197,11 @@ public class GovernanceEngineRESTServices {
 
     /**
      * Returns the list of governed asset
-     *
+     * <p>
      * These include the tag associations but not the definitions of those tags
      *
-     *
-     * @param userId - String - userId of user making request.
-     * @param rootClassification   - this may be the qualifiedName or displayName of the connection.
+     * @param userId             - String - userId of user making request.
+     * @param rootClassification - this may be the qualifiedName or displayName of the connection.
      * @param rootType
      * @return GovernedAssetComponentList or
      * InvalidParameterException - one of the parameters is null or invalid.
@@ -231,8 +212,8 @@ public class GovernanceEngineRESTServices {
      */
     @RequestMapping(method = RequestMethod.GET, path = "/{userId}/govAssets")
     GovernedAssetComponentListAPIResponse getGovernedAssetComponents(@PathVariable String userId,
-                                                                     @RequestParam(value="rootClassification",required=false) List<String> rootClassification,
-                                                                     @RequestParam(value="rootType",required=false) List<String> rootType) {
+                                                                     @RequestParam(value = "rootClassification", required = false) List<String> rootClassification,
+                                                                     @RequestParam(value = "rootType", required = false) List<String> rootType) {
         final String methodName = "getGovernedAssetComponents";
 
 
@@ -271,12 +252,11 @@ public class GovernanceEngineRESTServices {
 
     /**
      * Returns a single governed asset
-     *
+     * <p>
      * These include the tag associations but not the definitions of those tags
      *
-     *
-     * @param userId - String - userId of user making request.
-     * @param assetComponentGuid   - Guid of the asset component to retrieve
+     * @param userId             - String - userId of user making request.
+     * @param assetComponentGuid - Guid of the asset component to retrieve
      * @return GovernedAssetComponent or
      * InvalidParameterException - one of the parameters is null or invalid.
      * UnrecognizedConnectionNameException - there is no connection defined for this name.
@@ -304,7 +284,7 @@ public class GovernanceEngineRESTServices {
             GovernedAssetHandler governedAssetHandler = new GovernedAssetHandler(accessServiceName,
                     repositoryConnector);
 
-            response.setAsset(governedAssetHandler.getGovernedAssetComponent(userId,assetComponentGuid));
+            response.setAsset(governedAssetHandler.getGovernedAssetComponent(userId, assetComponentGuid));
         } catch (InvalidParameterException error) {
             captureInvalidParameterException(response, error);
         } catch (PropertyServerException error) {
@@ -345,6 +325,7 @@ public class GovernanceEngineRESTServices {
     }
 
     // TODO Fixup doc headers in file
+
     /**
      * Set the exception information into the response.
      *

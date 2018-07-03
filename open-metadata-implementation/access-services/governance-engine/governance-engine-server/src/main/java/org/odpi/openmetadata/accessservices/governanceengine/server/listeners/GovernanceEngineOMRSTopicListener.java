@@ -20,7 +20,7 @@ import org.odpi.openmetadata.repositoryservices.events.v1.OMRSEventV1;
 public class GovernanceEngineOMRSTopicListener implements OMRSTopicListener {
 
 
-    private static final org.apache.log4j.Logger log      = Logger.getLogger(GovernanceEngineOMRSTopicListener.class);
+    private static final org.apache.log4j.Logger log = Logger.getLogger(GovernanceEngineOMRSTopicListener.class);
 
     private OMRSInstanceEventProcessor instanceEventProcessor;
     private OMRSAuditLog auditLog;
@@ -28,7 +28,7 @@ public class GovernanceEngineOMRSTopicListener implements OMRSTopicListener {
     public GovernanceEngineOMRSTopicListener(Connection assetConsumerOutTopic,
                                              OMRSRepositoryHelper repositoryHelper,
                                              OMRSRepositoryValidator repositoryValidator,
-                                             String                  componentName) {
+                                             String componentName) {
 
         this.instanceEventProcessor = instanceEventProcessor;
         this.auditLog = auditLog;
@@ -60,23 +60,23 @@ public class GovernanceEngineOMRSTopicListener implements OMRSTopicListener {
                     break;
 
             }
-        }else {
-                /*
-                 * A bad event was passed - probably should not happen so log audit record.
-                 */
-                OMRSAuditCode auditCode = OMRSAuditCode.NULL_OMRS_EVENT_RECEIVED;
+        } else {
+            /*
+             * A bad event was passed - probably should not happen so log audit record.
+             */
+            OMRSAuditCode auditCode = OMRSAuditCode.NULL_OMRS_EVENT_RECEIVED;
 
-                auditLog.logRecord(actionDescription,
-                        auditCode.getLogMessageId(),
-                        auditCode.getSeverity(),
-                        auditCode.getFormattedLogMessage(),
-                        null,
-                        auditCode.getSystemAction(),
-                        auditCode.getUserAction());
+            auditLog.logRecord(actionDescription,
+                    auditCode.getLogMessageId(),
+                    auditCode.getSeverity(),
+                    auditCode.getFormattedLogMessage(),
+                    null,
+                    auditCode.getSystemAction(),
+                    auditCode.getUserAction());
 
 
-                log.debug("Null OMRS Event received ");
-            }
+            log.debug("Null OMRS Event received ");
+        }
 
         log.debug("<<" + actionDescription);
 
@@ -118,7 +118,7 @@ public class GovernanceEngineOMRSTopicListener implements OMRSTopicListener {
                 log.debug("Ignored instance event - null type");
             }
         }
-        log.debug("<< " + actionDescription );
+        log.debug("<< " + actionDescription);
 
 
     }

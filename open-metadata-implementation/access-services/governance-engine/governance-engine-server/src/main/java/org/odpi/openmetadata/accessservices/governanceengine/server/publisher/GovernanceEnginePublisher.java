@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.accessservices.governanceengine.server.publisher;
 
 
-
 import org.apache.log4j.Logger;
 
 import java.util.List;
@@ -14,8 +13,7 @@ import java.util.List;
  */
 public class GovernanceEnginePublisher {
 
-    private static final org.apache.log4j.Logger log      = Logger.getLogger(GovernanceEnginePublisher.class);
-
+    private static final org.apache.log4j.Logger log = Logger.getLogger(GovernanceEnginePublisher.class);
 
 
 }
