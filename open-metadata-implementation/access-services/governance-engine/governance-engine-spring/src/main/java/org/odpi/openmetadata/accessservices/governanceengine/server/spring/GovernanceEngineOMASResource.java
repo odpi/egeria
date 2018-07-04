@@ -52,7 +52,7 @@ public class GovernanceEngineOMASResource {
      * PropertyServerException - there is a problem retrieving information from the property (metadata) handlers.
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/govclasdefs")
+    @RequestMapping(method = RequestMethod.GET, path = "/govclassdefs")
     public GovernanceClassificationDefinitionListAPIResponse getGovernanceClassificationDefinitions(@PathVariable String userId,
                                                                                                     @RequestParam(value = "rootClassification", required = false) List<String> rootClassification
     ) {
@@ -77,7 +77,7 @@ public class GovernanceEngineOMASResource {
      * PropertyServerException - there is a problem retrieving information from the property (metadata) handlers.
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/govclasdefs/{tagguid}")
+    @RequestMapping(method = RequestMethod.GET, path = "/govclassdefs/{tagguid}")
     GovernanceClassificationDefinitionAPIResponse getTags(@PathVariable String userId, @PathVariable String tagguid) {
         return restAPI.getTags(userId, tagguid);
     }

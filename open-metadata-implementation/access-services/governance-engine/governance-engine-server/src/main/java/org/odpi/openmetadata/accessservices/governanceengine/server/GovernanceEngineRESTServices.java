@@ -65,7 +65,7 @@ public class GovernanceEngineRESTServices {
      * Default constructor
      */
     public GovernanceEngineRESTServices() {
-        AccessServiceDescription myDescription = AccessServiceDescription.GOVERNANCE_ENGINE_OMAS.GOVERNANCE_ENGINE_OMAS;
+        AccessServiceDescription myDescription = AccessServiceDescription.GOVERNANCE_ENGINE_OMAS;
         AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription.getAccessServiceCode(),
                 myDescription.getAccessServiceName(),
                 myDescription.getAccessServiceDescription(),
