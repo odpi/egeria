@@ -67,7 +67,12 @@ maven-eclipse.xml
 # Mac OS
 __MACOSX
 
+# specific OMAG config files
+omag.server.*.config
+
 # other files
 .DS_Store
 *.swp
 .java-version
+
+
