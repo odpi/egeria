@@ -157,8 +157,8 @@ public class GovernanceEngineRESTServices {
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
 
-    public GovernanceClassificationDefinitionAPIResponse getTags(String userId, String tagguid) {
-        final String methodName = "getTags";
+    public GovernanceClassificationDefinitionAPIResponse getClassificationDefinition(String userId, String tagguid) {
+        final String methodName = "getClassificationDefinition";
 
 
         if (log.isDebugEnabled()) {

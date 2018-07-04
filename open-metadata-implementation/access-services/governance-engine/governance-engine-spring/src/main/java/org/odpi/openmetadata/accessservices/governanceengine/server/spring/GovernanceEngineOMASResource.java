@@ -78,8 +78,8 @@ public class GovernanceEngineOMASResource {
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     @RequestMapping(method = RequestMethod.GET, path = "/govclassdefs/{tagguid}")
-    GovernanceClassificationDefinitionAPIResponse getTags(@PathVariable String userId, @PathVariable String tagguid) {
-        return restAPI.getTags(userId, tagguid);
+    GovernanceClassificationDefinitionAPIResponse getGovernanceClassificationDefinition(@PathVariable String userId, @PathVariable String tagguid) {
+        return restAPI.getClassificationDefinition(userId, tagguid);
     }
 
     /**
