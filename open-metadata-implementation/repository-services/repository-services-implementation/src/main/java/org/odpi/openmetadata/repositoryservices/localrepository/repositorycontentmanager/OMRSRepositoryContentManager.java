@@ -672,12 +672,29 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
                         /*
                          * The classification can only be attached to the entities listed.  Note an empty list
                          * means the classification can not be attached to any entity and it is effectively useless.
+                         * The logic checks the entity types parent types, as the parent types may allow the classification.
+                         *
+                         * The Archive types at this time do not have any ClassificationDefs with supertypes. If we want to support
+                         * ClassificationDefs with supertypes then we need to account for any entities that the ClassificationDef
+                         * supertype can introduce.
                          */
-                        for (TypeDefLink  allowedEntity : entityDefs)
+                        Set<String> entityTypes = new HashSet<>();
+                        TypeDef typeDef = getTypeDefByName(thisMethodName,entityTypeName);
+                        entityTypes.add(entityTypeName);
+                        while ( typeDef.getSuperType() !=null)
                         {
-                            if (allowedEntity != null)
+                            TypeDefLink superTypeLink=typeDef.getSuperType();
+                            String parentName= superTypeLink.getName();
+                            entityTypes.add(parentName);
+                            typeDef  = this.knownTypeDefGUIDs.get(superTypeLink.getGUID());
+                        }
+
+                        for (TypeDefLink  allowedEntityDefLink : entityDefs)
+                        {
+                            if (allowedEntityDefLink != null)
                             {
-                                if (entityTypeName.equals(allowedEntity.getName()))
+                                String allowedTypeName = allowedEntityDefLink.getName();
+                                if (entityTypes.contains(allowedTypeName))
                                 {
                                     return true;
                                 }
