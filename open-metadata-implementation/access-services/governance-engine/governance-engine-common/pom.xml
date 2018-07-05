@@ -14,20 +14,15 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Governance Engine OMAS Client</name>
+    <name>Governance Engine OMAS Common</name>
     <description>
-        Client library for the Governance Engine Open Metadata Access Service (OMAS).
+        Common library for the Governance Engine Open Metadata Access Service (OMAS).
+        This is required by both client and server
     </description>
 
-    <artifactId>governance-engine-client</artifactId>
+    <artifactId>governance-engine-common</artifactId>
 
     <dependencies>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>governance-engine-common</artifactId>
-            <version>${open-metadata.version}</version>
-        </dependency>
 
         <!-- Spring for calling REST APIs -->
 
@@ -35,12 +30,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
             <version>${spring.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>RELEASE</version>
-            <scope>test</scope>
         </dependency>
 
     </dependencies>
