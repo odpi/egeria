@@ -15,15 +15,33 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class VoidResponse extends OMRSRESTAPIResponse
+public class VoidResponse extends OMRSAPIResponse
 {
     /**
      * Default constructor
      */
     public VoidResponse()
     {
+        super();
     }
 
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public VoidResponse(VoidResponse   template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Standard toString method.
+     *
+     * @return print out of variables in a JSON-style
+     */
     @Override
     public String toString()
     {
@@ -33,6 +51,7 @@ public class VoidResponse extends OMRSRESTAPIResponse
                 ", exceptionErrorMessage='" + exceptionErrorMessage + '\'' +
                 ", exceptionSystemAction='" + exceptionSystemAction + '\'' +
                 ", exceptionUserAction='" + exceptionUserAction + '\'' +
+                ", exceptionProperties=" + exceptionProperties +
                 '}';
     }
 }

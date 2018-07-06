@@ -313,7 +313,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * Return the TypeDefs that have the properties matching the supplied match criteria.
      *
      * @param userId unique identifier for requesting user.
-     * @param matchCriteria TypeDefProperties - a list of property names and values.
+     * @param matchCriteria TypeDefProperties containing a list of property names and values.
      * @return TypeDefs list.
      * @throws InvalidParameterException the matchCriteria is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
@@ -408,7 +408,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      *
      * @param userId unique identifier for requesting user.
      * @param searchCriteria String search criteria.
-     * @return TypeDefs list - each entry in the list contains a typedef.  This is is a structure
+     * @return TypeDefs list where each entry in the list contains a typedef.  This is is a structure
      * describing the TypeDef's category and properties.
      * @throws InvalidParameterException the searchCriteria is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
@@ -867,7 +867,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      *
      * @param userId unique identifier for requesting user.
      * @param attributeTypeDef TypeDef structure describing the TypeDef to test.
-     * @return boolean - true means the TypeDef matches the local definition - false means the TypeDef is not known.
+     * @return boolean where true means the TypeDef matches the local definition where false means the TypeDef is not known.
      * @throws InvalidParameterException the TypeDef is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
@@ -1388,7 +1388,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
 
 
     /**
-     * Return a historical version of an entity - includes the header, classifications and properties of the entity.
+     * Return a historical version of an entity. This includes the header, classifications and properties of the entity.
      *
      * @param userId unique identifier for requesting user.
      * @param guid String unique identifier for the entity.
@@ -1549,7 +1549,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @param sequencingOrder Enum defining how the results should be ordered.
      * @param pageSize the maximum number of result entities that can be returned on this request.  Zero means
      *                 unrestricted return results size.
-     * @return a list of entities matching the supplied criteria - null means no matching entities in the metadata
+     * @return a list of entities matching the supplied criteria where null means no matching entities in the metadata
      * collection.
      *
      * @throws InvalidParameterException a parameter is invalid or null.
@@ -1643,7 +1643,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @param sequencingOrder Enum defining how the results should be ordered.
      * @param pageSize the maximum number of result entities that can be returned on this request.  Zero means
      *                 unrestricted return results size.
-     * @return a list of entities matching the supplied criteria - null means no matching entities in the metadata
+     * @return a list of entities matching the supplied criteria where null means no matching entities in the metadata
      * collection.
      * @throws InvalidParameterException a parameter is invalid or null.
      * @throws TypeErrorException the type guid passed on the request is not known by the
@@ -2433,7 +2433,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @param entityTypeGUID unique identifier (guid) for the new entity's type.
      * @param initialProperties initial list of properties for the new entity; null means no properties.
      * @param initialClassifications initial list of classifications for the new entity; null means no classifications.
-     * @param initialStatus initial status - typically DRAFT, PREPARED or ACTIVE.
+     * @param initialStatus initial status typically set to DRAFT, PREPARED or ACTIVE.
      * @return EntityDetail showing the new header plus the requested properties and classifications.  The entity will
      * not have any relationships at this stage.
      * @throws InvalidParameterException one of the parameters is invalid or null.
@@ -2498,7 +2498,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                                    methodName);
 
         /*
-         * Validation complete - ok to create new instance
+         * Validation complete; ok to create new instance
          */
         OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
 
@@ -2709,7 +2709,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
         repositoryValidator.validateGUID(repositoryName, entityGUIDParameterName, entityGUID, methodName);
 
         /*
-         * Validation complete - ok to restore entity
+         * Validation complete; ok to restore entity
          */
         OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
 
@@ -2742,7 +2742,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      *                                    the metadata collection is stored.
      * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection.
      * @throws FunctionNotSupportedException the metadata repository hosting the metadata collection does not support
-     *                                       soft-deletes - use purgeEntity() to remove the entity permanently.
+     *                                       soft-deletes (use purgeEntity() to remove the entity permanently).
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public EntityDetail   deleteEntity(String userId,
@@ -3122,7 +3122,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @param initialProperties initial list of properties for the new entity; null means no properties.
      * @param entityOneGUID the unique identifier of one of the entities that the relationship is connecting together.
      * @param entityTwoGUID the unique identifier of the other entity that the relationship is connecting together.
-     * @param initialStatus initial status - typically DRAFT, PREPARED or ACTIVE.
+     * @param initialStatus initial status typically set to DRAFT, PREPARED or ACTIVE.
      * @return Relationship structure with the new header, requested entities and properties.
      * @throws InvalidParameterException one of the parameters is invalid or null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
@@ -3181,7 +3181,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                                    methodName);
 
         /*
-         * Validation complete - ok to create new instance
+         * Validation complete, ok to create new instance
          */
         OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
 
@@ -3808,7 +3808,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
         Relationship  relationship  = this.getRelationship(userId, relationshipGUID);
 
         /*
-         * Validation complete - ok to make changes
+         * Validation complete, ok to make changes
          */
 
         OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
@@ -3894,7 +3894,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                                       methodName);
 
         /*
-         * Validation complete - ok to make changes
+         * Validation complete; ok to make changes
          */
 
         OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;

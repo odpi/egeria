@@ -4,7 +4,7 @@ package org.odpi.openmetadata.adminservices.configuration.registration;
 import java.io.Serializable;
 
 /**
- * AccessServiceRegistration is used by an access service to register its adminservices interface
+ * AccessServiceRegistration is used by an access service to register its admin services interface
  */
 public class AccessServiceRegistration implements Serializable
 {
@@ -24,12 +24,12 @@ public class AccessServiceRegistration implements Serializable
     /**
      * Complete Constructor
      *
-     * @param accessServiceCode - ordinal for this access service
-     * @param accessServiceName - symbolic name for this access service
-     * @param accessServiceDescription - short description for this access service
-     * @param accessServiceWiki - wiki page for the access service for this access service
-     * @param accessServiceOperationalStatus - default initial operational status for the access service
-     * @param accessServiceAdminClassName - class name of adminservices class
+     * @param accessServiceCode ordinal for this access service
+     * @param accessServiceName symbolic name for this access service
+     * @param accessServiceDescription short description for this access service
+     * @param accessServiceWiki wiki page for the access service for this access service
+     * @param accessServiceOperationalStatus default initial operational status for the access service
+     * @param accessServiceAdminClassName class name of adminservices class
      */
     public AccessServiceRegistration(int                            accessServiceCode,
                                      String                         accessServiceName,
@@ -60,7 +60,7 @@ public class AccessServiceRegistration implements Serializable
     /**
      * Return the code for this access service
      *
-     * @return int - type code
+     * @return int type code
      */
     public int getAccessServiceCode()
     {
@@ -71,7 +71,7 @@ public class AccessServiceRegistration implements Serializable
     /**
      * Set up the code for this access service
      *
-     * @param accessServiceCode  int - type code
+     * @param accessServiceCode  int type code
      */
     public void setAccessServiceCode(int accessServiceCode)
     {
@@ -82,7 +82,7 @@ public class AccessServiceRegistration implements Serializable
     /**
      * Return the default name for this access service.
      *
-     * @return String - default name
+     * @return String default name
      */
     public String getAccessServiceName()
     {
@@ -93,7 +93,7 @@ public class AccessServiceRegistration implements Serializable
     /**
      * Set up the default name for this access service.
      *
-     * @param accessServiceName  String - default name
+     * @param accessServiceName  String default name
      */
     public void setAccessServiceName(String accessServiceName)
     {
@@ -104,7 +104,7 @@ public class AccessServiceRegistration implements Serializable
     /**
      * Return the default description for the type for this access service.
      *
-     * @return String - default description
+     * @return String default description
      */
     public String getAccessServiceDescription()
     {
@@ -115,7 +115,7 @@ public class AccessServiceRegistration implements Serializable
     /**
      * Set up the default description for the type for this access service.
      *
-     * @param accessServiceDescription  String - default description
+     * @param accessServiceDescription  String default description
      */
     public void setAccessServiceDescription(String accessServiceDescription)
     {
@@ -159,7 +159,7 @@ public class AccessServiceRegistration implements Serializable
     /**
      * Set up the initial operational status for this access service.
      *
-     * @param accessServiceOperationalStatus - AccessServiceOperationalStatus enum
+     * @param accessServiceOperationalStatus AccessServiceOperationalStatus enum
      */
     public void setAccessServiceOperationalStatus(AccessServiceOperationalStatus accessServiceOperationalStatus)
     {

@@ -7,18 +7,20 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
 
+import java.util.Objects;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 
 /**
- * AttributeTypeDefResponse provides a response structure for an OMRS REST API call that returns an AttributeTypeDef
- * object.
+ * AttributeTypeDefResponse provides a response structure for an OMRS REST API call that returns
+ * an AttributeTypeDef object.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class AttributeTypeDefResponse extends OMRSRESTAPIResponse
+public class AttributeTypeDefResponse extends OMRSAPIResponse
 {
     private AttributeTypeDef attributeTypeDef = null;
 
@@ -28,6 +30,23 @@ public class AttributeTypeDefResponse extends OMRSRESTAPIResponse
      */
     public AttributeTypeDefResponse()
     {
+        super();
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public AttributeTypeDefResponse(AttributeTypeDefResponse  template)
+    {
+        super(template);
+
+        if (template != null)
+        {
+            attributeTypeDef = template.getAttributeTypeDef();
+        }
     }
 
 
@@ -38,7 +57,14 @@ public class AttributeTypeDefResponse extends OMRSRESTAPIResponse
      */
     public AttributeTypeDef getAttributeTypeDef()
     {
-        return attributeTypeDef;
+        if (attributeTypeDef == null)
+        {
+            return null;
+        }
+        else
+        {
+            return new AttributeTypeDef(attributeTypeDef);
+        }
     }
 
 
@@ -53,6 +79,11 @@ public class AttributeTypeDefResponse extends OMRSRESTAPIResponse
     }
 
 
+    /**
+     * Standard toString method.
+     *
+     * @return print out of variables in a JSON-style
+     */
     @Override
     public String toString()
     {
@@ -63,6 +94,46 @@ public class AttributeTypeDefResponse extends OMRSRESTAPIResponse
                 ", exceptionErrorMessage='" + exceptionErrorMessage + '\'' +
                 ", exceptionSystemAction='" + exceptionSystemAction + '\'' +
                 ", exceptionUserAction='" + exceptionUserAction + '\'' +
+                ", exceptionProperties=" + exceptionProperties +
                 '}';
+    }
+
+
+    /**
+     * Compare the values of the supplied object with those stored in the current object.
+     *
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (!(objectToCompare instanceof AttributeTypeDefResponse))
+        {
+            return false;
+        }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        AttributeTypeDefResponse that = (AttributeTypeDefResponse) objectToCompare;
+        return Objects.equals(getAttributeTypeDef(), that.getAttributeTypeDef());
+    }
+
+
+    /**
+     * Create a hash code for this element type.
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+
+        return Objects.hash(super.hashCode(), getAttributeTypeDef());
     }
 }

@@ -48,7 +48,7 @@ public class OMRSRepositoryEventManager implements OMRSRepositoryEventProcessor
      * @param repositoryValidator validator class for checking open metadata repository objects and parameters.
      */
     public OMRSRepositoryEventManager(OMRSRepositoryEventExchangeRule exchangeRule,
-                                      OMRSRepositoryContentValidator repositoryValidator)
+                                      OMRSRepositoryContentValidator  repositoryValidator)
     {
         final String   methodName = "OMRSRepositoryEventManager";
         /*

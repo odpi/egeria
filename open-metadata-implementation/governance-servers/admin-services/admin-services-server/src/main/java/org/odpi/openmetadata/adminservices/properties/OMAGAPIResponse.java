@@ -1,9 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.adminservices.properties;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.*;
+
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -15,13 +18,25 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public abstract class OMAGAPIResponse
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type")
+@JsonSubTypes(
+        {
+                @JsonSubTypes.Type(value = OMAGServerConfigResponse.class, name = "OMAGServerConfigResponse"),
+                @JsonSubTypes.Type(value = VoidResponse.class, name = "VoidResponse"),
+
+        })
+public abstract class OMAGAPIResponse implements Serializable
 {
-    protected int       relatedHTTPCode = 200;
-    protected String    exceptionClassName = null;
-    protected String    exceptionErrorMessage = null;
-    protected String    exceptionSystemAction = null;
-    protected String    exceptionUserAction = null;
+    protected int                 relatedHTTPCode       = 200;
+    protected String              exceptionClassName    = null;
+    protected String              exceptionErrorMessage = null;
+    protected String              exceptionSystemAction = null;
+    protected String              exceptionUserAction   = null;
+    protected Map<String, Object> exceptionProperties   = null;
+
+    private static final long     serialVersionUID = 1L;
 
 
     /**
@@ -29,6 +44,25 @@ public abstract class OMAGAPIResponse
      */
     public OMAGAPIResponse()
     {
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public OMAGAPIResponse(OMAGAPIResponse   template)
+    {
+        if (template != null)
+        {
+            relatedHTTPCode = template.getRelatedHTTPCode();
+            exceptionClassName = template.getExceptionClassName();
+            exceptionErrorMessage = template.getExceptionErrorMessage();
+            exceptionSystemAction = template.getExceptionSystemAction();
+            exceptionUserAction = template.getExceptionUserAction();
+            exceptionProperties = template.getExceptionProperties();
+        }
     }
 
 
@@ -141,7 +175,44 @@ public abstract class OMAGAPIResponse
         this.exceptionUserAction = exceptionUserAction;
     }
 
+    /**
+     * Return any additional properties associated with the exception.
+     *
+     * @return map of properties
+     */
+    public Map<String, Object> getExceptionProperties()
+    {
+        if (exceptionProperties == null)
+        {
+            return null;
+        }
+        else if (exceptionProperties.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new HashMap<>(exceptionProperties);
+        }
+    }
 
+
+    /**
+     * Set up any additional properties associated with the exception.
+     *
+     * @param exceptionProperties
+     */
+    public void setExceptionProperties(Map<String, Object> exceptionProperties)
+    {
+        this.exceptionProperties = exceptionProperties;
+    }
+
+
+    /**
+     * Standard toString method.
+     *
+     * @return print out of variables in a JSON-style
+     */
     @Override
     public String toString()
     {
@@ -151,6 +222,52 @@ public abstract class OMAGAPIResponse
                 ", exceptionErrorMessage='" + exceptionErrorMessage + '\'' +
                 ", exceptionSystemAction='" + exceptionSystemAction + '\'' +
                 ", exceptionUserAction='" + exceptionUserAction + '\'' +
+                ", exceptionProperties=" + exceptionProperties +
                 '}';
+    }
+
+
+    /**
+     * Compare the values of the supplied object with those stored in the current object.
+     *
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (!(objectToCompare instanceof OMAGAPIResponse))
+        {
+            return false;
+        }
+        OMAGAPIResponse that = (OMAGAPIResponse) objectToCompare;
+        return getRelatedHTTPCode() == that.getRelatedHTTPCode() &&
+                Objects.equals(getExceptionClassName(), that.getExceptionClassName()) &&
+                Objects.equals(getExceptionErrorMessage(), that.getExceptionErrorMessage()) &&
+                Objects.equals(getExceptionSystemAction(), that.getExceptionSystemAction()) &&
+                Objects.equals(getExceptionUserAction(), that.getExceptionUserAction()) &&
+                Objects.equals(getExceptionProperties(), that.getExceptionProperties());
+    }
+
+
+    /**
+     * Create a hash code for this element type.
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+
+        return Objects.hash(getRelatedHTTPCode(),
+                            getExceptionClassName(),
+                            getExceptionErrorMessage(),
+                            getExceptionSystemAction(),
+                            getExceptionUserAction(),
+                            getExceptionProperties());
     }
 }

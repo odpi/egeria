@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  * The ConnectedAssetRESTServices is the server-side implementation of the Connected Asset OMAS REST interface.
  */
 @RestController
-@RequestMapping("/access-services/connected-asset")
+@RequestMapping("/open-metadata/access-services/connected-asset")
 public class ConnectedAssetOMASResource
 {
     private ConnectedAssetRESTServices restAPI = new ConnectedAssetRESTServices();

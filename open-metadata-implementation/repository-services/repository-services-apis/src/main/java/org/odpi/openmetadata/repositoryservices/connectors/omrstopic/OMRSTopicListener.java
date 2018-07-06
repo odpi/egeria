@@ -2,7 +2,9 @@
 package org.odpi.openmetadata.repositoryservices.connectors.omrstopic;
 
 
-import org.odpi.openmetadata.repositoryservices.events.v1.OMRSEventV1;
+import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEvent;
+import org.odpi.openmetadata.repositoryservices.events.OMRSRegistryEvent;
+import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEvent;
 
 /**
  * OMRSTopicListener defines the interface that a listener must implement in order to receive events
@@ -11,9 +13,25 @@ import org.odpi.openmetadata.repositoryservices.events.v1.OMRSEventV1;
 public interface OMRSTopicListener
 {
     /**
-     * Method to pass an event received on topic.
+     * Method to pass a Registry event received on topic.
      *
      * @param event inbound event
      */
-    void processEvent(OMRSEventV1 event);
+    void processRegistryEvent(OMRSRegistryEvent event);
+
+
+    /**
+     * Method to pass a Registry event received on topic.
+     *
+     * @param event inbound event
+     */
+    void processTypeDefEvent(OMRSTypeDefEvent event);
+
+
+    /**
+     * Method to pass a Registry event received on topic.
+     *
+     * @param event inbound event
+     */
+    void processInstanceEvent(OMRSInstanceEvent event);
 }

@@ -160,6 +160,10 @@ public class ElementHeader extends PropertyBase
         {
             return null;
         }
+        else if (classifications.isEmpty())
+        {
+            return null;
+        }
         else
         {
             return new ArrayList<>(classifications);

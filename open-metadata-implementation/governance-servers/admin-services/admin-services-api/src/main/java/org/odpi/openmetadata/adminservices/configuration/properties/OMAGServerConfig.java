@@ -49,12 +49,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OMAGServerConfig implements Serializable
 {
+    private static final long serialVersionUID = 1L;
+
     /*
      * Default values used when the server configuration does not provide a value.
      */
     private static final String  defaultLocalServerType                   = "Open Metadata and Governance Server";
     private static final String  defaultLocalOrganizationName             = null;
     private static final String  defaultLocalServerURL                    = "http://localhost:8080";
+    private static final String  defaultLocalServerUserId                 = "OMAGServer";
     private static final int     defaultMaxPageSize                       = 1000;
 
 
@@ -65,12 +68,11 @@ public class OMAGServerConfig implements Serializable
     private String                    localServerType          = defaultLocalServerType;
     private String                    organizationName         = defaultLocalOrganizationName;
     private String                    localServerURL           = defaultLocalServerURL;
+    private String                    localServerUserId        = defaultLocalServerUserId;
     private int                       maxPageSize              = defaultMaxPageSize;
-    private List<AccessServiceConfig> accessServicesConfig     = new ArrayList<>();
+    private EventBusConfig            eventBusConfig           = null;
+    private List<AccessServiceConfig> accessServicesConfig     = null;
     private RepositoryServicesConfig  repositoryServicesConfig = null;
-
-
-    private static final long serialVersionUID = 1L;
 
 
     /**
@@ -81,6 +83,21 @@ public class OMAGServerConfig implements Serializable
     public OMAGServerConfig()
     {
 
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     */
+    public OMAGServerConfig(OMAGServerConfig  template)
+    {
+        localServerName = template.getLocalServerName();
+        localServerType = template.getLocalServerType();
+        localServerURL = template.getLocalServerURL();
+        organizationName = template.getOrganizationName();
+        maxPageSize = template.getMaxPageSize();
+        accessServicesConfig = template.getAccessServicesConfig();
+        repositoryServicesConfig = template.getRepositoryServicesConfig();
     }
 
 
@@ -98,7 +115,7 @@ public class OMAGServerConfig implements Serializable
     /**
      * Set up the name of the local server.
      *
-     * @param localServerName - String local server name
+     * @param localServerName String local server name
      */
     public void setLocalServerName(String localServerName)
     {
@@ -120,7 +137,7 @@ public class OMAGServerConfig implements Serializable
     /**
      * Set up the descriptive name for the server type.
      *
-     * @param localServerType - String server type
+     * @param localServerType String server type
      */
     public void setLocalServerType(String localServerType)
     {
@@ -142,7 +159,7 @@ public class OMAGServerConfig implements Serializable
     /**
      * Set up the name of the organization that is running the server.
      *
-     * @param organizationName - String organization name
+     * @param organizationName String organization name
      */
     public void setOrganizationName(String organizationName)
     {
@@ -164,11 +181,35 @@ public class OMAGServerConfig implements Serializable
     /**
      * Set up the base URL for calling the local server.
      *
-     * @param localServerURL - String URL
+     * @param localServerURL String URL
      */
     public void setLocalServerURL(String localServerURL)
     {
         this.localServerURL = localServerURL;
+    }
+
+
+    /**
+     * Return the userId that the local server should use when processing events and there is no external user
+     * driving the operation.
+     *
+     * @return user id
+     */
+    public String getLocalServerUserId()
+    {
+        return localServerUserId;
+    }
+
+
+    /**
+     * Set up the userId that the local server should use when processing events and there is no external user
+     * driving the operation.
+     *
+     * @param localServerUserId string user id
+     */
+    public void setLocalServerUserId(String localServerUserId)
+    {
+        this.localServerUserId = localServerUserId;
     }
 
 
@@ -186,7 +227,7 @@ public class OMAGServerConfig implements Serializable
     /**
      * Set up the  maximum page size supported by this server.
      *
-     * @param maxPageSize - int number of elements
+     * @param maxPageSize int number of elements
      */
     public void setMaxPageSize(int maxPageSize)
     {
@@ -195,9 +236,30 @@ public class OMAGServerConfig implements Serializable
 
 
     /**
+     * Set up the information used to create connections to an event bus.
+     *
+     * @return EventBusConfig object
+     */
+    public EventBusConfig getEventBusConfig()
+    {
+        return eventBusConfig;
+    }
+
+
+    /**
+     * Set up the information used to create connections to an event bus.
+     *
+     * @param eventBusConfig EventBusConfig object
+     */
+    public void setEventBusConfig(EventBusConfig eventBusConfig)
+    {
+        this.eventBusConfig = eventBusConfig;
+    }
+
+    /**
      * Return the configuration for the registered Open Metadata Access Services (OMAS).
      *
-     * @return array of configuration properties - one for each OMAS
+     * @return array of configuration properties one for each OMAS
      */
     public List<AccessServiceConfig> getAccessServicesConfig()
     {
@@ -208,7 +270,7 @@ public class OMAGServerConfig implements Serializable
     /**
      * Set up the configuration for the registered Open Metadata Access Services (OMAS).
      *
-     * @param accessServicesConfig - array of configuration properties - one for each OMAS
+     * @param accessServicesConfig array of configuration properties one for each OMAS
      */
     public void setAccessServicesConfig(List<AccessServiceConfig> accessServicesConfig)
     {
@@ -230,7 +292,7 @@ public class OMAGServerConfig implements Serializable
     /**
      * Set up the Open Metadata Repository Services (OMRS) config.
      *
-     * @param repositoryServicesConfig - configuration properties that control OMRS
+     * @param repositoryServicesConfig configuration properties that control OMRS
      */
     public void setRepositoryServicesConfig(RepositoryServicesConfig repositoryServicesConfig)
     {

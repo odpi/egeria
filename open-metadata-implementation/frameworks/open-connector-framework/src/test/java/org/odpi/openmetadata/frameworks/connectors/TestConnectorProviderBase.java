@@ -29,9 +29,9 @@ public class TestConnectorProviderBase
         ConnectorTypeProperties  connectorTypeProperties = new ConnectorTypeProperties(connectorTypeBean);
         MockConnectorProvider    mockConnectorProvider   = new MockConnectorProvider();
 
-        mockConnectorProvider.setTestConnectorTypeProperties(connectorTypeProperties);
+        mockConnectorProvider.setTestConnectorTypeProperties(connectorTypeBean);
 
-        assertTrue(mockConnectorProvider.getConnectorTypeProperties() == connectorTypeProperties);
+        assertTrue(mockConnectorProvider.getConnectorTypeProperties().equals(connectorTypeProperties));
     }
 
 

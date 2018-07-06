@@ -98,10 +98,10 @@ public enum AccessServiceDescription implements Serializable
     /**
      * Default Constructor
      *
-     * @param accessServiceCode - ordinal for this access service
-     * @param accessServiceName - symbolic name for this access service
-     * @param accessServiceDescription - short description for this access service
-     * @param accessServiceWiki - wiki page for the access service for this access service
+     * @param accessServiceCode ordinal for this access service
+     * @param accessServiceName symbolic name for this access service
+     * @param accessServiceDescription short description for this access service
+     * @param accessServiceWiki wiki page for the access service for this access service
      */
     AccessServiceDescription(int                            accessServiceCode,
                              String                         accessServiceName,
@@ -121,7 +121,7 @@ public enum AccessServiceDescription implements Serializable
     /**
      * Return the code for this enum instance
      *
-     * @return int - type code
+     * @return int type code
      */
     public int getAccessServiceCode()
     {
@@ -132,7 +132,7 @@ public enum AccessServiceDescription implements Serializable
     /**
      * Return the default name for this enum instance.
      *
-     * @return String - default name
+     * @return String default name
      */
     public String getAccessServiceName()
     {
@@ -143,7 +143,7 @@ public enum AccessServiceDescription implements Serializable
     /**
      * Return the default description for the type for this enum instance.
      *
-     * @return String - default description
+     * @return String default description
      */
     public String getAccessServiceDescription()
     {

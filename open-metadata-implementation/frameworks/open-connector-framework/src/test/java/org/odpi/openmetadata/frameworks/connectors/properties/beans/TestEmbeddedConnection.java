@@ -53,7 +53,7 @@ public class TestEmbeddedConnection
     private void validateResultObject(EmbeddedConnection  resultObject)
     {
         assertTrue(resultObject.getDisplayName().equals("TestDisplayName"));
-        assertTrue(resultObject.getArguments().equals(arguments));
+        assertTrue(resultObject.getArguments() == null);
         assertTrue(resultObject.getEmbeddedConnection().equals(connection));
     }
 

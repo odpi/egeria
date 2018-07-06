@@ -9,6 +9,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -19,7 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class TypeDefGalleryResponse extends OMRSRESTAPIResponse
+public class TypeDefGalleryResponse extends OMRSAPIResponse
 {
     private List<AttributeTypeDef> attributeTypeDefs = null;
     private List<TypeDef>          typeDefs          = null;
@@ -30,6 +31,24 @@ public class TypeDefGalleryResponse extends OMRSRESTAPIResponse
      */
     public TypeDefGalleryResponse()
     {
+        super();
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public TypeDefGalleryResponse(TypeDefGalleryResponse   template)
+    {
+        super(template);
+
+        if (template != null)
+        {
+            attributeTypeDefs = template.getAttributeTypeDefs();
+            typeDefs = template.getTypeDefs();
+        }
     }
 
 
@@ -40,7 +59,25 @@ public class TypeDefGalleryResponse extends OMRSRESTAPIResponse
      */
     public List<AttributeTypeDef> getAttributeTypeDefs()
     {
-        return attributeTypeDefs;
+        if (attributeTypeDefs == null)
+        {
+            return null;
+        }
+        else if (attributeTypeDefs.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            List<AttributeTypeDef>  clonedTypeDefs = new ArrayList<>();
+
+            for (AttributeTypeDef  attributeTypeDef : attributeTypeDefs)
+            {
+                clonedTypeDefs.add(new AttributeTypeDef(attributeTypeDef));
+            }
+
+            return clonedTypeDefs;
+        }
     }
 
 
@@ -51,7 +88,7 @@ public class TypeDefGalleryResponse extends OMRSRESTAPIResponse
      */
     public void setAttributeTypeDefs(List<AttributeTypeDef> attributeTypeDefs)
     {
-        this.attributeTypeDefs = new ArrayList<>(attributeTypeDefs);
+        this.attributeTypeDefs = attributeTypeDefs;
     }
 
 
@@ -62,7 +99,25 @@ public class TypeDefGalleryResponse extends OMRSRESTAPIResponse
      */
     public List<TypeDef> getTypeDefs()
     {
-        return typeDefs;
+        if (typeDefs == null)
+        {
+            return null;
+        }
+        else if (typeDefs.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            List<TypeDef>  clonedTypeDefs = new ArrayList<>();
+
+            for (TypeDef  typeDef : typeDefs)
+            {
+                clonedTypeDefs.add(new TypeDef(typeDef));
+            }
+
+            return clonedTypeDefs;
+        }
     }
 
 
@@ -73,10 +128,15 @@ public class TypeDefGalleryResponse extends OMRSRESTAPIResponse
      */
     public void setTypeDefs(List<TypeDef> typeDefs)
     {
-        this.typeDefs = new ArrayList<>(typeDefs);
+        this.typeDefs = typeDefs;
     }
 
 
+    /**
+     * Standard toString method.
+     *
+     * @return print out of variables in a JSON-style
+     */
     @Override
     public String toString()
     {
@@ -88,6 +148,46 @@ public class TypeDefGalleryResponse extends OMRSRESTAPIResponse
                 ", exceptionErrorMessage='" + exceptionErrorMessage + '\'' +
                 ", exceptionSystemAction='" + exceptionSystemAction + '\'' +
                 ", exceptionUserAction='" + exceptionUserAction + '\'' +
+                ", exceptionProperties=" + exceptionProperties +
                 '}';
+    }
+
+
+    /**
+     * Compare the values of the supplied object with those stored in the current object.
+     *
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (!(objectToCompare instanceof TypeDefGalleryResponse))
+        {
+            return false;
+        }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        TypeDefGalleryResponse that = (TypeDefGalleryResponse) objectToCompare;
+        return Objects.equals(getAttributeTypeDefs(), that.getAttributeTypeDefs()) &&
+                Objects.equals(getTypeDefs(), that.getTypeDefs());
+    }
+
+
+    /**
+     * Create a hash code for this element type.
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), getAttributeTypeDefs(), getTypeDefs());
     }
 }

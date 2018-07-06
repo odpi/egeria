@@ -11,6 +11,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,8 +57,10 @@ import java.util.List;
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class LocalRepositoryConfig
+public class LocalRepositoryConfig implements Serializable
 {
+    private static final long serialVersionUID = 1L;
+
     private String                   metadataCollectionId            = null;
     private Connection               localRepositoryLocalConnection  = null;
     private Connection               localRepositoryRemoteConnection = null;
@@ -71,18 +74,18 @@ public class LocalRepositoryConfig
     /**
      * Constructor
      *
-     * @param metadataCollectionId - unique id of local repository's metadata collection
-     * @param localRepositoryLocalConnection - the connection properties used to create a locally optimized connector
+     * @param metadataCollectionId unique id of local repository's metadata collection
+     * @param localRepositoryLocalConnection the connection properties used to create a locally optimized connector
      *         to the local repository for use by this local server's components.
-     * @param localRepositoryRemoteConnection - the connection properties used to create a connector
+     * @param localRepositoryRemoteConnection the connection properties used to create a connector
      *         to the local repository for use by remote servers.
-     * @param eventsToSaveRule - enumeration describing which open metadata repository events should be saved to
+     * @param eventsToSaveRule enumeration describing which open metadata repository events should be saved to
      *                         the local repository.
-     * @param selectedTypesToSave - list of TypeDefs in supported of the eventsToSave.SELECTED_TYPES option.
-     * @param eventsToSendRule - enumeration describing which open metadata repository events should be sent from
+     * @param selectedTypesToSave list of TypeDefs in supported of the eventsToSave.SELECTED_TYPES option.
+     * @param eventsToSendRule enumeration describing which open metadata repository events should be sent from
      *                         the local repository.
-     * @param selectedTypesToSend - list of TypeDefs in supported of the eventsToSend.SELECTED_TYPES option.
-     * @param eventMapperConnection - Connection for the local repository's event mapper.  This is optional.
+     * @param selectedTypesToSend list of TypeDefs in supported of the eventsToSend.SELECTED_TYPES option.
+     * @param eventMapperConnection Connection for the local repository's event mapper.  This is optional.
      */
     public LocalRepositoryConfig(String                    metadataCollectionId,
                                  Connection                localRepositoryLocalConnection,
@@ -129,7 +132,7 @@ public class LocalRepositoryConfig
      * Set up the unique id of local repository's metadata collection.  If this value is set to
      * null, the server will generate a unique Id.
      *
-     * @param metadataCollectionId - String unique Id
+     * @param metadataCollectionId String unique Id
      */
     public void setMetadataCollectionId(String metadataCollectionId)
     {
@@ -153,7 +156,7 @@ public class LocalRepositoryConfig
      * Set up the connection properties used to create a locally optimized connector to the local repository for
      * use by this local server's components.  If this value is null then the localRepositoryRemoteConnection is used.
      *
-     * @param localRepositoryLocalConnection - Connection properties object
+     * @param localRepositoryLocalConnection Connection properties object
      */
     public void setLocalRepositoryLocalConnection(Connection localRepositoryLocalConnection)
     {
@@ -175,7 +178,7 @@ public class LocalRepositoryConfig
     /**
      * Set up the connection properties used to create a connector to the local repository for use by remote servers.
      *
-     * @param localRepositoryRemoteConnection - Connection properties object
+     * @param localRepositoryRemoteConnection Connection properties object
      */
     public void setLocalRepositoryRemoteConnection(Connection localRepositoryRemoteConnection)
     {
@@ -199,7 +202,7 @@ public class LocalRepositoryConfig
      * Set up the enumeration describing which open metadata repository events should be saved to
      * the local repository.
      *
-     * @param eventsToSaveRule - OpenMetadataExchangeRule enum
+     * @param eventsToSaveRule OpenMetadataExchangeRule enum
      */
     public void setEventsToSaveRule(OpenMetadataExchangeRule eventsToSaveRule)
     {
@@ -228,7 +231,7 @@ public class LocalRepositoryConfig
     /**
      * Set up the list of TypeDefs in supported of the eventsToSave.SELECTED_TYPES option.
      *
-     * @param selectedTypesToSave - list of types
+     * @param selectedTypesToSave list of types
      */
     public void setSelectedTypesToSave(List<TypeDefSummary> selectedTypesToSave)
     {
@@ -259,7 +262,7 @@ public class LocalRepositoryConfig
      * Set up the enumeration describing which open metadata repository events should be sent from
      * the local repository.
      *
-     * @param eventsToSendRule - OpenMetadataExchangeRule enum
+     * @param eventsToSendRule OpenMetadataExchangeRule enum
      */
     public void setEventsToSendRule(OpenMetadataExchangeRule eventsToSendRule)
     {
@@ -288,7 +291,7 @@ public class LocalRepositoryConfig
     /**
      * Set up the list of TypeDefs in supported of the eventsToSend.SELECTED_TYPES option.
      *
-     * @param selectedTypesToSend - list of types
+     * @param selectedTypesToSend list of types
      */
     public void setSelectedTypesToSend(List<TypeDefSummary> selectedTypesToSend)
     {
@@ -323,7 +326,7 @@ public class LocalRepositoryConfig
      * in the repository without going through the OMRS interfaces.  It maps the proprietary events from
      * the local repository to the OMRS Events.
      *
-     * @param eventMapperConnection - Connection properties object
+     * @param eventMapperConnection Connection properties object
      */
     public void setEventMapperConnection(Connection eventMapperConnection)
     {

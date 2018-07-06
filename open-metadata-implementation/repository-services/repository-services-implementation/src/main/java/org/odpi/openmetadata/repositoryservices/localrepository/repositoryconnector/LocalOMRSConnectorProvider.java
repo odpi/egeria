@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypeProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryeventmapper.OMRSRepositoryEventMapperConnector;
 import org.odpi.openmetadata.repositoryservices.eventmanagement.OMRSRepositoryEventExchangeRule;
@@ -33,6 +34,7 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
     private OMRSRepositoryEventExchangeRule    saveExchangeRule                = null;
     private LocalOMRSRepositoryConnector       localRepositoryConnector        = null;
     private ConnectorTypeProperties            connectorTypeProperties         = null;
+    private ConnectorType                      connectorType                   = null;
 
 
     /**
@@ -83,6 +85,17 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
         return connectorTypeProperties;
     }
 
+
+    /**
+     * Returns the properties about the type of connector that this Connector Provider supports.
+     *
+     * @return properties including the name of the connector type, the connector provider class
+     * and any specific connection properties that are recognized by this connector.
+     */
+    public ConnectorType getConnectorType()
+    {
+        return connectorType;
+    }
 
     /**
      * Creates a new instance of a connector based on the information in the supplied connection.

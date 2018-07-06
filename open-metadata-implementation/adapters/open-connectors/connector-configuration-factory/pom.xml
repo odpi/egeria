@@ -61,13 +61,13 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>kafka-omrs-topic-connector</artifactId>
+            <artifactId>kafka-open-metadata-topic-connector</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>inmemory-omrs-topic-connector</artifactId>
+            <artifactId>inmemory-open-metadata-topic-connector</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
 

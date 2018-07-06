@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 
+import java.util.Objects;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -36,8 +38,16 @@ public class OMAGServerConfigResponse extends OMAGAPIResponse
      */
     public OMAGServerConfig getOMAGServerConfig()
     {
-        return serverConfig;
+        if (serverConfig == null)
+        {
+            return null;
+        }
+        else
+        {
+            return new OMAGServerConfig(serverConfig);
+        }
     }
+
 
     /**
      * Set up the OMAGServerConfig object.
@@ -49,6 +59,12 @@ public class OMAGServerConfigResponse extends OMAGAPIResponse
         this.serverConfig = serverConfig;
     }
 
+
+    /**
+     * Standard toString method.
+     *
+     * @return print out of variables in a JSON-style
+     */
     @Override
     public String toString()
     {
@@ -59,6 +75,46 @@ public class OMAGServerConfigResponse extends OMAGAPIResponse
                 ", exceptionErrorMessage='" + exceptionErrorMessage + '\'' +
                 ", exceptionSystemAction='" + exceptionSystemAction + '\'' +
                 ", exceptionUserAction='" + exceptionUserAction + '\'' +
+                ", exceptionProperties=" + exceptionProperties +
                 '}';
+    }
+
+
+    /**
+     * Compare the values of the supplied object with those stored in the current object.
+     *
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (!(objectToCompare instanceof OMAGServerConfigResponse))
+        {
+            return false;
+        }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        OMAGServerConfigResponse that = (OMAGServerConfigResponse) objectToCompare;
+        return Objects.equals(serverConfig, that.serverConfig);
+    }
+
+
+    /**
+     * Create a hash code for this element type.
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+
+        return Objects.hash(super.hashCode(), serverConfig);
     }
 }

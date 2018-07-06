@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 
+import java.util.Objects;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -15,7 +17,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class TypeDefResponse extends OMRSRESTAPIResponse
+public class TypeDefResponse extends OMRSAPIResponse
 {
     private TypeDef typeDef = null;
 
@@ -25,6 +27,23 @@ public class TypeDefResponse extends OMRSRESTAPIResponse
      */
     public TypeDefResponse()
     {
+        super();
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public TypeDefResponse(TypeDefResponse  template)
+    {
+        super(template);
+
+        if (template != null)
+        {
+            typeDef = template.getTypeDef();
+        }
     }
 
 
@@ -35,7 +54,14 @@ public class TypeDefResponse extends OMRSRESTAPIResponse
      */
     public TypeDef getTypeDef()
     {
-        return typeDef;
+        if (typeDef == null)
+        {
+            return null;
+        }
+        else
+        {
+            return new TypeDef(typeDef);
+        }
     }
 
 
@@ -50,6 +76,11 @@ public class TypeDefResponse extends OMRSRESTAPIResponse
     }
 
 
+    /**
+     * Standard toString method.
+     *
+     * @return print out of variables in a JSON-style
+     */
     @Override
     public String toString()
     {
@@ -60,6 +91,45 @@ public class TypeDefResponse extends OMRSRESTAPIResponse
                 ", exceptionErrorMessage='" + exceptionErrorMessage + '\'' +
                 ", exceptionSystemAction='" + exceptionSystemAction + '\'' +
                 ", exceptionUserAction='" + exceptionUserAction + '\'' +
+                ", exceptionProperties=" + exceptionProperties +
                 '}';
+    }
+
+
+    /**
+     * Compare the values of the supplied object with those stored in the current object.
+     *
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (!(objectToCompare instanceof TypeDefResponse))
+        {
+            return false;
+        }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        TypeDefResponse that = (TypeDefResponse) objectToCompare;
+        return Objects.equals(getTypeDef(), that.getTypeDef());
+    }
+
+
+    /**
+     * Create a hash code for this element type.
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), getTypeDef());
     }
 }

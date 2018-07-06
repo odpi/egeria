@@ -9,10 +9,10 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * The connection is an object that contains the properties needed to create and initialise a connector to access a
+ * ConnectionProperties is an object that contains the properties needed to create and initialise a connector to access a
  * specific data assets.
  *
- * The properties for a connection are defined in model 0201.  They include the following options for connector name:
+ * The properties for ConnectionProperties are defined in model 0201.  They include the following options for connector name:
  * <ul>
  *     <li>
  *         guid - Globally unique identifier for the connection.
@@ -58,9 +58,6 @@ import java.util.Objects;
  *          endpoint - Properties that describe the server endpoint where the connector will retrieve the assets.
  *      </li>
  *  </ul>
-
- * The connection class is simply used to cache the properties for an connection.
- * It is used by other classes to exchange this information between a metadata repository and a consumer.
  */
 public class ConnectionProperties extends AssetReferenceable
 {

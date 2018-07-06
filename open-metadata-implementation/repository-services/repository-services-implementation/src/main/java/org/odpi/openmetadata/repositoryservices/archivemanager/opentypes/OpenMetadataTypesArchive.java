@@ -36,7 +36,7 @@ public class OpenMetadataTypesArchive
     private static final String                  archiveName        = "Open Metadata Types";
     private static final String                  archiveDescription = "Standard types for open metadata repositories.";
     private static final OpenMetadataArchiveType archiveType        = OpenMetadataArchiveType.CONTENT_PACK;
-    private static final String                  originatorName     = "Apache Atlas (OMRS)";
+    private static final String                  originatorName     = "ODPi Egeria (OMRS)";
     private static final Date                    creationDate       = new Date(1516313040008L);
 
     /*

@@ -1,8 +1,14 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservices.connectedasset.server;
 
+import org.odpi.openmetadata.accessservices.connectedasset.admin.ConnectedAssetAdmin;
 import org.odpi.openmetadata.accessservices.connectedasset.server.properties.AssetUniverseResponse;
-import org.odpi.openmetadata.accessservices.connectedasset.properties.AssetUniverse;
+import org.odpi.openmetadata.adminservices.OMAGAccessServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceOperationalStatus;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
+import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 
 /**
@@ -10,13 +16,35 @@ import org.odpi.openmetadata.accessservices.connectedasset.properties.AssetUnive
  */
 public class ConnectedAssetRESTServices
 {
+    static private String                  accessServiceName   = null;
+    static private OMRSRepositoryConnector repositoryConnector = null;
+
+    /**
+     * Provide a connector to the REST Services.
+     *
+     * @param accessServiceName - name of this access service
+     * @param repositoryConnector - OMRS Repository Connector to the property server.
+     */
+    static public void setRepositoryConnector(String                   accessServiceName,
+                                              OMRSRepositoryConnector repositoryConnector)
+    {
+        ConnectedAssetRESTServices.accessServiceName = accessServiceName;
+        ConnectedAssetRESTServices.repositoryConnector = repositoryConnector;
+    }
 
     /**
      * Default constructor
      */
     public ConnectedAssetRESTServices()
     {
-
+        AccessServiceDescription myDescription = AccessServiceDescription.CONNECTED_ASSET_OMAS;
+        AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription.getAccessServiceCode(),
+                                                                                 myDescription.getAccessServiceName(),
+                                                                                 myDescription.getAccessServiceDescription(),
+                                                                                 myDescription.getAccessServiceWiki(),
+                                                                                 AccessServiceOperationalStatus.ENABLED,
+                                                                                 ConnectedAssetAdmin.class.getName());
+        OMAGAccessServiceRegistration.registerAccessService(myRegistration);
     }
 
 
@@ -54,7 +82,7 @@ public class ConnectedAssetRESTServices
     public AssetUniverseResponse  getAssetPropertiesByConnection(String   userId,
                                                                  String   guid)
     {
-        AssetUniverse   extractedAssetProperties = null;
+        AssetUniverse extractedAssetProperties = null;
 
         return null;
     }

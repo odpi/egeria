@@ -2,6 +2,7 @@
 package org.odpi.openmetadata.frameworks.connectors;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypeProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 
 /**
  * MockConnectorProvider is the simplest connector provider implementation possible that will
@@ -33,10 +34,10 @@ public class MockConnectorProvider extends ConnectorProviderBase
     /**
      * Pass the supplied ConnectorTypeProperties object to the super class.
      *
-     * @param connectorTypeProperties properties from metadata repository
+     * @param connectorType properties from metadata repository
      */
-    public void setTestConnectorTypeProperties(ConnectorTypeProperties connectorTypeProperties)
+    public void setTestConnectorTypeProperties(ConnectorType connectorType)
     {
-        super.setConnectorTypeProperties(connectorTypeProperties);
+        super.setConnectorTypeProperties(connectorType);
     }
 }

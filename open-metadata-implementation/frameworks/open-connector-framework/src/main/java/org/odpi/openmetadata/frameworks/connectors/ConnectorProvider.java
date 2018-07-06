@@ -6,6 +6,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypeProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 
 /**
  * The ConnectorProvider is a formal plug-in interface for the Open Connector Framework (OCF).  It provides a factory
@@ -23,17 +24,29 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 public abstract class ConnectorProvider
 {
     /**
-     * Returns the properties about the type of connector that this Connector Provider supports.
+     * Returns the properties about the type of connector that this ConnectorTypeManager supports.
      *
      * @return properties including the name of the connector type, the connector provider class
      * and any specific connection properties that are recognized by this connector.
      */
     public abstract ConnectorTypeProperties getConnectorTypeProperties();
 
+
     /**
-     * Creates a new instance of a connector using the name of the connector provider in the supplied connection.
+     * Returns the properties about the type of connector that this ConnectorTypeManager supports.
      *
-     * @param connection   properties for the connector and connector provider.
+     * @return properties including the name of the connector type, the connector provider class
+     * and any specific connection properties that are recognized by this connector.
+     */
+    public abstract ConnectorType getConnectorType();
+
+
+    /**
+     * Creates a new instance of a connector using the information from the connection and the properties
+     * from the subclass(es).
+     *
+     * @param connection   connection that should have all of the properties needed by the Connector Provider
+     *                   to create a connector instance.
      * @return new connector instance.
      * @throws ConnectionCheckedException an error with the connection.
      * @throws ConnectorCheckedException an error initializing the connector.
@@ -42,7 +55,8 @@ public abstract class ConnectorProvider
 
 
     /**
-     * Creates a new instance of a connector based on the information in the supplied connection.
+     * Creates a new instance of a connector using the information from the connection and the properties
+     * from the subclass(es).
      *
      * @param connection   connection that should have all of the properties needed by the Connector Provider
      *                   to create a connector instance.
