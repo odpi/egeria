@@ -69,6 +69,7 @@ __MACOSX
 
 # specific OMAG config files
 omag.server.*.config
+*.registrystore
 
 # other files
 .DS_Store

@@ -195,7 +195,7 @@ public class OMRSCohortManager
             if (enterpriseTopicConnector != null)
             {
                 OMRSEventPublisher enterpriseEventPublisher = new OMRSEventPublisher("OMAS Enterprise Access",
-                                                                                     cohortTopicConnector);
+                                                                                     enterpriseTopicConnector);
 
                 this.cohortRepositoryEventManager.registerInstanceProcessor(enterpriseEventPublisher);
             }
