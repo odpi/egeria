@@ -13,4 +13,5 @@ The current Egeria maintainers are:
 | Kees van de Fliert | keesvandefliert@gmail.com |
 | Guy Ackermans | guy.ackermans92@gmail.com |
 | Maryna Strelchuk | maryna.strelchuk@gmail.com |
+| Bogdan Sava | Bogdan-Mihail.Sava@ing.com |
 
