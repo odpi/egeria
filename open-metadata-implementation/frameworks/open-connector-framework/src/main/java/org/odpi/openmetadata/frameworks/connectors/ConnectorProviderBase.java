@@ -8,11 +8,12 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypeProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 
 import java.util.UUID;
 
 /**
- * ConnectorProviderBase is a base class for a new connector provider.  It manages all of the class loading
+ * ConnectorProviderBase is a base class for a connector provider.  It manages all of the class loading
  * for subclass implementations of the connector provider along with the generation of new connector guids.
  *
  * ConnectorProviderBase creates a connector instance with the class name from the private variable called
@@ -25,12 +26,12 @@ import java.util.UUID;
  */
 public abstract class ConnectorProviderBase extends ConnectorProvider
 {
-    private String                  connectorClassName = null;
-    private ConnectorTypeProperties connectorTypeProperties = null;
+    private   String        connectorClassName = null;
+    protected ConnectorType connectorTypeBean  = null;
 
-    private final int             hashCode = UUID.randomUUID().hashCode();
+    private final int     hashCode = UUID.randomUUID().hashCode();
 
-    private static final Logger   log = Logger.getLogger(ConnectorProviderBase.class);
+    private static final Logger     log = Logger.getLogger(ConnectorProviderBase.class);
 
     /**
      * Typical constructor
@@ -75,7 +76,7 @@ public abstract class ConnectorProviderBase extends ConnectorProvider
      * @param newConnectorClassName   this must be a valid Java class name for a class that implements the
      *                              org.odpi.openmetadata.Connector interface.
      */
-    public  void setConnectorClassName(String   newConnectorClassName)
+    protected  void setConnectorClassName(String   newConnectorClassName)
     {
         log.debug("Connector class name set: " + newConnectorClassName);
 
@@ -91,7 +92,33 @@ public abstract class ConnectorProviderBase extends ConnectorProvider
      */
     public ConnectorTypeProperties getConnectorTypeProperties()
     {
-        return connectorTypeProperties;
+        if (connectorTypeBean == null)
+        {
+            return null;
+        }
+        else
+        {
+            return new ConnectorTypeProperties(connectorTypeBean);
+        }
+    }
+
+
+    /**
+     * Returns the properties about the type of connector that this ConnectorTypeManager supports.
+     *
+     * @return properties including the name of the connector type, the connector provider class
+     * and any specific connection properties that are recognized by this connector.
+     */
+    public ConnectorType getConnectorType()
+    {
+        if (connectorTypeBean == null)
+        {
+            return null;
+        }
+        else
+        {
+            return new ConnectorType(connectorTypeBean);
+        }
     }
 
 
@@ -100,11 +127,11 @@ public abstract class ConnectorProviderBase extends ConnectorProvider
      * added to a connection properties object.  The connector type properties guide the
      * ConnectorBroker and ConnectorProvider on how to create and configure a Connector instance.
      *
-     * @param connectorTypeProperties default properties for this type of connector
+     * @param connectorTypeBean default properties for this type of connector
      */
-    protected void setConnectorTypeProperties(ConnectorTypeProperties  connectorTypeProperties)
+    protected void setConnectorTypeProperties(ConnectorType  connectorTypeBean)
     {
-        this.connectorTypeProperties = connectorTypeProperties;
+        this.connectorTypeBean = connectorTypeBean;
     }
 
 
@@ -126,13 +153,15 @@ public abstract class ConnectorProviderBase extends ConnectorProvider
      * Creates a new instance of a connector based on the information in the supplied connection.
      *
      * @param connection   connection that should have all of the properties needed by the Connector Provider
-     *                   to create a connector instance.
+     *                     to create a connector instance.
      * @return Connector   instance of the connector.
      * @throws ConnectionCheckedException if there are missing or invalid properties in the connection
      * @throws ConnectorCheckedException if there are issues instantiating or initializing the connector
      */
     public Connector getConnector(ConnectionProperties connection) throws ConnectionCheckedException, ConnectorCheckedException
     {
+        final String             methodName = "getConnector";
+
         Connector                connector;
         String                   guid;
 
@@ -148,7 +177,7 @@ public abstract class ConnectorProviderBase extends ConnectorProvider
 
             throw new ConnectionCheckedException(errorCode.getHTTPErrorCode(),
                                                  this.getClass().getName(),
-                                                 "getConnector",
+                                                 methodName,
                                                  errorMessage,
                                                  errorCode.getSystemAction(),
                                                  errorCode.getUserAction());
@@ -169,7 +198,7 @@ public abstract class ConnectorProviderBase extends ConnectorProvider
 
             throw new ConnectionCheckedException(errorCode.getHTTPErrorCode(),
                                                  this.getClass().getName(),
-                                                 "getConnector",
+                                                 methodName,
                                                  errorMessage,
                                                  errorCode.getSystemAction(),
                                                  errorCode.getUserAction());
@@ -205,7 +234,7 @@ public abstract class ConnectorProviderBase extends ConnectorProvider
 
             throw new ConnectionCheckedException(errorCode.getHTTPErrorCode(),
                                                  this.getClass().getName(),
-                                                 "getConnector",
+                                                 methodName,
                                                  errorMessage,
                                                  errorCode.getSystemAction(),
                                                  errorCode.getUserAction(),
@@ -223,7 +252,7 @@ public abstract class ConnectorProviderBase extends ConnectorProvider
 
             throw new ConnectionCheckedException(errorCode.getHTTPErrorCode(),
                                                  this.getClass().getName(),
-                                                 "getConnector",
+                                                 methodName,
                                                  errorMessage,
                                                  errorCode.getSystemAction(),
                                                  errorCode.getUserAction(),
@@ -242,7 +271,7 @@ public abstract class ConnectorProviderBase extends ConnectorProvider
 
             throw new ConnectionCheckedException(errorCode.getHTTPErrorCode(),
                                                  this.getClass().getName(),
-                                                 "getConnector",
+                                                 methodName,
                                                  errorMessage,
                                                  errorCode.getSystemAction(),
                                                  errorCode.getUserAction(),
@@ -309,6 +338,7 @@ public abstract class ConnectorProviderBase extends ConnectorProvider
     {
         return "ConnectorProviderBase{" +
                 "connectorClassName='" + connectorClassName + '\'' +
+                ", connectorType=" + connectorTypeBean +
                 ", hashCode=" + hashCode +
                 '}';
     }

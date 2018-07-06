@@ -8,17 +8,18 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * AttributeTypeDefListResponse provides a simple baen for returning an array of AttributeTypeDefs
+ * AttributeTypeDefListResponse provides a simple bean for returning an array of AttributeTypeDefs
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class AttributeTypeDefListResponse extends OMRSRESTAPIResponse
+public class AttributeTypeDefListResponse extends OMRSAPIResponse
 {
     private List<AttributeTypeDef> attributeTypeDefs = null;
 
@@ -28,6 +29,23 @@ public class AttributeTypeDefListResponse extends OMRSRESTAPIResponse
      */
     public AttributeTypeDefListResponse()
     {
+        super();
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public AttributeTypeDefListResponse(AttributeTypeDefListResponse   template)
+    {
+        super(template);
+
+        if (template != null)
+        {
+            attributeTypeDefs = template.getAttributeTypeDefs();
+        }
     }
 
 
@@ -38,7 +56,25 @@ public class AttributeTypeDefListResponse extends OMRSRESTAPIResponse
      */
     public List<AttributeTypeDef> getAttributeTypeDefs()
     {
-        return attributeTypeDefs;
+        if (attributeTypeDefs == null)
+        {
+            return null;
+        }
+        else if (attributeTypeDefs.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            List<AttributeTypeDef>  clonedTypeDefs = new ArrayList<>();
+
+            for (AttributeTypeDef  attributeTypeDef : attributeTypeDefs)
+            {
+                clonedTypeDefs.add(new AttributeTypeDef(attributeTypeDef));
+            }
+
+            return clonedTypeDefs;
+        }
     }
 
 
@@ -49,10 +85,15 @@ public class AttributeTypeDefListResponse extends OMRSRESTAPIResponse
      */
     public void setAttributeTypeDefs(List<AttributeTypeDef> attributeTypeDefs)
     {
-        this.attributeTypeDefs = new ArrayList<>(attributeTypeDefs);
+        this.attributeTypeDefs = attributeTypeDefs;
     }
 
 
+    /**
+     * Standard toString method.
+     *
+     * @return print out of variables in a JSON-style
+     */
     @Override
     public String toString()
     {
@@ -63,6 +104,45 @@ public class AttributeTypeDefListResponse extends OMRSRESTAPIResponse
                 ", exceptionErrorMessage='" + exceptionErrorMessage + '\'' +
                 ", exceptionSystemAction='" + exceptionSystemAction + '\'' +
                 ", exceptionUserAction='" + exceptionUserAction + '\'' +
+                ", exceptionProperties=" + exceptionProperties +
                 '}';
+    }
+
+
+    /**
+     * Compare the values of the supplied object with those stored in the current object.
+     *
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (!(objectToCompare instanceof AttributeTypeDefListResponse))
+        {
+            return false;
+        }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        AttributeTypeDefListResponse that = (AttributeTypeDefListResponse) objectToCompare;
+        return Objects.equals(getAttributeTypeDefs(), that.getAttributeTypeDefs());
+    }
+
+
+    /**
+     * Create a hash code for this element type.
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), getAttributeTypeDefs());
     }
 }

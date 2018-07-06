@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 
+import java.util.Objects;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -16,7 +18,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class RelationshipResponse extends OMRSRESTAPIResponse
+public class RelationshipResponse extends OMRSAPIResponse
 {
     private Relationship relationship = null;
 
@@ -26,6 +28,23 @@ public class RelationshipResponse extends OMRSRESTAPIResponse
      */
     public RelationshipResponse()
     {
+        super();
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public RelationshipResponse(RelationshipResponse  template)
+    {
+        super(template);
+
+        if (template != null)
+        {
+            relationship = template.getRelationship();
+        }
     }
 
 
@@ -36,7 +55,7 @@ public class RelationshipResponse extends OMRSRESTAPIResponse
      */
     public Relationship getRelationship()
     {
-        return relationship;
+        return new Relationship(relationship);
     }
 
 
@@ -51,6 +70,11 @@ public class RelationshipResponse extends OMRSRESTAPIResponse
     }
 
 
+    /**
+     * Standard toString method.
+     *
+     * @return print out of variables in a JSON-style
+     */
     @Override
     public String toString()
     {
@@ -61,6 +85,45 @@ public class RelationshipResponse extends OMRSRESTAPIResponse
                 ", exceptionErrorMessage='" + exceptionErrorMessage + '\'' +
                 ", exceptionSystemAction='" + exceptionSystemAction + '\'' +
                 ", exceptionUserAction='" + exceptionUserAction + '\'' +
+                ", exceptionProperties=" + exceptionProperties +
                 '}';
+    }
+
+
+    /**
+     * Compare the values of the supplied object with those stored in the current object.
+     *
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (!(objectToCompare instanceof RelationshipResponse))
+        {
+            return false;
+        }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        RelationshipResponse that = (RelationshipResponse) objectToCompare;
+        return Objects.equals(getRelationship(), that.getRelationship());
+    }
+
+
+    /**
+     * Create a hash code for this element type.
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), getRelationship());
     }
 }

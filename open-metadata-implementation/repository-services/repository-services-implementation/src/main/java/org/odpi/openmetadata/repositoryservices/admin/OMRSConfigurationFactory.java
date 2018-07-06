@@ -8,6 +8,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 
@@ -34,6 +35,7 @@ public class OMRSConfigurationFactory
     public OMRSConfigurationFactory()
     {
     }
+
 
     /**
      * Return the protocol level to use for communications with local open metadata access services through the open metadata
@@ -131,8 +133,8 @@ public class OMRSConfigurationFactory
      * @param localServerURL URL root of local server used for REST calls
      * @return LocalRepositoryConfig object
      */
-    private LocalRepositoryConfig getDefaultLocalRepositoryConfig(String localServerName,
-                                                                  String localServerURL)
+    private LocalRepositoryConfig getDefaultLocalRepositoryConfig(String              localServerName,
+                                                                  String              localServerURL)
     {
         LocalRepositoryConfig localRepositoryConfig = new LocalRepositoryConfig();
 
@@ -163,8 +165,7 @@ public class OMRSConfigurationFactory
         LocalRepositoryConfig localRepositoryConfig = this.getDefaultLocalRepositoryConfig(localServerName,
                                                                                            localServerURL);
 
-        localRepositoryConfig.setLocalRepositoryLocalConnection(connectorConfigurationFactory.getInMemoryLocalRepositoryLocalConnection(
-                localServerName));
+        localRepositoryConfig.setLocalRepositoryLocalConnection(connectorConfigurationFactory.getInMemoryLocalRepositoryLocalConnection(localServerName));
 
         return localRepositoryConfig;
     }
@@ -175,15 +176,31 @@ public class OMRSConfigurationFactory
      *
      * @param localServerName name of local server
      * @param localServerURL  URL root of local server used for REST calls
+     * @param additionalProperties name value property pairs for the topic connection
+     * @param eventBusConnectorProvider class name of the event bus connector's provider
+     * @param topicURLRoot root name for the topic URL
+     * @param eventBusAdditionalProperties name value property pairs for the event bus connection
      * @return LocalRepositoryConfig object
      */
-    public LocalRepositoryConfig getLocalGraphLocalRepositoryConfig(String localServerName, String localServerURL)
+    public LocalRepositoryConfig getLocalGraphLocalRepositoryConfig(String              localServerName,
+                                                                    String              localServerURL,
+                                                                    Map<String, Object> additionalProperties,
+                                                                    String              eventBusConnectorProvider,
+                                                                    String              topicURLRoot,
+                                                                    Map<String, Object> eventBusAdditionalProperties)
     {
         LocalRepositoryConfig localRepositoryConfig = this.getDefaultLocalRepositoryConfig(localServerName,
                                                                                            localServerURL);
 
-        localRepositoryConfig.setLocalRepositoryLocalConnection(connectorConfigurationFactory.getLocalGraphRepositoryLocalConnection(
-                localServerName));
+        localRepositoryConfig.
+                setLocalRepositoryLocalConnection(connectorConfigurationFactory.getLocalGraphRepositoryLocalConnection(localServerName));
+
+        localRepositoryConfig.
+                setEventMapperConnection(connectorConfigurationFactory.getLocalGraphRepositoryEventMapperConnection(localServerName,
+                                                                                                                    additionalProperties,
+                                                                                                                    eventBusConnectorProvider,
+                                                                                                                    topicURLRoot,
+                                                                                                                    eventBusAdditionalProperties));
 
         return localRepositoryConfig;
     }
@@ -213,14 +230,13 @@ public class OMRSConfigurationFactory
      * @param localServerName name of the local server
      * @return EnterpriseAccessConfig parameters
      */
-    public EnterpriseAccessConfig getDefaultEnterpriseAccessConfig(String localServerName)
+    public EnterpriseAccessConfig getDefaultEnterpriseAccessConfig(String              localServerName)
     {
         EnterpriseAccessConfig enterpriseAccessConfig = new EnterpriseAccessConfig();
 
         enterpriseAccessConfig.setEnterpriseMetadataCollectionId(UUID.randomUUID().toString());
         enterpriseAccessConfig.setEnterpriseMetadataCollectionName(localServerName + defaultEnterpriseMetadataCollectionName);
-        enterpriseAccessConfig.setEnterpriseOMRSTopicConnection(connectorConfigurationFactory.getDefaultEnterpriseOMRSTopicConnection(
-                localServerName));
+        enterpriseAccessConfig.setEnterpriseOMRSTopicConnection(connectorConfigurationFactory.getDefaultEnterpriseOMRSTopicConnection(localServerName));
         enterpriseAccessConfig.setEnterpriseOMRSTopicProtocolVersion(this.getDefaultEnterpriseOMRSTopicProtocolVersion());
 
         return enterpriseAccessConfig;
@@ -232,9 +248,18 @@ public class OMRSConfigurationFactory
      *
      * @param localServerName name of the local server
      * @param cohortName      name of the cohort
+     * @param additionalProperties name value property pairs for the topic connection
+     * @param eventBusConnectorProvider class name of the event bus connector's provider
+     * @param topicURLRoot root name for the topic URL
+     * @param eventBusAdditionalProperties name value property pairs for the event bus connection
      * @return default values in a CohortConfig object
      */
-    public CohortConfig getDefaultCohortConfig(String localServerName, String cohortName)
+    public CohortConfig getDefaultCohortConfig(String              localServerName,
+                                               String              cohortName,
+                                               Map<String, Object> additionalProperties,
+                                               String              eventBusConnectorProvider,
+                                               String              topicURLRoot,
+                                               Map<String, Object> eventBusAdditionalProperties)
     {
         CohortConfig cohortConfig  = new CohortConfig();
         String       newCohortName = defaultCohortName;
@@ -246,7 +271,11 @@ public class OMRSConfigurationFactory
 
         cohortConfig.setCohortName(newCohortName);
         cohortConfig.setCohortRegistryConnection(connectorConfigurationFactory.getDefaultCohortRegistryConnection(localServerName, newCohortName));
-        cohortConfig.setCohortOMRSTopicConnection(connectorConfigurationFactory.getDefaultCohortOMRSTopicConnection(newCohortName));
+        cohortConfig.setCohortOMRSTopicConnection(connectorConfigurationFactory.getDefaultCohortOMRSTopicConnection(newCohortName,
+                                                                                                                    additionalProperties,
+                                                                                                                    eventBusConnectorProvider,
+                                                                                                                    topicURLRoot,
+                                                                                                                    eventBusAdditionalProperties));
         cohortConfig.setCohortOMRSTopicProtocolVersion(this.getDefaultCohortOMRSTopicProtocolVersion());
         cohortConfig.setEventsToProcessRule(this.getDefaultEventsToProcessRule());
         cohortConfig.setSelectedTypesToProcess(this.getDefaultSelectedTypesToProcess());

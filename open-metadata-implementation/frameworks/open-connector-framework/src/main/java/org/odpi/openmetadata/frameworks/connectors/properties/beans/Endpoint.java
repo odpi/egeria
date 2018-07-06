@@ -74,6 +74,35 @@ public class Endpoint extends Referenceable
     protected   String                 encryptionMethod = null;
 
     /**
+     * Return the standard type for an endpoint.
+     *
+     * @return ElementType object
+     */
+    public static ElementType getEndpointType()
+    {
+        final String        elementTypeId                   = "dbc20663-d705-4ff0-8424-80c262c6b8e7";
+        final String        elementTypeName                 = "Endpoint";
+        final long          elementTypeVersion              = 1;
+        final String        elementTypeDescription          = "Description of the network address and related information needed to call a software service.";
+        final String        elementAccessServiceURL         = null;
+        final ElementOrigin elementOrigin                   = ElementOrigin.LOCAL_COHORT;
+        final String        elementHomeMetadataCollectionId = null;
+
+        ElementType elementType = new ElementType();
+
+        elementType.setElementTypeId(elementTypeId);
+        elementType.setElementTypeName(elementTypeName);
+        elementType.setElementTypeVersion(elementTypeVersion);
+        elementType.setElementTypeDescription(elementTypeDescription);
+        elementType.setElementSourceServer(elementAccessServiceURL);
+        elementType.setElementOrigin(elementOrigin);
+        elementType.setElementHomeMetadataCollectionId(elementHomeMetadataCollectionId);
+
+        return elementType;
+    }
+
+
+    /**
      * Default constructor
      */
     public Endpoint()

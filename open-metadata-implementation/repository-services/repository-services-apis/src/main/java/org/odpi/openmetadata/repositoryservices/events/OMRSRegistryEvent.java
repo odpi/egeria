@@ -3,8 +3,8 @@ package org.odpi.openmetadata.repositoryservices.events;
 
 import org.apache.log4j.Logger;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.repositoryservices.events.v1.OMRSEventV1;
-import org.odpi.openmetadata.repositoryservices.events.v1.OMRSEventV1RegistrySection;
+import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1;
+import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1RegistrySection;
 
 import java.util.Date;
 

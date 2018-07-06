@@ -27,10 +27,8 @@
         <module>audit-log-connectors</module>
         <module>open-metadata-collection-store-connectors</module>
         <module>cohort-registry-store-connectors</module>
-        <module>open-metadata-topic-connectors</module>
         <module>open-metadata-archive-connectors</module>
     </modules>
-
 
     <dependencies>
 

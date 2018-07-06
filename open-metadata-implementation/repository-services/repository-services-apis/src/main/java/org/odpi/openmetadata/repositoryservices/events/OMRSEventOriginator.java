@@ -2,6 +2,13 @@
 package org.odpi.openmetadata.repositoryservices.events;
 
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+
 /**
  * OMRSEventOriginator is part of an OMRSEvent's header.  It defines the properties of the server/repository
  * that originated the event.  These properties are as follows:
@@ -30,6 +37,9 @@ package org.odpi.openmetadata.repositoryservices.events;
  *     </li>
  * </ul>
  */
+@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class OMRSEventOriginator
 {
     private String                   metadataCollectionId = null;

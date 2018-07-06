@@ -75,7 +75,7 @@ public class TestCertification
         assertTrue(resultObject.getType().equals(type));
         assertTrue(resultObject.getGUID().equals("TestGUID"));
         assertTrue(resultObject.getURL().equals("TestURL"));
-        assertTrue(resultObject.getClassifications().equals(classifications));
+        assertTrue(resultObject.getClassifications() == null);
 
         assertTrue(resultObject.getQualifiedName().equals("TestQualifiedName"));
         assertTrue(resultObject.getAdditionalProperties() == null);

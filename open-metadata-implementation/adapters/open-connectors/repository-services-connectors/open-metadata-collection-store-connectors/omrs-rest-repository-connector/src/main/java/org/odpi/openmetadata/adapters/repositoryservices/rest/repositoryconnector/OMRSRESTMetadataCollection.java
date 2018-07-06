@@ -23,13 +23,10 @@ import java.util.List;
  * Requests to this metadata collection are translated one-for-one to requests to the remote repository since
  * the OMRS REST API has a one-to-one correspondence with the metadata collection.
  */
-/*
- * This class is using OMRSMetadataCollectionBase while it is under construction.  It will change to
- * inheriting from OMRSMetadataInstanceStore once it is implemented
- */
 public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
 {
     static final private  String  defaultRepositoryName = "REST-connected Repository ";
+    static final private  String  urlPathRoot           = "/open-metadata/repository-services/users/";
 
     private String                restURLRoot;                /* Initialized in constructor */
 
@@ -71,7 +68,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         }
 
         super.repositoryName = defaultRepositoryName + endpointAddress;
-        this.restURLRoot = endpointAddress;
+        this.restURLRoot = endpointAddress + urlPathRoot;
     }
 
 
@@ -4292,7 +4289,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @throws ClassificationErrorException encoded exception from the server
      */
     private void detectAndThrowClassificationErrorException(String               methodName,
-                                                            OMRSRESTAPIResponse  restResult) throws ClassificationErrorException
+                                                            OMRSAPIResponse restResult) throws ClassificationErrorException
     {
         final String   exceptionClassName = ClassificationErrorException.class.getName();
 
@@ -4316,7 +4313,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @throws EntityConflictException encoded exception from the server
      */
     private void detectAndThrowEntityConflictException(String               methodName,
-                                                       OMRSRESTAPIResponse  restResult) throws EntityConflictException
+                                                       OMRSAPIResponse restResult) throws EntityConflictException
     {
         final String   exceptionClassName = EntityConflictException.class.getName();
 
@@ -4340,7 +4337,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @throws EntityNotDeletedException encoded exception from the server
      */
     private void detectAndThrowEntityNotDeletedException(String               methodName,
-                                                         OMRSRESTAPIResponse  restResult) throws EntityNotDeletedException
+                                                         OMRSAPIResponse restResult) throws EntityNotDeletedException
     {
         final String   exceptionClassName = EntityNotDeletedException.class.getName();
 
@@ -4364,7 +4361,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @throws EntityNotKnownException encoded exception from the server
      */
     private void detectAndThrowEntityNotKnownException(String               methodName,
-                                                       OMRSRESTAPIResponse  restResult) throws EntityNotKnownException
+                                                       OMRSAPIResponse restResult) throws EntityNotKnownException
     {
         final String   exceptionClassName = EntityNotKnownException.class.getName();
 
@@ -4388,7 +4385,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @throws EntityProxyOnlyException encoded exception from the server
      */
     private void detectAndThrowEntityProxyOnlyException(String               methodName,
-                                                        OMRSRESTAPIResponse  restResult) throws EntityProxyOnlyException
+                                                        OMRSAPIResponse restResult) throws EntityProxyOnlyException
     {
         final String   exceptionClassName = EntityProxyOnlyException.class.getName();
 
@@ -4412,7 +4409,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @throws FunctionNotSupportedException encoded exception from the server
      */
     private void detectAndThrowFunctionNotSupportedException(String               methodName,
-                                                             OMRSRESTAPIResponse  restResult) throws FunctionNotSupportedException
+                                                             OMRSAPIResponse restResult) throws FunctionNotSupportedException
     {
         final String   exceptionClassName = FunctionNotSupportedException.class.getName();
 
@@ -4437,7 +4434,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @throws HomeEntityException encoded exception from the server
      */
     private void detectAndThrowHomeEntityException(String               methodName,
-                                                   OMRSRESTAPIResponse  restResult) throws HomeEntityException
+                                                   OMRSAPIResponse restResult) throws HomeEntityException
     {
         final String   exceptionClassName = HomeEntityException.class.getName();
 
@@ -4461,7 +4458,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @throws HomeRelationshipException encoded exception from the server
      */
     private void detectAndThrowHomeRelationshipException(String               methodName,
-                                                         OMRSRESTAPIResponse  restResult) throws HomeRelationshipException
+                                                         OMRSAPIResponse restResult) throws HomeRelationshipException
     {
         final String   exceptionClassName = HomeRelationshipException.class.getName();
 
@@ -4485,7 +4482,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @throws InvalidEntityException encoded exception from the server
      */
     private void detectAndThrowInvalidEntityException(String               methodName,
-                                                      OMRSRESTAPIResponse  restResult) throws InvalidEntityException
+                                                      OMRSAPIResponse restResult) throws InvalidEntityException
     {
         final String   exceptionClassName = InvalidEntityException.class.getName();
 
@@ -4509,7 +4506,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @throws InvalidParameterException encoded exception from the server
      */
     private void detectAndThrowInvalidParameterException(String               methodName,
-                                                         OMRSRESTAPIResponse  restResult) throws InvalidParameterException
+                                                         OMRSAPIResponse restResult) throws InvalidParameterException
     {
         final String   exceptionClassName = InvalidParameterException.class.getName();
 
@@ -4533,7 +4530,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @throws InvalidRelationshipException encoded exception from the server
      */
     private void detectAndThrowInvalidRelationshipException(String               methodName,
-                                                            OMRSRESTAPIResponse  restResult) throws InvalidRelationshipException
+                                                            OMRSAPIResponse restResult) throws InvalidRelationshipException
     {
         final String   exceptionClassName = InvalidRelationshipException.class.getName();
 
@@ -4557,7 +4554,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @throws InvalidTypeDefException encoded exception from the server
      */
     private void detectAndThrowInvalidTypeDefException(String               methodName,
-                                                       OMRSRESTAPIResponse  restResult) throws InvalidTypeDefException
+                                                       OMRSAPIResponse restResult) throws InvalidTypeDefException
     {
         final String   exceptionClassName = InvalidTypeDefException.class.getName();
 
@@ -4581,7 +4578,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @throws PagingErrorException encoded exception from the server
      */
     private void detectAndThrowPagingErrorException(String               methodName,
-                                                    OMRSRESTAPIResponse  restResult) throws PagingErrorException
+                                                    OMRSAPIResponse restResult) throws PagingErrorException
     {
         final String   exceptionClassName = PagingErrorException.class.getName();
 
@@ -4605,7 +4602,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @throws PatchErrorException encoded exception from the server
      */
     private void detectAndThrowPatchErrorException(String               methodName,
-                                                   OMRSRESTAPIResponse  restResult) throws PatchErrorException
+                                                   OMRSAPIResponse restResult) throws PatchErrorException
     {
         final String   exceptionClassName = PatchErrorException.class.getName();
 
@@ -4629,7 +4626,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @throws PropertyErrorException encoded exception from the server
      */
     private void detectAndThrowPropertyErrorException(String               methodName,
-                                                      OMRSRESTAPIResponse  restResult) throws PropertyErrorException
+                                                      OMRSAPIResponse restResult) throws PropertyErrorException
     {
         final String   exceptionClassName = PropertyErrorException.class.getName();
 
@@ -4653,7 +4650,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @throws RelationshipConflictException encoded exception from the server
      */
     private void detectAndThrowRelationshipConflictException(String               methodName,
-                                                             OMRSRESTAPIResponse  restResult) throws RelationshipConflictException
+                                                             OMRSAPIResponse restResult) throws RelationshipConflictException
     {
         final String   exceptionClassName = RelationshipConflictException.class.getName();
 
@@ -4677,7 +4674,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @throws RelationshipNotDeletedException encoded exception from the server
      */
     private void detectAndThrowRelationshipNotDeletedException(String               methodName,
-                                                               OMRSRESTAPIResponse  restResult) throws RelationshipNotDeletedException
+                                                               OMRSAPIResponse restResult) throws RelationshipNotDeletedException
     {
         final String   exceptionClassName = RelationshipNotDeletedException.class.getName();
 
@@ -4701,7 +4698,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @throws RelationshipNotKnownException encoded exception from the server
      */
     private void detectAndThrowRelationshipNotKnownException(String               methodName,
-                                                             OMRSRESTAPIResponse  restResult) throws RelationshipNotKnownException
+                                                             OMRSAPIResponse restResult) throws RelationshipNotKnownException
     {
         final String   exceptionClassName = RelationshipNotKnownException.class.getName();
 
@@ -4725,7 +4722,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @throws StatusNotSupportedException encoded exception from the server
      */
     private void detectAndThrowStatusNotSupportedException(String               methodName,
-                                                           OMRSRESTAPIResponse  restResult) throws StatusNotSupportedException
+                                                           OMRSAPIResponse restResult) throws StatusNotSupportedException
     {
         final String   exceptionClassName = StatusNotSupportedException.class.getName();
 
@@ -4749,7 +4746,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @throws TypeDefConflictException encoded exception from the server
      */
     private void detectAndThrowTypeDefConflictException(String               methodName,
-                                                        OMRSRESTAPIResponse  restResult) throws TypeDefConflictException
+                                                        OMRSAPIResponse restResult) throws TypeDefConflictException
     {
         final String   exceptionClassName = TypeDefConflictException.class.getName();
 
@@ -4773,7 +4770,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @throws TypeDefInUseException encoded exception from the server
      */
     private void detectAndThrowTypeDefInUseException(String               methodName,
-                                                        OMRSRESTAPIResponse  restResult) throws TypeDefInUseException
+                                                        OMRSAPIResponse restResult) throws TypeDefInUseException
     {
         final String   exceptionClassName = TypeDefInUseException.class.getName();
 
@@ -4797,7 +4794,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @throws TypeDefKnownException encoded exception from the server
      */
     private void detectAndThrowTypeDefKnownException(String               methodName,
-                                                     OMRSRESTAPIResponse  restResult) throws TypeDefKnownException
+                                                     OMRSAPIResponse restResult) throws TypeDefKnownException
     {
         final String   exceptionClassName = TypeDefKnownException.class.getName();
 
@@ -4821,7 +4818,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @throws TypeDefNotKnownException encoded exception from the server
      */
     private void detectAndThrowTypeDefNotKnownException(String               methodName,
-                                                        OMRSRESTAPIResponse  restResult) throws TypeDefNotKnownException
+                                                        OMRSAPIResponse restResult) throws TypeDefNotKnownException
     {
         final String   exceptionClassName = TypeDefNotKnownException.class.getName();
 
@@ -4845,7 +4842,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @throws TypeDefNotSupportedException encoded exception from the server
      */
     private void detectAndThrowTypeDefNotSupportedException(String               methodName,
-                                                            OMRSRESTAPIResponse  restResult) throws TypeDefNotSupportedException
+                                                            OMRSAPIResponse restResult) throws TypeDefNotSupportedException
     {
         final String   exceptionClassName = TypeDefNotSupportedException.class.getName();
 
@@ -4869,7 +4866,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @throws TypeErrorException encoded exception from the server
      */
     private void detectAndThrowTypeErrorException(String               methodName,
-                                                  OMRSRESTAPIResponse  restResult) throws TypeErrorException
+                                                  OMRSAPIResponse restResult) throws TypeErrorException
     {
         final String   exceptionClassName = TypeErrorException.class.getName();
 
@@ -4893,7 +4890,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @throws UserNotAuthorizedException encoded exception from the server
      */
     private void detectAndThrowUserNotAuthorizedException(String               methodName,
-                                                          OMRSRESTAPIResponse  restResult) throws UserNotAuthorizedException
+                                                          OMRSAPIResponse restResult) throws UserNotAuthorizedException
     {
         final String   exceptionClassName = UserNotAuthorizedException.class.getName();
 
@@ -4918,7 +4915,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @throws RepositoryErrorException resulting exception if response includes an exception.
      */
     private void detectAndThrowRepositoryErrorException(String               methodName,
-                                                        OMRSRESTAPIResponse  restResult) throws RepositoryErrorException
+                                                        OMRSAPIResponse restResult) throws RepositoryErrorException
     {
         if (restResult == null)
         {

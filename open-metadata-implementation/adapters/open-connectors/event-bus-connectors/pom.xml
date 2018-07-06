@@ -24,7 +24,7 @@
     <artifactId>event-bus-connectors</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>kafka-open-connector</module>
+        <module>open-metadata-topic-connectors</module>
     </modules>
 
 

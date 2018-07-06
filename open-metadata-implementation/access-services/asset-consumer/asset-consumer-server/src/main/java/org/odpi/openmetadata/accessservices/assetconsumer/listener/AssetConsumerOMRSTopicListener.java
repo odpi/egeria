@@ -7,10 +7,8 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListener;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
-import org.odpi.openmetadata.repositoryservices.events.OMRSEventOriginator;
-import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEvent;
-import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventType;
-import org.odpi.openmetadata.repositoryservices.events.v1.OMRSEventV1;
+import org.odpi.openmetadata.repositoryservices.events.*;
+import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1;
 
 
 public class AssetConsumerOMRSTopicListener implements OMRSTopicListener
@@ -42,75 +40,39 @@ public class AssetConsumerOMRSTopicListener implements OMRSTopicListener
 
 
     /**
-     * Method to pass an event received on topic.
+     * Method to pass a Registry event received on topic.
      *
-     * @param event - inbound event
+     * @param event inbound event
      */
-    public void processEvent(OMRSEventV1 event)
+    public void processRegistryEvent(OMRSRegistryEvent event)
     {
-        /*
-         * The event should not be null but worth checking.
-         */
-        if (event != null)
-        {
-            /*
-             * Determine the category of event to process.
-             */
-            switch (event.getEventCategory())
-            {
-                case REGISTRY:
-                    if (log.isDebugEnabled())
-                    {
-                        log.debug("Ignoring registry event: " + event.toString());
-                    }
-                    break;
+        log.debug("Ignoring registry event: " + event.toString());
+    }
 
-                case TYPEDEF:
-                    if (log.isDebugEnabled())
-                    {
-                        log.debug("Ignoring type event: " + event.toString());
-                    }
-                    break;
 
-                case INSTANCE:
-                    this.processInstanceEvent(new OMRSInstanceEvent(event));
-                    break;
-
-                default:
-                    if (log.isDebugEnabled())
-                    {
-                        log.debug("Unknown event received :|");
-                    }
-            }
-        }
-        else
-        {
-            if (log.isDebugEnabled())
-            {
-                log.debug("Null OMRS Event received :(");
-            }
-        }
+    /**
+     * Method to pass a Registry event received on topic.
+     *
+     * @param event inbound event
+     */
+    public void processTypeDefEvent(OMRSTypeDefEvent event)
+    {
+        log.debug("Ignoring type event: " + event.toString());
     }
 
 
     /**
      * Unpack and deliver an instance event to the InstanceEventProcessor
      *
-     * @param instanceEvent - event to unpack
+     * @param instanceEvent event to unpack
      */
-    private void processInstanceEvent(OMRSInstanceEvent  instanceEvent)
+    public void processInstanceEvent(OMRSInstanceEvent  instanceEvent)
     {
-        if (log.isDebugEnabled())
-        {
-            log.debug("Processing instance event: " + instanceEvent);
-        }
+        log.debug("Processing instance event: " + instanceEvent);
 
         if (instanceEvent == null)
         {
-            if (log.isDebugEnabled())
-            {
-                log.debug("Null instance event - ignoring event");
-            }
+            log.debug("Null instance event - ignoring event");
         }
         else
         {
@@ -225,10 +187,7 @@ public class AssetConsumerOMRSTopicListener implements OMRSTopicListener
             }
             else
             {
-                if (log.isDebugEnabled())
-                {
-                    log.debug("Ignored instance event - null type");
-                }
+                log.debug("Ignored instance event - null type");
             }
         }
     }

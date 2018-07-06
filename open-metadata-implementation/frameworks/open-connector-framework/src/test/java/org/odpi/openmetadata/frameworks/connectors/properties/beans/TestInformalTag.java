@@ -64,7 +64,7 @@ public class TestInformalTag
         assertTrue(resultObject.getType().equals(type));
         assertTrue(resultObject.getGUID().equals("TestGUID"));
         assertTrue(resultObject.getURL().equals("TestURL"));
-        assertTrue(resultObject.getClassifications().equals(classifications));
+        assertTrue(resultObject.getClassifications() == null);
 
         assertTrue(resultObject.getName().equals("TestName"));
         assertTrue(resultObject.getDescription().equals("TestDescription"));

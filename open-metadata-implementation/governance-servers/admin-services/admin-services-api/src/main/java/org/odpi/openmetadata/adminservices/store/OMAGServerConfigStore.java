@@ -12,7 +12,7 @@ public interface OMAGServerConfigStore
     /**
      * Save the server configuration.
      *
-     * @param configuration - configuration properties to save
+     * @param configuration configuration properties to save
      */
     void saveServerConfig(OMAGServerConfig   configuration);
 

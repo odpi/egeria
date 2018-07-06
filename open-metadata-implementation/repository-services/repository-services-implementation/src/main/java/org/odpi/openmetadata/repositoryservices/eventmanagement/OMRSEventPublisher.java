@@ -29,13 +29,12 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
                                            OMRSTypeDefEventProcessor,
                                            OMRSInstanceEventProcessor
 {
-    private static final OMRSAuditLog          auditLog  = new OMRSAuditLog(OMRSAuditingComponent.EVENT_PUBLISHER);
+    private static final OMRSAuditLog  auditLog  = new OMRSAuditLog(OMRSAuditingComponent.EVENT_PUBLISHER);
 
     private static final Logger log = Logger.getLogger(OMRSEventPublisher.class);
 
     private String                           publisherName;
     private OMRSTopicConnector               omrsTopicConnector;
-    private OpenMetadataEventProtocolVersion eventProtocolVersion;
 
 
     /**
@@ -43,19 +42,16 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
      *
      * @param publisherName name of the cohort (or enterprise virtual repository) that this event publisher
      *                      is sending events to.
-     * @param localProtocolVersion protocol version to use
      * @param topicConnector OMRS Topic to send requests on
      */
     public OMRSEventPublisher(String                           publisherName,
-                              OpenMetadataEventProtocolVersion localProtocolVersion,
                               OMRSTopicConnector               topicConnector)
     {
         String actionDescription = "Initialize event publisher";
 
         /*
-         * Save the publisherName and protocol version
+         * Save the publisherName
          */
-        this.eventProtocolVersion = localProtocolVersion;
         this.publisherName = publisherName;
 
         /*
@@ -63,10 +59,7 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
          */
         if (topicConnector == null)
         {
-            if (log.isDebugEnabled())
-            {
-                log.debug("Null topic connector");
-            }
+            log.debug("Null topic connector");
 
             OMRSErrorCode errorCode = OMRSErrorCode.NULL_TOPIC_CONNECTOR;
             String        errorMessage = errorCode.getErrorMessageId()
@@ -83,13 +76,8 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
 
         this.omrsTopicConnector = topicConnector;
 
-
-        if (log.isDebugEnabled())
-        {
-            log.debug("New Event Publisher: " + publisherName);
-        }
+        log.debug("New Event Publisher: " + publisherName);
     }
-
 
     /**
      * Send the registry event to the OMRS Topic connector and manage errors
@@ -97,26 +85,20 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
      * @param registryEvent  properties of the event to send
      * @return boolean flag to report if the call succeeded or not.
      */
-    private boolean sendRegistryEvent(OMRSRegistryEvent registryEvent)
+    public boolean sendRegistryEvent(OMRSRegistryEvent registryEvent)
     {
         String   actionDescription = "Send Registry Event";
         boolean  successFlag = false;
 
-        if (log.isDebugEnabled())
-        {
-            log.debug("Sending registryEvent for cohort: " + publisherName);
-            log.debug("topicConnector: " + omrsTopicConnector);
-            log.debug("registryEvent: " + registryEvent);
-            log.debug("localEventOriginator: " + registryEvent.getEventOriginator());
-        }
+        log.debug("Sending registryEvent for cohort: " + publisherName);
+        log.debug("topicConnector: " + omrsTopicConnector);
+        log.debug("registryEvent: " + registryEvent);
+        log.debug("localEventOriginator: " + registryEvent.getEventOriginator());
 
         try
         {
-            if (eventProtocolVersion == OpenMetadataEventProtocolVersion.V1)
-            {
-                omrsTopicConnector.sendEvent(registryEvent.getOMRSEventV1());
-                successFlag = true;
-            }
+            omrsTopicConnector.sendRegistryEvent(registryEvent);
+            successFlag = true;
         }
         catch (Throwable error)
         {
@@ -131,10 +113,7 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
                                   auditCode.getUserAction(),
                                   error);
 
-            if (log.isDebugEnabled())
-            {
-                log.debug("Exception: " + error + "; Registry Event: " + registryEvent);
-            }
+            log.debug("Exception: " + error + "; Registry Event: " + registryEvent);
         }
 
         return successFlag;
@@ -147,26 +126,20 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
      * @param typeDefEvent  properties of the event to send
      * @return boolean flag to report if the call succeeded or not.
      */
-    private boolean sendTypeDefEvent(OMRSTypeDefEvent typeDefEvent)
+    public boolean sendTypeDefEvent(OMRSTypeDefEvent typeDefEvent)
     {
         String   actionDescription = "Send TypeDef Event";
         boolean  successFlag       = false;
 
-        if (log.isDebugEnabled())
-        {
-            log.debug("Sending typeDefEvent for cohort: " + publisherName);
-            log.debug("topicConnector: " + omrsTopicConnector);
-            log.debug("typeDefEvent: " + typeDefEvent);
-            log.debug("localEventOriginator: " + typeDefEvent.getEventOriginator());
-        }
+        log.debug("Sending typeDefEvent for cohort: " + publisherName);
+        log.debug("topicConnector: " + omrsTopicConnector);
+        log.debug("typeDefEvent: " + typeDefEvent);
+        log.debug("localEventOriginator: " + typeDefEvent.getEventOriginator());
 
         try
         {
-            if (eventProtocolVersion == OpenMetadataEventProtocolVersion.V1)
-            {
-                omrsTopicConnector.sendEvent(typeDefEvent.getOMRSEventV1());
-                successFlag = true;
-            }
+            omrsTopicConnector.sendTypeDefEvent(typeDefEvent);
+            successFlag = true;
         }
         catch (Throwable error)
         {
@@ -181,10 +154,7 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
                                   auditCode.getUserAction(),
                                   error);
 
-            if (log.isDebugEnabled())
-            {
-                log.debug("Exception: ", error);
-            }
+            log.debug("Exception: ", error);
         }
 
         return successFlag;
@@ -203,21 +173,15 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
         String   actionDescription = "Send Instance Event";
         boolean  successFlag       = false;
 
-        if (log.isDebugEnabled())
-        {
-            log.debug("Sending instanceEvent for cohort: " + publisherName);
-            log.debug("topicConnector: " + omrsTopicConnector);
-            log.debug("instanceEvent: " + instanceEvent);
-            log.debug("localEventOriginator: " + instanceEvent.getEventOriginator());
-        }
+        log.debug("Sending instanceEvent for cohort: " + publisherName);
+        log.debug("topicConnector: " + omrsTopicConnector);
+        log.debug("instanceEvent: " + instanceEvent);
+        log.debug("localEventOriginator: " + instanceEvent.getEventOriginator());
 
         try
         {
-            if (eventProtocolVersion == OpenMetadataEventProtocolVersion.V1)
-            {
-                omrsTopicConnector.sendEvent(instanceEvent.getOMRSEventV1());
-                successFlag = true;
-            }
+            omrsTopicConnector.sendInstanceEvent(instanceEvent);
+            successFlag = true;
         }
         catch (Throwable error)
         {
@@ -232,10 +196,7 @@ public class OMRSEventPublisher implements OMRSRegistryEventProcessor,
                                   auditCode.getUserAction(),
                                   error);
 
-            if (log.isDebugEnabled())
-            {
-                log.debug("Exception: ", error);
-            }
+            log.debug("Exception: ", error);
         }
 
         return successFlag;

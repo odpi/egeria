@@ -107,7 +107,17 @@ public enum OMRSAuditingComponent
              "Provides access to the OMRS Topic that is used to exchange events between members of a cohort, " +
                                  "or to notify Open Metadata Access Services (OMASs) of changes to " +
                                  "metadata in the enterprise.",
-             "https://cwiki.apache.org/confluence/display/ATLAS/OMRS+Topic+Connector")
+             "https://cwiki.apache.org/confluence/display/ATLAS/OMRS+Topic+Connector"),
+
+    OPEN_METADATA_TOPIC_CONNECTOR(19,
+             "Open Metadata Topic Connector",
+             "Provides access to an event bus to exchange events with participants in the open metadata ecosystem.",
+             "https://cwiki.apache.org/confluence/display/ATLAS/OMRS+Topic+Connector"),
+
+    LOCAL_REPOSITORY_EVENT_MAPPER(20,
+             "Local Repository Event Mapper Connector",
+             "Provides access to an event bus to process events from a specific local repository.",
+             "https://cwiki.apache.org/confluence/display/ATLAS/OMRS+Repository+Event+Mapper")
     ;
 
 

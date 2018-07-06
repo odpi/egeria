@@ -110,7 +110,7 @@ public class OMRSRepositoryRESTServices
      * @param guid unique identifier of the instance
      * @return url
      */
-    public static String  getEntityURL(String   guid)
+    public static String  getEntityURL(String...   guid)
     {
         final String   urlTemplate = "/instances/entity/{0}";
 
@@ -126,7 +126,7 @@ public class OMRSRepositoryRESTServices
      * @param guid unique identifier of the instance
      * @return url
      */
-    public static String  getRelationshipURL(String   guid)
+    public static String  getRelationshipURL(String...   guid)
     {
         final String   urlTemplate = "/instances/relationship/{0}";
 
@@ -134,6 +134,7 @@ public class OMRSRepositoryRESTServices
 
         return localServerURL + mf.format(guid);
     }
+
 
     /**
      * Default constructor
@@ -4687,7 +4688,7 @@ public class OMRSRepositoryRESTServices
      * @param response REST Response
      * @param error returned response.
      */
-    private void captureUserNotAuthorizedException(OMRSRESTAPIResponse response, UserNotAuthorizedException error)
+    private void captureUserNotAuthorizedException(OMRSAPIResponse response, UserNotAuthorizedException error)
     {
         captureCheckedException(response, error, error.getClass().getName());
     }
@@ -4699,7 +4700,7 @@ public class OMRSRepositoryRESTServices
      * @param response REST Response
      * @param error returned response.
      */
-    private void captureFunctionNotSupportedException(OMRSRESTAPIResponse response, FunctionNotSupportedException error)
+    private void captureFunctionNotSupportedException(OMRSAPIResponse response, FunctionNotSupportedException error)
     {
         captureCheckedException(response, error, error.getClass().getName());
     }
@@ -4711,7 +4712,7 @@ public class OMRSRepositoryRESTServices
      * @param response REST Response
      * @param error returned response.
      */
-    private void captureRepositoryErrorException(OMRSRESTAPIResponse response, RepositoryErrorException error)
+    private void captureRepositoryErrorException(OMRSAPIResponse response, RepositoryErrorException error)
     {
         captureCheckedException(response, error, error.getClass().getName());
     }
@@ -4723,7 +4724,7 @@ public class OMRSRepositoryRESTServices
      * @param response REST Response
      * @param error returned response.
      */
-    private void captureInvalidParameterException(OMRSRESTAPIResponse response, InvalidParameterException error)
+    private void captureInvalidParameterException(OMRSAPIResponse response, InvalidParameterException error)
     {
         captureCheckedException(response, error, error.getClass().getName());
     }
@@ -4735,7 +4736,7 @@ public class OMRSRepositoryRESTServices
      * @param response REST Response
      * @param error returned response.
      */
-    private void captureInvalidTypeDefException(OMRSRESTAPIResponse response, InvalidTypeDefException error)
+    private void captureInvalidTypeDefException(OMRSAPIResponse response, InvalidTypeDefException error)
     {
         captureCheckedException(response, error, error.getClass().getName());
     }
@@ -4747,7 +4748,7 @@ public class OMRSRepositoryRESTServices
      * @param response REST Response
      * @param error returned response.
      */
-    private void captureTypeDefConflictException(OMRSRESTAPIResponse response, TypeDefConflictException error)
+    private void captureTypeDefConflictException(OMRSAPIResponse response, TypeDefConflictException error)
     {
         captureCheckedException(response, error, error.getClass().getName());
     }
@@ -4759,7 +4760,7 @@ public class OMRSRepositoryRESTServices
      * @param response REST Response
      * @param error returned response.
      */
-    private void captureTypeDefNotSupportedException(OMRSRESTAPIResponse response, TypeDefNotSupportedException error)
+    private void captureTypeDefNotSupportedException(OMRSAPIResponse response, TypeDefNotSupportedException error)
     {
         captureCheckedException(response, error, error.getClass().getName());
     }
@@ -4771,7 +4772,7 @@ public class OMRSRepositoryRESTServices
      * @param response REST Response
      * @param error returned response.
      */
-    private void captureHomeRelationshipException(OMRSRESTAPIResponse response, HomeRelationshipException error)
+    private void captureHomeRelationshipException(OMRSAPIResponse response, HomeRelationshipException error)
     {
         captureCheckedException(response, error, error.getClass().getName());
     }
@@ -4783,7 +4784,7 @@ public class OMRSRepositoryRESTServices
      * @param response REST Response
      * @param error returned response.
      */
-    private void captureRelationshipNotKnownException(OMRSRESTAPIResponse response, RelationshipNotKnownException error)
+    private void captureRelationshipNotKnownException(OMRSAPIResponse response, RelationshipNotKnownException error)
     {
         captureCheckedException(response, error, error.getClass().getName());
     }
@@ -4795,7 +4796,7 @@ public class OMRSRepositoryRESTServices
      * @param response REST Response
      * @param error returned response.
      */
-    private void captureInvalidRelationshipException(OMRSRESTAPIResponse response, InvalidRelationshipException error)
+    private void captureInvalidRelationshipException(OMRSAPIResponse response, InvalidRelationshipException error)
     {
         captureCheckedException(response, error, error.getClass().getName());
     }
@@ -4807,7 +4808,7 @@ public class OMRSRepositoryRESTServices
      * @param response REST Response
      * @param error returned response.
      */
-    private void captureRelationshipConflictException(OMRSRESTAPIResponse response, RelationshipConflictException error)
+    private void captureRelationshipConflictException(OMRSAPIResponse response, RelationshipConflictException error)
     {
         captureCheckedException(response, error, error.getClass().getName());
     }
@@ -4819,7 +4820,7 @@ public class OMRSRepositoryRESTServices
      * @param response REST Response
      * @param error returned response.
      */
-    private void captureTypeDefErrorException(OMRSRESTAPIResponse response, TypeErrorException error)
+    private void captureTypeDefErrorException(OMRSAPIResponse response, TypeErrorException error)
     {
         captureCheckedException(response, error, error.getClass().getName());
     }
@@ -4831,7 +4832,7 @@ public class OMRSRepositoryRESTServices
      * @param response REST Response
      * @param error returned response.
      */
-    private void capturePropertyErrorException(OMRSRESTAPIResponse response, PropertyErrorException error)
+    private void capturePropertyErrorException(OMRSAPIResponse response, PropertyErrorException error)
     {
         captureCheckedException(response, error, error.getClass().getName());
     }
@@ -4843,7 +4844,7 @@ public class OMRSRepositoryRESTServices
      * @param response REST Response
      * @param error returned response.
      */
-    private void captureEntityNotKnownException(OMRSRESTAPIResponse response, EntityNotKnownException error)
+    private void captureEntityNotKnownException(OMRSAPIResponse response, EntityNotKnownException error)
     {
         captureCheckedException(response, error, error.getClass().getName());
     }
@@ -4855,7 +4856,7 @@ public class OMRSRepositoryRESTServices
      * @param response REST Response
      * @param error returned response.
      */
-    private void captureHomeEntityException(OMRSRESTAPIResponse response, HomeEntityException error)
+    private void captureHomeEntityException(OMRSAPIResponse response, HomeEntityException error)
     {
         captureCheckedException(response, error, error.getClass().getName());
     }
@@ -4879,7 +4880,7 @@ public class OMRSRepositoryRESTServices
      * @param response REST Response
      * @param error returned response.
      */
-    private void captureTypeDefNotKnown(OMRSRESTAPIResponse response, TypeDefNotKnownException error)
+    private void captureTypeDefNotKnown(OMRSAPIResponse response, TypeDefNotKnownException error)
     {
         captureCheckedException(response, error, error.getClass().getName());
     }
@@ -4891,7 +4892,7 @@ public class OMRSRepositoryRESTServices
      * @param response REST Response
      * @param error returned response.
      */
-    private void captureTypeDefKnownException(OMRSRESTAPIResponse response, TypeDefKnownException error)
+    private void captureTypeDefKnownException(OMRSAPIResponse response, TypeDefKnownException error)
     {
         captureCheckedException(response, error, error.getClass().getName());
     }
@@ -4903,7 +4904,7 @@ public class OMRSRepositoryRESTServices
      * @param response REST Response
      * @param error returned response.
      */
-    private void captureTypeDefInUseException(OMRSRESTAPIResponse response, TypeDefInUseException error)
+    private void captureTypeDefInUseException(OMRSAPIResponse response, TypeDefInUseException error)
     {
         captureCheckedException(response, error, error.getClass().getName());
     }
@@ -4915,7 +4916,7 @@ public class OMRSRepositoryRESTServices
      * @param response REST Response
      * @param error returned response.
      */
-    private void captureTypeDefNotKnownException(OMRSRESTAPIResponse response, TypeDefNotKnownException error)
+    private void captureTypeDefNotKnownException(OMRSAPIResponse response, TypeDefNotKnownException error)
     {
         captureCheckedException(response, error, error.getClass().getName());
     }
@@ -4927,7 +4928,7 @@ public class OMRSRepositoryRESTServices
      * @param response REST Response
      * @param error returned response.
      */
-    private void captureEntityProxyOnlyException(OMRSRESTAPIResponse response, EntityProxyOnlyException error)
+    private void captureEntityProxyOnlyException(OMRSAPIResponse response, EntityProxyOnlyException error)
     {
         captureCheckedException(response, error, error.getClass().getName());
     }
@@ -4939,7 +4940,7 @@ public class OMRSRepositoryRESTServices
      * @param response REST Response
      * @param error returned response.
      */
-    private void captureClassificationErrorException(OMRSRESTAPIResponse response, ClassificationErrorException error)
+    private void captureClassificationErrorException(OMRSAPIResponse response, ClassificationErrorException error)
     {
         captureCheckedException(response, error, error.getClass().getName());
     }
@@ -4951,7 +4952,7 @@ public class OMRSRepositoryRESTServices
      * @param response REST Response
      * @param error returned response.
      */
-    private void capturePagingErrorException(OMRSRESTAPIResponse response, PagingErrorException error)
+    private void capturePagingErrorException(OMRSAPIResponse response, PagingErrorException error)
     {
         captureCheckedException(response, error, error.getClass().getName());
     }
@@ -4963,7 +4964,7 @@ public class OMRSRepositoryRESTServices
      * @param response REST Response
      * @param error returned response.
      */
-    private void captureTypeErrorException(OMRSRESTAPIResponse response, TypeErrorException error)
+    private void captureTypeErrorException(OMRSAPIResponse response, TypeErrorException error)
     {
         captureCheckedException(response, error, error.getClass().getName());
     }
@@ -4975,7 +4976,7 @@ public class OMRSRepositoryRESTServices
      * @param response REST Response
      * @param error returned response.
      */
-    private void captureStatusNotSupportedException(OMRSRESTAPIResponse response, StatusNotSupportedException error)
+    private void captureStatusNotSupportedException(OMRSAPIResponse response, StatusNotSupportedException error)
     {
         captureCheckedException(response, error, error.getClass().getName());
     }
@@ -4987,20 +4988,7 @@ public class OMRSRepositoryRESTServices
      * @param response REST Response
      * @param error returned response.
      */
-    private void captureEntityNotDeletedException(OMRSRESTAPIResponse response, EntityNotDeletedException error)
-    {
-        captureCheckedException(response, error, error.getClass().getName());
-    }
-
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response REST Response
-     * @param error returned response.
-     */
-    private void captureRelationshipNotDeletedException(OMRSRESTAPIResponse response, RelationshipNotDeletedException error)
+    private void captureEntityNotDeletedException(OMRSAPIResponse response, EntityNotDeletedException error)
     {
         captureCheckedException(response, error, error.getClass().getName());
     }
@@ -5013,7 +5001,20 @@ public class OMRSRepositoryRESTServices
      * @param response REST Response
      * @param error returned response.
      */
-    private void captureInvalidEntityException(OMRSRESTAPIResponse response, InvalidEntityException error)
+    private void captureRelationshipNotDeletedException(OMRSAPIResponse response, RelationshipNotDeletedException error)
+    {
+        captureCheckedException(response, error, error.getClass().getName());
+    }
+
+
+
+    /**
+     * Set the exception information into the response.
+     *
+     * @param response REST Response
+     * @param error returned response.
+     */
+    private void captureInvalidEntityException(OMRSAPIResponse response, InvalidEntityException error)
     {
         captureCheckedException(response, error, error.getClass().getName());
     }
@@ -5025,7 +5026,7 @@ public class OMRSRepositoryRESTServices
      * @param response REST Response
      * @param error returned response.
      */
-    private void captureEntityConflictException(OMRSRESTAPIResponse response, EntityConflictException error)
+    private void captureEntityConflictException(OMRSAPIResponse response, EntityConflictException error)
     {
         captureCheckedException(response, error, error.getClass().getName());
     }
@@ -5038,7 +5039,7 @@ public class OMRSRepositoryRESTServices
      * @param error returned response.
      * @param exceptionClassName class name of the exception to recreate
      */
-    private void captureCheckedException(OMRSRESTAPIResponse      response,
+    private void captureCheckedException(OMRSAPIResponse response,
                                          OMRSCheckedExceptionBase error,
                                          String                   exceptionClassName)
     {

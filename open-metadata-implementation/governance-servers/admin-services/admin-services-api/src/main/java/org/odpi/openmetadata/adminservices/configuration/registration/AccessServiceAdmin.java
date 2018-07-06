@@ -17,11 +17,11 @@ public interface AccessServiceAdmin
     /**
      * Initialize the access service.
      *
-     * @param accessServiceConfigurationProperties - specific configuration properties for this access service.
-     * @param enterpriseOMRSTopicConnector - connector for receiving OMRS Events from the cohorts
-     * @param enterpriseOMRSRepositoryConnector - connector for querying the cohort repositories
-     * @param auditLog - audit log component for logging messages.
-     * @param serverUserName - user id to use on OMRS calls where there is no end user.
+     * @param accessServiceConfigurationProperties  specific configuration properties for this access service.
+     * @param enterpriseOMRSTopicConnector  connector for receiving OMRS Events from the cohorts
+     * @param enterpriseOMRSRepositoryConnector  connector for querying the cohort repositories
+     * @param auditLog  audit log component for logging messages.
+     * @param serverUserName  user id to use on OMRS calls where there is no end user.
      * @throws OMAGConfigurationErrorException invalid parameters in the configuration properties.
      */
     void initialize(AccessServiceConfig     accessServiceConfigurationProperties,

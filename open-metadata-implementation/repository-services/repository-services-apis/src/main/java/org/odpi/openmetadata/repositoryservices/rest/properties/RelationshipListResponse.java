@@ -8,6 +8,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -19,7 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class RelationshipListResponse extends OMRSRESTAPIPagedResponse
+public class RelationshipListResponse extends OMRSAPIPagedResponse
 {
     private List<Relationship> relationships = null;
 
@@ -29,6 +30,23 @@ public class RelationshipListResponse extends OMRSRESTAPIPagedResponse
      */
     public RelationshipListResponse()
     {
+        super();
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public RelationshipListResponse(RelationshipListResponse   template)
+    {
+        super(template);
+
+        if (template != null)
+        {
+            relationships = template.getRelationships();
+        }
     }
 
 
@@ -39,7 +57,25 @@ public class RelationshipListResponse extends OMRSRESTAPIPagedResponse
      */
     public List<Relationship> getRelationships()
     {
-        return relationships;
+        if (relationships == null)
+        {
+            return null;
+        }
+        else if (relationships.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            List<Relationship>  clonedRelationships = new ArrayList<>();
+
+            for (Relationship  attributeTypeDef : relationships)
+            {
+                clonedRelationships.add(new Relationship(attributeTypeDef));
+            }
+
+            return clonedRelationships;
+        }
     }
 
 
@@ -50,10 +86,15 @@ public class RelationshipListResponse extends OMRSRESTAPIPagedResponse
      */
     public void setRelationships(List<Relationship> relationships)
     {
-        this.relationships = new ArrayList<>(relationships);
+        this.relationships = relationships;
     }
 
 
+    /**
+     * Standard toString method.
+     *
+     * @return print out of variables in a JSON-style
+     */
     @Override
     public String toString()
     {
@@ -67,6 +108,46 @@ public class RelationshipListResponse extends OMRSRESTAPIPagedResponse
                 ", exceptionErrorMessage='" + exceptionErrorMessage + '\'' +
                 ", exceptionSystemAction='" + exceptionSystemAction + '\'' +
                 ", exceptionUserAction='" + exceptionUserAction + '\'' +
+                ", exceptionProperties=" + exceptionProperties +
                 '}';
+    }
+
+
+    /**
+     * Compare the values of the supplied object with those stored in the current object.
+     *
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (!(objectToCompare instanceof RelationshipListResponse))
+        {
+            return false;
+        }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        RelationshipListResponse that = (RelationshipListResponse) objectToCompare;
+        return Objects.equals(getRelationships(), that.getRelationships());
+    }
+
+
+    /**
+     * Create a hash code for this element type.
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+
+        return Objects.hash(super.hashCode(), getRelationships());
     }
 }

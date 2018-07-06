@@ -2,6 +2,7 @@
 package org.odpi.openmetadata.adapters.repositoryservices.rest.repositoryconnector;
 
 
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnectorProviderBase;
 
 /**
@@ -16,6 +17,10 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 public class OMRSRESTRepositoryConnectorProvider extends OMRSRepositoryConnectorProviderBase
 {
+    static final String  connectorTypeGUID = "75ea56d1-656c-43fb-bc0c-9d35c5553b9e";
+    static final String  connectorTypeName = "OMRS REST API Repository Connector";
+    static final String  connectorTypeDescription = "OMRS Repository Connector that calls the repository services REST API of a remote server.";
+
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
      * OMRS Connector implementation.
@@ -25,5 +30,15 @@ public class OMRSRESTRepositoryConnectorProvider extends OMRSRepositoryConnector
         Class    connectorClass = OMRSRESTRepositoryConnector.class;
 
         super.setConnectorClassName(connectorClass.getName());
+
+        ConnectorType connectorType = new ConnectorType();
+        connectorType.setType(ConnectorType.getConnectorTypeType());
+        connectorType.setGUID(connectorTypeGUID);
+        connectorType.setQualifiedName(connectorTypeName);
+        connectorType.setDisplayName(connectorTypeName);
+        connectorType.setDescription(connectorTypeDescription);
+        connectorType.setConnectorProviderClassName(this.getClass().getName());
+
+        super.connectorTypeBean = connectorType;
     }
 }

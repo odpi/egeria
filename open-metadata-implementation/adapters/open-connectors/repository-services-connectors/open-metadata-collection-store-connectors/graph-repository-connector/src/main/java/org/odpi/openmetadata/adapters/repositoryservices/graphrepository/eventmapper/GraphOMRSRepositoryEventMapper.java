@@ -16,6 +16,7 @@ public class GraphOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBas
      */
     public GraphOMRSRepositoryEventMapper()
     {
+        super();
     }
 
 
@@ -29,6 +30,15 @@ public class GraphOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBas
         super.start();
     }
 
+    /**
+     * Method to pass an event received on topic.
+     *
+     * @param event inbound event
+     */
+    public void processEvent(String event)
+    {
+
+    }
 
     /**
      * Free up any resources held since the connector is no longer needed.

@@ -44,6 +44,7 @@ public class AssetConsumerRESTServices
         AssetConsumerRESTServices.repositoryConnector = repositoryConnector;
     }
 
+
     /**
      * Default constructor
      */

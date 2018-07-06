@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.io.Serializable;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -25,13 +27,19 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *     <li>
  *         enterpriseOMRSTopicConnection - connection for the enterprise OMRS Topic connector.
  *     </li>
+ *     <li>
+ *         enterpriseOMRSTopicProtocolVersion - the protocol version for the events passed on the
+ *                                            enterprise OMRS topic.
+ *     </li>
  * </ul>
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class EnterpriseAccessConfig
+public class EnterpriseAccessConfig implements Serializable
 {
+    private static final long serialVersionUID = 1L;
+
     private String                           enterpriseMetadataCollectionName   = null;
     private String                           enterpriseMetadataCollectionId     = null;
     private Connection                       enterpriseOMRSTopicConnection      = null;
@@ -49,12 +57,12 @@ public class EnterpriseAccessConfig
     /**
      * Constructor to set up all configuration values.
      *
-     * @param enterpriseMetadataCollectionName - name of the combined metadata collection covered by the connected open
+     * @param enterpriseMetadataCollectionName name of the combined metadata collection covered by the connected open
      *                                        metadata repositories.  Used for messages.
-     * @param enterpriseMetadataCollectionId - unique identifier for the combined metadata collection covered by the
+     * @param enterpriseMetadataCollectionId unique identifier for the combined metadata collection covered by the
      *                                      connected open metadata repositories.
-     * @param enterpriseOMRSTopicConnection - connection for the OMRS Topic connector.
-     * @param enterpriseOMRSTopicProtocolVersion - protocol version enum
+     * @param enterpriseOMRSTopicConnection connection for the OMRS Topic connector.
+     * @param enterpriseOMRSTopicProtocolVersion protocol version enum
      */
     public EnterpriseAccessConfig(String                           enterpriseMetadataCollectionName,
                                   String                           enterpriseMetadataCollectionId,
@@ -84,7 +92,7 @@ public class EnterpriseAccessConfig
      * Set up the name of the combined metadata collection covered by the connected open
      * metadata repositories.  Used for messages.
      *
-     * @param enterpriseMetadataCollectionName - String name
+     * @param enterpriseMetadataCollectionName String name
      */
     public void setEnterpriseMetadataCollectionName(String enterpriseMetadataCollectionName)
     {
@@ -108,7 +116,7 @@ public class EnterpriseAccessConfig
      * Set up the unique identifier for the combined metadata collection covered by the
      * connected open metadata repositories.
      *
-     * @param enterpriseMetadataCollectionId - Unique identifier (guid)
+     * @param enterpriseMetadataCollectionId Unique identifier (guid)
      */
     public void setEnterpriseMetadataCollectionId(String enterpriseMetadataCollectionId)
     {
@@ -130,7 +138,7 @@ public class EnterpriseAccessConfig
     /**
      * Set up the connection for the Enterprise OMRS Topic connector.
      *
-     * @param enterpriseOMRSTopicConnection - Connection object
+     * @param enterpriseOMRSTopicConnection Connection object
      */
     public void setEnterpriseOMRSTopicConnection(Connection enterpriseOMRSTopicConnection)
     {
@@ -152,7 +160,7 @@ public class EnterpriseAccessConfig
     /**
      * Set up the protocol version to use on the EnterpriseOMRSTopicConnector.
      *
-     * @param enterpriseOMRSTopicProtocolVersion - protocol version enum
+     * @param enterpriseOMRSTopicProtocolVersion protocol version enum
      */
     public void setEnterpriseOMRSTopicProtocolVersion(OpenMetadataEventProtocolVersion enterpriseOMRSTopicProtocolVersion)
     {

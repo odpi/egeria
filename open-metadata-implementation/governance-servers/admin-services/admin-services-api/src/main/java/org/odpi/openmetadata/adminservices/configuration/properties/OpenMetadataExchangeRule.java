@@ -19,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *         exchanges.
  *     </li>
  *     <li>
- *         JUST_TYPEDEFS - means only send/receive/validate type definitions (TypeDefs).
+ *         JUST_TYPEDEFS means only send/receive/validate type definitions (TypeDefs).
  *     </li>
  *     <li>
  *         SELECTED_TYPES means that in addition to TypeDefs events, only metadata instances of the types
@@ -51,21 +51,21 @@ public enum OpenMetadataExchangeRule implements Serializable
 
     private static final long serialVersionUID = 1L;
 
-    private  int     replicationRuleCode;
-    private  String  replicationRuleName;
-    private  String  replicationRuleDescription;
+    private  int    ordinal;
+    private  String name;
+    private  String replicationRuleDescription;
 
     /**
      * Constructor for the metadata instance replication rule.
      *
-     * @param replicationRuleCode - the code number of this metadata instance replication rule.
-     * @param replicationRuleName - the name of this metadata instance replication rule.
-     * @param replicationRuleDescription - the description of this metadata instance replication rule.
+     * @param ordinal the code number of this metadata instance replication rule.
+     * @param name the name of this metadata instance replication rule.
+     * @param replicationRuleDescription the description of this metadata instance replication rule.
      */
-    OpenMetadataExchangeRule(int replicationRuleCode, String replicationRuleName, String replicationRuleDescription)
+    OpenMetadataExchangeRule(int ordinal, String name, String replicationRuleDescription)
     {
-        this.replicationRuleCode = replicationRuleCode;
-        this.replicationRuleName = replicationRuleName;
+        this.ordinal = ordinal;
+        this.name = name;
         this.replicationRuleDescription = replicationRuleDescription;
     }
 
@@ -75,9 +75,9 @@ public enum OpenMetadataExchangeRule implements Serializable
      *
      * @return int replication rule code number
      */
-    public int getReplicationRuleCode()
+    public int getOrdinal()
     {
-        return replicationRuleCode;
+        return ordinal;
     }
 
 
@@ -86,9 +86,9 @@ public enum OpenMetadataExchangeRule implements Serializable
      *
      * @return String replication rule name
      */
-    public String getReplicationRuleName()
+    public String getName()
     {
-        return replicationRuleName;
+        return name;
     }
 
 
@@ -97,8 +97,24 @@ public enum OpenMetadataExchangeRule implements Serializable
      *
      * @return String replication rule description
      */
-    public String getReplicationRuleDescription()
+    public String getDescription()
     {
         return replicationRuleDescription;
+    }
+
+
+    /**
+     * Standard toString method.
+     *
+     * @return print out of variables in a JSON-style
+     */
+    @Override
+    public String toString()
+    {
+        return "OpenMetadataExchangeRule{" +
+                "ordinal=" + ordinal +
+                ", name='" + name + '\'' +
+                ", replicationRuleDescription='" + replicationRuleDescription + '\'' +
+                '}';
     }
 }

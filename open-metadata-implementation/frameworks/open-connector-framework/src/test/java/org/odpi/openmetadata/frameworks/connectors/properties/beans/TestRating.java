@@ -61,7 +61,7 @@ public class TestRating
         assertTrue(resultObject.getType().equals(type));
         assertTrue(resultObject.getGUID().equals("TestGUID"));
         assertTrue(resultObject.getURL().equals("TestURL"));
-        assertTrue(resultObject.getClassifications().equals(classifications));
+        assertTrue(resultObject.getClassifications() == null);
 
         assertTrue(resultObject.getStarRating().equals(StarRating.FOUR_STARS));
         assertTrue(resultObject.getReview().equals("TestReview"));

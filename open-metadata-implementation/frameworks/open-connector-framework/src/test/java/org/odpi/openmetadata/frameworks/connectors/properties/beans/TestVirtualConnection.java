@@ -74,7 +74,7 @@ public class TestVirtualConnection
         assertTrue(resultObject.getType().equals(type));
         assertTrue(resultObject.getGUID().equals("TestGUID"));
         assertTrue(resultObject.getURL().equals("TestURL"));
-        assertTrue(resultObject.getClassifications().equals(classifications));
+        assertTrue(resultObject.getClassifications() == null);
 
         assertTrue(resultObject.getQualifiedName().equals("TestQualifiedName"));
         assertTrue(resultObject.getAdditionalProperties() == null);
@@ -85,7 +85,7 @@ public class TestVirtualConnection
         assertTrue(resultObject.getEndpoint().equals(endpoint));
         assertTrue(resultObject.getSecuredProperties() == null);
 
-        assertTrue(resultObject.getEmbeddedConnections().equals(embeddedConnections));
+        assertTrue(resultObject.getEmbeddedConnections() == null);
     }
 
 
