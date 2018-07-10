@@ -6,7 +6,7 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.events.*;
-import org.odpi.openmetadata.repositoryservices.events.v1.OMRSEventV1;
+import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListener;
 
 /**
@@ -67,104 +67,23 @@ public class OMRSEventListener implements OMRSTopicListener
 
 
     /**
-     * Process an incoming event.  This method is called by the OMRSTopicConnector.  The processing is careful of nulls
-     * and ignores an event that is incorrectly formatted.  The assumption is that the unformatted part of the message
-     * is an extension from a newer version of the protocol and can be ignored.
-     *
-     * @param event Version 1 of the OMRSEvent that defines the category and payload of the incoming event.
-     */
-    public void processEvent(OMRSEventV1 event)
-    {
-        String   actionDescription = "Process Incoming Event";
-
-        /*
-         * The event should not be null but worth checking.
-         */
-        if (event != null)
-        {
-            /*
-             *  If the event came from this server then ignore it.
-             */
-            if ((localMetadataCollectionId != null) &&
-                    (localMetadataCollectionId.equals(event.getOriginator().getMetadataCollectionId())))
-            {
-                log.debug("Ignoring event that this server originated");
-            }
-            else
-            {
-                /*
-                 * Determine the category of event to process.
-                 */
-                switch (event.getEventCategory())
-                {
-                    case REGISTRY:
-                        this.processRegistryEvent(new OMRSRegistryEvent(event));
-                        break;
-
-                    case TYPEDEF:
-                        this.processTypeDefEvent(new OMRSTypeDefEvent(event));
-                        break;
-
-                    case INSTANCE:
-                        this.processInstanceEvent(new OMRSInstanceEvent(event));
-                        break;
-
-                    default:
-                        /*
-                         * Nothing to do since this server does not understand the message type.  This situation
-                         * will occur if the local server is back level from another server in the cohort
-                         * and the more advanced server supports new types of messages,
-                         */
-                        OMRSAuditCode auditCode = OMRSAuditCode.PROCESS_UNKNOWN_EVENT;
-
-                        auditLog.logRecord(actionDescription,
-                                           auditCode.getLogMessageId(),
-                                           auditCode.getSeverity(),
-                                           auditCode.getFormattedLogMessage(),
-                                           "event {" + event.toString() + "}",
-                                           auditCode.getSystemAction(),
-                                           auditCode.getUserAction());
-
-                        log.debug("Unknown event received :|");
-                }
-            }
-        }
-        else
-        {
-            /*
-             * A null event was passed, this probably should not happen so log audit record.
-             */
-            OMRSAuditCode auditCode = OMRSAuditCode.NULL_OMRS_EVENT_RECEIVED;
-
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
-
-            log.debug("Null OMRS Event received :(");
-        }
-    }
-
-
-    /**
      * The event contains a registry event.  It needs to be further unpacked and passed to the appropriate
      * registry event processor (OMRSCohortRegistry).
      *
      * @param registryEvent event to unpack
      */
-    private void processRegistryEvent(OMRSRegistryEvent   registryEvent)
+    public void processRegistryEvent(OMRSRegistryEvent   registryEvent)
     {
-        if (log.isDebugEnabled())
-        {
-            log.debug("Processing registry event: " + registryEvent);
-        }
+        log.debug("Processing registry event: " + registryEvent);
 
         if (registryEvent == null)
         {
             log.debug("Null registry event; ignoring event");
+        }
+        else if ((localMetadataCollectionId != null) &&
+                 (localMetadataCollectionId.equals(registryEvent.getEventOriginator().getMetadataCollectionId())))
+        {
+            log.debug("Ignoring event that this server originated");
         }
         else if (registryEventProcessor == null)
         {
@@ -274,11 +193,16 @@ public class OMRSEventListener implements OMRSTopicListener
      *
      * @param typeDefEvent event to unpack
      */
-    private void processTypeDefEvent(OMRSTypeDefEvent   typeDefEvent)
+    public void processTypeDefEvent(OMRSTypeDefEvent   typeDefEvent)
     {
         if (typeDefEvent == null)
         {
             log.debug("Null TypeDef event; ignoring event");
+        }
+        else if ((localMetadataCollectionId != null) &&
+                (localMetadataCollectionId.equals(typeDefEvent.getEventOriginator().getMetadataCollectionId())))
+        {
+            log.debug("Ignoring event that this server originated");
         }
         else if (typeDefEventProcessor == null)
         {
@@ -426,13 +350,18 @@ public class OMRSEventListener implements OMRSTopicListener
      *
      * @param instanceEvent event to unpack
      */
-    private void processInstanceEvent(OMRSInstanceEvent  instanceEvent)
+    public void processInstanceEvent(OMRSInstanceEvent  instanceEvent)
     {
         log.debug("Processing instance event: " + instanceEvent);
 
         if (instanceEvent == null)
         {
             log.debug("Null instance event ignoring event");
+        }
+        else if ((localMetadataCollectionId != null) &&
+                (localMetadataCollectionId.equals(instanceEvent.getEventOriginator().getMetadataCollectionId())))
+        {
+            log.debug("Ignoring event that this server originated");
         }
         else
         {

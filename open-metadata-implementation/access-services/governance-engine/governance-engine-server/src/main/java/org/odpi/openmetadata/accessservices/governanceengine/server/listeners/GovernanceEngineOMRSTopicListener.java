@@ -10,11 +10,8 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListener;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
-import org.odpi.openmetadata.repositoryservices.events.OMRSEventOriginator;
-import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEvent;
-import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventProcessor;
-import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventType;
-import org.odpi.openmetadata.repositoryservices.events.v1.OMRSEventV1;
+import org.odpi.openmetadata.repositoryservices.events.*;
+import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1;
 
 
 public class GovernanceEngineOMRSTopicListener implements OMRSTopicListener {
@@ -36,8 +33,21 @@ public class GovernanceEngineOMRSTopicListener implements OMRSTopicListener {
 
 
     /**
+     */
+    @Override
+    public void processRegistryEvent(OMRSRegistryEvent omrsRegistryEvent) {
+        //processEvent();
+    }
+
+    @Override
+    public void processTypeDefEvent(OMRSTypeDefEvent event) {
+
+    }
+
+    /**
      * @param event - inbound event
      */
+
     public void processEvent(OMRSEventV1 event) {
         String actionDescription = "processEvent";
         log.debug(">>" + actionDescription + " : Processing " + event);

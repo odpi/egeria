@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
  * on the asset.
  */
 @RestController
-@RequestMapping("/access-services/asset-consumer/users/{userId}")
+@RequestMapping("/open-metadata/access-services/asset-consumer/users/{userId}")
 public class AssetConsumerOMASResource
 {
     private AssetConsumerRESTServices  restAPI = new AssetConsumerRESTServices();

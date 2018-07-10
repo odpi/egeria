@@ -27,7 +27,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes({
         @JsonSubTypes.Type(value = PrimitiveDef.class, name = "PrimitiveDef"),
         @JsonSubTypes.Type(value = CollectionDef.class, name = "CollectionDef"),
-        @JsonSubTypes.Type(value = EnumDef.class, name = "EnumDef"),
+        @JsonSubTypes.Type(value = EnumDef.class, name = "EnumDef")
 })
 public class AttributeTypeDef extends TypeDefElementHeader
 {

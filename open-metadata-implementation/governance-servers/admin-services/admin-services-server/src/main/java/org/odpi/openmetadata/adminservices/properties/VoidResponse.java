@@ -22,8 +22,26 @@ public class VoidResponse extends OMAGAPIResponse
      */
     public VoidResponse()
     {
+        super();
     }
 
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public VoidResponse(VoidResponse  template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Standard toString method.
+     *
+     * @return print out of variables in a JSON-style
+     */
     @Override
     public String toString()
     {
@@ -33,6 +51,7 @@ public class VoidResponse extends OMAGAPIResponse
                 ", exceptionErrorMessage='" + exceptionErrorMessage + '\'' +
                 ", exceptionSystemAction='" + exceptionSystemAction + '\'' +
                 ", exceptionUserAction='" + exceptionUserAction + '\'' +
+                ", exceptionProperties=" + exceptionProperties +
                 '}';
     }
 }

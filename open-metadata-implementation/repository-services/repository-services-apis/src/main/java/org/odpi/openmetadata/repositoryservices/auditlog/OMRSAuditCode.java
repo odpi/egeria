@@ -56,7 +56,7 @@ public enum OMRSAuditCode
 
     COHORT_CONFIG_ERROR("OMRS-AUDIT-0006",
                       OMRSAuditLogRecordSeverity.EXCEPTION,
-                      "Configuration error detected while connecting to cohort {0}, error message was: {2}",
+                      "Configuration error detected while connecting to cohort {0}, error message was: {1}",
                       "The local server has started to initialize the communication with the named " +
                                 "open metadata repository cohort and a configuration error was detected.",
                       "Review the exception and resolve the issue it documents. " +
@@ -117,13 +117,13 @@ public enum OMRSAuditCode
                       "The local server may not shutdown cleanly.",
                       "Review previous error messages to determine the precise error. Correct the cause and restart the server. "),
 
-    OMRS_TOPIC_LISTENER_START("OMRS-AUDIT-0015",
+    OPEN_METADATA_TOPIC_LISTENER_START("OMRS-AUDIT-0015",
                       OMRSAuditLogRecordSeverity.INFO,
                       "The listener thread for an OMRS Topic Connector for topic {0} has started",
                       "The listener thread will process inbound events",
                       "No action is required.  This is part of the normal operation of the server."),
 
-    OMRS_TOPIC_LISTENER_SHUTDOWN("OMRS-AUDIT-0016",
+    OPEN_METADATA_TOPIC_LISTENER_SHUTDOWN("OMRS-AUDIT-0016",
                       OMRSAuditLogRecordSeverity.INFO,
                       "The listener thread for the OMRS Topic Connector for topic {0} has shutdown",
                       "The listener thread will process inbound events",
@@ -138,25 +138,72 @@ public enum OMRSAuditCode
                                  "start up configuration. " +
                                  "Correct the configuration and reconnect the server to the cohort. "),
 
-    NEW_ENTERPRISE_CONNECTOR("OMRS-AUDIT-0018",
+    OMRS_TOPIC_LISTENER_DEAF("OMRS-AUDIT-0018",
+                       OMRSAuditLogRecordSeverity.ERROR,
+                       "The OMRS Topic Connector {0} has no connector to an event bus",
+                       "The OMRS Topic Connector is unable to receive or send events",
+                       "Verify the start up configuration to ensure there is an event bus configured."),
+
+    OMRS_TOPIC_LISTENER_REGISTERED("OMRS-AUDIT-0019",
+                       OMRSAuditLogRecordSeverity.INFO,
+                       "The OMRS Topic Connector {0} has registered with an event bus connector connected to topic {1}",
+                       "The OMRS Topic Connector is able to receive or send events",
+                       "No action is required.  This is part of the normal operation of the server."),
+
+    OMRS_TOPIC_LISTENER_STARTED("OMRS-AUDIT-0020",
+                       OMRSAuditLogRecordSeverity.INFO,
+                       "The OMRS Topic Connector {0} is ready to send and receive events",
+                       "The OMRS Topic Connector is able to receive or send events",
+                       "No action is required.  This is part of the normal operation of the server."),
+
+    OMRS_TOPIC_LISTENER_DISCONNECTED("OMRS-AUDIT-0021",
+                      OMRSAuditLogRecordSeverity.ERROR,
+                      "The OMRS Topic Connector {0} has disconnected the event bus connectors",
+                      "The OMRS Topic Connector is no longer able to receive or send events",
+                      "No action is required.  This is part of the normal operation of the server."),
+
+    EVENT_MAPPER_LISTENER_DEAF("OMRS-AUDIT-0022",
+                      OMRSAuditLogRecordSeverity.ERROR,
+                      "The local repository's Event Mapper Connector {0} has no connector to an event bus",
+                      "The event mapper connector is unable to receive or send events",
+                      "Verify the start up configuration to ensure there is an event bus configured."),
+
+    EVENT_MAPPER_LISTENER_REGISTERED("OMRS-AUDIT-0023",
+                      OMRSAuditLogRecordSeverity.INFO,
+                      "The local repository's Event Mapper Connector {0} has registered with an event bus connector connected to topic {1}",
+                      "The event mapper connector is able to receive or send events",
+                      "No action is required.  This is part of the normal operation of the server."),
+
+    EVENT_MAPPER_LISTENER_STARTED("OMRS-AUDIT-0024",
+                      OMRSAuditLogRecordSeverity.INFO,
+                      "The local repository's Event Mapper Connector {0} is ready to send and receive events",
+                      "The event mapper connector is able to receive or send events",
+                      "No action is required.  This is part of the normal operation of the server."),
+
+    EVENT_MAPPER_LISTENER_DISCONNECTED("OMRS-AUDIT-0025",
+                      OMRSAuditLogRecordSeverity.ERROR,
+                      "The local repository's Event Mapper Connector {0} has disconnected the event bus connectors",
+                      "The event mapper connector is no longer able to receive or send events",
+                      "No action is required.  This is part of the normal operation of the server."),
+    NEW_ENTERPRISE_CONNECTOR("OMRS-AUDIT-0040",
                       OMRSAuditLogRecordSeverity.INFO,
                       "An enterprise OMRS Connector has been created for the {0} open metadata access service",
                       "The connector will support access to the connected open metadata repositories.",
                       "No action is required.  This is part of the normal operation of the server."),
 
-    STARTING_ENTERPRISE_CONNECTOR("OMRS-AUDIT-0019",
+    STARTING_ENTERPRISE_CONNECTOR("OMRS-AUDIT-0041",
                       OMRSAuditLogRecordSeverity.INFO,
                       "The enterprise OMRS Connector for the {0} open metadata access service has started",
                       "The connector will support access to the connected open metadata repositories.",
                       "No action is required.  This is part of the normal operation of the server."),
 
-    DISCONNECTING_ENTERPRISE_CONNECTOR("OMRS-AUDIT-0020",
+    DISCONNECTING_ENTERPRISE_CONNECTOR("OMRS-AUDIT-0042",
                       OMRSAuditLogRecordSeverity.INFO,
                       "The enterprise OMRS Connector for the {0} open metadata access service has shutdown",
                       "The connector will support access to the connected open metadata repositories.",
                       "No action is required.  This is part of the normal operation of the server."),
 
-    ENTERPRISE_CONNECTOR_FAILED("OMRS-AUDIT-0019",
+    ENTERPRISE_CONNECTOR_FAILED("OMRS-AUDIT-0043",
                       OMRSAuditLogRecordSeverity.INFO,
                       "The create of an enterprise OMRS Connector for the {0} open metadata access service failed with this error message: {1}",
                       "The connector will support access to the connected open metadata repositories.",
@@ -188,33 +235,46 @@ public enum OMRSAuditCode
                        "The local server has completed the processing of the open metadata archive.",
                        "No action is required.  This is part of the normal operation of the server."),
 
-    EVENT_PROCESSING_ERROR("OMRS-AUDIT-0100",
-                      OMRSAuditLogRecordSeverity.EXCEPTION,
-                      "Unable process an incoming event {0} due to exception {1}",
-                      "The information in the event is not available to the server.",
-                      "Review the exception to determine the source of the error and correct it. "),
-
-    REGISTERED_WITH_COHORT("OMRS-AUDIT-0101",
-                      OMRSAuditLogRecordSeverity.INFO,
-                      "Registering with open metadata repository cohort {0} using metadata collection id {1}",
-                      "The local server has sent a registration event to the other members of the cohort.",
+    REGISTERED_WITH_COHORT("OMRS-AUDIT-0060",
+                           OMRSAuditLogRecordSeverity.INFO,
+                           "Registering with open metadata repository cohort {0} using metadata collection id {1}",
+                           "The local server has sent a registration event to the other members of the cohort.",
                            "No action is required.  This is part of the normal operation of the server."),
 
-    RE_REGISTERED_WITH_COHORT("OMRS-AUDIT-0102",
-                      OMRSAuditLogRecordSeverity.INFO,
-                      "Refreshing registration information from open metadata repository cohort {0}",
-                      "The local server has sent a registration refresh request to the other members of the cohort as " +
+    RE_REGISTERED_WITH_COHORT("OMRS-AUDIT-0061",
+                              OMRSAuditLogRecordSeverity.INFO,
+                              "Refreshing registration information from open metadata repository cohort {0}",
+                              "The local server has sent a registration refresh request to the other members of the cohort as " +
                                       "part of its routine to re-connect with the open metadata repository cohort.",
-                      "No action is required.  This is part of the normal operation of the server."),
+                              "No action is required.  This is part of the normal operation of the server."),
 
-    UNREGISTERING_FROM_COHORT("OMRS-AUDIT-0103",
-                      OMRSAuditLogRecordSeverity.INFO,
-                      "Unregistering with open metadata repository cohort {0} using metadata collection id {1}",
-                      "The local server has sent a unregistration event to the other members of the cohort as " +
+    UNREGISTERING_FROM_COHORT("OMRS-AUDIT-0062",
+                              OMRSAuditLogRecordSeverity.INFO,
+                              "Unregistering with open metadata repository cohort {0} using metadata collection id {1}",
+                              "The local server has sent a unregistration event to the other members of the cohort as " +
                                       "part of its routine to permanently disconnect with the open metadata repository cohort.",
-                      "No action is required.  This is part of the normal operation of the server."),
+                              "No action is required.  This is part of the normal operation of the server."),
 
-    SEND_REGISTRY_EVENT_ERROR("OMRS-AUDIT-0104",
+
+    EVENT_PARSING_ERROR("OMRS-AUDIT-0100",
+                      OMRSAuditLogRecordSeverity.EXCEPTION,
+                      "Unable parse an incoming event {0} due to exception {1}",
+                      "The information in the event is not available to the server.",
+                      "Review the exception to determine the source of the error and correct it."),
+
+    EVENT_PROCESSING_ERROR("OMRS-AUDIT-0101",
+                      OMRSAuditLogRecordSeverity.EXCEPTION,
+                      "Unable process an incoming event {0} due to exception {1} from listener {2}",
+                      "The information in the event is not available to the server.",
+                      "Review the exception to determine the source of the error and correct it."),
+
+    NULL_EVENT_TO_PROCESS("OMRS-AUDIT-0101",
+                      OMRSAuditLogRecordSeverity.EXCEPTION,
+                      "Connector {0} is unable to process a null event {0} passed by the event bus",
+                      "The OMRS Topic Connector was passed a null event by the event bus.",
+                      "Review the exception to determine the source of the error and correct it."),
+
+    SEND_REGISTRY_EVENT_ERROR("OMRS-AUDIT-0105",
                       OMRSAuditLogRecordSeverity.EXCEPTION,
                       "Unable to send a registry event for cohort {0} due to an error in the OMRS Topic Connector",
                       "The local server is unable to properly manage registration events for the metadata " +
@@ -222,7 +282,7 @@ public enum OMRSAuditCode
                       "Review the exception and resolve the issue it documents.  " +
                                       "Then disconnect and reconnect this server to the cohort."),
 
-    REFRESHING_REGISTRATION_WITH_COHORT("OMRS-AUDIT-0105",
+    REFRESHING_REGISTRATION_WITH_COHORT("OMRS-AUDIT-0106",
                       OMRSAuditLogRecordSeverity.INFO,
                       "Refreshing registration with open metadata repository cohort {0} using " +
                                                 "metadata collection id {1} at the request of server {2}",
@@ -230,7 +290,7 @@ public enum OMRSAuditCode
                                                 "response to a registration refresh event from another member of the cohort.",
                       "No action is required.  This is part of the normal operation of the server."),
 
-    INCOMING_CONFLICTING_LOCAL_METADATA_COLLECTION_ID("OMRS-AUDIT-0106",
+    INCOMING_CONFLICTING_LOCAL_METADATA_COLLECTION_ID("OMRS-AUDIT-0107",
                       OMRSAuditLogRecordSeverity.ACTION,
                       "Registration request for this server in cohort {0} was rejected by server {1} that " +
                                                         "hosts metadata collection {2} because the local metadata " +
@@ -241,7 +301,7 @@ public enum OMRSAuditCode
                                                         "a metadata instance can be updated in two places.",
                       "It is necessary to update the local metadata collection Id to remove the conflict."),
 
-    INCOMING_CONFLICTING_METADATA_COLLECTION_ID("OMRS-AUDIT-0107",
+    INCOMING_CONFLICTING_METADATA_COLLECTION_ID("OMRS-AUDIT-0108",
                       OMRSAuditLogRecordSeverity.ACTION,
                       "Two servers in cohort {0} are using the same metadata collection identifier {1}",
                       "The local server will not be able to distinguish ownership of metadata " +
@@ -251,7 +311,7 @@ public enum OMRSAuditCode
                                                         "a metadata instance can be updated in two places.",
                       "It is necessary to update the local metadata collection Id to remove the conflict."),
 
-    INCOMING_BAD_CONNECTION("OMRS-AUDIT-0108",
+    INCOMING_BAD_CONNECTION("OMRS-AUDIT-0109",
                       OMRSAuditLogRecordSeverity.ACTION,
                       "Registration error occurred in cohort {0} because remote server {1} that hosts " +
                                     "metadata collection {2} is unable to use connection {3} to create a " +
@@ -260,7 +320,7 @@ public enum OMRSAuditCode
                       "This error may be caused because the connection is incorrectly " +
                                     "configured, or that the jar file for the connector is not available in the remote server."),
 
-    NEW_MEMBER_IN_COHORT("OMRS-AUDIT-0109",
+    NEW_MEMBER_IN_COHORT("OMRS-AUDIT-0110",
                       OMRSAuditLogRecordSeverity.INFO,
                       "A new registration request has been received for cohort {0} from server {1} that " +
                                  "hosts metadata collection {2}",
@@ -268,7 +328,7 @@ public enum OMRSAuditCode
                                  "it will accept the new member.",
                       "No action is required.  This is part of the normal operation of the server."),
 
-    MEMBER_LEFT_COHORT("OMRS-AUDIT-0110",
+    MEMBER_LEFT_COHORT("OMRS-AUDIT-0111",
                       OMRSAuditLogRecordSeverity.INFO,
                       "Server {0} hosting metadata collection {1} has left cohort {2}",
                       "The local server will process the incoming unregistration request and if the parameters are correct, " +
@@ -277,7 +337,7 @@ public enum OMRSAuditCode
                                "Any metadata from this remote repository that is stored in the local repository will no longer be updated.  " +
                                "It may be kept in the local repository for reference or removed by calling the administration REST API."),
 
-    REFRESHED_MEMBER_IN_COHORT("OMRS-AUDIT-0111",
+    REFRESHED_MEMBER_IN_COHORT("OMRS-AUDIT-0112",
                       OMRSAuditLogRecordSeverity.INFO,
                       "A re-registration request has been received for cohort {0} from server {1} that " +
                                        "hosts metadata collection {2}",
@@ -285,7 +345,7 @@ public enum OMRSAuditCode
                                        "it will accept the latest registration values for this member.",
                       "No action is required.  This is part of the normal operation of the server."),
 
-    OUTGOING_CONFLICTING_METADATA_COLLECTION_ID("OMRS-AUDIT-0112",
+    OUTGOING_CONFLICTING_METADATA_COLLECTION_ID("OMRS-AUDIT-0113",
                       OMRSAuditLogRecordSeverity.ACTION,
                       "Registration request received from cohort {0} was rejected by the " +
                                                         "local server because the remote server {1} is using a metadata " +
@@ -294,7 +354,7 @@ public enum OMRSAuditCode
                       "It is necessary to update the TypeDef to remove the conflict " +
                                                         "before the remote server will exchange metadata with this server."),
 
-    OUTGOING_BAD_CONNECTION("OMRS-AUDIT-0113",
+    OUTGOING_BAD_CONNECTION("OMRS-AUDIT-0114",
                       OMRSAuditLogRecordSeverity.ACTION,
                       "Registration error occurred in cohort {0} because the local server is not able to use " +
                                     "the remote connection {1} supplied by server {2} that hosts metadata " +
@@ -304,7 +364,7 @@ public enum OMRSAuditCode
                                     "configured, or that the jar file for the connector is not available in the " +
                                     "local server."),
 
-    CREATE_REGISTRY_FILE("OMRS-AUDIT-0114",
+    CREATE_REGISTRY_FILE("OMRS-AUDIT-0115",
                       OMRSAuditLogRecordSeverity.INFO,
                       "Creating new cohort registry store {0}",
                       "The local server is creating a new cohort registry store. " +
@@ -312,7 +372,7 @@ public enum OMRSAuditCode
                       "Verify that the local server is connecting to the open metadata repository cohort for" +
                                  "the first time."),
 
-    UNUSABLE_REGISTRY_FILE("OMRS-AUDIT-0115",
+    UNUSABLE_REGISTRY_FILE("OMRS-AUDIT-0116",
                       OMRSAuditLogRecordSeverity.EXCEPTION,
                       "Unable to write to cohort registry store {0}",
                       "The local server can not write to the cohort registry store. " +
@@ -320,7 +380,7 @@ public enum OMRSAuditCode
                                    "interaction with other servers in the cohort.",
                       "Shutdown the local server and resolve the issue with the repository store."),
 
-    NULL_MEMBER_REGISTRATION("OMRS-AUDIT-0116",
+    NULL_MEMBER_REGISTRATION("OMRS-AUDIT-0117",
                       OMRSAuditLogRecordSeverity.ERROR,
                       "Unable to read or write to cohort registry store {0} because registration information is null",
                       "The local server can not manage a member registration in the cohort registry store because " +
@@ -329,7 +389,7 @@ public enum OMRSAuditCode
                                      "interaction with other servers in the cohort.",
                       "Shutdown the local server and resolve the issue with the cohort registry."),
 
-    MISSING_MEMBER_REGISTRATION("OMRS-AUDIT-0117",
+    MISSING_MEMBER_REGISTRATION("OMRS-AUDIT-0118",
                       OMRSAuditLogRecordSeverity.ERROR,
                       "Unable to process the remote registration for {0} from cohort registry store {1} " +
                                         "because registration information is not stored",
@@ -565,22 +625,15 @@ public enum OMRSAuditCode
      */
     public String getFormattedLogMessage(String... params)
     {
-        if (log.isDebugEnabled())
-        {
-            log.debug(String.format("<== OMRS Audit Code.getMessage(%s)", Arrays.toString(params)));
-        }
+        log.debug(String.format("<== OMRS Audit Code.getMessage(%s)", Arrays.toString(params)));
 
         MessageFormat mf = new MessageFormat(logMessage);
         String result = mf.format(params);
 
-        if (log.isDebugEnabled())
-        {
-            log.debug(String.format("==> OMRS Audit Code.getMessage(%s): %s", Arrays.toString(params), result));
-        }
+        log.debug(String.format("==> OMRS Audit Code.getMessage(%s): %s", Arrays.toString(params), result));
 
         return result;
     }
-
 
 
     /**

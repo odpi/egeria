@@ -73,11 +73,11 @@ public class CohortConfig
     /**
      * Constructor to populate all config values.
      *
-     * @param cohortName - name of the cohort
-     * @param cohortRegistryConnection - connection to the cohort registry store
-     * @param cohortOMRSTopicConnection - connection to the OMRS Topic
-     * @param eventsToProcessRule - rule indicating whether metadata events should be sent to the federated OMRS Topic.
-     * @param selectedTypesToProcess - if the rule says "SELECTED_TYPES" then this is the list of types - otherwise
+     * @param cohortName name of the cohort
+     * @param cohortRegistryConnection connection to the cohort registry store
+     * @param cohortOMRSTopicConnection connection to the OMRS Topic
+     * @param eventsToProcessRule rule indicating whether metadata events should be sent to the federated OMRS Topic.
+     * @param selectedTypesToProcess if the rule says "SELECTED_TYPES" then this is the list of types otherwise
      *                                it is set to null.
      */
     public CohortConfig(String                      cohortName,
@@ -130,7 +130,7 @@ public class CohortConfig
     /**
      * Set up the connection for the cohort registry store.
      *
-     * @param cohortRegistryConnection - Connection object
+     * @param cohortRegistryConnection Connection object
      */
     public void setCohortRegistryConnection(Connection cohortRegistryConnection)
     {
@@ -151,7 +151,7 @@ public class CohortConfig
     /**
      * Set up the connection to the cohort's OMRS Topic.
      *
-     * @param cohortOMRSTopicConnection - Connection object
+     * @param cohortOMRSTopicConnection Connection object
      */
     public void setCohortOMRSTopicConnection(Connection cohortOMRSTopicConnection)
     {
@@ -173,7 +173,7 @@ public class CohortConfig
     /**
      * Set up the protocol version to use when exchanging events amongst the cohort members.
      *
-     * @param cohortOMRSTopicProtocolVersion - protocol version enum
+     * @param cohortOMRSTopicProtocolVersion protocol version enum
      */
     public void setCohortOMRSTopicProtocolVersion(OpenMetadataEventProtocolVersion cohortOMRSTopicProtocolVersion)
     {
@@ -195,7 +195,7 @@ public class CohortConfig
     /**
      * Set up the rule indicating whether incoming metadata events from a cohort should be processed.
      *
-     * @param eventsToProcessRule - OpenMetadataExchangeRule - NONE, JUST_TYPEDEFS, SELECTED_TYPES and ALL.
+     * @param eventsToProcessRule OpenMetadataExchangeRule - NONE, JUST_TYPEDEFS, SELECTED_TYPES and ALL.
      */
     public void setEventsToProcessRule(OpenMetadataExchangeRule eventsToProcessRule)
     {
@@ -226,7 +226,7 @@ public class CohortConfig
      * Set up the list of TypeDefs used if the EventsToProcess rule (above) says "SELECTED_TYPES" - otherwise
      * it is set to null.
      *
-     * @param selectedTypesToProcess - list of TypeDefs that determine which metadata instances to process
+     * @param selectedTypesToProcess list of TypeDefs that determine which metadata instances to process
      */
     public void setSelectedTypesToProcess(List<TypeDefSummary> selectedTypesToProcess)
     {

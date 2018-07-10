@@ -308,6 +308,10 @@ public enum OMRSErrorCode
                                  "Review previous error messages to determine the precise error in the " +
                                  "start up configuration. " +
                                  "Correct the configuration and reconnect the server to the cohort. "),
+    NO_EVENT_BUS_CONNECTORS(400, "OMRS-CONNECTOR-400-001 ",
+            "The connector {0} has been configured without an embedded event bus connector",
+            "There is an error in the connection for this connector. The connection is defined in the server's configuration document.",
+            "Review the configuration document and correct the definition of the connection."),
     NULL_REGISTRY_STORE(400, "OMRS-COHORT-REGISTRY-404-001 ",
             "The Open Metadata Repository Cohort Registry Store for cohort {0} is not available.",
             "The system is unable to process registration requests from the open metadata repository cohort.",
@@ -587,11 +591,32 @@ public enum OMRSErrorCode
             "A remote open metadata repository {0} returned a null metadata collection identifier on its REST API.  It registered with the cohort using a metadata collection identifier of {1}",
             "There is an internal error in the remote open metadata repository.",
              "Raise a Jira to get this fixed."),
+    NULL_OPEN_METADATA_TOPIC_LISTENER(500, "OPEN-METADATA-TOPIC-CONNECTOR-500-001 ",
+            "A null topic listener has been passed to the {0} open metadata topic connector {1}",
+            "There is an internal error in the open metadata repository.",
+            "Raise a Jira to get this fixed."),
+    NULL_OMRS_TOPIC_LISTENER(500, "OMRS-TOPIC-CONNECTOR-500-001 ",
+            "A null topic listener has been passed to the open metadata topic connector {0}",
+            "There is an internal error in the open metadata repository.",
+            "Raise a Jira to get this fixed."),
+    OMRS_TOPIC_SEND_EVENT_FAILED(500, "OMRS-TOPIC-CONNECTOR-500-002 ",
+            "Connector {0} received an unexpected exception from sending event {1}. The exception message was: {2}",
+            "There is an internal error in the open metadata repository.",
+            "Raise a Jira to get this fixed."),
+    OMRS_TOPIC_SEND_NULL_EVENT(500, "OMRS-TOPIC-CONNECTOR-500-002 ",
+             "Connector {0} is unable to send a null event",
+             "There is an internal error in the open metadata repository.",
+             "Raise a Jira to get this fixed."),
     METHOD_NOT_IMPLEMENTED(501, "OMRS-METADATA-COLLECTION-501-001 ",
-            "OMRSMetadataInstanceStore method {0} for OMRS Connector {1} to repository type {2} is not implemented.",
+            "OMRSMetadataInstanceStore method {0} for OMRS Connector {1} to repository type {2} is not implemented",
             "A method in MetadataCollectionBase was called which means that the connector's OMRSMetadataInstanceStore " +
                                    "(a subclass of MetadataCollectionBase) does not have a complete implementation.",
             "Raise a Jira to get this fixed."),
+    OMRS_UNSUPPORTED_EVENT_PROTOCOL(501, "OMRS-TOPIC-CONNECTOR-501-001 ",
+            "Connector {0} is not able to support event protocol {1}",
+            "This server does not support the requested event protocol level.",
+            "The protocol level is set in the configuration.  The admin services should not allow a protocol level that is not supported by its local OMRS." +
+                                            " Raise a Jira to get this fixed."),
     NO_REPOSITORIES(503, "OMRS-ENTERPRISE-REPOSITORY-503-001 ",
             "There are no open metadata repositories available for access service {0}.",
             "The configuration for the server is set up so there is no local repository and no remote repositories " +
@@ -728,18 +753,12 @@ public enum OMRSErrorCode
      */
     public String getFormattedErrorMessage(String... params)
     {
-        if (log.isDebugEnabled())
-        {
-            log.debug(String.format("<== OMRSErrorCode.getMessage(%s)", Arrays.toString(params)));
-        }
+        log.debug(String.format("<== OMRSErrorCode.getMessage(%s)", Arrays.toString(params)));
 
         MessageFormat mf = new MessageFormat(errorMessage);
         String result = mf.format(params);
 
-        if (log.isDebugEnabled())
-        {
-            log.debug(String.format("==> OMRSErrorCode.getMessage(%s): %s", Arrays.toString(params), result));
-        }
+        log.debug(String.format("==> OMRSErrorCode.getMessage(%s): %s", Arrays.toString(params), result));
 
         return result;
     }

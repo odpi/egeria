@@ -68,11 +68,40 @@ public class ConnectorType extends Referenceable
 
 
     /**
+     * Return the standard type for a connector type.
+     *
+     * @return ElementType object
+     */
+    public static ElementType getConnectorTypeType()
+    {
+        final String        elementTypeId                   = "954421eb-33a6-462d-a8ca-b5709a1bd0d4";
+        final String        elementTypeName                 = "ConnectorType";
+        final long          elementTypeVersion              = 1;
+        final String        elementTypeDescription          = "A set of properties describing a type of connector.";
+        final String        elementAccessServiceURL         = null;
+        final ElementOrigin elementOrigin                   = ElementOrigin.LOCAL_COHORT;
+        final String        elementHomeMetadataCollectionId = null;
+
+        ElementType elementType = new ElementType();
+
+        elementType.setElementTypeId(elementTypeId);
+        elementType.setElementTypeName(elementTypeName);
+        elementType.setElementTypeVersion(elementTypeVersion);
+        elementType.setElementTypeDescription(elementTypeDescription);
+        elementType.setElementSourceServer(elementAccessServiceURL);
+        elementType.setElementOrigin(elementOrigin);
+        elementType.setElementHomeMetadataCollectionId(elementHomeMetadataCollectionId);
+
+        return elementType;
+    }
+
+
+    /**
      * Default constructor
      */
     public ConnectorType()
     {
-
+        super();
     }
 
 
@@ -85,10 +114,6 @@ public class ConnectorType extends Referenceable
     {
         super(templateConnectorType);
 
-        /*
-         * All properties are initialised as null so only change their default setting if the template is
-         * not null
-         */
         if (templateConnectorType != null)
         {
             displayName = templateConnectorType.getDisplayName();

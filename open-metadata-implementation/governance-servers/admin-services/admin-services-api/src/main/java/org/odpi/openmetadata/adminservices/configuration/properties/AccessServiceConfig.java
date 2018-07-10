@@ -15,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * AccessServiceConfig provides the configuration for a single Open Metadata Access Service (OMAS)
+ * AccessServiceConfig provides the configuration for a single Open Metadata Access Service (OMAS).
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -32,7 +32,7 @@ public class AccessServiceConfig implements Serializable
     private AccessServiceOperationalStatus accessServiceOperationalStatus = null;
     private Connection                     accessServiceInTopic           = null;
     private Connection                     accessServiceOutTopic          = null;
-    private Map<String, String>            accessServiceOptions           = null;
+    private Map<String, Object>            accessServiceOptions           = null;
 
     /**
      * Default constructor for use with Jackson libraries
@@ -45,13 +45,9 @@ public class AccessServiceConfig implements Serializable
     /**
      * Set up the default values for an access service using an access service description.
      *
-     * @param accessServiceRegistration - AccessServiceDescription enum
-     * @param accessServiceInTopicConnection - connection for inbound OMAS events
-     * @param accessServiceOutTopicConnection - connection for outbound OMAS events
+     * @param accessServiceRegistration fixed properties about the access service
      */
-    public AccessServiceConfig(AccessServiceRegistration accessServiceRegistration,
-                               Connection                accessServiceInTopicConnection,
-                               Connection                accessServiceOutTopicConnection)
+    public AccessServiceConfig(AccessServiceRegistration accessServiceRegistration)
     {
         this.accessServiceId = accessServiceRegistration.getAccessServiceCode();
         this.accessServiceName = accessServiceRegistration.getAccessServiceName();
@@ -59,8 +55,6 @@ public class AccessServiceConfig implements Serializable
         this.accessServiceDescription = accessServiceRegistration.getAccessServiceDescription();
         this.accessServiceWiki = accessServiceRegistration.getAccessServiceWiki();
         this.accessServiceOperationalStatus = accessServiceRegistration.getAccessServiceOperationalStatus();
-        this.accessServiceInTopic = accessServiceInTopicConnection;
-        this.accessServiceOutTopic = accessServiceOutTopicConnection;
     }
 
 
@@ -89,8 +83,8 @@ public class AccessServiceConfig implements Serializable
     /**
      * Return the Java class name of the adminservices interface for this access service.
      *
-     * @return String class name implementing the org.apache.atlas.omag.configuration.registration.AccessServiceAdmin
-     * interface.
+     * @return String class name implementing the
+     * org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin interface.
      */
     public String getAccessServiceAdminClass()
     {
@@ -99,10 +93,10 @@ public class AccessServiceConfig implements Serializable
 
 
     /**
-     * Set up the Java class name of the adminservices interface for this access service.
+     * Set up the Java class name of the admin services interface for this access service.
      *
-     * @param accessServiceAdminClass - String class name implementing the
-     *                                org.apache.atlas.omag.configuration.registration.AccessServiceAdmin interface.
+     * @param accessServiceAdminClass String class name implementing the
+     * org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin interface.
      */
     public void setAccessServiceAdminClass(String accessServiceAdminClass)
     {
@@ -124,7 +118,7 @@ public class AccessServiceConfig implements Serializable
     /**
      * Set up the name of the access service.
      *
-     * @param accessServiceName - String name
+     * @param accessServiceName String name
      */
     public void setAccessServiceName(String accessServiceName)
     {
@@ -146,7 +140,7 @@ public class AccessServiceConfig implements Serializable
     /**
      * Set up the short description of the access service.
      *
-     * @param accessServiceDescription - String description
+     * @param accessServiceDescription String description
      */
     public void setAccessServiceDescription(String accessServiceDescription)
     {
@@ -169,7 +163,7 @@ public class AccessServiceConfig implements Serializable
     /**
      * Set up the wiki page link for the access service.
      *
-     * @param accessServiceWiki - String url
+     * @param accessServiceWiki String url
      */
     public void setAccessServiceWiki(String accessServiceWiki)
     {
@@ -191,7 +185,7 @@ public class AccessServiceConfig implements Serializable
     /**
      * Set up the status of the access service.
      *
-     * @param accessServiceOperationalStatus - AccessServiceOperationalStatus enum
+     * @param accessServiceOperationalStatus AccessServiceOperationalStatus enum
      */
     public void setAccessServiceOperationalStatus(AccessServiceOperationalStatus accessServiceOperationalStatus)
     {
@@ -214,7 +208,7 @@ public class AccessServiceConfig implements Serializable
     /**
      * Set up the OCF Connection for the topic used to pass requests to this access service.
      *
-     * @param accessServiceInTopic - Connection properties
+     * @param accessServiceInTopic Connection properties
      */
     public void setAccessServiceInTopic(Connection accessServiceInTopic)
     {
@@ -237,7 +231,7 @@ public class AccessServiceConfig implements Serializable
     /**
      * Set up the OCF Connection of the topic used by this access service to publish events.
      *
-     * @param accessServiceOutTopic - Connection properties
+     * @param accessServiceOutTopic Connection properties
      */
     public void setAccessServiceOutTopic(Connection accessServiceOutTopic)
     {
@@ -250,18 +244,29 @@ public class AccessServiceConfig implements Serializable
      *
      * @return Map from String to String
      */
-    public Map<String, String> getAccessServiceOptions()
+    public Map<String, Object> getAccessServiceOptions()
     {
-        return accessServiceOptions;
+        if (accessServiceOptions == null)
+        {
+            return null;
+        }
+        else if (accessServiceOptions.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return accessServiceOptions;
+        }
     }
 
 
     /**
      * Set up the options for this access service.  These are properties that are specific to the access service.
      *
-     * @param accessServiceOptions - Map from String to String
+     * @param accessServiceOptions Map from String to String
      */
-    public void setAccessServiceOptions(Map<String, String> accessServiceOptions)
+    public void setAccessServiceOptions(Map<String, Object> accessServiceOptions)
     {
         this.accessServiceOptions = accessServiceOptions;
     }

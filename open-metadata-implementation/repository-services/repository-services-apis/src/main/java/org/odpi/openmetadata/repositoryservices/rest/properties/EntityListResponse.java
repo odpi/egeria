@@ -6,8 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -18,7 +17,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class EntityListResponse extends OMRSRESTAPIPagedResponse
+public class EntityListResponse extends OMRSAPIPagedResponse
 {
     private List<EntityDetail> entities = null;
 
@@ -28,6 +27,23 @@ public class EntityListResponse extends OMRSRESTAPIPagedResponse
      */
     public EntityListResponse()
     {
+        super();
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public EntityListResponse(EntityListResponse   template)
+    {
+        super(template);
+
+        if (template != null)
+        {
+            entities = template.getEntities();
+        }
     }
 
 
@@ -38,7 +54,25 @@ public class EntityListResponse extends OMRSRESTAPIPagedResponse
      */
     public List<EntityDetail> getEntities()
     {
-        return entities;
+        if (entities == null)
+        {
+            return null;
+        }
+        else if (entities.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            List<EntityDetail>  clonedEntities = new ArrayList<>();
+
+            for (EntityDetail  attributeTypeDef : entities)
+            {
+                clonedEntities.add(new EntityDetail(attributeTypeDef));
+            }
+
+            return clonedEntities;
+        }
     }
 
 
@@ -49,10 +83,15 @@ public class EntityListResponse extends OMRSRESTAPIPagedResponse
      */
     public void setEntities(List<EntityDetail> entities)
     {
-        this.entities = new ArrayList<>(entities);
+        this.entities = entities;
     }
 
 
+    /**
+     * Standard toString method.
+     *
+     * @return print out of variables in a JSON-style
+     */
     @Override
     public String toString()
     {
@@ -66,6 +105,46 @@ public class EntityListResponse extends OMRSRESTAPIPagedResponse
                 ", exceptionErrorMessage='" + exceptionErrorMessage + '\'' +
                 ", exceptionSystemAction='" + exceptionSystemAction + '\'' +
                 ", exceptionUserAction='" + exceptionUserAction + '\'' +
+                ", exceptionProperties=" + exceptionProperties +
                 '}';
+    }
+
+
+    /**
+     * Compare the values of the supplied object with those stored in the current object.
+     *
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (!(objectToCompare instanceof EntityListResponse))
+        {
+            return false;
+        }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        EntityListResponse that = (EntityListResponse) objectToCompare;
+        return Objects.equals(getEntities(), that.getEntities());
+    }
+
+
+    /**
+     * Create a hash code for this element type.
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+
+        return Objects.hash(super.hashCode(), getEntities());
     }
 }

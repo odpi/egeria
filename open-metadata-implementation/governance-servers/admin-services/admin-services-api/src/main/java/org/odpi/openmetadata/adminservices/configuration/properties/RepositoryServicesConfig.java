@@ -10,6 +10,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,8 +46,10 @@ import java.util.List;
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class RepositoryServicesConfig
+public class RepositoryServicesConfig implements Serializable
 {
+    private static final long serialVersionUID = 1L;
+
     private List<Connection>       auditLogConnections            = new ArrayList<>();
     private List<Connection>       openMetadataArchiveConnections = new ArrayList<>();
     private LocalRepositoryConfig  localRepositoryConfig          = null;
@@ -65,12 +68,12 @@ public class RepositoryServicesConfig
     /**
      * Constructor to set all properties.
      *
-     * @param auditLogConnections - connections to copies of the audit log.
-     * @param openMetadataArchiveConnections - list of open metadata archive files to load.
-     * @param localRepositoryConfig - properties to configure the behavior of the local repository.
-     * @param enterpriseAccessConfig - properties to configure the behavior of the federation services provided
+     * @param auditLogConnections connections to copies of the audit log.
+     * @param openMetadataArchiveConnections list of open metadata archive files to load.
+     * @param localRepositoryConfig properties to configure the behavior of the local repository.
+     * @param enterpriseAccessConfig properties to configure the behavior of the federation services provided
      *                                to the Open Metadata Access Services (OMASs).
-     * @param cohortConfigList - properties about the open metadata repository clusters that this server connects to.
+     * @param cohortConfigList properties about the open metadata repository clusters that this server connects to.
      */
     public RepositoryServicesConfig(List<Connection>         auditLogConnections,
                                     List<Connection>         openMetadataArchiveConnections,
@@ -107,7 +110,7 @@ public class RepositoryServicesConfig
     /**
      * Set up the Connection properties used to create an OCF Connector to the AuditLog.
      *
-     * @param auditLogConnections - list of Connection objects
+     * @param auditLogConnections list of Connection objects
      */
     public void setAuditLogConnections(List<Connection> auditLogConnections)
     {
@@ -145,7 +148,7 @@ public class RepositoryServicesConfig
      * Set up the list of Connection object, each of which is used to create the Connector to an Open Metadata
      * Archive.  Open Metadata Archive contains pre-built metadata types and instances.
      *
-     * @param openMetadataArchiveConnections - list of Connection objects
+     * @param openMetadataArchiveConnections list of Connection objects
      */
     public void setOpenMetadataArchiveConnections(List<Connection> openMetadataArchiveConnections)
     {
@@ -174,7 +177,7 @@ public class RepositoryServicesConfig
     /**
      * Set up the configuration properties for the local repository.
      *
-     * @param localRepositoryConfig - configuration properties
+     * @param localRepositoryConfig configuration properties
      */
     public void setLocalRepositoryConfig(LocalRepositoryConfig localRepositoryConfig)
     {
@@ -229,7 +232,7 @@ public class RepositoryServicesConfig
      * Set up the configuration properties for each open metadata repository cluster that this local server
      * connects to.
      *
-     * @param cohortConfigList - list of cluster configuration properties
+     * @param cohortConfigList list of cluster configuration properties
      */
     public void setCohortConfigList(List<CohortConfig> cohortConfigList)
     {

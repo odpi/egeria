@@ -13,13 +13,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * There are 3 sections:
  * <ul>
  *     <li>
- *         ArchiveProperties - provides details of the source and contents of the archive.
+ *         ArchiveProperties: provides details of the source and contents of the archive.
  *     </li>
  *     <li>
- *         TypeStore - a list of new TypeDefs and patches to existing TypeDefs.
+ *         TypeStore: a list of new TypeDefs and patches to existing TypeDefs.
  *     </li>
  *     <li>
- *         InstanceStore - a list of new metadata instances (Entities and Relationships).
+ *         InstanceStore: a list of new metadata instances (Entities and Relationships).
  *     </li>
  * </ul>
  */

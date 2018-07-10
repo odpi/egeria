@@ -50,7 +50,7 @@ public abstract class Connector
      * @param connectorInstanceId   unique id for the connector instance   useful for messages etc
      * @param connection   POJO for the configuration used to create the connector.
      */
-    public abstract void initialize(String     connectorInstanceId,
+    public abstract void initialize(String               connectorInstanceId,
                                     ConnectionProperties connection);
 
 

@@ -68,10 +68,7 @@ public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreCo
 
         try
         {
-            if (log.isDebugEnabled())
-            {
-                log.debug("Writing server config store properties: " + omagServerConfig);
-            }
+            log.debug("Writing server config store properties: " + omagServerConfig);
 
             if (omagServerConfig == null)
             {
@@ -88,10 +85,7 @@ public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreCo
         }
         catch (IOException   ioException)
         {
-            if (log.isDebugEnabled())
-            {
-                log.debug("Unusable Server config Store :(", ioException);
-            }
+            log.debug("Unusable Server config Store :(", ioException);
         }
     }
 
@@ -124,11 +118,7 @@ public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreCo
             /*
              * The config file is not found, create a new one ...
              */
-
-            if (log.isDebugEnabled())
-            {
-                log.debug("New server config Store", ioException);
-            }
+            log.debug("New server config Store", ioException);
 
             newConfigProperties = new OMAGServerConfig();
         }
@@ -153,9 +143,6 @@ public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreCo
      */
     public void disconnect()
     {
-        if (log.isDebugEnabled())
-        {
-            log.debug("Closing Config Store.");
-        }
+        log.debug("Closing Config Store.");
     }
 }

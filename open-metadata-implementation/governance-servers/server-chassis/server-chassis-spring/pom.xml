@@ -34,8 +34,24 @@
             <artifactId>governance-engine-spring</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
-        <!-- Spring for REST APIs -->
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>repository-services-spring</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>connected-asset-spring</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
 
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>asset-consumer-spring</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <!-- Spring for REST APIs -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>

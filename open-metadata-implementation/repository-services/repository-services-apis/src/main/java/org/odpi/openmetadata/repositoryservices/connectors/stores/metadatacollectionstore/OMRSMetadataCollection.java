@@ -486,11 +486,11 @@ public abstract class OMRSMetadataCollection
 
 
     /**
-     * Verify that a definition of a TypeDef is either new - or matches the definition already stored.
+     * Verify that a definition of a TypeDef is either new or matches the definition already stored.
      *
      * @param userId unique identifier for requesting user.
      * @param typeDef TypeDef structure describing the TypeDef to test.
-     * @return boolean true means the TypeDef matches the local definition - false means the TypeDef is not known.
+     * @return boolean true means the TypeDef matches the local definition; false means the TypeDef is not known.
      * @throws InvalidParameterException the TypeDef is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
@@ -509,11 +509,11 @@ public abstract class OMRSMetadataCollection
 
 
     /**
-     * Verify that a definition of an AttributeTypeDef is either new - or matches the definition already stored.
+     * Verify that a definition of an AttributeTypeDef is either new or matches the definition already stored.
      *
      * @param userId unique identifier for requesting user.
      * @param attributeTypeDef TypeDef structure describing the TypeDef to test.
-     * @return boolean - true means the TypeDef matches the local definition - false means the TypeDef is not known.
+     * @return boolean where true means the TypeDef matches the local definition; false means the TypeDef is not known.
      * @throws InvalidParameterException the TypeDef is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
@@ -650,7 +650,7 @@ public abstract class OMRSMetadataCollection
      * @param originalAttributeTypeDefName the original name of the AttributeTypeDef.
      * @param newAttributeTypeDefGUID the new identifier for the AttributeTypeDef.
      * @param newAttributeTypeDefName new name for this AttributeTypeDef.
-     * @return attributeTypeDef - new values for this AttributeTypeDef, including the new guid/name.
+     * @return attributeTypeDef contains new values for this AttributeTypeDef, including the new guid/name.
      * @throws InvalidParameterException one of the parameters is invalid or null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
@@ -736,7 +736,7 @@ public abstract class OMRSMetadataCollection
 
 
     /**
-     * Return a historical version of an entity - includes the header, classifications and properties of the entity.
+     * Return a historical version of an entity.  Thi includes the header, classifications and properties of the entity.
      *
      * @param userId unique identifier for requesting user.
      * @param guid String unique identifier for the entity.
@@ -832,7 +832,7 @@ public abstract class OMRSMetadataCollection
      * @param sequencingOrder Enum defining how the results should be ordered.
      * @param pageSize the maximum number of result entities that can be returned on this request.  Zero means
      *                 unrestricted return results size.
-     * @return a list of entities matching the supplied criteria - null means no matching entities in the metadata
+     * @return a list of entities matching the supplied criteria; null means no matching entities in the metadata
      * collection.
      * @throws InvalidParameterException a parameter is invalid or null.
      * @throws TypeErrorException the type guid passed on the request is not known by the
@@ -870,7 +870,7 @@ public abstract class OMRSMetadataCollection
      * @param userId unique identifier for requesting user.
      * @param entityTypeGUID unique identifier for the type of entity requested.  Null means any type of entity
      *                       (but could be slow so not recommended.
-     * @param classificationName name of the classification - a null is not valid.
+     * @param classificationName name of the classification, note a null is not valid.
      * @param matchClassificationProperties list of classification properties used to narrow the search.
      * @param matchCriteria Enum defining how the properties should be matched to the classifications in the repository.
      * @param fromEntityElement the starting element number of the entities to return.
@@ -885,7 +885,7 @@ public abstract class OMRSMetadataCollection
      * @param sequencingOrder Enum defining how the results should be ordered.
      * @param pageSize the maximum number of result entities that can be returned on this request.  Zero means
      *                 unrestricted return results size.
-     * @return a list of entities matching the supplied criteria - null means no matching entities in the metadata
+     * @return a list of entities matching the supplied criteria; null means no matching entities in the metadata
      * collection.
      * @throws InvalidParameterException a parameter is invalid or null.
      * @throws TypeErrorException the type guid passed on the request is not known by the
@@ -941,7 +941,7 @@ public abstract class OMRSMetadataCollection
      * @param sequencingOrder Enum defining how the results should be ordered.
      * @param pageSize the maximum number of result entities that can be returned on this request.  Zero means
      *                 unrestricted return results size.
-     * @return a list of entities matching the supplied criteria - null means no matching entities in the metadata
+     * @return a list of entities matching the supplied criteria; null means no matching entities in the metadata
      * collection.
      * @throws InvalidParameterException a parameter is invalid or null.
      * @throws TypeErrorException the type guid passed on the request is not known by the
@@ -1558,7 +1558,7 @@ public abstract class OMRSMetadataCollection
      * @param initialProperties initial list of properties for the new entity; null means no properties.
      * @param entityOneGUID the unique identifier of one of the entities that the relationship is connecting together.
      * @param entityTwoGUID the unique identifier of the other entity that the relationship is connecting together.
-     * @param initialStatus initial status - typically DRAFT, PREPARED or ACTIVE.
+     * @param initialStatus initial status; typically DRAFT, PREPARED or ACTIVE.
      * @return Relationship structure with the new header, requested entities and properties.
      * @throws InvalidParameterException one of the parameters is invalid or null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where

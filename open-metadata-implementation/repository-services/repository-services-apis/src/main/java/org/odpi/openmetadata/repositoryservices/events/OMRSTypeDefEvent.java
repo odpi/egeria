@@ -2,8 +2,8 @@
 package org.odpi.openmetadata.repositoryservices.events;
 
 import org.apache.log4j.Logger;
-import org.odpi.openmetadata.repositoryservices.events.v1.OMRSEventV1;
-import org.odpi.openmetadata.repositoryservices.events.v1.OMRSEventV1TypeDefSection;
+import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1;
+import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1TypeDefSection;
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;

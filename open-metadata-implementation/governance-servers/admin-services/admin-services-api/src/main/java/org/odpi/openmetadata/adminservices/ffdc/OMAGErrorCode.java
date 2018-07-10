@@ -46,16 +46,6 @@ public enum OMAGErrorCode
             "The system is unable to configure the local server.",
             "The user name name is supplied by the caller to the OMAG server. This call needs to be corrected before the server can operate correctly."),
 
-    NULL_SERVICE_MODE(400, "OMAG-ADMIN-400-004 ",
-            "OMAG server {0} has been configured with a null service mode",
-            "The system is unable to configure the local server.",
-            "The service mode is supplied by the caller to the OMAG server. This call needs to be corrected before the server can operate correctly."),
-
-    NULL_LOCAL_REPOSITORY_MODE(400, "OMAG-ADMIN-400-005 ",
-            "OMAG server {0} has been configured with a null local repository service mode",
-            "The system is unable to configure the local server.",
-            "The service mode is supplied by the caller to the OMAG server. This call needs to be corrected before the server can operate correctly."),
-
     NULL_COHORT_NAME(400, "OMAG-ADMIN-400-006 ",
             "OMAG server {0} has been configured with a null cohort name",
             "The system is unable to configure the local server.",
@@ -91,11 +81,6 @@ public enum OMAGErrorCode
             "The system is unable to initialize the server.",
             "Review the error message to determine the cause of the problem."),
 
-    NULL_CONFIG_FILE(400, "OMAG-ADMIN-400-012 ",
-            "The OMAG server is not able to save its configuration file",
-            "The system is unable to maintain the configuration for the server.",
-            "Review any related error messages to determine the cause of the problem."),
-
     BAD_MAX_PAGE_SIZE(400, "OMAG-ADMIN-400-013 ",
             "The OMAG server {0} has been passed an invalid maximum page size of {1}",
             "The system has ignored this value.",
@@ -104,8 +89,21 @@ public enum OMAGErrorCode
     ENTERPRISE_TOPIC_START_FAILED(400, "OMAG-ADMIN-400-014 ",
             "The OMAG server {0} is unable to start the enterprise OMRS topic connector, error message was {1}",
             "The open metadata access services will not be able to receive events from the connected repositories.",
-            "Review the error messages and once the source of the problem is resolved, restart the server and retry the request.")
-            ;
+            "Review the error messages and once the source of the problem is resolved, restart the server and retry the request."),
+
+    TOO_LATE_TO_SET_EVENT_BUS(400, "OMAG-ADMIN-400-015 ",
+            "The OMAG server {0} is unable to set up new event bus configuration because other services are already configured",
+            "It is not possible to change the event bus configuration for this server while there are other open metadata services configured.",
+            "Remove any configuration for this server's cohorts, local repository and access services, " +
+                                      "and retry the request to add the event bus configuration.  " +
+                                      "Then it is possible to add the configuration for the other services back " +
+                                      "into the configuration document."),
+
+    NO_EVENT_BUS_SET(400, "OMAG-ADMIN-400-016 ",
+            "The OMAG server {0} is unable to add open metadata services until the event bus is configured",
+            "No change has occurred in this server's configuration document.",
+            "Add the event bus configuration using the administration services and retry the request."),
+    ;
 
     private int    httpErrorCode;
     private String errorMessageId;
@@ -124,11 +122,11 @@ public enum OMAGErrorCode
      *
      * This will expand out to the 5 parameters shown below.
      *
-     * @param newHTTPErrorCode - error code to use over REST calls
-     * @param newErrorMessageId - unique Id for the message
-     * @param newErrorMessage - text for the message
-     * @param newSystemAction - description of the action taken by the system when the error condition happened
-     * @param newUserAction - instructions for resolving the error
+     * @param newHTTPErrorCode error code to use over REST calls
+     * @param newErrorMessageId unique Id for the message
+     * @param newErrorMessage text for the message
+     * @param newSystemAction description of the action taken by the system when the error condition happened
+     * @param newUserAction instructions for resolving the error
      */
     OMAGErrorCode(int  newHTTPErrorCode, String newErrorMessageId, String newErrorMessage, String newSystemAction, String newUserAction)
     {
@@ -171,7 +169,7 @@ public enum OMAGErrorCode
     /**
      * Returns the error message with the placeholders filled out with the supplied parameters.
      *
-     * @param params - strings that plug into the placeholders in the errorMessage
+     * @param params strings that plug into the placeholders in the errorMessage
      * @return errorMessage (formatted with supplied parameters)
      */
     public String getFormattedErrorMessage(String... params)

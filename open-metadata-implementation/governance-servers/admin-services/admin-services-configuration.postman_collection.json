@@ -1,0 +1,608 @@
+{
+	"info": {
+		"_postman_id": "ba311a69-0d64-472f-bac8-5e9f3ff8402e",
+		"name": "OMAG Server Configuration",
+		"description": "Requests for configuring an OMAG Server",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Query Configuration",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/configuration",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"open-metadata",
+						"admin-services",
+						"users",
+						"garygeeke",
+						"servers",
+						"cocoMDS1",
+						"configuration"
+					]
+				},
+				"description": "Query Current Configuration"
+			},
+			"response": []
+		},
+		{
+			"name": "Query Server Origin",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/server-origin",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"open-metadata",
+						"admin-services",
+						"users",
+						"garygeeke",
+						"servers",
+						"cocoMDS1",
+						"server-origin"
+					]
+				},
+				"description": "Query the identifier of this server's origin.  This is usful where there are many different implementations of the open metadata repository servers."
+			},
+			"response": []
+		},
+		{
+			"name": "Set local server URL",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/server-url-root?url=https://cocoMDS1:8080",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"open-metadata",
+						"admin-services",
+						"users",
+						"garygeeke",
+						"servers",
+						"cocoMDS1",
+						"server-url-root"
+					],
+					"query": [
+						{
+							"key": "url",
+							"value": "https://cocoMDS1:8080"
+						}
+					]
+				},
+				"description": "Update the URL root that other servers should use to make calls to this local server. The URL path for the individual request is appended to this URL root."
+			},
+			"response": []
+		},
+		{
+			"name": "Set local server user Id",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/server-user-id?id=cocoMDS",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"open-metadata",
+						"admin-services",
+						"users",
+						"garygeeke",
+						"servers",
+						"cocoMDS1",
+						"server-user-id"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "cocoMDS"
+						}
+					]
+				},
+				"description": "Set up the user Id that this server should use on open metadata requests when it is processing events (and consequently there is no end user id to use)."
+			},
+			"response": []
+		},
+		{
+			"name": "Set max page size",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/max-page-size?limit=500",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"open-metadata",
+						"admin-services",
+						"users",
+						"garygeeke",
+						"servers",
+						"cocoMDS1",
+						"max-page-size"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "500"
+						}
+					]
+				},
+				"description": "Set up the maximum number of results that can be returned on an open metadata request."
+			},
+			"response": []
+		},
+		{
+			"name": "Set local server type",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/server-type?typeName=OMAG Test Server",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"open-metadata",
+						"admin-services",
+						"users",
+						"garygeeke",
+						"servers",
+						"cocoMDS1",
+						"server-type"
+					],
+					"query": [
+						{
+							"key": "typeName",
+							"value": "OMAG Test Server"
+						}
+					]
+				},
+				"description": "Set up a descriptive type name for your server."
+			},
+			"response": []
+		},
+		{
+			"name": "Set organization name",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/organization-name?name=Coco Pharmaceuticals",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"open-metadata",
+						"admin-services",
+						"users",
+						"garygeeke",
+						"servers",
+						"cocoMDS1",
+						"organization-name"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Coco Pharmaceuticals"
+						}
+					]
+				},
+				"description": "Set up the name of the organization that owns this server."
+			},
+			"response": []
+		},
+		{
+			"name": "Set up event bus",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/event-bus",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"open-metadata",
+						"admin-services",
+						"users",
+						"garygeeke",
+						"servers",
+						"cocoMDS1",
+						"event-bus"
+					]
+				},
+				"description": "Set up the common properties needed to call your event bus.  These properties are passed inthe request body."
+			},
+			"response": []
+		},
+		{
+			"name": "Enable the access services",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/access-services",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"open-metadata",
+						"admin-services",
+						"users",
+						"garygeeke",
+						"servers",
+						"cocoMDS1",
+						"access-services"
+					]
+				},
+				"description": "Turn on the open metadata access services (OMAS)"
+			},
+			"response": []
+		},
+		{
+			"name": "Disable the access services",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/access-services",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"open-metadata",
+						"admin-services",
+						"users",
+						"garygeeke",
+						"servers",
+						"cocoMDS1",
+						"access-services"
+					]
+				},
+				"description": "Disable the open metadata access services (this is the default)."
+			},
+			"response": []
+		},
+		{
+			"name": "Enable the in-memory repository",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository/mode/in-memory-repository",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"open-metadata",
+						"admin-services",
+						"users",
+						"garygeeke",
+						"servers",
+						"cocoMDS1",
+						"local-repository",
+						"mode",
+						"in-memory-repository"
+					]
+				},
+				"description": "Set up the local reposiotry to use the in-memory implementation."
+			},
+			"response": []
+		},
+		{
+			"name": "Enable the dummy graph repository",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository/mode/local-graph-repository",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"open-metadata",
+						"admin-services",
+						"users",
+						"garygeeke",
+						"servers",
+						"cocoMDS1",
+						"local-repository",
+						"mode",
+						"local-graph-repository"
+					]
+				},
+				"description": "Set the local reposiotry to use the graph implementation.  At this point it is a stub that will throw exceptions if called."
+			},
+			"response": []
+		},
+		{
+			"name": "Set repository proxy's local repository connection",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository/mode/repository-proxy/details?connectorProvider=org.odpi.openmetadata.adapters.igc.repositoryconnector.IGCOMRSRepositoryConnectorProvider             ",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"open-metadata",
+						"admin-services",
+						"users",
+						"garygeeke",
+						"servers",
+						"cocoMDS1",
+						"local-repository",
+						"mode",
+						"repository-proxy",
+						"details"
+					],
+					"query": [
+						{
+							"key": "connectorProvider",
+							"value": "org.odpi.openmetadata.adapters.igc.repositoryconnector.IGCOMRSRepositoryConnectorProvider             "
+						}
+					]
+				},
+				"description": "Query Current Configuration"
+			},
+			"response": []
+		},
+		{
+			"name": "Set repository event mapper",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository/event-mapper-details?connectorProvider=org.odpi.openmetadata.adapters.igc.eventmapper.IGCEventMapperProvider&eventSource=infosphereEvent",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"open-metadata",
+						"admin-services",
+						"users",
+						"garygeeke",
+						"servers",
+						"cocoMDS1",
+						"local-repository",
+						"event-mapper-details"
+					],
+					"query": [
+						{
+							"key": "connectorProvider",
+							"value": "org.odpi.openmetadata.adapters.igc.eventmapper.IGCEventMapperProvider"
+						},
+						{
+							"key": "eventSource",
+							"value": "infosphereEvent"
+						}
+					]
+				},
+				"description": "Set the event mapper for the local repository.  This translates proprietary events onto OMRS calls."
+			},
+			"response": []
+		},
+		{
+			"name": "Remove local repository",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"open-metadata",
+						"admin-services",
+						"users",
+						"garygeeke",
+						"servers",
+						"cocoMDS1",
+						"local-repository"
+					]
+				},
+				"description": "Remove all configuration for the local repository."
+			},
+			"response": []
+		},
+		{
+			"name": "Enable access to a cohort",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/cohorts/cohort1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"open-metadata",
+						"admin-services",
+						"users",
+						"garygeeke",
+						"servers",
+						"cocoMDS1",
+						"cohorts",
+						"cohort1"
+					]
+				},
+				"description": "Request registration to a cohort."
+			},
+			"response": []
+		},
+		{
+			"name": "Disable access to a cohort",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/cohorts/cohort1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"open-metadata",
+						"admin-services",
+						"users",
+						"garygeeke",
+						"servers",
+						"cocoMDS1",
+						"cohorts",
+						"cohort1"
+					]
+				},
+				"description": "Unregister from a cohort."
+			},
+			"response": []
+		},
+		{
+			"name": "Activate open metadata using config",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/instance",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"open-metadata",
+						"admin-services",
+						"users",
+						"garygeeke",
+						"servers",
+						"cocoMDS1",
+						"instance"
+					]
+				},
+				"description": "Activate open metadata services"
+			},
+			"response": []
+		},
+		{
+			"name": "Deactivate open metadata in server",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/instance",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"open-metadata",
+						"admin-services",
+						"users",
+						"garygeeke",
+						"servers",
+						"cocoMDS1",
+						"instance"
+					]
+				},
+				"description": "Deactivate open metadata services"
+			},
+			"response": []
+		},
+		{
+			"name": "Remove open metadata from server (including config)",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"open-metadata",
+						"admin-services",
+						"users",
+						"garygeeke",
+						"servers",
+						"cocoMDS1"
+					]
+				},
+				"description": "Unregister server and remove its configuration"
+			},
+			"response": []
+		}
+	]
+}

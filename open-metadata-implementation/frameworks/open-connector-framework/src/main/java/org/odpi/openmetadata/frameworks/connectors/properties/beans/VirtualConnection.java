@@ -28,9 +28,38 @@ public class VirtualConnection extends Connection
 
 
     /**
+     * Return the standard type for a connection type.
+     *
+     * @return ElementType object
+     */
+    public static ElementType getVirtualConnectionType()
+    {
+        final String        elementTypeId                   = "82f9c664-e59d-484c-a8f3-17088c23a2f3";
+        final String        elementTypeName                 = "VirtualConnection";
+        final long          elementTypeVersion              = 1;
+        final String        elementTypeDescription          = "A connector for a virtual resource that needs to retrieve data from multiple places.";
+        final String        elementAccessServiceURL         = null;
+        final ElementOrigin elementOrigin                   = ElementOrigin.LOCAL_COHORT;
+        final String        elementHomeMetadataCollectionId = null;
+
+        ElementType elementType = new ElementType();
+
+        elementType.setElementTypeId(elementTypeId);
+        elementType.setElementTypeName(elementTypeName);
+        elementType.setElementTypeVersion(elementTypeVersion);
+        elementType.setElementTypeDescription(elementTypeDescription);
+        elementType.setElementSourceServer(elementAccessServiceURL);
+        elementType.setElementOrigin(elementOrigin);
+        elementType.setElementHomeMetadataCollectionId(elementHomeMetadataCollectionId);
+
+        return elementType;
+    }
+
+
+    /**
      * Default constructor
      */
-    protected VirtualConnection()
+    public VirtualConnection()
     {
         super();
     }
@@ -60,6 +89,10 @@ public class VirtualConnection extends Connection
     public List<EmbeddedConnection> getEmbeddedConnections()
     {
         if (embeddedConnections == null)
+        {
+            return null;
+        }
+        else if (embeddedConnections.isEmpty())
         {
             return null;
         }

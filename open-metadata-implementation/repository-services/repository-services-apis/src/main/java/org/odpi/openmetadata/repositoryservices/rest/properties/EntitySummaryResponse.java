@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary;
 
+import java.util.Objects;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -16,7 +18,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class EntitySummaryResponse extends OMRSRESTAPIResponse
+public class EntitySummaryResponse extends OMRSAPIResponse
 {
     private EntitySummary entity = null;
 
@@ -25,6 +27,23 @@ public class EntitySummaryResponse extends OMRSRESTAPIResponse
      */
     public EntitySummaryResponse()
     {
+        super();
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public EntitySummaryResponse(EntitySummaryResponse   template)
+    {
+        super(template);
+
+        if (template != null)
+        {
+            entity = template.getEntity();
+        }
     }
 
 
@@ -35,7 +54,14 @@ public class EntitySummaryResponse extends OMRSRESTAPIResponse
      */
     public EntitySummary getEntity()
     {
-        return entity;
+        if (entity == null)
+        {
+            return null;
+        }
+        else
+        {
+            return new EntitySummary(entity);
+        }
     }
 
 
@@ -50,16 +76,60 @@ public class EntitySummaryResponse extends OMRSRESTAPIResponse
     }
 
 
+    /**
+     * Standard toString method.
+     *
+     * @return print out of variables in a JSON-style
+     */
     @Override
     public String toString()
     {
-        return "EntityDetailResponse{" +
+        return "EntitySummaryResponse{" +
                 "entity=" + entity +
                 ", relatedHTTPCode=" + relatedHTTPCode +
                 ", exceptionClassName='" + exceptionClassName + '\'' +
                 ", exceptionErrorMessage='" + exceptionErrorMessage + '\'' +
                 ", exceptionSystemAction='" + exceptionSystemAction + '\'' +
                 ", exceptionUserAction='" + exceptionUserAction + '\'' +
+                ", exceptionProperties=" + exceptionProperties +
                 '}';
+    }
+
+
+    /**
+     * Compare the values of the supplied object with those stored in the current object.
+     *
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (!(objectToCompare instanceof EntitySummaryResponse))
+        {
+            return false;
+        }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        EntitySummaryResponse that = (EntitySummaryResponse) objectToCompare;
+        return Objects.equals(getEntity(), that.getEntity());
+    }
+
+
+    /**
+     * Create a hash code for this element type.
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), getEntity());
     }
 }

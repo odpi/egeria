@@ -23,9 +23,9 @@ public enum AccessServiceOperationalStatus implements Serializable
     /**
      * Default Constructor
      *
-     * @param typeCode - ordinal for this enum
-     * @param typeName - symbolic name for this enum
-     * @param typeDescription - short description for this enum
+     * @param typeCode ordinal for this enum
+     * @param typeName symbolic name for this enum
+     * @param typeDescription short description for this enum
      */
     AccessServiceOperationalStatus(int     typeCode, String   typeName, String   typeDescription)
     {
@@ -41,7 +41,7 @@ public enum AccessServiceOperationalStatus implements Serializable
     /**
      * Return the code for this enum instance
      *
-     * @return int - type code
+     * @return int type code
      */
     public int getTypeCode()
     {
@@ -52,7 +52,7 @@ public enum AccessServiceOperationalStatus implements Serializable
     /**
      * Return the default name for this enum instance.
      *
-     * @return String - default name
+     * @return String default name
      */
     public String getTypeName()
     {
@@ -63,7 +63,7 @@ public enum AccessServiceOperationalStatus implements Serializable
     /**
      * Return the default description for the type for this enum instance.
      *
-     * @return String - default description
+     * @return String default description
      */
     public String getTypeDescription()
     {

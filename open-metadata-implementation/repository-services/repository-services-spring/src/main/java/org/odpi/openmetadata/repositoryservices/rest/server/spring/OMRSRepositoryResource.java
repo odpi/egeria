@@ -65,7 +65,7 @@ import java.util.List;
  * </ul>
  */
 @RestController
-@RequestMapping("/repository-services/")
+@RequestMapping("/open-metadata/repository-services")
 public class OMRSRepositoryResource
 {
     private OMRSRepositoryRESTServices  restAPI = new OMRSRepositoryRESTServices();
