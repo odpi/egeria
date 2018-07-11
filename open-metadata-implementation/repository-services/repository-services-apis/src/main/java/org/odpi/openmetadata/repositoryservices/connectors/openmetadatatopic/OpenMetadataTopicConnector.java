@@ -163,6 +163,17 @@ public abstract class OpenMetadataTopicConnector extends ConnectorBase implement
         if (topicListener != null)
         {
             topicListeners.add(topicListener);
+
+            if (super.connectionProperties != null)
+            {
+                EndpointProperties endpoint = super.connectionProperties.getEndpoint();
+
+                if (endpoint != null)
+                {
+                    topicName = endpoint.getAddress();
+                }
+            }
+
             return topicName;
         }
 
