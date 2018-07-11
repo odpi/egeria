@@ -24,4 +24,37 @@
 
     <packaging>pom</packaging>
 
+    <dependencies>
+
+        <!-- File I/O processing -->
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons-io.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>${commons-collections.version}</version>
+        </dependency>
+
+        <!-- REST Repository Connector -->
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>repository-services-implementation</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>connector-configuration-factory</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+    </dependencies>
+
 </project>
