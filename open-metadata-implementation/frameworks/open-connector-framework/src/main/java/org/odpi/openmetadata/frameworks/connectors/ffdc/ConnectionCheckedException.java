@@ -2,7 +2,8 @@
 package org.odpi.openmetadata.frameworks.connectors.ffdc;
 
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * ConnectionCheckedException provides a checked exception for reporting errors found in connection objects.
@@ -13,7 +14,7 @@ import org.apache.log4j.Logger;
  */
 public class ConnectionCheckedException extends OCFCheckedExceptionBase
 {
-    private static final Logger log = Logger.getLogger(ConnectionCheckedException.class);
+    private static final Logger log = LoggerFactory.getLogger(ConnectionCheckedException.class);
 
     /**
      * This is the typical constructor for creating a ConnectionCheckedException.  It captures the essential details

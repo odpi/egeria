@@ -2,7 +2,8 @@
 package org.odpi.openmetadata.frameworks.connectors.ffdc;
 
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * ConnectorCheckedException provides a checked exception for reporting errors found when using OCF connectors.
@@ -14,7 +15,7 @@ import org.apache.log4j.Logger;
  */
 public class ConnectorCheckedException extends OCFCheckedExceptionBase
 {
-    private static final Logger log = Logger.getLogger(ConnectorCheckedException.class);
+    private static final Logger log = LoggerFactory.getLogger(ConnectorCheckedException.class);
 
     /**
      * This is the typical constructor used for creating a ConnectorCheckedException.

@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservices.assetconsumer.outtopic;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.accessservices.assetconsumer.properties.Asset;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -21,7 +22,7 @@ public class AssetConsumerPublisher
     private static final String assetPropertyNameOwner         = "owner";
     private static final String assetPropertyNameDescription   = "description";
 
-    private static final Logger log = Logger.getLogger(AssetConsumerPublisher.class);
+    private static final Logger log = LoggerFactory.getLogger(AssetConsumerPublisher.class);
 
     private Connection              assetConsumerOutTopic;
     private OMRSRepositoryHelper    repositoryHelper;

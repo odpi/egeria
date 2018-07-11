@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.frameworks.connectors;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFErrorCode;
@@ -19,7 +20,7 @@ import java.util.*;
  */
 public class ConnectorBroker
 {
-    private static final Logger log      = Logger.getLogger(ConnectorBroker.class);
+    private static final Logger log      = LoggerFactory.getLogger(ConnectorBroker.class);
     private final        int    hashCode = UUID.randomUUID().hashCode();
 
 

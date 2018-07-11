@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservices.connectedasset.client;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 
@@ -34,7 +35,7 @@ public class ConnectedAssetProperties extends org.odpi.openmetadata.frameworks.c
 
     private ConnectedAsset       connectedAsset;
 
-    private static final Logger log = Logger.getLogger(ConnectedAssetProperties.class);
+    private static final Logger log = LoggerFactory.getLogger(ConnectedAssetProperties.class);
 
     /**
      * Typical constructor.

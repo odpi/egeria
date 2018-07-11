@@ -2,7 +2,8 @@
 package org.odpi.openmetadata.repositoryservices.events;
 
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1;
 import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1ErrorSection;
@@ -54,7 +55,7 @@ public abstract class OMRSEvent
     protected AttributeTypeDef       otherAttributeTypeDef     = null;
     protected String                 otherInstanceGUID         = null;
 
-    private static final Logger log = Logger.getLogger(OMRSEvent.class);
+    private static final Logger log = LoggerFactory.getLogger(OMRSEvent.class);
 
 
     /**

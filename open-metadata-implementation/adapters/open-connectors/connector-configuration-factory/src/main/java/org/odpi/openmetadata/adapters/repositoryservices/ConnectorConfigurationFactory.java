@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.adapters.repositoryservices;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.adapters.adminservices.configurationstore.file.FileBasedServerConfigStoreProvider;
 import org.odpi.openmetadata.adapters.eventbus.topic.inmemory.InMemoryOpenMetadataTopicProvider;
 import org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider;
@@ -43,7 +44,7 @@ public class ConnectorConfigurationFactory
     private static final String defaultOpenMetadataArchiveFileName = "OpenMetadataTypes.json";
 
 
-    private static final Logger log = Logger.getLogger(ConnectorConfigurationFactory.class);
+    private static final Logger log = LoggerFactory.getLogger(ConnectorConfigurationFactory.class);
 
 
     /**

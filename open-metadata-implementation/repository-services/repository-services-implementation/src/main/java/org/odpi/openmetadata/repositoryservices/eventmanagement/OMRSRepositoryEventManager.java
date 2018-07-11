@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.repositoryservices.eventmanagement;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventProcessor;
@@ -39,7 +40,7 @@ public class OMRSRepositoryEventManager implements OMRSRepositoryEventProcessor
      * the open metadata repository.  The Logger is for standard debug.
      */
     private static final OMRSAuditLog auditLog = new OMRSAuditLog(OMRSAuditingComponent.REPOSITORY_EVENT_MANAGER);
-    private static final Logger       log      = Logger.getLogger(OMRSRepositoryEventManager.class);
+    private static final Logger       log      = LoggerFactory.getLogger(OMRSRepositoryEventManager.class);
 
     /**
      * Constructor to initialize a repository event manager

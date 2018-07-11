@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservices.connectedasset.outtopic;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -14,7 +15,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 public class ConnectedAssetPublisher
 {
-    private static final Logger log = Logger.getLogger(ConnectedAssetPublisher.class);
+    private static final Logger log = LoggerFactory.getLogger(ConnectedAssetPublisher.class);
 
     private Connection              assetConsumerOutTopic;
     private OMRSRepositoryHelper    repositoryHelper;

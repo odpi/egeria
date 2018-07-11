@@ -2,7 +2,8 @@
 package org.odpi.openmetadata.repositoryservices.connectors.omrstopic;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.VirtualConnectorExtension;
@@ -53,7 +54,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
                                                                  VirtualConnectorExtension,
                                                                  OpenMetadataTopicListener
 {
-    private static final Logger       log      = Logger.getLogger(OMRSTopicConnector.class);
+    private static final Logger       log      = LoggerFactory.getLogger(OMRSTopicConnector.class);
     private static final OMRSAuditLog auditLog = new OMRSAuditLog(OMRSAuditingComponent.OMRS_TOPIC_CONNECTOR);
 
     private static final String connectorName    = "OMRSTopicListener";

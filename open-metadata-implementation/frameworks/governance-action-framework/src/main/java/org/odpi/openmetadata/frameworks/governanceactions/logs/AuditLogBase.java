@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.frameworks.governanceactions.logs;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.governanceactions.ffdc.GAFErrorCode;
 import org.odpi.openmetadata.frameworks.governanceactions.ffdc.GAFRuntimeException;
 
@@ -299,7 +300,7 @@ public class AuditLogBase implements AuditLog
             /*
              * This is the first use of the audit log so create the log file.
              */
-            auditLogFile = Logger.getLogger(getAuditLogName());
+            auditLogFile = LoggerFactory.getLogger(getAuditLogName());
         }
 
         auditLogFile.info(timestamp.toString() + contextId + message);

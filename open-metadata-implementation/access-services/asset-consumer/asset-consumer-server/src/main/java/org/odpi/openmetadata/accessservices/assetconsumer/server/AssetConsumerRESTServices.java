@@ -2,7 +2,8 @@
 package org.odpi.openmetadata.accessservices.assetconsumer.server;
 
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.AssetConsumerErrorCode;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.assetconsumer.server.properties.AssetConsumerOMASAPIResponse;
@@ -29,7 +30,7 @@ public class AssetConsumerRESTServices
     static private String                  accessServiceName   = null;
     static private OMRSRepositoryConnector repositoryConnector = null;
 
-    private static final Logger log = Logger.getLogger(AssetConsumerRESTServices.class);
+    private static final Logger log = LoggerFactory.getLogger(AssetConsumerRESTServices.class);
 
     /**
      * Provide a connector to the REST Services.
