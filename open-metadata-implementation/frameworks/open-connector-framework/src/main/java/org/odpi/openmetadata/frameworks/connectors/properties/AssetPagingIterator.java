@@ -1,10 +1,11 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
-import org.apache.log4j.Logger;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -52,7 +53,7 @@ public class AssetPagingIterator extends AssetPropertyBase implements Iterator<A
 
     protected AssetPropertyIteratorBase iterator = null;
 
-    private static final Logger log = Logger.getLogger(AssetPagingIterator.class);
+    private static final Logger log = LoggerFactory.getLogger(AssetPagingIterator.class);
 
 
 
