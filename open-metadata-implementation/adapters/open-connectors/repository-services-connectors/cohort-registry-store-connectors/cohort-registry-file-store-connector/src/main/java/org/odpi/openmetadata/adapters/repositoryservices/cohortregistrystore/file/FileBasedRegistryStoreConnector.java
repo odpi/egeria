@@ -2,7 +2,8 @@
 package org.odpi.openmetadata.adapters.repositoryservices.cohortregistrystore.file;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
@@ -42,7 +43,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
      */
     private static final OMRSAuditLog auditLog = new OMRSAuditLog(OMRSAuditingComponent.REGISTRY_STORE);
 
-    private static final Logger log = Logger.getLogger(FileBasedRegistryStoreConnector.class);
+    private static final Logger log = LoggerFactory.getLogger(FileBasedRegistryStoreConnector.class);
 
     /**
      * Default constructor

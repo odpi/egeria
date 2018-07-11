@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.frameworks.connectors.ffdc;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 
@@ -23,7 +24,7 @@ public class OCFRuntimeException extends RuntimeException
     private String    reportedUserAction;
     private Throwable reportedCaughtException = null;
 
-    private static final Logger log = Logger.getLogger(OCFRuntimeException.class);
+    private static final Logger log = LoggerFactory.getLogger(OCFRuntimeException.class);
 
     /**
      * This is the typical constructor used for creating an OCFRuntimeException.

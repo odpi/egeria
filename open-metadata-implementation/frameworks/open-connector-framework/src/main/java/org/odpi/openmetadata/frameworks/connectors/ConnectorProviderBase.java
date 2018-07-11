@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.frameworks.connectors;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFErrorCode;
@@ -31,7 +32,7 @@ public abstract class ConnectorProviderBase extends ConnectorProvider
 
     private final int     hashCode = UUID.randomUUID().hashCode();
 
-    private static final Logger     log = Logger.getLogger(ConnectorProviderBase.class);
+    private static final Logger     log = LoggerFactory.getLogger(ConnectorProviderBase.class);
 
     /**
      * Typical constructor

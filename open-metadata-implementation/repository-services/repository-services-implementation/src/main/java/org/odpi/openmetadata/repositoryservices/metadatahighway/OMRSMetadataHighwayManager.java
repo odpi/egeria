@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.repositoryservices.metadatahighway;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.adminservices.configuration.properties.OpenMetadataEventProtocolVersion;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
@@ -43,7 +44,7 @@ public class OMRSMetadataHighwayManager
 
     private static final OMRSAuditLog auditLog = new OMRSAuditLog(OMRSAuditingComponent.METADATA_HIGHWAY_MANAGER);
 
-    private static final Logger log = Logger.getLogger(OMRSMetadataHighwayManager.class);
+    private static final Logger log = LoggerFactory.getLogger(OMRSMetadataHighwayManager.class);
 
     /**
      * Constructor taking the values that are used in every cohort.  Any of these values may be null.

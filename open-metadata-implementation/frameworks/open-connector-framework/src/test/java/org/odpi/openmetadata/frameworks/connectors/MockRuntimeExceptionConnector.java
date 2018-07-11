@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.frameworks.connectors;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -48,7 +49,7 @@ public abstract class MockRuntimeExceptionConnector extends ConnectorBase
     protected AdditionalProperties securedProperties = null;
 
     private static final int      hashCode = UUID.randomUUID().hashCode();
-    private static final Logger   log = Logger.getLogger(MockRuntimeExceptionConnector.class);
+    private static final Logger   log = LoggerFactory.getLogger(MockRuntimeExceptionConnector.class);
 
     /**
      * Typical Constructor Connectors should always have a constructor requiring no parameters and perform

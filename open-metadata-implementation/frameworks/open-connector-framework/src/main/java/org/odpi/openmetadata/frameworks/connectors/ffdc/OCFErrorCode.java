@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.frameworks.connectors.ffdc;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.text.MessageFormat;
 import java.util.Arrays;
@@ -162,7 +163,7 @@ public enum OCFErrorCode
     private String systemAction;
     private String userAction;
 
-    private static final Logger log = Logger.getLogger(OCFErrorCode.class);
+    private static final Logger log = LoggerFactory.getLogger(OCFErrorCode.class);
 
 
     /**

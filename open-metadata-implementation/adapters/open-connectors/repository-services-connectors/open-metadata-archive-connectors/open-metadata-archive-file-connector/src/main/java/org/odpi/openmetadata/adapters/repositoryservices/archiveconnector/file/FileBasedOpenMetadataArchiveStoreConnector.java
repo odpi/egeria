@@ -2,13 +2,14 @@
 package org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.file;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.log4j.Logger;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.apache.commons.io.FileUtils;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveStoreConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,7 +29,7 @@ public class FileBasedOpenMetadataArchiveStoreConnector extends OpenMetadataArch
     /*
      * Variables used for logging and debug.
      */
-    private static final Logger log = Logger.getLogger(FileBasedOpenMetadataArchiveStoreConnector.class);
+    private static final Logger log = LoggerFactory.getLogger(FileBasedOpenMetadataArchiveStoreConnector.class);
 
 
     /**
