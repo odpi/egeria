@@ -118,16 +118,14 @@ Changes to be committed:
   (use "git reset HEAD <file>..." to unstage)
 
 	new file:   new-file.java
-
 ```
 
 You can now commit changes to your local repository, making sure to use the <code>-s</code> option to sign your changes (see below) and the <code>-m</code> option to provide a useful commit message. In the message you can make use of [special strings](https://blog.github.com/2011-10-12-introducing-issue-mentions/)to directly link to github issues. If this is done others following the issue will see the commits to your fork easily so can track the work going on even before you submit to the egeria repository
 
-It's also essential to push the changes from your local machine up to github ready for the next step
+It's also essential to push the changes from your local machine up to github ready for the next step - Note this issues github issues, also read the section on JIRA below
 ```
 $ git commit -s -m 'Best code change ever as per Issue #1433'
 $ git push 
-
 ```
 
 If you think there is ongoing work in a similar area to that of your changes, you may find it useful to pull
@@ -152,7 +150,48 @@ git push -d origin example-branch
 ```
 You may need to use <code>-D</code> if not all changes are merged, but check carefully!
 
+### Additional git tips
+
+If you're working locally, and realise you accidentally have been doing changes on master instead of another branch:
+```
+git stash
+git checkout -b correct-branch
+git stash pop
+```
+
+Messed up your master branch?
+```
+git checkout master
+git fetch upstream
+git reset --hard HEAD
+git push
+```
+
+Correcting your last commit
+```
+git commit --amend -s -m "New commit message"
+```
+
+Viewing recent changes
+```
+git log
+```
+
+View recent changes in a prettier way:
+```
+git log --pretty=format:"%h %ad | %s%d [%an]" --graph --date=short
+```
+
+Taking a fix you've pushed to a different branch (perhaps a top level pom change, or something else you need) & apply it to your current branch
+```
+git cherry-pick <commit-id>
+```
+
 ## Getting a JIRA account and creating an issue
+
+JIRAs should be opened for defects that are to be fixed by someone else, or for significant features where discussion is needed as to the
+correct approach, architecture, need, use cases. GitHub issues may be used by developers for submitting their own bug fixes or incremental
+updates.
 
 1. If you haven't already, create a [Linux Foundation account](https://identity.linuxfoundation.org). 
 Note the username and password you selected.
