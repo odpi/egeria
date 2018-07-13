@@ -87,7 +87,9 @@ You can also see that 'origin' will point to your github fork, whilst 'upstream'
 ```
 10:55 $ git remote -v
 origin https://github.com/USER/egeria (fetch)
-origin https://github.com/USER/egeria (push) upstream https://github.com/odpi/egeria.git (fetch) upstream https://github.com/odpi/egeria.git (push)
+origin https://github.com/USER/egeria (push)
+upstream https://github.com/odpi/egeria.git (fetch)
+upstream https://github.com/odpi/egeria.git (push)
 ```
 
 

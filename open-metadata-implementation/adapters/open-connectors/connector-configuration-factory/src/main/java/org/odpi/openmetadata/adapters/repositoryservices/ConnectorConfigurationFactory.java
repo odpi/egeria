@@ -660,7 +660,7 @@ public class ConnectorConfigurationFactory
         final String connectorTypeDescription   = "OMRS default enterprise connector type.";
         final String connectorTypeJavaClassName = OMRSTopicProvider.class.getName();
 
-        String connectorTypeName = "DefaultEnterpriseTopic.ConnectorType." + localServerName;
+        String connectorTypeName = "EnterpriseTopicConnectorType.Server." + localServerName;
 
         ConnectorType connectorType = new ConnectorType();
 
@@ -674,7 +674,7 @@ public class ConnectorConfigurationFactory
 
         final String connectionDescription = "OMRS default enterprise topic connection.";
 
-        String connectionName = "DefaultEnterpriseTopic.Connection." + localServerName;
+        String connectionName = "EnterpriseTopicConnector.Server." + localServerName;
 
         VirtualConnection connection = new VirtualConnection();
 
@@ -731,7 +731,7 @@ public class ConnectorConfigurationFactory
 
         final String connectionDescription = "OMRS default cohort topic connection.";
 
-        String connectionName = "DefaultCohortTopic.Connection." + cohortName;
+        String connectionName = "TopicConnector.Cohort." + cohortName;
 
         VirtualConnection connection = new VirtualConnection();
 
