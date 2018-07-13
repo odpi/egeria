@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservices.assetconsumer.listener;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.accessservices.assetconsumer.outtopic.AssetConsumerPublisher;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListener;
@@ -13,7 +14,7 @@ import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1;
 
 public class AssetConsumerOMRSTopicListener implements OMRSTopicListener
 {
-    private static final Logger log = Logger.getLogger(AssetConsumerOMRSTopicListener.class);
+    private static final Logger log = LoggerFactory.getLogger(AssetConsumerOMRSTopicListener.class);
 
     private AssetConsumerPublisher   publisher;
 

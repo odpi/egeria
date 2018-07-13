@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.repositoryservices.archivemanager;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.*;
@@ -48,7 +49,7 @@ public class OMRSArchiveBuilder
     private Map<String, Set<String>>       entityAttributeMap    = new HashMap<>();
 
 
-    private static final Logger log = Logger.getLogger(OMRSArchiveBuilder.class);
+    private static final Logger log = LoggerFactory.getLogger(OMRSArchiveBuilder.class);
 
 
     /**

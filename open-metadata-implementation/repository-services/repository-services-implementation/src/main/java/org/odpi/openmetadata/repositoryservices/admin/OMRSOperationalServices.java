@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.repositoryservices.admin;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
@@ -63,7 +64,7 @@ public class OMRSOperationalServices
      * The audit log provides a verifiable record of the membership of the open metadata repository cohort and the
      * metadata exchange activity they are involved in.  The Logger is for standard debug.
      */
-    private static final Logger       log      = Logger.getLogger(OMRSOperationalServices.class);
+    private static final Logger       log      = LoggerFactory.getLogger(OMRSOperationalServices.class);
     private static final OMRSAuditLog auditLog = new OMRSAuditLog(OMRSAuditingComponent.OPERATIONAL_SERVICES);
 
 

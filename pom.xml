@@ -202,7 +202,7 @@
                                 </requireMavenVersion>
                                 <requireJavaVersion>
                                     <level>ERROR</level>
-                                    <version>[1.8.0-151,)</version>
+                                    <version>[1.8,)</version>
                                     <message>** JAVA VERSION ERROR ** Java 8 (Update 151) or above is required.
                                     </message>
                                 </requireJavaVersion>

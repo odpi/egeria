@@ -2,7 +2,8 @@
 
 package org.odpi.openmetadata.adapters.connectors.database.gaian;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.adapters.connectors.database.OCFDatabaseConnector;
 import org.odpi.openmetadata.adapters.connectors.database.ffdc.OCFDatabaseConnectorErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
@@ -20,7 +21,7 @@ import java.sql.SQLException;
 public class GaianOCFConnector extends OCFDatabaseConnector {
 
     private final String connectorName=GaianOCFConnector.class.getName();
-    private static final Logger log = Logger.getLogger(GaianOCFConnector.class);
+    private static final Logger log = LoggerFactory.getLogger(GaianOCFConnector.class);
 
 
     /**

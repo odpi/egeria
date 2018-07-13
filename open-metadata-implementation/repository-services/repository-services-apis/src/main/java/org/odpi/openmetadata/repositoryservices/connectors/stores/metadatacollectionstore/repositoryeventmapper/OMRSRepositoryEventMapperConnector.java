@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryeventmapper;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.VirtualConnectorExtension;
@@ -26,7 +27,7 @@ public abstract class OMRSRepositoryEventMapperConnector extends ConnectorBase i
                                                                                           VirtualConnectorExtension,
                                                                                           OpenMetadataTopicListener
 {
-    private static final Logger       log           = Logger.getLogger(OMRSRepositoryEventMapperConnector.class);
+    private static final Logger       log           = LoggerFactory.getLogger(OMRSRepositoryEventMapperConnector.class);
     private static final OMRSAuditLog auditLog      = new OMRSAuditLog(OMRSAuditingComponent.LOCAL_REPOSITORY_EVENT_MAPPER);
 
     protected OMRSRepositoryEventProcessor repositoryEventProcessor  = null;

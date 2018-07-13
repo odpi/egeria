@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservices.assetconsumer.ffdc;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.text.MessageFormat;
 import java.util.Arrays;
@@ -130,7 +131,7 @@ public enum AssetConsumerErrorCode
     private String systemAction;
     private String userAction;
 
-    private static final Logger log = Logger.getLogger(AssetConsumerErrorCode.class);
+    private static final Logger log = LoggerFactory.getLogger(AssetConsumerErrorCode.class);
 
 
     /**

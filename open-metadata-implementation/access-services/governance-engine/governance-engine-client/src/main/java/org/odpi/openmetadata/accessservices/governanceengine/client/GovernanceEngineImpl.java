@@ -2,7 +2,8 @@
 
 package org.odpi.openmetadata.accessservices.governanceengine.client;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.errorcode.GovernanceEngineErrorCode;
 import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.governanceengine.common.objects.*;
@@ -20,7 +21,7 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
     private String omasServerURL;  /* Initialized in constructor */
     private RestTemplate restTemplate;
 
-    private static final Logger log = Logger.getLogger(GovernanceEngineImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(GovernanceEngineImpl.class);
 
 
     /**

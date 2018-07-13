@@ -2,7 +2,8 @@
 package org.odpi.openmetadata.repositoryservices.archivemanager;
 
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationFactory;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
@@ -17,7 +18,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.p
  */
 public class OMRSArchiveWriter
 {
-    private static final Logger log = Logger.getLogger(OMRSArchiveWriter.class);
+    private static final Logger log = LoggerFactory.getLogger(OMRSArchiveWriter.class);
 
     /**
      * Default constructor
