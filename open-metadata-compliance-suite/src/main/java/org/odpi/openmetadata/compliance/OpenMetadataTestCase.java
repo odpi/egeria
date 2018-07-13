@@ -5,7 +5,9 @@ import org.odpi.openmetadata.compliance.beans.ExceptionBean;
 import org.odpi.openmetadata.compliance.beans.OpenMetadataTestCaseResult;
 import org.odpi.openmetadata.compliance.beans.OpenMetadataTestCaseSummary;
 import org.odpi.openmetadata.compliance.ffdc.AssertionFailureException;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * OpenMetadataTestCase is the superclass for an open metadata compliance test.  It manages the
@@ -13,16 +15,26 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 public abstract class OpenMetadataTestCase
 {
-    protected String  testCaseId = null;
-    protected String  testCaseName = null;
-    protected String  testCaseDescription = null;
+    private static final String  documentationRootURL = "https://odpi.github.io/egeria/open-metadata-compliance-suite/docs/";
 
-    protected boolean testRan = false;
-    protected boolean testPassed = false;
+    private String  testCaseId;
+    private String  testCaseName;
+    private String  testCaseDescriptionURL;
+
+
+    protected List<String>  successfulAssertions = new ArrayList<>();
+    protected List<String>  unsuccessfulAssertions = new ArrayList<>();
 
     protected OpenMetadataTestCaseResult result = null;
 
-    protected OMRSRepositoryConnector connector = null;
+    public OpenMetadataTestCase(String workbenchId,
+                                String testCaseId,
+                                String testCaseName)
+    {
+        this.testCaseId = testCaseId;
+        this.testCaseName = testCaseName;
+        this.testCaseDescriptionURL = documentationRootURL + workbenchId + "/" + testCaseId + ".md";
+    }
 
 
     /**
@@ -52,9 +64,9 @@ public abstract class OpenMetadataTestCase
      *
      * @return string url
      */
-    public String getTestCaseDescription()
+    public String getTestCaseDescriptionURL()
     {
-        return testCaseDescription;
+        return testCaseDescriptionURL;
     }
 
 
@@ -65,7 +77,7 @@ public abstract class OpenMetadataTestCase
      */
     public boolean isTestRan()
     {
-        return testRan;
+        return ((! successfulAssertions.isEmpty()) || (! unsuccessfulAssertions.isEmpty()));
     }
 
 
@@ -76,7 +88,7 @@ public abstract class OpenMetadataTestCase
      */
     public boolean isTestPassed()
     {
-        return testPassed;
+        return (this.isTestRan() && (unsuccessfulAssertions.isEmpty()));
     }
 
 
@@ -103,13 +115,25 @@ public abstract class OpenMetadataTestCase
 
 
     /**
-     * Set up the connector to the repository that is being tested.
+     * Throw an exception if the condition is not true; else return
      *
-     * @param connector initialized and started OMRSRepositoryConnector object
+     * @param condition condition to test
+     * @param assertionId identifier for the assertion
+     * @param assertionMessage descriptive message of the assertion
+     * @throws AssertionFailureException condition was false
      */
-    public void setConnector(OMRSRepositoryConnector connector)
+    protected void assertCondition(boolean   condition,
+                                   String    assertionId,
+                                   String    assertionMessage) throws AssertionFailureException
     {
-        this.connector = connector;
+        if (condition)
+        {
+            successfulAssertions.add(assertionMessage);
+            return;
+        }
+
+        unsuccessfulAssertions.add(assertionId + ": " + assertionMessage);
+        throw new AssertionFailureException(assertionId, assertionMessage);
     }
 
 
@@ -118,6 +142,8 @@ public abstract class OpenMetadataTestCase
      */
     public void executeTest()
     {
+        result = new OpenMetadataTestCaseResult(this);
+
         try
         {
             /*
@@ -125,28 +151,31 @@ public abstract class OpenMetadataTestCase
              */
             this.run();
         }
+        catch (AssertionFailureException   exception)
+        {
+        }
         catch (Throwable   exception)
         {
-            this.testRan = true;
-            this.testPassed = false;
-
-            this.result = new OpenMetadataTestCaseResult(this);
+            this.unsuccessfulAssertions.add("test-case-base-01: Unexpected Exception " + exception.getClass().getSimpleName());
 
             ExceptionBean              exceptionBean = new ExceptionBean();
 
             exceptionBean.setErrorMessage(exception.getMessage());
             exceptionBean.setExceptionClassName(exception.getClass().getName());
 
-            this.result.setComplianceException(exceptionBean);
+            result.setComplianceException(exceptionBean);
         }
+
+        result.setSuccessfulAssertions(successfulAssertions);
+        result.setUnsuccessfulAssertions(unsuccessfulAssertions);
     }
 
 
     /**
      * Method implemented by the actual test case.
      *
-     * @throws AssertionFailureException something went wrong with the test.
+     * @throws Exception something went wrong with the test.
      */
-    protected abstract void run() throws AssertionFailureException;
+    protected abstract void run() throws Exception;
 
 }

@@ -26,7 +26,7 @@ import java.util.List;
 public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
 {
     static final private  String  defaultRepositoryName = "REST-connected Repository ";
-    static final private  String  urlPathRoot           = "/open-metadata/repository-services/users/";
+    static final private  String  urlPathRoot           = "/open-metadata/repository-services/";
 
     private String                restURLRoot;                /* Initialized in constructor */
 
@@ -89,13 +89,13 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         final String methodName = "getMetadataCollectionId";
         final String urlTemplate = "metadata-collection-id";
 
-        String restResult = null;
+        MetadataCollectionIdResponse restResult;
 
         try
         {
             RestTemplate    restTemplate = new RestTemplate();
 
-            restResult = restTemplate.getForObject(restURLRoot + urlTemplate, restResult.getClass());
+            restResult = restTemplate.getForObject(restURLRoot + urlTemplate, MetadataCollectionIdResponse.class);
         }
         catch (Throwable  error)
         {
@@ -103,6 +103,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
             String        errorMessage = errorCode.getErrorMessageId()
                                        + errorCode.getFormattedErrorMessage(methodName,
                                                                             repositoryName,
+                                                                            error.getClass().getSimpleName(),
                                                                             error.getMessage());
 
             throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
@@ -114,19 +115,27 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                error);
         }
 
+        this.detectAndThrowRepositoryErrorException(methodName, restResult);
+
+        String remoteMetadataCollectionId = null;
 
         if (restResult != null)
         {
-            if (restResult.equals(super.metadataCollectionId))
+            remoteMetadataCollectionId = restResult.getMetadataCollectionId();
+        }
+
+        if (remoteMetadataCollectionId != null)
+        {
+            if (remoteMetadataCollectionId.equals(super.metadataCollectionId))
             {
-                return restResult;
+                return remoteMetadataCollectionId;
             }
             else
             {
                 OMRSErrorCode errorCode = OMRSErrorCode.METADATA_COLLECTION_ID_MISMATCH;
                 String        errorMessage = errorCode.getErrorMessageId()
                                            + errorCode.getFormattedErrorMessage(repositoryName,
-                                                                                restResult,
+                                                                                remoteMetadataCollectionId,
                                                                                 super.metadataCollectionId);
 
                 throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
@@ -174,7 +183,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                               UserNotAuthorizedException
     {
         final String methodName  = "getAllTypes";
-        final String urlTemplate = "{0}/types/all";
+        final String urlTemplate = "users/{0}/types/all";
 
         TypeDefGalleryResponse restResult = this.callTypeDefGalleryGetRESTCall(methodName,
                                                                                restURLRoot + urlTemplate,
@@ -205,7 +214,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                               UserNotAuthorizedException
     {
         final String methodName  = "findTypesByName";
-        final String urlTemplate = "{0}/types/by-name?name={1}";
+        final String urlTemplate = "users/{0}/types/by-name?name={1}";
 
         TypeDefGalleryResponse restResult = this.callTypeDefGalleryGetRESTCall(methodName,
                                                                                restURLRoot + urlTemplate,
@@ -236,7 +245,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                                  UserNotAuthorizedException
     {
         final String methodName  = "findTypeDefsByCategory";
-        final String urlTemplate = "{0}/types/typedefs/by-category?category={1}";
+        final String urlTemplate = "users/{0}/types/typedefs/by-category?category={1}";
 
         TypeDefListResponse restResult = this.callTypeDefListGetRESTCall(methodName,
                                                                          restURLRoot + urlTemplate,
@@ -267,7 +276,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                                                             UserNotAuthorizedException
     {
         final String methodName  = "findAttributeTypeDefsByCategory";
-        final String urlTemplate = "{0}/types/attribute-typedefs/by-category?category={1}";
+        final String urlTemplate = "users/{0}/types/attribute-typedefs/by-category?category={1}";
 
 
         AttributeTypeDefListResponse restResult = this.callAttributeTypeDefListGetRESTCall(methodName,
@@ -299,7 +308,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                                         UserNotAuthorizedException
     {
         final String methodName  = "findTypeDefsByProperty";
-        final String urlTemplate = "{0}/types/typedefs/by-property?matchCriteria={1}";
+        final String urlTemplate = "users/{0}/types/typedefs/by-property?matchCriteria={1}";
 
         TypeDefListResponse restResult = this.callTypeDefListGetRESTCall(methodName,
                                                                          restURLRoot + urlTemplate,
@@ -328,14 +337,14 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public List<TypeDef> findTypesByExternalID(String    userId,
-                                                String    standard,
-                                                String    organization,
-                                                String    identifier) throws InvalidParameterException,
-                                                                             RepositoryErrorException,
-                                                                             UserNotAuthorizedException
+                                               String    standard,
+                                               String    organization,
+                                               String    identifier) throws InvalidParameterException,
+                                                                            RepositoryErrorException,
+                                                                            UserNotAuthorizedException
     {
         final String methodName  = "findTypesByExternalID";
-        final String urlTemplate = "{0}/types/typedefs/by-external-id?standard={1}&organization={2}&identifier={3}";
+        final String urlTemplate = "users/{0}/types/typedefs/by-external-id?standard={1}&organization={2}&identifier={3}";
 
 
         TypeDefListResponse restResult = this.callTypeDefListGetRESTCall(methodName,
@@ -370,7 +379,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                          UserNotAuthorizedException
     {
         final String methodName  = "searchForTypeDefs";
-        final String urlTemplate = "{0}/types/typedefs/by-property-value?searchCriteria={1}";
+        final String urlTemplate = "users/{0}/types/typedefs/by-property-value?searchCriteria={1}";
 
         TypeDefListResponse restResult = this.callTypeDefListGetRESTCall(methodName,
                                                                          restURLRoot + urlTemplate,
@@ -404,7 +413,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                            UserNotAuthorizedException
     {
         final String methodName  = "getTypeDefByGUID";
-        final String urlTemplate = "{0}/types/typedef/{1}";
+        final String urlTemplate = "users/{0}/types/typedef/{1}";
 
         TypeDefResponse restResult = this.callTypeDefGetRESTCall(methodName,
                                                                  restURLRoot + urlTemplate,
@@ -439,7 +448,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                               UserNotAuthorizedException
     {
         final String methodName  = "getAttributeTypeDefByGUID";
-        final String urlTemplate = "{0}/types/attribute-typedef/{1}";
+        final String urlTemplate = "users/{0}/types/attribute-typedef/{1}";
 
         AttributeTypeDefResponse restResult = this.callAttributeTypeDefGetRESTCall(methodName,
                                                                                    restURLRoot + urlTemplate,
@@ -474,7 +483,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                            UserNotAuthorizedException
     {
         final String methodName  = "getTypeDefByName";
-        final String urlTemplate = "{0}/types/typedef/name/{1}";
+        final String urlTemplate = "users/{0}/types/typedef/name/{1}";
 
         TypeDefResponse restResult = this.callTypeDefGetRESTCall(methodName,
                                                                  restURLRoot + urlTemplate,
@@ -509,7 +518,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                               UserNotAuthorizedException
     {
         final String methodName  = "getAttributeTypeDefByName";
-        final String urlTemplate = "{0}/types/attribute-typedef/name/{1}";
+        final String urlTemplate = "users/{0}/types/attribute-typedef/name/{1}";
 
         AttributeTypeDefResponse restResult = this.callAttributeTypeDefGetRESTCall(methodName,
                                                                                    restURLRoot + urlTemplate,
@@ -551,7 +560,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                     UserNotAuthorizedException
     {
         final String methodName  = "addTypeDefGallery";
-        final String urlTemplate = "{0}/types?newTypes={1}";
+        final String urlTemplate = "users/{0}/types?newTypes={1}";
 
         VoidResponse restResult = this.callVoidPostRESTCall(methodName,
                                                             restURLRoot + urlTemplate,
@@ -596,7 +605,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                            UserNotAuthorizedException
     {
         final String methodName  = "addTypeDef";
-        final String urlTemplate = "{0}/types/typedef?newTypeDef={1}";
+        final String urlTemplate = "users/{0}/types/typedef?newTypeDef={1}";
 
         VoidResponse restResult = this.callVoidPostRESTCall(methodName,
                                                             restURLRoot + urlTemplate,
@@ -641,7 +650,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                                     UserNotAuthorizedException
     {
         final String methodName  = "addAttributeTypeDef";
-        final String urlTemplate = "{0}/types/attribute-typedef?newAttributeTypeDef={1}";
+        final String urlTemplate = "users/{0}/types/attribute-typedef?newAttributeTypeDef={1}";
 
         VoidResponse restResult = this.callVoidPostRESTCall(methodName,
                                                             restURLRoot + urlTemplate,
@@ -683,7 +692,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                               UserNotAuthorizedException
     {
         final String methodName  = "verifyTypeDef";
-        final String urlTemplate = "{0}/types/typedef/compatibility?typeDef={1}";
+        final String urlTemplate = "users/{0}/types/typedef/compatibility?typeDef={1}";
 
         BooleanResponse restResult = this.callBooleanGetRESTCall(methodName,
                                                                  restURLRoot + urlTemplate,
@@ -724,7 +733,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                                       UserNotAuthorizedException
     {
         final String methodName  = "verifyTypeDef";
-        final String urlTemplate = "{0}/types/attribute-typedef/compatibility?attributeTypeDef={1}";
+        final String urlTemplate = "users/{0}/types/attribute-typedef/compatibility?attributeTypeDef={1}";
 
         BooleanResponse restResult = this.callBooleanGetRESTCall(methodName,
                                                                  restURLRoot + urlTemplate,
@@ -767,7 +776,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                    UserNotAuthorizedException
     {
         final String methodName  = "updateTypeDef";
-        final String urlTemplate = "{0}/types/typedef?typeDefPatch={1}";
+        final String urlTemplate = "users/{0}/types/typedef?typeDefPatch={1}";
 
         TypeDefResponse restResult = this.callTypeDefPatchRESTCall(methodName,
                                                                    restURLRoot + urlTemplate,
@@ -813,7 +822,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                     UserNotAuthorizedException
     {
         final String methodName  = "deleteTypeDef";
-        final String urlTemplate = "{0}/types/typedef/{1}?obsoleteTypeDefName={2}";
+        final String urlTemplate = "users/{0}/types/typedef/{1}?obsoleteTypeDefName={2}";
 
         VoidResponse restResult = this.callVoidPatchRESTCall(methodName,
                                                              restURLRoot + urlTemplate,
@@ -857,7 +866,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                              UserNotAuthorizedException
     {
         final String methodName  = "deleteAttributeTypeDef";
-        final String urlTemplate = "{0}/types/attribute-typedef/{1}?obsoleteTypeDefName={2}";
+        final String urlTemplate = "users/{0}/types/attribute-typedef/{1}?obsoleteTypeDefName={2}";
 
         VoidResponse restResult = this.callVoidPatchRESTCall(methodName,
                                                              restURLRoot + urlTemplate,
@@ -905,7 +914,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                         UserNotAuthorizedException
     {
         final String methodName  = "reIdentifyTypeDef";
-        final String urlTemplate = "{0}/types/typedef/{1}/identifier?originalTypeDefName={2}&newTypeDefGUID={3}&newTypeDefName{4}";
+        final String urlTemplate = "users/{0}/types/typedef/{1}/identifier?originalTypeDefName={2}&newTypeDefGUID={3}&newTypeDefName{4}";
 
         TypeDefResponse restResult = this.callTypeDefPatchRESTCall(methodName,
                                                                    restURLRoot + urlTemplate,
@@ -955,7 +964,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                                                    UserNotAuthorizedException
     {
         final String methodName  = "reIdentifyAttributeTypeDef";
-        final String urlTemplate = "{0}/types/attribute-typedef/{1}/identifier?originalTypeDefName={2}&newTypeDefGUID={3}&newTypeDefName{4}";
+        final String urlTemplate = "users/{0}/types/attribute-typedef/{1}/identifier?originalTypeDefName={2}&newTypeDefGUID={3}&newTypeDefName{4}";
 
         AttributeTypeDefResponse restResult = this.callAttributeTypeDefPatchRESTCall(methodName,
                                                                                      restURLRoot + urlTemplate,
@@ -997,7 +1006,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                               UserNotAuthorizedException
     {
         final String methodName  = "isEntityKnown";
-        final String urlTemplate = "{0}/instances/entity/{1}/existence";
+        final String urlTemplate = "users/{0}/instances/entity/{1}/existence";
 
         EntityDetailResponse restResult = this.callEntityDetailGetRESTCall(methodName,
                                                                            restURLRoot + urlTemplate,
@@ -1032,7 +1041,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                   UserNotAuthorizedException
     {
         final String methodName  = "getEntitySummary";
-        final String urlTemplate = "{0}/instances/entity/{1}/summary";
+        final String urlTemplate = "users/{0}/instances/entity/{1}/summary";
 
         EntitySummaryResponse restResult = this.callEntitySummaryGetRESTCall(methodName,
                                                                              restURLRoot + urlTemplate,
@@ -1069,7 +1078,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                 UserNotAuthorizedException
     {
         final String methodName  = "getEntityDetail";
-        final String urlTemplate = "{0}/instances/entity/{1}";
+        final String urlTemplate = "users/{0}/instances/entity/{1}";
 
         EntityDetailResponse restResult = this.callEntityDetailGetRESTCall(methodName,
                                                                            restURLRoot + urlTemplate,
@@ -1112,7 +1121,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                      UserNotAuthorizedException
     {
         final String methodName  = "getEntityDetail";
-        final String urlTemplate = "{0}/instances/entity/{1}/history";
+        final String urlTemplate = "users/{0}/instances/entity/{1}/history";
 
         EntityDetailResponse restResult = this.callEntityDetailGetRESTCall(methodName,
                                                                            restURLRoot + urlTemplate,
@@ -1180,7 +1189,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                                                     UserNotAuthorizedException
     {
         final String methodName  = "getRelationshipsForEntity";
-        final String urlTemplate = "{0}/instances/entity/{1}/relationships?relationshipTypeGUID={2}&fromRelationshipElement={3}&limitResultsByStatus={4}&asOfTime={5}&sequencingProperty={6}&sequencingOrder={7}&pageSize={8}";
+        final String urlTemplate = "users/{0}/instances/entity/{1}/relationships?relationshipTypeGUID={2}&fromRelationshipElement={3}&limitResultsByStatus={4}&asOfTime={5}&sequencingProperty={6}&sequencingOrder={7}&pageSize={8}";
 
         RelationshipListResponse restResult = this.callRelationshipListGetRESTCall(methodName,
                                                                                    restURLRoot + urlTemplate,
@@ -1261,7 +1270,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                                                  UserNotAuthorizedException
     {
         final String methodName  = "findEntitiesByProperty";
-        final String urlTemplate = "{0}/instances/entities/by-property?entityTypeGUID={1}&matchProperties={2}&matchCriteria={3}&fromEntityElement={4}&limitResultsByStatus={5}&limitResultsByClassification={6}&asOfTime={7}&sequencingProperty={8}&sequencingOrder={9}&pageSize={10}";
+        final String urlTemplate = "users/{0}/instances/entities/by-property?entityTypeGUID={1}&matchProperties={2}&matchCriteria={3}&fromEntityElement={4}&limitResultsByStatus={5}&limitResultsByClassification={6}&asOfTime={7}&sequencingProperty={8}&sequencingOrder={9}&pageSize={10}";
 
         EntityListResponse restResult = this.callEntityListGetRESTCall(methodName,
                                                                        restURLRoot + urlTemplate,
@@ -1344,7 +1353,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                                                        UserNotAuthorizedException
     {
         final String methodName  = "findEntitiesByClassification";
-        final String urlTemplate = "{0}/instances/entities/by-classification/{1}?entityTypeGUID={2}&matchClassificationProperties={3}&matchCriteria={4}&fromEntityElement={5}&limitResultsByStatus={6}&asOfTime={7}&sequencingProperty={8}&sequencingOrder={9}&pageSize={10}";
+        final String urlTemplate = "users/{0}/instances/entities/by-classification/{1}?entityTypeGUID={2}&matchClassificationProperties={3}&matchCriteria={4}&fromEntityElement={5}&limitResultsByStatus={6}&asOfTime={7}&sequencingProperty={8}&sequencingOrder={9}&pageSize={10}";
 
         EntityListResponse restResult = this.callEntityListGetRESTCall(methodName,
                                                                        restURLRoot + urlTemplate,
@@ -1425,7 +1434,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                                                   UserNotAuthorizedException
     {
         final String methodName  = "findEntitiesByPropertyValue";
-        final String urlTemplate = "{0}/instances/entities/by-property-value?entityTypeGUID={1}&searchCriteria={2}?fromEntityElement={3}&limitResultsByStatus={4}&limitResultsByClassification={5}&asOfTime={6}&sequencingProperty={7}&sequencingOrder={8}&pageSize={9}";
+        final String urlTemplate = "users/{0}/instances/entities/by-property-value?entityTypeGUID={1}&searchCriteria={2}?fromEntityElement={3}&limitResultsByStatus={4}&limitResultsByClassification={5}&asOfTime={6}&sequencingProperty={7}&sequencingOrder={8}&pageSize={9}";
 
         EntityListResponse restResult = this.callEntityListGetRESTCall(methodName,
                                                                        restURLRoot + urlTemplate,
@@ -1469,7 +1478,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                      UserNotAuthorizedException
     {
         final String methodName  = "isRelationshipKnown";
-        final String urlTemplate = "{0}/instances/relationship/{1}/existence";
+        final String urlTemplate = "users/{0}/instances/relationship/{1}/existence";
 
         RelationshipResponse restResult = this.callRelationshipGetRESTCall(methodName,
                                                                            restURLRoot + urlTemplate,
@@ -1504,7 +1513,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                UserNotAuthorizedException
     {
         final String methodName  = "getRelationship";
-        final String urlTemplate = "{0}/instances/relationship/{1}";
+        final String urlTemplate = "users/{0}/instances/relationship/{1}";
 
         RelationshipResponse restResult = this.callRelationshipGetRESTCall(methodName,
                                                                            restURLRoot + urlTemplate,
@@ -1544,7 +1553,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                     UserNotAuthorizedException
     {
         final String methodName  = "getRelationship";
-        final String urlTemplate = "{0}/instances/relationship/{1}/history";
+        final String urlTemplate = "users/{0}/instances/relationship/{1}/history";
 
         RelationshipResponse restResult = this.callRelationshipGetRESTCall(methodName,
                                                                            restURLRoot + urlTemplate,
@@ -1613,7 +1622,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                                                       UserNotAuthorizedException
     {
         final String methodName  = "findRelationshipsByProperty";
-        final String urlTemplate = "{0}/instances/relationships/by-property?relationshipTypeGUID={1}&matchProperties={2}&matchCriteria={3}&fromRelationshipElement={4}&limitResultsByStatus={5}&asOfTime={6}&sequencingProperty={7}&sequencingOrder={8}&pageSize={9}";
+        final String urlTemplate = "users/{0}/instances/relationships/by-property?relationshipTypeGUID={1}&matchProperties={2}&matchCriteria={3}&fromRelationshipElement={4}&limitResultsByStatus={5}&asOfTime={6}&sequencingProperty={7}&sequencingOrder={8}&pageSize={9}";
 
         RelationshipListResponse restResult = this.callRelationshipListGetRESTCall(methodName,
                                                                                    restURLRoot + urlTemplate,
@@ -1689,7 +1698,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                                                            UserNotAuthorizedException
     {
         final String methodName  = "findRelationshipsByPropertyValue";
-        final String urlTemplate = "{0}/instances/relationships/by-property-value?relationshipTypeGUID={1}&searchCriteria={2}&fromRelationshipElement={3}&limitResultsByStatus={4}&asOfTime={5}&sequencingProperty={6}&sequencingOrder={7}&pageSize={8}";
+        final String urlTemplate = "users/{0}/instances/relationships/by-property-value?relationshipTypeGUID={1}&searchCriteria={2}&fromRelationshipElement={3}&limitResultsByStatus={4}&asOfTime={5}&sequencingProperty={6}&sequencingOrder={7}&pageSize={8}";
 
         RelationshipListResponse restResult = this.callRelationshipListGetRESTCall(methodName,
                                                                                    restURLRoot + urlTemplate,
@@ -1748,7 +1757,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                                         UserNotAuthorizedException
     {
         final String methodName  = "getLinkingEntities";
-        final String urlTemplate = "/{0}/instances/entities/from-entity/{1}/by-linkage?endEntityGUID={2}&limitResultsByStatus={3}&asOfTime={4}";
+        final String urlTemplate = "users/{0}/instances/entities/from-entity/{1}/by-linkage?endEntityGUID={2}&limitResultsByStatus={3}&asOfTime={4}";
 
         InstanceGraphResponse restResult = this.callInstanceGraphGetRESTCall(methodName,
                                                                              restURLRoot + urlTemplate,
@@ -1814,7 +1823,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                                    UserNotAuthorizedException
     {
         final String methodName  = "getEntityNeighborhood";
-        final String urlTemplate = "/{0}/instances/entities/from-entity/{1}/by-neighborhood?entityTypeGUIDs={2}&relationshipTypeGUIDs={3}&limitResultsByStatus={4}&limitResultsByClassification={5}&asOfTime={6}&level={7}";
+        final String urlTemplate = "users/{0}/instances/entities/from-entity/{1}/by-neighborhood?entityTypeGUIDs={2}&relationshipTypeGUIDs={3}&limitResultsByStatus={4}&limitResultsByClassification={5}&asOfTime={6}&level={7}";
 
         InstanceGraphResponse restResult = this.callInstanceGraphGetRESTCall(methodName,
                                                                              restURLRoot + urlTemplate,
@@ -1892,7 +1901,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                                         UserNotAuthorizedException
     {
         final String methodName  = "getRelatedEntities";
-        final String urlTemplate = "{0}/instances/entities/from-entity/{1}/by-relationship?fromEntityElement={2}&limitResultsByStatus={3}&limitResultsByClassification={4}&asOfTime={5}&sequencingProperty={6}&sequencingOrder={7}&pageSize={8}";
+        final String urlTemplate = "users/{0}/instances/entities/from-entity/{1}/by-relationship?fromEntityElement={2}&limitResultsByStatus={3}&limitResultsByClassification={4}&asOfTime={5}&sequencingProperty={6}&sequencingOrder={7}&pageSize={8}";
 
         EntityListResponse restResult = this.callEntityListGetRESTCall(methodName,
                                                                        restURLRoot + urlTemplate,
@@ -1959,7 +1968,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                                    UserNotAuthorizedException
     {
         final String methodName  = "addEntity";
-        final String urlTemplate = "{0}/instances/entity?entityTypeGUID={1}&initialProperties={2}&initialClassifications={3}&initialStatus={4}";
+        final String urlTemplate = "users/{0}/instances/entity?entityTypeGUID={1}&initialProperties={2}&initialClassifications={3}&initialStatus={4}";
 
         EntityDetailResponse restResult = this.callEntityDetailPostRESTCall(methodName,
                                                                             restURLRoot + urlTemplate,
@@ -2000,7 +2009,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                 UserNotAuthorizedException
     {
         final String methodName  = "addEntityProxy";
-        final String urlTemplate = "{0}/instances/entity-proxy?entityProxy={1}";
+        final String urlTemplate = "users/{0}/instances/entity-proxy?entityProxy={1}";
 
         VoidResponse restResult = this.callVoidPostRESTCall(methodName,
                                                             restURLRoot + urlTemplate,
@@ -2038,7 +2047,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                               UserNotAuthorizedException
     {
         final String methodName  = "updateEntityStatus";
-        final String urlTemplate = "{0}/instances/entity/{1}/status?newStatus={2}";
+        final String urlTemplate = "users/{0}/instances/entity/{1}/status?newStatus={2}";
 
         EntityDetailResponse restResult = this.callEntityDetailPatchRESTCall(methodName,
                                                                              restURLRoot + urlTemplate,
@@ -2080,7 +2089,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                                        UserNotAuthorizedException
     {
         final String methodName  = "updateEntityProperties";
-        final String urlTemplate = "{0}/instances/entity/{1}/properties?properties={2}";
+        final String urlTemplate = "users/{0}/instances/entity/{1}/properties?properties={2}";
 
         EntityDetailResponse restResult = this.callEntityDetailPatchRESTCall(methodName,
                                                                              restURLRoot + urlTemplate,
@@ -2119,7 +2128,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                     UserNotAuthorizedException
     {
         final String methodName  = "undoEntityUpdate";
-        final String urlTemplate = "{0}/instances/entity/{1}/undo";
+        final String urlTemplate = "users/{0}/instances/entity/{1}/undo";
 
         EntityDetailResponse restResult = this.callEntityDetailPatchRESTCall(methodName,
                                                                              restURLRoot + urlTemplate,
@@ -2165,7 +2174,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                          UserNotAuthorizedException
     {
         final String methodName  = "deleteEntity";
-        final String urlTemplate = "{0}/instances/entity/{1}/delete?typeDefGUID={2}&typeDefName={3}";
+        final String urlTemplate = "users/{0}/instances/entity/{1}/delete?typeDefGUID={2}&typeDefName={3}";
 
         EntityDetailResponse restResult = this.callEntityDetailPatchRESTCall(methodName,
                                                                              restURLRoot + urlTemplate,
@@ -2208,7 +2217,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                 UserNotAuthorizedException
     {
         final String methodName  = "purgeEntity";
-        final String urlTemplate = "{0}/instances/entity/{1}/purge?typeDefGUID={2}&typeDefName={3}";
+        final String urlTemplate = "users/{0}/instances/entity/{1}/purge?typeDefGUID={2}&typeDefName={3}";
 
         VoidResponse restResult = this.callVoidPatchRESTCall(methodName,
                                                              restURLRoot + urlTemplate,
@@ -2248,7 +2257,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                           UserNotAuthorizedException
     {
         final String methodName  = "restoreEntity";
-        final String urlTemplate = "{0}/instances/entity/{1}/restore";
+        final String urlTemplate = "users/{0}/instances/entity/{1}/restore";
 
         EntityDetailResponse restResult = this.callEntityDetailPatchRESTCall(methodName,
                                                                              restURLRoot + urlTemplate,
@@ -2295,7 +2304,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                                              UserNotAuthorizedException
     {
         final String methodName  = "classifyEntity";
-        final String urlTemplate = "{0}/instances/entity/{1}/classification/{2}?classificationProperties={3}";
+        final String urlTemplate = "users/{0}/instances/entity/{1}/classification/{2}?classificationProperties={3}";
 
         EntityDetailResponse restResult = this.callEntityDetailPatchRESTCall(methodName,
                                                                              restURLRoot + urlTemplate,
@@ -2338,7 +2347,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                             UserNotAuthorizedException
     {
         final String methodName  = "declassifyEntity";
-        final String urlTemplate = "{0}/instances/entity/{1}/classification/{2}/delete";
+        final String urlTemplate = "users/{0}/instances/entity/{1}/classification/{2}/delete";
 
         EntityDetailResponse restResult = this.callEntityDetailPatchRESTCall(methodName,
                                                                              restURLRoot + urlTemplate,
@@ -2384,7 +2393,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                                            UserNotAuthorizedException
     {
         final String methodName  = "declassifyEntity";
-        final String urlTemplate = "{0}/instances/entity/{1}/classification/{2}/properties?properties={3}";
+        final String urlTemplate = "users/{0}/instances/entity/{1}/classification/{2}/properties?properties={3}";
 
         EntityDetailResponse restResult = this.callEntityDetailPatchRESTCall(methodName,
                                                                              restURLRoot + urlTemplate,
@@ -2441,7 +2450,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                                    UserNotAuthorizedException
     {
         final String methodName  = "addRelationship";
-        final String urlTemplate = "{0}/instances/relationship?relationshipTypeGUID={1}&initialProperties={2}&entityOneGUID={3}&entityTwoGUID={4}&initialStatus={5}";
+        final String urlTemplate = "users/{0}/instances/relationship?relationshipTypeGUID={1}&initialProperties={2}&entityOneGUID={3}&entityTwoGUID={4}&initialStatus={5}";
 
         RelationshipResponse restResult = this.callRelationshipPostRESTCall(methodName,
                                                                             restURLRoot + urlTemplate,
@@ -2488,7 +2497,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                                     UserNotAuthorizedException
     {
         final String methodName  = "updateRelationshipStatus";
-        final String urlTemplate = "{0}/instances/relationship/{1}/status?newStatus={2}";
+        final String urlTemplate = "users/{0}/instances/relationship/{1}/status?newStatus={2}";
 
         RelationshipResponse restResult = this.callRelationshipPatchRESTCall(methodName,
                                                                              restURLRoot + urlTemplate,
@@ -2530,7 +2539,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                                              UserNotAuthorizedException
     {
         final String methodName  = "updateRelationshipProperties";
-        final String urlTemplate = "{0}/instances/relationship/{1}/properties?properties={2}";
+        final String urlTemplate = "users/{0}/instances/relationship/{1}/properties?properties={2}";
 
         RelationshipResponse restResult = this.callRelationshipPatchRESTCall(methodName,
                                                                              restURLRoot + urlTemplate,
@@ -2569,7 +2578,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                                 UserNotAuthorizedException
     {
         final String methodName  = "undoRelationshipUpdate";
-        final String urlTemplate = "{0}/instances/relationship/{1}/undo";
+        final String urlTemplate = "users/{0}/instances/relationship/{1}/undo";
 
         RelationshipResponse restResult = this.callRelationshipPatchRESTCall(methodName,
                                                                              restURLRoot + urlTemplate,
@@ -2614,7 +2623,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                                    UserNotAuthorizedException
     {
         final String methodName  = "deleteRelationship";
-        final String urlTemplate = "{0}/instances/relationship/{1}/delete?typeDefGUID={2}&typeDefName={3}";
+        final String urlTemplate = "users/{0}/instances/relationship/{1}/delete?typeDefGUID={2}&typeDefName={3}";
 
         RelationshipResponse restResult = this.callRelationshipPatchRESTCall(methodName,
                                                                              restURLRoot + urlTemplate,
@@ -2657,7 +2666,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                             UserNotAuthorizedException
     {
         final String methodName  = "purgeRelationship";
-        final String urlTemplate = "{0}/instances/relationship/{1}/purge?typeDefGUID={2}&typeDefName={3}";
+        final String urlTemplate = "users/{0}/instances/relationship/{1}/purge?typeDefGUID={2}&typeDefName={3}";
 
         VoidResponse restResult = this.callVoidPatchRESTCall(methodName,
                                                              restURLRoot + urlTemplate,
@@ -2698,7 +2707,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                                       UserNotAuthorizedException
     {
         final String methodName  = "restoreRelationship";
-        final String urlTemplate = "{0}/instances/relationship/{1}/restore";
+        final String urlTemplate = "users/{0}/instances/relationship/{1}/restore";
 
         RelationshipResponse restResult = this.callRelationshipPatchRESTCall(methodName,
                                                                              restURLRoot + urlTemplate,
@@ -2750,7 +2759,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                           UserNotAuthorizedException
     {
         final String methodName  = "reIdentifyEntity";
-        final String urlTemplate = "{0}/instances/entity/{1}/identity?typeDefGUID={2}&typeDefName={3}&newEntityGUID={4}";
+        final String urlTemplate = "users/{0}/instances/entity/{1}/identity?typeDefGUID={2}&typeDefName={3}&newEntityGUID={4}";
 
         EntityDetailResponse restResult = this.callEntityDetailPatchRESTCall(methodName,
                                                                              restURLRoot + urlTemplate,
@@ -2804,7 +2813,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                               UserNotAuthorizedException
     {
         final String methodName  = "reTypeEntity";
-        final String urlTemplate = "{0}/instances/entity/{1}/type?currentTypeDefSummary={2}&newTypeDefSummary={3}";
+        final String urlTemplate = "users/{0}/instances/entity/{1}/type?currentTypeDefSummary={2}&newTypeDefSummary={3}";
 
         EntityDetailResponse restResult = this.callEntityDetailPatchRESTCall(methodName,
                                                                              restURLRoot + urlTemplate,
@@ -2857,7 +2866,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                                         UserNotAuthorizedException
     {
         final String methodName  = "reHomeEntity";
-        final String urlTemplate = "{0}/instances/entity/{1}/home/{2}?typeDefGUID={3}&typeDefName={4}&newHomeMetadataCollectionId={5}";
+        final String urlTemplate = "users/{0}/instances/entity/{1}/home/{2}?typeDefGUID={3}&typeDefName={4}&newHomeMetadataCollectionId={5}";
 
         EntityDetailResponse restResult = this.callEntityDetailPatchRESTCall(methodName,
                                                                              restURLRoot + urlTemplate,
@@ -2908,7 +2917,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                                       UserNotAuthorizedException
     {
         final String methodName  = "reIdentifyRelationship";
-        final String urlTemplate = "{0}/instances/relationship/{1}/identity?typeDefGUID={2}&typeDefName={3}&newRelationshipGUID={4}";
+        final String urlTemplate = "users/{0}/instances/relationship/{1}/identity?typeDefGUID={2}&typeDefName={3}&newRelationshipGUID={4}";
 
         RelationshipResponse restResult = this.callRelationshipPatchRESTCall(methodName,
                                                                              restURLRoot + urlTemplate,
@@ -2961,7 +2970,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                                     UserNotAuthorizedException
     {
         final String methodName  = "reTypeRelationship";
-        final String urlTemplate = "{0}/instances/relationship/{1}/type?currentTypeDefSummary={2}&newTypeDefSummary={3}";
+        final String urlTemplate = "users/{0}/instances/relationship/{1}/type?currentTypeDefSummary={2}&newTypeDefSummary={3}";
 
         RelationshipResponse restResult = this.callRelationshipPatchRESTCall(methodName,
                                                                              restURLRoot + urlTemplate,
@@ -3014,7 +3023,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                                         UserNotAuthorizedException
     {
         final String methodName  = "reHomeRelationship";
-        final String urlTemplate = "{0}/instances/relationship/{1}/home/{2}?typeDefGUID={3}&typeDefName={4}&newHomeMetadataCollectionId={5}";
+        final String urlTemplate = "users/{0}/instances/relationship/{1}/home/{2}?typeDefGUID={3}&typeDefName={4}&newHomeMetadataCollectionId={5}";
 
         RelationshipResponse restResult = this.callRelationshipPatchRESTCall(methodName,
                                                                              restURLRoot + urlTemplate,
@@ -3073,7 +3082,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                       UserNotAuthorizedException
     {
         final String methodName  = "saveEntityReferenceCopy";
-        final String urlTemplate = "{0}/instances/entities/reference-copy?entity={1}";
+        final String urlTemplate = "users/{0}/instances/entities/reference-copy?entity={1}";
 
         VoidResponse restResult = this.callVoidPatchRESTCall(methodName,
                                                              restURLRoot + urlTemplate,
@@ -3123,7 +3132,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                                    UserNotAuthorizedException
     {
         final String methodName  = "purgeEntityReferenceCopy";
-        final String urlTemplate = "{0}/instances/entities/reference-copy/{1}/purge?typeDefGUID={2}&typeDefName={3}&homeMetadataCollectionId={4}";
+        final String urlTemplate = "users/{0}/instances/entities/reference-copy/{1}/purge?typeDefGUID={2}&typeDefName={3}&homeMetadataCollectionId={4}";
 
         VoidResponse restResult = this.callVoidPatchRESTCall(methodName,
                                                              restURLRoot + urlTemplate,
@@ -3172,7 +3181,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                                      UserNotAuthorizedException
     {
         final String methodName  = "refreshEntityReferenceCopy";
-        final String urlTemplate = "{0}/instances/entities/reference-copy/{1}/refresh?typeDefGUID={2}&typeDefName={3}&homeMetadataCollectionId={4}";
+        final String urlTemplate = "users/{0}/instances/entities/reference-copy/{1}/refresh?typeDefGUID={2}&typeDefName={3}&homeMetadataCollectionId={4}";
 
         VoidResponse restResult = this.callVoidPatchRESTCall(methodName,
                                                              restURLRoot + urlTemplate,
@@ -3226,7 +3235,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                                   UserNotAuthorizedException
     {
         final String methodName  = "saveRelationshipReferenceCopy";
-        final String urlTemplate = "{0}/instances/relationships/reference-copy?relationship={1}";
+        final String urlTemplate = "users/{0}/instances/relationships/reference-copy?relationship={1}";
 
         VoidResponse restResult = this.callVoidPatchRESTCall(methodName,
                                                              restURLRoot + urlTemplate,
@@ -3277,7 +3286,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                                          UserNotAuthorizedException
     {
         final String methodName  = "purgeRelationshipReferenceCopy";
-        final String urlTemplate = "{0}/instances/relationships/reference-copy/{1}/purge?typeDefGUID={2}&typeDefName={3}&homeMetadataCollectionId={4}";
+        final String urlTemplate = "users/{0}/instances/relationships/reference-copy/{1}/purge?typeDefGUID={2}&typeDefName={3}&homeMetadataCollectionId={4}";
 
         VoidResponse restResult = this.callVoidPatchRESTCall(methodName,
                                                              restURLRoot + urlTemplate,
@@ -3327,7 +3336,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                                            UserNotAuthorizedException
     {
         final String methodName  = "refreshRelationshipReferenceCopy";
-        final String urlTemplate = "{0}/instances/relationships/reference-copy/{1}/refresh?typeDefGUID={2}&typeDefName={3}&homeMetadataCollectionId={4}";
+        final String urlTemplate = "users/{0}/instances/relationships/reference-copy/{1}/refresh?typeDefGUID={2}&typeDefName={3}&homeMetadataCollectionId={4}";
 
         VoidResponse restResult = this.callVoidPatchRESTCall(methodName,
                                                              restURLRoot + urlTemplate,

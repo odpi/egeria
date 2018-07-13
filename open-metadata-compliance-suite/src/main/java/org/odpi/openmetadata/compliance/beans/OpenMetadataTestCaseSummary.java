@@ -23,9 +23,9 @@ public class OpenMetadataTestCaseSummary implements Serializable
 {
     private static final long   serialVersionUID = 1L;
 
-    private String  testCaseId = null;
-    private String  testCaseName = null;
-    private String  testCaseDescription = null;
+    private String testCaseId             = null;
+    private String testCaseName           = null;
+    private String testCaseDescriptionURL = null;
 
     /**
      * Default constructor
@@ -44,36 +44,72 @@ public class OpenMetadataTestCaseSummary implements Serializable
     {
         this.testCaseId = testCase.getTestCaseId();
         this.testCaseName = testCase.getTestCaseName();
-        this.testCaseDescription = testCase.getTestCaseDescription();
+        this.testCaseDescriptionURL = testCase.getTestCaseDescriptionURL();
     }
 
+
+    /**
+     * Return the unique id of the test case.
+     *
+     * @return string id
+     */
     public String getTestCaseId()
     {
         return testCaseId;
     }
 
+
+    /**
+     * Set up the unique id of the test case.
+     *
+     * @param testCaseId string id
+     */
     public void setTestCaseId(String testCaseId)
     {
         this.testCaseId = testCaseId;
     }
 
+
+    /**
+     * Return the name of the test case.
+     *
+     * @return string name
+     */
     public String getTestCaseName()
     {
         return testCaseName;
     }
 
+
+    /**
+     * Set up the name of the test case.
+     *
+     * @param testCaseName string name
+     */
     public void setTestCaseName(String testCaseName)
     {
         this.testCaseName = testCaseName;
     }
 
-    public String getTestCaseDescription()
+
+    /**
+     * Return the URL that links to the test case description.
+     *
+     * @return string url
+     */
+    public String getTestCaseDescriptionURL()
     {
-        return testCaseDescription;
+        return testCaseDescriptionURL;
     }
 
-    public void setTestCaseDescription(String testCaseDescription)
+
+    /**
+     * Set up the URL that links to the test case description.
+     *
+     * @param testCaseDescriptionURL string url
+     */
+    public void setTestCaseDescriptionURL(String testCaseDescriptionURL)
     {
-        this.testCaseDescription = testCaseDescription;
+        this.testCaseDescriptionURL = testCaseDescriptionURL;
     }
 }

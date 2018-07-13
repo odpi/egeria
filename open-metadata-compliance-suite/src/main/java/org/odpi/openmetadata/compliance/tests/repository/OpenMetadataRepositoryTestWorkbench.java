@@ -17,12 +17,14 @@ import java.util.List;
 
 
 /**
- * OpenMetadataRepositoryTestWorkbench pr
+ * OpenMetadataRepositoryTestWorkbench provides the workbench for testing the OMRS REST API.
  */
 public class OpenMetadataRepositoryTestWorkbench extends OpenMetadataTestWorkbench
 {
-    private final String serverName           = "Test Server";
-    private final String metadataCollectionId = "DummyMetadataCollectionId";
+    private static final String workbenchId            = "repository-workbench";
+    private static final String workbenchName          = "Open Metadata Repository Test Workbench";
+    private static final String workbenchVersionNumber = "V0.1 SNAPSHOT";
+    private static final String workbenchDocURL        = "https://odpi.github.io/egeria/open-metadata-compliance-suite/docs/" + workbenchId;
 
 
     /**
@@ -32,9 +34,7 @@ public class OpenMetadataRepositoryTestWorkbench extends OpenMetadataTestWorkben
      */
     public OpenMetadataRepositoryTestWorkbench(String  serverURLRoot)
     {
-        super(serverURLRoot);
-
-        super.testCases = this.getTestCases();
+        super(workbenchName, workbenchVersionNumber, workbenchDocURL, serverURLRoot);
     }
 
 
@@ -43,11 +43,11 @@ public class OpenMetadataRepositoryTestWorkbench extends OpenMetadataTestWorkben
      *
      * @return list of test cases
      */
-    private List<OpenMetadataTestCase>  getTestCases()
+    private List<OpenMetadataRepositoryTestCase>  getTestCases()
     {
-        List<OpenMetadataTestCase>   testCases = new ArrayList<>();
+        List<OpenMetadataRepositoryTestCase>   testCases = new ArrayList<>();
 
-        // todo
+        testCases.add(new TestMetadataCollectionId(workbenchId));
 
         return testCases;
     }
@@ -60,6 +60,9 @@ public class OpenMetadataRepositoryTestWorkbench extends OpenMetadataTestWorkben
      */
     private OMRSRepositoryConnector   getRepositoryConnector()
     {
+        final String serverName           = "Test Server";
+        final String metadataCollectionId = "DummyMetadataCollectionId";
+
         try
         {
             ConnectorConfigurationFactory factory = new ConnectorConfigurationFactory();
@@ -93,7 +96,8 @@ public class OpenMetadataRepositoryTestWorkbench extends OpenMetadataTestWorkben
      */
     public OpenMetadataTestWorkbenchResults runTests()
     {
-        OpenMetadataTestWorkbenchResults  workbenchResults = new OpenMetadataTestWorkbenchResults();
+        List<OpenMetadataRepositoryTestCase>  testCases = this.getTestCases();
+        OpenMetadataTestWorkbenchResults      workbenchResults = new OpenMetadataTestWorkbenchResults(this);
 
         if (testCases != null)
         {
@@ -104,12 +108,13 @@ public class OpenMetadataRepositoryTestWorkbench extends OpenMetadataTestWorkben
                 /*
                  * Executing tests only if there is a repository connector
                  */
-                for (OpenMetadataTestCase testCase : testCases)
+                for (OpenMetadataRepositoryTestCase testCase : testCases)
                 {
                     testCase.setConnector(repositoryConnector);
                     testCase.executeTest();
                 }
             }
+
 
             List<OpenMetadataTestCaseResult>  passedTestCases  = new ArrayList<>();
             List<OpenMetadataTestCaseResult>  failedTestCases  = new ArrayList<>();
