@@ -24,8 +24,10 @@
     <artifactId>data-infrastructure</artifactId>
     <packaging>pom</packaging>
     <modules>
+        <module>data-infrastructure-api</module>
         <module>data-infrastructure-client</module>
         <module>data-infrastructure-server</module>
+        <module>data-infrastructure-spring</module>
     </modules>
 
 

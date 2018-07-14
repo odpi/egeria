@@ -24,8 +24,10 @@
     <artifactId>stewardship-action</artifactId>
     <packaging>pom</packaging>
     <modules>
+        <module>stewardship-action-api</module>
         <module>stewardship-action-client</module>
         <module>stewardship-action-server</module>
+        <module>stewardship-action-spring</module>
     </modules>
 
 </project>
