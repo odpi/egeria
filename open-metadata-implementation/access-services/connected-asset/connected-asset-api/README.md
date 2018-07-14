@@ -3,5 +3,5 @@
 # Connected Asset Open Metadata Access Service (OMAS) API
 
 The Connected Asset OMAS supports a REST API for requests for asset metadata.
-The Connected Asset OMAS API provide the shared Java classes between the
+The Connected Asset OMAS API provides the shared Java classes between the
 server and client.
