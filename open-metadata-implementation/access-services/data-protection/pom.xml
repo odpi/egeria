@@ -24,8 +24,10 @@
     <artifactId>data-protection</artifactId>
     <packaging>pom</packaging>
     <modules>
+        <module>data-protection-api</module>
         <module>data-protection-client</module>
         <module>data-protection-server</module>
+        <module>data-protection-spring</module>
     </modules>
 
 

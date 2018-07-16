@@ -7,35 +7,36 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <artifactId>access-services</artifactId>
+        <artifactId>project-management</artifactId>
         <groupId>org.odpi.egeria</groupId>
         <version>0.1-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Asset Consumer OMAS</name>
+    <name>Project Management OMAS with Spring</name>
     <description>
-        The Asset Consumer Open Metadata Access Services (OMAS) provides services for an application
-        accessing assets such as data stores, APIs or functions such as analytical services.
+        Spring-based REST API for the Project Management Open Metadata Access Service (OMAS).
     </description>
 
-    <artifactId>asset-consumer</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>asset-consumer-api</module>
-        <module>asset-consumer-client</module>
-        <module>asset-consumer-server</module>
-        <module>asset-consumer-spring</module>
-    </modules>
+    <artifactId>project-management-spring</artifactId>
 
-    <!-- Asset Consumer is built on Connected Asset -->
     <dependencies>
+
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>connected-asset-client</artifactId>
+            <artifactId>project-management-server</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
+
+        <!-- Spring for REST APIs -->
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>${spring-web.version}</version>
+        </dependency>
+
     </dependencies>
 
 </project>

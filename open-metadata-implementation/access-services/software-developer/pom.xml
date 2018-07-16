@@ -24,8 +24,10 @@
     <artifactId>software-developer</artifactId>
     <packaging>pom</packaging>
     <modules>
+        <module>software-developer-api</module>
         <module>software-developer-client</module>
         <module>software-developer-server</module>
+        <module>software-developer-spring</module>
     </modules>
 
 
