@@ -33,3 +33,6 @@ asynchronously between different tools.
 
 * **[data-store-connectors](data-store-connectors)** contain OCF connectors to data stores on different
 data platforms.
+
+In addition there is the **[connector-configuration-factory](connector-configuration-factory)**
+that creates **Connection** objects to configure these connectors.

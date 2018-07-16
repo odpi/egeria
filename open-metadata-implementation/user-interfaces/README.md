@@ -10,10 +10,10 @@ particularly for a larger organization.
 
 There are 2 user interfaces:
 
-* access-services-user-interface - provides a user interface that supports
+* **[access-services-user-interface](access-services-user-interface)** - provides a user interface that supports
 the user-facing open metadata access services.  It is a role-based UI that
 offers different capabilities based on the end user's role.  This makes it
 useful for demonstrations.
 
-* server-configuration-user-interface - provides the administration user
+* **[server-configuration-user-interface](server-configuration-user-interface)** - provides the administration user
 interface for an open metadata server.
