@@ -153,7 +153,7 @@ public class OMRSAuditLog
 
                     OMRSAuditLogRecord logRecord = new OMRSAuditLogRecord(originator,
                                                                           reportingComponent,
-                                                                          severity.getSeverityName(),
+                                                                          severity.getName(),
                                                                           logMessageId,
                                                                           logMessage,
                                                                           additionalInformationArray,

@@ -215,7 +215,7 @@ public class OMRSInstanceEvent extends OMRSEvent
                              String                     otherInstanceGUID)
     {
         super(OMRSEventCategory.INSTANCE,
-              errorCode.getErrorCodeEncoding(),
+              errorCode.getEncoding(),
               errorMessage,
               targetMetadataCollectionId,
               targetTypeDefSummary,
@@ -247,7 +247,7 @@ public class OMRSInstanceEvent extends OMRSEvent
                              TypeDefSummary             otherTypeDefSummary)
     {
         super(OMRSEventCategory.INSTANCE,
-              errorCode.getErrorCodeEncoding(),
+              errorCode.getEncoding(),
               errorMessage,
               targetMetadataCollectionId,
               targetTypeDefSummary,

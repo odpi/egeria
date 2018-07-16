@@ -70,7 +70,7 @@ public class AttributeTypeDefListResponse extends OMRSAPIResponse
 
             for (AttributeTypeDef  attributeTypeDef : attributeTypeDefs)
             {
-                clonedTypeDefs.add(new AttributeTypeDef(attributeTypeDef));
+                clonedTypeDefs.add(attributeTypeDef.cloneFromSubclass());
             }
 
             return clonedTypeDefs;

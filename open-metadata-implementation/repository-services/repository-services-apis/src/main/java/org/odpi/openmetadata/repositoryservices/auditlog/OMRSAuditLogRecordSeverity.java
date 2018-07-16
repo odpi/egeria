@@ -75,7 +75,7 @@ public enum OMRSAuditLogRecordSeverity
      *
      * @return int numeric for this enum
      */
-    public int getSeverityCode()
+    public int getOrdinal()
     {
         return severityCode;
     }
@@ -86,7 +86,7 @@ public enum OMRSAuditLogRecordSeverity
      *
      * @return String name
      */
-    public String getSeverityName()
+    public String getName()
     {
         return severityName;
     }
@@ -99,8 +99,24 @@ public enum OMRSAuditLogRecordSeverity
      *
      * @return String default description
      */
-    public String getSeverityDescription()
+    public String getDescription()
     {
         return severityDescription;
+    }
+
+
+    /**
+     * toString() JSON-style
+     *
+     * @return string description
+     */
+    @Override
+    public String toString()
+    {
+        return "OMRSAuditLogRecordSeverity{" +
+                "severityCode=" + severityCode +
+                ", severityName='" + severityName + '\'' +
+                ", severityDescription='" + severityDescription + '\'' +
+                '}';
     }
 }

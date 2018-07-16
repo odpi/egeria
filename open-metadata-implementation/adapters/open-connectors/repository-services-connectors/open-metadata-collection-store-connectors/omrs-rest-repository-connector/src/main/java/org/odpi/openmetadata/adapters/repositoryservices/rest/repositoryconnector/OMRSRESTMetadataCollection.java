@@ -287,7 +287,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * Return the TypeDefs that have the properties matching the supplied match criteria.
      *
      * @param userId - unique identifier for requesting user.
-     * @param matchCriteria - TypeDefProperties - a list of property names and values.
+     * @param matchCriteria - TypeDefProperties - a list of property names.
      * @return TypeDefs list.
      * @throws InvalidParameterException the matchCriteria is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository.

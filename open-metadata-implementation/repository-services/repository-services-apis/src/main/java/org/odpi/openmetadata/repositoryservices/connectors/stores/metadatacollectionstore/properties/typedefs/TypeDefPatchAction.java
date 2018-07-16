@@ -42,23 +42,23 @@ public enum TypeDefPatchAction
                                        "Update the descriptions and descriptionGUIDs of the TypeDef and its attributes.");
 
 
-    private int    patchActionCode;
-    private String patchActionName;
-    private String patchActionDescription;
+    private int    ordinal;
+    private String name;
+    private String description;
 
 
     /**
      * Constructor to set up a single instances of the enum.
      *
-     * @param patchActionCode numeric code for the patch action
-     * @param patchActionName descriptive name for the patch action
-     * @param patchActionDescription description of the patch action
+     * @param ordinal numeric code for the patch action
+     * @param name descriptive name for the patch action
+     * @param description description of the patch action
      */
-    TypeDefPatchAction(int patchActionCode, String patchActionName, String patchActionDescription)
+    TypeDefPatchAction(int ordinal, String name, String description)
     {
-        this.patchActionCode = patchActionCode;
-        this.patchActionName = patchActionName;
-        this.patchActionDescription = patchActionDescription;
+        this.ordinal = ordinal;
+        this.name = name;
+        this.description = description;
     }
 
 
@@ -67,9 +67,9 @@ public enum TypeDefPatchAction
      *
      * @return int code
      */
-    public int getPatchActionCode()
+    public int getOrdinal()
     {
-        return patchActionCode;
+        return ordinal;
     }
 
 
@@ -78,9 +78,9 @@ public enum TypeDefPatchAction
      *
      * @return String name
      */
-    public String getPatchActionName()
+    public String getName()
     {
-        return patchActionName;
+        return name;
     }
 
 
@@ -89,8 +89,24 @@ public enum TypeDefPatchAction
      *
      * @return String description
      */
-    public String getPatchActionDescription()
+    public String getDescription()
     {
-        return patchActionDescription;
+        return description;
+    }
+
+
+    /**
+     * toString() JSON-style
+     *
+     * @return string description
+     */
+    @Override
+    public String toString()
+    {
+        return "TypeDefPatchAction{" +
+                "ordinal=" + ordinal +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

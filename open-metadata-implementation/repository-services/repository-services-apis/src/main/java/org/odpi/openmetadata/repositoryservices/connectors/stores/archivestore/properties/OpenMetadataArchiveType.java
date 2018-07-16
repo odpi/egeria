@@ -49,7 +49,7 @@ public enum OpenMetadataArchiveType
      *
      * @return int code number
      */
-    public int getArchiveTypeCode()
+    public int getOrdinal()
     {
         return archiveTypeCode;
     }
@@ -60,7 +60,7 @@ public enum OpenMetadataArchiveType
      *
      * @return String archive type name
      */
-    public String getArchiveTypeName()
+    public String getName()
     {
         return archiveTypeName;
     }
@@ -71,8 +71,24 @@ public enum OpenMetadataArchiveType
      *
      * @return String archive description
      */
-    public String getArchiveTypeDescription()
+    public String getDescription()
     {
         return archiveTypeDescription;
+    }
+
+
+    /**
+     * toString() JSON-style
+     *
+     * @return string description
+     */
+    @Override
+    public String toString()
+    {
+        return "OpenMetadataArchiveType{" +
+                "archiveTypeCode=" + archiveTypeCode +
+                ", archiveTypeName='" + archiveTypeName + '\'' +
+                ", archiveTypeDescription='" + archiveTypeDescription + '\'' +
+                '}';
     }
 }

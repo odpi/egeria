@@ -1,7 +1,14 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.repositoryservices.events;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.io.Serializable;
+
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
  * OMRSTypeDefEventErrorCode defines the list of error codes that are used to record errors in the TypeDef
@@ -12,6 +19,9 @@ import java.io.Serializable;
  *     </li>
  * </ul>
  */
+@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown=true)
 public enum OMRSTypeDefEventErrorCode implements Serializable
 {
     NOT_IN_USE                     (0,  "No Error",
@@ -35,30 +45,30 @@ public enum OMRSTypeDefEventErrorCode implements Serializable
 
     private static final long serialVersionUID = 1L;
 
-    private int                errorCodeId;
-    private String             errorCodeName;
-    private String             errorCodeDescription;
-    private OMRSEventErrorCode errorCodeEncoding;
+    private int                ordinal;
+    private String             name;
+    private String             description;
+    private OMRSEventErrorCode encoding;
 
 
     /**
      * Default constructor sets up the values for this enum instance.
      *
-     * @param errorCodeId int identifier for the enum, used for indexing arrays etc with the enum.
-     * @param errorCodeName String name for the enum, used for message content.
-     * @param errorCodeDescription String default description for the enum, used when there is not natural
+     * @param ordinal int identifier for the enum, used for indexing arrays etc with the enum.
+     * @param name String name for the enum, used for message content.
+     * @param description String default description for the enum, used when there is not natural
      *                             language resource bundle available.
-     * @param errorCodeEncoding code value to use in OMRSEvents
+     * @param encoding code value to use in OMRSEvents
      */
-    OMRSTypeDefEventErrorCode(int                errorCodeId,
-                              String             errorCodeName,
-                              String             errorCodeDescription,
-                              OMRSEventErrorCode errorCodeEncoding)
+    OMRSTypeDefEventErrorCode(int                ordinal,
+                              String             name,
+                              String             description,
+                              OMRSEventErrorCode encoding)
     {
-        this.errorCodeId = errorCodeId;
-        this.errorCodeName = errorCodeName;
-        this.errorCodeDescription = errorCodeDescription;
-        this.errorCodeEncoding = errorCodeEncoding;
+        this.ordinal = ordinal;
+        this.name = name;
+        this.description = description;
+        this.encoding = encoding;
     }
 
 
@@ -67,9 +77,9 @@ public enum OMRSTypeDefEventErrorCode implements Serializable
      *
      * @return int identifier
      */
-    public int getErrorCodeId()
+    public int getOrdinal()
     {
-        return errorCodeId;
+        return ordinal;
     }
 
 
@@ -78,9 +88,9 @@ public enum OMRSTypeDefEventErrorCode implements Serializable
      *
      * @return String name
      */
-    public String getErrorCodeName()
+    public String getName()
     {
-        return errorCodeName;
+        return name;
     }
 
 
@@ -90,9 +100,9 @@ public enum OMRSTypeDefEventErrorCode implements Serializable
      *
      * @return String default description
      */
-    public String getErrorCodeDescription()
+    public String getDescription()
     {
-        return errorCodeDescription;
+        return description;
     }
 
 
@@ -101,8 +111,25 @@ public enum OMRSTypeDefEventErrorCode implements Serializable
      *
      * @return String OMRSEvent encoding for this errorCode
      */
-    public OMRSEventErrorCode getErrorCodeEncoding()
+    public OMRSEventErrorCode getEncoding()
     {
-        return errorCodeEncoding;
+        return encoding;
+    }
+
+
+    /**
+     * toString() JSON-style
+     *
+     * @return string description
+     */
+    @Override
+    public String toString()
+    {
+        return "OMRSTypeDefEventErrorCode{" +
+                "ordinal=" + ordinal +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", encoding=" + encoding +
+                '}';
     }
 }

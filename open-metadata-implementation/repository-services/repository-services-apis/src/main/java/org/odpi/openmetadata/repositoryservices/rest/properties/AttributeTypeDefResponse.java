@@ -63,7 +63,7 @@ public class AttributeTypeDefResponse extends OMRSAPIResponse
         }
         else
         {
-            return new AttributeTypeDef(attributeTypeDef);
+            return attributeTypeDef.cloneFromSubclass();
         }
     }
 

@@ -38,25 +38,25 @@ public enum InstanceStatus implements Serializable
 
     private static final long serialVersionUID = 1L;
 
-    private  int     ordinal;
-    private  String  statusName;
-    private  String  statusDescription;
+    private  int    ordinal;
+    private  String name;
+    private  String description;
 
 
     /**
      * Default constructor sets up the specific values for an enum instance.
      *
      * @param ordinal int enum value ordinal
-     * @param statusName String name
-     * @param statusDescription String description
+     * @param name String name
+     * @param description String description
      */
     InstanceStatus(int     ordinal,
-                   String  statusName,
-                   String  statusDescription)
+                   String  name,
+                   String  description)
     {
         this.ordinal = ordinal;
-        this.statusName = statusName;
-        this.statusDescription = statusDescription;
+        this.name = name;
+        this.description = description;
     }
 
 
@@ -73,7 +73,7 @@ public enum InstanceStatus implements Serializable
      *
      * @return String name
      */
-    public String getStatusName() { return statusName; }
+    public String getName() { return name; }
 
 
     /**
@@ -81,5 +81,21 @@ public enum InstanceStatus implements Serializable
      *
      * @return String description
      */
-    public String getStatusDescription() { return statusDescription; }
+    public String getDescription() { return description; }
+
+
+    /**
+     * toString() JSON-style
+     *
+     * @return string description
+     */
+    @Override
+    public String toString()
+    {
+        return "InstanceStatus{" +
+                "ordinal=" + ordinal +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }

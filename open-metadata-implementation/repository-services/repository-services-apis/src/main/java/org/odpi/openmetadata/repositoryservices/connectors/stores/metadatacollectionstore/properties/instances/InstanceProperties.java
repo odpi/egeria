@@ -65,7 +65,7 @@ public class InstanceProperties extends InstanceElementHeader
 
 
     /**
-     * Copy/clone Constructor.
+     * Copy/clone constructor.
      *
      * @param templateProperties template object to copy.
      */

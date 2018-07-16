@@ -60,7 +60,7 @@ public class TypeDefResponse extends OMRSAPIResponse
         }
         else
         {
-            return new TypeDef(typeDef);
+            return typeDef.cloneFromSubclass();
         }
     }
 

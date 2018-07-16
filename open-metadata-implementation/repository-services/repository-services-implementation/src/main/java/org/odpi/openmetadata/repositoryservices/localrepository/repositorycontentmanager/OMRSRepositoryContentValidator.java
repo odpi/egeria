@@ -1815,7 +1815,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
         if (typeDef.getCategory() != null)
         {
-            typeDefCategoryName = typeDef.getCategory().getTypeName();
+            typeDefCategoryName = typeDef.getCategory().getName();
         }
 
         List<TypeDefAttribute> typeDefAttributes = repositoryContentManager.getAllPropertiesForTypeDef(sourceName,
@@ -1942,7 +1942,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
             }
 
             boolean  validPropertyType = false;
-            String   validPropertyTypeName = propertyType.getTypeName();
+            String   validPropertyTypeName = propertyType.getName();
 
             switch (propertyType)
             {
@@ -1987,7 +1987,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                 OMRSErrorCode errorCode    = OMRSErrorCode.BAD_PROPERTY_TYPE;
                 String        errorMessage = errorCode.getErrorMessageId()
                                            + errorCode.getFormattedErrorMessage(propertyName,
-                                                                                propertyType.getTypeName(),
+                                                                                propertyType.getName(),
                                                                                 typeDefCategoryName,
                                                                                 typeDefName,
                                                                                 validPropertyTypeName,
@@ -2476,7 +2476,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
                 OMRSErrorCode errorCode = OMRSErrorCode.BAD_INSTANCE_STATUS;
                 String errorMessage = errorCode.getErrorMessageId()
-                                    + errorCode.getFormattedErrorMessage(instanceStatus.getStatusName(),
+                                    + errorCode.getFormattedErrorMessage(instanceStatus.getName(),
                                                                          instanceStatusParameterName,
                                                                          methodName,
                                                                          sourceName,

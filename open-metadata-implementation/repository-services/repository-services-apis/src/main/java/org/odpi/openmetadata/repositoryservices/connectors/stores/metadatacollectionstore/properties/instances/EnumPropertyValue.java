@@ -49,6 +49,17 @@ public class EnumPropertyValue extends InstancePropertyValue
 
 
     /**
+     * Delegate the process of cloning to the subclass.
+     *
+     * @return subclass of InstancePropertyValue
+     */
+    public  InstancePropertyValue cloneFromSubclass()
+    {
+        return new EnumPropertyValue(this);
+    }
+
+
+    /**
      * Return the integer ordinal for this enum.
      *
      * @return int ordinal

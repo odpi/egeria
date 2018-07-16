@@ -53,6 +53,17 @@ public class ArrayPropertyValue extends InstancePropertyValue
 
 
     /**
+     * Delegate the process of cloning to the subclass.
+     *
+     * @return subclass of InstancePropertyValue
+     */
+    public  InstancePropertyValue cloneFromSubclass()
+    {
+        return new ArrayPropertyValue(this);
+    }
+
+
+    /**
      * Return the number of elements in the array.
      *
      * @return int array size

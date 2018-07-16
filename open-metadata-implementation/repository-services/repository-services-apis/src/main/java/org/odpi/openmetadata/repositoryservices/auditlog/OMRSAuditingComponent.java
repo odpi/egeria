@@ -51,70 +51,70 @@ public enum OMRSAuditingComponent
                              "constructing new metadata instances.",
              "https://cwiki.apache.org/confluence/display/ATLAS/Local+OMRS+TypeDef+Manager"),
 
-    INSTANCE_EVENT_PROCESSOR (8,
+    INSTANCE_EVENT_PROCESSOR (9,
              "Local Inbound Instance Event Processor",
              "Supports the loading of reference metadata into the local repository that has come from other members of the local server's cohorts and open metadata archives.",
              "https://cwiki.apache.org/confluence/display/ATLAS/Local+OMRS+Instance+Event+Processor"),
 
-    REPOSITORY_EVENT_MANAGER (9,
+    REPOSITORY_EVENT_MANAGER (10,
              "Repository Event Manager",
              "Distribute repository events (TypeDefs, Entity and Instance events) between internal OMRS components within a server.",
              "https://cwiki.apache.org/confluence/display/ATLAS/OMRS+Repository+Event+Manager"),
 
-    REST_SERVICES (10,
+    REST_SERVICES (11,
              "Repository REST Services",
              "Provides the server-side support the the OMRS Repository Services REST API.",
              "https://cwiki.apache.org/confluence/display/ATLAS/OMRS+Repository+REST+Services"),
 
-    REST_REPOSITORY_CONNECTOR (11,
+    REST_REPOSITORY_CONNECTOR (12,
              "REST Repository Connector",
              "Supports an OMRS Repository Connector for calling the OMRS Repository REST API in a remote " +
                                        "open metadata repository.",
              "https://cwiki.apache.org/confluence/display/ATLAS/OMRS+REST+Repository+Connector"),
 
-    METADATA_HIGHWAY_MANAGER (12,
+    METADATA_HIGHWAY_MANAGER (13,
              "Metadata Highway Manager",
              "Manages the initialization and shutdown of the components that connector to each of the cohorts that the local server is a member of.",
              "https://cwiki.apache.org/confluence/display/ATLAS/OMRS+Metadata+Highway+Manager"),
 
-    COHORT_MANAGER  (13,
+    COHORT_MANAGER  (14,
              "Cohort Manager",
              "Manages the initialization and shutdown of the server's connectivity to a cohort.",
              "https://cwiki.apache.org/confluence/display/ATLAS/OMRS+Cohort+Manager"),
 
-    COHORT_REGISTRY(14,
+    COHORT_REGISTRY(15,
              "Cohort Registry",
              "Manages the registration requests send and received from this local repository.",
              "https://cwiki.apache.org/confluence/display/ATLAS/OMRS+Cohort+Registry"),
 
-    REGISTRY_STORE  (15,
+    REGISTRY_STORE  (16,
              "Registry Store",
              "Stores information about the repositories registered in the open metadata repository cohort.",
              "https://cwiki.apache.org/confluence/display/ATLAS/OMRS+Cohort+Registry+Store"),
 
-    EVENT_PUBLISHER (16,
+    EVENT_PUBLISHER (17,
              "Event Publisher",
              "Manages the publishing of events that this repository sends to the OMRS topic.",
              "https://cwiki.apache.org/confluence/display/ATLAS/OMRS+Event+Publisher"),
 
-    EVENT_LISTENER  (17,
+    EVENT_LISTENER  (18,
              "Event Listener",
              "Manages the receipt of incoming OMRS events.",
               "https://cwiki.apache.org/confluence/display/ATLAS/OMRS+Event+Listener"),
 
-    OMRS_TOPIC_CONNECTOR(18,
+    OMRS_TOPIC_CONNECTOR(19,
              "OMRS Topic Connector",
              "Provides access to the OMRS Topic that is used to exchange events between members of a cohort, " +
                                  "or to notify Open Metadata Access Services (OMASs) of changes to " +
                                  "metadata in the enterprise.",
              "https://cwiki.apache.org/confluence/display/ATLAS/OMRS+Topic+Connector"),
 
-    OPEN_METADATA_TOPIC_CONNECTOR(19,
+    OPEN_METADATA_TOPIC_CONNECTOR(20,
              "Open Metadata Topic Connector",
              "Provides access to an event bus to exchange events with participants in the open metadata ecosystem.",
              "https://cwiki.apache.org/confluence/display/ATLAS/OMRS+Topic+Connector"),
 
-    LOCAL_REPOSITORY_EVENT_MAPPER(20,
+    LOCAL_REPOSITORY_EVENT_MAPPER(21,
              "Local Repository Event Mapper Connector",
              "Provides access to an event bus to process events from a specific local repository.",
              "https://cwiki.apache.org/confluence/display/ATLAS/OMRS+Repository+Event+Mapper")
@@ -190,5 +190,22 @@ public enum OMRSAuditingComponent
     public String getComponentWikiURL()
     {
         return componentWikiURL;
+    }
+
+
+    /**
+     * toString, JSON-style
+     *
+     * @return string description
+     */
+    @Override
+    public String toString()
+    {
+        return "OMRSAuditingComponent{" +
+                "componentId=" + componentId +
+                ", componentName='" + componentName + '\'' +
+                ", componentDescription='" + componentDescription + '\'' +
+                ", componentWikiURL='" + componentWikiURL + '\'' +
+                '}';
     }
 }

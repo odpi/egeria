@@ -618,6 +618,7 @@ public enum OMRSAuditCode
         return severity;
     }
 
+
     /**
      * Returns the log message with the placeholders filled out with the supplied parameters.
      *
@@ -657,5 +658,23 @@ public enum OMRSAuditCode
     public String getUserAction()
     {
         return userAction;
+    }
+
+
+    /**
+     * toString, JSON-style
+     *
+     * @return string description
+     */
+    @Override
+    public String toString()
+    {
+        return "OMRSAuditCode{" +
+                "logMessageId='" + logMessageId + '\'' +
+                ", severity=" + severity +
+                ", logMessage='" + logMessage + '\'' +
+                ", systemAction='" + systemAction + '\'' +
+                ", userAction='" + userAction + '\'' +
+                '}';
     }
 }

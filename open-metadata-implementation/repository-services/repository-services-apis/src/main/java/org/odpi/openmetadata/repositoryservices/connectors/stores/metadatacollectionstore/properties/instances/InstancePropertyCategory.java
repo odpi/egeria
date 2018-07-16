@@ -56,7 +56,7 @@ public enum InstancePropertyCategory implements Serializable
      *
      * @return int type code
      */
-    public int getTypeCode()
+    public int getOrdinal()
     {
         return typeCode;
     }
@@ -67,7 +67,7 @@ public enum InstancePropertyCategory implements Serializable
      *
      * @return String default name
      */
-    public String getTypeName()
+    public String getName()
     {
         return typeName;
     }
@@ -78,8 +78,24 @@ public enum InstancePropertyCategory implements Serializable
      *
      * @return String default description
      */
-    public String getTypeDescription()
+    public String getDescription()
     {
         return typeDescription;
+    }
+
+
+    /**
+     * toString() JSON-style
+     *
+     * @return string description
+     */
+    @Override
+    public String toString()
+    {
+        return "InstancePropertyCategory{" +
+                "typeCode=" + typeCode +
+                ", typeName='" + typeName + '\'' +
+                ", typeDescription='" + typeDescription + '\'' +
+                '}';
     }
 }

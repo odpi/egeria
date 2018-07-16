@@ -1,7 +1,14 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.repositoryservices.events;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.io.Serializable;
+
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
  * OMRSTypeDefEventType defines the different types of TypeDef events in the open metadata repository services
@@ -27,6 +34,9 @@ import java.io.Serializable;
  *     </li>
  * </ul>
  */
+@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown=true)
 public enum OMRSTypeDefEventType implements Serializable
 {
     UNKNOWN_TYPEDEF_EVENT                 (0,  "UnknownTypeDefEvent",          "A TypeDef event that is not recognized by the local server."),
@@ -42,24 +52,24 @@ public enum OMRSTypeDefEventType implements Serializable
 
     private static final long serialVersionUID = 1L;
 
-    private  int      eventTypeCode;
-    private  String   eventTypeName;
-    private  String   eventTypeDescription;
+    private  int    ordinal;
+    private  String name;
+    private  String description;
 
 
     /**
      * Default Constructor sets up the specific values for this instance of the enum.
      *
-     * @param eventTypeCode int identifier used for indexing based on the enum.
-     * @param eventTypeName string name used for messages that include the enum.
-     * @param eventTypeDescription default description for the enum value used when natural resource
+     * @param ordinal int identifier used for indexing based on the enum.
+     * @param name string name used for messages that include the enum.
+     * @param description default description for the enum value used when natural resource
      *                                     bundle is not available.
      */
-    OMRSTypeDefEventType(int eventTypeCode, String eventTypeName, String eventTypeDescription)
+    OMRSTypeDefEventType(int ordinal, String name, String description)
     {
-        this.eventTypeCode = eventTypeCode;
-        this.eventTypeName = eventTypeName;
-        this.eventTypeDescription = eventTypeDescription;
+        this.ordinal = ordinal;
+        this.name = name;
+        this.description = description;
     }
 
 
@@ -68,9 +78,9 @@ public enum OMRSTypeDefEventType implements Serializable
      *
      * @return int identifier code
      */
-    public int getTypeDefEventTypeCode()
+    public int getOrdinal()
     {
-        return eventTypeCode;
+        return ordinal;
     }
 
 
@@ -79,9 +89,9 @@ public enum OMRSTypeDefEventType implements Serializable
      *
      * @return String name
      */
-    public String getTypeDefEventTypeName()
+    public String getName()
     {
-        return eventTypeName;
+        return name;
     }
 
 
@@ -91,8 +101,24 @@ public enum OMRSTypeDefEventType implements Serializable
      *
      * @return String default description
      */
-    public String getTypeDefEventTypeDescription()
+    public String getDescription()
     {
-        return eventTypeDescription;
+        return description;
+    }
+
+
+    /**
+     * toString() JSON-style
+     *
+     * @return string description
+     */
+    @Override
+    public String toString()
+    {
+        return "OMRSTypeDefEventType{" +
+                "ordinal=" + ordinal +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

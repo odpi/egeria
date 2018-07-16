@@ -1,7 +1,14 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.repositoryservices.events;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.io.Serializable;
+
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
  * OMRSRegistryEventType defines the different types of registry events in the open metadata repository services
@@ -42,6 +49,9 @@ import java.io.Serializable;
  *     </li>
  * </ul>
  */
+@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown=true)
 public enum OMRSRegistryEventType implements Serializable
 {
     UNKNOWN_REGISTRY_EVENT       (0, "UnknownRegistryEvent",
@@ -60,24 +70,24 @@ public enum OMRSRegistryEventType implements Serializable
     private static final long serialVersionUID = 1L;
 
 
-    private  int      registryEventTypeCode;
-    private  String   registryEventTypeName;
-    private  String   registryEventTypeDescription;
+    private  int    ordinal;
+    private  String name;
+    private  String description;
 
 
     /**
      * Default Constructor sets up the specific values for this instance of the enum.
      *
-     * @param registryEventTypeCode int identifier used for indexing based on the enum.
-     * @param registryEventTypeName string name used for messages that include the enum.
-     * @param registryEventTypeDescription default description for the enum value used when natural resource
-     *                                     bundle is not available.
+     * @param ordinal int identifier used for indexing based on the enum.
+     * @param name string name used for messages that include the enum.
+     * @param description default description for the enum value used when natural resource
+     *                    bundle is not available.
      */
-    OMRSRegistryEventType(int registryEventTypeCode, String registryEventTypeName, String registryEventTypeDescription)
+    OMRSRegistryEventType(int ordinal, String name, String description)
     {
-        this.registryEventTypeCode = registryEventTypeCode;
-        this.registryEventTypeName = registryEventTypeName;
-        this.registryEventTypeDescription = registryEventTypeDescription;
+        this.ordinal = ordinal;
+        this.name = name;
+        this.description = description;
     }
 
 
@@ -86,9 +96,9 @@ public enum OMRSRegistryEventType implements Serializable
      *
      * @return int identifier code
      */
-    public int getRegistryEventTypeCode()
+    public int getOrdinal()
     {
-        return registryEventTypeCode;
+        return ordinal;
     }
 
 
@@ -97,9 +107,9 @@ public enum OMRSRegistryEventType implements Serializable
      *
      * @return String name
      */
-    public String getRegistryEventTypeName()
+    public String getName()
     {
-        return registryEventTypeName;
+        return name;
     }
 
 
@@ -109,8 +119,24 @@ public enum OMRSRegistryEventType implements Serializable
      *
      * @return String default description
      */
-    public String getRegistryEventTypeDescription()
+    public String getDescription()
     {
-        return registryEventTypeDescription;
+        return description;
+    }
+
+
+    /**
+     * toString() JSON-style
+     *
+     * @return string description
+     */
+    @Override
+    public String toString()
+    {
+        return "OMRSRegistryEventType{" +
+                "ordinal=" + ordinal +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

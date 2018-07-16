@@ -73,6 +73,17 @@ public class ClassificationDef extends TypeDef
 
 
     /**
+     * Delegate the process of cloning to the subclass.
+     *
+     * @return subclass of TypeDef
+     */
+    public TypeDef cloneFromSubclass()
+    {
+        return new ClassificationDef(this);
+    }
+
+
+    /**
      * Return the list of identifiers for the types of entities that this type of Classification can be connected to.
      *
      * @return List of entity type identifiers

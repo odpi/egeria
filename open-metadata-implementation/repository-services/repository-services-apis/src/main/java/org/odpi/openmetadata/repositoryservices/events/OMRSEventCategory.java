@@ -1,7 +1,14 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.repositoryservices.events;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.io.Serializable;
+
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
  * OMRSEventCategory defines the different categories of events that pass through the OMRS Topic.
@@ -20,6 +27,9 @@ import java.io.Serializable;
  *     </li>
  * </ul>
  */
+@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown=true)
 public enum OMRSEventCategory implements Serializable
 {
     UNKNOWN (0, "Unknown Event",  "Unknown event category"),
@@ -30,25 +40,25 @@ public enum OMRSEventCategory implements Serializable
 
     private static final long serialVersionUID = 1L;
 
-    private int    categoryCode;
-    private String categoryName;
-    private String categoryDescription;
+    private int    ordinal;
+    private String name;
+    private String description;
 
 
     /**
      * Default constructor.
      *
-     * @param categoryCode int category code number
-     * @param categoryName String category name
-     * @param categoryDescription String category description
+     * @param ordinal int category code number
+     * @param name String category name
+     * @param description String category description
      */
-    OMRSEventCategory(int      categoryCode,
-                      String   categoryName,
-                      String   categoryDescription)
+    OMRSEventCategory(int ordinal,
+                      String name,
+                      String description)
     {
-        this.categoryCode = categoryCode;
-        this.categoryName = categoryName;
-        this.categoryDescription = categoryDescription;
+        this.ordinal = ordinal;
+        this.name = name;
+        this.description = description;
     }
 
 
@@ -57,9 +67,9 @@ public enum OMRSEventCategory implements Serializable
      *
      * @return int code number
      */
-    public int getEventCategoryCode()
+    public int getOrdinal()
     {
-        return categoryCode;
+        return ordinal;
     }
 
 
@@ -68,9 +78,9 @@ public enum OMRSEventCategory implements Serializable
      *
      * @return String name
      */
-    public String getEventCategoryName()
+    public String getName()
     {
-        return categoryName;
+        return name;
     }
 
 
@@ -80,8 +90,24 @@ public enum OMRSEventCategory implements Serializable
      *
      * @return String default description
      */
-    public String getEventCategoryDescription()
+    public String getDescription()
     {
-        return categoryDescription;
+        return description;
+    }
+
+
+    /**
+     * toString() JSON-style
+     *
+     * @return string description
+     */
+    @Override
+    public String toString()
+    {
+        return "OMRSEventCategory{" +
+                "ordinal=" + ordinal +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

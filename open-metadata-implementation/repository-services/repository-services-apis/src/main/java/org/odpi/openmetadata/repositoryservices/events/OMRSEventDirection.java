@@ -2,11 +2,21 @@
 package org.odpi.openmetadata.repositoryservices.events;
 
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.io.Serializable;
+
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
  * OMRSEventDirection defines the origin of an OMRSEvent.  It is used primarily for logging and debug.
  */
+@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown=true)
 public enum OMRSEventDirection implements Serializable
 {
     UNKNOWN  (0, "<Unknown>     ", "Uninitialized event direction"),
@@ -16,24 +26,24 @@ public enum OMRSEventDirection implements Serializable
     private static final long serialVersionUID = 1L;
 
 
-    private  int    eventDirectionCode;
-    private  String eventDirectionName;
-    private  String eventDirectionDescription;
+    private  int    ordinal;
+    private  String name;
+    private  String description;
 
 
     /**
      * Default constructor sets up the specific values for this enum instance.
      *
-     * @param eventDirectionCode int identifier for the enum, used for indexing arrays etc with the enum.
-     * @param eventDirectionName String name for the enum, used for message content.
-     * @param eventDirectionDescription String default description for the enum, used when there is not natural
+     * @param ordinal int identifier for the enum, used for indexing arrays etc with the enum.
+     * @param name String name for the enum, used for message content.
+     * @param description String default description for the enum, used when there is not natural
      *                             language resource bundle available.
      */
-    OMRSEventDirection(int eventDirectionCode, String eventDirectionName, String eventDirectionDescription)
+    OMRSEventDirection(int ordinal, String name, String description)
     {
-        this.eventDirectionCode = eventDirectionCode;
-        this.eventDirectionName = eventDirectionName;
-        this.eventDirectionDescription = eventDirectionDescription;
+        this.ordinal = ordinal;
+        this.name = name;
+        this.description = description;
     }
 
 
@@ -42,9 +52,9 @@ public enum OMRSEventDirection implements Serializable
      *
      * @return int identifier
      */
-    public int getEventDirectionCode()
+    public int getOrdinal()
     {
-        return eventDirectionCode;
+        return ordinal;
     }
 
 
@@ -53,9 +63,9 @@ public enum OMRSEventDirection implements Serializable
      *
      * @return String name
      */
-    public String getEventDirectionName()
+    public String getName()
     {
-        return eventDirectionName;
+        return name;
     }
 
 
@@ -65,8 +75,24 @@ public enum OMRSEventDirection implements Serializable
      *
      * @return String default description
      */
-    public String getEventDirectionDescription()
+    public String getDescription()
     {
-        return eventDirectionDescription;
+        return description;
+    }
+
+
+    /**
+     * toString() JSON-style
+     *
+     * @return string description
+     */
+    @Override
+    public String toString()
+    {
+        return "OMRSEventDirection{" +
+                "ordinal=" + ordinal +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

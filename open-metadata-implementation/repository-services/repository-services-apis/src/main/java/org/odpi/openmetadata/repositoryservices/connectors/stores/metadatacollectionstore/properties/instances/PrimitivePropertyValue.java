@@ -54,6 +54,16 @@ public class PrimitivePropertyValue extends InstancePropertyValue
         }
     }
 
+    /**
+     * Delegate the process of cloning to the subclass.
+     *
+     * @return subclass of InstancePropertyValue
+     */
+    public  InstancePropertyValue cloneFromSubclass()
+    {
+        return new PrimitivePropertyValue(this);
+    }
+
 
     /**
      * Return the the category of the primitive's type.  This sets the name and Java Class used for

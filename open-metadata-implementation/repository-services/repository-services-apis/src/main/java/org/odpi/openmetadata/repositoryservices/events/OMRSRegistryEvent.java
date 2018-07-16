@@ -133,7 +133,7 @@ public class OMRSRegistryEvent extends OMRSEvent
                              Connection                 remoteConnection)
     {
         super(OMRSEventCategory.REGISTRY,
-              errorCode.getErrorCodeEncoding(),
+              errorCode.getEncoding(),
               errorMessage,
               targetMetadataCollectionId,
               remoteConnection);

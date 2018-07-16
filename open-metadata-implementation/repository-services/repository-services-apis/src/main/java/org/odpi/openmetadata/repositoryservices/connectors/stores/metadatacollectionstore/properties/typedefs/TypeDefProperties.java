@@ -5,7 +5,9 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -21,11 +23,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TypeDefProperties extends TypeDefElementHeader
 {
-    private List<String> typeDefProperties = new ArrayList<>();
+    private Map<String, Object> typeDefProperties = null;
 
 
     /**
-     * Typical constructor
+     * Default constructor.
      */
     public TypeDefProperties()
     {
@@ -36,7 +38,7 @@ public class TypeDefProperties extends TypeDefElementHeader
 
 
     /**
-     * Copy/clone Constructor.
+     * Copy/clone constructor.
      *
      * @param templateProperties template object to copy.
      */
@@ -53,19 +55,23 @@ public class TypeDefProperties extends TypeDefElementHeader
 
 
     /**
-     * Return the list of property names
+     * Return the list of property names.
      *
      * @return List of String property names
      */
-    public List<String> getTypeDefProperties()
+    public Map<String, Object> getTypeDefProperties()
     {
         if (typeDefProperties == null)
         {
             return null;
         }
+        else if (typeDefProperties.isEmpty())
+        {
+            return null;
+        }
         else
         {
-            return new ArrayList<>(typeDefProperties);
+            return new HashMap<>(typeDefProperties);
         }
     }
 
@@ -75,16 +81,9 @@ public class TypeDefProperties extends TypeDefElementHeader
      *
      * @param typeDefProperties list of property names
      */
-    public void setTypeDefProperties(List<String> typeDefProperties)
+    public void setTypeDefProperties(Map<String, Object> typeDefProperties)
     {
-        if (typeDefProperties == null)
-        {
-            this.typeDefProperties = null;
-        }
-        else
-        {
-            this.typeDefProperties = new ArrayList<>(typeDefProperties);
-        }
+        this.typeDefProperties = typeDefProperties;
     }
 
 
