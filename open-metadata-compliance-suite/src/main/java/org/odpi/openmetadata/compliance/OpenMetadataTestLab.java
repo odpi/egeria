@@ -3,6 +3,7 @@ package org.odpi.openmetadata.compliance;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.FileUtils;
+import org.apache.log4j.varia.NullAppender;
 import org.odpi.openmetadata.compliance.beans.OpenMetadataTestLabResults;
 import org.odpi.openmetadata.compliance.beans.OpenMetadataTestWorkbenchResults;
 import org.odpi.openmetadata.compliance.tests.repository.OpenMetadataRepositoryTestWorkbench;
@@ -42,7 +43,7 @@ public class OpenMetadataTestLab
      *
      * @param serverURLRoot server to test.
      */
-    OpenMetadataTestLab(String    serverURLRoot)
+    private OpenMetadataTestLab(String    serverURLRoot)
     {
         this.registeredWorkbenches = getRegisteredWorkbenches(serverURLRoot);
         this.serverURLRoot = serverURLRoot;
@@ -89,6 +90,8 @@ public class OpenMetadataTestLab
     {
         String  serverURLRoot;
         String  reportFileName = "openmetadata.functional.testlab.results";
+
+        org.apache.log4j.BasicConfigurator.configure(new NullAppender());
 
         if ((args == null) || (args.length == 0))
         {

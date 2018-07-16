@@ -8,7 +8,7 @@ package org.odpi.openmetadata.compliance.ffdc;
 public class ComplianceException extends Exception
 {
     /**
-     * Normal constructor for a compliance
+     * Normal constructor for a compliance exception
      *
      * @param errorMessage description of the exception
      */
