@@ -42,7 +42,7 @@ import static org.mockito.Mockito.*;
 public class GovernanceEngineImplTest {
 
     @Mock
-    private RestTemplate restTemplate; // from Spring, used for REST API calls to server in implementation under test
+    private RestTemplate restTemplate; // from Spring, used for REST API calls to handlers in implementation under test
 
     static final String defaultOMASServerURL = "http://localhost:12345";
     static final String defaultUserId = "zebra91";
@@ -59,7 +59,7 @@ public class GovernanceEngineImplTest {
     private Throwable thrown; // for testing exceptions
 
     @Test
-    @DisplayName("GovernanceEngineImpl Constructor - Check empty server URL")
+    @DisplayName("GovernanceEngineImpl Constructor - Check empty handlers URL")
     void testGetGovernedAssetComponentListBadConstructorEmpty() {
         GovernanceEngineImpl governanceEngineImplalt = new GovernanceEngineImpl(""); // local
 
@@ -69,14 +69,14 @@ public class GovernanceEngineImplTest {
             List<GovernedAssetComponent> result = governanceEngineImplalt.getGovernedAssetComponentList("", "rootClassificationType", "rootType");
         });
 
-        // Must not call backend rest server
+        // Must not call backend rest handlers
         verify(restTemplate, never()).getForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(Class.class), ArgumentMatchers.<Object>any());
         // validate appropriate exception message
         assertTrue(thrown.getMessage().contains("OMAS-GOVERNANCEENGINE-400-001"));
     }
 
     @Test
-    @DisplayName("GovernanceEngineImp Constructor - Check null server URL")
+    @DisplayName("GovernanceEngineImp Constructor - Check null handlers URL")
     void testGetGovernedAssetComponentListBadConstructorNull() {
 
         GovernanceEngineImpl governanceEngineImplalt = new GovernanceEngineImpl(null);
@@ -130,9 +130,9 @@ public class GovernanceEngineImplTest {
     }
 
     @Test
-    @DisplayName("getGovernedAssetComponentList - server side exception")
+    @DisplayName("getGovernedAssetComponentList - handlers side exception")
     void testGetGovernedAssetComponentListRemoteInvalidParmException() {
-        // Not testing backend, so let's just check one error case that should go to server & back (but is mocked)
+        // Not testing backend, so let's just check one error case that should go to handlers & back (but is mocked)
         GovernedAssetComponentListAPIResponse expectedResponse = new GovernedAssetComponentListAPIResponse();
         expectedResponse.setRelatedHTTPCode(404);
         when(restTemplate.getForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(Class.class), ArgumentMatchers.<Object>any())).thenReturn(expectedResponse);
@@ -203,7 +203,7 @@ public class GovernanceEngineImplTest {
 
 
     @Test
-    @DisplayName("getGovernanceClassificationDefinitionList - server side exception")
+    @DisplayName("getGovernanceClassificationDefinitionList - handlers side exception")
     void testGetGovernanceClassificationDefinitionList() {
         GovernanceClassificationDefinitionListAPIResponse expectedResponse = new GovernanceClassificationDefinitionListAPIResponse();
         expectedResponse.setRelatedHTTPCode(404);
@@ -302,7 +302,7 @@ public class GovernanceEngineImplTest {
     }
 
     @Test
-    @DisplayName("getGovernedAssetComponent - server side exception")
+    @DisplayName("getGovernedAssetComponent - handlers side exception")
     void testGetGovernedAssetComponentRemoteInvalidParmException() {
         GovernedAssetComponentAPIResponse expectedResponse = new GovernedAssetComponentAPIResponse();
         expectedResponse.setRelatedHTTPCode(404);
@@ -364,7 +364,7 @@ public class GovernanceEngineImplTest {
             GovernanceClassificationDefinition result = governanceEngineImpl.getGovernanceClassificationDefinition(defaultUserId, null);
         });
 
-        // Check we do not call the backend server - should be checked locally
+        // Check we do not call the backend handlers - should be checked locally
         verify(restTemplate, never()).getForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(Class.class), ArgumentMatchers.<Object>any());
         assertTrue(thrown.getMessage().contains("OMAS-GOVERNANCEENGINE-400-004"));
     }
@@ -395,7 +395,7 @@ public class GovernanceEngineImplTest {
     }
 
     @Test
-    @DisplayName("getGovernanceClassificationDefinition - server side exception")
+    @DisplayName("getGovernanceClassificationDefinition - handlers side exception")
     void testGetGovernanceClassificationDefinitionServerException() {
         GovernanceClassificationDefinitionAPIResponse expectedResponse = new GovernanceClassificationDefinitionAPIResponse();
         expectedResponse.setRelatedHTTPCode(404);

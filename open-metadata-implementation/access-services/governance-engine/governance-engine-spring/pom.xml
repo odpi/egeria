@@ -14,28 +14,35 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Governance Engine OMAS Server-side</name>
+    <name>Governance Engine OMAS with Spring</name>
     <description>
-        Server-side support for the Governance Engine Open Metadata Access Service (OMAS).
+        Spring-based REST API for the Governance Engine Open Metadata Access Service (OMAS).
     </description>
 
-    <artifactId>governance-engine-server</artifactId>
+    <artifactId>governance-engine-spring</artifactId>
 
     <dependencies>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>governance-engine-common</artifactId>
+            <artifactId>governance-engine-server</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
 
-        <!-- Spring for calling REST APIs -->
+        <!-- Spring for REST APIs -->
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
             <version>${spring.version}</version>
         </dependency>
+
     </dependencies>
 
 </project>
