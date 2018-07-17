@@ -19,7 +19,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SuiteDisplayName("Governance Engine Client Implementation")
+@SuiteDisplayName("Governance Engine Server Validator")
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.WARN)
 
@@ -53,7 +53,7 @@ public class ValidatorTest {
     }
 
     @Test
-    @DisplayName("validateUYserId - check empty string handled")
+    @DisplayName("validateUserId - check empty string handled")
     void validateUserIdEmpty() {
         thrown = assertThrows(InvalidParameterException.class, () ->
         {
