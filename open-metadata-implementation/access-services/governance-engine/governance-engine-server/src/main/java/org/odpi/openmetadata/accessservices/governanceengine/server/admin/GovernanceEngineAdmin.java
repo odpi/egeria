@@ -26,6 +26,8 @@ public class GovernanceEngineAdmin implements AccessServiceAdmin {
     private OMRSTopicConnector omrsTopicConnector = null;
     private GovernanceEngineOMRSTopicListener omrsTopicListener = null;
 
+    //TODO Prevent multiple initialization/termination
+
 
     /**
      * Default constructor
@@ -43,7 +45,7 @@ public class GovernanceEngineAdmin implements AccessServiceAdmin {
      * @param serverUserName                       - user id to use on OMRS calls where there is no end user.
      * @throws OMAGConfigurationErrorException - invalid parameters in the configuration properties.
      */
-    public void initialize(AccessServiceConfig accessServiceConfigurationProperties,
+    public synchronized void initialize(AccessServiceConfig accessServiceConfigurationProperties,
                            OMRSTopicConnector enterpriseOMRSTopicConnector,
                            OMRSRepositoryConnector enterpriseOMRSRepositoryConnector,
                            OMRSAuditLog auditLog,
@@ -110,12 +112,35 @@ public class GovernanceEngineAdmin implements AccessServiceAdmin {
     /**
      * Shutdown the access service.
      */
-    public void shutdown() {
+    public synchronized void shutdown() {
         final String actionDescription = "shutdown";
 
         log.debug(">>" + actionDescription);
 
         GovernanceEngineAuditCode auditCode;
+
+        auditCode = GovernanceEngineAuditCode.SERVICE_TERMINATING;
+        auditLog.logRecord(actionDescription,
+                auditCode.getLogMessageId(),
+                auditCode.getSeverity(),
+                auditCode.getFormattedLogMessage(),
+                null,
+                auditCode.getSystemAction(),
+                auditCode.getUserAction());
+
+
+        // TODO Look into what we need to do for termination
+        this.repositoryConnector = null;
+        //TODO Clear repository connector?
+        // GovernanceEngineRESTServices.setRepositoryConnector
+        // (accessServiceConfigurationProperties
+        // .getAccessServiceName(),
+        //        null);
+
+        this.accessServiceConfig =null;
+        this.omrsTopicConnector = null;
+
+
 
         auditCode = GovernanceEngineAuditCode.SERVICE_SHUTDOWN;
         auditLog.logRecord(actionDescription,
@@ -127,6 +152,7 @@ public class GovernanceEngineAdmin implements AccessServiceAdmin {
                 auditCode.getUserAction());
 
         log.debug("<<" + actionDescription);
+
 
     }
 

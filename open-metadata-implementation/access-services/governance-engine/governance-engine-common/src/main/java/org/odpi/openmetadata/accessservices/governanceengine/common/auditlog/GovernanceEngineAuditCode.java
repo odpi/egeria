@@ -34,27 +34,25 @@ public enum GovernanceEngineAuditCode {
             "The Governance Engine OMAS is registering to receive events from the connected open metadata repositories.",
             "No action is required.  This is part of the normal operation of the handlers."),
 
-    SERVICE_REGISTERED_WITH_GE_IN_TOPIC("OMAS-GOVERNANCE-ENGINE-0002",
-            OMRSAuditLogRecordSeverity.INFO,
-            "The Governance Engine Open Metadata Access Service (OMAS) is registering a listeners with the Governance Engine OMAS In topic",
-            "The Governance Engine OMAS is registering to receive events from Governance Engine clients.",
-            "No action is required.  This is part of the normal operation of the handlers."),
-    SERVICE_BAD_EVENT("OMAS-GOVERNANCE-ENGINE-0006",
-            OMRSAuditLogRecordSeverity.INFO,
-            "The Governance Engine Open Metadata Access Service (OMAS) is registering a listeners with the Governance Engine OMAS In topic",
-            "The Governance Engine OMAS is registering to receive events from Governance Engine clients.",
-            "No action is required.  This is part of the normal operation of the handlers."),
     SERVICE_INITIALIZED("OMAS-GOVERNANCE-ENGINE-0003",
             OMRSAuditLogRecordSeverity.INFO,
             "The Governance Engine Open Metadata Access Service (OMAS) is initialized",
             "The Governance Engine OMAS has completed initialization.",
             "No action is required.  This is part of the normal operation of the handlers."),
 
-    SERVICE_SHUTDOWN("OMAS-GOVERNANCE-ENGINE-0004",
+
+
+    SERVICE_TERMINATING("OMAS-GOVERNANCE-ENGINE-0004",
             OMRSAuditLogRecordSeverity.INFO,
             "The Governance Engine Open Metadata Access Service (OMAS) is shutting down",
             "The local handlers has requested shut down of the Governance Engine OMAS.",
             "No action is required.  This is part of the normal operation of the handlers."),
+    SERVICE_SHUTDOWN("OMAS-GOVERNANCE-ENGINE-0005",
+            OMRSAuditLogRecordSeverity.INFO,
+            "The Governance Engine Open Metadata Access Service (OMAS) has completed shutdown",
+            "The requested shutdown has now been processed",
+            "No action is required.  This is part of the normal operation of the handlers."),
+
     ;
 
     private String logMessageId;
