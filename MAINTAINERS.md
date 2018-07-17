@@ -15,5 +15,6 @@ The current Egeria maintainers are:
 | Maryna Strelchuk | maryna.strelchuk@gmail.com |
 | Bogdan Sava | Bogdan-Mihail.Sava@ing.com |
 | Chris Replogle | chris.replogle@gmail.com | 
+| Ferd Scheepers | ferd.scheepers@mamahuhu.nl |
 
 
