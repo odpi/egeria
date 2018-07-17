@@ -506,7 +506,7 @@ public class OMRSCohortRegistry implements OMRSRegistryEventProcessor
         auditLog.logRecord(actionDescription,
                            auditCode.getLogMessageId(),
                            auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(cohortName, localMetadataCollectionId),
+                           auditCode.getFormattedLogMessage(cohortName, localRegistration.getMetadataCollectionId()),
                            null,
                            auditCode.getSystemAction(),
                            auditCode.getUserAction());

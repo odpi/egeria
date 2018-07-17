@@ -20,10 +20,6 @@ read and write open metadata archives.
 * **[open-metadata-collection-store-connectors](open-metadata-collection-store-connectors)** contains connectors that
 support mappings to different vendor's metadata repositories.
 
-* **[open-metadata-topic-connectors](open-metadata-topic-connectors)** contains connectors that support
-the OMRS Topic used for asynchronous event passing between members of
-an open metadata repository cohort.
-
-The **[repository-services-configuration-factory](https://odpi.github.io/egeria/open-metadata-implementation/adapters/open-connectors/connector-configuration-factory/)** sets
+The **[connector-configuration-factory](../connector-configuration-factory)** sets
 up connections to the default implementations
 of each type of the repository services connectors.
