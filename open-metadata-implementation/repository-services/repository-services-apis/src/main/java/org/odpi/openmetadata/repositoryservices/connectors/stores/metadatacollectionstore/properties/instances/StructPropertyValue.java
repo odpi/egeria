@@ -49,6 +49,17 @@ public class StructPropertyValue extends InstancePropertyValue
 
 
     /**
+     * Delegate the process of cloning to the subclass.
+     *
+     * @return subclass of InstancePropertyValue
+     */
+    public  InstancePropertyValue cloneFromSubclass()
+    {
+        return new StructPropertyValue(this);
+    }
+
+
+    /**
      * Return the attributes that make up the fields of the struct.
      *
      * @return attributes InstanceProperties iterator
@@ -64,6 +75,7 @@ public class StructPropertyValue extends InstancePropertyValue
             return new InstanceProperties(attributes);
         }
     }
+
 
     /**
      * Set up the attributes that make up the fields of the struct.

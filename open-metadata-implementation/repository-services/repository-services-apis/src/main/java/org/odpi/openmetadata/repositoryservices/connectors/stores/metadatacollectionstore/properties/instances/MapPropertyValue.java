@@ -49,6 +49,17 @@ public class MapPropertyValue extends InstancePropertyValue
 
 
     /**
+     * Delegate the process of cloning to the subclass.
+     *
+     * @return subclass of InstancePropertyValue
+     */
+    public  InstancePropertyValue cloneFromSubclass()
+    {
+        return new MapPropertyValue(this);
+    }
+
+
+    /**
      * Return the number of elements in the map.
      *
      * @return int map size

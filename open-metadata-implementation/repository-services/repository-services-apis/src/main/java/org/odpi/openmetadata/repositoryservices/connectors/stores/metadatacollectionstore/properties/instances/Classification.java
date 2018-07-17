@@ -93,7 +93,7 @@ public class Classification extends InstanceAuditHeader
 
 
     /**
-     * Copy/clone Constructor sets up new classification using values from the template
+     * Copy/clone constructor sets up new classification using values from the template
      *
      * @param templateClassification object to copy
      */

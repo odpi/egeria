@@ -68,6 +68,17 @@ public class CollectionDef extends AttributeTypeDef
 
 
     /**
+     * Delegate the process of cloning to the subclass.
+     *
+     * @return subclass of AttributeTypeDef
+     */
+    public AttributeTypeDef cloneFromSubclass()
+    {
+        return new CollectionDef(this);
+    }
+
+
+    /**
      * Return the type category for this collection type.
      *
      * @return CollectionDefCategory Enum

@@ -15,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
-        property = "type")
+        property = "class")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = ArrayPropertyValue.class, name = "ArrayPropertyValue"),
         @JsonSubTypes.Type(value = EnumPropertyValue.class, name = "EnumPropertyValue"),
@@ -23,7 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = PrimitivePropertyValue.class, name = "PrimitivePropertyValue"),
         @JsonSubTypes.Type(value = StructPropertyValue.class, name = "StructPropertyValue")
 })
-public class InstancePropertyValue extends InstanceElementHeader
+public abstract class InstancePropertyValue extends InstanceElementHeader
 {
     /*
      * Common type information that is this is augmented by the subclasses
@@ -36,7 +36,7 @@ public class InstancePropertyValue extends InstanceElementHeader
     /**
      * Default constructor for Jackson
      */
-    public InstancePropertyValue()
+    protected InstancePropertyValue()
     {
     }
 
@@ -45,7 +45,7 @@ public class InstancePropertyValue extends InstanceElementHeader
      *
      * @param instancePropertyCategory InstancePropertyCategory Enum
      */
-    public InstancePropertyValue(InstancePropertyCategory   instancePropertyCategory)
+    protected InstancePropertyValue(InstancePropertyCategory   instancePropertyCategory)
     {
         super();
         this.instancePropertyCategory = instancePropertyCategory;
@@ -57,7 +57,7 @@ public class InstancePropertyValue extends InstanceElementHeader
      *
      * @param template InstancePropertyValue
      */
-    public InstancePropertyValue(InstancePropertyValue  template)
+    protected InstancePropertyValue(InstancePropertyValue  template)
     {
         super(template);
 
@@ -68,6 +68,14 @@ public class InstancePropertyValue extends InstanceElementHeader
             this.typeName = template.getTypeName();
         }
     }
+
+
+    /**
+     * Delegate the process of cloning to the subclass.
+     *
+     * @return subclass of InstancePropertyValue
+     */
+    public abstract InstancePropertyValue cloneFromSubclass();
 
 
     /**

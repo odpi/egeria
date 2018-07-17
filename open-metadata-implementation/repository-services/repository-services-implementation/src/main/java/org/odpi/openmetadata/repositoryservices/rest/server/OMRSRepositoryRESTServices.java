@@ -359,7 +359,7 @@ public class OMRSRepositoryRESTServices
      * Return the TypeDefs that have the properties matching the supplied match criteria.
      *
      * @param userId unique identifier for requesting user.
-     * @param matchCriteria TypeDefProperties a list of property names and values.
+     * @param matchCriteria TypeDefProperties a list of property names.
      * @return TypeDefListResponse:
      * TypeDefs list or
      * InvalidParameterException the matchCriteria is null or

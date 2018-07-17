@@ -786,4 +786,22 @@ public enum OMRSErrorCode
     {
         return userAction;
     }
+
+
+    /**
+     * toString() JSON-style
+     *
+     * @return string description
+     */
+    @Override
+    public String toString()
+    {
+        return "OMRSErrorCode{" +
+                "httpErrorCode=" + httpErrorCode +
+                ", errorMessageId='" + errorMessageId + '\'' +
+                ", errorMessage='" + errorMessage + '\'' +
+                ", systemAction='" + systemAction + '\'' +
+                ", userAction='" + userAction + '\'' +
+                '}';
+    }
 }

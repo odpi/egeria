@@ -10,7 +10,7 @@ import java.util.List;
 import static org.testng.Assert.assertTrue;
 
 /**
- * Verify the StarRating enum contains unique ordinals, non-null names and descriptions and can be
+ * Verify the OMRSEventProtocolVersion enum contains unique ordinals, non-null names and descriptions and can be
  * serialized to JSON and back again.
  */
 public class TestOMRSEventProtocolVersion
@@ -42,7 +42,7 @@ public class TestOMRSEventProtocolVersion
     /**
      * Validated the values of the enum.
      */
-    @Test public void testStarRatingValues()
+    @Test public void testEnumValues()
     {
         existingOrdinals = new ArrayList<>();
 

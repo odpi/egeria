@@ -50,6 +50,17 @@ public class PrimitiveDef extends AttributeTypeDef
 
 
     /**
+     * Delegate the process of cloning to the subclass.
+     *
+     * @return subclass of AttributeTypeDef
+     */
+    public AttributeTypeDef cloneFromSubclass()
+    {
+        return new PrimitiveDef(this);
+    }
+
+
+    /**
      * Return the type category for this primitive type.
      *
      * @return PrimitiveDefCategory Enum

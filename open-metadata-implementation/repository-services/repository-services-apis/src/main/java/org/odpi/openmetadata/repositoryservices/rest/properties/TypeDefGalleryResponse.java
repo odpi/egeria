@@ -73,7 +73,7 @@ public class TypeDefGalleryResponse extends OMRSAPIResponse
 
             for (AttributeTypeDef  attributeTypeDef : attributeTypeDefs)
             {
-                clonedTypeDefs.add(new AttributeTypeDef(attributeTypeDef));
+                clonedTypeDefs.add(attributeTypeDef.cloneFromSubclass());
             }
 
             return clonedTypeDefs;
@@ -113,7 +113,7 @@ public class TypeDefGalleryResponse extends OMRSAPIResponse
 
             for (TypeDef  typeDef : typeDefs)
             {
-                clonedTypeDefs.add(new TypeDef(typeDef));
+                clonedTypeDefs.add(typeDef.cloneFromSubclass());
             }
 
             return clonedTypeDefs;

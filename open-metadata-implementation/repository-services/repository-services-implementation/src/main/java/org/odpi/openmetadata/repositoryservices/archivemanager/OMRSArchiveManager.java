@@ -283,7 +283,7 @@ public class OMRSArchiveManager
 
             if (archiveProperties.getArchiveType() != null)
             {
-                originatorServerType = archiveProperties.getArchiveType().getArchiveTypeName();
+                originatorServerType = archiveProperties.getArchiveType().getName();
             }
 
             if (typeDefPatches != null)
@@ -373,7 +373,7 @@ public class OMRSArchiveManager
 
             if (archiveProperties.getArchiveType() != null)
             {
-                originatorServerType = archiveProperties.getArchiveType().getArchiveTypeName();
+                originatorServerType = archiveProperties.getArchiveType().getName();
             }
 
             if (entities != null)

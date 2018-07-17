@@ -23,34 +23,34 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
               include = JsonTypeInfo.As.PROPERTY,
-              property = "type")
+              property = "class")
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = EntityDef.class, name = "EntityDef"),
                 @JsonSubTypes.Type(value = RelationshipDef.class, name = "RelationshipDef"),
                 @JsonSubTypes.Type(value = ClassificationDef.class, name = "ClassificationDef"),
         })
-public class TypeDef extends TypeDefSummary
+public abstract class TypeDef extends TypeDefSummary
 {
-    protected TypeDefLink                        superType                = null;
-    protected String                             description              = null;
-    protected String                             descriptionGUID          = null;
-    protected String                             origin                   = null;
-    protected String                             createdBy                = null;
-    protected String                             updatedBy                = null;
-    protected Date                               createTime               = null;
-    protected Date                               updateTime               = null;
-    protected Map<String, String>                options                  = null;
-    protected ArrayList<ExternalStandardMapping> externalStandardMappings = null;
-    protected ArrayList<InstanceStatus>          validInstanceStatusList  = null;
-    protected InstanceStatus                     initialStatus            = null;
-    protected ArrayList<TypeDefAttribute>        propertiesDefinition     = null;
+    protected TypeDefLink                   superType                = null;
+    protected String                        description              = null;
+    protected String                        descriptionGUID          = null;
+    protected String                        origin                   = null;
+    protected String                        createdBy                = null;
+    protected String                        updatedBy                = null;
+    protected Date                          createTime               = null;
+    protected Date                          updateTime               = null;
+    protected Map<String, String>           options                  = null;
+    protected List<ExternalStandardMapping> externalStandardMappings = null;
+    protected List<InstanceStatus>          validInstanceStatusList  = null;
+    protected InstanceStatus                initialStatus            = null;
+    protected List<TypeDefAttribute>        propertiesDefinition     = null;
 
 
     /**
      * Default constructor
      */
-    public TypeDef()
+    protected TypeDef()
     {
     }
 
@@ -61,7 +61,7 @@ public class TypeDef extends TypeDefSummary
      *
      * @param category TypeDefCategory enum
      */
-    public TypeDef(TypeDefCategory category)
+    protected TypeDef(TypeDefCategory category)
     {
         super();
         this.category = category;
@@ -77,11 +77,11 @@ public class TypeDef extends TypeDefSummary
      * @param version     active version number for the TypeDef
      * @param versionName name for the active version of the TypeDef
      */
-    public TypeDef(TypeDefCategory category,
-                   String          guid,
-                   String          name,
-                   long            version,
-                   String          versionName)
+    protected TypeDef(TypeDefCategory category,
+                      String          guid,
+                      String          name,
+                      long            version,
+                      String          versionName)
     {
         super(category, guid, name, version, versionName);
     }
@@ -92,7 +92,7 @@ public class TypeDef extends TypeDefSummary
      *
      * @param template TypeDef
      */
-    public TypeDef(TypeDef template)
+    protected TypeDef(TypeDef template)
     {
         super(template);
 
@@ -112,6 +112,15 @@ public class TypeDef extends TypeDefSummary
             this.setPropertiesDefinition(template.getPropertiesDefinition());
         }
     }
+
+
+    /**
+     * Delegate the process of cloning to the subclass.
+     *
+     * @return subclass of TypeDef
+     */
+    public abstract TypeDef cloneFromSubclass();
+
 
 
     /**

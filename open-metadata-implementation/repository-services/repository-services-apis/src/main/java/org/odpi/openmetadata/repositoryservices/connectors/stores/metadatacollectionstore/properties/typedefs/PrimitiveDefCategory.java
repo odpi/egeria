@@ -62,7 +62,7 @@ public enum PrimitiveDefCategory implements Serializable
      *
      * @return int type code
      */
-    public int getCode() {
+    public int getOrdinal() {
         return code;
     }
 
@@ -93,4 +93,21 @@ public enum PrimitiveDefCategory implements Serializable
      * @return String guid
      */
     public String getGUID() { return guid; }
+
+
+    /**
+     * toString() JSON-style
+     *
+     * @return string description
+     */
+    @Override
+    public String toString()
+    {
+        return "PrimitiveDefCategory{" +
+                "code=" + code +
+                ", name='" + name + '\'' +
+                ", javaClassName='" + javaClassName + '\'' +
+                ", guid='" + guid + '\'' +
+                '}';
+    }
 }

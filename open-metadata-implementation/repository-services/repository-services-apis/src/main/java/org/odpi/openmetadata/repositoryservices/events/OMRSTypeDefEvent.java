@@ -211,7 +211,7 @@ public class OMRSTypeDefEvent extends OMRSEvent
                             TypeDefSummary            otherTypeDefSummary)
     {
         super(OMRSEventCategory.TYPEDEF,
-              errorCode.getErrorCodeEncoding(),
+              errorCode.getEncoding(),
               errorMessage,
               targetMetadataCollectionId,
               targetTypeDefSummary,
@@ -237,7 +237,7 @@ public class OMRSTypeDefEvent extends OMRSEvent
                             AttributeTypeDef          otherAttributeTypeDef)
     {
         super(OMRSEventCategory.TYPEDEF,
-              errorCode.getErrorCodeEncoding(),
+              errorCode.getEncoding(),
               errorMessage,
               targetMetadataCollectionId,
               targetAttributeTypeDef,
@@ -264,7 +264,7 @@ public class OMRSTypeDefEvent extends OMRSEvent
                             TypeDef                   otherTypeDef)
     {
         super(OMRSEventCategory.TYPEDEF,
-              errorCode.getErrorCodeEncoding(),
+              errorCode.getEncoding(),
               errorMessage,
               targetMetadataCollectionId,
               targetTypeDefSummary,
