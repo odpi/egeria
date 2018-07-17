@@ -157,7 +157,7 @@ public enum OMRSAuditCode
                        "No action is required.  This is part of the normal operation of the server."),
 
     OMRS_TOPIC_LISTENER_DISCONNECTED("OMRS-AUDIT-0021",
-                      OMRSAuditLogRecordSeverity.ERROR,
+                      OMRSAuditLogRecordSeverity.INFO,
                       "The OMRS Topic Connector {0} has disconnected the event bus connectors",
                       "The OMRS Topic Connector is no longer able to receive or send events",
                       "No action is required.  This is part of the normal operation of the server."),

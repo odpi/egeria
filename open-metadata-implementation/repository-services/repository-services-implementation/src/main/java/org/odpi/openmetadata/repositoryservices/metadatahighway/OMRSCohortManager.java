@@ -184,7 +184,7 @@ public class OMRSCohortManager
                                                localServerType,
                                                localOrganizationName,
                                                outboundRegistryEventProcessor,
-                                               null,
+                                               cohortRegistryStore,
                                                connectionConsumer);
             }
 
