@@ -8,10 +8,17 @@ public class AssertionFailureException extends ComplianceException
 {
     private String assertionId;
 
+
+    /**
+     * Typical constructor accepts information about the failure of the test.
+     *
+     * @param assertionId identifier of the assertion.
+     * @param assertionMessage associated message.
+     */
     public AssertionFailureException(String    assertionId,
                                      String    assertionMessage)
     {
-        super(assertionMessage);
+        super("Failed Assertion: " + assertionMessage);
         this.assertionId = assertionId;
     }
 

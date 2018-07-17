@@ -286,7 +286,7 @@ public class ConnectorConfigurationFactory
 
         final String endpointDescription = "OMRS default repository REST API endpoint.";
 
-        String endpointAddress = localServerURL + "/openmetadata/repositoryservices/";
+        String endpointAddress = localServerURL;
         String endpointName    = "DefaultRepositoryRESTAPI.Endpoint." + localServerName;
 
         Endpoint endpoint = new Endpoint();

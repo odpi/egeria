@@ -24,8 +24,10 @@
     <artifactId>governance-program</artifactId>
     <packaging>pom</packaging>
     <modules>
+        <module>governance-program-api</module>
         <module>governance-program-client</module>
         <module>governance-program-server</module>
+        <module>governance-program-spring</module>
     </modules>
 
 

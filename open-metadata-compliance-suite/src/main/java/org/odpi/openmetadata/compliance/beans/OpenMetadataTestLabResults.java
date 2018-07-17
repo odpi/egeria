@@ -174,9 +174,9 @@ public class OpenMetadataTestLabResults extends OpenMetadataTestResults
 
 
     /**
-     * Set up the root url of the server to test.
+     * Return the root url of the server to test.
      *
-     * @return string
+     * @return string URL
      */
     public String getServerRootURL()
     {
@@ -184,18 +184,33 @@ public class OpenMetadataTestLabResults extends OpenMetadataTestResults
     }
 
 
-
+    /**
+     * Set up the root url of the server to test.
+     *
+     * @param serverRootURL string URL
+     */
     public void setServerRootURL(String serverRootURL)
     {
         this.serverRootURL = serverRootURL;
     }
 
 
+    /**
+     * Return the list of test results from each workbench.
+     *
+     * @return list of workbench results
+     */
     public List<OpenMetadataTestWorkbenchResults> getTestResultsFromWorkbenches()
     {
         return testResultsFromWorkbenches;
     }
 
+
+    /**
+     * Set up the list of test results from each workbench.
+     *
+     * @param testResultsFromWorkbenches list of workbench results
+     */
     public void setTestResultsFromWorkbenches(List<OpenMetadataTestWorkbenchResults> testResultsFromWorkbenches)
     {
         this.testResultsFromWorkbenches = testResultsFromWorkbenches;
