@@ -25,9 +25,10 @@
     <artifactId>dev-ops</artifactId>
     <packaging>pom</packaging>
     <modules>
+        <module>dev-ops-api</module>
         <module>dev-ops-client</module>
         <module>dev-ops-server</module>
+        <module>dev-ops-spring</module>
     </modules>
-
 
 </project>

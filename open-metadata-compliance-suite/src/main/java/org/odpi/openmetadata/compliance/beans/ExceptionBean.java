@@ -46,29 +46,54 @@ public class ExceptionBean implements Serializable
 
 
     /**
-     * Set up the
-     * @param exceptionClassName
+     * Set up the class name for the exception.
+     *
+     * @param exceptionClassName string name
      */
     public void setExceptionClassName(String exceptionClassName)
     {
         this.exceptionClassName = exceptionClassName;
     }
 
+
+    /**
+     * Return the error message associated with the exception.
+     *
+     * @return string message
+     */
     public String getErrorMessage()
     {
         return errorMessage;
     }
 
+
+    /**
+     * Set up the error message associated with the exception.
+     *
+     * @param errorMessage string message
+     */
     public void setErrorMessage(String errorMessage)
     {
         this.errorMessage = errorMessage;
     }
 
+
+    /**
+     * Return the properties providing more details about the exception.
+     *
+     * @return property map
+     */
     public Map<String, String> getProperties()
     {
         return properties;
     }
 
+
+    /**
+     * Set up the properties providing more details about the exception.
+     *
+     * @param properties property map
+     */
     public void setProperties(Map<String, String> properties)
     {
         this.properties = properties;

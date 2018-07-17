@@ -26,9 +26,10 @@
     <artifactId>data-science</artifactId>
     <packaging>pom</packaging>
     <modules>
+        <module>data-science-api</module>
         <module>data-science-client</module>
         <module>data-science-server</module>
+        <module>data-science-spring</module>
     </modules>
-
 
 </project>

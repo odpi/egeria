@@ -26,8 +26,10 @@
     <artifactId>data-process</artifactId>
     <packaging>pom</packaging>
     <modules>
+        <module>data-process-api</module>
         <module>data-process-client</module>
         <module>data-process-server</module>
+        <module>data-process-spring</module>
     </modules>
 
 

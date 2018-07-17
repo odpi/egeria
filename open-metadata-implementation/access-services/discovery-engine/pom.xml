@@ -24,8 +24,10 @@
     <artifactId>discovery-engine</artifactId>
     <packaging>pom</packaging>
     <modules>
+        <module>discovery-engine-api</module>
         <module>discovery-engine-client</module>
         <module>discovery-engine-server</module>
+        <module>discovery-engine-spring</module>
     </modules>
 
 

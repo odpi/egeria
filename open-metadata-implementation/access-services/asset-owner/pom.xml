@@ -24,8 +24,10 @@
     <artifactId>asset-owner</artifactId>
     <packaging>pom</packaging>
     <modules>
+        <module>asset-owner-api</module>
         <module>asset-owner-client</module>
         <module>asset-owner-server</module>
+        <module>asset-owner-spring</module>
     </modules>
 
     <!-- Asset Owner consumes Connected Asset -->

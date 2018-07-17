@@ -2,8 +2,16 @@
 
 # Open metadata administration services user guide
 
-An OMAG Server hosts a variety of open metadata and governance capabilities.  The capabilities that are enabled in a specific instance of the OMAG server are defined in a JSON configuration document that is read when the open metadata capabilities are activated in the running server.
-In an open metadata landscape, it is anticipated that there may be multiple instances of the OMAG Server running, each performing a different role.  Each of these instances would therefore use a different configuration document.  The correct configuration document to use is identified by the server name.  This is passed on the URL of every admin services API request along with the user id of the administrator.   By default, the configuration file is called:
+An OMAG Server hosts a variety of open metadata and governance capabilities.
+The capabilities that are enabled in a specific instance of the OMAG server
+are defined in a JSON configuration document that is read when the open metadata
+capabilities are activated in the running server.
+In an open metadata landscape, it is anticipated that there may be multiple
+instances of the OMAG Server running, each performing a different role.
+Each of these instances would therefore use a different configuration document.
+The correct configuration document to use is identified by the server name.
+This is passed on the URL of every admin services API request along with the user
+id of the administrator.   By default, the configuration file is called:
 ```
 omag.server.{servername}.config
 ```
@@ -24,12 +32,18 @@ document is used.
 ## Building a configuration document for a server
 
 The configuration document for the OMAG Server determines:
-* Basic descriptive properties of the server that are used in logging and events originating from the server.
+* Basic descriptive properties of the server that are used in logging and events
+originating from the server.
 * What type of local repository to use.
 * Whether the Open Metadata Access Services (OMASs) should be started.
 * Which cohorts to connect to.
-Each of the configuration commands builds up sections in the configuration document.   This document is stored in the configuration file after each configuration request so it is immediately available for use each time the open metadata services are activated in the OMAG Server.
-The example commands shown below assume the OMAG server is running on the localhost at port 8080.  The user id of the administrator is garygeeke and the name of the open metadata server is cocoMDS1.
+Each of the configuration commands builds up sections in the configuration document.
+This document is stored in the configuration file after each configuration request so
+it is immediately available for use each time the open metadata services are activated
+in the OMAG Server.
+The example commands shown below assume the OMAG server is running on the localhost
+at port 8080.  The user id of the administrator is *garygeeke* and
+the name of the open metadata server is *cocoMDS1*.
 
 ### Setting descriptive properties for a server
 The descriptive properties are used in logging and events originating
@@ -54,6 +68,21 @@ Here the organization name is set to “Clinical Trials”.
 POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/organization-name?name=”Clinical Trials”
 ```
 
+### Setting up the event bus
+
+An open metadata server uses an event bus to exchange events with other
+tools.  The open metadata code manages the specific topic names.
+However, it needs to know where the event bus implementation is and
+any properties needed to configure it.
+
+The following command creates information about the event bus.
+It is possible to add arbitrary name/value pairs as JSON in the
+request body.
+
+```
+POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/event-bus
+```
+
 ### Managing the access services
 
 The open metadata access services provide the domain specific
@@ -75,15 +104,18 @@ are not being used.
 DELETE http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/access-services
 ```
 
-###Setting up the local repository
+### Setting up the local repository
 
 A local repository is optional.
 The administration services can be used to enable one of the built in
 local repositories.
 
 #### Enable the graph repository:
+
 This command is a placeholder for an Egeria graph repository.
+```
 POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository/mode/local-graph-repository
+```
 
 #### Enable the in-memory repository:
 
@@ -136,14 +168,14 @@ They use a peer-to-peer protocol coordinated through an event bus topic
 
 #### To enable access to a cohort
 
-The following command registers the server with cohort called cocoCohort.
+The following command registers the server with cohort called *cocoCohort*.
 ```
-POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/cohort/cocoCohort
+POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/cohorts/cocoCohort
 ```
 
 #### To disconnect from a cohort
 
-This command unregisters a server from a cohort called cocoCohort.
+This command unregisters a server from a cohort called *cocoCohort*.
 ```
 DELETE http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/cohorts/cocoCohort
 ```

@@ -18,5 +18,13 @@ In addition it can add and remove feedback (tags, ratings, comments, likes) from
 the asset description.
 
 The caller can use the connector to access metadata about the
-asset it is accessing.   This service is provided by the ConnectedAsset OMAS.
+asset it is accessing.   This service is provided by the
+[Connected Asset OMAS](../connected-asset/README.md).
+
+The module structure for the Asset Consumer OMAS is as follows:
+
+* [asset-consumer-client](asset-consumer-client) supports the client library.
+* [asset-consumer-api](asset-consumer-api) supports the common Java classes that are used both by the client and the server.
+* [asset-consumer-server](asset-consumer-server) supports in implementation of the access service and its related event management.
+* [asset-consumer-spring](asset-consumer-spring) supports the REST API using the [Spring](../../../developer-resources/Spring.md) libraries.
 
