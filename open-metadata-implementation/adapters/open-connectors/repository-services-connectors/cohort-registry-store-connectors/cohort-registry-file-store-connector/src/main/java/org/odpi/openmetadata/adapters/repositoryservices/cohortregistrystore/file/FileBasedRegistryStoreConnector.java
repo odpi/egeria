@@ -36,7 +36,6 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
      * Variables used in writing to the file.
      */
     private String           registryStoreName       = defaultFilename;
-    private CohortMembership registryStoreProperties = null;
 
     /*
      * Variables used for logging and debug.
@@ -44,17 +43,6 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
     private static final OMRSAuditLog auditLog = new OMRSAuditLog(OMRSAuditingComponent.REGISTRY_STORE);
 
     private static final Logger log = LoggerFactory.getLogger(FileBasedRegistryStoreConnector.class);
-
-    /**
-     * Default constructor
-     */
-    public FileBasedRegistryStoreConnector()
-    {
-        /*
-         * Nothing to do
-         */
-    }
-
 
     /**
      * Initialize the connector.
@@ -99,18 +87,12 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
 
             if (metadataCollectionId.equals(memberId))
             {
-                if (log.isDebugEnabled())
-                {
-                    log.debug("Found existing registration for " + metadataCollectionId + " at position " + i);
-                }
+                log.debug("Found existing registration for " + metadataCollectionId + " at position " + i);
                 return i;
             }
         }
 
-        if (log.isDebugEnabled())
-        {
-            log.debug("New registration for " + metadataCollectionId + " - saving at position " + indexOfNewMember);
-        }
+        log.debug("New registration for " + metadataCollectionId + " - will save at position " + indexOfNewMember);
         return indexOfNewMember;
     }
 
@@ -126,10 +108,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
     {
         if (localRegistration != null)
         {
-            if (registryStoreProperties == null)
-            {
-                registryStoreProperties = this.retrieveRegistryStoreProperties();
-            }
+            CohortMembership registryStoreProperties = this.retrieveRegistryStoreProperties();
 
             registryStoreProperties.setLocalRegistration(localRegistration);
 
@@ -149,10 +128,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
                                auditCode.getSystemAction(),
                                auditCode.getUserAction());
 
-            if (log.isDebugEnabled())
-            {
-                log.debug("Null local registration passed to saveLocalRegistration :(");
-            }
+            log.debug("Null local registration passed to saveLocalRegistration :(");
         }
     }
 
@@ -166,14 +142,9 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
      */
     public MemberRegistration retrieveLocalRegistration()
     {
-        MemberRegistration  localRegistration = null;
+        CohortMembership registryStoreProperties = this.retrieveRegistryStoreProperties();
 
-        if (registryStoreProperties == null)
-        {
-            registryStoreProperties = this.retrieveRegistryStoreProperties();
-        }
-
-        localRegistration = registryStoreProperties.getLocalRegistration();
+        MemberRegistration localRegistration = registryStoreProperties.getLocalRegistration();
 
         if (log.isDebugEnabled())
         {
@@ -205,12 +176,13 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
      */
     public void removeLocalRegistration()
     {
-        if (log.isDebugEnabled())
-        {
-            log.debug("Emptying cohort registry store.");
-        }
+        log.debug("Removing local repository from  cohort registry store.");
 
-        this.writeRegistryStoreProperties(new CohortMembership());
+        CohortMembership registryStoreProperties = this.retrieveRegistryStoreProperties();
+
+        registryStoreProperties.setLocalRegistration(null);
+
+        this.writeRegistryStoreProperties(registryStoreProperties);
     }
 
 
@@ -227,16 +199,18 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
             /*
              * Retrieve the current properties from the file is necessary.
              */
-            if (registryStoreProperties == null)
-            {
-                registryStoreProperties = this.retrieveRegistryStoreProperties();
-            }
+            CohortMembership registryStoreProperties = this.retrieveRegistryStoreProperties();
 
             /*
              * It is possible that the remote repository already has an entry in the cohort registry and if this is
              * the case, it will be overwritten.  Otherwise the new remote properties are added.
              */
             List<MemberRegistration> remotePropertiesList = registryStoreProperties.getRemoteRegistrations();
+
+            if (remotePropertiesList == null)
+            {
+                remotePropertiesList = new ArrayList<>();
+            }
 
             int index = findRemoteRegistration(remoteRegistration.getMetadataCollectionId(), remotePropertiesList);
 
@@ -269,10 +243,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
                                auditCode.getSystemAction(),
                                auditCode.getUserAction());
 
-            if (log.isDebugEnabled())
-            {
-                log.debug("Null remote registration passed to saveRemoteRegistration :(");
-            }
+            log.debug("Null remote registration passed to saveRemoteRegistration :(");
         }
     }
 
@@ -289,10 +260,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
         /*
          * Ensure the current properties are retrieved from the registry.
          */
-        if (registryStoreProperties == null)
-        {
-            registryStoreProperties = this.retrieveRegistryStoreProperties();
-        }
+        CohortMembership registryStoreProperties = this.retrieveRegistryStoreProperties();
 
         /*
          * Copy the remote member properties into a registration iterator for return.
@@ -335,27 +303,31 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
             /*
              * Ensure the current properties are retrieved from the registry.
              */
-            if (registryStoreProperties == null)
-            {
-                registryStoreProperties = this.retrieveRegistryStoreProperties();
-            }
+            CohortMembership registryStoreProperties = this.retrieveRegistryStoreProperties();
 
             /*
              * Retrieve the list of remote registrations
              */
             List<MemberRegistration> remotePropertiesList = registryStoreProperties.getRemoteRegistrations();
 
-            /*
-             * Locate the required entry
-             */
-            int indexOfEntry = findRemoteRegistration(metadataCollectionId, remotePropertiesList);
-
-            /*
-             * If the entry is found create a registration object from it.
-             */
-            if (indexOfEntry < remotePropertiesList.size())
+            if (remotePropertiesList != null)
             {
-                remoteRegistration = remotePropertiesList.get(indexOfEntry);
+                /*
+                 * Locate the required entry
+                 */
+                int indexOfEntry = findRemoteRegistration(metadataCollectionId, remotePropertiesList);
+
+                /*
+                 * If the entry is found create a registration object from it.
+                 */
+                if (indexOfEntry < remotePropertiesList.size())
+                {
+                    remoteRegistration = remotePropertiesList.get(indexOfEntry);
+                }
+            }
+            else
+            {
+                log.debug("No remote registrations");
             }
         }
         else
@@ -372,10 +344,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
                                auditCode.getSystemAction(),
                                auditCode.getUserAction());
 
-            if (log.isDebugEnabled())
-            {
-                log.debug("Null metadataCollectionId passed to retrieveRemoteRegistration :(");
-            }
+            log.debug("Null metadataCollectionId passed to retrieveRemoteRegistration :(");
         }
 
         return remoteRegistration;
@@ -394,48 +363,49 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
             /*
              * Ensure the current properties are retrieved from the registry.
              */
-            if (registryStoreProperties == null)
-            {
-                registryStoreProperties = this.retrieveRegistryStoreProperties();
-            }
+            CohortMembership registryStoreProperties = this.retrieveRegistryStoreProperties();
 
             /*
              * Retrieve the list of remote registrations
              */
             List<MemberRegistration> remotePropertiesList = registryStoreProperties.getRemoteRegistrations();
 
-            /*
-             * Locate the required entry
-             */
-            int indexOfEntry = findRemoteRegistration(metadataCollectionId, remotePropertiesList);
-
-            /*
-             * If the entry is found create a registration object from it.
-             */
-            if (indexOfEntry < remotePropertiesList.size())
+            if (remotePropertiesList != null)
             {
-                remotePropertiesList.remove(indexOfEntry);
-                registryStoreProperties.setRemoteRegistrations(remotePropertiesList);
-                writeRegistryStoreProperties(registryStoreProperties);
+                /*
+                 * Locate the required entry
+                 */
+                int indexOfEntry = findRemoteRegistration(metadataCollectionId, remotePropertiesList);
+
+                /*
+                 * If the entry is found create a registration object from it.
+                 */
+                if (indexOfEntry < remotePropertiesList.size())
+                {
+                    remotePropertiesList.remove(indexOfEntry);
+                    registryStoreProperties.setRemoteRegistrations(remotePropertiesList);
+                    writeRegistryStoreProperties(registryStoreProperties);
+                }
+                else
+                {
+                    String actionDescription = "Removing Remote Registration from Cohort Registry Store";
+
+                    OMRSAuditCode auditCode = OMRSAuditCode.MISSING_MEMBER_REGISTRATION;
+
+                    auditLog.logRecord(actionDescription,
+                                       auditCode.getLogMessageId(),
+                                       auditCode.getSeverity(),
+                                       auditCode.getFormattedLogMessage(metadataCollectionId, registryStoreName),
+                                       null,
+                                       auditCode.getSystemAction(),
+                                       auditCode.getUserAction());
+
+                    log.debug("MetadataCollectionId : " + metadataCollectionId + " passed to removeRemoteRegistration not found :(");
+                }
             }
             else
             {
-                String actionDescription = "Removing Remote Registration from Cohort Registry Store";
-
-                OMRSAuditCode auditCode = OMRSAuditCode.MISSING_MEMBER_REGISTRATION;
-
-                auditLog.logRecord(actionDescription,
-                                   auditCode.getLogMessageId(),
-                                   auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(metadataCollectionId, registryStoreName),
-                                   null,
-                                   auditCode.getSystemAction(),
-                                   auditCode.getUserAction());
-
-                if (log.isDebugEnabled())
-                {
-                    log.debug("MetadataCollectionId : " + metadataCollectionId + " passed to removeRemoteRegistration not found :(");
-                }
+                log.debug("No remote registrations");
             }
         }
         else
@@ -452,10 +422,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
                                auditCode.getSystemAction(),
                                auditCode.getUserAction());
 
-            if (log.isDebugEnabled())
-            {
-                log.debug("Null metadataCollectionId passed to removeRemoteRegistration :(");
-            }
+            log.debug("Null metadataCollectionId passed to removeRemoteRegistration :(");
         }
     }
 
@@ -475,12 +442,17 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
      */
     public void disconnect()
     {
-        registryStoreProperties = null;
-
-        if (log.isDebugEnabled())
+        try
         {
-            log.debug("Closing Cohort Registry Store.");
+            super.disconnect();
         }
+        catch (Throwable  exec)
+        {
+            log.debug("Ignoring unexpected exception "
+                              + exec.getClass().getSimpleName() + " with message " + exec.getMessage());
+        }
+
+        log.debug("Closing Cohort Registry Store.");
     }
 
 
@@ -496,10 +468,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
 
         try
         {
-            if (log.isDebugEnabled())
-            {
-                log.debug("Retrieving cohort registry store properties");
-            }
+            log.debug("Retrieving cohort registry store properties");
 
             String registryStoreFileContents = FileUtils.readFileToString(registryStoreFile, "UTF-8");
 
@@ -523,11 +492,11 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
                                auditCode.getSystemAction(),
                                auditCode.getUserAction());
 
-            if (log.isDebugEnabled())
-            {
-                log.debug("New Cohort Registry Store", ioException);
-            }
+            log.debug("New Cohort Registry Store", ioException);
+        }
 
+        if (newRegistryStoreProperties == null)
+        {
             newRegistryStoreProperties = new CohortMembership();
         }
 
@@ -546,10 +515,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
 
         try
         {
-            if (log.isDebugEnabled())
-            {
-                log.debug("Writing cohort registry store properties" + newRegistryStoreProperties);
-            }
+            log.debug("Writing cohort registry store properties" + newRegistryStoreProperties);
 
             if (newRegistryStoreProperties == null)
             {
@@ -579,10 +545,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
                                   auditCode.getUserAction(),
                                   ioException);
 
-            if (log.isDebugEnabled())
-            {
-                log.debug("Unusable Cohort Registry Store :(", ioException);
-            }
+            log.debug("Unusable Cohort Registry Store :(", ioException);
         }
     }
 
