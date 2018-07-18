@@ -3,9 +3,8 @@
 package org.odpi.openmetadata.accessservices.governanceengine.server.publisher;
 
 
-import org.apache.log4j.Logger;
-
-import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * GovernanceEnginePublisher is responsible for publishing events about governed asset components .  It is called
@@ -13,7 +12,7 @@ import java.util.List;
  */
 public class GovernanceEnginePublisher {
 
-    private static final org.apache.log4j.Logger log = Logger.getLogger(GovernanceEnginePublisher.class);
+    private static final Logger log = LoggerFactory.getLogger(GovernanceEnginePublisher.class);
 
 
 }

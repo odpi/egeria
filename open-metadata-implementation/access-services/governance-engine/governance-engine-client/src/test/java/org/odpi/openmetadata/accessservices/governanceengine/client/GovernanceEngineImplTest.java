@@ -6,6 +6,7 @@ package org.odpi.openmetadata.accessservices.governanceengine.client;
  *
  * Requires Mockito 2.x & JUnit 5
  */
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,18 +20,19 @@ import org.mockito.quality.Strictness;
 import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.exceptions.MetadataServerException;
 import org.odpi.openmetadata.accessservices.governanceengine.common.objects.*;
+import org.slf4j.Logger;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
-/*
- * Mockito requires static imports
- */
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
+
+/*
+ * Mockito requires static imports
+ */
 
 /*
  * Test suite metadata & configuration
@@ -44,6 +46,8 @@ public class GovernanceEngineImplTest {
     @Mock
     private RestTemplate restTemplate; // from Spring, used for REST API calls to handlers in implementation under test
 
+    @Mock
+    private Logger log;
     static final String defaultOMASServerURL = "http://localhost:12345";
     static final String defaultUserId = "zebra91";
     static final String defaultClassificationType = "interestingClassificationType";

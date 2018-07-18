@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.accessservices.governanceengine.server;
 
 
-import org.apache.log4j.Logger;
 import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.errorcode.GovernanceEngineErrorCode;
 import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.governanceengine.common.objects.*;
@@ -15,6 +14,8 @@ import org.odpi.openmetadata.adminservices.configuration.registration.AccessServ
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceOperationalStatus;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -47,7 +48,7 @@ public class GovernanceEngineRESTServices {
     static private String accessServiceName = null;
     static private OMRSRepositoryConnector repositoryConnector = null;
 
-    private static final Logger log = Logger.getLogger(GovernanceEngineRESTServices.class);
+    private static final Logger log = LoggerFactory.getLogger(GovernanceEngineRESTServices.class);
 
     /**
      * Provide a connector to the REST Services.

@@ -2,10 +2,11 @@
 
 package org.odpi.openmetadata.accessservices.governanceengine.server.handlers;
 
-import org.apache.log4j.Logger;
 import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.errorcode.GovernanceEngineErrorCode;
 import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
@@ -16,7 +17,7 @@ import java.util.List;
 public class Validator {
     private OMRSRepositoryConnector repositoryConnector;
 
-    private static final Logger log = Logger.getLogger(Validator.class);
+    private static final Logger log = LoggerFactory.getLogger(Validator.class);
 
 
     /**

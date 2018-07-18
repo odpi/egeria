@@ -2,7 +2,6 @@
 
 package org.odpi.openmetadata.accessservices.governanceengine.server.admin;
 
-import org.apache.log4j.Logger;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,6 +17,7 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+import org.slf4j.LoggerFactory;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -41,7 +41,7 @@ import static org.mockito.Mockito.*;
 public class GovernanceEngineAdminTest {
 
     @Mock
-    private Logger log; // No external logging - do nothing
+    private LoggerFactory log; // No external logging - do nothing
     @Mock
     private OMRSAuditLog auditLog; // mock the service, but
     @Mock
