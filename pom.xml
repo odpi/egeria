@@ -231,6 +231,8 @@
                         <exclude>**/*.json</exclude>
                         <exclude>**/*.log</exclude>
                         <exclude>**/*.iml</exclude>
+                        <exclude>**/*.registrystore</exclude>
+                        <exclude>**/*.results</exclude>
                         <exclude>**/target/**</exclude>
                     </excludes>
                     <licenses>
