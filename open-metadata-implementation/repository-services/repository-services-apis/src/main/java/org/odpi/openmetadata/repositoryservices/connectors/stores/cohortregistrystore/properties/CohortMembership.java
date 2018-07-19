@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -89,5 +90,56 @@ public class CohortMembership implements Serializable
         {
             this.remoteRegistrations = new ArrayList<>(remoteRegistrations);
         }
+    }
+
+
+    /**
+     * Validate if the values stored match the object to compare.
+     *
+     * @param objectToCompare test object
+     * @return boolean result
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (!(objectToCompare instanceof CohortMembership))
+        {
+            return false;
+        }
+        CohortMembership that = (CohortMembership) objectToCompare;
+        return Objects.equals(getLocalRegistration(), that.getLocalRegistration()) &&
+                Objects.equals(getRemoteRegistrations(), that.getRemoteRegistrations());
+    }
+
+
+    /**
+     * Hash code base on variable values.
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+
+        return Objects.hash(getLocalRegistration(), getRemoteRegistrations());
+    }
+
+
+    /**
+     * toString JSON-style
+     *
+     * @return string containing variable values
+     */
+    @Override
+    public String toString()
+    {
+        return "CohortMembership{" +
+                "localRegistration=" + localRegistration +
+                ", remoteRegistrations=" + remoteRegistrations +
+                '}';
     }
 }
