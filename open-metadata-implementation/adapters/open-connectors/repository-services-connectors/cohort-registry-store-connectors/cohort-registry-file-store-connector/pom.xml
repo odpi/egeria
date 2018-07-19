@@ -21,14 +21,4 @@
 
     <artifactId>cohort-registry-file-store-connector</artifactId>
 
-
-    <dependencies>
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>connector-configuration-factory</artifactId>
-            <version>${open-metadata.version}</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
-
 </project>
