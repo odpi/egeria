@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -214,6 +213,51 @@
                                 </requireJavaVersion>
                             </rules>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.rat</groupId>
+                <artifactId>apache-rat-plugin</artifactId>
+                <version>0.12</version>
+                <configuration>
+                    <useDefaultExcludes>true</useDefaultExcludes>
+                    <useMavenDefaultExcludes>true</useMavenDefaultExcludes>
+                    <useIdeaDefaultExcludes>true</useIdeaDefaultExcludes>
+                    <useEclipseDefaultExcludes>true</useEclipseDefaultExcludes>
+                    <excludeSubProjects>true</excludeSubProjects>
+                    <excludes>
+                        <exclude>**/*.json</exclude>
+                        <exclude>**/*.log</exclude>
+                        <exclude>**/*.iml</exclude>
+                        <exclude>**/*.registrystore</exclude>
+                        <exclude>**/*.results</exclude>
+                        <exclude>**/target/**</exclude>
+                    </excludes>
+                    <licenses>
+                        <license implementation="org.apache.rat.analysis.license.SimplePatternBasedLicense">
+                            <licenseFamilyCategory>SPDX</licenseFamilyCategory>
+                            <licenseFamilyName>SPDX-License-Identifier: Apache-2.0</licenseFamilyName>
+                            <notes></notes>
+                            <patterns>
+                                <pattern>SPDX-License-Identifier: Apache-2.0</pattern>
+                            </patterns>
+                        </license>
+                    </licenses>
+                    <licenseFamilies>
+                        <licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">
+                            <familyName>SPDX-License-Identifier: Apache-2.0</familyName>
+                        </licenseFamily>
+                    </licenseFamilies>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>rat-check</id>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <phase>validate</phase>
                     </execution>
                 </executions>
             </plugin>
