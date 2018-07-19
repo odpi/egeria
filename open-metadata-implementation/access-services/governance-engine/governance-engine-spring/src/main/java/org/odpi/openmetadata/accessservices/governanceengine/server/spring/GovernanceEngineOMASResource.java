@@ -1,12 +1,13 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservices.governanceengine.server.spring;
 
-import org.apache.log4j.Logger;
 import org.odpi.openmetadata.accessservices.governanceengine.common.objects.GovernanceClassificationDefinitionAPIResponse;
 import org.odpi.openmetadata.accessservices.governanceengine.common.objects.GovernanceClassificationDefinitionListAPIResponse;
 import org.odpi.openmetadata.accessservices.governanceengine.common.objects.GovernedAssetComponentAPIResponse;
 import org.odpi.openmetadata.accessservices.governanceengine.common.objects.GovernedAssetComponentListAPIResponse;
 import org.odpi.openmetadata.accessservices.governanceengine.server.GovernanceEngineRESTServices;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.List;
 public class GovernanceEngineOMASResource {
     private GovernanceEngineRESTServices restAPI = new GovernanceEngineRESTServices();
 
-    private static final org.apache.log4j.Logger log = Logger.getLogger(GovernanceEngineOMASResource.class);
+    private static final Logger log = LoggerFactory.getLogger(GovernanceEngineOMASResource.class);
 
     /**
      * Constructor

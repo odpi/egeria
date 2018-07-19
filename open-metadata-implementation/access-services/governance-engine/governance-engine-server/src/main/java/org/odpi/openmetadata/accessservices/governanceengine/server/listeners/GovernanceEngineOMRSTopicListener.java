@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.accessservices.governanceengine.server.listeners;
 
 
-import org.apache.log4j.Logger;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
@@ -12,12 +11,14 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
 import org.odpi.openmetadata.repositoryservices.events.*;
 import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class GovernanceEngineOMRSTopicListener implements OMRSTopicListener {
 
 
-    private static final org.apache.log4j.Logger log = Logger.getLogger(GovernanceEngineOMRSTopicListener.class);
+    private static final Logger log = LoggerFactory.getLogger(GovernanceEngineOMRSTopicListener.class);
 
     private OMRSInstanceEventProcessor instanceEventProcessor;
     private OMRSAuditLog auditLog;
