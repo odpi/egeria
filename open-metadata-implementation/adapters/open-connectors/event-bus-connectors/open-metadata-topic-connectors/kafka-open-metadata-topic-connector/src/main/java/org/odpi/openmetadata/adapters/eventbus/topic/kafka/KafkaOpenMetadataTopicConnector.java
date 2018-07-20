@@ -1,7 +1,9 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.adapters.eventbus.topic.kafka;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -19,16 +21,13 @@ import java.util.concurrent.ExecutionException;
  * KafkaOMRSTopicConnector provides a concrete implementation of the OMRSTopicConnector that
  * uses native Apache Kafka as the event/messaging infrastructure.
  */
-public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
-{
-    private static final Logger log  = Logger.getLogger(KafkaOpenMetadataTopicConnector.class);
+public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector {
+    private static final Logger log = LoggerFactory.getLogger(KafkaOpenMetadataTopicConnector.class);
 
     private Properties producerProps;
-    private AdditionalProperties additionalProperties;
     private Properties consumerProps;
     private Thread consumerThread;
     private static String KAFKA_TOPIC_ID = "kafka.omrs.topic.id";
-    private static String KAFKA_TOPIC_NAME = "kafka-omrs-topic";
     private String outTopic;
     private KafkaOpenMetadataEventConsumer consumer;
     private List<String> eventList = new ArrayList<String>();
@@ -59,10 +58,10 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
 
         // Use random consumer group to ensure delivery
         String consumerGroupId = "omrsConsumerGroup-" + UUID.randomUUID().toString();
-        consumerProps.put("group.id",consumerGroupId);
+        consumerProps.put("group.id", consumerGroupId);
         this.connectorInstanceId = connectorInstanceId;
         outTopic = producerProps.getProperty(KAFKA_TOPIC_ID);
-        consumer = new KafkaOpenMetadataEventConsumer(consumerProps,this);
+        consumer = new KafkaOpenMetadataEventConsumer(consumerProps, this);
         consumerThread = new Thread(consumer);
         consumerThread.start();
 
@@ -73,30 +72,27 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
-    public void start() throws ConnectorCheckedException
-    { super.start();
+    public void start() throws ConnectorCheckedException {
+        super.start();
     }
 
 
     /**
      * Sends the supplied event to the topic.
      *
-     * @param event  object containing the event properties.
+     * @param event object containing the event properties.
      * @throws ConnectorCheckedException the connector is not able to communicate with the event bus
      */
-    public void sendEvent(String event) throws ConnectorCheckedException
-    {
+    public void sendEvent(String event) throws ConnectorCheckedException {
 
-        String outTopic = producerProps.getProperty(KAFKA_TOPIC_ID);
         Producer<String, String> producer = new KafkaProducer<>(producerProps);
 
         try {
-
-           log.debug("sending message {0}" + event);
+            log.debug("sending message {0}" + event);
             ProducerRecord<String, String> record = new ProducerRecord<String, String>(outTopic, event);
             producer.send(record).get();
         } catch (InterruptedException | ExecutionException e) {
-            // TODO Auto-generated catch block
+            log.error("Exception in sendevent",e);
             e.printStackTrace();
         } finally {
             producer.flush();
@@ -111,17 +107,18 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
      *
      * @return a list of received events or null
      */
-    protected List<String> checkForEvents()
-    {
-        List<String>   newEvents = null;
+    protected List<String> checkForEvents() {
+        List<String> newEvents = null;
 
-        // TODO Needs implementation to connect to Kafka and receive any waiting events.
         // This method is called periodically from a independent thread managed by OpenMetadataTopic
         // (superclass) so it should not block.
 
-        if (eventList != null & !eventList.isEmpty()){
+        if (eventList != null & !eventList.isEmpty()) {
+            log.debug("checking for events {0}" + eventList);
             newEvents = new ArrayList<String>();
             newEvents.addAll(eventList);
+
+            //empty eventList otherwise same events will be sent in a loop
             eventList.removeAll(newEvents);
 
         }
@@ -129,9 +126,15 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         return newEvents;
     }
 
-    public void distributeToListeners(String event){
-        // cannot call super.distributeEvent as it has has private access
+    /**
+     * Distribute events to other listeners.
+     *
+     * @param event object containing the event properties.
+     */
+    public void distributeToListeners(String event) {
+
         log.debug("distribute event to listeners" + event);
+        //TODO: Add synchronization
         eventList.add(event);
     }
 
@@ -140,8 +143,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
-    public  void disconnect() throws ConnectorCheckedException
-    {
+    public void disconnect() throws ConnectorCheckedException {
         super.disconnect();
     }
 }

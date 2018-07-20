@@ -21,10 +21,13 @@ import org.slf4j.LoggerFactory;
 
 
 
-
+/**
+  KafkaOpenMetadataEventConsumer is used to process events from kafka topic and is part of native
+  Apache Kafka event/messaging infrastructure.
+ **/
 public class KafkaOpenMetadataEventConsumer implements Runnable {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(KafkaOpenMetadataEventConsumer.class);
+    private static final Logger log = LoggerFactory.getLogger(KafkaOpenMetadataEventConsumer.class);
 
     private KafkaConsumer<String, String> consumer;
     private String topicToSubscribe;
@@ -67,10 +70,10 @@ public class KafkaOpenMetadataEventConsumer implements Runnable {
             ConsumerRecords<String, String> records = consumer.poll(DEFAULT_POLL_TIMEOUT);
             try {
 
-                LOGGER.debug("Found records "+records.count());
+                log.debug("Found records "+records.count());
                 for (ConsumerRecord<String, String> record : records) {
                     String json = record.value();
-                    LOGGER.debug("Received message: ", json);
+                    log.debug("Received message: ", json);
 
                     TopicPartition partition = new TopicPartition(record.topic(),
                             record.partition());
@@ -78,31 +81,31 @@ public class KafkaOpenMetadataEventConsumer implements Runnable {
                     try {
                         connector.distributeToListeners(json);
                     } catch (Exception e) {
-                        LOGGER.error(String.format("Error distributing event: %s", e.getMessage()), e);
+                        log.error(String.format("Error distributing event: %s", e.getMessage()), e);
                         e.printStackTrace(System.err);
                     }
                 }
             } catch (WakeupException e) {
-                LOGGER.debug("Received wakeup call, proceeding with graceful shutdown", e);
+                log.debug("Received wakeup call, proceeding with graceful shutdown", e);
             } catch (Exception e) {
-                LOGGER.error(String.format("Unexpected error: %s", e.getMessage()), e);
+                log.error(String.format("Unexpected error: %s", e.getMessage()), e);
                 recoverAfterError();
             } finally {
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
-                    LOGGER.error(String.format("Interruption error: %s", e.getMessage()), e);
+                    log.error(String.format("Interruption error: %s", e.getMessage()), e);
                 }
             }
         }
     }
 
     protected void recoverAfterError() {
-        LOGGER.info(String.format("Waiting %s seconds to recover", recoverySleepTimeSec));
+        log.info(String.format("Waiting %s seconds to recover", recoverySleepTimeSec));
         try {
             Thread.sleep(recoverySleepTimeSec * 1000L);
         } catch (InterruptedException e1) {
-            LOGGER.debug("Interrupted while recovering", e1);
+            log.debug("Interrupted while recovering", e1);
         }
     }
 
@@ -123,7 +126,7 @@ public class KafkaOpenMetadataEventConsumer implements Runnable {
         }
 
         public void onPartitionsRevoked(Collection<TopicPartition> partitions) {
-            LOGGER.info(
+            log.info(
                     "Lost partitions in rebalance. Committing current offsets:" + currentOffsets);
             consumer.commitSync(currentOffsets);
         }
