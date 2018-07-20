@@ -2242,6 +2242,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                                                     errorCode.getUserAction());
         }
 
+
         if (! validRelationship(sourceName, relationship))
         {
             OMRSErrorCode errorCode = OMRSErrorCode.INVALID_RELATIONSHIP_FROM_STORE;

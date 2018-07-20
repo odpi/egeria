@@ -6,37 +6,28 @@ import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
-import org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentManager;
 
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * OMRSRepositoryEventExchangeRule determines if particular types of events should be exchanged on the OMRS Topic.
  */
 public class OMRSRepositoryEventExchangeRule
 {
-    private String                             sourceName;
-    private OMRSRepositoryContentManager       repositoryContentManager;
     private OpenMetadataExchangeRule           exchangeRule;
-    private Map<String, TypeDefSummary>        selectedTypesToProcess = new HashMap<>();
+    private List<String>                       selectedTypesToProcess = new ArrayList<>();
 
 
     /**
      * Constructor provides all of the objects used in the event exchange decision.
      *
-     * @param sourceName name of the caller
-     * @param repositoryContentManager local manager of the type definitions (TypeDefs) used by the local repository.
      * @param exchangeRule enum detailing the types of events to process.
      * @param selectedTypesToProcess supplementary list to support selective processing of events.
      */
-    public OMRSRepositoryEventExchangeRule(String                       sourceName,
-                                           OMRSRepositoryContentManager repositoryContentManager,
-                                           OpenMetadataExchangeRule     exchangeRule,
+    public OMRSRepositoryEventExchangeRule(OpenMetadataExchangeRule     exchangeRule,
                                            List<TypeDefSummary>         selectedTypesToProcess)
     {
         final String  methodName = "OMRSRepositoryEventExchangeRule constructor";
@@ -44,33 +35,6 @@ public class OMRSRepositoryEventExchangeRule
         /*
          * Validate the supplied parameters.
          */
-        if (sourceName == null)
-        {
-            OMRSErrorCode  errorCode = OMRSErrorCode.NULL_SOURCE_NAME;
-
-            String errorMessage = errorCode.getErrorMessageId()
-                                + errorCode.getFormattedErrorMessage(methodName);
-
-            throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
-        }
-        if (repositoryContentManager == null)
-        {
-            OMRSErrorCode errorCode = OMRSErrorCode.NULL_CONTENT_MANAGER;
-            String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(methodName);
-
-            throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
-        }
         if (exchangeRule == null)
         {
             OMRSErrorCode  errorCode = OMRSErrorCode.NULL_EXCHANGE_RULE;
@@ -86,8 +50,6 @@ public class OMRSRepositoryEventExchangeRule
                                               errorCode.getUserAction());
         }
 
-        this.sourceName = sourceName;
-        this.repositoryContentManager = repositoryContentManager;
         this.exchangeRule = exchangeRule;
 
         /*
@@ -103,7 +65,7 @@ public class OMRSRepositoryEventExchangeRule
 
                     if (typeDefSummaryGUID != null)
                     {
-                        this.selectedTypesToProcess.put(typeDefSummaryGUID, typeDefSummary);
+                        this.selectedTypesToProcess.add(typeDefSummaryGUID);
                     }
                 }
             }
@@ -119,14 +81,7 @@ public class OMRSRepositoryEventExchangeRule
      */
     public boolean processTypeDefEvents()
     {
-        if (exchangeRule != OpenMetadataExchangeRule.REGISTRATION_ONLY)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return exchangeRule != OpenMetadataExchangeRule.REGISTRATION_ONLY;
     }
 
 
@@ -139,15 +94,8 @@ public class OMRSRepositoryEventExchangeRule
      */
     public boolean processInstanceEvent(String   typeDefGUID, String   typeDefName)
     {
-        if (repositoryContentManager == null)
-        {
-            /*
-             * A set up error
-             */
-            return false;
-        }
-        else if ((exchangeRule == OpenMetadataExchangeRule.REGISTRATION_ONLY) ||
-                 (exchangeRule == OpenMetadataExchangeRule.JUST_TYPEDEFS))
+        if ((exchangeRule == OpenMetadataExchangeRule.REGISTRATION_ONLY) ||
+            (exchangeRule == OpenMetadataExchangeRule.JUST_TYPEDEFS))
         {
             /*
              * The rule says not to process instances
@@ -163,32 +111,22 @@ public class OMRSRepositoryEventExchangeRule
         }
         else
         {
-            /*
-             * Only active types should be processed.
-             */
-            if (repositoryContentManager.isActiveType(sourceName, typeDefGUID, typeDefName))
+            if (exchangeRule == OpenMetadataExchangeRule.ALL)
             {
-                if (exchangeRule == OpenMetadataExchangeRule.ALL)
-                {
-                    /*
-                     * All active types should be processed
-                     */
-                    return true;
-                }
-                else
-                {
-                    /*
-                     * The exchange rule is either SELECTED_TYPES or LEARNED_TYPES. For either, the instance
-                     * is processed if its type is in the selectedTypesToProcess list.
-                     */
-                    if (selectedTypesToProcess.get(typeDefGUID) != null)
-                    {
-                        return true;
-                    }
-                }
+                /*
+                 * All active types should be processed
+                 */
+                return true;
+            }
+            else
+            {
+                /*
+                 * The exchange rule is either SELECTED_TYPES or LEARNED_TYPES. For either, the instance
+                 * is processed if its type is in the selectedTypesToProcess list.
+                 */
+                return selectedTypesToProcess.contains(typeDefGUID);
             }
 
-            return false;
         }
     }
 
@@ -201,10 +139,6 @@ public class OMRSRepositoryEventExchangeRule
      */
     public boolean processInstanceEvent(TypeDefSummary   typeDefSummary)
     {
-        if (repositoryContentManager == null)
-        {
-            return false;
-        }
         if (typeDefSummary == null)
         {
             return false;
@@ -224,11 +158,7 @@ public class OMRSRepositoryEventExchangeRule
      */
     public boolean processInstanceEvent(InstanceHeader instance)
     {
-        if (repositoryContentManager == null)
-        {
-            return false;
-        }
-        else if (instance == null)
+        if (instance == null)
         {
             return false;
         }
@@ -261,48 +191,24 @@ public class OMRSRepositoryEventExchangeRule
      */
     public boolean learnInstanceEvent(InstanceHeader instance)
     {
-        final String methodName = "learnInstanceEvent";
-        final String parameterName = "instance";
 
-        if (repositoryContentManager == null)
-        {
-            /*
-             * This is a logic error the cause of which has probably already been logged.
-             */
-            return false;
-        }
-        else if (exchangeRule == OpenMetadataExchangeRule.LEARNED_TYPES)
+        if (exchangeRule == OpenMetadataExchangeRule.LEARNED_TYPES)
         {
             InstanceType type = instance.getType();
 
             if (type != null)
             {
-                if (repositoryContentManager.isActiveType(sourceName, type.getTypeDefGUID(), type.getTypeDefName()))
+                String  typeDefGUID = type.getTypeDefGUID();
+
+                if (typeDefGUID != null)
                 {
                     /*
                      * All active types should be learned and added to the rule so save copies are updated by
                      * incoming events.
                      */
-                    if (selectedTypesToProcess.get(type.getTypeDefGUID()) == null)
+                    if (! selectedTypesToProcess.contains(type.getTypeDefGUID()))
                     {
-                        try
-                        {
-                            TypeDef typeDef = repositoryContentManager.getTypeDef(sourceName,
-                                                                                  parameterName,
-                                                                                  parameterName,
-                                                                                  type.getTypeDefGUID(),
-                                                                                  type.getTypeDefName(),
-                                                                                  methodName);
-
-                            if (typeDef != null)
-                            {
-                                selectedTypesToProcess.put(typeDef.getGUID(), typeDef);
-                            }
-                        }
-                        catch (Throwable  error)
-                        {
-                            return false; /* Problem with type */
-                        }
+                        selectedTypesToProcess.add(typeDefGUID);
                     }
 
                     /*
