@@ -173,9 +173,7 @@ public class OMRSMetadataHighwayManager
                                         cohortConfig.getCohortOMRSTopicProtocolVersion());
 
             OMRSRepositoryEventExchangeRule inboundEventExchangeRule
-                    = new OMRSRepositoryEventExchangeRule(cohortConfig.getCohortName() + " Events To Process",
-                                                          localRepositoryContentManager,
-                                                          cohortConfig.getEventsToProcessRule(),
+                    = new OMRSRepositoryEventExchangeRule(cohortConfig.getEventsToProcessRule(),
                                                           cohortConfig.getSelectedTypesToProcess());
 
             cohortManager.initialize(cohortConfig.getCohortName(),

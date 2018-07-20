@@ -2,6 +2,7 @@
 package org.odpi.openmetadata.repositoryservices.enterprise.connectormanager;
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+import org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector.LocalOMRSRepositoryConnector;
 
 /**
  * OMRSConnectConsumer provides the interfaces for a connector consumer.  This is a component that needs to
@@ -16,8 +17,8 @@ public interface OMRSConnectorConsumer
      * @param metadataCollectionId Unique identifier for the metadata collection
      * @param localConnector OMRSRepositoryConnector object for the local repository.
      */
-    void setLocalConnector(String                  metadataCollectionId,
-                           OMRSRepositoryConnector localConnector);
+    void setLocalConnector(String                       metadataCollectionId,
+                           LocalOMRSRepositoryConnector localConnector);
 
 
     /**

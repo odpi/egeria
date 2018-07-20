@@ -10,6 +10,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSRuntimeException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+import org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector.LocalOMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentManager;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentHelper;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentValidator;
@@ -69,8 +70,8 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
     private int                                    maxPageSize;
 
     private String                            localMetadataCollectionId    = null;
-    private OMRSRepositoryConnector           localRepositoryConnector     = null;
-    private OMRSRepositoryContentManager      repositoryContentManager     = null;
+    private LocalOMRSRepositoryConnector      localRepositoryConnector     = null;
+    private OMRSRepositoryContentManager      repositoryContentManager;
     private List<RegisteredConnector>         registeredRemoteConnectors   = new ArrayList<>();
     private List<RegisteredConnectorConsumer> registeredConnectorConsumers = new ArrayList<>();
 
@@ -83,12 +84,15 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
      *                                 the connector consumers will be informed of remote connectors; otherwise
      *                                 they will not.
      * @param maxPageSize the maximum number of elements that can be requested on a page.
+     * @param repositoryContentManager repository content manager used by the connectors.
      */
-    public OMRSEnterpriseConnectorManager(boolean enterpriseAccessEnabled,
-                                          int     maxPageSize)
+    public OMRSEnterpriseConnectorManager(boolean                      enterpriseAccessEnabled,
+                                          int                          maxPageSize,
+                                          OMRSRepositoryContentManager repositoryContentManager)
     {
         this.enterpriseAccessEnabled = enterpriseAccessEnabled;
         this.maxPageSize = maxPageSize;
+        this.repositoryContentManager = repositoryContentManager;
     }
 
 
@@ -114,8 +118,8 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
      * @param localMetadataCollectionId Unique identifier for the metadata collection
      * @param localRepositoryConnector connector to the local repository
      */
-    public void setLocalConnector(String                     localMetadataCollectionId,
-                                  OMRSRepositoryConnector    localRepositoryConnector)
+    public void setLocalConnector(String                       localMetadataCollectionId,
+                                  LocalOMRSRepositoryConnector localRepositoryConnector)
     {
 
         /*
@@ -169,7 +173,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
 
         if (remoteConnector != null)
         {
-            OMRSMetadataCollection metadataCollection = null;
+            OMRSMetadataCollection metadataCollection;
 
             /*
              * Need to validate that this repository connector has a metadata collection.
