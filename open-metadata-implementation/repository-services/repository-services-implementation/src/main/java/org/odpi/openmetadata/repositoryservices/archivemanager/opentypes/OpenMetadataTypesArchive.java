@@ -17293,7 +17293,7 @@ public class OpenMetadataTypesArchive
         final String attribute4Name            = "source";
         final String attribute4Description     = "Person, organization or automated process that created the relationship.";
         final String attribute4DescriptionGUID = null;
-        
+
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
                                                            attribute1DescriptionGUID);
