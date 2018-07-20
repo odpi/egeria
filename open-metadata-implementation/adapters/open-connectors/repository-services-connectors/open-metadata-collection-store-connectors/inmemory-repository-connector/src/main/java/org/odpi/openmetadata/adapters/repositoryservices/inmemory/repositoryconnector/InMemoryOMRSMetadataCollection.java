@@ -3051,7 +3051,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
 
         updatedEntity = repositoryHelper.incrementVersion(userId, entity, updatedEntity);
 
-        repositoryStore.removeEntityFromStore(updatedEntity);
+        repositoryStore.updateEntityInStore(updatedEntity);
 
         return updatedEntity;
     }
