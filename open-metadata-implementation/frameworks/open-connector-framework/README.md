@@ -4,8 +4,10 @@
 
 The OCF, as the name suggests, is an open framework for supporting connectors.
 Connectors support access to remote assets such as data sets, APIs and software components.
-OCF Connectors also provide access to metadata about the asset and they may call the Governance Action Framework
-GAF to execute appropriate governance actions related to the use of these assets in real-time.
+OCF Connectors also provide access to metadata about the asset and they may call
+the [Governance Action Framework (GAF)](../governance-action-framework) to execute
+appropriate governance actions related to the use of these assets
+in real-time.
 
 ## Terminology
 
@@ -24,6 +26,7 @@ Connections have 2 sub-objects:
   * **Endpoint** - this is the Java object that describes the server endpoint where the asset is accessed from.
 
 * **Connector Broker** - this is a generic factory for all OCF connectors.
+See [docs](docs/connector-broker.md) for more information.
 
 * **Connector Provider** - this is a factory for a specific type of connector.
 It is used by the Connector Broker.
@@ -53,17 +56,13 @@ These are simple POJO objects.
 
 ## Related Modules
 
-The ConnectedAsset OMAS (access-services/connected-asset) supports the retrieval
+The [ConnectedAsset OMAS](../../access-services/connected-asset) supports the retrieval
 of connection and connected asset properties from the open metadata
 repository/repositories.
 
-The AssetConsumer OMAS (access-services/asset-consumer) embeds the OCF to provide
+The [AssetConsumer OMAS](../../access-services/asset-consumer) embeds the OCF to provide
 client-side support for connectors.
 
-The Open Metadata Repository Services (OMRS) provides implementations
-of OCF connectors for accessing open metadata repository servers and other resources.
-These connectors are collectively called the OMRS Connectors.
-
-## Wiki References
-
-Further information on the OCF at: https://cwiki.apache.org/confluence/pages/viewpage.action?pageId=69408729
+The [Open Metadata Repository Services (OMRS)](../../repository-services)
+makes extensive use of OCF connectors for accessing open metadata repository servers and other resources.
+These connectors are collectively called the [OMRS Connectors](../../repository-services/docs/component-descriptions/connectors).

@@ -2,5 +2,7 @@
   
 # In Memory Repository Connector
 
-In Memory Repository Connector provides a local repository that is entirely in memory.  Its is useful for
-testing/developing OMASs and demos.
+The In-memory OMRS Repository Connector provides a simple repository
+implementation that "stores" metadata in hash maps within the JVM. 
+It is used for testing, or for environments where metadata maintained in other repositories
+needs to be cached locally for performance/scalability reasons.
