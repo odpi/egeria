@@ -100,6 +100,7 @@
         <spring-web.version>5.0.6.RELEASE</spring-web.version>
         <commons-io.version>2.4</commons-io.version>
         <commons-collections.version>3.2.2</commons-collections.version>
+        <kafka.version>0.10.0.0</kafka.version>
         <testng.version>6.14.3</testng.version>
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
         <mockito.version>2.18.3</mockito.version>
@@ -156,6 +157,12 @@
             <scope>test</scope>
         </dependency>
 
+        <!--  Kafka -->
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-clients</artifactId>
+            <version>${kafka.version}</version>
+        </dependency>
 
     </dependencies>
 
