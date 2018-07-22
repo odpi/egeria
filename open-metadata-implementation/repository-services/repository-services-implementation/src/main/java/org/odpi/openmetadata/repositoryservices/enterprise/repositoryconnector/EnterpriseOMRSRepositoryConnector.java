@@ -428,7 +428,7 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
     public void setLocalConnector(String                       metadataCollectionId,
                                   LocalOMRSRepositoryConnector localConnector)
     {
-        this.metadataCollectionId = metadataCollectionId;
+        this.localMetadataCollectionId = metadataCollectionId;
         this.localConnector = localConnector;
 
         if (localConnector != null)

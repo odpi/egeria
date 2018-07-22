@@ -1,0 +1,55 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+
+# Open Metadata Repository Cohort
+
+An **open metadata repository cohort** is a collection of metadata repositories
+sharing metadata using the **[Open Metadata Repository Services (OMRS)](../README.md)**.
+This sharing is peer-to-peer.  
+Once a metadata repository becomes a member of the cohort, it can share
+metadata with, and receive metadata from, any other member.
+
+OMRS needs to be flexible to support different performance and availability requirements.
+For example, where metadata is changing
+rapidly (such as in a data lake), this metadata should be dynamically queried
+from its **[home metadata repository](home-metadata-repositories.md)** because
+the rate of updates mean it would cost a lot of network traffic to keep a
+copy of this metadata up to date.  On the other hand, governance classifications
+(such as confidentially) and glossary terms rarely change.
+They are often administered centrally by the governance team and then
+linked to all metadata that describes the organization's data resources.
+Thus it makes sense for this metadata to be replicated across the repositories
+within the cohort.
+These copies are called **[reference copies](home-metadata-repositories.md)** of
+the metadata and they are read-only. 
+
+To join an open metadata repository cohort, a metadata repository must integrate
+with the OMRS module.  The integration involves:
+
+* Creating an [OMRS Repository Connector and optional Event Mapper Connector]
+* Designing how to configure the OMRS Services for your metadata repository.
+Typically this is done by extending the existing administration services of the
+metadata repository, but Egeria also offers
+some pre-built **[administration services](../../governance-servers/admin-services)** that
+can be used or modified.
+* Plugging the OMRS and any administration services into the metadata repository's security
+module so that requests to the server can be secured against unauthorized access.
+* Integrating the OMRS, administration and security capability into your product.
+
+There are different integration patterns available to help you choose the best approach for your
+product.
+
+support the following OMRS integration methods.  Each method is optimized for specific use cases and so the metadata repository can only play a full role in the open metadata use cases if it supports all integration methods.  These are:
+
+    Support for an OMRS repository connector to allow open metadata API calls to the repository to create, query, update and delete metadata stored in the repository.  The OMRS connectors support the Open Connector Framework (OCF) to provide a call interface to the metadata repositories.  The OMRS Repository Connector API is a standard interface for all metadata repositories.  This enables services such as the Enterprise OMRS Repository Connector to interact with 1 or many metadata repositories through the same interface.  The connection configuration it passes to the OCF determines which type of OMRS connector is returned by the OCF.
+    Support for the OMRS event notifications that are used to synchronize selective metadata between the metadata repositories. 
+    Support for OSLC linked data relationships to allow relationships between metadata entities that happen to reside in different metadata repositories.
+
+The OMRS protocols are peer-to-peer.   Each repository in the cohort has an OMRS Cohort Registry that supports the registration of the metadata repositories across the cohort.   Through the registration process, each OMRS Cohort Registry assembles a list of all of the members of the cohort.  This is saved in the OMRS Cohort Registry Store.  The list of connections to the remote members of the cohort are passed to the OMRS Enterprise Connector Manager that in turn manages the configuration of the Enterprise OMRS Repository Connectors. 
+
+The Enterprise OMRS Connector provides federated query support across the metadata cohort for the Open Metadata Access Services (OMAS).
+
+When a metadata repository registers with the OMRS Cohort Registry, the administrator may either supply a unique server identifier, or ask the OMRS to generate one.  This server identifier (called the metadata collection identifier) is used in the OMRS event notifications, and on OMRS repository connector calls to identify the location of the home copy of the metadata entities and to identify which repository is requesting service or supports a particular function.
+
+Once the metadata repository has registered with the OMRS Cohort Registry, it is a member of the metadata repository cohort and it can synchronize and share metadata with other repositories in the cohort through the OMRS Topic.
+
+Note: A single metadata repository can register with multiple metadata cohorts as long as its server identifier is unique across all cohorts that it joins and it manages the posting of events to the appropriate OMRS Topic.   This pattern is useful for a metadata repository that is aggregating reference copies of metadata from multiple metadata repository cohorts.

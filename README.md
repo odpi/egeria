@@ -2,11 +2,22 @@
   
 # Egeria - Open Metadata and Governance
   
-Egeria provides the Apache 2.0 licensed [open metadata and governance](https://odpi.github.io/data-governance/Open-Metadata-and-Governance)
-type system, frameworks,
-APIs, event payloads and interchange protocols to enable tools,
+Egeria provides the Apache 2.0 licensed [open metadata and governance](open-metadata-publication/website/README.md)
+type system, frameworks, APIs, event payloads and interchange protocols to enable tools,
 engines and platforms to exchange metadata in order to get the best
 value from data whilst ensuring it is properly governed.
+
+## Useful links
+
+* **[What is Egeria and what does it do?](open-metadata-publication/website/README.md)**
+* **[Why is this open metadata and governance capability supported by Egeria important?](https://zenodo.org/record/556504)**
+* **[Where is the design documentation?](open-metadata-publication/website/README.md#technical-components)**
+* **[Where are the open metadata specifications?](open-metadata-publication/website/open-metadata-specifications/README.md)**
+* **[How do I run Egeria?](open-metadata-implementation/governance-servers/server-chassis/README.md)**
+* **[How do I contribute to Egeria?](Community-Guide.md)**
+* **[How do I raise a bug or feature request?](Community-Guide.md#getting-a-jira-account-and-creating-an-issue)**
+* **[How do I enhance my product to support open metadata?](open-metadata-publication/website/open-metadata-integration-patterns/README.md)**
+* **[How do I test that a product is compliant with the open metadata standards?](open-metadata-compliance-suite/README.md)**
 
 ## Egeria content organization
   
