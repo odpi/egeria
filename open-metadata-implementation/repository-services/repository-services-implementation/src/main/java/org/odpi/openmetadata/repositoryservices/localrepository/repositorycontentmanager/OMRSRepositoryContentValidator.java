@@ -2609,7 +2609,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
     {
         if (instance != null)
         {
-            if (instance.getStatus() == InstanceStatus.DELETED)
+            if (instance.getStatus() != InstanceStatus.DELETED)
             {
                 /*
                  * Instance is already deleted

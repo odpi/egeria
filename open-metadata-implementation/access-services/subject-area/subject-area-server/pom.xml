@@ -21,5 +21,21 @@
 
     <artifactId>subject-area-server</artifactId>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>repository-services-implementation</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>subject-area-api</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>subject-area-tools</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+    </dependencies>
 </project>
