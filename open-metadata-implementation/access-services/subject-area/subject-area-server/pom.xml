@@ -38,5 +38,4 @@
             <version>${open-metadata.version}</version>
         </dependency>
     </dependencies>
-
 </project>
