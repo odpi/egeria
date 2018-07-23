@@ -8037,11 +8037,6 @@ public class OpenMetadataTypesArchive
                                                            attribute3DescriptionGUID);
         properties.add(property);
         
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
-        properties.add(property);
-        
         property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
                                                            attribute4Description,
                                                            attribute4DescriptionGUID);

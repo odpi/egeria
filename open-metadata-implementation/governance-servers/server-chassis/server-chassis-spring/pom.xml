@@ -62,7 +62,6 @@
   <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>subject-area-spring</artifactId>
-            <artifactId>asset-catalog-server</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
 
