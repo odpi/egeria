@@ -1,10 +1,9 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.adapters.repositoryservices.cohortregistrystore.file;
 
-
-import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationFactory;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.cohortregistrystore.properties.MemberRegistration;
 import org.testng.annotations.Test;
@@ -23,10 +22,53 @@ public class TestFileBasedRegistryStoreConnector
 {
     private Connection getGoodConnection()
     {
-        ConnectorConfigurationFactory factory = new ConnectorConfigurationFactory();
-        Connection                    connection;
+        final String endpointGUID      = "8bf8f5fa-b5d8-40e1-a00e-e4a0c59fd6c0";
+        final String connectorTypeGUID = "2e1556a3-908f-4303-812d-d81b48b19bab";
+        final String connectionGUID    = "b9af734f-f005-4085-9975-bf46c67a099a";
 
-        connection = factory.getDefaultCohortRegistryConnection("localServer", UUID.randomUUID().toString());
+        final String endpointDescription = "OMRS default cohort registry endpoint.";
+
+        String endpointAddress = "Test.registrystore";
+        String endpointName    = "DefaultCohortRegistry.Endpoint." + endpointAddress;
+
+        Endpoint endpoint = new Endpoint();
+
+        endpoint.setType(Endpoint.getEndpointType());
+        endpoint.setGUID(endpointGUID);
+        endpoint.setQualifiedName(endpointName);
+        endpoint.setDisplayName(endpointName);
+        endpoint.setDescription(endpointDescription);
+        endpoint.setAddress(endpointAddress);
+
+
+        final String connectorTypeDescription   = "OMRS default cohort registry connector type.";
+        final String connectorTypeJavaClassName = FileBasedRegistryStoreProvider.class.getName();
+
+        String connectorTypeName = "DefaultCohortRegistry.ConnectorType.Test";
+
+        ConnectorType connectorType = new ConnectorType();
+
+        connectorType.setType(ConnectorType.getConnectorTypeType());
+        connectorType.setGUID(connectorTypeGUID);
+        connectorType.setQualifiedName(connectorTypeName);
+        connectorType.setDisplayName(connectorTypeName);
+        connectorType.setDescription(connectorTypeDescription);
+        connectorType.setConnectorProviderClassName(connectorTypeJavaClassName);
+
+
+        final String connectionDescription = "OMRS default cohort registry connection.";
+
+        String connectionName = "DefaultCohortRegistry.Connection.Test";
+
+        Connection connection = new Connection();
+
+        connection.setType(Connection.getConnectionType());
+        connection.setGUID(connectionGUID);
+        connection.setQualifiedName(connectionName);
+        connection.setDisplayName(connectionName);
+        connection.setDescription(connectionDescription);
+        connection.setEndpoint(endpoint);
+        connection.setConnectorType(connectorType);
 
         return connection;
     }
