@@ -52,6 +52,17 @@ public class EnumDef extends AttributeTypeDef
 
 
     /**
+     * Delegate the process of cloning to the subclass.
+     *
+     * @return subclass of AttributeTypeDef
+     */
+    public AttributeTypeDef cloneFromSubclass()
+    {
+        return new EnumDef(this);
+    }
+
+
+    /**
      * Return the list of defined Enum values for this EnumDef.
      *
      * @return EnumElementDefs list

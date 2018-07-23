@@ -2,7 +2,8 @@
 
 package org.odpi.openmetadata.accessservices.governanceengine.client;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.errorcode.GovernanceEngineErrorCode;
 import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.governanceengine.common.objects.*;
@@ -20,13 +21,13 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
     private String omasServerURL;  /* Initialized in constructor */
     private RestTemplate restTemplate;
 
-    private static final Logger log = Logger.getLogger(GovernanceEngineImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(GovernanceEngineImpl.class);
 
 
     /**
      * Create a new GovernanceEngine client.
      *
-     * @param newServerURL - the network address of the server running the OMAS REST servers
+     * @param newServerURL - the network address of the handlers running the OMAS REST servers
      */
     public GovernanceEngineImpl(String newServerURL) {
         omasServerURL = newServerURL;
@@ -57,7 +58,7 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
 
         validateOMASServerURL(methodName);
         validateUserId(userId, methodName); // cannot be null
-        // No validation for other parms -- optional. Managed server-side
+        // No validation for other parms -- optional. Managed handlers-side
 
         GovernedAssetComponentListAPIResponse restResult = callGovernanceEngineGovernedAssetComponentListRESTCall(methodName,
                 omasServerURL + urlTemplate,
@@ -406,8 +407,8 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
      * Throw an InvalidParameterException if it is encoded in the REST response.
      *
      * @param methodName - name of the method called
-     * @param restResult - response from the rest call.  This generated in the remote server.
-     * @throws InvalidParameterException - encoded exception from the server
+     * @param restResult - response from the rest call.  This generated in the remote handlers.
+     * @throws InvalidParameterException - encoded exception from the handlers
      */
     private void detectAndThrowInvalidParameterException(String methodName,
                                                          GovernanceEngineOMASAPIResponse restResult) throws InvalidParameterException {
@@ -427,8 +428,8 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
      * Throw an GuidNotFoundException if it is encoded in the REST response.
      *
      * @param methodName - name of the method called
-     * @param restResult - response from the rest call.  This generated in the remote server.
-     * @throws GuidNotFoundException - encoded exception from the server
+     * @param restResult - response from the rest call.  This generated in the remote handlers.
+     * @throws GuidNotFoundException - encoded exception from the handlers
      */
     private void detectAndThrowGuidNotFoundException(String methodName,
                                                      GovernanceEngineOMASAPIResponse restResult) throws GuidNotFoundException {
@@ -449,8 +450,8 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
      * Throw a RootClassificationNotFoundException if it is encoded in the REST response.
      *
      * @param methodName - name of the method called
-     * @param restResult - response from the rest call.  This generated in the remote server.
-     * @throws RootClassificationNotFoundException - encoded exception from the server
+     * @param restResult - response from the rest call.  This generated in the remote handlers.
+     * @throws RootClassificationNotFoundException - encoded exception from the handlers
      */
     private void detectAndThrowRootClassificationNotFoundException(String methodName,
                                                                    GovernanceEngineOMASAPIResponse restResult) throws RootClassificationNotFoundException {
@@ -470,8 +471,8 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
      * Throw a RootAssetTypeNotFoundException if it is encoded in the REST response.
      *
      * @param methodName - name of the method called
-     * @param restResult - response from the rest call.  This generated in the remote server.
-     * @throws RootAssetTypeNotFoundException - encoded exception from the server
+     * @param restResult - response from the rest call.  This generated in the remote handlers.
+     * @throws RootAssetTypeNotFoundException - encoded exception from the handlers
      */
     private void detectAndThrowRootAssetTypeNotFoundException(String methodName,
                                                               GovernanceEngineOMASAPIResponse restResult) throws RootAssetTypeNotFoundException {
@@ -491,8 +492,8 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
      * Throw an UserNotAuthorizedException if it is encoded in the REST response.
      *
      * @param methodName - name of the method called
-     * @param restResult - response from UserNotAuthorizedException - encoded exception from the server
-     * @throws UserNotAuthorizedException - encoded exception from the server
+     * @param restResult - response from UserNotAuthorizedException - encoded exception from the handlers
+     * @throws UserNotAuthorizedException - encoded exception from the handlers
      */
     private void detectAndThrowUserNotAuthorizedException(String methodName,
                                                           GovernanceEngineOMASAPIResponse restResult) throws UserNotAuthorizedException {

@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.repositoryservices.events;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1;
 import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1InstanceSection;
 
@@ -49,7 +50,7 @@ public class OMRSInstanceEvent extends OMRSEvent
     private  OMRSInstanceEventErrorCode  errorCode  = OMRSInstanceEventErrorCode.NOT_IN_USE;
 
 
-    private static final Logger log = Logger.getLogger(OMRSInstanceEvent.class);
+    private static final Logger log = LoggerFactory.getLogger(OMRSInstanceEvent.class);
 
     /**
      * Inbound event constructor that takes the object created by the Jackson JSON mapper and unpacks the
@@ -214,7 +215,7 @@ public class OMRSInstanceEvent extends OMRSEvent
                              String                     otherInstanceGUID)
     {
         super(OMRSEventCategory.INSTANCE,
-              errorCode.getErrorCodeEncoding(),
+              errorCode.getEncoding(),
               errorMessage,
               targetMetadataCollectionId,
               targetTypeDefSummary,
@@ -246,7 +247,7 @@ public class OMRSInstanceEvent extends OMRSEvent
                              TypeDefSummary             otherTypeDefSummary)
     {
         super(OMRSEventCategory.INSTANCE,
-              errorCode.getErrorCodeEncoding(),
+              errorCode.getEncoding(),
               errorMessage,
               targetMetadataCollectionId,
               targetTypeDefSummary,

@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.frameworks.connectors.ffdc;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * PropertyServerException provides a checked exception for reporting errors when connecting to a
@@ -11,7 +12,7 @@ import org.apache.log4j.Logger;
  */
 public class PropertyServerException extends OCFCheckedExceptionBase
 {
-    private static final Logger log = Logger.getLogger(PropertyServerException.class);
+    private static final Logger log = LoggerFactory.getLogger(PropertyServerException.class);
 
     /**
      * This is the typical constructor for creating a PropertyServerException.  It captures the essential details

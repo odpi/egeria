@@ -154,15 +154,26 @@ public class OMRSRepositoryRESTServices
      * identify the home repository of a metadata instance.
      *
      * @return String metadata collection id.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
+     * or RepositoryErrorException there is a problem communicating with the metadata repository.
      */
-    public String      getMetadataCollectionId() throws RepositoryErrorException
+    public MetadataCollectionIdResponse getMetadataCollectionId()
     {
         final  String   methodName = "getMetadataCollectionId";
 
-        validateLocalRepository(methodName);
+        MetadataCollectionIdResponse response = new MetadataCollectionIdResponse();
 
-        return localMetadataCollection.getMetadataCollectionId();
+        try
+        {
+            validateLocalRepository(methodName);
+
+            response.setMetadataCollectionId(localMetadataCollection.getMetadataCollectionId());
+        }
+        catch (RepositoryErrorException  error)
+        {
+            captureRepositoryErrorException(response, error);
+        }
+
+        return response;
     }
 
 
@@ -348,7 +359,7 @@ public class OMRSRepositoryRESTServices
      * Return the TypeDefs that have the properties matching the supplied match criteria.
      *
      * @param userId unique identifier for requesting user.
-     * @param matchCriteria TypeDefProperties a list of property names and values.
+     * @param matchCriteria TypeDefProperties a list of property names.
      * @return TypeDefListResponse:
      * TypeDefs list or
      * InvalidParameterException the matchCriteria is null or

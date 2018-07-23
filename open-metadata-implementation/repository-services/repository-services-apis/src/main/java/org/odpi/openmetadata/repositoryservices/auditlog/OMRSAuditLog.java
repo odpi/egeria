@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.repositoryservices.auditlog;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogRecord;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogRecordOriginator;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogReportingComponent;
@@ -25,7 +26,7 @@ public class OMRSAuditLog
     static private final OMRSAuditLogRecordOriginator originator     = new OMRSAuditLogRecordOriginator();
     static private       List<OMRSAuditLogStore>      auditLogStores = null;
 
-    private static final Logger log = Logger.getLogger(OMRSAuditLog.class);
+    private static final Logger log = LoggerFactory.getLogger(OMRSAuditLog.class);
 
     private OMRSAuditLogReportingComponent reportingComponent;   /* Initialized in the constructor */
 
@@ -152,7 +153,7 @@ public class OMRSAuditLog
 
                     OMRSAuditLogRecord logRecord = new OMRSAuditLogRecord(originator,
                                                                           reportingComponent,
-                                                                          severity.getSeverityName(),
+                                                                          severity.getName(),
                                                                           logMessageId,
                                                                           logMessage,
                                                                           additionalInformationArray,

@@ -8012,11 +8012,35 @@ public class OpenMetadataTypesArchive
         final String attribute1Name            = "type";
         final String attribute1Description     = "Type of database.";
         final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "version";
+        final String attribute2Description     = "Version of the database.";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "instance";
+        final String attribute3Description     = "Name of the database instance.";
+        final String attribute3DescriptionGUID = null;
+        final String attribute4Name            = "importedFrom";
+        final String attribute4Description     = "Name of the connector where database is imported from.";
+        final String attribute4DescriptionGUID = null;        
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
                                                            attribute1DescriptionGUID);
         properties.add(property);
+        
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
+        
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                                                           attribute3Description,
+                                                           attribute3DescriptionGUID);
+        properties.add(property);
+        
+        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
+                                                           attribute4Description,
+                                                           attribute4DescriptionGUID);
+        properties.add(property);        
 
         entityDef.setPropertiesDefinition(properties);
 
@@ -17048,11 +17072,58 @@ public class OpenMetadataTypesArchive
 
         final String superTypeName = "TabularColumn";
 
-        return archiveHelper.getDefaultEntityDef(guid,
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
                                                  name,
                                                  this.archiveBuilder.getEntityDef(superTypeName),
                                                  description,
                                                  descriptionGUID);
+        
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+        
+        final String attribute1Name            = "minimumLength";
+        final String attribute1Description     = "Minimum length of the data.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "length";
+        final String attribute2Description     = "Length of the data.";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "fraction";
+        final String attribute3Description     = "Number of significant digits to the right of decimal point.";
+        final String attribute3DescriptionGUID = null;
+        final String attribute4Name            = "isNullable";
+        final String attribute4Description     = "Accepts null values or not.";
+        final String attribute4DescriptionGUID = null;
+        final String attribute5Name            = "isUnique";
+        final String attribute5Description     = "Data is unique or not.";
+        final String attribute5DescriptionGUID = null;
+        
+        property = archiveHelper.getIntTypeDefAttribute(attribute1Name,
+                                                        attribute1Description,
+                                                        attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getIntTypeDefAttribute(attribute2Name,
+                                                        attribute2Description,
+                                                        attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getIntTypeDefAttribute(attribute3Name,
+                                                        attribute3Description,
+                                                        attribute3DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getBooleanTypeDefAttribute(attribute4Name,
+                                                            attribute4Description,
+                                                            attribute4DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getBooleanTypeDefAttribute(attribute5Name,
+                                                            attribute5Description,
+                                                            attribute5DescriptionGUID);
+        properties.add(property);
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
     }
 
 

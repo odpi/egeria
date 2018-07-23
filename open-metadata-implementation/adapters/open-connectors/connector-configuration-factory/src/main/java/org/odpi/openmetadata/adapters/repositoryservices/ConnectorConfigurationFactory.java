@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.adapters.repositoryservices;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.adapters.adminservices.configurationstore.file.FileBasedServerConfigStoreProvider;
 import org.odpi.openmetadata.adapters.eventbus.topic.inmemory.InMemoryOpenMetadataTopicProvider;
 import org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider;
@@ -43,7 +44,7 @@ public class ConnectorConfigurationFactory
     private static final String defaultOpenMetadataArchiveFileName = "OpenMetadataTypes.json";
 
 
-    private static final Logger log = Logger.getLogger(ConnectorConfigurationFactory.class);
+    private static final Logger log = LoggerFactory.getLogger(ConnectorConfigurationFactory.class);
 
 
     /**
@@ -285,7 +286,7 @@ public class ConnectorConfigurationFactory
 
         final String endpointDescription = "OMRS default repository REST API endpoint.";
 
-        String endpointAddress = localServerURL + "/openmetadata/repositoryservices/";
+        String endpointAddress = localServerURL;
         String endpointName    = "DefaultRepositoryRESTAPI.Endpoint." + localServerName;
 
         Endpoint endpoint = new Endpoint();
@@ -659,7 +660,7 @@ public class ConnectorConfigurationFactory
         final String connectorTypeDescription   = "OMRS default enterprise connector type.";
         final String connectorTypeJavaClassName = OMRSTopicProvider.class.getName();
 
-        String connectorTypeName = "DefaultEnterpriseTopic.ConnectorType." + localServerName;
+        String connectorTypeName = "EnterpriseTopicConnectorType.Server." + localServerName;
 
         ConnectorType connectorType = new ConnectorType();
 
@@ -673,7 +674,7 @@ public class ConnectorConfigurationFactory
 
         final String connectionDescription = "OMRS default enterprise topic connection.";
 
-        String connectionName = "DefaultEnterpriseTopic.Connection." + localServerName;
+        String connectionName = "EnterpriseTopicConnector.Server." + localServerName;
 
         VirtualConnection connection = new VirtualConnection();
 
@@ -730,7 +731,7 @@ public class ConnectorConfigurationFactory
 
         final String connectionDescription = "OMRS default cohort topic connection.";
 
-        String connectionName = "DefaultCohortTopic.Connection." + cohortName;
+        String connectionName = "TopicConnector.Cohort." + cohortName;
 
         VirtualConnection connection = new VirtualConnection();
 

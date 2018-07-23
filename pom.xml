@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -95,10 +94,13 @@
 
         <!-- Versions of dependent libraries -->
         <log4j.version>1.2.17</log4j.version>
+        <slf4j.version>1.7.25</slf4j.version>
         <jackson.version>2.9.2</jackson.version>
         <spring.version>1.5.7.RELEASE</spring.version>
+        <spring-web.version>5.0.6.RELEASE</spring-web.version>
         <commons-io.version>2.4</commons-io.version>
         <commons-collections.version>3.2.2</commons-collections.version>
+        <kafka.version>0.10.0.0</kafka.version>
         <testng.version>6.14.3</testng.version>
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
         <mockito.version>2.18.3</mockito.version>
@@ -112,32 +114,14 @@
         <!-- Logging -->
 
         <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>${log4j.version}</version>
-            <scope>compile</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.sun.jdmk</groupId>
-                    <artifactId>jmxtools</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.sun.jmx</groupId>
-                    <artifactId>jmxri</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>javax.mail</groupId>
-                    <artifactId>mail</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>javax.jms</groupId>
-                    <artifactId>jmx</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>javax.jms</groupId>
-                    <artifactId>jms</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${slf4j.version}</version>
         </dependency>
 
         <!-- Jackson for JSON to Java processing -->
@@ -173,6 +157,12 @@
             <scope>test</scope>
         </dependency>
 
+        <!--  Kafka -->
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-clients</artifactId>
+            <version>${kafka.version}</version>
+        </dependency>
 
     </dependencies>
 
@@ -218,7 +208,7 @@
                                 </requireMavenVersion>
                                 <requireJavaVersion>
                                     <level>ERROR</level>
-                                    <version>[1.8.0-151,)</version>
+                                    <version>[1.8,)</version>
                                     <message>** JAVA VERSION ERROR ** Java 8 (Update 151) or above is required.
                                     </message>
                                 </requireJavaVersion>
@@ -230,6 +220,51 @@
                                 </requireJavaVersion>
                             </rules>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.rat</groupId>
+                <artifactId>apache-rat-plugin</artifactId>
+                <version>0.12</version>
+                <configuration>
+                    <useDefaultExcludes>true</useDefaultExcludes>
+                    <useMavenDefaultExcludes>true</useMavenDefaultExcludes>
+                    <useIdeaDefaultExcludes>true</useIdeaDefaultExcludes>
+                    <useEclipseDefaultExcludes>true</useEclipseDefaultExcludes>
+                    <excludeSubProjects>true</excludeSubProjects>
+                    <excludes>
+                        <exclude>**/*.json</exclude>
+                        <exclude>**/*.log</exclude>
+                        <exclude>**/*.iml</exclude>
+                        <exclude>**/*.registrystore</exclude>
+                        <exclude>**/*.results</exclude>
+                        <exclude>**/target/**</exclude>
+                    </excludes>
+                    <licenses>
+                        <license implementation="org.apache.rat.analysis.license.SimplePatternBasedLicense">
+                            <licenseFamilyCategory>SPDX</licenseFamilyCategory>
+                            <licenseFamilyName>SPDX-License-Identifier: Apache-2.0</licenseFamilyName>
+                            <notes></notes>
+                            <patterns>
+                                <pattern>SPDX-License-Identifier: Apache-2.0</pattern>
+                            </patterns>
+                        </license>
+                    </licenses>
+                    <licenseFamilies>
+                        <licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">
+                            <familyName>SPDX-License-Identifier: Apache-2.0</familyName>
+                        </licenseFamily>
+                    </licenseFamilies>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>rat-check</id>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <phase>validate</phase>
                     </execution>
                 </executions>
             </plugin>

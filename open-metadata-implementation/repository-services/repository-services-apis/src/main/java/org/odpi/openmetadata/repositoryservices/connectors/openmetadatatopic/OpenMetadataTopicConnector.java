@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.AdditionalProperties;
@@ -34,7 +35,7 @@ import java.util.List;
  */
 public abstract class OpenMetadataTopicConnector extends ConnectorBase implements OpenMetadataTopic, Runnable
 {
-    private static final Logger       log      = Logger.getLogger(OpenMetadataTopicConnector.class);
+    private static final Logger       log      = LoggerFactory.getLogger(OpenMetadataTopicConnector.class);
     private static final OMRSAuditLog auditLog = new OMRSAuditLog(OMRSAuditingComponent.OPEN_METADATA_TOPIC_CONNECTOR);
 
     private static final String       defaultThreadName = "OpenMetadataTopicListener";
@@ -163,6 +164,17 @@ public abstract class OpenMetadataTopicConnector extends ConnectorBase implement
         if (topicListener != null)
         {
             topicListeners.add(topicListener);
+
+            if (super.connectionProperties != null)
+            {
+                EndpointProperties endpoint = super.connectionProperties.getEndpoint();
+
+                if (endpoint != null)
+                {
+                    topicName = endpoint.getAddress();
+                }
+            }
+
             return topicName;
         }
 

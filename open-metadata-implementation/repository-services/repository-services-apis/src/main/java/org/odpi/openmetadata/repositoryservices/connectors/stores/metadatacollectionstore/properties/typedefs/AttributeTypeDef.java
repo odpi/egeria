@@ -23,13 +23,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
-        property = "type")
+        property = "class")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = PrimitiveDef.class, name = "PrimitiveDef"),
         @JsonSubTypes.Type(value = CollectionDef.class, name = "CollectionDef"),
         @JsonSubTypes.Type(value = EnumDef.class, name = "EnumDef")
 })
-public class AttributeTypeDef extends TypeDefElementHeader
+public abstract class AttributeTypeDef extends TypeDefElementHeader
 {
     protected long                     version         = 0L;
     protected String                   versionName     = null;
@@ -43,32 +43,34 @@ public class AttributeTypeDef extends TypeDefElementHeader
     /**
      * Default constructor
      */
-    public AttributeTypeDef()
+    protected AttributeTypeDef()
     {
     }
 
 
     /**
-     * Minimal constructor is passed the category of the attribute type
+     * Minimal constructor is passed the category of the attribute type. Note that since
+     * AttributeTypeDef is an abstract class, this method can only be called from a subclass.
      *
      * @param category category of this TypeDef
      */
-    public AttributeTypeDef(AttributeTypeDefCategory   category)
+    protected AttributeTypeDef(AttributeTypeDefCategory   category)
     {
         this.category = category;
     }
 
 
     /**
-     * Typical constructor is passed the values that describe the type.
+     * Typical constructor is passed the values that describe the type.  Note that since
+     * AttributeTypeDef is an abstract class, this method can only be called from a subclass.
      *
      * @param category category of this TypeDef
      * @param guid unique id for the TypeDef
      * @param name unique name for the TypeDef
      */
-    public AttributeTypeDef(AttributeTypeDefCategory   category,
-                            String                     guid,
-                            String                     name)
+    protected AttributeTypeDef(AttributeTypeDefCategory   category,
+                               String                     guid,
+                               String                     name)
     {
         super();
 
@@ -79,11 +81,12 @@ public class AttributeTypeDef extends TypeDefElementHeader
 
 
     /**
-     * Copy/clone constructor copies the values from the supplied template.
+     * Copy/clone constructor copies the values from the supplied template.  Note that since
+     * AttributeTypeDef is an abstract class, this method can only be called from a subclass.
      *
      * @param template AttributeTypeDef
      */
-    public AttributeTypeDef(AttributeTypeDef template)
+    protected AttributeTypeDef(AttributeTypeDef template)
     {
         super(template);
 
@@ -98,6 +101,15 @@ public class AttributeTypeDef extends TypeDefElementHeader
             this.descriptionGUID = template.getDescriptionGUID();
         }
     }
+
+
+    /**
+     * Delegate the process of cloning to the subclass.
+     *
+     * @return subclass of AttributeTypeDef
+     */
+    public abstract AttributeTypeDef cloneFromSubclass();
+
 
 
     /**

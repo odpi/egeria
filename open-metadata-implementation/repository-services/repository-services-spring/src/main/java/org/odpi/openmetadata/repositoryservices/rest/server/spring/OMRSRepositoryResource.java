@@ -1,7 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.repositoryservices.rest.server.spring;
 
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -88,11 +87,11 @@ public class OMRSRepositoryResource
      * identify the home repository of a metadata instance.
      *
      * @return String metadata collection id.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
+     * or RepositoryErrorException if there is a problem communicating with the metadata repository.
      */
     @RequestMapping(method = RequestMethod.GET, path = "/metadata-collection-id")
 
-    public String      getMetadataCollectionId() throws RepositoryErrorException
+    public MetadataCollectionIdResponse      getMetadataCollectionId()
     {
         return restAPI.getMetadataCollectionId();
     }
@@ -189,7 +188,7 @@ public class OMRSRepositoryResource
      * Return the TypeDefs that have the properties matching the supplied match criteria.
      *
      * @param userId unique identifier for requesting user.
-     * @param matchCriteria TypeDefProperties a list of property names and values.
+     * @param matchCriteria TypeDefProperties a list of property names.
      * @return TypeDefListResponse:
      * TypeDefs list or
      * InvalidParameterException the matchCriteria is null or

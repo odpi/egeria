@@ -23,6 +23,7 @@
     <artifactId>asset-consumer</artifactId>
     <packaging>pom</packaging>
     <modules>
+        <module>asset-consumer-api</module>
         <module>asset-consumer-client</module>
         <module>asset-consumer-server</module>
         <module>asset-consumer-spring</module>

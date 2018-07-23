@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -29,7 +30,7 @@ public class EnterpriseOMRSConnectorProvider extends OMRSRepositoryConnectorProv
 {
     private        final int hashCode = UUID.randomUUID().hashCode();
 
-    private static final Logger log = Logger.getLogger(EnterpriseOMRSConnectorProvider.class);
+    private static final Logger log = LoggerFactory.getLogger(EnterpriseOMRSConnectorProvider.class);
 
     private static OMRSConnectorManager         connectorManager                 = null;
     private static OMRSRepositoryContentManager repositoryContentManager         = null;

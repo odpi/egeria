@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.repositoryservices.metadatahighway.cohortregistry;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
@@ -77,7 +78,7 @@ public class OMRSCohortRegistry implements OMRSRegistryEventProcessor
      * metadata exchange activity they are involved in.  The Logger is for standard debug.
      */
     private static final OMRSAuditLog auditLog = new OMRSAuditLog(OMRSAuditingComponent.COHORT_REGISTRY);
-    private static final Logger       log      = Logger.getLogger(OMRSCohortRegistry.class);
+    private static final Logger       log      = LoggerFactory.getLogger(OMRSCohortRegistry.class);
 
 
     /**
@@ -505,7 +506,7 @@ public class OMRSCohortRegistry implements OMRSRegistryEventProcessor
         auditLog.logRecord(actionDescription,
                            auditCode.getLogMessageId(),
                            auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(cohortName, localMetadataCollectionId),
+                           auditCode.getFormattedLogMessage(cohortName, localRegistration.getMetadataCollectionId()),
                            null,
                            auditCode.getSystemAction(),
                            auditCode.getUserAction());

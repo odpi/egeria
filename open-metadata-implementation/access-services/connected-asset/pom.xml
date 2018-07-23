@@ -25,10 +25,10 @@
     <artifactId>connected-asset</artifactId>
     <packaging>pom</packaging>
     <modules>
+        <module>connected-asset-api</module>
         <module>connected-asset-client</module>
         <module>connected-asset-server</module>
         <module>connected-asset-spring</module>
-        <module>connected-asset-api</module>
     </modules>
 
 

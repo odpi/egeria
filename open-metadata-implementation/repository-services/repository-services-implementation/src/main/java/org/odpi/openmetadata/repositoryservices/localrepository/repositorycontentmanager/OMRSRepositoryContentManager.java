@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
@@ -63,7 +64,7 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
      * the open metadata repository.  The Logger is for standard debug.
      */
     private static final OMRSAuditLog auditLog = new OMRSAuditLog(OMRSAuditingComponent.TYPEDEF_MANAGER);
-    private static final Logger       log      = Logger.getLogger(OMRSRepositoryContentManager.class);
+    private static final Logger       log      = LoggerFactory.getLogger(OMRSRepositoryContentManager.class);
 
 
 
@@ -553,7 +554,7 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
         {
             OMRSErrorCode errorCode = OMRSErrorCode.BAD_CATEGORY_FOR_TYPEDEF_ATTRIBUTE;
             String errorMessage = errorCode.getErrorMessageId()
-                                + errorCode.getFormattedErrorMessage(sourceName, typeName, category.getTypeName());
+                                + errorCode.getFormattedErrorMessage(sourceName, typeName, category.getName());
 
             throw new TypeErrorException(errorCode.getHTTPErrorCode(),
                                          this.getClass().getName(),
@@ -604,7 +605,7 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
 
             if (retrievedTypeDefCategory != null)
             {
-                return (category.getTypeCode() == retrievedTypeDefCategory.getTypeCode());
+                return (category.getOrdinal() == retrievedTypeDefCategory.getOrdinal());
             }
             else
             {
@@ -616,7 +617,7 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
             OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_NOT_KNOWN_FOR_INSTANCE;
             String errorMessage = errorCode.getErrorMessageId()
                     + errorCode.getFormattedErrorMessage(typeName,
-                                                         category.getTypeName(),
+                                                         category.getName(),
                                                          methodName,
                                                          sourceName);
 
@@ -1597,11 +1598,11 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
                 return false;
             }
 
-            if (category.getTypeCode() != knownTypeDefCategory.getTypeCode())
+            if (category.getOrdinal() != knownTypeDefCategory.getOrdinal())
             {
                 log.error("TypeDef category mismatch for TypeDef " + typeDefName + " (GUID = " + typeDefGUID + ") from "
-                                  + sourceName + " received version number is " + category.getTypeDescription()
-                                  + " and stored category is " + knownTypeDefCategory.getTypeDescription());
+                                  + sourceName + " received version number is " + category.getDescription()
+                                  + " and stored category is " + knownTypeDefCategory.getDescription());
 
                 return false;
             }
@@ -1642,11 +1643,11 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
                 return false;
             }
 
-            if (category.getTypeCode() != knownAttributeTypeDefCategory.getTypeCode())
+            if (category.getOrdinal() != knownAttributeTypeDefCategory.getOrdinal())
             {
                 log.error("TypeDef category mismatch for TypeDef " + attributeTypeDefName + " (GUID = " + attributeTypeDefGUID + ") from "
-                                  + sourceName + " received version number is " + category.getTypeDescription()
-                                  + " and stored category is " + knownAttributeTypeDefCategory.getTypeDescription());
+                                  + sourceName + " received version number is " + category.getDescription()
+                                  + " and stored category is " + knownAttributeTypeDefCategory.getDescription());
 
                 return false;
             }

@@ -57,7 +57,7 @@ heterogeneous metadata repositories.
 # Technical Components 
 
 The open metadata and governance project is divided into the following pieces:
-* Common types for open metadata - these types are built from the Apache Atlas type system and define the types stored in the graph database as well as payloads for notifications and APIs
+* Common types for open metadata - these types are built from the Egeria type system and define the types stored in the graph database as well as payloads for notifications and APIs
 * [Open Metadata Repository Services (OMRS)](../../open-metadata-implementation/repository-services/README.md) - Open metadata repository APIs and notifications to enable metadata repositories to exchange metadata in a peer-to-peer metadata repository cohort.  This capability is located in each metadata repository and collectively they enable what is referred to as the "metadata highway".
 * [Open Metadata Access Services (OMAS)](../../open-metadata-implementation/access-services/README.md) - Consumer-centric APIs and notifications for specific classes of tools and applications.  The OMAS services call the OMRS to access metadata from any open metadata repository.
 * New frameworks:
@@ -65,7 +65,7 @@ The open metadata and governance project is divided into the following pieces:
   * [Open Discovery Framework (ODF)](../../open-metadata-implementation/frameworks/open-discovery-framework/README.md) - provides management for automated processes and analytics to analyze the content of data resources and update the metadata about them.
   * [Governance Action Framework (GAF)](../../open-metadata-implementation/frameworks/governance-action-framework/README.md) - provides audit logging and governance enforcement services for implementing enforcement points in data engines, security managers such as Apache Ranger, and APIs.  It also adds stewardship services for analyzing audit logs and resolving issues identified in exceptions raised by the enforcement services.
 * [Open Metadata Graph Repository](../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/graph-repository-connector/README.md) - A set of stores linked together with a graph database.  These stores provide linkage between business, technical and operational metadata along with logs for auditing, operational lineage, metering and exception management.
-* Open Lineage Services- Services for collecting and querying lineage information across multiple heterogeneous metadata repositories
+* Open Lineage Services - Services for collecting and querying lineage information across multiple heterogeneous metadata repositories
 
 At this current time, there is a huge investment into Egeria
 to add the open metadata and governance features plus also work on
@@ -78,4 +78,4 @@ With these frameworks and APIs in place,
 the Egeria function is divided into different packages to allow technology partners
 to connect into the open metadata and governance ecosystem.
 The integration options are described as five patterns
-(**native**, **caller**, **adapter**, **plug-in**, **special**).
+([**native**, **caller**, **adapter**, **plug-in**, **special**](open-metadata-integration-patterns/README.md)).

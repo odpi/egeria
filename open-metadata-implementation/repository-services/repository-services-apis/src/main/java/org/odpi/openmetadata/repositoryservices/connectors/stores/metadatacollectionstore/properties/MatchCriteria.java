@@ -70,4 +70,20 @@ public enum MatchCriteria implements Serializable
      * @return String description
      */
     public String getDescription() { return description; }
+
+
+    /**
+     * toString() JSON-style
+     *
+     * @return string description
+     */
+    @Override
+    public String toString()
+    {
+        return "MatchCriteria{" +
+                "ordinal=" + ordinal +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }

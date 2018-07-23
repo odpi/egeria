@@ -21,10 +21,14 @@
     </description>
 
     <artifactId>subject-area</artifactId>
+    <version>0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
+        <module>subject-area-api</module>
         <module>subject-area-client</module>
         <module>subject-area-server</module>
+        <module>subject-area-tools</module>
+        <module>subject-area-spring</module>
     </modules>
 
 </project>

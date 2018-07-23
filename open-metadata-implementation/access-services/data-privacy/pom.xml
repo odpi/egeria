@@ -24,8 +24,10 @@
     <artifactId>data-privacy</artifactId>
     <packaging>pom</packaging>
     <modules>
+        <module>data-privacy-api</module>
         <module>data-privacy-client</module>
         <module>data-privacy-server</module>
+        <module>data-privacy-spring</module>
     </modules>
 
 

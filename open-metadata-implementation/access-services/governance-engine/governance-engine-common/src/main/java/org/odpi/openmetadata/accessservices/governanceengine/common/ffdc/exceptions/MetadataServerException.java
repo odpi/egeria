@@ -7,7 +7,7 @@ import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.excepti
 
 /**
  * The MetadataServerException is thrown by the GovernanceEngine OMAS when it is not able to communicate with the
- * property server.
+ * property handlers.
  */
 public class MetadataServerException extends GovernanceEngineCheckedExceptionBase {
     /**

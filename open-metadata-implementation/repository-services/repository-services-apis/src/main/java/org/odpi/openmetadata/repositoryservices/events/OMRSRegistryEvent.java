@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.repositoryservices.events;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1;
 import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1RegistrySection;
@@ -43,7 +44,7 @@ public class OMRSRegistryEvent extends OMRSEvent
     private  OMRSRegistryEventErrorCode  errorCode                       = OMRSRegistryEventErrorCode.NOT_IN_USE;
 
 
-    private static final Logger log = Logger.getLogger(OMRSRegistryEvent.class);
+    private static final Logger log = LoggerFactory.getLogger(OMRSRegistryEvent.class);
 
 
     /**
@@ -132,7 +133,7 @@ public class OMRSRegistryEvent extends OMRSEvent
                              Connection                 remoteConnection)
     {
         super(OMRSEventCategory.REGISTRY,
-              errorCode.getErrorCodeEncoding(),
+              errorCode.getEncoding(),
               errorMessage,
               targetMetadataCollectionId,
               remoteConnection);

@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+
 package org.odpi.openmetadata.adapters.connectors.database.gaian;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;

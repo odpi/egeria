@@ -34,7 +34,7 @@ public class TypeDefListResponse extends OMRSAPIResponse
 
 
     /**
-     * Copy/clone Constructor
+     * Copy/clone constructor
      */
     public TypeDefListResponse(TypeDefListResponse   template)
     {
@@ -68,7 +68,7 @@ public class TypeDefListResponse extends OMRSAPIResponse
 
             for (TypeDef  typeDef : typeDefs)
             {
-                clonedTypeDefs.add(new TypeDef(typeDef));
+                clonedTypeDefs.add(typeDef.cloneFromSubclass());
             }
 
             return clonedTypeDefs;

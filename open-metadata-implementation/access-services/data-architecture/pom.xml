@@ -24,9 +24,10 @@
     <artifactId>data-architecture</artifactId>
     <packaging>pom</packaging>
     <modules>
+        <module>data-architecture-api</module>
         <module>data-architecture-client</module>
         <module>data-architecture-server</module>
+        <module>data-architecture-spring</module>
     </modules>
-
 
 </project>

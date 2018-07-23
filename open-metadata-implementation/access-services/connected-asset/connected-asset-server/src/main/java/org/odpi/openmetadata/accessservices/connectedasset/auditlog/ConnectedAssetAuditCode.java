@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservices.connectedasset.auditlog;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 
 import java.text.MessageFormat;
@@ -55,7 +56,7 @@ public enum ConnectedAssetAuditCode
     private String                     systemAction;
     private String                     userAction;
 
-    private static final Logger log = Logger.getLogger(ConnectedAssetAuditCode.class);
+    private static final Logger log = LoggerFactory.getLogger(ConnectedAssetAuditCode.class);
 
 
     /**

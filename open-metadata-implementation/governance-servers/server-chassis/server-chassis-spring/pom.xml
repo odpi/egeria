@@ -47,14 +47,25 @@
             <version>${open-metadata.version}</version>
         </dependency>
 
-        <!-- Spring for REST APIs -->
-
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-            <version>${spring.version}</version>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>governance-engine-spring</artifactId>
+            <version>${open-metadata.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>asset-catalog-server</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+  
+  <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>subject-area-spring</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <!-- Spring for REST APIs -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>

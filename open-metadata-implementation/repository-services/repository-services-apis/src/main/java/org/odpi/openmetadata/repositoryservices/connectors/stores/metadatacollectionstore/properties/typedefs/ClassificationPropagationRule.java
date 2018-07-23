@@ -78,4 +78,20 @@ public enum ClassificationPropagationRule implements Serializable
      * @return String description
      */
     public String getDescription() { return description; }
+
+
+    /**
+     * toString() JSON-style
+     *
+     * @return string description
+     */
+    @Override
+    public String toString()
+    {
+        return "ClassificationPropagationRule{" +
+                "ordinal=" + ordinal +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }

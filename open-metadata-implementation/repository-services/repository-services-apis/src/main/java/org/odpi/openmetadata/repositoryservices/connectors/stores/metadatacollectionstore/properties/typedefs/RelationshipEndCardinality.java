@@ -81,4 +81,20 @@ public enum RelationshipEndCardinality implements Serializable
      * @return String description
      */
     public String getDescription() { return description; }
+
+
+    /**
+     * toString() JSON-style
+     *
+     * @return string description
+     */
+    @Override
+    public String toString()
+    {
+        return "RelationshipEndCardinality{" +
+                "ordinal=" + ordinal +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }

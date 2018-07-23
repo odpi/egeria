@@ -60,7 +60,7 @@ public enum CollectionDefCategory implements Serializable
      *
      * @return int type code
      */
-    public int getCode() {
+    public int getOrdinal() {
         return code;
     }
 
@@ -90,5 +90,22 @@ public enum CollectionDefCategory implements Serializable
      */
     public String getJavaClassName() {
         return javaClassName;
+    }
+
+
+    /**
+     * toString() JSON-style
+     *
+     * @return string description
+     */
+    @Override
+    public String toString()
+    {
+        return "CollectionDefCategory{" +
+                "code=" + code +
+                ", name='" + name + '\'' +
+                ", argumentCount=" + argumentCount +
+                ", javaClassName='" + javaClassName + '\'' +
+                '}';
     }
 }

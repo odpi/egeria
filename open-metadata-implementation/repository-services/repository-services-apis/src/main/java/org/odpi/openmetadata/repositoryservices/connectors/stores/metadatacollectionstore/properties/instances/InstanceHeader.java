@@ -17,7 +17,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
-        property = "type")
+        property = "class")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = EntitySummary.class, name = "EntitySummary"),
         @JsonSubTypes.Type(value = Relationship.class, name = "Relationship")

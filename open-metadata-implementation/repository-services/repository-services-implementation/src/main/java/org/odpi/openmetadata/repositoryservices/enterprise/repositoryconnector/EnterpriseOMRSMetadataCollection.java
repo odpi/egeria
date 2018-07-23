@@ -527,7 +527,7 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
      * Return the TypeDefs that have the properties matching the supplied match criteria.
      *
      * @param userId  unique identifier for requesting user.
-     * @param matchCriteria  TypeDefProperties a list of property names and values.
+     * @param matchCriteria  TypeDefProperties a list of property names.
      * @return TypeDefs list.
      * @throws InvalidParameterException the matchCriteria is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
@@ -1612,9 +1612,14 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
                     /*
                      * Issue the request and return if it succeeds
                      */
-                    return metadataCollection.isEntityKnown(userId, guid);
-                }
+                    EntityDetail  entity  = metadataCollection.isEntityKnown(userId, guid);
 
+                    if (entity != null)
+                    {
+                        return enterpriseParentConnector.processRetrievedEntityDetail(cohortConnector.getMetadataCollectionId(),
+                                                                                      entity);
+                    }
+                }
                 catch (RepositoryErrorException error)
                 {
                     repositoryErrorException = error;
@@ -1706,7 +1711,8 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
 
                     repositoryValidator.validateEntityFromStore(repositoryName, guid, entity, methodName);
 
-                    return entity;
+                    return enterpriseParentConnector.processRetrievedEntitySummary(cohortConnector.getMetadataCollectionId(),
+                                                                                   entity);
                 }
                 catch (EntityNotKnownException error)
                 {
@@ -1806,7 +1812,8 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
 
                     repositoryValidator.validateEntityFromStore(repositoryName, guid, entity, methodName);
 
-                    return entity;
+                    return enterpriseParentConnector.processRetrievedEntityDetail(cohortConnector.getMetadataCollectionId(),
+                                                                                  entity);
                 }
                 catch (EntityNotKnownException error)
                 {
@@ -1919,7 +1926,8 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
 
                     repositoryValidator.validateEntityFromStore(repositoryName, guid, entity, methodName);
 
-                    return entity;
+                    return enterpriseParentConnector.processRetrievedEntityDetail(cohortConnector.getMetadataCollectionId(),
+                                                                                  entity);
                 }
                 catch (EntityNotKnownException error)
                 {
@@ -2076,7 +2084,7 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
                                                                                               pageSize);
 
                     /*
-                     * Step through the list of returned TypeDefs and remove duplicates.
+                     * Step through the list of returned relationships and remove duplicates.
                      */
                     combinedResults = this.addUniqueRelationships(combinedResults,
                                                                   results,
@@ -2790,11 +2798,15 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
                     /*
                      * Issue the request and return if it succeeds
                      */
-                    Relationship     relationship = this.isRelationshipKnown(userId, guid);
+                    Relationship     relationship = metadataCollection.isRelationshipKnown(userId, guid);
 
                     repositoryValidator.validateRelationshipFromStore(repositoryName, guid, relationship, methodName);
 
-                    return relationship;
+                    if (relationship != null)
+                    {
+                        return enterpriseParentConnector.processRetrievedRelationship(cohortConnector.getMetadataCollectionId(),
+                                                                                      relationship);
+                    }
                 }
                 catch (RepositoryErrorException error)
                 {
@@ -2883,7 +2895,7 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
                     /*
                      * Issue the request and return if it succeeds
                      */
-                    Relationship     relationship = this.getRelationship(userId, guid);
+                    Relationship     relationship = metadataCollection.getRelationship(userId, guid);
 
                     repositoryValidator.validateRelationshipFromStore(repositoryName, guid, relationship, methodName);
 
@@ -2988,11 +3000,12 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
                     /*
                      * Issue the request and return if it succeeds
                      */
-                    Relationship     relationship = this.getRelationship(userId, guid, asOfTime);
+                    Relationship     relationship = metadataCollection.getRelationship(userId, guid, asOfTime);
 
                     repositoryValidator.validateRelationshipFromStore(repositoryName, guid, relationship, methodName);
 
-                    return relationship;
+                    return enterpriseParentConnector.processRetrievedRelationship(cohortConnector.getMetadataCollectionId(),
+                                                                                  relationship);
                 }
                 catch (RelationshipNotKnownException error)
                 {
@@ -6019,7 +6032,11 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
 
         if (results != null)
         {
-            for (EntityDetail returnedEntity : results)
+            List<EntityDetail>         processedResults;
+
+            processedResults = enterpriseParentConnector.processRetrievedEntities(metadataCollectionId, results);
+
+            for (EntityDetail returnedEntity : processedResults)
             {
                 combinedResults = this.addUniqueEntity(combinedResults,
                                                        returnedEntity,
@@ -6082,7 +6099,11 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
 
         if (results != null)
         {
-            for (Relationship returnedRelationship : results)
+            List<Relationship>         processedResults;
+
+            processedResults = enterpriseParentConnector.processRetrievedRelationships(metadataCollectionId, results);
+
+            for (Relationship returnedRelationship : processedResults)
             {
                 combinedResults = this.addUniqueRelationship(combinedResults,
                                                              returnedRelationship,

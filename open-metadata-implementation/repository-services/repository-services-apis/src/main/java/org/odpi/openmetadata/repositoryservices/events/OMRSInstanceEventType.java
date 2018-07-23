@@ -1,12 +1,22 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.repositoryservices.events;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.io.Serializable;
+
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
  * OMRSInstanceEventType defines the different types of instance events in the open metadata repository services
  * protocol.
  */
+@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown=true)
 public enum OMRSInstanceEventType implements Serializable
 {
     UNKNOWN_INSTANCE_EVENT          (0,  "UnknownInstanceEvent",
@@ -80,24 +90,24 @@ public enum OMRSInstanceEventType implements Serializable
 
     private static final long serialVersionUID = 1L;
 
-    private  int      eventTypeCode;
-    private  String   eventTypeName;
-    private  String   eventTypeDescription;
+    private  int    ordinal;
+    private  String name;
+    private  String description;
 
 
     /**
      * Default Constructor sets up the specific values for this instance of the enum.
      *
-     * @param eventTypeCode int identifier used for indexing based on the enum.
-     * @param eventTypeName string name used for messages that include the enum.
-     * @param eventTypeDescription default description for the enum value used when natural resource
-     *                                     bundle is not available.
+     * @param ordinal int identifier used for indexing based on the enum.
+     * @param name string name used for messages that include the enum.
+     * @param description default description for the enum value used when natural resource
+     *                   bundle is not available.
      */
-    OMRSInstanceEventType(int eventTypeCode, String eventTypeName, String eventTypeDescription)
+    OMRSInstanceEventType(int ordinal, String name, String description)
     {
-        this.eventTypeCode = eventTypeCode;
-        this.eventTypeName = eventTypeName;
-        this.eventTypeDescription = eventTypeDescription;
+        this.ordinal = ordinal;
+        this.name = name;
+        this.description = description;
     }
 
 
@@ -106,9 +116,9 @@ public enum OMRSInstanceEventType implements Serializable
      *
      * @return int identifier code
      */
-    public int getInstanceEventTypeCode()
+    public int getOrdinal()
     {
-        return eventTypeCode;
+        return ordinal;
     }
 
 
@@ -117,9 +127,9 @@ public enum OMRSInstanceEventType implements Serializable
      *
      * @return String name
      */
-    public String getInstanceEventTypeName()
+    public String getName()
     {
-        return eventTypeName;
+        return name;
     }
 
 
@@ -129,8 +139,24 @@ public enum OMRSInstanceEventType implements Serializable
      *
      * @return String default description
      */
-    public String getInstanceEventTypeDescription()
+    public String getDescription()
     {
-        return eventTypeDescription;
+        return description;
+    }
+
+
+    /**
+     * toString() JSON-style
+     *
+     * @return string description
+     */
+    @Override
+    public String toString()
+    {
+        return "OMRSInstanceEventType{" +
+                "ordinal=" + ordinal +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.repositoryservices.ffdc;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.text.MessageFormat;
 import java.util.Arrays;
@@ -475,7 +476,7 @@ public enum OMRSErrorCode
             "The system is not able to process events sent between repositories in the open metadata cohort.",
             "Correct the configuration for the OMRS Topic Connector (in the OMRS Configuration). Retry the request when the topic connector configuration is correct."),
     REMOTE_REPOSITORY_ERROR(404, "OMRS-REST-REPOSITORY-CONNECTOR-404-001 ",
-            "A call to the {0} of the open metadata repository server {1} results in an exception with message {2}",
+            "A call to the {0} of the open metadata repository server {1} results in an exception {2} with message {3}",
             "The system is unable to retrieve any metadata properties from this repository.",
             "Retry the request when the repository server is available."),
     ENTERPRISE_NOT_SUPPORTED(405, "OMRS-ENTERPRISE-REPOSITORY-CONNECTOR-405-001 ",
@@ -671,8 +672,8 @@ public enum OMRSErrorCode
              "Raise a Jira to get this fixed."),
     NO_LOCAL_REPOSITORY(503, "OMRS-REST-API-503-001 ",
             "There is no local repository to support REST API call {0}",
-            "The server has received a call on its open metadata repository REST API services but is unable to process it because the local repository is not active.",
-            "If the server is supposed to have a local repository correct the server configuration and restart the server."),
+            "The server has received a call on its open metadata repository REST API services but is unable to process it because the local repository is not active.  This may be because the open metadata services have not been activated.",
+            "Ensure that the open metadata services have been activated in the server. If they are active and the server is supposed to have a local repository, correct the server's configuration document to include a local repository and activate the open metadata services."),
     NULL_RESPONSE_FROM_API(503, "OMRS-REST-API-503-002 ",
             "A null response was received from REST API call {0} to repository {1}",
             "The server has issued a call to the open metadata repository REST API services in a remote repository and has received a null response.",
@@ -690,7 +691,7 @@ public enum OMRSErrorCode
     private String systemAction;
     private String userAction;
 
-    private static final Logger log = Logger.getLogger(OMRSErrorCode.class);
+    private static final Logger log = LoggerFactory.getLogger(OMRSErrorCode.class);
 
 
     /**
@@ -784,5 +785,23 @@ public enum OMRSErrorCode
     public String getUserAction()
     {
         return userAction;
+    }
+
+
+    /**
+     * toString() JSON-style
+     *
+     * @return string description
+     */
+    @Override
+    public String toString()
+    {
+        return "OMRSErrorCode{" +
+                "httpErrorCode=" + httpErrorCode +
+                ", errorMessageId='" + errorMessageId + '\'' +
+                ", errorMessage='" + errorMessage + '\'' +
+                ", systemAction='" + systemAction + '\'' +
+                ", userAction='" + userAction + '\'' +
+                '}';
     }
 }

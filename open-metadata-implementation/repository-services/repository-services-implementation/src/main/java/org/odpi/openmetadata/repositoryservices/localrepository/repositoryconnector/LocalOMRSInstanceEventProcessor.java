@@ -1,7 +1,9 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector;
 
-import org.apache.log4j.Logger;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
@@ -9,10 +11,6 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventProcessor;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -51,7 +49,7 @@ public class LocalOMRSInstanceEventProcessor implements OMRSInstanceEventProcess
      * the open metadata repository.  The Logger is for standard debug.
      */
     private static final OMRSAuditLog auditLog = new OMRSAuditLog(OMRSAuditingComponent.INSTANCE_EVENT_PROCESSOR);
-    private static final Logger       log      = Logger.getLogger(LocalOMRSInstanceEventProcessor.class);
+    private static final Logger       log      = LoggerFactory.getLogger(LocalOMRSInstanceEventProcessor.class);
 
 
     /**
@@ -1075,56 +1073,102 @@ public class LocalOMRSInstanceEventProcessor implements OMRSInstanceEventProcess
      *
      * @param sourceName name of the source of this event.
      * @param metadataCollectionId unique identifier for the metadata from the remote repository
-     * @param entity               the retrieved entity.
-     * @return Validated and processed entity.
+     * @param processedEntityGUID the retrieved entity's GUID.
+     * @param processedEntityType the retrieved entity's Type.
      */
-    public EntityDetail processRetrievedEntity(String       sourceName,
-                                               String       metadataCollectionId,
-                                               EntityDetail entity)
+    public void refreshRetrievedEntity(String        sourceName,
+                                       String        metadataCollectionId,
+                                       String        processedEntityGUID,
+                                       InstanceType  processedEntityType)
     {
-        EntityDetail   processedEntity = new EntityDetail(entity);
+        try
+        {
+            if (realMetadataCollection.isEntityKnown(sourceName, processedEntityGUID) == null)
+            {
+                InstanceType type = processedEntityType;
 
-        processedEntity.setMetadataCollectionId(metadataCollectionId);
+                if (type != null)
+                {
+                    /*
+                     * It would be possible to save the relationship directly into the repository,
+                     * but it is possible that some of the properties have been suppressed for the
+                     * requesting user Id.  In which case saving it now would result in other users
+                     * seeing a restricted view of the relationship.
+                     */
+                    realMetadataCollection.refreshEntityReferenceCopy(localServerName,
+                                                                      processedEntityGUID,
+                                                                      type.getTypeDefGUID(),
+                                                                      type.getTypeDefName(),
+                                                                      metadataCollectionId);
+                }
+            }
+        }
+        catch (Throwable   error)
+        {
+            final String methodName = "processRetrievedEntity";
 
-        final String methodName = "processRetrievedEntity";
-        final String entityParameterName = "entity";
-
-        updateReferenceEntity(sourceName,
-                              methodName,
-                              entityParameterName,
-                              metadataCollectionId,
-                              localServerName,
-                              entity);
-        return entity;
+            OMRSAuditCode auditCode = OMRSAuditCode.UNEXPECTED_EXCEPTION_FROM_EVENT;
+            auditLog.logRecord(methodName,
+                               auditCode.getLogMessageId(),
+                               auditCode.getSeverity(),
+                               auditCode.getFormattedLogMessage(methodName,
+                                                                sourceName,
+                                                                metadataCollectionId,
+                                                                error.getMessage()),
+                               null,
+                               auditCode.getSystemAction(),
+                               auditCode.getUserAction());
+        }
     }
 
 
     /**
-     * Pass a list of entities that have been retrieved from a remote open metadata repository so they can be
-     * validated and (if the rules permit) cached in the local repository.
+     * Pass an entity that has been retrieved from a remote open metadata repository so it can be validated and
+     * (if the rules permit) cached in the local repository.
      *
      * @param sourceName name of the source of this event.
      * @param metadataCollectionId unique identifier for the metadata from the remote repository
-     * @param entities             the retrieved relationships
-     * @return the validated and processed relationships
+     * @param processedEntity  the retrieved entity.
      */
-    public List<EntityDetail> processRetrievedEntities(String                  sourceName,
-                                                       String                  metadataCollectionId,
-                                                       List<EntityDetail>      entities)
+    public void processRetrievedEntitySummary(String        sourceName,
+                                              String        metadataCollectionId,
+                                              EntitySummary processedEntity)
     {
-        List<EntityDetail> processedEntities = new ArrayList<>();
-
-        for (EntityDetail  entity : entities)
+        /*
+         * Discover whether the instance should be learned.
+         */
+        if (verifyEventToLearn(sourceName, processedEntity))
         {
-            EntityDetail   processedEntity = this.processRetrievedEntity(sourceName, metadataCollectionId, entity);
-
-            if (processedEntity != null)
-            {
-                processedEntities.add(processedEntity);
-            }
+            refreshRetrievedEntity(sourceName,
+                                   metadataCollectionId,
+                                   processedEntity.getGUID(),
+                                   processedEntity.getType());
         }
+    }
 
-        return processedEntities;
+
+    /**
+     * Pass an entity that has been retrieved from a remote open metadata repository so it can be validated and
+     * (if the rules permit) cached in the local repository.
+     *
+     * @param sourceName name of the source of this event.
+     * @param metadataCollectionId unique identifier for the metadata from the remote repository
+     * @param processedEntity the retrieved entity.
+     */
+    public void processRetrievedEntityDetail(String       sourceName,
+                                             String       metadataCollectionId,
+                                             EntityDetail processedEntity)
+    {
+        /*
+         * Discover whether the instance should be learned.
+         */
+        if (verifyEventToLearn(sourceName, processedEntity))
+        {
+            refreshRetrievedEntity(sourceName,
+                                   metadataCollectionId,
+                                   processedEntity.getGUID(),
+                                   processedEntity.getType());
+        }
     }
 
 
@@ -1134,28 +1178,16 @@ public class LocalOMRSInstanceEventProcessor implements OMRSInstanceEventProcess
      *
      * @param sourceName name of the source of this event.
      * @param metadataCollectionId unique identifier for the metadata from the remote repository
-     * @param relationship         the retrieved relationship
-     * @return the validated and processed relationship
+     * @param processedRelationship         the retrieved relationship
      */
-    public Relationship processRetrievedRelationship(String       sourceName,
-                                                     String       metadataCollectionId,
-                                                     Relationship relationship)
+    public void processRetrievedRelationship(String       sourceName,
+                                             String       metadataCollectionId,
+                                             Relationship processedRelationship)
     {
-        Relationship   processedRelationship = new Relationship(relationship);
-
-        /*
-         * Ensure the metadata collection is set up correctly.
-         */
-        if (processedRelationship.getMetadataCollectionId() == null)
-        {
-            processedRelationship.setMetadataCollectionId(metadataCollectionId);
-        }
-
-
         /*
          * Discover whether the instance should be learned.
          */
-        if (saveExchangeRule.learnInstanceEvent(processedRelationship))
+        if (verifyEventToLearn(sourceName, processedRelationship))
         {
             try
             {
@@ -1169,7 +1201,7 @@ public class LocalOMRSInstanceEventProcessor implements OMRSInstanceEventProcess
                          * It would be possible to save the relationship directly into the repository,
                          * but it is possible that some of the properties have been suppressed for the
                          * requesting user Id.  In which case saving it now would result in other users
-                         * seeing a restricted view of the
+                         * seeing a restricted view of the relationship.
                          */
                         realMetadataCollection.refreshRelationshipReferenceCopy(localServerName,
                                                                                 processedRelationship.getGUID(),
@@ -1196,39 +1228,6 @@ public class LocalOMRSInstanceEventProcessor implements OMRSInstanceEventProcess
                                    auditCode.getUserAction());
             }
         }
-
-        return processedRelationship;
-    }
-
-
-    /**
-     * Pass a list of relationships that have been retrieved from a remote open metadata repository so they can be
-     * validated and (if the rules permit) cached in the local repository.
-     *
-     * @param sourceName name of the source of this event.
-     * @param metadataCollectionId unique identifier for the metadata from the remote repository
-     * @param relationships        the list of retrieved relationships
-     * @return the validated and processed relationships
-     */
-    public List<Relationship> processRetrievedRelationships(String             sourceName,
-                                                            String             metadataCollectionId,
-                                                            List<Relationship> relationships)
-    {
-        List<Relationship> processedRelationships = new ArrayList<>();
-
-        for (Relationship  relationship : relationships)
-        {
-            Relationship processedRelationship = this.processRetrievedRelationship(sourceName,
-                                                                                   metadataCollectionId,
-                                                                                   relationship);
-
-            if (processedRelationship != null)
-            {
-                processedRelationships.add(processedRelationship);
-            }
-        }
-
-        return processedRelationships;
     }
 
 
@@ -1267,7 +1266,7 @@ public class LocalOMRSInstanceEventProcessor implements OMRSInstanceEventProcess
                                                                 entity,
                                                                 methodName);
 
-            if (saveExchangeRule.processInstanceEvent(entity))
+            if (verifyEventToSave(sourceName, entity))
             {
                 realMetadataCollection.saveEntityReferenceCopy(sourceName, entity);
             }
@@ -1295,7 +1294,7 @@ public class LocalOMRSInstanceEventProcessor implements OMRSInstanceEventProcess
      * @param sourceName                     name of the source of the event.  It may be the cohort name for incoming events or the
      *                                       local repository, or event mapper name.
      * @param methodName                     name of the event method
-     * @param entityParameterName            name of the parameter that passed the relationship.
+     * @param relationshipParameterName            name of the parameter that passed the relationship.
      * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
      * @param originatorServerName           name of the server that the event came from.
@@ -1303,7 +1302,7 @@ public class LocalOMRSInstanceEventProcessor implements OMRSInstanceEventProcess
      */
     private void updateReferenceRelationship(String       sourceName,
                                              String       methodName,
-                                             String       entityParameterName,
+                                             String       relationshipParameterName,
                                              String       originatorMetadataCollectionId,
                                              String       originatorServerName,
                                              Relationship relationship)
@@ -1313,11 +1312,11 @@ public class LocalOMRSInstanceEventProcessor implements OMRSInstanceEventProcess
             verifyEventProcessor(methodName);
             repositoryValidator.validateReferenceInstanceHeader(realRepositoryName,
                                                                 localMetadataCollectionId,
-                                                                entityParameterName,
+                                                                relationshipParameterName,
                                                                 relationship,
                                                                 methodName);
 
-            if (saveExchangeRule.processInstanceEvent(relationship))
+            if (verifyEventToSave(sourceName, relationship))
             {
                 realMetadataCollection.saveRelationshipReferenceCopy(sourceName, relationship);
             }
@@ -1484,5 +1483,42 @@ public class LocalOMRSInstanceEventProcessor implements OMRSInstanceEventProcess
                                               errorCode.getSystemAction(),
                                               errorCode.getUserAction());
         }
+    }
+
+
+    /**
+     * Determine if the event should be processed.
+     *
+     * @param source identifier of the source of the event.
+     * @param instance metadata instance in the event.
+     * @return boolean flag indicating whether the event should be sent to the real repository or not.
+     */
+    private boolean verifyEventToSave(String             source,
+                                      InstanceHeader     instance)
+    {
+        InstanceType   instanceType = instance.getType();
+
+        return ((saveExchangeRule.processInstanceEvent(instance)) &&
+                (repositoryValidator.isActiveType(source,
+                                                  instanceType.getTypeDefGUID(),
+                                                  instanceType.getTypeDefName())));
+    }
+
+    /**
+     * Determine if the event should be processed.
+     *
+     * @param source identifier of the source of the event.
+     * @param instance metadata instance in the event.
+     * @return boolean flag indicating whether the event should be sent to the real repository or not.
+     */
+    private boolean verifyEventToLearn(String             source,
+                                       InstanceHeader     instance)
+    {
+        InstanceType   instanceType = instance.getType();
+
+        return ((saveExchangeRule.learnInstanceEvent(instance)) &&
+                (repositoryValidator.isActiveType(source,
+                                                  instanceType.getTypeDefGUID(),
+                                                  instanceType.getTypeDefName())));
     }
 }

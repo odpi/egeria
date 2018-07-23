@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.repositoryservices.archivemanager;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.*;
@@ -48,7 +49,7 @@ public class OMRSArchiveBuilder
     private Map<String, Set<String>>       entityAttributeMap    = new HashMap<>();
 
 
-    private static final Logger log = Logger.getLogger(OMRSArchiveBuilder.class);
+    private static final Logger log = LoggerFactory.getLogger(OMRSArchiveBuilder.class);
 
 
     /**
@@ -103,7 +104,7 @@ public class OMRSArchiveBuilder
                 OMRSErrorCode errorCode = OMRSErrorCode.DUPLICATE_TYPE_IN_ARCHIVE;
                 String        errorMessage = errorCode.getErrorMessageId()
                                            + errorCode.getFormattedErrorMessage(primitiveDef.getName(),
-                                                                                AttributeTypeDefCategory.PRIMITIVE.getTypeName(),
+                                                                                AttributeTypeDefCategory.PRIMITIVE.getName(),
                                                                                 duplicateElement.toString(),
                                                                                 primitiveDef.toString());
 
@@ -177,7 +178,7 @@ public class OMRSArchiveBuilder
                 OMRSErrorCode errorCode = OMRSErrorCode.MISSING_TYPE_IN_ARCHIVE;
                 String        errorMessage = errorCode.getErrorMessageId()
                                            + errorCode.getFormattedErrorMessage(primitiveDefName,
-                                                                                AttributeTypeDefCategory.PRIMITIVE.getTypeName());
+                                                                                AttributeTypeDefCategory.PRIMITIVE.getName());
 
                 throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
                                                   this.getClass().getName(),
@@ -193,7 +194,7 @@ public class OMRSArchiveBuilder
         {
             OMRSErrorCode errorCode = OMRSErrorCode.MISSING_NAME_FOR_ARCHIVE;
             String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(AttributeTypeDefCategory.PRIMITIVE.getTypeName());
+                                       + errorCode.getFormattedErrorMessage(AttributeTypeDefCategory.PRIMITIVE.getName());
 
             throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
                                               this.getClass().getName(),
@@ -227,7 +228,7 @@ public class OMRSArchiveBuilder
                 OMRSErrorCode errorCode = OMRSErrorCode.DUPLICATE_TYPE_IN_ARCHIVE;
                 String        errorMessage = errorCode.getErrorMessageId()
                                            + errorCode.getFormattedErrorMessage(collectionDef.getName(),
-                                                                                AttributeTypeDefCategory.COLLECTION.getTypeName(),
+                                                                                AttributeTypeDefCategory.COLLECTION.getName(),
                                                                                 duplicateElement.toString(),
                                                                                 collectionDef.toString());
 
@@ -301,7 +302,7 @@ public class OMRSArchiveBuilder
                 OMRSErrorCode errorCode = OMRSErrorCode.MISSING_TYPE_IN_ARCHIVE;
                 String        errorMessage = errorCode.getErrorMessageId()
                                            + errorCode.getFormattedErrorMessage(collectionDefName,
-                                                                                AttributeTypeDefCategory.COLLECTION.getTypeName());
+                                                                                AttributeTypeDefCategory.COLLECTION.getName());
 
                 throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
                                                   this.getClass().getName(),
@@ -317,7 +318,7 @@ public class OMRSArchiveBuilder
         {
             OMRSErrorCode errorCode = OMRSErrorCode.MISSING_NAME_FOR_ARCHIVE;
             String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(AttributeTypeDefCategory.COLLECTION.getTypeName());
+                                       + errorCode.getFormattedErrorMessage(AttributeTypeDefCategory.COLLECTION.getName());
 
             throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
                                               this.getClass().getName(),
@@ -351,7 +352,7 @@ public class OMRSArchiveBuilder
                 OMRSErrorCode errorCode = OMRSErrorCode.DUPLICATE_TYPE_IN_ARCHIVE;
                 String        errorMessage = errorCode.getErrorMessageId()
                                            + errorCode.getFormattedErrorMessage(enumDef.getName(),
-                                                                                AttributeTypeDefCategory.ENUM_DEF.getTypeName(),
+                                                                                AttributeTypeDefCategory.ENUM_DEF.getName(),
                                                                                 duplicateElement.toString(),
                                                                                 enumDef.toString());
 
@@ -425,7 +426,7 @@ public class OMRSArchiveBuilder
                 OMRSErrorCode errorCode = OMRSErrorCode.MISSING_TYPE_IN_ARCHIVE;
                 String        errorMessage = errorCode.getErrorMessageId()
                                            + errorCode.getFormattedErrorMessage(enumDefName,
-                                                                                AttributeTypeDefCategory.ENUM_DEF.getTypeName());
+                                                                                AttributeTypeDefCategory.ENUM_DEF.getName());
 
                 throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
                                                   this.getClass().getName(),
@@ -441,7 +442,7 @@ public class OMRSArchiveBuilder
         {
             OMRSErrorCode errorCode = OMRSErrorCode.MISSING_NAME_FOR_ARCHIVE;
             String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(AttributeTypeDefCategory.ENUM_DEF.getTypeName());
+                                       + errorCode.getFormattedErrorMessage(AttributeTypeDefCategory.ENUM_DEF.getName());
 
             throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
                                               this.getClass().getName(),
@@ -475,7 +476,7 @@ public class OMRSArchiveBuilder
                 OMRSErrorCode errorCode = OMRSErrorCode.DUPLICATE_TYPE_IN_ARCHIVE;
                 String        errorMessage = errorCode.getErrorMessageId()
                                            + errorCode.getFormattedErrorMessage(classificationDef.getName(),
-                                                                                TypeDefCategory.CLASSIFICATION_DEF.getTypeName(),
+                                                                                TypeDefCategory.CLASSIFICATION_DEF.getName(),
                                                                                 duplicateElement.toString(),
                                                                                 classificationDef.toString());
 
@@ -577,7 +578,7 @@ public class OMRSArchiveBuilder
                 OMRSErrorCode errorCode = OMRSErrorCode.DUPLICATE_TYPE_IN_ARCHIVE;
                 String        errorMessage = errorCode.getErrorMessageId()
                                            + errorCode.getFormattedErrorMessage(entityDef.getName(),
-                                                                                TypeDefCategory.ENTITY_DEF.getTypeName(),
+                                                                                TypeDefCategory.ENTITY_DEF.getName(),
                                                                                 duplicateElement.toString(),
                                                                                 entityDef.toString());
 
@@ -677,7 +678,7 @@ public class OMRSArchiveBuilder
                 OMRSErrorCode errorCode = OMRSErrorCode.MISSING_TYPE_IN_ARCHIVE;
                 String        errorMessage = errorCode.getErrorMessageId()
                                            + errorCode.getFormattedErrorMessage(entityDefName,
-                                                                                TypeDefCategory.ENTITY_DEF.getTypeName());
+                                                                                TypeDefCategory.ENTITY_DEF.getName());
 
                 throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
                                                   this.getClass().getName(),
@@ -693,7 +694,7 @@ public class OMRSArchiveBuilder
         {
             OMRSErrorCode errorCode = OMRSErrorCode.MISSING_NAME_FOR_ARCHIVE;
             String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(TypeDefCategory.ENTITY_DEF.getTypeName());
+                                       + errorCode.getFormattedErrorMessage(TypeDefCategory.ENTITY_DEF.getName());
 
             throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
                                               this.getClass().getName(),
@@ -726,7 +727,7 @@ public class OMRSArchiveBuilder
                 OMRSErrorCode errorCode = OMRSErrorCode.DUPLICATE_TYPE_IN_ARCHIVE;
                 String        errorMessage = errorCode.getErrorMessageId()
                                            + errorCode.getFormattedErrorMessage(relationshipDef.getName(),
-                                                                                TypeDefCategory.RELATIONSHIP_DEF.getTypeName(),
+                                                                                TypeDefCategory.RELATIONSHIP_DEF.getName(),
                                                                                 duplicateElement.toString(),
                                                                                 relationshipDef.toString());
 
@@ -1017,7 +1018,7 @@ public class OMRSArchiveBuilder
             {
                 OMRSErrorCode errorCode = OMRSErrorCode.DUPLICATE_INSTANCE_IN_ARCHIVE;
                 String        errorMessage = errorCode.getErrorMessageId()
-                                           + errorCode.getFormattedErrorMessage(TypeDefCategory.ENTITY_DEF.getTypeName(),
+                                           + errorCode.getFormattedErrorMessage(TypeDefCategory.ENTITY_DEF.getName(),
                                                                                 entity.getGUID(),
                                                                                 duplicateElement.toString(),
                                                                                 entity.toString());
@@ -1072,7 +1073,7 @@ public class OMRSArchiveBuilder
             {
                 OMRSErrorCode errorCode = OMRSErrorCode.DUPLICATE_INSTANCE_IN_ARCHIVE;
                 String        errorMessage = errorCode.getErrorMessageId()
-                                           + errorCode.getFormattedErrorMessage(TypeDefCategory.ENTITY_DEF.getTypeName(),
+                                           + errorCode.getFormattedErrorMessage(TypeDefCategory.ENTITY_DEF.getName(),
                                                                                 relationship.getGUID(),
                                                                                 duplicateElement.toString(),
                                                                                 relationship.toString());

@@ -12,12 +12,6 @@ for people to map the Data Platform OMAS APIs and events to the actual technolog
 However, the specific implementation objects supported by thees APIs all inherit from common
 classes so it is possible to use this interface in a technology-agnostic mode.
 
-To date, the Data Platform OMAS supports:
-
-* Relational database platforms
-
-More will follow.
-
 The Data Platform OMAS APIs need to accommodate slight variations between different vendor
 implementations of data platforms, along with information relating to local deployment standards.
 As such there is provision in these interfaces to support:
@@ -25,3 +19,9 @@ As such there is provision in these interfaces to support:
 * VendorProperties for properties unique to a specific vendor implementation and
 * AdditionalProperties for properties that the infrastructure team wish to add to the metadata.
 
+The module structure for the Data Platform OMAS is as follows:
+
+* [data-platform-client](data-platform-client) supports the client library.
+* [data-platform-api](data-platform-api) supports the common Java classes that are used both by the client and the server.
+* [data-platform-server](data-platform-server) supports in implementation of the access service and its related event management.
+* [data-platform-spring](data-platform-spring) supports the REST API using the [Spring](../../../developer-resources/Spring.md) libraries.

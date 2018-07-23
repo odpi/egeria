@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.repositoryservices.auditlog;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.text.MessageFormat;
 import java.util.Arrays;
@@ -157,43 +158,43 @@ public enum OMRSAuditCode
                        "No action is required.  This is part of the normal operation of the server."),
 
     OMRS_TOPIC_LISTENER_DISCONNECTED("OMRS-AUDIT-0021",
-                      OMRSAuditLogRecordSeverity.ERROR,
+                      OMRSAuditLogRecordSeverity.INFO,
                       "The OMRS Topic Connector {0} has disconnected the event bus connectors",
                       "The OMRS Topic Connector is no longer able to receive or send events",
                       "No action is required.  This is part of the normal operation of the server."),
 
     EVENT_MAPPER_LISTENER_DEAF("OMRS-AUDIT-0022",
                       OMRSAuditLogRecordSeverity.ERROR,
-                      "The local repository's Event Mapper Connector {0} has no connector to an event bus",
+                      "The local repository's event mapper connector {0} has no connector to an event bus",
                       "The event mapper connector is unable to receive or send events",
                       "Verify the start up configuration to ensure there is an event bus configured."),
 
     EVENT_MAPPER_LISTENER_REGISTERED("OMRS-AUDIT-0023",
                       OMRSAuditLogRecordSeverity.INFO,
-                      "The local repository's Event Mapper Connector {0} has registered with an event bus connector connected to topic {1}",
+                      "The local repository's event mapper connector {0} has registered with an event bus connector connected to topic {1}",
                       "The event mapper connector is able to receive or send events",
                       "No action is required.  This is part of the normal operation of the server."),
 
     EVENT_MAPPER_LISTENER_STARTED("OMRS-AUDIT-0024",
                       OMRSAuditLogRecordSeverity.INFO,
-                      "The local repository's Event Mapper Connector {0} is ready to send and receive events",
+                      "The local repository's event mapper connector {0} is ready to send and receive events",
                       "The event mapper connector is able to receive or send events",
                       "No action is required.  This is part of the normal operation of the server."),
 
     EVENT_MAPPER_LISTENER_DISCONNECTED("OMRS-AUDIT-0025",
                       OMRSAuditLogRecordSeverity.ERROR,
-                      "The local repository's Event Mapper Connector {0} has disconnected the event bus connectors",
+                      "The local repository's event mapper connector {0} has disconnected the event bus connectors",
                       "The event mapper connector is no longer able to receive or send events",
                       "No action is required.  This is part of the normal operation of the server."),
     NEW_ENTERPRISE_CONNECTOR("OMRS-AUDIT-0040",
                       OMRSAuditLogRecordSeverity.INFO,
-                      "An enterprise OMRS Connector has been created for the {0} open metadata access service",
+                      "An enterprise OMRS connector has been created for the {0} open metadata access service",
                       "The connector will support access to the connected open metadata repositories.",
                       "No action is required.  This is part of the normal operation of the server."),
 
     STARTING_ENTERPRISE_CONNECTOR("OMRS-AUDIT-0041",
                       OMRSAuditLogRecordSeverity.INFO,
-                      "The enterprise OMRS Connector for the {0} open metadata access service has started",
+                      "The enterprise OMRS connector for the {0} open metadata access service has started",
                       "The connector will support access to the connected open metadata repositories.",
                       "No action is required.  This is part of the normal operation of the server."),
 
@@ -565,7 +566,7 @@ public enum OMRSAuditCode
     private String                     systemAction;
     private String                     userAction;
 
-    private static final Logger log = Logger.getLogger(OMRSAuditCode.class);
+    private static final Logger log = LoggerFactory.getLogger(OMRSAuditCode.class);
 
 
     /**
@@ -617,6 +618,7 @@ public enum OMRSAuditCode
         return severity;
     }
 
+
     /**
      * Returns the log message with the placeholders filled out with the supplied parameters.
      *
@@ -656,5 +658,23 @@ public enum OMRSAuditCode
     public String getUserAction()
     {
         return userAction;
+    }
+
+
+    /**
+     * toString, JSON-style
+     *
+     * @return string description
+     */
+    @Override
+    public String toString()
+    {
+        return "OMRSAuditCode{" +
+                "logMessageId='" + logMessageId + '\'' +
+                ", severity=" + severity +
+                ", logMessage='" + logMessage + '\'' +
+                ", systemAction='" + systemAction + '\'' +
+                ", userAction='" + userAction + '\'' +
+                '}';
     }
 }

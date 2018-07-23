@@ -8,6 +8,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -195,5 +196,69 @@ public class MemberRegistration implements Serializable
     public void setRepositoryConnection(Connection repositoryConnection)
     {
         this.repositoryConnection = repositoryConnection;
+    }
+
+
+    /**
+     * Validate if the values stored match the object to compare.
+     *
+     * @param objectToCompare test object
+     * @return boolean result
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (!(objectToCompare instanceof MemberRegistration))
+        {
+            return false;
+        }
+        MemberRegistration that = (MemberRegistration) objectToCompare;
+        return Objects.equals(getMetadataCollectionId(), that.getMetadataCollectionId()) &&
+                Objects.equals(getServerName(), that.getServerName()) &&
+                Objects.equals(getServerType(), that.getServerType()) &&
+                Objects.equals(getOrganizationName(), that.getOrganizationName()) &&
+                Objects.equals(getRegistrationTime(), that.getRegistrationTime()) &&
+                Objects.equals(getRepositoryConnection(), that.getRepositoryConnection());
+    }
+
+
+    /**
+     * Hash code base on variable values.
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+
+        return Objects.hash(getMetadataCollectionId(),
+                            getServerName(),
+                            getServerType(),
+                            getOrganizationName(),
+                            getRegistrationTime(),
+                            getRepositoryConnection());
+    }
+
+
+    /**
+     * toString JSON-style
+     *
+     * @return string containing variable values
+     */
+    @Override
+    public String toString()
+    {
+        return "MemberRegistration{" +
+                "metadataCollectionId='" + metadataCollectionId + '\'' +
+                ", serverName='" + serverName + '\'' +
+                ", serverType='" + serverType + '\'' +
+                ", organizationName='" + organizationName + '\'' +
+                ", registrationTime=" + registrationTime +
+                ", repositoryConnection=" + repositoryConnection +
+                '}';
     }
 }

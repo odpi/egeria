@@ -34,14 +34,15 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
      * The repository content manager is the TypeDefManager for the Local OMRS Metadata Collection,
      * and the incoming TypeDef Event Processor for the Archive Manager and EventListener
      */
-    private OMRSTypeDefManager                 typeDefManager;
-    private OMRSTypeDefEventProcessor          incomingTypeDefEventProcessor;
-    private OMRSInstanceEventProcessor         incomingInstanceEventProcessor   = null;
-    private OMRSRepositoryEventProcessor       outboundRepositoryEventProcessor = null;
-    private OMRSRepositoryEventManager         outboundRepositoryEventManager;
-    private OMRSRepositoryEventExchangeRule    saveExchangeRule;
-    private OMRSRepositoryConnector            realLocalConnector;
-    private OMRSRepositoryEventMapperConnector realEventMapper;
+    private OMRSTypeDefManager                  typeDefManager;
+    private OMRSTypeDefEventProcessor           incomingTypeDefEventProcessor;
+    private OMRSInstanceEventProcessor          incomingInstanceEventProcessor   = null;
+    private OMRSInstanceRetrievalEventProcessor instanceRetrievalEventProcessor  = null;
+    private OMRSRepositoryEventProcessor        outboundRepositoryEventProcessor = null;
+    private OMRSRepositoryEventManager          outboundRepositoryEventManager;
+    private OMRSRepositoryEventExchangeRule     saveExchangeRule;
+    private OMRSRepositoryConnector             realLocalConnector;
+    private OMRSRepositoryEventMapperConnector  realEventMapper;
 
 
     /**
@@ -299,13 +300,16 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
             realEventMapper.setMetadataCollectionId(metadataCollectionId);
         }
 
-        this.incomingInstanceEventProcessor = new LocalOMRSInstanceEventProcessor(metadataCollectionId,
+        LocalOMRSInstanceEventProcessor  localOMRSInstanceEventProcessor
+                                            = new LocalOMRSInstanceEventProcessor(metadataCollectionId,
                                                                                   super.serverName,
                                                                                   realLocalConnector,
                                                                                   super.repositoryHelper,
                                                                                   super.repositoryValidator,
                                                                                   saveExchangeRule,
                                                                                   outboundRepositoryEventProcessor);
+        this.incomingInstanceEventProcessor = localOMRSInstanceEventProcessor;
+        this.instanceRetrievalEventProcessor = localOMRSInstanceEventProcessor;
 
         try
         {
@@ -428,6 +432,18 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
     public OMRSInstanceEventProcessor getIncomingInstanceEventProcessor()
     {
         return incomingInstanceEventProcessor;
+    }
+
+
+    /**
+     * Return the instance event processor that should be passed all incoming instance events received
+     * from the cohorts that this server is a member of.
+     *
+     * @return OMRSInstanceEventProcessor for the local repository.
+     */
+    public OMRSInstanceRetrievalEventProcessor getIncomingInstanceRetrievealEventProcessor()
+    {
+        return instanceRetrievalEventProcessor;
     }
 
 

@@ -11,3 +11,10 @@ based on search criteria such as glossary terms and/or language.
 
 It also provides information about the most appropriate data sources
 to use for particular situations.
+
+The module structure for the Software Developer OMAS is as follows:
+
+* [software-developer-client](software-developer-client) supports the client library.
+* [software-developer-api](software-developer-api) supports the common Java classes that are used both by the client and the server.
+* [software-developer-server](software-developer-server) supports in implementation of the access service and its related event management.
+* [software-developer-spring](software-developer-spring) supports the REST API using the [Spring](../../../developer-resources/Spring.md) libraries.

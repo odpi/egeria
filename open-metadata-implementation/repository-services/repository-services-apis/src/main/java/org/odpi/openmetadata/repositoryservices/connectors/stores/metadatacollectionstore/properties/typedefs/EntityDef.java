@@ -57,6 +57,17 @@ public class EntityDef extends TypeDef
 
 
     /**
+     * Delegate the process of cloning to the subclass.
+     *
+     * @return subclass of TypeDef
+     */
+    public TypeDef cloneFromSubclass()
+    {
+        return new EntityDef(this);
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return JSON style description of variables.
