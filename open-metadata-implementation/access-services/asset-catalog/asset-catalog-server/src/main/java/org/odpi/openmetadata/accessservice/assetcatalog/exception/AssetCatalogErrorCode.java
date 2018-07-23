@@ -27,12 +27,22 @@ import java.text.MessageFormat;
 @Getter
 public enum AssetCatalogErrorCode {
 
-    NO_SEARCH_RESULTS(204, "CatalogOMAS-204-00-001",
+    NO_SEARCH_RESULTS(204, "OMAS-ASSET-CATALOG-204-001 ",
             "Given search filter {0} did not yield any results",
             "The system is unable to find an asset with the given details.",
             "Provide more details for the current search."),
 
-    NULL_USER_ID(400, "OMAS-ASSETCONSUMER-400-003 ",
+    SERVER_URL_NOT_SPECIFIED(400, "OMAS-ASSET-CATALOG-400-001 ",
+            "The OMAS Server URL is null",
+            "The system is unable to connect to the OMAS Server to populate the ConnectedAssetProperties object.",
+            "Retry the request when the OMAS Service is available."),
+
+    PARAMETER_NULL(400, "OMAS-ASSET-CATALOG-400-003 ",
+            "The parameter {0} passed on the {0} operation is null",
+            "The system is unable to process the request without this parameter.",
+            "Correct the code in the caller to provide the parameter for this operation."),
+
+    NULL_USER_ID(400, "OMAS-ASSET-CATALOG-400-004 ",
             "The user identifier (user id) passed on the {0} operation is null",
             "The system is unable to process the request without a user id.",
             "Correct the code in the caller to provide the user id."),

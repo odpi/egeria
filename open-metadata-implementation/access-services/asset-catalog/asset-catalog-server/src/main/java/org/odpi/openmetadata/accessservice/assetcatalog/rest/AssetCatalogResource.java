@@ -22,7 +22,7 @@ import java.util.List;
  * This interface facilitates the searching for asset's details, provides the connection to a specific asset.
  */
 @RestController
-@RequestMapping("/open-metadata/access-services/asset-catalog/users/{userId}/asset")
+@RequestMapping("/open-metadata/access-services/asset-catalog/users/{userId}")
 public class AssetCatalogResource {
 
     private static OMRSRepositoryConnector repositoryConnector;
@@ -59,7 +59,7 @@ public class AssetCatalogResource {
      * @param excludeDeleted exclude deleted entities from result
      * @return list of properties used to narrow the search
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/search/{searchCriteria}")
+    @RequestMapping(method = RequestMethod.GET, path = "/search-asset/{searchCriteria}")
     public List<AssetDescription> searchAssets(@PathVariable("userId") String userId,
                                                @PathVariable("searchCriteria") String searchCriteria,
                                                @RequestParam(required = false, value = "limit", defaultValue = "0") Integer limit,

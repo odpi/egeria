@@ -323,7 +323,7 @@ public class AssetCatalogEntityResource {
 
 
     /**
-     * Returns the assets that were updated between starting date and end date
+     * Returns  the last updated assets
      *
      * @param userId        the unique identifier for the user
      * @param assetTypeId   the asset type global identifier
