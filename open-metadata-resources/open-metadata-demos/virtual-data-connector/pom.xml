@@ -23,5 +23,9 @@
 
     <artifactId>virtual-data-connector</artifactId>
 
+    <packaging>pom</packaging>
+    <modules>
+        <module>igc-repository-proxy</module>
+    </modules>
 
 </project>
