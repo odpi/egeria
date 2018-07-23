@@ -47,6 +47,93 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
         this.repositoryContentManager = defaultRepositoryContentManager;
     }
 
+//TODO
+    /**
+     * Return a filled out entity.  It just needs to add the classifications.
+     *
+     * @param sourceName - source of the request (used for logging)
+     * @param metadataCollectionId - unique identifier for the home metadata collection
+     * @param provenanceType - origin of the entity
+     * @param userName - name of the creator
+     * @param typeName - name of the type
+     * @param properties - properties for the entity
+     * @param classifications - list of classifications for the entity
+     * @return an entity that is filled out
+     * @throws TypeErrorException - the type name is not recognized as an entity type
+     */
+    public EntityProxy getNewEntityProxyFORDEMO(String                    sourceName,
+                                                String                    metadataCollectionId,
+                                                InstanceProvenanceType    provenanceType,
+                                                String                    userName,
+                                                String                    typeName,
+                                                InstanceProperties        properties,
+                                                ArrayList<Classification> classifications) throws TypeErrorException
+    {
+        EntityProxy entity = this.getSkeletonEntityProxy(sourceName,
+                metadataCollectionId,
+                provenanceType,
+                userName,
+                typeName);
+
+        entity.setUniqueProperties(properties);
+        entity.setClassifications(classifications);
+
+        return entity;
+    }
+
+    //TODO
+    /**
+     * Return an entity with the header and type information filled out.  The caller only needs to add properties
+     * and classifications to complete the set up of the entity.
+     *
+     * @param sourceName - source of the request (used for logging)
+     * @param metadataCollectionId - unique identifier for the home metadata collection
+     * @param provenanceType - origin of the entity
+     * @param userName - name of the creator
+     * @param typeName - name of the type
+     * @return partially filled out entity - needs classifications and properties
+     * @throws TypeErrorException - the type name is not recognized.
+     */
+    public EntityProxy getSkeletonEntityProxy(String                  sourceName,
+                                              String                  metadataCollectionId,
+                                              InstanceProvenanceType  provenanceType,
+                                              String                  userName,
+                                              String                  typeName) throws TypeErrorException
+    {
+        final String methodName = "getSkeletonEntityProxy()";
+
+        if (repositoryContentManager != null)
+        {
+            EntityProxy entity = new EntityProxy();
+            String       guid   = UUID.randomUUID().toString();
+
+            entity.setInstanceProvenanceType(provenanceType);
+            entity.setMetadataCollectionId(metadataCollectionId);
+            entity.setCreateTime(new Date());
+            entity.setGUID(guid);
+            entity.setVersion(1L);
+
+            entity.setType(repositoryContentManager.getInstanceType(sourceName, TypeDefCategory.ENTITY_DEF, typeName, methodName));
+            entity.setStatus(repositoryContentManager.getInitialStatus(sourceName, typeName, methodName));
+            entity.setCreatedBy(userName);
+            entity.setInstanceURL(repositoryContentManager.getEntityURL(sourceName, guid));
+
+            return entity;
+        }
+        else
+        {
+            OMRSErrorCode errorCode = OMRSErrorCode.LOCAL_REPOSITORY_CONFIGURATION_ERROR;
+            String errorMessage = errorCode.getErrorMessageId()
+                    + errorCode.getFormattedErrorMessage();
+
+            throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+    }
 
     /**
      * Creates a repository helper linked to the supplied repository content manager.
