@@ -23,14 +23,19 @@
 
     <properties>
         <lombok.version>1.16.20</lombok.version>
-        <spring.version>4.3.17.RELEASE</spring.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>${spring.version}</version>
+            <version>${spring-web.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>${spring-web.version}</version>
         </dependency>
 
         <dependency>
@@ -38,12 +43,6 @@
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
             <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.atlas</groupId>
-            <artifactId>omrs</artifactId>
-            <version>2.0.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

@@ -22,7 +22,7 @@
     <artifactId>access-services</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <!--asset-catalog removed temporarily- see https://github.com/odpi/egeria/issues/103 -->
+        <module>asset-catalog</module>
         <module>asset-consumer</module>
         <module>asset-owner</module>
         <module>community-profile</module>
