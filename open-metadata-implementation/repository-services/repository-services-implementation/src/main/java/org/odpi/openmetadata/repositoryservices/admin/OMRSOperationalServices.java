@@ -307,7 +307,7 @@ public class OMRSOperationalServices
              * Supports outbound events from the local repository
              */
             localRepositoryEventManager =
-                    new OMRSRepositoryEventManager(
+                    new OMRSRepositoryEventManager("local repository outbound",
                             new OMRSRepositoryEventExchangeRule(localRepositoryConfig.getEventsToSendRule(),
                                                                 localRepositoryConfig.getSelectedTypesToSend()),
                             new OMRSRepositoryContentValidator(localRepositoryContentManager));
@@ -400,6 +400,18 @@ public class OMRSOperationalServices
                                                        enterpriseOMRSTopicConnector,
                                                        cohortConfigList);
         }
+
+
+        /*
+         * The local repository (if configured) has been started while the archives were loaded and the
+         * cohorts initialized.  During this time, outbound repository events have been buffered.
+         * Calling start() releases these buffered events into the cohort(s).
+         */
+        if (localRepositoryEventManager != null)
+        {
+            localRepositoryEventManager.start();
+        }
+
 
         /*
          * All done and no exceptions :)

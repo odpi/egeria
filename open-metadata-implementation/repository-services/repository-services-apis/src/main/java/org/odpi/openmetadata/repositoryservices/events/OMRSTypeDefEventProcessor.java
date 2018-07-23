@@ -15,6 +15,21 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 public interface OMRSTypeDefEventProcessor
 {
     /**
+     * Send the TypeDef event to the OMRS Topic connector (providing TypeDef Events are enabled).
+     *
+     * @param sourceName    source of the event
+     * @param typeDefEvent  properties of the event to send
+     */
+    void sendTypeDefEvent(String           sourceName,
+                          OMRSTypeDefEvent typeDefEvent);
+
+
+    /*
+     * ================================================
+     * Processor methods requesting specific events.
+     */
+
+    /**
      * A new TypeDef has been defined in an open metadata repository.
      *
      * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
