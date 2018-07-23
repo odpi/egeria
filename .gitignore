@@ -78,9 +78,8 @@ omag.server.*.config
 .java-version
 
 # Ignore Subject Area OMAS Generated output
-!open-metadata-implementation/access-services/subject-area/subject-area-server/src/main/java/org/odpi/openmetadata/accessservices/subjectarea/generated/**
-!open-metadata-implementation/access-services/subject-area/subject-area-server/src/test/java/org/odpi/openmetadata/accessservices/subjectarea/generated/**
-
+open-metadata-implementation/access-services/subject-area/subject-area-server/src/main/java/org/odpi/openmetadata/accessservices/subjectarea/generated/**
+open-metadata-implementation/access-services/subject-area/subject-area-server/src/test/java/org/odpi/openmetadata/accessservices/subjectarea/generated/**
 
 
 
