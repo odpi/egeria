@@ -14,6 +14,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
+import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEvent;
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +41,11 @@ public class EventPublisher implements OMRSInstanceEventProcessor {
         this.auditLog = auditLog;
     }
 
+
+    @Override
+    public void sendInstanceEvent(String sourceName, OMRSInstanceEvent instanceEvent) {
+
+    }
 
     public void processNewEntityEvent(String sourceName,
                                       String originatorMetadataCollectionId,
