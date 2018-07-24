@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <artifactId>open-metadata-packages</artifactId>
+        <groupId>org.odpi.egeria</groupId>
+        <version>0.1-SNAPSHOT</version>
+    </parent>
+
+    <name>Open Metadata Caller Package</name>
+    <description>
+        Provides the basic package for calling egeria from a client.
+    </description>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>open-metadata-caller-package</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>../../../open-metadata-implementation/governance-servers/admin-services/admin-services-spring</module>
+        <!--       <module>../../../open-metadata-implementation/access-services/asset-catalog/asset-catalog-spring</module> -->
+        <module>../../../open-metadata-implementation/access-services/asset-consumer/asset-consumer-spring</module>
+        <module>../../../open-metadata-implementation/access-services/asset-owner/asset-owner-spring</module>
+        <!--       <module>../../../open-metadata-implementation/access-services/community-profile/community-profile-spring</module> -->
+        <module>../../../open-metadata-implementation/access-services/connected-asset/connected-asset-spring</module>
+        <module>../../../open-metadata-implementation/access-services/data-architecture/data-architecture-spring</module>
+        <module>../../../open-metadata-implementation/access-services/data-infrastructure/data-infrastructure-spring</module>
+        <module>../../../open-metadata-implementation/access-services/data-platform/data-platform-spring</module>
+        <module>../../../open-metadata-implementation/access-services/data-privacy/data-privacy-spring</module>
+        <module>../../../open-metadata-implementation/access-services/data-process/data-process-spring</module>
+        <module>../../../open-metadata-implementation/access-services/data-protection/data-protection-spring</module>
+        <module>../../../open-metadata-implementation/access-services/data-science/data-science-spring</module>
+        <module>../../../open-metadata-implementation/access-services/dev-ops/dev-ops-spring</module>
+        <module>../../../open-metadata-implementation/access-services/discovery-engine/discovery-engine-spring</module>
+        <module>../../../open-metadata-implementation/access-services/governance-engine/governance-engine-spring</module>
+        <module>../../../open-metadata-implementation/access-services/governance-program/governance-program-spring</module>
+        <!--        <module>../../../open-metadata-implementation/access-services/information-view/information-view-spring</module> -->
+        <module>../../../open-metadata-implementation/access-services/project-management/project-management-spring</module>
+        <module>../../../open-metadata-implementation/access-services/software-developer/software-developer-spring</module>
+        <module>../../../open-metadata-implementation/access-services/stewardship-action/stewardship-action-spring</module>
+        <module>../../../open-metadata-implementation/access-services/subject-area/subject-area-spring</module>
+    </modules>
+
+</project>

@@ -5,24 +5,27 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <parent>
-        <artifactId>egeria</artifactId>
+        <artifactId>open-metadata-distribution</artifactId>
         <groupId>org.odpi.egeria</groupId>
         <version>0.1-SNAPSHOT</version>
     </parent>
 
-    <name>Open Metadata Distribution Files</name>
+    <name>Open Metadata Packages</name>
     <description>
-        Files built to be deployed or published from the build.
+        The typical maven packages that other technologies use to consume egeria.
     </description>
 
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>open-metadata-distribution</artifactId>
+    <artifactId>open-metadata-packages</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>open-metadata-packages</module>
-        <module>open-metadata-assemblies</module>
+        <module>open-metadata-client-package</module>
+        <module>open-metadata-native-package</module>
+        <module>open-metadata-caller-package</module>
+        <module>open-metadata-adapter-package</module>
     </modules>
 
 </project>
