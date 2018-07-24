@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager;
 
+import org.odpi.openmetadata.repositoryservices.events.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
@@ -11,7 +12,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
-import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEventProcessor;
 import org.odpi.openmetadata.repositoryservices.eventmanagement.*;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
@@ -1844,6 +1844,149 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
      * ===========================
      * OMRSTypeDefEventProcessor
      */
+
+
+    /**
+     * Process incoming TypeDefEvent based on its type.
+     *
+     * @param cohortName source of the event (cohort name)
+     * @param typeDefEvent event to process
+     */
+    public void sendTypeDefEvent(String           cohortName,
+                                 OMRSTypeDefEvent typeDefEvent)
+    {
+        OMRSTypeDefEventType typeDefEventType       = typeDefEvent.getTypeDefEventType();
+        OMRSEventOriginator  typeDefEventOriginator = typeDefEvent.getEventOriginator();
+
+        if ((typeDefEventType != null) && (typeDefEventOriginator != null))
+        {
+            switch (typeDefEventType)
+            {
+                case NEW_TYPEDEF_EVENT:
+                    this.processNewTypeDefEvent(cohortName,
+                                                typeDefEventOriginator.getMetadataCollectionId(),
+                                                typeDefEventOriginator.getServerName(),
+                                                typeDefEventOriginator.getServerType(),
+                                                typeDefEventOriginator.getOrganizationName(),
+                                                typeDefEvent.getTypeDef());
+                    break;
+
+                case NEW_ATTRIBUTE_TYPEDEF_EVENT:
+                    this.processNewAttributeTypeDefEvent(cohortName,
+                                                         typeDefEventOriginator.getMetadataCollectionId(),
+                                                         typeDefEventOriginator.getServerName(),
+                                                         typeDefEventOriginator.getServerType(),
+                                                         typeDefEventOriginator.getOrganizationName(),
+                                                         typeDefEvent.getAttributeTypeDef());
+                    break;
+
+                case UPDATED_TYPEDEF_EVENT:
+                    this.processUpdatedTypeDefEvent(cohortName,
+                                                    typeDefEventOriginator.getMetadataCollectionId(),
+                                                    typeDefEventOriginator.getServerName(),
+                                                    typeDefEventOriginator.getServerType(),
+                                                    typeDefEventOriginator.getOrganizationName(),
+                                                    typeDefEvent.getTypeDefPatch());
+                    break;
+
+                case DELETED_TYPEDEF_EVENT:
+                    this.processDeletedTypeDefEvent(cohortName,
+                                                    typeDefEventOriginator.getMetadataCollectionId(),
+                                                    typeDefEventOriginator.getServerName(),
+                                                    typeDefEventOriginator.getServerType(),
+                                                    typeDefEventOriginator.getOrganizationName(),
+                                                    typeDefEvent.getTypeDefGUID(),
+                                                    typeDefEvent.getTypeDefName());
+                    break;
+
+                case DELETED_ATTRIBUTE_TYPEDEF_EVENT:
+                    this.processDeletedAttributeTypeDefEvent(cohortName,
+                                                             typeDefEventOriginator.getMetadataCollectionId(),
+                                                             typeDefEventOriginator.getServerName(),
+                                                             typeDefEventOriginator.getServerType(),
+                                                             typeDefEventOriginator.getOrganizationName(),
+                                                             typeDefEvent.getTypeDefGUID(),
+                                                             typeDefEvent.getTypeDefName());
+                    break;
+
+                case RE_IDENTIFIED_TYPEDEF_EVENT:
+                    this.processReIdentifiedTypeDefEvent(cohortName,
+                                                         typeDefEventOriginator.getMetadataCollectionId(),
+                                                         typeDefEventOriginator.getServerName(),
+                                                         typeDefEventOriginator.getServerType(),
+                                                         typeDefEventOriginator.getOrganizationName(),
+                                                         typeDefEvent.getOriginalTypeDefSummary(),
+                                                         typeDefEvent.getTypeDef());
+                    break;
+
+                case RE_IDENTIFIED_ATTRIBUTE_TYPEDEF_EVENT:
+                    this.processReIdentifiedAttributeTypeDefEvent(cohortName,
+                                                                  typeDefEventOriginator.getMetadataCollectionId(),
+                                                                  typeDefEventOriginator.getServerName(),
+                                                                  typeDefEventOriginator.getServerType(),
+                                                                  typeDefEventOriginator.getOrganizationName(),
+                                                                  typeDefEvent.getOriginalAttributeTypeDef(),
+                                                                  typeDefEvent.getAttributeTypeDef());
+
+                case TYPEDEF_ERROR_EVENT:
+                    OMRSTypeDefEventErrorCode errorCode = typeDefEvent.getErrorCode();
+
+                    if (errorCode != null)
+                    {
+                        switch(errorCode)
+                        {
+                            case CONFLICTING_TYPEDEFS:
+                                this.processTypeDefConflictEvent(cohortName,
+                                                                 typeDefEventOriginator.getMetadataCollectionId(),
+                                                                 typeDefEventOriginator.getServerName(),
+                                                                 typeDefEventOriginator.getServerType(),
+                                                                 typeDefEventOriginator.getOrganizationName(),
+                                                                 typeDefEvent.getOriginalTypeDefSummary(),
+                                                                 typeDefEvent.getOtherMetadataCollectionId(),
+                                                                 typeDefEvent.getOtherTypeDefSummary(),
+                                                                 typeDefEvent.getErrorMessage());
+                                break;
+
+                            case CONFLICTING_ATTRIBUTE_TYPEDEFS:
+                                this.processAttributeTypeDefConflictEvent(cohortName,
+                                                                          typeDefEventOriginator.getMetadataCollectionId(),
+                                                                          typeDefEventOriginator.getServerName(),
+                                                                          typeDefEventOriginator.getServerType(),
+                                                                          typeDefEventOriginator.getOrganizationName(),
+                                                                          typeDefEvent.getOriginalAttributeTypeDef(),
+                                                                          typeDefEvent.getOtherMetadataCollectionId(),
+                                                                          typeDefEvent.getOtherAttributeTypeDef(),
+                                                                          typeDefEvent.getErrorMessage());
+
+                            case TYPEDEF_PATCH_MISMATCH:
+                                this.processTypeDefPatchMismatchEvent(cohortName,
+                                                                      typeDefEventOriginator.getMetadataCollectionId(),
+                                                                      typeDefEventOriginator.getServerName(),
+                                                                      typeDefEventOriginator.getServerType(),
+                                                                      typeDefEventOriginator.getOrganizationName(),
+                                                                      typeDefEvent.getTargetMetadataCollectionId(),
+                                                                      typeDefEvent.getTargetTypeDefSummary(),
+                                                                      typeDefEvent.getOtherTypeDef(),
+                                                                      typeDefEvent.getErrorMessage());
+                                break;
+
+                            default:
+                                log.debug("Unknown TypeDef event error code; ignoring event");
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        log.debug("Ignored TypeDef event; null error code");
+                    }
+                    break;
+
+                default:
+                    log.debug("Ignored TypeDef event; unknown type");
+                    break;
+            }
+        }
+    }
 
 
     /**

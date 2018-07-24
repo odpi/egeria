@@ -11,6 +11,12 @@ import java.util.Date;
  */
 public interface OMRSRegistryEventProcessor
 {
+
+    /*
+     * ================================================
+     * Processor methods requesting specific events.
+     */
+
     /**
      * Introduces a new server/repository to the metadata repository cohort.
      *
