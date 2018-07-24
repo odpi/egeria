@@ -48,6 +48,7 @@ public class OpenMetadataRepositoryTestWorkbench extends OpenMetadataTestWorkben
         List<OpenMetadataRepositoryTestCase>   testCases = new ArrayList<>();
 
         testCases.add(new TestMetadataCollectionId(workbenchId));
+        testCases.add(new TestGetTypeDef(workbenchId));
 
         return testCases;
     }

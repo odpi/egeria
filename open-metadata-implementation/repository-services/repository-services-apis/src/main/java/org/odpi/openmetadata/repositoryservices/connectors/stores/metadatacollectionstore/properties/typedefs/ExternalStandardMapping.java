@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.Objects;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -131,5 +133,42 @@ public class ExternalStandardMapping extends TypeDefElementHeader
                 ", standardOrganization='" + standardOrganization + '\'' +
                 ", standardTypeName='" + standardTypeName + '\'' +
                 '}';
+    }
+
+
+    /**
+     * Verify that supplied object has the same properties.
+     *
+     * @param o object to test
+     * @return result
+     */
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o)
+        {
+            return true;
+        }
+        if (!(o instanceof ExternalStandardMapping))
+        {
+            return false;
+        }
+        ExternalStandardMapping that = (ExternalStandardMapping) o;
+        return Objects.equals(getStandardName(), that.getStandardName()) &&
+                Objects.equals(getStandardOrganization(), that.getStandardOrganization()) &&
+                Objects.equals(getStandardTypeName(), that.getStandardTypeName());
+    }
+
+
+    /**
+     * Integer for hashmaps
+     *
+     * @return hash code
+     */
+    @Override
+    public int hashCode()
+    {
+
+        return Objects.hash(getStandardName(), getStandardOrganization(), getStandardTypeName());
     }
 }

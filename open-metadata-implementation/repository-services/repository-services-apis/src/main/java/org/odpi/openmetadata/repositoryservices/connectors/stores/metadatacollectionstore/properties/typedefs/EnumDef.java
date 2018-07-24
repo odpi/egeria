@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -121,5 +122,32 @@ public class EnumDef extends AttributeTypeDef
                 ", description='" + description + '\'' +
                 ", descriptionGUID='" + descriptionGUID + '\'' +
                 '}';
+    }
+
+
+    /**
+     * Verify that supplied object has the same properties.
+     *
+     * @param o object to test
+     * @return result
+     */
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o)
+        {
+            return true;
+        }
+        if (!(o instanceof EnumDef))
+        {
+            return false;
+        }
+        if (!super.equals(o))
+        {
+            return false;
+        }
+        EnumDef enumDef = (EnumDef) o;
+        return Objects.equals(getElementDefs(), enumDef.getElementDefs()) &&
+                Objects.equals(getDefaultValue(), enumDef.getDefaultValue());
     }
 }

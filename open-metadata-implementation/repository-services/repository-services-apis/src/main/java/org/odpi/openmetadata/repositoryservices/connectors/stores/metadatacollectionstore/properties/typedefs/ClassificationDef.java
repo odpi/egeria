@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -172,5 +173,32 @@ public class ClassificationDef extends TypeDef
                 ", guid='" + guid + '\'' +
                 ", name='" + name + '\'' +
                 '}';
+    }
+
+
+    /**
+     * Verify that supplied object has the same properties.
+     *
+     * @param object object to test
+     * @return result
+     */
+    @Override
+    public boolean equals(Object object)
+    {
+        if (this == object)
+        {
+            return true;
+        }
+        if (!(object instanceof ClassificationDef))
+        {
+            return false;
+        }
+        if (!super.equals(object))
+        {
+            return false;
+        }
+        ClassificationDef that = (ClassificationDef) object;
+        return isPropagatable() == that.isPropagatable() &&
+                Objects.equals(getValidEntityDefs(), that.getValidEntityDefs());
     }
 }

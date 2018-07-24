@@ -136,7 +136,6 @@ public class TypeDefLink extends TypeDefElementHeader
     /**
      * Validated that the GUID, name and version number of a TypeDef are equal.
      *
-     *
      * @param object to test
      * @return boolean flag to say object is the same TypeDefSummary
      */

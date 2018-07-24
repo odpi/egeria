@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -24,6 +25,15 @@ public class CollectionDef extends AttributeTypeDef
     private CollectionDefCategory      collectionDefCategory = null;
     private int                        argumentCount         = 0;
     private List<PrimitiveDefCategory> argumentTypes         = null;
+
+
+    /**
+     * Default constructor for Jackson (JSON parsing)
+     */
+    public CollectionDef()
+    {
+        super(AttributeTypeDefCategory.COLLECTION);
+    }
 
 
     /**
@@ -85,6 +95,21 @@ public class CollectionDef extends AttributeTypeDef
      */
     public CollectionDefCategory getCollectionDefCategory() { return collectionDefCategory; }
 
+    public void setCollectionDefCategory(CollectionDefCategory collectionDefCategory)
+    {
+        this.collectionDefCategory = collectionDefCategory;
+
+        this.argumentCount = collectionDefCategory.getArgumentCount();
+        this.argumentTypes = new ArrayList<>();
+
+        /*
+         * Set up the type of the elements stored in the collection as "unknown".  This is like an initialized Java generic.
+         */
+        for (int i=0; i<argumentCount; i++)
+        {
+            argumentTypes.add(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_UNKNOWN);
+        }
+    }
 
     /**
      * Return the number of arguments needed to set up the collection type name.
@@ -98,6 +123,16 @@ public class CollectionDef extends AttributeTypeDef
 
 
     /**
+     * Set upi the number of arguments needed to set upi the collection type name.
+     *
+     * @param argumentCount int count
+     */
+    public void setArgumentCount(int argumentCount)
+    {
+        // do nothing
+    }
+
+    /**
      * Return the list of argument types set up for this collection.
      *
      * @return list of argument type
@@ -105,6 +140,10 @@ public class CollectionDef extends AttributeTypeDef
     public List<PrimitiveDefCategory> getArgumentTypes()
     {
         if (argumentTypes == null)
+        {
+            return null;
+        }
+        else if (argumentTypes.isEmpty())
         {
             return null;
         }
@@ -151,5 +190,33 @@ public class CollectionDef extends AttributeTypeDef
                 ", description='" + description + '\'' +
                 ", descriptionGUID='" + descriptionGUID + '\'' +
                 '}';
+    }
+
+
+    /**
+     * Verify that supplied object has the same properties.
+     *
+     * @param o object to test
+     * @return result
+     */
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o)
+        {
+            return true;
+        }
+        if (!(o instanceof CollectionDef))
+        {
+            return false;
+        }
+        if (!super.equals(o))
+        {
+            return false;
+        }
+        CollectionDef that = (CollectionDef) o;
+        return getArgumentCount() == that.getArgumentCount() &&
+                getCollectionDefCategory() == that.getCollectionDefCategory() &&
+                Objects.equals(getArgumentTypes(), that.getArgumentTypes());
     }
 }
