@@ -26,6 +26,7 @@
     <modules>
         <module>information-view-client</module>
         <module>information-view-server</module>
+        <module>information-view-spring</module>
     </modules>
 
 
