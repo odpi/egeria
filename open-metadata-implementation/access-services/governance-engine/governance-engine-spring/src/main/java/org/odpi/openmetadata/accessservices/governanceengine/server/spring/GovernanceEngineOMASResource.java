@@ -16,7 +16,7 @@ import java.util.List;
  *
  */
 @RestController
-@RequestMapping("/access-services/governance-engine/users/{userId}")
+@RequestMapping("/open-metadata/access-services/governance-engine/users/{userId}")
 public class GovernanceEngineOMASResource {
     private GovernanceEngineRESTServices restAPI = new GovernanceEngineRESTServices();
 
