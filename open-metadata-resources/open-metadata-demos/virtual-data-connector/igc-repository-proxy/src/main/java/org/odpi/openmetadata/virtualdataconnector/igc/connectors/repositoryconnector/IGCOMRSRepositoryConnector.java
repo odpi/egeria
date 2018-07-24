@@ -31,22 +31,6 @@ public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector
 
     }
 
-//    /**
-//     * Set up the unique Id for this metadata collection.
-//     *
-//     * @param metadataCollectionId String unique Id
-//     */
-//    @Override
-//    public void setMetadataCollectionId(String metadataCollectionId) {
-//        super.setMetadataCollectionId(metadataCollectionId);
-//
-//        // Initialize the metadata collection only once the connector is properly set up.
-//        metadataCollection = new IGCOMRSMetadataCollection(this,
-//                serverName,
-//                repositoryHelper,
-//                repositoryValidator,
-//                metadataCollectionId);
-//    }
 
     /**
      * Set up the unique Id for this metadata collection.
@@ -72,6 +56,7 @@ public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector
      *
      * @throws ConnectorCheckedException - there is a problem disconnecting the connector.
      */
+    @Override
     public void disconnect() throws ConnectorCheckedException
     {
         super.metadataCollection = new IGCOMRSMetadataCollection(this,
@@ -115,6 +100,12 @@ public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector
         return (IGCColumn) genericIGCQuery(igcRID, IGCColumn.class);
     }
 
+    /**
+     * Query IGC for more information about an asset.
+     * @param igcRID
+     * @param responsePOJO
+     * @return
+     */
     private Object genericIGCQuery(String igcRID, Class responsePOJO) {
 
         String url = this.connectionBean.getAdditionalProperties().get("igcApiGet") + igcRID;

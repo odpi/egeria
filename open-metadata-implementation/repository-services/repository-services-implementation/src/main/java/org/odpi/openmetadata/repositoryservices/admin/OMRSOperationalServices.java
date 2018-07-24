@@ -268,7 +268,9 @@ public class OMRSOperationalServices
          * repository services will use.  The OMRS Topic is used to publish events from these repositories to support the
          * OMASs' event notifications.
          */
-        enterpriseConnectorManager = initializeEnterpriseConnectorManager(enterpriseAccessConfig, maxPageSize);
+        enterpriseConnectorManager = initializeEnterpriseConnectorManager(enterpriseAccessConfig,
+                                                                          maxPageSize,
+                                                                          localRepositoryContentManager);
         enterpriseOMRSTopicConnector = initializeEnterpriseOMRSTopicConnector(enterpriseAccessConfig);
 
         /*
@@ -301,11 +303,12 @@ public class OMRSOperationalServices
                                auditCode.getSystemAction(),
                                auditCode.getUserAction());
 
+            /*
+             * Supports outbound events from the local repository
+             */
             localRepositoryEventManager =
-                    new OMRSRepositoryEventManager(
-                            new OMRSRepositoryEventExchangeRule("Local Repository Events to Send",
-                                                                localRepositoryContentManager,
-                                                                localRepositoryConfig.getEventsToSendRule(),
+                    new OMRSRepositoryEventManager("local repository outbound",
+                            new OMRSRepositoryEventExchangeRule(localRepositoryConfig.getEventsToSendRule(),
                                                                 localRepositoryConfig.getSelectedTypesToSend()),
                             new OMRSRepositoryContentValidator(localRepositoryContentManager));
 
@@ -398,6 +401,18 @@ public class OMRSOperationalServices
                                                        cohortConfigList);
         }
 
+
+        /*
+         * The local repository (if configured) has been started while the archives were loaded and the
+         * cohorts initialized.  During this time, outbound repository events have been buffered.
+         * Calling start() releases these buffered events into the cohort(s).
+         */
+        if (localRepositoryEventManager != null)
+        {
+            localRepositoryEventManager.start();
+        }
+
+
         /*
          * All done and no exceptions :)
          */
@@ -447,24 +462,27 @@ public class OMRSOperationalServices
      * @param enterpriseAccessConfig enterprise access configuration from the OMAG server
      * @return initialized OMRSEnterpriseConnectorManager object
      */
-    private OMRSEnterpriseConnectorManager initializeEnterpriseConnectorManager(EnterpriseAccessConfig  enterpriseAccessConfig,
-                                                                                int                     maxPageSize)
+    private OMRSEnterpriseConnectorManager initializeEnterpriseConnectorManager(EnterpriseAccessConfig        enterpriseAccessConfig,
+                                                                                int                           maxPageSize,
+                                                                                OMRSRepositoryContentManager  repositoryContentManager)
     {
-        OMRSEnterpriseConnectorManager   enterpriseConnectorManager = null;
+        OMRSEnterpriseConnectorManager   enterpriseConnectorManager;
 
         if (enterpriseAccessConfig == null)
         {
             /*
              * Federation is not enabled in this server
              */
-            enterpriseConnectorManager = new OMRSEnterpriseConnectorManager(false, maxPageSize);
+            enterpriseConnectorManager = new OMRSEnterpriseConnectorManager(false,
+                                                                            maxPageSize,
+                                                                            repositoryContentManager);
 
             /*
              * Pass the address of the enterprise connector manager to the OMRSEnterpriseConnectorProvider class as
              * the connector manager is needed by each instance of the EnterpriseOMRSConnector.
              */
             EnterpriseOMRSConnectorProvider.initialize(enterpriseConnectorManager,
-                                                       localRepositoryContentManager,
+                                                       repositoryContentManager,
                                                        localServerName,
                                                        localServerType,
                                                        localOrganizationName,
@@ -487,14 +505,16 @@ public class OMRSOperationalServices
                                auditCode.getSystemAction(),
                                auditCode.getUserAction());
 
-            enterpriseConnectorManager = new OMRSEnterpriseConnectorManager(true, maxPageSize);
+            enterpriseConnectorManager = new OMRSEnterpriseConnectorManager(true,
+                                                                            maxPageSize,
+                                                                            repositoryContentManager);
 
             /*
              * Pass the address of the enterprise connector manager to the OMRSEnterpriseConnectorProvider class as
              * the connector manager is needed by each instance of the EnterpriseOMRSConnector.
              */
             EnterpriseOMRSConnectorProvider.initialize(enterpriseConnectorManager,
-                                                       localRepositoryContentManager,
+                                                       repositoryContentManager,
                                                        localServerName,
                                                        localServerType,
                                                        localOrganizationName,
@@ -537,9 +557,7 @@ public class OMRSOperationalServices
                                                    getLocalRepositoryEventMapper(localRepositoryConfig.getEventMapperConnection()),
                                                    localRepositoryEventManager,
                                                    localRepositoryContentManager,
-                                                   new OMRSRepositoryEventExchangeRule("Local Repository Events To Save",
-                                                                                       localRepositoryContentManager,
-                                                                                       localRepositoryConfig.getEventsToSaveRule(),
+                                                   new OMRSRepositoryEventExchangeRule(localRepositoryConfig.getEventsToSaveRule(),
                                                                                        localRepositoryConfig.getSelectedTypesToSave()));
 
 

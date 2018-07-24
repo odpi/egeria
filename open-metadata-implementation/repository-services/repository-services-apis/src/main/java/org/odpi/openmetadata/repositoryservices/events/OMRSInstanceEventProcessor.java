@@ -15,6 +15,21 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 public interface OMRSInstanceEventProcessor
 {
     /**
+     * Process the instance event directly.
+     *
+     * @param sourceName source of the event
+     * @param instanceEvent  properties of the event to send
+     * */
+    void sendInstanceEvent(String            sourceName,
+                           OMRSInstanceEvent instanceEvent);
+
+
+    /*
+     * ================================================
+     * Processor methods requesting specific events.
+     */
+
+    /**
      * A new entity has been created.
      *
      * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the

@@ -42,6 +42,11 @@ public class KafkaIGCEventMapperProducer extends OpenMetadataTopicConnector {
         producer = createProducer();
     }
 
+    /**
+     * Set properties for kafka producer.
+     *
+     * @return      kafka producer object
+     */
     private Producer<Long, String> createProducer() {
         Properties props = new Properties();
 

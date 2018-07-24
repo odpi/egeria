@@ -159,37 +159,24 @@ public abstract class OMRSRepositoryEventMapperConnector extends ConnectorBase i
     {
         super.start();
 
-        final String            methodName = "start";
+        final String            methodName = "Start Event Mapper";
 
-        if (this.eventBusConnectors.isEmpty())
+        /*
+         * If the event mapper is not using embedded connectors then this list is empty.
+         */
+        for (OpenMetadataTopicConnector eventBusConnector : eventBusConnectors)
         {
-            OMRSErrorCode errorCode = OMRSErrorCode.NO_EVENT_BUS_CONNECTORS;
-            String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(repositoryEventMapperName);
-
-            throw new ConnectorCheckedException(errorCode.getHTTPErrorCode(),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
+            eventBusConnector.start();
         }
-        else
-        {
-            for (OpenMetadataTopicConnector eventBusConnector : eventBusConnectors)
-            {
-                eventBusConnector.start();
-            }
 
-            OMRSAuditCode auditCode = OMRSAuditCode.EVENT_MAPPER_LISTENER_STARTED;
-            auditLog.logRecord(methodName,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(repositoryEventMapperName),
-                               this.getConnection().toString(),
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
-        }
+        OMRSAuditCode auditCode = OMRSAuditCode.EVENT_MAPPER_LISTENER_STARTED;
+        auditLog.logRecord(methodName,
+                           auditCode.getLogMessageId(),
+                           auditCode.getSeverity(),
+                           auditCode.getFormattedLogMessage(repositoryEventMapperName),
+                           this.getConnection().toString(),
+                           auditCode.getSystemAction(),
+                           auditCode.getUserAction());
     }
 
 
@@ -200,10 +187,13 @@ public abstract class OMRSRepositoryEventMapperConnector extends ConnectorBase i
      */
     public  void disconnect() throws ConnectorCheckedException
     {
-        final String            methodName = "disconnect";
+        final String            methodName = "Disconnect Event Mapper";
 
         super.disconnect();
 
+        /*
+         * If the event mapper is not using embedded connectors then this list is empty.
+         */
         for (OpenMetadataTopicConnector eventBusConnector : eventBusConnectors)
         {
             eventBusConnector.disconnect();

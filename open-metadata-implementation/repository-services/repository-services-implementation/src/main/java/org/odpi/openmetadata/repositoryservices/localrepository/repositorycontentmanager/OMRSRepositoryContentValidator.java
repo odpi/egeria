@@ -2242,6 +2242,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                                                     errorCode.getUserAction());
         }
 
+
         if (! validRelationship(sourceName, relationship))
         {
             OMRSErrorCode errorCode = OMRSErrorCode.INVALID_RELATIONSHIP_FROM_STORE;
@@ -2608,7 +2609,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
     {
         if (instance != null)
         {
-            if (instance.getStatus() == InstanceStatus.DELETED)
+            if (instance.getStatus() != InstanceStatus.DELETED)
             {
                 /*
                  * Instance is already deleted

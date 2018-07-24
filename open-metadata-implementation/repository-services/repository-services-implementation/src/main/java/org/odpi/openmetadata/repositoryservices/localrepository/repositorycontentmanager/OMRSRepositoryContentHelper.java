@@ -14,7 +14,7 @@ import java.util.*;
  * OMRSRepositoryContentHelper provides methods to repository connectors and repository event mappers to help
  * them build valid type definitions (TypeDefs), entities and relationships.  It is a facade to the
  * repository content manager which holds an in memory cache of all the active TypeDefs in the local server.
- * OMRSRepositoryContentHelper's purpose is to create a object that the repository connectors and event mappers can
+ * OMRSRepositoryContentHelper's purpose is to create an object that the repository connectors and event mappers can
  * create, use and discard without needing to know how to connect to the repository content manager.
  */
 public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
@@ -47,27 +47,27 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
         this.repositoryContentManager = defaultRepositoryContentManager;
     }
 
-//TODO
+
     /**
-     * Return a filled out entity.  It just needs to add the classifications.
+     * Return a filled out entity.
      *
-     * @param sourceName - source of the request (used for logging)
-     * @param metadataCollectionId - unique identifier for the home metadata collection
-     * @param provenanceType - origin of the entity
-     * @param userName - name of the creator
-     * @param typeName - name of the type
-     * @param properties - properties for the entity
-     * @param classifications - list of classifications for the entity
-     * @return an entity that is filled out
-     * @throws TypeErrorException - the type name is not recognized as an entity type
+     * @param sourceName            source of the request (used for logging)
+     * @param metadataCollectionId  unique identifier for the home metadata collection
+     * @param provenanceType        origin of the entity
+     * @param userName              name of the creator
+     * @param typeName              name of the type
+     * @param properties            properties for the entity
+     * @param classifications       list of classifications for the entity
+     * @return                      an entity that is filled out
+     * @throws TypeErrorException   the type name is not recognized as an entity type
      */
-    public EntityProxy getNewEntityProxyFORDEMO(String                    sourceName,
+    public EntityProxy getNewEntityProxy(String                    sourceName,
                                                 String                    metadataCollectionId,
                                                 InstanceProvenanceType    provenanceType,
                                                 String                    userName,
                                                 String                    typeName,
                                                 InstanceProperties        properties,
-                                                ArrayList<Classification> classifications) throws TypeErrorException
+                                                List<Classification> classifications) throws TypeErrorException
     {
         EntityProxy entity = this.getSkeletonEntityProxy(sourceName,
                 metadataCollectionId,
@@ -81,18 +81,17 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
         return entity;
     }
 
-    //TODO
     /**
      * Return an entity with the header and type information filled out.  The caller only needs to add properties
      * and classifications to complete the set up of the entity.
      *
-     * @param sourceName - source of the request (used for logging)
-     * @param metadataCollectionId - unique identifier for the home metadata collection
-     * @param provenanceType - origin of the entity
-     * @param userName - name of the creator
-     * @param typeName - name of the type
-     * @return partially filled out entity - needs classifications and properties
-     * @throws TypeErrorException - the type name is not recognized.
+     * @param sourceName                source of the request (used for logging)
+     * @param metadataCollectionId      unique identifier for the home metadata collection
+     * @param provenanceType            origin of the entity
+     * @param userName                  name of the creator
+     * @param typeName                  name of the type
+     * @return                          partially filled out entity  needs classifications and properties
+     * @throws TypeErrorException       the type name is not recognized.
      */
     public EntityProxy getSkeletonEntityProxy(String                  sourceName,
                                               String                  metadataCollectionId,

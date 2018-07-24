@@ -12,7 +12,7 @@ import java.util.*;
  * OMRSRepositoryHelper provides methods to repository connectors and repository event mappers to help
  * them build valid type definitions (TypeDefs), entities and relationships.  It is a facade to the
  * repository content manager which holds an in memory cache of all the active TypeDefs in the local server.
- * OMRSRepositoryHelper's purpose is to create a object that the repository connectors and event mappers can
+ * OMRSRepositoryHelper's purpose is to create an object that the repository connectors and event mappers can
  * create, use and discard without needing to know how to connect to the repository content manager.
  */
 public interface OMRSRepositoryHelper
@@ -157,7 +157,7 @@ public interface OMRSRepositoryHelper
     TypeDef applyPatch(String       sourceName,
                        TypeDef      originalTypeDef,
                        TypeDefPatch typeDefPatch) throws PatchErrorException,
-                                                         InvalidParameterException;
+            InvalidParameterException;
 
 
     /**
@@ -251,7 +251,7 @@ public interface OMRSRepositoryHelper
 
 
     /**
-     * Return a filled out relationship  just needs the entity proxies added.
+     * Return a filled out relationship which just needs the entity proxies added.
      *
      * @param sourceName            source of the request (used for logging)
      * @param metadataCollectionId  unique identifier for the home metadata collection
@@ -412,14 +412,35 @@ public interface OMRSRepositoryHelper
     /**
      * Generate an entity proxy from an entity and its TypeDef.
      *
-     * @param sourceName  source of the request (used for logging)
-     * @param entity      entity instance
-     * @return  new entity proxy
+     * @param sourceName                 source of the request (used for logging)
+     * @param entity                     entity instance
+     * @return                           new entity proxy
      * @throws RepositoryErrorException  logic error in the repository corrupted entity
      */
     EntityProxy getNewEntityProxy(String       sourceName,
                                   EntityDetail entity) throws RepositoryErrorException;
 
+
+    /**
+     * Return a filled out entity.
+     *
+     * @param sourceName            source of the request (used for logging)
+     * @param metadataCollectionId  unique identifier for the home metadata collection
+     * @param provenanceType        origin of the entity
+     * @param userName              name of the creator
+     * @param typeName              name of the type
+     * @param properties            properties for the entity
+     * @param classifications       list of classifications for the entity
+     * @return                      an entity that is filled out
+     * @throws TypeErrorException   the type name is not recognized as an entity type
+     */
+    EntityProxy getNewEntityProxy(String                    sourceName,
+                                  String                    metadataCollectionId,
+                                  InstanceProvenanceType    provenanceType,
+                                  String                    userName,
+                                  String                    typeName,
+                                  InstanceProperties        properties,
+                                  List<Classification> classifications) throws TypeErrorException;
 
     /**
      * Return boolean true if entity is linked by this relationship.

@@ -1,19 +1,16 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector;
 
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.events.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
-import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventProcessor;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -22,8 +19,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.eventmanagement.*;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -82,6 +77,7 @@ public class LocalOMRSInstanceEventProcessor implements OMRSInstanceEventProcess
         this.repositoryHelper = repositoryHelper;
         this.repositoryValidator = repositoryValidator;
         this.saveExchangeRule = saveExchangeRule;
+        this.outboundRepositoryEventProcessor = outboundRepositoryEventProcessor;
 
         if (realLocalConnector != null)
         {
@@ -112,6 +108,324 @@ public class LocalOMRSInstanceEventProcessor implements OMRSInstanceEventProcess
      * ====================================
      * OMRSInstanceEventProcessor
      */
+
+
+    /**
+     * Unpack and process the incoming event
+     *
+     * @param cohortName source of the event
+     * @param instanceEvent the event to process
+     */
+    public void   sendInstanceEvent(String            cohortName,
+                                    OMRSInstanceEvent instanceEvent)
+    {
+        OMRSInstanceEventType instanceEventType       = instanceEvent.getInstanceEventType();
+        OMRSEventOriginator   instanceEventOriginator = instanceEvent.getEventOriginator();
+
+        if ((instanceEventType != null) && (instanceEventOriginator != null))
+        {
+            switch (instanceEventType)
+            {
+                case NEW_ENTITY_EVENT:
+                    this.processNewEntityEvent(cohortName,
+                                               instanceEventOriginator.getMetadataCollectionId(),
+                                               instanceEventOriginator.getServerName(),
+                                               instanceEventOriginator.getServerType(),
+                                               instanceEventOriginator.getOrganizationName(),
+                                               instanceEvent.getEntity());
+                    break;
+
+                case UPDATED_ENTITY_EVENT:
+                    this.processUpdatedEntityEvent(cohortName,
+                                                   instanceEventOriginator.getMetadataCollectionId(),
+                                                   instanceEventOriginator.getServerName(),
+                                                   instanceEventOriginator.getServerType(),
+                                                   instanceEventOriginator.getOrganizationName(),
+                                                   instanceEvent.getOriginalEntity(),
+                                                   instanceEvent.getEntity());
+                    break;
+
+                case CLASSIFIED_ENTITY_EVENT:
+                    this.processClassifiedEntityEvent(cohortName,
+                                                      instanceEventOriginator.getMetadataCollectionId(),
+                                                      instanceEventOriginator.getServerName(),
+                                                      instanceEventOriginator.getServerType(),
+                                                      instanceEventOriginator.getOrganizationName(),
+                                                      instanceEvent.getEntity());
+                    break;
+
+                case RECLASSIFIED_ENTITY_EVENT:
+                    this.processReclassifiedEntityEvent(cohortName,
+                                                        instanceEventOriginator.getMetadataCollectionId(),
+                                                        instanceEventOriginator.getServerName(),
+                                                        instanceEventOriginator.getServerType(),
+                                                        instanceEventOriginator.getOrganizationName(),
+                                                        instanceEvent.getEntity());
+                    break;
+
+                case DECLASSIFIED_ENTITY_EVENT:
+                    this.processDeclassifiedEntityEvent(cohortName,
+                                                        instanceEventOriginator.getMetadataCollectionId(),
+                                                        instanceEventOriginator.getServerName(),
+                                                        instanceEventOriginator.getServerType(),
+                                                        instanceEventOriginator.getOrganizationName(),
+                                                        instanceEvent.getEntity());
+                    break;
+
+                case DELETED_ENTITY_EVENT:
+                    this.processDeletedEntityEvent(cohortName,
+                                                   instanceEventOriginator.getMetadataCollectionId(),
+                                                   instanceEventOriginator.getServerName(),
+                                                   instanceEventOriginator.getServerType(),
+                                                   instanceEventOriginator.getOrganizationName(),
+                                                   instanceEvent.getEntity());
+                    break;
+
+                case PURGED_ENTITY_EVENT:
+                    this.processPurgedEntityEvent(cohortName,
+                                                  instanceEventOriginator.getMetadataCollectionId(),
+                                                  instanceEventOriginator.getServerName(),
+                                                  instanceEventOriginator.getServerType(),
+                                                  instanceEventOriginator.getOrganizationName(),
+                                                  instanceEvent.getTypeDefGUID(),
+                                                  instanceEvent.getTypeDefName(),
+                                                  instanceEvent.getInstanceGUID());
+                    break;
+
+                case UNDONE_ENTITY_EVENT:
+                    this.processUndoneEntityEvent(cohortName,
+                                                  instanceEventOriginator.getMetadataCollectionId(),
+                                                  instanceEventOriginator.getServerName(),
+                                                  instanceEventOriginator.getServerType(),
+                                                  instanceEventOriginator.getOrganizationName(),
+                                                  instanceEvent.getEntity());
+                    break;
+
+                case RESTORED_ENTITY_EVENT:
+                    this.processRestoredEntityEvent(cohortName,
+                                                    instanceEventOriginator.getMetadataCollectionId(),
+                                                    instanceEventOriginator.getServerName(),
+                                                    instanceEventOriginator.getServerType(),
+                                                    instanceEventOriginator.getOrganizationName(),
+                                                    instanceEvent.getEntity());
+                    break;
+
+                case REFRESH_ENTITY_REQUEST:
+                    this.processRefreshEntityRequested(cohortName,
+                                                       instanceEventOriginator.getMetadataCollectionId(),
+                                                       instanceEventOriginator.getServerName(),
+                                                       instanceEventOriginator.getServerType(),
+                                                       instanceEventOriginator.getOrganizationName(),
+                                                       instanceEvent.getTypeDefGUID(),
+                                                       instanceEvent.getTypeDefName(),
+                                                       instanceEvent.getInstanceGUID(),
+                                                       instanceEvent.getHomeMetadataCollectionId());
+                    break;
+
+                case REFRESHED_ENTITY_EVENT:
+                    this.processRefreshEntityEvent(cohortName,
+                                                   instanceEventOriginator.getMetadataCollectionId(),
+                                                   instanceEventOriginator.getServerName(),
+                                                   instanceEventOriginator.getServerType(),
+                                                   instanceEventOriginator.getOrganizationName(),
+                                                   instanceEvent.getEntity());
+                    break;
+
+                case RE_HOMED_ENTITY_EVENT:
+                    this.processReHomedEntityEvent(cohortName,
+                                                   instanceEventOriginator.getMetadataCollectionId(),
+                                                   instanceEventOriginator.getServerName(),
+                                                   instanceEventOriginator.getServerType(),
+                                                   instanceEventOriginator.getOrganizationName(),
+                                                   instanceEvent.getOriginalHomeMetadataCollectionId(),
+                                                   instanceEvent.getEntity());
+                    break;
+
+                case RETYPED_ENTITY_EVENT:
+                    this.processReTypedEntityEvent(cohortName,
+                                                   instanceEventOriginator.getMetadataCollectionId(),
+                                                   instanceEventOriginator.getServerName(),
+                                                   instanceEventOriginator.getServerType(),
+                                                   instanceEventOriginator.getOrganizationName(),
+                                                   instanceEvent.getOriginalTypeDefSummary(),
+                                                   instanceEvent.getEntity());
+                    break;
+
+                case RE_IDENTIFIED_ENTITY_EVENT:
+                    this.processReIdentifiedEntityEvent(cohortName,
+                                                        instanceEventOriginator.getMetadataCollectionId(),
+                                                        instanceEventOriginator.getServerName(),
+                                                        instanceEventOriginator.getServerType(),
+                                                        instanceEventOriginator.getOrganizationName(),
+                                                        instanceEvent.getOriginalInstanceGUID(),
+                                                        instanceEvent.getEntity());
+                    break;
+
+                case NEW_RELATIONSHIP_EVENT:
+                    this.processNewRelationshipEvent(cohortName,
+                                                     instanceEventOriginator.getMetadataCollectionId(),
+                                                     instanceEventOriginator.getServerName(),
+                                                     instanceEventOriginator.getServerType(),
+                                                     instanceEventOriginator.getOrganizationName(),
+                                                     instanceEvent.getRelationship());
+                    break;
+
+                case UPDATED_RELATIONSHIP_EVENT:
+                    this.processUpdatedRelationshipEvent(cohortName,
+                                                         instanceEventOriginator.getMetadataCollectionId(),
+                                                         instanceEventOriginator.getServerName(),
+                                                         instanceEventOriginator.getServerType(),
+                                                         instanceEventOriginator.getOrganizationName(),
+                                                         instanceEvent.getOriginalRelationship(),
+                                                         instanceEvent.getRelationship());
+                    break;
+
+                case UNDONE_RELATIONSHIP_EVENT:
+                    this.processUndoneRelationshipEvent(cohortName,
+                                                        instanceEventOriginator.getMetadataCollectionId(),
+                                                        instanceEventOriginator.getServerName(),
+                                                        instanceEventOriginator.getServerType(),
+                                                        instanceEventOriginator.getOrganizationName(),
+                                                        instanceEvent.getRelationship());
+                    break;
+
+                case DELETED_RELATIONSHIP_EVENT:
+                    this.processDeletedRelationshipEvent(cohortName,
+                                                         instanceEventOriginator.getMetadataCollectionId(),
+                                                         instanceEventOriginator.getServerName(),
+                                                         instanceEventOriginator.getServerType(),
+                                                         instanceEventOriginator.getOrganizationName(),
+                                                         instanceEvent.getRelationship());
+                    break;
+
+                case PURGED_RELATIONSHIP_EVENT:
+                    this.processPurgedEntityEvent(cohortName,
+                                                  instanceEventOriginator.getMetadataCollectionId(),
+                                                  instanceEventOriginator.getServerName(),
+                                                  instanceEventOriginator.getServerType(),
+                                                  instanceEventOriginator.getOrganizationName(),
+                                                  instanceEvent.getTypeDefGUID(),
+                                                  instanceEvent.getTypeDefName(),
+                                                  instanceEvent.getInstanceGUID());
+                    break;
+
+                case RESTORED_RELATIONSHIP_EVENT:
+                    this.processRestoredRelationshipEvent(cohortName,
+                                                          instanceEventOriginator.getMetadataCollectionId(),
+                                                          instanceEventOriginator.getServerName(),
+                                                          instanceEventOriginator.getServerType(),
+                                                          instanceEventOriginator.getOrganizationName(),
+                                                          instanceEvent.getRelationship());
+                    break;
+
+                case REFRESH_RELATIONSHIP_REQUEST:
+                    this.processRefreshRelationshipRequest(cohortName,
+                                                           instanceEventOriginator.getMetadataCollectionId(),
+                                                           instanceEventOriginator.getServerName(),
+                                                           instanceEventOriginator.getServerType(),
+                                                           instanceEventOriginator.getOrganizationName(),
+                                                           instanceEvent.getTypeDefGUID(),
+                                                           instanceEvent.getTypeDefName(),
+                                                           instanceEvent.getInstanceGUID(),
+                                                           instanceEvent.getHomeMetadataCollectionId());
+                    break;
+
+                case REFRESHED_RELATIONSHIP_EVENT:
+                    this.processRefreshRelationshipEvent(cohortName,
+                                                         instanceEventOriginator.getMetadataCollectionId(),
+                                                         instanceEventOriginator.getServerName(),
+                                                         instanceEventOriginator.getServerType(),
+                                                         instanceEventOriginator.getOrganizationName(),
+                                                         instanceEvent.getRelationship());
+                    break;
+
+                case RE_IDENTIFIED_RELATIONSHIP_EVENT:
+                    this.processReIdentifiedRelationshipEvent(cohortName,
+                                                              instanceEventOriginator.getMetadataCollectionId(),
+                                                              instanceEventOriginator.getServerName(),
+                                                              instanceEventOriginator.getServerType(),
+                                                              instanceEventOriginator.getOrganizationName(),
+                                                              instanceEvent.getOriginalInstanceGUID(),
+                                                              instanceEvent.getRelationship());
+                    break;
+
+                case RE_HOMED_RELATIONSHIP_EVENT:
+                    this.processReHomedRelationshipEvent(cohortName,
+                                                         instanceEventOriginator.getMetadataCollectionId(),
+                                                         instanceEventOriginator.getServerName(),
+                                                         instanceEventOriginator.getServerType(),
+                                                         instanceEventOriginator.getOrganizationName(),
+                                                         instanceEvent.getOriginalHomeMetadataCollectionId(),
+                                                         instanceEvent.getRelationship());
+                    break;
+
+                case RETYPED_RELATIONSHIP_EVENT:
+                    this.processReTypedRelationshipEvent(cohortName,
+                                                         instanceEventOriginator.getMetadataCollectionId(),
+                                                         instanceEventOriginator.getServerName(),
+                                                         instanceEventOriginator.getServerType(),
+                                                         instanceEventOriginator.getOrganizationName(),
+                                                         instanceEvent.getOriginalTypeDefSummary(),
+                                                         instanceEvent.getRelationship());
+                    break;
+
+                case INSTANCE_ERROR_EVENT:
+                    OMRSInstanceEventErrorCode errorCode = instanceEvent.getErrorCode();
+
+                    if (errorCode != null)
+                    {
+                        switch(errorCode)
+                        {
+                            case CONFLICTING_INSTANCES:
+                                this.processConflictingInstancesEvent(cohortName,
+                                                                      instanceEventOriginator.getMetadataCollectionId(),
+                                                                      instanceEventOriginator.getServerName(),
+                                                                      instanceEventOriginator.getServerType(),
+                                                                      instanceEventOriginator.getOrganizationName(),
+                                                                      instanceEvent.getTargetMetadataCollectionId(),
+                                                                      instanceEvent.getTargetTypeDefSummary(),
+                                                                      instanceEvent.getTargetInstanceGUID(),
+                                                                      instanceEvent.getOtherMetadataCollectionId(),
+                                                                      instanceEvent.getOtherOrigin(),
+                                                                      instanceEvent.getOtherTypeDefSummary(),
+                                                                      instanceEvent.getOtherInstanceGUID(),
+                                                                      instanceEvent.getErrorMessage());
+                                break;
+
+                            case CONFLICTING_TYPE:
+                                this.processConflictingTypeEvent(cohortName,
+                                                                 instanceEventOriginator.getMetadataCollectionId(),
+                                                                 instanceEventOriginator.getServerName(),
+                                                                 instanceEventOriginator.getServerType(),
+                                                                 instanceEventOriginator.getOrganizationName(),
+                                                                 instanceEvent.getTargetMetadataCollectionId(),
+                                                                 instanceEvent.getTargetTypeDefSummary(),
+                                                                 instanceEvent.getTargetInstanceGUID(),
+                                                                 instanceEvent.getOtherTypeDefSummary(),
+                                                                 instanceEvent.getErrorMessage());
+                                break;
+
+                            default:
+                                log.debug("Unknown instance event error code, ignoring event");
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        log.debug("Ignored Instance event, null error code");
+                    }
+                    break;
+
+                default:
+                    log.debug("Ignored Instance event, unknown type");
+                    break;
+            }
+        }
+        else
+        {
+            log.debug("Ignored instance event, null type");
+        }
+    }
 
 
     /**
@@ -1076,56 +1390,100 @@ public class LocalOMRSInstanceEventProcessor implements OMRSInstanceEventProcess
      *
      * @param sourceName name of the source of this event.
      * @param metadataCollectionId unique identifier for the metadata from the remote repository
-     * @param entity               the retrieved entity.
-     * @return Validated and processed entity.
+     * @param processedEntityGUID the retrieved entity's GUID.
+     * @param processedEntityType the retrieved entity's Type.
      */
-    public EntityDetail processRetrievedEntity(String       sourceName,
-                                               String       metadataCollectionId,
-                                               EntityDetail entity)
+    public void refreshRetrievedEntity(String        sourceName,
+                                       String        metadataCollectionId,
+                                       String        processedEntityGUID,
+                                       InstanceType  processedEntityType)
     {
-        EntityDetail   processedEntity = new EntityDetail(entity);
+        try
+        {
+            if (realMetadataCollection.isEntityKnown(sourceName, processedEntityGUID) == null)
+            {
+                if (processedEntityType != null)
+                {
+                    /*
+                     * It would be possible to save the relationship directly into the repository,
+                     * but it is possible that some of the properties have been suppressed for the
+                     * requesting user Id.  In which case saving it now would result in other users
+                     * seeing a restricted view of the relationship.
+                     */
+                    realMetadataCollection.refreshEntityReferenceCopy(localServerName,
+                                                                      processedEntityGUID,
+                                                                      processedEntityType.getTypeDefGUID(),
+                                                                      processedEntityType.getTypeDefName(),
+                                                                      metadataCollectionId);
+                }
+            }
+        }
+        catch (Throwable   error)
+        {
+            final String methodName = "processRetrievedEntity";
 
-        processedEntity.setMetadataCollectionId(metadataCollectionId);
-
-        final String methodName = "processRetrievedEntity";
-        final String entityParameterName = "entity";
-
-        updateReferenceEntity(sourceName,
-                              methodName,
-                              entityParameterName,
-                              metadataCollectionId,
-                              localServerName,
-                              entity);
-        return entity;
+            OMRSAuditCode auditCode = OMRSAuditCode.UNEXPECTED_EXCEPTION_FROM_EVENT;
+            auditLog.logRecord(methodName,
+                               auditCode.getLogMessageId(),
+                               auditCode.getSeverity(),
+                               auditCode.getFormattedLogMessage(methodName,
+                                                                sourceName,
+                                                                metadataCollectionId,
+                                                                error.getMessage()),
+                               null,
+                               auditCode.getSystemAction(),
+                               auditCode.getUserAction());
+        }
     }
 
 
     /**
-     * Pass a list of entities that have been retrieved from a remote open metadata repository so they can be
-     * validated and (if the rules permit) cached in the local repository.
+     * Pass an entity that has been retrieved from a remote open metadata repository so it can be validated and
+     * (if the rules permit) cached in the local repository.
      *
      * @param sourceName name of the source of this event.
      * @param metadataCollectionId unique identifier for the metadata from the remote repository
-     * @param entities             the retrieved relationships
-     * @return the validated and processed relationships
+     * @param processedEntity  the retrieved entity.
      */
-    public List<EntityDetail> processRetrievedEntities(String                  sourceName,
-                                                       String                  metadataCollectionId,
-                                                       List<EntityDetail>      entities)
+    public void processRetrievedEntitySummary(String        sourceName,
+                                              String        metadataCollectionId,
+                                              EntitySummary processedEntity)
     {
-        List<EntityDetail> processedEntities = new ArrayList<>();
-
-        for (EntityDetail  entity : entities)
+        /*
+         * Discover whether the instance should be learned.
+         */
+        if (verifyEventToLearn(sourceName, processedEntity))
         {
-            EntityDetail   processedEntity = this.processRetrievedEntity(sourceName, metadataCollectionId, entity);
-
-            if (processedEntity != null)
-            {
-                processedEntities.add(processedEntity);
-            }
+            refreshRetrievedEntity(sourceName,
+                                   metadataCollectionId,
+                                   processedEntity.getGUID(),
+                                   processedEntity.getType());
         }
+    }
 
-        return processedEntities;
+
+    /**
+     * Pass an entity that has been retrieved from a remote open metadata repository so it can be validated and
+     * (if the rules permit) cached in the local repository.
+     *
+     * @param sourceName name of the source of this event.
+     * @param metadataCollectionId unique identifier for the metadata from the remote repository
+     * @param processedEntity the retrieved entity.
+     */
+    public void processRetrievedEntityDetail(String       sourceName,
+                                             String       metadataCollectionId,
+                                             EntityDetail processedEntity)
+    {
+        /*
+         * Discover whether the instance should be learned.
+         */
+        if (verifyEventToLearn(sourceName, processedEntity))
+        {
+            refreshRetrievedEntity(sourceName,
+                                   metadataCollectionId,
+                                   processedEntity.getGUID(),
+                                   processedEntity.getType());
+        }
     }
 
 
@@ -1135,28 +1493,16 @@ public class LocalOMRSInstanceEventProcessor implements OMRSInstanceEventProcess
      *
      * @param sourceName name of the source of this event.
      * @param metadataCollectionId unique identifier for the metadata from the remote repository
-     * @param relationship         the retrieved relationship
-     * @return the validated and processed relationship
+     * @param processedRelationship         the retrieved relationship
      */
-    public Relationship processRetrievedRelationship(String       sourceName,
-                                                     String       metadataCollectionId,
-                                                     Relationship relationship)
+    public void processRetrievedRelationship(String       sourceName,
+                                             String       metadataCollectionId,
+                                             Relationship processedRelationship)
     {
-        Relationship   processedRelationship = new Relationship(relationship);
-
-        /*
-         * Ensure the metadata collection is set up correctly.
-         */
-        if (processedRelationship.getMetadataCollectionId() == null)
-        {
-            processedRelationship.setMetadataCollectionId(metadataCollectionId);
-        }
-
-
         /*
          * Discover whether the instance should be learned.
          */
-        if (saveExchangeRule.learnInstanceEvent(processedRelationship))
+        if (verifyEventToLearn(sourceName, processedRelationship))
         {
             try
             {
@@ -1170,7 +1516,7 @@ public class LocalOMRSInstanceEventProcessor implements OMRSInstanceEventProcess
                          * It would be possible to save the relationship directly into the repository,
                          * but it is possible that some of the properties have been suppressed for the
                          * requesting user Id.  In which case saving it now would result in other users
-                         * seeing a restricted view of the
+                         * seeing a restricted view of the relationship.
                          */
                         realMetadataCollection.refreshRelationshipReferenceCopy(localServerName,
                                                                                 processedRelationship.getGUID(),
@@ -1197,39 +1543,6 @@ public class LocalOMRSInstanceEventProcessor implements OMRSInstanceEventProcess
                                    auditCode.getUserAction());
             }
         }
-
-        return processedRelationship;
-    }
-
-
-    /**
-     * Pass a list of relationships that have been retrieved from a remote open metadata repository so they can be
-     * validated and (if the rules permit) cached in the local repository.
-     *
-     * @param sourceName name of the source of this event.
-     * @param metadataCollectionId unique identifier for the metadata from the remote repository
-     * @param relationships        the list of retrieved relationships
-     * @return the validated and processed relationships
-     */
-    public List<Relationship> processRetrievedRelationships(String             sourceName,
-                                                            String             metadataCollectionId,
-                                                            List<Relationship> relationships)
-    {
-        List<Relationship> processedRelationships = new ArrayList<>();
-
-        for (Relationship  relationship : relationships)
-        {
-            Relationship processedRelationship = this.processRetrievedRelationship(sourceName,
-                                                                                   metadataCollectionId,
-                                                                                   relationship);
-
-            if (processedRelationship != null)
-            {
-                processedRelationships.add(processedRelationship);
-            }
-        }
-
-        return processedRelationships;
     }
 
 
@@ -1268,7 +1581,7 @@ public class LocalOMRSInstanceEventProcessor implements OMRSInstanceEventProcess
                                                                 entity,
                                                                 methodName);
 
-            if (saveExchangeRule.processInstanceEvent(entity))
+            if (verifyEventToSave(sourceName, entity))
             {
                 realMetadataCollection.saveEntityReferenceCopy(sourceName, entity);
             }
@@ -1296,7 +1609,7 @@ public class LocalOMRSInstanceEventProcessor implements OMRSInstanceEventProcess
      * @param sourceName                     name of the source of the event.  It may be the cohort name for incoming events or the
      *                                       local repository, or event mapper name.
      * @param methodName                     name of the event method
-     * @param entityParameterName            name of the parameter that passed the relationship.
+     * @param relationshipParameterName            name of the parameter that passed the relationship.
      * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
      * @param originatorServerName           name of the server that the event came from.
@@ -1304,7 +1617,7 @@ public class LocalOMRSInstanceEventProcessor implements OMRSInstanceEventProcess
      */
     private void updateReferenceRelationship(String       sourceName,
                                              String       methodName,
-                                             String       entityParameterName,
+                                             String       relationshipParameterName,
                                              String       originatorMetadataCollectionId,
                                              String       originatorServerName,
                                              Relationship relationship)
@@ -1314,11 +1627,11 @@ public class LocalOMRSInstanceEventProcessor implements OMRSInstanceEventProcess
             verifyEventProcessor(methodName);
             repositoryValidator.validateReferenceInstanceHeader(realRepositoryName,
                                                                 localMetadataCollectionId,
-                                                                entityParameterName,
+                                                                relationshipParameterName,
                                                                 relationship,
                                                                 methodName);
 
-            if (saveExchangeRule.processInstanceEvent(relationship))
+            if (verifyEventToSave(sourceName, relationship))
             {
                 realMetadataCollection.saveRelationshipReferenceCopy(sourceName, relationship);
             }
@@ -1485,5 +1798,42 @@ public class LocalOMRSInstanceEventProcessor implements OMRSInstanceEventProcess
                                               errorCode.getSystemAction(),
                                               errorCode.getUserAction());
         }
+    }
+
+
+    /**
+     * Determine if the event should be processed.
+     *
+     * @param source identifier of the source of the event.
+     * @param instance metadata instance in the event.
+     * @return boolean flag indicating whether the event should be sent to the real repository or not.
+     */
+    private boolean verifyEventToSave(String             source,
+                                      InstanceHeader     instance)
+    {
+        InstanceType   instanceType = instance.getType();
+
+        return ((saveExchangeRule.processInstanceEvent(instance)) &&
+                (repositoryValidator.isActiveType(source,
+                                                  instanceType.getTypeDefGUID(),
+                                                  instanceType.getTypeDefName())));
+    }
+
+    /**
+     * Determine if the event should be processed.
+     *
+     * @param source identifier of the source of the event.
+     * @param instance metadata instance in the event.
+     * @return boolean flag indicating whether the event should be sent to the real repository or not.
+     */
+    private boolean verifyEventToLearn(String             source,
+                                       InstanceHeader     instance)
+    {
+        InstanceType   instanceType = instance.getType();
+
+        return ((saveExchangeRule.learnInstanceEvent(instance)) &&
+                (repositoryValidator.isActiveType(source,
+                                                  instanceType.getTypeDefGUID(),
+                                                  instanceType.getTypeDefName())));
     }
 }

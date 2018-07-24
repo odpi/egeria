@@ -28,7 +28,6 @@ import java.util.Properties;
 public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase {
 
 
-
     private IGCEventProcessor igcEventProcessor;
     private static final Logger log = LoggerFactory.getLogger(IGCOMRSRepositoryEventMapper.class);
 
@@ -64,6 +63,11 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
 
     }
 
+    /**
+     * Set properties for the kafka consumer.
+     *
+     * @return  kafka consumer object
+     */
     private Consumer<Long, String> createConsumer() {
         final Properties props = new Properties();
         String address = this.connectionBean.getEndpoint().getAddress().split("/")[0];
@@ -78,10 +82,18 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         return consumer;
     }
 
+    /**
+     * Start a new thread to read IGC kafka events.
+     */
     public  void runConsumer(){
         new Thread(new ConsumerThread()).start();
     }
 
+    /**
+     * Receive events from the open metadata topic.
+     *
+     * @param event inbound event
+     */
     @Override
     public void processEvent(String event) {
         //TODO
@@ -90,29 +102,32 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
 
     private class ConsumerThread implements Runnable{
 
-    @Override
-    public void run() {
-        log.info("Started IGC Eventmapper");
-        IGCKafkaEvent igcKafkaEvent;
-        final Consumer<Long, String> consumer = createConsumer();
-        ConsumerRecords<Long, String> records;
-        while (true) {
-            try {
-                records = consumer.poll(100);
-                for (ConsumerRecord<Long, String> record : records) {
-                    ObjectMapper mapper = new ObjectMapper();
-                    igcKafkaEvent = mapper.readValue(record.value(), IGCKafkaEvent.class);
-                    log.info("Consumer Record");
-                    log.info(record.value());
-                    igcEventProcessor.process(igcKafkaEvent);
+        /**
+         * Read the Kafka events originating from IGC.
+         */
+        @Override
+        public void run() {
+            log.info("Started IGC Eventmapper");
+            IGCKafkaEvent igcKafkaEvent;
+            final Consumer<Long, String> consumer = createConsumer();
+            ConsumerRecords<Long, String> records;
+            while (true) {
+                try {
+                    records = consumer.poll(100);
+                    for (ConsumerRecord<Long, String> record : records) {
+                        ObjectMapper mapper = new ObjectMapper();
+                        igcKafkaEvent = mapper.readValue(record.value(), IGCKafkaEvent.class);
+                        log.info("Consumer Record");
+                        log.info(record.value());
+                        igcEventProcessor.process(igcKafkaEvent);
+                    }
                 }
-            }
-            catch(Exception e){
-                e.printStackTrace();
+                catch(Exception e){
+                    e.printStackTrace();
+                }
             }
         }
     }
-}
 
 }
 
