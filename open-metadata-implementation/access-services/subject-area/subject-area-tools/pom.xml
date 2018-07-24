@@ -55,6 +55,9 @@
                         <fileset>
                             <directory>${basedir}/../subject-area-server/src/main/java/org/odpi/openmetadata/accessservices/subjectarea/generated</directory>
                         </fileset>
+                        <fileset>
+                            <directory>${basedir}/../subject-area-server/src/test/java/org/odpi/openmetadata/accessservices/subjectarea/generated</directory>
+                        </fileset>
                     </filesets>
                 </configuration>
             </plugin>
