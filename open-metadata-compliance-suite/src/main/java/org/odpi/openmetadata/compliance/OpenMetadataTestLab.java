@@ -89,7 +89,7 @@ public class OpenMetadataTestLab
     public static void main(String[] args)
     {
         String  serverURLRoot;
-        String  reportFileName = "openmetadata.functional.testlab.results";
+        String  resultsFileName = "openmetadata.functional.testlab.results";
 
         org.apache.log4j.BasicConfigurator.configure(new NullAppender());
 
@@ -118,7 +118,7 @@ public class OpenMetadataTestLab
 
         try
         {
-            File resultsStoreFile = new File(reportFileName);
+            File resultsStoreFile = new File(resultsFileName);
             ObjectMapper objectMapper = new ObjectMapper();
             String       jsonString = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(testLabResults);
 

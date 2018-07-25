@@ -430,10 +430,10 @@ public class OMRSRepositoryResource
      * InvalidTypeDefException the new TypeDef has invalid contents.
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/types/typedef/compatibility")
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/types/typedef/compatibility")
 
     public BooleanResponse verifyTypeDef(@PathVariable String       userId,
-                                         @RequestParam TypeDef      typeDef)
+                                         @RequestBody  TypeDef      typeDef)
     {
         return restAPI.verifyTypeDef(userId, typeDef);
     }
@@ -454,10 +454,10 @@ public class OMRSRepositoryResource
      * InvalidTypeDefException the new TypeDef has invalid contents or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/types/attribute-typedef/compatibility")
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/types/attribute-typedef/compatibility")
 
     public  BooleanResponse verifyAttributeTypeDef(@PathVariable String            userId,
-                                                   @RequestParam AttributeTypeDef  attributeTypeDef)
+                                                   @RequestBody  AttributeTypeDef  attributeTypeDef)
     {
         return restAPI.verifyAttributeTypeDef(userId, attributeTypeDef);
     }

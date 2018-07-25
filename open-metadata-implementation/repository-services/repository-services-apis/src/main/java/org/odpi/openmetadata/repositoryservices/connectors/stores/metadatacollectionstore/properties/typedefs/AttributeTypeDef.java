@@ -277,8 +277,9 @@ public abstract class AttributeTypeDef extends TypeDefElementHeader
                 '}';
     }
 
+
     /**
-     * Validated that the GUID, name and version number of a TypeDef are equal.
+     * Validated that the GUID, name and version number of a AttributeTypeDef are equal.
      *
      * @param object to test
      * @return boolean flag to say object is the same TypeDefSummary
@@ -303,6 +304,7 @@ public abstract class AttributeTypeDef extends TypeDefElementHeader
                 Objects.equals(description, that.description) &&
                 Objects.equals(descriptionGUID, that.descriptionGUID);
     }
+
 
     /**
      * Using the GUID as a hashcode.  It should be unique if all connected metadata repositories are behaving properly.
