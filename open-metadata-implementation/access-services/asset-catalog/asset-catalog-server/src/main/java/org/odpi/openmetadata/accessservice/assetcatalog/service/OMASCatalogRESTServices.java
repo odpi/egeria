@@ -3,6 +3,7 @@ package org.odpi.openmetadata.accessservice.assetcatalog.service;
 
 import org.odpi.openmetadata.accessservice.assetcatalog.admin.AssetCatalogAdmin;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.*;
+import org.odpi.openmetadata.accessservice.assetcatalog.model.responses.AssetDescriptionResponse;
 import org.odpi.openmetadata.accessservice.assetcatalog.util.Converter;
 import org.odpi.openmetadata.adminservices.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
@@ -103,7 +104,7 @@ public class OMASCatalogRESTServices {
         return response;
     }
 
-    public List<AssetDescription> searchAssets(String userId, String searchCriteria) {
+    public AssetDescriptionResponse searchAssets(String userId, String searchCriteria) {
 
         List<EntityDetail> matchCriteriaEntities = findEntitiesBySearchCriteria(userId, searchCriteria);
         List<AssetDescription> assetDescriptions = new ArrayList<>(matchCriteriaEntities.size());
@@ -133,7 +134,10 @@ public class OMASCatalogRESTServices {
             assetDescription.setConnection(connections);
             assetDescriptions.add(assetDescription);
         }
-        return assetDescriptions;
+
+        AssetDescriptionResponse response = new AssetDescriptionResponse();
+        response.setAssetDescriptionList(assetDescriptions);
+        return response;
     }
 
     private List<EntityDetail> findEntitiesBySearchCriteria(String userId, String searchCriteria) {

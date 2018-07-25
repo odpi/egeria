@@ -33,7 +33,7 @@ public enum AssetCatalogErrorCode {
             "Provide more details for the current search."),
 
     SERVER_URL_NOT_SPECIFIED(400, "OMAS-ASSET-CATALOG-400-001 ",
-            "The OMAS Server URL is null",
+            "The OMAS Server URL is null or empty",
             "The system is unable to connect to the OMAS Server to populate the ConnectedAssetProperties object.",
             "Retry the request when the OMAS Service is available."),
 
