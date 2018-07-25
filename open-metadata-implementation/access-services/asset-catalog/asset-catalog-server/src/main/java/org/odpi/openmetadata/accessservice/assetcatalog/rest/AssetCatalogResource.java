@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservice.assetcatalog.rest;
 import org.odpi.openmetadata.accessservice.assetcatalog.admin.AssetCatalogAdmin;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.AssetDescription;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.Status;
+import org.odpi.openmetadata.accessservice.assetcatalog.model.responses.AssetDescriptionResponse;
 import org.odpi.openmetadata.accessservice.assetcatalog.service.OMASCatalogRESTServices;
 import org.odpi.openmetadata.adminservices.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
@@ -60,14 +61,14 @@ public class AssetCatalogResource {
      * @return list of properties used to narrow the search
      */
     @RequestMapping(method = RequestMethod.GET, path = "/search-asset/{searchCriteria}")
-    public List<AssetDescription> searchAssets(@PathVariable("userId") String userId,
-                                               @PathVariable("searchCriteria") String searchCriteria,
-                                               @RequestParam(required = false, value = "limit", defaultValue = "0") Integer limit,
-                                               @RequestParam(required = false, value = "offset", defaultValue = "0") Integer offset,
-                                               @RequestParam(required = false, value = "orderType") SequencingOrder orderType,
-                                               @RequestParam(required = false, value = "orderProperty") String orderProperty,
-                                               @RequestParam(required = false, value = "status") Status status,
-                                               @RequestParam(required = false, value = "excludeDeleted") Boolean excludeDeleted) {
+    public AssetDescriptionResponse searchAssets(@PathVariable("userId") String userId,
+                                                 @PathVariable("searchCriteria") String searchCriteria,
+                                                 @RequestParam(required = false, value = "limit", defaultValue = "0") Integer limit,
+                                                 @RequestParam(required = false, value = "offset", defaultValue = "0") Integer offset,
+                                                 @RequestParam(required = false, value = "orderType") SequencingOrder orderType,
+                                                 @RequestParam(required = false, value = "orderProperty") String orderProperty,
+                                                 @RequestParam(required = false, value = "status") Status status,
+                                                 @RequestParam(required = false, value = "excludeDeleted") Boolean excludeDeleted) {
         return restAPI.searchAssets(userId, searchCriteria);
     }
 }
