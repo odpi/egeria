@@ -48,11 +48,12 @@ public class SubjectAreaOmrsBeanGenerator {
     public static final String TEMPLATES_FOLDER = GENERATOR + "/src/main/resources/templates/";
     public static final String GENERATION_FOLDER = SUBJECTAREA_OMAS_SERVER + "/src/main/java/org/odpi/openmetadata/accessservices/subjectarea/generated";
     public static final String GENERATION_REST_FOLDER = GENERATION_FOLDER + "/server/";
-    public static final String GENERATION_REST_TEST_FOLDER = SUBJECTAREA_OMAS_SERVER + "/src/test/java/org/odpi/openmetadata/accessservices/subjectarea/generated/server/";
+    public static final String GENERATION_REST_TEST_FOLDER = SUBJECTAREA_OMAS_SERVER + "/src/test/java/org/odpi" +
+            "/openmetadata/accessservices/subjectarea/generated/server/Test";
     public static final String GENERATION_REST_CLASS_NAME = "SubjectAreaBeansToAccessOMRS.java";
 
     public static final String GENERATION_REST_FILE = GENERATION_REST_FOLDER + GENERATION_REST_CLASS_NAME;
-    public static final String GENERATION_REST_TEST_FILE = GENERATION_REST_TEST_FOLDER + "Test" + GENERATION_REST_CLASS_NAME;
+    public static final String GENERATION_REST_TEST_FILE = GENERATION_REST_TEST_FOLDER + GENERATION_REST_CLASS_NAME;
 
     public static final String GENERATION_REFERENCES_FOLDER = GENERATION_FOLDER + "/" + REFERENCES + "/";
     public static final String GENERATION_ENTITIES_FOLDER = GENERATION_FOLDER + "/" + ENTITIES + "/";
