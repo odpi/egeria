@@ -17,7 +17,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
-public abstract class AssetCatalogOMASAPIResponse {
+public class AssetCatalogOMASAPIResponse {
+
+    protected AssetCatalogOMASAPIResponse() {
+
+    }
 
     /**
      * the HTTP Code to use if forwarding response to HTTP client.
