@@ -4,10 +4,10 @@ package org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.except
 
 
 /**
- * The GuidNotFoundException is thrown by the Governance Engine OMAS when the guid passed is not found
- * in the repository.
+ * The TypeNotFoundException is thrown by the Governance Engine OMAS when the root type passed
+ * is not valid.
  */
-public class GuidNotFoundException extends GovernanceEngineCheckedExceptionBase {
+public class TypeNotFoundException extends GovernanceEngineCheckedExceptionBase {
     /**
      * This is the typical constructor used for creating a ClassificationNotFoundException.
      *
@@ -18,7 +18,7 @@ public class GuidNotFoundException extends GovernanceEngineCheckedExceptionBase 
      * @param systemAction      - actions of the system as a result of the error
      * @param userAction        - instructions for correcting the error
      */
-    public GuidNotFoundException(int httpCode, String className, String actionDescription, String errorMessage, String systemAction, String userAction) {
+    public TypeNotFoundException(int httpCode, String className, String actionDescription, String errorMessage, String systemAction, String userAction) {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction);
     }
 
@@ -34,7 +34,7 @@ public class GuidNotFoundException extends GovernanceEngineCheckedExceptionBase 
      * @param userAction        - instructions for correcting the error
      * @param caughtError       - the error that resulted in this exception.
      */
-    public GuidNotFoundException(int httpCode, String className, String actionDescription, String errorMessage, String systemAction, String userAction, Throwable caughtError) {
+    public TypeNotFoundException(int httpCode, String className, String actionDescription, String errorMessage, String systemAction, String userAction, Throwable caughtError) {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
     }
 }

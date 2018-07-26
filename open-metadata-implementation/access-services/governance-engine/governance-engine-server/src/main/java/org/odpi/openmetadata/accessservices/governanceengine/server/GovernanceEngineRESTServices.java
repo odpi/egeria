@@ -103,7 +103,7 @@ public class GovernanceEngineRESTServices {
      * PropertyServerException - there is a problem retrieving information from the property (metadata) handlers.
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public GovernanceClassificationDefinitionListAPIResponse getGovernanceClassificationDefinitions(String userId, List<String> rootClassification
+    public GovernanceClassificationDefListAPIResponse getGovernanceClassificationDefinitions(String userId, List<String> rootClassification
     ) {
         final String methodName = "getGovernanceClassificationDefinitions";
 
@@ -113,7 +113,7 @@ public class GovernanceEngineRESTServices {
         }
 
         // create API response
-        GovernanceClassificationDefinitionListAPIResponse response = new GovernanceClassificationDefinitionListAPIResponse();
+        GovernanceClassificationDefListAPIResponse response = new GovernanceClassificationDefListAPIResponse();
 
         // Invoke the right handler for this API request
         try {
@@ -125,7 +125,7 @@ public class GovernanceEngineRESTServices {
             response.setTagList(governanceClassificationDefinitionHandler.getGovernanceClassificationDefinitions(userId, rootClassification));
         } catch (InvalidParameterException error) {
             captureInvalidParameterException(response, error);
-        } catch (RootClassificationNotFoundException error) {
+        } catch (ClassificationNotFoundException error) {
             captureRootClassificationNotFoundException(response, error);
         } catch (PropertyServerException error) {
             capturePropertyServerException(response, error);
@@ -150,7 +150,7 @@ public class GovernanceEngineRESTServices {
      *
      * @param userId  - String - userId of user making request.
      * @param tagguid - guid of the definition to retrieve
-     * @return GovernanceClassificationDefinition or
+     * @return GovernanceClassificationDef or
      * InvalidParameterException - one of the parameters is null or invalid.
      * UnrecognizedConnectionNameException - there is no connection defined for this name.
      * AmbiguousConnectionNameException - there is more than one connection defined for this name.
@@ -158,7 +158,7 @@ public class GovernanceEngineRESTServices {
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
 
-    public GovernanceClassificationDefinitionAPIResponse getClassificationDefinition(String userId, String tagguid) {
+    public GovernanceClassificationDefAPIResponse getClassificationDefinition(String userId, String tagguid) {
         final String methodName = "getClassificationDefinition";
 
 
@@ -167,7 +167,7 @@ public class GovernanceEngineRESTServices {
         }
 
         // create API response
-        GovernanceClassificationDefinitionAPIResponse response = new GovernanceClassificationDefinitionAPIResponse();
+        GovernanceClassificationDefAPIResponse response = new GovernanceClassificationDefAPIResponse();
 
         // Invoke the right handler for this API request
         try {
@@ -176,7 +176,7 @@ public class GovernanceEngineRESTServices {
             GovernanceClassificationDefinitionHandler tagHandler = new GovernanceClassificationDefinitionHandler(accessServiceName,
                     repositoryConnector);
 
-            response.setGovernanceClassificationDefinition(tagHandler.getGovernanceClassificationDefinition(userId, tagguid));
+            response.setGovernanceClassificationDef(tagHandler.getGovernanceClassificationDefinition(userId, tagguid));
         } catch (InvalidParameterException error) {
             captureInvalidParameterException(response, error);
         } catch (PropertyServerException error) {
@@ -207,9 +207,9 @@ public class GovernanceEngineRESTServices {
      * PropertyServerException - there is a problem retrieving information from the property (metadata) handlers.
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public GovernedAssetComponentListAPIResponse getGovernedAssetComponents(String userId,
-                                                                            List<String> rootClassification,
-                                                                            List<String> rootType) {
+    public GovernedAssetListAPIResponse getGovernedAssetComponents(String userId,
+                                                                   List<String> rootClassification,
+                                                                   List<String> rootType) {
         final String methodName = "getGovernedAssetComponents";
 
 
@@ -218,7 +218,7 @@ public class GovernanceEngineRESTServices {
         }
 
         // create API response
-        GovernedAssetComponentListAPIResponse response = new GovernedAssetComponentListAPIResponse();
+        GovernedAssetListAPIResponse response = new GovernedAssetListAPIResponse();
 
         // Invoke the right handler for this API request
         try {
@@ -232,11 +232,11 @@ public class GovernanceEngineRESTServices {
             captureInvalidParameterException(response, error);
         } catch (PropertyServerException error) {
             capturePropertyServerException(response, error);
-        } catch (RootClassificationNotFoundException error) {
+        } catch (ClassificationNotFoundException error) {
             captureRootClassificationNotFoundException(response, error);
         } catch (UserNotAuthorizedException error) {
             captureUserNotAuthorizedException(response, error);
-        } catch (RootAssetTypeNotFoundException error) {
+        } catch (TypeNotFoundException error) {
             captureRootAssetNotFoundException(response, error);
         }
         if (log.isDebugEnabled()) {
@@ -253,7 +253,7 @@ public class GovernanceEngineRESTServices {
      *
      * @param userId             - String - userId of user making request.
      * @param assetComponentGuid - Guid of the asset component to retrieve
-     * @return GovernedAssetComponent or
+     * @return GovernedAsset or
      * InvalidParameterException - one of the parameters is null or invalid.
      * UnrecognizedConnectionNameException - there is no connection defined for this name.
      * AmbiguousConnectionNameException - there is more than one connection defined for this name.
@@ -261,8 +261,8 @@ public class GovernanceEngineRESTServices {
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
 
-    public GovernedAssetComponentAPIResponse getGovernedAssetComponent(String userId,
-                                                                       String assetComponentGuid) {
+    public GovernedAssetAPIResponse getGovernedAssetComponent(String userId,
+                                                              String assetComponentGuid) {
         final String methodName = "getGovernedAssetComponent";
 
 
@@ -271,7 +271,7 @@ public class GovernanceEngineRESTServices {
         }
 
         // create API response
-        GovernedAssetComponentAPIResponse response = new GovernedAssetComponentAPIResponse();
+        GovernedAssetAPIResponse response = new GovernedAssetAPIResponse();
 
         // Invoke the right handler for this API request
         try {
@@ -285,11 +285,11 @@ public class GovernanceEngineRESTServices {
             captureInvalidParameterException(response, error);
         } catch (PropertyServerException error) {
             capturePropertyServerException(response, error);
-        } catch (RootClassificationNotFoundException error) {
+        } catch (ClassificationNotFoundException error) {
             captureRootClassificationNotFoundException(response, error);
         } catch (UserNotAuthorizedException error) {
             captureUserNotAuthorizedException(response, error);
-        } catch (RootAssetTypeNotFoundException error) {
+        } catch (TypeNotFoundException error) {
             captureRootAssetNotFoundException(response, error);
         }
         if (log.isDebugEnabled()) {
@@ -368,7 +368,7 @@ public class GovernanceEngineRESTServices {
      * @param error    returned response.
      */
     private void captureRootClassificationNotFoundException(GovernanceEngineOMASAPIResponse response,
-                                                            RootClassificationNotFoundException error) {
+                                                            ClassificationNotFoundException error) {
         captureCheckedException(response, error, error.getClass().getName());
     }
 
@@ -390,7 +390,7 @@ public class GovernanceEngineRESTServices {
      * @param error    returned response.
      */
     private void captureRootAssetNotFoundException(GovernanceEngineOMASAPIResponse response,
-                                                   RootAssetTypeNotFoundException error) {
+                                                   TypeNotFoundException error) {
         captureCheckedException(response, error, error.getClass().getName());
     }
 }

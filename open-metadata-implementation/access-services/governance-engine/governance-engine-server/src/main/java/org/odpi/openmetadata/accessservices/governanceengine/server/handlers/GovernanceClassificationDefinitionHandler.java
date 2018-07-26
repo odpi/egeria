@@ -3,12 +3,12 @@
 package org.odpi.openmetadata.accessservices.governanceengine.server.handlers;
 
 
+import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.exceptions.ClassificationNotFoundException;
 import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.exceptions.PropertyServerException;
-import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.exceptions.RootClassificationNotFoundException;
 import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.exceptions.UserNotAuthorizedException;
-import org.odpi.openmetadata.accessservices.governanceengine.common.objects.GovernanceClassificationDefinition;
-import org.odpi.openmetadata.accessservices.governanceengine.common.objects.GovernanceClassificationDefinitionAPIResponse;
+import org.odpi.openmetadata.accessservices.governanceengine.common.objects.GovernanceClassificationDef;
+import org.odpi.openmetadata.accessservices.governanceengine.common.objects.GovernanceClassificationDefAPIResponse;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
@@ -55,13 +55,13 @@ public class GovernanceClassificationDefinitionHandler {
      * @param rootClassification - this may be the qualifiedName or displayName of the connection.
      * @return Connection retrieved from property handlers
      * @throws InvalidParameterException           - one of the parameters is null or invalid.
-     * @throws RootClassificationNotFoundException - there is no connection defined for this name.
+     * @throws ClassificationNotFoundException - there is no connection defined for this name.
      * @throws PropertyServerException             - there is a problem retrieving information from the property (metadata) handlers.
      * @throws UserNotAuthorizedException          - the requesting user is not authorized to issue this request.
      */
-    public List<GovernanceClassificationDefinition> getGovernanceClassificationDefinitions(String userId,
-                                                                                           List<String> rootClassification) throws InvalidParameterException,
-            RootClassificationNotFoundException,
+    public List<GovernanceClassificationDef> getGovernanceClassificationDefinitions(String userId,
+                                                                                    List<String> rootClassification) throws InvalidParameterException,
+            ClassificationNotFoundException,
             PropertyServerException,
             UserNotAuthorizedException {
         final String methodName = "getGovernanceClassificationDefinitions";
@@ -91,11 +91,11 @@ public class GovernanceClassificationDefinitionHandler {
      * @throws PropertyServerException    - there is a problem retrieving information from the property (metadata) handlers.
      * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public GovernanceClassificationDefinition getGovernanceClassificationDefinition(String userId,
-                                                                                    String tagguid) throws InvalidParameterException,
+    public GovernanceClassificationDef getGovernanceClassificationDefinition(String userId,
+                                                                             String tagguid) throws InvalidParameterException,
             PropertyServerException,
             UserNotAuthorizedException {
-        final String methodName = "getGovernanceClassificationDefinition";
+        final String methodName = "getGovernanceClassificationDef";
 
         errorHandler.validateUserId(userId, methodName);
         errorHandler.validateGUID(tagguid, "tagguid", methodName);
@@ -106,7 +106,7 @@ public class GovernanceClassificationDefinitionHandler {
         return null;
     }
 
-    GovernanceClassificationDefinitionAPIResponse getTagsFromRepository(String name, OMRSMetadataCollection metadataCollection, EntityDetail entity) {
+    GovernanceClassificationDefAPIResponse getTagsFromRepository(String name, OMRSMetadataCollection metadataCollection, EntityDetail entity) {
         //TODO: Needs implementing & signature changed as this needs to reformat the set - we can't return NULL...
         return null;
     }
