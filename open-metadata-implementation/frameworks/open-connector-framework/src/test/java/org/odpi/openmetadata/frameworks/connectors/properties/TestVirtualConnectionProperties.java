@@ -114,7 +114,7 @@ public class TestVirtualConnectionProperties
         testObject.setEndpoint(endpoint);
         testObject.setSecuredProperties(securedProperties);
 
-        testObject.setEmbeddedConnections(new ArrayList<>());
+        testObject.setEmbeddedConnections(new ArrayList<EmbeddedConnection>());
 
         return new VirtualConnectionProperties(testObject);
     }
