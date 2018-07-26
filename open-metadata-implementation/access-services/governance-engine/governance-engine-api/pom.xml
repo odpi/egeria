@@ -14,27 +14,16 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Governance Engine OMAS Client</name>
+    <name>Governance Engine OMAS Common</name>
     <description>
-        Client library for the Governance Engine Open Metadata Access Service (OMAS).
+        Common library for the Governance Engine Open Metadata Access Service (OMAS).
+        This is required by both client and server
     </description>
 
     <artifactId>governance-engine-api</artifactId>
 
     <dependencies>
 
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>governance-engine-common</artifactId>
-            <version>${open-metadata.version}</version>
-        </dependency>
-
-        <!-- Spring for calling REST APIs -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-            <version>${spring-web.version}</version>
-        </dependency>
     </dependencies>
 
 </project>

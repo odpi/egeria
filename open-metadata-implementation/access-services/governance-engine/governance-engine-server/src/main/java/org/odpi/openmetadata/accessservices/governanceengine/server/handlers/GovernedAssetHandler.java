@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.accessservices.governanceengine.server.handlers;
 
 
-import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.exceptions.*;
-import org.odpi.openmetadata.accessservices.governanceengine.common.objects.GovernedAsset;
+import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.*;
+import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAsset;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -22,7 +22,7 @@ public class GovernedAssetHandler {
     private String serviceName;
     private OMRSRepositoryHelper repositoryHelper = null;
     private String serverName = null;
-    private Validator errorHandler = null;
+    private GovernanceEngineValidator errorHandler = null;
 
     /**
      * Construct the connection handler with a link to the property handlers's connector and this access service's
@@ -37,7 +37,7 @@ public class GovernedAssetHandler {
         if (repositoryConnector != null) {
             this.repositoryHelper = repositoryConnector.getRepositoryHelper();
             this.serverName = repositoryConnector.getServerName();
-            errorHandler = new Validator(repositoryConnector);
+            errorHandler = new GovernanceEngineValidator(repositoryConnector);
         }
     }
 
@@ -61,13 +61,13 @@ public class GovernedAssetHandler {
             TypeNotFoundException,
             PropertyServerException,
             UserNotAuthorizedException {
-        final String methodName = "getGovernedAssetComponents";
+        final String methodName = "getGovernedAssets";
         final String rootClassificationParameter = "rootClassification";
         final String rootAssetTypeParameter = "rootAssetType";
 
         errorHandler.validateUserId(userId, methodName);
-        errorHandler.validateRootClassification(rootClassification, rootClassificationParameter, methodName);
-        errorHandler.validateRootAssetType(rootClassification, rootAssetTypeParameter, methodName);
+        errorHandler.validateClassification(rootClassification, rootClassificationParameter, methodName);
+        errorHandler.validateType(rootClassification, rootAssetTypeParameter, methodName);
 
         //OMRSMetadataCollection metadataCollection = errorHandler.validateRepositoryConnector(methodName);
 
@@ -147,7 +147,7 @@ public class GovernedAssetHandler {
             TypeNotFoundException,
             PropertyServerException,
             UserNotAuthorizedException {
-        final String methodName = "getGovernedAssetComponent";
+        final String methodName = "getGovernedAsset";
 
         final String assetParm = "assetGuid";
 

@@ -2,7 +2,7 @@
 
 package org.odpi.openmetadata.accessservices.governanceengine.server.admin;
 
-import org.odpi.openmetadata.accessservices.governanceengine.common.auditlog.GovernanceEngineAuditCode;
+import org.odpi.openmetadata.accessservices.governanceengine.api.auditlog.GovernanceEngineAuditCode;
 import org.odpi.openmetadata.accessservices.governanceengine.server.GovernanceEngineRESTServices;
 import org.odpi.openmetadata.accessservices.governanceengine.server.listeners.GovernanceEngineOMRSTopicListener;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;

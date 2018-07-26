@@ -25,8 +25,8 @@
     <artifactId>governance-engine</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>governance-engine-common</module>
         <module>governance-engine-api</module>
+        <module>governance-engine-client</module>
         <module>governance-engine-server</module>
         <module>governance-engine-spring</module>
 

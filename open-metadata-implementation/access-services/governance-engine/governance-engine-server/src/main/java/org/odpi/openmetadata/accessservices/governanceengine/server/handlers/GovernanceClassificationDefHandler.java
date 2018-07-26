@@ -3,12 +3,12 @@
 package org.odpi.openmetadata.accessservices.governanceengine.server.handlers;
 
 
-import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.exceptions.ClassificationNotFoundException;
-import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.exceptions.InvalidParameterException;
-import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.exceptions.PropertyServerException;
-import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.exceptions.UserNotAuthorizedException;
-import org.odpi.openmetadata.accessservices.governanceengine.common.objects.GovernanceClassificationDef;
-import org.odpi.openmetadata.accessservices.governanceengine.common.objects.GovernanceClassificationDefAPIResponse;
+import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.ClassificationNotFoundException;
+import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.InvalidParameterException;
+import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.PropertyServerException;
+import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.UserNotAuthorizedException;
+import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernanceClassificationDef;
+import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernanceClassificationDefAPIResponse;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
@@ -20,7 +20,7 @@ import java.util.List;
  * ConnectionHandler retrieves Connection objects from the property handlers.  It runs handlers-side in the AssetConsumer
  * OMAS and retrieves Connections through the OMRSRepositoryConnector.
  */
-public class GovernanceClassificationDefinitionHandler {
+public class GovernanceClassificationDefHandler {
     //TODO: Figure out what's needed for handler method
 
     private static final String connectionTypeGUID = "114e9f8f-5ff3-4c32-bd37-a7eb42712253";
@@ -28,7 +28,7 @@ public class GovernanceClassificationDefinitionHandler {
     private String serviceName;
     private OMRSRepositoryHelper repositoryHelper = null;
     private String serverName = null;
-    private Validator errorHandler = null;
+    private GovernanceEngineValidator errorHandler = null;
 
     /**
      * Construct the connection handler with a link to the property handlers's connector and this access service's
@@ -37,13 +37,13 @@ public class GovernanceClassificationDefinitionHandler {
      * @param serviceName         - name of this service
      * @param repositoryConnector - connector to the property handlers.
      */
-    public GovernanceClassificationDefinitionHandler(String serviceName,
-                                                     OMRSRepositoryConnector repositoryConnector) {
+    public GovernanceClassificationDefHandler(String serviceName,
+                                              OMRSRepositoryConnector repositoryConnector) {
         this.serviceName = serviceName;
         if (repositoryConnector != null) {
             this.repositoryHelper = repositoryConnector.getRepositoryHelper();
             this.serverName = repositoryConnector.getServerName();
-            errorHandler = new Validator(repositoryConnector);
+            errorHandler = new GovernanceEngineValidator(repositoryConnector);
         }
     }
 
@@ -64,13 +64,13 @@ public class GovernanceClassificationDefinitionHandler {
             ClassificationNotFoundException,
             PropertyServerException,
             UserNotAuthorizedException {
-        final String methodName = "getGovernanceClassificationDefinitions";
+        final String methodName = "getGovernanceClassificationDefs";
         final String nameParameter = "name";
 
-        //TODO: Should use common code for this validation in client and server
+        //TODO: Should use api code for this validation in client and server
 
         errorHandler.validateUserId(userId, methodName);
-        errorHandler.validateRootClassification(rootClassification, nameParameter, methodName);
+        errorHandler.validateClassification(rootClassification, nameParameter, methodName);
 
         //OMRSMetadataCollection metadataCollection = errorHandler.validateRepositoryConnector(methodName);
 

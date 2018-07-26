@@ -1,10 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservices.governanceengine.server.spring;
 
-import org.odpi.openmetadata.accessservices.governanceengine.common.objects.GovernanceClassificationDefAPIResponse;
-import org.odpi.openmetadata.accessservices.governanceengine.common.objects.GovernanceClassificationDefListAPIResponse;
-import org.odpi.openmetadata.accessservices.governanceengine.common.objects.GovernedAssetAPIResponse;
-import org.odpi.openmetadata.accessservices.governanceengine.common.objects.GovernedAssetListAPIResponse;
+import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernanceClassificationDefAPIResponse;
+import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernanceClassificationDefListAPIResponse;
+import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAssetAPIResponse;
+import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAssetListAPIResponse;
 import org.odpi.openmetadata.accessservices.governanceengine.server.GovernanceEngineRESTServices;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,12 +54,12 @@ public class GovernanceEngineOMASResource {
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     @RequestMapping(method = RequestMethod.GET, path = "/classificationdefs")
-    public GovernanceClassificationDefListAPIResponse getGovernanceClassificationDefinitions(@PathVariable String userId,
+    public GovernanceClassificationDefListAPIResponse getGovernanceClassificationDefs(@PathVariable String userId,
                                                                                              @RequestParam(value =
                                                                                                      "classification"
                                                                                                      , required = false) List<String> classification
     ) {
-        return restAPI.getGovernanceClassificationDefinitions(userId, classification);
+        return restAPI.getGovernanceClassificationDefs(userId, classification);
     }
 
     /**
@@ -81,9 +81,9 @@ public class GovernanceEngineOMASResource {
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     @RequestMapping(method = RequestMethod.GET, path = "/classificationdefs/{classificationGuid}")
-    GovernanceClassificationDefAPIResponse getGovernanceClassificationDefinition(@PathVariable String userId,
+    GovernanceClassificationDefAPIResponse getGovernanceClassificationDef(@PathVariable String userId,
                                                                                  @PathVariable String classificationGuid) {
-        return restAPI.getClassificationDefinition(userId, classificationGuid);
+        return restAPI.getClassificationDefs(userId, classificationGuid);
     }
 
     /**
@@ -102,10 +102,10 @@ public class GovernanceEngineOMASResource {
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     @RequestMapping(method = RequestMethod.GET, path = "/assets")
-    GovernedAssetListAPIResponse getGovernedAssetComponents(@PathVariable String userId,
+    GovernedAssetListAPIResponse getGovernedAssets(@PathVariable String userId,
                                                             @RequestParam(value = "classification", required = false) List<String> classification,
                                                             @RequestParam(value = "type", required = false) List<String> type) {
-        return restAPI.getGovernedAssetComponents(userId, classification, type);
+        return restAPI.getGovernedAssets(userId, classification, type);
     }
 
     /**
@@ -123,9 +123,9 @@ public class GovernanceEngineOMASResource {
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetComponentGuid}")
-    public GovernedAssetAPIResponse getGovernedAssetComponent(@PathVariable String userId,
+    public GovernedAssetAPIResponse getGovernedAsset(@PathVariable String userId,
                                                               @PathVariable String assetGuid) {
-        return restAPI.getGovernedAssetComponent(userId, assetGuid);
+        return restAPI.getGovernedAsset(userId, assetGuid);
     }
 
 

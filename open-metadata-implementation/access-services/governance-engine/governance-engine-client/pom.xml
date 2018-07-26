@@ -14,12 +14,12 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Governance Engine OMAS Server-side</name>
+    <name>Governance Engine OMAS Client</name>
     <description>
-        Server-side support for the Governance Engine Open Metadata Access Service (OMAS).
+        Client library for the Governance Engine Open Metadata Access Service (OMAS).
     </description>
 
-    <artifactId>governance-engine-server</artifactId>
+    <artifactId>governance-engine-client</artifactId>
 
     <dependencies>
 
@@ -30,7 +30,6 @@
         </dependency>
 
         <!-- Spring for calling REST APIs -->
-
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
