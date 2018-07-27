@@ -27,6 +27,7 @@
         <surefire.plugin.version>2.20.1</surefire.plugin.version>
         <junit.surefire.version>1.2.0</junit.surefire.version>
         <mockito.junit.version>2.19.0</mockito.junit.version>
+        <junit.version>4.12</junit.version>
     </properties>
 
     <dependencies>
@@ -78,7 +79,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>${junit.version}</version>
         </dependency>
 
     </dependencies>
