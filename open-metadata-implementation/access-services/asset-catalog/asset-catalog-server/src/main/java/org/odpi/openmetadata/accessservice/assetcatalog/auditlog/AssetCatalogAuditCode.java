@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservice.assetcatalog.auditlog;
 
+import lombok.Getter;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 
 import java.text.MessageFormat;
@@ -18,6 +19,7 @@ import java.text.MessageFormat;
  * <li>UserAction - describes how a user should correct the situation</li>
  * </ul>
  */
+@Getter
 public enum AssetCatalogAuditCode {
     SERVICE_INITIALIZING("OMAS-ASSET-CATALOG-0001",
             OMRSAuditLogRecordSeverity.INFO,
@@ -43,10 +45,28 @@ public enum AssetCatalogAuditCode {
             "The local server has requested shut down of the Asset Catalog OMAS.",
             "No action is required.  This is part of the normal operation of the server."),;
 
+    /**
+     * the unique identifier for the error message.
+     */
     private String logMessageId;
+
+    /**
+     * the severity of the audit log record.
+     */
     private OMRSAuditLogRecordSeverity severity;
+
+    /**
+     * the log message with the placeholders filled out with the supplied parameters.
+     */
     private String logMessage;
+
+    /**
+     * a description of the action taken by the system when the condition that caused this exception was detected.
+     */
     private String systemAction;
+    /**
+     * instructions of how to resolve the issue reported in this exception.
+     */
     private String userAction;
 
 
@@ -74,25 +94,6 @@ public enum AssetCatalogAuditCode {
     }
 
     /**
-     * Returns the unique identifier for the error message.
-     *
-     * @return logMessageId
-     */
-    public String getLogMessageId() {
-        return logMessageId;
-    }
-
-
-    /**
-     * Return the severity of the audit log record.
-     *
-     * @return OMRSAuditLogRecordSeverity enum
-     */
-    public OMRSAuditLogRecordSeverity getSeverity() {
-        return severity;
-    }
-
-    /**
      * Returns the log message with the placeholders filled out with the supplied parameters.
      *
      * @param params - strings that plug into the placeholders in the logMessage
@@ -101,26 +102,5 @@ public enum AssetCatalogAuditCode {
     public String getFormattedLogMessage(String... params) {
         MessageFormat mf = new MessageFormat(logMessage);
         return mf.format(params);
-    }
-
-
-    /**
-     * Returns a description of the action taken by the system when the condition that caused this exception was
-     * detected.
-     *
-     * @return systemAction String
-     */
-    public String getSystemAction() {
-        return systemAction;
-    }
-
-
-    /**
-     * Returns instructions of how to resolve the issue reported in this exception.
-     *
-     * @return userAction String
-     */
-    public String getUserAction() {
-        return userAction;
     }
 }

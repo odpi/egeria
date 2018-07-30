@@ -1,6 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservice.assetcatalog.exception;
 
+import lombok.Getter;
+
 /**
  * AssetCatalogException provides a checked exception for reporting errors found when using
  * the Asset Catalog OMAS services.
@@ -9,18 +11,45 @@ package org.odpi.openmetadata.accessservice.assetcatalog.exception;
  * The AssetCatalogErrorCode can be used with this exception to populate it with standard messages.
  * The aim is to be able to uniquely identify the cause and remedy for the error.
  */
+@Getter
 public class AssetCatalogException extends Exception {
 
-    /*
-     * These default values are only seen if this exception is initialized using one of its superclass constructors.
+    /**
+     * The HTTP response code to use with this exception.
      */
     private int reportedHTTPCode;
+
+    /**
+     * The class that created this exception.
+     */
     private String reportingClassName;
+
+    /**
+     * The type of request that the class was performing when the condition occurred that resulted in this
+     * exception.
+     */
     private String reportingActionDescription;
+
+    /**
+     * A formatted short description of the cause of the condition that resulted in this exception.
+     */
     private String reportedErrorMessage;
+
+    /**
+     * A description of the action that the system took as a result of the error condition.
+     */
     private String reportedSystemAction;
+
+    /**
+     * A description of the action necessary to correct the error.
+     */
     private String reportedUserAction;
-    private Throwable reportedCaughtException = null;
+
+    /**
+     * An exception that was caught and wrapped by this exception.  If a null is returned, then this exception is
+     * newly created and not the result of a previous exception.
+     */
+    private Throwable reportedCaughtException;
 
 
     /**
@@ -75,76 +104,5 @@ public class AssetCatalogException extends Exception {
         this.reportedSystemAction = systemAction;
         this.reportedUserAction = userAction;
         this.reportedCaughtException = caughtError;
-    }
-
-
-    /**
-     * Return the HTTP response code to use with this exception.
-     *
-     * @return reportedHTTPCode
-     */
-    public int getReportedHTTPCode() {
-        return reportedHTTPCode;
-    }
-
-    /**
-     * The class that created this exception.
-     *
-     * @return reportingClassName
-     */
-    public String getReportingClassName() {
-        return reportingClassName;
-    }
-
-
-    /**
-     * The type of request that the class was performing when the condition occurred that resulted in this
-     * exception.
-     *
-     * @return reportingActionDescription
-     */
-    public String getReportingActionDescription() {
-        return reportingActionDescription;
-    }
-
-
-    /**
-     * A formatted short description of the cause of the condition that resulted in this exception.
-     *
-     * @return reportedErrorMessage
-     */
-    public String getErrorMessage() {
-        return reportedErrorMessage;
-    }
-
-
-    /**
-     * A description of the action that the system took as a result of the error condition.
-     *
-     * @return reportedSystemAction
-     */
-    public String getReportedSystemAction() {
-        return reportedSystemAction;
-    }
-
-
-    /**
-     * A description of the action necessary to correct the error.
-     *
-     * @return reportedUserAction
-     */
-    public String getReportedUserAction() {
-        return reportedUserAction;
-    }
-
-
-    /**
-     * An exception that was caught and wrapped by this exception.  If a null is returned, then this exception is
-     * newly created and not the result of a previous exception.
-     *
-     * @return reportedCaughtException
-     */
-    public Throwable getReportedCaughtException() {
-        return reportedCaughtException;
     }
 }

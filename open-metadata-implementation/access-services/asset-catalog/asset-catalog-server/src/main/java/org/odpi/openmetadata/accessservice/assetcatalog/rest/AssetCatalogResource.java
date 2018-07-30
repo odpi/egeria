@@ -3,6 +3,7 @@ package org.odpi.openmetadata.accessservice.assetcatalog.rest;
 
 
 import org.odpi.openmetadata.accessservice.assetcatalog.admin.AssetCatalogAdmin;
+import org.odpi.openmetadata.accessservice.assetcatalog.aspects.LogExecution;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.Status;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.responses.AssetDescriptionResponse;
 import org.odpi.openmetadata.accessservice.assetcatalog.service.OMASCatalogRESTServices;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Assess Service (OMAS).
  * This interface facilitates the searching for asset's details, provides the connection to a specific asset.
  */
+@LogExecution
 @RestController
 @RequestMapping("/open-metadata/access-services/asset-catalog/users/{userId}")
 public class AssetCatalogResource {

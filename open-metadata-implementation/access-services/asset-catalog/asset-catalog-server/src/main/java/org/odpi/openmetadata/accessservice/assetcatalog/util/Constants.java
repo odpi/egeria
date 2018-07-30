@@ -3,7 +3,7 @@ package org.odpi.openmetadata.accessservice.assetcatalog.util;
 
 public final class Constants {
 
-    public static final String ASSET_CATALOG_OMAS = "asset-catalog-omas";
+    public static final String ASSET_CATALOG_OMAS = "ASSET_CATALOG_OMAS";
 
     //Asset Types
     public static final String ASSET = "Asset";

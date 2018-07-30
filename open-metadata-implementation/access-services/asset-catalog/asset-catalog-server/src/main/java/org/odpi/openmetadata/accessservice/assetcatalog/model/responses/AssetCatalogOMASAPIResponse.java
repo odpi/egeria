@@ -19,32 +19,28 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @Data
 public class AssetCatalogOMASAPIResponse {
 
-    protected AssetCatalogOMASAPIResponse() {
-
-    }
-
     /**
      * the HTTP Code to use if forwarding response to HTTP client.
      */
     protected int relatedHTTPCode = 200;
-
     /**
      * the fully-qualified Java class name to use to recreate the exception
      */
     protected String exceptionClassName = null;
-
     /**
      * the error message associated with the exception.
      */
     protected String exceptionErrorMessage = null;
-
     /**
      * the description of the action taken by the system as a result of the exception.
      */
     protected String exceptionSystemAction = null;
-
     /**
      * the action that a user should take to resolve the problem.
      */
     protected String exceptionUserAction = null;
+
+    protected AssetCatalogOMASAPIResponse() {
+
+    }
 }

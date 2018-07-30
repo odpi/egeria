@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservice.assetcatalog.rest;
 
+import org.odpi.openmetadata.accessservice.assetcatalog.aspects.LogExecution;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.AssetDescription;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.SequenceOrderType;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.Status;
@@ -25,6 +26,7 @@ import java.util.List;
  * Asset Catalog Open Metadata Assess Service (OMAS).
  * This interface facilitates the searching for assets, provides details about specific assets.
  */
+@LogExecution
 @RestController
 @RequestMapping("/open-metadata/access-services/asset-catalog/users/{userId}")
 public class AssetCatalogEntityResource {
