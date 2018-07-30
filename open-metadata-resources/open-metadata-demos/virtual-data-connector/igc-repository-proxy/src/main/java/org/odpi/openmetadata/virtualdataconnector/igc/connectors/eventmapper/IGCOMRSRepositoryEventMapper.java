@@ -50,6 +50,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
      *
      * @throws ConnectorCheckedException - there is a problem within the connector.
      */
+    @Override
     public void start() throws ConnectorCheckedException {
         super.start();
         this.igcomrsRepositoryConnector = (IGCOMRSRepositoryConnector) this.repositoryConnector;
@@ -57,16 +58,6 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         runConsumer();
     }
 
-
-    /**
-     * Free up any resources held since the connector is no longer needed.
-     *
-     * @throws ConnectorCheckedException - there is a problem within the connector.
-     */
-    public void disconnect() throws ConnectorCheckedException {
-        super.disconnect();
-
-    }
 
     /**
      * Set properties for the kafka consumer.
@@ -124,7 +115,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                         igcKafkaEvent = mapper.readValue(record.value(), IGCKafkaEvent.class);
                         log.info("Consumer Record");
                         log.info(record.value());
-                        process(igcKafkaEvent);
+                        processIGCEvent(igcKafkaEvent);
                     }
                 }
                 catch(Exception e){
@@ -139,7 +130,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
      *
      * @param igcKafkaEvent a Kafka event originating from IGC.
      */
-    public  void process(IGCKafkaEvent igcKafkaEvent) {
+    public  void processIGCEvent(IGCKafkaEvent igcKafkaEvent) {
         if (igcKafkaEvent.getASSETTYPE().equals("Database Column") &&
                 (
                         igcKafkaEvent.getACTION().equals("ASSIGNED_RELATIONSHIP") || igcKafkaEvent.getACTION().equals("MODIFY")
