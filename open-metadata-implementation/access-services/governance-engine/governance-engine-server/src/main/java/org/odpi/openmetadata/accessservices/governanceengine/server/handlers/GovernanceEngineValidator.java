@@ -4,30 +4,20 @@ package org.odpi.openmetadata.accessservices.governanceengine.server.handlers;
 
 import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.errorcode.GovernanceEngineErrorCode;
 import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
+import java.lang.invoke.MethodHandles;
 import java.util.List;
 
 /**
- * ErrorHandler provides api validation routines for the other handler classes
+ * ErrorValidator class that provides api validation routines for the other handler classes
  */
 public class GovernanceEngineValidator {
-    private OMRSRepositoryConnector repositoryConnector;
-
     private static final Logger log = LoggerFactory.getLogger(GovernanceEngineValidator.class);
 
 
-    /**
-     * Typical constructor providing access to the repository connector for this access service.
-     *
-     * @param repositoryConnector - connector object
-     */
-    public GovernanceEngineValidator(OMRSRepositoryConnector repositoryConnector) {
-        this.repositoryConnector = repositoryConnector;
-    }
 
 
     /**
@@ -44,8 +34,9 @@ public class GovernanceEngineValidator {
             String errorMessage = errorCode.getErrorMessageId()
                     + errorCode.getFormattedErrorMessage(methodName);
 
+            //TODO Exception reports utility class, but caller method by string - could be better
             throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
+                    MethodHandles.lookup().lookupClass().getName(),
                     methodName,
                     errorMessage,
                     errorCode.getSystemAction(),
@@ -71,7 +62,7 @@ public class GovernanceEngineValidator {
                     + errorCode.getFormattedErrorMessage(parameterName, methodName);
 
             throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
+                    MethodHandles.lookup().lookupClass().getName(),
                     methodName,
                     errorMessage,
                     errorCode.getSystemAction(),

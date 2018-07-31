@@ -3,10 +3,13 @@
 package org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions;
 
 
+import lombok.EqualsAndHashCode;
+
 /**
  * The TypeNotFoundException is thrown by the Governance Engine OMAS when the root type passed
  * is not valid.
  */
+@EqualsAndHashCode(callSuper=true)
 public class TypeNotFoundException extends GovernanceEngineCheckedExceptionBase {
     /**
      * This is the typical constructor used for creating a ClassificationNotFoundException.

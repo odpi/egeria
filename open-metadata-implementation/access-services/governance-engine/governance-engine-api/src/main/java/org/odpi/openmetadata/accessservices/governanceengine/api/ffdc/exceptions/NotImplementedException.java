@@ -3,9 +3,12 @@
 package org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions;
 
 
+import lombok.EqualsAndHashCode;
+
 /**
  * The NotImplementedException is thrown by the Governance Engine OMAS when a as-yet unimplemented operation is invoked
  */
+@EqualsAndHashCode(callSuper=true)
 public class NotImplementedException extends GovernanceEngineCheckedExceptionBase {
     /**
      * This is the typical constructor used for creating a NotImplementedException.

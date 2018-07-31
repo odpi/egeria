@@ -3,10 +3,13 @@
 package org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions;
 
 
+import lombok.EqualsAndHashCode;
+
 /**
  * The InvalidParameterException is thrown by the GovernanceEngine OMAS when a parameters is null or an invalid
  * value.
  */
+@EqualsAndHashCode(callSuper=true)
 public class InvalidParameterException extends GovernanceEngineCheckedExceptionBase {
     /**
      * This is the typical constructor used for creating a InvalidParameterException.

@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.governanceengine.api.objects;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.EqualsAndHashCode;
 
 import java.util.Map;
 
@@ -16,7 +17,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 
 // Used to store the governance classification, including a definition of optional attributes
-
+@EqualsAndHashCode(callSuper=true)
 public class GovernanceClassificationDef extends GovernanceClassificationBase {
 
     // Additional Attributes of a Tag Definition

@@ -13,6 +13,7 @@ import org.odpi.openmetadata.adminservices.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceOperationalStatus;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,6 +48,8 @@ import java.util.List;
 public class GovernanceEngineRESTServices {
     static private String accessServiceName = null;
     static private OMRSRepositoryConnector repositoryConnector = null;
+    private static OMRSMetadataCollection metadataCollection;
+
 
     private static final Logger log = LoggerFactory.getLogger(GovernanceEngineRESTServices.class);
 
@@ -60,6 +63,11 @@ public class GovernanceEngineRESTServices {
                                               OMRSRepositoryConnector repositoryConnector) {
         GovernanceEngineRESTServices.accessServiceName = accessServiceName;
         GovernanceEngineRESTServices.repositoryConnector = repositoryConnector;
+        try {
+            GovernanceEngineRESTServices.metadataCollection = repositoryConnector.getMetadataCollection();
+
+        } catch (Throwable error) {};
+
     }
 
     /**
@@ -227,7 +235,7 @@ public class GovernanceEngineRESTServices {
             GovernedAssetHandler governedAssetHandler = new GovernedAssetHandler(accessServiceName,
                     repositoryConnector);
 
-            response.setGovernedAssetList(governedAssetHandler.getGovernedAssetComponents(userId, classification, type));
+            response.setGovernedAssetList(governedAssetHandler.getGovernedAssets(userId, classification, type));
         } catch (InvalidParameterException error) {
             captureInvalidParameterException(response, error);
         } catch (PropertyServerException error) {
@@ -280,7 +288,7 @@ public class GovernanceEngineRESTServices {
             GovernedAssetHandler governedAssetHandler = new GovernedAssetHandler(accessServiceName,
                     repositoryConnector);
 
-            response.setAsset(governedAssetHandler.getGovernedAssetComponent(userId, assetGuid));
+            response.setAsset(governedAssetHandler.getGovernedAsset(userId, assetGuid));
         } catch (InvalidParameterException error) {
             captureInvalidParameterException(response, error);
         } catch (PropertyServerException error) {
@@ -393,4 +401,6 @@ public class GovernanceEngineRESTServices {
                                               TypeNotFoundException error) {
         captureCheckedException(response, error, error.getClass().getName());
     }
+
+
 }

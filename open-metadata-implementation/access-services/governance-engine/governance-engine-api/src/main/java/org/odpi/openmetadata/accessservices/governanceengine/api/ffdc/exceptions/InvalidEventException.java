@@ -3,6 +3,9 @@
 package org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions;
 
 
+import lombok.EqualsAndHashCode;
+
+@EqualsAndHashCode(callSuper=true)
 public class InvalidEventException extends GovernanceEngineCheckedExceptionBase {
 
     /**

@@ -3,10 +3,13 @@
 package org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions;
 
 
+import lombok.EqualsAndHashCode;
+
 /**
  * The UserNotAuthorizedException is thrown by the Governance Engine OMAS when a userId passed on a request is not
  * authorized to perform the requested action.
  */
+@EqualsAndHashCode(callSuper=true)
 public class UserNotAuthorizedException extends GovernanceEngineCheckedExceptionBase {
     /**
      * This is the typical constructor used for creating a UserNotAuthorizedException.

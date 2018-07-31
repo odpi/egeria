@@ -17,6 +17,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
+
 public enum GovernanceEngineEventType implements Serializable {
     UNKNOWN_GOVERNANCE_ENGINE_EVENT(0, "UnknownGovernanceEngineEvent", "A Governance Engine event that is not recognized by the local handlers."),
     NEW_TAG_EVENT(1, "NewTag", "A new tag has been defined."),

@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.governanceengine.api.objects;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-
+@EqualsAndHashCode
 public class GovernedAsset {
 
     // Attributes of a Governed Asset Component - we use this term as it may refer to only part of an asset - for example a single

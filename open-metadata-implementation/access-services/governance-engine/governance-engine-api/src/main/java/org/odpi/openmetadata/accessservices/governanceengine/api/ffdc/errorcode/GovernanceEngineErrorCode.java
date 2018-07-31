@@ -29,6 +29,7 @@ import java.util.Arrays;
  */
 
 //TODO Update descriptions for error codes with more information
+
 public enum GovernanceEngineErrorCode {
     SERVER_URL_NOT_SPECIFIED(400, "OMAS-GOVERNANCEENGINE-400-001 ",
             "The OMAS Server URL is empty or null",

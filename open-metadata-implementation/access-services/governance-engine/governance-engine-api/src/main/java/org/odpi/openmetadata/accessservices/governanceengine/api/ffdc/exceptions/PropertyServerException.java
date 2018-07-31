@@ -3,9 +3,12 @@
 package org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions;
 
 
+import lombok.EqualsAndHashCode;
+
 /**
  * The UserNotAuthorizedException is thrown by the Governance Engine OMAS when a property access has problems
  */
+@EqualsAndHashCode(callSuper=true)
 public class PropertyServerException extends GovernanceEngineCheckedExceptionBase {
     /**
      * This is the typical constructor used for creating a UserNotAuthorizedException.

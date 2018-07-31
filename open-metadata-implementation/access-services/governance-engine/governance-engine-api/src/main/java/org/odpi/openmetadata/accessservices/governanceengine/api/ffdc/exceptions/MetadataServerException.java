@@ -3,10 +3,13 @@
 package org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions;
 
 
+import lombok.EqualsAndHashCode;
+
 /**
  * The MetadataServerException is thrown by the GovernanceEngine OMAS when it is not able to communicate with the
  * property handlers.
  */
+@EqualsAndHashCode(callSuper=true)
 public class MetadataServerException extends GovernanceEngineCheckedExceptionBase {
     /**
      * This is the typical constructor used for creating a MetadataServerException.
