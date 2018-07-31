@@ -17,7 +17,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * The InstanceProperties class provides support for arbitrary properties to be added to an entity,
- * struct or relationship object.
+ * classification or relationship object.
  * It wraps a java.util.Map map object built around HashMap.  The property name (or domain) of the map is the name
  * of the property.  The property value (or range) of the map is a subclass of InstancePropertyValue depending on
  * the type of the property:
@@ -73,14 +73,14 @@ public class InstanceProperties extends InstanceElementHeader
     {
         super(templateProperties);
 
-    /*
-     * An empty properties object is created in the private variable declaration so nothing to do.
-     */
+        /*
+         * An empty properties object is created in the private variable declaration so nothing to do.
+         */
         if (templateProperties != null)
         {
-        /*
-         * Process templateProperties if they are not null
-         */
+            /*
+             * Process templateProperties if they are not null
+             */
             Iterator<String> propertyNames = templateProperties.getPropertyNames();
 
             if (propertyNames != null)
@@ -117,6 +117,7 @@ public class InstanceProperties extends InstanceElementHeader
     {
         this.instanceProperties = instanceProperties;
     }
+
 
     /**
      * Returns a list of the instance properties for the element.

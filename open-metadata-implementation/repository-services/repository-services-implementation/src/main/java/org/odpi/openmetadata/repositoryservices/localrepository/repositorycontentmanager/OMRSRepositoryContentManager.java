@@ -431,10 +431,10 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
      * @throws TypeErrorException the type name is not a recognized type or is of the wrong category or there is
      *                              a problem with the cached TypeDef.
      */
-    public InstanceType getInstanceType(String           sourceName,
+    public InstanceType getInstanceType(String          sourceName,
                                         TypeDefCategory category,
-                                        String           typeName,
-                                        String           methodName) throws TypeErrorException
+                                        String          typeName,
+                                        String          methodName) throws TypeErrorException
     {
         final String thisMethodName = "getInstanceType";
 
@@ -480,10 +480,7 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
 
                     if (superTypeName != null)
                     {
-                        if (log.isDebugEnabled())
-                        {
-                            log.debug(typeName + " from " + sourceName + " has super type " + superTypeName);
-                        }
+                        log.debug(typeName + " from " + sourceName + " has super type " + superTypeName);
 
                         /*
                          * Save the name of the super type into the instance type
@@ -2420,7 +2417,7 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
                                                 TypeDefSummary originalTypeDefSummary,
                                                 TypeDef        typeDef)
     {
-
+        // Todo
     }
 
 
