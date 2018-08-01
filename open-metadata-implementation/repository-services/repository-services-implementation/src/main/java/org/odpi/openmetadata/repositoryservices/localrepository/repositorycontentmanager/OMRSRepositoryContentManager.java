@@ -2050,6 +2050,13 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
                  */
                 this.cacheTypeDef(sourceName, typeDef, true);
             }
+            else
+            {
+                /*
+                 * No local repository so just cache for enterprise repository services.
+                 */
+                this.cacheTypeDef(sourceName, typeDef, false);
+            }
         }
         catch (TypeDefNotSupportedException fixedTypeSystemResponse)
         {
@@ -2191,6 +2198,13 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
                  */
                 this.cacheAttributeTypeDef(sourceName, attributeTypeDef, true);
             }
+            else
+            {
+                /*
+                 * No local repository so just cache for enterprise repository services.
+                 */
+                this.cacheAttributeTypeDef(sourceName, attributeTypeDef, false);
+            }
         }
         catch (TypeDefNotSupportedException fixedTypeSystemResponse)
         {
@@ -2292,14 +2306,11 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
 
             if (metadataCollection != null)
             {
-
-
                 TypeDef updatedTypeDef = metadataCollection.updateTypeDef(null, typeDefPatch);
 
-                if (log.isDebugEnabled())
-                {
-                    log.debug("Patch successfully applied:" + updatedTypeDef);
-                }
+                log.debug("Patch successfully applied:" + updatedTypeDef);
+
+                // TODO update needed to TypeDef Caches - whether there is a local repository or not
             }
         }
         catch (RepositoryErrorException  error)
