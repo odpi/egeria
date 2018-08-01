@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
-package org.odpi.openmetadata.accessservices.governanceengine.server;
+package org.odpi.openmetadata.accessservices.governanceengine.server.handlers;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,25 +12,18 @@ import org.mockito.quality.Strictness;
 @SuiteDisplayName("Governance Engine Server GovernanceEngineValidator")
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.WARN)
-class GovernanceEngineRESTServicesTest {
 
-    @Test
-    void setRepositoryConnector() {
-    }
+class GovernanceClassificationDefHandlerTest {
 
     @Test
     void getGovernanceClassificationDefinitions() {
     }
 
     @Test
-    void getClassificationDefinition() {
+    void getGovernanceClassificationDefinition() {
     }
 
     @Test
-    void getGovernedAssetComponents() {
-    }
-
-    @Test
-    void getGovernedAssetComponent() {
+    void getTagsFromRepository() {
     }
 }

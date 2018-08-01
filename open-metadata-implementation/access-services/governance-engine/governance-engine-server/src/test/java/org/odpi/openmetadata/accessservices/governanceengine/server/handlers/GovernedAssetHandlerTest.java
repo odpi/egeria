@@ -9,7 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
-@SuiteDisplayName("Governance Engine Server Validator")
+@SuiteDisplayName("Governance Engine Server GovernanceEngineValidator")
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.WARN)
 

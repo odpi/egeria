@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.accessservices.governanceengine.server.handlers;
 
 
-import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.exceptions.*;
-import org.odpi.openmetadata.accessservices.governanceengine.common.objects.GovernedAssetComponent;
+import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.*;
+import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAsset;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -22,7 +22,7 @@ public class GovernedAssetHandler {
     private String serviceName;
     private OMRSRepositoryHelper repositoryHelper = null;
     private String serverName = null;
-    private Validator errorHandler = null;
+    private GovernanceEngineValidator errorHandler = null;
 
     /**
      * Construct the connection handler with a link to the property handlers's connector and this access service's
@@ -37,7 +37,7 @@ public class GovernedAssetHandler {
         if (repositoryConnector != null) {
             this.repositoryHelper = repositoryConnector.getRepositoryHelper();
             this.serverName = repositoryConnector.getServerName();
-            errorHandler = new Validator(repositoryConnector);
+            errorHandler = new GovernanceEngineValidator(repositoryConnector);
         }
     }
 
@@ -49,25 +49,25 @@ public class GovernedAssetHandler {
      * @param rootClassification - this may be the qualifiedName or displayName of the connection.
      * @return Connection retrieved from property handlers
      * @throws InvalidParameterException           - one of the parameters is null or invalid.
-     * @throws RootClassificationNotFoundException - there is no connection defined for this name.
-     * @throws RootAssetTypeNotFoundException      - there is no connection defined for this name.
+     * @throws ClassificationNotFoundException - there is no connection defined for this name.
+     * @throws TypeNotFoundException      - there is no connection defined for this name.
      * @throws PropertyServerException             - there is a problem retrieving information from the property (metadata) handlers.
      * @throws UserNotAuthorizedException          - the requesting user is not authorized to issue this request.
      */
-    public List<GovernedAssetComponent> getGovernedAssetComponents(String userId,
-                                                                   List<String> rootClassification,
-                                                                   List<String> rootAssetType) throws InvalidParameterException,
-            RootClassificationNotFoundException,
-            RootAssetTypeNotFoundException,
+    public List<GovernedAsset> getGovernedAssetComponents(String userId,
+                                                          List<String> rootClassification,
+                                                          List<String> rootAssetType) throws InvalidParameterException,
+            ClassificationNotFoundException,
+            TypeNotFoundException,
             PropertyServerException,
             UserNotAuthorizedException {
-        final String methodName = "getGovernedAssetComponents";
+        final String methodName = "getGovernedAssets";
         final String rootClassificationParameter = "rootClassification";
         final String rootAssetTypeParameter = "rootAssetType";
 
         errorHandler.validateUserId(userId, methodName);
-        errorHandler.validateRootClassification(rootClassification, rootClassificationParameter, methodName);
-        errorHandler.validateRootAssetType(rootClassification, rootAssetTypeParameter, methodName);
+        errorHandler.validateClassification(rootClassification, rootClassificationParameter, methodName);
+        errorHandler.validateType(rootClassification, rootAssetTypeParameter, methodName);
 
         //OMRSMetadataCollection metadataCollection = errorHandler.validateRepositoryConnector(methodName);
 
@@ -135,19 +135,19 @@ public class GovernedAssetHandler {
      * @param assetGuid - guid of the asset component.
      * @return Connection retrieved from property handlers
      * @throws InvalidParameterException           - one of the parameters is null or invalid.
-     * @throws RootClassificationNotFoundException - there is no connection defined for this name.
-     * @throws RootAssetTypeNotFoundException      - there is no connection defined for this name.
+     * @throws ClassificationNotFoundException - there is no connection defined for this name.
+     * @throws TypeNotFoundException      - there is no connection defined for this name.
      * @throws PropertyServerException             - there is a problem retrieving information from the property (metadata) handlers.
      * @throws UserNotAuthorizedException          - the requesting user is not authorized to issue this request.
      */
-    public GovernedAssetComponent getGovernedAssetComponent(String userId,
-                                                            String assetGuid
+    public GovernedAsset getGovernedAssetComponent(String userId,
+                                                   String assetGuid
     ) throws InvalidParameterException,
-            RootClassificationNotFoundException,
-            RootAssetTypeNotFoundException,
+            ClassificationNotFoundException,
+            TypeNotFoundException,
             PropertyServerException,
             UserNotAuthorizedException {
-        final String methodName = "getGovernedAssetComponent";
+        final String methodName = "getGovernedAsset";
 
         final String assetParm = "assetGuid";
 

@@ -4,9 +4,9 @@ package org.odpi.openmetadata.accessservices.governanceengine.client;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.errorcode.GovernanceEngineErrorCode;
-import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.exceptions.*;
-import org.odpi.openmetadata.accessservices.governanceengine.common.objects.*;
+import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.errorcode.GovernanceEngineErrorCode;
+import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.*;
+import org.odpi.openmetadata.accessservices.governanceengine.api.objects.*;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
@@ -36,22 +36,22 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
 
     /**
      * @param userId                 - String - userId of user making request.
-     * @param rootClassificationType - String - name of base classification type
-     * @param rootType               - String - root asset type
+     * @param classification - String - name of base classification type
+     * @param type               - String - root asset type
      * @return governedAssetList                    - map of classification
      * @throws InvalidParameterException           - one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException          - the requesting user is not authorized to issue this request.
-     * @throws RootClassificationNotFoundException - the classification to scope search is not found
-     * @throws RootAssetTypeNotFoundException      - the classification to scope search is not found
+     * @throws ClassificationNotFoundException - the classification to scope search is not found
+     * @throws TypeNotFoundException      - the classification to scope search is not found
      * @throws MetadataServerException             - A failure occurred communicating with the metadata repository
      */
-    public List<GovernedAssetComponent> getGovernedAssetComponentList(String userId, String rootClassificationType,
-                                                                      String rootType) throws InvalidParameterException,
-            UserNotAuthorizedException, MetadataServerException, RootClassificationNotFoundException,
-            RootAssetTypeNotFoundException {
+    public List<GovernedAsset> getGovernedAssetList(String userId, String classification,
+                                                    String type) throws InvalidParameterException,
+            UserNotAuthorizedException, MetadataServerException, ClassificationNotFoundException,
+            TypeNotFoundException {
 
-        final String methodName = "getGovernedAssetComponentList";
-        final String urlTemplate = "/{0}/govAssets?rootClassification={1}&rootAssetType={2}";
+        final String methodName = "getGovernedAssetList";
+        final String urlTemplate = "/{0}/assets?classification={1}&type={2}";
 
         log.debug("Calling method: " + methodName);
 
@@ -60,33 +60,33 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
         validateUserId(userId, methodName); // cannot be null
         // No validation for other parms -- optional. Managed handlers-side
 
-        GovernedAssetComponentListAPIResponse restResult = callGovernanceEngineGovernedAssetComponentListRESTCall(methodName,
+        GovernedAssetListAPIResponse restResult = callGovernedAssetListREST(methodName,
                 omasServerURL + urlTemplate,
                 userId,
-                rootType,
-                rootClassificationType);
+                type,
+                classification);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
-        this.detectAndThrowRootClassificationNotFoundException(methodName, restResult);
+        this.detectAndThrowClassificationNotFoundException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        this.detectAndThrowRootAssetTypeNotFoundException(methodName, restResult);
+        this.detectAndThrowTypeNotFoundException(methodName, restResult);
 
         return restResult.getGovernedAssetList();
     }
 
     /**
      * @param userId                 - String - userId of user making request.
-     * @param rootClassificationType - String - name of base classification type
+     * @param classification - String - name of base classification type
      * @return AssetTagDefinitions                  - Tag definitions
      * @throws InvalidParameterException           - one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException          - the requesting user is not authorized to issue this request.
      * @throws MetadataServerException             - A failure occurred communicating with the metadata repository
-     * @throws RootClassificationNotFoundException - the classification to scope search is not found
+     * @throws ClassificationNotFoundException - the classification to scope search is not found
      */
-    public List<GovernanceClassificationDefinition> getGovernanceClassificationDefinitionList(String userId, String rootClassificationType) throws InvalidParameterException,
-            UserNotAuthorizedException, MetadataServerException, RootClassificationNotFoundException {
-        final String methodName = "getGovernanceClassificationDefinitionList";
-        final String urlTemplate = "/{0}/govclassdefs?rootClassification={1}";
+    public List<GovernanceClassificationDef> getGovernanceClassificationDefList(String userId, String classification) throws InvalidParameterException,
+            UserNotAuthorizedException, MetadataServerException, ClassificationNotFoundException {
+        final String methodName = "getGovernanceClassificationDefList";
+        final String urlTemplate = "/{0}/classificationdefs?classification={1}";
 
         log.debug("Calling method: " + methodName);
 
@@ -94,13 +94,13 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
         validateOMASServerURL(methodName);
         validateUserId(userId, methodName); // cannot be null
 
-        GovernanceClassificationDefinitionListAPIResponse restResult = callGovernanceEngineClassificationDefinitionListRESTCall(methodName,
+        GovernanceClassificationDefListAPIResponse restResult = callClassificationDefListREST(methodName,
                 omasServerURL + urlTemplate,
                 userId,
-                rootClassificationType);
+                classification);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
-        this.detectAndThrowRootClassificationNotFoundException(methodName, restResult);
+        this.detectAndThrowClassificationNotFoundException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
 
         return (restResult.getTagList());
@@ -108,17 +108,17 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
 
     /**
      * @param userId             - String - userId of user making request.
-     * @param assetComponentGuid - String - guid of asset component
+     * @param assetGuid - String - guid of asset component
      * @return AssetTagMap                  - map of classification
      * @throws InvalidParameterException  - one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      * @throws MetadataServerException    - A failure occurred communicating with the metadata repository
      * @throws GuidNotFoundException      - the guid is not found
      */
-    public GovernedAssetComponent getGovernedAssetComponent(String userId, String assetComponentGuid) throws InvalidParameterException,
+    public GovernedAsset getGovernedAsset(String userId, String assetGuid) throws InvalidParameterException,
             UserNotAuthorizedException, MetadataServerException, GuidNotFoundException {
-        final String methodName = "getGovernedAssetComponentList";
-        final String urlTemplate = "/{0}/govAssets/{1}";
+        final String methodName = "getGovernedAssetList";
+        final String urlTemplate = "/{0}/assets/{1}";
 
         log.debug("Calling method: " + methodName);
 
@@ -126,12 +126,12 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
         validateOMASServerURL(methodName);
         validateUserId(userId, methodName); // cannot be null
 
-        validateGuid(assetComponentGuid, methodName); // cannot be null
+        validateGuid(assetGuid, methodName); // cannot be null
 
-        GovernedAssetComponentAPIResponse restResult = callGovernanceEngineGovernedAssetComponentRESTCall(methodName,
+        GovernedAssetAPIResponse restResult = callGovernedAssetREST(methodName,
                 omasServerURL + urlTemplate,
                 userId,
-                assetComponentGuid);
+                assetGuid);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
@@ -142,36 +142,37 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
 
     /**
      * @param userId  - String - userId of user making request.
-     * @param tagGuid - String - classification guid
+     * @param classificationGuid - String - classification guid
      * @return AssetTagDefinitions          - Tag definitions
      * @throws InvalidParameterException  - one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      * @throws MetadataServerException    - A failure occurred communicating with the metadata repository
      * @throws GuidNotFoundException      - the guid is not found
      */
-    public GovernanceClassificationDefinition getGovernanceClassificationDefinition(String userId, String tagGuid) throws InvalidParameterException,
+    public GovernanceClassificationDef getGovernanceClassificationDef(String userId, String classificationGuid) throws InvalidParameterException,
             UserNotAuthorizedException, MetadataServerException, GuidNotFoundException {
-        final String methodName = "getGovernanceClassificationDefinition";
-        final String urlTemplate = "/{0}/govclassdefs?rootClassification={1}?rootType={2}"; //TODO: Need to allow for root classification to be speced and do validation
+        final String methodName = "getGovernanceClassificationDef";
+        final String urlTemplate = "/{0}/assets?classification={1}"; //TODO: Need to allow for root
+        // classification to be speced and do validation
 
         log.debug("Calling method: " + methodName);
 
         validateOMASServerURL(methodName);
         validateUserId(userId, methodName); // cannot be null
 
-        validateGuid(tagGuid, methodName); // cannot be null
+        validateGuid(classificationGuid, methodName); // cannot be null
 
 
-        GovernanceClassificationDefinitionAPIResponse restResult = callGovernanceEngineClassificationDefinitionRESTCall(methodName,
+        GovernanceClassificationDefAPIResponse restResult = callClassificationDefREST(methodName,
                 omasServerURL + urlTemplate,
                 userId,
-                tagGuid);
+                classificationGuid);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowGuidNotFoundException(methodName, restResult);
 
-        return (restResult.getGovernanceClassificationDefinition());
+        return (restResult.getGovernanceClassificationDef());
     }
 
     /**
@@ -244,18 +245,18 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
     }
 
     /**
-     * Issue a GET REST call that returns a GovernanceClassificationDefinitionListAPIResponse object.
+     * Issue a GET REST call that returns a GovernanceClassificationDefListAPIResponse object.
      *
      * @param methodName  - name of the method being called
      * @param urlTemplate - template of the URL for the REST API call with place-holders for the parameters
      * @param params      - a list of parameters that are slotted into the url template
-     * @return GovernanceClassificationDefinitionListAPIResponse    - List of classification definitions
+     * @return GovernanceClassificationDefListAPIResponse    - List of classification definitions
      * @throws MetadataServerException - something went wrong with the REST call stack.
      */
-    private GovernanceClassificationDefinitionListAPIResponse callGovernanceEngineClassificationDefinitionListRESTCall(String methodName,
-                                                                                                                       String urlTemplate,
-                                                                                                                       Object... params) throws MetadataServerException {
-        GovernanceClassificationDefinitionListAPIResponse restResult = new GovernanceClassificationDefinitionListAPIResponse();
+    private GovernanceClassificationDefListAPIResponse callClassificationDefListREST(String methodName,
+                                                                                     String urlTemplate,
+                                                                                     Object... params) throws MetadataServerException {
+        GovernanceClassificationDefListAPIResponse restResult = new GovernanceClassificationDefListAPIResponse();
 
         /*
          * Issue the request
@@ -284,18 +285,18 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
     }
 
     /**
-     * Issue a GET REST call that returns a GovernanceClassificationDefinitionAPIResponse object.
+     * Issue a GET REST call that returns a GovernanceClassificationDefAPIResponse object.
      *
      * @param methodName  - name of the method being called
      * @param urlTemplate - template of the URL for the REST API call with place-holders for the parameters
      * @param params      - a list of parameters that are slotted into the url template
-     * @return GovernanceClassificationDefinitionAPIResponse        - classification definition
+     * @return GovernanceClassificationDefAPIResponse        - classification definition
      * @throws MetadataServerException - something went wrong with the REST call stack.
      */
-    private GovernanceClassificationDefinitionAPIResponse callGovernanceEngineClassificationDefinitionRESTCall(String methodName,
-                                                                                                               String urlTemplate,
-                                                                                                               Object... params) throws MetadataServerException {
-        GovernanceClassificationDefinitionAPIResponse restResult = new GovernanceClassificationDefinitionAPIResponse();
+    private GovernanceClassificationDefAPIResponse callClassificationDefREST(String methodName,
+                                                                             String urlTemplate,
+                                                                             Object... params) throws MetadataServerException {
+        GovernanceClassificationDefAPIResponse restResult = new GovernanceClassificationDefAPIResponse();
 
         /*
          * Issue the request
@@ -323,18 +324,18 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
     }
 
     /**
-     * Issue a GET REST call that returns a GovernedAssetComponentListAPIResponse object.
+     * Issue a GET REST call that returns a GovernedAssetListAPIResponse object.
      *
      * @param methodName  - name of the method being called
      * @param urlTemplate - template of the URL for the REST API call with place-holders for the parameters
      * @param params      - a list of parameters that are slotted into the url template
-     * @return GovernedAssetComponentListAPIResponse    - list of governed asset components
+     * @return GovernedAssetListAPIResponse    - list of governed asset components
      * @throws MetadataServerException - something went wrong with the REST call stack.
      */
-    private GovernedAssetComponentListAPIResponse callGovernanceEngineGovernedAssetComponentListRESTCall(String methodName,
-                                                                                                         String urlTemplate,
-                                                                                                         Object... params) throws MetadataServerException {
-        GovernedAssetComponentListAPIResponse restResult = new GovernedAssetComponentListAPIResponse();
+    private GovernedAssetListAPIResponse callGovernedAssetListREST(String methodName,
+                                                                   String urlTemplate,
+                                                                   Object... params) throws MetadataServerException {
+        GovernedAssetListAPIResponse restResult = new GovernedAssetListAPIResponse();
 
         /*
          * Issue the request
@@ -363,18 +364,18 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
     }
 
     /**
-     * Issue a GET REST call that returns a GovernedAssetComponentAPIResponse object.
+     * Issue a GET REST call that returns a GovernedAssetAPIResponse object.
      *
      * @param methodName  - name of the method being called
      * @param urlTemplate - template of the URL for the REST API call with place-holders for the parameters
      * @param params      - a list of parameters that are slotted into the url template
-     * @return GovernedAssetComponentAPIResponse    - the governed asset component
+     * @return GovernedAssetAPIResponse    - the governed asset component
      * @throws MetadataServerException - something went wrong with the REST call stack.
      */
-    private GovernedAssetComponentAPIResponse callGovernanceEngineGovernedAssetComponentRESTCall(String methodName,
-                                                                                                 String urlTemplate,
-                                                                                                 Object... params) throws MetadataServerException {
-        GovernedAssetComponentAPIResponse restResult = new GovernedAssetComponentAPIResponse();
+    private GovernedAssetAPIResponse callGovernedAssetREST(String methodName,
+                                                           String urlTemplate,
+                                                           Object... params) throws MetadataServerException {
+        GovernedAssetAPIResponse restResult = new GovernedAssetAPIResponse();
 
         /*
          * Issue the request
@@ -447,18 +448,18 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
 
 
     /**
-     * Throw a RootClassificationNotFoundException if it is encoded in the REST response.
+     * Throw a ClassificationNotFoundException if it is encoded in the REST response.
      *
      * @param methodName - name of the method called
      * @param restResult - response from the rest call.  This generated in the remote handlers.
-     * @throws RootClassificationNotFoundException - encoded exception from the handlers
+     * @throws ClassificationNotFoundException - encoded exception from the handlers
      */
-    private void detectAndThrowRootClassificationNotFoundException(String methodName,
-                                                                   GovernanceEngineOMASAPIResponse restResult) throws RootClassificationNotFoundException {
-        final String exceptionClassName = RootClassificationNotFoundException.class.getName();
+    private void detectAndThrowClassificationNotFoundException(String methodName,
+                                                               GovernanceEngineOMASAPIResponse restResult) throws ClassificationNotFoundException {
+        final String exceptionClassName = ClassificationNotFoundException.class.getName();
 
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName()))) {
-            throw new RootClassificationNotFoundException(restResult.getRelatedHTTPCode(),
+            throw new ClassificationNotFoundException(restResult.getRelatedHTTPCode(),
                     this.getClass().getName(),
                     methodName,
                     restResult.getExceptionErrorMessage(),
@@ -468,18 +469,18 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
     }
 
     /**
-     * Throw a RootAssetTypeNotFoundException if it is encoded in the REST response.
+     * Throw a TypeNotFoundException if it is encoded in the REST response.
      *
      * @param methodName - name of the method called
      * @param restResult - response from the rest call.  This generated in the remote handlers.
-     * @throws RootAssetTypeNotFoundException - encoded exception from the handlers
+     * @throws TypeNotFoundException - encoded exception from the handlers
      */
-    private void detectAndThrowRootAssetTypeNotFoundException(String methodName,
-                                                              GovernanceEngineOMASAPIResponse restResult) throws RootAssetTypeNotFoundException {
-        final String exceptionClassName = RootAssetTypeNotFoundException.class.getName();
+    private void detectAndThrowTypeNotFoundException(String methodName,
+                                                     GovernanceEngineOMASAPIResponse restResult) throws TypeNotFoundException {
+        final String exceptionClassName = TypeNotFoundException.class.getName();
 
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName()))) {
-            throw new RootAssetTypeNotFoundException(restResult.getRelatedHTTPCode(),
+            throw new TypeNotFoundException(restResult.getRelatedHTTPCode(),
                     this.getClass().getName(),
                     methodName,
                     restResult.getExceptionErrorMessage(),
