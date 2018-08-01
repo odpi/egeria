@@ -198,3 +198,5 @@ services in the OMAGApplication many times over multiple server restarts.
 
 Details of how to set up the configuration document, and activate/deactivate
 the open metadata services can be found [here](../../admin-services/README.md).
+
+Swagger API documentation is generated with the chassis and is documented [here](./SwaggerGeneration.md).
