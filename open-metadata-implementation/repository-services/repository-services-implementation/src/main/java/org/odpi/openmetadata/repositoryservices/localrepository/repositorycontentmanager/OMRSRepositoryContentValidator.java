@@ -1825,6 +1825,9 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
         if (typeDefAttributes == null)
         {
+            /*
+             * Error is thrown because properties is not null so properties have been provided for this instance.
+             */
             OMRSErrorCode errorCode    = OMRSErrorCode.NO_PROPERTIES_FOR_TYPE;
             String        errorMessage = errorCode.getErrorMessageId()
                                        + errorCode.getFormattedErrorMessage(typeDefCategoryName,
