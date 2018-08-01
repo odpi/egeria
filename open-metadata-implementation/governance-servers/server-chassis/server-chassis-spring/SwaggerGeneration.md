@@ -1,3 +1,4 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
 # Swagger API Documentation
 
 This describes the generation of swagger documentation for the governance server chassis in the `OMAGApplication`.  This
