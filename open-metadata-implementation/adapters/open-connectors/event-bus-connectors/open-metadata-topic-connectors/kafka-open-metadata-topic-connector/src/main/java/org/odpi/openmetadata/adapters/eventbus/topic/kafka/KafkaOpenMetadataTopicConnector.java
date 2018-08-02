@@ -31,7 +31,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector 
     private static String KAFKA_TOPIC_ID = "kafka.omrs.topic.id";
     private String outTopic;
     private KafkaOpenMetadataEventConsumer consumer;
-    private List<String> eventList = new ArrayList<String>();
+    private List<String> eventList = Collections.synchronizedList(new ArrayList<String>());
 
     public KafkaOpenMetadataTopicConnector() {
         super();
@@ -144,7 +144,6 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector 
     public void distributeToListeners(String event) {
 
         log.debug("distribute event to listeners" + event);
-        //TODO: Add synchronization
         eventList.add(event);
     }
 
