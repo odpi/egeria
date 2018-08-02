@@ -692,12 +692,13 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                               UserNotAuthorizedException
     {
         final String methodName  = "verifyTypeDef";
-        final String urlTemplate = "users/{0}/types/typedef/compatibility?typeDef={1}";
+        final String urlTemplate = "users/{0}/types/typedef/compatibility";
 
-        BooleanResponse restResult = this.callBooleanGetRESTCall(methodName,
-                                                                 restURLRoot + urlTemplate,
-                                                                 userId,
-                                                                 typeDef);
+        BooleanResponse restResult = this.callBooleanPostRESTCall(methodName,
+                                                                  restURLRoot + urlTemplate,
+                                                                  typeDef,
+                                                                  userId,
+                                                                  typeDef);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeDefNotSupportedException(methodName, restResult);
@@ -733,12 +734,13 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                                       UserNotAuthorizedException
     {
         final String methodName  = "verifyTypeDef";
-        final String urlTemplate = "users/{0}/types/attribute-typedef/compatibility?attributeTypeDef={1}";
+        final String urlTemplate = "users/{0}/types/attribute-typedef/compatibility";
 
-        BooleanResponse restResult = this.callBooleanGetRESTCall(methodName,
-                                                                 restURLRoot + urlTemplate,
-                                                                 userId,
-                                                                 attributeTypeDef);
+        BooleanResponse restResult = this.callBooleanPostRESTCall(methodName,
+                                                                  restURLRoot + urlTemplate,
+                                                                  attributeTypeDef,
+                                                                  userId,
+                                                                  attributeTypeDef);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeDefNotSupportedException(methodName, restResult);
@@ -3502,9 +3504,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @return BooleanResponse
      * @throws RepositoryErrorException something went wrong with the REST call stack.
      */
-    private BooleanResponse callBooleanGetRESTCall(String    methodName,
-                                                   String    urlTemplate,
-                                                   Object... params) throws RepositoryErrorException
+    private BooleanResponse callBooleanPostRESTCall(String    methodName,
+                                                    String    urlTemplate,
+                                                    Object    request,
+                                                    Object... params) throws RepositoryErrorException
     {
         BooleanResponse restResult = new BooleanResponse();
 
@@ -3515,7 +3518,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         {
             RestTemplate  restTemplate  = new RestTemplate();
 
-            restResult = restTemplate.getForObject(urlTemplate, restResult.getClass(), params);
+            restResult = restTemplate.postForObject(urlTemplate, request, restResult.getClass(), params);
         }
         catch (Throwable error)
         {

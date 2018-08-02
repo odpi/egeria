@@ -3,12 +3,9 @@ package org.odpi.openmetadata.accessservice.assetcatalog;
 
 import org.odpi.openmetadata.accessservice.assetcatalog.exception.InvalidParameterException;
 import org.odpi.openmetadata.accessservice.assetcatalog.exception.PropertyServerException;
-import org.odpi.openmetadata.accessservice.assetcatalog.model.AssetDescription;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.responses.AssetDescriptionResponse;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.responses.ClassificationsResponse;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.responses.RelationshipsResponse;
-
-import java.util.List;
 
 /**
  * The Asset Catalog Open Metadata Access Service (OMAS) provides services to search for data assets including
@@ -75,7 +72,7 @@ public interface AssetCatalogInterface {
      * @throws PropertyServerException   there is a problem retrieving information from the property server
      * @throws InvalidParameterException one of the parameters is null or invalid
      */
-    ClassificationsResponse getAssetByClassification(String userId, String assetId) throws PropertyServerException, InvalidParameterException;
+    ClassificationsResponse getClassificationForAsset(String userId, String assetId) throws PropertyServerException, InvalidParameterException;
 
     /**
      * Fetch the assets that match the properties
@@ -166,7 +163,7 @@ public interface AssetCatalogInterface {
      * @throws PropertyServerException   there is a problem retrieving information from the property server
      * @throws InvalidParameterException one of the parameters is null or invalid
      */
-    List<AssetDescription> getLastCreatedAssets(String userId) throws InvalidParameterException, PropertyServerException;
+    AssetDescriptionResponse getLastCreatedAssets(String userId) throws InvalidParameterException, PropertyServerException;
 
     /**
      * Returns  the last updated assets
@@ -176,7 +173,7 @@ public interface AssetCatalogInterface {
      * @throws PropertyServerException   there is a problem retrieving information from the property server
      * @throws InvalidParameterException one of the parameters is null or invalid
      */
-    List<AssetDescription> getLastUpdatedAssets(String userId) throws PropertyServerException, InvalidParameterException;
+    AssetDescriptionResponse getLastUpdatedAssets(String userId) throws PropertyServerException, InvalidParameterException;
 
     /**
      * Fetch relationship details based on its unique identifier
@@ -219,5 +216,5 @@ public interface AssetCatalogInterface {
      * @throws PropertyServerException   there is a problem retrieving information from the property server
      * @throws InvalidParameterException one of the parameters is null or invalid
      */
-    List<AssetDescription> searchAssets(String userId, String searchCriteria) throws PropertyServerException, InvalidParameterException;
+    AssetDescriptionResponse searchAssets(String userId, String searchCriteria) throws PropertyServerException, InvalidParameterException;
 }

@@ -2,7 +2,15 @@
 package org.odpi.openmetadata.accessservice.assetcatalog.service;
 
 import org.odpi.openmetadata.accessservice.assetcatalog.admin.AssetCatalogAdmin;
-import org.odpi.openmetadata.accessservice.assetcatalog.model.*;
+import org.odpi.openmetadata.accessservice.assetcatalog.model.AssetDescription;
+import org.odpi.openmetadata.accessservice.assetcatalog.model.Column;
+import org.odpi.openmetadata.accessservice.assetcatalog.model.Connection;
+import org.odpi.openmetadata.accessservice.assetcatalog.model.DataType;
+import org.odpi.openmetadata.accessservice.assetcatalog.model.Database;
+import org.odpi.openmetadata.accessservice.assetcatalog.model.Endpoint;
+import org.odpi.openmetadata.accessservice.assetcatalog.model.Schema;
+import org.odpi.openmetadata.accessservice.assetcatalog.model.Table;
+import org.odpi.openmetadata.accessservice.assetcatalog.model.responses.AssetDescriptionResponse;
 import org.odpi.openmetadata.accessservice.assetcatalog.util.Converter;
 import org.odpi.openmetadata.adminservices.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
@@ -10,13 +18,25 @@ import org.odpi.openmetadata.adminservices.configuration.registration.AccessServ
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefGallery;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.rest.properties.TypeDefGalleryResponse;
 import org.odpi.openmetadata.repositoryservices.rest.properties.TypeDefResponse;
 import org.springframework.stereotype.Service;
@@ -103,7 +123,7 @@ public class OMASCatalogRESTServices {
         return response;
     }
 
-    public List<AssetDescription> searchAssets(String userId, String searchCriteria) {
+    public AssetDescriptionResponse searchAssets(String userId, String searchCriteria) {
 
         List<EntityDetail> matchCriteriaEntities = findEntitiesBySearchCriteria(userId, searchCriteria);
         List<AssetDescription> assetDescriptions = new ArrayList<>(matchCriteriaEntities.size());
@@ -133,7 +153,10 @@ public class OMASCatalogRESTServices {
             assetDescription.setConnection(connections);
             assetDescriptions.add(assetDescription);
         }
-        return assetDescriptions;
+
+        AssetDescriptionResponse response = new AssetDescriptionResponse();
+        response.setAssetDescriptionList(assetDescriptions);
+        return response;
     }
 
     private List<EntityDetail> findEntitiesBySearchCriteria(String userId, String searchCriteria) {

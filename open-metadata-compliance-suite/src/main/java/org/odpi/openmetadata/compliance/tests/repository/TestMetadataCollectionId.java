@@ -9,8 +9,8 @@ import java.util.Map;
 
 public class TestMetadataCollectionId extends OpenMetadataRepositoryTestCase
 {
-    private static final  String testCaseId = "repository-metadata-collection-id-test-case";
-    private static final  String testCaseName = "Repository metadata collection id test";
+    private static final  String testCaseId = "repository-metadata-collection";
+    private static final  String testCaseName = "Repository metadata collection id test case";
 
     private static final  String assertion1    = testCaseId + "-01";
     private static final  String assertionMsg1 = "Metadata collection id retrieved from repository.";

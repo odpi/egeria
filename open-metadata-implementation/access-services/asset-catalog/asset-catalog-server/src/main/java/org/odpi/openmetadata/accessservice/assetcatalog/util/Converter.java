@@ -1,15 +1,28 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservice.assetcatalog.util;
 
-import org.odpi.openmetadata.accessservice.assetcatalog.model.*;
+import org.odpi.openmetadata.accessservice.assetcatalog.model.Asset;
+import org.odpi.openmetadata.accessservice.assetcatalog.model.AssetDescription;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.Classification;
+import org.odpi.openmetadata.accessservice.assetcatalog.model.DataType;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.Relationship;
+import org.odpi.openmetadata.accessservice.assetcatalog.model.SequenceOrderType;
+import org.odpi.openmetadata.accessservice.assetcatalog.model.Status;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservice.assetcatalog.util.Constants.QUALIFIED_NAME;
@@ -17,16 +30,16 @@ import static org.odpi.openmetadata.accessservice.assetcatalog.util.Constants.QU
 @Service
 public class Converter {
 
+    private HashMap<String, DataType> dataTypes;
+
+    public Converter() {
+        dataTypes = getDataTypeMap();
+    }
+
     public List<AssetDescription> getAssetsDetails(List<EntityDetail> entityDetails) {
         return entityDetails.stream()
                 .map(this::getAssetDescription)
                 .collect(Collectors.toCollection(() -> new ArrayList<>(entityDetails.size())));
-    }
-
-    public List<AssetDescription> getAssets(List<EntitySummary> entitySummaries) {
-        return entitySummaries.stream()
-                .map(this::getAssetDescription)
-                .collect(Collectors.toCollection(() -> new ArrayList<>(entitySummaries.size())));
     }
 
     public AssetDescription getAssetDescription(EntityDetail entityDetail) {
@@ -118,11 +131,19 @@ public class Converter {
     }
 
     public List<InstanceStatus> getInstanceStatuses(Status status) {
-        return status == null ? getActiveInstanceStatusList() : getInstanceStatusList(status);
+        if (status == null) {
+            return getActiveInstanceStatusList();
+        }
+
+        return getInstanceStatusList(status);
     }
 
     public SequencingOrder getSequencingOrder(SequenceOrderType orderType) {
-        return orderType == null ? SequencingOrder.ANY : getOrderType(orderType);
+        if (orderType == null) {
+            return SequencingOrder.ANY;
+        }
+
+        return getOrderType(orderType);
     }
 
     public List<Classification> toClassifications
@@ -271,32 +292,27 @@ public class Converter {
     }
 
     public DataType getDataTypeDef(PrimitiveDefCategory primitiveValue) {
-        switch (primitiveValue.getJavaClassName()) {
-            case "java.lang.Boolean":
-                return DataType.BOOLEAN;
-            case "java.lang.Byte":
-                return DataType.BYTE;
-            case "java.Lang.Char":
-                return DataType.CHAR;
-            case "java.lang.Short":
-                return DataType.SHORT;
-            case "java.lang.Integer":
-                return DataType.INT;
-            case "java.lang.Long":
-                return DataType.LONG;
-            case "java.lang.Float":
-                return DataType.FLOAT;
-            case "java.lang.Double":
-                return DataType.DOUBLE;
-            case "java.math.BigInteger":
-                return DataType.BIG_INTEGER;
-            case "java.math.BigDecimal":
-                return DataType.BIG_DECIMAL;
-            case "java.lang.String":
-                return DataType.STRING;
-            case "java.util.Date":
-                return DataType.DATE;
+        if (primitiveValue == null || !dataTypes.containsKey(primitiveValue.getJavaClassName())) {
+            return null;
         }
-        return null;
+
+        return dataTypes.get(primitiveValue.getJavaClassName());
+    }
+
+    private HashMap<String, DataType> getDataTypeMap() {
+        HashMap<String, DataType> dataTypes = new HashMap<>();
+        dataTypes.put("java.lang.Boolean", DataType.BOOLEAN);
+        dataTypes.put("java.lang.Byte", DataType.BYTE);
+        dataTypes.put("java.Lang.Char", DataType.CHAR);
+        dataTypes.put("java.lang.Short", DataType.SHORT);
+        dataTypes.put("java.lang.Integer", DataType.INT);
+        dataTypes.put("java.lang.Long", DataType.LONG);
+        dataTypes.put("java.lang.Float", DataType.FLOAT);
+        dataTypes.put("java.lang.Double", DataType.DOUBLE);
+        dataTypes.put("java.math.BigInteger", DataType.BIG_INTEGER);
+        dataTypes.put("java.math.BigDecimal", DataType.BIG_DECIMAL);
+        dataTypes.put("java.lang.String", DataType.STRING);
+        dataTypes.put("java.util.Date", DataType.DATE);
+        return dataTypes;
     }
 }
