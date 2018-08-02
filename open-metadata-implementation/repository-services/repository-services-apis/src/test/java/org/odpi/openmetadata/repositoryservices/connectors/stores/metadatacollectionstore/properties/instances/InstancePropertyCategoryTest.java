@@ -10,10 +10,10 @@ import java.util.List;
 import static org.testng.Assert.assertTrue;
 
 /**
- * Verify the InstanceStatus enum contains unique ordinals, non-null names and descriptions and can be
+ * Verify the InstancePropertyCategory enum contains unique ordinals, non-null names and descriptions and can be
  * serialized to JSON and back again.
  */
-public class TestInstanceStatus
+public class InstancePropertyCategoryTest
 {
     private List<Integer> existingOrdinals = null;
 
@@ -46,34 +46,34 @@ public class TestInstanceStatus
     {
         existingOrdinals = new ArrayList<>();
 
-        InstanceStatus  testValue;
+        InstancePropertyCategory  testValue;
 
-        testValue = InstanceStatus.UNKNOWN;
+        testValue = InstancePropertyCategory.UNKNOWN;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
 
-        testValue = InstanceStatus.PROPOSED;
+        testValue = InstancePropertyCategory.PRIMITIVE;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
 
-        testValue = InstanceStatus.DRAFT;
+        testValue = InstancePropertyCategory.ENUM;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
 
-        testValue = InstanceStatus.PREPARED;
+        testValue = InstancePropertyCategory.STRUCT;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
 
-        testValue = InstanceStatus.ACTIVE;
+        testValue = InstancePropertyCategory.MAP;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
 
-        testValue = InstanceStatus.DELETED;
+        testValue = InstancePropertyCategory.ARRAY;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
@@ -92,7 +92,7 @@ public class TestInstanceStatus
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(InstanceStatus.PREPARED);
+            jsonString = objectMapper.writeValueAsString(InstancePropertyCategory.STRUCT);
         }
         catch (Throwable  exc)
         {
@@ -101,7 +101,7 @@ public class TestInstanceStatus
 
         try
         {
-            assertTrue(objectMapper.readValue(jsonString, InstanceStatus.class) == InstanceStatus.PREPARED);
+            assertTrue(objectMapper.readValue(jsonString, InstancePropertyCategory.class) == InstancePropertyCategory.STRUCT);
         }
         catch (Throwable  exc)
         {
@@ -115,6 +115,6 @@ public class TestInstanceStatus
      */
     @Test public void testToString()
     {
-        assertTrue(InstanceStatus.PROPOSED.toString().contains("InstanceStatus"));
+        assertTrue(InstancePropertyCategory.ARRAY.toString().contains("InstancePropertyCategory"));
     }
 }

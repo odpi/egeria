@@ -542,6 +542,7 @@ public class InMemoryOMRSMetadataStore
         entityHistoryStore.add(0, entity);
     }
 
+
     /**
      * Remove a reference entity from the active store and add it to the history store.
      *

@@ -154,19 +154,15 @@ public abstract class InstanceHeader extends InstanceAuditHeader
     public String toString()
     {
         return "InstanceHeader{" +
-                "type=" + type +
-                ", instanceProvenanceType=" + instanceProvenanceType +
-                ", metadataCollectionId='" + metadataCollectionId + '\'' +
-                ", instanceURL='" + instanceURL + '\'' +
-                ", currentStatus=" + currentStatus +
-                ", guid='" + guid + '\'' +
-                ", createdBy='" + createdBy + '\'' +
-                ", updatedBy='" + updatedBy + '\'' +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                ", version=" + version +
-                ", statusOnDelete=" + statusOnDelete +
-                ", GUID='" + getGUID() + '\'' +
+                "GUID='" + getGUID() + '\'' +
+                ", type=" + getType() +
+                ", status=" + getStatus() +
+                ", createdBy='" + getCreatedBy() + '\'' +
+                ", updatedBy='" + getUpdatedBy() + '\'' +
+                ", createTime=" + getCreateTime() +
+                ", updateTime=" + getUpdateTime() +
+                ", version=" + getVersion() +
+                ", statusOnDelete=" + getStatusOnDelete() +
                 '}';
     }
 }
