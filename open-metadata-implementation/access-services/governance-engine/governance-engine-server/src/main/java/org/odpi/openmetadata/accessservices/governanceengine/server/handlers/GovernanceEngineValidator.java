@@ -14,10 +14,12 @@ import java.util.List;
 /**
  * ErrorValidator class that provides api validation routines for the other handler classes
  */
-public class GovernanceEngineValidator {
+public final class GovernanceEngineValidator {
     private static final Logger log = LoggerFactory.getLogger(GovernanceEngineValidator.class);
 
-
+    // Static class for utility only
+    private GovernanceEngineValidator() {
+    }
 
 
     /**

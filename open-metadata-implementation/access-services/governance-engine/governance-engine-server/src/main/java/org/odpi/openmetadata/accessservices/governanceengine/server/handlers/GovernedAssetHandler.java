@@ -3,11 +3,13 @@
 package org.odpi.openmetadata.accessservices.governanceengine.server.handlers;
 
 
+import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.errorcode.GovernanceEngineErrorCode;
 import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.UserNotAuthorizedException;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernanceClassificationDef;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAsset;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -18,6 +20,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +34,7 @@ import static org.odpi.openmetadata.accessservices.governanceengine.server.util.
  */
 public class GovernedAssetHandler {
 
-    private OMRSMetadataCollection metadataCollection=null;
+    private OMRSMetadataCollection metadataCollection = null;
     private String serviceName;
     private OMRSRepositoryHelper repositoryHelper = null;
     private String serverName = null;
@@ -45,16 +48,26 @@ public class GovernedAssetHandler {
      * @param repositoryConnector - connector to the property handlers.
      */
     public GovernedAssetHandler(String serviceName,
-                                OMRSRepositoryConnector repositoryConnector) {
+                                OMRSRepositoryConnector repositoryConnector) throws MetadataServerException {
+        final String methodName = "GovernedAssetHandler";
         this.serviceName = serviceName;
+
         if (repositoryConnector != null) {
-              try {
+            try {
                 this.repositoryHelper = repositoryConnector.getRepositoryHelper();
                 this.serverName = repositoryConnector.getServerName();
                 this.metadataCollection = repositoryConnector.getMetadataCollection();
-            } catch (RepositoryErrorException re) {
-                //TODO Log appropriate error if we have a bad repository connection to metadata
-            } ;
+            } catch (Throwable error) {
+                GovernanceEngineErrorCode errorCode = GovernanceEngineErrorCode.NO_METADATA_COLLECTION;
+                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
+
+                throw new MetadataServerException(errorCode.getHTTPErrorCode(),
+                        this.getClass().getName(),
+                        methodName,
+                        errorMessage,
+                        errorCode.getSystemAction(),
+                        errorCode.getUserAction());
+            }
         }
     }
 
@@ -62,37 +75,31 @@ public class GovernedAssetHandler {
     /**
      * Returns the list of governed assets with associated tags
      *
-     * @param userId             - String - userId of user making request.
-     * @param rootClassification - this may be the qualifiedName or displayName of the connection.
-     * @return Connection retrieved from property handlers
-     * @throws InvalidParameterException           - one of the parameters is null or invalid.
-     * @throws ClassificationNotFoundException - there is no connection defined for this name.
-     * @throws TypeNotFoundException      - there is no connection defined for this name.
-     * @throws PropertyServerException             - there is a problem retrieving information from the property (metadata) handlers.
-     * @throws UserNotAuthorizedException          - the requesting user is not authorized to issue this request.
+     * @param userId         - String - userId of user making request.
+     * @param classification - classifications to start query from .
+     * @param type - types to start query from.
+     * @return List of Governed Access
+     * @throws InvalidParameterException       - one of the parameters is null or invalid.
+     * @throws ClassificationNotFoundException - cannot find all the classifications specified
+     * @throws TypeNotFoundException           - cannot find all the types specified
+     * @throws PropertyServerException         - there is a problem retrieving information from the metadata server
+     * @throws UserNotAuthorizedException      - the requesting user is not authorized to issue this request.
      */
     public List<GovernedAsset> getGovernedAssets(String userId,
-                                                 List<String> rootClassification,
-                                                 List<String> rootAssetType) throws InvalidParameterException,
-            ClassificationNotFoundException,
-            TypeNotFoundException,
-            PropertyServerException,
-            UserNotAuthorizedException {
+                                                 List<String> classification,
+                                                 List<String> type) throws InvalidParameterException,
+            UserNotAuthorizedException, MetadataServerException, ClassificationNotFoundException, TypeNotFoundException {
         final String methodName = "getGovernedAssets";
-        final String rootClassificationParameter = "rootClassification";
-        final String rootAssetTypeParameter = "rootAssetType";
-
-        List<GovernedAsset> assetsToReturn = null;
-
-        List<GovernanceClassificationDef> interestingClassifications = null;
-
+        final String classificationParameter = "classification";
+        final String typeParameter = "type";
+        List<GovernedAsset> assetsToReturn = new ArrayList<>();
+        List<GovernanceClassificationDef> interestingClassifications = new ArrayList<>();
 
         errorHandler.validateUserId(userId, methodName);
-        errorHandler.validateClassification(rootClassification, rootClassificationParameter, methodName);
-        errorHandler.validateType(rootClassification, rootAssetTypeParameter, methodName);
+        errorHandler.validateClassification(classification, classificationParameter, methodName);
+        errorHandler.validateType(classification, typeParameter, methodName);
 
-        //TODO: This will retrieve all assets for now - does not support starting from a root classification, nor 
-        // selection on type
+        //TODO: Add tighter query using type and classification (TBD)
 
         //TODO Refactoring of common code with GovernanceClassificationDefs
         // Get all classifications, to determine which we are interested in
@@ -114,35 +121,29 @@ public class GovernedAssetHandler {
                 gcd.setAttributeDefinitions(gdca);
                 interestingClassifications.add(gcd);
 
-                String assetTypeToSearchFor = null;
-
-                // Now let's get the entities
-
                 //TODO Need to iterate through all possible asset types - for now we will take first in the list
-                if (rootAssetType.size() >= 1)
-                     assetTypeToSearchFor = new String(rootAssetType.get(0));
+                String assetTypeToSearchFor="";
+                if (type.size() >= 1)
+                    assetTypeToSearchFor = new String(type.get(0));
 
                 // TODO Pagination & sort order is needed in these APIs - for now do not specify limits
-                //TODO We may want to restrict to active entities only
-                List<EntityDetail> entities = null;
-                // TODO Exceptions need handling before this method is usable!
+                //TODO restrict to active entities only
+                List<EntityDetail> entities = new ArrayList<>();
+
+                // Java Streams can't deal with checked exceptions
                 try {
                     entities = metadataCollection.findEntitiesByClassification(userId, assetTypeToSearchFor,
-                            td.getName() ,
+                            td.getName(),
                             null, null, 0,
                             null,
                             null, null, null, 0);
+                } catch (Exception e) {
+                    // We could only throw a RuntimeException here - consider using
+                    // wrapping, or unroll the iterator.
+                    // for now will catch and just return empty set (not good enough!)
+                                        // TODO Manage exceptions in Java Streams
                 }
-                //TODO Handle exceptions
-                catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException e) {
-                } catch (TypeErrorException e) {
-                } catch (RepositoryErrorException e) {
-                } catch (ClassificationErrorException e) {
-                } catch (PropertyErrorException e) {
-                } catch (PagingErrorException e) {
-                } catch (FunctionNotSupportedException e) {
-                } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
-                }
+
 
                 // Now for each entity we need to get it's fq name, and/or follow through to the schema
                 entities.forEach(entityDetail -> {
@@ -154,13 +155,32 @@ public class GovernedAssetHandler {
 
             // Return the data
 
-        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
-            e.printStackTrace();
-        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException e) {
-            e.printStackTrace();
-        } catch (RepositoryErrorException e) {
-            e.printStackTrace();
         }
+        // TODO - Common catch pattern
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
+
+                 GovernanceEngineErrorCode errorCode = GovernanceEngineErrorCode.USER_NOT_AUTHORIZED;
+                 String errorMessage =
+                         errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(userId, methodName);
+
+                 throw new UserNotAuthorizedException(errorCode.getHTTPErrorCode(),
+                         this.getClass().getName(),
+                         methodName,
+                         errorMessage,
+                         errorCode.getSystemAction(),
+                         errorCode.getUserAction());
+             } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException | RepositoryErrorException e) {
+
+                 GovernanceEngineErrorCode errorCode = GovernanceEngineErrorCode.METADATA_QUERY_ERROR;
+                 String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
+
+                 throw new MetadataServerException(errorCode.getHTTPErrorCode(),
+                         this.getClass().getName(),
+                         methodName,
+                         errorMessage,
+                         errorCode.getSystemAction(),
+                         errorCode.getUserAction());
+             }
         return assetsToReturn;
     }
 
@@ -182,7 +202,7 @@ public class GovernedAssetHandler {
                 break;
             default:
                 resourceName = "MyResourceWithAnotherName <placeholder>";
-break;
+                break;
         }
 
         return resourceName;
@@ -195,29 +215,66 @@ break;
      * @param userId    - String - userId of user making request.
      * @param assetGuid - guid of the asset component.
      * @return Connection retrieved from property handlers
-     * @throws InvalidParameterException           - one of the parameters is null or invalid.
-     * @throws ClassificationNotFoundException - there is no connection defined for this name.
-     * @throws TypeNotFoundException      - there is no connection defined for this name.
-     * @throws PropertyServerException             - there is a problem retrieving information from the property (metadata) handlers.
-     * @throws UserNotAuthorizedException          - the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException       - one of the parameters is null or invalid.
+     * @throws GuidNotFoundException           - specified guid is not found
+     * @throws MetadataServerException         - there is a problem retrieving information from the metadata server.
+     * @throws UserNotAuthorizedException      - the requesting user is not authorized to issue this request.
      */
     public GovernedAsset getGovernedAsset(String userId,
                                           String assetGuid
     ) throws InvalidParameterException,
-            ClassificationNotFoundException,
-            TypeNotFoundException,
-            PropertyServerException,
-            UserNotAuthorizedException {
-        final String methodName = "getGovernedAsset";
+            MetadataServerException,
+            UserNotAuthorizedException, GuidNotFoundException {
 
+        final String methodName = "getGovernedAsset";
         final String assetParm = "assetGuid";
+
+        GovernedAsset defToReturn = new GovernedAsset();
 
         errorHandler.validateUserId(userId, methodName);
         errorHandler.validateGUID(assetGuid, assetParm, methodName);
 
+/*        try {
+            // do some things here
+            int i=0;
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
 
-        return null;
+            GovernanceEngineErrorCode errorCode = GovernanceEngineErrorCode.USER_NOT_AUTHORIZED;
+            String errorMessage =
+                    errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(userId, methodName);
 
+            throw new UserNotAuthorizedException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException | RepositoryErrorException e) {
+
+            GovernanceEngineErrorCode errorCode = GovernanceEngineErrorCode.METADATA_QUERY_ERROR;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
+
+            throw new MetadataServerException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        } catch (TypeDefNotKnownException e) {
+
+            GovernanceEngineErrorCode errorCode = GovernanceEngineErrorCode.GUID_NOT_FOUND_ERROR;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
+
+            throw new GuidNotFoundException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+
+        }*/
+        return defToReturn;
     }
 
     private String getPropertyValue(InstanceProperties instanceProperties, String propertyName) {
