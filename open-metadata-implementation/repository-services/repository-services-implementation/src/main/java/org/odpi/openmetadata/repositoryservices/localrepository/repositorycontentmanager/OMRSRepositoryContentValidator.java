@@ -13,6 +13,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * OMRSRepositoryContentValidator provides methods to validate TypeDefs and Instances returned from
@@ -1824,6 +1825,9 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
         if (typeDefAttributes == null)
         {
+            /*
+             * Error is thrown because properties is not null so properties have been provided for this instance.
+             */
             OMRSErrorCode errorCode    = OMRSErrorCode.NO_PROPERTIES_FOR_TYPE;
             String        errorMessage = errorCode.getErrorMessageId()
                                        + errorCode.getFormattedErrorMessage(typeDefCategoryName,
@@ -2596,7 +2600,51 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
 
     /**
-     * Verify the status of an entity to check it has been deleted.
+     * Verify the status of an entity to check if it has been deleted.
+     *
+     * @param sourceName source of the request (used for logging)
+     * @param instance instance to validate
+     * @param methodName name of calling method
+     * @throws EntityNotKnownException the entity is in deleted status
+     */
+    public void validateEntityIsNotDeleted(String         sourceName,
+                                           InstanceHeader instance,
+                                           String         methodName) throws EntityNotKnownException
+    {
+        if (instance != null)
+        {
+            if (instance.getStatus() == InstanceStatus.DELETED)
+            {
+
+                OMRSErrorCode errorCode = OMRSErrorCode.ENTITY_NOT_KNOWN;
+                String errorMessage = errorCode.getErrorMessageId()
+                                    + errorCode.getFormattedErrorMessage(methodName,
+                                                                         sourceName,
+                                                                         instance.getGUID());
+
+                throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
+                                                  this.getClass().getName(),
+                                                  methodName,
+                                                  errorMessage,
+                                                  errorCode.getSystemAction(),
+                                                  errorCode.getUserAction());
+            }
+        }
+        else
+        {
+            /*
+             * Logic error as the instance should be valid
+             */
+            final String   thisMethodName = "validateEntityIsNotDeleted";
+
+            throwValidatorLogicError(sourceName, methodName, thisMethodName);
+        }
+    }
+
+
+    /**
+     * Verify the status of an entity to check it has been deleted.  This method is used during a purge operation
+     * to ensure delete() has been called before purge.
      *
      * @param sourceName source of the request (used for logging)
      * @param instance instance to validate
@@ -2611,14 +2659,11 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
         {
             if (instance.getStatus() != InstanceStatus.DELETED)
             {
-                /*
-                 * Instance is already deleted
-                 */
                 OMRSErrorCode errorCode = OMRSErrorCode.INSTANCE_NOT_DELETED;
                 String errorMessage = errorCode.getErrorMessageId()
-                        + errorCode.getFormattedErrorMessage(methodName,
-                                                             sourceName,
-                                                             instance.getGUID());
+                                    + errorCode.getFormattedErrorMessage(methodName,
+                                                                         sourceName,
+                                                                         instance.getGUID());
 
                 throw new EntityNotDeletedException(errorCode.getHTTPErrorCode(),
                                                     this.getClass().getName(),
@@ -2646,6 +2691,48 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
      * @param sourceName source of the request (used for logging)
      * @param instance instance to test
      * @param methodName name of calling method
+     * @throws RelationshipNotKnownException the relationship is in deleted status
+     */
+    public void validateRelationshipIsNotDeleted(String         sourceName,
+                                                 InstanceHeader instance,
+                                                 String         methodName) throws RelationshipNotKnownException
+    {
+        if (instance != null)
+        {
+            if (instance.getStatus() != InstanceStatus.DELETED)
+            {
+                OMRSErrorCode errorCode = OMRSErrorCode.RELATIONSHIP_NOT_KNOWN;
+                String errorMessage = errorCode.getErrorMessageId()
+                                    + errorCode.getFormattedErrorMessage(methodName,
+                                                                         sourceName,
+                                                                         instance.getGUID());
+
+                throw new RelationshipNotKnownException(errorCode.getHTTPErrorCode(),
+                                                          this.getClass().getName(),
+                                                          methodName,
+                                                          errorMessage,
+                                                          errorCode.getSystemAction(),
+                                                          errorCode.getUserAction());
+            }
+        }
+        else
+        {
+            /*
+             * Logic error as the instance should be valid
+             */
+            final String   thisMethodName = "validateRelationshipIsNotDeleted";
+
+            throwValidatorLogicError(sourceName, methodName, thisMethodName);
+        }
+    }
+
+
+    /**
+     * Verify the status of a relationship to check it has been deleted.
+     *
+     * @param sourceName source of the request (used for logging)
+     * @param instance instance to test
+     * @param methodName name of calling method
      * @throws RelationshipNotDeletedException the relationship is not in deleted status
      */
     public void validateRelationshipIsDeleted(String         sourceName,
@@ -2656,9 +2743,6 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
         {
             if (instance.getStatus() != InstanceStatus.DELETED)
             {
-                /*
-                 * Instance is already deleted
-                 */
                 OMRSErrorCode errorCode = OMRSErrorCode.INSTANCE_NOT_DELETED;
                 String errorMessage = errorCode.getErrorMessageId()
                                     + errorCode.getFormattedErrorMessage(methodName,
@@ -2865,24 +2949,24 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
         if ((matchProperties != null) && (instanceProperties != null))
         {
-            Iterator<String> instancePropertyNames = instanceProperties.getPropertyNames();
+            Iterator<String> matchPropertyNames = matchProperties.getPropertyNames();
 
-            while (instancePropertyNames.hasNext())
+            while (matchPropertyNames.hasNext())
             {
-                String instancePropertyName = instancePropertyNames.next();
+                String matchPropertyName = matchPropertyNames.next();
 
-                if (instancePropertyName != null)
+                if (matchPropertyName != null)
                 {
-                    InstancePropertyValue instancePropertyValue = instanceProperties.getPropertyValue(instancePropertyName);
-                    Iterator<String>      matchPropertyNames    = matchProperties.getPropertyNames();
+                    InstancePropertyValue matchPropertyValue = instanceProperties.getPropertyValue(matchPropertyName);
+                    Iterator<String>      instancePropertyNames  = instanceProperties.getPropertyNames();
 
-                    while (matchPropertyNames.hasNext())
+                    while (instancePropertyNames.hasNext())
                     {
-                        String matchPropertyName = matchPropertyNames.next();
+                        String instancePropertyName = instancePropertyNames.next();
 
-                        if (matchPropertyName != null)
+                        if (instancePropertyName != null)
                         {
-                            InstancePropertyValue matchPropertyValue = matchProperties.getPropertyValue(matchPropertyName);
+                            InstancePropertyValue instancePropertyValue = instanceProperties.getPropertyValue(instancePropertyName);
 
                             if ((instancePropertyName.equals(matchPropertyName)) &&
                                 (instancePropertyValue.equals(matchPropertyValue)))
@@ -2900,20 +2984,176 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
 
     /**
+     * Return true if the expected value is in the property map.
+     *
+     * @param propertyMap map with the properties
+     * @param propertyName name of the property to test
+     * @param expectedValue expected value
+     * @return boolean result
+     */
+    private  boolean  checkStringPropertyValue(Map<String, InstancePropertyValue>   propertyMap,
+                                               String                               propertyName,
+                                               String                               expectedValue)
+    {
+        boolean                 result = false;
+        InstancePropertyValue   instancePropertyValue = propertyMap.get(propertyName);
+
+        if (instancePropertyValue != null)
+        {
+            if (instancePropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.PRIMITIVE)
+            {
+                try
+                {
+                    PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue)instancePropertyValue;
+                    String                 matchValue = (String)primitivePropertyValue.getPrimitiveValue();
+
+                    if (matchValue != null)
+                    {
+                        if (matchValue.equals(expectedValue))
+                        {
+                            result = true;
+                        }
+                    }
+                }
+                catch (Throwable   exc)
+                {
+                    /*
+                     * Ignore property
+                     */
+                }
+            }
+        }
+        return result;
+    }
+
+
+    /**
+     * Return true if the expected value is in the property map.
+     *
+     * @param propertyMap map with the properties
+     * @param propertyName name of the property to test
+     * @param expectedValue expected value
+     * @return boolean result
+     */
+    private  boolean  checkDatePropertyValue(Map<String, InstancePropertyValue>   propertyMap,
+                                             String                               propertyName,
+                                             Date                                 expectedValue)
+    {
+        boolean                 result = false;
+        InstancePropertyValue   instancePropertyValue = propertyMap.get(propertyName);
+
+        if (instancePropertyValue != null)
+        {
+            if (instancePropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.PRIMITIVE)
+            {
+                try
+                {
+                    PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue)instancePropertyValue;
+                    Date                   matchValue = (Date)primitivePropertyValue.getPrimitiveValue();
+
+                    if (matchValue != null)
+                    {
+                        if (matchValue.equals(expectedValue))
+                        {
+                            result = true;
+                        }
+                    }
+                }
+                catch (Throwable   exc)
+                {
+                    /*
+                     * Ignore property
+                     */
+                }
+            }
+        }
+        return result;
+    }
+
+
+    /**
+     * Count the number of matching property values that an instance has.  They may come from an entity,
+     * or relationship.
+     *
+     * @param matchProperties  the properties to match.
+     * @param instanceHeader  the header properties from the instance.
+     * @return integer count of the matching properties.
+     */
+    public int countMatchingPropertyValues(InstanceProperties       matchProperties,
+                                           InstanceAuditHeader      instanceHeader,
+                                           String                   metadataCollectionId)
+    {
+        final String metadataCollectionIdPropertyName = "metadataCollectionId";
+        final String typeNamePropertyName = "typeName";
+        final String typeGUIDPropertyName = "typeGUID";
+        final String createdByPropertyName = "createdBy";
+        final String updatedByPropertyName = "updatedBy";
+        final String createTimePropertyName = "createTime";
+        final String updateTimePropertyName = "updateTime";
+
+        int       matchingProperties = 0;
+
+        if ((matchProperties != null) && (instanceHeader != null))
+        {
+            Map<String, InstancePropertyValue>   propertyMap = matchProperties.getInstanceProperties();
+
+            if (propertyMap != null)
+            {
+                if (this.checkStringPropertyValue(propertyMap, metadataCollectionIdPropertyName, metadataCollectionId))
+                {
+                    matchingProperties ++;
+                }
+                if (this.checkStringPropertyValue(propertyMap, typeNamePropertyName, instanceHeader.getType().getTypeDefName()))
+                {
+                    matchingProperties ++;
+                }
+                if (this.checkStringPropertyValue(propertyMap, typeGUIDPropertyName, instanceHeader.getType().getTypeDefGUID()))
+                {
+                    matchingProperties ++;
+                }
+                if (this.checkStringPropertyValue(propertyMap, createdByPropertyName, instanceHeader.getCreatedBy()))
+                {
+                    matchingProperties ++;
+                }
+                if (this.checkStringPropertyValue(propertyMap, updatedByPropertyName, instanceHeader.getUpdatedBy()))
+                {
+                    matchingProperties ++;
+                }
+                if (this.checkDatePropertyValue(propertyMap, createTimePropertyName, instanceHeader.getCreateTime()))
+                {
+                    matchingProperties ++;
+                }
+                if (this.checkDatePropertyValue(propertyMap, updateTimePropertyName, instanceHeader.getUpdateTime()))
+                {
+                    matchingProperties ++;
+                }
+            }
+        }
+
+        return matchingProperties;
+    }
+
+
+    /**
      * Determine if the instance properties match the match criteria.
      *
-     * @param matchProperties the properties to match.
-     * @param instanceProperties the properties from the instance.
-     * @param matchCriteria rule on how the match should occur.
+     * @param matchProperties  the properties to match.
+     * @param metadataCollectionId metadata collection Id for instance if known.
+     * @param instanceHeader the header of the instance.
+     * @param instanceProperties  the properties from the instance.
+     * @param matchCriteria  rule on how the match should occur.
      * @return boolean flag indicating whether the two sets of properties match
      */
     public boolean verifyMatchingInstancePropertyValues(InstanceProperties   matchProperties,
+                                                        String               metadataCollectionId,
+                                                        InstanceAuditHeader  instanceHeader,
                                                         InstanceProperties   instanceProperties,
                                                         MatchCriteria        matchCriteria)
     {
         if (matchProperties != null)
         {
-            int matchingProperties = this.countMatchingPropertyValues(matchProperties, instanceProperties);
+            int matchingProperties = this.countMatchingPropertyValues(matchProperties, instanceProperties) +
+                                     this.countMatchingPropertyValues(matchProperties, instanceHeader, metadataCollectionId);
 
             switch (matchCriteria)
             {

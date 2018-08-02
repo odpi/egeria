@@ -10,10 +10,10 @@ import java.util.List;
 import static org.testng.Assert.assertTrue;
 
 /**
- * Verify the InstancePropertyCategory enum contains unique ordinals, non-null names and descriptions and can be
+ * Verify the InstanceProvenanceType enum contains unique ordinals, non-null names and descriptions and can be
  * serialized to JSON and back again.
  */
-public class TestInstancePropertyCategory
+public class InstanceProvenanceTypeTest
 {
     private List<Integer> existingOrdinals = null;
 
@@ -46,34 +46,29 @@ public class TestInstancePropertyCategory
     {
         existingOrdinals = new ArrayList<>();
 
-        InstancePropertyCategory  testValue;
+        InstanceProvenanceType  testValue;
 
-        testValue = InstancePropertyCategory.UNKNOWN;
+        testValue = InstanceProvenanceType.UNKNOWN;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
 
-        testValue = InstancePropertyCategory.PRIMITIVE;
+        testValue = InstanceProvenanceType.LOCAL_COHORT;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
 
-        testValue = InstancePropertyCategory.ENUM;
+        testValue = InstanceProvenanceType.EXPORT_ARCHIVE;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
 
-        testValue = InstancePropertyCategory.STRUCT;
+        testValue = InstanceProvenanceType.CONTENT_PACK;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
 
-        testValue = InstancePropertyCategory.MAP;
-        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
-        assertTrue(testValue.getName() != null);
-        assertTrue(testValue.getDescription() != null);
-
-        testValue = InstancePropertyCategory.ARRAY;
+        testValue = InstanceProvenanceType.DEREGISTERED_REPOSITORY;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
@@ -92,7 +87,7 @@ public class TestInstancePropertyCategory
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(InstancePropertyCategory.STRUCT);
+            jsonString = objectMapper.writeValueAsString(InstanceProvenanceType.DEREGISTERED_REPOSITORY);
         }
         catch (Throwable  exc)
         {
@@ -101,7 +96,7 @@ public class TestInstancePropertyCategory
 
         try
         {
-            assertTrue(objectMapper.readValue(jsonString, InstancePropertyCategory.class) == InstancePropertyCategory.STRUCT);
+            assertTrue(objectMapper.readValue(jsonString, InstanceProvenanceType.class) == InstanceProvenanceType.DEREGISTERED_REPOSITORY);
         }
         catch (Throwable  exc)
         {
@@ -115,6 +110,6 @@ public class TestInstancePropertyCategory
      */
     @Test public void testToString()
     {
-        assertTrue(InstancePropertyCategory.ARRAY.toString().contains("InstancePropertyCategory"));
+        assertTrue(InstanceProvenanceType.EXPORT_ARCHIVE.toString().contains("InstanceProvenanceType"));
     }
 }
