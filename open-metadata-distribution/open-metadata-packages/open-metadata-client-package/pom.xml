@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <artifactId>open-metadata-packages</artifactId>
+        <groupId>org.odpi.egeria</groupId>
+        <version>0.1-SNAPSHOT</version>
+    </parent>
+
+    <name>Open Metadata Client Package</name>
+    <description>
+        Provides the basic package for calling egeria from a client.
+    </description>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>open-metadata-client-package</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>../../../open-metadata-implementation/governance-servers/admin-services/admin-services-client</module>
+        <module>../../../open-metadata-implementation/access-services/asset-catalog/asset-catalog-client</module>
+        <module>../../../open-metadata-implementation/access-services/asset-consumer/asset-consumer-client</module>
+        <module>../../../open-metadata-implementation/access-services/asset-owner/asset-owner-client</module>
+        <module>../../../open-metadata-implementation/access-services/community-profile/community-profile-client</module>
+        <module>../../../open-metadata-implementation/access-services/connected-asset/connected-asset-client</module>
+        <module>../../../open-metadata-implementation/access-services/data-architecture/data-architecture-client</module>
+        <module>../../../open-metadata-implementation/access-services/data-infrastructure/data-infrastructure-client</module>
+        <module>../../../open-metadata-implementation/access-services/data-platform/data-platform-client</module>
+        <module>../../../open-metadata-implementation/access-services/data-privacy/data-privacy-client</module>
+        <module>../../../open-metadata-implementation/access-services/data-process/data-process-client</module>
+        <module>../../../open-metadata-implementation/access-services/data-protection/data-protection-client</module>
+        <module>../../../open-metadata-implementation/access-services/data-science/data-science-client</module>
+        <module>../../../open-metadata-implementation/access-services/dev-ops/dev-ops-client</module>
+        <module>../../../open-metadata-implementation/access-services/discovery-engine/discovery-engine-client</module>
+        <module>../../../open-metadata-implementation/access-services/governance-engine/governance-engine-client</module>
+        <module>../../../open-metadata-implementation/access-services/governance-program/governance-program-client</module>
+        <module>../../../open-metadata-implementation/access-services/information-view/information-view-client</module>
+        <module>../../../open-metadata-implementation/access-services/project-management/project-management-client</module>
+        <module>../../../open-metadata-implementation/access-services/software-developer/software-developer-client</module>
+        <module>../../../open-metadata-implementation/access-services/stewardship-action/stewardship-action-client</module>
+        <module>../../../open-metadata-implementation/access-services/subject-area/subject-area-client</module>
+    </modules>
+
+</project>
