@@ -5,7 +5,7 @@
 Egeria provides basic user interfaces to demonstrate the power of the open
 metadata and governance capabilities.  They are fully functional as
 far as the standards go, and could be used by a small company.  However,
-it is likely that commercial offering will offer a richer user experience,
+it is likely that commercial offerings will offer a richer user experience,
 particularly for a larger organization.
 
 There are 2 user interfaces:
