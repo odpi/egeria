@@ -145,7 +145,7 @@ Changes to be committed:
 	new file:   new-file.java
 ```
 
-You can now commit changes to your local repository, making sure to use the `-s` option to sign your changes (see [Why the DCO?](#why-the-dco)) and the `-m` option to provide a useful commit message. In the message you can make use of [special strings](https://blog.github.com/2011-10-12-introducing-issue-mentions/)to directly link to GitHub issues. By doing this others following the issue will see the commits to your fork easily so can track the work going on even before you submit to the Egeria repository.
+You can now commit changes to your local repository, making sure to use the `-s` option to sign your changes (see [Why the DCO?](#why-the-dco)) and the `-m` option to provide a useful commit message. In the message you can make use of [special strings](https://blog.github.com/2011-10-12-introducing-issue-mentions/) to directly link to GitHub issues. By doing this others following the issue will see the commits to your fork easily so can track the work going on even before you submit to the Egeria repository.
 
 It is also essential to push the changes from your local machine up to GitHub ready for the next step - note this references GitHub issues, also read [the section on JIRA](#getting-a-jira-account-and-creating-an-issue):
 
