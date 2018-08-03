@@ -23,7 +23,7 @@ an example of the license text at the top of this file.  The following files in 
 **License-Example-Files** directory have the correct
 license information formatted for different file types to make it easy to use.
 
-* [License for Markdown files.md](./License-Example-Files/License_for_Markdown_files.md)
+* [License for Markdown Files.md](./License-Example-Files/License_for_Markdown_Files.md)
 * [License for POM Files.xml](./License-Example-Files/License_for_POM_Files.xml)
 * [License for Java Files.java](./License-Example-Files/License_for_Java_Files.java)
 
