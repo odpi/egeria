@@ -4,7 +4,7 @@
 
 Open Connectors are connectors that support the 
 Open Connector Framework (OCF) - see
-the [open-connector-framework](https://odpi.github.io/egeria/open-metadata-implementation/frameworks/open-connector-framework/) module.
+the [open-connector-framework](../../frameworks/open-connector-framework/README.md) module.
 
 This is the principle (preferred) mechanism for supporting pluggable
 components in the open metadata implementation.  The OCF has additional uses
