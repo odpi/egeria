@@ -22,7 +22,7 @@ the **[OMRS Topic](../../omrs-event-topic.md)** by calling
 the **[Open Metadata Topic Connector](open-metadata-topic-connector.md)**.
 
 * **[Open Metadata Archive Store Connector](open-metadata-archive-store-connector.md)** - supports the
-reading an writing of **[open metadata archives](../../open-metadata-archive.md)**
+reading and writing of **[open metadata archives](../../open-metadata-archive.md)**
 on behalf of the **[archive manager](../archive-manager.md)**.
 
 * **[Open Metadata Topic Connector](open-metadata-topic-connector.md)** - manages
@@ -30,7 +30,7 @@ the calls to the **[event bus](../../../../adapters/open-connectors/event-bus-co
 the **[OMRS Topic](../../omrs-event-topic.md)**.
 
 * **[Repository Connector](repository-connector.md)** supports calls to a real metadata repository on behalf
-of the **[local-repository-connector](../local-repository-connector.md).
+of the **[local-repository-connector](../local-repository-connector.md)**.
 
 The OMRS defines the interfaces for these connectors and selected implementations
 are located in the **[adapters](../../../../adapters/open-connectors/repository-services-connectors)** package.

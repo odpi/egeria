@@ -13,13 +13,13 @@ its local cohort registry store.
 Figure 1 shows a cohort with two members.  Notice that each server has its own
 cohort registry store - there is no central store.
 
-![Figure 1](cohort-registry-stores-in-a-cohort.png)
-**Figure 1: Cohort Registry Stores within a Open Metadata Repository Cohort
+![Figure 1: Cohort Registry Stores within a Open Metadata Repository Cohort](cohort-registry-stores-in-a-cohort.png)
+> Figure 1: Cohort Registry Stores within a Open Metadata Repository Cohort
 
 Figure 2 shows the logical structure inside the cohort registry store.
 
-![Figure 2](cohort-registry-store-contents.png)
-**Figure 2: Internal structure for the information stored inside a single
+![Figure 2: Internal structure for the information stored inside a single cohort registry store](cohort-registry-store-contents.png)
+> Figure 2: Internal structure for the information stored inside a single
 cohort registry store.
 
 There is one local registration record describing the information sent to
