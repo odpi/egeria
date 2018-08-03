@@ -16,7 +16,7 @@ The current Egeria maintainers are:
 | Bogdan Sava | Bogdan-Mihail.Sava@ing.com |
 | Chris Replogle | chris.replogle@gmail.com | 
 | Ferd Scheepers | ferd.scheepers@mamahuhu.nl |
-| Ruxandra Gabriela Rosu | ruxandra.rosu@ing.com |
+| Ruxandra Gabriela Rosu | ruxandra-gabriela.rosu@ing.com |
 | Daniela Valentina Otelea | daniela-valentina.otelea@ing.com |
 | Constantin Nastase | constantin.nastase@ing.com |
 
