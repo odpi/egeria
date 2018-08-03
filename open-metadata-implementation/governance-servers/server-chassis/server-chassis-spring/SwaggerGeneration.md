@@ -45,7 +45,7 @@ The following dependency allows for the Swagger UI to display the default genera
 
 The following code was added to parse/enable the scanning for REST APIs in spring controllers. 
 
-```
+```java
     @Bean
     public Docket egeriaAPI()
     {
