@@ -35,7 +35,7 @@ list](https://lists.odpi.org/g/odpi-pmc-datagovernance).
 As a member you are able to attend our meetings, just to listen, or to play an active part in the discussion.
 
 When you attend, your name will be recorded in the meeting minutes along with any remarks or suggestions you make.
-The agenda and minutes of our meetings are publicly available on the egeria wiki.
+The agenda and minutes of our meetings are publicly available on the [Egeria wiki](https://github.com/odpi/egeria/wiki).
 
 A member may make contributions to the Egeria content by submitting a
 Git change (Patch or a Git Pull Request) to the Egeria maintainers.
@@ -51,8 +51,8 @@ This includes:
 * Monitoring Slack (delayed response is perfectly acceptable).
 * Triage GitHub issues and perform pull request reviews for other maintainers and the community.
 * Make sure that ongoing git pull requests are moving forward at the right pace or closing them.
-* In general continue to be willing to spend at least 25% of ones time
-working on the project (~1.25 business days per week).
+* In general continue to be willing to spend at least 25% of one's time
+working on the project (approximately 1.25 business days per week).
 
 #### How to become a maintainer
 
@@ -95,7 +95,7 @@ For example, the face-to-face meeting may be at a conference that requires you t
 Or a meeting may be at an organization's offices that are required to maintain a list of everyone on site.
 
 Irrespective of whether a meeting is face-to-face or a web conference, all meetings are advertised in the Egeria calendar,
-the agenda is published before the meeting in the [egeria wiki](https://github.com/odpi/egeria/wiki)
+the agenda is published before the meeting in the [Egeria wiki](https://github.com/odpi/egeria/wiki)
 and the minutes are added once the meeting is complete.
 
 ## Egeria on Slack

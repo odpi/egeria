@@ -1,15 +1,14 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
   
-# Kafka Open Connector
+# Kafka Open Metadata Topic Connector
 
-The Kafka Open Connector implements 
+The Kafka Open Metadata Topic Connector implements 
 an [Apache Kafka](https://kafka.apache.org/) connector for a topic that exchanges
 Java Objects as JSON payloads.
 
-These are some of the default properties and sample values that can be set when creating [Apache Kafka](https://kafka.apache.org/)
-producer and consumer.
+## Default Producer configuration
 
-Producer configs:
+(see [Apache Kafka producer configurations](http://kafka.apache.org/0100/documentation.html#producerconfigs) for more information and options)
 
 | Property Name | Property Value |
 |---------------|----------------|
@@ -23,7 +22,9 @@ Producer configs:
 | key.serializer | org.apache.kafka.common.serialization.StringSerializer |
 | value.serializer | org.apache.kafka.common.serialization.StringSerializer |
 
-Consumer configs:
+## Default Consumer configuration
+
+(see [Apache Kafka consumer configurations](http://kafka.apache.org/0100/documentation.html#newconsumerconfigs) for more information and options)
 
 | Property Name | Property Value |
 |----------------|-----------------|
@@ -35,10 +36,3 @@ Consumer configs:
 | key.deserializer | org.apache.kafka.common.serialization.StringDeserializer |
 | value.deserializer| org.apache.kafka.common.serialization.StringDeserializer |
 
-
-For more information on Apache Kafka producer and consumer properties,
-see Apache Kafka documentation .
-
-[Apache Kafka producer configurations](http://kafka.apache.org/0100/documentation.html#producerconfigs)
-
-[Apache Kafka consumer configurations](http://kafka.apache.org/0100/documentation.html#newconsumerconfigs)

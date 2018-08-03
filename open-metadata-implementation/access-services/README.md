@@ -2,7 +2,7 @@
   
 # Open Metadata Access Services (OMAS)
 
-The Open Metadata Access Services (OMRS) provide domain-specific services
+The Open Metadata Access Services (OMAS) provide domain-specific services
 for data tools, engines and platforms to integrate with open metadata.
 
 The access services are as follows:
@@ -17,14 +17,14 @@ into the details of a specific asset to related metadata.
 
 * **[asset-consumer](asset-consumer)** - create connectors to access assets.
 
-  The Asset Consumer OMAS is designed for applications that are using OCF connectors to access data stores, API and
+  The Asset Consumer OMAS is designed for applications that are using OCF connectors to access data stores, APIs and
 functions such as analytics.  The Asset Consumer OMAS provides a factory function
 for the connectors, the ability to retrieve all of the metadata about the asset
 and the ability to add feedback on the asset.
 
 * **[asset-owner](asset-owner)** - manage metadata and feedback for owned assets.
 
-  The Asset Owner Open Metadata Access Service (OMAS) provides services for an asset owner to curate metadata about their
+  The Asset Owner OMAS provides services for an asset owner to curate metadata about their
 asset(s) and understand how these assets are being used and governed.
 
 * **[community-profile](community-profile)** - manage personal profiles and communities.
@@ -107,7 +107,7 @@ only have access to the data they have been authorized to see.
   The Governance Program OMAS provides the ability to maintain a governance program in the open metadata repositories.
 It is designed for governance and CDO tools.
 
-* **[information-view](information-view)** -  create virtual views over data.
+* **[information-view](information-view)** - create virtual views over data.
 
   The Information View OMAS provides information on existing assets plus the ability to define views over these assets.
 This OMAS is used by BI reporting tools and virtualization/federation tools to configure their engines.
@@ -135,7 +135,7 @@ simple remediation and status reporting.
 * **[subject-area](subject-area)** - develop a definition of a subject area including glossary
 terms, reference data and rules.
 
-  The Subject Area Expert OMAS is for tools that support subject matter experts
+  The Subject Area OMAS is for tools that support subject matter experts
 who are defining glossaries, reference data and rules around data for a specific
 subject area, such as "customer data".   It supports the development of a comprehensive
 definition of the subject area and the standards that support it.
@@ -152,10 +152,10 @@ use its topics to either post metadata to the open metadata repositories or
 receive notifications about metadata changes.
 
 ![Figure 1](omas-anatomy.png)
-**Figure 1: Anatomy of an Open Metadata Access Service (OMAS)**
-	
+> Figure 1: Anatomy of an Open Metadata Access Service (OMAS)
+
 Every OMAS supports a Java client interface that runs locally in the metadata tool,
-engine, application.  These client interfaces support calls to the REST API and
+engine, or application.  These client interfaces support calls to the REST API and
 provide message helpers for the OMAS In and Out Topics.
 They can be downloaded and used independently with the 
 **[Egeria Client Package](../../open-metadata-distribution/README.md)**.  
@@ -173,7 +173,7 @@ These topics are handled by the OMAS Event Listener and OMAS Event Publisher
 respectively.
 
 Both the REST API and the topics interact with the OMRS to receive
-and sent metadata to the open metadata repositories, either by receiving
+and send metadata to the open metadata repositories, either by receiving
 messages on the OMRS Topic or by calling an OMRS Connector. 
 The type and configuration of the OMRS Connector (and hence which metadata
 repositories it connects to) is set up when the OMAS APIs are deployed. 
