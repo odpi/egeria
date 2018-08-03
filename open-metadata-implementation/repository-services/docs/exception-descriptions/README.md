@@ -45,3 +45,4 @@ It is typically wrapping an OCF checked exception.
 * `OMRSLogicErrorException` - used when the OMRS detects an error in its processing.
 This may be due to a configuration error but is much more likely to be a bug in the
 OMRS code.
+
