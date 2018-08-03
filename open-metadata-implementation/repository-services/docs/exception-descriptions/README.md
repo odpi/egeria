@@ -4,46 +4,44 @@
 
 ## OMRS Checked Exceptions
 
-* **ClassificationErrorException** - the classification request is not known to the metadata collection.
-* **EntityConflictException** - the new entity passed to the metadata collection conflicts with an existing entity.
-* **EntityNotDeletedException** - the entity is not in DELETED status and so can not be purged.
-* **EntityNotKnownException** - the requested entity instance is not known in the metadata collection.
-* **EntityProxyOnlyException** - the requested entity instance is only a proxy in the metadata collection.
-* **FunctionNotSupportedException** - an optional function has been requested that this repository does not support.
-* **HomeEntityException** - the entity belongs to the local repository so creating a reference copy would be invalid.
-* **HomeRelationshipException** - the relationship belongs to the local repository so creating a reference copy would be invalid.
-* **InvalidEntityException** - the new entity has invalid contents.
-* **InvalidParameterException** - a mandatory parameter is either null or set to an invalid value.
-* **InvalidRelationshipException** - the new relationship has invalid contents.
-* **InvalidTypeDefException** - the new TypeDef has invalid contents.
-* **PagingErrorException** - the paging/sequencing parameters are set up incorrectly.
-* **PatchErrorException** - the TypeDef can not be updated because the supplied patch is incompatible with the stored TypeDef.
-* **PropertyErrorException** - the sequencing property is not valid for the attached classifications.
-* **RelationshipConflictException** - a new relationship conflicts with an existing relationship.
-* **RelationshipNotDeletedException** - the requested relationship is not in DELETED status.
-* **RelationshipNotKnownException** - the metadata collection does not have a relationship with the requested GUID stored.
-* **RepositoryErrorException** - there is a problem communicating with the metadata repository.
+* `ClassificationErrorException` - the classification request is not known to the metadata collection.
+* `EntityConflictException` - the new entity passed to the metadata collection conflicts with an existing entity.
+* `EntityNotDeletedException` - the entity is not in DELETED status and so cannot be purged.
+* `EntityNotKnownException` - the requested entity instance is not known in the metadata collection.
+* `EntityProxyOnlyException` - the requested entity instance is only a proxy in the metadata collection.
+* `FunctionNotSupportedException` - an optional function has been requested that this repository does not support.
+* `HomeEntityException` - the entity belongs to the local repository so creating a reference copy would be invalid.
+* `HomeRelationshipException` - the relationship belongs to the local repository so creating a reference copy would be invalid.
+* `InvalidEntityException` - the new entity has invalid contents.
+* `InvalidParameterException` - a mandatory parameter is either null or set to an invalid value.
+* `InvalidRelationshipException` - the new relationship has invalid contents.
+* `InvalidTypeDefException` - the new TypeDef has invalid contents.
+* `PagingErrorException` - the paging/sequencing parameters are set up incorrectly.
+* `PatchErrorException` - the TypeDef cannot be updated because the supplied patch is incompatible with the stored TypeDef.
+* `PropertyErrorException` - the sequencing property is not valid for the attached classifications.
+* `RelationshipConflictException` - a new relationship conflicts with an existing relationship.
+* `RelationshipNotDeletedException` - the requested relationship is not in DELETED status.
+* `RelationshipNotKnownException` - the metadata collection does not have a relationship with the requested GUID stored.
+* `RepositoryErrorException` - there is a problem communicating with the metadata repository.
 This may be caused by a configuration error, or a server outage.
-* **StatusNotSupportedException** - the metadata repository hosting the metadata collection does not support the requested status.
-* **TypeDefConflictException** - the new TypeDef conflicts with an existing TypeDef.
-* **TypeDefInUseException** - the TypeDef can not be deleted because there are instances of this type in the
+* `StatusNotSupportedException` - the metadata repository hosting the metadata collection does not support the requested status.
+* `TypeDefConflictException` - the new TypeDef conflicts with an existing TypeDef.
+* `TypeDefInUseException` - the TypeDef cannot be deleted because there are instances of this type in the
 the metadata collection.  These instances need to be purged before the TypeDef can be deleted.
-* **TypeDefKnownException** - the TypeDef is already stored in the repository.
-* **TypeDefNotKnownException** - the requested TypeDef is not known in the metadata collection.
-* **TypeDefNotSupportedException** - the repository is not able to support this TypeDef.
-* **TypeErrorException** - the type guid passed on the request is not known by the metadata collection.  
-* **UserNotAuthorizedException** - the userId passed on the call is not permitted to perform this operation.
-
+* `TypeDefKnownException` - the TypeDef is already stored in the repository.
+* `TypeDefNotKnownException` - the requested TypeDef is not known in the metadata collection.
+* `TypeDefNotSupportedException` - the repository is not able to support this TypeDef.
+* `TypeErrorException` - the type guid passed on the request is not known by the metadata collection.  
+* `UserNotAuthorizedException` - the userId passed on the call is not permitted to perform this operation.
 
 ## OMRS Runtime Exceptions
 
-* **NotImplementedRuntimeException** - uses when an OMRS function has been called that has not yet
+* `NotImplementedRuntimeException` - used when an OMRS function has been called that has not yet
 been implemented - an opportunity to contribute :).
-* **OMRSConnectorErrorException** - used for all runtime exceptions generated by the
+* `OMRSConnectorErrorException` - used for all runtime exceptions generated by the
 Open Metadata Repository Services (OMRS)
 components that indicate a problem with one of its connectors.
 It is typically wrapping an OCF checked exception.
-* **OMRSLogicErrorException** - uses when the OMRS detects and error in its processing.
-This may be due to a configuration error but is is much more likely to be a bug in the
+* `OMRSLogicErrorException` - used when the OMRS detects an error in its processing.
+This may be due to a configuration error but is much more likely to be a bug in the
 OMRS code.
-
