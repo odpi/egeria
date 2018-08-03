@@ -3,13 +3,11 @@
 package org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions;
 
 
-import lombok.EqualsAndHashCode;
 
 /**
  * The RootClassificationNotFound is thrown by the Governance Engine OMAS when the root classification passed
  * is not valid.
  */
-@EqualsAndHashCode(callSuper=true)
 public class ClassificationNotFoundException extends GovernanceEngineCheckedExceptionBase {
     /**
      * This is the typical constructor used for creating a ClassificationNotFoundException.

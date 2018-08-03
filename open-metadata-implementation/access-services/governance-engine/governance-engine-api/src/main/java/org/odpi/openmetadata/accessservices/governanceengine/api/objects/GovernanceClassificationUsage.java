@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.governanceengine.api.objects;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.EqualsAndHashCode;
 
 import java.util.Map;
 
@@ -18,7 +17,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 // We use this to manage objects associated with the classification of an asset component
 // for example confidentiality=C3
-@EqualsAndHashCode(callSuper=true)
 public class GovernanceClassificationUsage extends GovernanceClassificationBase {
 
     // Additional Attributes of a Tag Definition

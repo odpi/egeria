@@ -3,13 +3,11 @@
 package org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions;
 
 
-import lombok.EqualsAndHashCode;
 
 /**
  * The GuidNotFoundException is thrown by the Governance Engine OMAS when the guid passed is not found
  * in the repository.
  */
-@EqualsAndHashCode(callSuper=true)
 public class GuidNotFoundException extends GovernanceEngineCheckedExceptionBase {
     /**
      * This is the typical constructor used for creating a ClassificationNotFoundException.

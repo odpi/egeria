@@ -3,13 +3,11 @@
 package org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions;
 
 
-import lombok.EqualsAndHashCode;
 
 /**
      * The PublishEventException is thrown by the Governance Engine OMAS when we have issues
      * publishing an event
      */
-    @EqualsAndHashCode(callSuper=true)
     public class PublishEventException extends GovernanceEngineCheckedExceptionBase {
         /**
          * This is the typical constructor used for creating a UserNotAuthorizedException.

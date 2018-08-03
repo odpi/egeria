@@ -2,7 +2,7 @@
 
 package org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions;
 
-import lombok.EqualsAndHashCode;
+
 
 /**
  * GovernanceEngineExceptionBase provides a checked exception for reporting errors found when using
@@ -13,7 +13,6 @@ import lombok.EqualsAndHashCode;
  * this exception to populate it with standard messages.  The aim is to be able to uniquely identify the cause
  * and remedy for the error.
  */
-@EqualsAndHashCode(callSuper=true)
 public class GovernanceEngineCheckedExceptionBase extends Exception {
     /*
      * These default values are only seen if this exception is initialized using one of its superclass constructors.

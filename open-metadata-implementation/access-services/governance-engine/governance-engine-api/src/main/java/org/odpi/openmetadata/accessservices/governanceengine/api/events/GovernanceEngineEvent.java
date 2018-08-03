@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.governanceengine.api.events;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 
@@ -18,7 +17,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@EqualsAndHashCode
 public class GovernanceEngineEvent implements Serializable {
     GovernanceEngineEventType eventType = GovernanceEngineEventType.UNKNOWN_GOVERNANCE_ENGINE_EVENT;
 
