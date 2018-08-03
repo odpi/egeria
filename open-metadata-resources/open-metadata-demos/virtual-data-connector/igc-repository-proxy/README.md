@@ -3,7 +3,7 @@
 # IGC Repository Proxy
   
 The IGC Repository proxy is a server that provides an adapter for
-IBM Governance Catalog (IGC) that enables it to participate in an
+[IBM Information Governance Catalog (IGC)](https://www.ibm.com/marketplace/information-governance-catalog) that enables it to participate in an
 open metadata repository cohort.
 
 Within the server are two connectors:
