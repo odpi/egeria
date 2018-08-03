@@ -128,6 +128,8 @@ inconsistency that you introduce makes the whole file harder to read.
 It should not be possible to see where you have made the changes once the
 code is committed into git.
 
+* For java unit tests use /src/test/java folder of the module (standard maven location), and postfix java file names with "Test".
+
 ## Testing
 
 All code submissions should be accompanied by automated tests that validate
