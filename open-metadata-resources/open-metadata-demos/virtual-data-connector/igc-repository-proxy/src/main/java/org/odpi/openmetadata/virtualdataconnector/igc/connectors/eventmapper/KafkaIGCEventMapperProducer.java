@@ -88,7 +88,7 @@ public class KafkaIGCEventMapperProducer extends OpenMetadataTopicConnector {
     }
 
     @Override
-    public void sendEvent(String event) throws ConnectorCheckedException {
+    public void sendEvent(String event) {
 
         long time = System.currentTimeMillis();
         try {
