@@ -127,12 +127,13 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
      * @param igcKafkaEvent a Kafka event originating from IGC.
      */
     public void processIGCEvent(IGCKafkaEvent igcKafkaEvent) {
-        switch (igcKafkaEvent.getASSETTYPE()) {
-            case "Database Column":
-                if (igcKafkaEvent.getACTION().equals("ASSIGNED_RELATIONSHIP") || igcKafkaEvent.getACTION().equals("MODIFY")) {
-                    try {
-                        igcColumn = igcomrsRepositoryConnector.queryIGCColumn(igcKafkaEvent.getASSETRID());
-                        originatorServerName = igcColumn.getName(); //TODO check correctness
+        try {
+            igcColumn = igcomrsRepositoryConnector.queryIGCColumn(igcKafkaEvent.getASSETRID());
+            originatorServerName = igcColumn.getName(); //TODO check correctness
+
+            switch (igcKafkaEvent.getASSETTYPE()) {
+                case "Database Column":
+                    if (igcKafkaEvent.getACTION().equals("ASSIGNED_RELATIONSHIP") || igcKafkaEvent.getACTION().equals("MODIFY")) {
                         if (igcColumn.getAssignedToTerms() != null) {
                             businessTerm = igcColumn.getAssignedToTerms().getItems().get(0).getName();
                             Relationship relationship = newRelationship("SemanticAssignment", igcKafkaEvent.getASSETRID(), "RelationalColumn", igcColumn.getAssignedToTerms().getItems().get(0).getId(), "GlossaryTerm");
@@ -145,31 +146,30 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                                     relationship
                             );
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
-                }
-                break;
-            case "Term":
-                if (igcKafkaEvent.getACTION().equals("CREATE")) {
-                    igcColumn = igcomrsRepositoryConnector.queryIGCColumn(igcKafkaEvent.getASSETRID());
-                    originatorServerName = igcColumn.getName();
-                    EntityDetail entityDetail = new EntityDetail();
-                    this.repositoryEventProcessor.processNewEntityEvent(
-                            "IGCOMRSRepositoryEventMapper",
-                            igcomrsRepositoryConnector.getMetadataCollectionId(),
-                            originatorServerName,
-                            "IGC",
-                            "",
-                            entityDetail
+                    break;
+                case "Term":
+                    if (igcKafkaEvent.getACTION().equals("CREATE")) {
+                        EntityDetail entityDetail = new EntityDetail();
+                        this.repositoryEventProcessor.processNewEntityEvent(
+                                "IGCOMRSRepositoryEventMapper",
+                                igcomrsRepositoryConnector.getMetadataCollectionId(),
+                                originatorServerName,
+                                "IGC",
+                                "",
+                                entityDetail
 
-                    );
-                }
-                break;
-            case "Category":
-                if (igcKafkaEvent.getACTION().equals("ASSIGNED_RELATIONSHIP")) {
-                }
-                break;
+                        );
+                    }
+                    break;
+                case "Category":
+                    if (igcKafkaEvent.getACTION().equals("ASSIGNED_RELATIONSHIP")) {
+                    }
+                    break;
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
         }
     }
 
