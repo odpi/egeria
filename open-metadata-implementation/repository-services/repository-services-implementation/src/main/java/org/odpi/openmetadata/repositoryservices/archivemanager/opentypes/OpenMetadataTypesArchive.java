@@ -9485,7 +9485,7 @@ public class OpenMetadataTypesArchive
          * Set up end 2.
          */
         final String                     end2EntityType               = "ExternalGlossaryLink";
-        final String                     end2AttributeName            = "externalGlossaryLinks";
+        final String                     end2AttributeName            = "externalGlossaryCategories";
         final String                     end2AttributeDescription     = "Links to related external glossaries.";
         final String                     end2AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
@@ -9880,7 +9880,7 @@ public class OpenMetadataTypesArchive
     private RelationshipDef getLibraryTermReferenceRelationship()
     {
         final String guid            = "38c346e4-ddd2-42ef-b4aa-55d53c078d22";
-        final String name            = "IsTaxonomy";
+        final String name            = "LibraryTermReference";
         final String description     = "Links a glossary term to a glossary term in an external glossary.";
         final String descriptionGUID = null;
 
@@ -9916,7 +9916,7 @@ public class OpenMetadataTypesArchive
          * Set up end 2.
          */
         final String                     end2EntityType               = "ExternalGlossaryLink";
-        final String                     end2AttributeName            = "externalGlossaryLinks";
+        final String                     end2AttributeName            = "externalGlossaryTerms";
         final String                     end2AttributeDescription     = "Links to related external glossaries.";
         final String                     end2AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;

@@ -1444,6 +1444,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
         }
 
         repositoryValidator.validateEntityFromStore(repositoryName, guid, entity, methodName);
+        repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
 
         return entity;
     }
@@ -1507,6 +1508,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
         }
 
         repositoryValidator.validateEntityFromStore(repositoryName, guid, entity, methodName);
+        repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
 
         return entity;
     }
@@ -1575,6 +1577,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
         }
 
         repositoryValidator.validateEntityFromStore(repositoryName, guid, entity, methodName);
+        repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
 
         return entity;
     }
@@ -1650,6 +1653,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
         EntitySummary  entity = this.getEntitySummary(userId, entityGUID);
 
         repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, entity, methodName);
+        repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
 
         List<Relationship> entityRelationships = new ArrayList<>();
 
@@ -1659,19 +1663,22 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
         {
             if (storedRelationship != null)
             {
-                repositoryValidator.validRelationship(repositoryName, storedRelationship);
-
-                if (repositoryHelper.relatedEntity(repositoryName,
-                                                   entityGUID,
-                                                   storedRelationship))
+                if (storedRelationship.getStatus() != InstanceStatus.DELETED)
                 {
-                    if (relationshipTypeGUID == null)
+                    repositoryValidator.validRelationship(repositoryName, storedRelationship);
+
+                    if (repositoryHelper.relatedEntity(repositoryName,
+                                                       entityGUID,
+                                                       storedRelationship))
                     {
-                        entityRelationships.add(storedRelationship);
-                    }
-                    else if (relationshipTypeGUID.equals(storedRelationship.getType().getTypeDefGUID()))
-                    {
-                        entityRelationships.add(storedRelationship);
+                        if (relationshipTypeGUID == null)
+                        {
+                            entityRelationships.add(storedRelationship);
+                        }
+                        else if (relationshipTypeGUID.equals(storedRelationship.getType().getTypeDefGUID()))
+                        {
+                            entityRelationships.add(storedRelationship);
+                        }
                     }
                 }
             }
@@ -1781,6 +1788,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
                     (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, entity)) &&
                     (repositoryValidator.verifyEntityIsClassified(limitResultsByClassification, entity)) &&
                     (repositoryValidator.verifyMatchingInstancePropertyValues(matchProperties,
+                                                                              entity.getMetadataCollectionId(),
+                                                                              entity,
                                                                               entity.getProperties(),
                                                                               matchCriteria)))
                 {
@@ -1932,6 +1941,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
                                 if (classificationName.equals(entityClassification.getName()))
                                 {
                                     if (repositoryValidator.verifyMatchingInstancePropertyValues(matchClassificationProperties,
+                                                                                                 null,
+                                                                                                 entityClassification,
                                                                                                  entityClassification.getProperties(),
                                                                                                  matchCriteria))
                                     {
@@ -2120,6 +2131,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
         Relationship  relationship = repositoryStore.getRelationship(guid);
 
         repositoryValidator.validateRelationshipFromStore(repositoryName, guid, relationship, methodName);
+        repositoryValidator.validateRelationshipIsNotDeleted(repositoryName, relationship, methodName);
 
         return relationship;
     }
@@ -2166,6 +2178,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
         Relationship  relationship = repositoryStore.timeWarpRelationshipStore(asOfTime).get(guid);
 
         repositoryValidator.validateRelationshipFromStore(repositoryName, guid, relationship, methodName);
+        repositoryValidator.validateRelationshipIsNotDeleted(repositoryName, relationship, methodName);
 
         return relationship;
     }
@@ -2259,6 +2272,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
                 if ((repositoryValidator.verifyInstanceType(relationshipTypeGUID, relationship)) &&
                     (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, relationship)) &&
                     (repositoryValidator.verifyMatchingInstancePropertyValues(matchProperties,
+                                                                              relationship.getMetadataCollectionId(),
+                                                                              relationship,
                                                                               relationship.getProperties(),
                                                                               matchCriteria)))
                 {
@@ -2823,6 +2838,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
         EntityDetail  entity  = repositoryStore.getEntity(entityGUID);
 
         repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, entity, methodName);
+        repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
 
         repositoryValidator.validateInstanceType(repositoryName, entity);
 
@@ -2896,6 +2912,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
         EntityDetail  entity  = repositoryStore.getEntity(entityGUID);
 
         repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, entity, methodName);
+        repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
 
         repositoryValidator.validateInstanceType(repositoryName, entity);
 
@@ -2969,6 +2986,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
         EntityDetail restoredEntity = repositoryStore.retrievePreviousVersionOfEntity(entityGUID);
 
         repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, restoredEntity, methodName);
+        repositoryValidator.validateEntityIsNotDeleted(repositoryName, restoredEntity, methodName);
 
         /*
          * The repository store maintains an entity proxy for use with relationships.
@@ -3176,7 +3194,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
         EntityDetail restoredEntity = repositoryStore.retrievePreviousVersionOfEntity(deletedEntityGUID);
 
         repositoryValidator.validateEntityFromStore(repositoryName, deletedEntityGUID, restoredEntity, methodName);
-
+        repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
 
         /*
          * The repository store maintains an entity proxy for use with relationships.
@@ -3237,6 +3255,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
         EntityDetail entity = repositoryStore.getEntity(entityGUID);
 
         repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, entity, methodName);
+        repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
 
         repositoryValidator.validateInstanceType(repositoryName, entity);
 
@@ -3349,6 +3368,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
         EntityDetail entity = repositoryStore.getEntity(entityGUID);
 
         repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, entity, methodName);
+        repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
 
         EntityDetail updatedEntity = repositoryHelper.deleteClassificationFromEntity(repositoryName,
                                                                                      entity,
@@ -3444,6 +3464,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
         EntityDetail entity = repositoryStore.getEntity(entityGUID);
 
         repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, entity, methodName);
+        repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
 
         Classification classification = repositoryHelper.getClassificationFromEntity(repositoryName,
                                                                                      entity,
@@ -3567,10 +3588,13 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
         EntityProxy   entityOne = repositoryStore.getEntityProxy(entityOneGUID);
 
         repositoryValidator.validateEntityFromStore(repositoryName, entityOneGUID, entityOne, methodName);
+        repositoryValidator.validateEntityIsNotDeleted(repositoryName, entityOne, methodName);
+
 
         EntityProxy   entityTwo = repositoryStore.getEntityProxy(entityTwoGUID);
 
         repositoryValidator.validateEntityFromStore(repositoryName, entityTwoGUID, entityTwo, methodName);
+        repositoryValidator.validateEntityIsNotDeleted(repositoryName, entityTwo, methodName);
 
         repositoryValidator.validateRelationshipEnds(repositoryName, entityOne, entityTwo, typeDef, methodName);
 
@@ -3766,6 +3790,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
         Relationship restoredRelationship = repositoryStore.retrievePreviousVersionOfRelationship(relationshipGUID);
 
         repositoryValidator.validateRelationshipFromStore(repositoryName, relationshipGUID, restoredRelationship, methodName);
+        repositoryValidator.validateRelationshipIsNotDeleted(repositoryName, restoredRelationship, methodName);
 
         return restoredRelationship;
     }
@@ -3953,6 +3978,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
         Relationship restoredRelationship = repositoryStore.retrievePreviousVersionOfRelationship(deletedRelationshipGUID);
 
         repositoryValidator.validateRelationshipFromStore(repositoryName, deletedRelationshipGUID, relationship, methodName);
+        repositoryValidator.validateRelationshipIsNotDeleted(repositoryName, restoredRelationship, methodName);
 
         return restoredRelationship;
     }
@@ -4493,6 +4519,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
                                                             methodName);
 
         repositoryStore.saveReferenceEntityToStore(entity);
+        repositoryStore.removeEntityProxyFromStore(entity.getGUID());
     }
 
 
@@ -4545,10 +4572,25 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
                                                methodName);
         repositoryValidator.validateHomeMetadataGUID(repositoryName, homeParameterName, homeMetadataCollectionId, methodName);
 
-        /*
-         * Remove entity
-         */
-        repositoryStore.removeReferenceEntityFromStore(entityGUID);
+        EntityDetail  entity = repositoryStore.getEntity(entityGUID);
+        if (entity != null)
+        {
+            repositoryStore.removeReferenceEntityFromStore(entityGUID);
+            repositoryStore.addEntityProxyToStore(repositoryHelper.getNewEntityProxy(repositoryName, entity));
+        }
+        else
+        {
+            OMRSErrorCode errorCode = OMRSErrorCode.ENTITY_NOT_KNOWN;
+            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityGUID,
+                                                                                                            repositoryName);
+
+            throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
+                                              this.getClass().getName(),
+                                              methodName,
+                                              errorMessage,
+                                              errorCode.getSystemAction(),
+                                              errorCode.getUserAction());
+        }
     }
 
 
@@ -4883,7 +4925,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
             {
                 OMRSErrorCode errorCode    = OMRSErrorCode.TYPEDEF_ID_NOT_KNOWN;
                 String        errorMessage = errorCode.getErrorMessageId()
-                        + errorCode.getFormattedErrorMessage(guid, guidParameterName, methodName, sourceName);
+                                           + errorCode.getFormattedErrorMessage(guid, guidParameterName, methodName, sourceName);
 
                 throw new TypeErrorException(errorCode.getHTTPErrorCode(),
                                              this.getClass().getName(),

@@ -256,7 +256,11 @@ public class InstanceType extends InstanceElementHeader
      */
     public List<InstanceStatus> getValidStatusList()
     {
-        if ( validStatusList == null)
+        if (validStatusList == null)
+        {
+            return null;
+        }
+        else if (validStatusList.isEmpty())
         {
             return null;
         }
@@ -274,14 +278,7 @@ public class InstanceType extends InstanceElementHeader
      */
     public void setValidStatusList(List<InstanceStatus> validStatusList)
     {
-        if (validStatusList == null)
-        {
-            this.validStatusList = null;
-        }
-        else
-        {
-            this.validStatusList = new ArrayList<>(validStatusList);
-        }
+        this.validStatusList = validStatusList;
     }
 
 
@@ -293,6 +290,10 @@ public class InstanceType extends InstanceElementHeader
     public List<String> getValidInstanceProperties()
     {
         if (validInstanceProperties == null)
+        {
+            return null;
+        }
+        else if (validInstanceProperties.isEmpty())
         {
             return null;
         }
@@ -310,14 +311,7 @@ public class InstanceType extends InstanceElementHeader
      */
     public void setValidInstanceProperties(List<String> validInstanceProperties)
     {
-        if (validInstanceProperties == null)
-        {
-            this.validInstanceProperties = null;
-        }
-        else
-        {
-            this.validInstanceProperties = new ArrayList<>(validInstanceProperties);
-        }
+        this.validInstanceProperties = validInstanceProperties;
     }
 
 

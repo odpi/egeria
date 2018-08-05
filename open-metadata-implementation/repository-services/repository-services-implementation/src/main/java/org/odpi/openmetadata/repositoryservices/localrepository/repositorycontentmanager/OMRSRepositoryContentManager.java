@@ -431,10 +431,10 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
      * @throws TypeErrorException the type name is not a recognized type or is of the wrong category or there is
      *                              a problem with the cached TypeDef.
      */
-    public InstanceType getInstanceType(String           sourceName,
+    public InstanceType getInstanceType(String          sourceName,
                                         TypeDefCategory category,
-                                        String           typeName,
-                                        String           methodName) throws TypeErrorException
+                                        String          typeName,
+                                        String          methodName) throws TypeErrorException
     {
         final String thisMethodName = "getInstanceType";
 
@@ -480,10 +480,7 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
 
                     if (superTypeName != null)
                     {
-                        if (log.isDebugEnabled())
-                        {
-                            log.debug(typeName + " from " + sourceName + " has super type " + superTypeName);
-                        }
+                        log.debug(typeName + " from " + sourceName + " has super type " + superTypeName);
 
                         /*
                          * Save the name of the super type into the instance type
@@ -2053,6 +2050,13 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
                  */
                 this.cacheTypeDef(sourceName, typeDef, true);
             }
+            else
+            {
+                /*
+                 * No local repository so just cache for enterprise repository services.
+                 */
+                this.cacheTypeDef(sourceName, typeDef, false);
+            }
         }
         catch (TypeDefNotSupportedException fixedTypeSystemResponse)
         {
@@ -2194,6 +2198,13 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
                  */
                 this.cacheAttributeTypeDef(sourceName, attributeTypeDef, true);
             }
+            else
+            {
+                /*
+                 * No local repository so just cache for enterprise repository services.
+                 */
+                this.cacheAttributeTypeDef(sourceName, attributeTypeDef, false);
+            }
         }
         catch (TypeDefNotSupportedException fixedTypeSystemResponse)
         {
@@ -2295,14 +2306,11 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
 
             if (metadataCollection != null)
             {
-
-
                 TypeDef updatedTypeDef = metadataCollection.updateTypeDef(null, typeDefPatch);
 
-                if (log.isDebugEnabled())
-                {
-                    log.debug("Patch successfully applied:" + updatedTypeDef);
-                }
+                log.debug("Patch successfully applied:" + updatedTypeDef);
+
+                // TODO update needed to TypeDef Caches - whether there is a local repository or not
             }
         }
         catch (RepositoryErrorException  error)
@@ -2420,7 +2428,7 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
                                                 TypeDefSummary originalTypeDefSummary,
                                                 TypeDef        typeDef)
     {
-
+        // Todo
     }
 
 
