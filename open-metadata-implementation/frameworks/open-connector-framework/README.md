@@ -37,14 +37,14 @@ The connector also includes an API to retrieve the metadata properties about the
 
 ## Open Metadata Type Models
 
-Model 0040 defines the structure of an Endpoint and
-model 0201 defines the structures for Connections and Connector Types.
-Model 0205 defines the linkage between the connection and the connected asset.
+* [Model 0040](../../../open-metadata-publication/website/open-metadata-types/0040-Servers.png) defines the structure of an Endpoint.
+* [Model 0201](../../../open-metadata-publication/website/open-metadata-types/0201-Connectors-and-Connections.png) defines the structures for Connections and Connector Types.
+* [Model 0205](../../../open-metadata-publication/website/open-metadata-types/0205-Connection-Linkage.png) defines the linkage between the connection and the connected asset.
 
 ## Java Implementation
 
 The OCF provides the interface schema and base class implementation for these components.
-The Java implementation is located in packages org.odpi.openmetadata.ocf.*:
+The Java implementation is located in packages `org.odpi.openmetadata.ocf.*`:
 
 * **org.odpi.openmetadata.ocf** - Java interface and base classes for Connector and Connector Provider
 plus the implementation of the Connector Broker.

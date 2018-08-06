@@ -8,6 +8,7 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
+import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryeventmapper.OMRSRepositoryEventMapperBase;
 
 import java.util.ArrayList;
@@ -18,7 +19,8 @@ import java.util.List;
  * GraphOMRSRepositoryEventMapper supports the event mapper function for the default graph store open
  * metadata repository.
  */
-public class GraphOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase implements VirtualConnectorExtension
+public class GraphOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase implements VirtualConnectorExtension,
+                                                                                             OpenMetadataTopicListener
 {
     private static final OMRSAuditLog auditLog = new OMRSAuditLog(OMRSAuditingComponent.LOCAL_REPOSITORY_EVENT_MAPPER);
 

@@ -10,8 +10,8 @@ of changes to:
 * The types of metadata being managed by members of the open metadata repository cohort.
 * The changes to the metadata instances stored by each of the members of the open metadata repository cohort.
 
-The motivation for sending OMRS Events between the membership of the open metadata repository cohort
-is to ensure open metadata is as widely available as security permitted and access to it is as efficient as possible.
+The motivation for sending OMRS Events between the members of the open metadata repository cohort
+is to ensure open metadata is as widely available as security-permitted and access to it is as efficient as possible.
 The events are broadcast to the membership of the open metadata repository cohort through
 an **[OMRS Topic](../omrs-event-topic.md)** and no replies are expected.
 Each member is expected to receive each event and make
@@ -22,18 +22,18 @@ to act on it or ignore it.
 
 Figure 1 shows the structure of version 1 on an OMRS Event.
 
-![Figure 1](omrs-event-format.png)
-**Figure 1: OMRS Event Format (version 1)**
+![Figure 1: OMRS Event Format (version 1)](omrs-event-format.png)
+> Figure 1: OMRS Event Format (version 1)
 
 Every event has a:
 
 * Timestamp - indicating the time the event was created.
 * Originator - details of the server that originated the message. 
   * The **[metadata collection Id](../metadata-collection-id.md)** is the unique identifier for an open metadata repository's metadata collection.
-  The only time this is not set is when a message is send from a server that does not have a
+  The only time this is not set is when a message is sent from a server that does not have a
   local metadata repository configured.
-  * The server name, type and organization are optional descriptive field used in audit logging and problem determination.
-  These values are set up through the **[administration services](../../../governance-servers/admin-services/Using-the-Admin-Services.md)**
+  * The server name, type and organization are optional descriptive fields used in audit logging and problem determination.
+  These values are set up through the **[administration services](../../../governance-servers/admin-services/Using-the-Admin-Services.md)**.
   * Version - the version number of the event (set to "OMRS V1.0" in the initial version).
 
 Next is the category.  There are three categories of OMRS Events:
@@ -42,13 +42,13 @@ Next is the category.  There are three categories of OMRS Events:
 * **[TypeDef events](typedef-events.md)** - used to exchange type definitions (TypeDefs) between members of an open metadata repository cohort to verify that there are not conflicts in the types they are using.
 * **[Instance events](instance-events.md)** - used to synchronize updates to reference (cached) copies of metadata instances (entities and relationships) amongst the membership of an open metadata repository cohort.
 
-The setting of the category determines which category specific section is used.
-Each category specific section begins with an category specific event
+The setting of the category determines which category-specific section is used.
+Each category-specific section begins with a category-specific event
 type that describes the type of the event, and hence the properties that
-will be found in the category specific section.
+will be found in the category-specific section.
 
 If the event is reporting an error, there is also an optional error section.
 The error section has an error code, error message and a target metadata
 collection id.  The target metadata collection id indicates which member
 of the cohort is the target for the error message.
-Other members may pick up the error and act on it as well. 
+Other members may pick up the error and act on it as well.

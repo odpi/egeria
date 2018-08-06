@@ -21,7 +21,7 @@ This identifier is set up in the server configuration and shared when this
 server **[connects to a cohort](component-descriptions/cohort-registry.md)**.
 
 When metadata is shared by OMRS, each element is tagged with the metadata
-collection id of its  home repository.
+collection id of its home repository.
 OMRS is able to route update requests to the right server by comparing
 the metadata collection
 id in the metadata instance with the cohort registration information passed

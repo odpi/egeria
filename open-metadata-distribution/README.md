@@ -2,7 +2,7 @@
   
 # Open Metadata Distribution
 
-This module collects together the Egeria artifacts that are designed for used by external
+This module collects together the Egeria artifacts that are designed for use by external
 consuming websites and technologies.  This includes:
 
 * The Java client Jars for the Open Metadata Access Services (OMAS).
