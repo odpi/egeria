@@ -31,9 +31,14 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
 
     private static final Logger log = LoggerFactory.getLogger(IGCOMRSRepositoryEventMapper.class);
     private IGCColumn igcColumn;
-    private String originatorServerName;
+    private String technicalTerm;
     private String businessTerm;
     private IGCOMRSRepositoryConnector igcomrsRepositoryConnector;
+    private String originatorServerName;
+    private String metadataCollectionId;
+    private String originatorServerType;
+    private String sourceName;
+    private String originatorOrganizationName;
 
     /**
      * Default constructor
@@ -51,7 +56,11 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
     public void start() throws ConnectorCheckedException {
         super.start();
         this.igcomrsRepositoryConnector = (IGCOMRSRepositoryConnector) this.repositoryConnector;
-
+        this.originatorServerName = this.localServerName;
+        this.metadataCollectionId = igcomrsRepositoryConnector.getMetadataCollectionId();
+        this.originatorServerType = "IGC";
+        this.sourceName = "IGCOMRSRepositoryEventMapper";
+        this.originatorOrganizationName = "ING";
         runConsumer();
     }
 
@@ -129,8 +138,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
     public void processIGCEvent(IGCKafkaEvent igcKafkaEvent) {
         try {
             igcColumn = igcomrsRepositoryConnector.queryIGCColumn(igcKafkaEvent.getASSETRID());
-            originatorServerName = igcColumn.getName(); //TODO check correctness
-
+            this.technicalTerm = igcKafkaEvent.getASSETRID();
             switch (igcKafkaEvent.getASSETTYPE()) {
                 case "Database Column":
                     if (igcKafkaEvent.getACTION().equals("ASSIGNED_RELATIONSHIP") || igcKafkaEvent.getACTION().equals("MODIFY")) {
@@ -138,11 +146,11 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                             businessTerm = igcColumn.getAssignedToTerms().getItems().get(0).getName();
                             Relationship relationship = newRelationship("SemanticAssignment", igcKafkaEvent.getASSETRID(), "RelationalColumn", igcColumn.getAssignedToTerms().getItems().get(0).getId(), "GlossaryTerm");
                             this.repositoryEventProcessor.processNewRelationshipEvent(
-                                    "IGCOMRSRepositoryEventMapper",
-                                    igcomrsRepositoryConnector.getMetadataCollectionId(),
+                                    sourceName,
+                                    metadataCollectionId,
                                     originatorServerName,
-                                    "IGC",
-                                    "",
+                                    originatorServerType,
+                                    originatorOrganizationName,
                                     relationship
                             );
                         }
@@ -150,13 +158,25 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                     break;
                 case "Term":
                     if (igcKafkaEvent.getACTION().equals("CREATE")) {
-                        EntityDetail entityDetail = new EntityDetail();
-                        this.repositoryEventProcessor.processNewEntityEvent(
-                                "IGCOMRSRepositoryEventMapper",
-                                igcomrsRepositoryConnector.getMetadataCollectionId(),
-                                originatorServerName,
-                                "IGC",
+
+                        InstanceProperties properties = new InstanceProperties();
+
+
+                        EntityDetail entityDetail = this.repositoryHelper.getNewEntity(
+                                sourceName,
+                                metadataCollectionId,
+                                null,
                                 "",
+                                null,
+                                properties,
+                                null
+                        );
+                        this.repositoryEventProcessor.processNewEntityEvent(
+                                sourceName,
+                                metadataCollectionId,
+                                originatorServerName,
+                                originatorServerType,
+                                originatorOrganizationName,
                                 entityDetail
 
                         );
@@ -186,7 +206,14 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
      * @throws TypeErrorException The type name is not recognized as a relationship type.
      */
     private Relationship newRelationship(String relationshipType, String entityId1, String entityType1, String entityId2, String entityType2) throws TypeErrorException {
-        Relationship relationship = initiateRelationship(relationshipType);
+        Relationship relationship = this.repositoryHelper.getNewRelationship(
+                sourceName,
+                metadataCollectionId,
+                InstanceProvenanceType.LOCAL_COHORT,
+                "",
+                relationshipType,
+                null
+        );
 
         EntityProxy entityProxyOne = newEntityProxy(entityType1);
         EntityProxy entityProxyTwo = newEntityProxy(entityType2);
@@ -194,7 +221,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         entityProxyOne.setGUID(entityId1);
         entityProxyTwo.setGUID(entityId2);
 
-        relationship.setEntityOnePropertyName(originatorServerName);
+        relationship.setEntityOnePropertyName(technicalTerm);
         relationship.setEntityOneProxy(entityProxyOne);
 
 
@@ -203,23 +230,6 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         return relationship;
     }
 
-    /**
-     * Return a filled out relationship which just needs the entity proxies added.
-     *
-     * @param relationshipType name of the type
-     * @return a filled out relationship.
-     * @throws TypeErrorException the type name is not recognized as a relationship type.
-     */
-    private Relationship initiateRelationship(String relationshipType) throws TypeErrorException {
-        return this.repositoryHelper.getNewRelationship(
-                "IGCOMRSRepositoryEventMapper",
-                igcomrsRepositoryConnector.getMetadataCollectionId(),
-                InstanceProvenanceType.LOCAL_COHORT,
-                "",
-                relationshipType,
-                null
-        );
-    }
 
     /**
      * Return a filled out entity.
@@ -230,8 +240,8 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
      */
     private EntityProxy newEntityProxy(String typeName) throws TypeErrorException {
         EntityProxy entityProxy = this.repositoryHelper.getNewEntityProxy(
-                "IGCOMRSRepositoryEventMapper",
-                igcomrsRepositoryConnector.getMetadataCollectionId(),
+                sourceName,
+                metadataCollectionId,
                 InstanceProvenanceType.LOCAL_COHORT,
                 "",
                 typeName,
