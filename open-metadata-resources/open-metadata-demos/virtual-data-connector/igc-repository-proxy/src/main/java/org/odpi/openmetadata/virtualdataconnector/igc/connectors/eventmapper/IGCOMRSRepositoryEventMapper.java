@@ -89,16 +89,6 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         new Thread(new ConsumerThread()).start();
     }
 
-    /**
-     * Receive events from the open metadata topic.
-     *
-     * @param event inbound event
-     */
-    @Override
-    public void processEvent(String event) {
-        //TODO
-    }
-
 
     private class ConsumerThread implements Runnable{
 
