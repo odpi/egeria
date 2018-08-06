@@ -69,6 +69,10 @@ is hosted in the Apache Atlas server and calls the local internal metadata repos
 Every Atlas server will have one of these connectors.
 * B	- The **[OMRS REST Repository Connector](../../../../adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/omrs-rest-repository-connector)** 
 translates calls to its interface into calls to the [OMRS REST API](../omrs-rest-services.md) of a remote [open metadata repository](../../open-metadata-repository.md).
+* C - Other metadata repositories that have their own API can create a connector
+to translate OMRS calls to call to their own API. The IGC OMRS Repository
+Connector from the [virtual-data-connector demo](../../../../../open-metadata-resources/open-metadata-demos/virtual-data-connector) is an example of this type
+of OMRS connector.
 * C - Other metadata repositories that have their own API can create a connector to translate OMRS calls to call to their API.  The IGC OMRS Repository Connector is an example of this type of OMRS connector written to support a specific metadata repository that is not Apache Atlas.  This OMRS Connector will be included in the Apache Atlas build so it can be called directly from the Enterprise OMRS Connector rather than via a remote REST call.
 * D - The **[Enterprise Repository Connector](../enterprise-repository-connector.md)** converts each
 call to its repository connector interface to a call to each of the OMRS repository
