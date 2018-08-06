@@ -42,10 +42,14 @@ The Enterprise Repository Services provide the enterprise access metadata
 support for the OMASs.
 
 * **[Administration Services](subsystem-descriptions/administration-services.md)** drive the
-initialization of the OMRS at server startup plus access to the OMRS's
-internal status.  It relies on the OMAG Server to supply it with the
-configuration information to initialize the connectors it should use and
-connectors with other open metadata servers.
+initialization of the OMRS at server startup, provide access to the OMRS's internal status and
+coordinate the orderly termination of OMRS when the open metadata services
+are deactivated. OMRS's administration services are called by the server's administration
+services.   It is supplied with configuration information including:
+  * Connections for the connectors it should use.
+  * Information about the local repository (if any).
+  * Whether the enterprise repository services should be initialized.
+  * Details of any cohorts it should join.
 
 * **[Cohort Services](subsystem-descriptions/cohort-services.md)** manage the local
 server's membership in one or more open metadata repository cohorts.
