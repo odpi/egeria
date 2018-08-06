@@ -9,7 +9,7 @@ at many levels of granularity.
 
 ![UML](0025-Locations.png)
 
-The NestedLocation relationship allows hierarchical grouping of locations
+The NestedLocation relationship allows hierarchical groupings of locations
 to be represented.
 Notice that locations can be organized into multiple hierarchies.
 

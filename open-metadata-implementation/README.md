@@ -2,7 +2,7 @@
 
 # Open Metadata Implementation
 
-The open metadata and governance standards provide a java implementation broken
+The open metadata and governance standards provide a Java implementation broken
 down into embeddable packages to make it easier for different technologies to adopt
 the open metadata standards.
 
@@ -16,7 +16,7 @@ implementation.
 implementation of the metadata exchange and federation capabilities for a metadata
 repository that supports the open metadata standards.
 
-* **[access-services](access-services)** - the access services provide domain specific services for data tools, engines
+* **[access-services](access-services)** - the access services provide domain-specific services for data tools, engines
 and platforms that manage the function and support the work of the people engaged with the
 organization.
 

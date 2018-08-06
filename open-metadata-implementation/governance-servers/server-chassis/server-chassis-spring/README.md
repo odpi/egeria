@@ -3,18 +3,18 @@
 # Server Chassis for Spring
 
 The server chassis provides an "empty" server to host the open metadata
-services.  server-chassis-spring provides the server chassis called
-OMAGApplication that uses Spring Boot.
+services.  `server-chassis-spring` provides the server chassis called
+`OMAGApplication` that uses Spring Boot.
 
-When the OMAGApplication is started, it does a component scan for all spring
-services that are in package org.odpi.openmetadata/* and that are visible
+When the `OMAGApplication` is started, it does a component scan for all spring
+services that are in package `org.odpi.openmetadata/*` and that are visible
 to this module.
 
-To make a new package visible to OMAGApplication, add its spring package
-to the pom.xml file for this package.  For example, this is the
-snippet that adds the Connected Asset OMAS services to OMAGApplication
+To make a new package visible to `OMAGApplication`, add its spring package
+to the `pom.xml` file for this package.  For example, this is the
+snippet that adds the Connected Asset OMAS services to `OMAGApplication`:
 
-```
+```xml
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>connected-asset-spring</artifactId>
@@ -23,9 +23,9 @@ snippet that adds the Connected Asset OMAS services to OMAGApplication
 
 ```
 
-As OMAGApplication starts, the console lists all of the services that it
+As `OMAGApplication` starts, the console lists all of the services that it
 found.  This is a good way to verify that the URL strings are coded
-as they should - particularly if the service you want does not seem to be
+as they should be - particularly if the service you want does not seem to be
 available.
 
 Below is an example of the console from an OMAG start showing the services
@@ -192,9 +192,11 @@ admin services
 to set up a configuration document for the server that defines
 how the services should be configured.
 
-Setting up the configuration document is a one time activity.
+Setting up the configuration document is a one-time activity.
 Once it is in place it is possible to activate and deactivate the
 services in the OMAGApplication many times over multiple server restarts.
 
 Details of how to set up the configuration document, and activate/deactivate
-the open metadata services can be found [here](../../admin-services/README.md).
+the open metadata services can be found in [admin-services](../../admin-services/README.md).
+
+Swagger API documentation is generated with the chassis and is documented in [SwaggerGeneration.md](./SwaggerGeneration.md).

@@ -10,10 +10,10 @@ import java.util.List;
 import static org.testng.Assert.assertTrue;
 
 /**
- * Verify the ClassificationOrigin enum contains unique ordinals, non-null names and descriptions and can be
+ * Verify the InstanceStatus enum contains unique ordinals, non-null names and descriptions and can be
  * serialized to JSON and back again.
  */
-public class TestClassificationOrigin
+public class InstanceStatusTest
 {
     private List<Integer> existingOrdinals = null;
 
@@ -46,14 +46,34 @@ public class TestClassificationOrigin
     {
         existingOrdinals = new ArrayList<>();
 
-        ClassificationOrigin testValue;
+        InstanceStatus  testValue;
 
-        testValue = ClassificationOrigin.ASSIGNED;
+        testValue = InstanceStatus.UNKNOWN;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
 
-        testValue = ClassificationOrigin.PROPAGATED;
+        testValue = InstanceStatus.PROPOSED;
+        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
+        assertTrue(testValue.getName() != null);
+        assertTrue(testValue.getDescription() != null);
+
+        testValue = InstanceStatus.DRAFT;
+        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
+        assertTrue(testValue.getName() != null);
+        assertTrue(testValue.getDescription() != null);
+
+        testValue = InstanceStatus.PREPARED;
+        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
+        assertTrue(testValue.getName() != null);
+        assertTrue(testValue.getDescription() != null);
+
+        testValue = InstanceStatus.ACTIVE;
+        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
+        assertTrue(testValue.getName() != null);
+        assertTrue(testValue.getDescription() != null);
+
+        testValue = InstanceStatus.DELETED;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
@@ -72,7 +92,7 @@ public class TestClassificationOrigin
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(ClassificationOrigin.ASSIGNED);
+            jsonString = objectMapper.writeValueAsString(InstanceStatus.PREPARED);
         }
         catch (Throwable  exc)
         {
@@ -81,7 +101,7 @@ public class TestClassificationOrigin
 
         try
         {
-            assertTrue(objectMapper.readValue(jsonString, ClassificationOrigin.class) == ClassificationOrigin.ASSIGNED);
+            assertTrue(objectMapper.readValue(jsonString, InstanceStatus.class) == InstanceStatus.PREPARED);
         }
         catch (Throwable  exc)
         {
@@ -95,6 +115,6 @@ public class TestClassificationOrigin
      */
     @Test public void testToString()
     {
-        assertTrue(ClassificationOrigin.PROPAGATED.toString().contains("ClassificationOrigin"));
+        assertTrue(InstanceStatus.PROPOSED.toString().contains("InstanceStatus"));
     }
 }

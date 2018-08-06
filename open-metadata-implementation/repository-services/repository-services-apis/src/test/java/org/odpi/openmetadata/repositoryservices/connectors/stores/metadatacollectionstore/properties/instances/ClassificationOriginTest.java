@@ -10,10 +10,10 @@ import java.util.List;
 import static org.testng.Assert.assertTrue;
 
 /**
- * Verify the InstanceProvenanceType enum contains unique ordinals, non-null names and descriptions and can be
+ * Verify the ClassificationOrigin enum contains unique ordinals, non-null names and descriptions and can be
  * serialized to JSON and back again.
  */
-public class TestInstanceProvenanceType
+public class ClassificationOriginTest
 {
     private List<Integer> existingOrdinals = null;
 
@@ -46,29 +46,14 @@ public class TestInstanceProvenanceType
     {
         existingOrdinals = new ArrayList<>();
 
-        InstanceProvenanceType  testValue;
+        ClassificationOrigin testValue;
 
-        testValue = InstanceProvenanceType.UNKNOWN;
+        testValue = ClassificationOrigin.ASSIGNED;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
 
-        testValue = InstanceProvenanceType.LOCAL_COHORT;
-        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
-        assertTrue(testValue.getName() != null);
-        assertTrue(testValue.getDescription() != null);
-
-        testValue = InstanceProvenanceType.EXPORT_ARCHIVE;
-        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
-        assertTrue(testValue.getName() != null);
-        assertTrue(testValue.getDescription() != null);
-
-        testValue = InstanceProvenanceType.CONTENT_PACK;
-        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
-        assertTrue(testValue.getName() != null);
-        assertTrue(testValue.getDescription() != null);
-
-        testValue = InstanceProvenanceType.DEREGISTERED_REPOSITORY;
+        testValue = ClassificationOrigin.PROPAGATED;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
@@ -87,7 +72,7 @@ public class TestInstanceProvenanceType
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(InstanceProvenanceType.DEREGISTERED_REPOSITORY);
+            jsonString = objectMapper.writeValueAsString(ClassificationOrigin.ASSIGNED);
         }
         catch (Throwable  exc)
         {
@@ -96,7 +81,7 @@ public class TestInstanceProvenanceType
 
         try
         {
-            assertTrue(objectMapper.readValue(jsonString, InstanceProvenanceType.class) == InstanceProvenanceType.DEREGISTERED_REPOSITORY);
+            assertTrue(objectMapper.readValue(jsonString, ClassificationOrigin.class) == ClassificationOrigin.ASSIGNED);
         }
         catch (Throwable  exc)
         {
@@ -110,6 +95,6 @@ public class TestInstanceProvenanceType
      */
     @Test public void testToString()
     {
-        assertTrue(InstanceProvenanceType.EXPORT_ARCHIVE.toString().contains("InstanceProvenanceType"));
+        assertTrue(ClassificationOrigin.PROPAGATED.toString().contains("ClassificationOrigin"));
     }
 }
