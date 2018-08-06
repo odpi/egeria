@@ -12,19 +12,19 @@ However, over time, depending on the tools they buy, the projects they run or th
 within the organization, the number of deployed metadata repositories grows, creating multiple metadata silos.
 So for example, an organization may have:
 
-* a metadata repository and tools for its governance team.
+* A metadata repository and tools for its governance team.
 This metadata repository may host the canonical glossary, and the governance policies, rules and classifications.
 
-* a metadata repository for its data lake.
+* A metadata repository for its data lake.
 This metadata repository has the details of the data repositories in the data lake and the
 movement of data between them.
 
-* a metadata repository for its data integration tools that continuously extract data
+* A metadata repository for its data integration tools that continuously extract data
 from the operational systems and sends them to the data lake.
 
 The role of the OMRS is to bring these metadata repositories together so this metadata can be linked
 and used together across the organization.
-It enables these metadata repositories to act as a aggregated source of metadata.
+It enables these metadata repositories to act as an aggregated source of metadata.
 The metadata repositories using OMRS may be a mixture of repositories from different
 vendors that support the OMRS integration interfaces.
 
@@ -34,13 +34,12 @@ The OMRS supports peer-to-peer operation.  This means there is an instance of th
 running with each metadata repository.
 This OMRS instance acts as the metadata repository's interface
 to the wider open metadata ecosystem.  This includes distributing metadata to other
-repositories through the event bus and supporting metadata APIs requests.
+repositories through the event bus and supporting metadata API requests.
 
 An instance of the OMRS is communicating with other OMRS instances, each located in different
 metadata repositories.  The collection of metadata repositories communicating via
 their local OMRS instances is called
 an **[Open Metadata Repository Cohort](docs/open-metadata-repository-cohort.md)**.
-
 
 ## Where is metadata stored?
 
@@ -49,11 +48,11 @@ as close to its source as possible but it should also be easily accessible
 through standard open APIs and notifications.
 
 Another principle is that only one repository has write access to a **[specific piece of
-metadata](docs/metadata-instances.md)**.  Other copies of this metadata are read only.
+metadata](docs/metadata-instances.md)**.  Other copies of this metadata are read-only.
 
 Taking these two principles together, an instance of the OMRS aims to store any new metadata
 it receives in its local repository.
-Only if the local repository is not able to store its, will the OMRS seek an alternative
+Only if the local repository is not able to store it, will the OMRS seek an alternative
 location for it.  The local OMRS then supplements this metadata with read-only copies of
 metadata from other repositories that are of interest to its local users.
 

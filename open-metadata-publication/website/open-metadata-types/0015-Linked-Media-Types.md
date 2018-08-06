@@ -2,7 +2,7 @@
 
 # 0015 Linked Media Types
 
-Linked media types describes the simple
+Linked media types describe the simple
 structures that are used repeatedly in open metadata to connect it to
 documents and entities in other types of repositories.
 

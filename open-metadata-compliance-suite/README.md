@@ -15,9 +15,8 @@ Each compliance test suite is implemented by an
 that is given the URL root of the open metadata APIs for the
 server to test. The example below tests a server running at http://localhost:8080
 
-```
+```bash
 $ OpenMetadataTestLab http://localhost:8080
-
 ```
 
 The test lab then creates one or more specialized
@@ -31,19 +30,16 @@ The test cases will issue calls to the server and assess the
 response.  This is an "imitation game".
 The aim of the tests is to get the same result from any
 compliant open metadata repository.  If the test case
-can not tell the difference from the reference implementation
+cannot tell the difference from the reference implementation
 then the server being tested **is** an open metadata repository.
 
 As the workbenches run the test cases, results are accumulated
 into a test results document called
 <code>openmetadata.<i>type</i>.testlab.results</code>.
-For example, the functional test results document is
-<code>openmetadata.functional.testlab.results</code>.
+For example, the `functional` test results document is
+`openmetadata.functional.testlab.results`.
 
 Each workbench and test has its own documentation page located
 in the [docs](docs/README.md) directory.  Links to the
 individual test's documentation is included in the test results document.
 
-
-  
-  
