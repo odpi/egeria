@@ -13,7 +13,7 @@ import static org.testng.Assert.assertTrue;
  * Verify the PrimitiveDefCategory enum contains unique ordinals, non-null names and descriptions and can be
  * serialized to JSON and back again.
  */
-public class TestPrimitiveDefCategory
+public class PrimitiveDefCategoryTest
 {
     private List<Integer> existingOrdinals = null;
 

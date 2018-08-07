@@ -13,7 +13,7 @@ import static org.testng.Assert.assertTrue;
  * Verify the TypeDefPatchAction enum contains unique ordinals, non-null names and descriptions and can be
  * serialized to JSON and back again.
  */
-public class TestTypeDefPatchAction
+public class TypeDefPatchActionTest
 {
     private List<Integer> existingOrdinals = null;
 

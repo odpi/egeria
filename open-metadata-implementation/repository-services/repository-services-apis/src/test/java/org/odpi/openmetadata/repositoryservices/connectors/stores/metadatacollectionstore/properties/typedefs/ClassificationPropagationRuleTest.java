@@ -2,8 +2,6 @@
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ArrayPropertyValue;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.MapPropertyValue;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -12,10 +10,10 @@ import java.util.List;
 import static org.testng.Assert.assertTrue;
 
 /**
- * Verify the CollectionDefCategory enum contains unique ordinals, non-null names and descriptions and can be
+ * Verify the ClassificationPropagationRule enum contains unique ordinals, non-null names and descriptions and can be
  * serialized to JSON and back again.
  */
-public class TestCollectionDefCategory
+public class ClassificationPropagationRuleTest
 {
     private List<Integer> existingOrdinals = null;
 
@@ -48,31 +46,27 @@ public class TestCollectionDefCategory
     {
         existingOrdinals = new ArrayList<>();
 
-        CollectionDefCategory  testValue;
+        ClassificationPropagationRule  testValue;
 
-        testValue = CollectionDefCategory.OM_COLLECTION_UNKNOWN;
+        testValue = ClassificationPropagationRule.NONE;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
-        assertTrue(testValue.getJavaClassName() == null);
-        assertTrue(testValue.getArgumentCount() == 0);
+        assertTrue(testValue.getDescription() != null);
 
-        testValue = CollectionDefCategory.OM_COLLECTION_MAP;
+        testValue = ClassificationPropagationRule.ONE_TO_TWO;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
-        assertTrue(testValue.getJavaClassName() != null);
-        assertTrue(testValue.getArgumentCount() == 2);
+        assertTrue(testValue.getDescription() != null);
 
-        testValue = CollectionDefCategory.OM_COLLECTION_ARRAY;
+        testValue = ClassificationPropagationRule.TWO_TO_ONE;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
-        assertTrue(testValue.getJavaClassName() != null);
-        assertTrue(testValue.getArgumentCount() == 1);
+        assertTrue(testValue.getDescription() != null);
 
-        testValue = CollectionDefCategory.OM_COLLECTION_STRUCT;
+        testValue = ClassificationPropagationRule.BOTH;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
-        assertTrue(testValue.getJavaClassName() != null);
-        assertTrue(testValue.getArgumentCount() == 0);
+        assertTrue(testValue.getDescription() != null);
     }
 
 
@@ -88,7 +82,7 @@ public class TestCollectionDefCategory
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(CollectionDefCategory.OM_COLLECTION_ARRAY);
+            jsonString = objectMapper.writeValueAsString(ClassificationPropagationRule.BOTH);
         }
         catch (Throwable  exc)
         {
@@ -97,7 +91,7 @@ public class TestCollectionDefCategory
 
         try
         {
-            assertTrue(objectMapper.readValue(jsonString, CollectionDefCategory.class) == CollectionDefCategory.OM_COLLECTION_ARRAY);
+            assertTrue(objectMapper.readValue(jsonString, ClassificationPropagationRule.class) == ClassificationPropagationRule.BOTH);
         }
         catch (Throwable  exc)
         {
@@ -111,6 +105,6 @@ public class TestCollectionDefCategory
      */
     @Test public void testToString()
     {
-        assertTrue(CollectionDefCategory.OM_COLLECTION_STRUCT.toString().contains("CollectionDefCategory"));
+        assertTrue(ClassificationPropagationRule.TWO_TO_ONE.toString().contains("ClassificationPropagationRule"));
     }
 }

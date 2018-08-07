@@ -10,10 +10,10 @@ import java.util.List;
 import static org.testng.Assert.assertTrue;
 
 /**
- * Verify the TypeDefCategory enum contains unique ordinals, non-null names and descriptions and can be
+ * Verify the AttributeTypeDefCategory enum contains unique ordinals, non-null names and descriptions and can be
  * serialized to JSON and back again.
  */
-public class TestTypeDefCategory
+public class AttributeTypeDefCategoryTest
 {
     private List<Integer> existingOrdinals = null;
 
@@ -46,28 +46,29 @@ public class TestTypeDefCategory
     {
         existingOrdinals = new ArrayList<>();
 
-        TypeDefCategory  testValue;
+        AttributeTypeDefCategory  testValue;
 
-        testValue = TypeDefCategory.UNKNOWN_DEF;
+        testValue = AttributeTypeDefCategory.UNKNOWN_DEF;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
 
-        testValue = TypeDefCategory.CLASSIFICATION_DEF;
+        testValue = AttributeTypeDefCategory.PRIMITIVE;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
 
-        testValue = TypeDefCategory.ENTITY_DEF;
+        testValue = AttributeTypeDefCategory.COLLECTION;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
 
-        testValue = TypeDefCategory.RELATIONSHIP_DEF;
+        testValue = AttributeTypeDefCategory.ENUM_DEF;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
     }
+
 
 
     /**
@@ -81,7 +82,7 @@ public class TestTypeDefCategory
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(TypeDefCategory.UNKNOWN_DEF);
+            jsonString = objectMapper.writeValueAsString(AttributeTypeDefCategory.ENUM_DEF);
         }
         catch (Throwable  exc)
         {
@@ -90,7 +91,7 @@ public class TestTypeDefCategory
 
         try
         {
-            assertTrue(objectMapper.readValue(jsonString, TypeDefCategory.class) == TypeDefCategory.UNKNOWN_DEF);
+            assertTrue(objectMapper.readValue(jsonString, AttributeTypeDefCategory.class) == AttributeTypeDefCategory.ENUM_DEF);
         }
         catch (Throwable  exc)
         {
@@ -104,6 +105,6 @@ public class TestTypeDefCategory
      */
     @Test public void testToString()
     {
-        assertTrue(TypeDefCategory.CLASSIFICATION_DEF.toString().contains("TypeDefCategory"));
+        assertTrue(AttributeTypeDefCategory.COLLECTION.toString().contains("AttributeTypeDefCategory"));
     }
 }

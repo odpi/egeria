@@ -4,6 +4,8 @@ package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacolle
 
 import com.fasterxml.jackson.annotation.*;
 
+import java.util.Objects;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -27,7 +29,7 @@ public abstract class InstanceHeader extends InstanceAuditHeader
     /*
      * Provenance information defining where the instance came from and whether this is a master or reference copy.
      */
-    private InstanceProvenanceType    instanceProvenanceType = InstanceProvenanceType.UNKNOWN;
+    private InstanceProvenanceType    instanceProvenanceType = null;
     private String                    metadataCollectionId   = null;
 
     /*
@@ -164,5 +166,51 @@ public abstract class InstanceHeader extends InstanceAuditHeader
                 ", version=" + getVersion() +
                 ", statusOnDelete=" + getStatusOnDelete() +
                 '}';
+    }
+
+
+    /**
+     * Validate that an object is equal depending on their stored values.
+     *
+     * @param objectToCompare object
+     * @return boolean result
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (!(objectToCompare instanceof InstanceHeader))
+        {
+            return false;
+        }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        InstanceHeader that = (InstanceHeader) objectToCompare;
+        return getInstanceProvenanceType() == that.getInstanceProvenanceType() &&
+                Objects.equals(getMetadataCollectionId(), that.getMetadataCollectionId()) &&
+                Objects.equals(guid, that.guid) &&
+                Objects.equals(getInstanceURL(), that.getInstanceURL());
+    }
+
+
+    /**
+     * Return a hash code based on the values of this object.
+     *
+     * @return in hash code
+     */
+    @Override
+    public int hashCode()
+    {
+
+        return Objects.hash(super.hashCode(),
+                            getInstanceProvenanceType(),
+                            getMetadataCollectionId(),
+                            guid,
+                            getInstanceURL());
     }
 }

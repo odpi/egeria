@@ -10,10 +10,10 @@ import java.util.List;
 import static org.testng.Assert.assertTrue;
 
 /**
- * Verify the AttributeCardinality enum contains unique ordinals, non-null names and descriptions and can be
+ * Verify the RelationshipEndCardinality enum contains unique ordinals, non-null names and descriptions and can be
  * serialized to JSON and back again.
  */
-public class TestAttributeCardinality
+public class RelationshipEndCardinalityTest
 {
     private List<Integer> existingOrdinals = null;
 
@@ -46,39 +46,19 @@ public class TestAttributeCardinality
     {
         existingOrdinals = new ArrayList<>();
 
-        AttributeCardinality  testValue;
+        RelationshipEndCardinality  testValue;
 
-        testValue = AttributeCardinality.UNKNOWN;
+        testValue = RelationshipEndCardinality.UNKNOWN;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
 
-        testValue = AttributeCardinality.AT_MOST_ONE;
+        testValue = RelationshipEndCardinality.AT_MOST_ONE;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
 
-        testValue = AttributeCardinality.ONE_ONLY;
-        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
-        assertTrue(testValue.getName() != null);
-        assertTrue(testValue.getDescription() != null);
-
-        testValue = AttributeCardinality.AT_LEAST_ONE_ORDERED;
-        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
-        assertTrue(testValue.getName() != null);
-        assertTrue(testValue.getDescription() != null);
-
-        testValue = AttributeCardinality.AT_LEAST_ONE_UNORDERED;
-        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
-        assertTrue(testValue.getName() != null);
-        assertTrue(testValue.getDescription() != null);
-
-        testValue = AttributeCardinality.ANY_NUMBER_ORDERED;
-        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
-        assertTrue(testValue.getName() != null);
-        assertTrue(testValue.getDescription() != null);
-
-        testValue = AttributeCardinality.ANY_NUMBER_UNORDERED;
+        testValue = RelationshipEndCardinality.ANY_NUMBER;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
@@ -97,7 +77,7 @@ public class TestAttributeCardinality
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(AttributeCardinality.AT_LEAST_ONE_ORDERED);
+            jsonString = objectMapper.writeValueAsString(RelationshipEndCardinality.AT_MOST_ONE);
         }
         catch (Throwable  exc)
         {
@@ -106,7 +86,7 @@ public class TestAttributeCardinality
 
         try
         {
-            assertTrue(objectMapper.readValue(jsonString, AttributeCardinality.class) == AttributeCardinality.AT_LEAST_ONE_ORDERED);
+            assertTrue(objectMapper.readValue(jsonString, RelationshipEndCardinality.class) == RelationshipEndCardinality.AT_MOST_ONE);
         }
         catch (Throwable  exc)
         {
@@ -120,6 +100,6 @@ public class TestAttributeCardinality
      */
     @Test public void testToString()
     {
-        assertTrue(AttributeCardinality.ANY_NUMBER_ORDERED.toString().contains("AttributeCardinality"));
+        assertTrue(RelationshipEndCardinality.ANY_NUMBER.toString().contains("RelationshipEndCardinality"));
     }
 }
