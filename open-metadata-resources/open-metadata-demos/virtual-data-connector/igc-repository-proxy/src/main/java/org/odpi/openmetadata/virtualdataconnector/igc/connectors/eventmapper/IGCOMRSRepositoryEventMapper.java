@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryeventmapper.OMRSRepositoryEventMapperBase;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -18,6 +19,8 @@ import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconnector.IGCOMRSRepositoryConnector;
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 
@@ -148,32 +151,12 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                     break;
                 case "Term":
                     if (igcKafkaEvent.getACTION().equals("CREATE")) {
-
-                        InstanceProperties properties = new InstanceProperties();
-
-
-                        EntityDetail entityDetail = this.repositoryHelper.getNewEntity(
-                                sourceName,
-                                metadataCollectionId,
-                                null,
-                                "",
-                                null,
-                                properties,
-                                null
-                        );
-                        this.repositoryEventProcessor.processNewEntityEvent(
-                                sourceName,
-                                metadataCollectionId,
-                                originatorServerName,
-                                originatorServerType,
-                                originatorOrganizationName,
-                                entityDetail
-
-                        );
+                        createEntity("GlossaryTerm");
                     }
                     break;
                 case "Category":
-                    if (igcKafkaEvent.getACTION().equals("ASSIGNED_RELATIONSHIP")) {
+                    if (igcKafkaEvent.getACTION().equals("CREATE")) {
+                        createEntity("GlossaryCategory");
                     }
                     break;
             }
@@ -181,6 +164,42 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    private void createEntity(String typeName) throws TypeErrorException {
+
+        Map<String, InstancePropertyValue> properties = new HashMap<>();
+
+        PrimitivePropertyValue value = new PrimitivePropertyValue();
+        value.setPrimitiveValue(igcColumn.get_Name());
+        value.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+        properties.put("displayName", value);
+        PrimitivePropertyValue usage = new PrimitivePropertyValue();
+        usage.setPrimitiveValue(igcColumn.get_Name());
+        usage.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+        properties.put("usage", usage);
+
+        InstanceProperties instanceProperties = new InstanceProperties();
+        instanceProperties.setInstanceProperties(properties);
+
+        EntityDetail entityDetail = this.repositoryHelper.getNewEntity(
+                sourceName,
+                metadataCollectionId,
+                null,
+                "",
+                typeName,
+                instanceProperties,
+                null
+        );
+        this.repositoryEventProcessor.processNewEntityEvent(
+                sourceName,
+                metadataCollectionId,
+                originatorServerName,
+                originatorServerType,
+                originatorOrganizationName,
+                entityDetail
+
+        );
     }
 
     /**
