@@ -4,6 +4,8 @@ package org.odpi.openmetadata.virtualdataconnector.igc.connectors.eventmapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryeventmapper.OMRSRepositoryEventMapperBase;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -11,12 +13,14 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.StringDeserializer;
-import org.odpi.openmetadata.repositoryservices.eventmanagement.OMRSRepositoryEventManager;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconnector.IGCOMRSRepositoryConnector;
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 
@@ -28,14 +32,21 @@ import java.util.Properties;
 public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase {
 
 
-    private IGCEventProcessor igcEventProcessor;
     private static final Logger log = LoggerFactory.getLogger(IGCOMRSRepositoryEventMapper.class);
+    private IGCColumn igcColumn;
+    private String technicalTerm;
+    private String businessTerm;
+    private IGCOMRSRepositoryConnector igcomrsRepositoryConnector;
+    private String originatorServerName;
+    private String metadataCollectionId;
+    private String originatorServerType;
+    private String sourceName;
+    private String originatorOrganizationName;
 
     /**
      * Default constructor
      */
     public IGCOMRSRepositoryEventMapper() {
-        igcEventProcessor = new IGCEventProcessor();
 
     }
 
@@ -44,29 +55,23 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
      *
      * @throws ConnectorCheckedException - there is a problem within the connector.
      */
+    @Override
     public void start() throws ConnectorCheckedException {
         super.start();
-        igcEventProcessor.setIgcomrsRepositoryConnector((IGCOMRSRepositoryConnector) this.repositoryConnector);
-        igcEventProcessor.setOmrsRepositoryEventManager((OMRSRepositoryEventManager) this.repositoryEventProcessor);
-        igcEventProcessor.setRepositoryHelper(this.repositoryHelper);
+        this.igcomrsRepositoryConnector = (IGCOMRSRepositoryConnector) this.repositoryConnector;
+        this.originatorServerName = this.localServerName;
+        this.metadataCollectionId = igcomrsRepositoryConnector.getMetadataCollectionId();
+        this.originatorServerType = "IGC";
+        this.sourceName = "IGCOMRSRepositoryEventMapper";
+        this.originatorOrganizationName = "ING";
         runConsumer();
     }
 
 
     /**
-     * Free up any resources held since the connector is no longer needed.
-     *
-     * @throws ConnectorCheckedException - there is a problem within the connector.
-     */
-    public void disconnect() throws ConnectorCheckedException {
-        super.disconnect();
-
-    }
-
-    /**
      * Set properties for the kafka consumer.
      *
-     * @return  kafka consumer object
+     * @return kafka consumer object
      */
     private Consumer<Long, String> createConsumer() {
         final Properties props = new Properties();
@@ -85,12 +90,12 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
     /**
      * Start a new thread to read IGC kafka events.
      */
-    public  void runConsumer(){
+    public void runConsumer() {
         new Thread(new ConsumerThread()).start();
     }
 
 
-    private class ConsumerThread implements Runnable{
+    private class ConsumerThread implements Runnable {
 
         /**
          * Read the Kafka events originating from IGC.
@@ -109,14 +114,154 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                         igcKafkaEvent = mapper.readValue(record.value(), IGCKafkaEvent.class);
                         log.info("Consumer Record");
                         log.info(record.value());
-                        igcEventProcessor.process(igcKafkaEvent);
+                        processIGCEvent(igcKafkaEvent);
                     }
-                }
-                catch(Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }
+    }
+
+    /**
+     * Process individual IGC Kafka events and publish them through OMRS.
+     *
+     * @param igcKafkaEvent a Kafka event originating from IGC.
+     */
+    public void processIGCEvent(IGCKafkaEvent igcKafkaEvent) {
+        try {
+            igcColumn = igcomrsRepositoryConnector.queryIGCColumn(igcKafkaEvent.getASSETRID());
+            this.technicalTerm = igcKafkaEvent.getASSETRID();
+            switch (igcKafkaEvent.getASSETTYPE()) {
+                case "Database Column":
+                    if (igcKafkaEvent.getACTION().equals("ASSIGNED_RELATIONSHIP") || igcKafkaEvent.getACTION().equals("MODIFY")) {
+                        if (igcColumn.getAssignedToTerms() != null) {
+                            businessTerm = igcColumn.getAssignedToTerms().getItems().get(0).getName();
+                            Relationship relationship = newRelationship("SemanticAssignment", igcKafkaEvent.getASSETRID(), "RelationalColumn", igcColumn.getAssignedToTerms().getItems().get(0).getId(), "GlossaryTerm");
+                            this.repositoryEventProcessor.processNewRelationshipEvent(
+                                    sourceName,
+                                    metadataCollectionId,
+                                    originatorServerName,
+                                    originatorServerType,
+                                    originatorOrganizationName,
+                                    relationship
+                            );
+                        }
+                    }
+                    break;
+                case "Term":
+                    if (igcKafkaEvent.getACTION().equals("CREATE")) {
+                        createEntity("GlossaryTerm");
+                    }
+                    break;
+                case "Category":
+                    if (igcKafkaEvent.getACTION().equals("CREATE")) {
+                        createEntity("GlossaryCategory");
+                    }
+                    break;
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private void createEntity(String typeName) throws TypeErrorException {
+
+        Map<String, InstancePropertyValue> properties = new HashMap<>();
+
+        PrimitivePropertyValue qualifiedName = new PrimitivePropertyValue();
+        qualifiedName.setPrimitiveValue(this.technicalTerm);
+        qualifiedName.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+        properties.put("qualifiedName", qualifiedName);
+
+        PrimitivePropertyValue displayname = new PrimitivePropertyValue();
+        displayname.setPrimitiveValue(igcColumn.get_Name());
+        displayname.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+        properties.put("displayName", displayname);
+
+
+        //TODO Which properties are essential?
+        InstanceProperties instanceProperties = new InstanceProperties();
+        instanceProperties.setInstanceProperties(properties);
+
+        EntityDetail entityDetail = this.repositoryHelper.getNewEntity(
+                sourceName,
+                metadataCollectionId,
+                null,
+                "",
+                typeName,
+                instanceProperties,
+                null
+        );
+        this.repositoryEventProcessor.processNewEntityEvent(
+                sourceName,
+                metadataCollectionId,
+                originatorServerName,
+                originatorServerType,
+                originatorOrganizationName,
+                entityDetail
+
+        );
+    }
+
+    /**
+     * Set Relationship linking an IGC technical term with an IGC business term
+     *
+     * @param relationshipType name of the type
+     * @param entityId1        String unique identifier
+     * @param entityType1      name of the type
+     * @param entityId2        String unique identifier
+     * @param entityType2      name of the type
+     * @return Relationship is a POJO that manages the properties of an open metadata relationship.  This includes information
+     * about the relationship type, the two entities it connects and the properties it holds.
+     * @throws TypeErrorException The type name is not recognized as a relationship type.
+     */
+    private Relationship newRelationship(String relationshipType, String entityId1, String entityType1, String entityId2, String entityType2) throws TypeErrorException {
+        Relationship relationship = this.repositoryHelper.getNewRelationship(
+                sourceName,
+                metadataCollectionId,
+                InstanceProvenanceType.LOCAL_COHORT,
+                "",
+                relationshipType,
+                null
+        );
+
+        EntityProxy entityProxyOne = newEntityProxy(entityType1);
+        EntityProxy entityProxyTwo = newEntityProxy(entityType2);
+
+        entityProxyOne.setGUID(entityId1);
+        entityProxyTwo.setGUID(entityId2);
+
+        relationship.setEntityOnePropertyName(technicalTerm);
+        relationship.setEntityOneProxy(entityProxyOne);
+
+
+        relationship.setEntityTwoPropertyName(businessTerm);
+        relationship.setEntityTwoProxy(entityProxyTwo);
+        return relationship;
+    }
+
+
+    /**
+     * Return a filled out entity.
+     *
+     * @param typeName name of the type
+     * @return an entity that is filled out
+     * @throws TypeErrorException the type name is not recognized as an entity type
+     */
+    private EntityProxy newEntityProxy(String typeName) throws TypeErrorException {
+        EntityProxy entityProxy = this.repositoryHelper.getNewEntityProxy(
+                sourceName,
+                metadataCollectionId,
+                InstanceProvenanceType.LOCAL_COHORT,
+                "",
+                typeName,
+                null,
+                null
+        );
+        entityProxy.setStatus(InstanceStatus.ACTIVE);
+        return entityProxy;
     }
 
 }
