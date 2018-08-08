@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions;
 
 
+
 /**
  * The InvalidParameterException is thrown by the GovernanceEngine OMAS when a parameters is null or an invalid
  * value.
@@ -18,6 +19,8 @@ public class InvalidParameterException extends GovernanceEngineCheckedExceptionB
      * @param systemAction      - actions of the system as a result of the error
      * @param userAction        - instructions for correcting the error
      */
+
+    //TODO Extend with unique parameters per exception (see data architecture invalid parm exception)
     public InvalidParameterException(int httpCode, String className, String actionDescription, String errorMessage, String systemAction, String userAction) {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction);
     }

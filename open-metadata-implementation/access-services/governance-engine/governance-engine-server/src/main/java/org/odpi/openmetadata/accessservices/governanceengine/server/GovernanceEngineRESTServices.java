@@ -13,6 +13,8 @@ import org.odpi.openmetadata.adminservices.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceOperationalStatus;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,6 +49,8 @@ import java.util.List;
 public class GovernanceEngineRESTServices {
     static private String accessServiceName = null;
     static private OMRSRepositoryConnector repositoryConnector = null;
+    private static OMRSMetadataCollection metadataCollection;
+
 
     private static final Logger log = LoggerFactory.getLogger(GovernanceEngineRESTServices.class);
 
@@ -60,6 +64,11 @@ public class GovernanceEngineRESTServices {
                                               OMRSRepositoryConnector repositoryConnector) {
         GovernanceEngineRESTServices.accessServiceName = accessServiceName;
         GovernanceEngineRESTServices.repositoryConnector = repositoryConnector;
+        try {
+            GovernanceEngineRESTServices.metadataCollection = repositoryConnector.getMetadataCollection();
+
+        } catch (Throwable error) {};
+
     }
 
     /**
@@ -107,7 +116,6 @@ public class GovernanceEngineRESTServices {
     ) {
         final String methodName = "getGovernanceClassificationDefs";
 
-
         if (log.isDebugEnabled()) {
             log.debug("Calling method: " + methodName);
         }
@@ -122,15 +130,17 @@ public class GovernanceEngineRESTServices {
             GovernanceClassificationDefHandler governanceClassificationDefHandler = new GovernanceClassificationDefHandler(accessServiceName,
                     repositoryConnector);
 
-            response.setTagList(governanceClassificationDefHandler.getGovernanceClassificationDefinitions(userId, classification));
+            response.setClassificationDefsList(governanceClassificationDefHandler.getGovernanceClassificationDefs(userId, classification));
         } catch (InvalidParameterException error) {
             captureInvalidParameterException(response, error);
-        } catch (ClassificationNotFoundException error) {
+        }
+        catch (MetadataServerException error) {
+            captureMetadataServerException(response, error);
+        }
+        catch (ClassificationNotFoundException error) {
             captureClassificationNotFoundException(response, error);
-        } catch (PropertyServerException error) {
-            capturePropertyServerException(response, error);
         } catch (UserNotAuthorizedException error) {
-            captureUserNotAuthorizedException(response, error);
+            captureUserNotAuthorizedException(response,error);
         }
         if (log.isDebugEnabled()) {
             log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -176,13 +186,15 @@ public class GovernanceEngineRESTServices {
             GovernanceClassificationDefHandler tagHandler = new GovernanceClassificationDefHandler(accessServiceName,
                     repositoryConnector);
 
-            response.setGovernanceClassificationDef(tagHandler.getGovernanceClassificationDefinition(userId, classificationGuid));
+            response.setGovernanceClassificationDef(tagHandler.getGovernanceClassificationDef(userId, classificationGuid));
         } catch (InvalidParameterException error) {
             captureInvalidParameterException(response, error);
-        } catch (PropertyServerException error) {
-            capturePropertyServerException(response, error);
+        } catch (MetadataServerException error) {
+            captureMetadataServerException(response, error);
         } catch (UserNotAuthorizedException error) {
             captureUserNotAuthorizedException(response, error);
+        } catch (GuidNotFoundException error) {
+            captureGuidNotFoundException(response, error);
         }
         if (log.isDebugEnabled()) {
             log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -227,11 +239,11 @@ public class GovernanceEngineRESTServices {
             GovernedAssetHandler governedAssetHandler = new GovernedAssetHandler(accessServiceName,
                     repositoryConnector);
 
-            response.setGovernedAssetList(governedAssetHandler.getGovernedAssetComponents(userId, classification, type));
+            response.setGovernedAssetList(governedAssetHandler.getGovernedAssets(userId, classification, type));
         } catch (InvalidParameterException error) {
             captureInvalidParameterException(response, error);
-        } catch (PropertyServerException error) {
-            capturePropertyServerException(response, error);
+        } catch (MetadataServerException error) {
+            captureMetadataServerException(response, error);
         } catch (ClassificationNotFoundException error) {
             captureClassificationNotFoundException(response, error);
         } catch (UserNotAuthorizedException error) {
@@ -280,17 +292,15 @@ public class GovernanceEngineRESTServices {
             GovernedAssetHandler governedAssetHandler = new GovernedAssetHandler(accessServiceName,
                     repositoryConnector);
 
-            response.setAsset(governedAssetHandler.getGovernedAssetComponent(userId, assetGuid));
+            response.setAsset(governedAssetHandler.getGovernedAsset(userId, assetGuid));
         } catch (InvalidParameterException error) {
             captureInvalidParameterException(response, error);
-        } catch (PropertyServerException error) {
-            capturePropertyServerException(response, error);
-        } catch (ClassificationNotFoundException error) {
-            captureClassificationNotFoundException(response, error);
+        } catch (MetadataServerException error) {
+            captureMetadataServerException(response, error);
+        } catch (GuidNotFoundException error) {
+            captureGuidNotFoundException(response, error);
         } catch (UserNotAuthorizedException error) {
             captureUserNotAuthorizedException(response, error);
-        } catch (TypeNotFoundException error) {
-            captureTypeNotFoundException(response, error);
         }
         if (log.isDebugEnabled()) {
             log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -305,13 +315,13 @@ public class GovernanceEngineRESTServices {
      * @param methodName - name of method called.
      * @throws PropertyServerException - not initialized
      */
-    private void validateInitialization(String methodName) throws PropertyServerException {
+    private void validateInitialization(String methodName) throws MetadataServerException {
         if (repositoryConnector == null) {
             GovernanceEngineErrorCode errorCode = GovernanceEngineErrorCode.SERVICE_NOT_INITIALIZED;
             String errorMessage = errorCode.getErrorMessageId()
                     + errorCode.getFormattedErrorMessage(methodName);
 
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+            throw new MetadataServerException(errorCode.getHTTPErrorCode(),
                     this.getClass().getName(),
                     methodName,
                     errorMessage,
@@ -356,8 +366,8 @@ public class GovernanceEngineRESTServices {
      * @param response - REST Response
      * @param error    returned response.
      */
-    private void capturePropertyServerException(GovernanceEngineOMASAPIResponse response,
-                                                PropertyServerException error) {
+    private void captureMetadataServerException(GovernanceEngineOMASAPIResponse response,
+                                                MetadataServerException error) {
         captureCheckedException(response, error, error.getClass().getName());
     }
 
@@ -393,4 +403,15 @@ public class GovernanceEngineRESTServices {
                                               TypeNotFoundException error) {
         captureCheckedException(response, error, error.getClass().getName());
     }
+    /**
+     * Set the exception information into the response.
+     *
+     * @param response - REST Response
+     * @param error    returned response.
+     */
+    private void captureGuidNotFoundException(GovernanceEngineOMASAPIResponse response,
+                                              GuidNotFoundException error) {
+        captureCheckedException(response, error, error.getClass().getName());
+    }
+
 }

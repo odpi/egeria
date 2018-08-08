@@ -16,7 +16,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 
 // Used to store the governance classification, including a definition of optional attributes
-
 public class GovernanceClassificationDef extends GovernanceClassificationBase {
 
     // Additional Attributes of a Tag Definition
