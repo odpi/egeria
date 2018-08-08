@@ -170,15 +170,18 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
 
         Map<String, InstancePropertyValue> properties = new HashMap<>();
 
-        PrimitivePropertyValue value = new PrimitivePropertyValue();
-        value.setPrimitiveValue(igcColumn.get_Name());
-        value.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-        properties.put("displayName", value);
-        PrimitivePropertyValue usage = new PrimitivePropertyValue();
-        usage.setPrimitiveValue(igcColumn.get_Name());
-        usage.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-        properties.put("usage", usage);
+        PrimitivePropertyValue qualifiedName = new PrimitivePropertyValue();
+        qualifiedName.setPrimitiveValue(this.technicalTerm);
+        qualifiedName.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+        properties.put("qualifiedName", qualifiedName);
 
+        PrimitivePropertyValue displayname = new PrimitivePropertyValue();
+        displayname.setPrimitiveValue(igcColumn.get_Name());
+        displayname.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+        properties.put("displayName", displayname);
+
+
+        //TODO Which properties are essential?
         InstanceProperties instanceProperties = new InstanceProperties();
         instanceProperties.setInstanceProperties(properties);
 
