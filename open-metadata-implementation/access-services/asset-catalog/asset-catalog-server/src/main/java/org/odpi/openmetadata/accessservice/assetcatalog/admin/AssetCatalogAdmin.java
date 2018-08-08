@@ -19,31 +19,21 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 public class AssetCatalogAdmin implements AccessServiceAdmin {
 
-    private OMRSRepositoryConnector repositoryConnector;
-    private OMRSTopicConnector omrsTopicConnector;
-    private AccessServiceConfig accessServiceConfig;
     private OMRSAuditLog auditLog;
-    private String serverUserName;
-
-    /**
-     * Default constructor
-     */
-    public AssetCatalogAdmin() {
-    }
-
+    
     /**
      * Initialize the access service.
      *
      * @param accessServiceConfigurationProperties - specific configuration properties for this access service.
      * @param enterpriseOMRSTopicConnector         - connector for receiving OMRS Events from the cohorts
-     * @param enterpriseOMRSRepositoryConnector    - connector for querying the cohort repositories
+     * @param repositoryConnector                  - connector for querying the cohort repositories
      * @param auditLog                             - audit log component for logging messages.
      * @param serverUserName                       - user id to use on OMRS calls where there is no end user.
      * @throws OMAGConfigurationErrorException - invalid parameters in the configuration properties.
      */
     public void initialize(AccessServiceConfig accessServiceConfigurationProperties,
                            OMRSTopicConnector enterpriseOMRSTopicConnector,
-                           OMRSRepositoryConnector enterpriseOMRSRepositoryConnector,
+                           OMRSRepositoryConnector repositoryConnector,
                            OMRSAuditLog auditLog,
                            String serverUserName) throws OMAGConfigurationErrorException {
 
@@ -57,16 +47,11 @@ public class AssetCatalogAdmin implements AccessServiceAdmin {
                 auditCode.getSystemAction(),
                 auditCode.getUserAction());
 
-        this.repositoryConnector = enterpriseOMRSRepositoryConnector;
-
         AssetCatalogAssetService.setRepositoryConnector(repositoryConnector);
         AssetCatalogRelationshipService.setRepositoryConnector(repositoryConnector);
         OMASCatalogRESTServices.setRepositoryConnector(repositoryConnector);
 
-        this.accessServiceConfig = accessServiceConfigurationProperties;
-        this.omrsTopicConnector = enterpriseOMRSTopicConnector;
         this.auditLog = auditLog;
-        this.serverUserName = serverUserName;
 
         auditCode = AssetCatalogAuditCode.SERVICE_INITIALIZED;
         auditLog.logRecord(actionDescription,

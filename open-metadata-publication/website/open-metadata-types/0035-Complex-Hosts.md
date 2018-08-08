@@ -22,5 +22,5 @@ the VirtualContainer delegates the requests to the equivalent services
 of the actual host it is deployed on.
 
 VirtualContainers can be hosted on other VirtualContainers,
-but to actually run they need to ultimately be deployed on to a
+but to actually run they need to ultimately be deployed onto a
 real physical Host.

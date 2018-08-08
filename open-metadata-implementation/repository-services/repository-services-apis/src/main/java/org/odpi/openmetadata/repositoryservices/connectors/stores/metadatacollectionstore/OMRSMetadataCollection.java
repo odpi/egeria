@@ -688,8 +688,8 @@ public abstract class OMRSMetadataCollection
      */
     public abstract EntityDetail isEntityKnown(String     userId,
                                                String     guid) throws InvalidParameterException,
-                                                                        RepositoryErrorException,
-                                                                        UserNotAuthorizedException;
+                                                                       RepositoryErrorException,
+                                                                       UserNotAuthorizedException;
 
 
     /**
@@ -847,8 +847,8 @@ public abstract class OMRSMetadataCollection
      */
     public abstract List<EntityDetail> findEntitiesByProperty(String                    userId,
                                                               String                    entityTypeGUID,
-                                                              InstanceProperties matchProperties,
-                                                              MatchCriteria matchCriteria,
+                                                              InstanceProperties        matchProperties,
+                                                              MatchCriteria             matchCriteria,
                                                               int                       fromEntityElement,
                                                               List<InstanceStatus>      limitResultsByStatus,
                                                               List<String>              limitResultsByClassification,

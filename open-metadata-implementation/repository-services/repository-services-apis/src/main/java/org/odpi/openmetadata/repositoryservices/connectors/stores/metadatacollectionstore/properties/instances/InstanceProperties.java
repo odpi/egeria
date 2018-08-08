@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSRuntimeException;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -16,9 +17,23 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * The InstanceProperties class provides support for arbitrary properties to be added to an entity,
- * struct or relationship object.
- * It wraps a java.util.Map map object built around HashMap.  The property name (or domain) of the map is the name
+ * The InstanceProperties class provides support for properties to be added to an entity,
+ * classification or relationship instances.   These properties are maintained by the consumers of metadata
+ * (typically the Open Metadata Access Services (OMASs).
+ *
+ * There are some fixed properties that are available on all instances.  These are:
+ * <ul>
+ *     <li>
+ *         effectiveFromTime: Date/Time when the instance should be used.  If this value is null then the
+ *         instance can be used as soon as it is created.
+ *     </li>
+ *     <li>
+ *         effectiveToTime: Date/Time when the instance should not longer be used.  If this is null then
+ *         the instance can be used until it is deleted.
+ *     </li>
+ * </ul>
+ * Then there are variable properties that are defined in the TypeDefs. They are managed in
+ * a java.util.Map map object built around HashMap.  The property name (or domain) of the map is the name
  * of the property.  The property value (or range) of the map is a subclass of InstancePropertyValue depending on
  * the type of the property:
  * <ul>
@@ -49,9 +64,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class InstanceProperties extends InstanceElementHeader
 {
-    /*
-     * Map from property name to property value.  The value includes type information.
-     */
+    private Date                                effectiveFromTime = null;
+    private Date                                effectiveToTime = null;
     private Map<String, InstancePropertyValue>  instanceProperties = new HashMap<>();
 
 
@@ -73,14 +87,13 @@ public class InstanceProperties extends InstanceElementHeader
     {
         super(templateProperties);
 
-    /*
-     * An empty properties object is created in the private variable declaration so nothing to do.
-     */
+        /*
+         * An empty properties object is created in the private variable declaration so nothing to do.
+         */
         if (templateProperties != null)
         {
-        /*
-         * Process templateProperties if they are not null
-         */
+            this.effectiveFromTime = templateProperties.getEffectiveFromTime();
+            this.effectiveToTime = templateProperties.getEffectiveToTime();
             Iterator<String> propertyNames = templateProperties.getPropertyNames();
 
             if (propertyNames != null)
@@ -94,6 +107,57 @@ public class InstanceProperties extends InstanceElementHeader
                 }
             }
         }
+    }
+
+
+    /**
+     * Return the date/time that this instance should start to be used (null means it can be used from creationTime).
+     *
+     * @return Date object
+     */
+    public Date getEffectiveFromTime()
+    {
+        if (effectiveFromTime == null)
+        {
+            return null;
+        }
+        else
+        {
+            return effectiveFromTime;
+        }
+    }
+
+
+    /**
+     * Set up the date/time that this instance should start to be used (null means it can be used from creationTime).
+     *
+     * @param effectiveFromTime Date object
+     */
+    public void setEffectiveFromTime(Date effectiveFromTime)
+    {
+        this.effectiveFromTime = effectiveFromTime;
+    }
+
+
+    /**
+     * Return the date/time that this instance should no longer be used.
+     *
+     * @return Date object
+     */
+    public Date getEffectiveToTime()
+    {
+        return effectiveToTime;
+    }
+
+
+    /**
+     * Set up the date/time that this instance should no longer be used.
+     *
+     * @param effectiveToTime Date object
+     */
+    public void setEffectiveToTime(Date effectiveToTime)
+    {
+        this.effectiveToTime = effectiveToTime;
     }
 
 
@@ -117,6 +181,7 @@ public class InstanceProperties extends InstanceElementHeader
     {
         this.instanceProperties = instanceProperties;
     }
+
 
     /**
      * Returns a list of the instance properties for the element.

@@ -2,5 +2,5 @@
 
 # Operational Services
 
-OMRS Operational Services supports the start up and shutdown of the
+OMRS Operational Services supports the startup and shutdown of the
 Open Metadata Repository Services (OMRS).

@@ -17,9 +17,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
-import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.exceptions.InvalidParameterException;
-import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.exceptions.MetadataServerException;
-import org.odpi.openmetadata.accessservices.governanceengine.common.objects.*;
+import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.InvalidParameterException;
+import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.MetadataServerException;
+import org.odpi.openmetadata.accessservices.governanceengine.api.objects.*;
 import org.slf4j.Logger;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
@@ -70,7 +70,7 @@ public class GovernanceEngineImplTest {
         // Mockito assertion for exception that would be thrown after using a poor constructor parameter - actual method is arbitary
         thrown = assertThrows(InvalidParameterException.class, () ->
         {
-            List<GovernedAssetComponent> result = governanceEngineImplalt.getGovernedAssetComponentList("", "rootClassificationType", "rootType");
+            List<GovernedAsset> result = governanceEngineImplalt.getGovernedAssetList("", "rootClassificationType", "rootType");
         });
 
         // Must not call backend rest handlers
@@ -86,7 +86,7 @@ public class GovernanceEngineImplTest {
         GovernanceEngineImpl governanceEngineImplalt = new GovernanceEngineImpl(null);
         thrown = assertThrows(InvalidParameterException.class, () ->
         {
-            List<GovernedAssetComponent> result = governanceEngineImplalt.getGovernedAssetComponentList("", "rootClassificationType", "rootType");
+            List<GovernedAsset> result = governanceEngineImplalt.getGovernedAssetList("", "rootClassificationType", "rootType");
         });
 
         verify(restTemplate, never()).getForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(Class.class), ArgumentMatchers.<Object>any());
@@ -94,11 +94,11 @@ public class GovernanceEngineImplTest {
     }
 
     @Test
-    @DisplayName("getGovernedAssetComponentList - null userid")
+    @DisplayName("getGovernedAssetList - null userid")
     void testGetGovernedAssetComponentListNullUserid() {
         thrown = assertThrows(InvalidParameterException.class, () ->
         {
-            List<GovernedAssetComponent> result = governanceEngineImpl.getGovernedAssetComponentList(null, defaultClassificationType, defaultRootType);
+            List<GovernedAsset> result = governanceEngineImpl.getGovernedAssetList(null, defaultClassificationType, defaultRootType);
         });
 
         verify(restTemplate, never()).getForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(Class.class), ArgumentMatchers.<Object>any());
@@ -106,11 +106,11 @@ public class GovernanceEngineImplTest {
     }
 
     @Test
-    @DisplayName("getGovernedAssetComponentList - empty userid")
+    @DisplayName("getGovernedAssetList - empty userid")
     void testGetGovernedAssetComponentListEmptyUserid() {
         thrown = assertThrows(InvalidParameterException.class, () ->
         {
-            List<GovernedAssetComponent> result = governanceEngineImpl.getGovernedAssetComponentList("", defaultClassificationType, defaultRootType);
+            List<GovernedAsset> result = governanceEngineImpl.getGovernedAssetList("", defaultClassificationType, defaultRootType);
         });
 
         verify(restTemplate, never()).getForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(Class.class), ArgumentMatchers.<Object>any());
@@ -118,14 +118,14 @@ public class GovernanceEngineImplTest {
     }
 
     @Test
-    @DisplayName("getGovernedAssetComponentList - client REST exception")
+    @DisplayName("getGovernedAssetList - client REST exception")
     void testGetGovernedAssetComponentListClientAPIException() {
-        // configure mock to just return exception. Common one for client rest api call issues (network etc) - could be different to backend issue
+        // configure mock to just return exception. Common one for client rest client call issues (network etc) - could be different to backend issue
         when(restTemplate.getForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(Class.class), ArgumentMatchers.<Object>any())).thenThrow(new ResourceAccessException("Test Exception from REST client error"));
 
         thrown = assertThrows(MetadataServerException.class, () ->
         {
-            List<GovernedAssetComponent> result = governanceEngineImpl.getGovernedAssetComponentList(defaultUserId, defaultClassificationType, defaultRootType);
+            List<GovernedAsset> result = governanceEngineImpl.getGovernedAssetList(defaultUserId, defaultClassificationType, defaultRootType);
         });
 
         // verify we actually used the mocked rest template once
@@ -134,15 +134,15 @@ public class GovernanceEngineImplTest {
     }
 
     @Test
-    @DisplayName("getGovernedAssetComponentList - handlers side exception")
+    @DisplayName("getGovernedAssetList - handlers side exception")
     void testGetGovernedAssetComponentListRemoteInvalidParmException() {
         // Not testing backend, so let's just check one error case that should go to handlers & back (but is mocked)
-        GovernedAssetComponentListAPIResponse expectedResponse = new GovernedAssetComponentListAPIResponse();
+        GovernedAssetListAPIResponse expectedResponse = new GovernedAssetListAPIResponse();
         expectedResponse.setRelatedHTTPCode(404);
         when(restTemplate.getForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(Class.class), ArgumentMatchers.<Object>any())).thenReturn(expectedResponse);
 
         try {
-            List<GovernedAssetComponent> result = governanceEngineImpl.getGovernedAssetComponentList(defaultUserId, "rootClassificationType", "rootType");
+            List<GovernedAsset> result = governanceEngineImpl.getGovernedAssetList(defaultUserId, "rootClassificationType", "rootType");
         } catch (Exception e) { } // shouldn't get the exception!
 
         verify(restTemplate, times(1)).getForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(Class.class), ArgumentMatchers.<Object>any());
@@ -152,14 +152,14 @@ public class GovernanceEngineImplTest {
 
     // Now check a good return
     @Test
-    @DisplayName("getGovernedAssetComponentList - good result")
+    @DisplayName("getGovernedAssetList - good result")
     void testGetGovernedAssetComponentListGoodData() {
-        GovernedAssetComponentListAPIResponse expectedResponse = new GovernedAssetComponentListAPIResponse();
+        GovernedAssetListAPIResponse expectedResponse = new GovernedAssetListAPIResponse();
         expectedResponse.setRelatedHTTPCode(200);
         when(restTemplate.getForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(Class.class), ArgumentMatchers.<Object>any())).thenReturn(expectedResponse);
 
         try {
-            List<GovernedAssetComponent> result = governanceEngineImpl.getGovernedAssetComponentList(defaultUserId, defaultClassificationType, defaultRootType);
+            List<GovernedAsset> result = governanceEngineImpl.getGovernedAssetList(defaultUserId, defaultClassificationType, defaultRootType);
         } catch (Exception e) { }
 
         // verify we actually used the mocked rest template once
@@ -168,11 +168,11 @@ public class GovernanceEngineImplTest {
            }
 
     @Test
-    @DisplayName("getGovernanceClassificationDefinitionList - null userid")
+    @DisplayName("getGovernanceClassificationDefList - null userid")
     void testGetGovernanceClassificationDefinitionListNullUserid() {
         thrown = assertThrows(InvalidParameterException.class, () ->
         {
-            List<GovernanceClassificationDefinition> result = governanceEngineImpl.getGovernanceClassificationDefinitionList(null, defaultClassificationType);
+            List<GovernanceClassificationDef> result = governanceEngineImpl.getGovernanceClassificationDefList(null, defaultClassificationType);
         });
 
         verify(restTemplate, never()).getForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(Class.class), ArgumentMatchers.<Object>any());
@@ -180,11 +180,11 @@ public class GovernanceEngineImplTest {
     }
 
     @Test
-    @DisplayName("getGovernanceClassificationDefinitionList - empty userid")
+    @DisplayName("getGovernanceClassificationDefList - empty userid")
     void testGetGovernanceClassificationDefinitionListEmptyUserid() {
         thrown = assertThrows(InvalidParameterException.class, () ->
         {
-            List<GovernanceClassificationDefinition> result = governanceEngineImpl.getGovernanceClassificationDefinitionList("", defaultClassificationType);
+            List<GovernanceClassificationDef> result = governanceEngineImpl.getGovernanceClassificationDefList("", defaultClassificationType);
             // exception!
         });
 
@@ -193,13 +193,13 @@ public class GovernanceEngineImplTest {
     }
 
     @Test
-    @DisplayName("getGovernanceClassificationDefinitionList - client REST exception")
+    @DisplayName("getGovernanceClassificationDefList - client REST exception")
     void testGetGovernanceClassificationDefinitionListClientAPIException() {
         when(restTemplate.getForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(Class.class), ArgumentMatchers.<Object>any())).thenThrow(new ResourceAccessException("Test Exception from REST client error"));
 
         thrown = assertThrows(MetadataServerException.class, () ->
         {
-            List<GovernanceClassificationDefinition> result = governanceEngineImpl.getGovernanceClassificationDefinitionList(defaultUserId, defaultClassificationType);
+            List<GovernanceClassificationDef> result = governanceEngineImpl.getGovernanceClassificationDefList(defaultUserId, defaultClassificationType);
         });
        verify(restTemplate, times(1)).getForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(Class.class), ArgumentMatchers.<Object>any());
                assertTrue(thrown.getMessage().contains("OMAS-GOVERNANCEENGINE-503-002"));
@@ -207,14 +207,14 @@ public class GovernanceEngineImplTest {
 
 
     @Test
-    @DisplayName("getGovernanceClassificationDefinitionList - handlers side exception")
+    @DisplayName("getGovernanceClassificationDefList - handlers side exception")
     void testGetGovernanceClassificationDefinitionList() {
-        GovernanceClassificationDefinitionListAPIResponse expectedResponse = new GovernanceClassificationDefinitionListAPIResponse();
+        GovernanceClassificationDefListAPIResponse expectedResponse = new GovernanceClassificationDefListAPIResponse();
         expectedResponse.setRelatedHTTPCode(404);
         when(restTemplate.getForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(Class.class), ArgumentMatchers.<Object>any())).thenReturn(expectedResponse);
 
         try {
-            List<GovernanceClassificationDefinition> result = governanceEngineImpl.getGovernanceClassificationDefinitionList(defaultUserId, "rootClassificationType");
+            List<GovernanceClassificationDef> result = governanceEngineImpl.getGovernanceClassificationDefList(defaultUserId, "rootClassificationType");
         } catch (Exception e) { };
 
         verify(restTemplate, times(1)).getForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(Class.class), ArgumentMatchers.<Object>any());
@@ -224,14 +224,14 @@ public class GovernanceEngineImplTest {
 
     // Now check a good return
     @Test
-    @DisplayName("getGovernedAssetComponentList - good result")
+    @DisplayName("getGovernedAssetList - good result")
     void testGetGovernanceClassificationDefinitionListGoodData() {
-        GovernanceClassificationDefinitionListAPIResponse expectedResponse = new GovernanceClassificationDefinitionListAPIResponse();
+        GovernanceClassificationDefListAPIResponse expectedResponse = new GovernanceClassificationDefListAPIResponse();
         expectedResponse.setRelatedHTTPCode(200);
         when(restTemplate.getForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(Class.class), ArgumentMatchers.<Object>any())).thenReturn(expectedResponse);
 
         try {
-            List<GovernanceClassificationDefinition> result = governanceEngineImpl.getGovernanceClassificationDefinitionList(defaultUserId, defaultClassificationType);
+            List<GovernanceClassificationDef> result = governanceEngineImpl.getGovernanceClassificationDefList(defaultUserId, defaultClassificationType);
         } catch (Exception e) { };
 
         verify(restTemplate, times(1)).getForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(Class.class), ArgumentMatchers.<Object>any());
@@ -240,11 +240,11 @@ public class GovernanceEngineImplTest {
       }
 
     @Test
-    @DisplayName("getGovernedAssetComponent - null userid")
+    @DisplayName("getGovernedAsset - null userid")
     void testGetGovernedAssetComponentNullUserid() {
         thrown = assertThrows(InvalidParameterException.class, () ->
         {
-            GovernedAssetComponent result = governanceEngineImpl.getGovernedAssetComponent(null, defaultGUID);
+            GovernedAsset result = governanceEngineImpl.getGovernedAsset(null, defaultGUID);
         });
 
         verify(restTemplate, never()).getForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(Class.class), ArgumentMatchers.<Object>any());
@@ -252,11 +252,11 @@ public class GovernanceEngineImplTest {
     }
 
     @Test
-    @DisplayName("getGovernedAssetComponent - empty userid")
+    @DisplayName("getGovernedAsset - empty userid")
     void testGetGovernedAssetComponentEmptyUserid() {
         thrown = assertThrows(InvalidParameterException.class, () ->
         {
-            GovernedAssetComponent result = governanceEngineImpl.getGovernedAssetComponent("", defaultGUID);
+            GovernedAsset result = governanceEngineImpl.getGovernedAsset("", defaultGUID);
         });
 
         verify(restTemplate, never()).getForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(Class.class), ArgumentMatchers.<Object>any());
@@ -265,11 +265,11 @@ public class GovernanceEngineImplTest {
     }
 
     @Test
-    @DisplayName("getGovernedAssetComponent - null guid")
+    @DisplayName("getGovernedAsset - null guid")
     void testGetGovernedAssetComponentNullGuid() {
         thrown = assertThrows(InvalidParameterException.class, () ->
         {
-            GovernedAssetComponent result = governanceEngineImpl.getGovernedAssetComponent(defaultUserId, null);
+            GovernedAsset result = governanceEngineImpl.getGovernedAsset(defaultUserId, null);
         });
 
         verify(restTemplate, never()).getForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(Class.class), ArgumentMatchers.<Object>any());
@@ -278,12 +278,12 @@ public class GovernanceEngineImplTest {
     }
 
     @Test
-    @DisplayName("getGovernedAssetComponent - empty guid")
+    @DisplayName("getGovernedAsset - empty guid")
     void testGetGovernedAssetComponentEmptyGuid() {
 
         thrown = assertThrows(InvalidParameterException.class, () ->
         {
-            GovernedAssetComponent result = governanceEngineImpl.getGovernedAssetComponent(defaultUserId, "");
+            GovernedAsset result = governanceEngineImpl.getGovernedAsset(defaultUserId, "");
             // exception!
         });
 
@@ -292,13 +292,13 @@ public class GovernanceEngineImplTest {
     }
 
     @Test
-    @DisplayName("getGovernedAssetComponent - client REST exception")
+    @DisplayName("getGovernedAsset - client REST exception")
     void testGetGovernedAssetComponentClientAPIException() {
         when(restTemplate.getForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(Class.class), ArgumentMatchers.<Object>any())).thenThrow(new ResourceAccessException("Test Exception from REST client error"));
 
         thrown = assertThrows(MetadataServerException.class, () ->
         {
-            GovernedAssetComponent result = governanceEngineImpl.getGovernedAssetComponent(defaultUserId, defaultGUID);
+            GovernedAsset result = governanceEngineImpl.getGovernedAsset(defaultUserId, defaultGUID);
         });
 
         verify(restTemplate, times(1)).getForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(Class.class), ArgumentMatchers.<Object>any());
@@ -306,14 +306,14 @@ public class GovernanceEngineImplTest {
     }
 
     @Test
-    @DisplayName("getGovernedAssetComponent - handlers side exception")
+    @DisplayName("getGovernedAsset - handlers side exception")
     void testGetGovernedAssetComponentRemoteInvalidParmException() {
-        GovernedAssetComponentAPIResponse expectedResponse = new GovernedAssetComponentAPIResponse();
+        GovernedAssetAPIResponse expectedResponse = new GovernedAssetAPIResponse();
         expectedResponse.setRelatedHTTPCode(404);
         when(restTemplate.getForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(Class.class), ArgumentMatchers.<Object>any())).thenReturn(expectedResponse);
 
         try {
-            GovernedAssetComponent result = governanceEngineImpl.getGovernedAssetComponent(defaultUserId, defaultGUID);
+            GovernedAsset result = governanceEngineImpl.getGovernedAsset(defaultUserId, defaultGUID);
         } catch (Exception e) { };
 
         verify(restTemplate, times(1)).getForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(Class.class), ArgumentMatchers.<Object>any());
@@ -321,14 +321,14 @@ public class GovernanceEngineImplTest {
     }
 
     @Test
-    @DisplayName("getGovernedAssetComponent - good result")
+    @DisplayName("getGovernedAsset - good result")
     void testGetGovernedAssetComponentGoodData() {
-        GovernedAssetComponentAPIResponse expectedResponse = new GovernedAssetComponentAPIResponse();
+        GovernedAssetAPIResponse expectedResponse = new GovernedAssetAPIResponse();
         expectedResponse.setRelatedHTTPCode(200);
         when(restTemplate.getForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(Class.class), ArgumentMatchers.<Object>any())).thenReturn(expectedResponse);
 
         try {
-            GovernedAssetComponent result = governanceEngineImpl.getGovernedAssetComponent(defaultUserId, defaultGUID);
+            GovernedAsset result = governanceEngineImpl.getGovernedAsset(defaultUserId, defaultGUID);
         } catch (Exception e) { };
 
         verify(restTemplate, times(1)).getForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(Class.class), ArgumentMatchers.<Object>any());
@@ -336,11 +336,11 @@ public class GovernanceEngineImplTest {
     }
 
     @Test
-    @DisplayName("getGovernanceClassificationDefinition - null userid")
+    @DisplayName("getGovernanceClassificationDef - null userid")
     void testGetGovernanceClassificationDefinitionNullUserid() {
         thrown = assertThrows(InvalidParameterException.class, () ->
         {
-            GovernanceClassificationDefinition result = governanceEngineImpl.getGovernanceClassificationDefinition(null, defaultGUID);
+            GovernanceClassificationDef result = governanceEngineImpl.getGovernanceClassificationDef(null, defaultGUID);
         });
 
         verify(restTemplate, never()).getForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(Class.class), ArgumentMatchers.<Object>any());
@@ -348,11 +348,11 @@ public class GovernanceEngineImplTest {
     }
 
     @Test
-    @DisplayName("getGovernanceClassificationDefinition - empty userid")
+    @DisplayName("getGovernanceClassificationDef - empty userid")
     void testGetGovernanceClassificationDefinitionEmptyUserid() {
         thrown = assertThrows(InvalidParameterException.class, () ->
         {
-            GovernanceClassificationDefinition result = governanceEngineImpl.getGovernanceClassificationDefinition("", defaultGUID);
+            GovernanceClassificationDef result = governanceEngineImpl.getGovernanceClassificationDef("", defaultGUID);
         });
 
         verify(restTemplate, never()).getForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(Class.class), ArgumentMatchers.<Object>any());
@@ -361,11 +361,11 @@ public class GovernanceEngineImplTest {
     }
 
     @Test
-    @DisplayName("getGovernanceClassificationDefinition - null guid")
+    @DisplayName("getGovernanceClassificationDef - null guid")
     void testGetGovernanceClassificationDefinitionNullGuid() {
         thrown = assertThrows(InvalidParameterException.class, () ->
         {
-            GovernanceClassificationDefinition result = governanceEngineImpl.getGovernanceClassificationDefinition(defaultUserId, null);
+            GovernanceClassificationDef result = governanceEngineImpl.getGovernanceClassificationDef(defaultUserId, null);
         });
 
         // Check we do not call the backend handlers - should be checked locally
@@ -374,24 +374,24 @@ public class GovernanceEngineImplTest {
     }
 
     @Test
-    @DisplayName("getGovernanceClassificationDefinition - empty guid")
+    @DisplayName("getGovernanceClassificationDef - empty guid")
     void testGetGovernanceClassificationDefinitionEmptyGuid() {
         thrown = assertThrows(InvalidParameterException.class, () ->
         {
-            GovernanceClassificationDefinition result = governanceEngineImpl.getGovernanceClassificationDefinition(defaultUserId, "");
+            GovernanceClassificationDef result = governanceEngineImpl.getGovernanceClassificationDef(defaultUserId, "");
         });
         verify(restTemplate, never()).getForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(Class.class), ArgumentMatchers.<Object>any());
         assertTrue(thrown.getMessage().contains("OMAS-GOVERNANCEENGINE-400-004"));
     }
 
     @Test
-    @DisplayName("getGovernanceClassificationDefinition - client REST exception")
+    @DisplayName("getGovernanceClassificationDef - client REST exception")
     void testGetGovernanceClassificationDefinitionClientAPIException() {
         when(restTemplate.getForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(Class.class), ArgumentMatchers.<Object>any())).thenThrow(new ResourceAccessException("Test Exception from REST client error"));
 
         thrown = assertThrows(MetadataServerException.class, () ->
         {
-            GovernanceClassificationDefinition result = governanceEngineImpl.getGovernanceClassificationDefinition(defaultUserId, defaultGUID);
+            GovernanceClassificationDef result = governanceEngineImpl.getGovernanceClassificationDef(defaultUserId, defaultGUID);
         });
 
         verify(restTemplate, times(1)).getForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(Class.class), ArgumentMatchers.<Object>any());
@@ -399,14 +399,14 @@ public class GovernanceEngineImplTest {
     }
 
     @Test
-    @DisplayName("getGovernanceClassificationDefinition - handlers side exception")
+    @DisplayName("getGovernanceClassificationDef - handlers side exception")
     void testGetGovernanceClassificationDefinitionServerException() {
-        GovernanceClassificationDefinitionAPIResponse expectedResponse = new GovernanceClassificationDefinitionAPIResponse();
+        GovernanceClassificationDefAPIResponse expectedResponse = new GovernanceClassificationDefAPIResponse();
         expectedResponse.setRelatedHTTPCode(404);
         when(restTemplate.getForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(Class.class), ArgumentMatchers.<Object>any())).thenReturn(expectedResponse);
 
         try {
-            GovernanceClassificationDefinition result = governanceEngineImpl.getGovernanceClassificationDefinition(defaultUserId, defaultGUID);
+            GovernanceClassificationDef result = governanceEngineImpl.getGovernanceClassificationDef(defaultUserId, defaultGUID);
         } catch (Exception e) { };
 
         verify(restTemplate, times(1)).getForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(Class.class), ArgumentMatchers.<Object>any());
@@ -416,14 +416,14 @@ public class GovernanceEngineImplTest {
 
     // Now check a good return
     @Test
-    @DisplayName("getGovernedAssetComponent - good result")
+    @DisplayName("getGovernedAsset - good result")
     void testGetGovernanceClassificationDefinitionGoodData() {
-        GovernanceClassificationDefinitionAPIResponse expectedResponse = new GovernanceClassificationDefinitionAPIResponse();
+        GovernanceClassificationDefAPIResponse expectedResponse = new GovernanceClassificationDefAPIResponse();
         expectedResponse.setRelatedHTTPCode(200);
         when(restTemplate.getForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(Class.class), ArgumentMatchers.<Object>any())).thenReturn(expectedResponse);
 
         try {
-            GovernanceClassificationDefinition result = governanceEngineImpl.getGovernanceClassificationDefinition(defaultUserId, defaultGUID);
+            GovernanceClassificationDef result = governanceEngineImpl.getGovernanceClassificationDef(defaultUserId, defaultGUID);
         } catch (Exception e) { };
 
         verify(restTemplate, times(1)).getForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(Class.class), ArgumentMatchers.<Object>any());

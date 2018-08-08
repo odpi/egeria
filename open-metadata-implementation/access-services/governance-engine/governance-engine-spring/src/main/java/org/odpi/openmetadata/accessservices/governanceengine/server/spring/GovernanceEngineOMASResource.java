@@ -1,10 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservices.governanceengine.server.spring;
 
-import org.odpi.openmetadata.accessservices.governanceengine.common.objects.GovernanceClassificationDefinitionAPIResponse;
-import org.odpi.openmetadata.accessservices.governanceengine.common.objects.GovernanceClassificationDefinitionListAPIResponse;
-import org.odpi.openmetadata.accessservices.governanceengine.common.objects.GovernedAssetComponentAPIResponse;
-import org.odpi.openmetadata.accessservices.governanceengine.common.objects.GovernedAssetComponentListAPIResponse;
+import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernanceClassificationDefAPIResponse;
+import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernanceClassificationDefListAPIResponse;
+import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAssetAPIResponse;
+import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAssetListAPIResponse;
 import org.odpi.openmetadata.accessservices.governanceengine.server.GovernanceEngineRESTServices;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +16,7 @@ import java.util.List;
  *
  */
 @RestController
-@RequestMapping("/access-services/governance-engine/users/{userId}")
+@RequestMapping("/open-metadata/access-services/governance-engine/users/{userId}")
 public class GovernanceEngineOMASResource {
     private GovernanceEngineRESTServices restAPI = new GovernanceEngineRESTServices();
 
@@ -45,7 +45,7 @@ public class GovernanceEngineOMASResource {
      * are affected
      *
      * @param userId             - String - userId of user making request.
-     * @param rootClassification - this may be the qualifiedName or displayName of the connection.
+     * @param classification - this may be the qualifiedName or displayName of the connection.
      * @return GovernanceClassificationDefinitionList or
      * InvalidParameterException - one of the parameters is null or invalid.
      * UnrecognizedConnectionNameException - there is no connection defined for this name.
@@ -53,11 +53,13 @@ public class GovernanceEngineOMASResource {
      * PropertyServerException - there is a problem retrieving information from the property (metadata) handlers.
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/govclassdefs")
-    public GovernanceClassificationDefinitionListAPIResponse getGovernanceClassificationDefinitions(@PathVariable String userId,
-                                                                                                    @RequestParam(value = "rootClassification", required = false) List<String> rootClassification
+    @RequestMapping(method = RequestMethod.GET, path = "/classificationdefs")
+    public GovernanceClassificationDefListAPIResponse getGovernanceClassificationDefs(@PathVariable String userId,
+                                                                                             @RequestParam(value =
+                                                                                                     "classification"
+                                                                                                     , required = false) List<String> classification
     ) {
-        return restAPI.getGovernanceClassificationDefinitions(userId, rootClassification);
+        return restAPI.getGovernanceClassificationDefs(userId, classification);
     }
 
     /**
@@ -70,17 +72,18 @@ public class GovernanceEngineOMASResource {
      * are affected
      *
      * @param userId  - String - userId of user making request.
-     * @param tagguid - guid of the definition to retrieve
-     * @return GovernanceClassificationDefinition or
+     * @param classificationGuid - guid of the definition to retrieve
+     * @return GovernanceClassificationDef or
      * InvalidParameterException - one of the parameters is null or invalid.
      * UnrecognizedConnectionNameException - there is no connection defined for this name.
      * AmbiguousConnectionNameException - there is more than one connection defined for this name.
      * PropertyServerException - there is a problem retrieving information from the property (metadata) handlers.
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/govclassdefs/{tagguid}")
-    GovernanceClassificationDefinitionAPIResponse getGovernanceClassificationDefinition(@PathVariable String userId, @PathVariable String tagguid) {
-        return restAPI.getClassificationDefinition(userId, tagguid);
+    @RequestMapping(method = RequestMethod.GET, path = "/classificationdefs/{classificationGuid}")
+    GovernanceClassificationDefAPIResponse getGovernanceClassificationDef(@PathVariable String userId,
+                                                                                 @PathVariable String classificationGuid) {
+        return restAPI.getClassificationDefs(userId, classificationGuid);
     }
 
     /**
@@ -89,8 +92,8 @@ public class GovernanceEngineOMASResource {
      * These include the tag associations but not the definitions of those tags
      *
      * @param userId             - String - userId of user making request.
-     * @param rootClassification - this may be the qualifiedName or displayName of the connection.
-     * @param rootType
+     * @param classification - this may be the qualifiedName or displayName of the connection.
+     * @param type
      * @return GovernedAssetComponentList or
      * InvalidParameterException - one of the parameters is null or invalid.
      * UnrecognizedConnectionNameException - there is no connection defined for this name.
@@ -98,11 +101,11 @@ public class GovernanceEngineOMASResource {
      * PropertyServerException - there is a problem retrieving information from the property (metadata) handlers.
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/govAssets")
-    GovernedAssetComponentListAPIResponse getGovernedAssetComponents(@PathVariable String userId,
-                                                                     @RequestParam(value = "rootClassification", required = false) List<String> rootClassification,
-                                                                     @RequestParam(value = "rootType", required = false) List<String> rootType) {
-        return restAPI.getGovernedAssetComponents(userId, rootClassification, rootType);
+    @RequestMapping(method = RequestMethod.GET, path = "/assets")
+    GovernedAssetListAPIResponse getGovernedAssets(@PathVariable String userId,
+                                                            @RequestParam(value = "classification", required = false) List<String> classification,
+                                                            @RequestParam(value = "type", required = false) List<String> type) {
+        return restAPI.getGovernedAssets(userId, classification, type);
     }
 
     /**
@@ -111,18 +114,18 @@ public class GovernanceEngineOMASResource {
      * These include the tag associations but not the definitions of those tags
      *
      * @param userId             - String - userId of user making request.
-     * @param assetComponentGuid - Guid of the asset component to retrieve
-     * @return GovernedAssetComponent or
+     * @param assetGuid - Guid of the asset component to retrieve
+     * @return GovernedAsset or
      * InvalidParameterException - one of the parameters is null or invalid.
      * UnrecognizedConnectionNameException - there is no connection defined for this name.
      * AmbiguousConnectionNameException - there is more than one connection defined for this name.
      * PropertyServerException - there is a problem retrieving information from the property (metadata) handlers.
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/govAssets/{assetComponentGuid}")
-    public GovernedAssetComponentAPIResponse getGovernedAssetComponent(@PathVariable String userId,
-                                                                       @PathVariable String assetComponentGuid) {
-        return restAPI.getGovernedAssetComponent(userId, assetComponentGuid);
+    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetComponentGuid}")
+    public GovernedAssetAPIResponse getGovernedAsset(@PathVariable String userId,
+                                                              @PathVariable String assetGuid) {
+        return restAPI.getGovernedAsset(userId, assetGuid);
     }
 
 

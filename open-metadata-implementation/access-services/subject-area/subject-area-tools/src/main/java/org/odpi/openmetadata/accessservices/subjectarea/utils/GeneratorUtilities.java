@@ -75,7 +75,7 @@ public class GeneratorUtilities {
 
         if (!newFolder.exists()) {
             //System.out.println("creating new folder: " + newFolder.getName());
-            newFolder.mkdir();
+            newFolder.mkdirs();
         }
         return newFolder;
     }
