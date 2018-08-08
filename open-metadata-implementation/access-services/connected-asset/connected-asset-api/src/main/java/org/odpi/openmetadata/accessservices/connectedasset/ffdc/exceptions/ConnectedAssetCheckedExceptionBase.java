@@ -1,21 +1,19 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions;
 
+import java.util.Objects;
+
 /**
  * ConnectedAssetCheckedExceptionBase provides a checked exception for reporting errors found when using
  * the Connected Asset OMAS services.
  *
- * Typically these errors are either configuration or operational errors that can be fixed by an administrator.
- * However, there may be the odd bug that surfaces here.
- * The ConnectedAssetErrorCode can be used with
- * this exception to populate it with standard messages.  The aim is to be able to uniquely identify the cause
- * and remedy for the error.
+ * Typically these errors are either configuration or operational errors that can be fixed by an administrator
+ * or the developer that wrote the consuming service.   However, there may be the odd bug that surfaces here.
+ * The ConnectedAssetErrorCode can be used with this exception to populate it with standard messages.
+ * The aim is to be able to uniquely identify the cause and remedy for the error.
  */
-public class ConnectedAssetCheckedExceptionBase extends Exception
+public abstract class ConnectedAssetCheckedExceptionBase extends Exception
 {
-    /*
-     * These default values are only seen if this exception is initialized using one of its superclass constructors.
-     */
     private int       reportedHTTPCode;
     private String    reportingClassName;
     private String    reportingActionDescription;
@@ -26,7 +24,7 @@ public class ConnectedAssetCheckedExceptionBase extends Exception
 
 
     /**
-     * This is the typical constructor used for creating a ConnectedAssetCheckedExceptionBase.
+     * This is the typical constructor used for creating an exception.
      *
      * @param httpCode   http response code to use if this exception flows over a rest call
      * @param className   name of class reporting error
@@ -53,7 +51,7 @@ public class ConnectedAssetCheckedExceptionBase extends Exception
 
 
     /**
-     * This is the  constructor used for creating a ConnectedAssetCheckedExceptionBase
+     * This is the  constructor used for creating an exception
      * that resulted from a previous error.
      *
      * @param httpCode   http response code to use if this exception flows over a rest call
@@ -156,4 +154,50 @@ public class ConnectedAssetCheckedExceptionBase extends Exception
      * @return reportedCaughtException
      */
     public Throwable getReportedCaughtException() { return reportedCaughtException; }
+
+
+    /**
+     * Return comparison result based on the content of the properties.
+     *
+     * @param objectToCompare test object
+     * @return result of comparison
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (!(objectToCompare instanceof ConnectedAssetCheckedExceptionBase))
+        {
+            return false;
+        }
+        ConnectedAssetCheckedExceptionBase that = (ConnectedAssetCheckedExceptionBase) objectToCompare;
+        return getReportedHTTPCode() == that.getReportedHTTPCode() &&
+                Objects.equals(getReportingClassName(), that.getReportingClassName()) &&
+                Objects.equals(getReportingActionDescription(), that.getReportingActionDescription()) &&
+                Objects.equals(getErrorMessage(), that.getErrorMessage()) &&
+                Objects.equals(getReportedSystemAction(), that.getReportedSystemAction()) &&
+                Objects.equals(getReportedUserAction(), that.getReportedUserAction()) &&
+                Objects.equals(getReportedCaughtException(), that.getReportedCaughtException());
+    }
+
+
+    /**
+     * Return hash code for this object
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(getReportedHTTPCode(),
+                            getReportingClassName(),
+                            getReportingActionDescription(),
+                            getErrorMessage(),
+                            getReportedSystemAction(),
+                            getReportedUserAction(),
+                            getReportedCaughtException());
+    }
 }

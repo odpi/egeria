@@ -23,7 +23,7 @@ public class ConnectedAsset implements ConnectedAssetInterface
     /**
      * Default Constructor used once a connector is created.
      *
-     * @param omasServerURL - unique id for the connector instance
+     * @param omasServerURL  unique id for the connector instance
      */
     public ConnectedAsset(String   omasServerURL)
     {
@@ -38,8 +38,8 @@ public class ConnectedAsset implements ConnectedAssetInterface
     /**
      * Returns a comprehensive collection of properties about the requested asset.
      *
-     * @param userId - String - userId of user making request.
-     * @param assetGUID - String - unique id for asset.
+     * @param userId  String - userId of user making request.
+     * @param assetGUID  String - unique id for asset.
      *
      * @return AssetUniverse - a comprehensive collection of properties about the asset.
 
@@ -60,8 +60,8 @@ public class ConnectedAsset implements ConnectedAssetInterface
     /**
      * Returns a comprehensive collection of properties about the asset linked to the supplied connection.
      *
-     * @param connectionGUID - unique identifier for the connection
-     * @return AssetUniverse - a comprehensive collection of properties about the connected asset
+     * @param connectionGUID  unique identifier for the connection
+     * @return AssetUniverse  a comprehensive collection of properties about the connected asset
      * @throws PropertyServerException There is a problem retrieving the connected asset properties from
      *                                   the metadata repository.
      */
@@ -80,8 +80,8 @@ public class ConnectedAsset implements ConnectedAssetInterface
     /**
      * Returns a comprehensive collection of properties about the asset linked to the supplied connection.
      *
-     * @param connectionGUID - uniqueId for the connection.
-     * @return AssetUniverse - a comprehensive collection of properties about the connected asset.
+     * @param connectionGUID  uniqueId for the connection.
+     * @return AssetUniverse  a comprehensive collection of properties about the connected asset.
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException There is a problem retrieving the connected asset properties from
      *                                   the property server.

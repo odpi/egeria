@@ -6,18 +6,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.AssetConsumerErrorCode;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions.*;
-import org.odpi.openmetadata.accessservices.assetconsumer.server.properties.AssetConsumerOMASAPIResponse;
-import org.odpi.openmetadata.accessservices.assetconsumer.server.properties.ConnectionResponse;
-import org.odpi.openmetadata.accessservices.assetconsumer.server.properties.VoidResponse;
+import org.odpi.openmetadata.accessservices.assetconsumer.responses.AssetConsumerOMASAPIResponse;
+import org.odpi.openmetadata.accessservices.assetconsumer.responses.ConnectionResponse;
+import org.odpi.openmetadata.accessservices.assetconsumer.responses.VoidResponse;
 import org.odpi.openmetadata.adminservices.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.CommentType;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceOperationalStatus;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
 import org.odpi.openmetadata.accessservices.assetconsumer.admin.AssetConsumerAdmin;
-import org.odpi.openmetadata.accessservices.assetconsumer.server.properties.GUIDResponse;
+import org.odpi.openmetadata.accessservices.assetconsumer.responses.GUIDResponse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.StarRating;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -35,8 +38,8 @@ public class AssetConsumerRESTServices
     /**
      * Provide a connector to the REST Services.
      *
-     * @param accessServiceName - name of this access service
-     * @param repositoryConnector - OMRS Repository Connector to the property server.
+     * @param accessServiceName  name of this access service
+     * @param repositoryConnector  OMRS Repository Connector to the property server.
      */
     static public void setRepositoryConnector(String                   accessServiceName,
                                               OMRSRepositoryConnector  repositoryConnector)
@@ -66,8 +69,8 @@ public class AssetConsumerRESTServices
     /**
      * Returns the connection object corresponding to the supplied connection name.
      *
-     * @param userId - String - userId of user making request.
-     * @param name - this may be the qualifiedName or displayName of the connection.
+     * @param userId  String - userId of user making request.
+     * @param name  this may be the qualifiedName or displayName of the connection.
      *
      * @return ConnectionResponse or
      * InvalidParameterException one of the parameters is null or invalid.
@@ -124,8 +127,8 @@ public class AssetConsumerRESTServices
     /**
      * Returns the connection object corresponding to the supplied connection GUID.
      *
-     * @param userId - String - userId of user making request.
-     * @param guid - the unique id for the connection within the property server.
+     * @param userId  String - userId of user making request.
+     * @param guid  the unique id for the connection within the property server.
      *
      * @return ConnectionResponse or
      * InvalidParameterException one of the parameters is null or invalid.
@@ -177,13 +180,13 @@ public class AssetConsumerRESTServices
     /**
      * Creates an Audit log record for the asset.  This log record is stored in the Asset's Audit Log.
      *
-     * @param userId - String - userId of user making request.
-     * @param guid - String - unique id for the asset.
-     * @param connectorInstanceId - String - (optional) id of connector in use (if any).
-     * @param connectionName - String - (optional) name of the connection (extracted from the connector).
-     * @param connectorType - String - (optional) type of connector in use (if any).
-     * @param contextId - String - (optional) function name, or processId of the activity that the caller is performing.
-     * @param message - log record content.
+     * @param userId  String - userId of user making request.
+     * @param guid  String - unique id for the asset.
+     * @param connectorInstanceId  String - (optional) id of connector in use (if any).
+     * @param connectionName  String - (optional) name of the connection (extracted from the connector).
+     * @param connectorType  String - (optional) type of connector in use (if any).
+     * @param contextId  String - (optional) function name, or processId of the activity that the caller is performing.
+     * @param message  log record content.
      *
      * @return VoidResponse or
      * InvalidParameterException one of the parameters is null or invalid.
@@ -242,10 +245,10 @@ public class AssetConsumerRESTServices
     /**
      * Adds a new public tag to the asset's properties.
      *
-     * @param userId - String - userId of user making request.
-     * @param guid - String - unique id for the asset.
-     * @param tagName - String - name of the tag.
-     * @param tagDescription - String - (optional) description of the tag.  Setting a description, particularly in
+     * @param userId  String - userId of user making request.
+     * @param guid  String - unique id for the asset.
+     * @param tagName  String - name of the tag.
+     * @param tagDescription  String - (optional) description of the tag.  Setting a description, particularly in
      *                       a public tag makes the tag more valuable to other users and can act as an embryonic
      *                       glossary term.
      *
@@ -297,10 +300,10 @@ public class AssetConsumerRESTServices
     /**
      * Adds a new private tag to the asset's properties.
      *
-     * @param userId - String - userId of user making request.
-     * @param guid - String - unique id for the asset.
-     * @param tagName - String - name of the tag.
-     * @param tagDescription - String - (optional) description of the tag.  Setting a description, particularly in
+     * @param userId  String - userId of user making request.
+     * @param guid  String - unique id for the asset.
+     * @param tagName  String - name of the tag.
+     * @param tagDescription  String - (optional) description of the tag.  Setting a description, particularly in
      *                       a public tag makes the tag more valuable to other users and can act as an embryonic
      *                       glossary term.
      *
@@ -352,10 +355,10 @@ public class AssetConsumerRESTServices
     /**
      * Adds a rating to the asset.
      *
-     * @param userId - String - userId of user making request.
-     * @param guid - String - unique id for the asset.
-     * @param starRating - StarRating  - enumeration for none, one to five stars.
-     * @param review - String - user review of asset.
+     * @param userId  String - userId of user making request.
+     * @param guid  String - unique id for the asset.
+     * @param starRating StarRating  - enumeration for none, one to five stars.
+     * @param review  String - user review of asset.
      *
      * @return GUIDResponse or
      * InvalidParameterException one of the parameters is null or invalid.
@@ -405,8 +408,8 @@ public class AssetConsumerRESTServices
     /**
      * Adds a "Like" to the asset.
      *
-     * @param userId - String - userId of user making request.
-     * @param guid - String - unique id for the asset
+     * @param userId  String - userId of user making request.
+     * @param guid  String - unique id for the asset
      *
      * @return GUIDResponse or
      * InvalidParameterException one of the parameters is null or invalid.
@@ -454,10 +457,10 @@ public class AssetConsumerRESTServices
     /**
      * Adds a comment to the asset.
      *
-     * @param userId - String - userId of user making request.
-     * @param guid - String - unique id for the asset.
-     * @param commentType - type of comment enum.
-     * @param commentText - String - the text of the comment.
+     * @param userId  String - userId of user making request.
+     * @param guid  String - unique id for the asset.
+     * @param commentType  type of comment enum.
+     * @param commentText  String - the text of the comment.
      *
      * @return GUIDResponse or
      * InvalidParameterException one of the parameters is null or invalid.
@@ -507,10 +510,10 @@ public class AssetConsumerRESTServices
     /**
      * Adds a comment to the asset.
      *
-     * @param userId - String - userId of user making request.
-     * @param commentGUID - String - unique id for an existing comment.  Used to add a reply to a comment.
-     * @param commentType - type of comment enum.
-     * @param commentText - String - the text of the comment.
+     * @param userId  String - userId of user making request.
+     * @param commentGUID  String - unique id for an existing comment.  Used to add a reply to a comment.
+     * @param commentType  type of comment enum.
+     * @param commentText  String - the text of the comment.
      *
      * @return GUIDResponse or
      * InvalidParameterException one of the parameters is null or invalid.
@@ -560,8 +563,8 @@ public class AssetConsumerRESTServices
     /**
      * Removes a tag from the asset that was added by this user.
      *
-     * @param userId - String - userId of user making request.
-     * @param guid - String - unique id for the tag.
+     * @param userId  String - userId of user making request.
+     * @param guid  String - unique id for the tag.
      *
      * @return VoidResponse or
      * InvalidParameterException one of the parameters is null or invalid.
@@ -609,8 +612,8 @@ public class AssetConsumerRESTServices
     /**
      * Removes a tag from the asset that was added by this user.
      *
-     * @param userId - String - userId of user making request.
-     * @param guid - String - unique id for the tag.
+     * @param userId  String - userId of user making request.
+     * @param guid  String - unique id for the tag.
      *
      * @return VoidResponse or
      * InvalidParameterException one of the parameters is null or invalid.
@@ -658,8 +661,8 @@ public class AssetConsumerRESTServices
     /**
      * Removes of a star rating that was added to the asset by this user.
      *
-     * @param userId - String - userId of user making request.
-     * @param guid - String - unique id for the rating object
+     * @param userId  String - userId of user making request.
+     * @param guid  String - unique id for the rating object
      *
      * @return VoidResponse or
      * InvalidParameterException one of the parameters is null or invalid.
@@ -707,8 +710,8 @@ public class AssetConsumerRESTServices
     /**
      * Removes a "Like" added to the asset by this user.
      *
-     * @param userId - String - userId of user making request.
-     * @param guid - String - unique id for the like object
+     * @param userId  String - userId of user making request.
+     * @param guid  String - unique id for the like object
      * @return VoidResponse or
      * InvalidParameterException one of the parameters is null or invalid.
      * PropertyServerException There is a problem updating the asset properties in
@@ -755,8 +758,8 @@ public class AssetConsumerRESTServices
     /**
      * Removes a comment added to the asset by this user.
      *
-     * @param userId - String - userId of user making request.
-     * @param guid - String - unique id for the comment object
+     * @param userId  String - userId of user making request.
+     * @param guid  String - unique id for the comment object
      * @return VoidResponse or
      * InvalidParameterException one of the parameters is null or invalid.
      * PropertyServerException There is a problem updating the asset properties in
@@ -808,11 +811,11 @@ public class AssetConsumerRESTServices
     /**
      * Set the exception information into the response.
      *
-     * @param response - REST Response
+     * @param response  REST Response
      * @param error returned response.
-     * @param exceptionClassName - class name of the exception to recreate
+     * @param exceptionClassName  class name of the exception to recreate
      */
-    private void captureCheckedException(AssetConsumerOMASAPIResponse response,
+    private void captureCheckedException(AssetConsumerOMASAPIResponse      response,
                                          AssetConsumerCheckedExceptionBase error,
                                          String                            exceptionClassName)
     {
@@ -827,33 +830,79 @@ public class AssetConsumerRESTServices
     /**
      * Set the exception information into the response.
      *
-     * @param response - REST Response
+     * @param response  REST Response
+     * @param error returned response.
+     * @param exceptionClassName  class name of the exception to recreate
+     * @param exceptionProperties map of properties stored in the exception to help with diagnostics
+     */
+    private void captureCheckedException(AssetConsumerOMASAPIResponse      response,
+                                         AssetConsumerCheckedExceptionBase error,
+                                         String                            exceptionClassName,
+                                         Map<String, Object>               exceptionProperties)
+    {
+        response.setRelatedHTTPCode(error.getReportedHTTPCode());
+        response.setExceptionClassName(exceptionClassName);
+        response.setExceptionErrorMessage(error.getErrorMessage());
+        response.setExceptionSystemAction(error.getReportedSystemAction());
+        response.setExceptionUserAction(error.getReportedUserAction());
+        response.setExceptionProperties(exceptionProperties);
+    }
+
+
+    /**
+     * Set the exception information into the response.
+     *
+     * @param response  REST Response
      * @param error returned response.
      */
     private void captureAmbiguousConnectionNameException(AssetConsumerOMASAPIResponse     response,
                                                          AmbiguousConnectionNameException error)
     {
-        captureCheckedException(response, error, error.getClass().getName());
+        String  connectionName = error.getConnectionName();
+
+        if (connectionName != null)
+        {
+            Map<String, Object>  exceptionProperties = new HashMap<>();
+
+            exceptionProperties.put("connectionName", connectionName);
+            captureCheckedException(response, error, error.getClass().getName(), exceptionProperties);
+        }
+        else
+        {
+            captureCheckedException(response, error, error.getClass().getName());
+        }
     }
 
 
     /**
      * Set the exception information into the response.
      *
-     * @param response - REST Response
+     * @param response  REST Response
      * @param error returned response.
      */
     private void captureInvalidParameterException(AssetConsumerOMASAPIResponse response,
                                                   InvalidParameterException    error)
     {
-        captureCheckedException(response, error, error.getClass().getName());
+        String  parameterName = error.getParameterName();
+
+        if (parameterName != null)
+        {
+            Map<String, Object>  exceptionProperties = new HashMap<>();
+
+            exceptionProperties.put("parameterName", parameterName);
+            captureCheckedException(response, error, error.getClass().getName(), exceptionProperties);
+        }
+        else
+        {
+            captureCheckedException(response, error, error.getClass().getName());
+        }
     }
 
 
     /**
      * Set the exception information into the response.
      *
-     * @param response - REST Response
+     * @param response  REST Response
      * @param error returned response.
      */
     private void capturePropertyServerException(AssetConsumerOMASAPIResponse     response,
@@ -866,46 +915,82 @@ public class AssetConsumerRESTServices
     /**
      * Set the exception information into the response.
      *
-     * @param response - REST Response
+     * @param response  REST Response
      * @param error returned response.
      */
     private void captureUnrecognizedConnectionGUIDException(AssetConsumerOMASAPIResponse        response,
                                                             UnrecognizedConnectionGUIDException error)
     {
-        captureCheckedException(response, error, error.getClass().getName());
+        String  connectionGUID = error.getConnectionGUID();
+
+        if (connectionGUID != null)
+        {
+            Map<String, Object>  exceptionProperties = new HashMap<>();
+
+            exceptionProperties.put("connectionGUID", connectionGUID);
+            captureCheckedException(response, error, error.getClass().getName(), exceptionProperties);
+        }
+        else
+        {
+            captureCheckedException(response, error, error.getClass().getName());
+        }
     }
 
 
     /**
      * Set the exception information into the response.
      *
-     * @param response - REST Response
+     * @param response  REST Response
      * @param error returned response.
      */
     private void captureUnrecognizedConnectionNameException(AssetConsumerOMASAPIResponse        response,
                                                             UnrecognizedConnectionNameException error)
     {
-        captureCheckedException(response, error, error.getClass().getName());
+        String  connectionName = error.getConnectionName();
+
+        if (connectionName != null)
+        {
+            Map<String, Object>  exceptionProperties = new HashMap<>();
+
+            exceptionProperties.put("connectionName", connectionName);
+            captureCheckedException(response, error, error.getClass().getName(), exceptionProperties);
+        }
+        else
+        {
+            captureCheckedException(response, error, error.getClass().getName());
+        }
     }
 
 
     /**
      * Set the exception information into the response.
      *
-     * @param response - REST Response
+     * @param response  REST Response
      * @param error returned response.
      */
     private void captureUserNotAuthorizedException(AssetConsumerOMASAPIResponse response,
-                                                  UserNotAuthorizedException    error)
+                                                   UserNotAuthorizedException   error)
     {
-        captureCheckedException(response, error, error.getClass().getName());
+        String  userId = error.getUserId();
+
+        if (userId != null)
+        {
+            Map<String, Object>  exceptionProperties = new HashMap<>();
+
+            exceptionProperties.put("userId", userId);
+            captureCheckedException(response, error, error.getClass().getName(), exceptionProperties);
+        }
+        else
+        {
+            captureCheckedException(response, error, error.getClass().getName());
+        }
     }
 
 
     /**
      * Validate that this access service has been initialized before attempting to process a request.
      *
-     * @param methodName - name of method called.
+     * @param methodName  name of method called.
      * @throws PropertyServerException not initialized
      */
     private void validateInitialization(String  methodName) throws PropertyServerException
@@ -913,8 +998,7 @@ public class AssetConsumerRESTServices
         if (repositoryConnector == null)
         {
             AssetConsumerErrorCode errorCode = AssetConsumerErrorCode.SERVICE_NOT_INITIALIZED;
-            String        errorMessage = errorCode.getErrorMessageId()
-                        + errorCode.getFormattedErrorMessage(methodName);
+            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
 
             throw new PropertyServerException(errorCode.getHTTPErrorCode(),
                                                           this.getClass().getName(),

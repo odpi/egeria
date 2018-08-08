@@ -8,7 +8,7 @@ import static org.testng.Assert.assertTrue;
 
 
 /**
- * Validate that the OCFRuntimeException is properly populate and supports toString, hashCode and
+ * Validate that the OCFRuntimeException is properly populated and supports toString, hashCode and
  * equals.
  */
 public class TestOCFRuntimeException
@@ -106,6 +106,8 @@ public class TestOCFRuntimeException
         assertTrue(exception.equals(exception));
         assertFalse(exception.equals(reportedCaughtException));
         assertTrue(exception.equals(exception2));
+
+        assertTrue(exception.toString().contains("OCFRuntimeException"));
 
         assertTrue(exception.toString().equals(exception2.toString()));
     }

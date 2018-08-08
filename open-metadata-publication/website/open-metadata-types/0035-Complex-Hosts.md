@@ -2,7 +2,7 @@
 
 # 0035 Complex Hosts
 
-n today's systems, hardware is managed to get the maximum use out of it.
+In today's systems, hardware is managed to get the maximum use out of it.
 Therefore the concept of a Host is
 typically virtualized to allow a single computer to be used for many
 hosts and for multiple computers to collectively support a single host.

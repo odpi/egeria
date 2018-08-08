@@ -31,14 +31,13 @@ The Egeria content is organized into the following modules:
     * **[asset-owner](open-metadata-implementation/access-services/asset-owner)** - manage metadata and feedback for owned assets.
     * **[community-profile](open-metadata-implementation/access-services/community-profile)** - manage personal profiles and communities.
     * **[connected-asset](open-metadata-implementation/access-services/connected-asset)** - provide metadata about assets for the connectors.
-    * **[data-architecture](open-metadata-implementation/access-services/data-architecture)** - support the definition of data standards and models.
     * **[data-infrastructure](open-metadata-implementation/access-services/data-infrastructure)** - manage metadata about deployed infrastructure.
     * **[data-platform](open-metadata-implementation/access-services/data-platform)** - exchange metadata with a data platform.
     * **[data-privacy](open-metadata-implementation/access-services/data-privacy)** - support a data privacy officer.
     * **[data-process](open-metadata-implementation/access-services/data-process)** - exchange metadata with a data processing engine.
     * **[data-protection](open-metadata-implementation/access-services/data-protection)** - set up rules to protect data.
     * **[data-science](open-metadata-implementation/access-services/data-science)** - manage metadata for analytics.
-    * **[dev-ops](open-metadata-implementation/access-services/dev-ops)** - manage metadata for a devOps pipeline.
+    * **[digital-architecture](open-metadata-implementation/access-services/digital-architecture)** - support the definition of data standards and models.    * **[dev-ops](open-metadata-implementation/access-services/dev-ops)** - manage metadata for a devOps pipeline.
     * **[discovery-engine](open-metadata-implementation/access-services/discovery-engine)** - manage metadata for metadata discovery services.
     * **[governance-engine](open-metadata-implementation/access-services/governance-engine)** - manage metadata for an operational governance engine.
     * **[governance-program](open-metadata-implementation/access-services/governance-program)** - set up and manage a governance program.
