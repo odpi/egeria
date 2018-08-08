@@ -40,22 +40,11 @@ public class GovernanceClassificationDefListAPIResponse extends GovernanceEngine
      *
      * @param governanceClassificationDefList salary to set (in cents)
      */
-    public void setTagList(List<GovernanceClassificationDef> governanceClassificationDefList) {
+    public void setClassificationDefsList(List<GovernanceClassificationDef> governanceClassificationDefList) {
         this.governanceClassificationDefList = governanceClassificationDefList;
     }
 
 
 
-    @Override
-    public String toString() {
 
-        return "TagMapResponse{" +
-                "tagmap=" + governanceClassificationDefList +
-                ", relatedHTTPCode=" + relatedHTTPCode +
-                ", exceptionClassName='" + exceptionClassName + '\'' +
-                ", exceptionErrorMessage='" + exceptionErrorMessage + '\'' +
-                ", exceptionSystemAction='" + exceptionSystemAction + '\'' +
-                ", exceptionUserAction='" + exceptionUserAction + '\'' +
-                '}';
-    }
 }

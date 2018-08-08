@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions;
 
 
+
 public class InvalidEventException extends GovernanceEngineCheckedExceptionBase {
 
     /**

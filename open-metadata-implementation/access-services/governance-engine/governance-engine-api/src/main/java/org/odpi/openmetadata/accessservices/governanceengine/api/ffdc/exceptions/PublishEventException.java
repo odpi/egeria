@@ -3,7 +3,8 @@
 package org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions;
 
 
-    /**
+
+/**
      * The PublishEventException is thrown by the Governance Engine OMAS when we have issues
      * publishing an event
      */

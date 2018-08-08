@@ -2,6 +2,8 @@
 
 package org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions;
 
+
+
 /**
  * GovernanceEngineExceptionBase provides a checked exception for reporting errors found when using
  * the Governance Engine OMAS services.
