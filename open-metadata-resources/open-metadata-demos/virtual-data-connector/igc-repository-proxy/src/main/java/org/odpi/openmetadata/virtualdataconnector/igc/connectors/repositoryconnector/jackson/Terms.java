@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-package org.odpi.openmetadata.virtualdataconnector.igc.connectors.eventmapper;
+package org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconnector.jackson;
 
 import com.fasterxml.jackson.annotation.*;
 
@@ -12,14 +12,10 @@ import java.util.Map;
         "items",
         "paging"
 })
-public class IGCPostObject {
-
+public class Terms {
     @JsonProperty("items")
     private List<Item> items = null;
-    @JsonProperty("paging")
-    private Paging paging;
-    @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+
 
     @JsonProperty("items")
     public List<Item> getItems() {
@@ -32,29 +28,15 @@ public class IGCPostObject {
     }
 
     @JsonProperty("paging")
-    public Paging getPaging() {
-        return paging;
-    }
+    private Paging paging;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("paging")
     public void setPaging(Paging paging) {
         this.paging = paging;
     }
 
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
 
-    @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-    }
 
 }
-
-
-
-
-
-

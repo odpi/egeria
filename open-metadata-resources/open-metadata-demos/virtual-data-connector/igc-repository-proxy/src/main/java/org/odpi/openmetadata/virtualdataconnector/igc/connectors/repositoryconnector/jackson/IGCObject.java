@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-package org.odpi.openmetadata.virtualdataconnector.igc.connectors.eventmapper;
+package org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconnector.jackson;
 
 import com.fasterxml.jackson.annotation.*;
 
@@ -29,10 +29,11 @@ import java.util.Map;
         "length",
         "odbc_type",
         "database_table_or_view",
-        "is_a_type_of"
-
+        "is_a_type_of",
+        "short_description",
+        "terms"
 })
-public class IGCColumn {
+public class IGCObject {
 
     @JsonProperty("created_by")
     private String createdBy;
@@ -76,9 +77,17 @@ public class IGCColumn {
     private DatabaseTableOrView databaseTableOrView;
     @JsonProperty("is_a_type_of")
     private IsTypeOf isTypeOf;
+    @JsonProperty("short_description")
+    private String short_description;
+    @JsonProperty("terms")
+    private Terms terms;
+
 
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+
+    @JsonProperty("short_description")
+    public String getShort_description(){ return short_description;}
 
     @JsonProperty("created_by")
     public String getCreatedBy() {
@@ -288,6 +297,13 @@ public class IGCColumn {
     public void setIsTypeOf(IsTypeOf isTypeOf) {
         this.isTypeOf = isTypeOf;
     }
+
+
+    @JsonProperty("terms")
+    public Terms getTerms() {
+        return terms;
+    }
+
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;

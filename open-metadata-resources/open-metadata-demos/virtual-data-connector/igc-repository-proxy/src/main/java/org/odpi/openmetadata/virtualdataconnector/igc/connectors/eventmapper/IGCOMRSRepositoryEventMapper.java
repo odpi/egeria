@@ -14,6 +14,8 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
+import org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconnector.jackson.IGCKafkaEvent;
+import org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconnector.jackson.IGCObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconnector.IGCOMRSRepositoryConnector;
@@ -33,9 +35,8 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
 
 
     private static final Logger log = LoggerFactory.getLogger(IGCOMRSRepositoryEventMapper.class);
-    private IGCColumn igcColumn;
+    private IGCObject igcObject;
     private String technicalTerm;
-    private String businessTerm;
     private IGCOMRSRepositoryConnector igcomrsRepositoryConnector;
     private String originatorServerName;
     private String metadataCollectionId;
@@ -130,14 +131,25 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
      */
     public void processIGCEvent(IGCKafkaEvent igcKafkaEvent) {
         try {
-            igcColumn = igcomrsRepositoryConnector.queryIGCColumn(igcKafkaEvent.getASSETRID());
+            igcObject = igcomrsRepositoryConnector.genericIGCQuery(igcKafkaEvent.getASSETRID());
             this.technicalTerm = igcKafkaEvent.getASSETRID();
             switch (igcKafkaEvent.getASSETTYPE()) {
                 case "Database Column":
                     if (igcKafkaEvent.getACTION().equals("ASSIGNED_RELATIONSHIP") || igcKafkaEvent.getACTION().equals("MODIFY")) {
-                        if (igcColumn.getAssignedToTerms() != null) {
-                            businessTerm = igcColumn.getAssignedToTerms().getItems().get(0).getName();
-                            Relationship relationship = newRelationship("SemanticAssignment", igcKafkaEvent.getASSETRID(), "RelationalColumn", igcColumn.getAssignedToTerms().getItems().get(0).getId(), "GlossaryTerm");
+                        if (igcObject.getAssignedToTerms() != null) {
+
+                            String glossaryTermID = igcObject.getAssignedToTerms().getItems().get(0).getName();
+                            String glossaryTermName = igcObject.getAssignedToTerms().getItems().get(0).getName();
+
+                            Relationship relationship = newRelationship(
+                                    "SemanticAssignment",
+                                    igcKafkaEvent.getASSETRID(),
+                                    "RelationalColumn",
+                                    technicalTerm,
+                                    glossaryTermID,
+                                    "GlossaryTerm",
+                                    glossaryTermName);
+
                             this.repositoryEventProcessor.processNewRelationshipEvent(
                                     sourceName,
                                     metadataCollectionId,
@@ -158,6 +170,29 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                     if (igcKafkaEvent.getACTION().equals("CREATE")) {
                         createEntity("GlossaryCategory");
                     }
+                    if (igcKafkaEvent.getACTION().equals("ASSIGNED_RELATIONSHIP")){
+
+                        String glossaryTermID = igcObject.getTerms().getItems().get(0).getId();
+                        String glossaryTermName = igcObject.getTerms().getItems().get(0).getName();
+
+                        Relationship relationship = newRelationship(
+                                "TermCategorization",
+                                igcKafkaEvent.getASSETRID(),
+                                "GlossaryCategory",
+                                technicalTerm,
+                                glossaryTermID,
+                                "GlossaryTerm",
+                                glossaryTermName
+                        );
+                        this.repositoryEventProcessor.processNewRelationshipEvent(
+                                sourceName,
+                                metadataCollectionId,
+                                originatorServerName,
+                                originatorServerType,
+                                originatorOrganizationName,
+                                relationship
+                        );
+                    }
                     break;
             }
         }
@@ -170,18 +205,23 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
 
         Map<String, InstancePropertyValue> properties = new HashMap<>();
 
+
         PrimitivePropertyValue qualifiedName = new PrimitivePropertyValue();
         qualifiedName.setPrimitiveValue(this.technicalTerm);
         qualifiedName.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
         properties.put("qualifiedName", qualifiedName);
 
         PrimitivePropertyValue displayname = new PrimitivePropertyValue();
-        displayname.setPrimitiveValue(igcColumn.get_Name());
+        displayname.setPrimitiveValue(igcObject.getName());
         displayname.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
         properties.put("displayName", displayname);
 
+        PrimitivePropertyValue summary = new PrimitivePropertyValue();
+        summary.setPrimitiveValue(igcObject.getShort_description());
+        summary.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+        properties.put("summary", summary);
 
-        //TODO Which properties are essential?
+        //TODO Description = IGC Long description. Not retrievable with the IGC Connector GET request
         InstanceProperties instanceProperties = new InstanceProperties();
         instanceProperties.setInstanceProperties(properties);
 
@@ -217,7 +257,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
      * about the relationship type, the two entities it connects and the properties it holds.
      * @throws TypeErrorException The type name is not recognized as a relationship type.
      */
-    private Relationship newRelationship(String relationshipType, String entityId1, String entityType1, String entityId2, String entityType2) throws TypeErrorException {
+    private Relationship newRelationship(String relationshipType, String entityId1, String entityType1, String entityName1, String entityId2, String entityType2, String entityName2) throws TypeErrorException {
         Relationship relationship = this.repositoryHelper.getNewRelationship(
                 sourceName,
                 metadataCollectionId,
@@ -233,11 +273,10 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         entityProxyOne.setGUID(entityId1);
         entityProxyTwo.setGUID(entityId2);
 
-        relationship.setEntityOnePropertyName(technicalTerm);
+        relationship.setEntityOnePropertyName(entityName1);
         relationship.setEntityOneProxy(entityProxyOne);
 
-
-        relationship.setEntityTwoPropertyName(businessTerm);
+        relationship.setEntityTwoPropertyName(entityName2);
         relationship.setEntityTwoProxy(entityProxyTwo);
         return relationship;
     }
