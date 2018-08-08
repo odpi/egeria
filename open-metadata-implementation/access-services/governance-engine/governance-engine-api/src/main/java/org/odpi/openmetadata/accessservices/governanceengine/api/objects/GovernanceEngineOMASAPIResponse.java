@@ -16,6 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
+
 public abstract class GovernanceEngineOMASAPIResponse {
     protected int relatedHTTPCode = 200;
     protected String exceptionClassName = null;
@@ -131,14 +132,5 @@ public abstract class GovernanceEngineOMASAPIResponse {
     }
 
 
-    @Override
-    public String toString() {
-        return "GovernanceEngineOMASAPIResponse{" +
-                "relatedHTTPCode=" + relatedHTTPCode +
-                ", exceptionClassName='" + exceptionClassName + '\'' +
-                ", exceptionErrorMessage='" + exceptionErrorMessage + '\'' +
-                ", exceptionSystemAction='" + exceptionSystemAction + '\'' +
-                ", exceptionUserAction='" + exceptionUserAction + '\'' +
-                '}';
-    }
+
 }

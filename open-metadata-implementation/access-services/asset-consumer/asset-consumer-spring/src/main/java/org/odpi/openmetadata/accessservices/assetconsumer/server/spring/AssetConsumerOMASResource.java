@@ -1,12 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservices.assetconsumer.server.spring;
 
-import org.odpi.openmetadata.accessservices.assetconsumer.server.properties.ConnectionResponse;
-import org.odpi.openmetadata.accessservices.assetconsumer.server.properties.VoidResponse;
+import org.odpi.openmetadata.accessservices.assetconsumer.responses.ConnectionResponse;
+import org.odpi.openmetadata.accessservices.assetconsumer.responses.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.CommentType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.StarRating;
 import org.odpi.openmetadata.accessservices.assetconsumer.server.AssetConsumerRESTServices;
-import org.odpi.openmetadata.accessservices.assetconsumer.server.properties.GUIDResponse;
+import org.odpi.openmetadata.accessservices.assetconsumer.responses.GUIDResponse;
 import org.springframework.web.bind.annotation.*;
 
 

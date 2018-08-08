@@ -44,16 +44,5 @@ public class GovernanceClassificationDefAPIResponse extends GovernanceEngineOMAS
 
 
 
-    @Override
-    public String toString() {
 
-        return "TagMapResponse{" +
-                "tagmap=" + GovernanceClassificationDef +
-                ", relatedHTTPCode=" + relatedHTTPCode +
-                ", exceptionClassName='" + exceptionClassName + '\'' +
-                ", exceptionErrorMessage='" + exceptionErrorMessage + '\'' +
-                ", exceptionSystemAction='" + exceptionSystemAction + '\'' +
-                ", exceptionUserAction='" + exceptionUserAction + '\'' +
-                '}';
-    }
 }

@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 package org.odpi.openmetadata.accessservices.governanceengine.api.auditlog;
+
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

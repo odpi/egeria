@@ -17,7 +17,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 // We use this to manage objects associated with the classification of an asset component
 // for example confidentiality=C3
-
 public class GovernanceClassificationUsage extends GovernanceClassificationBase {
 
     // Additional Attributes of a Tag Definition

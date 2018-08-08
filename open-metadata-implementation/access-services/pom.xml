@@ -27,13 +27,13 @@
         <module>asset-owner</module>
         <module>community-profile</module>
         <module>connected-asset</module>
-        <module>data-architecture</module>
         <module>data-infrastructure</module>
         <module>data-platform</module>
         <module>data-process</module>
         <module>data-protection</module>
         <module>data-science</module>
         <module>dev-ops</module>
+        <module>digital-architecture</module>
         <module>discovery-engine</module>
         <module>governance-engine</module>
         <module>governance-program</module>

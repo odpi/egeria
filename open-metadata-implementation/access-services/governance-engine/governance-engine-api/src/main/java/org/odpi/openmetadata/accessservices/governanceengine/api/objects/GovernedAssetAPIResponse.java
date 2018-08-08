@@ -53,15 +53,5 @@ public class GovernedAssetAPIResponse extends GovernanceEngineOMASAPIResponse {
     }
 
 
-    @Override
-    public String toString() {
-        return "GovernedAssetListAPIResponse{" +
-                "assetList=" + asset +
-                ", relatedHTTPCode=" + relatedHTTPCode +
-                ", exceptionClassName='" + exceptionClassName + '\'' +
-                ", exceptionErrorMessage='" + exceptionErrorMessage + '\'' +
-                ", exceptionSystemAction='" + exceptionSystemAction + '\'' +
-                ", exceptionUserAction='" + exceptionUserAction + '\'' +
-                '}';
-    }
+
 }

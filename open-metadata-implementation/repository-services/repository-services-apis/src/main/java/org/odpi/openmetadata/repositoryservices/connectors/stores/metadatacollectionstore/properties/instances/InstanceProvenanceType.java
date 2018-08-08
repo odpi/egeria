@@ -36,6 +36,21 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *         of the repository cohort but has been deregistered. The metadata collection id remains the same.
  *         If the repository rejoins the cohort then these elements can be refreshed from the rejoining repository.
  *     </li>
+ *     <li>
+ *         DATA_PLATFORM: the element is being managed by an external data platform using the Data Platform OMAS.
+ *         This data platform hosts the data assets it documents and the metadata is an integral part of its
+ *         operation.
+ *     </li>
+ *     <li>
+ *         EXTERNAL_ENGINE: the element is being maintained by an external engine that is manipulating data
+ *         assets in real-time.  The metadata describes events in real-time and as such should not be
+ *         updated by other metadata processes.
+ *     </li>
+ *     <li>
+ *         EXTERNAL_TOOL: the element is being maintained by an external tool.  Typically this is descriptive
+ *         metadata that the tool is using to provide a service.  Hence it has tagged the metadata as
+ *         read-only.
+ *     </li>
  * </ul>
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -54,7 +69,11 @@ public enum InstanceProvenanceType implements Serializable
     DEREGISTERED_REPOSITORY (4, "Deregistered Repository", "The instance is a cached copy of a metadata instance " +
                                                                       "that is owned by a repository that is no longer " +
                                                                       "connected to one of the cohorts that the " +
-                                                                      "local server belongs to; it may be out-of-date");
+                                                                      "local server belongs to; it may be out-of-date"),
+    DATA_PLATFORM           (5, "Data Platform",           "The instance is maintained by an external data platform."),
+    EXTERNAL_ENGINE         (6, "External Engine",         "The instance is maintained by an external engine that is " +
+                                                                      "manipulating the data in real time."),
+    EXTERNAL_TOOL           (7, "External Tool",           "The instance is maintained by an external tool.");
 
     private static final long serialVersionUID = 1L;
 
