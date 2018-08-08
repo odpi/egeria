@@ -3,7 +3,7 @@
 # Data Protection Open Metadata Access Service (OMAS)
 
 The Data Protection OMAS provides APIs and events for tools and applications
-that are defining the data protection requirements an implementations for
+that are defining the data protection requirements and implementations for
 a governance program.
 
 The module structure for the Data Protection OMAS is as follows:
