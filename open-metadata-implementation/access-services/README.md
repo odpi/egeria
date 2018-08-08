@@ -37,11 +37,6 @@ involved in reviewing and crowd-sourcing knowledge about the data assets and the
   The Connected Asset OMAS implements the open metadata ConnectedAssetProperties API for an OCF connector.
 An OCF connector is a connector that supports the [Open Connector Framework (OCF)](../frameworks/open-connector-framework).
 
-* **[data-architecture](data-architecture)** - support the definition of data standards and models.
-
-  The Data Architecture OMAS provides the ability to define information standards, definitions, blueprints and models for an organization.
-It is designed for data architecture tools.
-
 * **[data-infrastructure](data-infrastructure)** - manage metadata about deployed infrastructure.
 
   The Data Infrastructure OMAS provides support for the design and planning of the information infrastructure
@@ -86,6 +81,13 @@ It is designed for data science and analytics management tools.
   
   The DevOps OMAS provides services for a DevOps pipeline to query and maintain metadata about systems, processes and
 software components that are being deployed into the information landscape.
+
+* **[digital-architecture](digital-architecture)** - support the design and architecture of the digital services
+that support the business.
+
+  The Digital Architecture OMAS provides the ability to define information standards, definitions, solution blueprints and
+models for an organization.  It is designed for architecture tools.  It is able to support the
+definition and management of a digital service through concept to deployment.
 
 * **[discovery-engine](discovery-engine)** - manage metadata for metadata discovery services.
 

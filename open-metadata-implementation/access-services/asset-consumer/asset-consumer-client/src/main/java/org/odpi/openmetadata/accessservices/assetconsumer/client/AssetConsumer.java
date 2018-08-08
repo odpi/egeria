@@ -4,9 +4,9 @@ package org.odpi.openmetadata.accessservices.assetconsumer.client;
 import org.odpi.openmetadata.accessservices.assetconsumer.AssetConsumerInterface;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.AssetConsumerErrorCode;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions.*;
-import org.odpi.openmetadata.accessservices.assetconsumer.server.properties.AssetConsumerOMASAPIResponse;
-import org.odpi.openmetadata.accessservices.assetconsumer.server.properties.ConnectionResponse;
-import org.odpi.openmetadata.accessservices.assetconsumer.server.properties.VoidResponse;
+import org.odpi.openmetadata.accessservices.assetconsumer.responses.AssetConsumerOMASAPIResponse;
+import org.odpi.openmetadata.accessservices.assetconsumer.responses.ConnectionResponse;
+import org.odpi.openmetadata.accessservices.assetconsumer.responses.VoidResponse;
 import org.odpi.openmetadata.accessservices.connectedasset.client.ConnectedAsset;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
@@ -14,11 +14,13 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedExcepti
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.CommentType;
-import org.odpi.openmetadata.accessservices.assetconsumer.server.properties.GUIDResponse;
+import org.odpi.openmetadata.accessservices.assetconsumer.responses.GUIDResponse;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.StarRating;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.Map;
 
 /**
  * The AssetConsumer Open Metadata Access Service (OMAS) provides an interface to support an application or tool
@@ -37,7 +39,7 @@ public class AssetConsumer implements AssetConsumerInterface
     /**
      * Create a new AssetConsumer client.
      *
-     * @param newServerURL - the network address of the server running the OMAS REST servers
+     * @param newServerURL - the network address of the server running the OMAS REST services
      */
     public AssetConsumer(String     newServerURL)
     {
@@ -82,7 +84,8 @@ public class AssetConsumer implements AssetConsumerInterface
                                                     methodName,
                                                     errorMessage,
                                                     errorCode.getSystemAction(),
-                                                    errorCode.getUserAction());
+                                                    errorCode.getUserAction(),
+                                                    null);
         }
 
         /*
@@ -905,7 +908,8 @@ public class AssetConsumer implements AssetConsumerInterface
                                                 methodName,
                                                 errorMessage,
                                                 errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
+                                                errorCode.getUserAction(),
+                                                "userId");
         }
     }
 
@@ -934,7 +938,8 @@ public class AssetConsumer implements AssetConsumerInterface
                                                 methodName,
                                                 errorMessage,
                                                 errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
+                                                errorCode.getUserAction(),
+                                                guidParameter);
         }
     }
 
@@ -963,7 +968,8 @@ public class AssetConsumer implements AssetConsumerInterface
                                                 methodName,
                                                 errorMessage,
                                                 errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
+                                                errorCode.getUserAction(),
+                                                nameParameter);
         }
     }
 
@@ -1016,9 +1022,9 @@ public class AssetConsumer implements AssetConsumerInterface
     /**
      * Issue a PATCH REST call that returns a TypeDefResponse object.
      *
-     * @param methodName - name of the method being called
-     * @param urlTemplate - template of the URL for the REST API call with place-holders for the parameters
-     * @param params - a list of parameters that are slotted into the url template
+     * @param methodName  name of the method being called
+     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param params  a list of parameters that are slotted into the url template
      * @return TypeDefResponse
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
@@ -1060,9 +1066,9 @@ public class AssetConsumer implements AssetConsumerInterface
     /**
      * Issue a POST REST call that returns a VoidResponse object.  This is typically a create
      *
-     * @param methodName - name of the method being called
-     * @param urlTemplate - template of the URL for the REST API call with place-holders for the parameters
-     * @param params - a list of parameters that are slotted into the url template
+     * @param methodName  name of the method being called
+     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param params  a list of parameters that are slotted into the url template
      * @return VoidResponse
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
@@ -1104,8 +1110,8 @@ public class AssetConsumer implements AssetConsumerInterface
     /**
      * Throw an AmbiguousConnectionNameException if it is encoded in the REST response.
      *
-     * @param methodName - name of the method called
-     * @param restResult - response from the rest call.  This generated in the remote server.
+     * @param methodName  name of the method called
+     * @param restResult  response from the rest call.  This generated in the remote server.
      * @throws AmbiguousConnectionNameException encoded exception from the server
      */
     private void detectAndThrowAmbiguousConnectionNameException(String                       methodName,
@@ -1115,12 +1121,27 @@ public class AssetConsumer implements AssetConsumerInterface
 
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
+            String connectionName = null;
+
+            Map<String, Object>   exceptionProperties = restResult. getExceptionProperties();
+
+            if (exceptionProperties != null)
+            {
+                Object  nameObject = exceptionProperties.get("connectionName");
+
+                if (nameObject != null)
+                {
+                    connectionName = (String)nameObject;
+                }
+            }
+
             throw new AmbiguousConnectionNameException(restResult.getRelatedHTTPCode(),
                                                        this.getClass().getName(),
                                                        methodName,
                                                        restResult.getExceptionErrorMessage(),
                                                        restResult.getExceptionSystemAction(),
-                                                       restResult.getExceptionUserAction());
+                                                       restResult.getExceptionUserAction(),
+                                                       connectionName);
         }
     }
 
@@ -1128,8 +1149,8 @@ public class AssetConsumer implements AssetConsumerInterface
     /**
      * Throw an InvalidParameterException if it is encoded in the REST response.
      *
-     * @param methodName - name of the method called
-     * @param restResult - response from the rest call.  This generated in the remote server.
+     * @param methodName  name of the method called
+     * @param restResult  response from the rest call.  This generated in the remote server.
      * @throws InvalidParameterException encoded exception from the server
      */
     private void detectAndThrowInvalidParameterException(String                       methodName,
@@ -1139,12 +1160,26 @@ public class AssetConsumer implements AssetConsumerInterface
 
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
+            String paramName = null;
+
+            Map<String, Object>   exceptionProperties = restResult. getExceptionProperties();
+
+            if (exceptionProperties != null)
+            {
+                Object  nameObject = exceptionProperties.get("parameterName");
+
+                if (nameObject != null)
+                {
+                    paramName = (String)nameObject;
+                }
+            }
             throw new InvalidParameterException(restResult.getRelatedHTTPCode(),
                                                 this.getClass().getName(),
                                                 methodName,
                                                 restResult.getExceptionErrorMessage(),
                                                 restResult.getExceptionSystemAction(),
-                                                restResult.getExceptionUserAction());
+                                                restResult.getExceptionUserAction(),
+                                                paramName);
         }
     }
 
@@ -1152,8 +1187,8 @@ public class AssetConsumer implements AssetConsumerInterface
     /**
      * Throw an PropertyServerException if it is encoded in the REST response.
      *
-     * @param methodName - name of the method called
-     * @param restResult - response from the rest call.  This generated in the remote server.
+     * @param methodName  name of the method called
+     * @param restResult  response from the rest call.  This generated in the remote server.
      * @throws PropertyServerException encoded exception from the server
      */
     private void detectAndThrowPropertyServerException(String                       methodName,
@@ -1176,8 +1211,8 @@ public class AssetConsumer implements AssetConsumerInterface
     /**
      * Throw an UnrecognizedConnectionGUIDException if it is encoded in the REST response.
      *
-     * @param methodName - name of the method called
-     * @param restResult - response from the rest call.  This generated in the remote server.
+     * @param methodName  name of the method called
+     * @param restResult  response from the rest call.  This generated in the remote server.
      * @throws UnrecognizedConnectionGUIDException encoded exception from the server
      */
     private void detectAndThrowUnrecognizedConnectionGUIDException(String                       methodName,
@@ -1187,12 +1222,26 @@ public class AssetConsumer implements AssetConsumerInterface
 
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
+            String connectionGUID = null;
+
+            Map<String, Object>   exceptionProperties = restResult. getExceptionProperties();
+
+            if (exceptionProperties != null)
+            {
+                Object  guidObject = exceptionProperties.get("connectionGUID");
+
+                if (guidObject != null)
+                {
+                    connectionGUID = (String)guidObject;
+                }
+            }
             throw new UnrecognizedConnectionGUIDException(restResult.getRelatedHTTPCode(),
                                                           this.getClass().getName(),
                                                           methodName,
                                                           restResult.getExceptionErrorMessage(),
                                                           restResult.getExceptionSystemAction(),
-                                                          restResult.getExceptionUserAction());
+                                                          restResult.getExceptionUserAction(),
+                                                          connectionGUID);
         }
     }
 
@@ -1200,8 +1249,8 @@ public class AssetConsumer implements AssetConsumerInterface
     /**
      * Throw an UnrecognizedConnectionNameException if it is encoded in the REST response.
      *
-     * @param methodName - name of the method called
-     * @param restResult - response from the rest call.  This generated in the remote server.
+     * @param methodName  name of the method called
+     * @param restResult  response from the rest call.  This generated in the remote server.
      * @throws UnrecognizedConnectionNameException encoded exception from the server
      */
     private void detectAndThrowUnrecognizedConnectionNameException(String                       methodName,
@@ -1211,12 +1260,27 @@ public class AssetConsumer implements AssetConsumerInterface
 
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
+            String connectionName = null;
+
+            Map<String, Object>   exceptionProperties = restResult. getExceptionProperties();
+
+            if (exceptionProperties != null)
+            {
+                Object  nameObject = exceptionProperties.get("connectionName");
+
+                if (nameObject != null)
+                {
+                    connectionName = (String)nameObject;
+                }
+            }
+
             throw new UnrecognizedConnectionNameException(restResult.getRelatedHTTPCode(),
                                                           this.getClass().getName(),
                                                           methodName,
                                                           restResult.getExceptionErrorMessage(),
                                                           restResult.getExceptionSystemAction(),
-                                                          restResult.getExceptionUserAction());
+                                                          restResult.getExceptionUserAction(),
+                                                          connectionName);
         }
     }
 
@@ -1224,8 +1288,8 @@ public class AssetConsumer implements AssetConsumerInterface
     /**
      * Throw an UserNotAuthorizedException if it is encoded in the REST response.
      *
-     * @param methodName - name of the method called
-     * @param restResult - response from UserNotAuthorizedException encoded exception from the server
+     * @param methodName  name of the method called
+     * @param restResult  response from UserNotAuthorizedException encoded exception from the server
      */
     private void detectAndThrowUserNotAuthorizedException(String                       methodName,
                                                           AssetConsumerOMASAPIResponse restResult) throws UserNotAuthorizedException
@@ -1234,12 +1298,27 @@ public class AssetConsumer implements AssetConsumerInterface
 
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
+            String userId = null;
+
+            Map<String, Object>   exceptionProperties = restResult. getExceptionProperties();
+
+            if (exceptionProperties != null)
+            {
+                Object  userIdObject = exceptionProperties.get("userId");
+
+                if (userIdObject != null)
+                {
+                    userId = (String)userIdObject;
+                }
+            }
+
             throw new UserNotAuthorizedException(restResult.getRelatedHTTPCode(),
                                                  this.getClass().getName(),
                                                  methodName,
                                                  restResult.getExceptionErrorMessage(),
                                                  restResult.getExceptionSystemAction(),
-                                                 restResult.getExceptionUserAction());
+                                                 restResult.getExceptionUserAction(),
+                                                 userId);
         }
     }
 }

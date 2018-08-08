@@ -6,7 +6,7 @@ import org.testng.annotations.Test;
 import static org.testng.Assert.assertTrue;
 
 /**
- * Test the overridden methods of TestOMRSAPIResponse
+ * Test the overridden methods of OMRSRESTAPIResponse
  */
 public class TestOMRSAPIResponse
 {

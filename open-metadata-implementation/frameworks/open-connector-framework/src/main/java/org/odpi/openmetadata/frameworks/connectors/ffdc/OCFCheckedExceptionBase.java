@@ -13,7 +13,7 @@ import java.util.UUID;
  * ConnectorProvider/Connector implementation can be used.  The aim is to be able to uniquely identify the cause
  * and remedy for the error.
  */
-public class OCFCheckedExceptionBase extends Exception
+public abstract class OCFCheckedExceptionBase extends Exception
 {
     /*
      * These default values are only seen if this exception is initialized using one of its superclass constructors.

@@ -21,7 +21,7 @@ public class ErrorHandler
      *
      * @param repositoryConnector - connector object
      */
-    public ErrorHandler(OMRSRepositoryConnector   repositoryConnector)
+    ErrorHandler(OMRSRepositoryConnector   repositoryConnector)
     {
         this.repositoryConnector = repositoryConnector;
     }
@@ -30,8 +30,8 @@ public class ErrorHandler
     /**
      * Throw an exception if the supplied userId is null
      *
-     * @param userId - user name to validate
-     * @param methodName - name of the method making the call.
+     * @param userId  user name to validate
+     * @param methodName  name of the method making the call.
      * @throws InvalidParameterException the userId is null
      */
     public  void validateUserId(String userId,
@@ -48,7 +48,8 @@ public class ErrorHandler
                                                 methodName,
                                                 errorMessage,
                                                 errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
+                                                errorCode.getUserAction(),
+                                                "userId");
         }
     }
 
@@ -56,9 +57,9 @@ public class ErrorHandler
     /**
      * Throw an exception if the supplied unique identifier is null
      *
-     * @param guid - unique identifier to validate
-     * @param parameterName - name of the parameter that passed the guid.
-     * @param methodName - name of the method making the call.
+     * @param guid  unique identifier to validate
+     * @param parameterName  name of the parameter that passed the guid.
+     * @param methodName  name of the method making the call.
      * @throws InvalidParameterException the guid is null
      */
     public  void validateGUID(String guid,
@@ -76,7 +77,8 @@ public class ErrorHandler
                                                 methodName,
                                                 errorMessage,
                                                 errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
+                                                errorCode.getUserAction(),
+                                                parameterName);
         }
     }
 
@@ -84,9 +86,9 @@ public class ErrorHandler
     /**
      * Throw an exception if the supplied enum is null
      *
-     * @param enumValue - enum value to validate
-     * @param parameterName - name of the parameter that passed the enum.
-     * @param methodName - name of the method making the call.
+     * @param enumValue  enum value to validate
+     * @param parameterName  name of the parameter that passed the enum.
+     * @param methodName  name of the method making the call.
      * @throws InvalidParameterException the enum is null
      */
     public  void validateEnum(Object enumValue,
@@ -104,7 +106,8 @@ public class ErrorHandler
                                                 methodName,
                                                 errorMessage,
                                                 errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
+                                                errorCode.getUserAction(),
+                                                parameterName);
         }
     }
 
@@ -112,9 +115,9 @@ public class ErrorHandler
     /**
      * Throw an exception if the supplied name is null
      *
-     * @param name - unique name to validate
-     * @param parameterName - name of the parameter that passed the name.
-     * @param methodName - name of the method making the call.
+     * @param name  unique name to validate
+     * @param parameterName  name of the parameter that passed the name.
+     * @param methodName  name of the method making the call.
      * @throws InvalidParameterException the guid is null
      */
     public  void validateName(String name,
@@ -132,7 +135,8 @@ public class ErrorHandler
                                                 methodName,
                                                 errorMessage,
                                                 errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
+                                                errorCode.getUserAction(),
+                                                parameterName);
         }
     }
 
@@ -140,9 +144,9 @@ public class ErrorHandler
     /**
      * Throw an exception if the supplied text field is null
      *
-     * @param text - unique name to validate
-     * @param parameterName - name of the parameter that passed the name.
-     * @param methodName - name of the method making the call.
+     * @param text  unique name to validate
+     * @param parameterName  name of the parameter that passed the name.
+     * @param methodName  name of the method making the call.
      * @throws InvalidParameterException the guid is null
      */
     public  void validateText(String text,
@@ -160,7 +164,8 @@ public class ErrorHandler
                                                 methodName,
                                                 errorMessage,
                                                 errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
+                                                errorCode.getUserAction(),
+                                                "text");
         }
     }
 
@@ -168,7 +173,7 @@ public class ErrorHandler
     /**
      * Check that there is a repository connector.
      *
-     * @param methodName - name of the method being called
+     * @param methodName  name of the method being called
      * @return metadata collection that provides access to the properties in the property server
      * @throws PropertyServerException exception thrown if the repository connector
      */
@@ -223,10 +228,10 @@ public class ErrorHandler
     /**
      * Throw an exception if the supplied userId is not authorized to perform a request
      *
-     * @param userId - user name to validate
-     * @param methodName - name of the method making the call.
-     * @param serverName - name of this server
-     * @param serviceName - name of this access service
+     * @param userId  user name to validate
+     * @param methodName  name of the method making the call.
+     * @param serverName  name of this server
+     * @param serviceName  name of this access service
      * @throws UserNotAuthorizedException the userId is unauthorised for the request
      */
     public  void handleUnauthorizedUser(String userId,
@@ -236,17 +241,18 @@ public class ErrorHandler
     {
         AssetConsumerErrorCode errorCode = AssetConsumerErrorCode.USER_NOT_AUTHORIZED;
         String                 errorMessage = errorCode.getErrorMessageId()
-                + errorCode.getFormattedErrorMessage(userId,
-                                                     methodName,
-                                                     serviceName,
-                                                     serverName);
+                                            + errorCode.getFormattedErrorMessage(userId,
+                                                                                 methodName,
+                                                                                 serviceName,
+                                                                                 serverName);
 
         throw new UserNotAuthorizedException(errorCode.getHTTPErrorCode(),
                                              this.getClass().getName(),
                                              methodName,
                                              errorMessage,
                                              errorCode.getSystemAction(),
-                                             errorCode.getUserAction());
+                                             errorCode.getUserAction(),
+                                             userId);
 
     }
 
@@ -254,10 +260,10 @@ public class ErrorHandler
     /**
      * Throw an exception if the supplied userId is not authorized to perform a request
      *
-     * @param error - caught exception
-     * @param methodName - name of the method making the call.
-     * @param serverName - name of this server
-     * @param serviceName - name of this access service
+     * @param error  caught exception
+     * @param methodName  name of the method making the call.
+     * @param serverName  name of this server
+     * @param serviceName  name of this access service
      * @throws PropertyServerException unexpected exception from property server
      */
     public  void handleRepositoryError(Throwable  error,
@@ -283,13 +289,13 @@ public class ErrorHandler
 
 
     /**
-     * Throw an exception if the supplied userId is not authorized to perform a request
+     * Throw an exception if there is a problem with the asset guid
      *
-     * @param error - caught exception
-     * @param assetGUID - unique identifier for the requested asset
-     * @param methodName - name of the method making the call
-     * @param serverName - name of this server
-     * @param serviceName - name of this access service
+     * @param error  caught exception
+     * @param assetGUID  unique identifier for the requested asset
+     * @param methodName  name of the method making the call
+     * @param serverName name of this server
+     * @param serviceName  name of this access service
      * @throws InvalidParameterException unexpected exception from property server
      */
     public  void handleUnknownAsset(Throwable  error,
@@ -311,7 +317,8 @@ public class ErrorHandler
                                             methodName,
                                             errorMessage,
                                             errorCode.getSystemAction(),
-                                            errorCode.getUserAction());
+                                            errorCode.getUserAction(),
+                                            "assetGUID");
 
     }
 }

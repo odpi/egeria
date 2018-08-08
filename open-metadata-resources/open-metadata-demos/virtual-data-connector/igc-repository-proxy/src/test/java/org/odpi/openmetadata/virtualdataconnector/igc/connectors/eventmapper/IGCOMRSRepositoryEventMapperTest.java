@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.virtualdataconnector.igc.connectors.eventmapper;
 
 import org.testng.annotations.Test;
