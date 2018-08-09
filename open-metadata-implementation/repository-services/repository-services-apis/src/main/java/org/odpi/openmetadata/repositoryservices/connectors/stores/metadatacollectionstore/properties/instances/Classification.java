@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSRuntimeException;
 
+import java.util.Objects;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -243,5 +245,51 @@ public class Classification extends InstanceAuditHeader
                 ", classificationOrigin=" + classificationOrigin +
                 ", classificationOriginGUID='" + classificationOriginGUID + '\'' +
                 '}';
+    }
+
+
+    /**
+     * Validate that an object is equal depending on their stored values.
+     *
+     * @param objectToCompare object
+     * @return boolean result
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (!(objectToCompare instanceof Classification))
+        {
+            return false;
+        }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        Classification that = (Classification) objectToCompare;
+        return Objects.equals(classificationName, that.classificationName) &&
+                Objects.equals(classificationProperties, that.classificationProperties) &&
+                getClassificationOrigin() == that.getClassificationOrigin() &&
+                Objects.equals(getClassificationOriginGUID(), that.getClassificationOriginGUID());
+    }
+
+
+    /**
+     * Return a hash code based on the values of this object.
+     *
+     * @return in hash code
+     */
+    @Override
+    public int hashCode()
+    {
+
+        return Objects.hash(super.hashCode(),
+                            classificationName,
+                            classificationProperties,
+                            getClassificationOrigin(),
+                            getClassificationOriginGUID());
     }
 }

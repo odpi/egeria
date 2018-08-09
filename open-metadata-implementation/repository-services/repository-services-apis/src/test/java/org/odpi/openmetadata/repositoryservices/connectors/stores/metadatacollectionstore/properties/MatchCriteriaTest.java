@@ -10,10 +10,10 @@ import java.util.List;
 import static org.testng.Assert.assertTrue;
 
 /**
- * Verify the SequencingOrder enum contains unique ordinals, non-null names and descriptions and can be
+ * Verify the MatchCriteria enum contains unique ordinals, non-null names and descriptions and can be
  * serialized to JSON and back again.
  */
-public class TestSequencingOrder
+public class MatchCriteriaTest
 {
     private List<Integer> existingOrdinals = null;
 
@@ -46,44 +46,19 @@ public class TestSequencingOrder
     {
         existingOrdinals = new ArrayList<>();
 
-        SequencingOrder  testValue;
+        MatchCriteria  testValue;
 
-        testValue = SequencingOrder.ANY;
+        testValue = MatchCriteria.ALL;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
 
-        testValue = SequencingOrder.GUID;
+        testValue = MatchCriteria.ANY;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
 
-        testValue = SequencingOrder.CREATION_DATE_RECENT;
-        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
-        assertTrue(testValue.getName() != null);
-        assertTrue(testValue.getDescription() != null);
-
-        testValue = SequencingOrder.CREATION_DATE_OLDEST;
-        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
-        assertTrue(testValue.getName() != null);
-        assertTrue(testValue.getDescription() != null);
-
-        testValue = SequencingOrder.LAST_UPDATE_RECENT;
-        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
-        assertTrue(testValue.getName() != null);
-        assertTrue(testValue.getDescription() != null);
-
-        testValue = SequencingOrder.LAST_UPDATE_OLDEST;
-        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
-        assertTrue(testValue.getName() != null);
-        assertTrue(testValue.getDescription() != null);
-
-        testValue = SequencingOrder.PROPERTY_ASCENDING;
-        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
-        assertTrue(testValue.getName() != null);
-        assertTrue(testValue.getDescription() != null);
-
-        testValue = SequencingOrder.PROPERTY_DESCENDING;
+        testValue = MatchCriteria.NONE;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
@@ -102,7 +77,7 @@ public class TestSequencingOrder
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(SequencingOrder.CREATION_DATE_OLDEST);
+            jsonString = objectMapper.writeValueAsString(MatchCriteria.ALL);
         }
         catch (Throwable  exc)
         {
@@ -111,7 +86,7 @@ public class TestSequencingOrder
 
         try
         {
-            assertTrue(objectMapper.readValue(jsonString, SequencingOrder.class) == SequencingOrder.CREATION_DATE_OLDEST);
+            assertTrue(objectMapper.readValue(jsonString, MatchCriteria.class) == MatchCriteria.ALL);
         }
         catch (Throwable  exc)
         {
@@ -125,6 +100,6 @@ public class TestSequencingOrder
      */
     @Test public void testToString()
     {
-        assertTrue(SequencingOrder.LAST_UPDATE_OLDEST.toString().contains("SequencingOrder"));
+        assertTrue(MatchCriteria.NONE.toString().contains("MatchCriteria"));
     }
 }

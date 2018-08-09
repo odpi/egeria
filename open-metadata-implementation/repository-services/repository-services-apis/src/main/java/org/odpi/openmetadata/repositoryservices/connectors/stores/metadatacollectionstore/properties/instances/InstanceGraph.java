@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -22,8 +23,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class InstanceGraph extends InstanceElementHeader
 {
-    private List<EntityDetail>   entityElementList = null;
-    private List<Relationship>   relationshipElementList = null;
+    private List<EntityDetail> entities      = null;
+    private List<Relationship> relationships = null;
 
 
     /**
@@ -31,34 +32,38 @@ public class InstanceGraph extends InstanceElementHeader
      */
     public InstanceGraph()
     {
+        super();
     }
+
 
     /**
      * Typical Constructor creates a graph with the supplied list of elements.  It assumes the caller has supplied
      * elements that do link together.  However, this graph supports graph fragments.
      *
-     * @param entityElementList list of entity elements to add to the list
-     * @param relationshipElementList list of relationship elements to add to the list
+     * @param entities list of entity elements to add to the list
+     * @param relationships list of relationship elements to add to the list
      */
-    public InstanceGraph(List<EntityDetail> entityElementList,
-                         List<Relationship> relationshipElementList)
+    public InstanceGraph(List<EntityDetail> entities,
+                         List<Relationship> relationships)
     {
-        if (entityElementList == null)
+        super();
+
+        if (entities == null)
         {
-            this.entityElementList = null;
+            this.entities = null;
         }
         else
         {
-            this.entityElementList = new ArrayList<>(entityElementList);
+            this.entities = new ArrayList<>(entities);
         }
 
-        if (relationshipElementList == null)
+        if (relationships == null)
         {
-            this.relationshipElementList = null;
+            this.relationships = null;
         }
         else
         {
-            this.relationshipElementList = new ArrayList<>(relationshipElementList);
+            this.relationships = new ArrayList<>(relationships);
         }
     }
 
@@ -70,6 +75,8 @@ public class InstanceGraph extends InstanceElementHeader
      */
     public InstanceGraph(InstanceGraph templateGraph)
     {
+        super(templateGraph);
+
         if (templateGraph != null)
         {
             setEntities(templateGraph.getEntities());
@@ -85,13 +92,17 @@ public class InstanceGraph extends InstanceElementHeader
      */
     public List<EntityDetail> getEntities()
     {
-        if (entityElementList == null)
+        if (entities == null)
+        {
+            return null;
+        }
+        else if (entities.isEmpty())
         {
             return null;
         }
         else
         {
-            return new ArrayList<>(entityElementList);
+            return new ArrayList<>(entities);
         }
     }
 
@@ -103,14 +114,7 @@ public class InstanceGraph extends InstanceElementHeader
      */
     public void setEntities(List<EntityDetail> entityElementList)
     {
-        if (entityElementList == null)
-        {
-            this.entityElementList = null;
-        }
-        else
-        {
-            this.entityElementList = new ArrayList<>(entityElementList);
-        }
+        this.entities = entityElementList;
     }
 
 
@@ -122,13 +126,17 @@ public class InstanceGraph extends InstanceElementHeader
      */
     public List<Relationship> getRelationships()
     {
-        if (relationshipElementList == null)
+        if (relationships == null)
+        {
+            return null;
+        }
+        else if (relationships.isEmpty())
         {
             return null;
         }
         else
         {
-            return new ArrayList<>(relationshipElementList);
+            return new ArrayList<>(relationships);
         }
     }
 
@@ -140,14 +148,7 @@ public class InstanceGraph extends InstanceElementHeader
      */
     public void setRelationships(List<Relationship> relationshipElementList)
     {
-        if (relationshipElementList == null)
-        {
-            this.relationshipElementList = null;
-        }
-        else
-        {
-            this.relationshipElementList = new ArrayList<>(relationshipElementList);
-        }
+        this.relationships = relationshipElementList;
     }
 
 
@@ -157,16 +158,16 @@ public class InstanceGraph extends InstanceElementHeader
      * @param anchorEntityGUID unique identifier for an entity
      * @return Relationships relationship iterator
      */
-    public List<Relationship> getRelationshipsForEntity(String  anchorEntityGUID)
+    public List<Relationship> returnRelationshipsForEntity(String  anchorEntityGUID)
     {
         ArrayList<Relationship> matchingRelationships = new ArrayList<>();
 
         /*
          * Load copies of each relationship that matches the requested entity into matchingRelationships.
          */
-        if (relationshipElementList != null)
+        if (relationships != null)
         {
-            for (Relationship  relationship : relationshipElementList)
+            for (Relationship  relationship : relationships)
             {
                 if (relationship.relatedToEntity(anchorEntityGUID))
                 {
@@ -197,19 +198,19 @@ public class InstanceGraph extends InstanceElementHeader
      * @return EntityDetail the requested entity at the far end of the relationship.
      * Null if the relationship or entity is not found.
      */
-    public EntityDetail getLinkedEntity(String  anchorEntityGUID, String linkingRelationshipGUID)
+    public EntityDetail returnLinkedEntity(String  anchorEntityGUID, String linkingRelationshipGUID)
     {
         Relationship    matchingRelationship = null;
-        String          linkedEntityGUID = null;
+        String          linkedEntityGUID;
         EntityDetail    linkedEntity = null;
 
         /*
          * Step through the list of relationships looking for the matching one.  If parameters are null we will not
          * match with the list.
          */
-        if (relationshipElementList != null)
+        if (relationships != null)
         {
-            for (Relationship  relationship : relationshipElementList)
+            for (Relationship  relationship : relationships)
             {
                 if (relationship.getGUID().equals(linkingRelationshipGUID))
                 {
@@ -230,7 +231,7 @@ public class InstanceGraph extends InstanceElementHeader
         /*
          * Extract the guid of the linking entity.
          */
-        linkedEntityGUID = matchingRelationship.getLinkedEntity(anchorEntityGUID);
+        linkedEntityGUID = matchingRelationship.returnLinkedEntity(anchorEntityGUID);
 
         /*
          * Return null if the entity does not match.
@@ -244,7 +245,7 @@ public class InstanceGraph extends InstanceElementHeader
          * Step through the list of entities in the graph looking for the appropriate entity to return.
          * If no match occurs, null will be returned.
          */
-        for (EntityDetail  entity : entityElementList)
+        for (EntityDetail  entity : entities)
         {
             if (entity.getGUID().equals(linkedEntityGUID))
             {
@@ -262,9 +263,9 @@ public class InstanceGraph extends InstanceElementHeader
      *
      * @return elementCount for entities
      */
-    public int getEntityElementCount()
+    public int returnEntityElementCount()
     {
-        return entityElementList.size();
+        return entities.size();
     }
 
 
@@ -273,9 +274,9 @@ public class InstanceGraph extends InstanceElementHeader
      *
      * @return elementCount for relationships
      */
-    public int getRelationshipElementCount()
+    public int returnRelationshipElementCount()
     {
-        return relationshipElementList.size();
+        return relationships.size();
     }
 
 
@@ -288,12 +289,44 @@ public class InstanceGraph extends InstanceElementHeader
     public String toString()
     {
         return "InstanceGraph{" +
-                "entityElementList=" + entityElementList +
-                ", relationshipElementList=" + relationshipElementList +
-                ", entities=" + getEntities() +
-                ", relationships=" + getRelationships() +
-                ", entityElementCount=" + getEntityElementCount() +
-                ", relationshipElementCount=" + getRelationshipElementCount() +
+                "entities=" + entities +
+                ", relationships=" + relationships +
                 '}';
+    }
+
+
+    /**
+     * Validate that an object is equal depending on their stored values.
+     *
+     * @param objectToCompare object
+     * @return boolean result
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (!(objectToCompare instanceof InstanceGraph))
+        {
+            return false;
+        }
+        InstanceGraph that = (InstanceGraph) objectToCompare;
+        return Objects.equals(entities, that.entities) &&
+                Objects.equals(relationships, that.relationships);
+    }
+
+
+    /**
+     * Return a hash code based on the values of this object.
+     *
+     * @return in hash code
+     */
+    @Override
+    public int hashCode()
+    {
+
+        return Objects.hash(entities, relationships);
     }
 }

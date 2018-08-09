@@ -33,7 +33,7 @@ public abstract class AttributeTypeDef extends TypeDefElementHeader
 {
     protected long                     version         = 0L;
     protected String                   versionName     = null;
-    protected AttributeTypeDefCategory category        = AttributeTypeDefCategory.UNKNOWN_DEF;
+    protected AttributeTypeDefCategory category        = null;
     protected String                   guid            = null;
     protected String                   name            = null;
     protected String                   description     = null;
@@ -45,6 +45,7 @@ public abstract class AttributeTypeDef extends TypeDefElementHeader
      */
     protected AttributeTypeDef()
     {
+        super();
     }
 
 
@@ -56,6 +57,7 @@ public abstract class AttributeTypeDef extends TypeDefElementHeader
      */
     protected AttributeTypeDef(AttributeTypeDefCategory   category)
     {
+        super();
         this.category = category;
     }
 
