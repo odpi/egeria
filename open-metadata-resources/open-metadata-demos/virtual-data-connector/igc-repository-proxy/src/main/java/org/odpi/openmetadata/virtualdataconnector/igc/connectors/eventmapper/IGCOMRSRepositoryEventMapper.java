@@ -16,14 +16,12 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 import org.odpi.openmetadata.virtualdataconnector.igc.connectors.eventmapper.jackson.IGCKafkaEvent;
 import org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconnector.jackson.IGCObject;
+import org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconnector.jackson.Item;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconnector.IGCOMRSRepositoryConnector;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 
 /**
@@ -36,7 +34,6 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
 
     private static final Logger log = LoggerFactory.getLogger(IGCOMRSRepositoryEventMapper.class);
     private IGCObject igcObject;
-    private String technicalTerm;
     private IGCOMRSRepositoryConnector igcomrsRepositoryConnector;
     private String originatorServerName;
     private String metadataCollectionId;
@@ -115,7 +112,10 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                         igcKafkaEvent = mapper.readValue(record.value(), IGCKafkaEvent.class);
                         log.info("Consumer Record");
                         log.info(record.value());
-                        processIGCEvent(igcKafkaEvent);
+                        if (igcKafkaEvent.getEventType().equals("IMAM_SHARE_EVENT"))
+                            processIMAM(igcKafkaEvent);
+                        else
+                            processAsset(igcKafkaEvent);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -125,14 +125,32 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
     }
 
     /**
+     * Propagate the importation of databases into IGC through the OMRS.
+     * @param igcKafkaEvent     A Kafka event originating from IGC
+     * @throws TypeErrorException
+     */
+    //TODO Propagation of database, schema.
+    private void processIMAM(IGCKafkaEvent igcKafkaEvent) throws TypeErrorException {
+        igcObject = igcomrsRepositoryConnector.genericIGCQuery(igcKafkaEvent.getDatacollectionRID());
+        List<Item> database_columns = new ArrayList<>();
+        for(Item item : igcObject.getDatabaseColumns().getItems())
+            database_columns.add(item);
+        for(Item item : database_columns){
+            igcObject = igcomrsRepositoryConnector.genericIGCQuery(item.getId());
+            createEntity("TabularColumn");
+        }
+
+    }
+
+    /**
      * Process individual IGC Kafka events and publish them through OMRS.
      *
      * @param igcKafkaEvent a Kafka event originating from IGC.
      */
-    public void processIGCEvent(IGCKafkaEvent igcKafkaEvent) {
+    private void processAsset(IGCKafkaEvent igcKafkaEvent) {
         try {
             igcObject = igcomrsRepositoryConnector.genericIGCQuery(igcKafkaEvent.getASSETRID());
-            this.technicalTerm = igcKafkaEvent.getASSETRID();
+            String technicalTerm = igcKafkaEvent.getASSETRID();
             switch (igcKafkaEvent.getASSETTYPE()) {
                 case "Database Column":
                     if (igcKafkaEvent.getACTION().equals("ASSIGNED_RELATIONSHIP") || igcKafkaEvent.getACTION().equals("MODIFY")) { //Relationship between a technical term and a glossary term.
@@ -170,7 +188,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                     if (igcKafkaEvent.getACTION().equals("CREATE")) { //Creation of a  glossary category.
                         createEntity("GlossaryCategory");
                     }
-                    if (igcKafkaEvent.getACTION().equals("ASSIGNED_RELATIONSHIP")){ //Relationship between a glossary category and a glossary term.
+                    if (igcKafkaEvent.getACTION().equals("ASSIGNED_RELATIONSHIP")) { //Relationship between a glossary category and a glossary term.
                         String glossaryTermID = igcObject.getTerms().getItems().get(0).getId();
                         String glossaryTermName = igcObject.getTerms().getItems().get(0).getName();
 
@@ -194,8 +212,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                     }
                     break;
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -206,7 +223,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         Map<String, InstancePropertyValue> properties = new HashMap<>();
 
         PrimitivePropertyValue qualifiedName = new PrimitivePropertyValue();
-        qualifiedName.setPrimitiveValue(this.technicalTerm);
+        qualifiedName.setPrimitiveValue(igcObject.getId());
         qualifiedName.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
         properties.put("qualifiedName", qualifiedName);
 

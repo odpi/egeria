@@ -32,8 +32,11 @@ import java.util.Map;
         "is_a_type_of",
         "short_description",
         "long_description",
-        "terms"
+        "terms",
+        "DatabaseColumns"
 })
+
+//Can be used for database columns, glossaryterms and glossary categories.
 public class IGCObject {
 
     @JsonProperty("created_by")
@@ -84,10 +87,16 @@ public class IGCObject {
     private String long_description;
     @JsonProperty("terms")
     private Terms terms;
-
+    @JsonProperty("database_columns")
+    private DatabaseColumns database_columns;
 
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+
+
+    @JsonProperty("database_columns")
+    public DatabaseColumns getDatabaseColumns(){ return database_columns;}
+
 
     @JsonProperty("short_description")
     public String getShortDescription(){ return short_description;}

@@ -14,7 +14,8 @@ import java.util.Map;
         "_isEncrypted",
         "ASSET_CONTEXT",
         "ACTION",
-        "ASSET_NAME"
+        "ASSET_NAME",
+        "createdRIDs"
 })
 public class IGCKafkaEvent {
 
@@ -32,8 +33,17 @@ public class IGCKafkaEvent {
     private String aCTION;
     @JsonProperty("ASSET_NAME")
     private String aSSETNAME;
+    @JsonProperty("createdRIDs")
+    private String createdRIDs;
+
+
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+
+    @JsonProperty("createdRIDs")
+    public String getDatacollectionRID() {
+        return createdRIDs.split(":")[1];
+    }
 
     @JsonProperty("ASSET_TYPE")
     public String getASSETTYPE() {
