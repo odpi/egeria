@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-package org.odpi.openmetadata.virtualdataconnector.igc.connectors.eventmapper;
+package org.odpi.openmetadata.virtualdataconnector.igc.connectors.eventmapper.jackson;
 
 import com.fasterxml.jackson.annotation.*;
 
@@ -14,7 +14,8 @@ import java.util.Map;
         "_isEncrypted",
         "ASSET_CONTEXT",
         "ACTION",
-        "ASSET_NAME"
+        "ASSET_NAME",
+        "createdRIDs"
 })
 public class IGCKafkaEvent {
 
@@ -32,8 +33,17 @@ public class IGCKafkaEvent {
     private String aCTION;
     @JsonProperty("ASSET_NAME")
     private String aSSETNAME;
+    @JsonProperty("createdRIDs")
+    private String createdRIDs;
+
+
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+
+    @JsonProperty("createdRIDs")
+    public String getDatacollectionRID() {
+        return createdRIDs.split(":")[1];
+    }
 
     @JsonProperty("ASSET_TYPE")
     public String getASSETTYPE() {
@@ -116,46 +126,3 @@ public class IGCKafkaEvent {
     }
 
 }
-
-//
-//package org.apache.atlas.omrs.adapters.igc.v1.eventmapper;
-//
-//
-//public class IGCKafkaEvent {
-//
-//    protected String ASSET_TYPE;
-//    protected String ASSET_RID;
-//    protected String eventType;
-//    protected boolean _isEncrypted;
-//    protected String ASSET_CONTEXT;
-//    protected String ACTION;
-//    protected String ASSET_NAME;
-//
-//    public String getASSET_TYPE() {
-//        return ASSET_TYPE;
-//    }
-//
-//    public String getASSET_RID() {
-//        return ASSET_RID;
-//    }
-//
-//    public String getEventType() {
-//        return eventType;
-//    }
-//
-//    public boolean is_isEncrypted() {
-//        return _isEncrypted;
-//    }
-//
-//    public String getASSET_CONTEXT() {
-//        return ASSET_CONTEXT;
-//    }
-//
-//    public String getACTION() {
-//        return ACTION;
-//    }
-//
-//    public String getASSET_NAME() {
-//        return ASSET_NAME;
-//    }
-//}

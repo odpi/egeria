@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-package org.odpi.openmetadata.virtualdataconnector.igc.connectors.eventmapper;
+package org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconnector.jackson;
 
 import com.fasterxml.jackson.annotation.*;
 
@@ -13,7 +13,7 @@ import java.util.Map;
         "_url",
         "_name"
 })
-public class Context {
+public class DatabaseTableOrView {
 
     @JsonProperty("_type")
     private String type;

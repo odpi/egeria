@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-package org.odpi.openmetadata.virtualdataconnector.igc.connectors.eventmapper;
+package org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconnector.jackson;
 
 import com.fasterxml.jackson.annotation.*;
 
@@ -29,10 +29,15 @@ import java.util.Map;
         "length",
         "odbc_type",
         "database_table_or_view",
-        "is_a_type_of"
-
+        "is_a_type_of",
+        "short_description",
+        "long_description",
+        "terms",
+        "DatabaseColumns"
 })
-public class IGCColumn {
+
+//Can be used for database columns, glossaryterms and glossary categories.
+public class IGCObject {
 
     @JsonProperty("created_by")
     private String createdBy;
@@ -76,9 +81,28 @@ public class IGCColumn {
     private DatabaseTableOrView databaseTableOrView;
     @JsonProperty("is_a_type_of")
     private IsTypeOf isTypeOf;
+    @JsonProperty("short_description")
+    private String short_description;
+    @JsonProperty("long_description")
+    private String long_description;
+    @JsonProperty("terms")
+    private Terms terms;
+    @JsonProperty("database_columns")
+    private DatabaseColumns database_columns;
 
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+
+
+    @JsonProperty("database_columns")
+    public DatabaseColumns getDatabaseColumns(){ return database_columns;}
+
+
+    @JsonProperty("short_description")
+    public String getShortDescription(){ return short_description;}
+
+    @JsonProperty("long_description")
+    public String getLongDescription(){ return long_description;}
 
     @JsonProperty("created_by")
     public String getCreatedBy() {
@@ -288,6 +312,13 @@ public class IGCColumn {
     public void setIsTypeOf(IsTypeOf isTypeOf) {
         this.isTypeOf = isTypeOf;
     }
+
+
+    @JsonProperty("terms")
+    public Terms getTerms() {
+        return terms;
+    }
+
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;

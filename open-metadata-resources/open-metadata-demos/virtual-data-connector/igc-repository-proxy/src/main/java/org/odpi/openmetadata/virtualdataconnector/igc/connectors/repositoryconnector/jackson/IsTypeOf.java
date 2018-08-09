@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-package org.odpi.openmetadata.virtualdataconnector.igc.connectors.eventmapper;
+package org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconnector.jackson;
 
 import com.fasterxml.jackson.annotation.*;
 
@@ -12,8 +12,7 @@ import java.util.Map;
         "items",
         "paging"
 })
-public class AssignedToTerms {
-
+public class IsTypeOf {
     @JsonProperty("items")
     private List<Item> items = null;
     @JsonProperty("paging")
@@ -50,5 +49,4 @@ public class AssignedToTerms {
     public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
-
 }
