@@ -202,9 +202,20 @@ public class PrimitivePropertyValue extends InstancePropertyValue
             {
                 if (primitiveDefCategory == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE)
                 {
-                    Integer    castValue = (Integer)primitiveValue;
-
-                    return new Date(castValue);
+                    if (primitiveValue instanceof Long)
+                    {
+                        Long    castValue = (Long)primitiveValue;
+                        return new Date(castValue);
+                    }
+                    else if (primitiveValue instanceof Integer)
+                    {
+                        Integer castValue = (Integer)primitiveValue;
+                        return new Date(castValue);
+                    }
+                    else
+                    {
+                        return null;
+                    }
                 }
                 else if (primitiveDefCategory == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGDECIMAL)
                 {
