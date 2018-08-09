@@ -1418,7 +1418,7 @@ public class OMRSRepositoryResource
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entity-proxy")
 
     public VoidResponse addEntityProxy(@PathVariable String      userId,
-                                       @RequestParam EntityProxy entityProxy)
+                                       @RequestBody  EntityProxy entityProxy)
     {
         return restAPI.addEntityProxy(userId, entityProxy);
     }
@@ -1444,7 +1444,7 @@ public class OMRSRepositoryResource
 
     public EntityDetailResponse updateEntityStatus(@PathVariable String           userId,
                                                    @PathVariable String           entityGUID,
-                                                   @RequestParam InstanceStatus   newStatus)
+                                                   @RequestBody  InstanceStatus   newStatus)
     {
         return restAPI.updateEntityStatus(userId, entityGUID, newStatus);
     }
@@ -1470,7 +1470,7 @@ public class OMRSRepositoryResource
 
     public EntityDetailResponse updateEntityProperties(@PathVariable String               userId,
                                                        @PathVariable String               entityGUID,
-                                                       @RequestParam InstanceProperties   properties)
+                                                       @RequestBody  InstanceProperties   properties)
     {
         return restAPI.updateEntityProperties(userId, entityGUID, properties);
     }
@@ -1490,7 +1490,7 @@ public class OMRSRepositoryResource
      * FunctionNotSupportedException the repository does not support undo or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.PATCH, path = "/users/{userId}/instances/entity/{entityGUID}/undo")
+    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/instances/entity/{entityGUID}/undo")
 
     public EntityDetailResponse undoEntityUpdate(@PathVariable String  userId,
                                                  @PathVariable String  entityGUID)
@@ -1572,7 +1572,7 @@ public class OMRSRepositoryResource
      * FunctionNotSupportedException the repository does not support soft-delete or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.PATCH, path = "/users/{userId}/instances/entity/{deletedEntityGUID}/restore")
+    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/instances/entity/{deletedEntityGUID}/restore")
 
     public EntityDetailResponse restoreEntity(@PathVariable String    userId,
                                               @PathVariable String    deletedEntityGUID)
@@ -1602,10 +1602,10 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.PATCH, path = "/users/{userId}/instances/entity/{entityGUID}/classification/{classificationName}")
 
-    public EntityDetailResponse classifyEntity(@PathVariable                   String               userId,
-                                               @PathVariable                   String               entityGUID,
-                                               @PathVariable                   String               classificationName,
-                                               @RequestParam(required = false) InstanceProperties   classificationProperties)
+    public EntityDetailResponse classifyEntity(@PathVariable                  String               userId,
+                                               @PathVariable                  String               entityGUID,
+                                               @PathVariable                  String               classificationName,
+                                               @RequestBody(required = false) InstanceProperties   classificationProperties)
     {
         return restAPI.classifyEntity(userId, entityGUID, classificationName, classificationProperties);
     }
@@ -1659,7 +1659,7 @@ public class OMRSRepositoryResource
     public EntityDetailResponse updateEntityClassification(@PathVariable String               userId,
                                                            @PathVariable String               entityGUID,
                                                            @PathVariable String               classificationName,
-                                                           @RequestParam InstanceProperties   properties)
+                                                           @RequestBody  InstanceProperties   properties)
     {
         return restAPI.updateEntityClassification(userId, entityGUID, classificationName, properties);
     }
@@ -1726,7 +1726,7 @@ public class OMRSRepositoryResource
 
     public RelationshipResponse updateRelationshipStatus(@PathVariable String           userId,
                                                          @PathVariable String           relationshipGUID,
-                                                         @RequestParam InstanceStatus   newStatus)
+                                                         @RequestBody  InstanceStatus   newStatus)
     {
         return restAPI.updateRelationshipStatus(userId, relationshipGUID, newStatus);
     }
@@ -1752,7 +1752,7 @@ public class OMRSRepositoryResource
 
     public RelationshipResponse updateRelationshipProperties(@PathVariable String               userId,
                                                              @PathVariable String               relationshipGUID,
-                                                             @RequestParam InstanceProperties   properties)
+                                                             @RequestBody  InstanceProperties   properties)
     {
         return restAPI.updateRelationshipProperties(userId, relationshipGUID, properties);
     }
@@ -1772,7 +1772,7 @@ public class OMRSRepositoryResource
      * FunctionNotSupportedException the repository does not support undo or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.PATCH, path = "/users/{userId}/instances/relationship/{relationshipGUID}/undo")
+    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/instances/relationship/{relationshipGUID}/undo")
 
     public RelationshipResponse undoRelationshipUpdate(@PathVariable String  userId,
                                                        @PathVariable String  relationshipGUID)
@@ -1854,7 +1854,7 @@ public class OMRSRepositoryResource
      * FunctionNotSupportedException the repository does not support soft-deletes
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.PATCH, path = "/users/{userId}/instances/relationship/{deletedRelationshipGUID}/restore")
+    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/instances/relationship/{deletedRelationshipGUID}/restore")
 
     public RelationshipResponse restoreRelationship(@PathVariable String    userId,
                                                     @PathVariable String    deletedRelationshipGUID)

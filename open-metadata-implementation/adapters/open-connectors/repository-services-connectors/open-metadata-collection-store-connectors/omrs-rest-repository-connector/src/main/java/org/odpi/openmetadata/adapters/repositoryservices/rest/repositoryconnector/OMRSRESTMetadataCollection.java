@@ -1207,9 +1207,9 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
 
             restResult = this.callRelationshipListPostRESTCall(methodName,
                                                                restURLRoot + urlTemplate,
+                                                               findRequestParameters,
                                                                userId,
-                                                               entityGUID,
-                                                               findRequestParameters);
+                                                               entityGUID);
         }
         else
         {
@@ -1226,9 +1226,9 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
 
             restResult = this.callRelationshipListPostRESTCall(methodName,
                                                                restURLRoot + urlTemplate,
+                                                               findRequestParameters,
                                                                userId,
-                                                               entityGUID,
-                                                               findRequestParameters);
+                                                               entityGUID);
         }
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
@@ -1317,8 +1317,8 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
 
             restResult = this.callEntityListPostRESTCall(methodName,
                                                          restURLRoot + urlTemplate,
-                                                         userId,
-                                                         findRequestParameters);
+                                                         findRequestParameters,
+                                                         userId);
         }
         else
         {
@@ -1338,8 +1338,8 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
 
             restResult = this.callEntityListPostRESTCall(methodName,
                                                          restURLRoot + urlTemplate,
-                                                         userId,
-                                                         findRequestParameters);
+                                                         findRequestParameters,
+                                                         userId);
 
         }
 
@@ -1428,9 +1428,9 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
 
             restResult = this.callEntityListPostRESTCall(methodName,
                                                          restURLRoot + urlTemplate,
+                                                         findRequestParameters,
                                                          userId,
-                                                         classificationName,
-                                                         findRequestParameters);
+                                                         classificationName);
         }
         else
         {
@@ -1449,9 +1449,9 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
 
             restResult = this.callEntityListPostRESTCall(methodName,
                                                          restURLRoot + urlTemplate,
+                                                         findRequestParameters,
                                                          userId,
-                                                         classificationName,
-                                                         findRequestParameters);
+                                                         classificationName);
         }
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
@@ -1536,9 +1536,9 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
 
             restResult = this.callEntityListPostRESTCall(methodName,
                                                          restURLRoot + urlTemplate,
+                                                         findRequestParameters,
                                                          userId,
-                                                         searchCriteria,
-                                                         findRequestParameters);
+                                                         searchCriteria);
         }
         else
         {
@@ -1556,9 +1556,9 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
 
             restResult = this.callEntityListPostRESTCall(methodName,
                                                          restURLRoot + urlTemplate,
+                                                         findRequestParameters,
                                                          userId,
-                                                         searchCriteria,
-                                                         findRequestParameters);
+                                                         searchCriteria);
         }
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
@@ -1753,8 +1753,8 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
 
             restResult = this.callRelationshipListPostRESTCall(methodName,
                                                                restURLRoot + urlTemplate,
-                                                               userId,
-                                                               findRequestParameters);
+                                                               findRequestParameters,
+                                                               userId);
         }
         else
         {
@@ -1774,8 +1774,8 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
 
             restResult = this.callRelationshipListPostRESTCall(methodName,
                                                                restURLRoot + urlTemplate,
-                                                               userId,
-                                                               findRequestParameters);
+                                                               findRequestParameters,
+                                                               userId);
         }
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
@@ -1855,9 +1855,9 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
 
             restResult = this.callRelationshipListPostRESTCall(methodName,
                                                                restURLRoot + urlTemplate,
+                                                               findRequestParameters,
                                                                userId,
-                                                               searchCriteria,
-                                                               findRequestParameters);
+                                                               searchCriteria);
         }
         else
         {
@@ -1874,9 +1874,9 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
 
             restResult = this.callRelationshipListPostRESTCall(methodName,
                                                                restURLRoot + urlTemplate,
+                                                               findRequestParameters,
                                                                userId,
-                                                               searchCriteria,
-                                                               findRequestParameters);
+                                                               searchCriteria);
         }
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
@@ -1935,10 +1935,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
 
             restResult = this.callInstanceGraphPostRESTCall(methodName,
                                                            restURLRoot + urlTemplate,
+                                                            findRequestParameters,
                                                             userId,
                                                             startEntityGUID,
-                                                            endEntityGUID,
-                                                            findRequestParameters);
+                                                            endEntityGUID);
         }
         else
         {
@@ -1950,10 +1950,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
 
             restResult = this.callInstanceGraphPostRESTCall(methodName,
                                                             restURLRoot + urlTemplate,
+                                                            findRequestParameters,
                                                             userId,
                                                             startEntityGUID,
-                                                            endEntityGUID,
-                                                            findRequestParameters);
+                                                            endEntityGUID);
         }
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
@@ -2026,10 +2026,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
 
             restResult = this.callInstanceGraphPostRESTCall(methodName,
                                                             restURLRoot + urlTemplate,
+                                                            findRequestParameters,
                                                             userId,
                                                             entityGUID,
-                                                            level,
-                                                            findRequestParameters);
+                                                            level);
         }
         else
         {
@@ -2044,10 +2044,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
 
             restResult = this.callInstanceGraphPostRESTCall(methodName,
                                                             restURLRoot + urlTemplate,
+                                                            findRequestParameters,
                                                             userId,
                                                             entityGUID,
-                                                            level,
-                                                            findRequestParameters);
+                                                            level);
         }
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
@@ -2132,9 +2132,9 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
 
             restResult = this.callEntityListPostRESTCall(methodName,
                                                          restURLRoot + urlTemplate,
+                                                         findRequestParameters,
                                                          userId,
-                                                         startEntityGUID,
-                                                         findRequestParameters);
+                                                         startEntityGUID);
         }
         else
         {
@@ -2152,9 +2152,9 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
 
             restResult = this.callEntityListPostRESTCall(methodName,
                                                          restURLRoot + urlTemplate,
+                                                         findRequestParameters,
                                                          userId,
-                                                         startEntityGUID,
-                                                         findRequestParameters);
+                                                         startEntityGUID);
         }
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
@@ -2255,12 +2255,12 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                 UserNotAuthorizedException
     {
         final String methodName  = "addEntityProxy";
-        final String urlTemplate = "users/{0}/instances/entity-proxy?entityProxy={1}";
+        final String urlTemplate = "users/{0}/instances/entity-proxy";
 
         VoidResponse restResult = this.callVoidPostRESTCall(methodName,
                                                             restURLRoot + urlTemplate,
-                                                            userId,
-                                                            entityProxy);
+                                                            entityProxy,
+                                                            userId);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
         this.detectAndThrowInvalidParameterException(methodName, restResult);
@@ -2293,13 +2293,13 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                               UserNotAuthorizedException
     {
         final String methodName  = "updateEntityStatus";
-        final String urlTemplate = "users/{0}/instances/entity/{1}/status?newStatus={2}";
+        final String urlTemplate = "users/{0}/instances/entity/{1}/status";
 
         EntityDetailResponse restResult = this.callEntityDetailPatchRESTCall(methodName,
                                                                              restURLRoot + urlTemplate,
+                                                                             newStatus,
                                                                              userId,
-                                                                             entityGUID,
-                                                                             newStatus);
+                                                                             entityGUID);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
@@ -2335,13 +2335,13 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                                        UserNotAuthorizedException
     {
         final String methodName  = "updateEntityProperties";
-        final String urlTemplate = "users/{0}/instances/entity/{1}/properties?properties={2}";
+        final String urlTemplate = "users/{0}/instances/entity/{1}/properties";
 
         EntityDetailResponse restResult = this.callEntityDetailPatchRESTCall(methodName,
                                                                              restURLRoot + urlTemplate,
+                                                                             properties,
                                                                              userId,
-                                                                             entityGUID,
-                                                                             properties);
+                                                                             entityGUID);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
@@ -2376,10 +2376,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         final String methodName  = "undoEntityUpdate";
         final String urlTemplate = "users/{0}/instances/entity/{1}/undo";
 
-        EntityDetailResponse restResult = this.callEntityDetailPatchRESTCall(methodName,
-                                                                             restURLRoot + urlTemplate,
-                                                                             userId,
-                                                                             entityGUID);
+        EntityDetailResponse restResult = this.callEntityDetailGetRESTCall(methodName,
+                                                                           restURLRoot + urlTemplate,
+                                                                           userId,
+                                                                           entityGUID);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
         this.detectAndThrowInvalidParameterException(methodName, restResult);
@@ -2505,10 +2505,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         final String methodName  = "restoreEntity";
         final String urlTemplate = "users/{0}/instances/entity/{1}/restore";
 
-        EntityDetailResponse restResult = this.callEntityDetailPatchRESTCall(methodName,
-                                                                             restURLRoot + urlTemplate,
-                                                                             userId,
-                                                                             deletedEntityGUID);
+        EntityDetailResponse restResult = this.callEntityDetailGetRESTCall(methodName,
+                                                                           restURLRoot + urlTemplate,
+                                                                           userId,
+                                                                           deletedEntityGUID);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
         this.detectAndThrowInvalidParameterException(methodName, restResult);
@@ -2550,14 +2550,14 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                                              UserNotAuthorizedException
     {
         final String methodName  = "classifyEntity";
-        final String urlTemplate = "users/{0}/instances/entity/{1}/classification/{2}?classificationProperties={3}";
+        final String urlTemplate = "users/{0}/instances/entity/{1}/classification/{2}";
 
         EntityDetailResponse restResult = this.callEntityDetailPatchRESTCall(methodName,
                                                                              restURLRoot + urlTemplate,
+                                                                             classificationProperties,
                                                                              userId,
                                                                              entityGUID,
-                                                                             classificationName,
-                                                                             classificationProperties);
+                                                                             classificationName);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
@@ -2639,14 +2639,14 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                                            UserNotAuthorizedException
     {
         final String methodName  = "declassifyEntity";
-        final String urlTemplate = "users/{0}/instances/entity/{1}/classification/{2}/properties?properties={3}";
+        final String urlTemplate = "users/{0}/instances/entity/{1}/classification/{2}/properties";
 
         EntityDetailResponse restResult = this.callEntityDetailPatchRESTCall(methodName,
                                                                              restURLRoot + urlTemplate,
+                                                                             properties,
                                                                              userId,
                                                                              entityGUID,
-                                                                             classificationName,
-                                                                             properties);
+                                                                             classificationName);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
@@ -2743,13 +2743,13 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                                     UserNotAuthorizedException
     {
         final String methodName  = "updateRelationshipStatus";
-        final String urlTemplate = "users/{0}/instances/relationship/{1}/status?newStatus={2}";
+        final String urlTemplate = "users/{0}/instances/relationship/{1}/status";
 
         RelationshipResponse restResult = this.callRelationshipPatchRESTCall(methodName,
                                                                              restURLRoot + urlTemplate,
+                                                                             newStatus,
                                                                              userId,
-                                                                             relationshipGUID,
-                                                                             newStatus);
+                                                                             relationshipGUID);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowRelationshipNotKnownException(methodName, restResult);
@@ -2785,13 +2785,13 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                                              UserNotAuthorizedException
     {
         final String methodName  = "updateRelationshipProperties";
-        final String urlTemplate = "users/{0}/instances/relationship/{1}/properties?properties={2}";
+        final String urlTemplate = "users/{0}/instances/relationship/{1}/properties";
 
         RelationshipResponse restResult = this.callRelationshipPatchRESTCall(methodName,
                                                                              restURLRoot + urlTemplate,
+                                                                             properties,
                                                                              userId,
-                                                                             relationshipGUID,
-                                                                             properties);
+                                                                             relationshipGUID);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowRelationshipNotKnownException(methodName, restResult);
@@ -2826,10 +2826,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         final String methodName  = "undoRelationshipUpdate";
         final String urlTemplate = "users/{0}/instances/relationship/{1}/undo";
 
-        RelationshipResponse restResult = this.callRelationshipPatchRESTCall(methodName,
-                                                                             restURLRoot + urlTemplate,
-                                                                             userId,
-                                                                             relationshipGUID);
+        RelationshipResponse restResult = this.callRelationshipGetRESTCall(methodName,
+                                                                           restURLRoot + urlTemplate,
+                                                                           userId,
+                                                                           relationshipGUID);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
         this.detectAndThrowInvalidParameterException(methodName, restResult);
@@ -2955,10 +2955,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         final String methodName  = "restoreRelationship";
         final String urlTemplate = "users/{0}/instances/relationship/{1}/restore";
 
-        RelationshipResponse restResult = this.callRelationshipPatchRESTCall(methodName,
-                                                                             restURLRoot + urlTemplate,
-                                                                             userId,
-                                                                             deletedRelationshipGUID);
+        RelationshipResponse restResult = this.callRelationshipGetRESTCall(methodName,
+                                                                           restURLRoot + urlTemplate,
+                                                                           userId,
+                                                                           deletedRelationshipGUID);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
         this.detectAndThrowInvalidParameterException(methodName, restResult);
