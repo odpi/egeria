@@ -7,7 +7,6 @@ import org.odpi.openmetadata.accessservices.informationview.auditlog.Information
 import org.odpi.openmetadata.accessservices.informationview.connectors.InformationViewTopic;
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.ColumnContextEventBuilder;
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.EntitiesCreatorHelper;
-import org.odpi.openmetadata.accessservices.informationview.contentmanager.RepositoryHelper;
 import org.odpi.openmetadata.accessservices.informationview.eventprocessor.EventPublisher;
 import org.odpi.openmetadata.accessservices.informationview.listeners.InformationViewEnterpriseOmrsEventListener;
 import org.odpi.openmetadata.accessservices.informationview.listeners.InformationViewInTopicListener;
@@ -78,9 +77,8 @@ public class InformationViewAdmin implements AccessServiceAdmin {
         informationViewInTopicConnector = initializeInformationViewTopicConnector(accessServiceConfigurationProperties.getAccessServiceInTopic());
         informationViewOutTopicConnector = initializeInformationViewTopicConnector(accessServiceConfigurationProperties.getAccessServiceOutTopic());
 
-        RepositoryHelper helper = new RepositoryHelper(this.enterpriseConnector);
-        entitiesCreatorHelper = new EntitiesCreatorHelper(helper,
-                                                          this.enterpriseConnector,
+
+        entitiesCreatorHelper = new EntitiesCreatorHelper( this.enterpriseConnector,
                                                           auditLog);
 
         if (enterpriseOMRSTopicConnector != null) {

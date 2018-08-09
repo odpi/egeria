@@ -2085,7 +2085,7 @@ public class OMRSRepositoryResource
     @RequestMapping(method = RequestMethod.PATCH, path = "/users/{userId}/instances/entities/reference-copy")
 
     public VoidResponse saveEntityReferenceCopy(@PathVariable String       userId,
-                                                @RequestParam EntityDetail entity)
+                                                @RequestBody EntityDetail entity)
     {
         return restAPI.saveEntityReferenceCopy(userId, entity);
     }
@@ -2187,7 +2187,7 @@ public class OMRSRepositoryResource
     @RequestMapping(method = RequestMethod.PATCH, path = "/users/{userId}/instances/relationships/reference-copy")
 
     public VoidResponse saveRelationshipReferenceCopy(@PathVariable String         userId,
-                                                      @RequestParam Relationship   relationship)
+                                                      @RequestBody Relationship   relationship)
     {
         return restAPI.saveRelationshipReferenceCopy(userId, relationship);
     }
@@ -2196,6 +2196,7 @@ public class OMRSRepositoryResource
 
 
     /**
+     * Remove the reference copy of the relationship from the local repository. This method can be used to
      * Remove the reference copy of the relationship from the local repository. This method can be used to
      * remove reference copies from the local cohort, repositories that have left the cohort,
      * or relationships that have come from open metadata archives.
