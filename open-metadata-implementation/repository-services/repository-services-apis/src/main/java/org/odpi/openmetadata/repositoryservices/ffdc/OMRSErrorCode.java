@@ -493,7 +493,7 @@ public enum OMRSErrorCode
             "There is an internal error in Java class PrimitiveDefCategory as it has been set up with an invalid class.",
             "Raise a Jira to get this fixed."),
     INVALID_PRIMITIVE_VALUE(500, "OMRS-METADATA-COLLECTION-500-002 ",
-            "The primitive value should be stored in Java class \'{0}\' since it is of PrimitiveDefCategory {1}",
+            "The primitive value should be stored in Java class {0} rather than {1} since it is of PrimitiveDefCategory {2}",
             "There is an internal error in the creation of a PrimitiveTypeValue.",
             "Raise a Jira to get this fixed."),
     INVALID_PRIMITIVE_CATEGORY(500, "OMRS-METADATA-COLLECTION-500-003 ",

@@ -2,6 +2,8 @@
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ArrayPropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.MapPropertyValue;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -10,10 +12,10 @@ import java.util.List;
 import static org.testng.Assert.assertTrue;
 
 /**
- * Verify the RelationshipEndCardinality enum contains unique ordinals, non-null names and descriptions and can be
+ * Verify the CollectionDefCategory enum contains unique ordinals, non-null names and descriptions and can be
  * serialized to JSON and back again.
  */
-public class TestRelationshipEndCardinality
+public class CollectionDefCategoryTest
 {
     private List<Integer> existingOrdinals = null;
 
@@ -46,22 +48,31 @@ public class TestRelationshipEndCardinality
     {
         existingOrdinals = new ArrayList<>();
 
-        RelationshipEndCardinality  testValue;
+        CollectionDefCategory  testValue;
 
-        testValue = RelationshipEndCardinality.UNKNOWN;
+        testValue = CollectionDefCategory.OM_COLLECTION_UNKNOWN;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
-        assertTrue(testValue.getDescription() != null);
+        assertTrue(testValue.getJavaClassName() == null);
+        assertTrue(testValue.getArgumentCount() == 0);
 
-        testValue = RelationshipEndCardinality.AT_MOST_ONE;
+        testValue = CollectionDefCategory.OM_COLLECTION_MAP;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
-        assertTrue(testValue.getDescription() != null);
+        assertTrue(testValue.getJavaClassName() != null);
+        assertTrue(testValue.getArgumentCount() == 2);
 
-        testValue = RelationshipEndCardinality.ANY_NUMBER;
+        testValue = CollectionDefCategory.OM_COLLECTION_ARRAY;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
-        assertTrue(testValue.getDescription() != null);
+        assertTrue(testValue.getJavaClassName() != null);
+        assertTrue(testValue.getArgumentCount() == 1);
+
+        testValue = CollectionDefCategory.OM_COLLECTION_STRUCT;
+        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
+        assertTrue(testValue.getName() != null);
+        assertTrue(testValue.getJavaClassName() != null);
+        assertTrue(testValue.getArgumentCount() == 0);
     }
 
 
@@ -77,7 +88,7 @@ public class TestRelationshipEndCardinality
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(RelationshipEndCardinality.AT_MOST_ONE);
+            jsonString = objectMapper.writeValueAsString(CollectionDefCategory.OM_COLLECTION_ARRAY);
         }
         catch (Throwable  exc)
         {
@@ -86,7 +97,7 @@ public class TestRelationshipEndCardinality
 
         try
         {
-            assertTrue(objectMapper.readValue(jsonString, RelationshipEndCardinality.class) == RelationshipEndCardinality.AT_MOST_ONE);
+            assertTrue(objectMapper.readValue(jsonString, CollectionDefCategory.class) == CollectionDefCategory.OM_COLLECTION_ARRAY);
         }
         catch (Throwable  exc)
         {
@@ -100,6 +111,6 @@ public class TestRelationshipEndCardinality
      */
     @Test public void testToString()
     {
-        assertTrue(RelationshipEndCardinality.ANY_NUMBER.toString().contains("RelationshipEndCardinality"));
+        assertTrue(CollectionDefCategory.OM_COLLECTION_STRUCT.toString().contains("CollectionDefCategory"));
     }
 }

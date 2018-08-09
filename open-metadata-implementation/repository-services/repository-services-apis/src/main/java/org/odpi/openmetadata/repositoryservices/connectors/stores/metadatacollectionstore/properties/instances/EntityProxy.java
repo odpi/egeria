@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.Objects;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -38,7 +40,7 @@ public class EntityProxy extends EntitySummary
     {
         super(template);
 
-        if (template == null)
+        if (template != null)
         {
             this.uniqueProperties = template.getUniqueProperties();
         }
@@ -65,7 +67,11 @@ public class EntityProxy extends EntitySummary
     {
         if (uniqueProperties == null)
         {
-            return uniqueProperties;
+            return null;
+        }
+        else if (uniqueProperties.getInstanceProperties() == null)
+        {
+            return null;
         }
         else
         {
@@ -108,5 +114,44 @@ public class EntityProxy extends EntitySummary
                 ", version=" + getVersion() +
                 ", statusOnDelete=" + getStatusOnDelete() +
                 '}';
+    }
+
+
+    /**
+     * Validate that an object is equal depending on their stored values.
+     *
+     * @param objectToCompare object
+     * @return boolean result
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (!(objectToCompare instanceof EntityProxy))
+        {
+            return false;
+        }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        EntityProxy that = (EntityProxy) objectToCompare;
+        return Objects.equals(getUniqueProperties(), that.getUniqueProperties());
+    }
+
+
+    /**
+     * Return a hash code based on the values of this object.
+     *
+     * @return in hash code
+     */
+    @Override
+    public int hashCode()
+    {
+
+        return Objects.hash(super.hashCode(), getUniqueProperties());
     }
 }

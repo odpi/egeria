@@ -160,27 +160,37 @@ public class ArrayPropertyValue extends InstancePropertyValue
     }
 
 
+    /**
+     * Validate that an object is equal depending on their stored values.
+     *
+     * @param objectToCompare object
+     * @return boolean result
+     */
     @Override
-    public boolean equals(Object o)
+    public boolean equals(Object objectToCompare)
     {
-        if (this == o)
+        if (this == objectToCompare)
         {
             return true;
         }
-        if (o == null || getClass() != o.getClass())
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
-        ArrayPropertyValue that = (ArrayPropertyValue) o;
+        ArrayPropertyValue that = (ArrayPropertyValue) objectToCompare;
         return arrayCount == that.arrayCount &&
                 Objects.equals(arrayValues, that.arrayValues);
     }
 
 
+    /**
+     * Return a hash code based on the property values
+     *
+     * @return int hash code
+     */
     @Override
     public int hashCode()
     {
-
         return Objects.hash(arrayCount, arrayValues);
     }
 }

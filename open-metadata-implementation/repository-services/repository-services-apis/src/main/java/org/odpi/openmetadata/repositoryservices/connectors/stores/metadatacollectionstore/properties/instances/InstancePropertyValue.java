@@ -3,6 +3,8 @@ package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacolle
 
 import com.fasterxml.jackson.annotation.*;
 
+import java.util.Objects;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -28,7 +30,7 @@ public abstract class InstancePropertyValue extends InstanceElementHeader
     /*
      * Common type information that is this is augmented by the subclasses
      */
-    private   InstancePropertyCategory   instancePropertyCategory = InstancePropertyCategory.UNKNOWN;
+    private   InstancePropertyCategory   instancePropertyCategory = null;
     private   String                     typeGUID  = null;
     private   String                     typeName  = null;
 
@@ -87,6 +89,17 @@ public abstract class InstancePropertyValue extends InstanceElementHeader
 
 
     /**
+     * Set up the category for this instance property.  This is used on the JSON deserialization.
+     *
+     * @param instancePropertyCategory new category
+     */
+    public void setInstancePropertyCategory(InstancePropertyCategory instancePropertyCategory)
+    {
+        this.instancePropertyCategory = instancePropertyCategory;
+    }
+
+
+    /**
      * Return the unique GUID for the type.
      *
      * @return String unique identifier
@@ -131,5 +144,42 @@ public abstract class InstancePropertyValue extends InstanceElementHeader
                 ", typeGUID='" + typeGUID + '\'' +
                 ", typeName='" + typeName + '\'' +
                 '}';
+    }
+
+
+    /**
+     * Validate that an object is equal depending on their stored values.
+     *
+     * @param objectToCompare object
+     * @return boolean result
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (!(objectToCompare instanceof InstancePropertyValue))
+        {
+            return false;
+        }
+        InstancePropertyValue that = (InstancePropertyValue) objectToCompare;
+        return getInstancePropertyCategory() == that.getInstancePropertyCategory() &&
+                Objects.equals(getTypeGUID(), that.getTypeGUID()) &&
+                Objects.equals(getTypeName(), that.getTypeName());
+    }
+
+
+    /**
+     * Return a hash code based on the property values
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+
+        return Objects.hash(getInstancePropertyCategory(), getTypeGUID(), getTypeName());
     }
 }
