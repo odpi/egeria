@@ -1441,6 +1441,42 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
 
     /**
+     * Validate that the asOfTime parameter is not null or for the future.
+     *
+     * @param sourceName source of the request (used for logging)
+     * @param parameterName name of the parameter that passed the guid.
+     * @param asOfTime unique name for a classification type
+     * @param methodName method receiving the call
+     * @throws InvalidParameterException asOfTime is for the future
+     */
+    public  void validateAsOfTimeNotNull(String sourceName,
+                                         String parameterName,
+                                         Date   asOfTime,
+                                         String methodName) throws InvalidParameterException
+    {
+        if (asOfTime == null)
+        {
+            OMRSErrorCode errorCode = OMRSErrorCode.NULL_AS_OF_TIME;
+            String errorMessage = errorCode.getErrorMessageId()
+                    + errorCode.getFormattedErrorMessage(methodName,
+                                                         parameterName,
+                                                         sourceName);
+
+            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                errorMessage,
+                                                errorCode.getSystemAction(),
+                                                errorCode.getUserAction());
+        }
+        else
+        {
+            this.validateAsOfTime(sourceName, parameterName, asOfTime, methodName);
+        }
+    }
+
+
+    /**
      * Validate that a page size parameter is not negative.
      *
      * @param sourceName source of the request (used for logging)

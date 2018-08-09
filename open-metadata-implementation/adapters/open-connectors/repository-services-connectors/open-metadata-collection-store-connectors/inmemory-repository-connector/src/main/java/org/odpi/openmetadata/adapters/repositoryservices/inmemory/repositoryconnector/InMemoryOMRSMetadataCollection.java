@@ -1549,7 +1549,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
 
         repositoryValidator.validateUserId(repositoryName, userId, methodName);
         repositoryValidator.validateGUID(repositoryName, guidParameterName, guid, methodName);
-        repositoryValidator.validateAsOfTime(repositoryName, asOfTimeParameter, asOfTime, methodName);
+        repositoryValidator.validateAsOfTimeNotNull(repositoryName, asOfTimeParameter, asOfTime, methodName);
 
         /*
          * Perform operation
@@ -2170,7 +2170,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
 
         repositoryValidator.validateUserId(repositoryName, userId, methodName);
         repositoryValidator.validateGUID(repositoryName, guidParameterName, guid, methodName);
-        repositoryValidator.validateAsOfTime(repositoryName, asOfTimeParameter, asOfTime, methodName);
+        repositoryValidator.validateAsOfTimeNotNull(repositoryName, asOfTimeParameter, asOfTime, methodName);
 
         /*
          * Perform operation
@@ -2551,12 +2551,12 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
 
 
     /**
-     * Return the list of entities that are of the types listed in instanceTypes and are connected, either directly or
+     * Return the list of entities that are of the types listed in entityTypeGUIDs and are connected, either directly or
      * indirectly to the entity identified by startEntityGUID.
      *
      * @param userId - unique identifier for requesting user.
      * @param startEntityGUID - unique identifier of the starting entity.
-     * @param instanceTypes - list of types to search for.  Null means any type.
+     * @param entityTypeGUIDs - list of types to search for.  Null means any type.
      * @param fromEntityElement - starting element for results list.  Used in paging.  Zero means first element.
      * @param limitResultsByStatus - By default, relationships in all statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
@@ -2584,7 +2584,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
      */
     public  List<EntityDetail> getRelatedEntities(String               userId,
                                                   String               startEntityGUID,
-                                                  List<String>         instanceTypes,
+                                                  List<String>         entityTypeGUIDs,
                                                   int                  fromEntityElement,
                                                   List<InstanceStatus> limitResultsByStatus,
                                                   List<String>         limitResultsByClassification,
@@ -2616,9 +2616,9 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
         repositoryValidator.validateAsOfTime(repositoryName, asOfTimeParameter, asOfTime, methodName);
         repositoryValidator.validatePageSize(repositoryName, pageSizeParameter, pageSize, methodName);
 
-        if (instanceTypes != null)
+        if (entityTypeGUIDs != null)
         {
-            for (String guid : instanceTypes)
+            for (String guid : entityTypeGUIDs)
             {
                 this.validateTypeGUID(repositoryName, instanceTypesParameter, guid, methodName);
             }
