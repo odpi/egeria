@@ -162,7 +162,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                     }
                     break;
                 case "Term":
-                    if (igcKafkaEvent.getACTION().equals("CREATE")) { //Creation of a new glossary term.
+                    if (igcKafkaEvent.getACTION().equals("CREATE")) { //Creation of a glossary term.
                         createEntity("GlossaryTerm");
                     }
                     break;
@@ -216,18 +216,22 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         properties.put("displayName", displayname);
 
         PrimitivePropertyValue summary = new PrimitivePropertyValue();
-        summary.setPrimitiveValue(igcObject.getShort_description());
+        summary.setPrimitiveValue(igcObject.getShortDescription());
         summary.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
         properties.put("summary", summary);
 
-        //TODO Description = IGC Long description. Not retrievable with the IGC Connector GET request
+        PrimitivePropertyValue description = new PrimitivePropertyValue();
+        description.setPrimitiveValue(igcObject.getLongDescription());
+        description.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+        properties.put("description", description);
+
         InstanceProperties instanceProperties = new InstanceProperties();
         instanceProperties.setInstanceProperties(properties);
 
         EntityDetail entityDetail = this.repositoryHelper.getNewEntity(
                 sourceName,
                 metadataCollectionId,
-                null,
+                InstanceProvenanceType.LOCAL_COHORT,
                 "",
                 typeName,
                 instanceProperties,
@@ -245,7 +249,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
     }
 
     /**
-     * Set Relationship linking an IGC technical term with an IGC business term
+     * Set relationship between two entities.
      *
      * @param relationshipType name of the type
      * @param entityId1        String unique identifier

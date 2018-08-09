@@ -31,6 +31,7 @@ import java.util.Map;
         "database_table_or_view",
         "is_a_type_of",
         "short_description",
+        "long_description",
         "terms"
 })
 public class IGCObject {
@@ -79,6 +80,8 @@ public class IGCObject {
     private IsTypeOf isTypeOf;
     @JsonProperty("short_description")
     private String short_description;
+    @JsonProperty("long_description")
+    private String long_description;
     @JsonProperty("terms")
     private Terms terms;
 
@@ -87,7 +90,10 @@ public class IGCObject {
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("short_description")
-    public String getShort_description(){ return short_description;}
+    public String getShortDescription(){ return short_description;}
+
+    @JsonProperty("long_description")
+    public String getLongDescription(){ return long_description;}
 
     @JsonProperty("created_by")
     public String getCreatedBy() {
