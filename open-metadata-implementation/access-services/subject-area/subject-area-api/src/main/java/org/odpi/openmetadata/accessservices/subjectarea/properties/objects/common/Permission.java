@@ -3,6 +3,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.properties.objects.comm
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 
@@ -15,7 +16,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 // For the future we could include ATTRIBUTE, ARRAY, MAP, ENUM here so that the tree could naturally show these things
 @JsonAutoDetect(getterVisibility= JsonAutoDetect.Visibility.PUBLIC_ONLY, setterVisibility= JsonAutoDetect.Visibility.PUBLIC_ONLY, fieldVisibility= JsonAutoDetect.Visibility.NONE)
-@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum Permission {
     WRITE, UPDATE, DELETE

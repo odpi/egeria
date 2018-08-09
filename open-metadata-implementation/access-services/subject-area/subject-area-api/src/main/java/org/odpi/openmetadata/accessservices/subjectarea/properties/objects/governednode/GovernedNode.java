@@ -19,6 +19,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.properties.objects.gove
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.GovernanceActions;
@@ -38,7 +39,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * A governed Node is a node that can have associated governance actions.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
-@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GovernedNode extends Node implements Serializable {
     private static final Logger log = LoggerFactory.getLogger(GovernedNode.class);

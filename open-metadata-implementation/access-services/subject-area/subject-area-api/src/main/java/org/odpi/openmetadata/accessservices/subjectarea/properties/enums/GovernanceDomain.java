@@ -5,19 +5,21 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
+import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
-
 
 /**
  * Defines the governance domains that open metadata seeks to unite.
  */
 
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
-@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum GovernanceDomain implements Serializable {
