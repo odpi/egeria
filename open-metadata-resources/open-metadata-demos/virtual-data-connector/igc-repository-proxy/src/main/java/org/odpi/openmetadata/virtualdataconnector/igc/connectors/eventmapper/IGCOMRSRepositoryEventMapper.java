@@ -202,8 +202,8 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
 
     private void createEntity(String typeName) throws TypeErrorException {
 
+        String username = igcObject.getCreatedBy();
         Map<String, InstancePropertyValue> properties = new HashMap<>();
-
 
         PrimitivePropertyValue qualifiedName = new PrimitivePropertyValue();
         qualifiedName.setPrimitiveValue(this.technicalTerm);
@@ -232,7 +232,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                 sourceName,
                 metadataCollectionId,
                 InstanceProvenanceType.LOCAL_COHORT,
-                "",
+                username,
                 typeName,
                 instanceProperties,
                 null
@@ -261,11 +261,12 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
      * @throws TypeErrorException The type name is not recognized as a relationship type.
      */
     private Relationship newRelationship(String relationshipType, String entityId1, String entityType1, String entityName1, String entityId2, String entityType2, String entityName2) throws TypeErrorException {
+
         Relationship relationship = this.repositoryHelper.getNewRelationship(
                 sourceName,
                 metadataCollectionId,
                 InstanceProvenanceType.LOCAL_COHORT,
-                "",
+                null,
                 relationshipType,
                 null
         );
@@ -297,7 +298,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                 sourceName,
                 metadataCollectionId,
                 InstanceProvenanceType.LOCAL_COHORT,
-                "",
+                null,
                 typeName,
                 null,
                 null
