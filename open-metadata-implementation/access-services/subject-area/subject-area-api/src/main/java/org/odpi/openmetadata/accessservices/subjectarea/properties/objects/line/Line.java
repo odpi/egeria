@@ -19,6 +19,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SystemAttributes;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
@@ -33,7 +34,7 @@ import java.util.Map;
  * A relationship between 2 subject area OMAS entities. It is called types as it has named fields for the attributes and references.
  */
 @JsonAutoDetect(getterVisibility= JsonAutoDetect.Visibility.PUBLIC_ONLY, setterVisibility= JsonAutoDetect.Visibility.PUBLIC_ONLY, fieldVisibility= JsonAutoDetect.Visibility.NONE)
-@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 
 public class Line implements Serializable {
