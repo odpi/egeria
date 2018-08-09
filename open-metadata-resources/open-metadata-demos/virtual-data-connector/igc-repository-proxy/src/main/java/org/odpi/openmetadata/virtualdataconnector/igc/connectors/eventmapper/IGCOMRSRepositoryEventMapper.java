@@ -14,7 +14,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
-import org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconnector.jackson.IGCKafkaEvent;
+import org.odpi.openmetadata.virtualdataconnector.igc.connectors.eventmapper.jackson.IGCKafkaEvent;
 import org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconnector.jackson.IGCObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -135,7 +135,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
             this.technicalTerm = igcKafkaEvent.getASSETRID();
             switch (igcKafkaEvent.getASSETTYPE()) {
                 case "Database Column":
-                    if (igcKafkaEvent.getACTION().equals("ASSIGNED_RELATIONSHIP") || igcKafkaEvent.getACTION().equals("MODIFY")) {
+                    if (igcKafkaEvent.getACTION().equals("ASSIGNED_RELATIONSHIP") || igcKafkaEvent.getACTION().equals("MODIFY")) { //Relationship between a technical term and a glossary term.
                         if (igcObject.getAssignedToTerms() != null) {
 
                             String glossaryTermID = igcObject.getAssignedToTerms().getItems().get(0).getName();
@@ -162,16 +162,15 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                     }
                     break;
                 case "Term":
-                    if (igcKafkaEvent.getACTION().equals("CREATE")) {
+                    if (igcKafkaEvent.getACTION().equals("CREATE")) { //Creation of a new glossary term.
                         createEntity("GlossaryTerm");
                     }
                     break;
                 case "Category":
-                    if (igcKafkaEvent.getACTION().equals("CREATE")) {
+                    if (igcKafkaEvent.getACTION().equals("CREATE")) { //Creation of a  glossary category.
                         createEntity("GlossaryCategory");
                     }
-                    if (igcKafkaEvent.getACTION().equals("ASSIGNED_RELATIONSHIP")){
-
+                    if (igcKafkaEvent.getACTION().equals("ASSIGNED_RELATIONSHIP")){ //Relationship between a glossary category and a glossary term.
                         String glossaryTermID = igcObject.getTerms().getItems().get(0).getId();
                         String glossaryTermName = igcObject.getTerms().getItems().get(0).getName();
 
