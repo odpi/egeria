@@ -6,6 +6,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.log4j.varia.NullAppender;
 import org.odpi.openmetadata.compliance.beans.OpenMetadataTestLabResults;
 import org.odpi.openmetadata.compliance.beans.OpenMetadataTestWorkbenchResults;
+import org.odpi.openmetadata.compliance.tests.origin.OpenMetadataOriginTestWorkbench;
 import org.odpi.openmetadata.compliance.tests.repository.OpenMetadataRepositoryTestWorkbench;
 
 import java.io.File;
@@ -32,6 +33,7 @@ public class OpenMetadataTestLab
     {
         List<OpenMetadataTestWorkbench>  registeredTestWorkbenches = new ArrayList<>();
 
+        registeredTestWorkbenches.add(new OpenMetadataOriginTestWorkbench(serverURLRoot));
         registeredTestWorkbenches.add(new OpenMetadataRepositoryTestWorkbench(serverURLRoot));
 
         return registeredTestWorkbenches;

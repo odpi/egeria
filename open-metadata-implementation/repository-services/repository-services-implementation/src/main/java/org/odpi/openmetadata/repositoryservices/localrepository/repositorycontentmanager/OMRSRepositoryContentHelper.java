@@ -1309,35 +1309,41 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 
                     EntityProxy            entityProxy          = new EntityProxy(entity);
                     InstanceProperties     entityProperties     = entity.getProperties();
-                    List<TypeDefAttribute> propertiesDefinition = repositoryContentManager.getAllPropertiesForTypeDef(sourceName,
-                                                                                                                      typeDef,
-                                                                                                                      methodName);
-                    InstanceProperties     uniqueAttributes     = new InstanceProperties();
 
-                    if (propertiesDefinition != null)
+                    if (entityProperties != null)
                     {
-                        for (TypeDefAttribute typeDefAttribute : propertiesDefinition)
+                        List<TypeDefAttribute> propertiesDefinition =
+                                repositoryContentManager.getAllPropertiesForTypeDef(sourceName,
+                                                                                    typeDef,
+                                                                                    methodName);
+                        InstanceProperties uniqueAttributes = new InstanceProperties();
+
+                        if (propertiesDefinition != null)
                         {
-                            if (typeDefAttribute != null)
+                            for (TypeDefAttribute typeDefAttribute : propertiesDefinition)
                             {
-                                String propertyName = typeDefAttribute.getAttributeName();
-
-                                if ((typeDefAttribute.isUnique()) && (propertyName != null))
+                                if (typeDefAttribute != null)
                                 {
-                                    InstancePropertyValue propertyValue = entityProperties.getPropertyValue(propertyName);
+                                    String propertyName = typeDefAttribute.getAttributeName();
 
-                                    if (propertyValue != null)
+                                    if ((typeDefAttribute.isUnique()) && (propertyName != null))
                                     {
-                                        uniqueAttributes.setProperty(propertyName, propertyValue);
+                                        InstancePropertyValue propertyValue = entityProperties.getPropertyValue(
+                                                propertyName);
+
+                                        if (propertyValue != null)
+                                        {
+                                            uniqueAttributes.setProperty(propertyName, propertyValue);
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
 
-                    if (uniqueAttributes.getPropertyCount() > 0)
-                    {
-                        entityProxy.setUniqueProperties(uniqueAttributes);
+                        if (uniqueAttributes.getPropertyCount() > 0)
+                        {
+                            entityProxy.setUniqueProperties(uniqueAttributes);
+                        }
                     }
 
                     return entityProxy;

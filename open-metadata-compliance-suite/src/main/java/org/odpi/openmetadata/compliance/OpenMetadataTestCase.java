@@ -33,7 +33,7 @@ public abstract class OpenMetadataTestCase
     {
         this.testCaseId = testCaseId;
         this.testCaseName = testCaseName;
-        this.testCaseDescriptionURL = documentationRootURL + workbenchId + "/" + testCaseId + ".md";
+        this.testCaseDescriptionURL = documentationRootURL + workbenchId + "/" + testCaseId + "-test-case.md";
     }
 
 

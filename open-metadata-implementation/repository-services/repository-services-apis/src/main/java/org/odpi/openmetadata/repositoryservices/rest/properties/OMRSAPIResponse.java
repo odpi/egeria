@@ -35,8 +35,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = TypeDefGalleryResponse.class, name = "TypeDefGalleryResponse"),
                 @JsonSubTypes.Type(value = TypeDefListResponse.class, name = "TypeDefListResponse"),
                 @JsonSubTypes.Type(value = TypeDefResponse.class, name = "TypeDefResponse"),
-                @JsonSubTypes.Type(value = VoidResponse.class, name = "VoidResponse"),
-
+                @JsonSubTypes.Type(value = VoidResponse.class, name = "VoidResponse")
         })
 public abstract class OMRSAPIResponse implements Serializable
 {
