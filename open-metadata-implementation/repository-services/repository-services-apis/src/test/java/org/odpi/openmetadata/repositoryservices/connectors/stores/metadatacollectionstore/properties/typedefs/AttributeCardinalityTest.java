@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties;
+package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.testng.annotations.Test;
@@ -10,10 +10,10 @@ import java.util.List;
 import static org.testng.Assert.assertTrue;
 
 /**
- * Verify the MatchCriteria enum contains unique ordinals, non-null names and descriptions and can be
+ * Verify the AttributeCardinality enum contains unique ordinals, non-null names and descriptions and can be
  * serialized to JSON and back again.
  */
-public class TestMatchCriteria
+public class AttributeCardinalityTest
 {
     private List<Integer> existingOrdinals = null;
 
@@ -46,19 +46,39 @@ public class TestMatchCriteria
     {
         existingOrdinals = new ArrayList<>();
 
-        MatchCriteria  testValue;
+        AttributeCardinality  testValue;
 
-        testValue = MatchCriteria.ALL;
+        testValue = AttributeCardinality.UNKNOWN;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
 
-        testValue = MatchCriteria.ANY;
+        testValue = AttributeCardinality.AT_MOST_ONE;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
 
-        testValue = MatchCriteria.NONE;
+        testValue = AttributeCardinality.ONE_ONLY;
+        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
+        assertTrue(testValue.getName() != null);
+        assertTrue(testValue.getDescription() != null);
+
+        testValue = AttributeCardinality.AT_LEAST_ONE_ORDERED;
+        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
+        assertTrue(testValue.getName() != null);
+        assertTrue(testValue.getDescription() != null);
+
+        testValue = AttributeCardinality.AT_LEAST_ONE_UNORDERED;
+        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
+        assertTrue(testValue.getName() != null);
+        assertTrue(testValue.getDescription() != null);
+
+        testValue = AttributeCardinality.ANY_NUMBER_ORDERED;
+        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
+        assertTrue(testValue.getName() != null);
+        assertTrue(testValue.getDescription() != null);
+
+        testValue = AttributeCardinality.ANY_NUMBER_UNORDERED;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
@@ -77,7 +97,7 @@ public class TestMatchCriteria
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(MatchCriteria.ALL);
+            jsonString = objectMapper.writeValueAsString(AttributeCardinality.AT_LEAST_ONE_ORDERED);
         }
         catch (Throwable  exc)
         {
@@ -86,7 +106,7 @@ public class TestMatchCriteria
 
         try
         {
-            assertTrue(objectMapper.readValue(jsonString, MatchCriteria.class) == MatchCriteria.ALL);
+            assertTrue(objectMapper.readValue(jsonString, AttributeCardinality.class) == AttributeCardinality.AT_LEAST_ONE_ORDERED);
         }
         catch (Throwable  exc)
         {
@@ -100,6 +120,6 @@ public class TestMatchCriteria
      */
     @Test public void testToString()
     {
-        assertTrue(MatchCriteria.NONE.toString().contains("MatchCriteria"));
+        assertTrue(AttributeCardinality.ANY_NUMBER_ORDERED.toString().contains("AttributeCardinality"));
     }
 }

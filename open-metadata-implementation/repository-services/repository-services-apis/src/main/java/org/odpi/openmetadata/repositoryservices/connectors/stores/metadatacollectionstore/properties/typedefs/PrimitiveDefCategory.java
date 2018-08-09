@@ -23,7 +23,7 @@ public enum PrimitiveDefCategory implements Serializable
     OM_PRIMITIVE_TYPE_UNKNOWN   (0,  "object",     "java.lang.Object",      "1c4b21f4-0b67-41a7-a6ed-2af185eb9b3b"),
     OM_PRIMITIVE_TYPE_BOOLEAN   (1,  "boolean",    "java.lang.Boolean",     "3863f010-611c-41fe-aaae-5d4d427f863b"),
     OM_PRIMITIVE_TYPE_BYTE      (2,  "byte",       "java.lang.Byte",        "6b7d410a-2e8a-4d12-981a-a806449f9bdb"),
-    OM_PRIMITIVE_TYPE_CHAR      (3,  "char",       "java.Lang.Char",        "b0abebe5-cf85-4065-86ad-f3c6360ed9c7"),
+    OM_PRIMITIVE_TYPE_CHAR      (3,  "char",       "java.lang.Character",   "b0abebe5-cf85-4065-86ad-f3c6360ed9c7"),
     OM_PRIMITIVE_TYPE_SHORT     (4,  "short",      "java.lang.Short",       "8e95b966-ab60-46d4-a03f-40c5a1ba6c2a"),
     OM_PRIMITIVE_TYPE_INT       (5,  "int",        "java.lang.Integer",     "7fc49104-fd3a-46c8-b6bf-f16b6074cd35"),
     OM_PRIMITIVE_TYPE_LONG      (6,  "long",       "java.lang.Long",        "33a91510-92ee-4825-9f49-facd7a6f9db6"),

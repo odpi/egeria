@@ -4,6 +4,7 @@ package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacolle
 import com.fasterxml.jackson.annotation.*;
 
 import java.util.Date;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -77,12 +78,12 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
     protected Date           createTime        = null;
     protected Date           updateTime        = null;
     protected long           version           = 0L;
-    protected InstanceStatus currentStatus     = InstanceStatus.UNKNOWN;
+    protected InstanceStatus currentStatus     = null;
 
     /*
      * Used only if the status is DELETED.  It defines the status to use if the instance is restored.
      */
-    protected InstanceStatus statusOnDelete  = InstanceStatus.UNKNOWN;
+    protected InstanceStatus statusOnDelete  = null;
 
 
     /**
@@ -126,7 +127,7 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
     {
         if (type == null)
         {
-            return type;
+            return null;
         }
         else
         {
@@ -298,5 +299,54 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
                 ", currentStatus=" + currentStatus +
                 ", statusOnDelete=" + statusOnDelete +
                 '}';
+    }
+
+
+    /**
+     * Validate if the supplied object equals this object.
+     *
+     * @param objectToCompare test object
+     * @return boolean evaluation
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (!(objectToCompare instanceof InstanceAuditHeader))
+        {
+            return false;
+        }
+        InstanceAuditHeader that = (InstanceAuditHeader) objectToCompare;
+        return getVersion() == that.getVersion() &&
+                Objects.equals(getType(), that.getType()) &&
+                Objects.equals(getCreatedBy(), that.getCreatedBy()) &&
+                Objects.equals(getUpdatedBy(), that.getUpdatedBy()) &&
+                Objects.equals(getCreateTime(), that.getCreateTime()) &&
+                Objects.equals(getUpdateTime(), that.getUpdateTime()) &&
+                currentStatus == that.currentStatus &&
+                getStatusOnDelete() == that.getStatusOnDelete();
+    }
+
+
+    /**
+     * Return a hash code based on the values of this object.
+     *
+     * @return in hash code
+     */
+    @Override
+    public int hashCode()
+    {
+
+        return Objects.hash(getType(),
+                            getCreatedBy(),
+                            getUpdatedBy(),
+                            getCreateTime(),
+                            getUpdateTime(),
+                            getVersion(),
+                            currentStatus,
+                            getStatusOnDelete());
     }
 }

@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs;
+package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.testng.annotations.Test;
@@ -10,10 +10,10 @@ import java.util.List;
 import static org.testng.Assert.assertTrue;
 
 /**
- * Verify the ClassificationPropagationRule enum contains unique ordinals, non-null names and descriptions and can be
+ * Verify the SequencingOrder enum contains unique ordinals, non-null names and descriptions and can be
  * serialized to JSON and back again.
  */
-public class TestClassificationPropagationRule
+public class SequencingOrderTest
 {
     private List<Integer> existingOrdinals = null;
 
@@ -46,24 +46,44 @@ public class TestClassificationPropagationRule
     {
         existingOrdinals = new ArrayList<>();
 
-        ClassificationPropagationRule  testValue;
+        SequencingOrder  testValue;
 
-        testValue = ClassificationPropagationRule.NONE;
+        testValue = SequencingOrder.ANY;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
 
-        testValue = ClassificationPropagationRule.ONE_TO_TWO;
+        testValue = SequencingOrder.GUID;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
 
-        testValue = ClassificationPropagationRule.TWO_TO_ONE;
+        testValue = SequencingOrder.CREATION_DATE_RECENT;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
 
-        testValue = ClassificationPropagationRule.BOTH;
+        testValue = SequencingOrder.CREATION_DATE_OLDEST;
+        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
+        assertTrue(testValue.getName() != null);
+        assertTrue(testValue.getDescription() != null);
+
+        testValue = SequencingOrder.LAST_UPDATE_RECENT;
+        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
+        assertTrue(testValue.getName() != null);
+        assertTrue(testValue.getDescription() != null);
+
+        testValue = SequencingOrder.LAST_UPDATE_OLDEST;
+        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
+        assertTrue(testValue.getName() != null);
+        assertTrue(testValue.getDescription() != null);
+
+        testValue = SequencingOrder.PROPERTY_ASCENDING;
+        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
+        assertTrue(testValue.getName() != null);
+        assertTrue(testValue.getDescription() != null);
+
+        testValue = SequencingOrder.PROPERTY_DESCENDING;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
@@ -82,7 +102,7 @@ public class TestClassificationPropagationRule
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(ClassificationPropagationRule.BOTH);
+            jsonString = objectMapper.writeValueAsString(SequencingOrder.CREATION_DATE_OLDEST);
         }
         catch (Throwable  exc)
         {
@@ -91,7 +111,7 @@ public class TestClassificationPropagationRule
 
         try
         {
-            assertTrue(objectMapper.readValue(jsonString, ClassificationPropagationRule.class) == ClassificationPropagationRule.BOTH);
+            assertTrue(objectMapper.readValue(jsonString, SequencingOrder.class) == SequencingOrder.CREATION_DATE_OLDEST);
         }
         catch (Throwable  exc)
         {
@@ -105,6 +125,6 @@ public class TestClassificationPropagationRule
      */
     @Test public void testToString()
     {
-        assertTrue(ClassificationPropagationRule.TWO_TO_ONE.toString().contains("ClassificationPropagationRule"));
+        assertTrue(SequencingOrder.LAST_UPDATE_OLDEST.toString().contains("SequencingOrder"));
     }
 }

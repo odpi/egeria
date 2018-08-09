@@ -10,8 +10,8 @@ public class InstanceElementHeaderTest
 {
     @Test public void testConstructors()
     {
-        MockInstanceElementHeader  testObject = new MockInstanceElementHeader();
+        InstanceElementHeaderMock testObject = new InstanceElementHeaderMock();
 
-        new MockInstanceElementHeader(testObject);
+        new InstanceElementHeaderMock(testObject);
     }
 }
