@@ -124,7 +124,7 @@ public class TestGetTypeDef extends OpenMetadataRepositoryTestCase
         Map<String, Object>    discoveredProperties = new HashMap<>();
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
 
-        TypeDefGallery  typeDefGallery = metadataCollection.getAllTypes("testUser");
+        TypeDefGallery  typeDefGallery = metadataCollection.getAllTypes(testUserId);
 
         if (typeDefGallery == null)
         {

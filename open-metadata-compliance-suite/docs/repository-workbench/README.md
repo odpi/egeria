@@ -13,7 +13,8 @@ repositories in an open metadata repository cohort.
 
 ## Test cases
 
-* **[repository-metadata-collection-id-test-case](repository-metadata-collection-id-test-case.md)**
+* **[Metadata Collection Id Test Case](repository-metadata-collection-id-test-case.md)**
+* **[Repository Get TypeDef Test Case](repository-get-typedef-test-case.md)**
 
 
   

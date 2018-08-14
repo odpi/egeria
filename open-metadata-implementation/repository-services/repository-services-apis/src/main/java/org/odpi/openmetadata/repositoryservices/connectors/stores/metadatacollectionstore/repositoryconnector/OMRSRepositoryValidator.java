@@ -660,6 +660,21 @@ public interface OMRSRepositoryValidator
 
 
     /**
+     * Validate that the asOfTime parameter is not null or for the future.
+     *
+     * @param sourceName source of the request (used for logging)
+     * @param parameterName name of the parameter that passed the guid.
+     * @param asOfTime unique name for a classification type
+     * @param methodName method receiving the call
+     * @throws InvalidParameterException asOfTime is for the future
+     */
+    void validateAsOfTimeNotNull(String sourceName,
+                                 String parameterName,
+                                 Date   asOfTime,
+                                 String methodName) throws InvalidParameterException;
+
+
+    /**
      * Validate that a page size parameter is not negative.
      *
      * @param sourceName  source of the request (used for logging)

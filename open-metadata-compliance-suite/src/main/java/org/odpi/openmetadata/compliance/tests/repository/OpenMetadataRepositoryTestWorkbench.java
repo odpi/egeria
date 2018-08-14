@@ -49,6 +49,7 @@ public class OpenMetadataRepositoryTestWorkbench extends OpenMetadataTestWorkben
 
         testCases.add(new TestMetadataCollectionId(workbenchId));
         testCases.add(new TestGetTypeDef(workbenchId));
+        testCases.add(new TestEntityLifecycle(workbenchId));
 
         return testCases;
     }
