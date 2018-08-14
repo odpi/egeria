@@ -128,12 +128,8 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
      * @param igcKafkaEvent     A Kafka event originating from IGC
      * @throws TypeErrorException
      */
-    //TODO Propagation of database, schema.
     private void processIMAM(IGCKafkaEvent igcKafkaEvent) throws TypeErrorException {
         IGCObject igcObject = igcomrsRepositoryConnector.genericIGCQuery(igcKafkaEvent.getDatacollectionRID());
-
-        //Propagate database table
-        createEntity(igcObject,"RelationalTable");
 
         //Propagate database
         IGCObject igcDatabase = igcomrsRepositoryConnector.genericIGCQuery(igcObject.getContext().get(1).getId());
@@ -143,16 +139,15 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         IGCObject igcSchema = igcomrsRepositoryConnector.genericIGCQuery(igcObject.getContext().get(2).getId());
         createEntity(igcSchema,"DeployedDatabaseSchema");
 
+        //Propagate database table
+        createEntity(igcObject,"RelationalTable");
+
         //Propagate database columns
-        List<Item> database_columns = new ArrayList<>();
         IGCObject igcColumn;
-        for(Item item : igcObject.getDatabaseColumns().getItems())
-            database_columns.add(item);
-        for(Item item : database_columns){
+        for(Item item : igcObject.getDatabaseColumns().getItems()){
             igcColumn = igcomrsRepositoryConnector.genericIGCQuery(item.getId());
             createEntity(igcColumn,"RelationalColumn");
         }
-
     }
 
     /**
