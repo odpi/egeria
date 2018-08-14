@@ -89,9 +89,17 @@ public class IGCObject {
     private Terms terms;
     @JsonProperty("database_columns")
     private DatabaseColumns database_columns;
+    @JsonProperty("database_schema")
+    private DatabaseSchema database_schema;
+
 
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+
+
+
+    @JsonProperty("database_schema")
+    public DatabaseSchema getDatabaseSchema(){ return database_schema;}
 
 
     @JsonProperty("database_columns")

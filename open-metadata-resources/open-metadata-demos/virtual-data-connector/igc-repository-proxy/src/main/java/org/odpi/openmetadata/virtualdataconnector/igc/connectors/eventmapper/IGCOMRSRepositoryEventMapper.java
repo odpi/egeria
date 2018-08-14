@@ -33,7 +33,6 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
 
 
     private static final Logger log = LoggerFactory.getLogger(IGCOMRSRepositoryEventMapper.class);
-    private IGCObject igcObject;
     private IGCOMRSRepositoryConnector igcomrsRepositoryConnector;
     private String originatorServerName;
     private String metadataCollectionId;
@@ -131,13 +130,27 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
      */
     //TODO Propagation of database, schema.
     private void processIMAM(IGCKafkaEvent igcKafkaEvent) throws TypeErrorException {
-        igcObject = igcomrsRepositoryConnector.genericIGCQuery(igcKafkaEvent.getDatacollectionRID());
+        IGCObject igcObject = igcomrsRepositoryConnector.genericIGCQuery(igcKafkaEvent.getDatacollectionRID());
+
+        //Propagate database table
+        createEntity(igcObject,"RelationalTable");
+
+        //Propagate database
+        IGCObject igcDatabase = igcomrsRepositoryConnector.genericIGCQuery(igcObject.getContext().get(1).getId());
+        createEntity(igcDatabase,"Database");
+
+        //Propagate database schema
+        IGCObject igcSchema = igcomrsRepositoryConnector.genericIGCQuery(igcObject.getContext().get(2).getId());
+        createEntity(igcSchema,"DeployedDatabaseSchema");
+
+        //Propagate database columns
         List<Item> database_columns = new ArrayList<>();
+        IGCObject igcColumn;
         for(Item item : igcObject.getDatabaseColumns().getItems())
             database_columns.add(item);
         for(Item item : database_columns){
-            igcObject = igcomrsRepositoryConnector.genericIGCQuery(item.getId());
-            createEntity("TabularColumn");
+            igcColumn = igcomrsRepositoryConnector.genericIGCQuery(item.getId());
+            createEntity(igcColumn,"RelationalColumn");
         }
 
     }
@@ -149,21 +162,21 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
      */
     private void processAsset(IGCKafkaEvent igcKafkaEvent) {
         try {
-            igcObject = igcomrsRepositoryConnector.genericIGCQuery(igcKafkaEvent.getASSETRID());
+            IGCObject igcObject = igcomrsRepositoryConnector.genericIGCQuery(igcKafkaEvent.getASSETRID());
             String technicalTerm = igcKafkaEvent.getASSETRID();
             switch (igcKafkaEvent.getASSETTYPE()) {
                 case "Database Column":
                     if (igcKafkaEvent.getACTION().equals("ASSIGNED_RELATIONSHIP") || igcKafkaEvent.getACTION().equals("MODIFY")) { //Relationship between a technical term and a glossary term.
                         if (igcObject.getAssignedToTerms() != null) {
 
-                            String glossaryTermID = igcObject.getAssignedToTerms().getItems().get(0).getName();
+                            String glossaryTermID = igcObject.getAssignedToTerms().getItems().get(0).getId();
                             String glossaryTermName = igcObject.getAssignedToTerms().getItems().get(0).getName();
 
                             Relationship relationship = newRelationship(
                                     "SemanticAssignment",
-                                    igcKafkaEvent.getASSETRID(),
-                                    "RelationalColumn",
                                     technicalTerm,
+                                    "RelationalColumn",
+                                    technicalTerm, //TODO Double RID?
                                     glossaryTermID,
                                     "GlossaryTerm",
                                     glossaryTermName);
@@ -181,12 +194,12 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                     break;
                 case "Term":
                     if (igcKafkaEvent.getACTION().equals("CREATE")) { //Creation of a glossary term.
-                        createEntity("GlossaryTerm");
+                        createEntity(igcObject,"GlossaryTerm");
                     }
                     break;
                 case "Category":
                     if (igcKafkaEvent.getACTION().equals("CREATE")) { //Creation of a  glossary category.
-                        createEntity("GlossaryCategory");
+                        createEntity(igcObject,"GlossaryCategory");
                     }
                     if (igcKafkaEvent.getACTION().equals("ASSIGNED_RELATIONSHIP")) { //Relationship between a glossary category and a glossary term.
                         String glossaryTermID = igcObject.getTerms().getItems().get(0).getId();
@@ -194,9 +207,9 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
 
                         Relationship relationship = newRelationship(
                                 "TermCategorization",
-                                igcKafkaEvent.getASSETRID(),
-                                "GlossaryCategory",
                                 technicalTerm,
+                                "GlossaryCategory",
+                                technicalTerm,   //TODO Double RID?
                                 glossaryTermID,
                                 "GlossaryTerm",
                                 glossaryTermName
@@ -217,13 +230,13 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         }
     }
 
-    private void createEntity(String typeName) throws TypeErrorException {
+    private void createEntity(IGCObject igcObject, String typeName) throws TypeErrorException {
 
         String username = igcObject.getCreatedBy();
         Map<String, InstancePropertyValue> properties = new HashMap<>();
 
         PrimitivePropertyValue qualifiedName = new PrimitivePropertyValue();
-        qualifiedName.setPrimitiveValue(igcObject.getId());
+        qualifiedName.setPrimitiveValue(typeName +":" + igcObject.getId());
         qualifiedName.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
         properties.put("qualifiedName", qualifiedName);
 

@@ -22,7 +22,7 @@ import java.util.Map;
         "_name",
         "database_table_or_view.assigned_to_terms"
 })
-public class Item {
+public class DatabaseSchema {
 
     @JsonProperty("position")
     private Integer position;
