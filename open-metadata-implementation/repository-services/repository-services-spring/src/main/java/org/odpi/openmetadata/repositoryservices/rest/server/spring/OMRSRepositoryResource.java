@@ -1669,11 +1669,8 @@ public class OMRSRepositoryResource
      * Add a new relationship between two entities to the metadata collection.
      *
      * @param userId unique identifier for requesting user.
-     * @param relationshipTypeGUID unique identifier (guid) for the new relationship's type.
-     * @param initialProperties initial list of properties for the new entity null means no properties.
-     * @param entityOneGUID the unique identifier of one of the entities that the relationship is connecting together.
-     * @param entityTwoGUID the unique identifier of the other entity that the relationship is connecting together.
-     * @param initialStatus initial status typically DRAFT, PREPARED or ACTIVE.
+     * @param requestBody parameters for the new relationship
+
      * @return RelationshipResponse:
      * Relationship structure with the new header, requested entities and properties or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -1691,18 +1688,9 @@ public class OMRSRepositoryResource
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/relationship")
 
     public RelationshipResponse addRelationship(@PathVariable                   String               userId,
-                                                @RequestParam                   String               relationshipTypeGUID,
-                                                @RequestParam(required = false) InstanceProperties   initialProperties,
-                                                @RequestParam                   String               entityOneGUID,
-                                                @RequestParam                   String               entityTwoGUID,
-                                                @RequestParam                   InstanceStatus       initialStatus)
+                                                @RequestBody RelationshipCreateRequest requestBody)
     {
-        return restAPI.addRelationship(userId,
-                                       relationshipTypeGUID,
-                                       initialProperties,
-                                       entityOneGUID,
-                                       entityTwoGUID,
-                                       initialStatus);
+        return restAPI.addRelationship(userId, requestBody);
     }
 
 

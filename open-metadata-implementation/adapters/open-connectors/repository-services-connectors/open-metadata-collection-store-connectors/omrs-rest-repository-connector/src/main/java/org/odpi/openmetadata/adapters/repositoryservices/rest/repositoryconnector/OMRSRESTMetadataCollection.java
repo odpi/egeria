@@ -2696,16 +2696,19 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                                    UserNotAuthorizedException
     {
         final String methodName  = "addRelationship";
-        final String urlTemplate = "users/{0}/instances/relationship?relationshipTypeGUID={1}&initialProperties={2}&entityOneGUID={3}&entityTwoGUID={4}&initialStatus={5}";
+        final String urlTemplate = "users/{0}/instances/relationship";
+
+        RelationshipCreateRequest requestBody = new RelationshipCreateRequest();
+        requestBody.setRelationshipTypeGUID(relationshipTypeGUID);
+        requestBody.setEntityOneGUID(entityOneGUID);
+        requestBody.setEntityTwoGUID(entityTwoGUID);
+        requestBody.setInitialProperties(initialProperties);
+        requestBody.setInitialStatus(initialStatus);
 
         RelationshipResponse restResult = this.callRelationshipPostRESTCall(methodName,
                                                                             restURLRoot + urlTemplate,
-                                                                            userId,
-                                                                            relationshipTypeGUID,
-                                                                            initialProperties,
-                                                                            entityOneGUID,
-                                                                            entityTwoGUID,
-                                                                            initialStatus);
+                                                                            requestBody,
+                                                                            userId);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeErrorException(methodName, restResult);

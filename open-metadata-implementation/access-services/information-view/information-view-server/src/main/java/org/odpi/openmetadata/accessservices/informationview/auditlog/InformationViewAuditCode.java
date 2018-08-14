@@ -24,9 +24,9 @@ public enum InformationViewAuditCode {
             "The Information View OMAS is registering to receive events from the connected open metadata repositories.",
             "No action is required.  This is part of the normal operation of the server."),
 
-    SERVICE_REGISTERED_WITH_IV_IN_TOPIC("OMAS-INFORMATION_VIEW-0003",
+    SERVICE_REGISTERED_WITH_IV_TOPIC("OMAS-INFORMATION_VIEW-0003",
             OMRSAuditLogRecordSeverity.INFO,
-            "The Information View Open Metadata Access Service (OMAS) is registering a listener with the IV IN Topic",
+            "The Information View Open Metadata Access Service (OMAS) is registering a listener with the Information View Topic",
             "The Information View OMAS is registering to receive events from the connected open metadata repositories.",
             "No action is required.  This is part of the normal operation of the server."),
 
@@ -40,7 +40,20 @@ public enum InformationViewAuditCode {
             OMRSAuditLogRecordSeverity.INFO,
             "The Information View Open Metadata Access Service (OMAS) is shutting down",
             "The local server has requested shut down of the Information View OMAS.",
-            "No action is required.  This is part of the normal operation of the server."),;
+            "No action is required.  This is part of the normal operation of the server."),
+
+    ERROR_INITIALIZING_CONNECTION("OMAS-INFORMATION_VIEW-0006",
+            OMRSAuditLogRecordSeverity.EXCEPTION,
+            "Unable to initialize the  Information View Open Metadata Access Service (OMAS) ",
+            "The connection {0} could not be initialized.",
+            "Review the exception and resolve the configuration. "),
+
+    ERROR_INITIALIZING_INFORMATION_VIEW_TOPIC_CONNECTION("OMAS-INFORMATION_VIEW-0007",
+            OMRSAuditLogRecordSeverity.EXCEPTION,
+            "Unable to initialize the  Information View Open Metadata Access Service (OMAS) ",
+            "The connection to information view topic {0} could not be initialized.",
+            "Review the exception and resolve the configuration. ")
+    ;
 
     private static final Logger log = LoggerFactory.getLogger(InformationViewAuditCode.class);
     private String logMessageId;
