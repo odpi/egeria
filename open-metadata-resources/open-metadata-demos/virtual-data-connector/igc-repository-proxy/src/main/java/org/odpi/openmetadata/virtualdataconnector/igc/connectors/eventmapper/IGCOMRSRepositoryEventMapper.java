@@ -147,8 +147,6 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         String RelationalDBSchemaTypeID = "DeployedDatabaseSchema.rid." + igcSchema.getId();
         String RelationalTableTypeID = "RelationalTableType.rid." + igcTable.getId();
 
-        Relationship relationship;
-
         createRelationship(
                 "DataContentForDataSet",
                 igcDatabase.getId(),
