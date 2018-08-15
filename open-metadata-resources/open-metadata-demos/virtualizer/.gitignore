@@ -1,0 +1,28 @@
+target*
+dependency-reduced-pom.xml
+core*.dmp
+pom.xml.releaseBackup
+
+# IntelliJ
+*.iml
+*.ipr
+*.iws
+.idea
+
+# Eclipse
+.cache
+.classpath
+.project
+.checkstyle
+
+.settings
+.externalToolBuilders
+maven-eclipse.xml
+
+#binary files
+#**/bin/**
+!distro/src/bin/**
+
+#log files
+logs
+*.log
