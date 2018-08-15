@@ -153,42 +153,29 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                 "DataContentForDataSet",
                 igcDatabase.getId(),
                 "Database",
-                igcDatabase.getId(),   //TODO Double RID?
                 igcSchema.getId(),
-                "DeployedDatabaseSchema",
-                igcSchema.getId()
-        );
+                "DeployedDatabaseSchema");
 
         createRelationship(
                 "AssetSchemaType",
                 igcSchema.getId(),
                 "DeployedDatabaseSchema",
-                igcSchema.getId(),   //TODO Double RID?
                 RelationalDBSchemaTypeID,
-                "RelationalDBSchemaType",
-                RelationalDBSchemaTypeID
-        );
-
+                "RelationalDBSchemaType");
 
         createRelationship(
                 "AttributeForSchema",
                 RelationalDBSchemaTypeID,
                 "RelationalDBSchemaType",
-                RelationalDBSchemaTypeID,
                 igcTable.getId(),
-                "RelationalTable",
-                igcTable.getId() //TODO Double RID?
-        );
+                "RelationalTable");
 
         createRelationship(
                 "SchemaAttributeType",
                 igcTable.getId(),
                 "RelationalTable",
-                igcTable.getId(),
                 RelationalTableTypeID,
-                "RelationalTableType",
-                RelationalTableTypeID //TODO Double RID?
-        );
+                "RelationalTableType");
 
 
         for(Item column : igcTable.getDatabaseColumns().getItems()){
@@ -202,21 +189,15 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                     "SchemaAttributeType",
                     igcColumn.getId(),
                     "RelationalColumn",
-                    igcColumn.getId(),
                     RelationalColumnTypeID,
-                    "RelationalColumnType",
-                    RelationalColumnTypeID //TODO Double RID?
-            );
+                    "RelationalColumnType");
 
             createRelationship(
                     "AttributeForSchema",
                     igcColumn.getId(),
                     "RelationalColumn",
-                    igcColumn.getId(),
                     RelationalTableTypeID,
-                    "RelationalTableType",
-                    RelationalTableTypeID //TODO Double RID?
-            );
+                    "RelationalTableType");
         }
     }
 
@@ -241,12 +222,8 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                                     "SemanticAssignment",
                                     technicalTerm,
                                     "RelationalColumn",
-                                    technicalTerm, //TODO Double RID?
                                     glossaryTermID,
-                                    "GlossaryTerm",
-                                    glossaryTermName);
-
-
+                                    "GlossaryTerm");
                         }
                     }
                     break;
@@ -261,17 +238,13 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                     }
                     if (igcKafkaEvent.getACTION().equals("ASSIGNED_RELATIONSHIP")) { //Relationship between a glossary category and a glossary term.
                         String glossaryTermID = igcObject.getTerms().getItems().get(0).getId();
-                        String glossaryTermName = igcObject.getTerms().getItems().get(0).getName();
 
                         createRelationship(
                                 "TermCategorization",
                                 technicalTerm,
                                 "GlossaryCategory",
-                                technicalTerm,   //TODO Double RID?
                                 glossaryTermID,
-                                "GlossaryTerm",
-                                glossaryTermName
-                        );
+                                "GlossaryTerm");
                     }
                     break;
             }
@@ -339,7 +312,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
      * @param entityType2      name of the type
      * @throws TypeErrorException The type name is not recognized as a relationship type.
      */
-    private void createRelationship(String relationshipType, String entityId1, String entityType1, String entityName1, String entityId2, String entityType2, String entityName2) throws TypeErrorException {
+    private void createRelationship(String relationshipType, String entityId1, String entityType1, String entityId2, String entityType2) throws TypeErrorException {
 
         Relationship relationship = this.repositoryHelper.getNewRelationship(
                 sourceName,
@@ -356,10 +329,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         entityProxyOne.setGUID(entityId1);
         entityProxyTwo.setGUID(entityId2);
 
-        relationship.setEntityOnePropertyName(entityName1);
         relationship.setEntityOneProxy(entityProxyOne);
-
-        relationship.setEntityTwoPropertyName(entityName2);
         relationship.setEntityTwoProxy(entityProxyTwo);
 
         this.repositoryEventProcessor.processNewRelationshipEvent(
