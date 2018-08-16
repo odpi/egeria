@@ -156,8 +156,23 @@ public interface OMRSRepositoryHelper
      */
     TypeDef applyPatch(String       sourceName,
                        TypeDef      originalTypeDef,
-                       TypeDefPatch typeDefPatch) throws PatchErrorException,
-            InvalidParameterException;
+                       TypeDefPatch typeDefPatch) throws PatchErrorException, InvalidParameterException;
+
+
+    /**
+     * Validate that the type's name is not null.
+     *
+     * @param sourceName source of the request (used for logging)
+     * @param standard name of the standard, null means any.
+     * @param organization name of the organization, null means any.
+     * @param identifier identifier of the element in the standard, null means any.
+     * @param methodName method receiving the call
+     */
+    List<TypeDef> getMatchingActiveTypes(String sourceName,
+                                         String standard,
+                                         String organization,
+                                         String identifier,
+                                         String methodName);
 
 
     /**
@@ -241,13 +256,13 @@ public interface OMRSRepositoryHelper
      * @return an entity that is filled out
      * @throws TypeErrorException  the type name is not recognized as an entity type
      */
-    EntityDetail getNewEntity(String sourceName,
-                              String metadataCollectionId,
+    EntityDetail getNewEntity(String                 sourceName,
+                              String                 metadataCollectionId,
                               InstanceProvenanceType provenanceType,
-                              String userName,
-                              String typeName,
-                              InstanceProperties properties,
-                              List<Classification> classifications) throws TypeErrorException;
+                              String                 userName,
+                              String                 typeName,
+                              InstanceProperties     properties,
+                              List<Classification>   classifications) throws TypeErrorException;
 
 
     /**
@@ -262,12 +277,12 @@ public interface OMRSRepositoryHelper
      * @return a relationship that is filled out
      * @throws TypeErrorException  the type name is not recognized as a relationship type
      */
-    Relationship getNewRelationship(String sourceName,
-                                    String metadataCollectionId,
+    Relationship getNewRelationship(String                 sourceName,
+                                    String                 metadataCollectionId,
                                     InstanceProvenanceType provenanceType,
-                                    String userName,
-                                    String typeName,
-                                    InstanceProperties properties) throws TypeErrorException;
+                                    String                 userName,
+                                    String                 typeName,
+                                    InstanceProperties     properties) throws TypeErrorException;
 
 
     /**
@@ -302,10 +317,10 @@ public interface OMRSRepositoryHelper
      * @param methodName         calling method
      * @return updated entity
      */
-    EntityDetail addClassificationToEntity(String sourceName,
-                                           EntityDetail entity,
+    EntityDetail addClassificationToEntity(String         sourceName,
+                                           EntityDetail   entity,
                                            Classification newClassification,
-                                           String methodName);
+                                           String         methodName);
 
 
     /**
@@ -440,7 +455,7 @@ public interface OMRSRepositoryHelper
                                   String                    userName,
                                   String                    typeName,
                                   InstanceProperties        properties,
-                                  List<Classification> classifications) throws TypeErrorException;
+                                  List<Classification>      classifications) throws TypeErrorException;
 
     /**
      * Return boolean true if entity is linked by this relationship.

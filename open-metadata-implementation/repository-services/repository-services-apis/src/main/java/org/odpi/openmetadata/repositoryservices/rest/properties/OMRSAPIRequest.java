@@ -21,9 +21,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = OMRSAPIFindRequest.class, name = "OMRSAPIFindRequest"),
-                @JsonSubTypes.Type(value = TypeDefCategoryFindRequest.class, name = "TypeDefCategoryFindRequest")
+                @JsonSubTypes.Type(value = TypeDefReIdentifyRequest.class, name = "TypeDefReIdentifyRequest"),
+                @JsonSubTypes.Type(value = InstancePropertiesRequest.class, name = "InstancePropertiesRequest"),
+                @JsonSubTypes.Type(value = InstanceGraphRequest.class, name = "InstanceGraphRequest"),
+                @JsonSubTypes.Type(value = MetadataCollectionIdRequest.class, name = "MetadataCollectionIdRequest"),
+                @JsonSubTypes.Type(value = EntityCreateRequest.class, name = "EntityCreateRequest"),
+                @JsonSubTypes.Type(value = RelationshipCreateRequest.class, name = "RelationshipCreateRequest")
         })
-public abstract class OMRSAPIRequest implements Serializable
+public class OMRSAPIRequest implements Serializable
 {
     private static final long       serialVersionUID = 1L;
 

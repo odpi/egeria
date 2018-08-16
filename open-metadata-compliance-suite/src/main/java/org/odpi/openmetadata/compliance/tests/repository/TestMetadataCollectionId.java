@@ -17,6 +17,8 @@ public class TestMetadataCollectionId extends OpenMetadataRepositoryTestCase
     private static final  String assertion2    = testCaseId + "-02";
     private static final  String assertionMsg2 = "Consistent metadata collection id retrieved from repository.";
 
+    private String metadataCollectionId = null;
+
 
     /**
      * Default constructor sets up superclass
@@ -28,6 +30,17 @@ public class TestMetadataCollectionId extends OpenMetadataRepositoryTestCase
 
 
     /**
+     * Return the discovered metadata collection Id.
+     *
+     * @return String guid
+     */
+    public String getMetadataCollectionId()
+    {
+        return metadataCollectionId;
+    }
+
+
+    /**
      * Method implemented by the actual test case.
      *
      * @throws Exception something went wrong with the test.
@@ -35,8 +48,6 @@ public class TestMetadataCollectionId extends OpenMetadataRepositoryTestCase
     protected void run() throws Exception
     {
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
-
-        String metadataCollectionId = null;
 
         try
         {

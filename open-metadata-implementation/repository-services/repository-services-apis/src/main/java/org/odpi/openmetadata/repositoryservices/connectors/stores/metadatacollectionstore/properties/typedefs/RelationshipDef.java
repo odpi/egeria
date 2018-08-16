@@ -148,30 +148,26 @@ public class RelationshipDef extends TypeDef
     public String toString()
     {
         return "RelationshipDef{" +
-                ", propagationRule=" + propagationRule +
-                ", endDef1=" + endDef1 +
-                ", endDef2=" + endDef2 +
-                ", superType=" + superType +
-                ", description='" + description + '\'' +
-                ", descriptionGUID='" + descriptionGUID + '\'' +
-                ", origin='" + origin + '\'' +
-                ", createdBy='" + createdBy + '\'' +
-                ", updatedBy='" + updatedBy + '\'' +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                ", options=" + options +
-                ", externalStandardMappings=" + externalStandardMappings +
-                ", validInstanceStatusList=" + validInstanceStatusList +
-                ", initialStatus=" + initialStatus +
-                ", propertiesDefinition=" + propertiesDefinition +
-                ", version=" + version +
-                ", versionName='" + versionName + '\'' +
-                ", category=" + category +
-                ", guid='" + guid + '\'' +
-                ", name='" + name + '\'' +
+                "superType=" + getSuperType() +
+                ", description='" + getDescription() + '\'' +
+                ", descriptionGUID='" + getDescriptionGUID() + '\'' +
+                ", origin='" + getOrigin() + '\'' +
+                ", createdBy='" + getCreatedBy() + '\'' +
+                ", updatedBy='" + getUpdatedBy() + '\'' +
+                ", createTime=" + getCreateTime() +
+                ", updateTime=" + getUpdateTime() +
+                ", options=" + getOptions() +
+                ", externalStandardMappings=" + getExternalStandardMappings() +
+                ", validInstanceStatusList=" + getValidInstanceStatusList() +
+                ", initialStatus=" + getInitialStatus() +
+                ", propertiesDefinition=" + getPropertiesDefinition() +
+                ", category=" + getCategory() +
+                ", version=" + getVersion() +
+                ", versionName='" + getVersionName() + '\'' +
+                ", GUID='" + getGUID() + '\'' +
+                ", name='" + getName() + '\'' +
                 '}';
     }
-
 
     /**
      * Verify that supplied object has the same properties.

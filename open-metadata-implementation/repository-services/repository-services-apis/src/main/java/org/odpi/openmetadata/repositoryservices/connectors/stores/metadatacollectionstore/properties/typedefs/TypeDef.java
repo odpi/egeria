@@ -104,9 +104,10 @@ public abstract class TypeDef extends TypeDefSummary
             this.createTime = template.getCreateTime();
             this.updateTime = template.getUpdateTime();
             this.options = template.getOptions();
-            this.setExternalStandardMappings(template.getExternalStandardMappings());
-            this.setValidInstanceStatusList(template.getValidInstanceStatusList());
-            this.setPropertiesDefinition(template.getPropertiesDefinition());
+            this.externalStandardMappings = template.getExternalStandardMappings();
+            this.validInstanceStatusList = template.getValidInstanceStatusList();
+            this.propertiesDefinition = template.getPropertiesDefinition();
+            this.initialStatus = template.getInitialStatus();
         }
     }
 

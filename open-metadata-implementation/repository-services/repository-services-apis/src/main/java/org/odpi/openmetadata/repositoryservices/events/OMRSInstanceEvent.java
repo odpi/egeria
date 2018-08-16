@@ -1,14 +1,11 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.repositoryservices.events;
 
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1;
 import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1InstanceSection;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
 
 
@@ -22,13 +19,14 @@ public class OMRSInstanceEvent extends OMRSEvent
     /*
      * Instance specific properties for typical instance events
      */
-    private String       typeDefGUID          = null;
-    private String       typeDefName          = null;
-    private String       instanceGUID         = null;
-    private EntityDetail originalEntity       = null;
-    private EntityDetail entity               = null;
-    private Relationship originalRelationship = null;
-    private Relationship relationship         = null;
+    private String        typeDefGUID          = null;
+    private String        typeDefName          = null;
+    private String        instanceGUID         = null;
+    private EntityDetail  originalEntity       = null;
+    private EntityDetail  entity               = null;
+    private Relationship  originalRelationship = null;
+    private Relationship  relationship         = null;
+    private InstanceGraph instanceBatch        = null;
 
     /*
      * Home repository Id for refresh requests.
@@ -212,6 +210,22 @@ public class OMRSInstanceEvent extends OMRSEvent
 
 
     /**
+     * Constructor for batch instance events.
+     *
+     * @param instanceEventType type of event
+     * @param instances graph of instances
+     */
+    public OMRSInstanceEvent(OMRSInstanceEventType instanceEventType,
+                             InstanceGraph         instances)
+    {
+        super(OMRSEventCategory.INSTANCE);
+
+        this.instanceEventType = instanceEventType;
+        this.instanceBatch = instances;
+    }
+
+
+    /**
      * Constructor for instance conflict events.
      *
      * @param errorCode error code
@@ -230,7 +244,7 @@ public class OMRSInstanceEvent extends OMRSEvent
                              TypeDefSummary             targetTypeDefSummary,
                              String                     targetInstanceGUID,
                              String                     otherMetadataCollectionId,
-                             InstanceProvenanceType otherOrigin,
+                             InstanceProvenanceType     otherOrigin,
                              TypeDefSummary             otherTypeDefSummary,
                              String                     otherInstanceGUID)
     {
@@ -276,6 +290,7 @@ public class OMRSInstanceEvent extends OMRSEvent
 
         this.errorCode = errorCode;
     }
+
 
     /**
      * Set up the home metadata collection Id.  This is used for when a repository is requesting a refresh of an instance's
@@ -413,6 +428,17 @@ public class OMRSInstanceEvent extends OMRSEvent
 
 
     /**
+     * Return the instance batch (if applicable) or null.
+     *
+     * @return InstanceGraph object
+     */
+    public InstanceGraph getInstanceBatch()
+    {
+        return instanceBatch;
+    }
+
+
+    /**
      * Return the identifier of the instance's home metadata collection.  This is used on refresh requests.
      *
      * @return String unique identifier (guid)
@@ -489,6 +515,7 @@ public class OMRSInstanceEvent extends OMRSEvent
         instanceSection.setEntity(this.entity);
         instanceSection.setOriginalRelationship(this.originalRelationship);
         instanceSection.setRelationship(this.relationship);
+        instanceSection.setInstanceBatch(this.instanceBatch);
         instanceSection.setHomeMetadataCollectionId(this.homeMetadataCollectionId);
 
         instanceSection.setOriginalHomeMetadataCollectionId(this.originalHomeMetadataCollectionId);
@@ -518,6 +545,7 @@ public class OMRSInstanceEvent extends OMRSEvent
                 ", entity=" + entity +
                 ", originalRelationship=" + originalRelationship +
                 ", relationship=" + relationship +
+                ", instanceBatch=" + instanceBatch +
                 ", homeMetadataCollectionId='" + homeMetadataCollectionId + '\'' +
                 ", originalHomeMetadataCollectionId='" + originalHomeMetadataCollectionId + '\'' +
                 ", originalTypeDefSummary=" + originalTypeDefSummary +

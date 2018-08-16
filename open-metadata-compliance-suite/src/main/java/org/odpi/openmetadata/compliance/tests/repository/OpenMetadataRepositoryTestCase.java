@@ -3,19 +3,14 @@ package org.odpi.openmetadata.compliance.tests.repository;
 
 import org.odpi.openmetadata.compliance.OpenMetadataTestCase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDefCategory;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * OpenMetadataTestCase is the superclass for an open metadata compliance test.  It manages the
@@ -34,8 +29,8 @@ public abstract class OpenMetadataRepositoryTestCase extends OpenMetadataTestCas
     /**
      * Constructor passes the standard descriptive information to the superclass.
      *
-     * @param workbenchId - identifier of the workbench used to build the documentation URL.
-     * @param testCaseId - id of the test case
+     * @param workbenchId  identifier of the workbench used to build the documentation URL.
+     * @param testCaseId  id of the test case
      * @param testCaseName - name of the test case
      */
     protected OpenMetadataRepositoryTestCase(String workbenchId,
@@ -150,7 +145,7 @@ public abstract class OpenMetadataRepositoryTestCase extends OpenMetadataTestCas
     /**
      * Return the instance properties defined for the TypeDef.
      *
-     * @param typeDefAttributes - attributes defined for a specific type
+     * @param typeDefAttributes  attributes defined for a specific type
      * @return properties for an instance of this type
      */
     protected InstanceProperties  getPropertiesForInstance(List<TypeDefAttribute> typeDefAttributes)
@@ -186,5 +181,77 @@ public abstract class OpenMetadataRepositoryTestCase extends OpenMetadataTestCas
 
 
         return properties;
+    }
+
+
+    /**
+     * Returns the appropriate entity definition for the supplied entity identifiers.
+     * This may be the entity specified, or a subclass of the entity that is supported.
+     *
+     * @param supportedEntityDefs map of entity type name to entity type definition
+     * @param entityIdentifiers guid and name of desired entity definition
+     * @return entity definition (EntityDef)
+     */
+    EntityDef  getEntityDef(Map<String, EntityDef>  supportedEntityDefs,
+                            TypeDefLink             entityIdentifiers)
+    {
+        EntityDef  entityDef = null;
+
+        /*
+         * Need to look up entity def (or a suitable subclass).
+         */
+        List<String>   possibleEntityNameMatch = new ArrayList<>();
+        possibleEntityNameMatch.add(entityIdentifiers.getName());
+
+        while ((entityDef == null) && (! possibleEntityNameMatch.isEmpty()))
+        {
+            List<String>   possibleEntitySubtypeNameMatch = new ArrayList<>();
+
+            for (String   entityTypeName : possibleEntityNameMatch)
+            {
+                entityDef = supportedEntityDefs.get(entityTypeName);
+
+                /*
+                 * First check that we have a match
+                 */
+                if (entityDef == null)
+                {
+                    /*
+                     * Now look for subclasses of this entity and set up list with subclasses for next iteration.
+                     */
+                    for (EntityDef supportedEntityDef : supportedEntityDefs.values())
+                    {
+                        TypeDefLink superType = supportedEntityDef.getSuperType();
+                        if ((superType != null) && (entityTypeName.equals(superType.getName())))
+                        {
+                            possibleEntitySubtypeNameMatch.add(supportedEntityDef.getName());
+                        }
+                    }
+                }
+            }
+
+            possibleEntityNameMatch = possibleEntitySubtypeNameMatch;
+        }
+
+        return entityDef;
+    }
+
+
+    /**
+     * Adds an entity of the requested type to the repository.
+     *
+     * @param userId userId for the new entity
+     * @param metadataCollection metadata connection to access the repository
+     * @param entityDef type of entity to create
+     * @return new entity
+     * @throws Exception error in create
+     */
+    EntityDetail addEntityToRepository(String                   userId,
+                                       OMRSMetadataCollection   metadataCollection,
+                                       EntityDef                entityDef) throws Exception
+    {
+        InstanceProperties properties = this.getPropertiesForInstance(entityDef.getPropertiesDefinition());
+
+        return metadataCollection.addEntity(userId, entityDef.getGUID(), properties, null, null );
     }
 }

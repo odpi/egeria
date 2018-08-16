@@ -5,34 +5,34 @@ package org.odpi.openmetadata.repositoryservices.rest.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 
-import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * EntityCreateRequest carries the properties needed to create a new entity.
+ * RelationshipCreateRequest provides the bean to hold all of the properties needed to create a new
+ * relationship.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class EntityCreateRequest extends OMRSAPIRequest
+public class RelationshipCreateRequest extends OMRSAPIRequest
 {
-    private String               entityTypeGUID         = null;
-    private InstanceProperties   initialProperties      = null;
-    private List<Classification> initialClassifications = null;
-    private InstanceStatus       initialStatus          = null;
+    private String             relationshipTypeGUID = null;
+    private InstanceProperties initialProperties = null;
+    private String             entityOneGUID = null;
+    private String             entityTwoGUID = null;
+    private InstanceStatus     initialStatus = null;
 
 
     /**
      * Default constructor
      */
-    public EntityCreateRequest()
+    public RelationshipCreateRequest()
     {
         super();
     }
@@ -43,44 +43,45 @@ public class EntityCreateRequest extends OMRSAPIRequest
      *
      * @param template object to copy
      */
-    public EntityCreateRequest(EntityCreateRequest template)
+    public RelationshipCreateRequest(RelationshipCreateRequest template)
     {
         super(template);
 
         if (template != null)
         {
-            this.entityTypeGUID = template.getEntityTypeGUID();
+            this.relationshipTypeGUID = template.getRelationshipTypeGUID();
             this.initialProperties = template.getInitialProperties();
-            this.initialClassifications = template.getInitialClassifications();
+            this.entityOneGUID = template.getEntityOneGUID();
+            this.entityTwoGUID = template.getEntityTwoGUID();
             this.initialStatus = template.getInitialStatus();
         }
     }
 
 
     /**
-     * Return the type of the new entity.
+     * Return the type of the new relationship.
      *
      * @return String guid
      */
-    public String getEntityTypeGUID()
+    public String getRelationshipTypeGUID()
     {
-        return entityTypeGUID;
+        return relationshipTypeGUID;
     }
 
 
     /**
-     * Set up the type of the new entity.
+     * Set up the type of the new relationship.
      *
-     * @param entityTypeGUID String guid
+     * @param relationshipTypeGUID String guid
      */
-    public void setEntityTypeGUID(String entityTypeGUID)
+    public void setRelationshipTypeGUID(String relationshipTypeGUID)
     {
-        this.entityTypeGUID = entityTypeGUID;
+        this.relationshipTypeGUID = relationshipTypeGUID;
     }
 
 
     /**
-     * Return the list of properties for the new entity.
+     * Return the list of properties for the new relationship.
      *
      * @return instance properties object
      */
@@ -98,7 +99,7 @@ public class EntityCreateRequest extends OMRSAPIRequest
 
 
     /**
-     * Set up the initial properties for the entity.
+     * Set up the initial properties for the relationship.
      *
      * @param initialProperties InstanceProperties object
      */
@@ -109,40 +110,51 @@ public class EntityCreateRequest extends OMRSAPIRequest
 
 
     /**
-     * Return the list of classification for the new entity.
+     * Return the unique identifier (GUID) for the first entity linked by the relationship.
      *
-     * @return list of classification objects
+     * @return entity guid
      */
-    public List<Classification> getInitialClassifications()
+    public String getEntityOneGUID()
     {
-        if (initialClassifications == null)
-        {
-            return null;
-        }
-        else if (initialClassifications.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return initialClassifications;
-        }
+        return entityOneGUID;
     }
 
 
     /**
-     * Set up the list of classification for the new entity.
+     * Set up the unique identifier (GUID) for the first entity linked by the relationship.
      *
-     * @param initialClassifications list of classification objects
+     * @param entityOneGUID entity guid
      */
-    public void setInitialClassifications(List<Classification> initialClassifications)
+    public void setEntityOneGUID(String entityOneGUID)
     {
-        this.initialClassifications = initialClassifications;
+        this.entityOneGUID = entityOneGUID;
     }
 
 
     /**
-     * Return the initial status for the new entity.
+     * Return the unique identifier (GUID) for the second entity linked by the relationship.
+     *
+     * @return entity guid
+     */
+    public String getEntityTwoGUID()
+    {
+        return entityTwoGUID;
+    }
+
+
+    /**
+     * Set up the unique identifier (GUID) for the second entity linked by the relationship.
+     *
+     * @param entityTwoGUID entity guid
+     */
+    public void setEntityTwoGUID(String entityTwoGUID)
+    {
+        this.entityTwoGUID = entityTwoGUID;
+    }
+
+
+    /**
+     * Return the initial status for the new relationship.
      *
      * @return instance status enum
      */
@@ -153,7 +165,7 @@ public class EntityCreateRequest extends OMRSAPIRequest
 
 
     /**
-     * Set up the initial status for the new entity.
+     * Set up the initial status for the new relationship.
      *
      * @param initialStatus instance status enum
      */
@@ -171,10 +183,11 @@ public class EntityCreateRequest extends OMRSAPIRequest
     @Override
     public String toString()
     {
-        return "EntityCreateRequest{" +
-                "entityTypeGUID='" + entityTypeGUID + '\'' +
+        return "RelationshipCreateRequest{" +
+                "relationshipTypeGUID='" + relationshipTypeGUID + '\'' +
                 ", initialProperties=" + initialProperties +
-                ", initialClassifications=" + initialClassifications +
+                ", entityOneGUID='" + entityOneGUID + '\'' +
+                ", entityTwoGUID='" + entityTwoGUID + '\'' +
                 ", initialStatus=" + initialStatus +
                 '}';
     }
@@ -193,14 +206,15 @@ public class EntityCreateRequest extends OMRSAPIRequest
         {
             return true;
         }
-        if (!(objectToCompare instanceof EntityCreateRequest))
+        if (!(objectToCompare instanceof RelationshipCreateRequest))
         {
             return false;
         }
-        EntityCreateRequest that = (EntityCreateRequest) objectToCompare;
-        return Objects.equals(getEntityTypeGUID(), that.getEntityTypeGUID()) &&
+        RelationshipCreateRequest that = (RelationshipCreateRequest) objectToCompare;
+        return Objects.equals(getRelationshipTypeGUID(), that.getRelationshipTypeGUID()) &&
                 Objects.equals(getInitialProperties(), that.getInitialProperties()) &&
-                Objects.equals(getInitialClassifications(), that.getInitialClassifications()) &&
+                Objects.equals(getEntityOneGUID(), that.getEntityOneGUID()) &&
+                Objects.equals(getEntityTwoGUID(), that.getEntityTwoGUID()) &&
                 getInitialStatus() == that.getInitialStatus();
     }
 
@@ -214,9 +228,10 @@ public class EntityCreateRequest extends OMRSAPIRequest
     public int hashCode()
     {
 
-        return Objects.hash(getEntityTypeGUID(),
+        return Objects.hash(getRelationshipTypeGUID(),
                             getInitialProperties(),
-                            getInitialClassifications(),
+                            getEntityOneGUID(),
+                            getEntityTwoGUID(),
                             getInitialStatus());
     }
 }

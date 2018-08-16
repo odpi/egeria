@@ -1296,14 +1296,59 @@ public class LocalOMRSInstanceEventProcessor implements OMRSInstanceEventProcess
                                                 Relationship relationship)
     {
         final String methodName = "processRefreshRelationshipEvent";
-        final String entityParameterName = "relationship";
+        final String relationshipParameterName = "relationship";
 
         updateReferenceRelationship(sourceName,
                                     methodName,
-                                    entityParameterName,
+                                    relationshipParameterName,
                                     originatorMetadataCollectionId,
                                     originatorServerName,
                                     relationship);
+    }
+
+
+    /**
+     * An open metadata repository is passing information about a collection of entities and relationships
+     * with the other repositories in the cohort.
+     *
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
+     *                   local repository, or event mapper name.
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param instances multiple entities and relationships for sharing.
+     */
+    public void processInstanceBatchEvent(String         sourceName,
+                                          String         originatorMetadataCollectionId,
+                                          String         originatorServerName,
+                                          String         originatorServerType,
+                                          String         originatorOrganizationName,
+                                          InstanceGraph  instances)
+    {
+        final String methodName = "processInstanceBatchEvent";
+
+        try
+        {
+            verifyEventProcessor(methodName);
+
+            realMetadataCollection.saveInstanceReferenceCopies(sourceName, instances);
+        }
+        catch (Throwable error)
+        {
+            OMRSAuditCode auditCode = OMRSAuditCode.UNEXPECTED_EXCEPTION_FROM_EVENT;
+            auditLog.logRecord(methodName,
+                               auditCode.getLogMessageId(),
+                               auditCode.getSeverity(),
+                               auditCode.getFormattedLogMessage(methodName,
+                                                                originatorServerName,
+                                                                originatorMetadataCollectionId,
+                                                                error.getMessage()),
+                               null,
+                               auditCode.getSystemAction(),
+                               auditCode.getUserAction());
+        }
     }
 
 
@@ -1700,6 +1745,7 @@ public class LocalOMRSInstanceEventProcessor implements OMRSInstanceEventProcess
                                auditCode.getUserAction());
         }
     }
+
 
     /**
      * Validate that this event processor is correctly initialized.
