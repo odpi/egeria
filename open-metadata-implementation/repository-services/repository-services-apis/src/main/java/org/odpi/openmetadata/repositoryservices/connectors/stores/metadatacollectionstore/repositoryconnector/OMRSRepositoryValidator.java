@@ -660,6 +660,21 @@ public interface OMRSRepositoryValidator
 
 
     /**
+     * Validate that the asOfTime parameter is not null or for the future.
+     *
+     * @param sourceName source of the request (used for logging)
+     * @param parameterName name of the parameter that passed the guid.
+     * @param asOfTime unique name for a classification type
+     * @param methodName method receiving the call
+     * @throws InvalidParameterException asOfTime is for the future
+     */
+    void validateAsOfTimeNotNull(String sourceName,
+                                 String parameterName,
+                                 Date   asOfTime,
+                                 String methodName) throws InvalidParameterException;
+
+
+    /**
      * Validate that a page size parameter is not negative.
      *
      * @param sourceName  source of the request (used for logging)
@@ -1035,6 +1050,20 @@ public interface OMRSRepositoryValidator
 
 
     /**
+     * Verify the status of an entity to check it has not been deleted.  This method is used
+     * when retrieving metadata instances from a store that supports soft delete.
+     *
+     * @param sourceName  source of the request (used for logging)
+     * @param instance  instance to validate
+     * @param methodName  name of calling method
+     * @throws EntityNotKnownException  the entity is in deleted status
+     */
+    void validateEntityIsNotDeleted(String         sourceName,
+                                    InstanceHeader instance,
+                                    String         methodName) throws EntityNotKnownException;
+
+
+    /**
      * Verify the status of an entity to check it has been deleted.
      *
      * @param sourceName  source of the request (used for logging)
@@ -1045,6 +1074,20 @@ public interface OMRSRepositoryValidator
     void validateEntityIsDeleted(String         sourceName,
                                  InstanceHeader instance,
                                  String         methodName) throws EntityNotDeletedException;
+
+
+    /**
+     * Verify the status of a relationship to check it has not been deleted.  This method is used
+     * when retrieving metadata instances from a store that supports soft delete.
+     *
+     * @param sourceName  source of the request (used for logging)
+     * @param instance  instance to test
+     * @param methodName  name of calling method
+     * @throws RelationshipNotKnownException  the relationship is in deleted status
+     */
+    void validateRelationshipIsNotDeleted(String         sourceName,
+                                          InstanceHeader instance,
+                                          String         methodName) throws RelationshipNotKnownException;
 
 
     /**
@@ -1103,14 +1146,31 @@ public interface OMRSRepositoryValidator
 
 
     /**
+     * Count the number of matching property values that an instance has.  They may come from an entity,
+     * or relationship.
+     *
+     * @param matchProperties  the properties to match.
+     * @param instanceHeader  the header properties from the instance.
+     * @return integer count of the matching properties.
+     */
+    int countMatchingPropertyValues(InstanceProperties       matchProperties,
+                                    InstanceAuditHeader      instanceHeader,
+                                    String                   metadataCollectionId);
+
+
+    /**
      * Determine if the instance properties match the match criteria.
      *
      * @param matchProperties  the properties to match.
+     * @param metadataCollectionId metadata collection Id for instance if known.
+     * @param instanceHeader the header of the instance.
      * @param instanceProperties  the properties from the instance.
      * @param matchCriteria  rule on how the match should occur.
      * @return boolean flag indicating whether the two sets of properties match
      */
     boolean verifyMatchingInstancePropertyValues(InstanceProperties   matchProperties,
+                                                 String               metadataCollectionId,
+                                                 InstanceAuditHeader  instanceHeader,
                                                  InstanceProperties   instanceProperties,
                                                  MatchCriteria        matchCriteria);
 

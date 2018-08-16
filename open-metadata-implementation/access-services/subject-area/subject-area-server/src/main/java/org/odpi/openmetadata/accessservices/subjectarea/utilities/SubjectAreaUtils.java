@@ -139,6 +139,11 @@ public class SubjectAreaUtils {
 
     public static Status convertInstanceStatusToStatus(InstanceStatus instanceStatus) {
         Status status = null;
+
+        if (instanceStatus == null) {
+            return Status.UNKNOWN;
+        }
+
         switch (instanceStatus) {
             case ACTIVE:
                 status = Status.ACTIVE;

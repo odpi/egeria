@@ -46,11 +46,11 @@ public class ConnectionHandler
      * Construct the connection handler with a link to the property server's connector and this access service's
      * official name.
      *
-     * @param serviceName - name of this service
-     * @param repositoryConnector - connector to the property server.
+     * @param serviceName  name of this service
+     * @param repositoryConnector  connector to the property server.
      */
-    public ConnectionHandler(String                  serviceName,
-                             OMRSRepositoryConnector repositoryConnector)
+    ConnectionHandler(String                  serviceName,
+                      OMRSRepositoryConnector repositoryConnector)
     {
         this.serviceName = serviceName;
         if (repositoryConnector != null)
@@ -65,8 +65,8 @@ public class ConnectionHandler
     /**
      * Returns the connection object corresponding to the supplied connection name.
      *
-     * @param userId - String - userId of user making request.
-     * @param name - this may be the qualifiedName or displayName of the connection.
+     * @param userId  String - userId of user making request.
+     * @param name  this may be the qualifiedName or displayName of the connection.
      *
      * @return Connection retrieved from property server
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -92,10 +92,10 @@ public class ConnectionHandler
 
         try
         {
-            InstanceProperties properties = null;
+            InstanceProperties properties;
 
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
+                                                                      null,
                                                                       qualifiedNamePropertyName,
                                                                       name,
                                                                       methodName);
@@ -129,7 +129,8 @@ public class ConnectionHandler
                                                               methodName,
                                                               errorMessage,
                                                               errorCode.getSystemAction(),
-                                                              errorCode.getUserAction());
+                                                              errorCode.getUserAction(),
+                                                              name);
             }
             else if (connections.isEmpty())
             {
@@ -143,7 +144,8 @@ public class ConnectionHandler
                                                               methodName,
                                                               errorMessage,
                                                               errorCode.getSystemAction(),
-                                                              errorCode.getUserAction());
+                                                              errorCode.getUserAction(),
+                                                              name);
             }
             else if (connections.size() > 1)
             {
@@ -157,7 +159,8 @@ public class ConnectionHandler
                                                            methodName,
                                                            errorMessage,
                                                            errorCode.getSystemAction(),
-                                                           errorCode.getUserAction());
+                                                           errorCode.getUserAction(),
+                                                           name);
             }
             else
             {
@@ -234,7 +237,8 @@ public class ConnectionHandler
                                                           methodName,
                                                           errorMessage,
                                                           errorCode.getSystemAction(),
-                                                          errorCode.getUserAction());
+                                                          errorCode.getUserAction(),
+                                                          guid);
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException error)
         {
@@ -248,14 +252,16 @@ public class ConnectionHandler
                                                           methodName,
                                                           errorMessage,
                                                           errorCode.getSystemAction(),
-                                                          errorCode.getUserAction());
+                                                          errorCode.getUserAction(),
+                                                          guid);
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
         {
             errorHandler.handleUnauthorizedUser(userId,
                                                 methodName,
                                                 serverName,
-                                                serviceName);        }
+                                                serviceName);
+        }
         catch (Throwable   error)
         {
             errorHandler.handleRepositoryError(error,

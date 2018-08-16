@@ -15,7 +15,6 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.odpi.openmetadata.accessservices.informationview.events.ColumnContextEvent;
 import org.odpi.openmetadata.accessservices.informationview.events.InformationViewEvent;
-import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.slf4j.Logger;

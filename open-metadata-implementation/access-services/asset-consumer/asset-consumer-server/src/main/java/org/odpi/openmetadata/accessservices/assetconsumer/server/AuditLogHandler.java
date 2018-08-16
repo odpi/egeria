@@ -108,7 +108,7 @@ public class AuditLogHandler
         catch (Throwable error)
         {
             AssetConsumerErrorCode errorCode = AssetConsumerErrorCode.NO_METADATA_COLLECTION;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
+            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(repositoryConnector.getClass().getName());
 
             throw new PropertyServerException(errorCode.getHTTPErrorCode(),
                                               this.getClass().getName(),

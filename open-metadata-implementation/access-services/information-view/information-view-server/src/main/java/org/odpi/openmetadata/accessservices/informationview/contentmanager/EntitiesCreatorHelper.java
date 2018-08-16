@@ -17,6 +17,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,13 +28,11 @@ public class EntitiesCreatorHelper {
 
     private static final Logger log = LoggerFactory.getLogger(EntitiesCreatorHelper.class);
     private static final Integer PAGE_SIZE = 0;
-    private RepositoryHelper helper;
     private OMRSRepositoryConnector enterpriseConnector;
     private OMRSAuditLog auditLog;
 
-    public EntitiesCreatorHelper(RepositoryHelper helper, OMRSRepositoryConnector enterpriseConnector, OMRSAuditLog auditLog) {
+    public EntitiesCreatorHelper(OMRSRepositoryConnector enterpriseConnector, OMRSAuditLog auditLog) {
         this.enterpriseConnector = enterpriseConnector;
-        this.helper = helper;
         this.auditLog = auditLog;
     }
 
@@ -53,7 +52,9 @@ public class EntitiesCreatorHelper {
                                    InstanceProperties instanceProperties) throws Exception {
         EntityDetail entity;
         try {
-            entity = helper.getSkeletonEntity(metadataCollectionId,
+            entity = enterpriseConnector.getRepositoryHelper()
+                    .getSkeletonEntity("",
+                    metadataCollectionId,
                     InstanceProvenanceType.LOCAL_COHORT,
                     userName,
                     typeName);
@@ -97,7 +98,9 @@ public class EntitiesCreatorHelper {
 
         Relationship relationship;
         try {
-            relationship = helper.getSkeletonRelationship(metadataCollectionId,
+            relationship = enterpriseConnector.getRepositoryHelper()
+                    .getSkeletonRelationship("",
+                    metadataCollectionId,
                     InstanceProvenanceType.LOCAL_COHORT,
                     Constants.USER_ID,
                     typeName);

@@ -23,8 +23,7 @@ import java.util.List;
 /**
  * OMRSRepositoryEventMapperBase provides a base class for implementors of OMRSRepositoryEventMapper.
  */
-public abstract class OMRSRepositoryEventMapperConnector extends ConnectorBase implements OMRSRepositoryEventMapper,
-                                                                                          OpenMetadataTopicListener
+public abstract class OMRSRepositoryEventMapperConnector extends ConnectorBase implements OMRSRepositoryEventMapper
 {
     private static final Logger       log           = LoggerFactory.getLogger(OMRSRepositoryEventMapperConnector.class);
     private static final OMRSAuditLog auditLog      = new OMRSAuditLog(OMRSAuditingComponent.LOCAL_REPOSITORY_EVENT_MAPPER);

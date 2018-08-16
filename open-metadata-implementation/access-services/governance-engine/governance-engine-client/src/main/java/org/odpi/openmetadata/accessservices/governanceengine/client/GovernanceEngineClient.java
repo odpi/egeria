@@ -2,9 +2,9 @@
 
 package org.odpi.openmetadata.accessservices.governanceengine.client;
 
-import org.odpi.openmetadata.accessservices.governanceengine.common.ffdc.exceptions.*;
-import org.odpi.openmetadata.accessservices.governanceengine.common.objects.GovernanceClassificationDefinition;
-import org.odpi.openmetadata.accessservices.governanceengine.common.objects.GovernedAssetComponent;
+import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.*;
+import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernanceClassificationDef;
+import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAsset;
 
 import java.util.List;
 
@@ -27,52 +27,52 @@ import java.util.List;
 public interface GovernanceEngineClient {
     /**
      * @param userId                                - String - userId of user making request.
-     * @param rootClassificationType                - String - name of base classification type (can be null)
-     * @param rootType                              - String - root type of asset (can be null)
+     * @param classification                - String - name of base classification type (can be null)
+     * @param type                              - String - root type of asset (can be null)
      * @return AssetTagMap                          - map of classification
      * @throws InvalidParameterException            - one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException           - the requesting user is not authorized to issue this request.
-     * @throws RootClassificationNotFoundException  - the classification to scope search is not found
-     * @throws RootAssetTypeNotFoundException       - the classification to scope search is not found
+     * @throws ClassificationNotFoundException  - the classification to scope search is not found
+     * @throws TypeNotFoundException       - the classification to scope search is not found
      * @throws MetadataServerException              - A failure occurred communicating with the metadata repository
      */
-    List<GovernedAssetComponent> getGovernedAssetComponentList(String userId, String rootClassificationType, String rootType)
-            throws InvalidParameterException, UserNotAuthorizedException, RootClassificationNotFoundException,
-            MetadataServerException, RootAssetTypeNotFoundException;
+    List<GovernedAsset> getGovernedAssetList(String userId, String classification, String type)
+            throws InvalidParameterException, UserNotAuthorizedException, ClassificationNotFoundException,
+            MetadataServerException, TypeNotFoundException;
 
     /**
      * @param userId                        - String - userId of user making request.
-     * @param assetComponentGuid            - String - guid of asset component
+     * @param assetGuid            - String - guid of asset component
      * @return AssetTagMap                  - map of classification
      * @throws InvalidParameterException    - one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException   - the requesting user is not authorized to issue this request.
      * @throws MetadataServerException      - A failure occurred communicating with the metadata repository
      * @throws GuidNotFoundException        - the guid is not found
      */
-    GovernedAssetComponent getGovernedAssetComponent(String userId, String assetComponentGuid) throws InvalidParameterException,
+    GovernedAsset getGovernedAsset(String userId, String assetGuid) throws InvalidParameterException,
             UserNotAuthorizedException, MetadataServerException, GuidNotFoundException;
     /**
      * @param userId                                - String - userId of user making request.
-     * @param rootClassificationType                - String - name of base classification type
+     * @param classification                - String - name of base classification type
      * @return AssetTagDefinitions                  - Tag definitions
      * @throws InvalidParameterException            - one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException           - the requesting user is not authorized to issue this request.
      * @throws MetadataServerException              - A failure occurred communicating with the metadata repository
-     * @throws RootClassificationNotFoundException  - the classification to scope search is not found
+     * @throws ClassificationNotFoundException  - the classification to scope search is not found
      */
-    List<GovernanceClassificationDefinition> getGovernanceClassificationDefinitionList(String userId, String rootClassificationType) throws InvalidParameterException,
-            UserNotAuthorizedException, RootClassificationNotFoundException, MetadataServerException;
+    List<GovernanceClassificationDef> getGovernanceClassificationDefList(String userId, String classification) throws InvalidParameterException,
+            UserNotAuthorizedException, ClassificationNotFoundException, MetadataServerException;
 
     /**
      * @param userId                        - String - userId of user making request.
-     * @param govClassGuid                  - String - classification guid
+     * @param classificationGuid                  - String - classification guid
      * @return AssetTagDefinitions          - Tag definitions
      * @throws InvalidParameterException    - one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException   - the requesting user is not authorized to issue this request.
      * @throws MetadataServerException      - A failure occurred communicating with the metadata repository
      * @throws GuidNotFoundException        - the guid is not found
      */
-    GovernanceClassificationDefinition getGovernanceClassificationDefinition(String userId, String govClassGuid) throws InvalidParameterException,
+    GovernanceClassificationDef getGovernanceClassificationDef(String userId, String classificationGuid) throws InvalidParameterException,
             UserNotAuthorizedException, MetadataServerException, GuidNotFoundException;
 
 

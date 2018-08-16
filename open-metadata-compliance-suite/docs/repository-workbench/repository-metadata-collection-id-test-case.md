@@ -15,7 +15,7 @@ operation to test that the repository knows its metadata collection id.
 
    The metadata collection id has successfully been retrieved from the server.
 If this assertion fails, check that the server is started and the
-open metadata services started.
+open metadata services are activated.
 
 * **repository-metadata-collection-id-02** Consistent metadata collection id retrieved from repository.
 

@@ -25,7 +25,7 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>governance-engine-common</artifactId>
+            <artifactId>governance-engine-api</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
 
@@ -36,6 +36,8 @@
             <artifactId>spring-web</artifactId>
             <version>${spring-web.version}</version>
         </dependency>
-    </dependencies>
+
+
+        </dependencies>
 
 </project>

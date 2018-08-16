@@ -15,9 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * EntityUniverse extends EntityDetail to add the relationships that this entity has.  These are available
  * in an iterator to make them easy to process.
  */
-@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown=true)
+@Deprecated
 public class EntityUniverse extends EntityDetail
 {
     private List<Relationship>  entityRelationships = null;
@@ -26,6 +24,7 @@ public class EntityUniverse extends EntityDetail
     /**
      * Default constructor initializes entity's universe as empty.
      */
+    @Deprecated
     public EntityUniverse()
     {
         super();
@@ -37,6 +36,7 @@ public class EntityUniverse extends EntityDetail
      *
      * @param templateElement template to copy.  If null passed, the EntityUniverse is initialized as empty.
      */
+    @Deprecated
     public EntityUniverse(EntityUniverse   templateElement)
     {
         super(templateElement);
@@ -53,6 +53,7 @@ public class EntityUniverse extends EntityDetail
      *
      * @param templateElement template to copy.  If null passed, the EntityUniverse is initialized as empty.
      */
+    @Deprecated
     public EntityUniverse(EntityDetail   templateElement)
     {
         super(templateElement);

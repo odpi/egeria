@@ -9,7 +9,7 @@ These connectors enable the OMRS to be adapted to many different platforms.
 * **[audit-log-connectors](audit-log-connectors)** supports different destinations for 
 audit log messages.
 
-* **[cohort-registry-store-connectors](cohort-registry-store-connectors)** contains connectors the store of
+* **[cohort-registry-store-connectors](cohort-registry-store-connectors)** contains connectors to the store of
 cohort membership details used and maintained by the cohort registry.
 There is a cohort registry (and hence a cohort registry store)
 for each open metadata repository server.
@@ -18,8 +18,8 @@ for each open metadata repository server.
 read and write open metadata archives.
 
 * **[open-metadata-collection-store-connectors](open-metadata-collection-store-connectors)** contains connectors that
-support mappings to different vendor's metadata repositories.
+support mappings to different vendors' metadata repositories.
 
 The **[connector-configuration-factory](../connector-configuration-factory)** sets
 up connections to the default implementations
-of each type of the repository services connectors.
+of each type of repository services connector.

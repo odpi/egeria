@@ -3,9 +3,8 @@ package org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconn
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.virtualdataconnector.igc.connectors.eventmapper.IGCColumn;
-import org.odpi.openmetadata.virtualdataconnector.igc.connectors.eventmapper.IGCDatabaseDetailsResponse;
-import org.odpi.openmetadata.virtualdataconnector.igc.connectors.eventmapper.IGCPostObject;
+import org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconnector.jackson.IGCObject;
+import org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconnector.jackson.IGCPostObject;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.springframework.http.HttpEntity;
@@ -83,30 +82,11 @@ public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector
 
 
     /**
-     * Returns the metadata collection object that provides an OMRS abstraction of the metadata within
-     * a metadata repository.
-     *
-     * @return OMRSMetadataCollection - metadata information retrieved from the metadata repository.
-     */
-    public IGCPostObject getIGCMetadataCollection(String igcRID)
-    {
-        return genericIGCPostQuery(igcRID);
-
-    }
-
-
-
-    public IGCColumn queryIGCColumn(String igcRID) {
-        return (IGCColumn) genericIGCQuery(igcRID, IGCColumn.class);
-    }
-
-    /**
      * Query IGC for more information about an asset.
-     * @param igcRID
-     * @param responsePOJO
+     * @param igcRID The techncial ID of the asset.
      * @return
      */
-    private Object genericIGCQuery(String igcRID, Class responsePOJO) {
+    public IGCObject genericIGCQuery(String igcRID) {
 
         String url = this.connectionBean.getAdditionalProperties().get("igcApiGet") + igcRID;
 
@@ -117,14 +97,14 @@ public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector
 
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<String> entity = new HttpEntity<>(headers);
-        Object igcResponse = null;
+        IGCObject igcResponse = null;
         try {
             ResponseEntity<String> result = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
 
             String resultBody = result.getBody();
             ObjectMapper mapper = new ObjectMapper();
             try {
-                igcResponse = mapper.readValue(resultBody, responsePOJO);
+                igcResponse = mapper.readValue(resultBody, IGCObject.class);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -133,10 +113,16 @@ public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector
         catch(Exception e){
             e.printStackTrace();
         }
-        return igcResponse;
+        return  igcResponse;
     }
 
-    private IGCPostObject genericIGCPostQuery(String igcRID){
+    /**
+     * Returns the metadata collection object that provides an OMRS abstraction of the metadata within
+     * a metadata repository.
+     *
+     * @return OMRSMetadataCollection - metadata information retrieved from the metadata repository.
+     */
+    public IGCPostObject genericIGCPostQuery(String igcRID){
         String url = this.connectionBean.getAdditionalProperties().get("igcApiSearch") + igcRID;
         HttpHeaders headers = new HttpHeaders();
         headers.set("Cache-Control", "no-cache");

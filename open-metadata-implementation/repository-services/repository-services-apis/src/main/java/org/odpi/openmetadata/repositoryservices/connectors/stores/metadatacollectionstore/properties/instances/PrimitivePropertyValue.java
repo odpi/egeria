@@ -10,6 +10,9 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorExc
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSRuntimeException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Date;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -85,7 +88,7 @@ public class PrimitivePropertyValue extends InstancePropertyValue
         /*
          * Tests that type and value are consistent
          */
-        validateValueAgainstType(primitiveDefCategory, primitiveValue);
+        this.primitiveValue = validateValueAgainstType(primitiveDefCategory, primitiveValue);
 
         /*
          * All ok so set the category
@@ -114,12 +117,7 @@ public class PrimitivePropertyValue extends InstancePropertyValue
         /*
          * Tests that type and value are consistent
          */
-        validateValueAgainstType(primitiveDefCategory, primitiveValue);
-
-        /*
-         * The primitive value is of the correct type so save it.
-         */
-        this.primitiveValue = primitiveValue;
+        this.primitiveValue = validateValueAgainstType(primitiveDefCategory, primitiveValue);
     }
 
 
@@ -140,26 +138,39 @@ public class PrimitivePropertyValue extends InstancePropertyValue
                 '}';
     }
 
+
+    /**
+     * Validate that an object is equal depending on their stored values.
+     *
+     * @param objectToCompare object
+     * @return boolean result
+     */
     @Override
-    public boolean equals(Object o)
+    public boolean equals(Object objectToCompare)
     {
-        if (this == o)
+        if (this == objectToCompare)
         {
             return true;
         }
-        if (o == null || getClass() != o.getClass())
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
-        PrimitivePropertyValue that = (PrimitivePropertyValue) o;
+        PrimitivePropertyValue that = (PrimitivePropertyValue) objectToCompare;
         return primitiveDefCategory == that.primitiveDefCategory &&
                 Objects.equals(primitiveValue, that.primitiveValue);
     }
 
+
+    /**
+     * Return a hash code based on the property values
+     *
+     * @return int hash code
+     */
     @Override
     public int hashCode()
     {
-        return Objects.hash(primitiveDefCategory, primitiveValue);
+        return Objects.hash(super.hashCode(), getPrimitiveDefCategory(), getPrimitiveValue());
     }
 
 
@@ -168,18 +179,19 @@ public class PrimitivePropertyValue extends InstancePropertyValue
      *
      * @param primitiveDefCategory category to test
      * @param primitiveValue value to test
+     * @return validated primitive value
      */
-    private void validateValueAgainstType(PrimitiveDefCategory   primitiveDefCategory,
-                                          Object                 primitiveValue)
+    private Object validateValueAgainstType(PrimitiveDefCategory   primitiveDefCategory,
+                                            Object                 primitiveValue)
     {
-        final String  methodName = "setPrimitiveValue()";
+        final String  methodName = "validateValueAgainstType";
 
         /*
          * Return if one of the values is missing
          */
         if ((primitiveDefCategory == null) || (primitiveValue == null))
         {
-            return;
+            return primitiveValue;
         }
 
         try
@@ -188,20 +200,83 @@ public class PrimitivePropertyValue extends InstancePropertyValue
 
             if (!testJavaClass.isInstance(primitiveValue))
             {
-                /*
-                 * The primitive value supplied is the wrong type.  Throw an exception.
-                 */
-                OMRSErrorCode errorCode    = OMRSErrorCode.INVALID_PRIMITIVE_VALUE;
-                String        errorMessage = errorCode.getErrorMessageId()
-                                           + errorCode.getFormattedErrorMessage(primitiveDefCategory.getJavaClassName(),
-                                                                                primitiveDefCategory.getName());
+                if (primitiveDefCategory == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE)
+                {
+                    if (primitiveValue instanceof Long)
+                    {
+                        Long    castValue = (Long)primitiveValue;
+                        return new Date(castValue);
+                    }
+                    else if (primitiveValue instanceof Integer)
+                    {
+                        Integer castValue = (Integer)primitiveValue;
+                        return new Date(castValue);
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+                else if (primitiveDefCategory == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGDECIMAL)
+                {
+                    Integer    castValue = (Integer)primitiveValue;
 
-                throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
-                                                  this.getClass().getName(),
-                                                  methodName,
-                                                  errorMessage,
-                                                  errorCode.getSystemAction(),
-                                                  errorCode.getUserAction());
+                    return new BigDecimal(castValue);
+                }
+                else if (primitiveDefCategory == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGINTEGER)
+                {
+                    Long    castValue = (Long)primitiveValue;
+
+                    return new BigInteger(castValue.toString());
+                }
+                else if (primitiveDefCategory == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BYTE)
+                {
+                    Integer    castValue = (Integer)primitiveValue;
+
+                    return new Byte(castValue.toString());
+                }
+                else if (primitiveDefCategory == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_CHAR)
+                {
+                    String    castValue = (String)primitiveValue;
+
+                    return new Character(castValue.charAt(0));
+                }
+                else if (primitiveDefCategory == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_FLOAT)
+                {
+                    Double    castValue = (Double)primitiveValue;
+
+                    return new Float(castValue);
+                }
+                else if (primitiveDefCategory == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG)
+                {
+                    Integer    castValue = (Integer)primitiveValue;
+
+                    return new Long(castValue);
+                }
+                else if (primitiveDefCategory == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_SHORT)
+                {
+                    Integer    castValue = (Integer)primitiveValue;
+
+                    return new Short(castValue.toString());
+                }
+                else
+                {
+                    /*
+                     * The primitive value supplied is the wrong type.  Throw an exception.
+                     */
+                    OMRSErrorCode errorCode = OMRSErrorCode.INVALID_PRIMITIVE_VALUE;
+                    String errorMessage = errorCode.getErrorMessageId()
+                                        + errorCode.getFormattedErrorMessage(primitiveDefCategory.getJavaClassName(),
+                                                                             primitiveValue.getClass().getName(),
+                                                                             primitiveDefCategory.getName());
+
+                    throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+                                                      this.getClass().getName(),
+                                                      methodName,
+                                                      errorMessage,
+                                                      errorCode.getSystemAction(),
+                                                      errorCode.getUserAction());
+                }
             }
         }
         catch (ClassNotFoundException    unknownPrimitiveClass)
@@ -212,8 +287,8 @@ public class PrimitivePropertyValue extends InstancePropertyValue
              */
             OMRSErrorCode errorCode    = OMRSErrorCode.INVALID_PRIMITIVE_CLASS_NAME;
             String        errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage(primitiveDefCategory.getJavaClassName(),
-                                                         primitiveDefCategory.getName());
+                                       + errorCode.getFormattedErrorMessage(primitiveDefCategory.getJavaClassName(),
+                                                                            primitiveDefCategory.getName());
 
             throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
                                               this.getClass().getName(),
@@ -240,5 +315,7 @@ public class PrimitivePropertyValue extends InstancePropertyValue
                                               errorCode.getUserAction(),
                                               invalidPrimitiveCategory);
         }
+
+        return primitiveValue;
     }
 }

@@ -3,6 +3,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.properties.objects.comm
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.Serializable;
@@ -19,7 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * This is a view of a relationship from the perspective of one of the ends.
  */
 @JsonAutoDetect(getterVisibility= JsonAutoDetect.Visibility.PUBLIC_ONLY, setterVisibility= JsonAutoDetect.Visibility.PUBLIC_ONLY, fieldVisibility= JsonAutoDetect.Visibility.NONE)
-@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class  Reference implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -250,7 +251,7 @@ public class  Reference implements Serializable {
      * TODO REST serialization friendly list?
      */
 //    @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
-//    @JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
+//    @JsonInclude(JsonInclude.Include.NON_NULL)
 //    @JsonIgnoreProperties(ignoreUnknown=true)
 //
 //    public static class ObjectIds extends PList<Reference> {

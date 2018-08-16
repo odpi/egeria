@@ -2,8 +2,8 @@
 
 # Open metadata administration services user guide
 
-An OMAG Server hosts a variety of open metadata and governance capabilities.
-The capabilities that are enabled in a specific instance of the OMAG server
+An Open Metadata and Governance (OMAG) Server hosts a variety of open metadata and governance capabilities.
+The capabilities that are enabled in a specific instance of the OMAG Server
 are defined in a JSON configuration document that is read when the open metadata
 capabilities are activated in the running server.
 In an open metadata landscape, it is anticipated that there may be multiple
@@ -12,14 +12,18 @@ Each of these instances would therefore use a different configuration document.
 The correct configuration document to use is identified by the server name.
 This is passed on the URL of every admin services API request along with the user
 id of the administrator.   By default, the configuration file is called:
+
 ```
 omag.server.{servername}.config
 ```
+
 The administration services that set up this file all begin with a URL like this:
+
 ```
-…/open-metadata/admin-services/users/{userid}/servers/{servername}/…
+.../open-metadata/admin-services/users/{userid}/servers/{servername}/...
 ```
-The OMAG server starts up without any open metadata capabilities enabled.
+
+The OMAG Server starts up without any open metadata capabilities enabled.
 Once it is running, it can be used to set up the configuration documents
 that describe the open metadata capabilities needed for each server instance.
 
@@ -32,47 +36,56 @@ document is used.
 ## Building a configuration document for a server
 
 The configuration document for the OMAG Server determines:
+
 * Basic descriptive properties of the server that are used in logging and events
 originating from the server.
 * What type of local repository to use.
 * Whether the Open Metadata Access Services (OMASs) should be started.
 * Which cohorts to connect to.
+
 Each of the configuration commands builds up sections in the configuration document.
 This document is stored in the configuration file after each configuration request so
 it is immediately available for use each time the open metadata services are activated
 in the OMAG Server.
-The example commands shown below assume the OMAG server is running on the localhost
-at port 8080.  The user id of the administrator is *garygeeke* and
-the name of the open metadata server is *cocoMDS1*.
+
+The example commands that follow assume:
+
+* The OMAG Server is running on the localhost, at port 8080.
+* The user id of the administrator is `garygeeke`.
+* The name of the open metadata server is `cocoMDS1`.
 
 ### Setting descriptive properties for a server
+
 The descriptive properties are used in logging and events originating
 from a server. 
 
-#### Set server type name:
+#### Set server type name
+
 The server type name should be set to something that describes the OMAG
-Server’s role.
+Server's role.
 It may be the name of a specific product that it is enabling, or a role
 in the metadata and governance landscape.
-In the example below, the server type is set to “Repository proxy for IBM IGC”
+In the example below, the server type is set to "Repository proxy for IBM IGC"
+
 ```
-POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/server-type?typeName=“Repository proxy for IBM IGC”
+POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/server-type?typeName="Repository proxy for IBM IGC"
 ```
-#### Set organization name:
+
+#### Set organization name
 
 The organization name may be the owning organization or department or
 team supported by the server.
-Here the organization name is set to “Clinical Trials”.
+Here the organization name is set to "Clinical Trials".
 
 ```
-POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/organization-name?name=”Clinical Trials”
+POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/organization-name?name="Clinical Trials"
 ```
 
 ### Setting up the event bus
 
 An open metadata server uses an event bus to exchange events with other
-tools.  The open metadata code manages the specific topic names.
-However, it needs to know where the event bus implementation is and
+tools.  The open metadata code manages the specific topic names;
+however, it needs to know where the event bus implementation is and
 any properties needed to configure it.
 
 The following command creates information about the event bus.
@@ -85,21 +98,24 @@ POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/
 
 ### Managing the access services
 
-The open metadata access services provide the domain specific
+The open metadata access services provide the domain-specific
 APIs for metadata management and governance.
 
 #### Enable the access services
 
 To enable the open metadata access services (and the enterprise
 repository services that support them) use the following command.
+
 ```
 POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/access-services
 ```
 
-#### To disable the access services
+#### Disable the access services
+
 The access services can be disabled with the following command.
 This also disables the enterprise repository services since they
 are not being used.
+
 ```
 DELETE http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/access-services
 ```
@@ -107,19 +123,20 @@ DELETE http://localhost:8080/open-metadata/admin-services/users/garygeeke/server
 ### Setting up the local repository
 
 A local repository is optional.
-The administration services can be used to enable one of the built in
+The administration services can be used to enable one of the built-in
 local repositories.
 
-#### Enable the graph repository:
+#### Enable the graph repository
 
 This command is a placeholder for an Egeria graph repository.
+
 ```
 POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository/mode/local-graph-repository
 ```
 
-#### Enable the in-memory repository:
+#### Enable the in-memory repository
 
-The in memory repository is useful for demos and testing.
+The in-memory repository is useful for demos and testing.
 No metadata is kept if the open metadata services are deactivated,
 or the server is shutdown.
 
@@ -127,15 +144,17 @@ or the server is shutdown.
 POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository/mode/in-memory-repository
 ```
 
-#### Enable OMAG server as a repository proxy:
+#### Enable OMAG Server as a repository proxy
+
 The OMAG Server can act as a proxy to a vendor's repository.
 Ths is done by adding the connection
 for the repository proxy as the local repository.
+
 ```
 POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository/proxy-details?connectorProvider={javaClassName}
 ```
 
-#### Add the local repository's event mapper:
+#### Add the local repository's event mapper
 
 Any open metadata repository that supports its own API needs an
 event mapper to ensure the
@@ -146,15 +165,18 @@ to the repository without going through the open metadata APIs.
 The event mapper is a connector that listens for proprietary events
 from the repository and converts them into calls to the OMRS.
 The OMRS then distributes this new metadata.
+
 ```
 POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository/event-mapper-details?connectorProvider={javaClassName}&eventSource={resourceName}
 ```
 
-#### To remove the local repository
+#### Remove the local repository
+
 This command removes all configuration for the local repository.
-This includes the local metadata Id.  If a new local repository is
+This includes the local metadata collection id.  If a new local repository is
 added, it will have a new local metadata collection id and will
 not be able to automatically re-register with its cohort(s).
+
 ```
 DELETE http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository
 ```
@@ -166,56 +188,67 @@ that are sharing metadata using the open metadata services.
 They use a peer-to-peer protocol coordinated through an event bus topic
 (typically this is an Apache Kafka topic).
 
-#### To enable access to a cohort
+#### Enable access to a cohort
 
-The following command registers the server with cohort called *cocoCohort*.
+The following command registers the server with cohort called `cocoCohort`.
+
 ```
 POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/cohorts/cocoCohort
 ```
 
-#### To disconnect from a cohort
+#### Disconnect from a cohort
 
-This command unregisters a server from a cohort called *cocoCohort*.
+This command unregisters a server from a cohort called `cocoCohort`.
+
 ```
 DELETE http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/cohorts/cocoCohort
 ```
 
 ### Querying the contents of a configuration document
+
 It is possible to query the configuration document for a specific
 server using the following command.
 This command can be issued any time the OMAG Server is running.
+
 ```
 GET http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/configuration
 ```
-It is also possible to query the origin of server supporting the open metadata services.  For the Egeria OMAG Server, the response is “Egeria OMAG Server”. 
+
+It is also possible to query the origin of the server supporting the open metadata services.  For the Egeria OMAG Server, the response is "Egeria OMAG Server".
+
 ```
 GET http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/server-origin
 ```
 
 ## Activation/Deactivation API
 
-### To activate open metadata services
+### Activate open metadata services
+
 The following command activates the open metadata capability defined in
 the configuration document for the named server.
 Once this call completes, the server begins processing events and the open metadata REST APIs are enabled.
+
 ```
 POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/instance
 ```
 
-### To deactivate open metadata services
+### Deactivate open metadata services
 
 The following command deactivates the open metadata capability
 defined in the configuration document for the named server.
-The server will stop processing open metadata events and calls to the REST interfaces with throw an error.
+The server will stop processing open metadata events and calls to the REST interfaces will throw an error.
+
 ```
 DELETE http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/instance
 ```
-### To deactivate open metadata services and unregister from all cohorts
+
+### Deactivate open metadata services and unregister from all cohorts
 
 The following command unregisters the named server from the cohorts it
 is connected to, disables the open metadata REST APIs and event
 processing and deletes the configuration file.
 Only use this command if the server is being permanently removed.
+
 ```
 DELETE http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1
 ```
@@ -235,8 +268,10 @@ returns a default document:
 ```
 GET http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/configuration
 ```
+
 returns
-```
+
+```JSON
 {
     "type": "OMAGServerConfigResponse",
     "relatedHTTPCode": 200,
@@ -249,6 +284,9 @@ returns
     }
 }
 ```
+
+### Update server configuration
+
 It is possible to update these values and add in the organization name:
 
 ```
@@ -258,8 +296,10 @@ POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/
 POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/server-type?typeName=OMAG Test Server
 http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/organization-name?name=Coco Pharmaceuticals
 ```
+
 results in
-```
+
+```JSON
 {
     "type": "OMAGServerConfigResponse",
     "relatedHTTPCode": 200,
@@ -273,12 +313,17 @@ results in
     }
 }
 ```
+
+### Update event bus configuration
+
 Next the event bus is set up.  The request body is set up with the common
 parameters needed to connect to the event bus
+
 ```
 POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/event-bus
 ```
-This event bus information is then used in the configuration of the in and out topics
+
+This event bus information is then used in the configuration of the In and Out Topics
 for each access service, the cohort OMRS topics and the local event mapper.
 
 ```
@@ -286,9 +331,10 @@ POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/
 POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository/mode/in-memory-repository
 POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/cohorts/cohort1
 ```
+
 These calls build up the configuration document as follows:
 
-```
+```JSON
 {
     "type": "OMAGServerConfigResponse",
     "relatedHTTPCode": 200,
@@ -837,6 +883,7 @@ These calls build up the configuration document as follows:
     }
 }
 ```
+
 Most of the configuration is made up of connection objects that are used to
 configure the repository services connectors.
 
@@ -844,10 +891,13 @@ configure the repository services connectors.
 
 With the configuration document in place, the services can be activated as
 follows:
+
 ```
 POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/instance
 ```
-and deactivated
+
+and deactivated, as follows:
+
 ```
 DELETE http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/instance
 ```
@@ -855,6 +905,7 @@ DELETE http://localhost:8080/open-metadata/admin-services/users/garygeeke/server
 The configuration document is not changed by these calls.
 
 If you want to delete the server's configuration document then issue:
+
 ```
 DELETE http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1
 ```
