@@ -4346,7 +4346,11 @@ public class OMRSRepositoryRESTServices
      * Add a new relationship between two entities to the metadata collection.
      *
      * @param userId unique identifier for requesting user.
-     * @param requestBody parameters for the new relationship
+     * @param relationshipTypeGUID unique identifier (guid) for the new relationship's type.
+     * @param initialProperties initial list of properties for the new entity null means no properties.
+     * @param entityOneGUID the unique identifier of one of the entities that the relationship is connecting together.
+     * @param entityTwoGUID the unique identifier of the other entity that the relationship is connecting together.
+     * @param initialStatus initial status typically DRAFT, PREPARED or ACTIVE.
      * @return RelationshipResponse:
      * Relationship structure with the new header, requested entities and properties or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -4362,37 +4366,26 @@ public class OMRSRepositoryRESTServices
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public RelationshipResponse addRelationship(String               userId,
-                                                RelationshipCreateRequest requestBody)
+                                                String               relationshipTypeGUID,
+                                                InstanceProperties   initialProperties,
+                                                String               entityOneGUID,
+                                                String               entityTwoGUID,
+                                                InstanceStatus       initialStatus)
     {
         final  String   methodName = "addRelationship";
 
-        String                     relationshipTypeGUID = null;
-        InstanceProperties         initialProperties = null;
-        String                     entityOneGUID = null;
-        String                     entityTwoGUID = null;
-        InstanceStatus             initialStatus = null;
-
         RelationshipResponse response = new RelationshipResponse();
-
-        if (requestBody != null)
-        {
-            relationshipTypeGUID = requestBody.getRelationshipTypeGUID();
-            initialProperties = requestBody.getInitialProperties();
-            entityOneGUID = requestBody.getEntityOneGUID();
-            entityTwoGUID = requestBody.getEntityTwoGUID();
-            initialStatus = requestBody.getInitialStatus();
-        }
 
         try
         {
             validateLocalRepository(methodName);
 
             response.setRelationship(localMetadataCollection.addRelationship(userId,
-                                                                             relationshipTypeGUID,
-                                                                             initialProperties,
-                                                                             entityOneGUID,
-                                                                             entityTwoGUID,
-                                                                             initialStatus));
+                    relationshipTypeGUID,
+                    initialProperties,
+                    entityOneGUID,
+                    entityTwoGUID,
+                    initialStatus));
         }
         catch (RepositoryErrorException  error)
         {
