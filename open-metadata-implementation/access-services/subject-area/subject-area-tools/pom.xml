@@ -27,41 +27,4 @@
             <version>${open-metadata.version}</version>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>1.6.0</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>java</goal>
-                        </goals>
-                        <phase>process-classes</phase>
-                        <configuration>
-                            <mainClass>org.odpi.openmetadata.accessservices.subjectarea.generators.SubjectAreaOmrsBeanGenerator</mainClass>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <artifactId>maven-clean-plugin</artifactId>
-                <version>${maven-clean-plugin.version}</version>
-                <configuration>
-                    <filesets>
-                        <fileset>
-                            <directory>${basedir}/../subject-area-server/src/main/java/org/odpi/openmetadata/accessservices/subjectarea/generated</directory>
-                        </fileset>
-                        <fileset>
-                            <directory>${basedir}/../subject-area-server/src/test/java/org/odpi/openmetadata/accessservices/subjectarea/generated</directory>
-                        </fileset>
-                    </filesets>
-                </configuration>
-            </plugin>
-
-        </plugins>
-    </build>
 </project>
