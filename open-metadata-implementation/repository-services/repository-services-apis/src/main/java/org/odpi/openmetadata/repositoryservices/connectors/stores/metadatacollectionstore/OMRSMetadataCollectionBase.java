@@ -3629,7 +3629,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      *                            hosting the metadata collection.
      * @throws PropertyErrorException The properties in the instance are incompatible with the requested type.
      * @throws ClassificationErrorException the entity's classifications are not valid for the new type.
-     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection.     *
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection.
      * @throws FunctionNotSupportedException the repository does not support the re-typing of instances.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */

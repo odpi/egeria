@@ -1,9 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.repositoryservices.rest.properties;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.*;
 
 import java.util.Objects;
 
@@ -12,12 +10,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * MetadataCollectionIdResponse is the response structure used on the OMRS REST API calls that return a String response.
+ * MetadataCollectionIdRequest is the request structure used on the OMRS REST API calls that use the home metadata collection id as
+ * a validator/originator for the request.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class MetadataCollectionIdResponse extends OMRSAPIResponse
+public class MetadataCollectionIdRequest extends OMRSAPIRequest
 {
     private String metadataCollectionId = null;
 
@@ -25,7 +24,7 @@ public class MetadataCollectionIdResponse extends OMRSAPIResponse
     /**
      * Default constructor
      */
-    public MetadataCollectionIdResponse()
+    public MetadataCollectionIdRequest()
     {
         super();
     }
@@ -36,7 +35,7 @@ public class MetadataCollectionIdResponse extends OMRSAPIResponse
      *
      * @param template object to copy
      */
-    public MetadataCollectionIdResponse(MetadataCollectionIdResponse template)
+    public MetadataCollectionIdRequest(MetadataCollectionIdRequest template)
     {
         super(template);
 
@@ -78,12 +77,6 @@ public class MetadataCollectionIdResponse extends OMRSAPIResponse
     {
         return "BooleanResponse{" +
                 "metadataCollectionId=" + metadataCollectionId +
-                ", relatedHTTPCode=" + relatedHTTPCode +
-                ", exceptionClassName='" + exceptionClassName + '\'' +
-                ", exceptionErrorMessage='" + exceptionErrorMessage + '\'' +
-                ", exceptionSystemAction='" + exceptionSystemAction + '\'' +
-                ", exceptionUserAction='" + exceptionUserAction + '\'' +
-                ", exceptionProperties=" + exceptionProperties +
                 '}';
     }
 
@@ -101,7 +94,7 @@ public class MetadataCollectionIdResponse extends OMRSAPIResponse
         {
             return true;
         }
-        if (!(objectToCompare instanceof MetadataCollectionIdResponse))
+        if (!(objectToCompare instanceof MetadataCollectionIdRequest))
         {
             return false;
         }
@@ -109,7 +102,7 @@ public class MetadataCollectionIdResponse extends OMRSAPIResponse
         {
             return false;
         }
-        MetadataCollectionIdResponse that = (MetadataCollectionIdResponse) objectToCompare;
+        MetadataCollectionIdRequest that = (MetadataCollectionIdRequest) objectToCompare;
         return metadataCollectionId.equals(that.metadataCollectionId);
     }
 

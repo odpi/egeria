@@ -56,10 +56,7 @@ public class FileBasedAuditLogStoreConnector extends OMRSAuditLogStoreConnectorB
                                                 errorCode.getUserAction());
         }
 
-        if (log.isDebugEnabled())
-        {
-            log.debug("AuditLogRecord: " + logRecord.toString());
-        }
+        log.debug("AuditLogRecord: " + logRecord.toString());
 
         return null;
     }

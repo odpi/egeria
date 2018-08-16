@@ -139,21 +139,21 @@ public class ExternalStandardMapping extends TypeDefElementHeader
     /**
      * Verify that supplied object has the same properties.
      *
-     * @param o object to test
+     * @param objectToCompare object to test
      * @return result
      */
     @Override
-    public boolean equals(Object o)
+    public boolean equals(Object objectToCompare)
     {
-        if (this == o)
+        if (this == objectToCompare)
         {
             return true;
         }
-        if (!(o instanceof ExternalStandardMapping))
+        if (!(objectToCompare instanceof ExternalStandardMapping))
         {
             return false;
         }
-        ExternalStandardMapping that = (ExternalStandardMapping) o;
+        ExternalStandardMapping that = (ExternalStandardMapping) objectToCompare;
         return Objects.equals(getStandardName(), that.getStandardName()) &&
                 Objects.equals(getStandardOrganization(), that.getStandardOrganization()) &&
                 Objects.equals(getStandardTypeName(), that.getStandardTypeName());

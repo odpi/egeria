@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -16,22 +15,21 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * InstanceGraphResponse is the response structure for an OMRS REST API call that
- * returns an instance graph object.
+ * InstanceGraphRequest is the request structure for an OMRS REST API call that
+ * sends an instance graph object.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class InstanceGraphResponse extends OMRSAPIResponse
+public class InstanceGraphRequest extends OMRSAPIRequest
 {
     private List<EntityDetail> entityElementList       = null;
     private List<Relationship> relationshipElementList = null;
 
-
     /**
      * Default constructor
      */
-    public InstanceGraphResponse()
+    public InstanceGraphRequest()
     {
         super();
     }
@@ -42,7 +40,7 @@ public class InstanceGraphResponse extends OMRSAPIResponse
      *
      * @param template object to copy
      */
-    public InstanceGraphResponse(InstanceGraphResponse   template)
+    public InstanceGraphRequest(InstanceGraphRequest template)
     {
         super(template);
 
@@ -145,12 +143,6 @@ public class InstanceGraphResponse extends OMRSAPIResponse
         return "InstanceGraphResponse{" +
                 "entityElementList=" + entityElementList +
                 ", relationshipElementList=" + relationshipElementList +
-                ", relatedHTTPCode=" + relatedHTTPCode +
-                ", exceptionClassName='" + exceptionClassName + '\'' +
-                ", exceptionErrorMessage='" + exceptionErrorMessage + '\'' +
-                ", exceptionSystemAction='" + exceptionSystemAction + '\'' +
-                ", exceptionUserAction='" + exceptionUserAction + '\'' +
-                ", exceptionProperties=" + exceptionProperties +
                 '}';
     }
 
@@ -168,7 +160,7 @@ public class InstanceGraphResponse extends OMRSAPIResponse
         {
             return true;
         }
-        if (!(objectToCompare instanceof InstanceGraphResponse))
+        if (!(objectToCompare instanceof InstanceGraphRequest))
         {
             return false;
         }
@@ -176,7 +168,7 @@ public class InstanceGraphResponse extends OMRSAPIResponse
         {
             return false;
         }
-        InstanceGraphResponse that = (InstanceGraphResponse) objectToCompare;
+        InstanceGraphRequest that = (InstanceGraphRequest) objectToCompare;
         return Objects.equals(getEntityElementList(), that.getEntityElementList()) &&
                 Objects.equals(getRelationshipElementList(), that.getRelationshipElementList());
     }

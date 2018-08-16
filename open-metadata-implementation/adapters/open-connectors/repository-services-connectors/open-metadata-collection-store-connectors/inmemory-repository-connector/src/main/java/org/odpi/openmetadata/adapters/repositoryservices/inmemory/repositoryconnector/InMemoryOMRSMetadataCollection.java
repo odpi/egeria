@@ -32,11 +32,11 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
      * @param repositoryValidator - class used to validate type definitions and instances.
      * @param metadataCollectionId - unique Identifier of the metadata collection Id.
      */
-    public InMemoryOMRSMetadataCollection(InMemoryOMRSRepositoryConnector parentConnector,
-                                          String                          repositoryName,
-                                          OMRSRepositoryHelper            repositoryHelper,
-                                          OMRSRepositoryValidator         repositoryValidator,
-                                          String                          metadataCollectionId)
+    InMemoryOMRSMetadataCollection(InMemoryOMRSRepositoryConnector parentConnector,
+                                   String                          repositoryName,
+                                   OMRSRepositoryHelper            repositoryHelper,
+                                   OMRSRepositoryValidator         repositoryValidator,
+                                   String                          metadataCollectionId)
     {
         /*
          * The metadata collection Id is the unique identifier for the metadata collection.  It is managed by the super class.
@@ -154,7 +154,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
         /*
          * Perform operation
          */
-        // todo
         return repositoryHelper.getActiveTypesByWildCardName(repositoryName, name);
     }
 
@@ -371,11 +370,11 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public List<TypeDef> findTypesByExternalID(String    userId,
-                                                String    standard,
-                                                String    organization,
-                                                String    identifier) throws InvalidParameterException,
-                                                                             RepositoryErrorException,
-                                                                             UserNotAuthorizedException
+                                               String    standard,
+                                               String    organization,
+                                               String    identifier) throws InvalidParameterException,
+                                                                            RepositoryErrorException,
+                                                                            UserNotAuthorizedException
     {
         final String                       methodName = "findTypesByExternalID";
 
@@ -391,26 +390,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
         /*
          * Perform operation
          */
-        List<AttributeTypeDef> attributeTypeDefs = repositoryStore.getAttributeTypeDefs();
-        List<TypeDef>          typeDefs          = repositoryStore.getTypeDefs();
-
-        List<AttributeTypeDef> matchedAttributeTypeDefs = new ArrayList<>();
-        List<TypeDef>          matchedTypeDefs          = new ArrayList<>();
-
-
-
-        // TODO Loop through the AttributeTypeDefs and TypeDefs looking for matching external IDs
-
-        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
-
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName, this.getClass().getName(), repositoryName);
-
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                                            this.getClass().getName(),
-                                            methodName,
-                                            errorMessage,
-                                            errorCode.getSystemAction(),
-                                            errorCode.getUserAction());
+        return repositoryHelper.getMatchingActiveTypes(repositoryName, standard, organization, identifier, methodName);
     }
 
 
@@ -694,7 +674,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
      * @throws InvalidParameterException the new TypeDef is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
-     * @throws TypeDefNotSupportedException the repository is not able to support this TypeDef.
      * @throws TypeDefKnownException the TypeDef is already stored in the repository.
      * @throws TypeDefConflictException the new TypeDef conflicts with an existing TypeDef.
      * @throws InvalidTypeDefException the new TypeDef has invalid contents.
@@ -703,7 +682,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
     public  void addTypeDefGallery(String          userId,
                                    TypeDefGallery  newTypes) throws InvalidParameterException,
                                                                     RepositoryErrorException,
-                                                                    TypeDefNotSupportedException,
                                                                     TypeDefKnownException,
                                                                     TypeDefConflictException,
                                                                     InvalidTypeDefException,
@@ -753,7 +731,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
      * @throws InvalidParameterException the new TypeDef is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
-     * @throws TypeDefNotSupportedException the repository is not able to support this TypeDef.
      * @throws TypeDefKnownException the TypeDef is already stored in the repository.
      * @throws TypeDefConflictException the new TypeDef conflicts with an existing TypeDef.
      * @throws InvalidTypeDefException the new TypeDef has invalid contents.
@@ -762,7 +739,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
     public void addTypeDef(String       userId,
                            TypeDef      newTypeDef) throws InvalidParameterException,
                                                            RepositoryErrorException,
-                                                           TypeDefNotSupportedException,
                                                            TypeDefKnownException,
                                                            TypeDefConflictException,
                                                            InvalidTypeDefException,
@@ -814,7 +790,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
      * @throws InvalidParameterException the new TypeDef is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
-     * @throws TypeDefNotSupportedException the repository is not able to support this TypeDef.
      * @throws TypeDefKnownException the TypeDef is already stored in the repository.
      * @throws TypeDefConflictException the new TypeDef conflicts with an existing TypeDef.
      * @throws InvalidTypeDefException the new TypeDef has invalid contents.
@@ -823,7 +798,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
     public  void addAttributeTypeDef(String             userId,
                                      AttributeTypeDef   newAttributeTypeDef) throws InvalidParameterException,
                                                                                     RepositoryErrorException,
-                                                                                    TypeDefNotSupportedException,
                                                                                     TypeDefKnownException,
                                                                                     TypeDefConflictException,
                                                                                     InvalidTypeDefException,
@@ -876,7 +850,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
      * @throws InvalidParameterException the TypeDef is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
-     * @throws TypeDefNotSupportedException the repository is not able to support this TypeDef.
      * @throws TypeDefConflictException the new TypeDef conflicts with an existing TypeDef.
      * @throws InvalidTypeDefException the new TypeDef has invalid contents.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
@@ -884,7 +857,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
     public boolean verifyTypeDef(String       userId,
                                  TypeDef      typeDef) throws InvalidParameterException,
                                                               RepositoryErrorException,
-                                                              TypeDefNotSupportedException,
                                                               TypeDefConflictException,
                                                               InvalidTypeDefException,
                                                               UserNotAuthorizedException
@@ -906,15 +878,31 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
          */
         TypeDef  existingTypeDef = repositoryStore.getTypeDef(typeDef.getGUID());
 
-        // todo need to validate that the supplied type def matches the stored one
-
         if (existingTypeDef == null)
         {
             return false;
         }
-        else
+        else if ((existingTypeDef.getName().equals(typeDef.getName())) &&
+                 (existingTypeDef.getVersion() == typeDef.getVersion()) &&
+                 (existingTypeDef.getVersionName().equals(typeDef.getVersionName())) &&
+                 (existingTypeDef.getCreateTime().equals(typeDef.getCreateTime())))
         {
             return true;
+        }
+        else
+        {
+            OMRSErrorCode errorCode    = OMRSErrorCode.VERIFY_CONFLICT_DETECTED;
+            String        errorMessage = errorCode.getErrorMessageId()
+                                       + errorCode.getFormattedErrorMessage(typeDef.getGUID(),
+                                                                            typeDef.getName(),
+                                                                            repositoryName);
+
+            throw new TypeDefConflictException(errorCode.getHTTPErrorCode(),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               errorMessage,
+                                               errorCode.getSystemAction(),
+                                               errorCode.getUserAction());
         }
     }
 
@@ -928,7 +916,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
      * @throws InvalidParameterException the TypeDef is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
-     * @throws TypeDefNotSupportedException the repository is not able to support this TypeDef.
      * @throws TypeDefConflictException the new TypeDef conflicts with an existing TypeDef.
      * @throws InvalidTypeDefException the new TypeDef has invalid contents.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
@@ -936,7 +923,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
     public  boolean verifyAttributeTypeDef(String            userId,
                                            AttributeTypeDef  attributeTypeDef) throws InvalidParameterException,
                                                                                       RepositoryErrorException,
-                                                                                      TypeDefNotSupportedException,
                                                                                       TypeDefConflictException,
                                                                                       InvalidTypeDefException,
                                                                                       UserNotAuthorizedException
@@ -958,15 +944,28 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
          */
         AttributeTypeDef  existingAttributeTypeDef = repositoryStore.getAttributeTypeDef(attributeTypeDef.getGUID());
 
-        // todo need to validate that the supplied attribute type def matches the stored one
-
         if (existingAttributeTypeDef == null)
         {
             return false;
         }
-        else
+        else if (attributeTypeDef.equals(existingAttributeTypeDef))
         {
             return true;
+        }
+        else
+        {
+            OMRSErrorCode errorCode    = OMRSErrorCode.VERIFY_CONFLICT_DETECTED;
+            String        errorMessage = errorCode.getErrorMessageId()
+                                       + errorCode.getFormattedErrorMessage(attributeTypeDef.getGUID(),
+                                                                            attributeTypeDef.getName(),
+                                                                            repositoryName);
+
+            throw new TypeDefConflictException(errorCode.getHTTPErrorCode(),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               errorMessage,
+                                               errorCode.getSystemAction(),
+                                               errorCode.getUserAction());
         }
     }
 
@@ -1086,7 +1085,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
         {
             OMRSErrorCode errorCode    = OMRSErrorCode.TYPEDEF_ID_NOT_KNOWN;
             String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(typeDef.getGUID(),
+                                       + errorCode.getFormattedErrorMessage(obsoleteTypeDefGUID,
                                                                             guidParameterName,
                                                                             methodName,
                                                                             repositoryName);
@@ -1993,7 +1992,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
      * @throws PropertyErrorException the sequencing property specified is not valid for any of the requested types of
      *                                  entity.
      * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
-     * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public  List<EntityDetail> findEntitiesByPropertyValue(String                userId,
@@ -2010,7 +2008,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
                                                                                                   RepositoryErrorException,
                                                                                                   PropertyErrorException,
                                                                                                   PagingErrorException,
-                                                                                                  FunctionNotSupportedException,
                                                                                                   UserNotAuthorizedException
     {
         final String  methodName = "findEntitiesByPropertyValue";
@@ -2730,16 +2727,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
                                                                  typeDef.getName(),
                                                                  initialProperties,
                                                                  initialClassifications);
-        repositoryStore.createEntityInStore(newEntity);
-
-
-        /*
-         * The repository store maintains an entity proxy for use with relationships.
-         */
-        EntityProxy entityProxy = repositoryHelper.getNewEntityProxy(repositoryName, newEntity);
-
-        repositoryStore.addEntityProxyToStore(entityProxy);
-
         /*
          * If an initial status is supplied then override the default value.
          */
@@ -2748,7 +2735,17 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
             newEntity.setStatus(initialStatus);
         }
 
-        return repositoryStore.createEntityInStore(newEntity);
+        newEntity = repositoryStore.createEntityInStore(newEntity);
+
+        /*
+         * The repository store maintains an entity proxy for use with relationships.
+         */
+        EntityProxy entityProxy = repositoryHelper.getNewEntityProxy(repositoryName, newEntity);
+
+        repositoryStore.addEntityProxyToStore(entityProxy);
+
+
+        return newEntity;
     }
 
 
@@ -2931,9 +2928,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
          */
         EntityDetail   updatedEntity = new EntityDetail(entity);
 
-        updatedEntity.setProperties(repositoryHelper.mergeInstanceProperties(repositoryName,
-                                                                             entity.getProperties(),
-                                                                             properties));
+        updatedEntity.setProperties(properties);
 
         updatedEntity = repositoryHelper.incrementVersion(userId, entity, updatedEntity);
 
@@ -3071,6 +3066,13 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
 
         repositoryStore.updateEntityInStore(updatedEntity);
 
+        /*
+         * The repository store maintains an entity proxy for use with relationships.
+         */
+        EntityProxy entityProxy = repositoryHelper.getNewEntityProxy(repositoryName, updatedEntity);
+
+        repositoryStore.updateEntityProxyInStore(entityProxy);
+
         return updatedEntity;
     }
 
@@ -3191,10 +3193,14 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
          * Validation is complete.  It is ok to restore the entity.
          */
 
-        EntityDetail restoredEntity = repositoryStore.retrievePreviousVersionOfEntity(deletedEntityGUID);
+        EntityDetail restoredEntity = new EntityDetail(entity);
 
-        repositoryValidator.validateEntityFromStore(repositoryName, deletedEntityGUID, restoredEntity, methodName);
-        repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
+        restoredEntity.setStatus(entity.getStatusOnDelete());
+        restoredEntity.setStatusOnDelete(null);
+
+        restoredEntity = repositoryHelper.incrementVersion(userId, entity, restoredEntity);
+
+        repositoryStore.updateEntityInStore(restoredEntity);
 
         /*
          * The repository store maintains an entity proxy for use with relationships.
@@ -3286,6 +3292,10 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
                                                                       ClassificationOrigin.ASSIGNED,
                                                                       null,
                                                                       classificationProperties);
+        }
+        catch (PropertyErrorException  error)
+        {
+            throw error;
         }
         catch (Throwable   error)
         {
@@ -3471,19 +3481,9 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
                                                                                      classificationName,
                                                                                      methodName);
 
-        InstanceProperties  existingClassificationProperties = null;
-        if (classification != null)
-        {
-            existingClassificationProperties = classification.getProperties();
-        }
-
-        InstanceProperties newProperties = repositoryHelper.mergeInstanceProperties(repositoryName,
-                                                                                    existingClassificationProperties,
-                                                                                    properties);
-
         Classification  newClassification = new Classification(classification);
 
-        newClassification.setProperties(newProperties);
+        newClassification.setProperties(properties);
 
         repositoryHelper.incrementVersion(userId, classification, newClassification);
 
@@ -3743,9 +3743,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
          */
         Relationship   updatedRelationship = new Relationship(relationship);
 
-        updatedRelationship.setProperties(repositoryHelper.mergeInstanceProperties(repositoryName,
-                                                                            relationship.getProperties(),
-                                                                            properties));
+        updatedRelationship.setProperties(properties);
         updatedRelationship = repositoryHelper.incrementVersion(userId, relationship, updatedRelationship);
 
         repositoryStore.updateRelationshipInStore(updatedRelationship);
@@ -4084,7 +4082,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
      * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
      *                            hosting the metadata collection.
      * @throws ClassificationErrorException the entity's classifications are not valid for the new type.
-     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection.     *
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public EntityDetail reTypeEntity(String         userId,
@@ -4582,6 +4580,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
         {
             OMRSErrorCode errorCode = OMRSErrorCode.ENTITY_NOT_KNOWN;
             String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityGUID,
+                                                                                                            methodName,
                                                                                                             repositoryName);
 
             throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),

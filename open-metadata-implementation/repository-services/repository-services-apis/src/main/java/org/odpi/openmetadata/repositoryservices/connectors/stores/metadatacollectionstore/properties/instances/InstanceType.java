@@ -190,7 +190,17 @@ public class InstanceType extends InstanceElementHeader
         }
         else
         {
-            return new ArrayList<>(typeDefSuperTypes);
+            /*
+             * Ensure the exported typeDefLinks are not instances of a subclass.
+             */
+            List<TypeDefLink>  superTypes = new ArrayList<>();
+
+            for (TypeDefLink  typeDefLink: typeDefSuperTypes)
+            {
+                superTypes.add(new TypeDefLink(typeDefLink));
+            }
+
+            return superTypes;
         }
     }
 
@@ -331,12 +341,11 @@ public class InstanceType extends InstanceElementHeader
                 ", typeDefVersion=" + typeDefVersion +
                 ", typeDefDescription='" + typeDefDescription + '\'' +
                 ", typeDefDescriptionGUID='" + typeDefDescriptionGUID + '\'' +
-                ", typeDefSuperTypes=" + typeDefSuperTypes +
-                ", validStatusList=" + validStatusList +
-                ", validInstanceProperties=" + validInstanceProperties +
+                ", typeDefSuperTypes=" + getTypeDefSuperTypes() +
+                ", validStatusList=" + getValidStatusList() +
+                ", validInstanceProperties=" + getValidInstanceProperties() +
                 '}';
     }
-
 
     /**
      * Validate if the supplied object equals this object.

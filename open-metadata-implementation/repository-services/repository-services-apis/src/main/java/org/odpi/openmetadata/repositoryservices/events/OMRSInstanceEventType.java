@@ -83,6 +83,10 @@ public enum OMRSInstanceEventType implements Serializable
     REFRESHED_RELATIONSHIP_EVENT    (25, "RefreshedRelationshipEvent",
                                          "The local repository is refreshing the information about a relationship for the " +
                                           "other repositories in the cohort."),
+    BATCH_INSTANCES_EVENT           (26, "BatchInstancesEvent",
+                                         "The local repository is passing a batch of instances to the other " +
+                                                 "repositories in the cohort.  They may be new, or updated and include " +
+                                                 "instances originating from different repositories."),
     INSTANCE_ERROR_EVENT            (99, "InstanceErrorEvent",
                                          "An error has been detected in the exchange of instances between members of the cohort.")
     ;

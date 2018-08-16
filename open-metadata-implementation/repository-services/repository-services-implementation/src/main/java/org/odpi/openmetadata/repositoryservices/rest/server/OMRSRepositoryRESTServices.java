@@ -274,7 +274,7 @@ public class OMRSRepositoryRESTServices
      * Returns all of the TypeDefs for a specific category.
      *
      * @param userId unique identifier for requesting user.
-     * @param findRequestParameters find parameters used to limit the returned results.
+     * @param category find parameters used to limit the returned results.
      * @return TypeDefListResponse:
      * TypeDefs list or
      * InvalidParameterException the TypeDefCategory is null or
@@ -282,18 +282,11 @@ public class OMRSRepositoryRESTServices
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public TypeDefListResponse findTypeDefsByCategory(String                     userId,
-                                                      TypeDefCategoryFindRequest findRequestParameters)
+                                                      TypeDefCategory            category)
     {
         final  String   methodName = "findTypeDefsByCategory";
 
-        TypeDefCategory category = null;
-
         TypeDefListResponse response = new TypeDefListResponse();
-
-        if (findRequestParameters != null)
-        {
-            category = findRequestParameters.getCategory();
-        }
 
         try
         {
@@ -322,26 +315,19 @@ public class OMRSRepositoryRESTServices
      * Returns all of the AttributeTypeDefs for a specific category.
      *
      * @param userId unique identifier for requesting user.
-     * @param findRequestParameters find parameters used to limit the returned results.
+     * @param category find parameters used to limit the returned results.
      * @return AttributeTypeDefListResponse:
      * AttributeTypeDefs list or
      * InvalidParameterException the TypeDefCategory is null or
      * RepositoryErrorException there is a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public AttributeTypeDefListResponse findAttributeTypeDefsByCategory(String                              userId,
-                                                                        AttributeTypeDefCategoryFindRequest findRequestParameters)
+    public AttributeTypeDefListResponse findAttributeTypeDefsByCategory(String                   userId,
+                                                                        AttributeTypeDefCategory category)
     {
         final  String   methodName = "findAttributeTypeDefsByCategory";
 
-        AttributeTypeDefCategory category = null;
-
         AttributeTypeDefListResponse response = new AttributeTypeDefListResponse();
-
-        if (findRequestParameters != null)
-        {
-            category = findRequestParameters.getCategory();
-        }
 
         try
         {
@@ -1198,9 +1184,8 @@ public class OMRSRepositoryRESTServices
      *
      * @param userId unique identifier for requesting user.
      * @param originalTypeDefGUID the original guid of the TypeDef.
-     * @param originalTypeDefName the original name of the TypeDef.
-     * @param newTypeDefGUID the new identifier for the TypeDef.
-     * @param newTypeDefName new name for this TypeDef.
+     * @param requestParameters the original name of the TypeDef, the new identifier for the TypeDef and the
+     *                         new name for this TypeDef.
      * @return TypeDefResponse:
      * typeDef: new values for this TypeDef, including the new guid/name or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -1211,15 +1196,24 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support this call or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  TypeDefResponse reIdentifyTypeDef(String     userId,
-                                              String     originalTypeDefGUID,
-                                              String     originalTypeDefName,
-                                              String     newTypeDefGUID,
-                                              String     newTypeDefName)
+    public  TypeDefResponse reIdentifyTypeDef(String                    userId,
+                                              String                    originalTypeDefGUID,
+                                              TypeDefReIdentifyRequest  requestParameters)
     {
         final  String   methodName = "reIdentifyTypeDef";
 
+        String originalTypeDefName = null;
+        String newTypeDefGUID = null;
+        String newTypeDefName = null;
+
         TypeDefResponse response = new TypeDefResponse();
+
+        if (requestParameters != null)
+        {
+            originalTypeDefName = requestParameters.getOriginalTypeDefName();
+            newTypeDefGUID = requestParameters.getNewTypeDefGUID();
+            newTypeDefName = requestParameters.getNewTypeDefName();
+        }
 
         try
         {
@@ -1263,9 +1257,8 @@ public class OMRSRepositoryRESTServices
      *
      * @param userId unique identifier for requesting user.
      * @param originalAttributeTypeDefGUID the original guid of the AttributeTypeDef.
-     * @param originalAttributeTypeDefName the original name of the AttributeTypeDef.
-     * @param newAttributeTypeDefGUID the new identifier for the AttributeTypeDef.
-     * @param newAttributeTypeDefName new name for this AttributeTypeDef.
+     * @param requestParameters the original name of the AttributeTypeDef and the new identifier for the AttributeTypeDef
+     *                          and the new name for this AttributeTypeDef.
      * @return AttributeTypeDefResponse:
      * attributeTypeDef: new values for this AttributeTypeDef, including the new guid/name or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -1276,15 +1269,24 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support this call or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  AttributeTypeDefResponse reIdentifyAttributeTypeDef(String     userId,
-                                                                String     originalAttributeTypeDefGUID,
-                                                                String     originalAttributeTypeDefName,
-                                                                String     newAttributeTypeDefGUID,
-                                                                String     newAttributeTypeDefName)
+    public  AttributeTypeDefResponse reIdentifyAttributeTypeDef(String                   userId,
+                                                                String                   originalAttributeTypeDefGUID,
+                                                                TypeDefReIdentifyRequest requestParameters)
     {
         final  String   methodName = "reIdentifyAttributeTypeDef";
 
+        String originalAttributeTypeDefName = null;
+        String newAttributeTypeDefGUID = null;
+        String newAttributeTypeDefName = null;
+
         AttributeTypeDefResponse response = new AttributeTypeDefResponse();
+
+        if (requestParameters != null)
+        {
+            originalAttributeTypeDefName = requestParameters.getOriginalTypeDefName();
+            newAttributeTypeDefGUID = requestParameters.getNewTypeDefGUID();
+            newAttributeTypeDefName = requestParameters.getNewTypeDefName();
+        }
 
         try
         {
@@ -1501,7 +1503,7 @@ public class OMRSRepositoryRESTServices
      * EntityNotKnownException the requested entity instance is not known in the metadata collection
      *                                   at the time requested or
      * EntityProxyOnlyException the requested entity instance is only a proxy in the metadata collection or
-     * FunctionNotSupportedException the repository does not support satOfTime parameter or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public  EntityDetailResponse getEntityDetail(String     userId,
@@ -1563,8 +1565,8 @@ public class OMRSRepositoryRESTServices
      * EntityNotKnownException the requested entity instance is not known in the metadata collection or
      * PropertyErrorException the sequencing property is not valid for the attached classifications or
      * PagingErrorException the paging/sequencing parameters are set up incorrectly or
-     * FunctionNotSupportedException the repository does not support satOfTime parameter or
-     * UserNotAuthorizedException the userId is not permitted to perform this operation or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public RelationshipListResponse getRelationshipsForEntity(String                     userId,
                                                               String                     entityGUID,
@@ -1676,8 +1678,8 @@ public class OMRSRepositoryRESTServices
      * EntityNotKnownException the requested entity instance is not known in the metadata collection or
      * PropertyErrorException the sequencing property is not valid for the attached classifications or
      * PagingErrorException the paging/sequencing parameters are set up incorrectly or
-     * FunctionNotSupportedException the repository does not support satOfTime parameter or
-     * UserNotAuthorizedException the userId is not permitted to perform this operation or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public RelationshipListResponse getRelationshipsForEntityHistory(String                               userId,
                                                                      String                               entityGUID,
@@ -1792,7 +1794,7 @@ public class OMRSRepositoryRESTServices
      * PropertyErrorException the properties specified are not valid for any of the requested types of
      *                                  entity or
      * PagingErrorException the paging/sequencing parameters are set up incorrectly or
-     * FunctionNotSupportedException the repository does not support satOfTime parameter or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public  EntityListResponse findEntitiesByProperty(String                    userId,
@@ -1908,7 +1910,7 @@ public class OMRSRepositoryRESTServices
      * PropertyErrorException the properties specified are not valid for any of the requested types of
      *                                  entity or
      * PagingErrorException the paging/sequencing parameters are set up incorrectly or
-     * FunctionNotSupportedException the repository does not support satOfTime parameter or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public  EntityListResponse findEntitiesByPropertyHistory(String                              userId,
@@ -2027,7 +2029,7 @@ public class OMRSRepositoryRESTServices
      * PropertyErrorException the properties specified are not valid for the requested type of
      *                                  classification or
      * PagingErrorException the paging/sequencing parameters are set up incorrectly or
-     * FunctionNotSupportedException the repository does not support satOfTime parameter or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public  EntityListResponse findEntitiesByClassification(String                    userId,
@@ -2146,7 +2148,7 @@ public class OMRSRepositoryRESTServices
      * PropertyErrorException the properties specified are not valid for the requested type of
      *                                  classification or
      * PagingErrorException the paging/sequencing parameters are set up incorrectly or
-     * FunctionNotSupportedException the repository does not support satOfTime parameter or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public  EntityListResponse findEntitiesByClassificationHistory(String                              userId,
@@ -2266,7 +2268,7 @@ public class OMRSRepositoryRESTServices
      * PropertyErrorException the sequencing property specified is not valid for any of the requested types of
      *                                  entity or
      * PagingErrorException the paging/sequencing parameters are set up incorrectly.
-     * FunctionNotSupportedException the repository does not support satOfTime parameter or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public  EntityListResponse findEntitiesByPropertyValue(String                    userId,
@@ -2379,7 +2381,7 @@ public class OMRSRepositoryRESTServices
      * PropertyErrorException the sequencing property specified is not valid for any of the requested types of
      *                                  entity or
      * PagingErrorException the paging/sequencing parameters are set up incorrectly.
-     * FunctionNotSupportedException the repository does not support satOfTime parameter or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public  EntityListResponse findEntitiesByPropertyValueHistory(String                              userId,
@@ -2599,7 +2601,7 @@ public class OMRSRepositoryRESTServices
      *                                 the metadata collection is stored or
      * RelationshipNotKnownException the requested entity instance is not known in the metadata collection
      *                                   at the time requested or
-     * FunctionNotSupportedException the repository does not support satOfTime parameter or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public  RelationshipResponse getRelationship(String    userId,
@@ -2656,7 +2658,7 @@ public class OMRSRepositoryRESTServices
      * PropertyErrorException the properties specified are not valid for any of the requested types of
      *                                  relationships or
      * PagingErrorException the paging/sequencing parameters are set up incorrectly or
-     * FunctionNotSupportedException the repository does not support satOfTime parameter or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public  RelationshipListResponse findRelationshipsByProperty(String                    userId,
@@ -2768,7 +2770,7 @@ public class OMRSRepositoryRESTServices
      * PropertyErrorException the properties specified are not valid for any of the requested types of
      *                                  relationships or
      * PagingErrorException the paging/sequencing parameters are set up incorrectly or
-     * FunctionNotSupportedException the repository does not support satOfTime parameter or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public  RelationshipListResponse findRelationshipsByPropertyHistory(String                              userId,
@@ -2881,7 +2883,7 @@ public class OMRSRepositoryRESTServices
      *                                  the metadata collection is stored or
      * PropertyErrorException there is a problem with one of the other parameters  or
      * PagingErrorException the paging/sequencing parameters are set up incorrectly or
-     * FunctionNotSupportedException the repository does not support satOfTime parameter or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public  RelationshipListResponse findRelationshipsByPropertyValue(String                    userId,
@@ -2989,7 +2991,7 @@ public class OMRSRepositoryRESTServices
      *                                  the metadata collection is stored or
      * PropertyErrorException there is a problem with one of the other parameters  or
      * PagingErrorException the paging/sequencing parameters are set up incorrectly or
-     * FunctionNotSupportedException the repository does not support satOfTime parameter or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public  RelationshipListResponse findRelationshipsByPropertyValueHistory(String                              userId,
@@ -3100,7 +3102,7 @@ public class OMRSRepositoryRESTServices
      * EntityNotKnownException the entity identified by either the startEntityGUID or the endEntityGUID
      *                                   is not found in the metadata collection or
      * PropertyErrorException there is a problem with one of the other parameters or
-     * FunctionNotSupportedException the repository does not support satOfTime parameter or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public  InstanceGraphResponse getLinkingEntities(String                    userId,
@@ -3178,7 +3180,7 @@ public class OMRSRepositoryRESTServices
      * EntityNotKnownException the entity identified by either the startEntityGUID or the endEntityGUID
      *                                   is not found in the metadata collection or
      * PropertyErrorException there is a problem with one of the other parameters or
-     * FunctionNotSupportedException the repository does not support satOfTime parameter or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public  InstanceGraphResponse getLinkingEntitiesHistory(String                         userId,
@@ -3260,7 +3262,7 @@ public class OMRSRepositoryRESTServices
      *                                  the metadata collection is stored or
      * EntityNotKnownException the entity identified by the entityGUID is not found in the metadata collection or
      * PropertyErrorException there is a problem with one of the other parameters or
-     * FunctionNotSupportedException the repository does not support satOfTime parameter or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public  InstanceGraphResponse getEntityNeighborhood(String                         userId,
@@ -3353,7 +3355,7 @@ public class OMRSRepositoryRESTServices
      *                                  the metadata collection is stored or
      * EntityNotKnownException the entity identified by the entityGUID is not found in the metadata collection or
      * PropertyErrorException there is a problem with one of the other parameters or
-     * FunctionNotSupportedException the repository does not support satOfTime parameter or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public  InstanceGraphResponse getEntityNeighborhoodHistory(String                                   userId,
@@ -3451,7 +3453,7 @@ public class OMRSRepositoryRESTServices
      * PropertyErrorException the sequencing property specified is not valid for any of the requested types of
      *                                  entity or
      * PagingErrorException the paging/sequencing parameters are set up incorrectly or
-     * FunctionNotSupportedException the repository does not support satOfTime parameter or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public  EntityListResponse getRelatedEntities(String                     userId,
@@ -3572,7 +3574,7 @@ public class OMRSRepositoryRESTServices
      * PropertyErrorException the sequencing property specified is not valid for any of the requested types of
      *                                  entity or
      * PagingErrorException the paging/sequencing parameters are set up incorrectly or
-     * FunctionNotSupportedException the repository does not support satOfTime parameter or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public  EntityListResponse getRelatedEntitiesHistory(String                               userId,
@@ -3880,7 +3882,7 @@ public class OMRSRepositoryRESTServices
      *
      * @param userId unique identifier for requesting user.
      * @param entityGUID String unique identifier (guid) for the entity.
-     * @param properties a list of properties to change.
+     * @param propertiesRequestBody a list of properties to change.
      * @return EntityDetailResponse:
      * EntityDetail showing the resulting entity header, properties and classifications or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -3889,11 +3891,11 @@ public class OMRSRepositoryRESTServices
      * EntityNotKnownException the entity identified by the guid is not found in the metadata collection
      * PropertyErrorException one or more of the requested properties are not defined, or have different
      *                                characteristics in the TypeDef for this entity's type or
-     * UserNotAuthorizedException the userId is not permitted to perform this operation or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetailResponse updateEntityProperties(String               userId,
-                                                       String               entityGUID,
-                                                       InstanceProperties   properties)
+    public EntityDetailResponse updateEntityProperties(String                      userId,
+                                                       String                      entityGUID,
+                                                       InstancePropertiesRequest   propertiesRequestBody)
     {
         final  String   methodName = "updateEntityProperties";
 
@@ -3903,7 +3905,7 @@ public class OMRSRepositoryRESTServices
         {
             validateLocalRepository(methodName);
 
-            response.setEntity(localMetadataCollection.updateEntityProperties(userId, entityGUID, properties));
+            response.setEntity(localMetadataCollection.updateEntityProperties(userId, entityGUID, propertiesRequestBody.getInstanceProperties()));
         }
         catch (RepositoryErrorException  error)
         {
@@ -3989,9 +3991,8 @@ public class OMRSRepositoryRESTServices
      * The restoreEntity() method will switch an entity back to Active status to restore the entity to normal use.
      *
      * @param userId unique identifier for requesting user.
-     * @param typeDefGUID unique identifier of the type of the entity to delete.
-     * @param typeDefName unique name of the type of the entity to delete.
      * @param obsoleteEntityGUID String unique identifier (guid) for the entity.
+     * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
      * @return EntityDetailResponse
      * details of the deleted entity or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -4002,14 +4003,22 @@ public class OMRSRepositoryRESTServices
      *                                       soft-deletes (use purgeEntity() to remove the entity permanently)
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetailResponse  deleteEntity(String    userId,
-                                              String    typeDefGUID,
-                                              String    typeDefName,
-                                              String    obsoleteEntityGUID)
+    public EntityDetailResponse  deleteEntity(String                        userId,
+                                              String                        obsoleteEntityGUID,
+                                              TypeDefValidationForRequest   typeDefValidationForRequest)
     {
         final  String   methodName = "deleteEntity";
 
+        String    typeDefGUID = null;
+        String    typeDefName = null;
+
         EntityDetailResponse response = new EntityDetailResponse();
+
+        if (typeDefValidationForRequest != null)
+        {
+            typeDefGUID = typeDefValidationForRequest.getTypeDefGUID();
+            typeDefName = typeDefValidationForRequest.getTypeDefName();
+        }
 
         try
         {
@@ -4046,9 +4055,8 @@ public class OMRSRepositoryRESTServices
      * Permanently removes a deleted entity from the metadata collection.  This request can not be undone.
      *
      * @param userId unique identifier for requesting user.
-     * @param typeDefGUID unique identifier of the type of the entity to purge.
-     * @param typeDefName unique name of the type of the entity to purge.
      * @param deletedEntityGUID String unique identifier (guid) for the entity.
+     * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
      * @return VoidResponse:
      * void or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -4058,14 +4066,22 @@ public class OMRSRepositoryRESTServices
      * EntityNotDeletedException the entity is not in DELETED status and so can not be purged or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public VoidResponse purgeEntity(String    userId,
-                                    String    typeDefGUID,
-                                    String    typeDefName,
-                                    String    deletedEntityGUID)
+    public VoidResponse purgeEntity(String                        userId,
+                                    String                        deletedEntityGUID,
+                                    TypeDefValidationForRequest   typeDefValidationForRequest)
     {
         final  String   methodName = "purgeEntity";
 
+        String    typeDefGUID = null;
+        String    typeDefName = null;
+
         VoidResponse response = new VoidResponse();
+
+        if (typeDefValidationForRequest != null)
+        {
+            typeDefGUID = typeDefValidationForRequest.getTypeDefGUID();
+            typeDefName = typeDefValidationForRequest.getTypeDefName();
+        }
 
         try
         {
@@ -4161,7 +4177,7 @@ public class OMRSRepositoryRESTServices
      * @param userId unique identifier for requesting user.
      * @param entityGUID String unique identifier (guid) for the entity.
      * @param classificationName String name for the classification.
-     * @param classificationProperties list of properties to set in the classification.
+     * @param propertiesRequestBody list of properties to set in the classification.
      * @return EntityDetailResponse:
      * EntityDetail showing the resulting entity header, properties and classifications or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -4174,10 +4190,10 @@ public class OMRSRepositoryRESTServices
      *                                characteristics in the TypeDef for this classification type or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetailResponse classifyEntity(String               userId,
-                                               String               entityGUID,
-                                               String               classificationName,
-                                               InstanceProperties   classificationProperties)
+    public EntityDetailResponse classifyEntity(String                      userId,
+                                               String                      entityGUID,
+                                               String                      classificationName,
+                                               InstancePropertiesRequest   propertiesRequestBody)
     {
         final  String   methodName = "classifyEntity";
 
@@ -4190,7 +4206,7 @@ public class OMRSRepositoryRESTServices
             response.setEntity(localMetadataCollection.classifyEntity(userId,
                                                                       entityGUID,
                                                                       classificationName,
-                                                                      classificationProperties));
+                                                                      propertiesRequestBody.getInstanceProperties()));
         }
         catch (RepositoryErrorException  error)
         {
@@ -4283,7 +4299,7 @@ public class OMRSRepositoryRESTServices
      * @param userId unique identifier for requesting user.
      * @param entityGUID String unique identifier (guid) for the entity.
      * @param classificationName String name for the classification.
-     * @param properties list of properties for the classification.
+     * @param propertiesRequestBody list of properties for the classification.
      * @return EntityDetailResponse:
      * EntityDetail showing the resulting entity header, properties and classifications or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -4295,10 +4311,10 @@ public class OMRSRepositoryRESTServices
      *                                characteristics in the TypeDef for this classification type or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetailResponse updateEntityClassification(String               userId,
-                                                           String               entityGUID,
-                                                           String               classificationName,
-                                                           InstanceProperties   properties)
+    public EntityDetailResponse updateEntityClassification(String                      userId,
+                                                           String                      entityGUID,
+                                                           String                      classificationName,
+                                                           InstancePropertiesRequest   propertiesRequestBody)
     {
         final  String   methodName = "updateEntityClassification";
 
@@ -4311,7 +4327,7 @@ public class OMRSRepositoryRESTServices
             response.setEntity(localMetadataCollection.updateEntityClassification(userId,
                                                                                   entityGUID,
                                                                                   classificationName,
-                                                                                  properties));
+                                                                                  propertiesRequestBody.getInstanceProperties()));
         }
         catch (RepositoryErrorException  error)
         {
@@ -4346,11 +4362,7 @@ public class OMRSRepositoryRESTServices
      * Add a new relationship between two entities to the metadata collection.
      *
      * @param userId unique identifier for requesting user.
-     * @param relationshipTypeGUID unique identifier (guid) for the new relationship's type.
-     * @param initialProperties initial list of properties for the new entity null means no properties.
-     * @param entityOneGUID the unique identifier of one of the entities that the relationship is connecting together.
-     * @param entityTwoGUID the unique identifier of the other entity that the relationship is connecting together.
-     * @param initialStatus initial status typically DRAFT, PREPARED or ACTIVE.
+     * @param createRequestParameters parameters used to fill out the new relationship
      * @return RelationshipResponse:
      * Relationship structure with the new header, requested entities and properties or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -4365,16 +4377,27 @@ public class OMRSRepositoryRESTServices
      *                                     the requested status or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public RelationshipResponse addRelationship(String               userId,
-                                                String               relationshipTypeGUID,
-                                                InstanceProperties   initialProperties,
-                                                String               entityOneGUID,
-                                                String               entityTwoGUID,
-                                                InstanceStatus       initialStatus)
+    public RelationshipResponse addRelationship(String                     userId,
+                                                RelationshipCreateRequest  createRequestParameters)
     {
         final  String   methodName = "addRelationship";
 
+        String             relationshipTypeGUID = null;
+        InstanceProperties initialProperties = null;
+        String             entityOneGUID = null;
+        String             entityTwoGUID = null;
+        InstanceStatus     initialStatus = null;
+
         RelationshipResponse response = new RelationshipResponse();
+
+        if (createRequestParameters != null)
+        {
+            relationshipTypeGUID = createRequestParameters.getRelationshipTypeGUID();
+            initialProperties = createRequestParameters.getInitialProperties();
+            entityOneGUID = createRequestParameters.getEntityOneGUID();
+            entityTwoGUID = createRequestParameters.getEntityTwoGUID();
+            initialStatus = createRequestParameters.getInitialStatus();
+        }
 
         try
         {
@@ -4434,7 +4457,7 @@ public class OMRSRepositoryRESTServices
      * RelationshipNotKnownException the requested relationship is not known in the metadata collection or
      * StatusNotSupportedException the metadata repository hosting the metadata collection does not support
      *                                     the requested status or
-     * UserNotAuthorizedException the userId is not permitted to perform this operation or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public RelationshipResponse updateRelationshipStatus(String           userId,
                                                          String           relationshipGUID,
@@ -4482,7 +4505,7 @@ public class OMRSRepositoryRESTServices
      *
      * @param userId unique identifier for requesting user.
      * @param relationshipGUID String unique identifier (guid) for the relationship.
-     * @param properties list of the properties to update.
+     * @param propertiesRequestBody list of the properties to update.
      * @return RelationshipResponse:
      * Resulting relationship structure with the new properties set or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -4493,9 +4516,9 @@ public class OMRSRepositoryRESTServices
      *                                characteristics in the TypeDef for this relationship's type or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public RelationshipResponse updateRelationshipProperties(String               userId,
-                                                             String               relationshipGUID,
-                                                             InstanceProperties   properties)
+    public RelationshipResponse updateRelationshipProperties(String                      userId,
+                                                             String                      relationshipGUID,
+                                                             InstancePropertiesRequest   propertiesRequestBody)
     {
         final  String   methodName = "updateRelationshipProperties";
 
@@ -4507,7 +4530,7 @@ public class OMRSRepositoryRESTServices
 
             response.setRelationship(localMetadataCollection.updateRelationshipProperties(userId,
                                                                                           relationshipGUID,
-                                                                                          properties));
+                                                                                          propertiesRequestBody.getInstanceProperties()));
         }
         catch (RepositoryErrorException  error)
         {
@@ -4592,9 +4615,8 @@ public class OMRSRepositoryRESTServices
      * metadata collection, use purgeRelationship().
      *
      * @param userId unique identifier for requesting user.
-     * @param typeDefGUID unique identifier of the type of the relationship to delete.
-     * @param typeDefName unique name of the type of the relationship to delete.
      * @param obsoleteRelationshipGUID String unique identifier (guid) for the relationship.
+     * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
      * @return RelationshipResponse:
      * Updated relationship or
      * InvalidParameterException one of the parameters is null or
@@ -4605,14 +4627,22 @@ public class OMRSRepositoryRESTServices
      *                                     soft-deletes or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public RelationshipResponse deleteRelationship(String    userId,
-                                                   String    typeDefGUID,
-                                                   String    typeDefName,
-                                                   String    obsoleteRelationshipGUID)
+    public RelationshipResponse deleteRelationship(String                        userId,
+                                                   String                        obsoleteRelationshipGUID,
+                                                   TypeDefValidationForRequest   typeDefValidationForRequest)
     {
         final  String   methodName = "deleteRelationship";
 
+        String    typeDefGUID = null;
+        String    typeDefName = null;
+
         RelationshipResponse response = new RelationshipResponse();
+
+        if (typeDefValidationForRequest != null)
+        {
+            typeDefGUID = typeDefValidationForRequest.getTypeDefGUID();
+            typeDefName = typeDefValidationForRequest.getTypeDefName();
+        }
 
         try
         {
@@ -4652,9 +4682,8 @@ public class OMRSRepositoryRESTServices
      * Permanently delete the relationship from the repository.  There is no means to undo this request.
      *
      * @param userId unique identifier for requesting user.
-     * @param typeDefGUID unique identifier of the type of the relationship to purge.
-     * @param typeDefName unique name of the type of the relationship to purge.
      * @param deletedRelationshipGUID String unique identifier (guid) for the relationship.
+     * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
      * @return VoidResponse:
      * void or
      * InvalidParameterException one of the parameters is null or
@@ -4664,14 +4693,22 @@ public class OMRSRepositoryRESTServices
      * RelationshipNotDeletedException the requested relationship is not in DELETED status or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public VoidResponse purgeRelationship(String    userId,
-                                          String    typeDefGUID,
-                                          String    typeDefName,
-                                          String    deletedRelationshipGUID)
+    public VoidResponse purgeRelationship(String                        userId,
+                                          String                        deletedRelationshipGUID,
+                                          TypeDefValidationForRequest   typeDefValidationForRequest)
     {
         final  String   methodName = "purgeRelationship";
 
+        String    typeDefGUID = null;
+        String    typeDefName = null;
+
         VoidResponse response = new VoidResponse();
+
+        if (typeDefValidationForRequest != null)
+        {
+            typeDefGUID = typeDefValidationForRequest.getTypeDefGUID();
+            typeDefName = typeDefValidationForRequest.getTypeDefName();
+        }
 
         try
         {
@@ -4773,10 +4810,9 @@ public class OMRSRepositoryRESTServices
      * the open metadata protocol has provision for this.
      *
      * @param userId unique identifier for requesting user.
-     * @param typeDefGUID the guid of the TypeDef for the entity used to verify the entity identity.
-     * @param typeDefName the name of the TypeDef for the entity used to verify the entity identity.
      * @param entityGUID the existing identifier for the entity.
      * @param newEntityGUID new unique identifier for the entity.
+     * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
      * @return EntityDetailResponse:
      * entity: new values for this entity, including the new guid or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -4786,15 +4822,23 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support instance re-identification or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetailResponse reIdentifyEntity(String     userId,
-                                                 String     typeDefGUID,
-                                                 String     typeDefName,
-                                                 String     entityGUID,
-                                                 String     newEntityGUID)
+    public EntityDetailResponse reIdentifyEntity(String                        userId,
+                                                 String                        entityGUID,
+                                                 String                        newEntityGUID,
+                                                 TypeDefValidationForRequest   typeDefValidationForRequest)
     {
         final  String   methodName = "reIdentifyEntity";
 
+        String    typeDefGUID = null;
+        String    typeDefName = null;
+
         EntityDetailResponse response = new EntityDetailResponse();
+
+        if (typeDefValidationForRequest != null)
+        {
+            typeDefGUID = typeDefValidationForRequest.getTypeDefGUID();
+            typeDefName = typeDefValidationForRequest.getTypeDefName();
+        }
 
         try
         {
@@ -4838,8 +4882,7 @@ public class OMRSRepositoryRESTServices
      *
      * @param userId unique identifier for requesting user.
      * @param entityGUID the unique identifier for the entity to change.
-     * @param currentTypeDefSummary the current details of the TypeDef for the entity used to verify the entity identity
-     * @param newTypeDefSummary details of this entity's new TypeDef.
+     * @param typeDefChangeRequest the details of the current and new type.
      * @return EntityDetailResponse:
      * entity: new values for this entity, including the new type information or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -4853,14 +4896,22 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support instance re-typing or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetailResponse reTypeEntity(String         userId,
-                                             String         entityGUID,
-                                             TypeDefSummary currentTypeDefSummary,
-                                             TypeDefSummary newTypeDefSummary)
+    public EntityDetailResponse reTypeEntity(String               userId,
+                                             String               entityGUID,
+                                             TypeDefChangeRequest typeDefChangeRequest)
     {
         final  String   methodName = "reTypeEntity";
 
+        TypeDefSummary currentTypeDefSummary = null;
+        TypeDefSummary newTypeDefSummary = null;
+
         EntityDetailResponse response = new EntityDetailResponse();
+
+        if (typeDefChangeRequest != null)
+        {
+            currentTypeDefSummary = typeDefChangeRequest.getCurrentTypeDef();
+            newTypeDefSummary = typeDefChangeRequest.getNewTypeDef();
+        }
 
         try
         {
@@ -4915,10 +4966,9 @@ public class OMRSRepositoryRESTServices
      *
      * @param userId unique identifier for requesting user.
      * @param entityGUID the unique identifier for the entity to change.
-     * @param typeDefGUID the guid of the TypeDef for the entity used to verify the entity identity.
-     * @param typeDefName the name of the TypeDef for the entity used to verify the entity identity.
      * @param homeMetadataCollectionId the existing identifier for this entity's home.
      * @param newHomeMetadataCollectionId unique identifier for the new home metadata collection/repository.
+     * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
      * @return EntityDetailResponse:
      * entity: new values for this entity, including the new home information or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -4928,16 +4978,24 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support instance re-homing or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetailResponse reHomeEntity(String         userId,
-                                             String         entityGUID,
-                                             String         typeDefGUID,
-                                             String         typeDefName,
-                                             String         homeMetadataCollectionId,
-                                             String         newHomeMetadataCollectionId)
+    public EntityDetailResponse reHomeEntity(String                        userId,
+                                             String                        entityGUID,
+                                             String                        homeMetadataCollectionId,
+                                             String                        newHomeMetadataCollectionId,
+                                             TypeDefValidationForRequest   typeDefValidationForRequest)
     {
         final  String   methodName = "reHomeEntity";
 
+        String    typeDefGUID = null;
+        String    typeDefName = null;
+
         EntityDetailResponse response = new EntityDetailResponse();
+
+        if (typeDefValidationForRequest != null)
+        {
+            typeDefGUID = typeDefValidationForRequest.getTypeDefGUID();
+            typeDefName = typeDefValidationForRequest.getTypeDefName();
+        }
 
         try
         {
@@ -4981,10 +5039,9 @@ public class OMRSRepositoryRESTServices
      * the open metadata protocol has provision for this.
      *
      * @param userId unique identifier for requesting user.
-     * @param typeDefGUID the guid of the TypeDef for the relationship used to verify the relationship identity.
-     * @param typeDefName the name of the TypeDef for the relationship used to verify the relationship identity.
      * @param relationshipGUID the existing identifier for the relationship.
      * @param newRelationshipGUID  the new unique identifier for the relationship.
+     * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
      * @return RelationshipResponse:
      * relationship: new values for this relationship, including the new guid or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -4995,15 +5052,23 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support instance re-identification or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public RelationshipResponse reIdentifyRelationship(String     userId,
-                                                       String     typeDefGUID,
-                                                       String     typeDefName,
-                                                       String     relationshipGUID,
-                                                       String     newRelationshipGUID)
+    public RelationshipResponse reIdentifyRelationship(String                        userId,
+                                                       String                        relationshipGUID,
+                                                       String                        newRelationshipGUID,
+                                                       TypeDefValidationForRequest   typeDefValidationForRequest)
     {
         final  String   methodName = "reIdentifyRelationship";
 
+        String    typeDefGUID = null;
+        String    typeDefName = null;
+
         RelationshipResponse response = new RelationshipResponse();
+
+        if (typeDefValidationForRequest != null)
+        {
+            typeDefGUID = typeDefValidationForRequest.getTypeDefGUID();
+            typeDefName = typeDefValidationForRequest.getTypeDefName();
+        }
 
         try
         {
@@ -5047,8 +5112,7 @@ public class OMRSRepositoryRESTServices
      *
      * @param userId unique identifier for requesting user.
      * @param relationshipGUID the unique identifier for the relationship.
-     * @param currentTypeDefSummary the details of the TypeDef for the relationship used to verify the relationship identity.
-     * @param newTypeDefSummary details of this relationship's new TypeDef.
+     * @param typeDefChangeRequest the details of the current and new type.
      * @return RelationshipResponse:
      * relationship: new values for this relationship, including the new type information or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -5062,14 +5126,22 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support instance re-typing or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public RelationshipResponse reTypeRelationship(String         userId,
-                                                   String         relationshipGUID,
-                                                   TypeDefSummary currentTypeDefSummary,
-                                                   TypeDefSummary newTypeDefSummary)
+    public RelationshipResponse reTypeRelationship(String               userId,
+                                                   String               relationshipGUID,
+                                                   TypeDefChangeRequest typeDefChangeRequest)
     {
         final  String   methodName = "reTypeRelationship";
 
+        TypeDefSummary currentTypeDefSummary = null;
+        TypeDefSummary newTypeDefSummary = null;
+
         RelationshipResponse response = new RelationshipResponse();
+
+        if (typeDefChangeRequest != null)
+        {
+            currentTypeDefSummary = typeDefChangeRequest.getCurrentTypeDef();
+            newTypeDefSummary = typeDefChangeRequest.getNewTypeDef();
+        }
 
         try
         {
@@ -5120,10 +5192,9 @@ public class OMRSRepositoryRESTServices
      *
      * @param userId unique identifier for requesting user.
      * @param relationshipGUID the unique identifier for the relationship.
-     * @param typeDefGUID the guid of the TypeDef for the relationship used to verify the relationship identity.
-     * @param typeDefName the name of the TypeDef for the relationship used to verify the relationship identity.
      * @param homeMetadataCollectionId the existing identifier for this relationship's home.
      * @param newHomeMetadataCollectionId unique identifier for the new home metadata collection/repository.
+     * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
      * @return RelationshipResponse:
      * relationship: new values for this relationship, including the new home information or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -5134,16 +5205,24 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support instance re-homing or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public RelationshipResponse reHomeRelationship(String   userId,
-                                                   String   relationshipGUID,
-                                                   String   typeDefGUID,
-                                                   String   typeDefName,
-                                                   String   homeMetadataCollectionId,
-                                                   String   newHomeMetadataCollectionId)
+    public RelationshipResponse reHomeRelationship(String                        userId,
+                                                   String                        relationshipGUID,
+                                                   String                        homeMetadataCollectionId,
+                                                   String                        newHomeMetadataCollectionId,
+                                                   TypeDefValidationForRequest   typeDefValidationForRequest)
     {
         final  String   methodName = "reHomeRelationship";
 
+        String    typeDefGUID = null;
+        String    typeDefName = null;
+
         RelationshipResponse response = new RelationshipResponse();
+
+        if (typeDefValidationForRequest != null)
+        {
+            typeDefGUID = typeDefValidationForRequest.getTypeDefGUID();
+            typeDefName = typeDefValidationForRequest.getTypeDefName();
+        }
 
         try
         {
@@ -5271,9 +5350,8 @@ public class OMRSRepositoryRESTServices
      *
      * @param userId unique identifier for requesting server.
      * @param entityGUID the unique identifier for the entity.
-     * @param typeDefGUID the guid of the TypeDef for the relationship used to verify the relationship identity.
-     * @param typeDefName the name of the TypeDef for the relationship used to verify the relationship identity.
      * @param homeMetadataCollectionId identifier of the metadata collection that is the home to this entity.
+     * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
      * @return VoidResponse:
      * void or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -5285,15 +5363,23 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support instance reference copies or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public VoidResponse purgeEntityReferenceCopy(String   userId,
-                                                 String   entityGUID,
-                                                 String   typeDefGUID,
-                                                 String   typeDefName,
-                                                 String   homeMetadataCollectionId)
+    public VoidResponse purgeEntityReferenceCopy(String                        userId,
+                                                 String                        entityGUID,
+                                                 String                        homeMetadataCollectionId,
+                                                 TypeDefValidationForRequest   typeDefValidationForRequest)
     {
         final  String   methodName = "purgeEntityReferenceCopy";
 
+        String    typeDefGUID = null;
+        String    typeDefName = null;
+
         VoidResponse response = new VoidResponse();
+
+        if (typeDefValidationForRequest != null)
+        {
+            typeDefGUID = typeDefValidationForRequest.getTypeDefGUID();
+            typeDefName = typeDefValidationForRequest.getTypeDefName();
+        }
 
         try
         {
@@ -5303,7 +5389,8 @@ public class OMRSRepositoryRESTServices
                                                              entityGUID,
                                                              typeDefGUID,
                                                              typeDefName,
-                                                             homeMetadataCollectionId);        }
+                                                             homeMetadataCollectionId);
+        }
         catch (RepositoryErrorException  error)
         {
             captureRepositoryErrorException(response, error);
@@ -5339,9 +5426,8 @@ public class OMRSRepositoryRESTServices
      *
      * @param userId unique identifier for requesting server.
      * @param entityGUID unique identifier of requested entity.
-     * @param typeDefGUID unique identifier of requested entity's TypeDef.
-     * @param typeDefName unique name of requested entity's TypeDef.
      * @param homeMetadataCollectionId identifier of the metadata collection that is the home to this entity.
+     * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
      * @return VoidResponse:
      * void or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -5353,15 +5439,23 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support instance reference copies or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public VoidResponse refreshEntityReferenceCopy(String   userId,
-                                                   String   entityGUID,
-                                                   String   typeDefGUID,
-                                                   String   typeDefName,
-                                                   String   homeMetadataCollectionId)
+    public VoidResponse refreshEntityReferenceCopy(String                        userId,
+                                                   String                        entityGUID,
+                                                   String                        homeMetadataCollectionId,
+                                                   TypeDefValidationForRequest   typeDefValidationForRequest)
     {
         final  String   methodName = "refreshEntityReferenceCopy";
 
+        String    typeDefGUID = null;
+        String    typeDefName = null;
+
         VoidResponse response = new VoidResponse();
+
+        if (typeDefValidationForRequest != null)
+        {
+            typeDefGUID = typeDefValidationForRequest.getTypeDefGUID();
+            typeDefName = typeDefValidationForRequest.getTypeDefName();
+        }
 
         try
         {
@@ -5371,7 +5465,8 @@ public class OMRSRepositoryRESTServices
                                                                entityGUID,
                                                                typeDefGUID,
                                                                typeDefName,
-                                                               homeMetadataCollectionId);        }
+                                                               homeMetadataCollectionId);
+        }
         catch (RepositoryErrorException  error)
         {
             captureRepositoryErrorException(response, error);
@@ -5492,9 +5587,8 @@ public class OMRSRepositoryRESTServices
      *
      * @param userId unique identifier for requesting server.
      * @param relationshipGUID the unique identifier for the relationship.
-     * @param typeDefGUID the guid of the TypeDef for the relationship used to verify the relationship identity.
-     * @param typeDefName the name of the TypeDef for the relationship used to verify the relationship identity.
      * @param homeMetadataCollectionId unique identifier for the home repository for this relationship.
+     * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
      * @return VoidResponse:
      * void or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -5506,15 +5600,23 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support instance reference copies or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public VoidResponse purgeRelationshipReferenceCopy(String   userId,
-                                                       String   relationshipGUID,
-                                                       String   typeDefGUID,
-                                                       String   typeDefName,
-                                                       String   homeMetadataCollectionId)
+    public VoidResponse purgeRelationshipReferenceCopy(String                        userId,
+                                                       String                        relationshipGUID,
+                                                       String                        homeMetadataCollectionId,
+                                                       TypeDefValidationForRequest   typeDefValidationForRequest)
     {
         final  String   methodName = "purgeRelationshipReferenceCopy";
 
+        String    typeDefGUID = null;
+        String    typeDefName = null;
+
         VoidResponse response = new VoidResponse();
+
+        if (typeDefValidationForRequest != null)
+        {
+            typeDefGUID = typeDefValidationForRequest.getTypeDefGUID();
+            typeDefName = typeDefValidationForRequest.getTypeDefName();
+        }
 
         try
         {
@@ -5524,7 +5626,8 @@ public class OMRSRepositoryRESTServices
                                                                    relationshipGUID,
                                                                    typeDefGUID,
                                                                    typeDefName,
-                                                                   homeMetadataCollectionId);        }
+                                                                   homeMetadataCollectionId);
+        }
         catch (RepositoryErrorException  error)
         {
             captureRepositoryErrorException(response, error);
@@ -5561,9 +5664,8 @@ public class OMRSRepositoryRESTServices
      *
      * @param userId unique identifier for requesting server.
      * @param relationshipGUID unique identifier of the relationship.
-     * @param typeDefGUID the guid of the TypeDef for the relationship used to verify the relationship identity.
-     * @param typeDefName the name of the TypeDef for the relationship used to verify the relationship identity.
      * @param homeMetadataCollectionId unique identifier for the home repository for this relationship.
+     * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
      * @return VoidResponse:
      * void or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -5575,15 +5677,23 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support instance reference copies or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public VoidResponse refreshRelationshipReferenceCopy(String userId,
-                                                         String relationshipGUID,
-                                                         String typeDefGUID,
-                                                         String typeDefName,
-                                                         String homeMetadataCollectionId)
+    public VoidResponse refreshRelationshipReferenceCopy(String                        userId,
+                                                         String                        relationshipGUID,
+                                                         String                        homeMetadataCollectionId,
+                                                         TypeDefValidationForRequest   typeDefValidationForRequest)
     {
         final  String   methodName = "refreshRelationshipReferenceCopy";
 
+        String    typeDefGUID = null;
+        String    typeDefName = null;
+
         VoidResponse response = new VoidResponse();
+
+        if (typeDefValidationForRequest != null)
+        {
+            typeDefGUID = typeDefValidationForRequest.getTypeDefGUID();
+            typeDefName = typeDefValidationForRequest.getTypeDefName();
+        }
 
         try
         {
@@ -5624,6 +5734,97 @@ public class OMRSRepositoryRESTServices
     }
 
 
+    /**
+     * Save the entities and relationships supplied in the instance graph as a reference copies.
+     * The id of the home metadata collection is already set up in the instances.
+     * Any instances from the home metadata collection are ignored.
+     *
+     * @param userId unique identifier for requesting server.
+     * @param instances instances to save or
+     * InvalidParameterException the relationship is null or
+     * RepositoryErrorException  there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored or
+     * TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection or
+     * EntityNotKnownException one of the entities identified by the relationship is not found in the
+     *                                   metadata collection or
+     * PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                  characteristics in the TypeDef for this relationship's type or
+     * EntityConflictException the new entity conflicts with an existing entity or
+     * InvalidEntityException the new entity has invalid contents or
+     * RelationshipConflictException the new relationship conflicts with an existing relationship or
+     * InvalidRelationshipException the new relationship has invalid contents or
+     * FunctionNotSupportedException the repository does not support reference copies of instances or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public VoidResponse  saveInstanceReferenceCopies(String                 userId,
+                                                     InstanceGraphRequest   instances)
+    {
+        final  String   methodName = "saveInstanceReferenceCopies";
+
+        InstanceGraph instanceGraph = new InstanceGraph();
+
+        VoidResponse response = new VoidResponse();
+
+        if (instances != null)
+        {
+            instanceGraph.setEntities(instances.getEntityElementList());
+            instanceGraph.setRelationships(instances.getRelationshipElementList());
+        }
+
+        try
+        {
+            validateLocalRepository(methodName);
+
+            localMetadataCollection.saveInstanceReferenceCopies(userId, instanceGraph);
+        }
+        catch (RepositoryErrorException  error)
+        {
+            captureRepositoryErrorException(response, error);
+        }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (InvalidEntityException error)
+        {
+            captureInvalidEntityException(response, error);
+        }
+        catch (InvalidRelationshipException error)
+        {
+            captureInvalidRelationshipException(response, error);
+        }
+        catch (EntityNotKnownException error)
+        {
+            captureEntityNotKnownException(response, error);
+        }
+        catch (PropertyErrorException error)
+        {
+            capturePropertyErrorException(response, error);
+        }
+        catch (TypeErrorException error)
+        {
+            captureTypeDefErrorException(response, error);
+        }
+        catch (EntityConflictException error)
+        {
+            captureEntityConflictException(response, error);
+        }
+        catch (RelationshipConflictException error)
+        {
+            captureRelationshipConflictException(response, error);
+        }
+
+        return response;
+    }
 
 
     /*
