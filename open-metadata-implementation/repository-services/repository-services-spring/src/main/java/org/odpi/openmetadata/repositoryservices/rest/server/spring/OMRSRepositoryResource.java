@@ -1381,7 +1381,6 @@ public class OMRSRepositoryResource
     }
 
 
-
     /**
      * Create an entity proxy in the metadata collection.  This is used to store relationships that span metadata
      * repositories.

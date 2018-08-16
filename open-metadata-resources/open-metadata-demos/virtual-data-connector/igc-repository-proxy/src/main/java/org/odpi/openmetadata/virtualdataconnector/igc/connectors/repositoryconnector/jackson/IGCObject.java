@@ -90,6 +90,8 @@ public class IGCObject {
     @JsonProperty("database_columns")
     private DatabaseColumns database_columns;
 
+
+
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 

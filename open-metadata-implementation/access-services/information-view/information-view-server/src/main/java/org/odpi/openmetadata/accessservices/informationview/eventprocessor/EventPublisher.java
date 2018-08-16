@@ -3,13 +3,13 @@
 package org.odpi.openmetadata.accessservices.informationview.eventprocessor;
 
 
-
-import org.odpi.openmetadata.accessservices.informationview.connectors.InformationViewTopic;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.ColumnContextEventBuilder;
 import org.odpi.openmetadata.accessservices.informationview.events.ColumnContextEvent;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
+import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopic;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceGraph;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
@@ -29,12 +29,13 @@ import static org.odpi.openmetadata.accessservices.informationview.utils.Constan
 public class EventPublisher implements OMRSInstanceEventProcessor {
 
     private static final Logger log = LoggerFactory.getLogger(EventPublisher.class);
-    private InformationViewTopic informationViewTopicConnector;
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private OpenMetadataTopic informationViewTopicConnector;
     private ColumnContextEventBuilder columnContextEventBuilder;
 
     private OMRSAuditLog auditLog;
 
-    public EventPublisher(InformationViewTopic informationViewTopicConnector,
+    public EventPublisher(OpenMetadataTopic informationViewTopicConnector,
                           ColumnContextEventBuilder columnContextEventBuilder,
                           OMRSAuditLog auditLog) {
         this.informationViewTopicConnector = informationViewTopicConnector;
@@ -218,8 +219,8 @@ public class EventPublisher implements OMRSInstanceEventProcessor {
             auditLog.logException("processNewRelationshipEvent",
                     auditCode.getErrorMessageId(),
                     OMRSAuditLogRecordSeverity.EXCEPTION,
-                    auditCode.getErrorMessage(),
-                    "column guid{" + guid + "}",
+                    auditCode.getFormattedErrorMessage(guid, e.getMessage()),
+                    e.getMessage(),
                     auditCode.getSystemAction(),
                     auditCode.getUserAction(),
                     e);
@@ -359,7 +360,6 @@ public class EventPublisher implements OMRSInstanceEventProcessor {
 
 
     /**
-     *
      * @param eventList - list of column context events
      * @return true if all events were published, false otherwise
      */
@@ -387,7 +387,7 @@ public class EventPublisher implements OMRSInstanceEventProcessor {
 
         try {
 
-            informationViewTopicConnector.sendEvent(event);
+            informationViewTopicConnector.sendEvent(OBJECT_MAPPER.writeValueAsString(event));
             successFlag = true;
 
         } catch (Throwable error) {
