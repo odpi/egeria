@@ -159,7 +159,7 @@ public class EntitiesCreatorHelper {
             auditLog.logException("getEntity",
                     auditCode.getErrorMessageId(),
                     OMRSAuditLogRecordSeverity.EXCEPTION,
-                    auditCode.getFormattedErrorMessage(typeName),
+                    auditCode.getFormattedErrorMessage(qualifiedName),
                     "entity with properties{" + matchProperties + "}",
                     auditCode.getSystemAction(),
                     auditCode.getUserAction(),

@@ -4381,11 +4381,11 @@ public class OMRSRepositoryRESTServices
             validateLocalRepository(methodName);
 
             response.setRelationship(localMetadataCollection.addRelationship(userId,
-                                                                             relationshipTypeGUID,
-                                                                             initialProperties,
-                                                                             entityOneGUID,
-                                                                             entityTwoGUID,
-                                                                             initialStatus));
+                    relationshipTypeGUID,
+                    initialProperties,
+                    entityOneGUID,
+                    entityTwoGUID,
+                    initialStatus));
         }
         catch (RepositoryErrorException  error)
         {
