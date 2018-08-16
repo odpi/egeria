@@ -1698,11 +1698,11 @@ public class OMRSRepositoryResource
                                                 @RequestParam                   InstanceStatus       initialStatus)
     {
         return restAPI.addRelationship(userId,
-                                       relationshipTypeGUID,
-                                       initialProperties,
-                                       entityOneGUID,
-                                       entityTwoGUID,
-                                       initialStatus);
+                relationshipTypeGUID,
+                initialProperties,
+                entityOneGUID,
+                entityTwoGUID,
+                initialStatus);
     }
 
 

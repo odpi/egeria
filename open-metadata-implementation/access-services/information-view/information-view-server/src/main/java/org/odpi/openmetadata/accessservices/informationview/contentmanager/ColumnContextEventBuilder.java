@@ -66,8 +66,7 @@ public class ColumnContextEventBuilder {
             allEvents.addAll(getTableTypeDetails(columnDetail.getGUID(), relationship));
         }
 
-        log.info("Context events: {}", allEvents);//TODO filter?
-
+        log.info("Context events: {}", allEvents);
         return allEvents;
     }
 
