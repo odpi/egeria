@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservice.assetcatalog.rest;
 
+import org.odpi.openmetadata.accessservice.assetcatalog.aspects.LogExecution;
 import org.odpi.openmetadata.accessservice.assetcatalog.service.OMASCatalogRESTServices;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.rest.properties.TypeDefGalleryResponse;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  * The AssetCatalogGeneralResource provides the server-side implementation of the Asset Catalog Open Metadata
  * Assess Service (OMAS).
  */
+@LogExecution
 @RestController
 @RequestMapping("/open-metadata/access-services/asset-catalog/users/{userId}/")
 public class AssetCatalogGeneralResource {

@@ -2,6 +2,7 @@
 package org.odpi.openmetadata.accessservice.assetcatalog.rest;
 
 
+import org.odpi.openmetadata.accessservice.assetcatalog.aspects.LogExecution;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.SequenceOrderType;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.Status;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.responses.RelationshipsResponse;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Assess Service (OMAS).
  * This interface facilitates the searching for asset's relationships, fetch the details about a specific relationship.
  */
+@LogExecution
 @RestController
 @RequestMapping("/open-metadata/access-services/asset-catalog/users/{userId}/relationships")
 public class AssetCatalogRelationshipResource {
