@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-package org.odpi.openmetadata.accessservice.assetcatalog.rest;
+package org.odpi.openmetadata.accessservice.assetcatalog.server.spring;
 
 import org.odpi.openmetadata.accessservice.assetcatalog.model.AssetDescription;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.SequenceOrderType;
@@ -8,8 +8,6 @@ import org.odpi.openmetadata.accessservice.assetcatalog.model.responses.AssetDes
 import org.odpi.openmetadata.accessservice.assetcatalog.model.responses.ClassificationsResponse;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.responses.RelationshipsResponse;
 import org.odpi.openmetadata.accessservice.assetcatalog.service.AssetCatalogAssetService;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,13 +27,7 @@ import java.util.List;
 @RequestMapping("/open-metadata/access-services/asset-catalog/users/{userId}")
 public class AssetCatalogEntityResource {
 
-    private static OMRSRepositoryConnector repositoryConnector;
-    private final AssetCatalogAssetService assetService;
-
-    @Autowired
-    public AssetCatalogEntityResource(AssetCatalogAssetService assetService) {
-        this.assetService = assetService;
-    }
+    private AssetCatalogAssetService assetService = new AssetCatalogAssetService();
 
     /**
      * Fetch asset's header and classification

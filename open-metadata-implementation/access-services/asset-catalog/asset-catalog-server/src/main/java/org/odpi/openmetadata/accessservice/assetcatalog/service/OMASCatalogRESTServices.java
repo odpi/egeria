@@ -39,7 +39,6 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorExceptio
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.rest.properties.TypeDefGalleryResponse;
 import org.odpi.openmetadata.repositoryservices.rest.properties.TypeDefResponse;
-import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,14 +50,12 @@ import static org.odpi.openmetadata.accessservice.assetcatalog.util.Constants.*;
  * Assess Service (OMAS).
  * This service searches for assets, for asset's connections.
  */
-@Service
 public class OMASCatalogRESTServices {
 
     private static OMRSMetadataCollection metadataCollection;
+    private Converter converter = new Converter();
 
-    private Converter converter;
-
-    public OMASCatalogRESTServices(Converter converter) {
+    public OMASCatalogRESTServices() {
         AccessServiceDescription myDescription = AccessServiceDescription.ASSET_CATALOG_OMAS;
 
         AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription.getAccessServiceCode(),
@@ -67,8 +64,8 @@ public class OMASCatalogRESTServices {
                 myDescription.getAccessServiceWiki(),
                 AccessServiceOperationalStatus.ENABLED,
                 AssetCatalogAdmin.class.getName());
+
         OMAGAccessServiceRegistration.registerAccessService(myRegistration);
-        this.converter = converter;
     }
 
     /**

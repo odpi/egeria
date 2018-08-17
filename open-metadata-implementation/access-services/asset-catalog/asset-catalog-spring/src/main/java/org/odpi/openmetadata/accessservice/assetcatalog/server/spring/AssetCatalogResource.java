@@ -1,17 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-package org.odpi.openmetadata.accessservice.assetcatalog.rest;
+package org.odpi.openmetadata.accessservice.assetcatalog.server.spring;
 
 
 import org.odpi.openmetadata.accessservice.assetcatalog.admin.AssetCatalogAdmin;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.Status;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.responses.AssetDescriptionResponse;
 import org.odpi.openmetadata.accessservice.assetcatalog.service.OMASCatalogRESTServices;
-import org.odpi.openmetadata.adminservices.OMAGAccessServiceRegistration;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceOperationalStatus;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,25 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/open-metadata/access-services/asset-catalog/users/{userId}")
 public class AssetCatalogResource {
 
-    private static OMRSRepositoryConnector repositoryConnector;
-    private final OMASCatalogRESTServices restAPI;
-
-    /**
-     * Default constructor
-     */
-    public AssetCatalogResource(OMASCatalogRESTServices restAPI) {
-        AccessServiceDescription myDescription = AccessServiceDescription.ASSET_CATALOG_OMAS;
-
-        AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription.getAccessServiceCode(),
-                myDescription.getAccessServiceName(),
-                myDescription.getAccessServiceDescription(),
-                myDescription.getAccessServiceWiki(),
-                AccessServiceOperationalStatus.ENABLED,
-                AssetCatalogAdmin.class.getName());
-        OMAGAccessServiceRegistration.registerAccessService(myRegistration);
-
-        this.restAPI = restAPI;
-    }
+    private final OMASCatalogRESTServices restAPI = new OMASCatalogRESTServices();
 
     /**
      * Return a list of assets (details and connections) matching the search criteria
