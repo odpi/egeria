@@ -175,6 +175,7 @@ public class InformationViewInTopicListener implements OpenMetadataTopicListener
 
                 }
             } catch (Exception e) {
+                log.error("Exception processing event from in topic", e);
                 InformationViewErrorCode auditCode = InformationViewErrorCode.PROCESS_EVENT_EXCEPTION;
 
                 auditLog.logException("processEvent",

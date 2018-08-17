@@ -154,5 +154,6 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector 
      */
     public void disconnect() throws ConnectorCheckedException {
         super.disconnect();
+        consumer.safeCloseConsumer();
     }
 }

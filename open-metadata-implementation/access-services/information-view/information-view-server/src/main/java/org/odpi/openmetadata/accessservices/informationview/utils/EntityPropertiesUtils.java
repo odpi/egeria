@@ -19,9 +19,9 @@ public class EntityPropertiesUtils {
         return ""; //TODO throw exception as we expect string?
     }
 
-    public static Integer getIntegerValueForProperty(EntityDetail entityUniverse, String name) {
-        if (entityUniverse.getProperties().getPropertyValue(name) instanceof PrimitivePropertyValue && ((PrimitivePropertyValue) entityUniverse.getProperties().getPropertyValue(name)).getPrimitiveDefCategory() == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT) {
-            return (Integer) ((PrimitivePropertyValue) entityUniverse.getProperties().getPropertyValue(name)).getPrimitiveValue();
+    public static Integer getIntegerValueForProperty(InstanceProperties properties, String name) {
+        if (properties.getPropertyValue(name) instanceof PrimitivePropertyValue && ((PrimitivePropertyValue) properties.getPropertyValue(name)).getPrimitiveDefCategory() == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT) {
+            return (Integer) ((PrimitivePropertyValue) properties.getPropertyValue(name)).getPrimitiveValue();
         }
         return 0;
     }

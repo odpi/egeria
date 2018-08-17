@@ -210,6 +210,11 @@ public class InformationViewAdmin implements AccessServiceAdmin {
      * Shutdown the access service.
      */
     public void shutdown() {
+        try {
+            informationViewTopicConnector.disconnect();
+        } catch (ConnectorCheckedException e) {
+            log.error("Error disconnecting information view topic connector");
+        }
         final String actionDescription = "shutdown";
         InformationViewAuditCode auditCode;
 

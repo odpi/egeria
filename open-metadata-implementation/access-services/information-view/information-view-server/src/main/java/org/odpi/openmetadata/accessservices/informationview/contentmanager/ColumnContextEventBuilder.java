@@ -150,7 +150,7 @@ public class ColumnContextEventBuilder {
             EntityDetail columnEntity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, getOtherEntityGuid(tableTypeGuid, relationship));
             ColumnDetails columnDetails = new ColumnDetails();
             columnDetails.setAttributeName(EntityPropertiesUtils.getStringValueForProperty(columnEntity.getProperties(), Constants.ATTRIBUTE_NAME));
-            columnDetails.setPosition(EntityPropertiesUtils.getIntegerValueForProperty(columnEntity, Constants.ELEMENT_POSITION_NAME));
+            columnDetails.setPosition(EntityPropertiesUtils.getIntegerValueForProperty(columnEntity.getProperties(), Constants.ELEMENT_POSITION_NAME));
             columnDetails.setGuid(columnEntity.getGUID());
             columnDetails.setBusinessTerm(getBusinessTermAssociated(columnEntity));
             EntityDetail columnTypeUniverse = getColumnType(columnEntity);
@@ -256,8 +256,8 @@ public class ColumnContextEventBuilder {
         log.debug("Load deployed db schema for entity with guid {}", guid);
         List<ColumnContextEvent> allEvents = new ArrayList<>();
         String deployedDatabaseSchemaGuid = getOtherEntityGuid(guid, relationshipToDeployedDatabaseSchema);
-
-        InstanceProperties deployedDatabaseSchemaEntityProperties = relationshipToDeployedDatabaseSchema.getEntityTwoProxy().getUniqueProperties();
+        EntityDetail deployedDatabaseSchemaEntity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, deployedDatabaseSchemaGuid);
+        InstanceProperties deployedDatabaseSchemaEntityProperties = deployedDatabaseSchemaEntity.getProperties();
         String schemaName = EntityPropertiesUtils.getStringValueForProperty(deployedDatabaseSchemaEntityProperties, Constants.NAME);
         String schemaQualifiedName = EntityPropertiesUtils.getStringValueForProperty(deployedDatabaseSchemaEntityProperties, Constants.QUALIFIED_NAME);
         String relationshipTypeGuid = enterpriseConnector.getMetadataCollection().getTypeDefByName(Constants.USER_ID, Constants.DATA_CONTENT_FOR_DATASET).getGUID();
@@ -290,7 +290,7 @@ public class ColumnContextEventBuilder {
         String databaseGuid = getOtherEntityGuid(guid, dbRelationships);
 
         String relationshipTypeGuid = enterpriseConnector.getMetadataCollection().getTypeDefByName(Constants.USER_ID, Constants.CONNECTION_TO_ASSET).getGUID();
-        InstanceProperties databaseEntityProperties = dbRelationships.getEntityTwoProxy().getUniqueProperties();
+        InstanceProperties databaseEntityProperties = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, databaseGuid).getProperties();
         List<Relationship> relationships = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.USER_ID, databaseGuid, relationshipTypeGuid, 0, null, null, null, null, 0);
         for (Relationship relationship : relationships) {
             ColumnContextEvent event = getConnectionDetails(databaseGuid, relationship);
