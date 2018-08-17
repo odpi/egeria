@@ -125,7 +125,8 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
 
     /**
      * Propagate the importation of databases into IGC through the OMRS.
-     * @param igcKafkaEvent     A Kafka event originating from IGC
+     *
+     * @param igcKafkaEvent A Kafka event originating from IGC
      * @throws TypeErrorException
      */
     private void processIMAM(IGCKafkaEvent igcKafkaEvent) throws TypeErrorException {
@@ -134,67 +135,75 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         IGCObject igcSchema = igcomrsRepositoryConnector.genericIGCQuery(igcTable.getContext().get(2).getId());
 
 
-        createEntity(igcDatabase,"Database");
+        createEntity(igcDatabase, "Database");
+        String databaseID = "Database.rid." + igcDatabase.getId();
 
-        createEntity(igcSchema,"DeployedDatabaseSchema");
+        createEntity(igcSchema, "DeployedDatabaseSchema");
+        String deployedDatabaseSchemaID = "DeployedDatabaseSchema.rid." + igcSchema.getId();
+
         createEntity(igcSchema, "RelationalDBSchemaType");
+        String relationalDBSchemaTypeID = "RelationalDBSchemaType.rid." + igcSchema.getId();
 
-        createEntity(igcTable,"RelationalTable");
-        createEntity(igcTable,"RelationalTableType");
+        createEntity(igcTable, "RelationalTable");
+        String relationalTableID = "RelationalTable.rid." + igcTable.getId();
 
-        IGCObject igcColumn;
-
-        String RelationalDBSchemaTypeID = "DeployedDatabaseSchema.rid." + igcSchema.getId();
-        String RelationalTableTypeID = "RelationalTableType.rid." + igcTable.getId();
+        createEntity(igcTable, "RelationalTableType");
+        String relationalTableTypeID = "RelationalTableType.rid." + igcTable.getId();
 
         createRelationship(
                 "DataContentForDataSet",
-                igcDatabase.getId(),
+                databaseID,
                 "Database",
-                igcSchema.getId(),
+                deployedDatabaseSchemaID,
                 "DeployedDatabaseSchema");
 
         createRelationship(
                 "AssetSchemaType",
-                igcSchema.getId(),
+                deployedDatabaseSchemaID,
                 "DeployedDatabaseSchema",
-                RelationalDBSchemaTypeID,
+                relationalDBSchemaTypeID,
                 "RelationalDBSchemaType");
 
         createRelationship(
                 "AttributeForSchema",
-                RelationalDBSchemaTypeID,
+                relationalDBSchemaTypeID,
                 "RelationalDBSchemaType",
-                igcTable.getId(),
+                relationalTableID,
                 "RelationalTable");
 
         createRelationship(
                 "SchemaAttributeType",
-                igcTable.getId(),
+                relationalTableID,
                 "RelationalTable",
-                RelationalTableTypeID,
+                relationalTableTypeID,
                 "RelationalTableType");
 
 
-        for(Item column : igcTable.getDatabaseColumns().getItems()){
-            igcColumn = igcomrsRepositoryConnector.genericIGCQuery(column.getId());
-            createEntity(igcColumn,"RelationalColumn");
-            createEntity(igcColumn,"RelationalColumnType");
+        IGCObject igcColumn;
+        String relationalColumnID;
+        String relationalColumnTypeID;
 
-            String RelationalColumnTypeID = "RelationalColumnType.rid." + igcColumn.getId();
+        for (Item column : igcTable.getDatabaseColumns().getItems()) {
+            igcColumn = igcomrsRepositoryConnector.genericIGCQuery(column.getId());
+
+            createEntity(igcColumn, "RelationalColumn");
+            relationalColumnID = "RelationalColumn.rid." + igcColumn.getId();
+
+            createEntity(igcColumn, "RelationalColumnType");
+            relationalColumnTypeID = "RelationalColumnType.rid." + igcColumn.getId();
 
             createRelationship(
                     "SchemaAttributeType",
-                    igcColumn.getId(),
+                    relationalColumnID,
                     "RelationalColumn",
-                    RelationalColumnTypeID,
+                    relationalColumnTypeID,
                     "RelationalColumnType");
 
             createRelationship(
                     "AttributeForSchema",
-                    igcColumn.getId(),
+                    relationalColumnID,
                     "RelationalColumn",
-                    RelationalTableTypeID,
+                    relationalTableTypeID,
                     "RelationalTableType");
         }
     }
@@ -227,22 +236,24 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                     break;
                 case "Term":
                     if (igcKafkaEvent.getACTION().equals("CREATE")) { //Creation of a glossary term.
-                        createEntity(igcObject,"GlossaryTerm");
+                        createEntity(igcObject, "GlossaryTerm");
                     }
                     break;
                 case "Category":
                     if (igcKafkaEvent.getACTION().equals("CREATE")) { //Creation of a  glossary category.
-                        createEntity(igcObject,"GlossaryCategory");
+                        createEntity(igcObject, "GlossaryCategory");
                     }
                     if (igcKafkaEvent.getACTION().equals("ASSIGNED_RELATIONSHIP")) { //Relationship between a glossary category and a glossary term.
-                        String glossaryTermID = igcObject.getTerms().getItems().get(0).getId();
+                        for (Item term : igcObject.getTerms().getItems()) {
+                            String glossaryTermID = term.getId();
 
-                        createRelationship(
-                                "TermCategorization",
-                                technicalTerm,
-                                "GlossaryCategory",
-                                glossaryTermID,
-                                "GlossaryTerm");
+                            createRelationship(
+                                    "TermCategorization",
+                                    technicalTerm,
+                                    "GlossaryCategory",
+                                    glossaryTermID,
+                                    "GlossaryTerm");
+                        }
                     }
                     break;
             }
@@ -258,7 +269,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         Map<String, InstancePropertyValue> properties = new HashMap<>();
 
         PrimitivePropertyValue qualifiedName = new PrimitivePropertyValue();
-        qualifiedName.setPrimitiveValue(typeName +".qualifiedName." + igcObject.getId());
+        qualifiedName.setPrimitiveValue(typeName + ".qualifiedName." + igcObject.getId());
         qualifiedName.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
         properties.put("qualifiedName", qualifiedName);
 
@@ -266,6 +277,11 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         displayname.setPrimitiveValue(igcObject.getName());
         displayname.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
         properties.put("displayName", displayname);
+
+        PrimitivePropertyValue name = new PrimitivePropertyValue();
+        name.setPrimitiveValue(igcObject.getName());
+        name.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+        properties.put("name", name);
 
         PrimitivePropertyValue summary = new PrimitivePropertyValue();
         summary.setPrimitiveValue(igcObject.getShortDescription());
@@ -289,6 +305,10 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                 instanceProperties,
                 null
         );
+
+        entityDetail.setStatus(InstanceStatus.ACTIVE);
+        entityDetail.setGUID(typeName + ".rid." + igcObject.getId());
+
         this.repositoryEventProcessor.processNewEntityEvent(
                 sourceName,
                 metadataCollectionId,
