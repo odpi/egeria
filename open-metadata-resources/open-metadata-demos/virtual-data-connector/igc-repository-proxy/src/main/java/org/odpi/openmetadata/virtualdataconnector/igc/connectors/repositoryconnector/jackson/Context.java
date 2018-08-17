@@ -23,13 +23,16 @@ public class Context {
     private String url;
     @JsonProperty("_name")
     private String name;
+
+
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("_type")
-    public String getType() {
-        return type;
+    public String getType() {return type;
     }
+
+
 
     @JsonProperty("_type")
     public void setType(String type) {

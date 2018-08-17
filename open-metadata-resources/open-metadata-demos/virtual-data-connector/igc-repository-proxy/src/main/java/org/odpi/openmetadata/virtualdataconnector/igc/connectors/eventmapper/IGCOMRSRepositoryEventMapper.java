@@ -134,7 +134,10 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         IGCObject igcDatabase = igcomrsRepositoryConnector.genericIGCQuery(igcTable.getContext().get(1).getId());
         IGCObject igcSchema = igcomrsRepositoryConnector.genericIGCQuery(igcTable.getContext().get(2).getId());
 
+        IGCObject igcEndpoint = igcomrsRepositoryConnector.genericIGCQuery(igcTable.getContext().get(0).getId());;
+
         createEntity(igcDatabase, "Database", false);
+        createEntity(igcEndpoint, "Endpoint", false);
         createEntity(igcSchema, "DeployedDatabaseSchema", false);
         createEntity(igcTable, "RelationalTable", false);
 
@@ -173,9 +176,32 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                 "RelationalTableType");
 
 
+        IGCObject igcConnection;
+        //Propagate Connection/Connection type creations and relationships
+        for(Item connection : igcDatabase.getDataConnections().getItems()){
+            igcConnection = igcomrsRepositoryConnector.genericIGCQuery(connection.getId());
+            IGCObject igcConnectorType = igcomrsRepositoryConnector.genericIGCQuery(igcConnection.getDataConnectors().getId());
+            createEntity(igcConnection, "Connection", false);
+            createEntity(igcConnectorType, "ConnectorType", false);
+
+            createRelationship(
+                    "ConnectionConnectorType",
+                    igcConnection.getId(),
+                    "Connection",
+                    igcConnectorType.getId(),
+                    "ConnectorType");
+
+            createRelationship(
+                    "ConnectionEndpoint",
+                    igcEndpoint.getId(),
+                    "Endpoint",
+                    igcConnection.getId(),
+                    "Connection");
+        }
+
         IGCObject igcColumn;
         String relationalColumnTypeID;
-
+        //Propagate RelationalColumns and relationships
         for (Item column : igcTable.getDatabaseColumns().getItems()) {
             igcColumn = igcomrsRepositoryConnector.genericIGCQuery(column.getId());
 
@@ -198,6 +224,8 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                     relationalTableTypeID,
                     "RelationalTableType");
         }
+
+
     }
 
     /**
