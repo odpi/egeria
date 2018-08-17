@@ -114,13 +114,13 @@ public class EnumDef extends AttributeTypeDef
     public String toString()
     {
         return "EnumDef{" +
-                "elementDefs=" + elementDefs +
-                ", defaultValue=" + defaultValue +
-                ", category=" + category +
-                ", guid='" + guid + '\'' +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", descriptionGUID='" + descriptionGUID + '\'' +
+                "version=" + getVersion() +
+                ", versionName='" + getVersionName() + '\'' +
+                ", category=" + getCategory() +
+                ", GUID='" + getGUID() + '\'' +
+                ", name='" + getName() + '\'' +
+                ", description='" + getDescription() + '\'' +
+                ", descriptionGUID='" + getDescriptionGUID() + '\'' +
                 '}';
     }
 
@@ -128,25 +128,25 @@ public class EnumDef extends AttributeTypeDef
     /**
      * Verify that supplied object has the same properties.
      *
-     * @param o object to test
+     * @param objectToCompare object to test
      * @return result
      */
     @Override
-    public boolean equals(Object o)
+    public boolean equals(Object objectToCompare)
     {
-        if (this == o)
+        if (this == objectToCompare)
         {
             return true;
         }
-        if (!(o instanceof EnumDef))
+        if (!(objectToCompare instanceof EnumDef))
         {
             return false;
         }
-        if (!super.equals(o))
+        if (!super.equals(objectToCompare))
         {
             return false;
         }
-        EnumDef enumDef = (EnumDef) o;
+        EnumDef enumDef = (EnumDef) objectToCompare;
         return Objects.equals(getElementDefs(), enumDef.getElementDefs()) &&
                 Objects.equals(getDefaultValue(), enumDef.getDefaultValue());
     }

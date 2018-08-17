@@ -68,9 +68,7 @@ public class RelationshipTest
         testObject.setGUID(guid);
         testObject.setInstanceURL(instanceURL);
         testObject.setProperties(relationshipProperties);
-        testObject.setEntityOnePropertyName(entityOnePropertyName);
         testObject.setEntityOneProxy(entityOneProxy);
-        testObject.setEntityTwoPropertyName(entityTwoPropertyName);
         testObject.setEntityTwoProxy(entityTwoProxy);
 
         return testObject;
@@ -97,9 +95,7 @@ public class RelationshipTest
         assertTrue(testObject.getGUID().equals(guid));
         assertTrue(testObject.getInstanceURL().equals(instanceURL));
         assertTrue(testObject.getProperties().equals(relationshipProperties));
-        assertTrue(testObject.getEntityOnePropertyName().equals(entityOnePropertyName));
         assertTrue(testObject.getEntityOneProxy().equals(entityOneProxy));
-        assertTrue(testObject.getEntityTwoPropertyName().equals(entityTwoPropertyName));
         assertTrue(testObject.getEntityTwoProxy().equals(entityTwoProxy));
     }
 
@@ -124,9 +120,7 @@ public class RelationshipTest
         assertTrue(testObject.getGUID() == null);
         assertTrue(testObject.getInstanceURL() == null);
         assertTrue(testObject.getProperties() == null);
-        assertTrue(testObject.getEntityOnePropertyName() == null);
         assertTrue(testObject.getEntityOneProxy() == null);
-        assertTrue(testObject.getEntityTwoPropertyName() == null);
         assertTrue(testObject.getEntityTwoProxy() == null);
 
         Relationship anotherTestObject = getTestObject();

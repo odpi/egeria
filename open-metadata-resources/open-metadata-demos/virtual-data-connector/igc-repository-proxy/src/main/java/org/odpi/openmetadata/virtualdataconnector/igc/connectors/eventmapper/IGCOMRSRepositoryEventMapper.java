@@ -33,7 +33,6 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
 
 
     private static final Logger log = LoggerFactory.getLogger(IGCOMRSRepositoryEventMapper.class);
-    private IGCObject igcObject;
     private IGCOMRSRepositoryConnector igcomrsRepositoryConnector;
     private String originatorServerName;
     private String metadataCollectionId;
@@ -129,17 +128,75 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
      * @param igcKafkaEvent     A Kafka event originating from IGC
      * @throws TypeErrorException
      */
-    //TODO Propagation of database, schema.
     private void processIMAM(IGCKafkaEvent igcKafkaEvent) throws TypeErrorException {
-        igcObject = igcomrsRepositoryConnector.genericIGCQuery(igcKafkaEvent.getDatacollectionRID());
-        List<Item> database_columns = new ArrayList<>();
-        for(Item item : igcObject.getDatabaseColumns().getItems())
-            database_columns.add(item);
-        for(Item item : database_columns){
-            igcObject = igcomrsRepositoryConnector.genericIGCQuery(item.getId());
-            createEntity("TabularColumn");
-        }
+        IGCObject igcTable = igcomrsRepositoryConnector.genericIGCQuery(igcKafkaEvent.getDatacollectionRID());
+        IGCObject igcDatabase = igcomrsRepositoryConnector.genericIGCQuery(igcTable.getContext().get(1).getId());
+        IGCObject igcSchema = igcomrsRepositoryConnector.genericIGCQuery(igcTable.getContext().get(2).getId());
 
+
+        createEntity(igcDatabase,"Database");
+
+        createEntity(igcSchema,"DeployedDatabaseSchema");
+        createEntity(igcSchema, "RelationalDBSchemaType");
+
+        createEntity(igcTable,"RelationalTable");
+        createEntity(igcTable,"RelationalTableType");
+
+        IGCObject igcColumn;
+
+        String RelationalDBSchemaTypeID = "DeployedDatabaseSchema.rid." + igcSchema.getId();
+        String RelationalTableTypeID = "RelationalTableType.rid." + igcTable.getId();
+
+        createRelationship(
+                "DataContentForDataSet",
+                igcDatabase.getId(),
+                "Database",
+                igcSchema.getId(),
+                "DeployedDatabaseSchema");
+
+        createRelationship(
+                "AssetSchemaType",
+                igcSchema.getId(),
+                "DeployedDatabaseSchema",
+                RelationalDBSchemaTypeID,
+                "RelationalDBSchemaType");
+
+        createRelationship(
+                "AttributeForSchema",
+                RelationalDBSchemaTypeID,
+                "RelationalDBSchemaType",
+                igcTable.getId(),
+                "RelationalTable");
+
+        createRelationship(
+                "SchemaAttributeType",
+                igcTable.getId(),
+                "RelationalTable",
+                RelationalTableTypeID,
+                "RelationalTableType");
+
+
+        for(Item column : igcTable.getDatabaseColumns().getItems()){
+            igcColumn = igcomrsRepositoryConnector.genericIGCQuery(column.getId());
+            createEntity(igcColumn,"RelationalColumn");
+            createEntity(igcColumn,"RelationalColumnType");
+
+            String RelationalColumnTypeID = "RelationalColumnType.rid." + igcColumn.getId();
+
+            createRelationship(
+                    "SchemaAttributeType",
+                    igcColumn.getId(),
+                    "RelationalColumn",
+                    RelationalColumnTypeID,
+                    "RelationalColumnType");
+
+            createRelationship(
+                    "AttributeForSchema",
+                    igcColumn.getId(),
+                    "RelationalColumn",
+                    RelationalTableTypeID,
+                    "RelationalTableType");
+        }
     }
 
     /**
@@ -149,66 +206,43 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
      */
     private void processAsset(IGCKafkaEvent igcKafkaEvent) {
         try {
-            igcObject = igcomrsRepositoryConnector.genericIGCQuery(igcKafkaEvent.getASSETRID());
+            IGCObject igcObject = igcomrsRepositoryConnector.genericIGCQuery(igcKafkaEvent.getASSETRID());
             String technicalTerm = igcKafkaEvent.getASSETRID();
             switch (igcKafkaEvent.getASSETTYPE()) {
                 case "Database Column":
                     if (igcKafkaEvent.getACTION().equals("ASSIGNED_RELATIONSHIP") || igcKafkaEvent.getACTION().equals("MODIFY")) { //Relationship between a technical term and a glossary term.
                         if (igcObject.getAssignedToTerms() != null) {
 
-                            String glossaryTermID = igcObject.getAssignedToTerms().getItems().get(0).getName();
+                            String glossaryTermID = igcObject.getAssignedToTerms().getItems().get(0).getId();
                             String glossaryTermName = igcObject.getAssignedToTerms().getItems().get(0).getName();
 
-                            Relationship relationship = newRelationship(
+                            createRelationship(
                                     "SemanticAssignment",
-                                    igcKafkaEvent.getASSETRID(),
-                                    "RelationalColumn",
                                     technicalTerm,
+                                    "RelationalColumn",
                                     glossaryTermID,
-                                    "GlossaryTerm",
-                                    glossaryTermName);
-
-                            this.repositoryEventProcessor.processNewRelationshipEvent(
-                                    sourceName,
-                                    metadataCollectionId,
-                                    originatorServerName,
-                                    originatorServerType,
-                                    originatorOrganizationName,
-                                    relationship
-                            );
+                                    "GlossaryTerm");
                         }
                     }
                     break;
                 case "Term":
                     if (igcKafkaEvent.getACTION().equals("CREATE")) { //Creation of a glossary term.
-                        createEntity("GlossaryTerm");
+                        createEntity(igcObject,"GlossaryTerm");
                     }
                     break;
                 case "Category":
                     if (igcKafkaEvent.getACTION().equals("CREATE")) { //Creation of a  glossary category.
-                        createEntity("GlossaryCategory");
+                        createEntity(igcObject,"GlossaryCategory");
                     }
                     if (igcKafkaEvent.getACTION().equals("ASSIGNED_RELATIONSHIP")) { //Relationship between a glossary category and a glossary term.
                         String glossaryTermID = igcObject.getTerms().getItems().get(0).getId();
-                        String glossaryTermName = igcObject.getTerms().getItems().get(0).getName();
 
-                        Relationship relationship = newRelationship(
+                        createRelationship(
                                 "TermCategorization",
-                                igcKafkaEvent.getASSETRID(),
-                                "GlossaryCategory",
                                 technicalTerm,
+                                "GlossaryCategory",
                                 glossaryTermID,
-                                "GlossaryTerm",
-                                glossaryTermName
-                        );
-                        this.repositoryEventProcessor.processNewRelationshipEvent(
-                                sourceName,
-                                metadataCollectionId,
-                                originatorServerName,
-                                originatorServerType,
-                                originatorOrganizationName,
-                                relationship
-                        );
+                                "GlossaryTerm");
                     }
                     break;
             }
@@ -217,13 +251,14 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         }
     }
 
-    private void createEntity(String typeName) throws TypeErrorException {
+
+    private void createEntity(IGCObject igcObject, String typeName) throws TypeErrorException {
 
         String username = igcObject.getCreatedBy();
         Map<String, InstancePropertyValue> properties = new HashMap<>();
 
         PrimitivePropertyValue qualifiedName = new PrimitivePropertyValue();
-        qualifiedName.setPrimitiveValue(igcObject.getId());
+        qualifiedName.setPrimitiveValue(typeName +".qualifiedName." + igcObject.getId());
         qualifiedName.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
         properties.put("qualifiedName", qualifiedName);
 
@@ -273,11 +308,9 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
      * @param entityType1      name of the type
      * @param entityId2        String unique identifier
      * @param entityType2      name of the type
-     * @return Relationship is a POJO that manages the properties of an open metadata relationship.  This includes information
-     * about the relationship type, the two entities it connects and the properties it holds.
      * @throws TypeErrorException The type name is not recognized as a relationship type.
      */
-    private Relationship newRelationship(String relationshipType, String entityId1, String entityType1, String entityName1, String entityId2, String entityType2, String entityName2) throws TypeErrorException {
+    private void createRelationship(String relationshipType, String entityId1, String entityType1, String entityId2, String entityType2) throws TypeErrorException {
 
         Relationship relationship = this.repositoryHelper.getNewRelationship(
                 sourceName,
@@ -294,12 +327,17 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         entityProxyOne.setGUID(entityId1);
         entityProxyTwo.setGUID(entityId2);
 
-        relationship.setEntityOnePropertyName(entityName1);
         relationship.setEntityOneProxy(entityProxyOne);
-
-        relationship.setEntityTwoPropertyName(entityName2);
         relationship.setEntityTwoProxy(entityProxyTwo);
-        return relationship;
+
+        this.repositoryEventProcessor.processNewRelationshipEvent(
+                sourceName,
+                metadataCollectionId,
+                originatorServerName,
+                originatorServerType,
+                originatorOrganizationName,
+                relationship
+        );
     }
 
 

@@ -632,6 +632,88 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 
 
     /**
+     * March the supplied external standard identifiers against the active types for this repository.
+     *
+     * @param sourceName source of the request (used for logging)
+     * @param standard name of the standard, null means any.
+     * @param organization name of the organization, null means any.
+     * @param identifier identifier of the element in the standard, null means any.
+     * @param methodName method receiving the call
+     */
+    public  List<TypeDef> getMatchingActiveTypes(String sourceName,
+                                                 String standard,
+                                                 String organization,
+                                                 String identifier,
+                                                 String methodName)
+    {
+        List<TypeDef>  matchingTypes = new ArrayList<>();
+        TypeDefGallery typeDefGallery = this.getActiveTypeDefGallery();
+
+        if (typeDefGallery != null)
+        {
+            for (TypeDef activeTypeDef : typeDefGallery.getTypeDefs())
+            {
+                /*
+                 * Extract all of the external standards mappings from the TypeDef.  They are located in the TypeDef
+                 * itself and in the TypeDefAttributes.
+                 */
+                List<ExternalStandardMapping>  externalStandardMappings = new ArrayList<>();
+
+                if (activeTypeDef.getExternalStandardMappings() != null)
+                {
+                    externalStandardMappings.addAll(activeTypeDef.getExternalStandardMappings());
+                }
+
+                List<TypeDefAttribute>  typeDefAttributes = activeTypeDef.getPropertiesDefinition();
+
+                if (typeDefAttributes != null)
+                {
+                    for (TypeDefAttribute  typeDefAttribute : typeDefAttributes)
+                    {
+                        if ((typeDefAttribute != null) && (typeDefAttribute.getExternalStandardMappings() != null))
+                        {
+                            externalStandardMappings.addAll(activeTypeDef.getExternalStandardMappings());
+                        }
+                    }
+                }
+
+                /*
+                 * Look for matching standards
+                 */
+                for (ExternalStandardMapping externalStandardMapping : externalStandardMappings)
+                {
+                    String activeTypeDefStandardName = externalStandardMapping.getStandardName();
+                    String activeTypeDefStandardOrgName = externalStandardMapping.getStandardOrganization();
+                    String activeTypeDefStandardIdentifier = externalStandardMapping.getStandardTypeName();
+
+                    if ((activeTypeDefStandardName != null) && (activeTypeDefStandardName.equals(standard)))
+                    {
+                        matchingTypes.add(activeTypeDef);
+                    }
+                    else if ((activeTypeDefStandardOrgName != null) && (activeTypeDefStandardOrgName.equals(organization)))
+                    {
+                        matchingTypes.add(activeTypeDef);
+                    }
+                    else if ((activeTypeDefStandardIdentifier != null) && (activeTypeDefStandardIdentifier.equals(identifier)))
+                    {
+                        matchingTypes.add(activeTypeDef);
+                    }
+                }
+            }
+        }
+
+        if (matchingTypes.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return matchingTypes;
+        }
+    }
+
+
+    /**
      * Return an entity with the header and type information filled out.  The caller only needs to add properties
      * and classifications to complete the set up of the entity.
      *
@@ -1139,7 +1221,7 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 
             if (entityClassificationsMap.isEmpty())
             {
-                entity.setClassifications(null);
+                updatedEntity.setClassifications(null);
             }
             else
             {
@@ -1268,7 +1350,7 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
         updatedInstance.setUpdateTime(new Date());
 
         long currentVersion = originalInstance.getVersion();
-        updatedInstance.setVersion(currentVersion++);
+        updatedInstance.setVersion(currentVersion+1);
 
         return updatedInstance;
     }
