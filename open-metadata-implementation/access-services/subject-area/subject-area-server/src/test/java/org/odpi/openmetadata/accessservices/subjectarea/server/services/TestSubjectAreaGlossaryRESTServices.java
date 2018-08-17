@@ -265,7 +265,6 @@ public class TestSubjectAreaGlossaryRESTServices {
         when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntityUpdate);
         // mock out the get entity
         when( oMRSAPIHelper.callOMRSGetEntityByGuid(anyString(),any())).thenReturn(mockEntityGet);
-
         SubjectAreaOMASAPIResponse response = subjectAreaGlossaryOmasREST.updateGlossary(testuserid,testguid1, requestedGlossary,true);
         assertTrue(response.getResponseCategory().equals(ResponseCategory.Glossary));
         Glossary returnedGlossary = ((GlossaryResponse)response).getGlossary();

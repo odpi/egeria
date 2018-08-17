@@ -234,7 +234,6 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                 case "Category":
                     if (igcKafkaEvent.getACTION().equals("CREATE")) { //Creation of a  glossary category.
                         createEntity(igcObject, "GlossaryCategory", false);
-
                     }
                     if (igcKafkaEvent.getACTION().equals("ASSIGNED_RELATIONSHIP")) { //Relationship between a glossary category and a glossary term.
                         for (Item term : igcObject.getTerms().getItems()) {

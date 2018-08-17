@@ -374,7 +374,6 @@ public class TestSubjectAreaTermRESTServices {
 
         String abbreviation = "test abbrev";
         String examples = "test examples";
-
         EntityDetail mockEntityGet = createMockGlossaryTerm(displayName,summary,description,testguid1, abbreviation, examples);
         when( oMRSAPIHelper.callOMRSGetEntityByGuid(anyString(),any())).thenReturn(mockEntityGet);
 

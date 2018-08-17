@@ -13,90 +13,90 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.
 import org.odpi.openmetadata.accessservices.subjectarea.generated.references.MediaCollectionToMediaFile.DataSetMembersReference;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.GroupedMedia.GroupedMedia;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.GroupedMedia.GroupedMediaMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.references.AssetToSoftwareServerCapability.ConsumedByReference;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.AssetServerUse.AssetServerUse;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.AssetServerUse.AssetServerUseMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.references.ReferenceableToInformalTag.TagsReference;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.AttachedTag.AttachedTag;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.AttachedTag.AttachedTagMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.references.ReferenceableToExternalId.ManagedResourcesReference;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ExternalIdScope.ExternalIdScope;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ExternalIdScope.ExternalIdScopeMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.references.ReferenceableToNoteLog.NoteLogsReference;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.AttachedNoteLog.AttachedNoteLog;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.AttachedNoteLog.AttachedNoteLogMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.references.DataSetToGovernanceMetric.MetricsReference;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.GovernanceResults.GovernanceResults;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.GovernanceResults.GovernanceResultsMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.references.ReferenceableToLicenseType.LicensesReference;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.License.License;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.License.LicenseMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.references.ReferenceableToPropertyFacet.FacetsReference;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ReferenceableFacet.ReferenceableFacet;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ReferenceableFacet.ReferenceableFacetMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.references.ReferenceableToGlossaryTerm.MeaningReference;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.SemanticAssignment.SemanticAssignment;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.SemanticAssignment.SemanticAssignmentMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.references.ReferenceableToComment.CommentsReference;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.AttachedComment.AttachedComment;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.AttachedComment.AttachedCommentMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.references.ReferenceableToRating.StarRatingsReference;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.AttachedRating.AttachedRating;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.AttachedRating.AttachedRatingMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.references.ReferenceableToCollection.FoundInCollectionsReference;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.CollectionMember.CollectionMember;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.CollectionMember.CollectionMemberMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.references.ReferenceableToExternalReference.ExternalReferenceReference;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ExternalReferenceLink.ExternalReferenceLink;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ExternalReferenceLink.ExternalReferenceLinkMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.references.ReferenceableToRelatedMedia.RelatedMediaReference;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.MediaReference.MediaReference;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.MediaReference.MediaReferenceMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.references.ReferenceableToActorProfile.ContributorsReference;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.Contributor.Contributor;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.Contributor.ContributorMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.references.ReferenceableToPerson.StaffReference;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.StaffAssignment.StaffAssignment;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.StaffAssignment.StaffAssignmentMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.references.AssetToDataSet.SupportedDataSetsReference;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.DataContentForDataSet.DataContentForDataSet;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.DataContentForDataSet.DataContentForDataSetMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.references.AssetToSchemaType.SchemaReference;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.AssetSchemaType.AssetSchemaType;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.AssetSchemaType.AssetSchemaTypeMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.references.AssetToConnection.ConnectionsReference;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ConnectionToAsset.ConnectionToAsset;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ConnectionToAsset.ConnectionToAssetMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.references.ReferenceableToMeeting.MeetingsReference;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.MeetingOnReferenceable.MeetingOnReferenceable;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.MeetingOnReferenceable.MeetingOnReferenceableMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.references.ReferenceableToExternalId.AlsoKnownAsReference;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ExternalIdLink.ExternalIdLink;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ExternalIdLink.ExternalIdLinkMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.references.ReferenceableToLicenseType.LicensesReference;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.License.License;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.License.LicenseMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.references.DataSetToProcess.ConsumedByProcessReference;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ProcessInput.ProcessInput;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ProcessInput.ProcessInputMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.references.ReferenceableToToDo.TodosReference;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ToDoOnReferenceable.ToDoOnReferenceable;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ToDoOnReferenceable.ToDoOnReferenceableMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.references.AssetToGovernanceZone.ZonesReference;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ZoneMembership.ZoneMembership;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ZoneMembership.ZoneMembershipMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.references.DataSetToProcess.ProducedByProcessReference;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ProcessOutput.ProcessOutput;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ProcessOutput.ProcessOutputMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.references.ReferenceableToLike.LikesReference;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.AttachedLike.AttachedLike;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.AttachedLike.AttachedLikeMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.references.DataSetToAsset.DataContentReference;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.DataContentForDataSet.DataContentForDataSet;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.DataContentForDataSet.DataContentForDataSetMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.references.ReferenceableToToDo.ActionsReference;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ToDoSource.ToDoSource;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ToDoSource.ToDoSourceMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.references.ReferenceableToRating.StarRatingsReference;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.AttachedRating.AttachedRating;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.AttachedRating.AttachedRatingMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.references.ReferenceableToInformalTag.TagsReference;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.AttachedTag.AttachedTag;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.AttachedTag.AttachedTagMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.references.ReferenceableToRelatedMedia.RelatedMediaReference;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.MediaReference.MediaReference;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.MediaReference.MediaReferenceMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.references.AssetToConnection.ConnectionsReference;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ConnectionToAsset.ConnectionToAsset;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ConnectionToAsset.ConnectionToAssetMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.references.ReferenceableToCertificationType.CertificationsReference;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.Certification.Certification;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.Certification.CertificationMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.references.ReferenceableToExternalId.ManagedResourcesReference;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ExternalIdScope.ExternalIdScope;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ExternalIdScope.ExternalIdScopeMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.references.ReferenceableToExternalId.AlsoKnownAsReference;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ExternalIdLink.ExternalIdLink;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ExternalIdLink.ExternalIdLinkMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.references.DataSetToGovernanceMetric.MetricsReference;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.GovernanceResults.GovernanceResults;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.GovernanceResults.GovernanceResultsMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.references.ReferenceableToGlossaryTerm.MeaningReference;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.SemanticAssignment.SemanticAssignment;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.SemanticAssignment.SemanticAssignmentMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.references.ReferenceableToExternalReference.ExternalReferenceReference;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ExternalReferenceLink.ExternalReferenceLink;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ExternalReferenceLink.ExternalReferenceLinkMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.references.ReferenceableToCollection.FoundInCollectionsReference;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.CollectionMember.CollectionMember;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.CollectionMember.CollectionMemberMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.references.AssetToGovernanceZone.ZonesReference;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ZoneMembership.ZoneMembership;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ZoneMembership.ZoneMembershipMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.references.ReferenceableToPropertyFacet.FacetsReference;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ReferenceableFacet.ReferenceableFacet;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ReferenceableFacet.ReferenceableFacetMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.references.ReferenceableToToDo.ActionsReference;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ToDoSource.ToDoSource;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ToDoSource.ToDoSourceMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.references.ReferenceableToActorProfile.ContributorsReference;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.Contributor.Contributor;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.Contributor.ContributorMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.references.AssetToDataSet.SupportedDataSetsReference;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.DataContentForDataSet.DataContentForDataSet;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.DataContentForDataSet.DataContentForDataSetMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.references.DataSetToProcess.ProducedByProcessReference;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ProcessOutput.ProcessOutput;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ProcessOutput.ProcessOutputMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.references.AssetToSchemaType.SchemaReference;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.AssetSchemaType.AssetSchemaType;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.AssetSchemaType.AssetSchemaTypeMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.references.AssetToSoftwareServerCapability.ConsumedByReference;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.AssetServerUse.AssetServerUse;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.AssetServerUse.AssetServerUseMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.references.ReferenceableToPerson.StaffReference;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.StaffAssignment.StaffAssignment;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.StaffAssignment.StaffAssignmentMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.references.DataSetToAsset.DataContentReference;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.DataContentForDataSet.DataContentForDataSet;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.DataContentForDataSet.DataContentForDataSetMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.references.ReferenceableToToDo.TodosReference;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ToDoOnReferenceable.ToDoOnReferenceable;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ToDoOnReferenceable.ToDoOnReferenceableMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.references.ReferenceableToComment.CommentsReference;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.AttachedComment.AttachedComment;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.AttachedComment.AttachedCommentMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.references.ReferenceableToNoteLog.NoteLogsReference;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.AttachedNoteLog.AttachedNoteLog;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.AttachedNoteLog.AttachedNoteLogMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.references.ReferenceableToLike.LikesReference;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.AttachedLike.AttachedLike;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.AttachedLike.AttachedLikeMapper;
 
 import java.io.Serializable;
 import java.util.*;
@@ -121,68 +121,68 @@ public class MediaCollectionReferences implements Serializable {
 
     public static final String[] REFERENCE_NAMES_SET_VALUES = new String[] {
              "dataSetMembers",
-             "consumedBy",
-             "tags",
-             "managedResources",
-             "noteLogs",
-             "metrics",
-             "licenses",
-             "facets",
-             "meaning",
-             "comments",
-             "starRatings",
-             "foundInCollections",
-             "externalReference",
-             "relatedMedia",
-             "contributors",
-             "staff",
-             "supportedDataSets",
-             "schema",
-             "connections",
              "meetings",
-             "alsoKnownAs",
+             "licenses",
              "consumedByProcess",
-             "todos",
-             "zones",
-             "producedByProcess",
-             "likes",
-             "dataContent",
-             "actions",
+             "starRatings",
+             "tags",
+             "relatedMedia",
+             "connections",
              "certifications",
+             "managedResources",
+             "alsoKnownAs",
+             "metrics",
+             "meaning",
+             "externalReference",
+             "foundInCollections",
+             "zones",
+             "facets",
+             "actions",
+             "contributors",
+             "supportedDataSets",
+             "producedByProcess",
+             "schema",
+             "consumedBy",
+             "staff",
+             "dataContent",
+             "todos",
+             "comments",
+             "noteLogs",
+             "likes",
              // Terminate the list
              null
     };
 
      public static final String[] RELATIONSHIP_NAMES_SET_VALUES = new String[] {
              "GroupedMedia",
-             "AssetServerUse",
-             "AttachedTag",
-             "ExternalIdScope",
-             "AttachedNoteLog",
-             "GovernanceResults",
+             "MeetingOnReferenceable",
              "License",
-             "ReferenceableFacet",
-             "SemanticAssignment",
-             "AttachedComment",
+             "ProcessInput",
              "AttachedRating",
-             "CollectionMember",
-             "ExternalReferenceLink",
+             "AttachedTag",
              "MediaReference",
+             "ConnectionToAsset",
+             "Certification",
+             "ExternalIdScope",
+             "ExternalIdLink",
+             "GovernanceResults",
+             "SemanticAssignment",
+             "ExternalReferenceLink",
+             "CollectionMember",
+             "ZoneMembership",
+             "ReferenceableFacet",
+             "ToDoSource",
              "Contributor",
+             "DataContentForDataSet",
+             "ProcessOutput",
+             "AssetSchemaType",
+             "AssetServerUse",
              "StaffAssignment",
              "DataContentForDataSet",
-             "AssetSchemaType",
-             "ConnectionToAsset",
-             "MeetingOnReferenceable",
-             "ExternalIdLink",
-             "ProcessInput",
              "ToDoOnReferenceable",
-             "ZoneMembership",
-             "ProcessOutput",
+             "AttachedComment",
+             "AttachedNoteLog",
              "AttachedLike",
-             "DataContentForDataSet",
-             "ToDoSource",
-             "Certification",
               // Terminate the list
               null
      };
@@ -211,45 +211,13 @@ public class MediaCollectionReferences implements Serializable {
                          }
                           dataSetMembers.add(dataSetMembersReference);
                     }
-                    if ("consumedBy".equals(referenceName)) {
-                         AssetServerUse assetServerUse_relationship = (AssetServerUse)relationship;
-                         ConsumedByReference consumedByReference = new ConsumedByReference(entityGuid,assetServerUse_relationship);
-                         if ( consumedBy== null ) {
-                              consumedBy = new HashSet();
+                    if ("meetings".equals(referenceName)) {
+                         MeetingOnReferenceable meetingOnReferenceable_relationship = (MeetingOnReferenceable)relationship;
+                         MeetingsReference meetingsReference = new MeetingsReference(entityGuid,meetingOnReferenceable_relationship);
+                         if ( meetings== null ) {
+                              meetings = new HashSet();
                          }
-                          consumedBy.add(consumedByReference);
-                    }
-                    if ("tags".equals(referenceName)) {
-                         AttachedTag attachedTag_relationship = (AttachedTag)relationship;
-                         TagsReference tagsReference = new TagsReference(entityGuid,attachedTag_relationship);
-                         if ( tags== null ) {
-                              tags = new HashSet();
-                         }
-                          tags.add(tagsReference);
-                    }
-                    if ("managedResources".equals(referenceName)) {
-                         ExternalIdScope externalIdScope_relationship = (ExternalIdScope)relationship;
-                         ManagedResourcesReference managedResourcesReference = new ManagedResourcesReference(entityGuid,externalIdScope_relationship);
-                         if ( managedResources== null ) {
-                              managedResources = new HashSet();
-                         }
-                          managedResources.add(managedResourcesReference);
-                    }
-                    if ("noteLogs".equals(referenceName)) {
-                         AttachedNoteLog attachedNoteLog_relationship = (AttachedNoteLog)relationship;
-                         NoteLogsReference noteLogsReference = new NoteLogsReference(entityGuid,attachedNoteLog_relationship);
-                         if ( noteLogs== null ) {
-                              noteLogs = new HashSet();
-                         }
-                          noteLogs.add(noteLogsReference);
-                    }
-                    if ("metrics".equals(referenceName)) {
-                         GovernanceResults governanceResults_relationship = (GovernanceResults)relationship;
-                         MetricsReference metricsReference = new MetricsReference(entityGuid,governanceResults_relationship);
-                         if ( metrics== null ) {
-                              metrics = new HashSet();
-                         }
-                          metrics.add(metricsReference);
+                          meetings.add(meetingsReference);
                     }
                     if ("licenses".equals(referenceName)) {
                          License license_relationship = (License)relationship;
@@ -259,29 +227,13 @@ public class MediaCollectionReferences implements Serializable {
                          }
                           licenses.add(licensesReference);
                     }
-                    if ("facets".equals(referenceName)) {
-                         ReferenceableFacet referenceableFacet_relationship = (ReferenceableFacet)relationship;
-                         FacetsReference facetsReference = new FacetsReference(entityGuid,referenceableFacet_relationship);
-                         if ( facets== null ) {
-                              facets = new HashSet();
+                    if ("consumedByProcess".equals(referenceName)) {
+                         ProcessInput processInput_relationship = (ProcessInput)relationship;
+                         ConsumedByProcessReference consumedByProcessReference = new ConsumedByProcessReference(entityGuid,processInput_relationship);
+                         if ( consumedByProcess== null ) {
+                              consumedByProcess = new HashSet();
                          }
-                          facets.add(facetsReference);
-                    }
-                    if ("meaning".equals(referenceName)) {
-                         SemanticAssignment semanticAssignment_relationship = (SemanticAssignment)relationship;
-                         MeaningReference meaningReference = new MeaningReference(entityGuid,semanticAssignment_relationship);
-                         if ( meaning== null ) {
-                              meaning = new HashSet();
-                         }
-                          meaning.add(meaningReference);
-                    }
-                    if ("comments".equals(referenceName)) {
-                         AttachedComment attachedComment_relationship = (AttachedComment)relationship;
-                         CommentsReference commentsReference = new CommentsReference(entityGuid,attachedComment_relationship);
-                         if ( comments== null ) {
-                              comments = new HashSet();
-                         }
-                          comments.add(commentsReference);
+                          consumedByProcess.add(consumedByProcessReference);
                     }
                     if ("starRatings".equals(referenceName)) {
                          AttachedRating attachedRating_relationship = (AttachedRating)relationship;
@@ -291,21 +243,13 @@ public class MediaCollectionReferences implements Serializable {
                          }
                           starRatings.add(starRatingsReference);
                     }
-                    if ("foundInCollections".equals(referenceName)) {
-                         CollectionMember collectionMember_relationship = (CollectionMember)relationship;
-                         FoundInCollectionsReference foundInCollectionsReference = new FoundInCollectionsReference(entityGuid,collectionMember_relationship);
-                         if ( foundInCollections== null ) {
-                              foundInCollections = new HashSet();
+                    if ("tags".equals(referenceName)) {
+                         AttachedTag attachedTag_relationship = (AttachedTag)relationship;
+                         TagsReference tagsReference = new TagsReference(entityGuid,attachedTag_relationship);
+                         if ( tags== null ) {
+                              tags = new HashSet();
                          }
-                          foundInCollections.add(foundInCollectionsReference);
-                    }
-                    if ("externalReference".equals(referenceName)) {
-                         ExternalReferenceLink externalReferenceLink_relationship = (ExternalReferenceLink)relationship;
-                         ExternalReferenceReference externalReferenceReference = new ExternalReferenceReference(entityGuid,externalReferenceLink_relationship);
-                         if ( externalReference== null ) {
-                              externalReference = new HashSet();
-                         }
-                          externalReference.add(externalReferenceReference);
+                          tags.add(tagsReference);
                     }
                     if ("relatedMedia".equals(referenceName)) {
                          MediaReference mediaReference_relationship = (MediaReference)relationship;
@@ -315,30 +259,6 @@ public class MediaCollectionReferences implements Serializable {
                          }
                           relatedMedia.add(relatedMediaReference);
                     }
-                    if ("contributors".equals(referenceName)) {
-                         Contributor contributor_relationship = (Contributor)relationship;
-                         ContributorsReference contributorsReference = new ContributorsReference(entityGuid,contributor_relationship);
-                         if ( contributors== null ) {
-                              contributors = new HashSet();
-                         }
-                          contributors.add(contributorsReference);
-                    }
-                    if ("staff".equals(referenceName)) {
-                         StaffAssignment staffAssignment_relationship = (StaffAssignment)relationship;
-                         StaffReference staffReference = new StaffReference(entityGuid,staffAssignment_relationship);
-                         if ( staff== null ) {
-                              staff = new HashSet();
-                         }
-                          staff.add(staffReference);
-                    }
-                    if ("supportedDataSets".equals(referenceName)) {
-                         DataContentForDataSet dataContentForDataSet_relationship = (DataContentForDataSet)relationship;
-                         SupportedDataSetsReference supportedDataSetsReference = new SupportedDataSetsReference(entityGuid,dataContentForDataSet_relationship);
-                         if ( supportedDataSets== null ) {
-                              supportedDataSets = new HashSet();
-                         }
-                          supportedDataSets.add(supportedDataSetsReference);
-                    }
                     if ("connections".equals(referenceName)) {
                          ConnectionToAsset connectionToAsset_relationship = (ConnectionToAsset)relationship;
                          ConnectionsReference connectionsReference = new ConnectionsReference(entityGuid,connectionToAsset_relationship);
@@ -347,13 +267,21 @@ public class MediaCollectionReferences implements Serializable {
                          }
                           connections.add(connectionsReference);
                     }
-                    if ("meetings".equals(referenceName)) {
-                         MeetingOnReferenceable meetingOnReferenceable_relationship = (MeetingOnReferenceable)relationship;
-                         MeetingsReference meetingsReference = new MeetingsReference(entityGuid,meetingOnReferenceable_relationship);
-                         if ( meetings== null ) {
-                              meetings = new HashSet();
+                    if ("certifications".equals(referenceName)) {
+                         Certification certification_relationship = (Certification)relationship;
+                         CertificationsReference certificationsReference = new CertificationsReference(entityGuid,certification_relationship);
+                         if ( certifications== null ) {
+                              certifications = new HashSet();
                          }
-                          meetings.add(meetingsReference);
+                          certifications.add(certificationsReference);
+                    }
+                    if ("managedResources".equals(referenceName)) {
+                         ExternalIdScope externalIdScope_relationship = (ExternalIdScope)relationship;
+                         ManagedResourcesReference managedResourcesReference = new ManagedResourcesReference(entityGuid,externalIdScope_relationship);
+                         if ( managedResources== null ) {
+                              managedResources = new HashSet();
+                         }
+                          managedResources.add(managedResourcesReference);
                     }
                     if ("alsoKnownAs".equals(referenceName)) {
                          ExternalIdLink externalIdLink_relationship = (ExternalIdLink)relationship;
@@ -363,21 +291,37 @@ public class MediaCollectionReferences implements Serializable {
                          }
                           alsoKnownAs.add(alsoKnownAsReference);
                     }
-                    if ("consumedByProcess".equals(referenceName)) {
-                         ProcessInput processInput_relationship = (ProcessInput)relationship;
-                         ConsumedByProcessReference consumedByProcessReference = new ConsumedByProcessReference(entityGuid,processInput_relationship);
-                         if ( consumedByProcess== null ) {
-                              consumedByProcess = new HashSet();
+                    if ("metrics".equals(referenceName)) {
+                         GovernanceResults governanceResults_relationship = (GovernanceResults)relationship;
+                         MetricsReference metricsReference = new MetricsReference(entityGuid,governanceResults_relationship);
+                         if ( metrics== null ) {
+                              metrics = new HashSet();
                          }
-                          consumedByProcess.add(consumedByProcessReference);
+                          metrics.add(metricsReference);
                     }
-                    if ("todos".equals(referenceName)) {
-                         ToDoOnReferenceable toDoOnReferenceable_relationship = (ToDoOnReferenceable)relationship;
-                         TodosReference todosReference = new TodosReference(entityGuid,toDoOnReferenceable_relationship);
-                         if ( todos== null ) {
-                              todos = new HashSet();
+                    if ("meaning".equals(referenceName)) {
+                         SemanticAssignment semanticAssignment_relationship = (SemanticAssignment)relationship;
+                         MeaningReference meaningReference = new MeaningReference(entityGuid,semanticAssignment_relationship);
+                         if ( meaning== null ) {
+                              meaning = new HashSet();
                          }
-                          todos.add(todosReference);
+                          meaning.add(meaningReference);
+                    }
+                    if ("externalReference".equals(referenceName)) {
+                         ExternalReferenceLink externalReferenceLink_relationship = (ExternalReferenceLink)relationship;
+                         ExternalReferenceReference externalReferenceReference = new ExternalReferenceReference(entityGuid,externalReferenceLink_relationship);
+                         if ( externalReference== null ) {
+                              externalReference = new HashSet();
+                         }
+                          externalReference.add(externalReferenceReference);
+                    }
+                    if ("foundInCollections".equals(referenceName)) {
+                         CollectionMember collectionMember_relationship = (CollectionMember)relationship;
+                         FoundInCollectionsReference foundInCollectionsReference = new FoundInCollectionsReference(entityGuid,collectionMember_relationship);
+                         if ( foundInCollections== null ) {
+                              foundInCollections = new HashSet();
+                         }
+                          foundInCollections.add(foundInCollectionsReference);
                     }
                     if ("zones".equals(referenceName)) {
                          ZoneMembership zoneMembership_relationship = (ZoneMembership)relationship;
@@ -387,29 +331,13 @@ public class MediaCollectionReferences implements Serializable {
                          }
                           zones.add(zonesReference);
                     }
-                    if ("producedByProcess".equals(referenceName)) {
-                         ProcessOutput processOutput_relationship = (ProcessOutput)relationship;
-                         ProducedByProcessReference producedByProcessReference = new ProducedByProcessReference(entityGuid,processOutput_relationship);
-                         if ( producedByProcess== null ) {
-                              producedByProcess = new HashSet();
+                    if ("facets".equals(referenceName)) {
+                         ReferenceableFacet referenceableFacet_relationship = (ReferenceableFacet)relationship;
+                         FacetsReference facetsReference = new FacetsReference(entityGuid,referenceableFacet_relationship);
+                         if ( facets== null ) {
+                              facets = new HashSet();
                          }
-                          producedByProcess.add(producedByProcessReference);
-                    }
-                    if ("likes".equals(referenceName)) {
-                         AttachedLike attachedLike_relationship = (AttachedLike)relationship;
-                         LikesReference likesReference = new LikesReference(entityGuid,attachedLike_relationship);
-                         if ( likes== null ) {
-                              likes = new HashSet();
-                         }
-                          likes.add(likesReference);
-                    }
-                    if ("dataContent".equals(referenceName)) {
-                         DataContentForDataSet dataContentForDataSet_relationship = (DataContentForDataSet)relationship;
-                         DataContentReference dataContentReference = new DataContentReference(entityGuid,dataContentForDataSet_relationship);
-                         if ( dataContent== null ) {
-                              dataContent = new HashSet();
-                         }
-                          dataContent.add(dataContentReference);
+                          facets.add(facetsReference);
                     }
                     if ("actions".equals(referenceName)) {
                          ToDoSource toDoSource_relationship = (ToDoSource)relationship;
@@ -419,13 +347,85 @@ public class MediaCollectionReferences implements Serializable {
                          }
                           actions.add(actionsReference);
                     }
-                    if ("certifications".equals(referenceName)) {
-                         Certification certification_relationship = (Certification)relationship;
-                         CertificationsReference certificationsReference = new CertificationsReference(entityGuid,certification_relationship);
-                         if ( certifications== null ) {
-                              certifications = new HashSet();
+                    if ("contributors".equals(referenceName)) {
+                         Contributor contributor_relationship = (Contributor)relationship;
+                         ContributorsReference contributorsReference = new ContributorsReference(entityGuid,contributor_relationship);
+                         if ( contributors== null ) {
+                              contributors = new HashSet();
                          }
-                          certifications.add(certificationsReference);
+                          contributors.add(contributorsReference);
+                    }
+                    if ("supportedDataSets".equals(referenceName)) {
+                         DataContentForDataSet dataContentForDataSet_relationship = (DataContentForDataSet)relationship;
+                         SupportedDataSetsReference supportedDataSetsReference = new SupportedDataSetsReference(entityGuid,dataContentForDataSet_relationship);
+                         if ( supportedDataSets== null ) {
+                              supportedDataSets = new HashSet();
+                         }
+                          supportedDataSets.add(supportedDataSetsReference);
+                    }
+                    if ("producedByProcess".equals(referenceName)) {
+                         ProcessOutput processOutput_relationship = (ProcessOutput)relationship;
+                         ProducedByProcessReference producedByProcessReference = new ProducedByProcessReference(entityGuid,processOutput_relationship);
+                         if ( producedByProcess== null ) {
+                              producedByProcess = new HashSet();
+                         }
+                          producedByProcess.add(producedByProcessReference);
+                    }
+                    if ("consumedBy".equals(referenceName)) {
+                         AssetServerUse assetServerUse_relationship = (AssetServerUse)relationship;
+                         ConsumedByReference consumedByReference = new ConsumedByReference(entityGuid,assetServerUse_relationship);
+                         if ( consumedBy== null ) {
+                              consumedBy = new HashSet();
+                         }
+                          consumedBy.add(consumedByReference);
+                    }
+                    if ("staff".equals(referenceName)) {
+                         StaffAssignment staffAssignment_relationship = (StaffAssignment)relationship;
+                         StaffReference staffReference = new StaffReference(entityGuid,staffAssignment_relationship);
+                         if ( staff== null ) {
+                              staff = new HashSet();
+                         }
+                          staff.add(staffReference);
+                    }
+                    if ("dataContent".equals(referenceName)) {
+                         DataContentForDataSet dataContentForDataSet_relationship = (DataContentForDataSet)relationship;
+                         DataContentReference dataContentReference = new DataContentReference(entityGuid,dataContentForDataSet_relationship);
+                         if ( dataContent== null ) {
+                              dataContent = new HashSet();
+                         }
+                          dataContent.add(dataContentReference);
+                    }
+                    if ("todos".equals(referenceName)) {
+                         ToDoOnReferenceable toDoOnReferenceable_relationship = (ToDoOnReferenceable)relationship;
+                         TodosReference todosReference = new TodosReference(entityGuid,toDoOnReferenceable_relationship);
+                         if ( todos== null ) {
+                              todos = new HashSet();
+                         }
+                          todos.add(todosReference);
+                    }
+                    if ("comments".equals(referenceName)) {
+                         AttachedComment attachedComment_relationship = (AttachedComment)relationship;
+                         CommentsReference commentsReference = new CommentsReference(entityGuid,attachedComment_relationship);
+                         if ( comments== null ) {
+                              comments = new HashSet();
+                         }
+                          comments.add(commentsReference);
+                    }
+                    if ("noteLogs".equals(referenceName)) {
+                         AttachedNoteLog attachedNoteLog_relationship = (AttachedNoteLog)relationship;
+                         NoteLogsReference noteLogsReference = new NoteLogsReference(entityGuid,attachedNoteLog_relationship);
+                         if ( noteLogs== null ) {
+                              noteLogs = new HashSet();
+                         }
+                          noteLogs.add(noteLogsReference);
+                    }
+                    if ("likes".equals(referenceName)) {
+                         AttachedLike attachedLike_relationship = (AttachedLike)relationship;
+                         LikesReference likesReference = new LikesReference(entityGuid,attachedLike_relationship);
+                         if ( likes== null ) {
+                              likes = new HashSet();
+                         }
+                          likes.add(likesReference);
                     }
 
                     if ("schema".equals(referenceName)) {
@@ -445,33 +445,33 @@ public class MediaCollectionReferences implements Serializable {
 // Set properties
 
     private Set<DataSetMembersReference> dataSetMembers;
-    private Set<ConsumedByReference> consumedBy;
-    private Set<TagsReference> tags;
-    private Set<ManagedResourcesReference> managedResources;
-    private Set<NoteLogsReference> noteLogs;
-    private Set<MetricsReference> metrics;
-    private Set<LicensesReference> licenses;
-    private Set<FacetsReference> facets;
-    private Set<MeaningReference> meaning;
-    private Set<CommentsReference> comments;
-    private Set<StarRatingsReference> starRatings;
-    private Set<FoundInCollectionsReference> foundInCollections;
-    private Set<ExternalReferenceReference> externalReference;
-    private Set<RelatedMediaReference> relatedMedia;
-    private Set<ContributorsReference> contributors;
-    private Set<StaffReference> staff;
-    private Set<SupportedDataSetsReference> supportedDataSets;
-    private Set<ConnectionsReference> connections;
     private Set<MeetingsReference> meetings;
-    private Set<AlsoKnownAsReference> alsoKnownAs;
+    private Set<LicensesReference> licenses;
     private Set<ConsumedByProcessReference> consumedByProcess;
-    private Set<TodosReference> todos;
-    private Set<ZonesReference> zones;
-    private Set<ProducedByProcessReference> producedByProcess;
-    private Set<LikesReference> likes;
-    private Set<DataContentReference> dataContent;
-    private Set<ActionsReference> actions;
+    private Set<StarRatingsReference> starRatings;
+    private Set<TagsReference> tags;
+    private Set<RelatedMediaReference> relatedMedia;
+    private Set<ConnectionsReference> connections;
     private Set<CertificationsReference> certifications;
+    private Set<ManagedResourcesReference> managedResources;
+    private Set<AlsoKnownAsReference> alsoKnownAs;
+    private Set<MetricsReference> metrics;
+    private Set<MeaningReference> meaning;
+    private Set<ExternalReferenceReference> externalReference;
+    private Set<FoundInCollectionsReference> foundInCollections;
+    private Set<ZonesReference> zones;
+    private Set<FacetsReference> facets;
+    private Set<ActionsReference> actions;
+    private Set<ContributorsReference> contributors;
+    private Set<SupportedDataSetsReference> supportedDataSets;
+    private Set<ProducedByProcessReference> producedByProcess;
+    private Set<ConsumedByReference> consumedBy;
+    private Set<StaffReference> staff;
+    private Set<DataContentReference> dataContent;
+    private Set<TodosReference> todos;
+    private Set<CommentsReference> comments;
+    private Set<NoteLogsReference> noteLogs;
+    private Set<LikesReference> likes;
 
 // List properties
 
@@ -490,40 +490,12 @@ public class MediaCollectionReferences implements Serializable {
     public void setDataSetMembersReferences(Set<DataSetMembersReference> dataSetMembers) {
         this.dataSetMembers =dataSetMembers;
     }
-    public Set<ConsumedByReference> getConsumedByReferences() {
-        return consumedBy;
+    public Set<MeetingsReference> getMeetingsReferences() {
+        return meetings;
     }
 
-    public void setConsumedByReferences(Set<ConsumedByReference> consumedBy) {
-        this.consumedBy =consumedBy;
-    }
-    public Set<TagsReference> getTagsReferences() {
-        return tags;
-    }
-
-    public void setTagsReferences(Set<TagsReference> tags) {
-        this.tags =tags;
-    }
-    public Set<ManagedResourcesReference> getManagedResourcesReferences() {
-        return managedResources;
-    }
-
-    public void setManagedResourcesReferences(Set<ManagedResourcesReference> managedResources) {
-        this.managedResources =managedResources;
-    }
-    public Set<NoteLogsReference> getNoteLogsReferences() {
-        return noteLogs;
-    }
-
-    public void setNoteLogsReferences(Set<NoteLogsReference> noteLogs) {
-        this.noteLogs =noteLogs;
-    }
-    public Set<MetricsReference> getMetricsReferences() {
-        return metrics;
-    }
-
-    public void setMetricsReferences(Set<MetricsReference> metrics) {
-        this.metrics =metrics;
+    public void setMeetingsReferences(Set<MeetingsReference> meetings) {
+        this.meetings =meetings;
     }
     public Set<LicensesReference> getLicensesReferences() {
         return licenses;
@@ -532,26 +504,12 @@ public class MediaCollectionReferences implements Serializable {
     public void setLicensesReferences(Set<LicensesReference> licenses) {
         this.licenses =licenses;
     }
-    public Set<FacetsReference> getFacetsReferences() {
-        return facets;
+    public Set<ConsumedByProcessReference> getConsumedByProcessReferences() {
+        return consumedByProcess;
     }
 
-    public void setFacetsReferences(Set<FacetsReference> facets) {
-        this.facets =facets;
-    }
-    public Set<MeaningReference> getMeaningReferences() {
-        return meaning;
-    }
-
-    public void setMeaningReferences(Set<MeaningReference> meaning) {
-        this.meaning =meaning;
-    }
-    public Set<CommentsReference> getCommentsReferences() {
-        return comments;
-    }
-
-    public void setCommentsReferences(Set<CommentsReference> comments) {
-        this.comments =comments;
+    public void setConsumedByProcessReferences(Set<ConsumedByProcessReference> consumedByProcess) {
+        this.consumedByProcess =consumedByProcess;
     }
     public Set<StarRatingsReference> getStarRatingsReferences() {
         return starRatings;
@@ -560,19 +518,12 @@ public class MediaCollectionReferences implements Serializable {
     public void setStarRatingsReferences(Set<StarRatingsReference> starRatings) {
         this.starRatings =starRatings;
     }
-    public Set<FoundInCollectionsReference> getFoundInCollectionsReferences() {
-        return foundInCollections;
+    public Set<TagsReference> getTagsReferences() {
+        return tags;
     }
 
-    public void setFoundInCollectionsReferences(Set<FoundInCollectionsReference> foundInCollections) {
-        this.foundInCollections =foundInCollections;
-    }
-    public Set<ExternalReferenceReference> getExternalReferenceReferences() {
-        return externalReference;
-    }
-
-    public void setExternalReferenceReferences(Set<ExternalReferenceReference> externalReference) {
-        this.externalReference =externalReference;
+    public void setTagsReferences(Set<TagsReference> tags) {
+        this.tags =tags;
     }
     public Set<RelatedMediaReference> getRelatedMediaReferences() {
         return relatedMedia;
@@ -581,27 +532,6 @@ public class MediaCollectionReferences implements Serializable {
     public void setRelatedMediaReferences(Set<RelatedMediaReference> relatedMedia) {
         this.relatedMedia =relatedMedia;
     }
-    public Set<ContributorsReference> getContributorsReferences() {
-        return contributors;
-    }
-
-    public void setContributorsReferences(Set<ContributorsReference> contributors) {
-        this.contributors =contributors;
-    }
-    public Set<StaffReference> getStaffReferences() {
-        return staff;
-    }
-
-    public void setStaffReferences(Set<StaffReference> staff) {
-        this.staff =staff;
-    }
-    public Set<SupportedDataSetsReference> getSupportedDataSetsReferences() {
-        return supportedDataSets;
-    }
-
-    public void setSupportedDataSetsReferences(Set<SupportedDataSetsReference> supportedDataSets) {
-        this.supportedDataSets =supportedDataSets;
-    }
     public Set<ConnectionsReference> getConnectionsReferences() {
         return connections;
     }
@@ -609,12 +539,19 @@ public class MediaCollectionReferences implements Serializable {
     public void setConnectionsReferences(Set<ConnectionsReference> connections) {
         this.connections =connections;
     }
-    public Set<MeetingsReference> getMeetingsReferences() {
-        return meetings;
+    public Set<CertificationsReference> getCertificationsReferences() {
+        return certifications;
     }
 
-    public void setMeetingsReferences(Set<MeetingsReference> meetings) {
-        this.meetings =meetings;
+    public void setCertificationsReferences(Set<CertificationsReference> certifications) {
+        this.certifications =certifications;
+    }
+    public Set<ManagedResourcesReference> getManagedResourcesReferences() {
+        return managedResources;
+    }
+
+    public void setManagedResourcesReferences(Set<ManagedResourcesReference> managedResources) {
+        this.managedResources =managedResources;
     }
     public Set<AlsoKnownAsReference> getAlsoKnownAsReferences() {
         return alsoKnownAs;
@@ -623,19 +560,33 @@ public class MediaCollectionReferences implements Serializable {
     public void setAlsoKnownAsReferences(Set<AlsoKnownAsReference> alsoKnownAs) {
         this.alsoKnownAs =alsoKnownAs;
     }
-    public Set<ConsumedByProcessReference> getConsumedByProcessReferences() {
-        return consumedByProcess;
+    public Set<MetricsReference> getMetricsReferences() {
+        return metrics;
     }
 
-    public void setConsumedByProcessReferences(Set<ConsumedByProcessReference> consumedByProcess) {
-        this.consumedByProcess =consumedByProcess;
+    public void setMetricsReferences(Set<MetricsReference> metrics) {
+        this.metrics =metrics;
     }
-    public Set<TodosReference> getTodosReferences() {
-        return todos;
+    public Set<MeaningReference> getMeaningReferences() {
+        return meaning;
     }
 
-    public void setTodosReferences(Set<TodosReference> todos) {
-        this.todos =todos;
+    public void setMeaningReferences(Set<MeaningReference> meaning) {
+        this.meaning =meaning;
+    }
+    public Set<ExternalReferenceReference> getExternalReferenceReferences() {
+        return externalReference;
+    }
+
+    public void setExternalReferenceReferences(Set<ExternalReferenceReference> externalReference) {
+        this.externalReference =externalReference;
+    }
+    public Set<FoundInCollectionsReference> getFoundInCollectionsReferences() {
+        return foundInCollections;
+    }
+
+    public void setFoundInCollectionsReferences(Set<FoundInCollectionsReference> foundInCollections) {
+        this.foundInCollections =foundInCollections;
     }
     public Set<ZonesReference> getZonesReferences() {
         return zones;
@@ -644,26 +595,12 @@ public class MediaCollectionReferences implements Serializable {
     public void setZonesReferences(Set<ZonesReference> zones) {
         this.zones =zones;
     }
-    public Set<ProducedByProcessReference> getProducedByProcessReferences() {
-        return producedByProcess;
+    public Set<FacetsReference> getFacetsReferences() {
+        return facets;
     }
 
-    public void setProducedByProcessReferences(Set<ProducedByProcessReference> producedByProcess) {
-        this.producedByProcess =producedByProcess;
-    }
-    public Set<LikesReference> getLikesReferences() {
-        return likes;
-    }
-
-    public void setLikesReferences(Set<LikesReference> likes) {
-        this.likes =likes;
-    }
-    public Set<DataContentReference> getDataContentReferences() {
-        return dataContent;
-    }
-
-    public void setDataContentReferences(Set<DataContentReference> dataContent) {
-        this.dataContent =dataContent;
+    public void setFacetsReferences(Set<FacetsReference> facets) {
+        this.facets =facets;
     }
     public Set<ActionsReference> getActionsReferences() {
         return actions;
@@ -672,12 +609,75 @@ public class MediaCollectionReferences implements Serializable {
     public void setActionsReferences(Set<ActionsReference> actions) {
         this.actions =actions;
     }
-    public Set<CertificationsReference> getCertificationsReferences() {
-        return certifications;
+    public Set<ContributorsReference> getContributorsReferences() {
+        return contributors;
     }
 
-    public void setCertificationsReferences(Set<CertificationsReference> certifications) {
-        this.certifications =certifications;
+    public void setContributorsReferences(Set<ContributorsReference> contributors) {
+        this.contributors =contributors;
+    }
+    public Set<SupportedDataSetsReference> getSupportedDataSetsReferences() {
+        return supportedDataSets;
+    }
+
+    public void setSupportedDataSetsReferences(Set<SupportedDataSetsReference> supportedDataSets) {
+        this.supportedDataSets =supportedDataSets;
+    }
+    public Set<ProducedByProcessReference> getProducedByProcessReferences() {
+        return producedByProcess;
+    }
+
+    public void setProducedByProcessReferences(Set<ProducedByProcessReference> producedByProcess) {
+        this.producedByProcess =producedByProcess;
+    }
+    public Set<ConsumedByReference> getConsumedByReferences() {
+        return consumedBy;
+    }
+
+    public void setConsumedByReferences(Set<ConsumedByReference> consumedBy) {
+        this.consumedBy =consumedBy;
+    }
+    public Set<StaffReference> getStaffReferences() {
+        return staff;
+    }
+
+    public void setStaffReferences(Set<StaffReference> staff) {
+        this.staff =staff;
+    }
+    public Set<DataContentReference> getDataContentReferences() {
+        return dataContent;
+    }
+
+    public void setDataContentReferences(Set<DataContentReference> dataContent) {
+        this.dataContent =dataContent;
+    }
+    public Set<TodosReference> getTodosReferences() {
+        return todos;
+    }
+
+    public void setTodosReferences(Set<TodosReference> todos) {
+        this.todos =todos;
+    }
+    public Set<CommentsReference> getCommentsReferences() {
+        return comments;
+    }
+
+    public void setCommentsReferences(Set<CommentsReference> comments) {
+        this.comments =comments;
+    }
+    public Set<NoteLogsReference> getNoteLogsReferences() {
+        return noteLogs;
+    }
+
+    public void setNoteLogsReferences(Set<NoteLogsReference> noteLogs) {
+        this.noteLogs =noteLogs;
+    }
+    public Set<LikesReference> getLikesReferences() {
+        return likes;
+    }
+
+    public void setLikesReferences(Set<LikesReference> likes) {
+        this.likes =likes;
     }
 
 // Lists
@@ -689,33 +689,33 @@ public class MediaCollectionReferences implements Serializable {
 
         sb.append("MediaCollectionReferences{");
         sb.append("dataSetMembersReference='").append(dataSetMembers.toString());
-        sb.append("consumedByReference='").append(consumedBy.toString());
-        sb.append("tagsReference='").append(tags.toString());
-        sb.append("managedResourcesReference='").append(managedResources.toString());
-        sb.append("noteLogsReference='").append(noteLogs.toString());
-        sb.append("metricsReference='").append(metrics.toString());
-        sb.append("licensesReference='").append(licenses.toString());
-        sb.append("facetsReference='").append(facets.toString());
-        sb.append("meaningReference='").append(meaning.toString());
-        sb.append("commentsReference='").append(comments.toString());
-        sb.append("starRatingsReference='").append(starRatings.toString());
-        sb.append("foundInCollectionsReference='").append(foundInCollections.toString());
-        sb.append("externalReferenceReference='").append(externalReference.toString());
-        sb.append("relatedMediaReference='").append(relatedMedia.toString());
-        sb.append("contributorsReference='").append(contributors.toString());
-        sb.append("staffReference='").append(staff.toString());
-        sb.append("supportedDataSetsReference='").append(supportedDataSets.toString());
-        sb.append("connectionsReference='").append(connections.toString());
         sb.append("meetingsReference='").append(meetings.toString());
-        sb.append("alsoKnownAsReference='").append(alsoKnownAs.toString());
+        sb.append("licensesReference='").append(licenses.toString());
         sb.append("consumedByProcessReference='").append(consumedByProcess.toString());
-        sb.append("todosReference='").append(todos.toString());
-        sb.append("zonesReference='").append(zones.toString());
-        sb.append("producedByProcessReference='").append(producedByProcess.toString());
-        sb.append("likesReference='").append(likes.toString());
-        sb.append("dataContentReference='").append(dataContent.toString());
-        sb.append("actionsReference='").append(actions.toString());
+        sb.append("starRatingsReference='").append(starRatings.toString());
+        sb.append("tagsReference='").append(tags.toString());
+        sb.append("relatedMediaReference='").append(relatedMedia.toString());
+        sb.append("connectionsReference='").append(connections.toString());
         sb.append("certificationsReference='").append(certifications.toString());
+        sb.append("managedResourcesReference='").append(managedResources.toString());
+        sb.append("alsoKnownAsReference='").append(alsoKnownAs.toString());
+        sb.append("metricsReference='").append(metrics.toString());
+        sb.append("meaningReference='").append(meaning.toString());
+        sb.append("externalReferenceReference='").append(externalReference.toString());
+        sb.append("foundInCollectionsReference='").append(foundInCollections.toString());
+        sb.append("zonesReference='").append(zones.toString());
+        sb.append("facetsReference='").append(facets.toString());
+        sb.append("actionsReference='").append(actions.toString());
+        sb.append("contributorsReference='").append(contributors.toString());
+        sb.append("supportedDataSetsReference='").append(supportedDataSets.toString());
+        sb.append("producedByProcessReference='").append(producedByProcess.toString());
+        sb.append("consumedByReference='").append(consumedBy.toString());
+        sb.append("staffReference='").append(staff.toString());
+        sb.append("dataContentReference='").append(dataContent.toString());
+        sb.append("todosReference='").append(todos.toString());
+        sb.append("commentsReference='").append(comments.toString());
+        sb.append("noteLogsReference='").append(noteLogs.toString());
+        sb.append("likesReference='").append(likes.toString());
         sb.append("schemaReference='").append(schema.toString());
 
         sb.append('}');
@@ -733,88 +733,88 @@ public class MediaCollectionReferences implements Serializable {
          if (this.dataSetMembers != null && !Objects.equals(this.dataSetMembers,typedThat.dataSetMembers)) {
                             return false;
                  }
-         if (this.consumedBy != null && !Objects.equals(this.consumedBy,typedThat.consumedBy)) {
-                            return false;
-                 }
-         if (this.tags != null && !Objects.equals(this.tags,typedThat.tags)) {
-                            return false;
-                 }
-         if (this.managedResources != null && !Objects.equals(this.managedResources,typedThat.managedResources)) {
-                            return false;
-                 }
-         if (this.noteLogs != null && !Objects.equals(this.noteLogs,typedThat.noteLogs)) {
-                            return false;
-                 }
-         if (this.metrics != null && !Objects.equals(this.metrics,typedThat.metrics)) {
+         if (this.meetings != null && !Objects.equals(this.meetings,typedThat.meetings)) {
                             return false;
                  }
          if (this.licenses != null && !Objects.equals(this.licenses,typedThat.licenses)) {
                             return false;
                  }
-         if (this.facets != null && !Objects.equals(this.facets,typedThat.facets)) {
-                            return false;
-                 }
-         if (this.meaning != null && !Objects.equals(this.meaning,typedThat.meaning)) {
-                            return false;
-                 }
-         if (this.comments != null && !Objects.equals(this.comments,typedThat.comments)) {
+         if (this.consumedByProcess != null && !Objects.equals(this.consumedByProcess,typedThat.consumedByProcess)) {
                             return false;
                  }
          if (this.starRatings != null && !Objects.equals(this.starRatings,typedThat.starRatings)) {
                             return false;
                  }
-         if (this.foundInCollections != null && !Objects.equals(this.foundInCollections,typedThat.foundInCollections)) {
-                            return false;
-                 }
-         if (this.externalReference != null && !Objects.equals(this.externalReference,typedThat.externalReference)) {
+         if (this.tags != null && !Objects.equals(this.tags,typedThat.tags)) {
                             return false;
                  }
          if (this.relatedMedia != null && !Objects.equals(this.relatedMedia,typedThat.relatedMedia)) {
                             return false;
                  }
-         if (this.contributors != null && !Objects.equals(this.contributors,typedThat.contributors)) {
-                            return false;
-                 }
-         if (this.staff != null && !Objects.equals(this.staff,typedThat.staff)) {
-                            return false;
-                 }
-         if (this.supportedDataSets != null && !Objects.equals(this.supportedDataSets,typedThat.supportedDataSets)) {
-                            return false;
-                 }
-         if (this.schema != null && !Objects.equals(this.schema,typedThat.schema)) {
-                            return false;
-                 }
          if (this.connections != null && !Objects.equals(this.connections,typedThat.connections)) {
                             return false;
                  }
-         if (this.meetings != null && !Objects.equals(this.meetings,typedThat.meetings)) {
+         if (this.certifications != null && !Objects.equals(this.certifications,typedThat.certifications)) {
+                            return false;
+                 }
+         if (this.managedResources != null && !Objects.equals(this.managedResources,typedThat.managedResources)) {
                             return false;
                  }
          if (this.alsoKnownAs != null && !Objects.equals(this.alsoKnownAs,typedThat.alsoKnownAs)) {
                             return false;
                  }
-         if (this.consumedByProcess != null && !Objects.equals(this.consumedByProcess,typedThat.consumedByProcess)) {
+         if (this.metrics != null && !Objects.equals(this.metrics,typedThat.metrics)) {
                             return false;
                  }
-         if (this.todos != null && !Objects.equals(this.todos,typedThat.todos)) {
+         if (this.meaning != null && !Objects.equals(this.meaning,typedThat.meaning)) {
+                            return false;
+                 }
+         if (this.externalReference != null && !Objects.equals(this.externalReference,typedThat.externalReference)) {
+                            return false;
+                 }
+         if (this.foundInCollections != null && !Objects.equals(this.foundInCollections,typedThat.foundInCollections)) {
                             return false;
                  }
          if (this.zones != null && !Objects.equals(this.zones,typedThat.zones)) {
                             return false;
                  }
-         if (this.producedByProcess != null && !Objects.equals(this.producedByProcess,typedThat.producedByProcess)) {
-                            return false;
-                 }
-         if (this.likes != null && !Objects.equals(this.likes,typedThat.likes)) {
-                            return false;
-                 }
-         if (this.dataContent != null && !Objects.equals(this.dataContent,typedThat.dataContent)) {
+         if (this.facets != null && !Objects.equals(this.facets,typedThat.facets)) {
                             return false;
                  }
          if (this.actions != null && !Objects.equals(this.actions,typedThat.actions)) {
                             return false;
                  }
-         if (this.certifications != null && !Objects.equals(this.certifications,typedThat.certifications)) {
+         if (this.contributors != null && !Objects.equals(this.contributors,typedThat.contributors)) {
+                            return false;
+                 }
+         if (this.supportedDataSets != null && !Objects.equals(this.supportedDataSets,typedThat.supportedDataSets)) {
+                            return false;
+                 }
+         if (this.producedByProcess != null && !Objects.equals(this.producedByProcess,typedThat.producedByProcess)) {
+                            return false;
+                 }
+         if (this.schema != null && !Objects.equals(this.schema,typedThat.schema)) {
+                            return false;
+                 }
+         if (this.consumedBy != null && !Objects.equals(this.consumedBy,typedThat.consumedBy)) {
+                            return false;
+                 }
+         if (this.staff != null && !Objects.equals(this.staff,typedThat.staff)) {
+                            return false;
+                 }
+         if (this.dataContent != null && !Objects.equals(this.dataContent,typedThat.dataContent)) {
+                            return false;
+                 }
+         if (this.todos != null && !Objects.equals(this.todos,typedThat.todos)) {
+                            return false;
+                 }
+         if (this.comments != null && !Objects.equals(this.comments,typedThat.comments)) {
+                            return false;
+                 }
+         if (this.noteLogs != null && !Objects.equals(this.noteLogs,typedThat.noteLogs)) {
+                            return false;
+                 }
+         if (this.likes != null && !Objects.equals(this.likes,typedThat.likes)) {
                             return false;
                  }
         return false;
@@ -824,34 +824,34 @@ public class MediaCollectionReferences implements Serializable {
     public int hashCode() {
         return Objects.hash(super.hashCode()
     ,this.dataSetMembers
-    ,this.consumedBy
-    ,this.tags
-    ,this.managedResources
-    ,this.noteLogs
-    ,this.metrics
-    ,this.licenses
-    ,this.facets
-    ,this.meaning
-    ,this.comments
-    ,this.starRatings
-    ,this.foundInCollections
-    ,this.externalReference
-    ,this.relatedMedia
-    ,this.contributors
-    ,this.staff
-    ,this.supportedDataSets
-    ,this.schema
-    ,this.connections
     ,this.meetings
-    ,this.alsoKnownAs
+    ,this.licenses
     ,this.consumedByProcess
-    ,this.todos
-    ,this.zones
-    ,this.producedByProcess
-    ,this.likes
-    ,this.dataContent
-    ,this.actions
+    ,this.starRatings
+    ,this.tags
+    ,this.relatedMedia
+    ,this.connections
     ,this.certifications
+    ,this.managedResources
+    ,this.alsoKnownAs
+    ,this.metrics
+    ,this.meaning
+    ,this.externalReference
+    ,this.foundInCollections
+    ,this.zones
+    ,this.facets
+    ,this.actions
+    ,this.contributors
+    ,this.supportedDataSets
+    ,this.producedByProcess
+    ,this.schema
+    ,this.consumedBy
+    ,this.staff
+    ,this.dataContent
+    ,this.todos
+    ,this.comments
+    ,this.noteLogs
+    ,this.likes
        );
     }
 

@@ -30,6 +30,7 @@ The following has been implemented :
 
 ## Example REST calls: 
 
+
 The implementation is not complete. The following has been implemented : 
 
 * REST API for create, get and update for Glossary.
@@ -42,6 +43,12 @@ POST url: `localhost:8080/open-metadata/access-services/subject-area/users/{user
 
 
 JSON body 
+=======
+
+POST url: `localhost:8080/open-metadata/access-services/subject-area/users/{user}/glossaries`
+
+body:
+```JSON
 {
   "name": "Test glossary 1",
   "description": "This is a Glossary for testing.",
@@ -80,6 +87,7 @@ JSON body
     }
   }
 }
+```
 
 ### Get Glossary instance
  Get Glossary instance (where {user} is the guid in the Glossary create response and {user} is the userid )
@@ -93,5 +101,4 @@ GET url: `localhost:8080/open-metadata/access-services/subject-area/users/{user}
 
 Delete Glossary instance (where {user} is the guid in the Glossary create response and {user} is the userid )
 DELETE url : localhost:8080/open-metadata/access-services/subject-area/users/{user}/glossaries/{guid}
-
 
