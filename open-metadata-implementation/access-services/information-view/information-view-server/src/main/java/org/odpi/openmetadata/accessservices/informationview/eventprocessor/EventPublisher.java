@@ -213,6 +213,7 @@ public class EventPublisher implements OMRSInstanceEventProcessor {
             events = columnContextEventBuilder.buildEvents(guid);
         } catch (Exception e) {
 
+            log.error("Exception building events", e);
             InformationViewErrorCode auditCode = InformationViewErrorCode.BUILD_COLUMN_CONTEXT_EXCEPTION;
 
             auditLog.logException("processNewRelationshipEvent",
@@ -390,6 +391,7 @@ public class EventPublisher implements OMRSInstanceEventProcessor {
             successFlag = true;
 
         } catch (Throwable error) {
+            log.error("Exception publishing event", error);
             InformationViewErrorCode auditCode = InformationViewErrorCode.PUBLISH_EVENT_EXCEPTION;
 
             auditLog.logException(actionDescription,
