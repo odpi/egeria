@@ -11,7 +11,11 @@ import org.odpi.openmetadata.accessservice.assetcatalog.service.AssetCatalogAsse
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
 import java.util.List;
@@ -323,7 +327,7 @@ public class AssetCatalogEntityResource {
 
 
     /**
-     * Returns the assets that were updated between starting date and end date
+     * Returns  the last updated assets
      *
      * @param userId        the unique identifier for the user
      * @param assetTypeId   the asset type global identifier

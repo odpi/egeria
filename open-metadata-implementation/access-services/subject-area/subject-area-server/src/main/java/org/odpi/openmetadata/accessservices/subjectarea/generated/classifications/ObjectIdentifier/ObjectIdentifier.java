@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.generated.classificatio
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -20,22 +21,22 @@ import java.util.*;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
-// uncomment to generate a class that json serialises
-//import com.fasterxml.jackson.annotation.JsonAutoDetect;
-//import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-//import com.fasterxml.jackson.annotation.JsonFormat;
-//import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-//import com.fasterxml.jackson.annotation.JsonProperty;
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.*;
 
 /**
  * Identifies a glossary term that describes an attribute that can be used to identify an instance.
  */
- // uncomment to generate a class that json serialises
-//@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
-//@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
-//@JsonIgnoreProperties(ignoreUnknown=true)
+
+@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class ObjectIdentifier extends Classification {
     private static final Logger log = LoggerFactory.getLogger( ObjectIdentifier.class);
     private static final String className =  ObjectIdentifier.class.getName();

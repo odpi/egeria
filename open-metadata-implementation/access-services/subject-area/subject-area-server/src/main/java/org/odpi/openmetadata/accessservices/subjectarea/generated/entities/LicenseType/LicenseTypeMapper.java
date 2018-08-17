@@ -104,9 +104,9 @@ public class LicenseTypeMapper {
                             EnumPropertyValue enumPropertyValue = (EnumPropertyValue) value;
                             String symbolicName = enumPropertyValue.getSymbolicName();
                             if (licenseType.ENUM_NAMES_SET.contains(name)) {
-                                 if (name.equals("status")) {
-                                       org.odpi.openmetadata.accessservices.subjectarea.properties.enums.GovernanceDefinitionStatus status = org.odpi.openmetadata.accessservices.subjectarea.properties.enums.GovernanceDefinitionStatus.valueOf(symbolicName);
-                                      licenseType.setStatus(status);
+                                 if (name.equals("domain")) {
+                                       org.odpi.openmetadata.accessservices.subjectarea.properties.enums.GovernanceDomain domain = org.odpi.openmetadata.accessservices.subjectarea.properties.enums.GovernanceDomain.valueOf(symbolicName);
+                                      licenseType.setDomain(domain);
                                  }
                             } else {
                                 // put out the omrs value object
@@ -245,12 +245,12 @@ public class LicenseTypeMapper {
                 primitivePropertyValue.setPrimitiveValue(licenseType.getQualifiedName());
                 instanceProperties.setProperty("qualifiedName", primitivePropertyValue);
             }
-            if (licenseType.getStatus()!=null) {
-                GovernanceDefinitionStatus enumType = licenseType.getStatus();
+            if (licenseType.getDomain()!=null) {
+                GovernanceDomain enumType = licenseType.getDomain();
                 EnumPropertyValue enumPropertyValue = new EnumPropertyValue();
                 enumPropertyValue.setOrdinal(enumType.ordinal());
                 enumPropertyValue.setSymbolicName(enumType.name());
-                instanceProperties.setProperty("status", enumPropertyValue);
+                instanceProperties.setProperty("domain", enumPropertyValue);
             }
             if (licenseType.getAdditionalProperties()!=null) {
 

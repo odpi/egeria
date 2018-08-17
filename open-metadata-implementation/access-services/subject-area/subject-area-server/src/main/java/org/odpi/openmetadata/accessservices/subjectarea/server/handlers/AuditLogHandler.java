@@ -3,7 +3,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.handlers;
 
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.PropertyServerException;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.MetadataServerUncontactableException;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
@@ -46,7 +46,7 @@ public class AuditLogHandler
      * @param message - log record content.
      *
      * @throws InvalidParameterException - one of the parameters is null or invalid.
-     * @throws PropertyServerException - There is a problem adding the asset properties to
+     * @throws MetadataServerUncontactableException - There is a problem adding the asset properties to
      *                                   the property org.odpi.openmetadata.accessservices.subjectarea.server.
      * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -57,7 +57,7 @@ public class AuditLogHandler
 //                                      String      connectorType,
 //                                      String      contextId,
 //                                      String      message) throws InvalidParameterException,
-//                                                                  PropertyServerException,
+//                                                                  MetadataServerUncontactableException,
 //                                                                  UserNotAuthorizedException
 //    {
 //        // TODO
@@ -69,9 +69,9 @@ public class AuditLogHandler
      *
      * @param methodName - name of the method being called
      * @return metadata collection that provides access to the properties in the property org.odpi.openmetadata.accessservices.subjectarea.server
-     * @throws PropertyServerException - exception thrown if the repository connector
+     * @throws MetadataServerUncontactableException - exception thrown if the repository connector
      */
-    private OMRSMetadataCollection validateRepositoryConnector(String   methodName) throws PropertyServerException
+    private OMRSMetadataCollection validateRepositoryConnector(String   methodName) throws MetadataServerUncontactableException
     {
         if (this.repositoryConnector == null)
         {
@@ -79,7 +79,7 @@ public class AuditLogHandler
             String        errorMessage = errorCode.getErrorMessageId()
                     + errorCode.getFormattedErrorMessage(methodName);
 
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+            throw new MetadataServerUncontactableException(errorCode.getHTTPErrorCode(),
                                               this.getClass().getName(),
                                               methodName,
                                               errorMessage,
@@ -94,7 +94,7 @@ public class AuditLogHandler
             String        errorMessage = errorCode.getErrorMessageId()
                     + errorCode.getFormattedErrorMessage(methodName);
 
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+            throw new MetadataServerUncontactableException(errorCode.getHTTPErrorCode(),
                                               this.getClass().getName(),
                                               methodName,
                                               errorMessage,
@@ -111,7 +111,7 @@ public class AuditLogHandler
             SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.NO_METADATA_COLLECTION;
             String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
 
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+            throw new MetadataServerUncontactableException(errorCode.getHTTPErrorCode(),
                                               this.getClass().getName(),
                                               methodName,
                                               errorMessage,

@@ -78,7 +78,7 @@ public class FeedbackHandler
 //     * @return guid of new rating object.
 //     *
 //     * @throws InvalidParameterException - one of the parameters is null or invalid.
-//     * @throws PropertyServerException - There is a problem adding the asset properties to
+//     * @throws MetadataServerUncontactableException - There is a problem adding the asset properties to
 //     *                                   the property org.odpi.openmetadata.accessservices.subjectarea.server.
 //     * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
 //     */
@@ -86,7 +86,7 @@ public class FeedbackHandler
 //                                   String     assetGUID,
 //                                   StarRating starRating,
 //                                   String     review) throws InvalidParameterException,
-//                                                             PropertyServerException,
+//                                                             MetadataServerUncontactableException,
 //                                                             UserNotAuthorizedException
 //    {
 //        final String methodName = "addRatingToAsset";
@@ -257,13 +257,13 @@ public class FeedbackHandler
 //     * @return guid of new like object.
 //     *
 //     * @throws InvalidParameterException - one of the parameters is null or invalid.
-//     * @throws PropertyServerException - There is a problem adding the asset properties to
+//     * @throws MetadataServerUncontactableException - There is a problem adding the asset properties to
 //     *                                   the property org.odpi.openmetadata.accessservices.subjectarea.server.
 //     * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
 //     */
 //    public String addLikeToAsset(String       userId,
 //                                 String       assetGUID) throws InvalidParameterException,
-//                                                                PropertyServerException,
+//                                                                MetadataServerUncontactableException,
 //                                                                UserNotAuthorizedException
 //    {
 //        final String methodName = "addLikeToAsset";
@@ -335,7 +335,7 @@ public class FeedbackHandler
 //     * @return guid of new comment.
 //     *
 //     * @throws InvalidParameterException - one of the parameters is null or invalid.
-//     * @throws PropertyServerException - There is a problem adding the asset properties to
+//     * @throws MetadataServerUncontactableException - There is a problem adding the asset properties to
 //     *                                   the property org.odpi.openmetadata.accessservices.subjectarea.server.
 //     * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
 //     */
@@ -343,7 +343,7 @@ public class FeedbackHandler
 //                                    String      assetGUID,
 //                                    CommentType commentType,
 //                                    String      commentText) throws InvalidParameterException,
-//                                                                    PropertyServerException,
+//                                                                    MetadataServerUncontactableException,
 //                                                                    UserNotAuthorizedException
 //    {
 //        final String methodName = "addCommentToAsset";
@@ -363,7 +363,7 @@ public class FeedbackHandler
 //     * @return guid of new comment.
 //     *
 //     * @throws InvalidParameterException - one of the parameters is null or invalid.
-//     * @throws PropertyServerException - There is a problem adding the asset properties to
+//     * @throws MetadataServerUncontactableException - There is a problem adding the asset properties to
 //     *                                   the property org.odpi.openmetadata.accessservices.subjectarea.server.
 //     * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
 //     */
@@ -371,7 +371,7 @@ public class FeedbackHandler
 //                                  String      commentGUID,
 //                                  CommentType commentType,
 //                                  String      commentText) throws InvalidParameterException,
-//                                                                  PropertyServerException,
+//                                                                  MetadataServerUncontactableException,
 //                                                                  UserNotAuthorizedException
 //    {
 //        final String methodName = "addCommentReply";
@@ -473,7 +473,7 @@ public class FeedbackHandler
 //     * @return guid of new comment.
 //     *
 //     * @throws InvalidParameterException - one of the parameters is null or invalid.
-//     * @throws PropertyServerException - There is a problem adding the asset properties to
+//     * @throws MetadataServerUncontactableException - There is a problem adding the asset properties to
 //     *                                   the property org.odpi.openmetadata.accessservices.subjectarea.server.
 //     * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
 //     */
@@ -483,7 +483,7 @@ public class FeedbackHandler
 //                                      CommentType commentType,
 //                                      String      commentText,
 //                                      String      methodName) throws InvalidParameterException,
-//                                                                     PropertyServerException,
+//                                                                     MetadataServerUncontactableException,
 //                                                                     UserNotAuthorizedException
 //    {
 //        final String typeParameter = "commentType";
@@ -568,13 +568,13 @@ public class FeedbackHandler
 //     * @param tagGUID - String - unique id for the tag.
 //     *
 //     * @throws InvalidParameterException - one of the parameters is null or invalid.
-//     * @throws PropertyServerException - There is a problem updating the asset properties in
+//     * @throws MetadataServerUncontactableException - There is a problem updating the asset properties in
 //     *                                   the property org.odpi.openmetadata.accessservices.subjectarea.server.
 //     * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
 //     */
 //    public void   removeTagFromAsset(String     userId,
 //                                     String     tagGUID) throws InvalidParameterException,
-//                                                                PropertyServerException,
+//                                                                MetadataServerUncontactableException,
 //                                                                UserNotAuthorizedException
 //    {
 //        final String methodName = "removeTagFromAsset";
@@ -612,13 +612,13 @@ public class FeedbackHandler
 //     * @param tagGUID - String - unique id for the tag.
 //     *
 //     * @throws InvalidParameterException - one of the parameters is null or invalid.
-//     * @throws PropertyServerException - There is a problem updating the asset properties in
+//     * @throws MetadataServerUncontactableException - There is a problem updating the asset properties in
 //     *                                   the property org.odpi.openmetadata.accessservices.subjectarea.server.
 //     * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
 //     */
 //    public void   removePrivateTagFromAsset(String     userId,
 //                                            String     tagGUID) throws InvalidParameterException,
-//                                                                       PropertyServerException,
+//                                                                       MetadataServerUncontactableException,
 //                                                                       UserNotAuthorizedException
 //    {
 //        final String methodName = "removePrivateTagFromAsset";
@@ -656,13 +656,13 @@ public class FeedbackHandler
 //     * @param ratingGUID - String - unique id for the rating object
 //     *
 //     * @throws InvalidParameterException - one of the parameters is null or invalid.
-//     * @throws PropertyServerException - There is a problem updating the asset properties in
+//     * @throws MetadataServerUncontactableException - There is a problem updating the asset properties in
 //     *                                   the property org.odpi.openmetadata.accessservices.subjectarea.server.
 //     * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
 //     */
 //    public void   removeRatingFromAsset(String     userId,
 //                                        String     ratingGUID) throws InvalidParameterException,
-//                                                                      PropertyServerException,
+//                                                                      MetadataServerUncontactableException,
 //                                                                      UserNotAuthorizedException
 //    {
 //        final String methodName = "removeRatingFromAsset";
@@ -700,13 +700,13 @@ public class FeedbackHandler
 //     * @param likeGUID - String - unique id for the like object
 //     *
 //     * @throws InvalidParameterException - one of the parameters is null or invalid.
-//     * @throws PropertyServerException - There is a problem updating the asset properties in
+//     * @throws MetadataServerUncontactableException - There is a problem updating the asset properties in
 //     *                                   the property org.odpi.openmetadata.accessservices.subjectarea.server.
 //     * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
 //     */
 //    public void   removeLikeFromAsset(String     userId,
 //                                      String     likeGUID) throws InvalidParameterException,
-//                                                                  PropertyServerException,
+//                                                                  MetadataServerUncontactableException,
 //                                                                  UserNotAuthorizedException
 //    {
 //        final String methodName = "removeLikeFromAsset";
@@ -744,13 +744,13 @@ public class FeedbackHandler
 //     * @param commentGUID - String - unique id for the comment object
 //     *
 //     * @throws InvalidParameterException - one of the parameters is null or invalid.
-//     * @throws PropertyServerException - There is a problem updating the asset properties in
+//     * @throws MetadataServerUncontactableException - There is a problem updating the asset properties in
 //     *                                   the property org.odpi.openmetadata.accessservices.subjectarea.server.
 //     * @throws UserNotAuthorizedException - the user does not have permission to perform this request.
 //     */
 //    public void   removeCommentFromAsset(String     userId,
 //                                         String     commentGUID) throws InvalidParameterException,
-//                                                                        PropertyServerException,
+//                                                                        MetadataServerUncontactableException,
 //                                                                        UserNotAuthorizedException
 //    {
 //        final String methodName = "removeCommentFromAsset";
@@ -789,14 +789,14 @@ public class FeedbackHandler
 //     * @param metadataCollection - repository's metadata collection
 //     * @param methodName - name of method called.
 //     * @throws InvalidParameterException - entity not known
-//     * @throws PropertyServerException - problem accessing property org.odpi.openmetadata.accessservices.subjectarea.server
+//     * @throws MetadataServerUncontactableException - problem accessing property org.odpi.openmetadata.accessservices.subjectarea.server
 //     * @throws UserNotAuthorizedException - security access problem
 //     */
 //    private void validateEntity(String                  userId,
 //                                String                  assetGUID,
 //                                OMRSMetadataCollection  metadataCollection,
 //                                String                  methodName) throws InvalidParameterException,
-//            PropertyServerException,
+//            MetadataServerUncontactableException,
 //            UserNotAuthorizedException, UnrecognizedGUIDException {
 //        try
 //        {

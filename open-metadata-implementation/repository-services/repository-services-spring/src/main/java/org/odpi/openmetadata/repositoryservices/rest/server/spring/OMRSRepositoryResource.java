@@ -1,8 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.repositoryservices.rest.server.spring;
 
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.rest.properties.*;
@@ -10,7 +8,6 @@ import org.odpi.openmetadata.repositoryservices.rest.server.OMRSRepositoryRESTSe
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * OMRSRepositoryRESTServices provides the server-side support for the OMRS Repository REST Services API.
@@ -148,17 +145,17 @@ public class OMRSRepositoryResource
      * Returns all of the TypeDefs for a specific category.
      *
      * @param userId unique identifier for requesting user.
-     * @param category enum value for the category of TypeDef to return.
+     * @param category find parameters used to limit the returned results.
      * @return TypeDefListResponse:
      * TypeDefs list or
      * InvalidParameterException the TypeDefCategory is null or
      * RepositoryErrorException there is a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/types/typedefs/by-category")
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/types/typedefs/by-category")
 
-    public TypeDefListResponse findTypeDefsByCategory(@PathVariable String          userId,
-                                                      @RequestParam TypeDefCategory category)
+    public TypeDefListResponse findTypeDefsByCategory(@PathVariable String                     userId,
+                                                      @RequestBody  TypeDefCategory            category)
     {
         return restAPI.findTypeDefsByCategory(userId, category);
     }
@@ -168,17 +165,17 @@ public class OMRSRepositoryResource
      * Returns all of the AttributeTypeDefs for a specific category.
      *
      * @param userId unique identifier for requesting user.
-     * @param category enum value for the category of an AttributeTypeDef to return.
+     * @param category find parameters used to limit the returned results.
      * @return AttributeTypeDefListResponse:
      * AttributeTypeDefs list or
      * InvalidParameterException the TypeDefCategory is null or
      * RepositoryErrorException there is a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/types/attribute-typedefs/by-category")
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/types/attribute-typedefs/by-category")
 
     public AttributeTypeDefListResponse findAttributeTypeDefsByCategory(@PathVariable String                   userId,
-                                                                        @RequestParam AttributeTypeDefCategory category)
+                                                                        @RequestBody  AttributeTypeDefCategory category)
     {
         return restAPI.findAttributeTypeDefsByCategory(userId, category);
     }
@@ -198,7 +195,7 @@ public class OMRSRepositoryResource
     @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/types/typedefs/by-property")
 
     public TypeDefListResponse findTypeDefsByProperty(@PathVariable String            userId,
-                                                      @RequestParam TypeDefProperties matchCriteria)
+                                                      @RequestBody  TypeDefProperties matchCriteria)
     {
         return restAPI.findTypeDefsByProperty(userId, matchCriteria);
     }
@@ -219,10 +216,10 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/types/typedefs/by-external-id")
 
-    public TypeDefListResponse findTypesByExternalID(@PathVariable String    userId,
-                                                     @RequestParam String    standard,
-                                                     @RequestParam String    organization,
-                                                     @RequestParam String    identifier)
+    public TypeDefListResponse findTypesByExternalID(@PathVariable                   String    userId,
+                                                     @RequestParam(required = false) String    standard,
+                                                     @RequestParam(required = false) String    organization,
+                                                     @RequestParam(required = false) String    identifier)
     {
         return restAPI.findTypesByExternalID(userId, standard, organization, identifier);
     }
@@ -357,7 +354,7 @@ public class OMRSRepositoryResource
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/types")
 
     public  VoidResponse addTypeDefGallery(@PathVariable String         userId,
-                                           @RequestParam TypeDefGallery newTypes)
+                                           @RequestBody  TypeDefGallery newTypes)
     {
         return restAPI.addTypeDefGallery(userId, newTypes);
     }
@@ -383,7 +380,7 @@ public class OMRSRepositoryResource
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/types/typedef")
 
     public VoidResponse addTypeDef(@PathVariable String  userId,
-                                   @RequestParam TypeDef newTypeDef)
+                                   @RequestBody  TypeDef newTypeDef)
     {
         return restAPI.addTypeDef(userId, newTypeDef);
     }
@@ -409,7 +406,7 @@ public class OMRSRepositoryResource
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/types/attribute-typedef")
 
     public  VoidResponse addAttributeTypeDef(@PathVariable String             userId,
-                                             @RequestParam AttributeTypeDef   newAttributeTypeDef)
+                                             @RequestBody  AttributeTypeDef   newAttributeTypeDef)
     {
         return restAPI.addAttributeTypeDef(userId, newAttributeTypeDef);
     }
@@ -430,10 +427,10 @@ public class OMRSRepositoryResource
      * InvalidTypeDefException the new TypeDef has invalid contents.
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/types/typedef/compatibility")
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/types/typedef/compatibility")
 
     public BooleanResponse verifyTypeDef(@PathVariable String       userId,
-                                         @RequestParam TypeDef      typeDef)
+                                         @RequestBody  TypeDef      typeDef)
     {
         return restAPI.verifyTypeDef(userId, typeDef);
     }
@@ -454,10 +451,10 @@ public class OMRSRepositoryResource
      * InvalidTypeDefException the new TypeDef has invalid contents or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/types/attribute-typedef/compatibility")
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/types/attribute-typedef/compatibility")
 
     public  BooleanResponse verifyAttributeTypeDef(@PathVariable String            userId,
-                                                   @RequestParam AttributeTypeDef  attributeTypeDef)
+                                                   @RequestBody  AttributeTypeDef  attributeTypeDef)
     {
         return restAPI.verifyAttributeTypeDef(userId, attributeTypeDef);
     }
@@ -480,10 +477,10 @@ public class OMRSRepositoryResource
      * FunctionNotSupportedException the repository does not support this call or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.PATCH, path = "/users/{userId}/types/typedef")
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/types/typedef/update")
 
     public TypeDefResponse updateTypeDef(@PathVariable String       userId,
-                                         @RequestParam TypeDefPatch typeDefPatch)
+                                         @RequestBody  TypeDefPatch typeDefPatch)
     {
         return restAPI.updateTypeDef(userId, typeDefPatch);
     }
@@ -494,8 +491,8 @@ public class OMRSRepositoryResource
      * instances of this TypeDef have been purged from the metadata collection.
      *
      * @param userId unique identifier for requesting user.
-     * @param obsoleteTypeDefGUID String unique identifier for the TypeDef.
-     * @param obsoleteTypeDefName String unique name for the TypeDef.
+     * @param guid String unique identifier for the TypeDef.
+     * @param name String unique name for the TypeDef.
      * @return VoidResponse:
      * void or
      * InvalidParameterException the one of TypeDef identifiers is null or
@@ -508,13 +505,13 @@ public class OMRSRepositoryResource
      * FunctionNotSupportedException the repository does not support this call or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.PATCH, path = "/users/{userId}/types/typedef/{obsoleteTypeDefGUID}")
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/types/typedef/{guid}")
 
     public VoidResponse deleteTypeDef(@PathVariable String    userId,
-                                      @PathVariable String    obsoleteTypeDefGUID,
-                                      @RequestParam String    obsoleteTypeDefName)
+                                      @PathVariable String    guid,
+                                      @RequestParam String    name)
     {
-        return restAPI.deleteTypeDef(userId, obsoleteTypeDefGUID, obsoleteTypeDefName);
+        return restAPI.deleteTypeDef(userId, guid, name);
     }
 
 
@@ -523,8 +520,8 @@ public class OMRSRepositoryResource
      * instances or any instances of this AttributeTypeDef have been purged from the metadata collection.
      *
      * @param userId unique identifier for requesting user.
-     * @param obsoleteTypeDefGUID String unique identifier for the AttributeTypeDef.
-     * @param obsoleteTypeDefName String unique name for the AttributeTypeDef.
+     * @param guid String unique identifier for the AttributeTypeDef.
+     * @param name String unique name for the AttributeTypeDef.
      * @return VoidResponse:
      * void or
      * InvalidParameterException the one of AttributeTypeDef identifiers is null or
@@ -537,13 +534,13 @@ public class OMRSRepositoryResource
      * FunctionNotSupportedException the repository does not support this call or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.PATCH, path = "/users/{userId}/types/attribute-typedef/{obsoleteTypeDefGUID}")
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/types/attribute-typedef/{guid}")
 
     public VoidResponse deleteAttributeTypeDef(@PathVariable String    userId,
-                                               @PathVariable String    obsoleteTypeDefGUID,
-                                               @RequestParam String    obsoleteTypeDefName)
+                                               @PathVariable String    guid,
+                                               @RequestParam String    name)
     {
-        return restAPI.deleteAttributeTypeDef(userId, obsoleteTypeDefGUID, obsoleteTypeDefName);
+        return restAPI.deleteAttributeTypeDef(userId, guid, name);
     }
 
 
@@ -554,11 +551,10 @@ public class OMRSRepositoryResource
      *
      * @param userId unique identifier for requesting user.
      * @param originalTypeDefGUID the original guid of the TypeDef.
-     * @param originalTypeDefName the original name of the TypeDef.
-     * @param newTypeDefGUID the new identifier for the TypeDef.
-     * @param newTypeDefName new name for this TypeDef.
+     * @param requestParameters the original name of the TypeDef, the new identifier for the TypeDef and the
+     *                         new name for this TypeDef.
      * @return TypeDefResponse:
-     * typeDef new values for this TypeDef, including the new guid/name or
+     * typeDef: new values for this TypeDef, including the new guid/name or
      * InvalidParameterException one of the parameters is invalid or null or
      * RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
@@ -567,19 +563,15 @@ public class OMRSRepositoryResource
      * FunctionNotSupportedException the repository does not support this call or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.PATCH, path = "/users/{userId}/types/typedef/{originalTypeDefGUID}/identifier")
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/types/typedef/{originalTypeDefGUID}/identifier")
 
-    public  TypeDefResponse reIdentifyTypeDef(@PathVariable String     userId,
-                                              @PathVariable String     originalTypeDefGUID,
-                                              @RequestParam String     originalTypeDefName,
-                                              @RequestParam String     newTypeDefGUID,
-                                              @RequestParam String     newTypeDefName)
+    public  TypeDefResponse reIdentifyTypeDef(@PathVariable String                   userId,
+                                              @PathVariable String                   originalTypeDefGUID,
+                                              @RequestBody  TypeDefReIdentifyRequest requestParameters)
     {
         return restAPI.reIdentifyTypeDef(userId,
                                          originalTypeDefGUID,
-                                         originalTypeDefName,
-                                         newTypeDefGUID,
-                                         newTypeDefName);
+                                         requestParameters);
     }
 
 
@@ -590,9 +582,8 @@ public class OMRSRepositoryResource
      *
      * @param userId unique identifier for requesting user.
      * @param originalAttributeTypeDefGUID the original guid of the AttributeTypeDef.
-     * @param originalAttributeTypeDefName the original name of the AttributeTypeDef.
-     * @param newAttributeTypeDefGUID the new identifier for the AttributeTypeDef.
-     * @param newAttributeTypeDefName new name for this AttributeTypeDef.
+     * @param requestParameters the original name of the AttributeTypeDef and the new identifier for the AttributeTypeDef
+     *                          and the new name for this AttributeTypeDef.
      * @return AttributeTypeDefResponse:
      * attributeTypeDef new values for this AttributeTypeDef, including the new guid/name or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -603,19 +594,15 @@ public class OMRSRepositoryResource
      * FunctionNotSupportedException the repository does not support this call or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.PATCH, path = "/users/{userId}/types/attribute-typedef/{originalAttributeTypeDefGUID}/identifier")
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/types/attribute-typedef/{originalAttributeTypeDefGUID}/identifier")
 
-    public  AttributeTypeDefResponse reIdentifyAttributeTypeDef(@PathVariable String     userId,
-                                                                @PathVariable String     originalAttributeTypeDefGUID,
-                                                                @RequestParam String     originalAttributeTypeDefName,
-                                                                @RequestParam String     newAttributeTypeDefGUID,
-                                                                @RequestParam String     newAttributeTypeDefName)
+    public  AttributeTypeDefResponse reIdentifyAttributeTypeDef(@PathVariable String                    userId,
+                                                                @PathVariable String                    originalAttributeTypeDefGUID,
+                                                                @RequestBody  TypeDefReIdentifyRequest  requestParameters)
     {
         return restAPI.reIdentifyAttributeTypeDef(userId,
                                                   originalAttributeTypeDefGUID,
-                                                  originalAttributeTypeDefName,
-                                                  newAttributeTypeDefGUID,
-                                                  newAttributeTypeDefName);
+                                                  requestParameters);
     }
 
 
@@ -726,7 +713,7 @@ public class OMRSRepositoryResource
      * EntityNotKnownException the requested entity instance is not known in the metadata collection
      *                                   at the time requested or
      * EntityProxyOnlyException the requested entity instance is only a proxy in the metadata collection or
-     * FunctionNotSupportedException the repository does not support satOfTime parameter or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/instances/entity/{guid}/history")
@@ -744,20 +731,7 @@ public class OMRSRepositoryResource
      *
      * @param userId unique identifier for requesting user.
      * @param entityGUID String unique identifier for the entity.
-     * @param relationshipTypeGUID String GUID of the the type of relationship required (null for all).
-     * @param fromRelationshipElement the starting element number of the relationships to return.
-     *                                This is used when retrieving elements
-     *                                beyond the first page of results. Zero means start from the first element.
-     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
-     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
-     * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
-     *                 present values.
-     * @param sequencingProperty String name of the property that is to be used to sequence the results.
-     *                           Null means do not sequence on a property name (see SequencingOrder).
-     * @param sequencingOrder Enum defining how the results should be ordered.
-     * @param pageSize -- the maximum number of result classifications that can be returned on this request.  Zero means
-     *                 unrestricted return results size.
+     * @param findRequestParameters find parameters used to limit the returned results.
      * @return RelationshipListResponse:
      * Relationships list.  Null means no relationships associated with the entity or
      * InvalidParameterException a parameter is invalid or null or
@@ -767,30 +741,48 @@ public class OMRSRepositoryResource
      * EntityNotKnownException the requested entity instance is not known in the metadata collection or
      * PropertyErrorException the sequencing property is not valid for the attached classifications or
      * PagingErrorException the paging/sequencing parameters are set up incorrectly or
-     * FunctionNotSupportedException the repository does not support satOfTime parameter or
-     * UserNotAuthorizedException the userId is not permitted to perform this operation or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/instances/entity/{entityGUID}/relationships")
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entity/{entityGUID}/relationships")
 
-    public RelationshipListResponse getRelationshipsForEntity(@PathVariable                   String                     userId,
-                                                              @PathVariable                   String                     entityGUID,
-                                                              @RequestParam(required = false) String                     relationshipTypeGUID,
-                                                              @RequestParam(required = false) int                        fromRelationshipElement,
-                                                              @RequestParam(required = false) List<InstanceStatus>       limitResultsByStatus,
-                                                              @RequestParam(required = false) Date                       asOfTime,
-                                                              @RequestParam(required = false) String                     sequencingProperty,
-                                                              @RequestParam(required = false) SequencingOrder sequencingOrder,
-                                                              @RequestParam(required = false) int                        pageSize)
+    public RelationshipListResponse getRelationshipsForEntity(@PathVariable String                     userId,
+                                                              @PathVariable String                     entityGUID,
+                                                              @RequestBody  TypeLimitedFindRequest     findRequestParameters)
     {
         return restAPI.getRelationshipsForEntity(userId,
                                                  entityGUID,
-                                                 relationshipTypeGUID,
-                                                 fromRelationshipElement,
-                                                 limitResultsByStatus,
-                                                 asOfTime,
-                                                 sequencingProperty,
-                                                 sequencingOrder,
-                                                 pageSize);
+                                                 findRequestParameters);
+    }
+
+
+    /**
+     * Return the relationships for a specific entity.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID String unique identifier for the entity.
+     * @param findRequestParameters find parameters used to limit the returned results.
+     * @return RelationshipListResponse:
+     * Relationships list.  Null means no relationships associated with the entity or
+     * InvalidParameterException a parameter is invalid or null or
+     * TypeErrorException the type guid passed on the request is not known by the metadata collection or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored or
+     * EntityNotKnownException the requested entity instance is not known in the metadata collection or
+     * PropertyErrorException the sequencing property is not valid for the attached classifications or
+     * PagingErrorException the paging/sequencing parameters are set up incorrectly or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entity/{entityGUID}/relationships/history")
+
+    public RelationshipListResponse getRelationshipsForEntityHistory(@PathVariable String                            userId,
+                                                                     @PathVariable String                            entityGUID,
+                                                                     @RequestBody  TypeLimitedHistoricalFindRequest  findRequestParameters)
+    {
+        return restAPI.getRelationshipsForEntityHistory(userId,
+                                                        entityGUID,
+                                                        findRequestParameters);
     }
 
 
@@ -799,22 +791,7 @@ public class OMRSRepositoryResource
      * can be returned over many pages.
      *
      * @param userId unique identifier for requesting user.
-     * @param entityTypeGUID String unique identifier for the entity type of interest (null means any entity type).
-     * @param matchProperties List of entity properties to match to (null means match on entityTypeGUID only).
-     * @param matchCriteria Enum defining how the properties should be matched to the entities in the repository.
-     * @param fromEntityElement the starting element number of the entities to return.
-     *                                This is used when retrieving elements
-     *                                beyond the first page of results. Zero means start from the first element.
-     * @param limitResultsByStatus By default, entities in all statuses are returned.  However, it is possible
-     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
-     * @param limitResultsByClassification List of classifications that must be present on all returned entities.
-     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
-     * @param sequencingProperty String name of the entity property that is to be used to sequence the results.
-     *                           Null means do not sequence on a property name (see SequencingOrder).
-     * @param sequencingOrder Enum defining how the results should be ordered.
-     * @param pageSize the maximum number of result entities that can be returned on this request.  Zero means
-     *                 unrestricted return results size.
+     * @param findRequestParameters find parameters used to limit the returned results.
      * @return EntityListResponse:
      * a list of entities matching the supplied criteria null means no matching entities in the metadata
      * collection or
@@ -825,34 +802,43 @@ public class OMRSRepositoryResource
      * PropertyErrorException the properties specified are not valid for any of the requested types of
      *                                  entity or
      * PagingErrorException the paging/sequencing parameters are set up incorrectly or
-     * FunctionNotSupportedException the repository does not support satOfTime parameter or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/instances/entities/by-property")
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entities/by-property")
 
-    public  EntityListResponse findEntitiesByProperty(@PathVariable                   String                    userId,
-                                                      @RequestParam(required = false) String                    entityTypeGUID,
-                                                      @RequestParam(required = false) InstanceProperties        matchProperties,
-                                                      @RequestParam(required = false) MatchCriteria             matchCriteria,
-                                                      @RequestParam(required = false) int                       fromEntityElement,
-                                                      @RequestParam(required = false) List<InstanceStatus>      limitResultsByStatus,
-                                                      @RequestParam(required = false) List<String>              limitResultsByClassification,
-                                                      @RequestParam(required = false) Date                      asOfTime,
-                                                      @RequestParam(required = false) String                    sequencingProperty,
-                                                      @RequestParam(required = false) SequencingOrder           sequencingOrder,
-                                                      @RequestParam(required = false) int                       pageSize)
+    public  EntityListResponse findEntitiesByProperty(@PathVariable  String                    userId,
+                                                      @RequestBody   EntityPropertyFindRequest findRequestParameters)
     {
-        return restAPI.findEntitiesByProperty(userId,
-                                              entityTypeGUID,
-                                              matchProperties,
-                                              matchCriteria,
-                                              fromEntityElement,
-                                              limitResultsByStatus,
-                                              limitResultsByClassification,
-                                              asOfTime,
-                                              sequencingProperty,
-                                              sequencingOrder,
-                                              pageSize);
+        return restAPI.findEntitiesByProperty(userId, findRequestParameters);
+    }
+
+
+    /**
+     * Return a list of entities that match the supplied properties according to the match criteria.  The results
+     * can be returned over many pages.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param findRequestParameters find parameters used to limit the returned results.
+     * @return EntityListResponse:
+     * a list of entities matching the supplied criteria null means no matching entities in the metadata
+     * collection or
+     * InvalidParameterException a parameter is invalid or null or
+     * TypeErrorException the type guid passed on the request is not known by the metadata collection or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored or
+     * PropertyErrorException the properties specified are not valid for any of the requested types of
+     *                                  entity or
+     * PagingErrorException the paging/sequencing parameters are set up incorrectly or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entities/by-property/history")
+
+    public  EntityListResponse findEntitiesByPropertyHistory(@PathVariable  String                              userId,
+                                                             @RequestBody   EntityPropertyHistoricalFindRequest findRequestParameters)
+    {
+        return restAPI.findEntitiesByPropertyHistory(userId, findRequestParameters);
     }
 
 
@@ -860,22 +846,8 @@ public class OMRSRepositoryResource
      * Return a list of entities that have the requested type of classification attached.
      *
      * @param userId unique identifier for requesting user.
-     * @param entityTypeGUID unique identifier for the type of entity requested.  Null mans any type of entity.
      * @param classificationName name of the classification a null is not valid.
-     * @param matchClassificationProperties list of classification properties used to narrow the search.
-     * @param matchCriteria Enum defining how the properties should be matched to the classifications in the repository.
-     * @param fromEntityElement the starting element number of the entities to return.
-     *                                This is used when retrieving elements
-     *                                beyond the first page of results. Zero means start from the first element.
-     * @param limitResultsByStatus By default, entities in all statuses are returned.  However, it is possible
-     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
-     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
-     * @param sequencingProperty String name of the entity property that is to be used to sequence the results.
-     *                           Null means do not sequence on a property name (see SequencingOrder).
-     * @param sequencingOrder Enum defining how the results should be ordered.
-     * @param pageSize the maximum number of result entities that can be returned on this request.  Zero means
-     *                 unrestricted return results size.
+     * @param findRequestParameters find parameters used to limit the returned results.
      * @return EntityListResponse:
      * a list of entities matching the supplied criteria, null means no matching entities in the metadata
      * collection or
@@ -887,34 +859,46 @@ public class OMRSRepositoryResource
      * PropertyErrorException the properties specified are not valid for the requested type of
      *                                  classification or
      * PagingErrorException the paging/sequencing parameters are set up incorrectly or
-     * FunctionNotSupportedException the repository does not support satOfTime parameter or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/instances/entities/by-classification/{classificationName}")
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entities/by-classification/{classificationName}")
 
-    public  EntityListResponse findEntitiesByClassification(@PathVariable                   String                    userId,
-                                                            @RequestParam(required = false) String                    entityTypeGUID,
-                                                            @PathVariable                   String                    classificationName,
-                                                            @RequestParam(required = false) InstanceProperties        matchClassificationProperties,
-                                                            @RequestParam(required = false) MatchCriteria             matchCriteria,
-                                                            @RequestParam(required = false) int                       fromEntityElement,
-                                                            @RequestParam(required = false) List<InstanceStatus>      limitResultsByStatus,
-                                                            @RequestParam(required = false) Date                      asOfTime,
-                                                            @RequestParam(required = false) String                    sequencingProperty,
-                                                            @RequestParam(required = false) SequencingOrder           sequencingOrder,
-                                                            @RequestParam(required = false) int                       pageSize)
+    public  EntityListResponse findEntitiesByClassification(@PathVariable String                   userId,
+                                                            @PathVariable String                   classificationName,
+                                                            @RequestBody  PropertyMatchFindRequest findRequestParameters)
     {
-        return restAPI.findEntitiesByClassification(userId,
-                                                    entityTypeGUID,
-                                                    classificationName,
-                                                    matchClassificationProperties,
-                                                    matchCriteria,
-                                                    fromEntityElement,
-                                                    limitResultsByStatus,
-                                                    asOfTime,
-                                                    sequencingProperty,
-                                                    sequencingOrder,
-                                                    pageSize);
+        return restAPI.findEntitiesByClassification(userId, classificationName, findRequestParameters);
+    }
+
+
+    /**
+     * Return a list of entities that have the requested type of classification attached.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param classificationName name of the classification a null is not valid.
+     * @param findRequestParameters find parameters used to limit the returned results.
+     * @return EntityListResponse:
+     * a list of entities matching the supplied criteria, null means no matching entities in the metadata
+     * collection or
+     * InvalidParameterException a parameter is invalid or null or
+     * TypeErrorException the type guid passed on the request is not known by the metadata collection or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored or
+     * ClassificationErrorException the classification request is not known to the metadata collection.
+     * PropertyErrorException the properties specified are not valid for the requested type of
+     *                                  classification or
+     * PagingErrorException the paging/sequencing parameters are set up incorrectly or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entities/by-classification/{classificationName}/history")
+
+    public  EntityListResponse findEntitiesByClassificationHistory(@PathVariable String                             userId,
+                                                                   @PathVariable String                             classificationName,
+                                                                   @RequestBody  PropertyMatchHistoricalFindRequest findRequestParameters)
+    {
+        return restAPI.findEntitiesByClassificationHistory(userId, classificationName, findRequestParameters);
     }
 
 
@@ -923,22 +907,8 @@ public class OMRSRepositoryResource
      * search criteria may include regex style wild cards.
      *
      * @param userId unique identifier for requesting user.
-     * @param entityTypeGUID GUID of the type of entity to search for. Null means all types will
-     *                       be searched (could be slow so not recommended).
      * @param searchCriteria String expression of the characteristics of the required relationships.
-     * @param fromEntityElement the starting element number of the entities to return.
-     *                                This is used when retrieving elements
-     *                                beyond the first page of results. Zero means start from the first element.
-     * @param limitResultsByStatus By default, entities in all statuses are returned.  However, it is possible
-     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
-     * @param limitResultsByClassification List of classifications that must be present on all returned entities.
-     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
-     * @param sequencingProperty String name of the property that is to be used to sequence the results.
-     *                           Null means do not sequence on a property name (see SequencingOrder).
-     * @param sequencingOrder Enum defining how the results should be ordered.
-     * @param pageSize the maximum number of result entities that can be returned on this request.  Zero means
-     *                 unrestricted return results size.
+     * @param findRequestParameters find parameters used to limit the returned results.
      * @return EntityListResponse:
      * a list of entities matching the supplied criteria, null means no matching entities in the metadata
      * collection or
@@ -949,32 +919,46 @@ public class OMRSRepositoryResource
      * PropertyErrorException the sequencing property specified is not valid for any of the requested types of
      *                                  entity or
      * PagingErrorException the paging/sequencing parameters are set up incorrectly.
-     * FunctionNotSupportedException the repository does not support satOfTime parameter or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/instances/entities/by-property-value")
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entities/by-property-value")
 
-    public  EntityListResponse findEntitiesByPropertyValue(@PathVariable                   String                  userId,
-                                                           @RequestParam(required = false) String                  entityTypeGUID,
-                                                           @RequestParam                   String                  searchCriteria,
-                                                           @RequestParam(required = false) int                     fromEntityElement,
-                                                           @RequestParam(required = false) List<InstanceStatus>    limitResultsByStatus,
-                                                           @RequestParam(required = false) List<String>            limitResultsByClassification,
-                                                           @RequestParam(required = false) Date                    asOfTime,
-                                                           @RequestParam(required = false) String                  sequencingProperty,
-                                                           @RequestParam(required = false) SequencingOrder         sequencingOrder,
-                                                           @RequestParam(required = false) int                     pageSize)
+    public  EntityListResponse findEntitiesByPropertyValue(@PathVariable  String                    userId,
+                                                           @RequestParam  String                    searchCriteria,
+                                                           @RequestBody   EntityPropertyFindRequest findRequestParameters)
     {
-        return restAPI.findEntitiesByPropertyValue(userId,
-                                                   entityTypeGUID,
-                                                   searchCriteria,
-                                                   fromEntityElement,
-                                                   limitResultsByStatus,
-                                                   limitResultsByClassification,
-                                                   asOfTime,
-                                                   sequencingProperty,
-                                                   sequencingOrder,
-                                                   pageSize);
+        return restAPI.findEntitiesByPropertyValue(userId, searchCriteria, findRequestParameters);
+    }
+
+
+    /**
+     * Return a list of entities whose string based property values match the search criteria.  The
+     * search criteria may include regex style wild cards.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param searchCriteria String expression of the characteristics of the required relationships.
+     * @param findRequestParameters find parameters used to limit the returned results.
+     * @return EntityListResponse:
+     * a list of entities matching the supplied criteria, null means no matching entities in the metadata
+     * collection or
+     * InvalidParameterException a parameter is invalid or null or
+     * TypeErrorException the type guid passed on the request is not known by the metadata collection or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored or
+     * PropertyErrorException the sequencing property specified is not valid for any of the requested types of
+     *                                  entity or
+     * PagingErrorException the paging/sequencing parameters are set up incorrectly.
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entities/by-property-value/history")
+
+    public  EntityListResponse findEntitiesByPropertyValueHistory(@PathVariable  String                              userId,
+                                                                  @RequestParam  String                              searchCriteria,
+                                                                  @RequestBody   EntityPropertyHistoricalFindRequest findRequestParameters)
+    {
+        return restAPI.findEntitiesByPropertyValueHistory(userId, searchCriteria, findRequestParameters);
     }
 
 
@@ -1057,7 +1041,7 @@ public class OMRSRepositoryResource
      *                                 the metadata collection is stored or
      * RelationshipNotKnownException the requested entity instance is not known in the metadata collection
      *                                   at the time requested or
-     * FunctionNotSupportedException the repository does not support satOfTime parameter or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/instances/relationship/{guid}/history")
@@ -1075,22 +1059,7 @@ public class OMRSRepositoryResource
      * can be broken into pages.
      *
      * @param userId unique identifier for requesting user
-     * @param relationshipTypeGUID unique identifier (guid) for the new relationship's type.
-     * @param matchProperties list of  properties used to narrow the search.
-     * @param matchCriteria Enum defining how the properties should be matched to the relationships in the repository.
-     * @param fromRelationshipElement the starting element number of the relationships to return.
-     *                                This is used when retrieving elements
-     *                                beyond the first page of results. Zero means start from the first element.
-     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
-     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
-     * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
-     *                 present values.
-     * @param sequencingProperty String name of the property that is to be used to sequence the results.
-     *                           Null means do not sequence on a property name (see SequencingOrder).
-     * @param sequencingOrder Enum defining how the results should be ordered.
-     * @param pageSize the maximum number of result relationships that can be returned on this request.  Zero means
-     *                 unrestricted return results size.
+     * @param findRequestParameters find parameters used to limit the returned results.
      * @return RelationshipListResponse:
      * a list of relationships.  Null means no matching relationships or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -1100,32 +1069,42 @@ public class OMRSRepositoryResource
      * PropertyErrorException the properties specified are not valid for any of the requested types of
      *                                  relationships or
      * PagingErrorException the paging/sequencing parameters are set up incorrectly or
-     * FunctionNotSupportedException the repository does not support satOfTime parameter or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/instances/relationships/by-property")
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/relationships/by-property")
 
-    public  RelationshipListResponse findRelationshipsByProperty(@PathVariable                   String                    userId,
-                                                                 @RequestParam(required = false) String                    relationshipTypeGUID,
-                                                                 @RequestParam(required = false) InstanceProperties        matchProperties,
-                                                                 @RequestParam(required = false) MatchCriteria             matchCriteria,
-                                                                 @RequestParam(required = false) int                       fromRelationshipElement,
-                                                                 @RequestParam(required = false) List<InstanceStatus>      limitResultsByStatus,
-                                                                 @RequestParam(required = false) Date                      asOfTime,
-                                                                 @RequestParam(required = false) String                    sequencingProperty,
-                                                                 @RequestParam(required = false) SequencingOrder           sequencingOrder,
-                                                                 @RequestParam(required = false) int                       pageSize)
+    public  RelationshipListResponse findRelationshipsByProperty(@PathVariable String                   userId,
+                                                                 @RequestBody  PropertyMatchFindRequest findRequestParameters)
     {
-        return restAPI.findRelationshipsByProperty(userId,
-                                                   relationshipTypeGUID,
-                                                   matchProperties,
-                                                   matchCriteria,
-                                                   fromRelationshipElement,
-                                                   limitResultsByStatus,
-                                                   asOfTime,
-                                                   sequencingProperty,
-                                                   sequencingOrder,
-                                                   pageSize);
+        return restAPI.findRelationshipsByProperty(userId, findRequestParameters);
+    }
+
+
+    /**
+     * Return a list of relationships that match the requested properties by the matching criteria.   The results
+     * can be broken into pages.
+     *
+     * @param userId unique identifier for requesting user
+     * @param findRequestParameters find parameters used to limit the returned results.
+     * @return RelationshipListResponse:
+     * a list of relationships.  Null means no matching relationships or
+     * InvalidParameterException one of the parameters is invalid or null or
+     * TypeErrorException the type guid passed on the request is not known by the metadata collection or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored or
+     * PropertyErrorException the properties specified are not valid for any of the requested types of
+     *                                  relationships or
+     * PagingErrorException the paging/sequencing parameters are set up incorrectly or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/relationships/by-property/history")
+
+    public  RelationshipListResponse findRelationshipsByPropertyHistory(@PathVariable String                             userId,
+                                                                        @RequestBody  PropertyMatchHistoricalFindRequest findRequestParameters)
+    {
+        return restAPI.findRelationshipsByPropertyHistory(userId, findRequestParameters);
     }
 
 
@@ -1133,21 +1112,8 @@ public class OMRSRepositoryResource
      * Return a list of relationships that match the search criteria.  The results can be paged.
      *
      * @param userId unique identifier for requesting user.
-     * @param relationshipTypeGUID unique identifier of a relationship type (or null for all types of relationship.
      * @param searchCriteria String expression of the characteristics of the required relationships.
-     * @param fromRelationshipElement Element number of the results to skip to when building the results list
-     *                                to return.  Zero means begin at the start of the results.  This is used
-     *                                to retrieve the results over a number of pages.
-     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
-     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
-     * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
-     *                 present values.
-     * @param sequencingProperty String name of the property that is to be used to sequence the results.
-     *                           Null means do not sequence on a property name (see SequencingOrder).
-     * @param sequencingOrder Enum defining how the results should be ordered.
-     * @param pageSize the maximum number of result relationships that can be returned on this request.  Zero means
-     *                 unrestricted return results size.
+     * @param findRequestParameters find parameters used to limit the returned results.
      * @return RelationshipListResponse:
      * a list of relationships.  Null means no matching relationships or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -1156,33 +1122,44 @@ public class OMRSRepositoryResource
      *                                  the metadata collection is stored or
      * PropertyErrorException there is a problem with one of the other parameters  or
      * PagingErrorException the paging/sequencing parameters are set up incorrectly or
-     * FunctionNotSupportedException the repository does not support satOfTime parameter or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/instances/relationships/by-property-value")
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/relationships/by-property-value")
 
-    public  RelationshipListResponse findRelationshipsByPropertyValue(@PathVariable                   String                    userId,
-                                                                      @RequestParam(required = false) String                    relationshipTypeGUID,
-                                                                      @RequestParam                   String                    searchCriteria,
-                                                                      @RequestParam(required = false) int                       fromRelationshipElement,
-                                                                      @RequestParam(required = false) List<InstanceStatus>      limitResultsByStatus,
-                                                                      @RequestParam(required = false) Date                      asOfTime,
-                                                                      @RequestParam(required = false) String                    sequencingProperty,
-                                                                      @RequestParam(required = false) SequencingOrder           sequencingOrder,
-                                                                      @RequestParam(required = false) int                       pageSize)
+    public  RelationshipListResponse findRelationshipsByPropertyValue(@PathVariable  String                    userId,
+                                                                      @RequestParam  String                    searchCriteria,
+                                                                      @RequestBody   TypeLimitedFindRequest    findRequestParameters)
     {
-        return restAPI.findRelationshipsByPropertyValue(userId,
-                                                        relationshipTypeGUID,
-                                                        searchCriteria,
-                                                        fromRelationshipElement,
-                                                        limitResultsByStatus,
-                                                        asOfTime,
-                                                        sequencingProperty,
-                                                        sequencingOrder,
-                                                        pageSize);
+        return restAPI.findRelationshipsByPropertyValue(userId, searchCriteria, findRequestParameters);
     }
 
 
+    /**
+     * Return a list of relationships that match the search criteria.  The results can be paged.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param searchCriteria String expression of the characteristics of the required relationships.
+     * @param findRequestParameters find parameters used to limit the returned results.
+     * @return RelationshipListResponse:
+     * a list of relationships.  Null means no matching relationships or
+     * InvalidParameterException one of the parameters is invalid or null or
+     * TypeErrorException the type guid passed on the request is not known by the metadata collection or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored or
+     * PropertyErrorException there is a problem with one of the other parameters  or
+     * PagingErrorException the paging/sequencing parameters are set up incorrectly or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/relationships/by-property-value/history")
+
+    public  RelationshipListResponse findRelationshipsByPropertyValueHistory(@PathVariable  String                              userId,
+                                                                             @RequestParam  String                              searchCriteria,
+                                                                             @RequestBody   TypeLimitedHistoricalFindRequest    findRequestParameters)
+    {
+        return restAPI.findRelationshipsByPropertyValueHistory(userId, searchCriteria, findRequestParameters);
+    }
 
 
     /**
@@ -1191,11 +1168,7 @@ public class OMRSRepositoryResource
      * @param userId unique identifier for requesting user.
      * @param startEntityGUID The entity that is used to anchor the query.
      * @param endEntityGUID the other entity that defines the scope of the query.
-     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
-     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
-     * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
-     *                 present values.
+     * @param findRequestParameters find parameters used to limit the returned results.
      * @return InstanceGraphResponse:
      * the sub-graph that represents the returned linked entities and their relationships or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -1204,18 +1177,46 @@ public class OMRSRepositoryResource
      * EntityNotKnownException the entity identified by either the startEntityGUID or the endEntityGUID
      *                                   is not found in the metadata collection or
      * PropertyErrorException there is a problem with one of the other parameters or
-     * FunctionNotSupportedException the repository does not support satOfTime parameter or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/instances/entities/from-entity/{startEntityGUID}/by-linkage")
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entities/from-entity/{startEntityGUID}/by-linkage")
 
-    public  InstanceGraphResponse getLinkingEntities(@PathVariable                   String                    userId,
-                                                     @PathVariable                   String                    startEntityGUID,
-                                                     @RequestParam                   String                    endEntityGUID,
-                                                     @RequestParam(required = false) List<InstanceStatus>      limitResultsByStatus,
-                                                     @RequestParam(required = false) Date                      asOfTime)
+    public  InstanceGraphResponse getLinkingEntities(@PathVariable String                    userId,
+                                                     @PathVariable String                    startEntityGUID,
+                                                     @RequestParam String                    endEntityGUID,
+                                                     @RequestBody  OMRSAPIFindRequest        findRequestParameters)
     {
-        return restAPI.getLinkingEntities(userId, startEntityGUID, endEntityGUID, limitResultsByStatus, asOfTime);
+        return restAPI.getLinkingEntities(userId, startEntityGUID, endEntityGUID, findRequestParameters);
+    }
+
+
+    /**
+     * Return all of the relationships and intermediate entities that connect the startEntity with the endEntity.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param startEntityGUID The entity that is used to anchor the query.
+     * @param endEntityGUID the other entity that defines the scope of the query.
+     * @param findRequestParameters find parameters used to limit the returned results.
+     * @return InstanceGraphResponse:
+     * the sub-graph that represents the returned linked entities and their relationships or
+     * InvalidParameterException one of the parameters is invalid or null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored or
+     * EntityNotKnownException the entity identified by either the startEntityGUID or the endEntityGUID
+     *                                   is not found in the metadata collection or
+     * PropertyErrorException there is a problem with one of the other parameters or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entities/from-entity/{startEntityGUID}/by-linkage/history")
+
+    public  InstanceGraphResponse getLinkingEntitiesHistory(@PathVariable String                              userId,
+                                                            @PathVariable String                              startEntityGUID,
+                                                            @RequestParam String                              endEntityGUID,
+                                                            @RequestBody  OMRSAPIHistoricalFindRequest        findRequestParameters)
+    {
+        return restAPI.getLinkingEntitiesHistory(userId, startEntityGUID, endEntityGUID, findRequestParameters);
     }
 
 
@@ -1225,18 +1226,9 @@ public class OMRSRepositoryResource
      *
      * @param userId unique identifier for requesting user.
      * @param entityGUID the starting point of the query.
-     * @param entityTypeGUIDs list of entity types to include in the query results.  Null means include
-     *                          all entities found, irrespective of their type.
-     * @param relationshipTypeGUIDs list of relationship types to include in the query results.  Null means include
-     *                                all relationships found, irrespective of their type.
-     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
-     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
-     * @param limitResultsByClassification List of classifications that must be present on all returned entities.
-     * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
-     *                 present values.
      * @param level the number of the relationships out from the starting entity that the query will traverse to
      *              gather results.
+     * @param findRequestParameters find parameters used to limit the returned results.
      * @return InstanceGraphResponse
      * the sub-graph that represents the returned linked entities and their relationships or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -1245,30 +1237,49 @@ public class OMRSRepositoryResource
      *                                  the metadata collection is stored or
      * EntityNotKnownException the entity identified by the entityGUID is not found in the metadata collection or
      * PropertyErrorException there is a problem with one of the other parameters or
-     * FunctionNotSupportedException the repository does not support satOfTime parameter or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/instances/entities/from-entity/{entityGUID}/by-neighborhood")
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entities/from-entity/{entityGUID}/by-neighborhood")
 
-    public  InstanceGraphResponse getEntityNeighborhood(@PathVariable                   String               userId,
-                                                        @PathVariable                   String               entityGUID,
-                                                        @RequestParam(required = false) List<String>         entityTypeGUIDs,
-                                                        @RequestParam(required = false) List<String>         relationshipTypeGUIDs,
-                                                        @RequestParam(required = false) List<InstanceStatus> limitResultsByStatus,
-                                                        @RequestParam(required = false) List<String>         limitResultsByClassification,
-                                                        @RequestParam(required = false) Date                 asOfTime,
-                                                        @RequestParam                   int                  level)
+    public  InstanceGraphResponse getEntityNeighborhood(@PathVariable  String                        userId,
+                                                        @PathVariable  String                        entityGUID,
+                                                        @RequestParam  int                           level,
+                                                        @RequestBody   EntityNeighborhoodFindRequest findRequestParameters)
     {
-        return restAPI.getEntityNeighborhood(userId,
-                                             entityGUID,
-                                             entityTypeGUIDs,
-                                             relationshipTypeGUIDs,
-                                             limitResultsByStatus,
-                                             limitResultsByClassification,
-                                             asOfTime,
-                                             level);
+        return restAPI.getEntityNeighborhood(userId, entityGUID, level, findRequestParameters);
     }
 
+
+    /**
+     * Return the entities and relationships that radiate out from the supplied entity GUID.
+     * The results are scoped both the instance type guids and the level.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID the starting point of the query.
+     * @param level the number of the relationships out from the starting entity that the query will traverse to
+     *              gather results.
+     * @param findRequestParameters find parameters used to limit the returned results.
+     * @return InstanceGraphResponse
+     * the sub-graph that represents the returned linked entities and their relationships or
+     * InvalidParameterException one of the parameters is invalid or null or
+     * TypeErrorException one of the type guids passed on the request is not known by the metadata collection or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored or
+     * EntityNotKnownException the entity identified by the entityGUID is not found in the metadata collection or
+     * PropertyErrorException there is a problem with one of the other parameters or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entities/from-entity/{entityGUID}/by-neighborhood/history")
+
+    public  InstanceGraphResponse getEntityNeighborhoodHistory(@PathVariable  String                                  userId,
+                                                               @PathVariable  String                                  entityGUID,
+                                                               @RequestParam  int                                     level,
+                                                               @RequestBody   EntityNeighborhoodHistoricalFindRequest findRequestParameters)
+    {
+        return restAPI.getEntityNeighborhoodHistory(userId, entityGUID, level, findRequestParameters);
+    }
 
 
     /**
@@ -1277,19 +1288,7 @@ public class OMRSRepositoryResource
      *
      * @param userId unique identifier for requesting user.
      * @param startEntityGUID unique identifier of the starting entity.
-     * @param instanceTypes list of types to search for.  Null means any type.
-     * @param fromEntityElement starting element for results list.  Used in paging.  Zero means first element.
-     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
-     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
-     * @param limitResultsByClassification List of classifications that must be present on all returned entities.
-     * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
-     *                 present values.
-     * @param sequencingProperty String name of the property that is to be used to sequence the results.
-     *                           Null means do not sequence on a property name (see SequencingOrder).
-     * @param sequencingOrder Enum defining how the results should be ordered.
-     * @param pageSize the maximum number of result entities that can be returned on this request.  Zero means
-     *                 unrestricted return results size.
+     * @param findRequestParameters find parameters used to limit the returned results.
      * @return EntityListResponse:
      * list of entities either directly or indirectly connected to the start entity or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -1303,34 +1302,50 @@ public class OMRSRepositoryResource
      * PropertyErrorException the sequencing property specified is not valid for any of the requested types of
      *                                  entity or
      * PagingErrorException the paging/sequencing parameters are set up incorrectly or
-     * FunctionNotSupportedException the repository does not support satOfTime parameter or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/instances/entities/from-entity/{startEntityGUID}/by-relationship")
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entities/from-entity/{startEntityGUID}/by-relationship")
 
-    public  EntityListResponse getRelatedEntities(@PathVariable                   String               userId,
-                                                  @PathVariable                   String               startEntityGUID,
-                                                  @RequestParam(required = false) List<String>         instanceTypes,
-                                                  @RequestParam(required = false) int                  fromEntityElement,
-                                                  @RequestParam(required = false) List<InstanceStatus> limitResultsByStatus,
-                                                  @RequestParam(required = false) List<String>         limitResultsByClassification,
-                                                  @RequestParam(required = false) Date                 asOfTime,
-                                                  @RequestParam(required = false) String               sequencingProperty,
-                                                  @RequestParam(required = false) SequencingOrder      sequencingOrder,
-                                                  @RequestParam(required = false) int                  pageSize)
+    public  EntityListResponse getRelatedEntities(@PathVariable  String                      userId,
+                                                  @PathVariable  String                      startEntityGUID,
+                                                  @RequestBody   RelatedEntitiesFindRequest  findRequestParameters)
     {
-        return restAPI.getRelatedEntities(userId,
-                                          startEntityGUID,
-                                          instanceTypes,
-                                          fromEntityElement,
-                                          limitResultsByStatus,
-                                          limitResultsByClassification,
-                                          asOfTime,
-                                          sequencingProperty,
-                                          sequencingOrder,
-                                          pageSize);
+        return restAPI.getRelatedEntities(userId, startEntityGUID, findRequestParameters);
     }
 
+
+    /**
+     * Return the list of entities that are of the types listed in instanceTypes and are connected, either directly or
+     * indirectly to the entity identified by startEntityGUID.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param startEntityGUID unique identifier of the starting entity.
+     * @param findRequestParameters find parameters used to limit the returned results.
+     * @return EntityListResponse:
+     * list of entities either directly or indirectly connected to the start entity or
+     * InvalidParameterException one of the parameters is invalid or null or
+     * TypeErrorException one of the type guids passed on the request is not known by the metadata collection or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored or
+     * TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                              hosting the metadata collection or
+     * EntityNotKnownException the entity identified by the startEntityGUID
+     *                                   is not found in the metadata collection or
+     * PropertyErrorException the sequencing property specified is not valid for any of the requested types of
+     *                                  entity or
+     * PagingErrorException the paging/sequencing parameters are set up incorrectly or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entities/from-entity/{startEntityGUID}/by-relationship/history")
+
+    public  EntityListResponse getRelatedEntitiesHistory(@PathVariable  String                                userId,
+                                                         @PathVariable  String                                startEntityGUID,
+                                                         @RequestBody   RelatedEntitiesHistoricalFindRequest  findRequestParameters)
+    {
+        return restAPI.getRelatedEntitiesHistory(userId, startEntityGUID, findRequestParameters);
+    }
 
     /* ======================================================
      * Group 4: Maintaining entity and relationship instances
@@ -1340,10 +1355,7 @@ public class OMRSRepositoryResource
      * Create a new entity and put it in the requested state.  The new entity is returned.
      *
      * @param userId unique identifier for requesting user.
-     * @param entityTypeGUID unique identifier (guid) for the new entity's type.
-     * @param initialProperties initial list of properties for the new entity null means no properties.
-     * @param initialClassifications initial list of classifications for the new entity null means no classifications.
-     * @param initialStatus initial status typically DRAFT, PREPARED or ACTIVE.
+     * @param requestBody parameters for the new entity
      * @return EntityDetailResponse:
      * EntityDetail showing the new header plus the requested properties and classifications.  The entity will
      * not have any relationships at this stage or
@@ -1362,15 +1374,11 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entity")
 
-    public EntityDetailResponse addEntity(@PathVariable                   String                     userId,
-                                          @RequestParam                   String                     entityTypeGUID,
-                                          @RequestParam(required = false) InstanceProperties         initialProperties,
-                                          @RequestParam(required = false) List<Classification>       initialClassifications,
-                                          @RequestParam                   InstanceStatus             initialStatus)
+    public EntityDetailResponse addEntity(@PathVariable  String               userId,
+                                          @RequestBody   EntityCreateRequest  requestBody)
     {
-        return restAPI.addEntity(userId, entityTypeGUID, initialProperties, initialClassifications, initialStatus);
+        return restAPI.addEntity(userId, requestBody);
     }
-
 
 
     /**
@@ -1398,7 +1406,7 @@ public class OMRSRepositoryResource
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entity-proxy")
 
     public VoidResponse addEntityProxy(@PathVariable String      userId,
-                                       @RequestParam EntityProxy entityProxy)
+                                       @RequestBody  EntityProxy entityProxy)
     {
         return restAPI.addEntityProxy(userId, entityProxy);
     }
@@ -1420,11 +1428,11 @@ public class OMRSRepositoryResource
      *                                      the requested status or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.PATCH, path = "/users/{userId}/instances/entity/{entityGUID}/status")
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entity/{entityGUID}/status")
 
     public EntityDetailResponse updateEntityStatus(@PathVariable String           userId,
                                                    @PathVariable String           entityGUID,
-                                                   @RequestParam InstanceStatus   newStatus)
+                                                   @RequestBody  InstanceStatus   newStatus)
     {
         return restAPI.updateEntityStatus(userId, entityGUID, newStatus);
     }
@@ -1435,7 +1443,7 @@ public class OMRSRepositoryResource
      *
      * @param userId unique identifier for requesting user.
      * @param entityGUID String unique identifier (guid) for the entity.
-     * @param properties a list of properties to change.
+     * @param propertiesRequestBody a list of properties to change.
      * @return EntityDetailResponse:
      * EntityDetail showing the resulting entity header, properties and classifications or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -1444,15 +1452,15 @@ public class OMRSRepositoryResource
      * EntityNotKnownException the entity identified by the guid is not found in the metadata collection
      * PropertyErrorException one or more of the requested properties are not defined, or have different
      *                                characteristics in the TypeDef for this entity's type or
-     * UserNotAuthorizedException the userId is not permitted to perform this operation or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.PATCH, path = "/users/{userId}/instances/entity/{entityGUID}/properties")
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entity/{entityGUID}/properties")
 
-    public EntityDetailResponse updateEntityProperties(@PathVariable String               userId,
-                                                       @PathVariable String               entityGUID,
-                                                       @RequestParam InstanceProperties   properties)
+    public EntityDetailResponse updateEntityProperties(@PathVariable String                      userId,
+                                                       @PathVariable String                      entityGUID,
+                                                       @RequestBody  InstancePropertiesRequest   propertiesRequestBody)
     {
-        return restAPI.updateEntityProperties(userId, entityGUID, properties);
+        return restAPI.updateEntityProperties(userId, entityGUID, propertiesRequestBody);
     }
 
 
@@ -1470,7 +1478,7 @@ public class OMRSRepositoryResource
      * FunctionNotSupportedException the repository does not support undo or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.PATCH, path = "/users/{userId}/instances/entity/{entityGUID}/undo")
+    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/instances/entity/{entityGUID}/previous")
 
     public EntityDetailResponse undoEntityUpdate(@PathVariable String  userId,
                                                  @PathVariable String  entityGUID)
@@ -1486,9 +1494,8 @@ public class OMRSRepositoryResource
      * The restoreEntity() method will switch an entity back to Active status to restore the entity to normal use.
      *
      * @param userId unique identifier for requesting user.
-     * @param typeDefGUID unique identifier of the type of the entity to delete.
-     * @param typeDefName unique name of the type of the entity to delete.
      * @param obsoleteEntityGUID String unique identifier (guid) for the entity.
+     * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
      * @return EntityDetailResponse
      * details of the deleted entity or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -1499,14 +1506,13 @@ public class OMRSRepositoryResource
      *                                       soft-deletes (use purgeEntity() to remove the entity permanently) or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.PATCH, path = "/users/{userId}/instances/entity/{obsoleteEntityGUID}/delete")
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entity/{obsoleteEntityGUID}/delete")
 
-    public EntityDetailResponse  deleteEntity(@PathVariable String    userId,
-                                              @RequestParam String    typeDefGUID,
-                                              @RequestParam String    typeDefName,
-                                              @PathVariable String    obsoleteEntityGUID)
+    public EntityDetailResponse  deleteEntity(@PathVariable String                        userId,
+                                              @PathVariable String                        obsoleteEntityGUID,
+                                              @RequestBody  TypeDefValidationForRequest   typeDefValidationForRequest)
     {
-        return restAPI.deleteEntity(userId, typeDefGUID, typeDefName, obsoleteEntityGUID);
+        return restAPI.deleteEntity(userId, obsoleteEntityGUID, typeDefValidationForRequest);
     }
 
 
@@ -1514,9 +1520,8 @@ public class OMRSRepositoryResource
      * Permanently removes a deleted entity from the metadata collection.  This request can not be undone.
      *
      * @param userId unique identifier for requesting user.
-     * @param typeDefGUID unique identifier of the type of the entity to purge.
-     * @param typeDefName unique name of the type of the entity to purge.
      * @param deletedEntityGUID String unique identifier (guid) for the entity.
+     * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
      * @return VoidResponse:
      * void or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -1526,14 +1531,13 @@ public class OMRSRepositoryResource
      * EntityNotDeletedException the entity is not in DELETED status and so can not be purged or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.PATCH, path = "/users/{userId}/instances/entity/{deletedEntityGUID}/purge")
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entity/{deletedEntityGUID}/purge")
 
-    public VoidResponse purgeEntity(@PathVariable String    userId,
-                                    @RequestParam String    typeDefGUID,
-                                    @RequestParam String    typeDefName,
-                                    @PathVariable String    deletedEntityGUID)
+    public VoidResponse purgeEntity(@PathVariable String                        userId,
+                                    @PathVariable String                        deletedEntityGUID,
+                                    @RequestBody  TypeDefValidationForRequest   typeDefValidationForRequest)
     {
-        return restAPI.purgeEntity(userId, typeDefGUID, typeDefName, deletedEntityGUID);
+        return restAPI.purgeEntity(userId, deletedEntityGUID, typeDefValidationForRequest);
     }
 
 
@@ -1552,7 +1556,7 @@ public class OMRSRepositoryResource
      * FunctionNotSupportedException the repository does not support soft-delete or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.PATCH, path = "/users/{userId}/instances/entity/{deletedEntityGUID}/restore")
+    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/instances/entity/{deletedEntityGUID}/restore")
 
     public EntityDetailResponse restoreEntity(@PathVariable String    userId,
                                               @PathVariable String    deletedEntityGUID)
@@ -1567,7 +1571,7 @@ public class OMRSRepositoryResource
      * @param userId unique identifier for requesting user.
      * @param entityGUID String unique identifier (guid) for the entity.
      * @param classificationName String name for the classification.
-     * @param classificationProperties list of properties to set in the classification.
+     * @param propertiesRequestBody list of properties to set in the classification.
      * @return EntityDetailResponse:
      * EntityDetail showing the resulting entity header, properties and classifications or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -1580,14 +1584,14 @@ public class OMRSRepositoryResource
      *                                characteristics in the TypeDef for this classification type or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.PATCH, path = "/users/{userId}/instances/entity/{entityGUID}/classification/{classificationName}")
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entity/{entityGUID}/classification/{classificationName}")
 
-    public EntityDetailResponse classifyEntity(@PathVariable                   String               userId,
-                                               @PathVariable                   String               entityGUID,
-                                               @PathVariable                   String               classificationName,
-                                               @RequestParam(required = false) InstanceProperties   classificationProperties)
+    public EntityDetailResponse classifyEntity(@PathVariable String                      userId,
+                                               @PathVariable String                      entityGUID,
+                                               @PathVariable String                      classificationName,
+                                               @RequestBody  InstancePropertiesRequest   propertiesRequestBody)
     {
-        return restAPI.classifyEntity(userId, entityGUID, classificationName, classificationProperties);
+        return restAPI.classifyEntity(userId, entityGUID, classificationName, propertiesRequestBody);
     }
 
 
@@ -1597,6 +1601,7 @@ public class OMRSRepositoryResource
      * @param userId unique identifier for requesting user.
      * @param entityGUID String unique identifier (guid) for the entity.
      * @param classificationName String name for the classification.
+     * @param requestBody empty request body
      * @return EntityDetailResponse:
      * EntityDetail showing the resulting entity header, properties and classifications or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -1606,11 +1611,12 @@ public class OMRSRepositoryResource
      * ClassificationErrorException the requested classification is not set on the entity or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.PATCH, path = "/users/{userId}/instances/entity/{entityGUID}/classification/{classificationName}/delete")
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entity/{entityGUID}/classification/{classificationName}/delete")
 
-    public EntityDetailResponse declassifyEntity(@PathVariable String  userId,
-                                                 @PathVariable String  entityGUID,
-                                                 @PathVariable String  classificationName)
+    public EntityDetailResponse declassifyEntity(@PathVariable String          userId,
+                                                 @PathVariable String          entityGUID,
+                                                 @PathVariable String          classificationName,
+                                                 @RequestBody  OMRSAPIRequest  requestBody)
     {
         return restAPI.declassifyEntity(userId, entityGUID, classificationName);
     }
@@ -1622,7 +1628,7 @@ public class OMRSRepositoryResource
      * @param userId unique identifier for requesting user.
      * @param entityGUID String unique identifier (guid) for the entity.
      * @param classificationName String name for the classification.
-     * @param properties list of properties for the classification.
+     * @param propertiesRequestBody list of properties for the classification.
      * @return EntityDetailResponse:
      * EntityDetail showing the resulting entity header, properties and classifications or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -1634,14 +1640,14 @@ public class OMRSRepositoryResource
      *                                characteristics in the TypeDef for this classification type or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.PATCH, path = "/users/{userId}/instances/entity/{entityGUID}/classification/{classificationName}/properties")
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entity/{entityGUID}/classification/{classificationName}/properties")
 
-    public EntityDetailResponse updateEntityClassification(@PathVariable String               userId,
-                                                           @PathVariable String               entityGUID,
-                                                           @PathVariable String               classificationName,
-                                                           @RequestParam InstanceProperties   properties)
+    public EntityDetailResponse updateEntityClassification(@PathVariable String                      userId,
+                                                           @PathVariable String                      entityGUID,
+                                                           @PathVariable String                      classificationName,
+                                                           @RequestBody  InstancePropertiesRequest   propertiesRequestBody)
     {
-        return restAPI.updateEntityClassification(userId, entityGUID, classificationName, properties);
+        return restAPI.updateEntityClassification(userId, entityGUID, classificationName, propertiesRequestBody);
     }
 
 
@@ -1649,11 +1655,7 @@ public class OMRSRepositoryResource
      * Add a new relationship between two entities to the metadata collection.
      *
      * @param userId unique identifier for requesting user.
-     * @param relationshipTypeGUID unique identifier (guid) for the new relationship's type.
-     * @param initialProperties initial list of properties for the new entity null means no properties.
-     * @param entityOneGUID the unique identifier of one of the entities that the relationship is connecting together.
-     * @param entityTwoGUID the unique identifier of the other entity that the relationship is connecting together.
-     * @param initialStatus initial status typically DRAFT, PREPARED or ACTIVE.
+     * @param createRequestParameters parameters used to fill out the new relationship
      * @return RelationshipResponse:
      * Relationship structure with the new header, requested entities and properties or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -1670,19 +1672,10 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/relationship")
 
-    public RelationshipResponse addRelationship(@PathVariable                   String               userId,
-                                                @RequestParam                   String               relationshipTypeGUID,
-                                                @RequestParam(required = false) InstanceProperties   initialProperties,
-                                                @RequestParam                   String               entityOneGUID,
-                                                @RequestParam                   String               entityTwoGUID,
-                                                @RequestParam                   InstanceStatus       initialStatus)
+    public RelationshipResponse addRelationship(@PathVariable String                    userId,
+                                                @RequestBody  RelationshipCreateRequest createRequestParameters)
     {
-        return restAPI.addRelationship(userId,
-                                       relationshipTypeGUID,
-                                       initialProperties,
-                                       entityOneGUID,
-                                       entityTwoGUID,
-                                       initialStatus);
+        return restAPI.addRelationship(userId, createRequestParameters);
     }
 
 
@@ -1700,13 +1693,13 @@ public class OMRSRepositoryResource
      * RelationshipNotKnownException the requested relationship is not known in the metadata collection or
      * StatusNotSupportedException the metadata repository hosting the metadata collection does not support
      *                                     the requested status or
-     * UserNotAuthorizedException the userId is not permitted to perform this operation or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.PATCH, path = "/users/{userId}/instances/relationship/{relationshipGUID}/status")
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/relationship/{relationshipGUID}/status")
 
     public RelationshipResponse updateRelationshipStatus(@PathVariable String           userId,
                                                          @PathVariable String           relationshipGUID,
-                                                         @RequestParam InstanceStatus   newStatus)
+                                                         @RequestBody  InstanceStatus   newStatus)
     {
         return restAPI.updateRelationshipStatus(userId, relationshipGUID, newStatus);
     }
@@ -1717,7 +1710,7 @@ public class OMRSRepositoryResource
      *
      * @param userId unique identifier for requesting user.
      * @param relationshipGUID String unique identifier (guid) for the relationship.
-     * @param properties list of the properties to update.
+     * @param propertiesRequestBody list of the properties to update.
      * @return RelationshipResponse:
      * Resulting relationship structure with the new properties set or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -1728,13 +1721,13 @@ public class OMRSRepositoryResource
      *                                characteristics in the TypeDef for this relationship's type or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.PATCH, path = "/users/{userId}/instances/relationship/{relationshipGUID}/properties")
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/relationship/{relationshipGUID}/properties")
 
-    public RelationshipResponse updateRelationshipProperties(@PathVariable String               userId,
-                                                             @PathVariable String               relationshipGUID,
-                                                             @RequestParam InstanceProperties   properties)
+    public RelationshipResponse updateRelationshipProperties(@PathVariable String                      userId,
+                                                             @PathVariable String                      relationshipGUID,
+                                                             @RequestBody  InstancePropertiesRequest   propertiesRequestBody)
     {
-        return restAPI.updateRelationshipProperties(userId, relationshipGUID, properties);
+        return restAPI.updateRelationshipProperties(userId, relationshipGUID, propertiesRequestBody);
     }
 
 
@@ -1752,7 +1745,7 @@ public class OMRSRepositoryResource
      * FunctionNotSupportedException the repository does not support undo or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.PATCH, path = "/users/{userId}/instances/relationship/{relationshipGUID}/undo")
+    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/instances/relationship/{relationshipGUID}/previous")
 
     public RelationshipResponse undoRelationshipUpdate(@PathVariable String  userId,
                                                        @PathVariable String  relationshipGUID)
@@ -1767,9 +1760,8 @@ public class OMRSRepositoryResource
      * metadata collection, use purgeRelationship().
      *
      * @param userId unique identifier for requesting user.
-     * @param typeDefGUID unique identifier of the type of the relationship to delete.
-     * @param typeDefName unique name of the type of the relationship to delete.
      * @param obsoleteRelationshipGUID String unique identifier (guid) for the relationship.
+     * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
      * @return RelationshipResponse:
      * Updated relationship or
      * InvalidParameterException one of the parameters is null or
@@ -1780,14 +1772,13 @@ public class OMRSRepositoryResource
      *                                     soft-deletes or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.PATCH, path = "/users/{userId}/instances/relationship/{obsoleteRelationshipGUID}/delete")
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/relationship/{obsoleteRelationshipGUID}/delete")
 
-    public RelationshipResponse deleteRelationship(@PathVariable String    userId,
-                                                   @RequestParam String    typeDefGUID,
-                                                   @RequestParam String    typeDefName,
-                                                   @PathVariable String    obsoleteRelationshipGUID)
+    public RelationshipResponse deleteRelationship(@PathVariable String                        userId,
+                                                   @PathVariable String                        obsoleteRelationshipGUID,
+                                                   @RequestBody  TypeDefValidationForRequest   typeDefValidationForRequest)
     {
-        return restAPI.deleteRelationship(userId, typeDefGUID, typeDefName, obsoleteRelationshipGUID);
+        return restAPI.deleteRelationship(userId, obsoleteRelationshipGUID, typeDefValidationForRequest);
     }
 
 
@@ -1795,9 +1786,8 @@ public class OMRSRepositoryResource
      * Permanently delete the relationship from the repository.  There is no means to undo this request.
      *
      * @param userId unique identifier for requesting user.
-     * @param typeDefGUID unique identifier of the type of the relationship to purge.
-     * @param typeDefName unique name of the type of the relationship to purge.
      * @param deletedRelationshipGUID String unique identifier (guid) for the relationship.
+     * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
      * @return VoidResponse:
      * void or
      * InvalidParameterException one of the parameters is null or
@@ -1807,14 +1797,13 @@ public class OMRSRepositoryResource
      * RelationshipNotDeletedException the requested relationship is not in DELETED status or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.PATCH, path = "/users/{userId}/instances/relationship/{deletedRelationshipGUID}/purge")
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/relationship/{deletedRelationshipGUID}/purge")
 
-    public VoidResponse purgeRelationship(@PathVariable String    userId,
-                                          @RequestParam String    typeDefGUID,
-                                          @RequestParam String    typeDefName,
-                                          @PathVariable String    deletedRelationshipGUID)
+    public VoidResponse purgeRelationship(@PathVariable String                        userId,
+                                          @PathVariable String                        deletedRelationshipGUID,
+                                          @RequestBody  TypeDefValidationForRequest   typeDefValidationForRequest)
     {
-        return restAPI.purgeRelationship(userId, typeDefGUID, typeDefName, deletedRelationshipGUID);
+        return restAPI.purgeRelationship(userId, deletedRelationshipGUID, typeDefValidationForRequest);
     }
 
 
@@ -1834,7 +1823,7 @@ public class OMRSRepositoryResource
      * FunctionNotSupportedException the repository does not support soft-deletes
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.PATCH, path = "/users/{userId}/instances/relationship/{deletedRelationshipGUID}/restore")
+    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/instances/relationship/{deletedRelationshipGUID}/restore")
 
     public RelationshipResponse restoreRelationship(@PathVariable String    userId,
                                                     @PathVariable String    deletedRelationshipGUID)
@@ -1854,10 +1843,9 @@ public class OMRSRepositoryResource
      * the open metadata protocol has provision for this.
      *
      * @param userId unique identifier for requesting user.
-     * @param typeDefGUID the guid of the TypeDef for the entity used to verify the entity identity.
-     * @param typeDefName the name of the TypeDef for the entity used to verify the entity identity.
      * @param entityGUID the existing identifier for the entity.
      * @param newEntityGUID new unique identifier for the entity.
+     * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
      * @return EntityDetailResponse:
      * entity: new values for this entity, including the new guid or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -1867,15 +1855,14 @@ public class OMRSRepositoryResource
      * FunctionNotSupportedException the repository does not support instance re-identification or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.PATCH, path = "/users/{userId}/instances/entity/{entityGUID}/identity")
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entity/{entityGUID}/identity")
 
-    public EntityDetailResponse reIdentifyEntity(@PathVariable String     userId,
-                                                 @RequestParam String     typeDefGUID,
-                                                 @RequestParam String     typeDefName,
-                                                 @PathVariable String     entityGUID,
-                                                 @RequestParam String     newEntityGUID)
+    public EntityDetailResponse reIdentifyEntity(@PathVariable String                        userId,
+                                                 @PathVariable String                        entityGUID,
+                                                 @RequestParam String                        newEntityGUID,
+                                                 @RequestBody  TypeDefValidationForRequest   typeDefValidationForRequest)
     {
-        return restAPI.reIdentifyEntity(userId, typeDefGUID, typeDefName, entityGUID, newEntityGUID);
+        return restAPI.reIdentifyEntity(userId, entityGUID, newEntityGUID, typeDefValidationForRequest);
     }
 
 
@@ -1886,8 +1873,7 @@ public class OMRSRepositoryResource
      *
      * @param userId unique identifier for requesting user.
      * @param entityGUID the unique identifier for the entity to change.
-     * @param currentTypeDefSummary the current details of the TypeDef for the entity used to verify the entity identity
-     * @param newTypeDefSummary details of this entity's new TypeDef.
+     * @param typeDefChangeRequest the details of the current and new type.
      * @return EntityDetailResponse:
      * entity: new values for this entity, including the new type information or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -1901,14 +1887,13 @@ public class OMRSRepositoryResource
      * FunctionNotSupportedException the repository does not support instance re-typing or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.PATCH, path = "/users/{userId}/instances/entity/{entityGUID}/type")
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entity/{entityGUID}/type")
 
-    public EntityDetailResponse reTypeEntity(@PathVariable String         userId,
-                                             @PathVariable String         entityGUID,
-                                             @RequestParam TypeDefSummary currentTypeDefSummary,
-                                             @RequestParam TypeDefSummary newTypeDefSummary)
+    public EntityDetailResponse reTypeEntity(@PathVariable String                userId,
+                                             @PathVariable String                entityGUID,
+                                             @RequestBody  TypeDefChangeRequest  typeDefChangeRequest)
     {
-        return restAPI.reTypeEntity(userId, entityGUID, currentTypeDefSummary, newTypeDefSummary);
+        return restAPI.reTypeEntity(userId, entityGUID, typeDefChangeRequest);
     }
 
 
@@ -1919,10 +1904,9 @@ public class OMRSRepositoryResource
      *
      * @param userId unique identifier for requesting user.
      * @param entityGUID the unique identifier for the entity to change.
-     * @param typeDefGUID the guid of the TypeDef for the entity used to verify the entity identity.
-     * @param typeDefName the name of the TypeDef for the entity used to verify the entity identity.
      * @param homeMetadataCollectionId the existing identifier for this entity's home.
      * @param newHomeMetadataCollectionId unique identifier for the new home metadata collection/repository.
+     * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
      * @return EntityDetailResponse:
      * entity: new values for this entity, including the new home information or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -1932,21 +1916,19 @@ public class OMRSRepositoryResource
      * FunctionNotSupportedException the repository does not support instance re-homing or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.PATCH, path = "/users/{userId}/instances/entity/{entityGUID}/home/{homeMetadataCollectionId}")
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entity/{entityGUID}/home/{homeMetadataCollectionId}")
 
-    public EntityDetailResponse reHomeEntity(@PathVariable String         userId,
-                                             @PathVariable String         entityGUID,
-                                             @RequestParam String         typeDefGUID,
-                                             @RequestParam String         typeDefName,
-                                             @PathVariable String         homeMetadataCollectionId,
-                                             @RequestParam String         newHomeMetadataCollectionId)
+    public EntityDetailResponse reHomeEntity(@PathVariable String                        userId,
+                                             @PathVariable String                        entityGUID,
+                                             @PathVariable String                        homeMetadataCollectionId,
+                                             @RequestParam String                        newHomeMetadataCollectionId,
+                                             @RequestBody  TypeDefValidationForRequest   typeDefValidationForRequest)
     {
         return restAPI.reHomeEntity(userId,
                                     entityGUID,
-                                    typeDefGUID,
-                                    typeDefName,
                                     homeMetadataCollectionId,
-                                    newHomeMetadataCollectionId);
+                                    newHomeMetadataCollectionId,
+                                    typeDefValidationForRequest);
     }
 
 
@@ -1956,10 +1938,9 @@ public class OMRSRepositoryResource
      * the open metadata protocol has provision for this.
      *
      * @param userId unique identifier for requesting user.
-     * @param typeDefGUID the guid of the TypeDef for the relationship used to verify the relationship identity.
-     * @param typeDefName the name of the TypeDef for the relationship used to verify the relationship identity.
      * @param relationshipGUID the existing identifier for the relationship.
      * @param newRelationshipGUID  the new unique identifier for the relationship.
+     * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
      * @return RelationshipResponse:
      * relationship: new values for this relationship, including the new guid or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -1970,15 +1951,14 @@ public class OMRSRepositoryResource
      * FunctionNotSupportedException the repository does not support instance re-identification or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.PATCH, path = "/users/{userId}/instances/relationship/{relationshipGUID}/identity")
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/relationship/{relationshipGUID}/identity")
 
-    public RelationshipResponse reIdentifyRelationship(@PathVariable String     userId,
-                                                       @RequestParam String     typeDefGUID,
-                                                       @RequestParam String     typeDefName,
-                                                       @PathVariable String     relationshipGUID,
-                                                       @RequestParam String     newRelationshipGUID)
+    public RelationshipResponse reIdentifyRelationship(@PathVariable String                        userId,
+                                                       @PathVariable String                        relationshipGUID,
+                                                       @RequestParam String                        newRelationshipGUID,
+                                                       @RequestBody  TypeDefValidationForRequest   typeDefValidationForRequest)
     {
-        return restAPI.reIdentifyRelationship(userId, typeDefGUID, typeDefName, relationshipGUID, newRelationshipGUID);
+        return restAPI.reIdentifyRelationship(userId, relationshipGUID, newRelationshipGUID, typeDefValidationForRequest);
     }
 
 
@@ -1989,8 +1969,7 @@ public class OMRSRepositoryResource
      *
      * @param userId unique identifier for requesting user.
      * @param relationshipGUID the unique identifier for the relationship.
-     * @param currentTypeDefSummary the details of the TypeDef for the relationship used to verify the relationship identity.
-     * @param newTypeDefSummary details of this relationship's new TypeDef.
+     * @param typeDefChangeRequest the details of the current and new type.
      * @return RelationshipResponse:
      * relationship: new values for this relationship, including the new type information or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -2004,14 +1983,13 @@ public class OMRSRepositoryResource
      * FunctionNotSupportedException the repository does not support instance re-typing or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.PATCH, path = "/users/{userId}/instances/relationship/{relationshipGUID}/type")
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/relationship/{relationshipGUID}/type")
 
-    public RelationshipResponse reTypeRelationship(@PathVariable String         userId,
-                                                   @PathVariable String         relationshipGUID,
-                                                   @RequestParam TypeDefSummary currentTypeDefSummary,
-                                                   @RequestParam TypeDefSummary newTypeDefSummary)
+    public RelationshipResponse reTypeRelationship(@PathVariable String                userId,
+                                                   @PathVariable String                relationshipGUID,
+                                                   @RequestBody  TypeDefChangeRequest  typeDefChangeRequest)
     {
-        return restAPI.reTypeRelationship(userId, relationshipGUID, currentTypeDefSummary, newTypeDefSummary);
+        return restAPI.reTypeRelationship(userId, relationshipGUID, typeDefChangeRequest);
     }
 
 
@@ -2022,10 +2000,9 @@ public class OMRSRepositoryResource
      *
      * @param userId unique identifier for requesting user.
      * @param relationshipGUID the unique identifier for the relationship.
-     * @param typeDefGUID the guid of the TypeDef for the relationship used to verify the relationship identity.
-     * @param typeDefName the name of the TypeDef for the relationship used to verify the relationship identity.
      * @param homeMetadataCollectionId the existing identifier for this relationship's home.
      * @param newHomeMetadataCollectionId unique identifier for the new home metadata collection/repository.
+     * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
      * @return RelationshipResponse:
      * relationship: new values for this relationship, including the new home information or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -2036,21 +2013,19 @@ public class OMRSRepositoryResource
      * FunctionNotSupportedException the repository does not support instance re-homing or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.PATCH, path = "/users/{userId}/instances/relationship/{relationshipGUID}/home")
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/relationship/{relationshipGUID}/home")
 
-    public RelationshipResponse reHomeRelationship(@PathVariable String   userId,
-                                                   @PathVariable String   relationshipGUID,
-                                                   @RequestParam String   typeDefGUID,
-                                                   @RequestParam String   typeDefName,
-                                                   @RequestParam String   homeMetadataCollectionId,
-                                                   @RequestParam String   newHomeMetadataCollectionId)
+    public RelationshipResponse reHomeRelationship(@PathVariable String                        userId,
+                                                   @PathVariable String                        relationshipGUID,
+                                                   @RequestParam String                        homeMetadataCollectionId,
+                                                   @RequestParam String                        newHomeMetadataCollectionId,
+                                                   @RequestBody  TypeDefValidationForRequest   typeDefValidationForRequest)
     {
         return restAPI.reHomeRelationship(userId,
                                           relationshipGUID,
-                                          typeDefGUID,
-                                          typeDefName,
                                           homeMetadataCollectionId,
-                                          newHomeMetadataCollectionId);
+                                          newHomeMetadataCollectionId,
+                                          typeDefValidationForRequest);
     }
 
 
@@ -2082,10 +2057,10 @@ public class OMRSRepositoryResource
      * FunctionNotSupportedException the repository does not support instance reference copies or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.PATCH, path = "/users/{userId}/instances/entities/reference-copy")
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entities/reference-copy")
 
     public VoidResponse saveEntityReferenceCopy(@PathVariable String       userId,
-                                                @RequestParam EntityDetail entity)
+                                                @RequestBody  EntityDetail entity)
     {
         return restAPI.saveEntityReferenceCopy(userId, entity);
     }
@@ -2098,9 +2073,8 @@ public class OMRSRepositoryResource
      *
      * @param userId unique identifier for requesting server.
      * @param entityGUID the unique identifier for the entity.
-     * @param typeDefGUID the guid of the TypeDef for the relationship used to verify the relationship identity.
-     * @param typeDefName the name of the TypeDef for the relationship used to verify the relationship identity.
      * @param homeMetadataCollectionId identifier of the metadata collection that is the home to this entity.
+     * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
      * @return VoidResponse:
      * void or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -2112,15 +2086,14 @@ public class OMRSRepositoryResource
      * FunctionNotSupportedException the repository does not support instance reference copies or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.PATCH, path = "/users/{userId}/instances/entities/reference-copy/{entityGUID}/purge")
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entities/reference-copy/{entityGUID}/purge")
 
-    public VoidResponse purgeEntityReferenceCopy(@PathVariable String   userId,
-                                                 @PathVariable String   entityGUID,
-                                                 @RequestParam String   typeDefGUID,
-                                                 @RequestParam String   typeDefName,
-                                                 @RequestParam String   homeMetadataCollectionId)
+    public VoidResponse purgeEntityReferenceCopy(@PathVariable String                        userId,
+                                                 @PathVariable String                        entityGUID,
+                                                 @RequestParam String                        homeMetadataCollectionId,
+                                                 @RequestBody  TypeDefValidationForRequest   typeDefValidationForRequest)
     {
-        return restAPI.purgeEntityReferenceCopy(userId, entityGUID, typeDefGUID, typeDefName, homeMetadataCollectionId);
+        return restAPI.purgeEntityReferenceCopy(userId, entityGUID, homeMetadataCollectionId, typeDefValidationForRequest);
     }
 
 
@@ -2130,9 +2103,8 @@ public class OMRSRepositoryResource
      *
      * @param userId unique identifier for requesting server.
      * @param entityGUID unique identifier of requested entity.
-     * @param typeDefGUID unique identifier of requested entity's TypeDef.
-     * @param typeDefName unique name of requested entity's TypeDef.
      * @param homeMetadataCollectionId identifier of the metadata collection that is the home to this entity.
+     * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
      * @return VoidResponse:
      * void or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -2144,19 +2116,17 @@ public class OMRSRepositoryResource
      * FunctionNotSupportedException the repository does not support instance reference copies or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.PATCH, path = "/users/{userId}/instances/entities/reference-copy/{entityGUID}/refresh")
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entities/reference-copy/{entityGUID}/refresh")
 
-    public VoidResponse refreshEntityReferenceCopy(@PathVariable String   userId,
-                                                   @PathVariable String   entityGUID,
-                                                   @RequestParam String   typeDefGUID,
-                                                   @RequestParam String   typeDefName,
-                                                   @RequestParam String   homeMetadataCollectionId)
+    public VoidResponse refreshEntityReferenceCopy(@PathVariable String                        userId,
+                                                   @PathVariable String                        entityGUID,
+                                                   @RequestParam String                        homeMetadataCollectionId,
+                                                   @RequestBody  TypeDefValidationForRequest   typeDefValidationForRequest)
     {
         return restAPI.refreshEntityReferenceCopy(userId,
                                                   entityGUID,
-                                                  typeDefGUID,
-                                                  typeDefName,
-                                                  homeMetadataCollectionId);
+                                                  homeMetadataCollectionId,
+                                                  typeDefValidationForRequest);
     }
 
 
@@ -2184,10 +2154,10 @@ public class OMRSRepositoryResource
      * FunctionNotSupportedException the repository does not support instance reference copies or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.PATCH, path = "/users/{userId}/instances/relationships/reference-copy")
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/relationships/reference-copy")
 
     public VoidResponse saveRelationshipReferenceCopy(@PathVariable String         userId,
-                                                      @RequestParam Relationship   relationship)
+                                                      @RequestBody  Relationship   relationship)
     {
         return restAPI.saveRelationshipReferenceCopy(userId, relationship);
     }
@@ -2202,9 +2172,8 @@ public class OMRSRepositoryResource
      *
      * @param userId unique identifier for requesting server.
      * @param relationshipGUID the unique identifier for the relationship.
-     * @param typeDefGUID the guid of the TypeDef for the relationship used to verify the relationship identity.
-     * @param typeDefName the name of the TypeDef for the relationship used to verify the relationship identity.
      * @param homeMetadataCollectionId unique identifier for the home repository for this relationship.
+     * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
      * @return VoidResponse:
      * void or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -2216,19 +2185,17 @@ public class OMRSRepositoryResource
      * FunctionNotSupportedException the repository does not support instance reference copies or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.PATCH, path = "/users/{userId}/instances/relationships/reference-copy/{relationshipGUID}/purge")
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/relationships/reference-copy/{relationshipGUID}/purge")
 
-    public VoidResponse purgeRelationshipReferenceCopy(@PathVariable String   userId,
-                                                       @PathVariable String   relationshipGUID,
-                                                       @RequestParam String   typeDefGUID,
-                                                       @RequestParam String   typeDefName,
-                                                       @RequestParam String   homeMetadataCollectionId)
+    public VoidResponse purgeRelationshipReferenceCopy(@PathVariable String                        userId,
+                                                       @PathVariable String                        relationshipGUID,
+                                                       @RequestParam String                        homeMetadataCollectionId,
+                                                       @RequestBody  TypeDefValidationForRequest   typeDefValidationForRequest)
     {
         return restAPI.purgeRelationshipReferenceCopy(userId,
                                                       relationshipGUID,
-                                                      typeDefGUID,
-                                                      typeDefName,
-                                                      homeMetadataCollectionId);
+                                                      homeMetadataCollectionId,
+                                                      typeDefValidationForRequest);
     }
 
 
@@ -2239,9 +2206,8 @@ public class OMRSRepositoryResource
      *
      * @param userId unique identifier for requesting server.
      * @param relationshipGUID unique identifier of the relationship.
-     * @param typeDefGUID the guid of the TypeDef for the relationship used to verify the relationship identity.
-     * @param typeDefName the name of the TypeDef for the relationship used to verify the relationship identity.
      * @param homeMetadataCollectionId unique identifier for the home repository for this relationship.
+     * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
      * @return VoidResponse:
      * void or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -2253,18 +2219,48 @@ public class OMRSRepositoryResource
      * FunctionNotSupportedException the repository does not support instance reference copies or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.PATCH, path = "/users/{userId}/instances/relationships/reference-copy/{relationshipGUID}/refresh")
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/relationships/reference-copy/{relationshipGUID}/refresh")
 
-    public VoidResponse refreshRelationshipReferenceCopy(@PathVariable String userId,
-                                                         @PathVariable String relationshipGUID,
-                                                         @RequestParam String typeDefGUID,
-                                                         @RequestParam String typeDefName,
-                                                         @RequestParam String homeMetadataCollectionId)
+    public VoidResponse refreshRelationshipReferenceCopy(@PathVariable String                        userId,
+                                                         @PathVariable String                        relationshipGUID,
+                                                         @RequestParam String                        homeMetadataCollectionId,
+                                                         @RequestBody  TypeDefValidationForRequest   typeDefValidationForRequest)
     {
         return restAPI.refreshRelationshipReferenceCopy(userId,
                                                         relationshipGUID,
-                                                        typeDefGUID,
-                                                        typeDefName,
-                                                        homeMetadataCollectionId);
+                                                        homeMetadataCollectionId,
+                                                        typeDefValidationForRequest);
+    }
+
+
+    /**
+     * Save the entities and relationships supplied in the instance graph as a reference copies.
+     * The id of the home metadata collection is already set up in the instances.
+     * Any instances from the home metadata collection are ignored.
+     *
+     * @param userId unique identifier for requesting server.
+     * @param instances instances to save or
+     * InvalidParameterException the relationship is null or
+     * RepositoryErrorException  there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored or
+     * TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection or
+     * EntityNotKnownException one of the entities identified by the relationship is not found in the
+     *                                   metadata collection or
+     * PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                  characteristics in the TypeDef for this relationship's type or
+     * EntityConflictException the new entity conflicts with an existing entity or
+     * InvalidEntityException the new entity has invalid contents or
+     * RelationshipConflictException the new relationship conflicts with an existing relationship or
+     * InvalidRelationshipException the new relationship has invalid contents or
+     * FunctionNotSupportedException the repository does not support reference copies of instances or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances")
+
+    public VoidResponse  saveInstanceReferenceCopies(@PathVariable String                 userId,
+                                                     @RequestBody  InstanceGraphRequest   instances)
+    {
+        return restAPI.saveInstanceReferenceCopies(userId, instances);
     }
 }

@@ -9,13 +9,15 @@ import java.util.Map;
 
 public class TestMetadataCollectionId extends OpenMetadataRepositoryTestCase
 {
-    private static final  String testCaseId = "repository-metadata-collection-id-test-case";
-    private static final  String testCaseName = "Repository metadata collection id test";
+    private static final  String testCaseId = "repository-metadata-collection";
+    private static final  String testCaseName = "Repository metadata collection id test case";
 
     private static final  String assertion1    = testCaseId + "-01";
     private static final  String assertionMsg1 = "Metadata collection id retrieved from repository.";
     private static final  String assertion2    = testCaseId + "-02";
     private static final  String assertionMsg2 = "Consistent metadata collection id retrieved from repository.";
+
+    private String metadataCollectionId = null;
 
 
     /**
@@ -28,6 +30,17 @@ public class TestMetadataCollectionId extends OpenMetadataRepositoryTestCase
 
 
     /**
+     * Return the discovered metadata collection Id.
+     *
+     * @return String guid
+     */
+    public String getMetadataCollectionId()
+    {
+        return metadataCollectionId;
+    }
+
+
+    /**
      * Method implemented by the actual test case.
      *
      * @throws Exception something went wrong with the test.
@@ -35,8 +48,6 @@ public class TestMetadataCollectionId extends OpenMetadataRepositoryTestCase
     protected void run() throws Exception
     {
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
-
-        String metadataCollectionId = null;
 
         try
         {

@@ -4,6 +4,7 @@ package org.odpi.openmetadata.repositoryservices.archivemanager.opentypes;
 
 import org.odpi.openmetadata.repositoryservices.archivemanager.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archivemanager.OMRSArchiveHelper;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -8037,11 +8038,6 @@ public class OpenMetadataTypesArchive
                                                            attribute3DescriptionGUID);
         properties.add(property);
         
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
-        properties.add(property);
-        
         property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
                                                            attribute4Description,
                                                            attribute4DescriptionGUID);
@@ -9490,7 +9486,7 @@ public class OpenMetadataTypesArchive
          * Set up end 2.
          */
         final String                     end2EntityType               = "ExternalGlossaryLink";
-        final String                     end2AttributeName            = "externalGlossaryLinks";
+        final String                     end2AttributeName            = "externalGlossaryCategories";
         final String                     end2AttributeDescription     = "Links to related external glossaries.";
         final String                     end2AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
@@ -9885,7 +9881,7 @@ public class OpenMetadataTypesArchive
     private RelationshipDef getLibraryTermReferenceRelationship()
     {
         final String guid            = "38c346e4-ddd2-42ef-b4aa-55d53c078d22";
-        final String name            = "IsTaxonomy";
+        final String name            = "LibraryTermReference";
         final String description     = "Links a glossary term to a glossary term in an external glossary.";
         final String descriptionGUID = null;
 
@@ -9921,7 +9917,7 @@ public class OpenMetadataTypesArchive
          * Set up end 2.
          */
         final String                     end2EntityType               = "ExternalGlossaryLink";
-        final String                     end2AttributeName            = "externalGlossaryLinks";
+        final String                     end2AttributeName            = "externalGlossaryTerms";
         final String                     end2AttributeDescription     = "Links to related external glossaries.";
         final String                     end2AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
@@ -11748,11 +11744,22 @@ public class OpenMetadataTypesArchive
 
         final String superTypeName = "GlossaryTerm";
 
-        return archiveHelper.getDefaultEntityDef(guid,
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
                                                  name,
                                                  this.archiveBuilder.getEntityDef(superTypeName),
                                                  description,
                                                  descriptionGUID);
+
+        ArrayList<InstanceStatus> validInstanceStatusList = new ArrayList<>();
+        validInstanceStatusList.add(InstanceStatus.DRAFT);
+        validInstanceStatusList.add(InstanceStatus.PROPOSED);
+        validInstanceStatusList.add(InstanceStatus.APPROVED);
+        validInstanceStatusList.add(InstanceStatus.ACTIVE);
+        validInstanceStatusList.add(InstanceStatus.DELETED);
+        entityDef.setValidInstanceStatusList(validInstanceStatusList);
+        entityDef.setInitialStatus(InstanceStatus.DRAFT);
+
+        return entityDef;
     }
 
 
@@ -11833,17 +11840,21 @@ public class OpenMetadataTypesArchive
      */
     private void add0401GovernanceDefinitions()
     {
-        this.archiveBuilder.addEnumDef(getGovernanceDefinitionStatusEnum());
+        this.archiveBuilder.addEnumDef(getGovernanceDomainEnum());
 
         this.archiveBuilder.addEntityDef(getGovernanceDefinitionEntity());
+        this.archiveBuilder.addEntityDef(getGovernanceOfficerEntity());
+
+        this.archiveBuilder.addRelationshipDef(getGovernancePostRelationship());
+
     }
 
 
-    private EnumDef getGovernanceDefinitionStatusEnum()
+    private EnumDef getGovernanceDomainEnum()
     {
         final String guid            = "baa31998-f3cb-47b0-9123-674a701e87bc";
-        final String name            = "GovernanceDefinitionStatus";
-        final String description     = "Defines the status values of a governance definition.";
+        final String name            = "GovernanceDomain";
+        final String description     = "Defines the governance domains that open metadata seeks to unite.";
         final String descriptionGUID = null;
 
         EnumDef enumDef = archiveHelper.getEmptyEnumDef(guid, name, description, descriptionGUID);
@@ -11852,19 +11863,20 @@ public class OpenMetadataTypesArchive
         EnumElementDef            elementDef;
 
         final int    element1Ordinal         = 0;
-        final String element1Value           = "Proposed";
-        final String element1Description     = "The governance definition is under development.";
+        final String element1Value           = "Unclassified";
+        final String element1Description     = "The governance domain is not specified.";
         final String element1DescriptionGUID = null;
 
         elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
                                                      element1Value,
                                                      element1Description,
                                                      element1DescriptionGUID);
+
         elementDefs.add(elementDef);
 
         final int    element2Ordinal         = 1;
-        final String element2Value           = "Active";
-        final String element2Description     = "The governance definition is approved and in use.";
+        final String element2Value           = "Data";
+        final String element2Description     = "The data (information) governance domain.";
         final String element2DescriptionGUID = null;
 
         elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
@@ -11874,8 +11886,8 @@ public class OpenMetadataTypesArchive
         elementDefs.add(elementDef);
 
         final int    element3Ordinal         = 2;
-        final String element3Value           = "Deprecated";
-        final String element3Description     = "The governance definition has been replaced.";
+        final String element3Value           = "Privacy";
+        final String element3Description     = "The data privacy domain.";
         final String element3DescriptionGUID = null;
 
         elementDef = archiveHelper.getEnumElementDef(element3Ordinal,
@@ -11885,8 +11897,8 @@ public class OpenMetadataTypesArchive
         elementDefs.add(elementDef);
 
         final int    element4Ordinal         = 3;
-        final String element4Value           = "Obsolete";
-        final String element4Description     = "The governance definition must not be used any more.";
+        final String element4Value           = "Security";
+        final String element4Description     = "The security governance domain.";
         final String element4DescriptionGUID = null;
 
         elementDef = archiveHelper.getEnumElementDef(element4Ordinal,
@@ -11895,9 +11907,56 @@ public class OpenMetadataTypesArchive
                                                      element4DescriptionGUID);
         elementDefs.add(elementDef);
 
+        final int    element5Ordinal         = 4;
+        final String element5Value           = "ITInfrastructure";
+        final String element5Description     = "The IT infrastructure governance domain.";
+        final String element5DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element5Ordinal,
+                                                     element5Value,
+                                                     element5Description,
+                                                     element5DescriptionGUID);
+        elementDefs.add(elementDef);
+
+        final int    element6Ordinal         = 5;
+        final String element6Value           = "SoftwareDevelopment";
+        final String element6Description     = "The software development lifecycle governance domain.";
+        final String element6DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element6Ordinal,
+                                                     element6Value,
+                                                     element6Description,
+                                                     element6DescriptionGUID);
+
+        elementDefs.add(elementDef);
+
+        final int    element7Ordinal         = 6;
+        final String element7Value           = "Corporate";
+        final String element7Description     = "The corporate governance domain.";
+        final String element7DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element7Ordinal,
+                                                     element7Value,
+                                                     element7Description,
+                                                     element7DescriptionGUID);
+
+        elementDefs.add(elementDef);
+
+        final int    element9Ordinal         = 7;
+        final String element9Value           = "AssetManagement";
+        final String element9Description     = "The physical asset management governance domain.";
+        final String element9DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element9Ordinal,
+                                                     element9Value,
+                                                     element9Description,
+                                                     element9DescriptionGUID);
+
+        elementDefs.add(elementDef);
+
         final int    element99Ordinal         = 99;
         final String element99Value           = "Other";
-        final String element99Description     = "Another governance definition status.";
+        final String element99Description     = "Another governance domain.";
         final String element99DescriptionGUID = null;
 
         elementDef = archiveHelper.getEnumElementDef(element99Ordinal,
@@ -11945,8 +12004,8 @@ public class OpenMetadataTypesArchive
         final String attribute4Name            = "scope";
         final String attribute4Description     = "Scope of impact for this governance definition.";
         final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "status";
-        final String attribute5Description     = "Current status of this governance definition.";
+        final String attribute5Name            = "domain";
+        final String attribute5Description     = "Governance domain for this governance definition.";
         final String attribute5DescriptionGUID = null;
         final String attribute6Name            = "priority";
         final String attribute6Description     = "Relative importance of this governance definition compared to its peers.";
@@ -11957,6 +12016,9 @@ public class OpenMetadataTypesArchive
         final String attribute8Name            = "outcomes";
         final String attribute8Description     = "Expected outcomes.";
         final String attribute8DescriptionGUID = null;
+        final String attribute9Name            = "results";
+        final String attribute9Description     = "Actual results.";
+        final String attribute9DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -11974,7 +12036,7 @@ public class OpenMetadataTypesArchive
                                                            attribute4Description,
                                                            attribute4DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute("GovernanceDefinitionStatus",
+        property = archiveHelper.getEnumTypeDefAttribute("GovernanceDomain",
                                                          attribute5Name,
                                                          attribute5Description,
                                                          attribute5DescriptionGUID);
@@ -11991,10 +12053,132 @@ public class OpenMetadataTypesArchive
                                                                 attribute8Description,
                                                                 attribute8DescriptionGUID);
         properties.add(property);
+        property = archiveHelper.getArrayStringTypeDefAttribute(attribute9Name,
+                                                                attribute9Description,
+                                                                attribute9DescriptionGUID);
+        properties.add(property);
+
+        entityDef.setPropertiesDefinition(properties);
+
+        ArrayList<InstanceStatus> validInstanceStatusList = new ArrayList<>();
+        validInstanceStatusList.add(InstanceStatus.DRAFT);
+        validInstanceStatusList.add(InstanceStatus.PROPOSED);
+        validInstanceStatusList.add(InstanceStatus.APPROVED);
+        validInstanceStatusList.add(InstanceStatus.ACTIVE);
+        validInstanceStatusList.add(InstanceStatus.DEPRECATED);
+        validInstanceStatusList.add(InstanceStatus.OTHER);
+        validInstanceStatusList.add(InstanceStatus.DELETED);
+        entityDef.setValidInstanceStatusList(validInstanceStatusList);
+        entityDef.setInitialStatus(InstanceStatus.DRAFT);
+
+        return entityDef;
+    }
+
+
+    private EntityDef getGovernanceOfficerEntity()
+    {
+        final String guid            = "578a3510-9ad3-45fe-8ada-e4e9572c37c8";
+        final String name            = "GovernanceOfficer";
+        final String description     = "Person responsible for a governance domain.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "Referenceable";
+
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
+                                                                name,
+                                                                this.archiveBuilder.getEntityDef(superTypeName),
+                                                                description,
+                                                                descriptionGUID);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "title";
+        final String attribute1Description     = "Title describing the governance officer.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "scope";
+        final String attribute2Description     = "Scope of responsibility for this governance officer.";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "domain";
+        final String attribute3Description     = "Governance domain for this governance officer.";
+        final String attribute3DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getEnumTypeDefAttribute("GovernanceDomain",
+                                                         attribute3Name,
+                                                         attribute3Description,
+                                                         attribute3DescriptionGUID);
+        properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);
 
         return entityDef;
+    }
+
+
+    private RelationshipDef getGovernancePostRelationship()
+    {
+        final String guid            = "4c4d1d0c-a9fc-4305-8b71-4e691c0f9ae0";
+        final String name            = "GovernancePost";
+        final String description     = "Shows the appointment of a person to a governance officer position.";
+        final String descriptionGUID = null;
+
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
+
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
+                                                                                name,
+                                                                                null,
+                                                                                description,
+                                                                                descriptionGUID,
+                                                                                classificationPropagationRule);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = "GovernanceOfficer";
+        final String                     end1AttributeName            = "governancePosts";
+        final String                     end1AttributeDescription     = "The governance positions that this person holds.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 end1Cardinality);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "Person";
+        final String                     end2AttributeName            = "personAppointed";
+        final String                     end2AttributeDescription     = "The individual appointed as a governance officer.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 end2Cardinality);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+
+        return relationshipDef;
     }
 
     /*
@@ -12050,13 +12234,13 @@ public class OpenMetadataTypesArchive
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "businessImperative";
-        final String attribute1Description     = "Goal or required outcome from the business strategy that is supported by the data strategy.";
+        final String attribute1Name            = "businessImperatives";
+        final String attribute1Description     = "Goals or required outcomes from the business strategy that is supported by the data strategy.";
         final String attribute1DescriptionGUID = null;
 
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
+        property = archiveHelper.getArrayStringTypeDefAttribute(attribute1Name,
+                                                                attribute1Description,
+                                                                attribute1DescriptionGUID);
         properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);
@@ -13947,7 +14131,7 @@ public class OpenMetadataTypesArchive
 
         this.archiveBuilder.addRelationshipDef(getOrganizationCapabilityRelationship());
         this.archiveBuilder.addRelationshipDef(getResponsibilityStaffContactRelationship());
-        this.archiveBuilder.addRelationshipDef(getBusinessCapabilityResponsibilityRelationship());
+        this.archiveBuilder.addRelationshipDef(getBusinessCapabilityControlsRelationship());
     }
 
 
@@ -14238,11 +14422,11 @@ public class OpenMetadataTypesArchive
     }
 
 
-    private RelationshipDef getBusinessCapabilityResponsibilityRelationship()
+    private RelationshipDef getBusinessCapabilityControlsRelationship()
     {
         final String guid            = "b5de932a-738c-4c69-b852-09fec2b9c678";
-        final String name            = "BusinessCapabilityResponsibility";
-        final String description     = "Identifies a business capability that supports a governance responsibility.";
+        final String name            = "BusinessCapabilityControls";
+        final String description     = "Identifies a business capability that supports a governance control.";
         final String descriptionGUID = null;
 
 
@@ -14260,9 +14444,9 @@ public class OpenMetadataTypesArchive
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "GovernanceResponsibility";
-        final String                     end1AttributeName            = "supportingResponsibilities";
-        final String                     end1AttributeDescription     = "The governance responsibilities that this business capability supports.";
+        final String                     end1EntityType               = "GovernanceControl";
+        final String                     end1AttributeName            = "implementsControls";
+        final String                     end1AttributeDescription     = "The governance controls that this business capability supports.";
         final String                     end1AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
@@ -14297,7 +14481,7 @@ public class OpenMetadataTypesArchive
         TypeDefAttribute       property;
 
         final String attribute1Name            = "rationale";
-        final String attribute1Description     = "Documents reasons for assigning the responsibility to this business capability.";
+        final String attribute1Description     = "Documents reasons for assigning the control to this business capability.";
         final String attribute1DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
@@ -14444,7 +14628,7 @@ public class OpenMetadataTypesArchive
     {
         final String guid            = "cb10c107-b7af-475d-aab0-d78b8297b982";
         final String name            = "StaffAssignment";
-        final String description     = "Identifies a person, team or engine assigned to reform a specific role.";
+        final String description     = "Identifies a person, team or engine assigned to reform a specific responsibility.";
         final String descriptionGUID = null;
 
 
@@ -14498,8 +14682,8 @@ public class OpenMetadataTypesArchive
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "notes";
-        final String attribute1Description     = "Documents reasons for implementing the rule using this implementation.";
+        final String attribute1Name            = "responsibilityType";
+        final String attribute1Description     = "Documents the unique identifier of the GovernanceResponsibility that the Person is supporting for the Asset.";
         final String attribute1DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,

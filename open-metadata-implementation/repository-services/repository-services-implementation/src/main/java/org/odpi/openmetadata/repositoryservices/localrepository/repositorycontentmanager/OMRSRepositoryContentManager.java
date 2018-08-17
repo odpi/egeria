@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager;
 
+import org.odpi.openmetadata.repositoryservices.events.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
@@ -11,7 +12,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
-import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEventProcessor;
 import org.odpi.openmetadata.repositoryservices.eventmanagement.*;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
@@ -431,10 +431,10 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
      * @throws TypeErrorException the type name is not a recognized type or is of the wrong category or there is
      *                              a problem with the cached TypeDef.
      */
-    public InstanceType getInstanceType(String           sourceName,
+    public InstanceType getInstanceType(String          sourceName,
                                         TypeDefCategory category,
-                                        String           typeName,
-                                        String           methodName) throws TypeErrorException
+                                        String          typeName,
+                                        String          methodName) throws TypeErrorException
     {
         final String thisMethodName = "getInstanceType";
 
@@ -480,10 +480,7 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
 
                     if (superTypeName != null)
                     {
-                        if (log.isDebugEnabled())
-                        {
-                            log.debug(typeName + " from " + sourceName + " has super type " + superTypeName);
-                        }
+                        log.debug(typeName + " from " + sourceName + " has super type " + superTypeName);
 
                         /*
                          * Save the name of the super type into the instance type
@@ -1847,6 +1844,149 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
 
 
     /**
+     * Process incoming TypeDefEvent based on its type.
+     *
+     * @param cohortName source of the event (cohort name)
+     * @param typeDefEvent event to process
+     */
+    public void sendTypeDefEvent(String           cohortName,
+                                 OMRSTypeDefEvent typeDefEvent)
+    {
+        OMRSTypeDefEventType typeDefEventType       = typeDefEvent.getTypeDefEventType();
+        OMRSEventOriginator  typeDefEventOriginator = typeDefEvent.getEventOriginator();
+
+        if ((typeDefEventType != null) && (typeDefEventOriginator != null))
+        {
+            switch (typeDefEventType)
+            {
+                case NEW_TYPEDEF_EVENT:
+                    this.processNewTypeDefEvent(cohortName,
+                                                typeDefEventOriginator.getMetadataCollectionId(),
+                                                typeDefEventOriginator.getServerName(),
+                                                typeDefEventOriginator.getServerType(),
+                                                typeDefEventOriginator.getOrganizationName(),
+                                                typeDefEvent.getTypeDef());
+                    break;
+
+                case NEW_ATTRIBUTE_TYPEDEF_EVENT:
+                    this.processNewAttributeTypeDefEvent(cohortName,
+                                                         typeDefEventOriginator.getMetadataCollectionId(),
+                                                         typeDefEventOriginator.getServerName(),
+                                                         typeDefEventOriginator.getServerType(),
+                                                         typeDefEventOriginator.getOrganizationName(),
+                                                         typeDefEvent.getAttributeTypeDef());
+                    break;
+
+                case UPDATED_TYPEDEF_EVENT:
+                    this.processUpdatedTypeDefEvent(cohortName,
+                                                    typeDefEventOriginator.getMetadataCollectionId(),
+                                                    typeDefEventOriginator.getServerName(),
+                                                    typeDefEventOriginator.getServerType(),
+                                                    typeDefEventOriginator.getOrganizationName(),
+                                                    typeDefEvent.getTypeDefPatch());
+                    break;
+
+                case DELETED_TYPEDEF_EVENT:
+                    this.processDeletedTypeDefEvent(cohortName,
+                                                    typeDefEventOriginator.getMetadataCollectionId(),
+                                                    typeDefEventOriginator.getServerName(),
+                                                    typeDefEventOriginator.getServerType(),
+                                                    typeDefEventOriginator.getOrganizationName(),
+                                                    typeDefEvent.getTypeDefGUID(),
+                                                    typeDefEvent.getTypeDefName());
+                    break;
+
+                case DELETED_ATTRIBUTE_TYPEDEF_EVENT:
+                    this.processDeletedAttributeTypeDefEvent(cohortName,
+                                                             typeDefEventOriginator.getMetadataCollectionId(),
+                                                             typeDefEventOriginator.getServerName(),
+                                                             typeDefEventOriginator.getServerType(),
+                                                             typeDefEventOriginator.getOrganizationName(),
+                                                             typeDefEvent.getTypeDefGUID(),
+                                                             typeDefEvent.getTypeDefName());
+                    break;
+
+                case RE_IDENTIFIED_TYPEDEF_EVENT:
+                    this.processReIdentifiedTypeDefEvent(cohortName,
+                                                         typeDefEventOriginator.getMetadataCollectionId(),
+                                                         typeDefEventOriginator.getServerName(),
+                                                         typeDefEventOriginator.getServerType(),
+                                                         typeDefEventOriginator.getOrganizationName(),
+                                                         typeDefEvent.getOriginalTypeDefSummary(),
+                                                         typeDefEvent.getTypeDef());
+                    break;
+
+                case RE_IDENTIFIED_ATTRIBUTE_TYPEDEF_EVENT:
+                    this.processReIdentifiedAttributeTypeDefEvent(cohortName,
+                                                                  typeDefEventOriginator.getMetadataCollectionId(),
+                                                                  typeDefEventOriginator.getServerName(),
+                                                                  typeDefEventOriginator.getServerType(),
+                                                                  typeDefEventOriginator.getOrganizationName(),
+                                                                  typeDefEvent.getOriginalAttributeTypeDef(),
+                                                                  typeDefEvent.getAttributeTypeDef());
+
+                case TYPEDEF_ERROR_EVENT:
+                    OMRSTypeDefEventErrorCode errorCode = typeDefEvent.getErrorCode();
+
+                    if (errorCode != null)
+                    {
+                        switch(errorCode)
+                        {
+                            case CONFLICTING_TYPEDEFS:
+                                this.processTypeDefConflictEvent(cohortName,
+                                                                 typeDefEventOriginator.getMetadataCollectionId(),
+                                                                 typeDefEventOriginator.getServerName(),
+                                                                 typeDefEventOriginator.getServerType(),
+                                                                 typeDefEventOriginator.getOrganizationName(),
+                                                                 typeDefEvent.getOriginalTypeDefSummary(),
+                                                                 typeDefEvent.getOtherMetadataCollectionId(),
+                                                                 typeDefEvent.getOtherTypeDefSummary(),
+                                                                 typeDefEvent.getErrorMessage());
+                                break;
+
+                            case CONFLICTING_ATTRIBUTE_TYPEDEFS:
+                                this.processAttributeTypeDefConflictEvent(cohortName,
+                                                                          typeDefEventOriginator.getMetadataCollectionId(),
+                                                                          typeDefEventOriginator.getServerName(),
+                                                                          typeDefEventOriginator.getServerType(),
+                                                                          typeDefEventOriginator.getOrganizationName(),
+                                                                          typeDefEvent.getOriginalAttributeTypeDef(),
+                                                                          typeDefEvent.getOtherMetadataCollectionId(),
+                                                                          typeDefEvent.getOtherAttributeTypeDef(),
+                                                                          typeDefEvent.getErrorMessage());
+
+                            case TYPEDEF_PATCH_MISMATCH:
+                                this.processTypeDefPatchMismatchEvent(cohortName,
+                                                                      typeDefEventOriginator.getMetadataCollectionId(),
+                                                                      typeDefEventOriginator.getServerName(),
+                                                                      typeDefEventOriginator.getServerType(),
+                                                                      typeDefEventOriginator.getOrganizationName(),
+                                                                      typeDefEvent.getTargetMetadataCollectionId(),
+                                                                      typeDefEvent.getTargetTypeDefSummary(),
+                                                                      typeDefEvent.getOtherTypeDef(),
+                                                                      typeDefEvent.getErrorMessage());
+                                break;
+
+                            default:
+                                log.debug("Unknown TypeDef event error code; ignoring event");
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        log.debug("Ignored TypeDef event; null error code");
+                    }
+                    break;
+
+                default:
+                    log.debug("Ignored TypeDef event; unknown type");
+                    break;
+            }
+        }
+    }
+
+
+    /**
      * A new TypeDef has been defined either in an archive, or in another member of the cohort.
      *
      * This new TypeDef can be added to the repository if it does not clash with an existing typeDef and the local
@@ -1909,6 +2049,13 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
                  * Cache information about the type in the repository content manager's maps.
                  */
                 this.cacheTypeDef(sourceName, typeDef, true);
+            }
+            else
+            {
+                /*
+                 * No local repository so just cache for enterprise repository services.
+                 */
+                this.cacheTypeDef(sourceName, typeDef, false);
             }
         }
         catch (TypeDefNotSupportedException fixedTypeSystemResponse)
@@ -2051,6 +2198,13 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
                  */
                 this.cacheAttributeTypeDef(sourceName, attributeTypeDef, true);
             }
+            else
+            {
+                /*
+                 * No local repository so just cache for enterprise repository services.
+                 */
+                this.cacheAttributeTypeDef(sourceName, attributeTypeDef, false);
+            }
         }
         catch (TypeDefNotSupportedException fixedTypeSystemResponse)
         {
@@ -2152,14 +2306,11 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
 
             if (metadataCollection != null)
             {
-
-
                 TypeDef updatedTypeDef = metadataCollection.updateTypeDef(null, typeDefPatch);
 
-                if (log.isDebugEnabled())
-                {
-                    log.debug("Patch successfully applied:" + updatedTypeDef);
-                }
+                log.debug("Patch successfully applied:" + updatedTypeDef);
+
+                // TODO update needed to TypeDef Caches - whether there is a local repository or not
             }
         }
         catch (RepositoryErrorException  error)
@@ -2277,7 +2428,7 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
                                                 TypeDefSummary originalTypeDefSummary,
                                                 TypeDef        typeDef)
     {
-
+        // Todo
     }
 
 

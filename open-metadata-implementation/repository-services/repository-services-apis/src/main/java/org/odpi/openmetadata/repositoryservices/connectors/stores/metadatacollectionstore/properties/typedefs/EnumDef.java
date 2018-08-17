@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -113,13 +114,40 @@ public class EnumDef extends AttributeTypeDef
     public String toString()
     {
         return "EnumDef{" +
-                "elementDefs=" + elementDefs +
-                ", defaultValue=" + defaultValue +
-                ", category=" + category +
-                ", guid='" + guid + '\'' +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", descriptionGUID='" + descriptionGUID + '\'' +
+                "version=" + getVersion() +
+                ", versionName='" + getVersionName() + '\'' +
+                ", category=" + getCategory() +
+                ", GUID='" + getGUID() + '\'' +
+                ", name='" + getName() + '\'' +
+                ", description='" + getDescription() + '\'' +
+                ", descriptionGUID='" + getDescriptionGUID() + '\'' +
                 '}';
+    }
+
+
+    /**
+     * Verify that supplied object has the same properties.
+     *
+     * @param objectToCompare object to test
+     * @return result
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (!(objectToCompare instanceof EnumDef))
+        {
+            return false;
+        }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        EnumDef enumDef = (EnumDef) objectToCompare;
+        return Objects.equals(getElementDefs(), enumDef.getElementDefs()) &&
+                Objects.equals(getDefaultValue(), enumDef.getDefaultValue());
     }
 }

@@ -32,9 +32,16 @@ import java.util.*;
  */
 public class SubjectAreaOmrsBeanGenerator {
 
-    // This generator needs to be run in the top level Egeria folder - i.e. the folder you run git commands in. It is run automatically as part of the Maven build.
+    // This generator can be run in the top level Egeria folder - i.e. the folder you run git commands in. It is run automatically as part of the Maven build.
+
+    // The API properties should not be generated as part of the normal build.
+    // Changes the API properties should be considered if the generate files change either due to the archive types changing or the generator or templates changing.
+    // if the API classifications properties need to be changed in line with the generated files then set regenAPIFiles to true.
+    private boolean regenAPIFiles = false;
+
 
     public static final String SUBJECTAREA_OMAS_SERVER = "open-metadata-implementation/access-services/subject-area/subject-area-server";
+    public static final String SUBJECTAREA_OMAS_API =    "open-metadata-implementation/access-services/subject-area/subject-area-api";
     public static final String GENERATOR = "open-metadata-implementation/access-services/subject-area/subject-area-tools";
 
     public static final String CLASSIFICATIONS = "classifications";
@@ -46,19 +53,23 @@ public class SubjectAreaOmrsBeanGenerator {
     public static final String GENERATION_CLASSIFICATION_FACTORY_CLASS_NAME = "ClassificationFactory.java";
 
     public static final String TEMPLATES_FOLDER = GENERATOR + "/src/main/resources/templates/";
-    public static final String GENERATION_FOLDER = SUBJECTAREA_OMAS_SERVER + "/src/main/java/org/odpi/openmetadata/accessservices/subjectarea/generated";
+    public static final String SRC_SUBJECT_AREA = "/src/main/java/org/odpi/openmetadata/accessservices/subjectarea/";
+    public static final String GENERATION_FOLDER = SUBJECTAREA_OMAS_SERVER + SRC_SUBJECT_AREA + "/generated";
     public static final String GENERATION_REST_FOLDER = GENERATION_FOLDER + "/server/";
-    public static final String GENERATION_REST_TEST_FOLDER = SUBJECTAREA_OMAS_SERVER + "/src/test/java/org/odpi/openmetadata/accessservices/subjectarea/generated/server/";
+    public static final String GENERATION_REST_TEST_FOLDER = SUBJECTAREA_OMAS_SERVER + "/src/test/java/org/odpi" +
+            "/openmetadata/accessservices/subjectarea/generated/server/Test";
     public static final String GENERATION_REST_CLASS_NAME = "SubjectAreaBeansToAccessOMRS.java";
 
     public static final String GENERATION_REST_FILE = GENERATION_REST_FOLDER + GENERATION_REST_CLASS_NAME;
-    public static final String GENERATION_REST_TEST_FILE = GENERATION_REST_TEST_FOLDER + "Test" + GENERATION_REST_CLASS_NAME;
+    public static final String GENERATION_REST_TEST_FILE = GENERATION_REST_TEST_FOLDER + GENERATION_REST_CLASS_NAME;
 
     public static final String GENERATION_REFERENCES_FOLDER = GENERATION_FOLDER + "/" + REFERENCES + "/";
     public static final String GENERATION_ENTITIES_FOLDER = GENERATION_FOLDER + "/" + ENTITIES + "/";
     public static final String GENERATION_ENUMS_FOLDER = GENERATION_FOLDER + "/" + ENUMS + "/";
     public static final String GENERATION_CLASSIFICATIONS_FOLDER = GENERATION_FOLDER + "/" + CLASSIFICATIONS + "/";
 
+    public static final String SUBJECTAREA_OMAS_API_CLASSIFICATION_FOLDER =  SUBJECTAREA_OMAS_API + SRC_SUBJECT_AREA + "/properties/classifications";
+    public static final String SUBJECTAREA_OMAS_API_ENUM_FOLDER =  SUBJECTAREA_OMAS_API + SRC_SUBJECT_AREA + "/properties/enums";
 
     public static final String GENERATION_RELATIONSHIPS_FOLDER = GENERATION_FOLDER + "/" + RELATIONSHIPS + "/";
 
@@ -180,8 +191,23 @@ public class SubjectAreaOmrsBeanGenerator {
         Map<String, List<OmrsBeanEnumValue>> enumsMap = omrsBeanModel.getEnumsMap();
         for (String enumName : enumsMap.keySet()) {
             final String enumFileName = GENERATION_ENUMS_FOLDER + "/" + enumName + ".java";
-            generateEnumFile(enumName, enumsMap.get(enumName), enumFileName);
+            generateEnumFile(enumName, enumsMap.get(enumName), enumFileName,"org.odpi.openmetadata.accessservices.subjectarea.generated.enums");
         }
+        if (this.regenAPIFiles) {
+            repopulateAPIEnums(enumsMap.keySet());
+        }
+    }
+
+    private void repopulateAPIEnums(Set<String> enumNames) throws IOException {
+        // delete all the files in the folder
+        GeneratorUtilities.deleteFilesInFolder(SUBJECTAREA_OMAS_API_ENUM_FOLDER,"Status.java");
+        // generate the Classification files
+        Map<String, List<OmrsBeanEnumValue>> enumsMap = omrsBeanModel.getEnumsMap();
+        for (String enumName : enumNames) {
+            final String enumPropertyFileName = SUBJECTAREA_OMAS_API_ENUM_FOLDER + "/" + enumName + ".java";
+            generateEnumFile(enumName, enumsMap.get(enumName),enumPropertyFileName,"org.odpi.openmetadata.accessservices.subjectarea.properties.enums");
+        }
+
     }
 
     private void generateClassificationFiles() throws IOException {
@@ -191,10 +217,21 @@ public class SubjectAreaOmrsBeanGenerator {
             String outputFolder = this.createClassificationJavaFolderIfRequired(classificationName);
             final String classificationFileName = outputFolder + "/" + classificationName + ".java";
             final String classificationMapperFileName = outputFolder + "/" + classificationName + "Mapper.java";
-
-//            final String classificationFileName = GENERATION_CLASSIFICATIONS_FOLDER  + classificationName + ".java";
-            generateClassificationFile(classificationName, classificationFileName);
+            generateClassificationFile(classificationName, classificationFileName,"org.odpi.openmetadata.accessservices.subjectarea.generated.classifications." + classificationName);
             generateClassificationMapperFile(classificationName, classificationMapperFileName);
+        }
+        if (this.regenAPIFiles) {
+            repopulateAPIClassifications(omrsBeanAttributeMap.keySet());
+        }
+    }
+    private void repopulateAPIClassifications(Set<String> classificationNames) throws IOException {
+        // delete all but the classification java file.
+        GeneratorUtilities.deleteFilesInFolder(SUBJECTAREA_OMAS_API_CLASSIFICATION_FOLDER, "Classification.java");
+        // generate the Classification files
+
+        for (String classificationName : classificationNames) {
+            final String classificationPropertyFileName = SUBJECTAREA_OMAS_API_CLASSIFICATION_FOLDER + "/" + classificationName + ".java";
+            generateClassificationFile(classificationName, classificationPropertyFileName,"org.odpi.openmetadata.accessservices.subjectarea.properties.classifications");
         }
     }
     private void generateClassificationMapperFile(String classificationName, String fileName) throws IOException {
@@ -308,7 +345,7 @@ public class SubjectAreaOmrsBeanGenerator {
      * @param enumFileName
      * @throws IOException
      */
-    private void generateEnumFile(String enumName, List<OmrsBeanEnumValue> enumValues, String enumFileName) throws IOException {
+    private void generateEnumFile(String enumName, List<OmrsBeanEnumValue> enumValues, String enumFileName,String pkg) throws IOException {
         FileWriter outputFileWriter = new FileWriter(enumFileName);
 
         BufferedReader reader = new BufferedReader(new FileReader(OMAS_ENUM_TEMPLATE));
@@ -316,7 +353,7 @@ public class SubjectAreaOmrsBeanGenerator {
         while (line != null) {
             Map<String, String> replacementMap = new HashMap();
             replacementMap.put("description", this.omrsBeanModel.getTypeDefDescription(GeneratorUtilities.uppercase1stLetter(enumName)));
-            replacementMap.put("package", "enums." + enumName);
+            replacementMap.put("package", pkg);
             replacementMap.put("name", org.odpi.openmetadata.accessservices.subjectarea.utils.GeneratorUtilities.lowercase1stLetter(enumName));
             replacementMap.put("uname", GeneratorUtilities.uppercase1stLetter(enumName));
             //String enumName, List<OmrsBeanEnumValue> enumValues, Map<String, String> replacementMap,
@@ -796,7 +833,7 @@ public class SubjectAreaOmrsBeanGenerator {
         outputFileWriter.close();
     }
 
-    private void generateClassificationFile(String classificationName, String fileName) throws IOException {
+    private void generateClassificationFile(String classificationName, String fileName,String pkg) throws IOException {
 
         FileWriter outputFileWriter = new FileWriter(fileName);
         classificationName = GeneratorUtilities.lowercase1stLetter(classificationName);
@@ -811,7 +848,7 @@ public class SubjectAreaOmrsBeanGenerator {
             replacementMap.put("uname", uClassificationName);
             replacementMap.put("name",classificationName);
             replacementMap.put("description", omrsBeanModel.getTypeDefDescription(uClassificationName));
-
+            replacementMap.put("package",pkg);
             writeAttributesToFile(attrList, replacementMap, outputFileWriter, reader, line);
             line = reader.readLine();
         }

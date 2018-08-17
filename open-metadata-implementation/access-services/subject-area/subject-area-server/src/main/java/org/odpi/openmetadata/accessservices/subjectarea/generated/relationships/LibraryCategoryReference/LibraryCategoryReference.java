@@ -23,7 +23,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.
  * LibraryCategoryReference is a relationship between an entity of type GlossaryCategory and an entity of type ExternalGlossaryLink.
  * The ends of the relationship are stored as entity proxies, where there is a 'proxy' name by which the entity type is known.
  * The first entity proxy has localCategories as the proxy name for entity type GlossaryCategory.
- * The second entity proxy has externalGlossaryLinks as the proxy name for entity type ExternalGlossaryLink.
+ * The second entity proxy has externalGlossaryCategories as the proxy name for entity type ExternalGlossaryLink.
  *
  * Each entity proxy also stores the entities guid.
 
@@ -73,7 +73,7 @@ public class LibraryCategoryReference extends Line {
         super("LibraryCategoryReference");
         super.entity1Name = "localCategories";
         super.entity1Type = "GlossaryCategory";
-        super.entity2Name = "externalGlossaryLinks";
+        super.entity2Name = "externalGlossaryCategories";
         super.entity2Type = "ExternalGlossaryLink";
     }
 
@@ -83,7 +83,7 @@ public class LibraryCategoryReference extends Line {
         if (!omrsRelationship.getEntityOnePropertyName().equals("localCategories")){
             //error
         }
-        if (!omrsRelationship.getEntityTwoPropertyName().equals("externalGlossaryLinks")){
+        if (!omrsRelationship.getEntityTwoPropertyName().equals("externalGlossaryCategories")){
             //error
         }
         if (!omrsRelationship.getEntityOneProxy().getType().getTypeDefName().equals("GlossaryCategory")){

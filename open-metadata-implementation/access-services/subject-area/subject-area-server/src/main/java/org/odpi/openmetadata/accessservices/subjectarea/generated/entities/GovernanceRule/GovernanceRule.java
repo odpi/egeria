@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SystemAttributes;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -32,7 +33,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.*;
    Technical control expressed as a logic expression.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
-@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class  GovernanceRule implements Serializable {
     private static final Logger log = LoggerFactory.getLogger(GovernanceRule.class);
@@ -63,10 +64,11 @@ public class  GovernanceRule implements Serializable {
         "summary",
         "description",
         "scope",
-        "status",
+        "domain",
         "priority",
         "implications",
         "outcomes",
+        "results",
         "qualifiedName",
         "additionalProperties",
 
@@ -82,13 +84,14 @@ public class  GovernanceRule implements Serializable {
         "priority",
         "implications",
         "outcomes",
+        "results",
         "qualifiedName",
 
      // Terminate the list
         null
     };
     public static final String[] ENUM_NAMES_SET_VALUES = new String[] {
-         "status",
+         "domain",
 
          // Terminate the list
           null
@@ -113,10 +116,10 @@ public class  GovernanceRule implements Serializable {
         InstanceProperties instanceProperties = new InstanceProperties();
         EnumPropertyValue enumPropertyValue=null;
         enumPropertyValue = new EnumPropertyValue();
-        // current status of this governance definition.
-        enumPropertyValue.setOrdinal(status.ordinal());
-        enumPropertyValue.setSymbolicName(status.name());
-        instanceProperties.setProperty("status",enumPropertyValue);
+        // governance domain for this governance definition.
+        enumPropertyValue.setOrdinal(domain.ordinal());
+        enumPropertyValue.setSymbolicName(domain.name());
+        instanceProperties.setProperty("domain",enumPropertyValue);
         MapPropertyValue mapPropertyValue=null;
         // Additional properties for the element.
         mapPropertyValue = new MapPropertyValue();
@@ -145,6 +148,9 @@ public class  GovernanceRule implements Serializable {
         primitivePropertyValue = new PrimitivePropertyValue();
         primitivePropertyValue.setPrimitiveValue(outcomes);
         instanceProperties.setProperty("outcomes",primitivePropertyValue);
+        primitivePropertyValue = new PrimitivePropertyValue();
+        primitivePropertyValue.setPrimitiveValue(results);
+        instanceProperties.setProperty("results",primitivePropertyValue);
         primitivePropertyValue = new PrimitivePropertyValue();
         primitivePropertyValue.setPrimitiveValue(qualifiedName);
         instanceProperties.setProperty("qualifiedName",primitivePropertyValue);
@@ -209,16 +215,16 @@ public class  GovernanceRule implements Serializable {
        public void setScope(String scope)  {
            this.scope = scope;
        }
-       private GovernanceDefinitionStatus status;
+       private GovernanceDomain domain;
        /**
-        * Current status of this governance definition.
-        * @return GovernanceDefinitionStatus
+        * Governance domain for this governance definition.
+        * @return GovernanceDomain
         */
-       public GovernanceDefinitionStatus getStatus() {
-           return this.status;
+       public GovernanceDomain getDomain() {
+           return this.domain;
        }
-       public void setStatus(GovernanceDefinitionStatus status)  {
-           this.status = status;
+       public void setDomain(GovernanceDomain domain)  {
+           this.domain = domain;
        }
        private String priority;
        /**
@@ -252,6 +258,17 @@ public class  GovernanceRule implements Serializable {
        }
        public void setOutcomes(List<String> outcomes)  {
            this.outcomes = outcomes;
+       }
+       private List<String> results;
+       /**
+        * Actual results.
+        * @return List<String>
+        */
+       public List<String> getResults() {
+           return this.results;
+       }
+       public void setResults(List<String> results)  {
+           this.results = results;
        }
        private String qualifiedName;
        /**
@@ -325,10 +342,11 @@ public class  GovernanceRule implements Serializable {
     	sb.append("Summary=" +this.summary);
     	sb.append("Description=" +this.description);
     	sb.append("Scope=" +this.scope);
-    	sb.append("Status=" +this.status);
+    	sb.append("Domain=" +this.domain);
     	sb.append("Priority=" +this.priority);
     	sb.append("Implications=" +this.implications);
     	sb.append("Outcomes=" +this.outcomes);
+    	sb.append("Results=" +this.results);
     	sb.append("QualifiedName=" +this.qualifiedName);
     	sb.append("AdditionalProperties=" +this.additionalProperties);
 
@@ -376,7 +394,7 @@ public class  GovernanceRule implements Serializable {
         if (this.scope != null && !Objects.equals(this.scope,that.getScope())) {
              return false;
         }
-        if (this.status != null && !Objects.equals(this.status,that.getStatus())) {
+        if (this.domain != null && !Objects.equals(this.domain,that.getDomain())) {
              return false;
         }
         if (this.priority != null && !Objects.equals(this.priority,that.getPriority())) {
@@ -386,6 +404,9 @@ public class  GovernanceRule implements Serializable {
              return false;
         }
         if (this.outcomes != null && !Objects.equals(this.outcomes,that.getOutcomes())) {
+             return false;
+        }
+        if (this.results != null && !Objects.equals(this.results,that.getResults())) {
              return false;
         }
         if (this.qualifiedName != null && !Objects.equals(this.qualifiedName,that.getQualifiedName())) {
@@ -410,10 +431,11 @@ public class  GovernanceRule implements Serializable {
           , this.summary
           , this.description
           , this.scope
-          , this.status
+          , this.domain
           , this.priority
           , this.implications
           , this.outcomes
+          , this.results
           , this.qualifiedName
           , this.additionalProperties
         );

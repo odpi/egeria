@@ -168,8 +168,8 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServices{
             GlossaryCategory parent = null;
             try {
                 parent = service.getGlossaryCategoryById(userId, suppliedCategoryParentGuid);
-            } catch (PropertyServerException e) {
-               response=OMASExceptionToResponse.convertPropertyServerException(e);
+            } catch (MetadataServerUncontactableException e) {
+               response=OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
             } catch (UserNotAuthorizedException e) {
                response=OMASExceptionToResponse.convertUserNotAuthorizedException(e);
             } catch (InvalidParameterException e) {
@@ -217,8 +217,8 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServices{
         GlossaryCategory newGlossaryCategory = null;
         try {
             newGlossaryCategory = newGlossaryCategory = service.createGlossaryCategory(userId, glossaryCategory);
-        } catch (PropertyServerException e) {
-           response=OMASExceptionToResponse.convertPropertyServerException(e);
+        } catch (MetadataServerUncontactableException e) {
+           response=OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
         } catch (UserNotAuthorizedException e) {
            response=OMASExceptionToResponse.convertUserNotAuthorizedException(e);
         } catch (InvalidParameterException e) {
@@ -236,14 +236,16 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServices{
 
         try {
             service.createCategoryAnchorRelationship(userId, categoryAnchor);
-        } catch (PropertyServerException e) {
-           response=OMASExceptionToResponse.convertPropertyServerException(e);
+        } catch (MetadataServerUncontactableException e) {
+           response=OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
         } catch (UserNotAuthorizedException e) {
            response=OMASExceptionToResponse.convertUserNotAuthorizedException(e);
         } catch (UnrecognizedGUIDException e) {
            response=OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
         } catch (InvalidParameterException e) {
            response=OMASExceptionToResponse.convertInvalidParameterException(e);
+        } catch (StatusNotSupportedException e) {
+            response = OMASExceptionToResponse.convertStatusNotSupportedException(e);
         }
         // We could allow other relationship creation here. I suggest not - encourage user to use relationship creation API
         if (response == null) {
@@ -268,7 +270,7 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServices{
      * @throws UserNotAuthorizedException
      * @throws FunctionNotSupportedException
      * @throws InvalidParameterException
-     * @throws PropertyServerException
+     * @throws MetadataServerUncontactableException
      */
     public SubjectAreaOMASAPIResponse checkSiblingCategoryNames(String userId, String methodName, String suppliedCategoryName, String suppliedCategoryParentGuid, SubjectAreaErrorCode errorCode) {
         SubjectAreaOMASAPIResponse response = null;
@@ -283,8 +285,8 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServices{
         List<Relationship> omrsRelationships = null;
         try {
             omrsRelationships = oMRSAPIHelper.callGetRelationshipsForEntity(userId,suppliedCategoryParentGuid, SubjectAreaGlossaryRESTServices.CATEGORY_HIERARCHY_LINK_GUID,0,statusList,null,null,null,0);
-        } catch (PropertyServerException e) {
-           response=OMASExceptionToResponse.convertPropertyServerException(e);
+        } catch (MetadataServerUncontactableException e) {
+           response=OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
         } catch (UserNotAuthorizedException e) {
            response=OMASExceptionToResponse.convertUserNotAuthorizedException(e);
         } catch (InvalidParameterException e) {
@@ -344,8 +346,8 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServices{
             glossaryCategory = subjectAreaOmasREST.getGlossaryCategoryById(userId,guid);
             gotCategory = CategoryMapper.mapOMRSBeantoCategory(glossaryCategory);
             response = new CategoryResponse(gotCategory);
-        } catch (PropertyServerException e) {
-           response=OMASExceptionToResponse.convertPropertyServerException(e);
+        } catch (MetadataServerUncontactableException e) {
+           response=OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
         } catch (UserNotAuthorizedException e) {
            response=OMASExceptionToResponse.convertUserNotAuthorizedException(e);
         } catch (InvalidParameterException e) {
@@ -361,8 +363,8 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServices{
             List<Line> termRelationships = null;
             try {
                 termRelationships = subjectAreaOmasREST.getGlossaryCategoryRelationships(userId, guid);
-            } catch (PropertyServerException e) {
-               response=OMASExceptionToResponse.convertPropertyServerException(e);
+            } catch (MetadataServerUncontactableException e) {
+               response=OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
             } catch (UserNotAuthorizedException e) {
                response=OMASExceptionToResponse.convertUserNotAuthorizedException(e);
             } catch (InvalidParameterException e) {
@@ -446,8 +448,8 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServices{
                response=OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
             } catch (UserNotAuthorizedException e) {
                response=OMASExceptionToResponse.convertUserNotAuthorizedException(e);
-            } catch (PropertyServerException e) {
-               response=OMASExceptionToResponse.convertPropertyServerException(e);
+            } catch (MetadataServerUncontactableException e) {
+               response=OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
             }
         }
 
@@ -502,8 +504,8 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServices{
                 response=OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
             } catch (UserNotAuthorizedException e) {
                 response=OMASExceptionToResponse.convertUserNotAuthorizedException(e);
-            } catch (PropertyServerException e) {
-                response=OMASExceptionToResponse.convertPropertyServerException(e);
+            } catch (MetadataServerUncontactableException e) {
+                response=OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
             }
         }
 
@@ -557,8 +559,8 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServices{
                 response=OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
             } catch (UserNotAuthorizedException e) {
                 response=OMASExceptionToResponse.convertUserNotAuthorizedException(e);
-            } catch (PropertyServerException e) {
-                response=OMASExceptionToResponse.convertPropertyServerException(e);
+            } catch (MetadataServerUncontactableException e) {
+                response=OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
             }
         }
 
@@ -580,8 +582,8 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServices{
             try {
                 service.purgeGlossaryCategoryByGuid(userId, guid);
                 response = new VoidResponse();
-            } catch (PropertyServerException e) {
-               response=OMASExceptionToResponse.convertPropertyServerException(e);
+            } catch (MetadataServerUncontactableException e) {
+               response=OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
             } catch (UserNotAuthorizedException e) {
                response=OMASExceptionToResponse.convertUserNotAuthorizedException(e);
             } catch (InvalidParameterException e) {
@@ -597,8 +599,8 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServices{
             try {
                 service.deleteGlossaryCategoryByGuid(userId, guid);
                 response = new VoidResponse();
-            } catch (PropertyServerException e) {
-               response=OMASExceptionToResponse.convertPropertyServerException(e);
+            } catch (MetadataServerUncontactableException e) {
+               response=OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
             } catch (UserNotAuthorizedException e) {
                response=OMASExceptionToResponse.convertUserNotAuthorizedException(e);
             } catch (FunctionNotSupportedException e) {

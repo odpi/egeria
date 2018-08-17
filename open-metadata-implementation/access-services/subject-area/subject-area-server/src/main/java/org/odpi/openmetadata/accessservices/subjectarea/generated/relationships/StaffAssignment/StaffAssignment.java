@@ -27,7 +27,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.
  *
  * Each entity proxy also stores the entities guid.
 
- Identifies a person, team or engine assigned to reform a specific role.
+ Identifies a person, team or engine assigned to reform a specific responsibility.
  */
 public class StaffAssignment extends Line {
     private static final Logger log = LoggerFactory.getLogger(StaffAssignment.class);
@@ -35,13 +35,13 @@ public class StaffAssignment extends Line {
 
    //public java.util.Set<String> propertyNames = new HashSet<>();
       public static final String[] PROPERTY_NAMES_SET_VALUES = new String[] {
-          "notes",
+          "responsibilityType",
 
       // Terminate the list
           null
       };
       public static final String[] ATTRIBUTE_NAMES_SET_VALUES = new String[] {
-          "notes",
+          "responsibilityType",
 
        // Terminate the list
           null
@@ -100,22 +100,22 @@ public class StaffAssignment extends Line {
           primitivePropertyValue = new PrimitivePropertyValue();
           // TODO  description + change null to value
           primitivePropertyValue.setPrimitiveValue(null);
-          instanceProperties.setProperty("notes",primitivePropertyValue);
+          instanceProperties.setProperty("responsibilityType",primitivePropertyValue);
           if (log.isDebugEnabled()) {
                  log.debug("<== Method: " + methodName);
           }
           return instanceProperties;
     }
 
-         private String notes;
+         private String responsibilityType;
          /**
-          * Documents reasons for implementing the rule using this implementation.
+          * Documents the unique identifier of the GovernanceResponsibility that the Person is supporting for the Asset.
           * @return String
           */
-         public String getNotes() {
-             return this.notes;
+         public String getResponsibilityType() {
+             return this.responsibilityType;
          }
-         public void setNotes(String notes)  {
-            this.notes = notes;
+         public void setResponsibilityType(String responsibilityType)  {
+            this.responsibilityType = responsibilityType;
         }
 }

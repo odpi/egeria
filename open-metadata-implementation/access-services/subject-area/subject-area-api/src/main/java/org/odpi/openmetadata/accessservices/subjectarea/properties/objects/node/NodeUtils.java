@@ -28,7 +28,7 @@ public class NodeUtils {
      * @throws InvalidParameterException
      */
     public static void foundGovernanceClassifications(String classificationName) throws InvalidParameterException {
-        SubjectAreaErrorCode errorCode    = SubjectAreaErrorCode.GOVERNNCE_CLASSIFICATION_SUPPLIED_IN_CLASSIFICATIONS;
+        SubjectAreaErrorCode errorCode    = SubjectAreaErrorCode.GOVERNANCE_CLASSIFICATION_SUPPLIED_IN_CLASSIFICATIONS;
         String errorMessage = errorCode.getErrorMessageId()
                 + errorCode.getFormattedErrorMessage(className,
                 classificationName );

@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -98,5 +99,40 @@ public class TypeDefProperties extends TypeDefElementHeader
         return "TypeDefProperties{" +
                 "typeDefProperties=" + typeDefProperties +
                 '}';
+    }
+
+
+    /**
+     * Verify that supplied object has the same properties.
+     *
+     * @param o object to test
+     * @return result
+     */
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o)
+        {
+            return true;
+        }
+        if (!(o instanceof TypeDefProperties))
+        {
+            return false;
+        }
+        TypeDefProperties that = (TypeDefProperties) o;
+        return Objects.equals(getTypeDefProperties(), that.getTypeDefProperties());
+    }
+
+
+    /**
+     * Return hash code based on the stored properties
+     *
+     * @return hash code
+     */
+    @Override
+    public int hashCode()
+    {
+
+        return Objects.hash(getTypeDefProperties());
     }
 }

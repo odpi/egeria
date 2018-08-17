@@ -73,7 +73,6 @@ import java.util.List;
  */
 public class OMRSRepositoryRESTServices
 {
-    private static LocalOMRSRepositoryConnector localRepositoryConnector = null;
     private static OMRSMetadataCollection       localMetadataCollection  = null;
     private static String                       localServerURL           = null;
 
@@ -91,12 +90,10 @@ public class OMRSRepositoryRESTServices
     {
         try
         {
-            OMRSRepositoryRESTServices.localRepositoryConnector = localRepositoryConnector;
             OMRSRepositoryRESTServices.localMetadataCollection = localRepositoryConnector.getMetadataCollection();
         }
         catch (Throwable error)
         {
-            OMRSRepositoryRESTServices.localRepositoryConnector = null;
             OMRSRepositoryRESTServices.localMetadataCollection = null;
         }
 
@@ -277,15 +274,15 @@ public class OMRSRepositoryRESTServices
      * Returns all of the TypeDefs for a specific category.
      *
      * @param userId unique identifier for requesting user.
-     * @param category enum value for the category of TypeDef to return.
+     * @param category find parameters used to limit the returned results.
      * @return TypeDefListResponse:
      * TypeDefs list or
      * InvalidParameterException the TypeDefCategory is null or
      * RepositoryErrorException there is a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public TypeDefListResponse findTypeDefsByCategory(String          userId,
-                                                      TypeDefCategory category)
+    public TypeDefListResponse findTypeDefsByCategory(String                     userId,
+                                                      TypeDefCategory            category)
     {
         final  String   methodName = "findTypeDefsByCategory";
 
@@ -318,7 +315,7 @@ public class OMRSRepositoryRESTServices
      * Returns all of the AttributeTypeDefs for a specific category.
      *
      * @param userId unique identifier for requesting user.
-     * @param category enum value for the category of an AttributeTypeDef to return.
+     * @param category find parameters used to limit the returned results.
      * @return AttributeTypeDefListResponse:
      * AttributeTypeDefs list or
      * InvalidParameterException the TypeDefCategory is null or
@@ -1187,9 +1184,8 @@ public class OMRSRepositoryRESTServices
      *
      * @param userId unique identifier for requesting user.
      * @param originalTypeDefGUID the original guid of the TypeDef.
-     * @param originalTypeDefName the original name of the TypeDef.
-     * @param newTypeDefGUID the new identifier for the TypeDef.
-     * @param newTypeDefName new name for this TypeDef.
+     * @param requestParameters the original name of the TypeDef, the new identifier for the TypeDef and the
+     *                         new name for this TypeDef.
      * @return TypeDefResponse:
      * typeDef: new values for this TypeDef, including the new guid/name or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -1200,15 +1196,24 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support this call or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  TypeDefResponse reIdentifyTypeDef(String     userId,
-                                              String     originalTypeDefGUID,
-                                              String     originalTypeDefName,
-                                              String     newTypeDefGUID,
-                                              String     newTypeDefName)
+    public  TypeDefResponse reIdentifyTypeDef(String                    userId,
+                                              String                    originalTypeDefGUID,
+                                              TypeDefReIdentifyRequest  requestParameters)
     {
         final  String   methodName = "reIdentifyTypeDef";
 
+        String originalTypeDefName = null;
+        String newTypeDefGUID = null;
+        String newTypeDefName = null;
+
         TypeDefResponse response = new TypeDefResponse();
+
+        if (requestParameters != null)
+        {
+            originalTypeDefName = requestParameters.getOriginalTypeDefName();
+            newTypeDefGUID = requestParameters.getNewTypeDefGUID();
+            newTypeDefName = requestParameters.getNewTypeDefName();
+        }
 
         try
         {
@@ -1252,9 +1257,8 @@ public class OMRSRepositoryRESTServices
      *
      * @param userId unique identifier for requesting user.
      * @param originalAttributeTypeDefGUID the original guid of the AttributeTypeDef.
-     * @param originalAttributeTypeDefName the original name of the AttributeTypeDef.
-     * @param newAttributeTypeDefGUID the new identifier for the AttributeTypeDef.
-     * @param newAttributeTypeDefName new name for this AttributeTypeDef.
+     * @param requestParameters the original name of the AttributeTypeDef and the new identifier for the AttributeTypeDef
+     *                          and the new name for this AttributeTypeDef.
      * @return AttributeTypeDefResponse:
      * attributeTypeDef: new values for this AttributeTypeDef, including the new guid/name or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -1265,15 +1269,24 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support this call or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  AttributeTypeDefResponse reIdentifyAttributeTypeDef(String     userId,
-                                                                String     originalAttributeTypeDefGUID,
-                                                                String     originalAttributeTypeDefName,
-                                                                String     newAttributeTypeDefGUID,
-                                                                String     newAttributeTypeDefName)
+    public  AttributeTypeDefResponse reIdentifyAttributeTypeDef(String                   userId,
+                                                                String                   originalAttributeTypeDefGUID,
+                                                                TypeDefReIdentifyRequest requestParameters)
     {
         final  String   methodName = "reIdentifyAttributeTypeDef";
 
+        String originalAttributeTypeDefName = null;
+        String newAttributeTypeDefGUID = null;
+        String newAttributeTypeDefName = null;
+
         AttributeTypeDefResponse response = new AttributeTypeDefResponse();
+
+        if (requestParameters != null)
+        {
+            originalAttributeTypeDefName = requestParameters.getOriginalTypeDefName();
+            newAttributeTypeDefGUID = requestParameters.getNewTypeDefGUID();
+            newAttributeTypeDefName = requestParameters.getNewTypeDefName();
+        }
 
         try
         {
@@ -1490,7 +1503,7 @@ public class OMRSRepositoryRESTServices
      * EntityNotKnownException the requested entity instance is not known in the metadata collection
      *                                   at the time requested or
      * EntityProxyOnlyException the requested entity instance is only a proxy in the metadata collection or
-     * FunctionNotSupportedException the repository does not support satOfTime parameter or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public  EntityDetailResponse getEntityDetail(String     userId,
@@ -1542,20 +1555,7 @@ public class OMRSRepositoryRESTServices
      *
      * @param userId unique identifier for requesting user.
      * @param entityGUID String unique identifier for the entity.
-     * @param relationshipTypeGUID String GUID of the the type of relationship required (null for all).
-     * @param fromRelationshipElement the starting element number of the relationships to return.
-     *                                This is used when retrieving elements
-     *                                beyond the first page of results. Zero means start from the first element.
-     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
-     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
-     * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
-     *                 present values.
-     * @param sequencingProperty String name of the property that is to be used to sequence the results.
-     *                           Null means do not sequence on a property name (see SequencingOrder).
-     * @param sequencingOrder Enum defining how the results should be ordered.
-     * @param pageSize -- the maximum number of result classifications that can be returned on this request.  Zero means
-     *                 unrestricted return results size.
+     * @param findRequestParameters find parameters used to limit the returned results.
      * @return RelationshipListResponse:
      * Relationships list.  Null means no relationships associated with the entity or
      * InvalidParameterException a parameter is invalid or null or
@@ -1565,36 +1565,47 @@ public class OMRSRepositoryRESTServices
      * EntityNotKnownException the requested entity instance is not known in the metadata collection or
      * PropertyErrorException the sequencing property is not valid for the attached classifications or
      * PagingErrorException the paging/sequencing parameters are set up incorrectly or
-     * FunctionNotSupportedException the repository does not support satOfTime parameter or
-     * UserNotAuthorizedException the userId is not permitted to perform this operation or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public RelationshipListResponse getRelationshipsForEntity(String                     userId,
                                                               String                     entityGUID,
-                                                              String                     relationshipTypeGUID,
-                                                              int                        fromRelationshipElement,
-                                                              List<InstanceStatus>       limitResultsByStatus,
-                                                              Date                       asOfTime,
-                                                              String                     sequencingProperty,
-                                                              SequencingOrder sequencingOrder,
-                                                              int                        pageSize)
+                                                              TypeLimitedFindRequest     findRequestParameters)
     {
         final  String   methodName = "getRelationshipsForEntity";
 
+        String               relationshipTypeGUID    = null;
+        int                  fromRelationshipElement = 0;
+        List<InstanceStatus> limitResultsByStatus    = null;
+        String               sequencingProperty      = null;
+        SequencingOrder      sequencingOrder         = null;
+        int                  pageSize                = 0;
+
         RelationshipListResponse response = new RelationshipListResponse();
+
+        if (findRequestParameters != null)
+        {
+            relationshipTypeGUID    = findRequestParameters.getTypeGUID();
+            fromRelationshipElement = findRequestParameters.getOffset();
+            limitResultsByStatus    = findRequestParameters.getLimitResultsByStatus();
+            sequencingProperty      = findRequestParameters.getSequencingProperty();
+            sequencingOrder         = findRequestParameters.getSequencingOrder();
+            pageSize                = findRequestParameters.getPageSize();
+        }
 
         try
         {
             validateLocalRepository(methodName);
 
-            List<Relationship>  relationships = localMetadataCollection.getRelationshipsForEntity(userId,
-                                                                                                  entityGUID,
-                                                                                                  relationshipTypeGUID,
-                                                                                                  fromRelationshipElement,
-                                                                                                  limitResultsByStatus,
-                                                                                                  asOfTime,
-                                                                                                  sequencingProperty,
-                                                                                                  sequencingOrder,
-                                                                                                  pageSize);
+            List<Relationship> relationships = localMetadataCollection.getRelationshipsForEntity(userId,
+                                                                                                 entityGUID,
+                                                                                                 relationshipTypeGUID,
+                                                                                                 fromRelationshipElement,
+                                                                                                 limitResultsByStatus,
+                                                                                                 null,
+                                                                                                 sequencingProperty,
+                                                                                                 sequencingOrder,
+                                                                                                 pageSize);
             response.setRelationships(relationships);
             if (relationships != null)
             {
@@ -1602,27 +1613,139 @@ public class OMRSRepositoryRESTServices
                 response.setPageSize(pageSize);
                 if (response.getRelationships().size() == pageSize)
                 {
-                    final String urlTemplate = "{0}/instances/entity/{1}/relationships?relationshipTypeGUID={2}&fromRelationshipElement={3}&limitResultsByStatus={4}&asOfTime={5}&sequencingProperty={6}&sequencingOrder={7}&pageSize={8}";
+                    final String urlTemplate = "{0}/instances/entity/{1}/relationships";
+
+                    TypeLimitedFindRequest nextFindRequestParameters = new TypeLimitedFindRequest(findRequestParameters);
+                    nextFindRequestParameters.setOffset(fromRelationshipElement + pageSize);
 
                     response.setNextPageURL(formatNextPageURL(localServerURL + urlTemplate,
+                                                              nextFindRequestParameters,
                                                               userId,
-                                                              entityGUID,
-                                                              relationshipTypeGUID,
-                                                              fromRelationshipElement + pageSize,
-                                                              limitResultsByStatus,
-                                                              asOfTime,
-                                                              sequencingProperty,
-                                                              sequencingOrder,
-                                                              pageSize));
+                                                              entityGUID));
                 }
             }
 
         }
-        catch (RepositoryErrorException  error)
+        catch (RepositoryErrorException error)
         {
             captureRepositoryErrorException(response, error);
         }
-        catch (FunctionNotSupportedException  error)
+        catch (FunctionNotSupportedException error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (EntityNotKnownException error)
+        {
+            captureEntityNotKnownException(response, error);
+        }
+        catch (PropertyErrorException error)
+        {
+            capturePropertyErrorException(response, error);
+        }
+        catch (TypeErrorException error)
+        {
+            captureTypeErrorException(response, error);
+        }
+        catch (PagingErrorException error)
+        {
+            capturePagingErrorException(response, error);
+        }
+
+        return response;
+    }
+
+
+    /**
+     * Return the relationships for a specific entity.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID String unique identifier for the entity.
+     * @param findRequestParameters find parameters used to limit the returned results.
+     * @return RelationshipListResponse:
+     * Relationships list.  Null means no relationships associated with the entity or
+     * InvalidParameterException a parameter is invalid or null or
+     * TypeErrorException the type guid passed on the request is not known by the metadata collection or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored or
+     * EntityNotKnownException the requested entity instance is not known in the metadata collection or
+     * PropertyErrorException the sequencing property is not valid for the attached classifications or
+     * PagingErrorException the paging/sequencing parameters are set up incorrectly or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public RelationshipListResponse getRelationshipsForEntityHistory(String                               userId,
+                                                                     String                               entityGUID,
+                                                                     TypeLimitedHistoricalFindRequest     findRequestParameters)
+    {
+        final  String   methodName = "getRelationshipsForEntityHistory";
+
+        String               relationshipTypeGUID    = null;
+        int                  fromRelationshipElement = 0;
+        List<InstanceStatus> limitResultsByStatus    = null;
+        Date                 asOfTime                = null;
+        String               sequencingProperty      = null;
+        SequencingOrder      sequencingOrder         = null;
+        int                  pageSize                = 0;
+
+        RelationshipListResponse response = new RelationshipListResponse();
+
+        if (findRequestParameters != null)
+        {
+            relationshipTypeGUID    = findRequestParameters.getTypeGUID();
+            fromRelationshipElement = findRequestParameters.getOffset();
+            limitResultsByStatus    = findRequestParameters.getLimitResultsByStatus();
+            asOfTime                = findRequestParameters.getAsOfTime();
+            sequencingProperty      = findRequestParameters.getSequencingProperty();
+            sequencingOrder         = findRequestParameters.getSequencingOrder();
+            pageSize                = findRequestParameters.getPageSize();
+        }
+
+        try
+        {
+            validateLocalRepository(methodName);
+
+            List<Relationship> relationships = localMetadataCollection.getRelationshipsForEntity(userId,
+                                                                                                 entityGUID,
+                                                                                                 relationshipTypeGUID,
+                                                                                                 fromRelationshipElement,
+                                                                                                 limitResultsByStatus,
+                                                                                                 asOfTime,
+                                                                                                 sequencingProperty,
+                                                                                                 sequencingOrder,
+                                                                                                 pageSize);
+            response.setRelationships(relationships);
+            if (relationships != null)
+            {
+                response.setOffset(fromRelationshipElement);
+                response.setPageSize(pageSize);
+                if (response.getRelationships().size() == pageSize)
+                {
+                    final String urlTemplate = "{0}/instances/entity/{1}/relationships/history";
+
+                    TypeLimitedHistoricalFindRequest nextFindRequestParameters = new TypeLimitedHistoricalFindRequest(findRequestParameters);
+                    nextFindRequestParameters.setOffset(fromRelationshipElement + pageSize);
+
+                    response.setNextPageURL(formatNextPageURL(localServerURL + urlTemplate,
+                                                              nextFindRequestParameters,
+                                                              userId,
+                                                              entityGUID));
+                }
+            }
+
+        }
+        catch (RepositoryErrorException error)
+        {
+            captureRepositoryErrorException(response, error);
+        }
+        catch (FunctionNotSupportedException error)
         {
             captureFunctionNotSupportedException(response, error);
         }
@@ -1660,22 +1783,7 @@ public class OMRSRepositoryRESTServices
      * can be returned over many pages.
      *
      * @param userId unique identifier for requesting user.
-     * @param entityTypeGUID String unique identifier for the entity type of interest (null means any entity type).
-     * @param matchProperties List of entity properties to match to (null means match on entityTypeGUID only).
-     * @param matchCriteria Enum defining how the properties should be matched to the entities in the repository.
-     * @param fromEntityElement the starting element number of the entities to return.
-     *                                This is used when retrieving elements
-     *                                beyond the first page of results. Zero means start from the first element.
-     * @param limitResultsByStatus By default, entities in all statuses are returned.  However, it is possible
-     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
-     * @param limitResultsByClassification List of classifications that must be present on all returned entities.
-     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
-     * @param sequencingProperty String name of the entity property that is to be used to sequence the results.
-     *                           Null means do not sequence on a property name (see SequencingOrder).
-     * @param sequencingOrder Enum defining how the results should be ordered.
-     * @param pageSize the maximum number of result entities that can be returned on this request.  Zero means
-     *                 unrestricted return results size.
+     * @param findRequestParameters find parameters used to limit the returned results.
      * @return EntityListResponse:
      * a list of entities matching the supplied criteria where null means no matching entities in the metadata
      * collection or
@@ -1686,24 +1794,156 @@ public class OMRSRepositoryRESTServices
      * PropertyErrorException the properties specified are not valid for any of the requested types of
      *                                  entity or
      * PagingErrorException the paging/sequencing parameters are set up incorrectly or
-     * FunctionNotSupportedException the repository does not support satOfTime parameter or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public  EntityListResponse findEntitiesByProperty(String                    userId,
-                                                      String                    entityTypeGUID,
-                                                      InstanceProperties        matchProperties,
-                                                      MatchCriteria             matchCriteria,
-                                                      int                       fromEntityElement,
-                                                      List<InstanceStatus>      limitResultsByStatus,
-                                                      List<String>              limitResultsByClassification,
-                                                      Date                      asOfTime,
-                                                      String                    sequencingProperty,
-                                                      SequencingOrder           sequencingOrder,
-                                                      int                       pageSize)
+                                                      EntityPropertyFindRequest findRequestParameters)
     {
         final  String   methodName = "findEntitiesByProperty";
 
+        String                    entityTypeGUID                    = null;
+        InstanceProperties        matchProperties                   = null;
+        MatchCriteria             matchCriteria                     = null;
+        int                       fromEntityElement                 = 0;
+        List<InstanceStatus>      limitResultsByStatus              = null;
+        List<String>              limitResultsByClassification      = null;
+        String                    sequencingProperty                = null;
+        SequencingOrder           sequencingOrder                   = null;
+        int                       pageSize                          = 0;
+
         EntityListResponse response = new EntityListResponse();
+
+        if (findRequestParameters != null)
+        {
+            entityTypeGUID                    = findRequestParameters.getTypeGUID();
+            matchProperties                   = findRequestParameters.getMatchProperties();
+            matchCriteria                     = findRequestParameters.getMatchCriteria();
+            fromEntityElement                 = findRequestParameters.getOffset();
+            limitResultsByStatus              = findRequestParameters.getLimitResultsByStatus();
+            limitResultsByClassification      = findRequestParameters.getLimitResultsByClassification();
+            sequencingProperty                = findRequestParameters.getSequencingProperty();
+            sequencingOrder                   = findRequestParameters.getSequencingOrder();
+            pageSize                          = findRequestParameters.getPageSize();
+        }
+
+        try
+        {
+            validateLocalRepository(methodName);
+
+            List<EntityDetail>  entities = localMetadataCollection.findEntitiesByProperty(userId,
+                                                                                          entityTypeGUID,
+                                                                                          matchProperties,
+                                                                                          matchCriteria,
+                                                                                          fromEntityElement,
+                                                                                          limitResultsByStatus,
+                                                                                          limitResultsByClassification,
+                                                                                          null,
+                                                                                          sequencingProperty,
+                                                                                          sequencingOrder,
+                                                                                          pageSize);
+            response.setEntities(entities);
+            if (entities != null)
+            {
+                response.setOffset(fromEntityElement);
+                response.setPageSize(pageSize);
+                if (entities.size() == pageSize)
+                {
+                    final String urlTemplate = "{0}/instances/entities/by-property";
+
+                    EntityPropertyFindRequest nextFindRequestParameters = new EntityPropertyFindRequest(findRequestParameters);
+                    nextFindRequestParameters.setOffset(fromEntityElement + pageSize);
+
+                    response.setNextPageURL(formatNextPageURL(localServerURL + urlTemplate,
+                                                              nextFindRequestParameters,
+                                                              userId));
+                }
+            }
+
+        }
+        catch (RepositoryErrorException  error)
+        {
+            captureRepositoryErrorException(response, error);
+        }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (TypeErrorException error)
+        {
+            captureTypeErrorException(response, error);
+        }
+        catch (PropertyErrorException error)
+        {
+            capturePropertyErrorException(response, error);
+        }
+        catch (PagingErrorException error)
+        {
+            capturePagingErrorException(response, error);
+        }
+
+        return response;
+    }
+
+
+    /**
+     * Return a list of entities that match the supplied properties according to the match criteria.  The results
+     * can be returned over many pages.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param findRequestParameters find parameters used to limit the returned results.
+     * @return EntityListResponse:
+     * a list of entities matching the supplied criteria where null means no matching entities in the metadata
+     * collection or
+     * InvalidParameterException a parameter is invalid or null or
+     * TypeErrorException the type guid passed on the request is not known by the metadata collection or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored or
+     * PropertyErrorException the properties specified are not valid for any of the requested types of
+     *                                  entity or
+     * PagingErrorException the paging/sequencing parameters are set up incorrectly or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public  EntityListResponse findEntitiesByPropertyHistory(String                              userId,
+                                                             EntityPropertyHistoricalFindRequest findRequestParameters)
+    {
+        final  String   methodName = "findEntitiesByPropertyHistory";
+
+        String                    entityTypeGUID                    = null;
+        InstanceProperties        matchProperties                   = null;
+        MatchCriteria             matchCriteria                     = null;
+        int                       fromEntityElement                 = 0;
+        List<InstanceStatus>      limitResultsByStatus              = null;
+        List<String>              limitResultsByClassification      = null;
+        Date                      asOfTime                          = null;
+        String                    sequencingProperty                = null;
+        SequencingOrder           sequencingOrder                   = null;
+        int                       pageSize                          = 0;
+
+        EntityListResponse response = new EntityListResponse();
+
+        if (findRequestParameters != null)
+        {
+            entityTypeGUID                    = findRequestParameters.getTypeGUID();
+            matchProperties                   = findRequestParameters.getMatchProperties();
+            matchCriteria                     = findRequestParameters.getMatchCriteria();
+            fromEntityElement                 = findRequestParameters.getOffset();
+            limitResultsByStatus              = findRequestParameters.getLimitResultsByStatus();
+            limitResultsByClassification      = findRequestParameters.getLimitResultsByClassification();
+            asOfTime                          = findRequestParameters.getAsOfTime();
+            sequencingProperty                = findRequestParameters.getSequencingProperty();
+            sequencingOrder                   = findRequestParameters.getSequencingOrder();
+            pageSize                          = findRequestParameters.getPageSize();
+        }
 
         try
         {
@@ -1727,20 +1967,14 @@ public class OMRSRepositoryRESTServices
                 response.setPageSize(pageSize);
                 if (entities.size() == pageSize)
                 {
-                    final String urlTemplate = "{0}/instances/entities/by-property?entityTypeGUID={1}&matchProperties={2}&matchCriteria={3}&fromEntityElement={4}&limitResultsByStatus={5}&limitResultsByClassification={6}&asOfTime={7}&sequencingProperty={8}&sequencingOrder={9}&pageSize={10}";
+                    final String urlTemplate = "{0}/instances/entities/by-property";
+
+                    EntityPropertyFindRequest nextFindRequestParameters = new EntityPropertyFindRequest(findRequestParameters);
+                    nextFindRequestParameters.setOffset(fromEntityElement + pageSize);
 
                     response.setNextPageURL(formatNextPageURL(localServerURL + urlTemplate,
-                                                              userId,
-                                                              entityTypeGUID,
-                                                              matchProperties,
-                                                              matchCriteria,
-                                                              fromEntityElement + pageSize,
-                                                              limitResultsByStatus,
-                                                              limitResultsByClassification,
-                                                              asOfTime,
-                                                              sequencingProperty,
-                                                              sequencingOrder,
-                                                              pageSize));
+                                                              nextFindRequestParameters,
+                                                              userId));
                 }
             }
 
@@ -1782,22 +2016,8 @@ public class OMRSRepositoryRESTServices
      * Return a list of entities that have the requested type of classification attached.
      *
      * @param userId unique identifier for requesting user.
-     * @param entityTypeGUID unique identifier for the type of entity requested.  Null mans any type of entity.
      * @param classificationName name of the classification a null is not valid.
-     * @param matchClassificationProperties list of classification properties used to narrow the search.
-     * @param matchCriteria Enum defining how the properties should be matched to the classifications in the repository.
-     * @param fromEntityElement the starting element number of the entities to return.
-     *                                This is used when retrieving elements
-     *                                beyond the first page of results. Zero means start from the first element.
-     * @param limitResultsByStatus By default, entities in all statuses are returned.  However, it is possible
-     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
-     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
-     * @param sequencingProperty String name of the entity property that is to be used to sequence the results.
-     *                           Null means do not sequence on a property name (see SequencingOrder).
-     * @param sequencingOrder Enum defining how the results should be ordered.
-     * @param pageSize the maximum number of result entities that can be returned on this request.  Zero means
-     *                 unrestricted return results size.
+     * @param findRequestParameters find parameters used to limit the returned results.
      * @return EntityListResponse:
      * a list of entities matching the supplied criteria where null means no matching entities in the metadata
      * collection or
@@ -1809,24 +2029,37 @@ public class OMRSRepositoryRESTServices
      * PropertyErrorException the properties specified are not valid for the requested type of
      *                                  classification or
      * PagingErrorException the paging/sequencing parameters are set up incorrectly or
-     * FunctionNotSupportedException the repository does not support satOfTime parameter or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public  EntityListResponse findEntitiesByClassification(String                    userId,
-                                                            String                    entityTypeGUID,
                                                             String                    classificationName,
-                                                            InstanceProperties        matchClassificationProperties,
-                                                            MatchCriteria             matchCriteria,
-                                                            int                       fromEntityElement,
-                                                            List<InstanceStatus>      limitResultsByStatus,
-                                                            Date                      asOfTime,
-                                                            String                    sequencingProperty,
-                                                            SequencingOrder           sequencingOrder,
-                                                            int                       pageSize)
+                                                            PropertyMatchFindRequest  findRequestParameters)
     {
         final  String   methodName = "findEntitiesByClassification";
 
+        String                    entityTypeGUID                  = null;
+        InstanceProperties        matchClassificationProperties   = null;
+        MatchCriteria             matchCriteria                   = null;
+        int                       fromEntityElement               = 0;
+        List<InstanceStatus>      limitResultsByStatus            = null;
+        String                    sequencingProperty              = null;
+        SequencingOrder           sequencingOrder                 = null;
+        int                       pageSize                        = 0;
+
         EntityListResponse response = new EntityListResponse();
+
+        if (findRequestParameters != null)
+        {
+            entityTypeGUID                    = findRequestParameters.getTypeGUID();
+            matchClassificationProperties     = findRequestParameters.getMatchProperties();
+            matchCriteria                     = findRequestParameters.getMatchCriteria();
+            fromEntityElement                 = findRequestParameters.getOffset();
+            limitResultsByStatus              = findRequestParameters.getLimitResultsByStatus();
+            sequencingProperty                = findRequestParameters.getSequencingProperty();
+            sequencingOrder                   = findRequestParameters.getSequencingOrder();
+            pageSize                          = findRequestParameters.getPageSize();
+        }
 
         try
         {
@@ -1839,7 +2072,7 @@ public class OMRSRepositoryRESTServices
                                                                                                 matchCriteria,
                                                                                                 fromEntityElement,
                                                                                                 limitResultsByStatus,
-                                                                                                asOfTime,
+                                                                                                null,
                                                                                                 sequencingProperty,
                                                                                                 sequencingOrder,
                                                                                                 pageSize);
@@ -1850,20 +2083,14 @@ public class OMRSRepositoryRESTServices
                 response.setPageSize(pageSize);
                 if (entities.size() == pageSize)
                 {
-                    final String urlTemplate = "{0}/instances/entities/by-classification/{1}?entityTypeGUID={2}&matchClassificationProperties={3}&matchCriteria={4}&fromEntityElement={5}&limitResultsByStatus={6}&asOfTime={7}&sequencingProperty={8}&sequencingOrder={9}&pageSize={10}";
+                    final String urlTemplate = "{0}/instances/entities/by-classification/{1}";
 
+                    PropertyMatchFindRequest nextFindRequestParameters = new PropertyMatchFindRequest(findRequestParameters);
+                    nextFindRequestParameters.setOffset(fromEntityElement + pageSize);
                     response.setNextPageURL(formatNextPageURL(localServerURL + urlTemplate,
+                                                              nextFindRequestParameters,
                                                               userId,
-                                                              entityTypeGUID,
-                                                              classificationName,
-                                                              matchClassificationProperties,
-                                                              matchCriteria,
-                                                              fromEntityElement + pageSize,
-                                                              limitResultsByStatus,
-                                                              asOfTime,
-                                                              sequencingProperty,
-                                                              sequencingOrder,
-                                                              pageSize));
+                                                              classificationName));
                 }
             }
         }
@@ -1905,26 +2132,132 @@ public class OMRSRepositoryRESTServices
 
 
     /**
+     * Return a list of entities that have the requested type of classification attached.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param classificationName name of the classification a null is not valid.
+     * @param findRequestParameters find parameters used to limit the returned results.
+     * @return EntityListResponse:
+     * a list of entities matching the supplied criteria where null means no matching entities in the metadata
+     * collection or
+     * InvalidParameterException a parameter is invalid or null or
+     * TypeErrorException the type guid passed on the request is not known by the metadata collection or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored or
+     * ClassificationErrorException the classification request is not known to the metadata collection.
+     * PropertyErrorException the properties specified are not valid for the requested type of
+     *                                  classification or
+     * PagingErrorException the paging/sequencing parameters are set up incorrectly or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public  EntityListResponse findEntitiesByClassificationHistory(String                              userId,
+                                                                   String                              classificationName,
+                                                                   PropertyMatchHistoricalFindRequest  findRequestParameters)
+    {
+        final  String   methodName = "findEntitiesByClassificationHistory";
+
+        String                    entityTypeGUID                  = null;
+        InstanceProperties        matchClassificationProperties   = null;
+        MatchCriteria             matchCriteria                   = null;
+        int                       fromEntityElement               = 0;
+        List<InstanceStatus>      limitResultsByStatus            = null;
+        Date                      asOfTime                        = null;
+        String                    sequencingProperty              = null;
+        SequencingOrder           sequencingOrder                 = null;
+        int                       pageSize                        = 0;
+
+        EntityListResponse response = new EntityListResponse();
+
+        if (findRequestParameters != null)
+        {
+            entityTypeGUID                    = findRequestParameters.getTypeGUID();
+            matchClassificationProperties     = findRequestParameters.getMatchProperties();
+            matchCriteria                     = findRequestParameters.getMatchCriteria();
+            fromEntityElement                 = findRequestParameters.getOffset();
+            limitResultsByStatus              = findRequestParameters.getLimitResultsByStatus();
+            asOfTime                          = findRequestParameters.getAsOfTime();
+            sequencingProperty                = findRequestParameters.getSequencingProperty();
+            sequencingOrder                   = findRequestParameters.getSequencingOrder();
+            pageSize                          = findRequestParameters.getPageSize();
+        }
+
+        try
+        {
+            validateLocalRepository(methodName);
+
+            List<EntityDetail>  entities = localMetadataCollection.findEntitiesByClassification(userId,
+                                                                                                entityTypeGUID,
+                                                                                                classificationName,
+                                                                                                matchClassificationProperties,
+                                                                                                matchCriteria,
+                                                                                                fromEntityElement,
+                                                                                                limitResultsByStatus,
+                                                                                                asOfTime,
+                                                                                                sequencingProperty,
+                                                                                                sequencingOrder,
+                                                                                                pageSize);
+            response.setEntities(entities);
+            if (entities != null)
+            {
+                response.setOffset(fromEntityElement);
+                response.setPageSize(pageSize);
+                if (entities.size() == pageSize)
+                {
+                    final String urlTemplate = "{0}/instances/entities/by-classification/{1}/history";
+
+                    PropertyMatchHistoricalFindRequest nextFindRequestParameters = new PropertyMatchHistoricalFindRequest(findRequestParameters);
+                    nextFindRequestParameters.setOffset(fromEntityElement + pageSize);
+                    response.setNextPageURL(formatNextPageURL(localServerURL + urlTemplate,
+                                                              nextFindRequestParameters,
+                                                              userId,
+                                                              classificationName));
+                }
+            }
+        }
+        catch (RepositoryErrorException  error)
+        {
+            captureRepositoryErrorException(response, error);
+        }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (TypeErrorException error)
+        {
+            captureTypeErrorException(response, error);
+        }
+        catch (PropertyErrorException error)
+        {
+            capturePropertyErrorException(response, error);
+        }
+        catch (PagingErrorException error)
+        {
+            capturePagingErrorException(response, error);
+        }
+        catch (ClassificationErrorException error)
+        {
+            captureClassificationErrorException(response, error);
+        }
+
+        return response;
+    }
+
+    /**
      * Return a list of entities whose string based property values match the search criteria.  The
      * search criteria may include regex style wild cards.
      *
      * @param userId unique identifier for requesting user.
-     * @param entityTypeGUID GUID of the type of entity to search for. Null means all types will
-     *                       be searched (could be slow so not recommended).
      * @param searchCriteria String expression of the characteristics of the required relationships.
-     * @param fromEntityElement the starting element number of the entities to return.
-     *                                This is used when retrieving elements
-     *                                beyond the first page of results. Zero means start from the first element.
-     * @param limitResultsByStatus By default, entities in all statuses are returned.  However, it is possible
-     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
-     * @param limitResultsByClassification List of classifications that must be present on all returned entities.
-     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
-     * @param sequencingProperty String name of the property that is to be used to sequence the results.
-     *                           Null means do not sequence on a property name (see SequencingOrder).
-     * @param sequencingOrder Enum defining how the results should be ordered.
-     * @param pageSize the maximum number of result entities that can be returned on this request.  Zero means
-     *                 unrestricted return results size.
+     * @param findRequestParameters find parameters used to limit the returned results.
      * @return EntityListResponse:
      * a list of entities matching the supplied criteria where null means no matching entities in the metadata
      * collection or
@@ -1935,23 +2268,150 @@ public class OMRSRepositoryRESTServices
      * PropertyErrorException the sequencing property specified is not valid for any of the requested types of
      *                                  entity or
      * PagingErrorException the paging/sequencing parameters are set up incorrectly.
-     * FunctionNotSupportedException the repository does not support satOfTime parameter or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  EntityListResponse findEntitiesByPropertyValue(String                  userId,
-                                                           String                  entityTypeGUID,
-                                                           String                  searchCriteria,
-                                                           int                     fromEntityElement,
-                                                           List<InstanceStatus>    limitResultsByStatus,
-                                                           List<String>            limitResultsByClassification,
-                                                           Date                    asOfTime,
-                                                           String                  sequencingProperty,
-                                                           SequencingOrder         sequencingOrder,
-                                                           int                     pageSize)
+    public  EntityListResponse findEntitiesByPropertyValue(String                    userId,
+                                                           String                    searchCriteria,
+                                                           EntityPropertyFindRequest findRequestParameters)
     {
         final  String   methodName = "findEntitiesByPropertyValue";
 
+        String                  entityTypeGUID                    = null;
+        int                     fromEntityElement                 = 0;
+        List<InstanceStatus>    limitResultsByStatus              = null;
+        List<String>            limitResultsByClassification      = null;
+        String                  sequencingProperty                = null;
+        SequencingOrder         sequencingOrder                   = null;
+        int                     pageSize                          = 0;
+
         EntityListResponse response = new EntityListResponse();
+
+        if (findRequestParameters != null)
+        {
+            entityTypeGUID                    = findRequestParameters.getTypeGUID();
+            fromEntityElement                 = findRequestParameters.getOffset();
+            limitResultsByClassification      = findRequestParameters.getLimitResultsByClassification();
+            limitResultsByStatus              = findRequestParameters.getLimitResultsByStatus();
+            sequencingProperty                = findRequestParameters.getSequencingProperty();
+            sequencingOrder                   = findRequestParameters.getSequencingOrder();
+            pageSize                          = findRequestParameters.getPageSize();
+        }
+
+        try
+        {
+            validateLocalRepository(methodName);
+
+            List<EntityDetail>  entities = localMetadataCollection.findEntitiesByPropertyValue(userId,
+                                                                                               entityTypeGUID,
+                                                                                               searchCriteria,
+                                                                                               fromEntityElement,
+                                                                                               limitResultsByStatus,
+                                                                                               limitResultsByClassification,
+                                                                                               null,
+                                                                                               sequencingProperty,
+                                                                                               sequencingOrder,
+                                                                                               pageSize);
+            response.setEntities(entities);
+            if (entities != null)
+            {
+                response.setOffset(fromEntityElement);
+                response.setPageSize(pageSize);
+                if (entities.size() == pageSize)
+                {
+                    final String urlTemplate = "{0}/instances/entities/by-property-value?&searchCriteria={1}";
+                    EntityPropertyFindRequest nextFindRequestParameters = new EntityPropertyFindRequest(findRequestParameters);
+                    nextFindRequestParameters.setOffset(fromEntityElement + pageSize);
+
+                    response.setNextPageURL(formatNextPageURL(localServerURL + urlTemplate,
+                                                              nextFindRequestParameters,
+                                                              userId,
+                                                              searchCriteria));
+                }
+            }
+
+        }
+        catch (RepositoryErrorException  error)
+        {
+            captureRepositoryErrorException(response, error);
+        }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (PropertyErrorException error)
+        {
+            capturePropertyErrorException(response, error);
+        }
+        catch (TypeErrorException error)
+        {
+            captureTypeErrorException(response, error);
+        }
+        catch (PagingErrorException error)
+        {
+            capturePagingErrorException(response, error);
+        }
+
+        return response;
+    }
+
+
+    /**
+     * Return a list of entities whose string based property values match the search criteria.  The
+     * search criteria may include regex style wild cards.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param searchCriteria String expression of the characteristics of the required relationships.
+     * @param findRequestParameters find parameters used to limit the returned results.
+     * @return EntityListResponse:
+     * a list of entities matching the supplied criteria where null means no matching entities in the metadata
+     * collection or
+     * InvalidParameterException a parameter is invalid or null or
+     * TypeErrorException the type guid passed on the request is not known by the metadata collection or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored or
+     * PropertyErrorException the sequencing property specified is not valid for any of the requested types of
+     *                                  entity or
+     * PagingErrorException the paging/sequencing parameters are set up incorrectly.
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public  EntityListResponse findEntitiesByPropertyValueHistory(String                              userId,
+                                                                  String                              searchCriteria,
+                                                                  EntityPropertyHistoricalFindRequest findRequestParameters)
+    {
+        final  String   methodName = "findEntitiesByPropertyValueHistory";
+
+        String                  entityTypeGUID                    = null;
+        int                     fromEntityElement                 = 0;
+        List<InstanceStatus>    limitResultsByStatus              = null;
+        List<String>            limitResultsByClassification      = null;
+        Date                    asOfTime                          = null;
+        String                  sequencingProperty                = null;
+        SequencingOrder         sequencingOrder                   = null;
+        int                     pageSize                          = 0;
+
+        EntityListResponse response = new EntityListResponse();
+
+        if (findRequestParameters != null)
+        {
+            entityTypeGUID                    = findRequestParameters.getTypeGUID();
+            fromEntityElement                 = findRequestParameters.getOffset();
+            limitResultsByClassification      = findRequestParameters.getLimitResultsByClassification();
+            limitResultsByStatus              = findRequestParameters.getLimitResultsByStatus();
+            asOfTime                          = findRequestParameters.getAsOfTime();
+            sequencingProperty                = findRequestParameters.getSequencingProperty();
+            sequencingOrder                   = findRequestParameters.getSequencingOrder();
+            pageSize                          = findRequestParameters.getPageSize();
+        }
 
         try
         {
@@ -1974,21 +2434,16 @@ public class OMRSRepositoryRESTServices
                 response.setPageSize(pageSize);
                 if (entities.size() == pageSize)
                 {
-                    final String urlTemplate = "{0}/instances/entities/by-property-value?entityTypeGUID={1}&searchCriteria={2}&fromEntityElement={3}&limitResultsByStatus={4}&limitResultsByClassification={5}&asOfTime={6}&sequencingProperty={7}&sequencingOrder={8}&pageSize={9}";
+                    final String urlTemplate = "{0}/instances/entities/by-property-value?&searchCriteria={1}/history";
+                    EntityPropertyHistoricalFindRequest nextFindRequestParameters = new EntityPropertyHistoricalFindRequest(findRequestParameters);
+                    nextFindRequestParameters.setOffset(fromEntityElement + pageSize);
 
                     response.setNextPageURL(formatNextPageURL(localServerURL + urlTemplate,
+                                                              nextFindRequestParameters,
                                                               userId,
-                                                              searchCriteria,
-                                                              fromEntityElement + pageSize,
-                                                              limitResultsByStatus,
-                                                              limitResultsByClassification,
-                                                              asOfTime,
-                                                              sequencingProperty,
-                                                              sequencingOrder,
-                                                              pageSize));
+                                                              searchCriteria));
                 }
             }
-
         }
         catch (RepositoryErrorException  error)
         {
@@ -2146,7 +2601,7 @@ public class OMRSRepositoryRESTServices
      *                                 the metadata collection is stored or
      * RelationshipNotKnownException the requested entity instance is not known in the metadata collection
      *                                   at the time requested or
-     * FunctionNotSupportedException the repository does not support satOfTime parameter or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public  RelationshipResponse getRelationship(String    userId,
@@ -2193,22 +2648,7 @@ public class OMRSRepositoryRESTServices
      * can be broken into pages.
      *
      * @param userId unique identifier for requesting user
-     * @param relationshipTypeGUID unique identifier (guid) for the new relationship's type.
-     * @param matchProperties list of  properties used to narrow the search.
-     * @param matchCriteria Enum defining how the properties should be matched to the relationships in the repository.
-     * @param fromRelationshipElement the starting element number of the relationships to return.
-     *                                This is used when retrieving elements
-     *                                beyond the first page of results. Zero means start from the first element.
-     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
-     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
-     * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
-     *                 present values.
-     * @param sequencingProperty String name of the property that is to be used to sequence the results.
-     *                           Null means do not sequence on a property name (see SequencingOrder).
-     * @param sequencingOrder Enum defining how the results should be ordered.
-     * @param pageSize the maximum number of result relationships that can be returned on this request.  Zero means
-     *                 unrestricted return results size.
+     * @param findRequestParameters find parameters used to limit the returned results.
      * @return RelationshipListResponse:
      * a list of relationships.  Null means no matching relationships or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -2218,23 +2658,150 @@ public class OMRSRepositoryRESTServices
      * PropertyErrorException the properties specified are not valid for any of the requested types of
      *                                  relationships or
      * PagingErrorException the paging/sequencing parameters are set up incorrectly or
-     * FunctionNotSupportedException the repository does not support satOfTime parameter or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public  RelationshipListResponse findRelationshipsByProperty(String                    userId,
-                                                                 String                    relationshipTypeGUID,
-                                                                 InstanceProperties        matchProperties,
-                                                                 MatchCriteria             matchCriteria,
-                                                                 int                       fromRelationshipElement,
-                                                                 List<InstanceStatus>      limitResultsByStatus,
-                                                                 Date                      asOfTime,
-                                                                 String                    sequencingProperty,
-                                                                 SequencingOrder           sequencingOrder,
-                                                                 int                       pageSize)
+                                                                 PropertyMatchFindRequest  findRequestParameters)
     {
         final  String   methodName = "findRelationshipsByProperty";
 
+        String                    relationshipTypeGUID     = null;
+        InstanceProperties        matchProperties          = null;
+        MatchCriteria             matchCriteria            = null;
+        int                       fromRelationshipElement  = 0;
+        List<InstanceStatus>      limitResultsByStatus     = null;
+        String                    sequencingProperty       = null;
+        SequencingOrder           sequencingOrder          = null;
+        int                       pageSize                 = 0;
+
         RelationshipListResponse response = new RelationshipListResponse();
+
+        if (findRequestParameters != null)
+        {
+            relationshipTypeGUID              = findRequestParameters.getTypeGUID();
+            matchProperties                   = findRequestParameters.getMatchProperties();
+            matchCriteria                     = findRequestParameters.getMatchCriteria();
+            fromRelationshipElement           = findRequestParameters.getOffset();
+            limitResultsByStatus              = findRequestParameters.getLimitResultsByStatus();
+            sequencingProperty                = findRequestParameters.getSequencingProperty();
+            sequencingOrder                   = findRequestParameters.getSequencingOrder();
+            pageSize                          = findRequestParameters.getPageSize();
+        }
+
+        try
+        {
+            validateLocalRepository(methodName);
+
+            List<Relationship>  relationships = localMetadataCollection.findRelationshipsByProperty(userId,
+                                                                                                    relationshipTypeGUID,
+                                                                                                    matchProperties,
+                                                                                                    matchCriteria,
+                                                                                                    fromRelationshipElement,
+                                                                                                    limitResultsByStatus,
+                                                                                                    null,
+                                                                                                    sequencingProperty,
+                                                                                                    sequencingOrder,
+                                                                                                    pageSize);
+            response.setRelationships(relationships);
+            if (relationships != null)
+            {
+                response.setOffset(fromRelationshipElement);
+                response.setPageSize(pageSize);
+                if (response.getRelationships().size() == pageSize)
+                {
+                    final String urlTemplate = "{0}/instances/relationships/by-property";
+
+                    PropertyMatchFindRequest nextFindRequestParameters = new PropertyMatchFindRequest(findRequestParameters);
+                    nextFindRequestParameters.setOffset(fromRelationshipElement + pageSize);
+
+                    response.setNextPageURL(formatNextPageURL(localServerURL + urlTemplate,
+                                                              nextFindRequestParameters,
+                                                              userId));
+                }
+            }
+
+        }
+        catch (RepositoryErrorException  error)
+        {
+            captureRepositoryErrorException(response, error);
+        }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (TypeErrorException error)
+        {
+            captureTypeErrorException(response, error);
+        }
+        catch (PropertyErrorException error)
+        {
+            capturePropertyErrorException(response, error);
+        }
+        catch (PagingErrorException error)
+        {
+            capturePagingErrorException(response, error);
+        }
+
+        return response;
+    }
+
+
+    /**
+     * Return a list of relationships that match the requested properties by the matching criteria.   The results
+     * can be broken into pages.
+     *
+     * @param userId unique identifier for requesting user
+     * @param findRequestParameters find parameters used to limit the returned results.
+     * @return RelationshipListResponse:
+     * a list of relationships.  Null means no matching relationships or
+     * InvalidParameterException one of the parameters is invalid or null or
+     * TypeErrorException the type guid passed on the request is not known by the metadata collection or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored or
+     * PropertyErrorException the properties specified are not valid for any of the requested types of
+     *                                  relationships or
+     * PagingErrorException the paging/sequencing parameters are set up incorrectly or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public  RelationshipListResponse findRelationshipsByPropertyHistory(String                              userId,
+                                                                        PropertyMatchHistoricalFindRequest  findRequestParameters)
+    {
+        final  String   methodName = "findRelationshipsByPropertyHistory";
+
+        String                    relationshipTypeGUID     = null;
+        InstanceProperties        matchProperties          = null;
+        MatchCriteria             matchCriteria            = null;
+        int                       fromRelationshipElement  = 0;
+        List<InstanceStatus>      limitResultsByStatus     = null;
+        Date                      asOfTime                 = null;
+        String                    sequencingProperty       = null;
+        SequencingOrder           sequencingOrder          = null;
+        int                       pageSize                 = 0;
+
+        RelationshipListResponse response = new RelationshipListResponse();
+
+        if (findRequestParameters != null)
+        {
+            relationshipTypeGUID              = findRequestParameters.getTypeGUID();
+            matchProperties                   = findRequestParameters.getMatchProperties();
+            matchCriteria                     = findRequestParameters.getMatchCriteria();
+            fromRelationshipElement           = findRequestParameters.getOffset();
+            limitResultsByStatus              = findRequestParameters.getLimitResultsByStatus();
+            asOfTime                          = findRequestParameters.getAsOfTime();
+            sequencingProperty                = findRequestParameters.getSequencingProperty();
+            sequencingOrder                   = findRequestParameters.getSequencingOrder();
+            pageSize                          = findRequestParameters.getPageSize();
+        }
 
         try
         {
@@ -2257,19 +2824,14 @@ public class OMRSRepositoryRESTServices
                 response.setPageSize(pageSize);
                 if (response.getRelationships().size() == pageSize)
                 {
-                    final String urlTemplate = "{0}/instances/relationships/by-property?relationshipTypeGUID={1}&matchProperties={2}&matchCriteria={3}&fromRelationshipElement={4}&limitResultsByStatus={5}&asOfTime={6}&sequencingProperty={7}&sequencingOrder={8}&pageSize={9}";
+                    final String urlTemplate = "{0}/instances/relationships/by-property/history";
+
+                    PropertyMatchHistoricalFindRequest nextFindRequestParameters = new PropertyMatchHistoricalFindRequest(findRequestParameters);
+                    nextFindRequestParameters.setOffset(fromRelationshipElement + pageSize);
 
                     response.setNextPageURL(formatNextPageURL(localServerURL + urlTemplate,
-                                                              userId,
-                                                              relationshipTypeGUID,
-                                                              matchProperties,
-                                                              matchCriteria,
-                                                              fromRelationshipElement + pageSize,
-                                                              limitResultsByStatus,
-                                                              asOfTime,
-                                                              sequencingProperty,
-                                                              sequencingOrder,
-                                                              pageSize));
+                                                              nextFindRequestParameters,
+                                                              userId));
                 }
             }
 
@@ -2311,21 +2873,8 @@ public class OMRSRepositoryRESTServices
      * Return a list of relationships that match the search criteria.  The results can be paged.
      *
      * @param userId unique identifier for requesting user.
-     * @param relationshipTypeGUID unique identifier of a relationship type (or null for all types of relationship.
      * @param searchCriteria String expression of the characteristics of the required relationships.
-     * @param fromRelationshipElement Element number of the results to skip to when building the results list
-     *                                to return.  Zero means begin at the start of the results.  This is used
-     *                                to retrieve the results over a number of pages.
-     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
-     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
-     * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
-     *                 present values.
-     * @param sequencingProperty String name of the property that is to be used to sequence the results.
-     *                           Null means do not sequence on a property name (see SequencingOrder).
-     * @param sequencingOrder Enum defining how the results should be ordered.
-     * @param pageSize the maximum number of result relationships that can be returned on this request.  Zero means
-     *                 unrestricted return results size.
+     * @param findRequestParameters find parameters used to limit the returned results.
      * @return RelationshipListResponse:
      * a list of relationships.  Null means no matching relationships or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -2334,22 +2883,33 @@ public class OMRSRepositoryRESTServices
      *                                  the metadata collection is stored or
      * PropertyErrorException there is a problem with one of the other parameters  or
      * PagingErrorException the paging/sequencing parameters are set up incorrectly or
-     * FunctionNotSupportedException the repository does not support satOfTime parameter or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public  RelationshipListResponse findRelationshipsByPropertyValue(String                    userId,
-                                                                      String                    relationshipTypeGUID,
                                                                       String                    searchCriteria,
-                                                                      int                       fromRelationshipElement,
-                                                                      List<InstanceStatus>      limitResultsByStatus,
-                                                                      Date                      asOfTime,
-                                                                      String                    sequencingProperty,
-                                                                      SequencingOrder           sequencingOrder,
-                                                                      int                       pageSize)
+                                                                      TypeLimitedFindRequest    findRequestParameters)
     {
         final  String   methodName = "findRelationshipsByPropertyValue";
 
+        String                    relationshipTypeGUID     = null;
+        int                       fromRelationshipElement  = 0;
+        List<InstanceStatus>      limitResultsByStatus     = null;
+        String                    sequencingProperty       = null;
+        SequencingOrder           sequencingOrder          = null;
+        int                       pageSize                 = 0;
+
         RelationshipListResponse response = new RelationshipListResponse();
+
+        if (findRequestParameters != null)
+        {
+            relationshipTypeGUID              = findRequestParameters.getTypeGUID();
+            fromRelationshipElement           = findRequestParameters.getOffset();
+            limitResultsByStatus              = findRequestParameters.getLimitResultsByStatus();
+            sequencingProperty                = findRequestParameters.getSequencingProperty();
+            sequencingOrder                   = findRequestParameters.getSequencingOrder();
+            pageSize                          = findRequestParameters.getPageSize();
+        }
 
         try
         {
@@ -2360,7 +2920,7 @@ public class OMRSRepositoryRESTServices
                                                                                                          searchCriteria,
                                                                                                          fromRelationshipElement,
                                                                                                          limitResultsByStatus,
-                                                                                                         asOfTime,
+                                                                                                         null,
                                                                                                          sequencingProperty,
                                                                                                          sequencingOrder,
                                                                                                          pageSize);
@@ -2371,17 +2931,15 @@ public class OMRSRepositoryRESTServices
                 response.setPageSize(pageSize);
                 if (response.getRelationships().size() == pageSize)
                 {
-                    final String urlTemplate = "{0}/instances/relationships/by-property-value?relationshipTypeGUID={1}&searchCriteria={2}?fromRelationshipElement={3}&limitResultsByStatus={4}&asOfTime={5}&sequencingProperty={6}&sequencingOrder={7}&pageSize={8}";
+                    final String urlTemplate = "{0}/instances/relationships/by-property-value?searchCriteria={1}";
+
+                    TypeLimitedFindRequest nextFindRequestParameters = new TypeLimitedFindRequest(findRequestParameters);
+                    nextFindRequestParameters.setOffset(fromRelationshipElement + pageSize);
 
                     response.setNextPageURL(formatNextPageURL(localServerURL + urlTemplate,
+                                                              nextFindRequestParameters,
                                                               userId,
-                                                              searchCriteria,
-                                                              fromRelationshipElement + pageSize,
-                                                              limitResultsByStatus,
-                                                              asOfTime,
-                                                              sequencingProperty,
-                                                              sequencingOrder,
-                                                              pageSize));
+                                                              searchCriteria));
                 }
             }
 
@@ -2419,6 +2977,114 @@ public class OMRSRepositoryRESTServices
     }
 
 
+    /**
+     * Return a list of relationships that match the search criteria.  The results can be paged.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param searchCriteria String expression of the characteristics of the required relationships.
+     * @param findRequestParameters find parameters used to limit the returned results.
+     * @return RelationshipListResponse:
+     * a list of relationships.  Null means no matching relationships or
+     * InvalidParameterException one of the parameters is invalid or null or
+     * TypeErrorException the type guid passed on the request is not known by the metadata collection or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored or
+     * PropertyErrorException there is a problem with one of the other parameters  or
+     * PagingErrorException the paging/sequencing parameters are set up incorrectly or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public  RelationshipListResponse findRelationshipsByPropertyValueHistory(String                              userId,
+                                                                             String                              searchCriteria,
+                                                                             TypeLimitedHistoricalFindRequest    findRequestParameters)
+    {
+        final  String   methodName = "findRelationshipsByPropertyValueHistory";
+
+        String                    relationshipTypeGUID     = null;
+        int                       fromRelationshipElement  = 0;
+        List<InstanceStatus>      limitResultsByStatus     = null;
+        Date                      asOfTime                 = null;
+        String                    sequencingProperty       = null;
+        SequencingOrder           sequencingOrder          = null;
+        int                       pageSize                 = 0;
+
+        RelationshipListResponse response = new RelationshipListResponse();
+
+        if (findRequestParameters != null)
+        {
+            relationshipTypeGUID              = findRequestParameters.getTypeGUID();
+            fromRelationshipElement           = findRequestParameters.getOffset();
+            limitResultsByStatus              = findRequestParameters.getLimitResultsByStatus();
+            asOfTime                          = findRequestParameters.getAsOfTime();
+            sequencingProperty                = findRequestParameters.getSequencingProperty();
+            sequencingOrder                   = findRequestParameters.getSequencingOrder();
+            pageSize                          = findRequestParameters.getPageSize();
+        }
+
+        try
+        {
+            validateLocalRepository(methodName);
+
+            List<Relationship>  relationships = localMetadataCollection.findRelationshipsByPropertyValue(userId,
+                                                                                                         relationshipTypeGUID,
+                                                                                                         searchCriteria,
+                                                                                                         fromRelationshipElement,
+                                                                                                         limitResultsByStatus,
+                                                                                                         asOfTime,
+                                                                                                         sequencingProperty,
+                                                                                                         sequencingOrder,
+                                                                                                         pageSize);
+            response.setRelationships(relationships);
+            if (relationships != null)
+            {
+                response.setOffset(fromRelationshipElement);
+                response.setPageSize(pageSize);
+                if (response.getRelationships().size() == pageSize)
+                {
+                    final String urlTemplate = "{0}/instances/relationships/by-property-value/history?searchCriteria={1}";
+
+                    TypeLimitedHistoricalFindRequest nextFindRequestParameters = new TypeLimitedHistoricalFindRequest(findRequestParameters);
+                    nextFindRequestParameters.setOffset(fromRelationshipElement + pageSize);
+
+                    response.setNextPageURL(formatNextPageURL(localServerURL + urlTemplate,
+                                                              nextFindRequestParameters,
+                                                              userId,
+                                                              searchCriteria));
+                }
+            }
+
+        }
+        catch (RepositoryErrorException  error)
+        {
+            captureRepositoryErrorException(response, error);
+        }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (PropertyErrorException error)
+        {
+            capturePropertyErrorException(response, error);
+        }
+        catch (TypeErrorException error)
+        {
+            captureTypeErrorException(response, error);
+        }
+        catch (PagingErrorException error)
+        {
+            capturePagingErrorException(response, error);
+        }
+
+        return response;
+    }
 
 
     /**
@@ -2427,11 +3093,7 @@ public class OMRSRepositoryRESTServices
      * @param userId unique identifier for requesting user.
      * @param startEntityGUID The entity that is used to anchor the query.
      * @param endEntityGUID the other entity that defines the scope of the query.
-     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
-     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
-     * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
-     *                 present values.
+     * @param findRequestParameters find parameters used to limit the returned results.
      * @return InstanceGraphResponse:
      * the sub-graph that represents the returned linked entities and their relationships or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -2440,18 +3102,104 @@ public class OMRSRepositoryRESTServices
      * EntityNotKnownException the entity identified by either the startEntityGUID or the endEntityGUID
      *                                   is not found in the metadata collection or
      * PropertyErrorException there is a problem with one of the other parameters or
-     * FunctionNotSupportedException the repository does not support satOfTime parameter or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public  InstanceGraphResponse getLinkingEntities(String                    userId,
                                                      String                    startEntityGUID,
                                                      String                    endEntityGUID,
-                                                     List<InstanceStatus>      limitResultsByStatus,
-                                                     Date                      asOfTime)
+                                                     OMRSAPIFindRequest        findRequestParameters)
     {
         final  String   methodName = "getLinkingEntities";
 
+        List<InstanceStatus>      limitResultsByStatus = null;
+
         InstanceGraphResponse response = new InstanceGraphResponse();
+
+        if (findRequestParameters != null)
+        {
+            limitResultsByStatus = findRequestParameters.getLimitResultsByStatus();
+        }
+
+        try
+        {
+            validateLocalRepository(methodName);
+
+            InstanceGraph instanceGraph = localMetadataCollection.getLinkingEntities(userId,
+                                                                                     startEntityGUID,
+                                                                                     endEntityGUID,
+                                                                                     limitResultsByStatus,
+                                                                                     null);
+            if (instanceGraph != null)
+            {
+                response.setEntityElementList(instanceGraph.getEntities());
+                response.setRelationshipElementList(instanceGraph.getRelationships());
+            }
+        }
+        catch (RepositoryErrorException  error)
+        {
+            captureRepositoryErrorException(response, error);
+        }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (PropertyErrorException error)
+        {
+            capturePropertyErrorException(response, error);
+        }
+        catch (EntityNotKnownException error)
+        {
+            captureEntityNotKnownException(response, error);
+        }
+
+        return response;
+    }
+
+
+    /**
+     * Return all of the relationships and intermediate entities that connect the startEntity with the endEntity.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param startEntityGUID The entity that is used to anchor the query.
+     * @param endEntityGUID the other entity that defines the scope of the query.
+     * @param findRequestParameters find parameters used to limit the returned results.
+     * @return InstanceGraphResponse:
+     * the sub-graph that represents the returned linked entities and their relationships or
+     * InvalidParameterException one of the parameters is invalid or null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored or
+     * EntityNotKnownException the entity identified by either the startEntityGUID or the endEntityGUID
+     *                                   is not found in the metadata collection or
+     * PropertyErrorException there is a problem with one of the other parameters or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public  InstanceGraphResponse getLinkingEntitiesHistory(String                         userId,
+                                                            String                         startEntityGUID,
+                                                            String                         endEntityGUID,
+                                                            OMRSAPIHistoricalFindRequest   findRequestParameters)
+    {
+        final  String   methodName = "getLinkingEntitiesHistory";
+
+        List<InstanceStatus>      limitResultsByStatus = null;
+        Date                      asOfTime = null;
+
+        InstanceGraphResponse response = new InstanceGraphResponse();
+
+        if (findRequestParameters != null)
+        {
+            limitResultsByStatus = findRequestParameters.getLimitResultsByStatus();
+            asOfTime = findRequestParameters.getAsOfTime();
+        }
 
         try
         {
@@ -2503,16 +3251,7 @@ public class OMRSRepositoryRESTServices
      *
      * @param userId unique identifier for requesting user.
      * @param entityGUID the starting point of the query.
-     * @param entityTypeGUIDs list of entity types to include in the query results.  Null means include
-     *                          all entities found, irrespective of their type.
-     * @param relationshipTypeGUIDs list of relationship types to include in the query results.  Null means include
-     *                                all relationships found, irrespective of their type.
-     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
-     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
-     * @param limitResultsByClassification List of classifications that must be present on all returned entities.
-     * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
-     *                 present values.
+     * @param findRequestParameters find parameters used to limit the returned results.
      * @param level the number of the relationships out from the starting entity that the query will traverse to
      *              gather results.
      * @return InstanceGraphResponse
@@ -2523,21 +3262,125 @@ public class OMRSRepositoryRESTServices
      *                                  the metadata collection is stored or
      * EntityNotKnownException the entity identified by the entityGUID is not found in the metadata collection or
      * PropertyErrorException there is a problem with one of the other parameters or
-     * FunctionNotSupportedException the repository does not support satOfTime parameter or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  InstanceGraphResponse getEntityNeighborhood(String               userId,
-                                                        String               entityGUID,
-                                                        List<String>         entityTypeGUIDs,
-                                                        List<String>         relationshipTypeGUIDs,
-                                                        List<InstanceStatus> limitResultsByStatus,
-                                                        List<String>         limitResultsByClassification,
-                                                        Date                 asOfTime,
-                                                        int                  level)
+    public  InstanceGraphResponse getEntityNeighborhood(String                         userId,
+                                                        String                         entityGUID,
+                                                        int                            level,
+                                                        EntityNeighborhoodFindRequest  findRequestParameters)
     {
         final  String   methodName = "getEntityNeighborhood";
 
+        List<String>         entityTypeGUIDs                = null;
+        List<String>         relationshipTypeGUIDs          = null;
+        List<InstanceStatus> limitResultsByStatus           = null;
+        List<String>         limitResultsByClassification   = null;
+
         InstanceGraphResponse response = new InstanceGraphResponse();
+
+        if (findRequestParameters != null)
+        {
+            entityTypeGUIDs = findRequestParameters.getEntityTypeGUIDs();
+            relationshipTypeGUIDs = findRequestParameters.getRelationshipTypeGUIDs();
+            limitResultsByStatus = findRequestParameters.getLimitResultsByStatus();
+            limitResultsByClassification = findRequestParameters.getLimitResultsByClassification();
+        }
+
+        try
+        {
+            validateLocalRepository(methodName);
+
+            InstanceGraph instanceGraph = localMetadataCollection.getEntityNeighborhood(userId,
+                                                                                        entityGUID,
+                                                                                        entityTypeGUIDs,
+                                                                                        relationshipTypeGUIDs,
+                                                                                        limitResultsByStatus,
+                                                                                        limitResultsByClassification,
+                                                                                        null,
+                                                                                        level);
+            if (instanceGraph != null)
+            {
+                response.setEntityElementList(instanceGraph.getEntities());
+                response.setRelationshipElementList(instanceGraph.getRelationships());
+            }
+        }
+        catch (RepositoryErrorException  error)
+        {
+            captureRepositoryErrorException(response, error);
+        }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (PropertyErrorException error)
+        {
+            capturePropertyErrorException(response, error);
+        }
+        catch (EntityNotKnownException error)
+        {
+            captureEntityNotKnownException(response, error);
+        }
+        catch (TypeErrorException error)
+        {
+            captureTypeErrorException(response, error);
+        }
+
+        return response;
+    }
+
+
+    /**
+     * Return the entities and relationships that radiate out from the supplied entity GUID.
+     * The results are scoped both the instance type guids and the level.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID the starting point of the query.
+     * @param level the number of the relationships out from the starting entity that the query will traverse to
+     *              gather results.
+     * @param findRequestParameters find parameters used to limit the returned results.
+     * @return InstanceGraphResponse
+     * the sub-graph that represents the returned linked entities and their relationships or
+     * InvalidParameterException one of the parameters is invalid or null or
+     * TypeErrorException one of the type guids passed on the request is not known by the metadata collection or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored or
+     * EntityNotKnownException the entity identified by the entityGUID is not found in the metadata collection or
+     * PropertyErrorException there is a problem with one of the other parameters or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public  InstanceGraphResponse getEntityNeighborhoodHistory(String                                   userId,
+                                                               String                                   entityGUID,
+                                                               int                                      level,
+                                                               EntityNeighborhoodHistoricalFindRequest  findRequestParameters)
+    {
+        final  String   methodName = "getEntityNeighborhoodHistory";
+
+        List<String>         entityTypeGUIDs                = null;
+        List<String>         relationshipTypeGUIDs          = null;
+        List<InstanceStatus> limitResultsByStatus           = null;
+        List<String>         limitResultsByClassification   = null;
+        Date                 asOfTime                       = null;
+
+        InstanceGraphResponse response = new InstanceGraphResponse();
+
+        if (findRequestParameters != null)
+        {
+            entityTypeGUIDs = findRequestParameters.getEntityTypeGUIDs();
+            relationshipTypeGUIDs = findRequestParameters.getRelationshipTypeGUIDs();
+            limitResultsByStatus = findRequestParameters.getLimitResultsByStatus();
+            asOfTime = findRequestParameters.getAsOfTime();
+            limitResultsByClassification = findRequestParameters.getLimitResultsByClassification();
+        }
 
         try
         {
@@ -2590,26 +3433,13 @@ public class OMRSRepositoryRESTServices
     }
 
 
-
     /**
      * Return the list of entities that are of the types listed in instanceTypes and are connected, either directly or
      * indirectly to the entity identified by startEntityGUID.
      *
      * @param userId unique identifier for requesting user.
      * @param startEntityGUID unique identifier of the starting entity.
-     * @param instanceTypes list of types to search for.  Null means any type.
-     * @param fromEntityElement starting element for results list.  Used in paging.  Zero means first element.
-     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
-     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
-     * @param limitResultsByClassification List of classifications that must be present on all returned entities.
-     * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
-     *                 present values.
-     * @param sequencingProperty String name of the property that is to be used to sequence the results.
-     *                           Null means do not sequence on a property name (see SequencingOrder).
-     * @param sequencingOrder Enum defining how the results should be ordered.
-     * @param pageSize the maximum number of result entities that can be returned on this request.  Zero means
-     *                 unrestricted return results size.
+     * @param findRequestParameters find parameters used to limit the returned results.
      * @return EntityListResponse:
      * list of entities either directly or indirectly connected to the start entity or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -2623,23 +3453,35 @@ public class OMRSRepositoryRESTServices
      * PropertyErrorException the sequencing property specified is not valid for any of the requested types of
      *                                  entity or
      * PagingErrorException the paging/sequencing parameters are set up incorrectly or
-     * FunctionNotSupportedException the repository does not support satOfTime parameter or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  EntityListResponse getRelatedEntities(String               userId,
-                                                  String               startEntityGUID,
-                                                  List<String>         instanceTypes,
-                                                  int                  fromEntityElement,
-                                                  List<InstanceStatus> limitResultsByStatus,
-                                                  List<String>         limitResultsByClassification,
-                                                  Date                 asOfTime,
-                                                  String               sequencingProperty,
-                                                  SequencingOrder      sequencingOrder,
-                                                  int                  pageSize)
+    public  EntityListResponse getRelatedEntities(String                     userId,
+                                                  String                     startEntityGUID,
+                                                  RelatedEntitiesFindRequest findRequestParameters)
     {
         final  String   methodName = "getRelatedEntities";
 
+        List<String>         entityTypeGUIDs               = null;
+        int                  fromEntityElement             = 0;
+        List<InstanceStatus> limitResultsByStatus          = null;
+        List<String>         limitResultsByClassification  = null;
+        String               sequencingProperty            = null;
+        SequencingOrder      sequencingOrder               = null;
+        int                  pageSize                      = 0;
+
         EntityListResponse response = new EntityListResponse();
+
+        if (findRequestParameters != null)
+        {
+            entityTypeGUIDs = findRequestParameters.getEntityTypeGUIDs();
+            fromEntityElement = findRequestParameters.getOffset();
+            limitResultsByStatus = findRequestParameters.getLimitResultsByStatus();
+            limitResultsByClassification = findRequestParameters.getLimitResultsByClassification();
+            sequencingProperty = findRequestParameters.getSequencingProperty();
+            sequencingOrder = findRequestParameters.getSequencingOrder();
+            pageSize = findRequestParameters.getPageSize();
+        }
 
         try
         {
@@ -2647,7 +3489,130 @@ public class OMRSRepositoryRESTServices
 
             List<EntityDetail>  entities = localMetadataCollection.getRelatedEntities(userId,
                                                                                       startEntityGUID,
-                                                                                      instanceTypes,
+                                                                                      entityTypeGUIDs,
+                                                                                      fromEntityElement,
+                                                                                      limitResultsByStatus,
+                                                                                      limitResultsByClassification,
+                                                                                      null,
+                                                                                      sequencingProperty,
+                                                                                      sequencingOrder,
+                                                                                      pageSize);
+            response.setEntities(entities);
+            if (entities != null)
+            {
+                response.setOffset(fromEntityElement);
+                response.setPageSize(pageSize);
+                if (entities.size() == pageSize)
+                {
+                    final String urlTemplate = "{0}/instances/entities/from-entity/{1}/by-relationship";
+
+                    RelatedEntitiesFindRequest  nextFindRequestParameters = new RelatedEntitiesFindRequest(findRequestParameters);
+
+                    nextFindRequestParameters.setOffset(fromEntityElement + pageSize);
+
+                    response.setNextPageURL(formatNextPageURL(localServerURL + urlTemplate,
+                                                              nextFindRequestParameters,
+                                                              userId,
+                                                              startEntityGUID));
+                }
+            }
+        }
+        catch (RepositoryErrorException  error)
+        {
+            captureRepositoryErrorException(response, error);
+        }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (PropertyErrorException error)
+        {
+            capturePropertyErrorException(response, error);
+        }
+        catch (PagingErrorException error)
+        {
+            capturePagingErrorException(response, error);
+        }
+        catch (TypeErrorException error)
+        {
+            captureTypeErrorException(response, error);
+        }
+        catch (EntityNotKnownException error)
+        {
+            captureEntityNotKnownException(response, error);
+        }
+
+        return response;
+    }
+
+
+    /**
+     * Return the list of entities that are of the types listed in instanceTypes and are connected, either directly or
+     * indirectly to the entity identified by startEntityGUID.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param startEntityGUID unique identifier of the starting entity.
+     * @param findRequestParameters find parameters used to limit the returned results.
+     * @return EntityListResponse:
+     * list of entities either directly or indirectly connected to the start entity or
+     * InvalidParameterException one of the parameters is invalid or null or
+     * TypeErrorException one of the type guids passed on the request is not known by the metadata collection or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored or
+     * TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                              hosting the metadata collection or
+     * EntityNotKnownException the entity identified by the startEntityGUID
+     *                                   is not found in the metadata collection or
+     * PropertyErrorException the sequencing property specified is not valid for any of the requested types of
+     *                                  entity or
+     * PagingErrorException the paging/sequencing parameters are set up incorrectly or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public  EntityListResponse getRelatedEntitiesHistory(String                               userId,
+                                                         String                               startEntityGUID,
+                                                         RelatedEntitiesHistoricalFindRequest findRequestParameters)
+    {
+        final  String   methodName = "getRelatedEntitiesHistory";
+
+        List<String>         entityTypeGUIDs               = null;
+        int                  fromEntityElement             = 0;
+        List<InstanceStatus> limitResultsByStatus          = null;
+        List<String>         limitResultsByClassification  = null;
+        Date                 asOfTime                      = null;
+        String               sequencingProperty            = null;
+        SequencingOrder      sequencingOrder               = null;
+        int                  pageSize                      = 0;
+
+        EntityListResponse response = new EntityListResponse();
+
+        if (findRequestParameters != null)
+        {
+            entityTypeGUIDs = findRequestParameters.getEntityTypeGUIDs();
+            fromEntityElement = findRequestParameters.getOffset();
+            limitResultsByStatus = findRequestParameters.getLimitResultsByStatus();
+            limitResultsByClassification = findRequestParameters.getLimitResultsByClassification();
+            asOfTime = findRequestParameters.getAsOfTime();
+            sequencingProperty = findRequestParameters.getSequencingProperty();
+            sequencingOrder = findRequestParameters.getSequencingOrder();
+            pageSize = findRequestParameters.getPageSize();
+        }
+
+        try
+        {
+            validateLocalRepository(methodName);
+
+            List<EntityDetail>  entities = localMetadataCollection.getRelatedEntities(userId,
+                                                                                      startEntityGUID,
+                                                                                      entityTypeGUIDs,
                                                                                       fromEntityElement,
                                                                                       limitResultsByStatus,
                                                                                       limitResultsByClassification,
@@ -2662,22 +3627,18 @@ public class OMRSRepositoryRESTServices
                 response.setPageSize(pageSize);
                 if (entities.size() == pageSize)
                 {
-                    final String urlTemplate = "{0}/instances/entities/from-entity/{1}/by-relationship?fromEntityElement={2}&limitResultsByStatus={3}&limitResultsByClassification={4}&asOfTime={5}&sequencingProperty={6}&sequencingOrder={7}&pageSize={8}";
+                    final String urlTemplate = "{0}/instances/entities/from-entity/{1}/by-relationship/history";
+
+                    RelatedEntitiesHistoricalFindRequest  nextFindRequestParameters = new RelatedEntitiesHistoricalFindRequest(findRequestParameters);
+
+                    nextFindRequestParameters.setOffset(fromEntityElement + pageSize);
 
                     response.setNextPageURL(formatNextPageURL(localServerURL + urlTemplate,
+                                                              nextFindRequestParameters,
                                                               userId,
-                                                              startEntityGUID,
-                                                              instanceTypes,
-                                                              fromEntityElement,
-                                                              limitResultsByStatus,
-                                                              limitResultsByClassification,
-                                                              asOfTime,
-                                                              sequencingProperty,
-                                                              sequencingOrder,
-                                                              pageSize));
+                                                              startEntityGUID));
                 }
             }
-
         }
         catch (RepositoryErrorException  error)
         {
@@ -2724,10 +3685,7 @@ public class OMRSRepositoryRESTServices
      * Create a new entity and put it in the requested state.  The new entity is returned.
      *
      * @param userId unique identifier for requesting user.
-     * @param entityTypeGUID unique identifier (guid) for the new entity's type.
-     * @param initialProperties initial list of properties for the new entity null means no properties.
-     * @param initialClassifications initial list of classifications for the new entity null means no classifications.
-     * @param initialStatus initial status typically DRAFT, PREPARED or ACTIVE.
+     * @param requestBody parameters for the new entity
      * @return EntityDetailResponse:
      * EntityDetail showing the new header plus the requested properties and classifications.  The entity will
      * not have any relationships at this stage or
@@ -2744,15 +3702,25 @@ public class OMRSRepositoryRESTServices
      *                                       the requested status or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetailResponse addEntity(String                     userId,
-                                          String                     entityTypeGUID,
-                                          InstanceProperties         initialProperties,
-                                          List<Classification>       initialClassifications,
-                                          InstanceStatus             initialStatus)
+    public EntityDetailResponse addEntity(String                userId,
+                                          EntityCreateRequest   requestBody)
     {
         final  String   methodName = "addEntity";
 
+        String                     entityTypeGUID = null;
+        InstanceProperties         initialProperties = null;
+        List<Classification>       initialClassifications = null;
+        InstanceStatus             initialStatus = null;
+
         EntityDetailResponse response = new EntityDetailResponse();
+
+        if (requestBody != null)
+        {
+            entityTypeGUID = requestBody.getEntityTypeGUID();
+            initialProperties = requestBody.getInitialProperties();
+            initialClassifications = requestBody.getInitialClassifications();
+            initialStatus = requestBody.getInitialStatus();
+        }
 
         try
         {
@@ -2914,7 +3882,7 @@ public class OMRSRepositoryRESTServices
      *
      * @param userId unique identifier for requesting user.
      * @param entityGUID String unique identifier (guid) for the entity.
-     * @param properties a list of properties to change.
+     * @param propertiesRequestBody a list of properties to change.
      * @return EntityDetailResponse:
      * EntityDetail showing the resulting entity header, properties and classifications or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -2923,11 +3891,11 @@ public class OMRSRepositoryRESTServices
      * EntityNotKnownException the entity identified by the guid is not found in the metadata collection
      * PropertyErrorException one or more of the requested properties are not defined, or have different
      *                                characteristics in the TypeDef for this entity's type or
-     * UserNotAuthorizedException the userId is not permitted to perform this operation or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetailResponse updateEntityProperties(String               userId,
-                                                       String               entityGUID,
-                                                       InstanceProperties   properties)
+    public EntityDetailResponse updateEntityProperties(String                      userId,
+                                                       String                      entityGUID,
+                                                       InstancePropertiesRequest   propertiesRequestBody)
     {
         final  String   methodName = "updateEntityProperties";
 
@@ -2937,7 +3905,7 @@ public class OMRSRepositoryRESTServices
         {
             validateLocalRepository(methodName);
 
-            response.setEntity(localMetadataCollection.updateEntityProperties(userId, entityGUID, properties));
+            response.setEntity(localMetadataCollection.updateEntityProperties(userId, entityGUID, propertiesRequestBody.getInstanceProperties()));
         }
         catch (RepositoryErrorException  error)
         {
@@ -3023,9 +3991,8 @@ public class OMRSRepositoryRESTServices
      * The restoreEntity() method will switch an entity back to Active status to restore the entity to normal use.
      *
      * @param userId unique identifier for requesting user.
-     * @param typeDefGUID unique identifier of the type of the entity to delete.
-     * @param typeDefName unique name of the type of the entity to delete.
      * @param obsoleteEntityGUID String unique identifier (guid) for the entity.
+     * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
      * @return EntityDetailResponse
      * details of the deleted entity or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -3036,14 +4003,22 @@ public class OMRSRepositoryRESTServices
      *                                       soft-deletes (use purgeEntity() to remove the entity permanently)
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetailResponse  deleteEntity(String    userId,
-                                              String    typeDefGUID,
-                                              String    typeDefName,
-                                              String    obsoleteEntityGUID)
+    public EntityDetailResponse  deleteEntity(String                        userId,
+                                              String                        obsoleteEntityGUID,
+                                              TypeDefValidationForRequest   typeDefValidationForRequest)
     {
         final  String   methodName = "deleteEntity";
 
+        String    typeDefGUID = null;
+        String    typeDefName = null;
+
         EntityDetailResponse response = new EntityDetailResponse();
+
+        if (typeDefValidationForRequest != null)
+        {
+            typeDefGUID = typeDefValidationForRequest.getTypeDefGUID();
+            typeDefName = typeDefValidationForRequest.getTypeDefName();
+        }
 
         try
         {
@@ -3080,9 +4055,8 @@ public class OMRSRepositoryRESTServices
      * Permanently removes a deleted entity from the metadata collection.  This request can not be undone.
      *
      * @param userId unique identifier for requesting user.
-     * @param typeDefGUID unique identifier of the type of the entity to purge.
-     * @param typeDefName unique name of the type of the entity to purge.
      * @param deletedEntityGUID String unique identifier (guid) for the entity.
+     * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
      * @return VoidResponse:
      * void or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -3092,14 +4066,22 @@ public class OMRSRepositoryRESTServices
      * EntityNotDeletedException the entity is not in DELETED status and so can not be purged or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public VoidResponse purgeEntity(String    userId,
-                                    String    typeDefGUID,
-                                    String    typeDefName,
-                                    String    deletedEntityGUID)
+    public VoidResponse purgeEntity(String                        userId,
+                                    String                        deletedEntityGUID,
+                                    TypeDefValidationForRequest   typeDefValidationForRequest)
     {
         final  String   methodName = "purgeEntity";
 
+        String    typeDefGUID = null;
+        String    typeDefName = null;
+
         VoidResponse response = new VoidResponse();
+
+        if (typeDefValidationForRequest != null)
+        {
+            typeDefGUID = typeDefValidationForRequest.getTypeDefGUID();
+            typeDefName = typeDefValidationForRequest.getTypeDefName();
+        }
 
         try
         {
@@ -3195,7 +4177,7 @@ public class OMRSRepositoryRESTServices
      * @param userId unique identifier for requesting user.
      * @param entityGUID String unique identifier (guid) for the entity.
      * @param classificationName String name for the classification.
-     * @param classificationProperties list of properties to set in the classification.
+     * @param propertiesRequestBody list of properties to set in the classification.
      * @return EntityDetailResponse:
      * EntityDetail showing the resulting entity header, properties and classifications or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -3208,10 +4190,10 @@ public class OMRSRepositoryRESTServices
      *                                characteristics in the TypeDef for this classification type or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetailResponse classifyEntity(String               userId,
-                                               String               entityGUID,
-                                               String               classificationName,
-                                               InstanceProperties   classificationProperties)
+    public EntityDetailResponse classifyEntity(String                      userId,
+                                               String                      entityGUID,
+                                               String                      classificationName,
+                                               InstancePropertiesRequest   propertiesRequestBody)
     {
         final  String   methodName = "classifyEntity";
 
@@ -3224,7 +4206,7 @@ public class OMRSRepositoryRESTServices
             response.setEntity(localMetadataCollection.classifyEntity(userId,
                                                                       entityGUID,
                                                                       classificationName,
-                                                                      classificationProperties));
+                                                                      propertiesRequestBody.getInstanceProperties()));
         }
         catch (RepositoryErrorException  error)
         {
@@ -3317,7 +4299,7 @@ public class OMRSRepositoryRESTServices
      * @param userId unique identifier for requesting user.
      * @param entityGUID String unique identifier (guid) for the entity.
      * @param classificationName String name for the classification.
-     * @param properties list of properties for the classification.
+     * @param propertiesRequestBody list of properties for the classification.
      * @return EntityDetailResponse:
      * EntityDetail showing the resulting entity header, properties and classifications or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -3329,10 +4311,10 @@ public class OMRSRepositoryRESTServices
      *                                characteristics in the TypeDef for this classification type or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetailResponse updateEntityClassification(String               userId,
-                                                           String               entityGUID,
-                                                           String               classificationName,
-                                                           InstanceProperties   properties)
+    public EntityDetailResponse updateEntityClassification(String                      userId,
+                                                           String                      entityGUID,
+                                                           String                      classificationName,
+                                                           InstancePropertiesRequest   propertiesRequestBody)
     {
         final  String   methodName = "updateEntityClassification";
 
@@ -3345,7 +4327,7 @@ public class OMRSRepositoryRESTServices
             response.setEntity(localMetadataCollection.updateEntityClassification(userId,
                                                                                   entityGUID,
                                                                                   classificationName,
-                                                                                  properties));
+                                                                                  propertiesRequestBody.getInstanceProperties()));
         }
         catch (RepositoryErrorException  error)
         {
@@ -3380,11 +4362,7 @@ public class OMRSRepositoryRESTServices
      * Add a new relationship between two entities to the metadata collection.
      *
      * @param userId unique identifier for requesting user.
-     * @param relationshipTypeGUID unique identifier (guid) for the new relationship's type.
-     * @param initialProperties initial list of properties for the new entity null means no properties.
-     * @param entityOneGUID the unique identifier of one of the entities that the relationship is connecting together.
-     * @param entityTwoGUID the unique identifier of the other entity that the relationship is connecting together.
-     * @param initialStatus initial status typically DRAFT, PREPARED or ACTIVE.
+     * @param createRequestParameters parameters used to fill out the new relationship
      * @return RelationshipResponse:
      * Relationship structure with the new header, requested entities and properties or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -3399,27 +4377,38 @@ public class OMRSRepositoryRESTServices
      *                                     the requested status or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public RelationshipResponse addRelationship(String               userId,
-                                                String               relationshipTypeGUID,
-                                                InstanceProperties   initialProperties,
-                                                String               entityOneGUID,
-                                                String               entityTwoGUID,
-                                                InstanceStatus       initialStatus)
+    public RelationshipResponse addRelationship(String                     userId,
+                                                RelationshipCreateRequest  createRequestParameters)
     {
         final  String   methodName = "addRelationship";
 
+        String             relationshipTypeGUID = null;
+        InstanceProperties initialProperties = null;
+        String             entityOneGUID = null;
+        String             entityTwoGUID = null;
+        InstanceStatus     initialStatus = null;
+
         RelationshipResponse response = new RelationshipResponse();
+
+        if (createRequestParameters != null)
+        {
+            relationshipTypeGUID = createRequestParameters.getRelationshipTypeGUID();
+            initialProperties = createRequestParameters.getInitialProperties();
+            entityOneGUID = createRequestParameters.getEntityOneGUID();
+            entityTwoGUID = createRequestParameters.getEntityTwoGUID();
+            initialStatus = createRequestParameters.getInitialStatus();
+        }
 
         try
         {
             validateLocalRepository(methodName);
 
             response.setRelationship(localMetadataCollection.addRelationship(userId,
-                                                                             relationshipTypeGUID,
-                                                                             initialProperties,
-                                                                             entityOneGUID,
-                                                                             entityTwoGUID,
-                                                                             initialStatus));
+                    relationshipTypeGUID,
+                    initialProperties,
+                    entityOneGUID,
+                    entityTwoGUID,
+                    initialStatus));
         }
         catch (RepositoryErrorException  error)
         {
@@ -3468,7 +4457,7 @@ public class OMRSRepositoryRESTServices
      * RelationshipNotKnownException the requested relationship is not known in the metadata collection or
      * StatusNotSupportedException the metadata repository hosting the metadata collection does not support
      *                                     the requested status or
-     * UserNotAuthorizedException the userId is not permitted to perform this operation or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public RelationshipResponse updateRelationshipStatus(String           userId,
                                                          String           relationshipGUID,
@@ -3516,7 +4505,7 @@ public class OMRSRepositoryRESTServices
      *
      * @param userId unique identifier for requesting user.
      * @param relationshipGUID String unique identifier (guid) for the relationship.
-     * @param properties list of the properties to update.
+     * @param propertiesRequestBody list of the properties to update.
      * @return RelationshipResponse:
      * Resulting relationship structure with the new properties set or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -3527,9 +4516,9 @@ public class OMRSRepositoryRESTServices
      *                                characteristics in the TypeDef for this relationship's type or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public RelationshipResponse updateRelationshipProperties(String               userId,
-                                                             String               relationshipGUID,
-                                                             InstanceProperties   properties)
+    public RelationshipResponse updateRelationshipProperties(String                      userId,
+                                                             String                      relationshipGUID,
+                                                             InstancePropertiesRequest   propertiesRequestBody)
     {
         final  String   methodName = "updateRelationshipProperties";
 
@@ -3541,7 +4530,7 @@ public class OMRSRepositoryRESTServices
 
             response.setRelationship(localMetadataCollection.updateRelationshipProperties(userId,
                                                                                           relationshipGUID,
-                                                                                          properties));
+                                                                                          propertiesRequestBody.getInstanceProperties()));
         }
         catch (RepositoryErrorException  error)
         {
@@ -3626,9 +4615,8 @@ public class OMRSRepositoryRESTServices
      * metadata collection, use purgeRelationship().
      *
      * @param userId unique identifier for requesting user.
-     * @param typeDefGUID unique identifier of the type of the relationship to delete.
-     * @param typeDefName unique name of the type of the relationship to delete.
      * @param obsoleteRelationshipGUID String unique identifier (guid) for the relationship.
+     * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
      * @return RelationshipResponse:
      * Updated relationship or
      * InvalidParameterException one of the parameters is null or
@@ -3639,14 +4627,22 @@ public class OMRSRepositoryRESTServices
      *                                     soft-deletes or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public RelationshipResponse deleteRelationship(String    userId,
-                                                   String    typeDefGUID,
-                                                   String    typeDefName,
-                                                   String    obsoleteRelationshipGUID)
+    public RelationshipResponse deleteRelationship(String                        userId,
+                                                   String                        obsoleteRelationshipGUID,
+                                                   TypeDefValidationForRequest   typeDefValidationForRequest)
     {
         final  String   methodName = "deleteRelationship";
 
+        String    typeDefGUID = null;
+        String    typeDefName = null;
+
         RelationshipResponse response = new RelationshipResponse();
+
+        if (typeDefValidationForRequest != null)
+        {
+            typeDefGUID = typeDefValidationForRequest.getTypeDefGUID();
+            typeDefName = typeDefValidationForRequest.getTypeDefName();
+        }
 
         try
         {
@@ -3686,9 +4682,8 @@ public class OMRSRepositoryRESTServices
      * Permanently delete the relationship from the repository.  There is no means to undo this request.
      *
      * @param userId unique identifier for requesting user.
-     * @param typeDefGUID unique identifier of the type of the relationship to purge.
-     * @param typeDefName unique name of the type of the relationship to purge.
      * @param deletedRelationshipGUID String unique identifier (guid) for the relationship.
+     * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
      * @return VoidResponse:
      * void or
      * InvalidParameterException one of the parameters is null or
@@ -3698,14 +4693,22 @@ public class OMRSRepositoryRESTServices
      * RelationshipNotDeletedException the requested relationship is not in DELETED status or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public VoidResponse purgeRelationship(String    userId,
-                                          String    typeDefGUID,
-                                          String    typeDefName,
-                                          String    deletedRelationshipGUID)
+    public VoidResponse purgeRelationship(String                        userId,
+                                          String                        deletedRelationshipGUID,
+                                          TypeDefValidationForRequest   typeDefValidationForRequest)
     {
         final  String   methodName = "purgeRelationship";
 
+        String    typeDefGUID = null;
+        String    typeDefName = null;
+
         VoidResponse response = new VoidResponse();
+
+        if (typeDefValidationForRequest != null)
+        {
+            typeDefGUID = typeDefValidationForRequest.getTypeDefGUID();
+            typeDefName = typeDefValidationForRequest.getTypeDefName();
+        }
 
         try
         {
@@ -3807,10 +4810,9 @@ public class OMRSRepositoryRESTServices
      * the open metadata protocol has provision for this.
      *
      * @param userId unique identifier for requesting user.
-     * @param typeDefGUID the guid of the TypeDef for the entity used to verify the entity identity.
-     * @param typeDefName the name of the TypeDef for the entity used to verify the entity identity.
      * @param entityGUID the existing identifier for the entity.
      * @param newEntityGUID new unique identifier for the entity.
+     * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
      * @return EntityDetailResponse:
      * entity: new values for this entity, including the new guid or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -3820,15 +4822,23 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support instance re-identification or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetailResponse reIdentifyEntity(String     userId,
-                                                 String     typeDefGUID,
-                                                 String     typeDefName,
-                                                 String     entityGUID,
-                                                 String     newEntityGUID)
+    public EntityDetailResponse reIdentifyEntity(String                        userId,
+                                                 String                        entityGUID,
+                                                 String                        newEntityGUID,
+                                                 TypeDefValidationForRequest   typeDefValidationForRequest)
     {
         final  String   methodName = "reIdentifyEntity";
 
+        String    typeDefGUID = null;
+        String    typeDefName = null;
+
         EntityDetailResponse response = new EntityDetailResponse();
+
+        if (typeDefValidationForRequest != null)
+        {
+            typeDefGUID = typeDefValidationForRequest.getTypeDefGUID();
+            typeDefName = typeDefValidationForRequest.getTypeDefName();
+        }
 
         try
         {
@@ -3872,8 +4882,7 @@ public class OMRSRepositoryRESTServices
      *
      * @param userId unique identifier for requesting user.
      * @param entityGUID the unique identifier for the entity to change.
-     * @param currentTypeDefSummary the current details of the TypeDef for the entity used to verify the entity identity
-     * @param newTypeDefSummary details of this entity's new TypeDef.
+     * @param typeDefChangeRequest the details of the current and new type.
      * @return EntityDetailResponse:
      * entity: new values for this entity, including the new type information or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -3887,14 +4896,22 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support instance re-typing or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetailResponse reTypeEntity(String         userId,
-                                             String         entityGUID,
-                                             TypeDefSummary currentTypeDefSummary,
-                                             TypeDefSummary newTypeDefSummary)
+    public EntityDetailResponse reTypeEntity(String               userId,
+                                             String               entityGUID,
+                                             TypeDefChangeRequest typeDefChangeRequest)
     {
         final  String   methodName = "reTypeEntity";
 
+        TypeDefSummary currentTypeDefSummary = null;
+        TypeDefSummary newTypeDefSummary = null;
+
         EntityDetailResponse response = new EntityDetailResponse();
+
+        if (typeDefChangeRequest != null)
+        {
+            currentTypeDefSummary = typeDefChangeRequest.getCurrentTypeDef();
+            newTypeDefSummary = typeDefChangeRequest.getNewTypeDef();
+        }
 
         try
         {
@@ -3949,10 +4966,9 @@ public class OMRSRepositoryRESTServices
      *
      * @param userId unique identifier for requesting user.
      * @param entityGUID the unique identifier for the entity to change.
-     * @param typeDefGUID the guid of the TypeDef for the entity used to verify the entity identity.
-     * @param typeDefName the name of the TypeDef for the entity used to verify the entity identity.
      * @param homeMetadataCollectionId the existing identifier for this entity's home.
      * @param newHomeMetadataCollectionId unique identifier for the new home metadata collection/repository.
+     * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
      * @return EntityDetailResponse:
      * entity: new values for this entity, including the new home information or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -3962,16 +4978,24 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support instance re-homing or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetailResponse reHomeEntity(String         userId,
-                                             String         entityGUID,
-                                             String         typeDefGUID,
-                                             String         typeDefName,
-                                             String         homeMetadataCollectionId,
-                                             String         newHomeMetadataCollectionId)
+    public EntityDetailResponse reHomeEntity(String                        userId,
+                                             String                        entityGUID,
+                                             String                        homeMetadataCollectionId,
+                                             String                        newHomeMetadataCollectionId,
+                                             TypeDefValidationForRequest   typeDefValidationForRequest)
     {
         final  String   methodName = "reHomeEntity";
 
+        String    typeDefGUID = null;
+        String    typeDefName = null;
+
         EntityDetailResponse response = new EntityDetailResponse();
+
+        if (typeDefValidationForRequest != null)
+        {
+            typeDefGUID = typeDefValidationForRequest.getTypeDefGUID();
+            typeDefName = typeDefValidationForRequest.getTypeDefName();
+        }
 
         try
         {
@@ -4015,10 +5039,9 @@ public class OMRSRepositoryRESTServices
      * the open metadata protocol has provision for this.
      *
      * @param userId unique identifier for requesting user.
-     * @param typeDefGUID the guid of the TypeDef for the relationship used to verify the relationship identity.
-     * @param typeDefName the name of the TypeDef for the relationship used to verify the relationship identity.
      * @param relationshipGUID the existing identifier for the relationship.
      * @param newRelationshipGUID  the new unique identifier for the relationship.
+     * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
      * @return RelationshipResponse:
      * relationship: new values for this relationship, including the new guid or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -4029,15 +5052,23 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support instance re-identification or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public RelationshipResponse reIdentifyRelationship(String     userId,
-                                                       String     typeDefGUID,
-                                                       String     typeDefName,
-                                                       String     relationshipGUID,
-                                                       String     newRelationshipGUID)
+    public RelationshipResponse reIdentifyRelationship(String                        userId,
+                                                       String                        relationshipGUID,
+                                                       String                        newRelationshipGUID,
+                                                       TypeDefValidationForRequest   typeDefValidationForRequest)
     {
         final  String   methodName = "reIdentifyRelationship";
 
+        String    typeDefGUID = null;
+        String    typeDefName = null;
+
         RelationshipResponse response = new RelationshipResponse();
+
+        if (typeDefValidationForRequest != null)
+        {
+            typeDefGUID = typeDefValidationForRequest.getTypeDefGUID();
+            typeDefName = typeDefValidationForRequest.getTypeDefName();
+        }
 
         try
         {
@@ -4081,8 +5112,7 @@ public class OMRSRepositoryRESTServices
      *
      * @param userId unique identifier for requesting user.
      * @param relationshipGUID the unique identifier for the relationship.
-     * @param currentTypeDefSummary the details of the TypeDef for the relationship used to verify the relationship identity.
-     * @param newTypeDefSummary details of this relationship's new TypeDef.
+     * @param typeDefChangeRequest the details of the current and new type.
      * @return RelationshipResponse:
      * relationship: new values for this relationship, including the new type information or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -4096,14 +5126,22 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support instance re-typing or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public RelationshipResponse reTypeRelationship(String         userId,
-                                                   String         relationshipGUID,
-                                                   TypeDefSummary currentTypeDefSummary,
-                                                   TypeDefSummary newTypeDefSummary)
+    public RelationshipResponse reTypeRelationship(String               userId,
+                                                   String               relationshipGUID,
+                                                   TypeDefChangeRequest typeDefChangeRequest)
     {
         final  String   methodName = "reTypeRelationship";
 
+        TypeDefSummary currentTypeDefSummary = null;
+        TypeDefSummary newTypeDefSummary = null;
+
         RelationshipResponse response = new RelationshipResponse();
+
+        if (typeDefChangeRequest != null)
+        {
+            currentTypeDefSummary = typeDefChangeRequest.getCurrentTypeDef();
+            newTypeDefSummary = typeDefChangeRequest.getNewTypeDef();
+        }
 
         try
         {
@@ -4154,10 +5192,9 @@ public class OMRSRepositoryRESTServices
      *
      * @param userId unique identifier for requesting user.
      * @param relationshipGUID the unique identifier for the relationship.
-     * @param typeDefGUID the guid of the TypeDef for the relationship used to verify the relationship identity.
-     * @param typeDefName the name of the TypeDef for the relationship used to verify the relationship identity.
      * @param homeMetadataCollectionId the existing identifier for this relationship's home.
      * @param newHomeMetadataCollectionId unique identifier for the new home metadata collection/repository.
+     * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
      * @return RelationshipResponse:
      * relationship: new values for this relationship, including the new home information or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -4168,16 +5205,24 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support instance re-homing or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public RelationshipResponse reHomeRelationship(String   userId,
-                                                   String   relationshipGUID,
-                                                   String   typeDefGUID,
-                                                   String   typeDefName,
-                                                   String   homeMetadataCollectionId,
-                                                   String   newHomeMetadataCollectionId)
+    public RelationshipResponse reHomeRelationship(String                        userId,
+                                                   String                        relationshipGUID,
+                                                   String                        homeMetadataCollectionId,
+                                                   String                        newHomeMetadataCollectionId,
+                                                   TypeDefValidationForRequest   typeDefValidationForRequest)
     {
         final  String   methodName = "reHomeRelationship";
 
+        String    typeDefGUID = null;
+        String    typeDefName = null;
+
         RelationshipResponse response = new RelationshipResponse();
+
+        if (typeDefValidationForRequest != null)
+        {
+            typeDefGUID = typeDefValidationForRequest.getTypeDefGUID();
+            typeDefName = typeDefValidationForRequest.getTypeDefName();
+        }
 
         try
         {
@@ -4305,9 +5350,8 @@ public class OMRSRepositoryRESTServices
      *
      * @param userId unique identifier for requesting server.
      * @param entityGUID the unique identifier for the entity.
-     * @param typeDefGUID the guid of the TypeDef for the relationship used to verify the relationship identity.
-     * @param typeDefName the name of the TypeDef for the relationship used to verify the relationship identity.
      * @param homeMetadataCollectionId identifier of the metadata collection that is the home to this entity.
+     * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
      * @return VoidResponse:
      * void or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -4319,15 +5363,23 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support instance reference copies or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public VoidResponse purgeEntityReferenceCopy(String   userId,
-                                                 String   entityGUID,
-                                                 String   typeDefGUID,
-                                                 String   typeDefName,
-                                                 String   homeMetadataCollectionId)
+    public VoidResponse purgeEntityReferenceCopy(String                        userId,
+                                                 String                        entityGUID,
+                                                 String                        homeMetadataCollectionId,
+                                                 TypeDefValidationForRequest   typeDefValidationForRequest)
     {
         final  String   methodName = "purgeEntityReferenceCopy";
 
+        String    typeDefGUID = null;
+        String    typeDefName = null;
+
         VoidResponse response = new VoidResponse();
+
+        if (typeDefValidationForRequest != null)
+        {
+            typeDefGUID = typeDefValidationForRequest.getTypeDefGUID();
+            typeDefName = typeDefValidationForRequest.getTypeDefName();
+        }
 
         try
         {
@@ -4337,7 +5389,8 @@ public class OMRSRepositoryRESTServices
                                                              entityGUID,
                                                              typeDefGUID,
                                                              typeDefName,
-                                                             homeMetadataCollectionId);        }
+                                                             homeMetadataCollectionId);
+        }
         catch (RepositoryErrorException  error)
         {
             captureRepositoryErrorException(response, error);
@@ -4373,9 +5426,8 @@ public class OMRSRepositoryRESTServices
      *
      * @param userId unique identifier for requesting server.
      * @param entityGUID unique identifier of requested entity.
-     * @param typeDefGUID unique identifier of requested entity's TypeDef.
-     * @param typeDefName unique name of requested entity's TypeDef.
      * @param homeMetadataCollectionId identifier of the metadata collection that is the home to this entity.
+     * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
      * @return VoidResponse:
      * void or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -4387,15 +5439,23 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support instance reference copies or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public VoidResponse refreshEntityReferenceCopy(String   userId,
-                                                   String   entityGUID,
-                                                   String   typeDefGUID,
-                                                   String   typeDefName,
-                                                   String   homeMetadataCollectionId)
+    public VoidResponse refreshEntityReferenceCopy(String                        userId,
+                                                   String                        entityGUID,
+                                                   String                        homeMetadataCollectionId,
+                                                   TypeDefValidationForRequest   typeDefValidationForRequest)
     {
         final  String   methodName = "refreshEntityReferenceCopy";
 
+        String    typeDefGUID = null;
+        String    typeDefName = null;
+
         VoidResponse response = new VoidResponse();
+
+        if (typeDefValidationForRequest != null)
+        {
+            typeDefGUID = typeDefValidationForRequest.getTypeDefGUID();
+            typeDefName = typeDefValidationForRequest.getTypeDefName();
+        }
 
         try
         {
@@ -4405,7 +5465,8 @@ public class OMRSRepositoryRESTServices
                                                                entityGUID,
                                                                typeDefGUID,
                                                                typeDefName,
-                                                               homeMetadataCollectionId);        }
+                                                               homeMetadataCollectionId);
+        }
         catch (RepositoryErrorException  error)
         {
             captureRepositoryErrorException(response, error);
@@ -4526,9 +5587,8 @@ public class OMRSRepositoryRESTServices
      *
      * @param userId unique identifier for requesting server.
      * @param relationshipGUID the unique identifier for the relationship.
-     * @param typeDefGUID the guid of the TypeDef for the relationship used to verify the relationship identity.
-     * @param typeDefName the name of the TypeDef for the relationship used to verify the relationship identity.
      * @param homeMetadataCollectionId unique identifier for the home repository for this relationship.
+     * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
      * @return VoidResponse:
      * void or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -4540,15 +5600,23 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support instance reference copies or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public VoidResponse purgeRelationshipReferenceCopy(String   userId,
-                                                       String   relationshipGUID,
-                                                       String   typeDefGUID,
-                                                       String   typeDefName,
-                                                       String   homeMetadataCollectionId)
+    public VoidResponse purgeRelationshipReferenceCopy(String                        userId,
+                                                       String                        relationshipGUID,
+                                                       String                        homeMetadataCollectionId,
+                                                       TypeDefValidationForRequest   typeDefValidationForRequest)
     {
         final  String   methodName = "purgeRelationshipReferenceCopy";
 
+        String    typeDefGUID = null;
+        String    typeDefName = null;
+
         VoidResponse response = new VoidResponse();
+
+        if (typeDefValidationForRequest != null)
+        {
+            typeDefGUID = typeDefValidationForRequest.getTypeDefGUID();
+            typeDefName = typeDefValidationForRequest.getTypeDefName();
+        }
 
         try
         {
@@ -4558,7 +5626,8 @@ public class OMRSRepositoryRESTServices
                                                                    relationshipGUID,
                                                                    typeDefGUID,
                                                                    typeDefName,
-                                                                   homeMetadataCollectionId);        }
+                                                                   homeMetadataCollectionId);
+        }
         catch (RepositoryErrorException  error)
         {
             captureRepositoryErrorException(response, error);
@@ -4595,9 +5664,8 @@ public class OMRSRepositoryRESTServices
      *
      * @param userId unique identifier for requesting server.
      * @param relationshipGUID unique identifier of the relationship.
-     * @param typeDefGUID the guid of the TypeDef for the relationship used to verify the relationship identity.
-     * @param typeDefName the name of the TypeDef for the relationship used to verify the relationship identity.
      * @param homeMetadataCollectionId unique identifier for the home repository for this relationship.
+     * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
      * @return VoidResponse:
      * void or
      * InvalidParameterException one of the parameters is invalid or null or
@@ -4609,15 +5677,23 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support instance reference copies or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public VoidResponse refreshRelationshipReferenceCopy(String userId,
-                                                         String relationshipGUID,
-                                                         String typeDefGUID,
-                                                         String typeDefName,
-                                                         String homeMetadataCollectionId)
+    public VoidResponse refreshRelationshipReferenceCopy(String                        userId,
+                                                         String                        relationshipGUID,
+                                                         String                        homeMetadataCollectionId,
+                                                         TypeDefValidationForRequest   typeDefValidationForRequest)
     {
         final  String   methodName = "refreshRelationshipReferenceCopy";
 
+        String    typeDefGUID = null;
+        String    typeDefName = null;
+
         VoidResponse response = new VoidResponse();
+
+        if (typeDefValidationForRequest != null)
+        {
+            typeDefGUID = typeDefValidationForRequest.getTypeDefGUID();
+            typeDefName = typeDefValidationForRequest.getTypeDefName();
+        }
 
         try
         {
@@ -4658,6 +5734,97 @@ public class OMRSRepositoryRESTServices
     }
 
 
+    /**
+     * Save the entities and relationships supplied in the instance graph as a reference copies.
+     * The id of the home metadata collection is already set up in the instances.
+     * Any instances from the home metadata collection are ignored.
+     *
+     * @param userId unique identifier for requesting server.
+     * @param instances instances to save or
+     * InvalidParameterException the relationship is null or
+     * RepositoryErrorException  there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored or
+     * TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection or
+     * EntityNotKnownException one of the entities identified by the relationship is not found in the
+     *                                   metadata collection or
+     * PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                  characteristics in the TypeDef for this relationship's type or
+     * EntityConflictException the new entity conflicts with an existing entity or
+     * InvalidEntityException the new entity has invalid contents or
+     * RelationshipConflictException the new relationship conflicts with an existing relationship or
+     * InvalidRelationshipException the new relationship has invalid contents or
+     * FunctionNotSupportedException the repository does not support reference copies of instances or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public VoidResponse  saveInstanceReferenceCopies(String                 userId,
+                                                     InstanceGraphRequest   instances)
+    {
+        final  String   methodName = "saveInstanceReferenceCopies";
+
+        InstanceGraph instanceGraph = new InstanceGraph();
+
+        VoidResponse response = new VoidResponse();
+
+        if (instances != null)
+        {
+            instanceGraph.setEntities(instances.getEntityElementList());
+            instanceGraph.setRelationships(instances.getRelationshipElementList());
+        }
+
+        try
+        {
+            validateLocalRepository(methodName);
+
+            localMetadataCollection.saveInstanceReferenceCopies(userId, instanceGraph);
+        }
+        catch (RepositoryErrorException  error)
+        {
+            captureRepositoryErrorException(response, error);
+        }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (InvalidEntityException error)
+        {
+            captureInvalidEntityException(response, error);
+        }
+        catch (InvalidRelationshipException error)
+        {
+            captureInvalidRelationshipException(response, error);
+        }
+        catch (EntityNotKnownException error)
+        {
+            captureEntityNotKnownException(response, error);
+        }
+        catch (PropertyErrorException error)
+        {
+            capturePropertyErrorException(response, error);
+        }
+        catch (TypeErrorException error)
+        {
+            captureTypeDefErrorException(response, error);
+        }
+        catch (EntityConflictException error)
+        {
+            captureEntityConflictException(response, error);
+        }
+        catch (RelationshipConflictException error)
+        {
+            captureRelationshipConflictException(response, error);
+        }
+
+        return response;
+    }
 
 
     /*
@@ -5070,10 +6237,11 @@ public class OMRSRepositoryRESTServices
      * @return formatted string
      */
     private String  formatNextPageURL(String    urlTemplate,
+                                      Object    request,
                                       Object... parameters)
     {
         MessageFormat mf     = new MessageFormat(urlTemplate);
 
-        return mf.format(parameters);
+        return mf.format(parameters) + "{" + request + "}";
     }
 }

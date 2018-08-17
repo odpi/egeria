@@ -6,6 +6,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.log4j.varia.NullAppender;
 import org.odpi.openmetadata.compliance.beans.OpenMetadataTestLabResults;
 import org.odpi.openmetadata.compliance.beans.OpenMetadataTestWorkbenchResults;
+import org.odpi.openmetadata.compliance.tests.origin.OpenMetadataOriginTestWorkbench;
 import org.odpi.openmetadata.compliance.tests.repository.OpenMetadataRepositoryTestWorkbench;
 
 import java.io.File;
@@ -32,6 +33,7 @@ public class OpenMetadataTestLab
     {
         List<OpenMetadataTestWorkbench>  registeredTestWorkbenches = new ArrayList<>();
 
+        registeredTestWorkbenches.add(new OpenMetadataOriginTestWorkbench(serverURLRoot));
         registeredTestWorkbenches.add(new OpenMetadataRepositoryTestWorkbench(serverURLRoot));
 
         return registeredTestWorkbenches;
@@ -89,7 +91,7 @@ public class OpenMetadataTestLab
     public static void main(String[] args)
     {
         String  serverURLRoot;
-        String  reportFileName = "openmetadata.functional.testlab.results";
+        String  resultsFileName = "openmetadata.functional.testlab.results";
 
         org.apache.log4j.BasicConfigurator.configure(new NullAppender());
 
@@ -118,7 +120,7 @@ public class OpenMetadataTestLab
 
         try
         {
-            File resultsStoreFile = new File(reportFileName);
+            File resultsStoreFile = new File(resultsFileName);
             ObjectMapper objectMapper = new ObjectMapper();
             String       jsonString = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(testLabResults);
 

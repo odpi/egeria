@@ -27,25 +27,4 @@
             <version>${open-metadata.version}</version>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>1.6.0</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>java</goal>
-                        </goals>
-                        <phase>process-classes</phase>
-                        <configuration>
-                            <mainClass>org.odpi.openmetadata.accessservices.subjectarea.generators.SubjectAreaOmrsBeanGenerator</mainClass>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
 </project>

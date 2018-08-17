@@ -247,6 +247,10 @@ public class TypeDefPatch extends TypeDefElementHeader
         {
             this.typeDefAttributes = null;
         }
+        else if (typeDefAttributes.isEmpty())
+        {
+            this.typeDefAttributes = null;
+        }
         else
         {
             this.typeDefAttributes = new ArrayList<>(typeDefAttributes);
@@ -305,6 +309,10 @@ public class TypeDefPatch extends TypeDefElementHeader
         {
             this.externalStandardMappings = null;
         }
+        else if (externalStandardMappings.isEmpty())
+        {
+            this.externalStandardMappings = null;
+        }
         else
         {
             this.externalStandardMappings = new ArrayList<>(externalStandardMappings);
@@ -341,6 +349,10 @@ public class TypeDefPatch extends TypeDefElementHeader
         {
             this.validInstanceStatusList = null;
         }
+        else if (validInstanceStatusList.isEmpty())
+        {
+            this.validInstanceStatusList = null;
+        }
         else
         {
             this.validInstanceStatusList = new ArrayList<>(validInstanceStatusList);
@@ -369,6 +381,7 @@ public class TypeDefPatch extends TypeDefElementHeader
                 ", validInstanceStatusList=" + validInstanceStatusList +
                 '}';
     }
+
 
     /**
      * Validated that the GUID, name and version of a TypeDef are equal.

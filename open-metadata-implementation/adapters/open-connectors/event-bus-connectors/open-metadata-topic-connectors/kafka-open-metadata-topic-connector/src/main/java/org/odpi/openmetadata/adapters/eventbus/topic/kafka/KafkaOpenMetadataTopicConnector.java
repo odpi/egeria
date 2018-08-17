@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.adapters.eventbus.topic.kafka;
 
+import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFErrorCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +31,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector 
     private static String KAFKA_TOPIC_ID = "kafka.omrs.topic.id";
     private String outTopic;
     private KafkaOpenMetadataEventConsumer consumer;
-    private List<String> eventList = new ArrayList<String>();
+    private List<String> eventList = Collections.synchronizedList(new ArrayList<String>());
 
     public KafkaOpenMetadataTopicConnector() {
         super();
@@ -44,17 +45,9 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector 
     public void initialize(String connectorInstanceId, ConnectionProperties connectionProperties) {
 
         super.initialize(connectorInstanceId, connectionProperties);
+
         AdditionalProperties additionalProperties = connectionProperties.getAdditionalProperties();
-
-        Map<String, Object> propertiesMap = (Map) additionalProperties.getProperty("producer");
-        for (Map.Entry<String, Object> entry :propertiesMap.entrySet()) {
-            producerProps.setProperty(entry.getKey(), (String) entry.getValue());
-        }
-
-        propertiesMap = (Map) additionalProperties.getProperty("consumer");
-        for (Map.Entry<String, Object> entry :propertiesMap.entrySet()) {
-            consumerProps.setProperty(entry.getKey(), (String) entry.getValue());
-        }
+        initializeKafkaProperties(additionalProperties);
 
         // Use random consumer group to ensure delivery
         String consumerGroupId = "omrsConsumerGroup-" + UUID.randomUUID().toString();
@@ -64,6 +57,22 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector 
         consumer = new KafkaOpenMetadataEventConsumer(consumerProps, this);
         consumerThread = new Thread(consumer);
         consumerThread.start();
+
+    }
+
+    private void  initializeKafkaProperties(AdditionalProperties additionalProperties) {
+
+        if (additionalProperties != null) {
+            Map<String, Object> propertiesMap = (Map) additionalProperties.getProperty("producer");
+            for (Map.Entry<String, Object> entry : propertiesMap.entrySet()) {
+                producerProps.setProperty(entry.getKey(), (String) entry.getValue());
+            }
+
+            propertiesMap = (Map) additionalProperties.getProperty("consumer");
+            for (Map.Entry<String, Object> entry : propertiesMap.entrySet()) {
+                consumerProps.setProperty(entry.getKey(), (String) entry.getValue());
+            }
+        }
 
     }
 
@@ -121,6 +130,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector 
             //empty eventList otherwise same events will be sent in a loop
             eventList.removeAll(newEvents);
 
+
         }
 
         return newEvents;
@@ -134,7 +144,6 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector 
     public void distributeToListeners(String event) {
 
         log.debug("distribute event to listeners" + event);
-        //TODO: Add synchronization
         eventList.add(event);
     }
 

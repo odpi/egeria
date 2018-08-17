@@ -33,7 +33,7 @@ public abstract class AttributeTypeDef extends TypeDefElementHeader
 {
     protected long                     version         = 0L;
     protected String                   versionName     = null;
-    protected AttributeTypeDefCategory category        = AttributeTypeDefCategory.UNKNOWN_DEF;
+    protected AttributeTypeDefCategory category        = null;
     protected String                   guid            = null;
     protected String                   name            = null;
     protected String                   description     = null;
@@ -45,6 +45,7 @@ public abstract class AttributeTypeDef extends TypeDefElementHeader
      */
     protected AttributeTypeDef()
     {
+        super();
     }
 
 
@@ -56,6 +57,7 @@ public abstract class AttributeTypeDef extends TypeDefElementHeader
      */
     protected AttributeTypeDef(AttributeTypeDefCategory   category)
     {
+        super();
         this.category = category;
     }
 
@@ -277,8 +279,9 @@ public abstract class AttributeTypeDef extends TypeDefElementHeader
                 '}';
     }
 
+
     /**
-     * Validated that the GUID, name and version number of a TypeDef are equal.
+     * Validated that the GUID, name and version number of a AttributeTypeDef are equal.
      *
      * @param object to test
      * @return boolean flag to say object is the same TypeDefSummary
@@ -303,6 +306,7 @@ public abstract class AttributeTypeDef extends TypeDefElementHeader
                 Objects.equals(description, that.description) &&
                 Objects.equals(descriptionGUID, that.descriptionGUID);
     }
+
 
     /**
      * Using the GUID as a hashcode.  It should be unique if all connected metadata repositories are behaving properly.

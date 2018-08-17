@@ -17,9 +17,9 @@
  */
 package org.odpi.openmetadata.accessservices.subjectarea.responses;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.UnrecognizedGUIDException;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.UnrecognizedNameException;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -31,6 +31,35 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "class")
+@JsonSubTypes(
+        {
+                @JsonSubTypes.Type(value = CategoryResponse.class, name = "CategoryResponse"),
+                @JsonSubTypes.Type(value = GlossaryResponse.class, name = "GlossaryResponse"),
+                @JsonSubTypes.Type(value = GlossaryResponse.class, name = "TermResponse"),
+                @JsonSubTypes.Type(value = VoidResponse.class, name = "VoidResponse"),
+                @JsonSubTypes.Type(value = ProjectResponse.class, name = "ProjectResponse"),
+                /*
+                 Exception responses - note that each excpetion has the same 4 Exception orientated fields.
+                 Ideally these should be in a superclass. Due to restrictions in the @JsonSubTypes processing it  is only possible to have
+                 one level of inheritance at this time.
+                 */
+                @JsonSubTypes.Type(value = ClassificationExceptionResponse.class, name = "ClassificationExceptionResponse"),
+                @JsonSubTypes.Type(value = EntityNotDeletedExceptionResponse.class, name = "EntityNotDeletedExceptionResponse") ,
+                @JsonSubTypes.Type(value = FunctionNotSupportedExceptionResponse.class, name = "FunctionNotSupportedExceptionResponse") ,
+                @JsonSubTypes.Type(value = GUIDNotPurgedExceptionResponse.class, name = "GUIDNotPurgedExceptionResponse") ,
+                @JsonSubTypes.Type(value = InvalidParameterExceptionResponse.class, name = "InvalidParameterExceptionResponse") ,
+                @JsonSubTypes.Type(value = MetadataServerUncontactableExceptionResponse.class, name = "MetadataServerUncontactableExceptionResponse") ,
+                @JsonSubTypes.Type(value = PossibleClassificationsResponse.class, name = "PossibleClassificationsResponse") ,
+                @JsonSubTypes.Type(value = PossibleRelationshipsResponse.class, name = "PossibleRelationshipsResponse") ,
+                @JsonSubTypes.Type(value = RelationshipNotDeletedExceptionResponse.class, name = "RelationshipNotDeletedExceptionResponse") ,
+                @JsonSubTypes.Type(value = StatusNotsupportedExceptionResponse.class, name = "StatusNotsupportedExceptionResponse") ,
+                @JsonSubTypes.Type(value = UnrecognizedGUIDExceptionResponse.class, name = "UnrecognizedGUIDExceptionResponse") ,
+                @JsonSubTypes.Type(value = UnrecognizedNameExceptionResponse.class, name = "UnrecognizedNameExceptionResponse") ,
+                @JsonSubTypes.Type(value = UserNotAuthorizedExceptionResponse.class, name = "UserNotAuthorizedExceptionResponse")
+        })
 public abstract class SubjectAreaOMASAPIResponse
 {
     protected int       relatedHTTPCode = 200;

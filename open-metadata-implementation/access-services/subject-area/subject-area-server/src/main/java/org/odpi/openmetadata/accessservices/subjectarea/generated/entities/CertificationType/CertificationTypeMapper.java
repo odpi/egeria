@@ -104,9 +104,9 @@ public class CertificationTypeMapper {
                             EnumPropertyValue enumPropertyValue = (EnumPropertyValue) value;
                             String symbolicName = enumPropertyValue.getSymbolicName();
                             if (certificationType.ENUM_NAMES_SET.contains(name)) {
-                                 if (name.equals("status")) {
-                                       org.odpi.openmetadata.accessservices.subjectarea.properties.enums.GovernanceDefinitionStatus status = org.odpi.openmetadata.accessservices.subjectarea.properties.enums.GovernanceDefinitionStatus.valueOf(symbolicName);
-                                      certificationType.setStatus(status);
+                                 if (name.equals("domain")) {
+                                       org.odpi.openmetadata.accessservices.subjectarea.properties.enums.GovernanceDomain domain = org.odpi.openmetadata.accessservices.subjectarea.properties.enums.GovernanceDomain.valueOf(symbolicName);
+                                      certificationType.setDomain(domain);
                                  }
                             } else {
                                 // put out the omrs value object
@@ -245,12 +245,12 @@ public class CertificationTypeMapper {
                 primitivePropertyValue.setPrimitiveValue(certificationType.getQualifiedName());
                 instanceProperties.setProperty("qualifiedName", primitivePropertyValue);
             }
-            if (certificationType.getStatus()!=null) {
-                GovernanceDefinitionStatus enumType = certificationType.getStatus();
+            if (certificationType.getDomain()!=null) {
+                GovernanceDomain enumType = certificationType.getDomain();
                 EnumPropertyValue enumPropertyValue = new EnumPropertyValue();
                 enumPropertyValue.setOrdinal(enumType.ordinal());
                 enumPropertyValue.setSymbolicName(enumType.name());
-                instanceProperties.setProperty("status", enumPropertyValue);
+                instanceProperties.setProperty("domain", enumPropertyValue);
             }
             if (certificationType.getAdditionalProperties()!=null) {
 

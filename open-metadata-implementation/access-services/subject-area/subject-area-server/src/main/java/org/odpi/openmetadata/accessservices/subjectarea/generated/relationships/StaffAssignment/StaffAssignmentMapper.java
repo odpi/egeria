@@ -57,8 +57,8 @@ public class StaffAssignmentMapper {
                                                    PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) value;
                                                    actualValue = primitivePropertyValue.getPrimitiveValue();
                                                    if (StaffAssignment.ATTRIBUTE_NAMES_SET.contains(name)) {
-                                                      if (name.equals("notes")) {
-                                                           staffAssignment.setNotes((String)actualValue);
+                                                      if (name.equals("responsibilityType")) {
+                                                           staffAssignment.setResponsibilityType((String)actualValue);
                                                       }
                                                    } else {
                                                        // put out the omrs value object
@@ -130,11 +130,11 @@ public class StaffAssignmentMapper {
            InstanceProperties instanceProperties = new InstanceProperties();
            // primitives
 
-            if (staffAssignment.getNotes()!=null) {
+            if (staffAssignment.getResponsibilityType()!=null) {
                 PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
                 primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-                primitivePropertyValue.setPrimitiveValue(staffAssignment.getNotes());
-                instanceProperties.setProperty("notes", primitivePropertyValue);
+                primitivePropertyValue.setPrimitiveValue(staffAssignment.getResponsibilityType());
+                instanceProperties.setProperty("responsibilityType", primitivePropertyValue);
             }
             omrsRelationship.setProperties(instanceProperties);
 

@@ -104,9 +104,9 @@ public class GovernanceResponsibilityMapper {
                             EnumPropertyValue enumPropertyValue = (EnumPropertyValue) value;
                             String symbolicName = enumPropertyValue.getSymbolicName();
                             if (governanceResponsibility.ENUM_NAMES_SET.contains(name)) {
-                                 if (name.equals("status")) {
-                                       org.odpi.openmetadata.accessservices.subjectarea.properties.enums.GovernanceDefinitionStatus status = org.odpi.openmetadata.accessservices.subjectarea.properties.enums.GovernanceDefinitionStatus.valueOf(symbolicName);
-                                      governanceResponsibility.setStatus(status);
+                                 if (name.equals("domain")) {
+                                       org.odpi.openmetadata.accessservices.subjectarea.properties.enums.GovernanceDomain domain = org.odpi.openmetadata.accessservices.subjectarea.properties.enums.GovernanceDomain.valueOf(symbolicName);
+                                      governanceResponsibility.setDomain(domain);
                                  }
                             } else {
                                 // put out the omrs value object
@@ -245,12 +245,12 @@ public class GovernanceResponsibilityMapper {
                 primitivePropertyValue.setPrimitiveValue(governanceResponsibility.getQualifiedName());
                 instanceProperties.setProperty("qualifiedName", primitivePropertyValue);
             }
-            if (governanceResponsibility.getStatus()!=null) {
-                GovernanceDefinitionStatus enumType = governanceResponsibility.getStatus();
+            if (governanceResponsibility.getDomain()!=null) {
+                GovernanceDomain enumType = governanceResponsibility.getDomain();
                 EnumPropertyValue enumPropertyValue = new EnumPropertyValue();
                 enumPropertyValue.setOrdinal(enumType.ordinal());
                 enumPropertyValue.setSymbolicName(enumType.name());
-                instanceProperties.setProperty("status", enumPropertyValue);
+                instanceProperties.setProperty("domain", enumPropertyValue);
             }
             if (governanceResponsibility.getAdditionalProperties()!=null) {
 

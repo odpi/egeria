@@ -40,10 +40,13 @@ public class CategoryResponse extends SubjectAreaOMASAPIResponse
     /**
      * Default constructor
      */
+    public CategoryResponse() {
+        this.setResponseCategory(ResponseCategory.Category);
+    }
     public CategoryResponse(Category category)
     {
+        this();
         this.category=category;
-        this.setResponseCategory(ResponseCategory.Category);
     }
 
 

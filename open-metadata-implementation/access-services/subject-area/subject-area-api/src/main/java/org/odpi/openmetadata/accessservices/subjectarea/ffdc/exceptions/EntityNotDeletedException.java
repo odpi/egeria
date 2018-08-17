@@ -45,6 +45,6 @@ public class EntityNotDeletedException extends SubjectAreaCheckedExceptionBase
     }
 
     public String getGuid() {
-        return guid;
+        return this.guid;
     }
 }

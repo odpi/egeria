@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -308,5 +309,60 @@ public class TypeDefAttribute extends TypeDefElementHeader
                 ", defaultValue='" + defaultValue + '\'' +
                 ", externalStandardMappings=" + externalStandardMappings +
                 '}';
+    }
+
+
+    /**
+     * Verify that supplied object has the same properties.
+     *
+     * @param o object to test
+     * @return result
+     */
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o)
+        {
+            return true;
+        }
+        if (!(o instanceof TypeDefAttribute))
+        {
+            return false;
+        }
+        TypeDefAttribute that = (TypeDefAttribute) o;
+        return getValuesMinCount() == that.getValuesMinCount() &&
+                getValuesMaxCount() == that.getValuesMaxCount() &&
+                isIndexable() == that.isIndexable() &&
+                isUnique() == that.isUnique() &&
+                Objects.equals(getAttributeName(), that.getAttributeName()) &&
+                Objects.equals(getAttributeType(), that.getAttributeType()) &&
+                Objects.equals(getAttributeDescription(), that.getAttributeDescription()) &&
+                Objects.equals(getAttributeDescriptionGUID(), that.getAttributeDescriptionGUID()) &&
+                cardinality == that.cardinality &&
+                Objects.equals(getDefaultValue(), that.getDefaultValue()) &&
+                Objects.equals(getExternalStandardMappings(), that.getExternalStandardMappings());
+    }
+
+
+    /**
+     * Int for hash map
+     *
+     * @return hash code
+     */
+    @Override
+    public int hashCode()
+    {
+
+        return Objects.hash(getAttributeName(),
+                            getAttributeType(),
+                            getAttributeDescription(),
+                            getAttributeDescriptionGUID(),
+                            cardinality,
+                            getValuesMinCount(),
+                            getValuesMaxCount(),
+                            isIndexable(),
+                            isUnique(),
+                            getDefaultValue(),
+                            getExternalStandardMappings());
     }
 }

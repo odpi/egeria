@@ -4,10 +4,7 @@ package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacolle
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -107,9 +104,10 @@ public abstract class TypeDef extends TypeDefSummary
             this.createTime = template.getCreateTime();
             this.updateTime = template.getUpdateTime();
             this.options = template.getOptions();
-            this.setExternalStandardMappings(template.getExternalStandardMappings());
-            this.setValidInstanceStatusList(template.getValidInstanceStatusList());
-            this.setPropertiesDefinition(template.getPropertiesDefinition());
+            this.externalStandardMappings = template.getExternalStandardMappings();
+            this.validInstanceStatusList = template.getValidInstanceStatusList();
+            this.propertiesDefinition = template.getPropertiesDefinition();
+            this.initialStatus = template.getInitialStatus();
         }
     }
 
@@ -479,5 +477,55 @@ public abstract class TypeDef extends TypeDefSummary
                 ", guid='" + guid + '\'' +
                 ", name='" + name + '\'' +
                 '}';
+    }
+
+
+    /**
+     * Validated that the GUID, name and version number of a TypeDef are equal.
+     *
+     * @param object to test
+     * @return boolean flag to say object is the same TypeDefSummary
+     */
+    @Override
+    public boolean equals(Object object)
+    {
+        if (this == object)
+        {
+            return true;
+        }
+        if (!(object instanceof TypeDef))
+        {
+            return false;
+        }
+        if (!super.equals(object))
+        {
+            return false;
+        }
+        TypeDef typeDef = (TypeDef) object;
+        return Objects.equals(getSuperType(), typeDef.getSuperType()) &&
+                Objects.equals(getDescription(), typeDef.getDescription()) &&
+                Objects.equals(getDescriptionGUID(), typeDef.getDescriptionGUID()) &&
+                Objects.equals(getOrigin(), typeDef.getOrigin()) &&
+                Objects.equals(getCreatedBy(), typeDef.getCreatedBy()) &&
+                Objects.equals(getUpdatedBy(), typeDef.getUpdatedBy()) &&
+                Objects.equals(getCreateTime(), typeDef.getCreateTime()) &&
+                Objects.equals(getUpdateTime(), typeDef.getUpdateTime()) &&
+                Objects.equals(getOptions(), typeDef.getOptions()) &&
+                Objects.equals(getExternalStandardMappings(), typeDef.getExternalStandardMappings()) &&
+                Objects.equals(getValidInstanceStatusList(), typeDef.getValidInstanceStatusList()) &&
+                getInitialStatus() == typeDef.getInitialStatus() &&
+                Objects.equals(getPropertiesDefinition(), typeDef.getPropertiesDefinition());
+    }
+
+
+    /**
+     * Using the GUID as a hashcode.  It should be unique if all connected metadata repositories are behaving properly.
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return guid != null ? guid.hashCode() : 0;
     }
 }

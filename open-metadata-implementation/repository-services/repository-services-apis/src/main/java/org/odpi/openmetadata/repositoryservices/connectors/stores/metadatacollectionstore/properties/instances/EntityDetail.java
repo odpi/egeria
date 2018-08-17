@@ -3,6 +3,8 @@ package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacolle
 
 import com.fasterxml.jackson.annotation.*;
 
+import java.util.Objects;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -13,13 +15,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "class")
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = EntityUniverse.class, name = "EntityUniverse")
-})
 public class EntityDetail extends EntitySummary
 {
     private   InstanceProperties    entityProperties = null;
@@ -58,7 +53,11 @@ public class EntityDetail extends EntitySummary
     {
         if (entityProperties == null)
         {
-            return entityProperties;
+            return null;
+        }
+        else if (entityProperties.getInstanceProperties() == null)
+        {
+            return null;
         }
         else
         {
@@ -102,5 +101,44 @@ public class EntityDetail extends EntitySummary
                 ", version=" + getVersion() +
                 ", statusOnDelete=" + getStatusOnDelete() +
                 '}';
+    }
+
+
+    /**
+     * Validate that an object is equal depending on their stored values.
+     *
+     * @param objectToCompare object
+     * @return boolean result
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (!(objectToCompare instanceof EntityDetail))
+        {
+            return false;
+        }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        EntityDetail that = (EntityDetail) objectToCompare;
+        return Objects.equals(entityProperties, that.entityProperties);
+    }
+
+
+    /**
+     * Return a hash code based on the values of this object.
+     *
+     * @return in hash code
+     */
+    @Override
+    public int hashCode()
+    {
+
+        return Objects.hash(super.hashCode(), entityProperties);
     }
 }

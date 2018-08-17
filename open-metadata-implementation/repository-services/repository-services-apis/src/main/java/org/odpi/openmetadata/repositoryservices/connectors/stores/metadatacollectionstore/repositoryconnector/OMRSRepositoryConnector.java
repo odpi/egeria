@@ -174,7 +174,7 @@ public abstract class OMRSRepositoryConnector extends ConnectorBase implements O
      *
      * @param metadataCollectionId String unique Id
      */
-    public void setMetadataCollectionId(String         metadataCollectionId)
+    public void setMetadataCollectionId(String metadataCollectionId)
     {
         this.metadataCollectionId = metadataCollectionId;
     }
@@ -217,11 +217,11 @@ public abstract class OMRSRepositoryConnector extends ConnectorBase implements O
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, methodName);
 
             throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                                               this.getClass().getName(),
-                                               methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction());
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
         }
     }
 
@@ -241,14 +241,14 @@ public abstract class OMRSRepositoryConnector extends ConnectorBase implements O
 
             OMRSErrorCode errorCode = OMRSErrorCode.NULL_METADATA_COLLECTION;
             String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(serverName);
+                    + errorCode.getFormattedErrorMessage(serverName);
 
             throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                                               this.getClass().getName(),
-                                               methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction());
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
         }
 
         return metadataCollection;

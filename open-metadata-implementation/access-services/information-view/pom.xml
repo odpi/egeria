@@ -26,6 +26,8 @@
     <modules>
         <module>information-view-client</module>
         <module>information-view-server</module>
+        <module>information-view-spring</module>
+        <module>information-view-api</module>
     </modules>
 
 

@@ -104,9 +104,9 @@ public class RegulationMapper {
                             EnumPropertyValue enumPropertyValue = (EnumPropertyValue) value;
                             String symbolicName = enumPropertyValue.getSymbolicName();
                             if (regulation.ENUM_NAMES_SET.contains(name)) {
-                                 if (name.equals("status")) {
-                                       org.odpi.openmetadata.accessservices.subjectarea.properties.enums.GovernanceDefinitionStatus status = org.odpi.openmetadata.accessservices.subjectarea.properties.enums.GovernanceDefinitionStatus.valueOf(symbolicName);
-                                      regulation.setStatus(status);
+                                 if (name.equals("domain")) {
+                                       org.odpi.openmetadata.accessservices.subjectarea.properties.enums.GovernanceDomain domain = org.odpi.openmetadata.accessservices.subjectarea.properties.enums.GovernanceDomain.valueOf(symbolicName);
+                                      regulation.setDomain(domain);
                                  }
                             } else {
                                 // put out the omrs value object
@@ -245,12 +245,12 @@ public class RegulationMapper {
                 primitivePropertyValue.setPrimitiveValue(regulation.getQualifiedName());
                 instanceProperties.setProperty("qualifiedName", primitivePropertyValue);
             }
-            if (regulation.getStatus()!=null) {
-                GovernanceDefinitionStatus enumType = regulation.getStatus();
+            if (regulation.getDomain()!=null) {
+                GovernanceDomain enumType = regulation.getDomain();
                 EnumPropertyValue enumPropertyValue = new EnumPropertyValue();
                 enumPropertyValue.setOrdinal(enumType.ordinal());
                 enumPropertyValue.setSymbolicName(enumType.name());
-                instanceProperties.setProperty("status", enumPropertyValue);
+                instanceProperties.setProperty("domain", enumPropertyValue);
             }
             if (regulation.getAdditionalProperties()!=null) {
 

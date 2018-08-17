@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.Objects;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -134,5 +136,42 @@ public class EnumElementDef extends TypeDefElementHeader
                 ", description='" + description + '\'' +
                 ", descriptionGUID='" + descriptionGUID + '\'' +
                 '}';
+    }
+
+
+    /**
+     * Verify that supplied object has the same properties.
+     *
+     * @param o object to test
+     * @return result
+     */
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o)
+        {
+            return true;
+        }
+        if (!(o instanceof EnumElementDef))
+        {
+            return false;
+        }
+        EnumElementDef that = (EnumElementDef) o;
+        return getOrdinal() == that.getOrdinal() &&
+                Objects.equals(getValue(), that.getValue()) &&
+                Objects.equals(getDescription(), that.getDescription()) &&
+                Objects.equals(getDescriptionGUID(), that.getDescriptionGUID());
+    }
+
+
+    /**
+     * Integer useful for hashmaps
+     *
+     * @return int hash number
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(getOrdinal(), getValue(), getDescription(), getDescriptionGUID());
     }
 }

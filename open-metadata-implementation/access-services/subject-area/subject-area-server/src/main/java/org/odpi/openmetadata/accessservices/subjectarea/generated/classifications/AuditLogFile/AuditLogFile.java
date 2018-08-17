@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.generated.classificatio
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -20,22 +21,22 @@ import java.util.*;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
-// uncomment to generate a class that json serialises
-//import com.fasterxml.jackson.annotation.JsonAutoDetect;
-//import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-//import com.fasterxml.jackson.annotation.JsonFormat;
-//import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-//import com.fasterxml.jackson.annotation.JsonProperty;
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.*;
 
 /**
  * A data file containing audit log records.
  */
- // uncomment to generate a class that json serialises
-//@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
-//@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
-//@JsonIgnoreProperties(ignoreUnknown=true)
+
+@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class AuditLogFile extends Classification {
     private static final Logger log = LoggerFactory.getLogger( AuditLogFile.class);
     private static final String className =  AuditLogFile.class.getName();

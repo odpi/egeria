@@ -186,6 +186,40 @@ public enum OMRSAuditCode
                       "The local repository's event mapper connector {0} has disconnected the event bus connectors",
                       "The event mapper connector is no longer able to receive or send events",
                       "No action is required.  This is part of the normal operation of the server."),
+
+    OMRS_LISTENER_INITIALIZING("OMRS-AUDIT-0026",
+                      OMRSAuditLogRecordSeverity.INFO,
+                      "Initializing listener for cohort {0}",
+                      "The local server has initialized a listener to receive inbound events from the named " +
+                                "open metadata repository cohort.",
+                      "No action is required.  This is part of the normal operation of the server."),
+
+
+    INITIALIZING_EVENT_MANAGER("OMRS-AUDIT-0030",
+                      OMRSAuditLogRecordSeverity.INFO,
+                      "The {0} event manager is initializing",
+                      "The event manager is ready for internal OMRS event consumers to register with it.",
+                      "No action is required.  This is part of the normal operation of the server."),
+
+    STARTING_EVENT_MANAGER("OMRS-AUDIT-0031",
+                      OMRSAuditLogRecordSeverity.INFO,
+                      "The {0} event manager is starting with {1} type definition event consumer(s) and {2} instance event consumer(s)",
+                      "The event manager is fully initialized and beginning to distribute events",
+                      "No action is required.  This is part of the normal operation of the server."),
+
+    DRAINING_TYPEDEF_EVENT_BUFFER("OMRS-AUDIT-0032",
+                      OMRSAuditLogRecordSeverity.INFO,
+                      "The {0} event manager is sending out the {1} type definition events that were generated and buffered during server initialization",
+                      "The event manager is fully initialized and distributing buffered events that describe type definitions",
+                      "No action is required.  This is part of the normal operation of the server."),
+
+    DRAINING_INSTANCE_EVENT_BUFFER("OMRS-AUDIT-0033",
+                      OMRSAuditLogRecordSeverity.INFO,
+                      "The {0} event manager is sending out the {1} instance events that were generated and buffered during server initialization",
+                      "The event manager is fully initialized and distributing buffered events that describe type definitions",
+                      "No action is required.  This is part of the normal operation of the server."),
+
+
     NEW_ENTERPRISE_CONNECTOR("OMRS-AUDIT-0040",
                       OMRSAuditLogRecordSeverity.INFO,
                       "An enterprise OMRS connector has been created for the {0} open metadata access service",

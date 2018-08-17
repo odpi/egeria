@@ -4,7 +4,6 @@ package org.odpi.openmetadata.repositoryservices.metadatahighway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.adminservices.configuration.properties.OpenMetadataEventProtocolVersion;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
@@ -109,14 +108,15 @@ public class OMRSCohortManager
             /*
              * Create the event manager for processing incoming events from the cohort's OMRS Topic.
              */
-            this.cohortRepositoryEventManager = new OMRSRepositoryEventManager(inboundEventExchangeRule,
+            this.cohortRepositoryEventManager = new OMRSRepositoryEventManager(cohortName + " cohort inbound",
+                                                                               inboundEventExchangeRule,
                                                                                new OMRSRepositoryContentValidator(localRepositoryContentManager));
 
             /*
              * Create an event publisher for the cohort registry to use to send registration requests.
              */
-            OMRSEventPublisher outboundRegistryEventProcessor = new OMRSEventPublisher(cohortName,
-                                                                                       cohortTopicConnector);
+            OMRSRegistryEventPublisher outboundRegistryEventProcessor = new OMRSRegistryEventPublisher(cohortName,
+                                                                                                       cohortTopicConnector);
 
             /*
              * Create the cohort registry.
@@ -149,8 +149,8 @@ public class OMRSCohortManager
                      * Register an event publisher with the local repository for this cohort.  This will mean
                      * other members of the cohort can receive events from the local server's repository.
                      */
-                    OMRSEventPublisher repositoryEventPublisher = new OMRSEventPublisher(cohortName,
-                                                                                         cohortTopicConnector);
+                    OMRSRepositoryEventPublisher repositoryEventPublisher = new OMRSRepositoryEventPublisher(cohortName,
+                                                                                                             cohortTopicConnector);
 
 
                     localRepositoryEventManager.registerTypeDefProcessor(repositoryEventPublisher);
@@ -163,13 +163,11 @@ public class OMRSCohortManager
                  */
                 if (localRepository.getIncomingTypeDefEventProcessor() != null)
                 {
-                    this.cohortRepositoryEventManager.registerTypeDefProcessor(
-                            localRepository.getIncomingTypeDefEventProcessor());
+                    this.cohortRepositoryEventManager.registerTypeDefProcessor(localRepository.getIncomingTypeDefEventProcessor());
                 }
                 if (localRepository.getIncomingInstanceEventProcessor() != null)
                 {
-                    this.cohortRepositoryEventManager.registerInstanceProcessor(
-                            localRepository.getIncomingInstanceEventProcessor());
+                    this.cohortRepositoryEventManager.registerInstanceProcessor(localRepository.getIncomingInstanceEventProcessor());
                 }
             }
             else /* no local repository */
@@ -195,13 +193,22 @@ public class OMRSCohortManager
              */
             if (enterpriseTopicConnector != null)
             {
-                OMRSEventPublisher enterpriseEventPublisher = new OMRSEventPublisher("OMAS Enterprise Access",
-                                                                                     enterpriseTopicConnector);
+                OMRSRepositoryEventPublisher enterpriseEventPublisher = new OMRSRepositoryEventPublisher("OMAS Enterprise Access",
+                                                                                                         enterpriseTopicConnector);
 
                 this.cohortRepositoryEventManager.registerInstanceProcessor(enterpriseEventPublisher);
             }
 
             this.cohortConnectionStatus = CohortConnectionStatus.NEW;
+
+
+            /*
+             * Start the cohort's event manager so it is able to pass events.
+             */
+            if (this.cohortRepositoryEventManager != null)
+            {
+                this.cohortRepositoryEventManager.start();
+            }
 
             /*
              * The cohort topic connector is used by the local cohort components to communicate with the other
@@ -245,10 +252,7 @@ public class OMRSCohortManager
                                auditCode.getUserAction());
         }
 
-        if (log.isDebugEnabled())
-        {
-            log.debug(actionDescription + " COMPLETE");
-        }
+        log.debug(actionDescription + " COMPLETE");
     }
 
 
@@ -284,10 +288,7 @@ public class OMRSCohortManager
     {
         final String actionDescription = "Disconnect Cohort Manager";
 
-        if (log.isDebugEnabled())
-        {
-            log.debug(actionDescription);
-        }
+        log.debug(actionDescription);
 
         try
         {
@@ -307,10 +308,7 @@ public class OMRSCohortManager
         }
         catch (ConnectorCheckedException   error)
         {
-            if (log.isDebugEnabled())
-            {
-                log.debug(actionDescription + " FAILED with connector checked exception");
-            }
+            log.debug(actionDescription + " FAILED with connector checked exception");
 
             /*
              * Throw runtime exception to indicate that the cohort registry is not available.
@@ -330,18 +328,12 @@ public class OMRSCohortManager
         }
         catch (Throwable  error)
         {
-            if (log.isDebugEnabled())
-            {
-                log.debug(actionDescription + " FAILED with exception");
-            }
+            log.debug(actionDescription + " FAILED with exception");
 
             throw error;
         }
 
-        if (log.isDebugEnabled())
-        {
-            log.debug(actionDescription + " COMPLETE");
-        }
+        log.debug(actionDescription + " COMPLETE");
     }
 
 

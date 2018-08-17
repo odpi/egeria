@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.Objects;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -19,9 +21,17 @@ public class PrimitiveDef extends AttributeTypeDef
 {
     private  PrimitiveDefCategory   primitiveDefCategory = null;
 
-
     /**
      * Default constructor initializes the PrimitiveDef based on the supplied category.
+     */
+    public PrimitiveDef()
+    {
+        super(AttributeTypeDefCategory.PRIMITIVE);
+    }
+
+
+    /**
+     * Superclass constructor initializes the PrimitiveDef based on the supplied category.
      *
      * @param primitiveDefCategory PrimitiveDefCategory Enum
      */
@@ -69,6 +79,17 @@ public class PrimitiveDef extends AttributeTypeDef
 
 
     /**
+     * Set up the type category for this primitive type.
+     *
+     * @param primitiveDefCategory PrimitiveDefCategory Enum
+     */
+    public void setPrimitiveDefCategory(PrimitiveDefCategory primitiveDefCategory)
+    {
+        this.primitiveDefCategory = primitiveDefCategory;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return JSON style description of variables.
@@ -84,5 +105,31 @@ public class PrimitiveDef extends AttributeTypeDef
                 ", description='" + description + '\'' +
                 ", descriptionGUID='" + descriptionGUID + '\'' +
                 '}';
+    }
+
+
+    /**
+     * Verify that supplied object has the same properties.
+     *
+     * @param o object to test
+     * @return result
+     */
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o)
+        {
+            return true;
+        }
+        if (!(o instanceof PrimitiveDef))
+        {
+            return false;
+        }
+        if (!super.equals(o))
+        {
+            return false;
+        }
+        PrimitiveDef that = (PrimitiveDef) o;
+        return getPrimitiveDefCategory() == that.getPrimitiveDefCategory();
     }
 }

@@ -14,7 +14,7 @@ import java.util.*;
  * OMRSRepositoryContentHelper provides methods to repository connectors and repository event mappers to help
  * them build valid type definitions (TypeDefs), entities and relationships.  It is a facade to the
  * repository content manager which holds an in memory cache of all the active TypeDefs in the local server.
- * OMRSRepositoryContentHelper's purpose is to create a object that the repository connectors and event mappers can
+ * OMRSRepositoryContentHelper's purpose is to create an object that the repository connectors and event mappers can
  * create, use and discard without needing to know how to connect to the repository content manager.
  */
 public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
@@ -632,6 +632,88 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 
 
     /**
+     * March the supplied external standard identifiers against the active types for this repository.
+     *
+     * @param sourceName source of the request (used for logging)
+     * @param standard name of the standard, null means any.
+     * @param organization name of the organization, null means any.
+     * @param identifier identifier of the element in the standard, null means any.
+     * @param methodName method receiving the call
+     */
+    public  List<TypeDef> getMatchingActiveTypes(String sourceName,
+                                                 String standard,
+                                                 String organization,
+                                                 String identifier,
+                                                 String methodName)
+    {
+        List<TypeDef>  matchingTypes = new ArrayList<>();
+        TypeDefGallery typeDefGallery = this.getActiveTypeDefGallery();
+
+        if (typeDefGallery != null)
+        {
+            for (TypeDef activeTypeDef : typeDefGallery.getTypeDefs())
+            {
+                /*
+                 * Extract all of the external standards mappings from the TypeDef.  They are located in the TypeDef
+                 * itself and in the TypeDefAttributes.
+                 */
+                List<ExternalStandardMapping>  externalStandardMappings = new ArrayList<>();
+
+                if (activeTypeDef.getExternalStandardMappings() != null)
+                {
+                    externalStandardMappings.addAll(activeTypeDef.getExternalStandardMappings());
+                }
+
+                List<TypeDefAttribute>  typeDefAttributes = activeTypeDef.getPropertiesDefinition();
+
+                if (typeDefAttributes != null)
+                {
+                    for (TypeDefAttribute  typeDefAttribute : typeDefAttributes)
+                    {
+                        if ((typeDefAttribute != null) && (typeDefAttribute.getExternalStandardMappings() != null))
+                        {
+                            externalStandardMappings.addAll(activeTypeDef.getExternalStandardMappings());
+                        }
+                    }
+                }
+
+                /*
+                 * Look for matching standards
+                 */
+                for (ExternalStandardMapping externalStandardMapping : externalStandardMappings)
+                {
+                    String activeTypeDefStandardName = externalStandardMapping.getStandardName();
+                    String activeTypeDefStandardOrgName = externalStandardMapping.getStandardOrganization();
+                    String activeTypeDefStandardIdentifier = externalStandardMapping.getStandardTypeName();
+
+                    if ((activeTypeDefStandardName != null) && (activeTypeDefStandardName.equals(standard)))
+                    {
+                        matchingTypes.add(activeTypeDef);
+                    }
+                    else if ((activeTypeDefStandardOrgName != null) && (activeTypeDefStandardOrgName.equals(organization)))
+                    {
+                        matchingTypes.add(activeTypeDef);
+                    }
+                    else if ((activeTypeDefStandardIdentifier != null) && (activeTypeDefStandardIdentifier.equals(identifier)))
+                    {
+                        matchingTypes.add(activeTypeDef);
+                    }
+                }
+            }
+        }
+
+        if (matchingTypes.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return matchingTypes;
+        }
+    }
+
+
+    /**
      * Return an entity with the header and type information filled out.  The caller only needs to add properties
      * and classifications to complete the set up of the entity.
      *
@@ -1139,7 +1221,7 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 
             if (entityClassificationsMap.isEmpty())
             {
-                entity.setClassifications(null);
+                updatedEntity.setClassifications(null);
             }
             else
             {
@@ -1268,10 +1350,12 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
         updatedInstance.setUpdateTime(new Date());
 
         long currentVersion = originalInstance.getVersion();
-        updatedInstance.setVersion(currentVersion++);
+        updatedInstance.setVersion(currentVersion+1);
 
         return updatedInstance;
     }
+
+
 
 
     /**
@@ -1307,30 +1391,41 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 
                     EntityProxy            entityProxy          = new EntityProxy(entity);
                     InstanceProperties     entityProperties     = entity.getProperties();
-                    List<TypeDefAttribute> propertiesDefinition = typeDef.getPropertiesDefinition();
-                    InstanceProperties     uniqueAttributes     = new InstanceProperties();
 
-                    for (TypeDefAttribute typeDefAttribute : propertiesDefinition)
+                    if (entityProperties != null)
                     {
-                        if (typeDefAttribute != null)
+                        List<TypeDefAttribute> propertiesDefinition =
+                                repositoryContentManager.getAllPropertiesForTypeDef(sourceName,
+                                                                                    typeDef,
+                                                                                    methodName);
+                        InstanceProperties uniqueAttributes = new InstanceProperties();
+
+                        if (propertiesDefinition != null)
                         {
-                            String propertyName = typeDefAttribute.getAttributeName();
-
-                            if ((typeDefAttribute.isUnique()) && (propertyName != null))
+                            for (TypeDefAttribute typeDefAttribute : propertiesDefinition)
                             {
-                                InstancePropertyValue propertyValue = entityProperties.getPropertyValue(propertyName);
-
-                                if (propertyValue != null)
+                                if (typeDefAttribute != null)
                                 {
-                                    uniqueAttributes.setProperty(propertyName, propertyValue);
+                                    String propertyName = typeDefAttribute.getAttributeName();
+
+                                    if ((typeDefAttribute.isUnique()) && (propertyName != null))
+                                    {
+                                        InstancePropertyValue propertyValue = entityProperties.getPropertyValue(
+                                                propertyName);
+
+                                        if (propertyValue != null)
+                                        {
+                                            uniqueAttributes.setProperty(propertyName, propertyValue);
+                                        }
+                                    }
                                 }
                             }
                         }
-                    }
 
-                    if (uniqueAttributes.getPropertyCount() > 0)
-                    {
-                        entityProxy.setUniqueProperties(uniqueAttributes);
+                        if (uniqueAttributes.getPropertyCount() > 0)
+                        {
+                            entityProxy.setUniqueProperties(uniqueAttributes);
+                        }
                     }
 
                     return entityProxy;
@@ -1353,6 +1448,79 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
         }
 
         return null;
+    }
+
+
+    /**
+     * Return a filled out entity.
+     *
+     * @param sourceName            source of the request (used for logging)
+     * @param metadataCollectionId  unique identifier for the home metadata collection
+     * @param provenanceType        origin of the entity
+     * @param userName              name of the creator
+     * @param typeName              name of the type
+     * @param properties            properties for the entity
+     * @param classifications       list of classifications for the entity
+     * @return                      an entity that is filled out
+     * @throws TypeErrorException   the type name is not recognized as an entity type
+     */
+    public EntityProxy getNewEntityProxy(String                    sourceName,
+                                         String                    metadataCollectionId,
+                                         InstanceProvenanceType    provenanceType,
+                                         String                    userName,
+                                         String                    typeName,
+                                         InstanceProperties        properties,
+                                         List<Classification>      classifications) throws TypeErrorException
+    {
+        EntityProxy entity = this.getSkeletonEntityProxy(sourceName,
+                                                         metadataCollectionId,
+                                                         provenanceType,
+                                                         userName,
+                                                         typeName);
+
+        entity.setUniqueProperties(properties);
+        entity.setClassifications(classifications);
+
+        return entity;
+    }
+
+    /**
+     * Return an entity with the header and type information filled out.  The caller only needs to add properties
+     * and classifications to complete the set up of the entity.
+     *
+     * @param sourceName                source of the request (used for logging)
+     * @param metadataCollectionId      unique identifier for the home metadata collection
+     * @param provenanceType            origin of the entity
+     * @param userName                  name of the creator
+     * @param typeName                  name of the type
+     * @return                          partially filled out entity  needs classifications and properties
+     * @throws TypeErrorException       the type name is not recognized.
+     */
+    public EntityProxy getSkeletonEntityProxy(String                  sourceName,
+                                              String                  metadataCollectionId,
+                                              InstanceProvenanceType  provenanceType,
+                                              String                  userName,
+                                              String                  typeName) throws TypeErrorException
+    {
+        final String methodName = "getSkeletonEntityProxy";
+
+        validateRepositoryContentManager(methodName);
+
+        EntityProxy entity = new EntityProxy();
+        String       guid   = UUID.randomUUID().toString();
+
+        entity.setInstanceProvenanceType(provenanceType);
+        entity.setMetadataCollectionId(metadataCollectionId);
+        entity.setCreateTime(new Date());
+        entity.setGUID(guid);
+        entity.setVersion(1L);
+
+        entity.setType(repositoryContentManager.getInstanceType(sourceName, TypeDefCategory.ENTITY_DEF, typeName, methodName));
+        entity.setStatus(repositoryContentManager.getInitialStatus(sourceName, typeName, methodName));
+        entity.setCreatedBy(userName);
+        entity.setInstanceURL(repositoryContentManager.getEntityURL(sourceName, guid));
+
+        return entity;
     }
 
 

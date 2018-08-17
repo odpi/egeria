@@ -20,5 +20,8 @@
     </description>
 
     <artifactId>open-metadata-samples</artifactId>
-
+    <packaging>pom</packaging>
+    <modules>
+             <module>open-metadata-subjectarea-client-samples</module>
+    </modules>
 </project>

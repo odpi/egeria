@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -17,7 +18,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class TypeDefGallery
+public class TypeDefGallery extends TypeDefElementHeader
 {
     private List<AttributeTypeDef> attributeTypeDefs = null;
     private List<TypeDef>          typeDefs          = null;
@@ -78,6 +79,10 @@ public class TypeDefGallery
         {
             this.attributeTypeDefs = null;
         }
+        else if (attributeTypeDefs.isEmpty())
+        {
+            this.attributeTypeDefs = null;
+        }
         else
         {
             this.attributeTypeDefs = new ArrayList<>(attributeTypeDefs);
@@ -114,9 +119,64 @@ public class TypeDefGallery
         {
             this.typeDefs = null;
         }
+        else if (typeDefs.isEmpty())
+        {
+            this.typeDefs = null;
+        }
         else
         {
             this.typeDefs = new ArrayList<>(typeDefs);
         }
+    }
+
+
+    /**
+     * toString JSON-style
+     *
+     * @return String of properties
+     */
+    @Override
+    public String toString()
+    {
+        return "TypeDefGallery{" +
+                "attributeTypeDefs=" + attributeTypeDefs +
+                ", typeDefs=" + typeDefs +
+                '}';
+    }
+
+
+    /**
+     * Verify that supplied object has the same properties.
+     *
+     * @param o object to test
+     * @return result
+     */
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o)
+        {
+            return true;
+        }
+        if (!(o instanceof TypeDefGallery))
+        {
+            return false;
+        }
+        TypeDefGallery that = (TypeDefGallery) o;
+        return Objects.equals(getAttributeTypeDefs(), that.getAttributeTypeDefs()) &&
+                Objects.equals(getTypeDefs(), that.getTypeDefs());
+    }
+
+
+    /**
+     * Code number for hash maps
+     *
+     * @return hash code
+     */
+    @Override
+    public int hashCode()
+    {
+
+        return Objects.hash(getAttributeTypeDefs(), getTypeDefs());
     }
 }

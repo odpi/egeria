@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.Objects;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -146,27 +148,51 @@ public class RelationshipDef extends TypeDef
     public String toString()
     {
         return "RelationshipDef{" +
-                ", propagationRule=" + propagationRule +
-                ", endDef1=" + endDef1 +
-                ", endDef2=" + endDef2 +
-                ", superType=" + superType +
-                ", description='" + description + '\'' +
-                ", descriptionGUID='" + descriptionGUID + '\'' +
-                ", origin='" + origin + '\'' +
-                ", createdBy='" + createdBy + '\'' +
-                ", updatedBy='" + updatedBy + '\'' +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                ", options=" + options +
-                ", externalStandardMappings=" + externalStandardMappings +
-                ", validInstanceStatusList=" + validInstanceStatusList +
-                ", initialStatus=" + initialStatus +
-                ", propertiesDefinition=" + propertiesDefinition +
-                ", version=" + version +
-                ", versionName='" + versionName + '\'' +
-                ", category=" + category +
-                ", guid='" + guid + '\'' +
-                ", name='" + name + '\'' +
+                "superType=" + getSuperType() +
+                ", description='" + getDescription() + '\'' +
+                ", descriptionGUID='" + getDescriptionGUID() + '\'' +
+                ", origin='" + getOrigin() + '\'' +
+                ", createdBy='" + getCreatedBy() + '\'' +
+                ", updatedBy='" + getUpdatedBy() + '\'' +
+                ", createTime=" + getCreateTime() +
+                ", updateTime=" + getUpdateTime() +
+                ", options=" + getOptions() +
+                ", externalStandardMappings=" + getExternalStandardMappings() +
+                ", validInstanceStatusList=" + getValidInstanceStatusList() +
+                ", initialStatus=" + getInitialStatus() +
+                ", propertiesDefinition=" + getPropertiesDefinition() +
+                ", category=" + getCategory() +
+                ", version=" + getVersion() +
+                ", versionName='" + getVersionName() + '\'' +
+                ", GUID='" + getGUID() + '\'' +
+                ", name='" + getName() + '\'' +
                 '}';
+    }
+
+    /**
+     * Verify that supplied object has the same properties.
+     *
+     * @param o object to test
+     * @return result
+     */
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o)
+        {
+            return true;
+        }
+        if (!(o instanceof RelationshipDef))
+        {
+            return false;
+        }
+        if (!super.equals(o))
+        {
+            return false;
+        }
+        RelationshipDef that = (RelationshipDef) o;
+        return getPropagationRule() == that.getPropagationRule() &&
+                Objects.equals(getEndDef1(), that.getEndDef1()) &&
+                Objects.equals(getEndDef2(), that.getEndDef2());
     }
 }

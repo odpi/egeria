@@ -7,7 +7,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.generated.server;
 import java.util.*;
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ArrayPropertyValue;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityUniverse;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
@@ -26,7 +26,7 @@ import org.mockito.MockitoAnnotations;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 import static org.testng.Assert.assertEquals;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
@@ -57,7 +57,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreate<$$uEntityName$$>";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -116,7 +116,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("<$$uEntityName$$>");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         <$$uEntityName$$> requested<$$uEntityName$$> = new <$$uEntityName$$>();
@@ -170,7 +170,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-<$$uEntityName$$>-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -232,7 +232,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdate<$$uEntityName$$>";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -278,7 +278,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("<$$uEntityName$$>");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             <$$uEntityName$$> requested<$$uEntityName$$> = new <$$uEntityName$$>();
@@ -405,7 +405,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             <$$uRelationshipName$$> requested<$$uRelationshipName$$> = new <$$uRelationshipName$$>();
@@ -647,7 +647,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             <$$uRelationshipName$$> requested<$$uRelationshipName$$> = new <$$uRelationshipName$$>();

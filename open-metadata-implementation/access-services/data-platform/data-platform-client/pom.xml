@@ -25,6 +25,12 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>data-platform-api</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>data-platform-server</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>

@@ -423,7 +423,6 @@ public class InMemoryOMRSMetadataStore
     }
 
 
-
     /**
      * Maintain a history of relationships as they are stored into the relationship store to ensure old version
      * can be restored.  The history is maintained with the latest changes first in the list.
@@ -476,6 +475,15 @@ public class InMemoryOMRSMetadataStore
     {
         if (guid != null)
         {
+            Relationship  currentVersionOfRelationship = relationshipStore.get(guid);
+
+            long versionNumber = 0;
+
+            if (currentVersionOfRelationship != null)
+            {
+                versionNumber = currentVersionOfRelationship.getVersion() + 1;
+            }
+
             int  elementPosition = 0;
 
             for (Relationship relationship : relationshipHistoryStore)
@@ -484,6 +492,11 @@ public class InMemoryOMRSMetadataStore
                 {
                     if (guid.equals(relationship.getGUID()))
                     {
+                        if (versionNumber == 0)
+                        {
+                            versionNumber = relationship.getVersion() + 1;
+                        }
+                        relationship.setVersion(versionNumber);
                         relationshipHistoryStore.remove(elementPosition);
                         relationshipStore.put(guid, relationship);
                         return relationship;
@@ -509,6 +522,15 @@ public class InMemoryOMRSMetadataStore
     {
         if (guid != null)
         {
+            EntityDetail  currentVersionOfEntity = entityStore.get(guid);
+
+            long versionNumber = 0;
+
+            if (currentVersionOfEntity != null)
+            {
+                versionNumber = currentVersionOfEntity.getVersion() + 1;
+            }
+
             int  elementPosition = 0;
 
             for (EntityDetail entity : entityHistoryStore)
@@ -517,6 +539,11 @@ public class InMemoryOMRSMetadataStore
                 {
                     if (guid.equals(entity.getGUID()))
                     {
+                        if (versionNumber == 0)
+                        {
+                            versionNumber = entity.getVersion() + 1;
+                        }
+                        entity.setVersion(versionNumber);
                         entityHistoryStore.remove(elementPosition);
                         entityStore.put(guid, entity);
                         return entity;
@@ -541,6 +568,7 @@ public class InMemoryOMRSMetadataStore
         entityStore.remove(entity.getGUID());
         entityHistoryStore.add(0, entity);
     }
+
 
     /**
      * Remove a reference entity from the active store and add it to the history store.

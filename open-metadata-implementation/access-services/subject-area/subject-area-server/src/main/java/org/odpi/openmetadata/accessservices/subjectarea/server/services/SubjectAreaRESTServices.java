@@ -27,7 +27,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUti
 import org.odpi.openmetadata.accessservices.subjectarea.admin.SubjectAreaAdmin;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.PropertyServerException;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.MetadataServerUncontactableException;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.UnrecognizedGUIDException;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.UserNotAuthorizedException;
 
@@ -127,8 +127,8 @@ public class SubjectAreaRESTServices {
             EntityDetail entityDetail = null;
             try {
                 entityDetail = oMRSAPIHelper.callOMRSGetEntityByGuid(userId, guid);
-            } catch (PropertyServerException e) {
-                response = OMASExceptionToResponse.convertPropertyServerException(e);
+            } catch (MetadataServerUncontactableException e) {
+                response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
             } catch (UserNotAuthorizedException e) {
                 response = OMASExceptionToResponse.convertUserNotAuthorizedException(e);
             } catch (InvalidParameterException e) {
@@ -225,8 +225,8 @@ public class SubjectAreaRESTServices {
             response = OMASExceptionToResponse.convertUserNotAuthorizedException(e);
         } catch (InvalidParameterException e) {
             response = OMASExceptionToResponse.convertInvalidParameterException(e);
-        } catch (PropertyServerException e) {
-            response = OMASExceptionToResponse.convertPropertyServerException(e);
+        } catch (MetadataServerUncontactableException e) {
+            response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== Method: " + methodName + ",userId=" + userId + ", typeName=" + typeName + ", response=" + response);
@@ -243,8 +243,8 @@ public class SubjectAreaRESTServices {
         EntityDetail entityDetail = null;
         try {
             entityDetail = oMRSAPIHelper.callOMRSGetEntityByGuid(userId, guid);
-        } catch (PropertyServerException e) {
-            response=  OMASExceptionToResponse.convertPropertyServerException(e);
+        } catch (MetadataServerUncontactableException e) {
+            response=  OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
         } catch (UserNotAuthorizedException e) {
             response=  OMASExceptionToResponse.convertUserNotAuthorizedException(e);
         } catch (InvalidParameterException e) {
@@ -271,8 +271,8 @@ public class SubjectAreaRESTServices {
         TypeDef typeDef = null;
         try {
             typeDef = oMRSAPIHelper.callGetTypeDefByName(userId, typeName);
-        } catch (PropertyServerException e) {
-            response=  OMASExceptionToResponse.convertPropertyServerException(e);
+        } catch (MetadataServerUncontactableException e) {
+            response=  OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
         } catch (UserNotAuthorizedException e) {
             response=  OMASExceptionToResponse.convertUserNotAuthorizedException(e);
         } catch (InvalidParameterException e) {
@@ -284,8 +284,8 @@ public class SubjectAreaRESTServices {
                 TypeDefGallery gallery = null;
                 try {
                     gallery = oMRSAPIHelper.callGetAllTypes(userId);
-                } catch (PropertyServerException e) {
-                    response=  OMASExceptionToResponse.convertPropertyServerException(e);
+                } catch (MetadataServerUncontactableException e) {
+                    response=  OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
                 } catch (UserNotAuthorizedException e) {
                     response=  OMASExceptionToResponse.convertUserNotAuthorizedException(e);
                 }

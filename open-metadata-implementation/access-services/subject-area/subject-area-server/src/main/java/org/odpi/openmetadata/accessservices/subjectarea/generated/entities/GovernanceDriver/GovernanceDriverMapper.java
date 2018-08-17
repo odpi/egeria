@@ -101,9 +101,9 @@ public class GovernanceDriverMapper {
                             EnumPropertyValue enumPropertyValue = (EnumPropertyValue) value;
                             String symbolicName = enumPropertyValue.getSymbolicName();
                             if (governanceDriver.ENUM_NAMES_SET.contains(name)) {
-                                 if (name.equals("status")) {
-                                       org.odpi.openmetadata.accessservices.subjectarea.properties.enums.GovernanceDefinitionStatus status = org.odpi.openmetadata.accessservices.subjectarea.properties.enums.GovernanceDefinitionStatus.valueOf(symbolicName);
-                                      governanceDriver.setStatus(status);
+                                 if (name.equals("domain")) {
+                                       org.odpi.openmetadata.accessservices.subjectarea.properties.enums.GovernanceDomain domain = org.odpi.openmetadata.accessservices.subjectarea.properties.enums.GovernanceDomain.valueOf(symbolicName);
+                                      governanceDriver.setDomain(domain);
                                  }
                             } else {
                                 // put out the omrs value object
@@ -236,12 +236,12 @@ public class GovernanceDriverMapper {
                 primitivePropertyValue.setPrimitiveValue(governanceDriver.getQualifiedName());
                 instanceProperties.setProperty("qualifiedName", primitivePropertyValue);
             }
-            if (governanceDriver.getStatus()!=null) {
-                GovernanceDefinitionStatus enumType = governanceDriver.getStatus();
+            if (governanceDriver.getDomain()!=null) {
+                GovernanceDomain enumType = governanceDriver.getDomain();
                 EnumPropertyValue enumPropertyValue = new EnumPropertyValue();
                 enumPropertyValue.setOrdinal(enumType.ordinal());
                 enumPropertyValue.setSymbolicName(enumType.name());
-                instanceProperties.setProperty("status", enumPropertyValue);
+                instanceProperties.setProperty("domain", enumPropertyValue);
             }
             if (governanceDriver.getAdditionalProperties()!=null) {
 

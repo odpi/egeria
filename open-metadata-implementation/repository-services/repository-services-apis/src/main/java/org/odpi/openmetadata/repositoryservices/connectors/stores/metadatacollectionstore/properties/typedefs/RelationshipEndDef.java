@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.Objects;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -60,7 +62,7 @@ public class RelationshipEndDef extends TypeDefElementHeader
     {
         if (entityType == null)
         {
-            return entityType;
+            return null;
         }
         else
         {
@@ -182,5 +184,48 @@ public class RelationshipEndDef extends TypeDefElementHeader
                 ", attributeDescription='" + attributeDescription + '\'' +
                 ", attributeCardinality=" + attributeCardinality +
                 '}';
+    }
+
+
+    /**
+     * Verify that supplied object has the same properties.
+     *
+     * @param objectToCompare object to test
+     * @return result
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (!(objectToCompare instanceof RelationshipEndDef))
+        {
+            return false;
+        }
+        RelationshipEndDef that = (RelationshipEndDef) objectToCompare;
+        return Objects.equals(getEntityType(), that.getEntityType()) &&
+                Objects.equals(getAttributeName(), that.getAttributeName()) &&
+                Objects.equals(getAttributeDescription(), that.getAttributeDescription()) &&
+                Objects.equals(getAttributeDescriptionGUID(), that.getAttributeDescriptionGUID()) &&
+                getAttributeCardinality() == that.getAttributeCardinality();
+    }
+
+
+    /**
+     * Code for hash map
+     *
+     * @return hashcode
+     */
+    @Override
+    public int hashCode()
+    {
+
+        return Objects.hash(getEntityType(),
+                            getAttributeName(),
+                            getAttributeDescription(),
+                            getAttributeDescriptionGUID(),
+                            getAttributeCardinality());
     }
 }

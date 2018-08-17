@@ -4,6 +4,7 @@ package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacolle
 import com.fasterxml.jackson.annotation.*;
 
 import java.util.Date;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -11,7 +12,45 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 /**
  * InstanceAuditHeader manages the attributes that are common to classifications and "proper" instances, ie
  * as entities and relationships.  We need to be able to audit when these fundamental elements change and
- * by whom.  Thus they share this header.
+ * by whom.  Thus they share this header.  The fields in this header are managed as follows:
+ * <ul>
+ *     <li>
+ *         Type defines which TypeDef defines the type of concept/thing that this instance represents and
+ *         controls the properties that can be stored in the instance.
+ *     </li>
+ *     <li>
+ *         CreatedBy contains the userId of the person/engine that created the instance.  This field is set
+ *         up when the instance is created and not changed.  It typically indicates who is the owner of the
+ *         element and hence who has update rights.
+ *     </li>
+ *     <li>
+ *         UpdatedBy contains the userId of the person/engine that last updated the instance.  This field is
+ *         set automatically by the open metadata repository when the update happens.
+ *     </li>
+ *     <li>
+ *         CreateTime contains the Date/Time when the instance was created.  It is set automatically by the
+ *         open metadata repository when the instance is created.
+ *     </li>
+ *     <li>
+ *         UpdateTime contains the Data/Time when the instance was last updated.  It is also set automatically
+ *         by the open metadata repository when the update happens.
+ *     </li>
+ *     <li>
+ *         Version is a numeric count of the updates to the instance.  It is used by the open metadata repositories
+ *         to ensure updates to reference copies of the instance are applied in the right sequence.  The home open
+ *         metadata repository (where the create an all subsequent updates happen) maintains the version number.
+ *     </li>
+ *     <li>
+ *         CurrentStatus indicates the status of the instance.  It is initialized by the open metadata repository
+ *         to the first status defined in the TypeDef.  After that, it is the actions of the consumers of the
+ *         metadata (typically the Open Metadata Access Services (OMASs)
+ *     </li>
+ *     <li>
+ *         StatusOnDelete is populated when the instance is deleted and is se to the status when the deleted was
+ *         called - it is used set the status if the instance is restored.
+ *     </li>
+ * </ul>
+ *
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -29,23 +68,22 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
     /*
      * Summary information about this element's type
      */
-    protected InstanceType              type = null;
+    protected InstanceType   type = null;
 
     /*
      * Standard header information for a classification, entity and relationship.
      */
-    protected String                    createdBy       = null;
-    protected String                    updatedBy       = null;
-    protected Date                      createTime      = null;
-    protected Date                      updateTime      = null;
-    protected long                      version         = 0L;
-
-    protected InstanceStatus            currentStatus   = InstanceStatus.UNKNOWN;
+    protected String         createdBy         = null;
+    protected String         updatedBy         = null;
+    protected Date           createTime        = null;
+    protected Date           updateTime        = null;
+    protected long           version           = 0L;
+    protected InstanceStatus currentStatus     = null;
 
     /*
      * Used only if the status is DELETED.  It defines the status to use if the instance is restored.
      */
-    protected InstanceStatus            statusOnDelete  = InstanceStatus.UNKNOWN;
+    protected InstanceStatus statusOnDelete  = null;
 
 
     /**
@@ -89,7 +127,7 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
     {
         if (type == null)
         {
-            return type;
+            return null;
         }
         else
         {
@@ -160,13 +198,13 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
     /**
      * Return the date/time that this instance was created.
      *
-     * @return Date creation time
+     * @return Date/Time of creation
      */
     public Date getCreateTime()
     {
         if (createTime == null)
         {
-            return createTime;
+            return null;
         }
         else
         {
@@ -178,7 +216,7 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
     /**
      * Set up the time that this instance was created.
      *
-     * @param createTime Date of creation
+     * @param createTime Date/Time of creation
      */
     public void setCreateTime(Date createTime) { this.createTime = createTime; }
 
@@ -186,13 +224,13 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
     /**
      * Return what was the late time this instance was updated.
      *
-     * @return Date last update time
+     * @return Date/Time last updated
      */
     public Date getUpdateTime()
     {
         if (updateTime == null)
         {
-            return updateTime;
+            return null;
         }
         else
         {
@@ -204,7 +242,7 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
     /**
      * Set up the last update time for this instance.
      *
-     * @param updateTime Date last update time
+     * @param updateTime Date/Time last updated
      */
     public void setUpdateTime(Date updateTime) { this.updateTime = updateTime; }
 
@@ -251,15 +289,64 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
     @Override
     public String toString()
     {
-        return "InstanceHeader{" +
+        return "InstanceAuditHeader{" +
                 "type=" + type +
-                ", status=" + currentStatus +
                 ", createdBy='" + createdBy + '\'' +
                 ", updatedBy='" + updatedBy + '\'' +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
                 ", version=" + version +
+                ", currentStatus=" + currentStatus +
                 ", statusOnDelete=" + statusOnDelete +
                 '}';
+    }
+
+
+    /**
+     * Validate if the supplied object equals this object.
+     *
+     * @param objectToCompare test object
+     * @return boolean evaluation
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (!(objectToCompare instanceof InstanceAuditHeader))
+        {
+            return false;
+        }
+        InstanceAuditHeader that = (InstanceAuditHeader) objectToCompare;
+        return getVersion() == that.getVersion() &&
+                Objects.equals(getType(), that.getType()) &&
+                Objects.equals(getCreatedBy(), that.getCreatedBy()) &&
+                Objects.equals(getUpdatedBy(), that.getUpdatedBy()) &&
+                Objects.equals(getCreateTime(), that.getCreateTime()) &&
+                Objects.equals(getUpdateTime(), that.getUpdateTime()) &&
+                currentStatus == that.currentStatus &&
+                getStatusOnDelete() == that.getStatusOnDelete();
+    }
+
+
+    /**
+     * Return a hash code based on the values of this object.
+     *
+     * @return in hash code
+     */
+    @Override
+    public int hashCode()
+    {
+
+        return Objects.hash(getType(),
+                            getCreatedBy(),
+                            getUpdatedBy(),
+                            getCreateTime(),
+                            getUpdateTime(),
+                            getVersion(),
+                            currentStatus,
+                            getStatusOnDelete());
     }
 }

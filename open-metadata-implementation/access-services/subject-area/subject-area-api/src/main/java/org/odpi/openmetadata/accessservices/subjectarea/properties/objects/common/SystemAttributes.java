@@ -3,6 +3,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.properties.objects.comm
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.Status;
 
@@ -14,7 +15,7 @@ import java.util.Date;
  * These are the core ' system' attributes
  */
 @JsonAutoDetect(getterVisibility= JsonAutoDetect.Visibility.PUBLIC_ONLY, setterVisibility= JsonAutoDetect.Visibility.PUBLIC_ONLY, fieldVisibility= JsonAutoDetect.Visibility.NONE)
-@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SystemAttributes implements Serializable {
     protected static final long serialVersionUID = 1L;

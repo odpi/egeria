@@ -6,6 +6,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.generated.references.Pe
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -40,7 +41,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * contained in this reference.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
-@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ResponsibilitiesReference extends Reference implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -59,17 +60,17 @@ public class ResponsibilitiesReference extends Reference implements Serializable
     public void setReferenceable(Referenceable referenceable) {
         this.referenceable = referenceable;
     }
-    private String notes;
+    private String responsibilityType;
     /**
-     * Documents reasons for implementing the rule using this implementation.
+     * Documents the unique identifier of the GovernanceResponsibility that the Person is supporting for the Asset.
      * @return
      */
-    public String getNotes() {
-        return this.notes;
+    public String getResponsibilityType() {
+        return this.responsibilityType;
     }
 
-    public void setNotes(String notes) {
-        this.notes = notes;
+    public void setResponsibilityType(String responsibilityType) {
+        this.responsibilityType = responsibilityType;
     }
 
 
@@ -168,7 +169,7 @@ public class ResponsibilitiesReference extends Reference implements Serializable
 //  AtlasBaseTypeDef.dumpObjects(uniqueAttributes, sb);
         sb.append("}");
  	sb.append("{");
-	sb.append("this.notes ");
+	sb.append("this.responsibilityType ");
  	sb.append('}');
 
 
@@ -196,7 +197,7 @@ public class ResponsibilitiesReference extends Reference implements Serializable
             return false;
         }
         ResponsibilitiesReference typedThat =(ResponsibilitiesReference)that;
-        if (this.notes != null && !Objects.equals(this.notes,typedThat.getNotes())) {
+        if (this.responsibilityType != null && !Objects.equals(this.responsibilityType,typedThat.getResponsibilityType())) {
             return false;
         }
 
@@ -208,7 +209,7 @@ public class ResponsibilitiesReference extends Reference implements Serializable
     @Override
     public int hashCode() {
         return relatedEndGuid != null ? Objects.hash(relatedEndGuid) : Objects.hash(relatedEndType, uniqueAttributes
-, this.notes
+, this.responsibilityType
 );
     }
 }

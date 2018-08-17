@@ -49,7 +49,7 @@ public class SubjectAreaOMASGlossaryResource extends SubjectAreaRESTServices{
      * @return response, when successful contains the created glossary.
      *  when not successful the following Exception responses can occur
      * @throws UserNotAuthorizedException  the requesting user is not authorized to issue this request.
-     * @throws PropertyServerException  not able to communicate with a Metadata respository service.
+     * @throws MetadataServerUncontactableException  not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws UnrecognizedGUIDException  the supplied guid was not recognised
      * @throws ClassificationException Error processing a classification 
@@ -62,134 +62,51 @@ public class SubjectAreaOMASGlossaryResource extends SubjectAreaRESTServices{
     }
 
     /**
-     * Get a glossary by guid.
+     * Get a glossary.
      * @param userId userId under which the request is performed
-     * @param guid guid of the glossary to get
+     * @param id id of the glossary to get, this can be a name or a guid depending on the
+     * @param idIsName When set this indicates that the id is a name
      * @return response which when successful contains the glossary with the requested guid
      *      when not successful the following Exceptions can occur
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws PropertyServerException  not able to communicate with a Metadata respository service.
+     * @throws MetadataServerUncontactableException  not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UnrecognizedGUIDException the supplied guid was not recognised
+     *  * @throws UnrecognizedGUIDException the supplied guid was not recognised
      * @throws FunctionNotSupportedException   Function not supported
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/glossaries/{guid}")
-    public  SubjectAreaOMASAPIResponse getGlossaryByGuid(@PathVariable String userId, @PathVariable String guid) {
-        return restAPI.getGlossaryByGuid(userId,guid);
+    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/glossaries/{id}")
+    public  SubjectAreaOMASAPIResponse getGlossary(@PathVariable String userId, @PathVariable String id,@RequestParam(value = "idIsName", required=false) Boolean idIsName) {
+        if (idIsName == null || !idIsName) {
+            return restAPI.getGlossaryByGuid(userId,id);
+        } else {
+            return restAPI.getGlossaryByName(userId,id);
+        }
     }
     /**
-     *  Update a Glossary's name.
+     *  Update a Glossary
      *
-     * If the caller has chosen to incorporate the glossary name in their Glossary Terms qualified name, renaming the glossary will cause those
+     * If the caller has chosen to incorporate the glossary name in their Glossary Terms or Categories qualified name, renaming the glossary will cause those
      * qualified names to mismatch the Glossary name.
+     * If the caller has chosen to incorporate the glossary qualifiedName in their Glossary Terms or Categories qualified name, changing the qualified name of the glossary will cause those
+     * qualified names to mismatch the Glossary name.
+     * Status is not updated using this call.
+     *
      * @param userId userId under which the request is performed
      * @param guid guid of the glossary to update
-     * @param name name to be updated
+     * @param glossary glossary to be updated
+     * @Param isReplace when set the Glossary should be replaced with the supplied content. When not set, the Glossary should be updated with only the content that has been supplied.
      * @return a response which when successful contains the updated glossary
      *      when not successful the following Exceptions can occur
      * @throws UnrecognizedGUIDException the supplied guid was not recognised
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws FunctionNotSupportedException   Function not supported
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException  not able to communicate with a Metadata respository service.
+     * @throws MetadataServerUncontactableException  not able to communicate with a Metadata respository service.
      */
-    @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/glossaries/{guid}/name/{name}")
-    public  SubjectAreaOMASAPIResponse updateGlossaryName(String userId,String guid,@PathVariable String name) {
-        return restAPI.updateGlossaryName(userId,guid,name);
-    }
-    /**
-     *  Update a Glossary's description.
-     *
-     * @param userId userId under which the request is performed
-     * @param guid guid of the glossary to update
-     * @param description new description
-     * @return a response which when successful contains the updated glossary
-     *       when not successful the following Exceptions can occur
-     * @throws UnrecognizedGUIDException the supplied guid was not recognised
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws FunctionNotSupportedException   Function not supported
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException  not able to communicate with a Metadata respository service.
-     */
-    @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/glossaries/{guid}/description/{description}")
-    public  SubjectAreaOMASAPIResponse updateGlossaryDescription(@PathVariable String userId,@PathVariable String guid,@PathVariable String description) {
-        return restAPI.updateGlossaryDescription(userId,guid,description);
-    }
-    /**
-     *  Update a Glossary's qualified name.
-     *
-     * @param userId userId under which the request is performed
-     * @param guid guid of the glossary to update
-     * @param qualifiedName new qualifiedName
-     * @return a response which when successful contains the updated glossary
-     *      when not successful the following Exceptions can occur
-     * @throws UnrecognizedGUIDException the supplied guid was not recognised
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws FunctionNotSupportedException   Function not supported
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException  not able to communicate with a Metadata respository service.
-     */
-    @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/glossaries/{guid}/qualifiedName/{qualifiedName}")
-    public  SubjectAreaOMASAPIResponse updateGlossaryQualifiedName(@PathVariable String userId,@PathVariable String guid,@PathVariable String qualifiedName) {
-        return restAPI.updateGlossaryQualifiedName(userId,guid,qualifiedName);
-    }
-
-    /**
-     *  Update a Glossary's usage
-     *
-     * @param userId userId under which the request is performed
-     * @param guid guid of the glossary to update
-     * @param usage new usage
-     * @return a response which when successful contains the updated glossary
-     *      when not successful the following Exceptions can occur
-     * @throws UnrecognizedGUIDException the supplied guid was not recognised
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws FunctionNotSupportedException   Function not supported
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException  not able to communicate with a Metadata respository service.
-     */
-    @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/glossaries/{guid}/usage/{usage}")
-    public  SubjectAreaOMASAPIResponse updateGlossaryUsage(@PathVariable String userId,@PathVariable String guid,@PathVariable String usage) {
-        return restAPI.updateGlossaryUsage(userId,guid,usage);
-    }
-
-    /**
-     *  Update a Glossary's language
-     *
-     * @param userId userId under which the request is performed
-     * @param guid guid of the glossary to update
-     * @param language new language for this glossary
-     * @return a response which when successful contains the updated glossary
-     *      when not successful the following Exceptions can occur
-     * @throws UnrecognizedGUIDException the supplied guid was not recognised
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws FunctionNotSupportedException   Function not supported
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException  not able to communicate with a Metadata respository service.
-     */
-    @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/glossaries/{guid}/language/{language}")
-    public SubjectAreaOMASAPIResponse updateGlossaryLanguage(@PathVariable String userId,@PathVariable String guid,@PathVariable String language) {
-        return restAPI.updateGlossaryLanguage(userId,guid,language);
-    }
-
-    /**
-     * Get a Glossary by name
-     *
-     * Glossaries should have unique names. If repositories were not able to contact each other on the network, it is possible that glossaries of the same
-     * name might be added. If this has occured this operation may not retun the glossary you are interested in. The guid of the glossary is the way to
-     * uniquely identify a glossary; a get for glossary by guid can be issued to find glossaries with particular guids.
-     *
-     * @param userId userId under which the request is performed
-     * @param name find the glossary with this name.
-     * @return the requested glossary.
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws PropertyServerException  not able to communicate with a Metadata respository service.
-     * @throws FunctionNotSupportedException   Function not supported
-     */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/glossaries")
-    public  SubjectAreaOMASAPIResponse getGlossaryByName(@PathVariable String userId,@RequestParam String name) {
-        return restAPI.getGlossaryByName(userId,name);
+    @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/glossaries/{guid}")
+    public  SubjectAreaOMASAPIResponse updateGlossary(@PathVariable String userId,@PathVariable String guid,Glossary glossary,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
+        return restAPI.updateGlossary(userId,guid,glossary,isReplace);
     }
 
     /**
@@ -212,7 +129,7 @@ public class SubjectAreaOMASGlossaryResource extends SubjectAreaRESTServices{
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws FunctionNotSupportedException   Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException  not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
+     * @throws MetadataServerUncontactableException  not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
      * @throws EntityNotDeletedException a soft delete was issued but the glossary was not deleted.
      * @throws GUIDNotPurgedException a hard delete was issued but the glossary was not purged
      */

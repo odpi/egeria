@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -65,11 +66,15 @@ public class EntitySummary extends InstanceHeader
      * Return a copy of the classifications for the entity.  This is a list stored in a newly initialized
      * iterator.
      *
-     * @return Classifications iterator
+     * @return Classifications list
      */
     public List<Classification> getClassifications()
     {
         if (classifications == null)
+        {
+            return null;
+        }
+        else if (classifications.isEmpty())
         {
             return null;
         }
@@ -83,18 +88,11 @@ public class EntitySummary extends InstanceHeader
     /**
      * Set up the classifications for an entity.  This is stored as an iterator.
      *
-     * @param classifications Classifications list
+     * @param classifications Classification list
      */
     public void setClassifications(List<Classification> classifications)
     {
-        if (classifications == null)
-        {
-            this.classifications = null;
-        }
-        else
-        {
-            this.classifications = new ArrayList<>(classifications);
-        }
+        this.classifications = classifications;
     }
 
 
@@ -121,5 +119,44 @@ public class EntitySummary extends InstanceHeader
                 ", version=" + getVersion() +
                 ", statusOnDelete=" + getStatusOnDelete() +
                 '}';
+    }
+
+
+    /**
+     * Validate that an object is equal depending on their stored values.
+     *
+     * @param objectToCompare object
+     * @return boolean result
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (!(objectToCompare instanceof EntitySummary))
+        {
+            return false;
+        }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        EntitySummary that = (EntitySummary) objectToCompare;
+        return Objects.equals(getClassifications(), that.getClassifications());
+    }
+
+
+    /**
+     * Return a hash code based on the values of this object.
+     *
+     * @return in hash code
+     */
+    @Override
+    public int hashCode()
+    {
+
+        return Objects.hash(super.hashCode(), getClassifications());
     }
 }

@@ -7,7 +7,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.generated.server;
 import java.util.*;
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ArrayPropertyValue;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityUniverse;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
@@ -26,7 +26,7 @@ import org.mockito.MockitoAnnotations;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 import static org.testng.Assert.assertEquals;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
@@ -210,7 +210,6 @@ import org.odpi.openmetadata.accessservices.subjectarea.generated.entities.Schem
  import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.PreferredTerm.PreferredTerm;
  import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ProjectHierarchy.ProjectHierarchy;
  import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.DeployedVirtualContainer.DeployedVirtualContainer;
- import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.BusinessCapabilityResponsibility.BusinessCapabilityResponsibility;
  import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ProjectMeeting.ProjectMeeting;
  import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.GovernanceResults.GovernanceResults;
  import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.APIResponse.APIResponse;
@@ -219,7 +218,6 @@ import org.odpi.openmetadata.accessservices.subjectarea.generated.entities.Schem
  import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.HostNetwork.HostNetwork;
  import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.AttributeForSchema.AttributeForSchema;
  import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.AssetLocation.AssetLocation;
- import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.IsTaxonomy.IsTaxonomy;
  import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.SchemaAttributeType.SchemaAttributeType;
  import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.GovernanceImplementation.GovernanceImplementation;
  import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.LinkedMedia.LinkedMedia;
@@ -318,7 +316,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateCertificationType";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -355,7 +353,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         instanceProperties.setProperty("priority", primitivePropertyValue);
         primitivePropertyValue = new PrimitivePropertyValue();
         primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-        String qualifiedName = "string8";
+        String qualifiedName = "string9";
         primitivePropertyValue.setPrimitiveValue(qualifiedName);
         instanceProperties.setProperty("qualifiedName", primitivePropertyValue);
         primitivePropertyValue = new PrimitivePropertyValue();
@@ -376,11 +374,20 @@ public class TestSubjectAreaBeansToAccessOMRS {
         arrayPropertyValue.setArrayCount(1);
         arrayPropertyValue.setArrayValue(0,primitivePropertyValue);
         instanceProperties.setProperty("outcomes", arrayPropertyValue);
+        primitivePropertyValue = new PrimitivePropertyValue();
+        primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+        String results = "string8";
+        primitivePropertyValue.setPrimitiveValue(results);
+
+        arrayPropertyValue = new ArrayPropertyValue();
+        arrayPropertyValue.setArrayCount(1);
+        arrayPropertyValue.setArrayValue(0,primitivePropertyValue);
+        instanceProperties.setProperty("results", arrayPropertyValue);
         EnumPropertyValue enumPropertyValue;
         enumPropertyValue = new EnumPropertyValue();
         // get the name of the first enumeration value as a sample data.
-        enumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-        instanceProperties.setProperty("status", enumPropertyValue);
+        enumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+        instanceProperties.setProperty("domain", enumPropertyValue);
 
         MapPropertyValue mapPropertyValue;
         // In the models we are generating from we only have map<String,String> types, this code assumes those types.
@@ -404,7 +411,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("CertificationType");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         CertificationType requestedCertificationType = new CertificationType();
@@ -426,12 +433,12 @@ public class TestSubjectAreaBeansToAccessOMRS {
 
         requestedCertificationType.setQualifiedName(qualifiedName);
 
-        EnumPropertyValue GovernanceDefinitionStatusEnumPropertyValue = new EnumPropertyValue();
+        EnumPropertyValue GovernanceDomainEnumPropertyValue = new EnumPropertyValue();
         // get the name of the first enumeration value as a sample data.
-        GovernanceDefinitionStatusEnumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-        instanceProperties.setProperty("status", GovernanceDefinitionStatusEnumPropertyValue);
+        GovernanceDomainEnumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+        instanceProperties.setProperty("domain", GovernanceDomainEnumPropertyValue);
 
-        requestedCertificationType.setStatus(GovernanceDefinitionStatus.values()[0]);
+        requestedCertificationType.setDomain(GovernanceDomain.values()[0]);
 
         Map<String,String>  mapValue=null;
 
@@ -453,7 +460,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
 
         assertEquals(requestedCertificationType.getQualifiedName(),returnedCertificationType.getQualifiedName());
 
-        assertEquals(requestedCertificationType.getStatus(),returnedCertificationType.getStatus());
+        assertEquals(requestedCertificationType.getDomain(),returnedCertificationType.getDomain());
 
         assertEquals(requestedCertificationType.getAdditionalProperties(),returnedCertificationType.getAdditionalProperties());
 
@@ -464,7 +471,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-CertificationType-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -501,14 +508,14 @@ public class TestSubjectAreaBeansToAccessOMRS {
         instanceProperties.setProperty("priority", primitivePropertyValue);
         primitivePropertyValue = new PrimitivePropertyValue();
         primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-        String qualifiedName = "string8";
+        String qualifiedName = "string9";
         primitivePropertyValue.setPrimitiveValue(qualifiedName);
         instanceProperties.setProperty("qualifiedName", primitivePropertyValue);
         EnumPropertyValue enumPropertyValue;
         enumPropertyValue = new EnumPropertyValue();
         // get the name of the first enumeration value as a sample data.
-        enumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-        instanceProperties.setProperty("status", enumPropertyValue);
+        enumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+        instanceProperties.setProperty("domain", enumPropertyValue);
 
         MapPropertyValue mapPropertyValue =null;
         // In the models we are generating from we only have map<String,String> types, this code assumes those types.
@@ -550,7 +557,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateCertificationType";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -586,14 +593,14 @@ public class TestSubjectAreaBeansToAccessOMRS {
             instanceProperties.setProperty("priority", primitivePropertyValue);
             primitivePropertyValue = new PrimitivePropertyValue();
             primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-            String qualifiedName = "string8";
+            String qualifiedName = "string9";
             primitivePropertyValue.setPrimitiveValue(qualifiedName);
             instanceProperties.setProperty("qualifiedName", primitivePropertyValue);
             EnumPropertyValue enumPropertyValue;
             enumPropertyValue = new EnumPropertyValue();
             // get the name of the first enumeration value as a sample data.
-            enumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-            instanceProperties.setProperty("status", enumPropertyValue);
+            enumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+            instanceProperties.setProperty("domain", enumPropertyValue);
 
             MapPropertyValue mapPropertyValue;
             // In the models we are generating from we only have map<String,String> types, this code assumes those types.
@@ -617,7 +624,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("CertificationType");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             CertificationType requestedCertificationType = new CertificationType();
@@ -639,12 +646,12 @@ public class TestSubjectAreaBeansToAccessOMRS {
 
             requestedCertificationType.setQualifiedName(qualifiedName);
 
-            EnumPropertyValue GovernanceDefinitionStatusEnumPropertyValue = new EnumPropertyValue();
+            EnumPropertyValue GovernanceDomainEnumPropertyValue = new EnumPropertyValue();
             // get the name of the first enumeration value as a sample data.
-            GovernanceDefinitionStatusEnumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-            instanceProperties.setProperty("status", GovernanceDefinitionStatusEnumPropertyValue);
+            GovernanceDomainEnumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+            instanceProperties.setProperty("domain", GovernanceDomainEnumPropertyValue);
 
-            requestedCertificationType.setStatus(GovernanceDefinitionStatus.values()[0]);
+            requestedCertificationType.setDomain(GovernanceDomain.values()[0]);
 
 
             PrimitivePropertyValue testPrimitivePropertyValueForMap=null;
@@ -679,7 +686,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
 
             assertEquals(requestedCertificationType.getQualifiedName(),returnedCertificationType.getQualifiedName());
 
-            assertEquals(requestedCertificationType.getStatus(),returnedCertificationType.getStatus());
+            assertEquals(requestedCertificationType.getDomain(),returnedCertificationType.getDomain());
 
             assertEquals(requestedCertificationType.getAdditionalProperties(),returnedCertificationType.getAdditionalProperties());
 
@@ -690,7 +697,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateAPISchemaType";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -723,7 +730,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("APISchemaType");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         APISchemaType requestedAPISchemaType = new APISchemaType();
@@ -750,7 +757,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-APISchemaType-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -795,7 +802,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateAPISchemaType";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -827,7 +834,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("APISchemaType");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             APISchemaType requestedAPISchemaType = new APISchemaType();
@@ -867,7 +874,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateDataSet";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -915,7 +922,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("DataSet");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         DataSet requestedDataSet = new DataSet();
@@ -954,7 +961,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-DataSet-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -1017,7 +1024,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateDataSet";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -1064,7 +1071,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("DataSet");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             DataSet requestedDataSet = new DataSet();
@@ -1116,7 +1123,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateOperatingPlatform";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -1154,7 +1161,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("OperatingPlatform");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         OperatingPlatform requestedOperatingPlatform = new OperatingPlatform();
@@ -1188,7 +1195,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-OperatingPlatform-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -1241,7 +1248,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateOperatingPlatform";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -1278,7 +1285,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("OperatingPlatform");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             OperatingPlatform requestedOperatingPlatform = new OperatingPlatform();
@@ -1316,7 +1323,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateGovernancePolicy";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -1348,7 +1355,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         instanceProperties.setProperty("priority", primitivePropertyValue);
         primitivePropertyValue = new PrimitivePropertyValue();
         primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-        String qualifiedName = "string7";
+        String qualifiedName = "string8";
         primitivePropertyValue.setPrimitiveValue(qualifiedName);
         instanceProperties.setProperty("qualifiedName", primitivePropertyValue);
         primitivePropertyValue = new PrimitivePropertyValue();
@@ -1369,11 +1376,20 @@ public class TestSubjectAreaBeansToAccessOMRS {
         arrayPropertyValue.setArrayCount(1);
         arrayPropertyValue.setArrayValue(0,primitivePropertyValue);
         instanceProperties.setProperty("outcomes", arrayPropertyValue);
+        primitivePropertyValue = new PrimitivePropertyValue();
+        primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+        String results = "string7";
+        primitivePropertyValue.setPrimitiveValue(results);
+
+        arrayPropertyValue = new ArrayPropertyValue();
+        arrayPropertyValue.setArrayCount(1);
+        arrayPropertyValue.setArrayValue(0,primitivePropertyValue);
+        instanceProperties.setProperty("results", arrayPropertyValue);
         EnumPropertyValue enumPropertyValue;
         enumPropertyValue = new EnumPropertyValue();
         // get the name of the first enumeration value as a sample data.
-        enumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-        instanceProperties.setProperty("status", enumPropertyValue);
+        enumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+        instanceProperties.setProperty("domain", enumPropertyValue);
 
         MapPropertyValue mapPropertyValue;
         // In the models we are generating from we only have map<String,String> types, this code assumes those types.
@@ -1397,7 +1413,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("GovernancePolicy");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         GovernancePolicy requestedGovernancePolicy = new GovernancePolicy();
@@ -1417,12 +1433,12 @@ public class TestSubjectAreaBeansToAccessOMRS {
 
         requestedGovernancePolicy.setQualifiedName(qualifiedName);
 
-        EnumPropertyValue GovernanceDefinitionStatusEnumPropertyValue = new EnumPropertyValue();
+        EnumPropertyValue GovernanceDomainEnumPropertyValue = new EnumPropertyValue();
         // get the name of the first enumeration value as a sample data.
-        GovernanceDefinitionStatusEnumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-        instanceProperties.setProperty("status", GovernanceDefinitionStatusEnumPropertyValue);
+        GovernanceDomainEnumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+        instanceProperties.setProperty("domain", GovernanceDomainEnumPropertyValue);
 
-        requestedGovernancePolicy.setStatus(GovernanceDefinitionStatus.values()[0]);
+        requestedGovernancePolicy.setDomain(GovernanceDomain.values()[0]);
 
         Map<String,String>  mapValue=null;
 
@@ -1442,7 +1458,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
 
         assertEquals(requestedGovernancePolicy.getQualifiedName(),returnedGovernancePolicy.getQualifiedName());
 
-        assertEquals(requestedGovernancePolicy.getStatus(),returnedGovernancePolicy.getStatus());
+        assertEquals(requestedGovernancePolicy.getDomain(),returnedGovernancePolicy.getDomain());
 
         assertEquals(requestedGovernancePolicy.getAdditionalProperties(),returnedGovernancePolicy.getAdditionalProperties());
 
@@ -1453,7 +1469,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-GovernancePolicy-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -1485,14 +1501,14 @@ public class TestSubjectAreaBeansToAccessOMRS {
         instanceProperties.setProperty("priority", primitivePropertyValue);
         primitivePropertyValue = new PrimitivePropertyValue();
         primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-        String qualifiedName = "string7";
+        String qualifiedName = "string8";
         primitivePropertyValue.setPrimitiveValue(qualifiedName);
         instanceProperties.setProperty("qualifiedName", primitivePropertyValue);
         EnumPropertyValue enumPropertyValue;
         enumPropertyValue = new EnumPropertyValue();
         // get the name of the first enumeration value as a sample data.
-        enumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-        instanceProperties.setProperty("status", enumPropertyValue);
+        enumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+        instanceProperties.setProperty("domain", enumPropertyValue);
 
         MapPropertyValue mapPropertyValue =null;
         // In the models we are generating from we only have map<String,String> types, this code assumes those types.
@@ -1533,7 +1549,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateGovernancePolicy";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -1564,14 +1580,14 @@ public class TestSubjectAreaBeansToAccessOMRS {
             instanceProperties.setProperty("priority", primitivePropertyValue);
             primitivePropertyValue = new PrimitivePropertyValue();
             primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-            String qualifiedName = "string7";
+            String qualifiedName = "string8";
             primitivePropertyValue.setPrimitiveValue(qualifiedName);
             instanceProperties.setProperty("qualifiedName", primitivePropertyValue);
             EnumPropertyValue enumPropertyValue;
             enumPropertyValue = new EnumPropertyValue();
             // get the name of the first enumeration value as a sample data.
-            enumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-            instanceProperties.setProperty("status", enumPropertyValue);
+            enumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+            instanceProperties.setProperty("domain", enumPropertyValue);
 
             MapPropertyValue mapPropertyValue;
             // In the models we are generating from we only have map<String,String> types, this code assumes those types.
@@ -1595,7 +1611,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("GovernancePolicy");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             GovernancePolicy requestedGovernancePolicy = new GovernancePolicy();
@@ -1615,12 +1631,12 @@ public class TestSubjectAreaBeansToAccessOMRS {
 
             requestedGovernancePolicy.setQualifiedName(qualifiedName);
 
-            EnumPropertyValue GovernanceDefinitionStatusEnumPropertyValue = new EnumPropertyValue();
+            EnumPropertyValue GovernanceDomainEnumPropertyValue = new EnumPropertyValue();
             // get the name of the first enumeration value as a sample data.
-            GovernanceDefinitionStatusEnumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-            instanceProperties.setProperty("status", GovernanceDefinitionStatusEnumPropertyValue);
+            GovernanceDomainEnumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+            instanceProperties.setProperty("domain", GovernanceDomainEnumPropertyValue);
 
-            requestedGovernancePolicy.setStatus(GovernanceDefinitionStatus.values()[0]);
+            requestedGovernancePolicy.setDomain(GovernanceDomain.values()[0]);
 
 
             PrimitivePropertyValue testPrimitivePropertyValueForMap=null;
@@ -1653,7 +1669,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
 
             assertEquals(requestedGovernancePolicy.getQualifiedName(),returnedGovernancePolicy.getQualifiedName());
 
-            assertEquals(requestedGovernancePolicy.getStatus(),returnedGovernancePolicy.getStatus());
+            assertEquals(requestedGovernancePolicy.getDomain(),returnedGovernancePolicy.getDomain());
 
             assertEquals(requestedGovernancePolicy.getAdditionalProperties(),returnedGovernancePolicy.getAdditionalProperties());
 
@@ -1664,7 +1680,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateDerivedSchemaAttribute";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -1722,7 +1738,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("DerivedSchemaAttribute");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         DerivedSchemaAttribute requestedDerivedSchemaAttribute = new DerivedSchemaAttribute();
@@ -1769,7 +1785,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-DerivedSchemaAttribute-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -1844,7 +1860,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateDerivedSchemaAttribute";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -1901,7 +1917,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("DerivedSchemaAttribute");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             DerivedSchemaAttribute requestedDerivedSchemaAttribute = new DerivedSchemaAttribute();
@@ -1961,7 +1977,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateProcess";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -2009,7 +2025,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("Process");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         Process requestedProcess = new Process();
@@ -2048,7 +2064,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-Process-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -2111,7 +2127,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateProcess";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -2158,7 +2174,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("Process");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             Process requestedProcess = new Process();
@@ -2210,7 +2226,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateMapSchemaType";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -2268,7 +2284,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("MapSchemaType");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         MapSchemaType requestedMapSchemaType = new MapSchemaType();
@@ -2315,7 +2331,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-MapSchemaType-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -2390,7 +2406,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateMapSchemaType";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -2447,7 +2463,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("MapSchemaType");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             MapSchemaType requestedMapSchemaType = new MapSchemaType();
@@ -2507,7 +2523,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateDeployedSoftwareComponent";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -2540,7 +2556,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("DeployedSoftwareComponent");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         DeployedSoftwareComponent requestedDeployedSoftwareComponent = new DeployedSoftwareComponent();
@@ -2567,7 +2583,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-DeployedSoftwareComponent-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -2612,7 +2628,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateDeployedSoftwareComponent";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -2644,7 +2660,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("DeployedSoftwareComponent");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             DeployedSoftwareComponent requestedDeployedSoftwareComponent = new DeployedSoftwareComponent();
@@ -2684,7 +2700,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateSchemaType";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -2742,7 +2758,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("SchemaType");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         SchemaType requestedSchemaType = new SchemaType();
@@ -2789,7 +2805,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-SchemaType-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -2864,7 +2880,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateSchemaType";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -2921,7 +2937,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("SchemaType");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             SchemaType requestedSchemaType = new SchemaType();
@@ -2981,7 +2997,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateDataFile";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -3014,7 +3030,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("DataFile");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         DataFile requestedDataFile = new DataFile();
@@ -3041,7 +3057,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-DataFile-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -3086,7 +3102,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateDataFile";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -3118,7 +3134,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("DataFile");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             DataFile requestedDataFile = new DataFile();
@@ -3158,7 +3174,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateLike";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -3176,7 +3192,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("Like");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         Like requestedLike = new Like();
@@ -3194,7 +3210,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-Like-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -3223,7 +3239,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateLike";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -3240,7 +3256,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("Like");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             Like requestedLike = new Like();
@@ -3262,7 +3278,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateReferenceable";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -3295,7 +3311,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("Referenceable");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         Referenceable requestedReferenceable = new Referenceable();
@@ -3322,7 +3338,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-Referenceable-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -3367,7 +3383,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateReferenceable";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -3399,7 +3415,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("Referenceable");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             Referenceable requestedReferenceable = new Referenceable();
@@ -3439,7 +3455,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateExternalReference";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -3497,7 +3513,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("ExternalReference");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         ExternalReference requestedExternalReference = new ExternalReference();
@@ -3544,7 +3560,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-ExternalReference-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -3619,7 +3635,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateExternalReference";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -3676,7 +3692,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("ExternalReference");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ExternalReference requestedExternalReference = new ExternalReference();
@@ -3736,7 +3752,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateEndpoint";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -3794,7 +3810,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("Endpoint");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         Endpoint requestedEndpoint = new Endpoint();
@@ -3841,7 +3857,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-Endpoint-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -3916,7 +3932,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateEndpoint";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -3973,7 +3989,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("Endpoint");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             Endpoint requestedEndpoint = new Endpoint();
@@ -4033,7 +4049,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateContactDetails";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -4076,7 +4092,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("ContactDetails");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         ContactDetails requestedContactDetails = new ContactDetails();
@@ -4116,7 +4132,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-ContactDetails-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -4172,7 +4188,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateContactDetails";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -4214,7 +4230,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("ContactDetails");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ContactDetails requestedContactDetails = new ContactDetails();
@@ -4267,7 +4283,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateGovernanceDefinition";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -4299,7 +4315,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         instanceProperties.setProperty("priority", primitivePropertyValue);
         primitivePropertyValue = new PrimitivePropertyValue();
         primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-        String qualifiedName = "string7";
+        String qualifiedName = "string8";
         primitivePropertyValue.setPrimitiveValue(qualifiedName);
         instanceProperties.setProperty("qualifiedName", primitivePropertyValue);
         primitivePropertyValue = new PrimitivePropertyValue();
@@ -4320,11 +4336,20 @@ public class TestSubjectAreaBeansToAccessOMRS {
         arrayPropertyValue.setArrayCount(1);
         arrayPropertyValue.setArrayValue(0,primitivePropertyValue);
         instanceProperties.setProperty("outcomes", arrayPropertyValue);
+        primitivePropertyValue = new PrimitivePropertyValue();
+        primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+        String results = "string7";
+        primitivePropertyValue.setPrimitiveValue(results);
+
+        arrayPropertyValue = new ArrayPropertyValue();
+        arrayPropertyValue.setArrayCount(1);
+        arrayPropertyValue.setArrayValue(0,primitivePropertyValue);
+        instanceProperties.setProperty("results", arrayPropertyValue);
         EnumPropertyValue enumPropertyValue;
         enumPropertyValue = new EnumPropertyValue();
         // get the name of the first enumeration value as a sample data.
-        enumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-        instanceProperties.setProperty("status", enumPropertyValue);
+        enumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+        instanceProperties.setProperty("domain", enumPropertyValue);
 
         MapPropertyValue mapPropertyValue;
         // In the models we are generating from we only have map<String,String> types, this code assumes those types.
@@ -4348,7 +4373,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("GovernanceDefinition");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         GovernanceDefinition requestedGovernanceDefinition = new GovernanceDefinition();
@@ -4368,12 +4393,12 @@ public class TestSubjectAreaBeansToAccessOMRS {
 
         requestedGovernanceDefinition.setQualifiedName(qualifiedName);
 
-        EnumPropertyValue GovernanceDefinitionStatusEnumPropertyValue = new EnumPropertyValue();
+        EnumPropertyValue GovernanceDomainEnumPropertyValue = new EnumPropertyValue();
         // get the name of the first enumeration value as a sample data.
-        GovernanceDefinitionStatusEnumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-        instanceProperties.setProperty("status", GovernanceDefinitionStatusEnumPropertyValue);
+        GovernanceDomainEnumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+        instanceProperties.setProperty("domain", GovernanceDomainEnumPropertyValue);
 
-        requestedGovernanceDefinition.setStatus(GovernanceDefinitionStatus.values()[0]);
+        requestedGovernanceDefinition.setDomain(GovernanceDomain.values()[0]);
 
         Map<String,String>  mapValue=null;
 
@@ -4393,7 +4418,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
 
         assertEquals(requestedGovernanceDefinition.getQualifiedName(),returnedGovernanceDefinition.getQualifiedName());
 
-        assertEquals(requestedGovernanceDefinition.getStatus(),returnedGovernanceDefinition.getStatus());
+        assertEquals(requestedGovernanceDefinition.getDomain(),returnedGovernanceDefinition.getDomain());
 
         assertEquals(requestedGovernanceDefinition.getAdditionalProperties(),returnedGovernanceDefinition.getAdditionalProperties());
 
@@ -4404,7 +4429,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-GovernanceDefinition-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -4436,14 +4461,14 @@ public class TestSubjectAreaBeansToAccessOMRS {
         instanceProperties.setProperty("priority", primitivePropertyValue);
         primitivePropertyValue = new PrimitivePropertyValue();
         primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-        String qualifiedName = "string7";
+        String qualifiedName = "string8";
         primitivePropertyValue.setPrimitiveValue(qualifiedName);
         instanceProperties.setProperty("qualifiedName", primitivePropertyValue);
         EnumPropertyValue enumPropertyValue;
         enumPropertyValue = new EnumPropertyValue();
         // get the name of the first enumeration value as a sample data.
-        enumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-        instanceProperties.setProperty("status", enumPropertyValue);
+        enumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+        instanceProperties.setProperty("domain", enumPropertyValue);
 
         MapPropertyValue mapPropertyValue =null;
         // In the models we are generating from we only have map<String,String> types, this code assumes those types.
@@ -4484,7 +4509,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateGovernanceDefinition";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -4515,14 +4540,14 @@ public class TestSubjectAreaBeansToAccessOMRS {
             instanceProperties.setProperty("priority", primitivePropertyValue);
             primitivePropertyValue = new PrimitivePropertyValue();
             primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-            String qualifiedName = "string7";
+            String qualifiedName = "string8";
             primitivePropertyValue.setPrimitiveValue(qualifiedName);
             instanceProperties.setProperty("qualifiedName", primitivePropertyValue);
             EnumPropertyValue enumPropertyValue;
             enumPropertyValue = new EnumPropertyValue();
             // get the name of the first enumeration value as a sample data.
-            enumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-            instanceProperties.setProperty("status", enumPropertyValue);
+            enumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+            instanceProperties.setProperty("domain", enumPropertyValue);
 
             MapPropertyValue mapPropertyValue;
             // In the models we are generating from we only have map<String,String> types, this code assumes those types.
@@ -4546,7 +4571,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("GovernanceDefinition");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             GovernanceDefinition requestedGovernanceDefinition = new GovernanceDefinition();
@@ -4566,12 +4591,12 @@ public class TestSubjectAreaBeansToAccessOMRS {
 
             requestedGovernanceDefinition.setQualifiedName(qualifiedName);
 
-            EnumPropertyValue GovernanceDefinitionStatusEnumPropertyValue = new EnumPropertyValue();
+            EnumPropertyValue GovernanceDomainEnumPropertyValue = new EnumPropertyValue();
             // get the name of the first enumeration value as a sample data.
-            GovernanceDefinitionStatusEnumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-            instanceProperties.setProperty("status", GovernanceDefinitionStatusEnumPropertyValue);
+            GovernanceDomainEnumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+            instanceProperties.setProperty("domain", GovernanceDomainEnumPropertyValue);
 
-            requestedGovernanceDefinition.setStatus(GovernanceDefinitionStatus.values()[0]);
+            requestedGovernanceDefinition.setDomain(GovernanceDomain.values()[0]);
 
 
             PrimitivePropertyValue testPrimitivePropertyValueForMap=null;
@@ -4604,7 +4629,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
 
             assertEquals(requestedGovernanceDefinition.getQualifiedName(),returnedGovernanceDefinition.getQualifiedName());
 
-            assertEquals(requestedGovernanceDefinition.getStatus(),returnedGovernanceDefinition.getStatus());
+            assertEquals(requestedGovernanceDefinition.getDomain(),returnedGovernanceDefinition.getDomain());
 
             assertEquals(requestedGovernanceDefinition.getAdditionalProperties(),returnedGovernanceDefinition.getAdditionalProperties());
 
@@ -4615,7 +4640,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateFileFolder";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -4673,7 +4698,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("FileFolder");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         FileFolder requestedFileFolder = new FileFolder();
@@ -4720,7 +4745,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-FileFolder-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -4795,7 +4820,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateFileFolder";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -4852,7 +4877,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("FileFolder");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             FileFolder requestedFileFolder = new FileFolder();
@@ -4912,7 +4937,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateNetwork";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -4960,7 +4985,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("Network");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         Network requestedNetwork = new Network();
@@ -4999,7 +5024,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-Network-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -5062,7 +5087,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateNetwork";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -5109,7 +5134,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("Network");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             Network requestedNetwork = new Network();
@@ -5161,7 +5186,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateActorProfile";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -5204,7 +5229,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("ActorProfile");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         ActorProfile requestedActorProfile = new ActorProfile();
@@ -5239,7 +5264,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-ActorProfile-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -5296,7 +5321,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateActorProfile";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -5338,7 +5363,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("ActorProfile");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ActorProfile requestedActorProfile = new ActorProfile();
@@ -5386,7 +5411,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateAsset";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -5434,7 +5459,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("Asset");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         Asset requestedAsset = new Asset();
@@ -5473,7 +5498,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-Asset-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -5536,7 +5561,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateAsset";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -5583,7 +5608,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("Asset");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             Asset requestedAsset = new Asset();
@@ -5635,7 +5660,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateAPIOperation";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -5668,7 +5693,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("APIOperation");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         APIOperation requestedAPIOperation = new APIOperation();
@@ -5695,7 +5720,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-APIOperation-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -5740,7 +5765,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateAPIOperation";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -5772,7 +5797,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("APIOperation");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             APIOperation requestedAPIOperation = new APIOperation();
@@ -5812,7 +5837,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateToDo";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -5870,7 +5895,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("ToDo");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         ToDo requestedToDo = new ToDo();
@@ -5922,7 +5947,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-ToDo-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -5996,7 +6021,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateToDo";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -6053,7 +6078,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("ToDo");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ToDo requestedToDo = new ToDo();
@@ -6118,7 +6143,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateNetworkGateway";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -6181,7 +6206,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("NetworkGateway");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         NetworkGateway requestedNetworkGateway = new NetworkGateway();
@@ -6232,7 +6257,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-NetworkGateway-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -6313,7 +6338,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateNetworkGateway";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -6375,7 +6400,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("NetworkGateway");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             NetworkGateway requestedNetworkGateway = new NetworkGateway();
@@ -6439,7 +6464,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateGovernanceResponsibility";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -6476,7 +6501,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         instanceProperties.setProperty("priority", primitivePropertyValue);
         primitivePropertyValue = new PrimitivePropertyValue();
         primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-        String qualifiedName = "string8";
+        String qualifiedName = "string9";
         primitivePropertyValue.setPrimitiveValue(qualifiedName);
         instanceProperties.setProperty("qualifiedName", primitivePropertyValue);
         primitivePropertyValue = new PrimitivePropertyValue();
@@ -6497,11 +6522,20 @@ public class TestSubjectAreaBeansToAccessOMRS {
         arrayPropertyValue.setArrayCount(1);
         arrayPropertyValue.setArrayValue(0,primitivePropertyValue);
         instanceProperties.setProperty("outcomes", arrayPropertyValue);
+        primitivePropertyValue = new PrimitivePropertyValue();
+        primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+        String results = "string8";
+        primitivePropertyValue.setPrimitiveValue(results);
+
+        arrayPropertyValue = new ArrayPropertyValue();
+        arrayPropertyValue.setArrayCount(1);
+        arrayPropertyValue.setArrayValue(0,primitivePropertyValue);
+        instanceProperties.setProperty("results", arrayPropertyValue);
         EnumPropertyValue enumPropertyValue;
         enumPropertyValue = new EnumPropertyValue();
         // get the name of the first enumeration value as a sample data.
-        enumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-        instanceProperties.setProperty("status", enumPropertyValue);
+        enumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+        instanceProperties.setProperty("domain", enumPropertyValue);
 
         MapPropertyValue mapPropertyValue;
         // In the models we are generating from we only have map<String,String> types, this code assumes those types.
@@ -6525,7 +6559,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("GovernanceResponsibility");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         GovernanceResponsibility requestedGovernanceResponsibility = new GovernanceResponsibility();
@@ -6547,12 +6581,12 @@ public class TestSubjectAreaBeansToAccessOMRS {
 
         requestedGovernanceResponsibility.setQualifiedName(qualifiedName);
 
-        EnumPropertyValue GovernanceDefinitionStatusEnumPropertyValue = new EnumPropertyValue();
+        EnumPropertyValue GovernanceDomainEnumPropertyValue = new EnumPropertyValue();
         // get the name of the first enumeration value as a sample data.
-        GovernanceDefinitionStatusEnumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-        instanceProperties.setProperty("status", GovernanceDefinitionStatusEnumPropertyValue);
+        GovernanceDomainEnumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+        instanceProperties.setProperty("domain", GovernanceDomainEnumPropertyValue);
 
-        requestedGovernanceResponsibility.setStatus(GovernanceDefinitionStatus.values()[0]);
+        requestedGovernanceResponsibility.setDomain(GovernanceDomain.values()[0]);
 
         Map<String,String>  mapValue=null;
 
@@ -6574,7 +6608,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
 
         assertEquals(requestedGovernanceResponsibility.getQualifiedName(),returnedGovernanceResponsibility.getQualifiedName());
 
-        assertEquals(requestedGovernanceResponsibility.getStatus(),returnedGovernanceResponsibility.getStatus());
+        assertEquals(requestedGovernanceResponsibility.getDomain(),returnedGovernanceResponsibility.getDomain());
 
         assertEquals(requestedGovernanceResponsibility.getAdditionalProperties(),returnedGovernanceResponsibility.getAdditionalProperties());
 
@@ -6585,7 +6619,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-GovernanceResponsibility-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -6622,14 +6656,14 @@ public class TestSubjectAreaBeansToAccessOMRS {
         instanceProperties.setProperty("priority", primitivePropertyValue);
         primitivePropertyValue = new PrimitivePropertyValue();
         primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-        String qualifiedName = "string8";
+        String qualifiedName = "string9";
         primitivePropertyValue.setPrimitiveValue(qualifiedName);
         instanceProperties.setProperty("qualifiedName", primitivePropertyValue);
         EnumPropertyValue enumPropertyValue;
         enumPropertyValue = new EnumPropertyValue();
         // get the name of the first enumeration value as a sample data.
-        enumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-        instanceProperties.setProperty("status", enumPropertyValue);
+        enumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+        instanceProperties.setProperty("domain", enumPropertyValue);
 
         MapPropertyValue mapPropertyValue =null;
         // In the models we are generating from we only have map<String,String> types, this code assumes those types.
@@ -6671,7 +6705,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateGovernanceResponsibility";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -6707,14 +6741,14 @@ public class TestSubjectAreaBeansToAccessOMRS {
             instanceProperties.setProperty("priority", primitivePropertyValue);
             primitivePropertyValue = new PrimitivePropertyValue();
             primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-            String qualifiedName = "string8";
+            String qualifiedName = "string9";
             primitivePropertyValue.setPrimitiveValue(qualifiedName);
             instanceProperties.setProperty("qualifiedName", primitivePropertyValue);
             EnumPropertyValue enumPropertyValue;
             enumPropertyValue = new EnumPropertyValue();
             // get the name of the first enumeration value as a sample data.
-            enumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-            instanceProperties.setProperty("status", enumPropertyValue);
+            enumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+            instanceProperties.setProperty("domain", enumPropertyValue);
 
             MapPropertyValue mapPropertyValue;
             // In the models we are generating from we only have map<String,String> types, this code assumes those types.
@@ -6738,7 +6772,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("GovernanceResponsibility");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             GovernanceResponsibility requestedGovernanceResponsibility = new GovernanceResponsibility();
@@ -6760,12 +6794,12 @@ public class TestSubjectAreaBeansToAccessOMRS {
 
             requestedGovernanceResponsibility.setQualifiedName(qualifiedName);
 
-            EnumPropertyValue GovernanceDefinitionStatusEnumPropertyValue = new EnumPropertyValue();
+            EnumPropertyValue GovernanceDomainEnumPropertyValue = new EnumPropertyValue();
             // get the name of the first enumeration value as a sample data.
-            GovernanceDefinitionStatusEnumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-            instanceProperties.setProperty("status", GovernanceDefinitionStatusEnumPropertyValue);
+            GovernanceDomainEnumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+            instanceProperties.setProperty("domain", GovernanceDomainEnumPropertyValue);
 
-            requestedGovernanceResponsibility.setStatus(GovernanceDefinitionStatus.values()[0]);
+            requestedGovernanceResponsibility.setDomain(GovernanceDomain.values()[0]);
 
 
             PrimitivePropertyValue testPrimitivePropertyValueForMap=null;
@@ -6800,7 +6834,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
 
             assertEquals(requestedGovernanceResponsibility.getQualifiedName(),returnedGovernanceResponsibility.getQualifiedName());
 
-            assertEquals(requestedGovernanceResponsibility.getStatus(),returnedGovernanceResponsibility.getStatus());
+            assertEquals(requestedGovernanceResponsibility.getDomain(),returnedGovernanceResponsibility.getDomain());
 
             assertEquals(requestedGovernanceResponsibility.getAdditionalProperties(),returnedGovernanceResponsibility.getAdditionalProperties());
 
@@ -6811,7 +6845,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateImplementationSnippet";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -6869,7 +6903,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("ImplementationSnippet");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         ImplementationSnippet requestedImplementationSnippet = new ImplementationSnippet();
@@ -6916,7 +6950,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-ImplementationSnippet-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -6991,7 +7025,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateImplementationSnippet";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -7048,7 +7082,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("ImplementationSnippet");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ImplementationSnippet requestedImplementationSnippet = new ImplementationSnippet();
@@ -7108,7 +7142,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateUserIdentity";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -7146,7 +7180,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("UserIdentity");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         UserIdentity requestedUserIdentity = new UserIdentity();
@@ -7177,7 +7211,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-UserIdentity-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -7228,7 +7262,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateUserIdentity";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -7265,7 +7299,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("UserIdentity");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             UserIdentity requestedUserIdentity = new UserIdentity();
@@ -7309,7 +7343,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateNoteEntry";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -7347,7 +7381,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("NoteEntry");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         NoteEntry requestedNoteEntry = new NoteEntry();
@@ -7378,7 +7412,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-NoteEntry-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -7429,7 +7463,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateNoteEntry";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -7466,7 +7500,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("NoteEntry");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             NoteEntry requestedNoteEntry = new NoteEntry();
@@ -7510,7 +7544,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreatePropertyFacet";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -7563,7 +7597,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("PropertyFacet");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         PropertyFacet requestedPropertyFacet = new PropertyFacet();
@@ -7603,7 +7637,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-PropertyFacet-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -7670,7 +7704,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdatePropertyFacet";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -7722,7 +7756,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("PropertyFacet");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             PropertyFacet requestedPropertyFacet = new PropertyFacet();
@@ -7784,7 +7818,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateProject";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -7842,7 +7876,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("Project");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         Project requestedProject = new Project();
@@ -7889,7 +7923,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-Project-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -7964,7 +7998,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateProject";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -8021,7 +8055,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("Project");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             Project requestedProject = new Project();
@@ -8081,7 +8115,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateHostCluster";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -8129,7 +8163,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("HostCluster");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         HostCluster requestedHostCluster = new HostCluster();
@@ -8168,7 +8202,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-HostCluster-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -8231,7 +8265,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateHostCluster";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -8278,7 +8312,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("HostCluster");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             HostCluster requestedHostCluster = new HostCluster();
@@ -8330,7 +8364,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateGlossary";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -8383,7 +8417,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("Glossary");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         Glossary requestedGlossary = new Glossary();
@@ -8426,7 +8460,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-Glossary-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -8495,7 +8529,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateGlossary";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -8547,7 +8581,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("Glossary");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             Glossary requestedGlossary = new Glossary();
@@ -8603,7 +8637,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateGlossaryCategory";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -8651,7 +8685,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("GlossaryCategory");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         GlossaryCategory requestedGlossaryCategory = new GlossaryCategory();
@@ -8690,7 +8724,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-GlossaryCategory-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -8753,7 +8787,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateGlossaryCategory";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -8800,7 +8834,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("GlossaryCategory");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             GlossaryCategory requestedGlossaryCategory = new GlossaryCategory();
@@ -8852,7 +8886,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateMediaCollection";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -8900,7 +8934,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("MediaCollection");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         MediaCollection requestedMediaCollection = new MediaCollection();
@@ -8939,7 +8973,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-MediaCollection-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -9002,7 +9036,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateMediaCollection";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -9049,7 +9083,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("MediaCollection");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             MediaCollection requestedMediaCollection = new MediaCollection();
@@ -9101,7 +9135,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateCollection";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -9144,7 +9178,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("Collection");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         Collection requestedCollection = new Collection();
@@ -9179,7 +9213,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-Collection-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -9236,7 +9270,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateCollection";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -9278,7 +9312,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("Collection");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             Collection requestedCollection = new Collection();
@@ -9326,7 +9360,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateInformalTag";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -9354,7 +9388,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("InformalTag");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         InformalTag requestedInformalTag = new InformalTag();
@@ -9380,7 +9414,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-InformalTag-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -9421,7 +9455,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateInformalTag";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -9448,7 +9482,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("InformalTag");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             InformalTag requestedInformalTag = new InformalTag();
@@ -9478,7 +9512,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateGovernanceZone";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -9526,7 +9560,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("GovernanceZone");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         GovernanceZone requestedGovernanceZone = new GovernanceZone();
@@ -9565,7 +9599,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-GovernanceZone-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -9628,7 +9662,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateGovernanceZone";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -9675,7 +9709,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("GovernanceZone");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             GovernanceZone requestedGovernanceZone = new GovernanceZone();
@@ -9727,7 +9761,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreatePerson";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -9775,7 +9809,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("Person");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         Person requestedPerson = new Person();
@@ -9814,7 +9848,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-Person-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -9877,7 +9911,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdatePerson";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -9924,7 +9958,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("Person");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             Person requestedPerson = new Person();
@@ -9976,7 +10010,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateApplication";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -10039,7 +10073,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("Application");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         Application requestedApplication = new Application();
@@ -10090,7 +10124,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-Application-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -10171,7 +10205,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateApplication";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -10233,7 +10267,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("Application");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             Application requestedApplication = new Application();
@@ -10297,7 +10331,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateVirtualContainer";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -10345,7 +10379,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("VirtualContainer");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         VirtualContainer requestedVirtualContainer = new VirtualContainer();
@@ -10384,7 +10418,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-VirtualContainer-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -10447,7 +10481,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateVirtualContainer";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -10494,7 +10528,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("VirtualContainer");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             VirtualContainer requestedVirtualContainer = new VirtualContainer();
@@ -10546,7 +10580,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateGovernanceDriver";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -10578,7 +10612,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         instanceProperties.setProperty("priority", primitivePropertyValue);
         primitivePropertyValue = new PrimitivePropertyValue();
         primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-        String qualifiedName = "string7";
+        String qualifiedName = "string8";
         primitivePropertyValue.setPrimitiveValue(qualifiedName);
         instanceProperties.setProperty("qualifiedName", primitivePropertyValue);
         primitivePropertyValue = new PrimitivePropertyValue();
@@ -10599,11 +10633,20 @@ public class TestSubjectAreaBeansToAccessOMRS {
         arrayPropertyValue.setArrayCount(1);
         arrayPropertyValue.setArrayValue(0,primitivePropertyValue);
         instanceProperties.setProperty("outcomes", arrayPropertyValue);
+        primitivePropertyValue = new PrimitivePropertyValue();
+        primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+        String results = "string7";
+        primitivePropertyValue.setPrimitiveValue(results);
+
+        arrayPropertyValue = new ArrayPropertyValue();
+        arrayPropertyValue.setArrayCount(1);
+        arrayPropertyValue.setArrayValue(0,primitivePropertyValue);
+        instanceProperties.setProperty("results", arrayPropertyValue);
         EnumPropertyValue enumPropertyValue;
         enumPropertyValue = new EnumPropertyValue();
         // get the name of the first enumeration value as a sample data.
-        enumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-        instanceProperties.setProperty("status", enumPropertyValue);
+        enumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+        instanceProperties.setProperty("domain", enumPropertyValue);
 
         MapPropertyValue mapPropertyValue;
         // In the models we are generating from we only have map<String,String> types, this code assumes those types.
@@ -10627,7 +10670,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("GovernanceDriver");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         GovernanceDriver requestedGovernanceDriver = new GovernanceDriver();
@@ -10647,12 +10690,12 @@ public class TestSubjectAreaBeansToAccessOMRS {
 
         requestedGovernanceDriver.setQualifiedName(qualifiedName);
 
-        EnumPropertyValue GovernanceDefinitionStatusEnumPropertyValue = new EnumPropertyValue();
+        EnumPropertyValue GovernanceDomainEnumPropertyValue = new EnumPropertyValue();
         // get the name of the first enumeration value as a sample data.
-        GovernanceDefinitionStatusEnumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-        instanceProperties.setProperty("status", GovernanceDefinitionStatusEnumPropertyValue);
+        GovernanceDomainEnumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+        instanceProperties.setProperty("domain", GovernanceDomainEnumPropertyValue);
 
-        requestedGovernanceDriver.setStatus(GovernanceDefinitionStatus.values()[0]);
+        requestedGovernanceDriver.setDomain(GovernanceDomain.values()[0]);
 
         Map<String,String>  mapValue=null;
 
@@ -10672,7 +10715,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
 
         assertEquals(requestedGovernanceDriver.getQualifiedName(),returnedGovernanceDriver.getQualifiedName());
 
-        assertEquals(requestedGovernanceDriver.getStatus(),returnedGovernanceDriver.getStatus());
+        assertEquals(requestedGovernanceDriver.getDomain(),returnedGovernanceDriver.getDomain());
 
         assertEquals(requestedGovernanceDriver.getAdditionalProperties(),returnedGovernanceDriver.getAdditionalProperties());
 
@@ -10683,7 +10726,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-GovernanceDriver-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -10715,14 +10758,14 @@ public class TestSubjectAreaBeansToAccessOMRS {
         instanceProperties.setProperty("priority", primitivePropertyValue);
         primitivePropertyValue = new PrimitivePropertyValue();
         primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-        String qualifiedName = "string7";
+        String qualifiedName = "string8";
         primitivePropertyValue.setPrimitiveValue(qualifiedName);
         instanceProperties.setProperty("qualifiedName", primitivePropertyValue);
         EnumPropertyValue enumPropertyValue;
         enumPropertyValue = new EnumPropertyValue();
         // get the name of the first enumeration value as a sample data.
-        enumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-        instanceProperties.setProperty("status", enumPropertyValue);
+        enumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+        instanceProperties.setProperty("domain", enumPropertyValue);
 
         MapPropertyValue mapPropertyValue =null;
         // In the models we are generating from we only have map<String,String> types, this code assumes those types.
@@ -10763,7 +10806,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateGovernanceDriver";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -10794,14 +10837,14 @@ public class TestSubjectAreaBeansToAccessOMRS {
             instanceProperties.setProperty("priority", primitivePropertyValue);
             primitivePropertyValue = new PrimitivePropertyValue();
             primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-            String qualifiedName = "string7";
+            String qualifiedName = "string8";
             primitivePropertyValue.setPrimitiveValue(qualifiedName);
             instanceProperties.setProperty("qualifiedName", primitivePropertyValue);
             EnumPropertyValue enumPropertyValue;
             enumPropertyValue = new EnumPropertyValue();
             // get the name of the first enumeration value as a sample data.
-            enumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-            instanceProperties.setProperty("status", enumPropertyValue);
+            enumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+            instanceProperties.setProperty("domain", enumPropertyValue);
 
             MapPropertyValue mapPropertyValue;
             // In the models we are generating from we only have map<String,String> types, this code assumes those types.
@@ -10825,7 +10868,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("GovernanceDriver");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             GovernanceDriver requestedGovernanceDriver = new GovernanceDriver();
@@ -10845,12 +10888,12 @@ public class TestSubjectAreaBeansToAccessOMRS {
 
             requestedGovernanceDriver.setQualifiedName(qualifiedName);
 
-            EnumPropertyValue GovernanceDefinitionStatusEnumPropertyValue = new EnumPropertyValue();
+            EnumPropertyValue GovernanceDomainEnumPropertyValue = new EnumPropertyValue();
             // get the name of the first enumeration value as a sample data.
-            GovernanceDefinitionStatusEnumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-            instanceProperties.setProperty("status", GovernanceDefinitionStatusEnumPropertyValue);
+            GovernanceDomainEnumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+            instanceProperties.setProperty("domain", GovernanceDomainEnumPropertyValue);
 
-            requestedGovernanceDriver.setStatus(GovernanceDefinitionStatus.values()[0]);
+            requestedGovernanceDriver.setDomain(GovernanceDomain.values()[0]);
 
 
             PrimitivePropertyValue testPrimitivePropertyValueForMap=null;
@@ -10883,7 +10926,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
 
             assertEquals(requestedGovernanceDriver.getQualifiedName(),returnedGovernanceDriver.getQualifiedName());
 
-            assertEquals(requestedGovernanceDriver.getStatus(),returnedGovernanceDriver.getStatus());
+            assertEquals(requestedGovernanceDriver.getDomain(),returnedGovernanceDriver.getDomain());
 
             assertEquals(requestedGovernanceDriver.getAdditionalProperties(),returnedGovernanceDriver.getAdditionalProperties());
 
@@ -10894,7 +10937,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateMeeting";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -10952,7 +10995,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("Meeting");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         Meeting requestedMeeting = new Meeting();
@@ -10999,7 +11042,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-Meeting-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -11074,7 +11117,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateMeeting";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -11131,7 +11174,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("Meeting");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             Meeting requestedMeeting = new Meeting();
@@ -11191,7 +11234,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateRating";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -11219,7 +11262,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("Rating");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         Rating requestedRating = new Rating();
@@ -11250,7 +11293,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-Rating-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -11290,7 +11333,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateRating";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -11317,7 +11360,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("Rating");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             Rating requestedRating = new Rating();
@@ -11352,7 +11395,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateProjectCharter";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -11404,7 +11447,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("ProjectCharter");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         ProjectCharter requestedProjectCharter = new ProjectCharter();
@@ -11439,7 +11482,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-ProjectCharter-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -11496,7 +11539,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateProjectCharter";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -11538,7 +11581,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("ProjectCharter");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ProjectCharter requestedProjectCharter = new ProjectCharter();
@@ -11586,7 +11629,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateSoftwareServerCapability";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -11649,7 +11692,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("SoftwareServerCapability");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         SoftwareServerCapability requestedSoftwareServerCapability = new SoftwareServerCapability();
@@ -11700,7 +11743,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-SoftwareServerCapability-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -11781,7 +11824,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateSoftwareServerCapability";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -11843,7 +11886,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("SoftwareServerCapability");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             SoftwareServerCapability requestedSoftwareServerCapability = new SoftwareServerCapability();
@@ -11907,7 +11950,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateLicenseType";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -11944,7 +11987,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         instanceProperties.setProperty("priority", primitivePropertyValue);
         primitivePropertyValue = new PrimitivePropertyValue();
         primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-        String qualifiedName = "string8";
+        String qualifiedName = "string9";
         primitivePropertyValue.setPrimitiveValue(qualifiedName);
         instanceProperties.setProperty("qualifiedName", primitivePropertyValue);
         primitivePropertyValue = new PrimitivePropertyValue();
@@ -11965,11 +12008,20 @@ public class TestSubjectAreaBeansToAccessOMRS {
         arrayPropertyValue.setArrayCount(1);
         arrayPropertyValue.setArrayValue(0,primitivePropertyValue);
         instanceProperties.setProperty("outcomes", arrayPropertyValue);
+        primitivePropertyValue = new PrimitivePropertyValue();
+        primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+        String results = "string8";
+        primitivePropertyValue.setPrimitiveValue(results);
+
+        arrayPropertyValue = new ArrayPropertyValue();
+        arrayPropertyValue.setArrayCount(1);
+        arrayPropertyValue.setArrayValue(0,primitivePropertyValue);
+        instanceProperties.setProperty("results", arrayPropertyValue);
         EnumPropertyValue enumPropertyValue;
         enumPropertyValue = new EnumPropertyValue();
         // get the name of the first enumeration value as a sample data.
-        enumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-        instanceProperties.setProperty("status", enumPropertyValue);
+        enumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+        instanceProperties.setProperty("domain", enumPropertyValue);
 
         MapPropertyValue mapPropertyValue;
         // In the models we are generating from we only have map<String,String> types, this code assumes those types.
@@ -11993,7 +12045,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("LicenseType");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         LicenseType requestedLicenseType = new LicenseType();
@@ -12015,12 +12067,12 @@ public class TestSubjectAreaBeansToAccessOMRS {
 
         requestedLicenseType.setQualifiedName(qualifiedName);
 
-        EnumPropertyValue GovernanceDefinitionStatusEnumPropertyValue = new EnumPropertyValue();
+        EnumPropertyValue GovernanceDomainEnumPropertyValue = new EnumPropertyValue();
         // get the name of the first enumeration value as a sample data.
-        GovernanceDefinitionStatusEnumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-        instanceProperties.setProperty("status", GovernanceDefinitionStatusEnumPropertyValue);
+        GovernanceDomainEnumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+        instanceProperties.setProperty("domain", GovernanceDomainEnumPropertyValue);
 
-        requestedLicenseType.setStatus(GovernanceDefinitionStatus.values()[0]);
+        requestedLicenseType.setDomain(GovernanceDomain.values()[0]);
 
         Map<String,String>  mapValue=null;
 
@@ -12042,7 +12094,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
 
         assertEquals(requestedLicenseType.getQualifiedName(),returnedLicenseType.getQualifiedName());
 
-        assertEquals(requestedLicenseType.getStatus(),returnedLicenseType.getStatus());
+        assertEquals(requestedLicenseType.getDomain(),returnedLicenseType.getDomain());
 
         assertEquals(requestedLicenseType.getAdditionalProperties(),returnedLicenseType.getAdditionalProperties());
 
@@ -12053,7 +12105,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-LicenseType-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -12090,14 +12142,14 @@ public class TestSubjectAreaBeansToAccessOMRS {
         instanceProperties.setProperty("priority", primitivePropertyValue);
         primitivePropertyValue = new PrimitivePropertyValue();
         primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-        String qualifiedName = "string8";
+        String qualifiedName = "string9";
         primitivePropertyValue.setPrimitiveValue(qualifiedName);
         instanceProperties.setProperty("qualifiedName", primitivePropertyValue);
         EnumPropertyValue enumPropertyValue;
         enumPropertyValue = new EnumPropertyValue();
         // get the name of the first enumeration value as a sample data.
-        enumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-        instanceProperties.setProperty("status", enumPropertyValue);
+        enumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+        instanceProperties.setProperty("domain", enumPropertyValue);
 
         MapPropertyValue mapPropertyValue =null;
         // In the models we are generating from we only have map<String,String> types, this code assumes those types.
@@ -12139,7 +12191,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateLicenseType";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -12175,14 +12227,14 @@ public class TestSubjectAreaBeansToAccessOMRS {
             instanceProperties.setProperty("priority", primitivePropertyValue);
             primitivePropertyValue = new PrimitivePropertyValue();
             primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-            String qualifiedName = "string8";
+            String qualifiedName = "string9";
             primitivePropertyValue.setPrimitiveValue(qualifiedName);
             instanceProperties.setProperty("qualifiedName", primitivePropertyValue);
             EnumPropertyValue enumPropertyValue;
             enumPropertyValue = new EnumPropertyValue();
             // get the name of the first enumeration value as a sample data.
-            enumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-            instanceProperties.setProperty("status", enumPropertyValue);
+            enumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+            instanceProperties.setProperty("domain", enumPropertyValue);
 
             MapPropertyValue mapPropertyValue;
             // In the models we are generating from we only have map<String,String> types, this code assumes those types.
@@ -12206,7 +12258,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("LicenseType");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             LicenseType requestedLicenseType = new LicenseType();
@@ -12228,12 +12280,12 @@ public class TestSubjectAreaBeansToAccessOMRS {
 
             requestedLicenseType.setQualifiedName(qualifiedName);
 
-            EnumPropertyValue GovernanceDefinitionStatusEnumPropertyValue = new EnumPropertyValue();
+            EnumPropertyValue GovernanceDomainEnumPropertyValue = new EnumPropertyValue();
             // get the name of the first enumeration value as a sample data.
-            GovernanceDefinitionStatusEnumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-            instanceProperties.setProperty("status", GovernanceDefinitionStatusEnumPropertyValue);
+            GovernanceDomainEnumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+            instanceProperties.setProperty("domain", GovernanceDomainEnumPropertyValue);
 
-            requestedLicenseType.setStatus(GovernanceDefinitionStatus.values()[0]);
+            requestedLicenseType.setDomain(GovernanceDomain.values()[0]);
 
 
             PrimitivePropertyValue testPrimitivePropertyValueForMap=null;
@@ -12268,7 +12320,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
 
             assertEquals(requestedLicenseType.getQualifiedName(),returnedLicenseType.getQualifiedName());
 
-            assertEquals(requestedLicenseType.getStatus(),returnedLicenseType.getStatus());
+            assertEquals(requestedLicenseType.getDomain(),returnedLicenseType.getDomain());
 
             assertEquals(requestedLicenseType.getAdditionalProperties(),returnedLicenseType.getAdditionalProperties());
 
@@ -12279,7 +12331,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateGraphVertex";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -12332,7 +12384,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("GraphVertex");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         GraphVertex requestedGraphVertex = new GraphVertex();
@@ -12375,7 +12427,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-GraphVertex-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -12444,7 +12496,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateGraphVertex";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -12496,7 +12548,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("GraphVertex");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             GraphVertex requestedGraphVertex = new GraphVertex();
@@ -12552,7 +12604,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateGlossaryTerm";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -12620,7 +12672,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("GlossaryTerm");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         GlossaryTerm requestedGlossaryTerm = new GlossaryTerm();
@@ -12675,7 +12727,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-GlossaryTerm-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -12762,7 +12814,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateGlossaryTerm";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -12829,7 +12881,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("GlossaryTerm");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             GlossaryTerm requestedGlossaryTerm = new GlossaryTerm();
@@ -12897,7 +12949,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateTeam";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -12940,7 +12992,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("Team");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         Team requestedTeam = new Team();
@@ -12975,7 +13027,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-Team-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -13032,7 +13084,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateTeam";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -13074,7 +13126,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("Team");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             Team requestedTeam = new Team();
@@ -13122,7 +13174,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateMetadataCollection";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -13175,7 +13227,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("MetadataCollection");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         MetadataCollection requestedMetadataCollection = new MetadataCollection();
@@ -13218,7 +13270,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-MetadataCollection-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -13287,7 +13339,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateMetadataCollection";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -13339,7 +13391,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("MetadataCollection");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             MetadataCollection requestedMetadataCollection = new MetadataCollection();
@@ -13395,7 +13447,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateGovernanceControl";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -13432,7 +13484,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         instanceProperties.setProperty("priority", primitivePropertyValue);
         primitivePropertyValue = new PrimitivePropertyValue();
         primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-        String qualifiedName = "string8";
+        String qualifiedName = "string9";
         primitivePropertyValue.setPrimitiveValue(qualifiedName);
         instanceProperties.setProperty("qualifiedName", primitivePropertyValue);
         primitivePropertyValue = new PrimitivePropertyValue();
@@ -13453,11 +13505,20 @@ public class TestSubjectAreaBeansToAccessOMRS {
         arrayPropertyValue.setArrayCount(1);
         arrayPropertyValue.setArrayValue(0,primitivePropertyValue);
         instanceProperties.setProperty("outcomes", arrayPropertyValue);
+        primitivePropertyValue = new PrimitivePropertyValue();
+        primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+        String results = "string8";
+        primitivePropertyValue.setPrimitiveValue(results);
+
+        arrayPropertyValue = new ArrayPropertyValue();
+        arrayPropertyValue.setArrayCount(1);
+        arrayPropertyValue.setArrayValue(0,primitivePropertyValue);
+        instanceProperties.setProperty("results", arrayPropertyValue);
         EnumPropertyValue enumPropertyValue;
         enumPropertyValue = new EnumPropertyValue();
         // get the name of the first enumeration value as a sample data.
-        enumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-        instanceProperties.setProperty("status", enumPropertyValue);
+        enumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+        instanceProperties.setProperty("domain", enumPropertyValue);
 
         MapPropertyValue mapPropertyValue;
         // In the models we are generating from we only have map<String,String> types, this code assumes those types.
@@ -13481,7 +13542,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("GovernanceControl");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         GovernanceControl requestedGovernanceControl = new GovernanceControl();
@@ -13503,12 +13564,12 @@ public class TestSubjectAreaBeansToAccessOMRS {
 
         requestedGovernanceControl.setQualifiedName(qualifiedName);
 
-        EnumPropertyValue GovernanceDefinitionStatusEnumPropertyValue = new EnumPropertyValue();
+        EnumPropertyValue GovernanceDomainEnumPropertyValue = new EnumPropertyValue();
         // get the name of the first enumeration value as a sample data.
-        GovernanceDefinitionStatusEnumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-        instanceProperties.setProperty("status", GovernanceDefinitionStatusEnumPropertyValue);
+        GovernanceDomainEnumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+        instanceProperties.setProperty("domain", GovernanceDomainEnumPropertyValue);
 
-        requestedGovernanceControl.setStatus(GovernanceDefinitionStatus.values()[0]);
+        requestedGovernanceControl.setDomain(GovernanceDomain.values()[0]);
 
         Map<String,String>  mapValue=null;
 
@@ -13530,7 +13591,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
 
         assertEquals(requestedGovernanceControl.getQualifiedName(),returnedGovernanceControl.getQualifiedName());
 
-        assertEquals(requestedGovernanceControl.getStatus(),returnedGovernanceControl.getStatus());
+        assertEquals(requestedGovernanceControl.getDomain(),returnedGovernanceControl.getDomain());
 
         assertEquals(requestedGovernanceControl.getAdditionalProperties(),returnedGovernanceControl.getAdditionalProperties());
 
@@ -13541,7 +13602,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-GovernanceControl-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -13578,14 +13639,14 @@ public class TestSubjectAreaBeansToAccessOMRS {
         instanceProperties.setProperty("priority", primitivePropertyValue);
         primitivePropertyValue = new PrimitivePropertyValue();
         primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-        String qualifiedName = "string8";
+        String qualifiedName = "string9";
         primitivePropertyValue.setPrimitiveValue(qualifiedName);
         instanceProperties.setProperty("qualifiedName", primitivePropertyValue);
         EnumPropertyValue enumPropertyValue;
         enumPropertyValue = new EnumPropertyValue();
         // get the name of the first enumeration value as a sample data.
-        enumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-        instanceProperties.setProperty("status", enumPropertyValue);
+        enumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+        instanceProperties.setProperty("domain", enumPropertyValue);
 
         MapPropertyValue mapPropertyValue =null;
         // In the models we are generating from we only have map<String,String> types, this code assumes those types.
@@ -13627,7 +13688,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateGovernanceControl";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -13663,14 +13724,14 @@ public class TestSubjectAreaBeansToAccessOMRS {
             instanceProperties.setProperty("priority", primitivePropertyValue);
             primitivePropertyValue = new PrimitivePropertyValue();
             primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-            String qualifiedName = "string8";
+            String qualifiedName = "string9";
             primitivePropertyValue.setPrimitiveValue(qualifiedName);
             instanceProperties.setProperty("qualifiedName", primitivePropertyValue);
             EnumPropertyValue enumPropertyValue;
             enumPropertyValue = new EnumPropertyValue();
             // get the name of the first enumeration value as a sample data.
-            enumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-            instanceProperties.setProperty("status", enumPropertyValue);
+            enumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+            instanceProperties.setProperty("domain", enumPropertyValue);
 
             MapPropertyValue mapPropertyValue;
             // In the models we are generating from we only have map<String,String> types, this code assumes those types.
@@ -13694,7 +13755,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("GovernanceControl");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             GovernanceControl requestedGovernanceControl = new GovernanceControl();
@@ -13716,12 +13777,12 @@ public class TestSubjectAreaBeansToAccessOMRS {
 
             requestedGovernanceControl.setQualifiedName(qualifiedName);
 
-            EnumPropertyValue GovernanceDefinitionStatusEnumPropertyValue = new EnumPropertyValue();
+            EnumPropertyValue GovernanceDomainEnumPropertyValue = new EnumPropertyValue();
             // get the name of the first enumeration value as a sample data.
-            GovernanceDefinitionStatusEnumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-            instanceProperties.setProperty("status", GovernanceDefinitionStatusEnumPropertyValue);
+            GovernanceDomainEnumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+            instanceProperties.setProperty("domain", GovernanceDomainEnumPropertyValue);
 
-            requestedGovernanceControl.setStatus(GovernanceDefinitionStatus.values()[0]);
+            requestedGovernanceControl.setDomain(GovernanceDomain.values()[0]);
 
 
             PrimitivePropertyValue testPrimitivePropertyValueForMap=null;
@@ -13756,7 +13817,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
 
             assertEquals(requestedGovernanceControl.getQualifiedName(),returnedGovernanceControl.getQualifiedName());
 
-            assertEquals(requestedGovernanceControl.getStatus(),returnedGovernanceControl.getStatus());
+            assertEquals(requestedGovernanceControl.getDomain(),returnedGovernanceControl.getDomain());
 
             assertEquals(requestedGovernanceControl.getAdditionalProperties(),returnedGovernanceControl.getAdditionalProperties());
 
@@ -13767,7 +13828,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateTopic";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -13820,7 +13881,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("Topic");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         Topic requestedTopic = new Topic();
@@ -13863,7 +13924,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-Topic-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -13932,7 +13993,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateTopic";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -13984,7 +14045,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("Topic");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             Topic requestedTopic = new Topic();
@@ -14040,7 +14101,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateSoftwareServer";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -14108,7 +14169,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("SoftwareServer");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         SoftwareServer requestedSoftwareServer = new SoftwareServer();
@@ -14163,7 +14224,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-SoftwareServer-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -14250,7 +14311,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateSoftwareServer";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -14317,7 +14378,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("SoftwareServer");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             SoftwareServer requestedSoftwareServer = new SoftwareServer();
@@ -14385,7 +14446,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateDeployedAPI";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -14433,7 +14494,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("DeployedAPI");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         DeployedAPI requestedDeployedAPI = new DeployedAPI();
@@ -14472,7 +14533,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-DeployedAPI-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -14535,7 +14596,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateDeployedAPI";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -14582,7 +14643,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("DeployedAPI");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             DeployedAPI requestedDeployedAPI = new DeployedAPI();
@@ -14634,7 +14695,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateMediaFile";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -14677,7 +14738,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("MediaFile");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         MediaFile requestedMediaFile = new MediaFile();
@@ -14709,7 +14770,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-MediaFile-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -14764,7 +14825,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateMediaFile";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -14806,7 +14867,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("MediaFile");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             MediaFile requestedMediaFile = new MediaFile();
@@ -14860,7 +14921,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateComment";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -14903,7 +14964,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("Comment");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         Comment requestedComment = new Comment();
@@ -14943,7 +15004,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-Comment-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -14999,7 +15060,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateComment";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -15041,7 +15102,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("Comment");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             Comment requestedComment = new Comment();
@@ -15094,7 +15155,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateRelatedMedia";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -15166,7 +15227,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("RelatedMedia");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         RelatedMedia requestedRelatedMedia = new RelatedMedia();
@@ -15222,7 +15283,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-RelatedMedia-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -15302,7 +15363,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateRelatedMedia";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -15364,7 +15425,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("RelatedMedia");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             RelatedMedia requestedRelatedMedia = new RelatedMedia();
@@ -15433,7 +15494,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateConnectorType";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -15499,7 +15560,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("ConnectorType");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         ConnectorType requestedConnectorType = new ConnectorType();
@@ -15538,7 +15599,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-ConnectorType-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -15601,7 +15662,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateConnectorType";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -15648,7 +15709,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("ConnectorType");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ConnectorType requestedConnectorType = new ConnectorType();
@@ -15700,7 +15761,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateCohortMember";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -15763,7 +15824,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("CohortMember");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         CohortMember requestedCohortMember = new CohortMember();
@@ -15814,7 +15875,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-CohortMember-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -15895,7 +15956,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateCohortMember";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -15957,7 +16018,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("CohortMember");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             CohortMember requestedCohortMember = new CohortMember();
@@ -16021,7 +16082,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateComplexSchemaType";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -16079,7 +16140,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("ComplexSchemaType");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         ComplexSchemaType requestedComplexSchemaType = new ComplexSchemaType();
@@ -16126,7 +16187,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-ComplexSchemaType-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -16201,7 +16262,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateComplexSchemaType";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -16258,7 +16319,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("ComplexSchemaType");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ComplexSchemaType requestedComplexSchemaType = new ComplexSchemaType();
@@ -16318,7 +16379,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateGovernanceMetric";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -16371,7 +16432,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("GovernanceMetric");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         GovernanceMetric requestedGovernanceMetric = new GovernanceMetric();
@@ -16414,7 +16475,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-GovernanceMetric-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -16483,7 +16544,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateGovernanceMetric";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -16535,7 +16596,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("GovernanceMetric");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             GovernanceMetric requestedGovernanceMetric = new GovernanceMetric();
@@ -16591,7 +16652,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateExternalId";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -16634,7 +16695,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("ExternalId");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         ExternalId requestedExternalId = new ExternalId();
@@ -16674,7 +16735,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-ExternalId-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -16730,7 +16791,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateExternalId";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -16772,7 +16833,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("ExternalId");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ExternalId requestedExternalId = new ExternalId();
@@ -16825,7 +16886,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateConnection";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -16878,7 +16939,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("Connection");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         Connection requestedConnection = new Connection();
@@ -16918,7 +16979,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-Connection-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -16985,7 +17046,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateConnection";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -17037,7 +17098,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("Connection");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             Connection requestedConnection = new Connection();
@@ -17099,7 +17160,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateHost";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -17147,7 +17208,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("Host");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         Host requestedHost = new Host();
@@ -17186,7 +17247,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-Host-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -17249,7 +17310,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateHost";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -17296,7 +17357,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("Host");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             Host requestedHost = new Host();
@@ -17348,7 +17409,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateSubscriberList";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -17396,7 +17457,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("SubscriberList");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         SubscriberList requestedSubscriberList = new SubscriberList();
@@ -17435,7 +17496,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-SubscriberList-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -17498,7 +17559,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateSubscriberList";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -17545,7 +17606,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("SubscriberList");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             SubscriberList requestedSubscriberList = new SubscriberList();
@@ -17597,7 +17658,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateGovernanceRule";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -17634,7 +17695,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         instanceProperties.setProperty("priority", primitivePropertyValue);
         primitivePropertyValue = new PrimitivePropertyValue();
         primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-        String qualifiedName = "string8";
+        String qualifiedName = "string9";
         primitivePropertyValue.setPrimitiveValue(qualifiedName);
         instanceProperties.setProperty("qualifiedName", primitivePropertyValue);
         primitivePropertyValue = new PrimitivePropertyValue();
@@ -17655,11 +17716,20 @@ public class TestSubjectAreaBeansToAccessOMRS {
         arrayPropertyValue.setArrayCount(1);
         arrayPropertyValue.setArrayValue(0,primitivePropertyValue);
         instanceProperties.setProperty("outcomes", arrayPropertyValue);
+        primitivePropertyValue = new PrimitivePropertyValue();
+        primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+        String results = "string8";
+        primitivePropertyValue.setPrimitiveValue(results);
+
+        arrayPropertyValue = new ArrayPropertyValue();
+        arrayPropertyValue.setArrayCount(1);
+        arrayPropertyValue.setArrayValue(0,primitivePropertyValue);
+        instanceProperties.setProperty("results", arrayPropertyValue);
         EnumPropertyValue enumPropertyValue;
         enumPropertyValue = new EnumPropertyValue();
         // get the name of the first enumeration value as a sample data.
-        enumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-        instanceProperties.setProperty("status", enumPropertyValue);
+        enumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+        instanceProperties.setProperty("domain", enumPropertyValue);
 
         MapPropertyValue mapPropertyValue;
         // In the models we are generating from we only have map<String,String> types, this code assumes those types.
@@ -17683,7 +17753,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("GovernanceRule");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         GovernanceRule requestedGovernanceRule = new GovernanceRule();
@@ -17705,12 +17775,12 @@ public class TestSubjectAreaBeansToAccessOMRS {
 
         requestedGovernanceRule.setQualifiedName(qualifiedName);
 
-        EnumPropertyValue GovernanceDefinitionStatusEnumPropertyValue = new EnumPropertyValue();
+        EnumPropertyValue GovernanceDomainEnumPropertyValue = new EnumPropertyValue();
         // get the name of the first enumeration value as a sample data.
-        GovernanceDefinitionStatusEnumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-        instanceProperties.setProperty("status", GovernanceDefinitionStatusEnumPropertyValue);
+        GovernanceDomainEnumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+        instanceProperties.setProperty("domain", GovernanceDomainEnumPropertyValue);
 
-        requestedGovernanceRule.setStatus(GovernanceDefinitionStatus.values()[0]);
+        requestedGovernanceRule.setDomain(GovernanceDomain.values()[0]);
 
         Map<String,String>  mapValue=null;
 
@@ -17732,7 +17802,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
 
         assertEquals(requestedGovernanceRule.getQualifiedName(),returnedGovernanceRule.getQualifiedName());
 
-        assertEquals(requestedGovernanceRule.getStatus(),returnedGovernanceRule.getStatus());
+        assertEquals(requestedGovernanceRule.getDomain(),returnedGovernanceRule.getDomain());
 
         assertEquals(requestedGovernanceRule.getAdditionalProperties(),returnedGovernanceRule.getAdditionalProperties());
 
@@ -17743,7 +17813,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-GovernanceRule-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -17780,14 +17850,14 @@ public class TestSubjectAreaBeansToAccessOMRS {
         instanceProperties.setProperty("priority", primitivePropertyValue);
         primitivePropertyValue = new PrimitivePropertyValue();
         primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-        String qualifiedName = "string8";
+        String qualifiedName = "string9";
         primitivePropertyValue.setPrimitiveValue(qualifiedName);
         instanceProperties.setProperty("qualifiedName", primitivePropertyValue);
         EnumPropertyValue enumPropertyValue;
         enumPropertyValue = new EnumPropertyValue();
         // get the name of the first enumeration value as a sample data.
-        enumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-        instanceProperties.setProperty("status", enumPropertyValue);
+        enumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+        instanceProperties.setProperty("domain", enumPropertyValue);
 
         MapPropertyValue mapPropertyValue =null;
         // In the models we are generating from we only have map<String,String> types, this code assumes those types.
@@ -17829,7 +17899,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateGovernanceRule";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -17865,14 +17935,14 @@ public class TestSubjectAreaBeansToAccessOMRS {
             instanceProperties.setProperty("priority", primitivePropertyValue);
             primitivePropertyValue = new PrimitivePropertyValue();
             primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-            String qualifiedName = "string8";
+            String qualifiedName = "string9";
             primitivePropertyValue.setPrimitiveValue(qualifiedName);
             instanceProperties.setProperty("qualifiedName", primitivePropertyValue);
             EnumPropertyValue enumPropertyValue;
             enumPropertyValue = new EnumPropertyValue();
             // get the name of the first enumeration value as a sample data.
-            enumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-            instanceProperties.setProperty("status", enumPropertyValue);
+            enumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+            instanceProperties.setProperty("domain", enumPropertyValue);
 
             MapPropertyValue mapPropertyValue;
             // In the models we are generating from we only have map<String,String> types, this code assumes those types.
@@ -17896,7 +17966,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("GovernanceRule");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             GovernanceRule requestedGovernanceRule = new GovernanceRule();
@@ -17918,12 +17988,12 @@ public class TestSubjectAreaBeansToAccessOMRS {
 
             requestedGovernanceRule.setQualifiedName(qualifiedName);
 
-            EnumPropertyValue GovernanceDefinitionStatusEnumPropertyValue = new EnumPropertyValue();
+            EnumPropertyValue GovernanceDomainEnumPropertyValue = new EnumPropertyValue();
             // get the name of the first enumeration value as a sample data.
-            GovernanceDefinitionStatusEnumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-            instanceProperties.setProperty("status", GovernanceDefinitionStatusEnumPropertyValue);
+            GovernanceDomainEnumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+            instanceProperties.setProperty("domain", GovernanceDomainEnumPropertyValue);
 
-            requestedGovernanceRule.setStatus(GovernanceDefinitionStatus.values()[0]);
+            requestedGovernanceRule.setDomain(GovernanceDomain.values()[0]);
 
 
             PrimitivePropertyValue testPrimitivePropertyValueForMap=null;
@@ -17958,7 +18028,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
 
             assertEquals(requestedGovernanceRule.getQualifiedName(),returnedGovernanceRule.getQualifiedName());
 
-            assertEquals(requestedGovernanceRule.getStatus(),returnedGovernanceRule.getStatus());
+            assertEquals(requestedGovernanceRule.getDomain(),returnedGovernanceRule.getDomain());
 
             assertEquals(requestedGovernanceRule.getAdditionalProperties(),returnedGovernanceRule.getAdditionalProperties());
 
@@ -17969,7 +18039,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateMetadataRepositoryCohort";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -18012,7 +18082,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("MetadataRepositoryCohort");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         MetadataRepositoryCohort requestedMetadataRepositoryCohort = new MetadataRepositoryCohort();
@@ -18047,7 +18117,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-MetadataRepositoryCohort-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -18104,7 +18174,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateMetadataRepositoryCohort";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -18146,7 +18216,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("MetadataRepositoryCohort");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             MetadataRepositoryCohort requestedMetadataRepositoryCohort = new MetadataRepositoryCohort();
@@ -18194,7 +18264,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateNoteLog";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -18237,7 +18307,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("NoteLog");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         NoteLog requestedNoteLog = new NoteLog();
@@ -18272,7 +18342,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-NoteLog-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -18329,7 +18399,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateNoteLog";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -18371,7 +18441,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("NoteLog");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             NoteLog requestedNoteLog = new NoteLog();
@@ -18419,7 +18489,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateExternalGlossaryLink";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -18477,7 +18547,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("ExternalGlossaryLink");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         ExternalGlossaryLink requestedExternalGlossaryLink = new ExternalGlossaryLink();
@@ -18524,7 +18594,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-ExternalGlossaryLink-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -18599,7 +18669,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateExternalGlossaryLink";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -18656,7 +18726,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("ExternalGlossaryLink");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ExternalGlossaryLink requestedExternalGlossaryLink = new ExternalGlossaryLink();
@@ -18716,7 +18786,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateVirtualConnection";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -18769,7 +18839,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("VirtualConnection");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         VirtualConnection requestedVirtualConnection = new VirtualConnection();
@@ -18809,7 +18879,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-VirtualConnection-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -18876,7 +18946,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateVirtualConnection";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -18928,7 +18998,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("VirtualConnection");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             VirtualConnection requestedVirtualConnection = new VirtualConnection();
@@ -18990,7 +19060,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateRegulation";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -19027,7 +19097,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         instanceProperties.setProperty("priority", primitivePropertyValue);
         primitivePropertyValue = new PrimitivePropertyValue();
         primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-        String qualifiedName = "string8";
+        String qualifiedName = "string9";
         primitivePropertyValue.setPrimitiveValue(qualifiedName);
         instanceProperties.setProperty("qualifiedName", primitivePropertyValue);
         primitivePropertyValue = new PrimitivePropertyValue();
@@ -19048,11 +19118,20 @@ public class TestSubjectAreaBeansToAccessOMRS {
         arrayPropertyValue.setArrayCount(1);
         arrayPropertyValue.setArrayValue(0,primitivePropertyValue);
         instanceProperties.setProperty("outcomes", arrayPropertyValue);
+        primitivePropertyValue = new PrimitivePropertyValue();
+        primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+        String results = "string8";
+        primitivePropertyValue.setPrimitiveValue(results);
+
+        arrayPropertyValue = new ArrayPropertyValue();
+        arrayPropertyValue.setArrayCount(1);
+        arrayPropertyValue.setArrayValue(0,primitivePropertyValue);
+        instanceProperties.setProperty("results", arrayPropertyValue);
         EnumPropertyValue enumPropertyValue;
         enumPropertyValue = new EnumPropertyValue();
         // get the name of the first enumeration value as a sample data.
-        enumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-        instanceProperties.setProperty("status", enumPropertyValue);
+        enumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+        instanceProperties.setProperty("domain", enumPropertyValue);
 
         MapPropertyValue mapPropertyValue;
         // In the models we are generating from we only have map<String,String> types, this code assumes those types.
@@ -19076,7 +19155,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("Regulation");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         Regulation requestedRegulation = new Regulation();
@@ -19098,12 +19177,12 @@ public class TestSubjectAreaBeansToAccessOMRS {
 
         requestedRegulation.setQualifiedName(qualifiedName);
 
-        EnumPropertyValue GovernanceDefinitionStatusEnumPropertyValue = new EnumPropertyValue();
+        EnumPropertyValue GovernanceDomainEnumPropertyValue = new EnumPropertyValue();
         // get the name of the first enumeration value as a sample data.
-        GovernanceDefinitionStatusEnumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-        instanceProperties.setProperty("status", GovernanceDefinitionStatusEnumPropertyValue);
+        GovernanceDomainEnumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+        instanceProperties.setProperty("domain", GovernanceDomainEnumPropertyValue);
 
-        requestedRegulation.setStatus(GovernanceDefinitionStatus.values()[0]);
+        requestedRegulation.setDomain(GovernanceDomain.values()[0]);
 
         Map<String,String>  mapValue=null;
 
@@ -19125,7 +19204,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
 
         assertEquals(requestedRegulation.getQualifiedName(),returnedRegulation.getQualifiedName());
 
-        assertEquals(requestedRegulation.getStatus(),returnedRegulation.getStatus());
+        assertEquals(requestedRegulation.getDomain(),returnedRegulation.getDomain());
 
         assertEquals(requestedRegulation.getAdditionalProperties(),returnedRegulation.getAdditionalProperties());
 
@@ -19136,7 +19215,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-Regulation-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -19173,14 +19252,14 @@ public class TestSubjectAreaBeansToAccessOMRS {
         instanceProperties.setProperty("priority", primitivePropertyValue);
         primitivePropertyValue = new PrimitivePropertyValue();
         primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-        String qualifiedName = "string8";
+        String qualifiedName = "string9";
         primitivePropertyValue.setPrimitiveValue(qualifiedName);
         instanceProperties.setProperty("qualifiedName", primitivePropertyValue);
         EnumPropertyValue enumPropertyValue;
         enumPropertyValue = new EnumPropertyValue();
         // get the name of the first enumeration value as a sample data.
-        enumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-        instanceProperties.setProperty("status", enumPropertyValue);
+        enumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+        instanceProperties.setProperty("domain", enumPropertyValue);
 
         MapPropertyValue mapPropertyValue =null;
         // In the models we are generating from we only have map<String,String> types, this code assumes those types.
@@ -19222,7 +19301,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateRegulation";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -19258,14 +19337,14 @@ public class TestSubjectAreaBeansToAccessOMRS {
             instanceProperties.setProperty("priority", primitivePropertyValue);
             primitivePropertyValue = new PrimitivePropertyValue();
             primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-            String qualifiedName = "string8";
+            String qualifiedName = "string9";
             primitivePropertyValue.setPrimitiveValue(qualifiedName);
             instanceProperties.setProperty("qualifiedName", primitivePropertyValue);
             EnumPropertyValue enumPropertyValue;
             enumPropertyValue = new EnumPropertyValue();
             // get the name of the first enumeration value as a sample data.
-            enumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-            instanceProperties.setProperty("status", enumPropertyValue);
+            enumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+            instanceProperties.setProperty("domain", enumPropertyValue);
 
             MapPropertyValue mapPropertyValue;
             // In the models we are generating from we only have map<String,String> types, this code assumes those types.
@@ -19289,7 +19368,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("Regulation");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             Regulation requestedRegulation = new Regulation();
@@ -19311,12 +19390,12 @@ public class TestSubjectAreaBeansToAccessOMRS {
 
             requestedRegulation.setQualifiedName(qualifiedName);
 
-            EnumPropertyValue GovernanceDefinitionStatusEnumPropertyValue = new EnumPropertyValue();
+            EnumPropertyValue GovernanceDomainEnumPropertyValue = new EnumPropertyValue();
             // get the name of the first enumeration value as a sample data.
-            GovernanceDefinitionStatusEnumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-            instanceProperties.setProperty("status", GovernanceDefinitionStatusEnumPropertyValue);
+            GovernanceDomainEnumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+            instanceProperties.setProperty("domain", GovernanceDomainEnumPropertyValue);
 
-            requestedRegulation.setStatus(GovernanceDefinitionStatus.values()[0]);
+            requestedRegulation.setDomain(GovernanceDomain.values()[0]);
 
 
             PrimitivePropertyValue testPrimitivePropertyValueForMap=null;
@@ -19351,7 +19430,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
 
             assertEquals(requestedRegulation.getQualifiedName(),returnedRegulation.getQualifiedName());
 
-            assertEquals(requestedRegulation.getStatus(),returnedRegulation.getStatus());
+            assertEquals(requestedRegulation.getDomain(),returnedRegulation.getDomain());
 
             assertEquals(requestedRegulation.getAdditionalProperties(),returnedRegulation.getAdditionalProperties());
 
@@ -19362,7 +19441,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateGovernanceProcess";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -19399,7 +19478,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         instanceProperties.setProperty("priority", primitivePropertyValue);
         primitivePropertyValue = new PrimitivePropertyValue();
         primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-        String qualifiedName = "string8";
+        String qualifiedName = "string9";
         primitivePropertyValue.setPrimitiveValue(qualifiedName);
         instanceProperties.setProperty("qualifiedName", primitivePropertyValue);
         primitivePropertyValue = new PrimitivePropertyValue();
@@ -19420,11 +19499,20 @@ public class TestSubjectAreaBeansToAccessOMRS {
         arrayPropertyValue.setArrayCount(1);
         arrayPropertyValue.setArrayValue(0,primitivePropertyValue);
         instanceProperties.setProperty("outcomes", arrayPropertyValue);
+        primitivePropertyValue = new PrimitivePropertyValue();
+        primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+        String results = "string8";
+        primitivePropertyValue.setPrimitiveValue(results);
+
+        arrayPropertyValue = new ArrayPropertyValue();
+        arrayPropertyValue.setArrayCount(1);
+        arrayPropertyValue.setArrayValue(0,primitivePropertyValue);
+        instanceProperties.setProperty("results", arrayPropertyValue);
         EnumPropertyValue enumPropertyValue;
         enumPropertyValue = new EnumPropertyValue();
         // get the name of the first enumeration value as a sample data.
-        enumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-        instanceProperties.setProperty("status", enumPropertyValue);
+        enumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+        instanceProperties.setProperty("domain", enumPropertyValue);
 
         MapPropertyValue mapPropertyValue;
         // In the models we are generating from we only have map<String,String> types, this code assumes those types.
@@ -19448,7 +19536,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("GovernanceProcess");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         GovernanceProcess requestedGovernanceProcess = new GovernanceProcess();
@@ -19470,12 +19558,12 @@ public class TestSubjectAreaBeansToAccessOMRS {
 
         requestedGovernanceProcess.setQualifiedName(qualifiedName);
 
-        EnumPropertyValue GovernanceDefinitionStatusEnumPropertyValue = new EnumPropertyValue();
+        EnumPropertyValue GovernanceDomainEnumPropertyValue = new EnumPropertyValue();
         // get the name of the first enumeration value as a sample data.
-        GovernanceDefinitionStatusEnumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-        instanceProperties.setProperty("status", GovernanceDefinitionStatusEnumPropertyValue);
+        GovernanceDomainEnumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+        instanceProperties.setProperty("domain", GovernanceDomainEnumPropertyValue);
 
-        requestedGovernanceProcess.setStatus(GovernanceDefinitionStatus.values()[0]);
+        requestedGovernanceProcess.setDomain(GovernanceDomain.values()[0]);
 
         Map<String,String>  mapValue=null;
 
@@ -19497,7 +19585,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
 
         assertEquals(requestedGovernanceProcess.getQualifiedName(),returnedGovernanceProcess.getQualifiedName());
 
-        assertEquals(requestedGovernanceProcess.getStatus(),returnedGovernanceProcess.getStatus());
+        assertEquals(requestedGovernanceProcess.getDomain(),returnedGovernanceProcess.getDomain());
 
         assertEquals(requestedGovernanceProcess.getAdditionalProperties(),returnedGovernanceProcess.getAdditionalProperties());
 
@@ -19508,7 +19596,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-GovernanceProcess-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -19545,14 +19633,14 @@ public class TestSubjectAreaBeansToAccessOMRS {
         instanceProperties.setProperty("priority", primitivePropertyValue);
         primitivePropertyValue = new PrimitivePropertyValue();
         primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-        String qualifiedName = "string8";
+        String qualifiedName = "string9";
         primitivePropertyValue.setPrimitiveValue(qualifiedName);
         instanceProperties.setProperty("qualifiedName", primitivePropertyValue);
         EnumPropertyValue enumPropertyValue;
         enumPropertyValue = new EnumPropertyValue();
         // get the name of the first enumeration value as a sample data.
-        enumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-        instanceProperties.setProperty("status", enumPropertyValue);
+        enumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+        instanceProperties.setProperty("domain", enumPropertyValue);
 
         MapPropertyValue mapPropertyValue =null;
         // In the models we are generating from we only have map<String,String> types, this code assumes those types.
@@ -19594,7 +19682,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateGovernanceProcess";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -19630,14 +19718,14 @@ public class TestSubjectAreaBeansToAccessOMRS {
             instanceProperties.setProperty("priority", primitivePropertyValue);
             primitivePropertyValue = new PrimitivePropertyValue();
             primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-            String qualifiedName = "string8";
+            String qualifiedName = "string9";
             primitivePropertyValue.setPrimitiveValue(qualifiedName);
             instanceProperties.setProperty("qualifiedName", primitivePropertyValue);
             EnumPropertyValue enumPropertyValue;
             enumPropertyValue = new EnumPropertyValue();
             // get the name of the first enumeration value as a sample data.
-            enumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-            instanceProperties.setProperty("status", enumPropertyValue);
+            enumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+            instanceProperties.setProperty("domain", enumPropertyValue);
 
             MapPropertyValue mapPropertyValue;
             // In the models we are generating from we only have map<String,String> types, this code assumes those types.
@@ -19661,7 +19749,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("GovernanceProcess");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             GovernanceProcess requestedGovernanceProcess = new GovernanceProcess();
@@ -19683,12 +19771,12 @@ public class TestSubjectAreaBeansToAccessOMRS {
 
             requestedGovernanceProcess.setQualifiedName(qualifiedName);
 
-            EnumPropertyValue GovernanceDefinitionStatusEnumPropertyValue = new EnumPropertyValue();
+            EnumPropertyValue GovernanceDomainEnumPropertyValue = new EnumPropertyValue();
             // get the name of the first enumeration value as a sample data.
-            GovernanceDefinitionStatusEnumPropertyValue.setSymbolicName(GovernanceDefinitionStatus.values()[0].name());
-            instanceProperties.setProperty("status", GovernanceDefinitionStatusEnumPropertyValue);
+            GovernanceDomainEnumPropertyValue.setSymbolicName(GovernanceDomain.values()[0].name());
+            instanceProperties.setProperty("domain", GovernanceDomainEnumPropertyValue);
 
-            requestedGovernanceProcess.setStatus(GovernanceDefinitionStatus.values()[0]);
+            requestedGovernanceProcess.setDomain(GovernanceDomain.values()[0]);
 
 
             PrimitivePropertyValue testPrimitivePropertyValueForMap=null;
@@ -19723,7 +19811,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
 
             assertEquals(requestedGovernanceProcess.getQualifiedName(),returnedGovernanceProcess.getQualifiedName());
 
-            assertEquals(requestedGovernanceProcess.getStatus(),returnedGovernanceProcess.getStatus());
+            assertEquals(requestedGovernanceProcess.getDomain(),returnedGovernanceProcess.getDomain());
 
             assertEquals(requestedGovernanceProcess.getAdditionalProperties(),returnedGovernanceProcess.getAdditionalProperties());
 
@@ -19734,7 +19822,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateSchemaAttribute";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -19787,7 +19875,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("SchemaAttribute");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         SchemaAttribute requestedSchemaAttribute = new SchemaAttribute();
@@ -19830,7 +19918,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-SchemaAttribute-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -19899,7 +19987,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateSchemaAttribute";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -19951,7 +20039,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("SchemaAttribute");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             SchemaAttribute requestedSchemaAttribute = new SchemaAttribute();
@@ -20007,7 +20095,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateGraphEdge";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -20060,7 +20148,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("GraphEdge");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         GraphEdge requestedGraphEdge = new GraphEdge();
@@ -20103,7 +20191,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-GraphEdge-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -20172,7 +20260,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateGraphEdge";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -20224,7 +20312,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("GraphEdge");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             GraphEdge requestedGraphEdge = new GraphEdge();
@@ -20280,7 +20368,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateCommunity";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -20328,7 +20416,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("Community");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         Community requestedCommunity = new Community();
@@ -20367,7 +20455,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-Community-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -20430,7 +20518,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateCommunity";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -20477,7 +20565,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("Community");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             Community requestedCommunity = new Community();
@@ -20529,7 +20617,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateLocation";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -20572,7 +20660,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("Location");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         Location requestedLocation = new Location();
@@ -20607,7 +20695,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-Location-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -20664,7 +20752,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateLocation";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -20706,7 +20794,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("Location");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             Location requestedLocation = new Location();
@@ -20754,7 +20842,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateBusinessCapability";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -20797,7 +20885,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("BusinessCapability");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         BusinessCapability requestedBusinessCapability = new BusinessCapability();
@@ -20837,7 +20925,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-BusinessCapability-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -20893,7 +20981,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateBusinessCapability";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -20935,7 +21023,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("BusinessCapability");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             BusinessCapability requestedBusinessCapability = new BusinessCapability();
@@ -20988,7 +21076,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreateSchemaLinkElement";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -21036,7 +21124,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         typeOfEntity.setTypeDefName("SchemaLinkElement");
         mockEntity.setType(typeOfEntity);
 
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),anyObject())).thenReturn(mockEntity);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntity);
         // set the mock omrs in to the rest file.
         subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
         SchemaLinkElement requestedSchemaLinkElement = new SchemaLinkElement();
@@ -21072,7 +21160,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-SchemaLinkElement-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -21133,7 +21221,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdateSchemaLinkElement";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;
@@ -21180,7 +21268,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfEntity.setTypeDefName("SchemaLinkElement");
             mockEntity.setType(typeOfEntity);
 
-            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),anyObject())).thenReturn(mockEntity);
+            when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntity);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             SchemaLinkElement requestedSchemaLinkElement = new SchemaLinkElement();
@@ -21292,7 +21380,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             UsedInContext requestedUsedInContext = new UsedInContext();
@@ -21489,7 +21577,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             UsedInContext requestedUsedInContext = new UsedInContext();
@@ -21564,7 +21652,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             Leadership requestedLeadership = new Leadership();
@@ -21661,7 +21749,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             Leadership requestedLeadership = new Leadership();
@@ -21711,7 +21799,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             AttachedComment requestedAttachedComment = new AttachedComment();
@@ -21808,7 +21896,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             AttachedComment requestedAttachedComment = new AttachedComment();
@@ -21868,7 +21956,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ContactThrough requestedContactThrough = new ContactThrough();
@@ -22011,7 +22099,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ContactThrough requestedContactThrough = new ContactThrough();
@@ -22114,7 +22202,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             License requestedLicense = new License();
@@ -22355,7 +22443,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             License requestedLicense = new License();
@@ -22437,7 +22525,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ZoneGovernance requestedZoneGovernance = new ZoneGovernance();
@@ -22534,7 +22622,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ZoneGovernance requestedZoneGovernance = new ZoneGovernance();
@@ -22584,7 +22672,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             FolderHierarchy requestedFolderHierarchy = new FolderHierarchy();
@@ -22681,7 +22769,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             FolderHierarchy requestedFolderHierarchy = new FolderHierarchy();
@@ -22731,7 +22819,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             HostClusterMember requestedHostClusterMember = new HostClusterMember();
@@ -22828,7 +22916,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             HostClusterMember requestedHostClusterMember = new HostClusterMember();
@@ -22886,7 +22974,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setType(typeOfRelationship);
 
             mockRelationship.setEntityOnePropertyName("LocalCategories");
-            mockRelationship.setEntityTwoPropertyName("ExternalGlossaryLinks");
+            mockRelationship.setEntityTwoPropertyName("ExternalGlossaryCategories");
             EntityProxy entityProxy1 = new EntityProxy();
             EntityProxy entityProxy2 = new EntityProxy();
             InstanceType type1 = new InstanceType();
@@ -22898,7 +22986,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             LibraryCategoryReference requestedLibraryCategoryReference = new LibraryCategoryReference();
@@ -22972,7 +23060,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setType(typeOfRelationship);
 
             mockRelationship.setEntityOnePropertyName("LocalCategories");
-            mockRelationship.setEntityTwoPropertyName("ExternalGlossaryLinks");
+            mockRelationship.setEntityTwoPropertyName("ExternalGlossaryCategories");
             EntityProxy entityProxy1 = new EntityProxy();
             EntityProxy entityProxy2 = new EntityProxy();
             InstanceType type1 = new InstanceType();
@@ -23055,7 +23143,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setType(typeOfRelationship);
 
             mockRelationship.setEntityOnePropertyName("LocalCategories");
-            mockRelationship.setEntityTwoPropertyName("ExternalGlossaryLinks");
+            mockRelationship.setEntityTwoPropertyName("ExternalGlossaryCategories");
             EntityProxy entityProxy1 = new EntityProxy();
             EntityProxy entityProxy2 = new EntityProxy();
             InstanceType type1 = new InstanceType();
@@ -23067,7 +23155,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             LibraryCategoryReference requestedLibraryCategoryReference = new LibraryCategoryReference();
@@ -23133,7 +23221,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ProjectCharterLink requestedProjectCharterLink = new ProjectCharterLink();
@@ -23230,7 +23318,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ProjectCharterLink requestedProjectCharterLink = new ProjectCharterLink();
@@ -23285,7 +23373,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ProfileIdentity requestedProfileIdentity = new ProfileIdentity();
@@ -23400,7 +23488,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ProfileIdentity requestedProfileIdentity = new ProfileIdentity();
@@ -23454,7 +23542,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ToDoSource requestedToDoSource = new ToDoSource();
@@ -23551,7 +23639,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ToDoSource requestedToDoSource = new ToDoSource();
@@ -23626,7 +23714,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             Translation requestedTranslation = new Translation();
@@ -23823,7 +23911,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             Translation requestedTranslation = new Translation();
@@ -23898,7 +23986,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             SchemaLinkToType requestedSchemaLinkToType = new SchemaLinkToType();
@@ -23995,7 +24083,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             SchemaLinkToType requestedSchemaLinkToType = new SchemaLinkToType();
@@ -24045,7 +24133,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             CommunityResources requestedCommunityResources = new CommunityResources();
@@ -24142,7 +24230,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             CommunityResources requestedCommunityResources = new CommunityResources();
@@ -24192,7 +24280,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             DataContentForDataSet requestedDataContentForDataSet = new DataContentForDataSet();
@@ -24289,7 +24377,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             DataContentForDataSet requestedDataContentForDataSet = new DataContentForDataSet();
@@ -24339,7 +24427,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ServerEndpoint requestedServerEndpoint = new ServerEndpoint();
@@ -24436,7 +24524,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ServerEndpoint requestedServerEndpoint = new ServerEndpoint();
@@ -24501,7 +24589,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ExternalIdLink requestedExternalIdLink = new ExternalIdLink();
@@ -24652,7 +24740,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ExternalIdLink requestedExternalIdLink = new ExternalIdLink();
@@ -24714,7 +24802,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             CategoryHierarchyLink requestedCategoryHierarchyLink = new CategoryHierarchyLink();
@@ -24811,7 +24899,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             CategoryHierarchyLink requestedCategoryHierarchyLink = new CategoryHierarchyLink();
@@ -24886,7 +24974,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             PreferredTerm requestedPreferredTerm = new PreferredTerm();
@@ -25083,7 +25171,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             PreferredTerm requestedPreferredTerm = new PreferredTerm();
@@ -25158,7 +25246,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ProjectHierarchy requestedProjectHierarchy = new ProjectHierarchy();
@@ -25255,7 +25343,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ProjectHierarchy requestedProjectHierarchy = new ProjectHierarchy();
@@ -25305,7 +25393,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             DeployedVirtualContainer requestedDeployedVirtualContainer = new DeployedVirtualContainer();
@@ -25402,7 +25490,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             DeployedVirtualContainer requestedDeployedVirtualContainer = new DeployedVirtualContainer();
@@ -25417,180 +25505,6 @@ public class TestSubjectAreaBeansToAccessOMRS {
 
 
             DeployedVirtualContainer returnedDeployedVirtualContainer = subjectAreaBeansToAccessOMRS.updateDeployedVirtualContainerRelationship(testuserid, requestedDeployedVirtualContainer);
-        }
-
-    @Test
-        public void testCreateBusinessCapabilityResponsibility() throws Exception {
-            String testuserid = "userid1";
-            String testguid1 = "testcreateBusinessCapabilityResponsibility";
-            SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
-
-            Relationship mockRelationship = new Relationship();
-            InstanceProperties instanceProperties = new InstanceProperties();
-
-            PrimitivePropertyValue primitivePropertyValue;
-            primitivePropertyValue = new PrimitivePropertyValue();
-            primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-            String rationale = "string0";
-            primitivePropertyValue.setPrimitiveValue(rationale);
-            instanceProperties.setProperty("rationale", primitivePropertyValue);
-            EnumPropertyValue enumPropertyValue;
-            MapPropertyValue mapPropertyValue;
-            // In the models we are generating from we only have map<String,String> types, this code assumes those types.
-            mockRelationship.setProperties(instanceProperties);
-            mockRelationship.setGUID(testguid1);
-            mockRelationship.setVersion(1L);
-            InstanceType typeOfRelationship = new InstanceType();
-            typeOfRelationship.setTypeDefName("BusinessCapabilityResponsibility");
-            mockRelationship.setType(typeOfRelationship);
-
-            mockRelationship.setEntityOnePropertyName("SupportingResponsibilities");
-            mockRelationship.setEntityTwoPropertyName("AffectedBusinessCapabilities");
-            EntityProxy entityProxy1 = new EntityProxy();
-            EntityProxy entityProxy2 = new EntityProxy();
-            InstanceType type1 = new InstanceType();
-            type1.setTypeDefName("GovernanceResponsibility");
-            InstanceType type2 = new InstanceType();
-            type2.setTypeDefName("BusinessCapability");
-            entityProxy1.setType(type1);
-            entityProxy2.setType(type2);
-            mockRelationship.setEntityOneProxy(entityProxy1);
-            mockRelationship.setEntityTwoProxy(entityProxy2);
-
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
-            // set the mock omrs in to the rest file.
-            subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
-            BusinessCapabilityResponsibility requestedBusinessCapabilityResponsibility = new BusinessCapabilityResponsibility();
-            SystemAttributes systemAttributes = new SystemAttributes();
-            systemAttributes.setVersion(1L);
-            requestedBusinessCapabilityResponsibility.setSystemAttributes(systemAttributes);
-
-            requestedBusinessCapabilityResponsibility.setRationale(rationale);
-
-            MapPropertyValue testMapPropertyValue = null;
-            InstanceProperties testMapValues =null;
-            PrimitivePropertyValue testPrimitivePropertyValueForMap=null;
-            BusinessCapabilityResponsibility returnedBusinessCapabilityResponsibility = subjectAreaBeansToAccessOMRS.createBusinessCapabilityResponsibilityRelationship(testuserid, requestedBusinessCapabilityResponsibility);
-            assertEquals(requestedBusinessCapabilityResponsibility.getRationale(),returnedBusinessCapabilityResponsibility.getRationale());
-
-        }
-
-        @Test
-        public void testGetBusinessCapabilityResponsibility() throws Exception {
-            String testuserid = "userid1";
-            String testguid1 = "testGetBusinessCapabilityResponsibility";
-            SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
-
-            Relationship mockRelationship = new Relationship();
-            InstanceProperties instanceProperties = new InstanceProperties();
-
-            PrimitivePropertyValue primitivePropertyValue;
-            primitivePropertyValue = new PrimitivePropertyValue();
-            primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-            String rationale = "string0";
-            primitivePropertyValue.setPrimitiveValue(rationale);
-            instanceProperties.setProperty("rationale", primitivePropertyValue);
-            EnumPropertyValue enumPropertyValue;
-            // In the models we are generating from we only have map<String,String> types, this code assumes those types.
-            MapPropertyValue mapPropertyValue = null;
-            InstanceProperties mapValues =null;
-            PrimitivePropertyValue primitivePropertyValueForMap =null;
-
-            mockRelationship.setProperties(instanceProperties);
-            mockRelationship.setGUID(testguid1);
-            mockRelationship.setVersion(1L);
-            InstanceType typeOfRelationship = new InstanceType();
-            typeOfRelationship.setTypeDefName("BusinessCapabilityResponsibility");
-            mockRelationship.setType(typeOfRelationship);
-
-            mockRelationship.setEntityOnePropertyName("SupportingResponsibilities");
-            mockRelationship.setEntityTwoPropertyName("AffectedBusinessCapabilities");
-            EntityProxy entityProxy1 = new EntityProxy();
-            EntityProxy entityProxy2 = new EntityProxy();
-            InstanceType type1 = new InstanceType();
-            type1.setTypeDefName("GovernanceResponsibility");
-            InstanceType type2 = new InstanceType();
-            type2.setTypeDefName("BusinessCapability");
-            entityProxy1.setType(type1);
-            entityProxy2.setType(type2);
-            mockRelationship.setEntityOneProxy(entityProxy1);
-            mockRelationship.setEntityTwoProxy(entityProxy2);
-
-            when( oMRSAPIHelper.callOMRSGetRelationshipByGuid(anyString(),anyString())).thenReturn(mockRelationship);
-            // set the mock omrs in to the rest file.
-            subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
-            BusinessCapabilityResponsibility requestedBusinessCapabilityResponsibility = new BusinessCapabilityResponsibility();
-
-            requestedBusinessCapabilityResponsibility.setRationale(rationale);
-
-            InstanceProperties testMapValues =null;
-            PrimitivePropertyValue testPrimitivePropertyValueForMap=null;
-            MapPropertyValue testMapPropertyValue = null;
-
-            BusinessCapabilityResponsibility returnedBusinessCapabilityResponsibility = subjectAreaBeansToAccessOMRS.getBusinessCapabilityResponsibilityRelationshipByGuid(testuserid, testguid1);
-            assertEquals(requestedBusinessCapabilityResponsibility.getRationale(),returnedBusinessCapabilityResponsibility.getRationale());
-
-        }
-        @Test
-        public void testUpdateBusinessCapabilityResponsibility() throws Exception {
-            String testuserid = "userid1";
-            String testguid1 = "testUpdateBusinessCapabilityResponsibility";
-            SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
-
-            Relationship mockRelationship = new Relationship();
-            InstanceProperties instanceProperties = new InstanceProperties();
-
-            PrimitivePropertyValue primitivePropertyValue;
-            primitivePropertyValue = new PrimitivePropertyValue();
-            primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-            String rationale = "string0";
-            primitivePropertyValue.setPrimitiveValue(rationale);
-            instanceProperties.setProperty("rationale", primitivePropertyValue);
-            EnumPropertyValue enumPropertyValue;
-            MapPropertyValue mapPropertyValue=null;
-            PrimitivePropertyValue primitivePropertyValueForMap = null;
-            InstanceProperties mapValues =null;
-
-            // In the models we are generating from we only have map<String,String> types, this code assumes those types.
-            mockRelationship.setProperties(instanceProperties);
-            mockRelationship.setGUID(testguid1);
-            mockRelationship.setVersion(1L);
-            InstanceType typeOfRelationship = new InstanceType();
-            typeOfRelationship.setTypeDefName("BusinessCapabilityResponsibility");
-            mockRelationship.setType(typeOfRelationship);
-
-            mockRelationship.setEntityOnePropertyName("SupportingResponsibilities");
-            mockRelationship.setEntityTwoPropertyName("AffectedBusinessCapabilities");
-            EntityProxy entityProxy1 = new EntityProxy();
-            EntityProxy entityProxy2 = new EntityProxy();
-            InstanceType type1 = new InstanceType();
-            type1.setTypeDefName("GovernanceResponsibility");
-            InstanceType type2 = new InstanceType();
-            type2.setTypeDefName("BusinessCapability");
-            entityProxy1.setType(type1);
-            entityProxy2.setType(type2);
-            mockRelationship.setEntityOneProxy(entityProxy1);
-            mockRelationship.setEntityTwoProxy(entityProxy2);
-
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
-            // set the mock omrs in to the rest file.
-            subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
-            BusinessCapabilityResponsibility requestedBusinessCapabilityResponsibility = new BusinessCapabilityResponsibility();
-
-            requestedBusinessCapabilityResponsibility.setRationale(rationale);
-
-            PrimitivePropertyValue testPrimitivePropertyValueForMap=null;
-            InstanceProperties testMapValues =null;
-            MapPropertyValue testMapPropertyValue = null;
-
-            SystemAttributes systemAttributes = new SystemAttributes();
-            systemAttributes.setVersion(1L);
-            requestedBusinessCapabilityResponsibility.setSystemAttributes(systemAttributes);
-
-
-            BusinessCapabilityResponsibility returnedBusinessCapabilityResponsibility = subjectAreaBeansToAccessOMRS.updateBusinessCapabilityResponsibilityRelationship(testuserid, requestedBusinessCapabilityResponsibility);
-            assertEquals(requestedBusinessCapabilityResponsibility.getRationale(),returnedBusinessCapabilityResponsibility.getRationale());
-
         }
 
     @Test
@@ -25626,7 +25540,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ProjectMeeting requestedProjectMeeting = new ProjectMeeting();
@@ -25723,7 +25637,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ProjectMeeting requestedProjectMeeting = new ProjectMeeting();
@@ -25778,7 +25692,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             GovernanceResults requestedGovernanceResults = new GovernanceResults();
@@ -25893,7 +25807,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             GovernanceResults requestedGovernanceResults = new GovernanceResults();
@@ -25947,7 +25861,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             APIResponse requestedAPIResponse = new APIResponse();
@@ -26044,7 +25958,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             APIResponse requestedAPIResponse = new APIResponse();
@@ -26109,7 +26023,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ServerSupportedCapability requestedServerSupportedCapability = new ServerSupportedCapability();
@@ -26270,7 +26184,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ServerSupportedCapability requestedServerSupportedCapability = new ServerSupportedCapability();
@@ -26337,7 +26251,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             CollectionMember requestedCollectionMember = new CollectionMember();
@@ -26434,7 +26348,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             CollectionMember requestedCollectionMember = new CollectionMember();
@@ -26484,7 +26398,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             HostNetwork requestedHostNetwork = new HostNetwork();
@@ -26581,7 +26495,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             HostNetwork requestedHostNetwork = new HostNetwork();
@@ -26631,7 +26545,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             AttributeForSchema requestedAttributeForSchema = new AttributeForSchema();
@@ -26728,7 +26642,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             AttributeForSchema requestedAttributeForSchema = new AttributeForSchema();
@@ -26778,7 +26692,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             AssetLocation requestedAssetLocation = new AssetLocation();
@@ -26875,7 +26789,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             AssetLocation requestedAssetLocation = new AssetLocation();
@@ -26890,261 +26804,6 @@ public class TestSubjectAreaBeansToAccessOMRS {
 
 
             AssetLocation returnedAssetLocation = subjectAreaBeansToAccessOMRS.updateAssetLocationRelationship(testuserid, requestedAssetLocation);
-        }
-
-    @Test
-        public void testCreateIsTaxonomy() throws Exception {
-            String testuserid = "userid1";
-            String testguid1 = "testcreateIsTaxonomy";
-            SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
-
-            Relationship mockRelationship = new Relationship();
-            InstanceProperties instanceProperties = new InstanceProperties();
-
-            PrimitivePropertyValue primitivePropertyValue;
-            primitivePropertyValue = new PrimitivePropertyValue();
-            primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-            String identifier = "string0";
-            primitivePropertyValue.setPrimitiveValue(identifier);
-            instanceProperties.setProperty("identifier", primitivePropertyValue);
-            primitivePropertyValue = new PrimitivePropertyValue();
-            primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-            String description = "string1";
-            primitivePropertyValue.setPrimitiveValue(description);
-            instanceProperties.setProperty("description", primitivePropertyValue);
-            primitivePropertyValue = new PrimitivePropertyValue();
-            primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-            String steward = "string2";
-            primitivePropertyValue.setPrimitiveValue(steward);
-            instanceProperties.setProperty("steward", primitivePropertyValue);
-            primitivePropertyValue = new PrimitivePropertyValue();
-            primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE);
-            java.util.Date lastVerified = new java.util.Date();
-            primitivePropertyValue.setPrimitiveValue(lastVerified);
-            instanceProperties.setProperty("lastVerified", primitivePropertyValue);
-            EnumPropertyValue enumPropertyValue;
-            MapPropertyValue mapPropertyValue;
-            // In the models we are generating from we only have map<String,String> types, this code assumes those types.
-            mockRelationship.setProperties(instanceProperties);
-            mockRelationship.setGUID(testguid1);
-            mockRelationship.setVersion(1L);
-            InstanceType typeOfRelationship = new InstanceType();
-            typeOfRelationship.setTypeDefName("IsTaxonomy");
-            mockRelationship.setType(typeOfRelationship);
-
-            mockRelationship.setEntityOnePropertyName("LocalTerms");
-            mockRelationship.setEntityTwoPropertyName("ExternalGlossaryLinks");
-            EntityProxy entityProxy1 = new EntityProxy();
-            EntityProxy entityProxy2 = new EntityProxy();
-            InstanceType type1 = new InstanceType();
-            type1.setTypeDefName("GlossaryTerm");
-            InstanceType type2 = new InstanceType();
-            type2.setTypeDefName("ExternalGlossaryLink");
-            entityProxy1.setType(type1);
-            entityProxy2.setType(type2);
-            mockRelationship.setEntityOneProxy(entityProxy1);
-            mockRelationship.setEntityTwoProxy(entityProxy2);
-
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
-            // set the mock omrs in to the rest file.
-            subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
-            IsTaxonomy requestedIsTaxonomy = new IsTaxonomy();
-            SystemAttributes systemAttributes = new SystemAttributes();
-            systemAttributes.setVersion(1L);
-            requestedIsTaxonomy.setSystemAttributes(systemAttributes);
-
-            requestedIsTaxonomy.setIdentifier(identifier);
-
-            requestedIsTaxonomy.setDescription(description);
-
-            requestedIsTaxonomy.setSteward(steward);
-
-            requestedIsTaxonomy.setLastVerified(lastVerified);
-
-            MapPropertyValue testMapPropertyValue = null;
-            InstanceProperties testMapValues =null;
-            PrimitivePropertyValue testPrimitivePropertyValueForMap=null;
-            IsTaxonomy returnedIsTaxonomy = subjectAreaBeansToAccessOMRS.createIsTaxonomyRelationship(testuserid, requestedIsTaxonomy);
-            assertEquals(requestedIsTaxonomy.getIdentifier(),returnedIsTaxonomy.getIdentifier());
-
-            assertEquals(requestedIsTaxonomy.getDescription(),returnedIsTaxonomy.getDescription());
-
-            assertEquals(requestedIsTaxonomy.getSteward(),returnedIsTaxonomy.getSteward());
-
-            assertEquals(requestedIsTaxonomy.getLastVerified(),returnedIsTaxonomy.getLastVerified());
-
-        }
-
-        @Test
-        public void testGetIsTaxonomy() throws Exception {
-            String testuserid = "userid1";
-            String testguid1 = "testGetIsTaxonomy";
-            SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
-
-            Relationship mockRelationship = new Relationship();
-            InstanceProperties instanceProperties = new InstanceProperties();
-
-            PrimitivePropertyValue primitivePropertyValue;
-            primitivePropertyValue = new PrimitivePropertyValue();
-            primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-            String identifier = "string0";
-            primitivePropertyValue.setPrimitiveValue(identifier);
-            instanceProperties.setProperty("identifier", primitivePropertyValue);
-            primitivePropertyValue = new PrimitivePropertyValue();
-            primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-            String description = "string1";
-            primitivePropertyValue.setPrimitiveValue(description);
-            instanceProperties.setProperty("description", primitivePropertyValue);
-            primitivePropertyValue = new PrimitivePropertyValue();
-            primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-            String steward = "string2";
-            primitivePropertyValue.setPrimitiveValue(steward);
-            instanceProperties.setProperty("steward", primitivePropertyValue);
-            primitivePropertyValue = new PrimitivePropertyValue();
-            primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE);
-            java.util.Date lastVerified = new java.util.Date();
-            primitivePropertyValue.setPrimitiveValue(lastVerified);
-            instanceProperties.setProperty("lastVerified", primitivePropertyValue);
-            EnumPropertyValue enumPropertyValue;
-            // In the models we are generating from we only have map<String,String> types, this code assumes those types.
-            MapPropertyValue mapPropertyValue = null;
-            InstanceProperties mapValues =null;
-            PrimitivePropertyValue primitivePropertyValueForMap =null;
-
-            mockRelationship.setProperties(instanceProperties);
-            mockRelationship.setGUID(testguid1);
-            mockRelationship.setVersion(1L);
-            InstanceType typeOfRelationship = new InstanceType();
-            typeOfRelationship.setTypeDefName("IsTaxonomy");
-            mockRelationship.setType(typeOfRelationship);
-
-            mockRelationship.setEntityOnePropertyName("LocalTerms");
-            mockRelationship.setEntityTwoPropertyName("ExternalGlossaryLinks");
-            EntityProxy entityProxy1 = new EntityProxy();
-            EntityProxy entityProxy2 = new EntityProxy();
-            InstanceType type1 = new InstanceType();
-            type1.setTypeDefName("GlossaryTerm");
-            InstanceType type2 = new InstanceType();
-            type2.setTypeDefName("ExternalGlossaryLink");
-            entityProxy1.setType(type1);
-            entityProxy2.setType(type2);
-            mockRelationship.setEntityOneProxy(entityProxy1);
-            mockRelationship.setEntityTwoProxy(entityProxy2);
-
-            when( oMRSAPIHelper.callOMRSGetRelationshipByGuid(anyString(),anyString())).thenReturn(mockRelationship);
-            // set the mock omrs in to the rest file.
-            subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
-            IsTaxonomy requestedIsTaxonomy = new IsTaxonomy();
-
-            requestedIsTaxonomy.setIdentifier(identifier);
-
-            requestedIsTaxonomy.setDescription(description);
-
-            requestedIsTaxonomy.setSteward(steward);
-
-            requestedIsTaxonomy.setLastVerified(lastVerified);
-
-            InstanceProperties testMapValues =null;
-            PrimitivePropertyValue testPrimitivePropertyValueForMap=null;
-            MapPropertyValue testMapPropertyValue = null;
-
-            IsTaxonomy returnedIsTaxonomy = subjectAreaBeansToAccessOMRS.getIsTaxonomyRelationshipByGuid(testuserid, testguid1);
-            assertEquals(requestedIsTaxonomy.getIdentifier(),returnedIsTaxonomy.getIdentifier());
-
-            assertEquals(requestedIsTaxonomy.getDescription(),returnedIsTaxonomy.getDescription());
-
-            assertEquals(requestedIsTaxonomy.getSteward(),returnedIsTaxonomy.getSteward());
-
-            assertEquals(requestedIsTaxonomy.getLastVerified(),returnedIsTaxonomy.getLastVerified());
-
-        }
-        @Test
-        public void testUpdateIsTaxonomy() throws Exception {
-            String testuserid = "userid1";
-            String testguid1 = "testUpdateIsTaxonomy";
-            SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
-
-            Relationship mockRelationship = new Relationship();
-            InstanceProperties instanceProperties = new InstanceProperties();
-
-            PrimitivePropertyValue primitivePropertyValue;
-            primitivePropertyValue = new PrimitivePropertyValue();
-            primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-            String identifier = "string0";
-            primitivePropertyValue.setPrimitiveValue(identifier);
-            instanceProperties.setProperty("identifier", primitivePropertyValue);
-            primitivePropertyValue = new PrimitivePropertyValue();
-            primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-            String description = "string1";
-            primitivePropertyValue.setPrimitiveValue(description);
-            instanceProperties.setProperty("description", primitivePropertyValue);
-            primitivePropertyValue = new PrimitivePropertyValue();
-            primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-            String steward = "string2";
-            primitivePropertyValue.setPrimitiveValue(steward);
-            instanceProperties.setProperty("steward", primitivePropertyValue);
-            primitivePropertyValue = new PrimitivePropertyValue();
-            primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE);
-            java.util.Date lastVerified = new java.util.Date();
-            primitivePropertyValue.setPrimitiveValue(lastVerified);
-            instanceProperties.setProperty("lastVerified", primitivePropertyValue);
-            EnumPropertyValue enumPropertyValue;
-            MapPropertyValue mapPropertyValue=null;
-            PrimitivePropertyValue primitivePropertyValueForMap = null;
-            InstanceProperties mapValues =null;
-
-            // In the models we are generating from we only have map<String,String> types, this code assumes those types.
-            mockRelationship.setProperties(instanceProperties);
-            mockRelationship.setGUID(testguid1);
-            mockRelationship.setVersion(1L);
-            InstanceType typeOfRelationship = new InstanceType();
-            typeOfRelationship.setTypeDefName("IsTaxonomy");
-            mockRelationship.setType(typeOfRelationship);
-
-            mockRelationship.setEntityOnePropertyName("LocalTerms");
-            mockRelationship.setEntityTwoPropertyName("ExternalGlossaryLinks");
-            EntityProxy entityProxy1 = new EntityProxy();
-            EntityProxy entityProxy2 = new EntityProxy();
-            InstanceType type1 = new InstanceType();
-            type1.setTypeDefName("GlossaryTerm");
-            InstanceType type2 = new InstanceType();
-            type2.setTypeDefName("ExternalGlossaryLink");
-            entityProxy1.setType(type1);
-            entityProxy2.setType(type2);
-            mockRelationship.setEntityOneProxy(entityProxy1);
-            mockRelationship.setEntityTwoProxy(entityProxy2);
-
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
-            // set the mock omrs in to the rest file.
-            subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
-            IsTaxonomy requestedIsTaxonomy = new IsTaxonomy();
-
-            requestedIsTaxonomy.setIdentifier(identifier);
-
-            requestedIsTaxonomy.setDescription(description);
-
-            requestedIsTaxonomy.setSteward(steward);
-
-            requestedIsTaxonomy.setLastVerified(lastVerified);
-
-            PrimitivePropertyValue testPrimitivePropertyValueForMap=null;
-            InstanceProperties testMapValues =null;
-            MapPropertyValue testMapPropertyValue = null;
-
-            SystemAttributes systemAttributes = new SystemAttributes();
-            systemAttributes.setVersion(1L);
-            requestedIsTaxonomy.setSystemAttributes(systemAttributes);
-
-
-            IsTaxonomy returnedIsTaxonomy = subjectAreaBeansToAccessOMRS.updateIsTaxonomyRelationship(testuserid, requestedIsTaxonomy);
-            assertEquals(requestedIsTaxonomy.getIdentifier(),returnedIsTaxonomy.getIdentifier());
-
-            assertEquals(requestedIsTaxonomy.getDescription(),returnedIsTaxonomy.getDescription());
-
-            assertEquals(requestedIsTaxonomy.getSteward(),returnedIsTaxonomy.getSteward());
-
-            assertEquals(requestedIsTaxonomy.getLastVerified(),returnedIsTaxonomy.getLastVerified());
-
         }
 
     @Test
@@ -27180,7 +26839,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             SchemaAttributeType requestedSchemaAttributeType = new SchemaAttributeType();
@@ -27277,7 +26936,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             SchemaAttributeType requestedSchemaAttributeType = new SchemaAttributeType();
@@ -27332,7 +26991,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             GovernanceImplementation requestedGovernanceImplementation = new GovernanceImplementation();
@@ -27447,7 +27106,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             GovernanceImplementation requestedGovernanceImplementation = new GovernanceImplementation();
@@ -27506,7 +27165,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             LinkedMedia requestedLinkedMedia = new LinkedMedia();
@@ -27621,7 +27280,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             LinkedMedia requestedLinkedMedia = new LinkedMedia();
@@ -27675,7 +27334,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             MapToElementType requestedMapToElementType = new MapToElementType();
@@ -27772,7 +27431,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             MapToElementType requestedMapToElementType = new MapToElementType();
@@ -27822,7 +27481,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ExternallySourcedGlossary requestedExternallySourcedGlossary = new ExternallySourcedGlossary();
@@ -27919,7 +27578,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ExternallySourcedGlossary requestedExternallySourcedGlossary = new ExternallySourcedGlossary();
@@ -27979,7 +27638,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ExternalReferenceLink requestedExternalReferenceLink = new ExternalReferenceLink();
@@ -28112,7 +27771,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ExternalReferenceLink requestedExternalReferenceLink = new ExternalReferenceLink();
@@ -28180,7 +27839,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             MediaReference requestedMediaReference = new MediaReference();
@@ -28313,7 +27972,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             MediaReference requestedMediaReference = new MediaReference();
@@ -28376,7 +28035,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             CommunityMembership requestedCommunityMembership = new CommunityMembership();
@@ -28501,7 +28160,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             CommunityMembership requestedCommunityMembership = new CommunityMembership();
@@ -28565,7 +28224,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ExternalIdScope requestedExternalIdScope = new ExternalIdScope();
@@ -28680,7 +28339,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ExternalIdScope requestedExternalIdScope = new ExternalIdScope();
@@ -28759,7 +28418,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ValidValue requestedValidValue = new ValidValue();
@@ -28956,7 +28615,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ValidValue requestedValidValue = new ValidValue();
@@ -29031,7 +28690,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             AcceptedAnswer requestedAcceptedAnswer = new AcceptedAnswer();
@@ -29128,7 +28787,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             AcceptedAnswer requestedAcceptedAnswer = new AcceptedAnswer();
@@ -29183,7 +28842,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             GovernanceDefinitionMetric requestedGovernanceDefinitionMetric = new GovernanceDefinitionMetric();
@@ -29298,7 +28957,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             GovernanceDefinitionMetric requestedGovernanceDefinitionMetric = new GovernanceDefinitionMetric();
@@ -29357,7 +29016,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             SchemaQueryImplementation requestedSchemaQueryImplementation = new SchemaQueryImplementation();
@@ -29472,7 +29131,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             SchemaQueryImplementation requestedSchemaQueryImplementation = new SchemaQueryImplementation();
@@ -29526,7 +29185,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             AssetSchemaType requestedAssetSchemaType = new AssetSchemaType();
@@ -29623,7 +29282,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             AssetSchemaType requestedAssetSchemaType = new AssetSchemaType();
@@ -29678,7 +29337,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ProjectDependency requestedProjectDependency = new ProjectDependency();
@@ -29793,7 +29452,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ProjectDependency requestedProjectDependency = new ProjectDependency();
@@ -29847,7 +29506,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             TopicSubscribers requestedTopicSubscribers = new TopicSubscribers();
@@ -29944,7 +29603,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             TopicSubscribers requestedTopicSubscribers = new TopicSubscribers();
@@ -30019,7 +29678,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ReplacementTerm requestedReplacementTerm = new ReplacementTerm();
@@ -30216,7 +29875,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ReplacementTerm requestedReplacementTerm = new ReplacementTerm();
@@ -30291,7 +29950,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             OrganizationalCapability requestedOrganizationalCapability = new OrganizationalCapability();
@@ -30388,7 +30047,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             OrganizationalCapability requestedOrganizationalCapability = new OrganizationalCapability();
@@ -30443,7 +30102,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             MetadataCohortPeer requestedMetadataCohortPeer = new MetadataCohortPeer();
@@ -30558,7 +30217,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             MetadataCohortPeer requestedMetadataCohortPeer = new MetadataCohortPeer();
@@ -30612,7 +30271,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             AttachedNoteLogEntry requestedAttachedNoteLogEntry = new AttachedNoteLogEntry();
@@ -30709,7 +30368,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             AttachedNoteLogEntry requestedAttachedNoteLogEntry = new AttachedNoteLogEntry();
@@ -30769,7 +30428,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             AssetServerUse requestedAssetServerUse = new AssetServerUse();
@@ -30912,7 +30571,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             AssetServerUse requestedAssetServerUse = new AssetServerUse();
@@ -30975,7 +30634,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             RuntimeForProcess requestedRuntimeForProcess = new RuntimeForProcess();
@@ -31072,7 +30731,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             RuntimeForProcess requestedRuntimeForProcess = new RuntimeForProcess();
@@ -31122,7 +30781,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             NestedLocation requestedNestedLocation = new NestedLocation();
@@ -31219,7 +30878,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             NestedLocation requestedNestedLocation = new NestedLocation();
@@ -31248,9 +30907,9 @@ public class TestSubjectAreaBeansToAccessOMRS {
             PrimitivePropertyValue primitivePropertyValue;
             primitivePropertyValue = new PrimitivePropertyValue();
             primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-            String notes = "string0";
-            primitivePropertyValue.setPrimitiveValue(notes);
-            instanceProperties.setProperty("notes", primitivePropertyValue);
+            String responsibilityType = "string0";
+            primitivePropertyValue.setPrimitiveValue(responsibilityType);
+            instanceProperties.setProperty("responsibilityType", primitivePropertyValue);
             EnumPropertyValue enumPropertyValue;
             MapPropertyValue mapPropertyValue;
             // In the models we are generating from we only have map<String,String> types, this code assumes those types.
@@ -31274,7 +30933,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             StaffAssignment requestedStaffAssignment = new StaffAssignment();
@@ -31282,13 +30941,13 @@ public class TestSubjectAreaBeansToAccessOMRS {
             systemAttributes.setVersion(1L);
             requestedStaffAssignment.setSystemAttributes(systemAttributes);
 
-            requestedStaffAssignment.setNotes(notes);
+            requestedStaffAssignment.setResponsibilityType(responsibilityType);
 
             MapPropertyValue testMapPropertyValue = null;
             InstanceProperties testMapValues =null;
             PrimitivePropertyValue testPrimitivePropertyValueForMap=null;
             StaffAssignment returnedStaffAssignment = subjectAreaBeansToAccessOMRS.createStaffAssignmentRelationship(testuserid, requestedStaffAssignment);
-            assertEquals(requestedStaffAssignment.getNotes(),returnedStaffAssignment.getNotes());
+            assertEquals(requestedStaffAssignment.getResponsibilityType(),returnedStaffAssignment.getResponsibilityType());
 
         }
 
@@ -31304,9 +30963,9 @@ public class TestSubjectAreaBeansToAccessOMRS {
             PrimitivePropertyValue primitivePropertyValue;
             primitivePropertyValue = new PrimitivePropertyValue();
             primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-            String notes = "string0";
-            primitivePropertyValue.setPrimitiveValue(notes);
-            instanceProperties.setProperty("notes", primitivePropertyValue);
+            String responsibilityType = "string0";
+            primitivePropertyValue.setPrimitiveValue(responsibilityType);
+            instanceProperties.setProperty("responsibilityType", primitivePropertyValue);
             EnumPropertyValue enumPropertyValue;
             // In the models we are generating from we only have map<String,String> types, this code assumes those types.
             MapPropertyValue mapPropertyValue = null;
@@ -31338,14 +30997,14 @@ public class TestSubjectAreaBeansToAccessOMRS {
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             StaffAssignment requestedStaffAssignment = new StaffAssignment();
 
-            requestedStaffAssignment.setNotes(notes);
+            requestedStaffAssignment.setResponsibilityType(responsibilityType);
 
             InstanceProperties testMapValues =null;
             PrimitivePropertyValue testPrimitivePropertyValueForMap=null;
             MapPropertyValue testMapPropertyValue = null;
 
             StaffAssignment returnedStaffAssignment = subjectAreaBeansToAccessOMRS.getStaffAssignmentRelationshipByGuid(testuserid, testguid1);
-            assertEquals(requestedStaffAssignment.getNotes(),returnedStaffAssignment.getNotes());
+            assertEquals(requestedStaffAssignment.getResponsibilityType(),returnedStaffAssignment.getResponsibilityType());
 
         }
         @Test
@@ -31360,9 +31019,9 @@ public class TestSubjectAreaBeansToAccessOMRS {
             PrimitivePropertyValue primitivePropertyValue;
             primitivePropertyValue = new PrimitivePropertyValue();
             primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-            String notes = "string0";
-            primitivePropertyValue.setPrimitiveValue(notes);
-            instanceProperties.setProperty("notes", primitivePropertyValue);
+            String responsibilityType = "string0";
+            primitivePropertyValue.setPrimitiveValue(responsibilityType);
+            instanceProperties.setProperty("responsibilityType", primitivePropertyValue);
             EnumPropertyValue enumPropertyValue;
             MapPropertyValue mapPropertyValue=null;
             PrimitivePropertyValue primitivePropertyValueForMap = null;
@@ -31389,12 +31048,12 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             StaffAssignment requestedStaffAssignment = new StaffAssignment();
 
-            requestedStaffAssignment.setNotes(notes);
+            requestedStaffAssignment.setResponsibilityType(responsibilityType);
 
             PrimitivePropertyValue testPrimitivePropertyValueForMap=null;
             InstanceProperties testMapValues =null;
@@ -31406,7 +31065,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
 
 
             StaffAssignment returnedStaffAssignment = subjectAreaBeansToAccessOMRS.updateStaffAssignmentRelationship(testuserid, requestedStaffAssignment);
-            assertEquals(requestedStaffAssignment.getNotes(),returnedStaffAssignment.getNotes());
+            assertEquals(requestedStaffAssignment.getResponsibilityType(),returnedStaffAssignment.getResponsibilityType());
 
         }
 
@@ -31443,7 +31102,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             LinkedFile requestedLinkedFile = new LinkedFile();
@@ -31540,7 +31199,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             LinkedFile requestedLinkedFile = new LinkedFile();
@@ -31600,7 +31259,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             TermCategorization requestedTermCategorization = new TermCategorization();
@@ -31743,7 +31402,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             TermCategorization requestedTermCategorization = new TermCategorization();
@@ -31806,7 +31465,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ZoneMembership requestedZoneMembership = new ZoneMembership();
@@ -31903,7 +31562,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ZoneMembership requestedZoneMembership = new ZoneMembership();
@@ -31953,7 +31612,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             APIEndpoint requestedAPIEndpoint = new APIEndpoint();
@@ -32050,7 +31709,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             APIEndpoint requestedAPIEndpoint = new APIEndpoint();
@@ -32100,7 +31759,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ConnectionEndpoint requestedConnectionEndpoint = new ConnectionEndpoint();
@@ -32197,7 +31856,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ConnectionEndpoint requestedConnectionEndpoint = new ConnectionEndpoint();
@@ -32247,7 +31906,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             CategoryAnchor requestedCategoryAnchor = new CategoryAnchor();
@@ -32344,7 +32003,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             CategoryAnchor requestedCategoryAnchor = new CategoryAnchor();
@@ -32399,7 +32058,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ProjectTeam requestedProjectTeam = new ProjectTeam();
@@ -32514,7 +32173,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ProjectTeam requestedProjectTeam = new ProjectTeam();
@@ -32568,7 +32227,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ProcessOutput requestedProcessOutput = new ProcessOutput();
@@ -32665,7 +32324,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ProcessOutput requestedProcessOutput = new ProcessOutput();
@@ -32715,7 +32374,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             APIOperations requestedAPIOperations = new APIOperations();
@@ -32812,7 +32471,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             APIOperations requestedAPIOperations = new APIOperations();
@@ -32867,7 +32526,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             GovernancePolicyLink requestedGovernancePolicyLink = new GovernancePolicyLink();
@@ -32982,7 +32641,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             GovernancePolicyLink requestedGovernancePolicyLink = new GovernancePolicyLink();
@@ -33041,7 +32700,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ResponsibilityStaffContact requestedResponsibilityStaffContact = new ResponsibilityStaffContact();
@@ -33156,7 +32815,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ResponsibilityStaffContact requestedResponsibilityStaffContact = new ResponsibilityStaffContact();
@@ -33210,7 +32869,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             Peer requestedPeer = new Peer();
@@ -33307,7 +32966,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             Peer requestedPeer = new Peer();
@@ -33377,7 +33036,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             TermTYPEDBYRelationship requestedTermTYPEDBYRelationship = new TermTYPEDBYRelationship();
@@ -33556,7 +33215,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             TermTYPEDBYRelationship requestedTermTYPEDBYRelationship = new TermTYPEDBYRelationship();
@@ -33627,7 +33286,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             MapFromElementType requestedMapFromElementType = new MapFromElementType();
@@ -33724,7 +33383,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             MapFromElementType requestedMapFromElementType = new MapFromElementType();
@@ -33814,7 +33473,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             Certification requestedCertification = new Certification();
@@ -34055,7 +33714,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             Certification requestedCertification = new Certification();
@@ -34137,7 +33796,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             NetworkGatewayLink requestedNetworkGatewayLink = new NetworkGatewayLink();
@@ -34234,7 +33893,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             NetworkGatewayLink requestedNetworkGatewayLink = new NetworkGatewayLink();
@@ -34284,7 +33943,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ConnectionConnectorType requestedConnectionConnectorType = new ConnectionConnectorType();
@@ -34381,7 +34040,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ConnectionConnectorType requestedConnectionConnectorType = new ConnectionConnectorType();
@@ -34456,7 +34115,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             Synonym requestedSynonym = new Synonym();
@@ -34653,7 +34312,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             Synonym requestedSynonym = new Synonym();
@@ -34753,7 +34412,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             Antonym requestedAntonym = new Antonym();
@@ -34950,7 +34609,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             Antonym requestedAntonym = new Antonym();
@@ -35025,7 +34684,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             GraphEdgeLink requestedGraphEdgeLink = new GraphEdgeLink();
@@ -35122,7 +34781,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             GraphEdgeLink requestedGraphEdgeLink = new GraphEdgeLink();
@@ -35172,7 +34831,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ToDoOnReferenceable requestedToDoOnReferenceable = new ToDoOnReferenceable();
@@ -35269,7 +34928,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ToDoOnReferenceable requestedToDoOnReferenceable = new ToDoOnReferenceable();
@@ -35324,7 +34983,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ProjectScope requestedProjectScope = new ProjectScope();
@@ -35439,7 +35098,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ProjectScope requestedProjectScope = new ProjectScope();
@@ -35518,7 +35177,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ISARelationship requestedISARelationship = new ISARelationship();
@@ -35715,7 +35374,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ISARelationship requestedISARelationship = new ISARelationship();
@@ -35810,7 +35469,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             TermISATypeOFRelationship requestedTermISATypeOFRelationship = new TermISATypeOFRelationship();
@@ -35989,7 +35648,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             TermISATypeOFRelationship requestedTermISATypeOFRelationship = new TermISATypeOFRelationship();
@@ -36065,7 +35724,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             Contributor requestedContributor = new Contributor();
@@ -36190,7 +35849,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             Contributor requestedContributor = new Contributor();
@@ -36264,7 +35923,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             EmbeddedConnection requestedEmbeddedConnection = new EmbeddedConnection();
@@ -36424,7 +36083,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             EmbeddedConnection requestedEmbeddedConnection = new EmbeddedConnection();
@@ -36496,7 +36155,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             GovernanceControlLink requestedGovernanceControlLink = new GovernanceControlLink();
@@ -36611,7 +36270,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             GovernanceControlLink requestedGovernanceControlLink = new GovernanceControlLink();
@@ -36665,7 +36324,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             AttachedRating requestedAttachedRating = new AttachedRating();
@@ -36762,7 +36421,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             AttachedRating requestedAttachedRating = new AttachedRating();
@@ -36812,7 +36471,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             AttachedNoteLog requestedAttachedNoteLog = new AttachedNoteLog();
@@ -36909,7 +36568,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             AttachedNoteLog requestedAttachedNoteLog = new AttachedNoteLog();
@@ -36964,7 +36623,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ConnectionToAsset requestedConnectionToAsset = new ConnectionToAsset();
@@ -37079,7 +36738,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ConnectionToAsset requestedConnectionToAsset = new ConnectionToAsset();
@@ -37133,7 +36792,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             RegulationCertificationType requestedRegulationCertificationType = new RegulationCertificationType();
@@ -37230,7 +36889,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             RegulationCertificationType requestedRegulationCertificationType = new RegulationCertificationType();
@@ -37280,7 +36939,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             LinkedType requestedLinkedType = new LinkedType();
@@ -37377,7 +37036,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             LinkedType requestedLinkedType = new LinkedType();
@@ -37432,7 +37091,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             GovernanceRuleImplementation requestedGovernanceRuleImplementation = new GovernanceRuleImplementation();
@@ -37547,7 +37206,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             GovernanceRuleImplementation requestedGovernanceRuleImplementation = new GovernanceRuleImplementation();
@@ -37601,7 +37260,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             AdjacentLocation requestedAdjacentLocation = new AdjacentLocation();
@@ -37698,7 +37357,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             AdjacentLocation requestedAdjacentLocation = new AdjacentLocation();
@@ -37778,7 +37437,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             SemanticAssignment requestedSemanticAssignment = new SemanticAssignment();
@@ -37993,7 +37652,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             SemanticAssignment requestedSemanticAssignment = new SemanticAssignment();
@@ -38072,7 +37731,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             HostLocation requestedHostLocation = new HostLocation();
@@ -38169,7 +37828,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             HostLocation requestedHostLocation = new HostLocation();
@@ -38234,7 +37893,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ServerDeployment requestedServerDeployment = new ServerDeployment();
@@ -38395,7 +38054,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ServerDeployment requestedServerDeployment = new ServerDeployment();
@@ -38487,7 +38146,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             RelatedTerm requestedRelatedTerm = new RelatedTerm();
@@ -38684,7 +38343,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             RelatedTerm requestedRelatedTerm = new RelatedTerm();
@@ -38759,7 +38418,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             SchemaTypeImplementation requestedSchemaTypeImplementation = new SchemaTypeImplementation();
@@ -38856,7 +38515,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             SchemaTypeImplementation requestedSchemaTypeImplementation = new SchemaTypeImplementation();
@@ -38906,7 +38565,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ProcessInput requestedProcessInput = new ProcessInput();
@@ -39003,7 +38662,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ProcessInput requestedProcessInput = new ProcessInput();
@@ -39053,7 +38712,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             APIHeader requestedAPIHeader = new APIHeader();
@@ -39150,7 +38809,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             APIHeader requestedAPIHeader = new APIHeader();
@@ -39200,7 +38859,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             MeetingOnReferenceable requestedMeetingOnReferenceable = new MeetingOnReferenceable();
@@ -39297,7 +38956,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             MeetingOnReferenceable requestedMeetingOnReferenceable = new MeetingOnReferenceable();
@@ -39347,7 +39006,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             AttachedTag requestedAttachedTag = new AttachedTag();
@@ -39444,7 +39103,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             AttachedTag requestedAttachedTag = new AttachedTag();
@@ -39514,7 +39173,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             TermHASARelationship requestedTermHASARelationship = new TermHASARelationship();
@@ -39693,7 +39352,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             TermHASARelationship requestedTermHASARelationship = new TermHASARelationship();
@@ -39769,7 +39428,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             GovernanceProcessImplementation requestedGovernanceProcessImplementation = new GovernanceProcessImplementation();
@@ -39884,7 +39543,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             GovernanceProcessImplementation requestedGovernanceProcessImplementation = new GovernanceProcessImplementation();
@@ -39938,7 +39597,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             GroupedMedia requestedGroupedMedia = new GroupedMedia();
@@ -40035,7 +39694,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             GroupedMedia requestedGroupedMedia = new GroupedMedia();
@@ -40090,7 +39749,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             GovernanceResponse requestedGovernanceResponse = new GovernanceResponse();
@@ -40205,7 +39864,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             GovernanceResponse requestedGovernanceResponse = new GovernanceResponse();
@@ -40259,7 +39918,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             NestedFile requestedNestedFile = new NestedFile();
@@ -40356,7 +40015,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             NestedFile requestedNestedFile = new NestedFile();
@@ -40406,7 +40065,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             HostOperatingPlatform requestedHostOperatingPlatform = new HostOperatingPlatform();
@@ -40503,7 +40162,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             HostOperatingPlatform requestedHostOperatingPlatform = new HostOperatingPlatform();
@@ -40558,7 +40217,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ActorCollection requestedActorCollection = new ActorCollection();
@@ -40673,7 +40332,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ActorCollection requestedActorCollection = new ActorCollection();
@@ -40727,7 +40386,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             TermAnchor requestedTermAnchor = new TermAnchor();
@@ -40824,7 +40483,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             TermAnchor requestedTermAnchor = new TermAnchor();
@@ -40879,7 +40538,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ProjectResources requestedProjectResources = new ProjectResources();
@@ -40994,7 +40653,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ProjectResources requestedProjectResources = new ProjectResources();
@@ -41048,7 +40707,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             APIRequest requestedAPIRequest = new APIRequest();
@@ -41145,7 +40804,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             APIRequest requestedAPIRequest = new APIRequest();
@@ -41205,7 +40864,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             SoftwareComponentDeployment requestedSoftwareComponentDeployment = new SoftwareComponentDeployment();
@@ -41338,7 +40997,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             SoftwareComponentDeployment requestedSoftwareComponentDeployment = new SoftwareComponentDeployment();
@@ -41396,7 +41055,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             CohortMemberMetadataCollection requestedCohortMemberMetadataCollection = new CohortMemberMetadataCollection();
@@ -41493,7 +41152,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             CohortMemberMetadataCollection requestedCohortMemberMetadataCollection = new CohortMemberMetadataCollection();
@@ -41548,7 +41207,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ReferenceableFacet requestedReferenceableFacet = new ReferenceableFacet();
@@ -41663,7 +41322,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             ReferenceableFacet requestedReferenceableFacet = new ReferenceableFacet();
@@ -41717,7 +41376,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             AttachedLike requestedAttachedLike = new AttachedLike();
@@ -41814,7 +41473,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             mockRelationship.setEntityOneProxy(entityProxy1);
             mockRelationship.setEntityTwoProxy(entityProxy2);
 
-            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),anyObject())).thenReturn(mockRelationship);
+            when( oMRSAPIHelper.callOMRSUpdateRelationship(anyString(),any())).thenReturn(mockRelationship);
             // set the mock omrs in to the rest file.
             subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
             AttachedLike requestedAttachedLike = new AttachedLike();

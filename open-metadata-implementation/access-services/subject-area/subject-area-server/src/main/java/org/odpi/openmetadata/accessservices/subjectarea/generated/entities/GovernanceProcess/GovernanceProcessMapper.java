@@ -104,9 +104,9 @@ public class GovernanceProcessMapper {
                             EnumPropertyValue enumPropertyValue = (EnumPropertyValue) value;
                             String symbolicName = enumPropertyValue.getSymbolicName();
                             if (governanceProcess.ENUM_NAMES_SET.contains(name)) {
-                                 if (name.equals("status")) {
-                                       org.odpi.openmetadata.accessservices.subjectarea.properties.enums.GovernanceDefinitionStatus status = org.odpi.openmetadata.accessservices.subjectarea.properties.enums.GovernanceDefinitionStatus.valueOf(symbolicName);
-                                      governanceProcess.setStatus(status);
+                                 if (name.equals("domain")) {
+                                       org.odpi.openmetadata.accessservices.subjectarea.properties.enums.GovernanceDomain domain = org.odpi.openmetadata.accessservices.subjectarea.properties.enums.GovernanceDomain.valueOf(symbolicName);
+                                      governanceProcess.setDomain(domain);
                                  }
                             } else {
                                 // put out the omrs value object
@@ -245,12 +245,12 @@ public class GovernanceProcessMapper {
                 primitivePropertyValue.setPrimitiveValue(governanceProcess.getQualifiedName());
                 instanceProperties.setProperty("qualifiedName", primitivePropertyValue);
             }
-            if (governanceProcess.getStatus()!=null) {
-                GovernanceDefinitionStatus enumType = governanceProcess.getStatus();
+            if (governanceProcess.getDomain()!=null) {
+                GovernanceDomain enumType = governanceProcess.getDomain();
                 EnumPropertyValue enumPropertyValue = new EnumPropertyValue();
                 enumPropertyValue.setOrdinal(enumType.ordinal());
                 enumPropertyValue.setSymbolicName(enumType.name());
-                instanceProperties.setProperty("status", enumPropertyValue);
+                instanceProperties.setProperty("domain", enumPropertyValue);
             }
             if (governanceProcess.getAdditionalProperties()!=null) {
 
