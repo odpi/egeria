@@ -166,6 +166,7 @@ public class Relationship extends InstanceHeader
      *
      * @return entityOnePropertyName String property name
      */
+    @Deprecated
     public String getEntityOnePropertyName() {
         return entityOnePropertyName;
     }
@@ -177,6 +178,7 @@ public class Relationship extends InstanceHeader
      *
      * @param entityOnePropertyName String property name
      */
+    @Deprecated
     public void setEntityOnePropertyName(String entityOnePropertyName)
     {
         this.entityOnePropertyName = entityOnePropertyName;
@@ -215,6 +217,7 @@ public class Relationship extends InstanceHeader
      *
      * @return String property name
      */
+    @Deprecated
     public String getEntityTwoPropertyName() { return entityTwoPropertyName; }
 
 
@@ -224,6 +227,7 @@ public class Relationship extends InstanceHeader
      *
      * @param entityTwoPropertyName String property name
      */
+    @Deprecated
     public void setEntityTwoPropertyName(String entityTwoPropertyName) { this.entityTwoPropertyName = entityTwoPropertyName; }
 
 
@@ -263,9 +267,7 @@ public class Relationship extends InstanceHeader
     {
         return "Relationship{" +
                 "relationshipProperties=" + relationshipProperties +
-                ", entityOneLabel='" + entityOnePropertyName + '\'' +
                 ", entityOneProxy=" + entityOneProxy +
-                ", entityTwoLabel='" + entityTwoPropertyName + '\'' +
                 ", entityTwoProxy=" + entityTwoProxy +
                 ", properties=" + getProperties() +
                 ", type=" + getType() +
@@ -307,9 +309,7 @@ public class Relationship extends InstanceHeader
         }
         Relationship that = (Relationship) objectToCompare;
         return Objects.equals(relationshipProperties, that.relationshipProperties) &&
-                Objects.equals(getEntityOnePropertyName(), that.getEntityOnePropertyName()) &&
                 Objects.equals(getEntityOneProxy(), that.getEntityOneProxy()) &&
-                Objects.equals(getEntityTwoPropertyName(), that.getEntityTwoPropertyName()) &&
                 Objects.equals(getEntityTwoProxy(), that.getEntityTwoProxy());
     }
 
@@ -325,9 +325,7 @@ public class Relationship extends InstanceHeader
 
         return Objects.hash(super.hashCode(),
                             relationshipProperties,
-                            getEntityOnePropertyName(),
                             getEntityOneProxy(),
-                            getEntityTwoPropertyName(),
                             getEntityTwoProxy());
     }
 }

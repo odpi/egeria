@@ -43,9 +43,17 @@ public class EntityCreateRequest extends OMRSAPIRequest
      *
      * @param template object to copy
      */
-    public EntityCreateRequest(OMRSAPIRequest template)
+    public EntityCreateRequest(EntityCreateRequest template)
     {
         super(template);
+
+        if (template != null)
+        {
+            this.entityTypeGUID = template.getEntityTypeGUID();
+            this.initialProperties = template.getInitialProperties();
+            this.initialClassifications = template.getInitialClassifications();
+            this.initialStatus = template.getInitialStatus();
+        }
     }
 
 
@@ -155,6 +163,11 @@ public class EntityCreateRequest extends OMRSAPIRequest
     }
 
 
+    /**
+     * Standard toString method.
+     *
+     * @return print out of variables in a JSON-style
+     */
     @Override
     public String toString()
     {

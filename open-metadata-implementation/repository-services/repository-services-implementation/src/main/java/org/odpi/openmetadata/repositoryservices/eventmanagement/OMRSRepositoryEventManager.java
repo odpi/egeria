@@ -2,6 +2,7 @@
 package org.odpi.openmetadata.repositoryservices.eventmanagement;
 
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceGraph;
 import org.odpi.openmetadata.repositoryservices.events.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -1186,6 +1187,71 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
                                                   originatorServerType,
                                                   originatorOrganizationName,
                                                   relationship);
+        }
+    }
+
+
+    /**
+     * An open metadata repository is passing information about a collection of entities and relationships
+     * with the other repositories in the cohort.
+     *
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
+     *                   local repository, or event mapper name.
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param instances multiple entities and relationships for sharing.
+     */
+    public void processInstanceBatchEvent(String         sourceName,
+                                          String         originatorMetadataCollectionId,
+                                          String         originatorServerName,
+                                          String         originatorServerType,
+                                          String         originatorOrganizationName,
+                                          InstanceGraph  instances)
+    {
+        if (instances != null)
+        {
+            List<EntityDetail>  validatedEntities = new ArrayList<>();
+            List<Relationship>  validatedRelationships = new ArrayList<>();
+
+            if (instances.getEntities() != null)
+            {
+                for (EntityDetail entity : instances.getEntities())
+                {
+                    if (repositoryValidator.validEntity(sourceName, entity))
+                    {
+                        validatedEntities.add(entity);
+                    }
+                }
+            }
+
+            if (instances.getRelationships() != null)
+            {
+                for (Relationship relationship : instances.getRelationships())
+                {
+                    if (repositoryValidator.validRelationship(sourceName, relationship))
+                    {
+                        validatedRelationships.add(relationship);
+                    }
+                }
+            }
+
+            if (!(validatedEntities.isEmpty() && validatedRelationships.isEmpty()))
+            {
+                InstanceGraph       validatedInstances = new InstanceGraph();
+
+                validatedInstances.setEntities(validatedEntities);
+                validatedInstances.setRelationships(validatedRelationships);
+
+                super.processInstanceBatchEvent(sourceName,
+                                                originatorMetadataCollectionId,
+                                                originatorServerName,
+                                                originatorServerType,
+                                                originatorOrganizationName,
+                                                validatedInstances);
+            }
         }
     }
 

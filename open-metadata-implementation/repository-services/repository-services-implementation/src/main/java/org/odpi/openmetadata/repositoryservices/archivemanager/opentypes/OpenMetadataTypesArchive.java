@@ -4,6 +4,7 @@ package org.odpi.openmetadata.repositoryservices.archivemanager.opentypes;
 
 import org.odpi.openmetadata.repositoryservices.archivemanager.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archivemanager.OMRSArchiveHelper;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -11743,11 +11744,22 @@ public class OpenMetadataTypesArchive
 
         final String superTypeName = "GlossaryTerm";
 
-        return archiveHelper.getDefaultEntityDef(guid,
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
                                                  name,
                                                  this.archiveBuilder.getEntityDef(superTypeName),
                                                  description,
                                                  descriptionGUID);
+
+        ArrayList<InstanceStatus> validInstanceStatusList = new ArrayList<>();
+        validInstanceStatusList.add(InstanceStatus.DRAFT);
+        validInstanceStatusList.add(InstanceStatus.PROPOSED);
+        validInstanceStatusList.add(InstanceStatus.APPROVED);
+        validInstanceStatusList.add(InstanceStatus.ACTIVE);
+        validInstanceStatusList.add(InstanceStatus.DELETED);
+        entityDef.setValidInstanceStatusList(validInstanceStatusList);
+        entityDef.setInitialStatus(InstanceStatus.DRAFT);
+
+        return entityDef;
     }
 
 
@@ -12047,6 +12059,17 @@ public class OpenMetadataTypesArchive
         properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);
+
+        ArrayList<InstanceStatus> validInstanceStatusList = new ArrayList<>();
+        validInstanceStatusList.add(InstanceStatus.DRAFT);
+        validInstanceStatusList.add(InstanceStatus.PROPOSED);
+        validInstanceStatusList.add(InstanceStatus.APPROVED);
+        validInstanceStatusList.add(InstanceStatus.ACTIVE);
+        validInstanceStatusList.add(InstanceStatus.DEPRECATED);
+        validInstanceStatusList.add(InstanceStatus.OTHER);
+        validInstanceStatusList.add(InstanceStatus.DELETED);
+        entityDef.setValidInstanceStatusList(validInstanceStatusList);
+        entityDef.setInitialStatus(InstanceStatus.DRAFT);
 
         return entityDef;
     }

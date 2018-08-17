@@ -15,12 +15,23 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * defines its visibility to different types of queries.  Most queries by default will only return instances in the
  * active status.
  * <ul>
- *     <li>UNKNOWN: the instance has not been initialized.</li>
- *     <li>PROPOSED: the instance has not yet been stored in the metadata collection.</li>
- *     <li>DRAFT: the instance is stored but not fully filled out so should not be used for normal queries.</li>
- *     <li>PREPARED: the instance is stored and complete and is ready to be moved to active status.</li>
- *     <li>ACTIVE: the instance is in active use.</li>
- *     <li>DELETED: the instance has been deleted and is waiting to be purged.  It is kept in the metadata collection
+ *     <li><Unknown>: Unknown instance status.</li>
+ *     <li>Draft: The content is incomplete.</li>
+ *     <li>Proposed: The content is in review.</li>
+ *     <li>Approved: The content is approved.</li>
+ *     <li>Rejected: The request or proposal is rejected.</li>
+ *     <li>Approved concept: The request or proposal is approved for development.</li>
+ *     <li>Under development: The instance is being developed.</li>
+ *     <li>Development complete: The development of the instance is complete.</li>
+ *     <li>Approved for deployment: The instance is approved for deployment.</li>
+ *     <li>StandBy: The instance is deployed in standby mode.</li>
+ *     <li>Active: The instance is approved and in use.</li>
+ *     <li>Failed: The instance is not in use due to failure.</li>
+ *     <li>Disabled: The instance is shutdown or disabled.</li>
+ *     <li>Complete: The activity associated with the instance is complete.</li>
+ *     <li>Deprecated: The instance is out of date and should not be used.</li>
+ *     <li>Other: The instance is in a locally defined state.</li>
+ *     <li>Deleted: The instance has been deleted and is waiting to be purged.  It is kept in the metadata collection
  *     to support a restore request.  It is not returned on normal queries.</li>
  * </ul>
  */
@@ -29,12 +40,24 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum InstanceStatus implements Serializable
 {
-    UNKNOWN (0, "<Unknown>", "Unknown instance status."),
-    PROPOSED(1, "Proposed",  "Proposed instance to store in the metadata collection."),
-    DRAFT   (2, "Draft",     "Potentially incomplete draft of instance still being developed."),
-    PREPARED(3, "Prepared",  "Complete draft of instance waiting for approval."),
-    ACTIVE (10, "Active",    "Active instance in use."),
-    DELETED(99, "Deleted",   "Instance that has been deleted and is no longer in use.");
+    UNKNOWN                 (0,  "<Unknown>",               "Unknown instance status."),
+    DRAFT                   (1,  "Draft",                   "The content is incomplete."),
+    PREPARED                (2,  "Prepared",                "The content is ready for review."),
+    PROPOSED                (3,  "Proposed",                "The content is in review."),
+    APPROVED                (4,  "Approved",                "The content is approved."),
+    REJECTED                (5,  "Rejected",                "The request or proposal is rejected."),
+    APPROVED_CONCEPT        (6,  "Approved concept",        "The request or proposal is approved for development."),
+    UNDER_DEVELOPMENT       (7,  "Under development",       "The instance is being developed."),
+    DEVELOPMENT_COMPLETE    (8,  "Development complete",    "The development of the instance is complete."),
+    APPROVED_FOR_DEPLOYMENT (9,  "Approved for deployment", "The instance is approved for deployment."),
+    STANDBY                 (10, "StandBy",                 "The instance is deployed in standby mode."),
+    ACTIVE                  (15, "Active",                  "The instance is approved and in use."),
+    FAILED                  (20, "Failed",                  "The instance is not in use due to failure."),
+    DISABLED                (21, "Disabled",                "The instance is shutdown or disabled."),
+    COMPLETE                (22, "Complete",                "The activity associated with the instance is complete."),
+    DEPRECATED              (30, "Deprecated",              "The instance is out of date and should not be used."),
+    OTHER                   (50, "Other",                   "The instance is in a locally defined state."),
+    DELETED                 (99, "Deleted",                 "The instance has been deleted and is no longer available.");
 
     private static final long serialVersionUID = 1L;
 

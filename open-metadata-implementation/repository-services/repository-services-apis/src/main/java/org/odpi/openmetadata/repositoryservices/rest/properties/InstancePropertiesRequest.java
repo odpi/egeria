@@ -1,28 +1,32 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.repositoryservices.rest.properties;
 
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
+/**
+ * InstancePropertiesRequest carries the properties needed to update an entity, relationship or classification.
+ */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class TypeDefCategoryFindRequest extends OMRSAPIRequest
+public class InstancePropertiesRequest extends OMRSAPIRequest
 {
-    private TypeDefCategory    category = null;
+    private InstanceProperties   instanceProperties     = null;
 
 
     /**
      * Default constructor
      */
-    public TypeDefCategoryFindRequest()
+    public InstancePropertiesRequest()
     {
         super();
     }
@@ -33,37 +37,45 @@ public class TypeDefCategoryFindRequest extends OMRSAPIRequest
      *
      * @param template object to copy
      */
-    public TypeDefCategoryFindRequest(TypeDefCategoryFindRequest template)
+    public InstancePropertiesRequest(InstancePropertiesRequest template)
     {
         super(template);
 
         if (template != null)
         {
-            this.category = template.getCategory();
+            this.instanceProperties = template.getInstanceProperties();
         }
     }
 
 
     /**
-     * Return the category for the request.
+     * Return the list of properties for the new entity.
      *
-     * @return category enum
+     * @return instance properties object
      */
-    public TypeDefCategory getCategory()
+    public InstanceProperties getInstanceProperties()
     {
-        return category;
+        if (instanceProperties == null)
+        {
+            return null;
+        }
+        else
+        {
+            return new InstanceProperties(instanceProperties);
+        }
     }
 
 
     /**
-     * Set up the category for the request.
+     * Set up the initial properties for the entity.
      *
-     * @param category category enum
+     * @param instanceProperties InstanceProperties object
      */
-    public void setCategory(TypeDefCategory category)
+    public void setInstanceProperties(InstanceProperties instanceProperties)
     {
-        this.category = category;
+        this.instanceProperties = instanceProperties;
     }
+
 
     /**
      * Standard toString method.
@@ -73,8 +85,8 @@ public class TypeDefCategoryFindRequest extends OMRSAPIRequest
     @Override
     public String toString()
     {
-        return "TypeDefCategoryFindRequest{" +
-                "category=" + category +
+        return "InstancePropertiesRequest{" +
+                "instanceProperties=" + instanceProperties +
                 '}';
     }
 
@@ -92,12 +104,12 @@ public class TypeDefCategoryFindRequest extends OMRSAPIRequest
         {
             return true;
         }
-        if (!(objectToCompare instanceof TypeDefCategoryFindRequest))
+        if (!(objectToCompare instanceof InstancePropertiesRequest))
         {
             return false;
         }
-        TypeDefCategoryFindRequest that = (TypeDefCategoryFindRequest) objectToCompare;
-        return getCategory() == that.getCategory();
+        InstancePropertiesRequest that = (InstancePropertiesRequest) objectToCompare;
+        return Objects.equals(getInstanceProperties(), that.getInstanceProperties());
     }
 
 
@@ -109,6 +121,6 @@ public class TypeDefCategoryFindRequest extends OMRSAPIRequest
     @Override
     public int hashCode()
     {
-        return Objects.hash(getCategory());
+        return Objects.hash(getInstanceProperties());
     }
 }

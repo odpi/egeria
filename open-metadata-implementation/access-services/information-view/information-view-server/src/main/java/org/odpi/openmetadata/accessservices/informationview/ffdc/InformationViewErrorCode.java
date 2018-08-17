@@ -21,7 +21,7 @@ public enum InformationViewErrorCode {
             "The system is unable to process the request.",
             "Verify the topic configuration."),
     PROCESS_EVENT_EXCEPTION("OMAS-INFORMATIONVIEW-003",
-            "Event{0} could not be consumed",
+            "Event {0} could not be consumed",
             "The system is unable to process the request.",
             "Verify the topic configuration."),
     ADD_ENTITY_EXCEPTION("OMAS-INFORMATIONVIEW-004",
@@ -41,7 +41,11 @@ public enum InformationViewErrorCode {
             "The system is unable to process the request.",
             "Verify the topic event."),
     BUILD_COLUMN_CONTEXT_EXCEPTION("OMAS-INFORMATIONVIEW-008",
-            "Full context could not be built",
+            "Full context could not be built for column {0} because of {1}",
+            "The system is unable to process the request.",
+            "Verify the topic event."),
+    PARSE_EVENT("OMAS-INFORMATIONVIEW-009",
+            "Event could not be parsed",
             "The system is unable to process the request.",
             "Verify the topic event.");
     private static final Logger log = LoggerFactory.getLogger(InformationViewErrorCode.class);

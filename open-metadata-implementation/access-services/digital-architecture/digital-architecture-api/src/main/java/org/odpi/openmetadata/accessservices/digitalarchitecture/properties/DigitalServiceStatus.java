@@ -53,7 +53,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public enum DigitalServiceStatus implements Serializable
 {
     DRAFT                   (0,  "Draft",                   "The digital service definition is a draft."),
-    PROPOSED                (1,  "Proposed",                "The digital service definition is in planning and business review."),
+    PROPOSED                (1,  "Proposed",                "The digital service definition is in planning, feasibility study and business review."),
     APPROVED_CONCEPT        (2,  "Approved Concept",        "The digital service definition is approved for development."),
     UNDER_DEVELOPMENT       (3,  "Under development",       "The digital service definition is being developed."),
     APPROVED_FOR_DEPLOYMENT (4,  "Approved for deployment", "The digital service definition is approved for deployment."),

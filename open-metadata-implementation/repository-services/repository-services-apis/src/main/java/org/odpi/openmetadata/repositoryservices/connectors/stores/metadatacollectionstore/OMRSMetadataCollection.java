@@ -748,7 +748,7 @@ public abstract class OMRSMetadataCollection
      * @throws EntityNotKnownException the requested entity instance is not known in the metadata collection
      *                                   at the time requested.
      * @throws EntityProxyOnlyException the requested entity instance is only a proxy in the metadata collection.
-     * @throws FunctionNotSupportedException the repository does not support satOfTime parameter.
+     * @throws FunctionNotSupportedException the repository does not support asOfTime parameter.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public abstract EntityDetail getEntityDetail(String     userId,
@@ -2119,4 +2119,80 @@ public abstract class OMRSMetadataCollection
                                                                                                     HomeRelationshipException,
                                                                                                     FunctionNotSupportedException,
                                                                                                     UserNotAuthorizedException;
+
+    /**
+     * Save the entities and relationships supplied in the instance graph as a reference copies.
+     * The id of the home metadata collection is already set up in the instances.
+     * Any instances from the home metadata collection are ignored.
+     *
+     * @param userId unique identifier for requesting server.
+     * @param instances instances to save.
+     * @throws InvalidParameterException the relationship is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection.
+     * @throws EntityNotKnownException one of the entities identified by the relationship is not found in the
+     *                                   metadata collection.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                  characteristics in the TypeDef for this relationship's type.
+     * @throws EntityConflictException the new entity conflicts with an existing entity.
+     * @throws InvalidEntityException the new entity has invalid contents.* @throws RelationshipConflictException the new relationship conflicts with an existing relationship.
+     * @throws InvalidRelationshipException the new relationship has invalid contents.
+     * @throws FunctionNotSupportedException the repository does not support reference copies of instances.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public void saveInstanceReferenceCopies(String          userId,
+                                            InstanceGraph   instances) throws InvalidParameterException,
+                                                                              RepositoryErrorException,
+                                                                              TypeErrorException,
+                                                                              EntityNotKnownException,
+                                                                              PropertyErrorException,
+                                                                              EntityConflictException,
+                                                                              RelationshipConflictException,
+                                                                              InvalidEntityException,
+                                                                              InvalidRelationshipException,
+                                                                              FunctionNotSupportedException,
+                                                                              UserNotAuthorizedException
+    {
+        /*
+         * Work through the entities and then the relationships, skipping any instance that has the
+         * local home metadata collection id.
+         */
+        if (instances != null)
+        {
+            try
+            {
+                if (instances.getEntities() != null)
+                {
+                    for (EntityDetail entity : instances.getEntities())
+                    {
+                        if ((entity != null) && (! metadataCollectionId.equals(entity.getMetadataCollectionId())))
+                        {
+                            saveEntityReferenceCopy(userId, entity);
+                        }
+                    }
+                }
+
+                if (instances.getRelationships() != null)
+                {
+                    for (Relationship relationship : instances.getRelationships())
+                    {
+                        if ((relationship != null) && (! metadataCollectionId.equals(relationship.getMetadataCollectionId())))
+                        {
+                            saveRelationshipReferenceCopy(userId, relationship);
+                        }
+                    }
+                }
+            }
+            catch (HomeEntityException  exception)
+            {
+
+            }
+            catch (HomeRelationshipException exception)
+            {
+
+            }
+        }
+    }
 }

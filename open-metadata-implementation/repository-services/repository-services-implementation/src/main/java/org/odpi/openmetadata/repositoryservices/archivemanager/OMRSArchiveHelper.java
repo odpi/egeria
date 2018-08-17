@@ -90,6 +90,8 @@ public class OMRSArchiveHelper
         collectionDef.setName("array<" + arrayType.getName() + ">");
         collectionDef.setDescription(description);
         collectionDef.setDescriptionGUID(descriptionGUID);
+        collectionDef.setVersion(versionNumber);
+        collectionDef.setVersionName(versionName);
 
         List<PrimitiveDefCategory> argumentList = new ArrayList<>();
         argumentList.add(arrayType);
@@ -232,6 +234,7 @@ public class OMRSArchiveHelper
         validInstanceStatusList.add(InstanceStatus.ACTIVE);
         validInstanceStatusList.add(InstanceStatus.DELETED);
         entityDef.setValidInstanceStatusList(validInstanceStatusList);
+        entityDef.setInitialStatus(InstanceStatus.ACTIVE);
 
         return entityDef;
     }
@@ -587,6 +590,7 @@ public class OMRSArchiveHelper
         validInstanceStatusList.add(InstanceStatus.ACTIVE);
         validInstanceStatusList.add(InstanceStatus.DELETED);
         relationshipDef.setValidInstanceStatusList(validInstanceStatusList);
+        relationshipDef.setInitialStatus(InstanceStatus.ACTIVE);
 
         /*
          * Use the supplied propagation rule.
@@ -673,6 +677,7 @@ public class OMRSArchiveHelper
         validInstanceStatusList.add(InstanceStatus.ACTIVE);
         validInstanceStatusList.add(InstanceStatus.DELETED);
         classificationDef.setValidInstanceStatusList(validInstanceStatusList);
+        classificationDef.setInitialStatus(InstanceStatus.ACTIVE);
 
         /*
          * Set up the supplied validEntityTypes and propagatable flag.
