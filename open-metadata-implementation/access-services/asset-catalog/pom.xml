@@ -28,6 +28,7 @@
     <modules>
         <module>asset-catalog-client</module>
         <module>asset-catalog-server</module>
+        <module>asset-catalog-spring</module>
     </modules>
 
 </project>

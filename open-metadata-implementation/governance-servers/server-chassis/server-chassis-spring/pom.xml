@@ -55,11 +55,11 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>asset-catalog-server</artifactId>
+            <artifactId>asset-catalog-spring</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
-  
-  <dependency>
+
+        <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>subject-area-spring</artifactId>
             <version>${open-metadata.version}</version>
