@@ -21,5 +21,14 @@
 
     <artifactId>data-protection-server</artifactId>
 
+    <dependencies>
 
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>data-protection-api</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+    </dependencies>
+    
 </project>

@@ -22,5 +22,14 @@
 
     <artifactId>asset-owner-server</artifactId>
 
+    <dependencies>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>asset-owner-api</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+    </dependencies>
 
 </project>

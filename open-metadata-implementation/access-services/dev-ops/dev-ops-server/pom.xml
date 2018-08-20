@@ -21,5 +21,14 @@
 
     <artifactId>dev-ops-server</artifactId>
 
+    <dependencies>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>dev-ops-api</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+    </dependencies>
 
 </project>

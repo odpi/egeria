@@ -21,5 +21,14 @@
 
     <artifactId>data-privacy-server</artifactId>
 
+    <dependencies>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>data-privacy-api</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+    </dependencies>
 
 </project>
