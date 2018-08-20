@@ -141,52 +141,36 @@ public class SubjectAreaUtils {
         Status status = null;
 
         if (instanceStatus == null) {
-            return Status.UNKNOWN;
-        }
+            //default to ACTIVE
+            status = Status.ACTIVE;
+        } else {
+            switch (instanceStatus) {
+                case ACTIVE:
+                    status = Status.ACTIVE;
+                    break;
+                case DELETED:
+                    status = Status.DELETED;
+                    break;
+            }
 
-        switch (instanceStatus) {
-            case ACTIVE:
-                status = Status.ACTIVE;
-                break;
-            case DRAFT:
-                status = Status.DRAFT;
-                break;
-            case DELETED:
-                status = Status.DELETED;
-                break;
-            case PREPARED:
-                status = Status.PREPARED;
-                break;
-            case PROPOSED:
-                status = Status.PROPOSED;
-                break;
-            default:
-                status = Status.UNKNOWN;
         }
-
         return status;
     }
 
     public static InstanceStatus convertStatusToStatusInstance(Status status) {
         InstanceStatus instanceStatus = null;
-        switch (status) {
-            case ACTIVE:
-                instanceStatus = InstanceStatus.ACTIVE;
-                break;
-            case DRAFT:
-                instanceStatus = InstanceStatus.DRAFT;
-                break;
-            case DELETED:
-                instanceStatus = InstanceStatus.DELETED;
-                break;
-            case PREPARED:
-                instanceStatus = InstanceStatus.PREPARED;
-                break;
-            case PROPOSED:
-                instanceStatus = InstanceStatus.PROPOSED;
-                break;
-            default:
-                instanceStatus = InstanceStatus.UNKNOWN;
+        if (status == null) {
+            //default to ACTIVE
+            instanceStatus = InstanceStatus.ACTIVE;
+        } else {
+            switch (status) {
+                case ACTIVE:
+                    instanceStatus = InstanceStatus.ACTIVE;
+                    break;
+                case DELETED:
+                    instanceStatus = InstanceStatus.DELETED;
+                    break;
+            }
         }
         return instanceStatus;
     }

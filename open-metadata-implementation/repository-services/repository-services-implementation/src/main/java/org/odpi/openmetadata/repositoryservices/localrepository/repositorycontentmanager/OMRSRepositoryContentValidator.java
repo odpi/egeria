@@ -3017,7 +3017,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
                 if (matchPropertyName != null)
                 {
-                    InstancePropertyValue matchPropertyValue = instanceProperties.getPropertyValue(matchPropertyName);
+                    InstancePropertyValue matchPropertyValue = matchProperties.getPropertyValue(matchPropertyName);
                     Iterator<String>      instancePropertyNames  = instanceProperties.getPropertyNames();
 
                     while (instancePropertyNames.hasNext())

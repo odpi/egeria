@@ -7,7 +7,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.generated.server;
 import java.util.*;
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ArrayPropertyValue;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityUniverse;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
@@ -57,7 +57,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcreate<$$uEntityName$$>";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -170,7 +170,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
         String testguid1 = "testcallOMRSGetEntityByGuid-<$$uEntityName$$>-guid";
         SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -232,7 +232,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             String testguid1 = "testUpdate<$$uEntityName$$>";
             SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
 
-            EntityUniverse mockEntity = new EntityUniverse();
+            EntityDetail mockEntity = new EntityDetail();
             InstanceProperties instanceProperties = new InstanceProperties();
 
             PrimitivePropertyValue primitivePropertyValue;

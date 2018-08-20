@@ -56,9 +56,10 @@ public class TestSubjectAreaGlossaryRESTServices {
         String displayName = "string0";
         String usage = "string1";
         String description = "string2 fsdgsdg";
+        String qualifiedName = "test qname";
         // set up the mocks
-        EntityUniverse mockEntityAdd = createMockGlossary(displayName,usage,description,testguid1);
-        EntityUniverse mockEntityGet = createMockGlossary(displayName,usage,description,testguid1);
+        EntityDetail mockEntityAdd = createMockGlossary(displayName,usage,description,testguid1,qualifiedName);
+        EntityDetail mockEntityGet = createMockGlossary(displayName,usage,description,testguid1,qualifiedName);
 
         mockEntityAdd.setGUID(testguid1);
         mockEntityGet.setGUID(testguid1);
@@ -146,8 +147,9 @@ public class TestSubjectAreaGlossaryRESTServices {
         String displayName = "string0";
         String usage = "string1";
         String description = "string2 fsdgsdg";
+        String qualifiedName = "test qname";
         // set up the mocks
-        EntityUniverse mockEntityGet = createMockGlossary(displayName,usage,description,testguid1);
+        EntityDetail mockEntityGet = createMockGlossary(displayName,usage,description,testguid1,qualifiedName);
         List<EntityDetail> mockGlossaryList = new ArrayList<>();
         mockGlossaryList.add(mockEntityGet);
 
@@ -193,9 +195,10 @@ public class TestSubjectAreaGlossaryRESTServices {
         String displayName = "string0";
         String usage = "string1";
         String description = "string2 fsdgsdg";
+        String qualifiedName = "test qname";
         // set up the mock
 
-        EntityUniverse mockEntityGet = createMockGlossary(displayName,usage,description,testguid1);
+        EntityDetail mockEntityGet = createMockGlossary(displayName,usage,description,testguid1,qualifiedName);
 
         mockEntityGet.setGUID(testguid1);
 
@@ -220,7 +223,7 @@ public class TestSubjectAreaGlossaryRESTServices {
 
 
     @Test
-    public void testUpdateGlossaryName() throws Exception {
+    public void testUpdateGlossary() throws Exception {
         String testuserid = "userid1";
         String testguid1 = "glossary-guid-1";
         final String testGlossaryName = "TestGlossary";
@@ -228,13 +231,19 @@ public class TestSubjectAreaGlossaryRESTServices {
         // set the mock omrs in to the rest file.
         subjectAreaGlossaryOmasREST.setOMRSAPIHelper(oMRSAPIHelper);
 
+
         String displayName = "string0";
         String usage = "string1";
         String description = "string2 fsdgsdg";
+        String qualifiedName = "string2 fsdgsdgss";
         final String newName = "newName";
+        final String newQualifiedName = qualifiedName +"new";
+
+        final String newUsage = usage +"new";
+        final String newDescription = description + "new";
         // set up the mocks
-        EntityUniverse mockEntityUpdate = createMockGlossary(newName,usage,description,testguid1);
-        EntityUniverse mockEntityGet = createMockGlossary(displayName,usage,description,testguid1);
+        EntityDetail mockEntityUpdate = createMockGlossary(newName,newUsage,newDescription,testguid1,newQualifiedName);
+        EntityDetail mockEntityGet = createMockGlossary(displayName,usage,description,testguid1,qualifiedName);
         List<EntityDetail> mockGlossaryList = new ArrayList<>();
 
         // mock out the update entity
@@ -242,38 +251,25 @@ public class TestSubjectAreaGlossaryRESTServices {
         // mock out the get entity
         when( oMRSAPIHelper.callOMRSGetEntityByGuid(anyString(),any())).thenReturn(mockEntityGet);
 
-        SubjectAreaOMASAPIResponse response = subjectAreaGlossaryOmasREST.updateGlossaryName(testuserid,testguid1, newName);
+
+
+        Glossary requestedGlossary = new Glossary();
+        requestedGlossary.setName(newName);
+        requestedGlossary.setUsage(newUsage);
+        requestedGlossary.setDescription(newDescription);
+
+        requestedGlossary.setQualifiedName(newQualifiedName);
+
+
+        // mock out the update entity
+        when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntityUpdate);
+        // mock out the get entity
+        when( oMRSAPIHelper.callOMRSGetEntityByGuid(anyString(),any())).thenReturn(mockEntityGet);
+        SubjectAreaOMASAPIResponse response = subjectAreaGlossaryOmasREST.updateGlossary(testuserid,testguid1, requestedGlossary,true);
         assertTrue(response.getResponseCategory().equals(ResponseCategory.Glossary));
         Glossary returnedGlossary = ((GlossaryResponse)response).getGlossary();
 
         assertEquals(newName,returnedGlossary.getName());
-    }
-    @Test
-    public void testUpdateGlossaryDescription() throws Exception {
-        String testuserid = "userid1";
-        String testguid1 = "glossary-guid-1";
-
-        final String testGlossaryName = "TestGlossary";
-        SubjectAreaGlossaryRESTServices subjectAreaGlossaryOmasREST = new SubjectAreaGlossaryRESTServices();
-        // set the mock omrs in to the rest file.
-        subjectAreaGlossaryOmasREST.setOMRSAPIHelper(oMRSAPIHelper);
-
-        String displayName = "string0";
-        String usage = "string1";
-        String description = "string2 fsdgsdg";
-        final String newDescription = "new description1";
-        // set up the mocks
-        EntityUniverse mockEntityUpdate = createMockGlossary(displayName,usage,newDescription ,testguid1);
-        EntityUniverse mockEntityGet = createMockGlossary(displayName,usage,newDescription ,testguid1);
-        List<EntityDetail> mockGlossaryList = new ArrayList<>();
-
-        // mock out the update entity
-        when( oMRSAPIHelper.callOMRSUpdateEntity(anyString(),any())).thenReturn(mockEntityUpdate);
-        // mock out the get entity
-        when( oMRSAPIHelper.callOMRSGetEntityByGuid(anyString(),any())).thenReturn(mockEntityGet);
-        SubjectAreaOMASAPIResponse response = subjectAreaGlossaryOmasREST.updateGlossaryDescription(testuserid,testguid1, newDescription);
-        assertTrue(response.getResponseCategory().equals(ResponseCategory.Glossary));
-        Glossary returnedGlossary = ((GlossaryResponse)response).getGlossary();
     }
 
     @Test
@@ -285,8 +281,9 @@ public class TestSubjectAreaGlossaryRESTServices {
         String displayName = "string0";
         String usage = "string1";
         String description = "string2 fsdgsdg";
+        String qualifiedName = "test qname";
 
-        EntityUniverse mockEntityGet = createMockGlossary(displayName,usage,description,testguid1);
+        EntityDetail mockEntityGet = createMockGlossary(displayName,usage,description,testguid1,qualifiedName);
         when( oMRSAPIHelper.callOMRSGetEntityByGuid(anyString(),any())).thenReturn(mockEntityGet);
         List<Relationship> mockRelationshipList = new ArrayList<>();
 
@@ -327,8 +324,9 @@ public class TestSubjectAreaGlossaryRESTServices {
         String displayName = "string0";
         String usage = "string1";
         String description = "string2 fsdgsdg";
+        String qualifiedName = "test qname";
 
-        EntityUniverse mockEntityGet = createMockGlossary(displayName,usage,description,testguid1);
+        EntityDetail mockEntityGet = createMockGlossary(displayName,usage,description,testguid1,qualifiedName);
         when( oMRSAPIHelper.callOMRSGetEntityByGuid(anyString(),any())).thenReturn(mockEntityGet);
         List<Relationship> mockRelationshipList = new ArrayList<>();
         mockRelationshipList.add(new Relationship());
@@ -363,10 +361,10 @@ public class TestSubjectAreaGlossaryRESTServices {
         assertTrue(invalidExResponse.getExceptionErrorMessage().contains("OMAS-SUBJECTAREA-400-033"));
     }
 
-    private static EntityUniverse createMockGlossary(String displayName, String usage, String description, String testguid1) {
+    private static EntityDetail createMockGlossary(String displayName, String usage, String description, String testguid1,String qualifiedName) {
         // TODO          "qualifiedName","additionalProperties",
 
-        EntityUniverse mockEntity = new EntityUniverse();
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         PrimitivePropertyValue primitivePropertyValue;
@@ -374,6 +372,7 @@ public class TestSubjectAreaGlossaryRESTServices {
         SubjectAreaUtils.addStringToInstanceProperty("displayName",displayName ,instanceProperties);
         SubjectAreaUtils.addStringToInstanceProperty("usage",usage ,instanceProperties);
         SubjectAreaUtils.addStringToInstanceProperty("description",description ,instanceProperties);
+        SubjectAreaUtils.addStringToInstanceProperty("qualifiedName",description ,instanceProperties);
 
 
         InstanceStatus status = InstanceStatus.ACTIVE;

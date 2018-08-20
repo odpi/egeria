@@ -158,16 +158,16 @@ public class ErrorHandler
      *
      * @param methodName - name of the method being called
      * @return metadata collection that provides access to the properties in the property server
-     * @throws PropertyServerException - exception thrown if the repository connector
+     * @throws MetadataServerUncontactableException - exception thrown if the repository connector
      */
-    public static OMRSMetadataCollection validateRepositoryConnector(String   methodName,OMRSRepositoryConnector repositoryConnector ) throws PropertyServerException
+    public static OMRSMetadataCollection validateRepositoryConnector(String   methodName,OMRSRepositoryConnector repositoryConnector ) throws MetadataServerUncontactableException
     {
         if (repositoryConnector == null)
         {
             SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.OMRS_NOT_INITIALIZED;
             String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
 
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+            throw new MetadataServerUncontactableException(errorCode.getHTTPErrorCode(),
                                               className,
                                               methodName,
                                               errorMessage,
@@ -181,7 +181,7 @@ public class ErrorHandler
             SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.OMRS_NOT_AVAILABLE;
             String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
 
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+            throw new MetadataServerUncontactableException(errorCode.getHTTPErrorCode(),
                                               className,
                                               methodName,
                                               errorMessage,
@@ -200,7 +200,7 @@ public class ErrorHandler
             SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.OMRS_NOT_AVAILABLE;
             String                 errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
 
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+            throw new MetadataServerUncontactableException(errorCode.getHTTPErrorCode(),
                                               className,
                                               methodName,
                                               errorMessage,
@@ -243,27 +243,27 @@ public class ErrorHandler
 
 
     /**
-     * Throw an exception if the supplied userId is not authorized to perform a request
+     * Throw an exception if the respository could not be contacted
      *
      * @param error - caught exception
      * @param methodName - name of the method making the call.
      * @param serverName - name of this server
      * @param serviceName - name of this access service
-     * @throws PropertyServerException - unexpected exception from property server
+     * @throws MetadataServerUncontactableException - unexpected exception from property server
      */
     public static  void handleRepositoryError(Throwable  error,
                                        String     methodName,
                                        String     serverName,
-                                       String     serviceName) throws PropertyServerException
+                                       String     serviceName) throws MetadataServerUncontactableException
     {
-        SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.PROPERTY_SERVER_ERROR;
+        SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.METADATA_SERVER_UNCONTACTABLE_ERROR;
         String                 errorMessage = errorCode.getErrorMessageId()
                                             + errorCode.getFormattedErrorMessage(error.getMessage(),
                                                                                  methodName,
                                                                                  serviceName,
                                                                                  serverName);
 
-        throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+        throw new MetadataServerUncontactableException(errorCode.getHTTPErrorCode(),
                                           className,
                                           methodName,
                                           errorMessage,
@@ -420,7 +420,7 @@ public class ErrorHandler
      * @param serviceName
      * @throws UnrecognizedGUIDException
      */
-    public static void handleEntitytNotKnownError(String guid, String methodName, String serverName, String serviceName) throws UnrecognizedGUIDException {
+    public static void handleEntityNotKnownError(String guid, String methodName, String serverName, String serviceName) throws UnrecognizedGUIDException {
         SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.ENTITY_NOT_KNOWN_ERROR;
         String                 errorMessage = errorCode.getErrorMessageId()
                 + errorCode.getFormattedErrorMessage(methodName,guid);
@@ -440,17 +440,17 @@ public class ErrorHandler
      * @param methodName
      * @param serverName
      * @param serviceName
-     * @throws PropertyServerException
+     * @throws MetadataServerUncontactableException
      */
-    public static void handleEntityProxyOnlyException(org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException e, String methodName, String serverName, String serviceName) throws PropertyServerException {
-        SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.PROPERTY_SERVER_ERROR;
+    public static void handleEntityProxyOnlyException(org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException e, String methodName, String serverName, String serviceName) throws MetadataServerUncontactableException {
+        SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.METADATA_SERVER_UNCONTACTABLE_ERROR;
         String                 errorMessage = errorCode.getErrorMessageId()
                 + errorCode.getFormattedErrorMessage(e.getMessage(),
                 methodName,
                 serviceName,
                 serverName);
 
-        throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+        throw new MetadataServerUncontactableException(errorCode.getHTTPErrorCode(),
                 className,
                 methodName,
                 errorMessage,

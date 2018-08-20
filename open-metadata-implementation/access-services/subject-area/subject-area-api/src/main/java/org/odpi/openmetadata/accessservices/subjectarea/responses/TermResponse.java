@@ -40,6 +40,10 @@ public class TermResponse extends SubjectAreaOMASAPIResponse
     /**
      * Default constructor
      */
+    public TermResponse()
+    {
+        this.setResponseCategory(ResponseCategory.Term);
+    }
     public TermResponse(Term term)
     {
         this.term=term;

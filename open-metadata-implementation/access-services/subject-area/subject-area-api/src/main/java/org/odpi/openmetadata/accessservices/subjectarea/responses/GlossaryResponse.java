@@ -40,10 +40,13 @@ public class GlossaryResponse extends SubjectAreaOMASAPIResponse
     /**
      * Default constructor
      */
+    public GlossaryResponse() {
+        this.setResponseCategory(ResponseCategory.Glossary);
+    }
     public GlossaryResponse(Glossary glossary)
     {
+        this();
         this.glossary=glossary;
-        this.setResponseCategory(ResponseCategory.Glossary);
     }
 
 

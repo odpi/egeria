@@ -54,10 +54,10 @@ public class TestSubjectAreaTermRESTServices {
         String abbreviation = "test abbrev";
         String examples = "test examples";
         // set up the mocks
-        EntityUniverse mockEntityAdd = createMockGlossaryTerm(displayName,summary,description,testguid1, abbreviation, examples);
-        EntityUniverse mockEntityGet = createMockGlossaryTerm(displayName,summary,description,testguid1, abbreviation, examples);
+        EntityDetail mockEntityAdd = createMockGlossaryTerm(displayName,summary,description,testguid1, abbreviation, examples);
+        EntityDetail mockEntityGet = createMockGlossaryTerm(displayName,summary,description,testguid1, abbreviation, examples);
         List<EntityDetail> mockGlossaryList = new ArrayList<>();
-        EntityUniverse mockGlossary= createMockGlossary(displayName);
+        EntityDetail mockGlossary= createMockGlossary(displayName);
         mockGlossaryList.add(mockGlossary);
 
         TermAnchor termAnchor = new TermAnchor();
@@ -272,10 +272,10 @@ public class TestSubjectAreaTermRESTServices {
         String abbreviation = "test abbrev";
         String examples = "test examples";
         // set up the mocks
-        EntityUniverse mockEntityUpdate = createMockGlossaryTerm(newName,summary,description,testguid1, abbreviation, examples);
-        EntityUniverse mockEntityGet = createMockGlossaryTerm(displayName,summary,description,testguid1, abbreviation, examples);
+        EntityDetail mockEntityUpdate = createMockGlossaryTerm(newName,summary,description,testguid1, abbreviation, examples);
+        EntityDetail mockEntityGet = createMockGlossaryTerm(displayName,summary,description,testguid1, abbreviation, examples);
         List<EntityDetail> mockGlossaryList = new ArrayList<>();
-        EntityUniverse mockGlossary= createMockGlossary(displayName);
+        EntityDetail mockGlossary= createMockGlossary(displayName);
         mockGlossaryList.add(mockGlossary);
 
             // mock out the add entity
@@ -309,10 +309,10 @@ public class TestSubjectAreaTermRESTServices {
         String abbreviation = "test abbrev";
         String examples = "test examples";
         // set up the mocks
-        EntityUniverse mockEntityUpdate = createMockGlossaryTerm(displayName,summary,newDescription,testguid1, abbreviation, examples);
-        EntityUniverse mockEntityGet = createMockGlossaryTerm(displayName,summary,description,testguid1, abbreviation, examples);
+        EntityDetail mockEntityUpdate = createMockGlossaryTerm(displayName,summary,newDescription,testguid1, abbreviation, examples);
+        EntityDetail mockEntityGet = createMockGlossaryTerm(displayName,summary,description,testguid1, abbreviation, examples);
         List<EntityDetail> mockGlossaryList = new ArrayList<>();
-        EntityUniverse mockGlossary= createMockGlossary(displayName);
+        EntityDetail mockGlossary= createMockGlossary(displayName);
         mockGlossaryList.add(mockGlossary);
 
         // mock out the add entity
@@ -342,8 +342,8 @@ public class TestSubjectAreaTermRESTServices {
         String description = "string2 fsdgsdg";
         String abbreviation = "test abbrev";
         String examples = "test examples";
+        EntityDetail mockEntityGet = createMockGlossaryTerm(displayName,summary,description,testguid1, abbreviation, examples);
 
-        EntityUniverse mockEntityGet = createMockGlossaryTerm(displayName,summary,description,testguid1, abbreviation, examples);
         when( oMRSAPIHelper.callOMRSGetEntityByGuid(anyString(),any())).thenReturn(mockEntityGet);
 
         // the deletion method returns void so we need to mock it out differently.
@@ -374,7 +374,7 @@ public class TestSubjectAreaTermRESTServices {
 
         String abbreviation = "test abbrev";
         String examples = "test examples";
-        EntityUniverse mockEntityGet = createMockGlossaryTerm(displayName,summary,description,testguid1, abbreviation, examples);
+        EntityDetail mockEntityGet = createMockGlossaryTerm(displayName,summary,description,testguid1, abbreviation, examples);
         when( oMRSAPIHelper.callOMRSGetEntityByGuid(anyString(),any())).thenReturn(mockEntityGet);
 
         // set the mock omrs in to the rest file.
@@ -391,8 +391,8 @@ public class TestSubjectAreaTermRESTServices {
 
         assertEquals(description,returnedTerm.getDescription());
     }
-    private EntityUniverse createMockGlossary(String displayName) {
-        EntityUniverse mockGlossary= new EntityUniverse();
+    private EntityDetail createMockGlossary(String displayName) {
+        EntityDetail mockGlossary= new EntityDetail();
         InstanceType typeOfEntity = new InstanceType();
         typeOfEntity.setTypeDefName("Glossary");
         mockGlossary.setType(typeOfEntity);
@@ -408,8 +408,8 @@ public class TestSubjectAreaTermRESTServices {
         mockGlossary.setProperties(instanceProperties);
         return mockGlossary;
     }
-    private static EntityUniverse createMockGlossaryTerm(String displayName, String summary, String description, String testguid1, String abbreviation, String examples) {
-        EntityUniverse mockEntity = new EntityUniverse();
+    private static EntityDetail createMockGlossaryTerm(String displayName, String summary, String description, String testguid1, String abbreviation, String examples) {
+        EntityDetail mockEntity = new EntityDetail();
         InstanceProperties instanceProperties = new InstanceProperties();
 
         SubjectAreaUtils.addStringToInstanceProperty("displayName",displayName ,instanceProperties);

@@ -22,11 +22,11 @@ public enum ResponseCategory {
     FunctionNotSupportedException,
     GUIDNotPurgedException,
     InvalidParameterException,
-    PropertyServerException,
     RelationshipNotDeletedException,
     StatusNotSupportedException,
     SubjectAreaRuntimeException,
     UnrecognizedGUIDException,
     UnrecognizedNameException,
     UserNotAuthorizedException,
+    MetadataServerUncontactableException,
 }
