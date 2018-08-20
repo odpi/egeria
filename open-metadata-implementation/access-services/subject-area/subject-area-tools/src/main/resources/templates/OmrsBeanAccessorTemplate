@@ -65,12 +65,13 @@ public class SubjectAreaBeansToAccessOMRS  {
      * The limit and offset paging parameters limit the number elements returned in each of the <$$lowerCasePluralEntityName$$> relationships.
      * @param entityGuid GUID for the entity
      * @return <$$uEntityName$$>
-     * @throws UserNotAuthorizedException, RepositoryErrorException, InvalidParameterException,
-     * exceptions on call
-     * ConnectorCheckedException, ConnectionCheckedException, EntityProxyOnlyException
+     * @throws MetadataServerUncontactableException
+     * @throws UserNotAuthorizedException
+     * @throws InvalidParameterException
+     * @throws UnrecognizedGUIDException
      */
     public <$$uEntityName$$> get<$$uEntityName$$>ById(String userId,String entityGuid)
-        throws PropertyServerException, UserNotAuthorizedException, InvalidParameterException, UnrecognizedGUIDException
+        throws MetadataServerUncontactableException, UserNotAuthorizedException, InvalidParameterException, UnrecognizedGUIDException
     {
         final String methodName = "get<$$uEntityName$$>ById";
         if (log.isDebugEnabled()) {
@@ -90,16 +91,18 @@ public class SubjectAreaBeansToAccessOMRS  {
 
     }
     /**
-     * Create new <$$EntityName$$> in Atlas.
+     * Create new <$$EntityName$$>.
      * @param <$$EntityName$$>
      * @return <$$uEntityName$$>
-     * @throws UserNotAuthorizedException, RepositoryErrorException, InvalidParameterException,
-     * exceptions on call
-     * ConnectorCheckedException, ConnectionCheckedException, EntityProxyOnlyException
+     * @throws MetadataServerUncontactableException
+     * @throws UserNotAuthorizedException
+     * @throws InvalidParameterException
+     * @throws ClassificationException
+     * @throws StatusNotSupportedException
      */
 
     public <$$uEntityName$$> create<$$uEntityName$$>(String userId,<$$uEntityName$$> <$$EntityName$$>)
-          throws PropertyServerException, UserNotAuthorizedException, InvalidParameterException, ClassificationException, StatusNotSupportedException
+          throws MetadataServerUncontactableException, UserNotAuthorizedException, InvalidParameterException, ClassificationException, StatusNotSupportedException
     {
 
         final String methodName = "create<$$uEntityName$$>ById";
@@ -122,9 +125,18 @@ public class SubjectAreaBeansToAccessOMRS  {
         }
         return created<$$uEntityName$$>;
     }
-
+    /**
+     * Update <$$EntityName$$> 
+     * @param <$$EntityName$$>
+     * @return <$$uEntityName$$>
+     * @throws MetadataServerUncontactableException
+     * @throws UserNotAuthorizedException
+     * @throws InvalidParameterException
+     * @throws ClassificationException
+     * @throws StatusNotSupportedException
+     */
     public <$$uEntityName$$> update<$$uEntityName$$>(String userId, <$$uEntityName$$> <$$EntityName$$>)
-         throws PropertyServerException, UserNotAuthorizedException, InvalidParameterException,UnrecognizedGUIDException
+         throws MetadataServerUncontactableException, UserNotAuthorizedException, InvalidParameterException,UnrecognizedGUIDException
     {
 
             final String methodName = "update<$$uEntityName$$>ById";
@@ -153,10 +165,15 @@ public class SubjectAreaBeansToAccessOMRS  {
      *
      * @param  entityGuid GUID for the <$$EntityName$$>
      * @return <$$uEntityName$$>
+     * @throws MetadataServerUncontactableException
+     * @throws UserNotAuthorizedException
+     * @throws InvalidParameterException
+     * @throws FunctionNotSupportedException
+     * @throws UnrecognizedGUIDException
      */
 
     public EntityDetail delete<$$uEntityName$$>ByGuid(String userId,final String entityGuid)
-         throws PropertyServerException, UserNotAuthorizedException,  FunctionNotSupportedException, InvalidParameterException, UnrecognizedGUIDException
+         throws MetadataServerUncontactableException, UserNotAuthorizedException,  FunctionNotSupportedException, InvalidParameterException, UnrecognizedGUIDException
     {
          final String methodName = "delete<$$uEntityName$$>ByGuid";
          if (log.isDebugEnabled()) {
@@ -175,9 +192,22 @@ public class SubjectAreaBeansToAccessOMRS  {
          return deletedOmrsEntityDetail;
 
     }
-
+    /**
+     * Purge an <$$EntityName$$> identified by its GUID. Delete is a hard delete, this means that the <$$EntityName$$> is really
+     * deleted .
+     *
+     * @param  entityGuid GUID for the <$$EntityName$$>
+     * @return <$$uEntityName$$>
+     * @throws MetadataServerUncontactableException
+     * @throws UserNotAuthorizedException
+     * @throws InvalidParameterException
+     * @throws UnrecognizedGUIDException
+     * @throws EntityNotDeletedException
+     * @throws GUIDNotPurgedException
+     */
     public void purge<$$uEntityName$$>ByGuid(String userId,final String entityGuid)
-           throws PropertyServerException, UserNotAuthorizedException, InvalidParameterException, UnrecognizedGUIDException, EntityNotDeletedException, GUIDNotPurgedException {
+           throws MetadataServerUncontactableException, UserNotAuthorizedException, InvalidParameterException, UnrecognizedGUIDException, EntityNotDeletedException, GUIDNotPurgedException {
+
         final String methodName = "purge<$$uEntityName$$>ByGuid";
          if (log.isDebugEnabled()) {
               log.debug("==> Method: " + methodName + ",userId="+userId+",guid="+entityGuid);
@@ -198,12 +228,15 @@ public class SubjectAreaBeansToAccessOMRS  {
      * Add classifications to the supplied <$$EntityName$$>
      * @param entityGuid
      * @param classifications
-     * @throws UserNotAuthorizedException, RepositoryErrorException, InvalidParameterException,
-            // exceptions on call
-            ConnectorCheckedException, ConnectionCheckedException, EntityProxyOnlyException
+     * @throws MetadataServerUncontactableException
+     * @throws UserNotAuthorizedException
+     * @throws InvalidParameterException
+     * @throws UnrecognizedGUIDException
+     * @throws ClassificationException
      */
      public <$$uEntityName$$> add<$$uEntityName$$>Classifications(String userId,final String entityGuid, List<Classification> classifications)
-           throws PropertyServerException, UserNotAuthorizedException, InvalidParameterException, ClassificationException, UnrecognizedGUIDException {
+           throws MetadataServerUncontactableException, UserNotAuthorizedException, InvalidParameterException, ClassificationException, UnrecognizedGUIDException {
+
         final String methodName = "add<$$uEntityName$$>Classifications";
          if (log.isDebugEnabled()) {
              log.debug("==> Method: " + methodName + ",userId="+userId+",guid="+entityGuid);
@@ -234,9 +267,14 @@ public class SubjectAreaBeansToAccessOMRS  {
      * Updates classifications to an existing <$$EntityName$$> represented by a guid.
      * @param  entityGuid globally unique identifier for the <$$EntityName$$>
      * @return classification for the given <$$EntityName$$> guid
+     * @throws MetadataServerUncontactableException
+     * @throws UserNotAuthorizedException
+     * @throws InvalidParameterException
+     * @throws UnrecognizedGUIDException
+     * @throws ClassificationException
      */
     public <$$uEntityName$$> update<$$uEntityName$$>Classification(String userId, final String entityGuid, List<Classification> classificationsToUpdate)
-        throws PropertyServerException, UserNotAuthorizedException, InvalidParameterException, ClassificationException,  UnrecognizedGUIDException {
+        throws MetadataServerUncontactableException, UserNotAuthorizedException, InvalidParameterException, ClassificationException,  UnrecognizedGUIDException {
 
         final String methodName = "update<$$uEntityName$$>Classifications";
         if (log.isDebugEnabled()) {
@@ -299,9 +337,14 @@ public class SubjectAreaBeansToAccessOMRS  {
      * Deletes a given classification from an existing <$$EntityName$$> represented by a guid.
      * @param entityGuid  globally unique identifier for the <$$EntityName$$>
      * @param name name of the classification
+     * @throws MetadataServerUncontactableException
+     * @throws UserNotAuthorizedException
+     * @throws InvalidParameterException
+     * @throws UnrecognizedGUIDException
+     * @throws ClassificationException
      */
     public <$$uEntityName$$> delete<$$uEntityName$$>Classification(String userId,String entityGuid, final String name)
-        throws PropertyServerException, UserNotAuthorizedException, InvalidParameterException, ClassificationException,  UnrecognizedGUIDException {
+        throws MetadataServerUncontactableException, UserNotAuthorizedException, InvalidParameterException, ClassificationException,  UnrecognizedGUIDException {
 
        final String methodName = "delete<$$uEntityName$$>Classification";
        if (log.isDebugEnabled()) {
@@ -323,9 +366,18 @@ public class SubjectAreaBeansToAccessOMRS  {
     /**
       * Get the relationships associated with entity <$$EntityName$$> represented by a guid.
       * @param entityGuid  globally unique identifier for the <$$EntityName$$>
+      * @throws MetadataServerUncontactableException
+      * @throws UserNotAuthorizedException
+      * @throws InvalidParameterException
+      * @throws UnrecognizedGUIDException
+      * @throws FunctionNotSupportedException
       */
      public List<Line> get<$$uEntityName$$>Relationships(String userId,String entityGuid)
-         throws PropertyServerException, UserNotAuthorizedException, InvalidParameterException, FunctionNotSupportedException, UnrecognizedGUIDException {
+         throws MetadataServerUncontactableException,
+          UserNotAuthorizedException,
+          InvalidParameterException,
+          FunctionNotSupportedException,
+          UnrecognizedGUIDException {
         final String methodName = "get<$$uEntityName$$>Relationships";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId="+userId+",guid="+entityGuid);
@@ -354,9 +406,17 @@ public class SubjectAreaBeansToAccessOMRS  {
      // Relationships
 
      <$$RELATIONSHIP$
-
+    /**
+      * Create relationship
+      * @param <$$uRelationshipName$$> relationship to create
+      * @throws MetadataServerUncontactableException
+      * @throws UserNotAuthorizedException
+      * @throws InvalidParameterException
+      * @throws  UnrecognizedGUIDException
+      * @throws StatusNotSupportedException
+      */
     public <$$uRelationshipName$$> create<$$uRelationshipName$$>Relationship(String userId,<$$uRelationshipName$$> relationship)
-          throws PropertyServerException, UserNotAuthorizedException, InvalidParameterException,  UnrecognizedGUIDException {
+          throws MetadataServerUncontactableException, UserNotAuthorizedException, InvalidParameterException,  UnrecognizedGUIDException,StatusNotSupportedException {
         final String methodName = "create<$$uRelationshipName$$>Relationship";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId="+userId+",relationship="+relationship);
@@ -371,9 +431,16 @@ public class SubjectAreaBeansToAccessOMRS  {
         }
         return reclassified<$$uRelationshipName$$>;
     }
-
+    /**
+      * get relationship
+      * @param <$$uRelationshipName$$> relationship
+      * @throws MetadataServerUncontactableException
+      * @throws UserNotAuthorizedException
+      * @throws InvalidParameterException
+      * @throws UnrecognizedGUIDException
+      */
     public <$$uRelationshipName$$> get<$$uRelationshipName$$>RelationshipByGuid( String userId, String relationshipGuid)
-         throws PropertyServerException, UserNotAuthorizedException, InvalidParameterException, UnrecognizedGUIDException {
+         throws MetadataServerUncontactableException, UserNotAuthorizedException, InvalidParameterException, UnrecognizedGUIDException {
             final String methodName = "get<$$uRelationshipName$$>RelationshipByGuid";
             if (log.isDebugEnabled()) {
                 log.debug("==> Method: " + methodName + ",userId="+userId+",relationshipGuid="+relationshipGuid);
@@ -387,9 +454,18 @@ public class SubjectAreaBeansToAccessOMRS  {
                 log.debug("<== successful Method: " + methodName + ",userId="+userId+",relationshipGuid="+relationshipGuid);
             }
             return got<$$uRelationshipName$$>;
-        }
+      }
+    /**
+      * update relationship
+      * @param <$$uRelationshipName$$> relationship
+      * @throws MetadataServerUncontactableException
+      * @throws UserNotAuthorizedException
+      * @throws InvalidParameterException
+      * @throws UnrecognizedGUIDException
+      * @throws StatusNotSupportedException
+      */
       public <$$uRelationshipName$$> update<$$uRelationshipName$$>Relationship(String userId,<$$uRelationshipName$$> <$$RelationshipName$$>)
-            throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException, StatusNotSupportedException, UnrecognizedGUIDException {
+            throws UserNotAuthorizedException, MetadataServerUncontactableException, InvalidParameterException, StatusNotSupportedException, UnrecognizedGUIDException {
         final String methodName = "update<$$uRelationshipName$$>Relationship";
         if (log.isDebugEnabled()) {
            log.debug("==> Method: " + methodName + ",userId="+userId);
@@ -405,9 +481,17 @@ public class SubjectAreaBeansToAccessOMRS  {
         }
         return updated<$$uRelationshipName$$>;
     }
-
+    /**
+      * delete relationship
+      * @param relationshipGuid relationshipGuid
+      * @throws MetadataServerUncontactableException
+      * @throws UserNotAuthorizedException
+      * @throws InvalidParameterException
+      * @throws UnrecognizedGUIDException
+      * @throws FunctionNotSupportedException
+      */
      public void delete<$$uRelationshipName$$>RelationshipById(String userId,String relationshipGuid)
-              throws PropertyServerException, UserNotAuthorizedException, InvalidParameterException, FunctionNotSupportedException, UnrecognizedGUIDException {
+              throws MetadataServerUncontactableException, UserNotAuthorizedException, InvalidParameterException, FunctionNotSupportedException, UnrecognizedGUIDException {
             final String methodName = "delete<$$uRelationshipName$$>RelationshipById";
             if (log.isDebugEnabled()) {
                 log.debug("==> Method: " + methodName + ",userId="+userId+",guid="+relationshipGuid);
@@ -427,27 +511,37 @@ public class SubjectAreaBeansToAccessOMRS  {
                  // error guid supplied is not for a relationship of type <$$RelationshipName$$>
              }
      }
+    /**
+      * purge relationship
+      * @param relationshipGuid relationshipGuid
+      * @throws MetadataServerUncontactableException
+      * @throws UserNotAuthorizedException
+      * @throws InvalidParameterException
+      * @throws UnrecognizedGUIDException
+      * @throws RelationshipNotDeletedException
+      * @throws GUIDNotPurgedException
+      */
      public void purge<$$uRelationshipName$$>RelationshipById(String userId,String relationshipGuid)
-                  throws PropertyServerException, UserNotAuthorizedException, InvalidParameterException, UnrecognizedGUIDException, RelationshipNotDeletedException, GUIDNotPurgedException {
-                 final String methodName = "purge<$$uRelationshipName$$>RelationshipById";
-                 if (log.isDebugEnabled()) {
-                     log.debug("==> Method: " + methodName + ",userId="+userId+",guid="+relationshipGuid);
-                 }
-                  RestValidator.validateUserIdNotNull(className,methodName,userId);
-                  RestValidator.validateGUIDNotNull(className,methodName,relationshipGuid,"relationshipGuid");
+            throws MetadataServerUncontactableException, UserNotAuthorizedException, InvalidParameterException, UnrecognizedGUIDException, RelationshipNotDeletedException, GUIDNotPurgedException {
+            final String methodName = "purge<$$uRelationshipName$$>RelationshipById";
+            if (log.isDebugEnabled()) {
+                log.debug("==> Method: " + methodName + ",userId="+userId+",guid="+relationshipGuid);
+            }
+            RestValidator.validateUserIdNotNull(className,methodName,userId);
+            RestValidator.validateGUIDNotNull(className,methodName,relationshipGuid,"relationshipGuid");
 
-                  Relationship relationship =  oMRSAPIHelper.callOMRSGetRelationshipByGuid(userId,relationshipGuid);
-                  String typeGuid = relationship.getType().getTypeDefGUID();
-                  String typeName = relationship.getType().getTypeDefName();
-                  if (typeName.equals("<$$uRelationshipName$$>")) {
-                     oMRSAPIHelper.callOMRSPurgeRelationship(userId, typeGuid, typeName, relationshipGuid);
-                     if (log.isDebugEnabled()) {
-                         log.debug("<== successful Method: " + methodName + ",userId="+userId+",guid="+relationshipGuid);
-                      }
-                  } else {
-                      // error guid supplied is not for a relationship of type <$$RelationshipName$$>
-                  }
-          }
+            Relationship relationship =  oMRSAPIHelper.callOMRSGetRelationshipByGuid(userId,relationshipGuid);
+            String typeGuid = relationship.getType().getTypeDefGUID();
+            String typeName = relationship.getType().getTypeDefName();
+            if (typeName.equals("<$$uRelationshipName$$>")) {
+                oMRSAPIHelper.callOMRSPurgeRelationship(userId, typeGuid, typeName, relationshipGuid);
+                if (log.isDebugEnabled()) {
+                    log.debug("<== successful Method: " + methodName + ",userId="+userId+",guid="+relationshipGuid);
+                 }
+             } else {
+                 // error guid supplied is not for a relationship of type <$$RelationshipName$$>
+             }
+     }
     $$RELATIONSHIP$>
 
 }

@@ -2,9 +2,9 @@
 package org.odpi.openmetadata.accessservices.subjectarea;
 
 /**
- * The SubjectArea Open Metadata Access Service (OMAS).
+ * The SubjectAreaImpl Open Metadata Access Service (OMAS).
  */
-public interface SubjectAreaInterface
+public interface SubjectAreaTerm
 {
 
 

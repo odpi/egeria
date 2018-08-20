@@ -26,6 +26,10 @@ public class PossibleRelationshipsResponse extends SubjectAreaOMASAPIResponse
     /**
      * Default constructor
      */
+    public PossibleRelationshipsResponse()
+    {
+        this.setResponseCategory(ResponseCategory.PossibleRelationships);
+    }
     public PossibleRelationshipsResponse(Set<String> possibleRelationships)
     {
         this.possibleRelationships=possibleRelationships;

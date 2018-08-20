@@ -282,7 +282,6 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         }
     }
 
-
     private void createEntity(IGCObject igcObject, String typeName, boolean avoidDuplicate) throws TypeErrorException {
 
         String username = igcObject.getCreatedBy();
@@ -332,7 +331,6 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
             entityDetail.setGUID(typeName + ".rid." + igcObject.getId());
         else
             entityDetail.setGUID(igcObject.getId());
-
         this.repositoryEventProcessor.processNewEntityEvent(
                 sourceName,
                 metadataCollectionId,

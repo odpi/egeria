@@ -20,38 +20,62 @@ package org.odpi.openmetadata.accessservices.subjectarea.responses;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.RelationshipNotDeletedException;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedExceptionBase;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * SubjectAreaOMASAPIExceptionResponse provides a common header for subject Area Exceptions to its REST API.
- * It manages information about exceptions.
+ *RelationshipNotDeletedExceptionResponse is the response that wraps a RelationshipNotDeletedException
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SubjectAreaOMASAPIExceptionResponse extends SubjectAreaOMASAPIResponse
+public class RelationshipNotDeletedExceptionResponse extends SubjectAreaOMASAPIResponse
 {
     protected String    exceptionClassName = null;
     protected String    exceptionErrorMessage = null;
     protected String    exceptionSystemAction = null;
     protected String    exceptionUserAction = null;
-    protected ResponseCategory responseCategory;
 
+    public String getGuid() {
+        return guid;
+    }
+
+    private String guid=null;
+    // TODO add some useful fields here - like the field name that was incorrect and its value.
     /**
      * Default constructor
-     * @param e
      */
-    public SubjectAreaOMASAPIExceptionResponse(SubjectAreaCheckedExceptionBase e)
+    public RelationshipNotDeletedExceptionResponse()
+    {
+        this.setResponseCategory(ResponseCategory.RelationshipNotDeletedException);
+    }
+    public RelationshipNotDeletedExceptionResponse(SubjectAreaCheckedExceptionBase e)
     {
         this.exceptionClassName = e.getReportingClassName();
         this.exceptionErrorMessage = e.getErrorMessage();
         this.exceptionSystemAction = e.getReportedSystemAction();
         this.exceptionUserAction = e.getReportedUserAction();
+        this.setResponseCategory(ResponseCategory.RelationshipNotDeletedException);
+        this.guid = ((RelationshipNotDeletedException)e).getGuid();
     }
 
+    @Override
+    public String toString()
+    {
+        return "RelationshipNotDeletedExceptionResponse{" +
+                super.toString() +
+                "guid="+this.guid + '\'' +
+                "relatedHTTPCode=" + relatedHTTPCode +
+                ", exceptionClassName='" + exceptionClassName + '\'' +
+                ", exceptionErrorMessage='" + exceptionErrorMessage + '\'' +
+                ", exceptionSystemAction='" + exceptionSystemAction + '\'' +
+                ", exceptionUserAction='" + exceptionUserAction + '\'' +
+                "category=" + this.responseCategory +
+                '}';
+    }
 
     /**
      * Return the name of the Java class name to use to recreate the exception.
@@ -63,7 +87,6 @@ public class SubjectAreaOMASAPIExceptionResponse extends SubjectAreaOMASAPIRespo
         return exceptionClassName;
     }
 
-
     /**
      * Set up the name of the Java class name to use to recreate the exception.
      *
@@ -73,7 +96,6 @@ public class SubjectAreaOMASAPIExceptionResponse extends SubjectAreaOMASAPIRespo
     {
         this.exceptionClassName = exceptionClassName;
     }
-
 
     /**
      * Return the error message associated with the exception.
@@ -85,7 +107,6 @@ public class SubjectAreaOMASAPIExceptionResponse extends SubjectAreaOMASAPIRespo
         return exceptionErrorMessage;
     }
 
-
     /**
      * Set up the error message associated with the exception.
      *
@@ -95,7 +116,6 @@ public class SubjectAreaOMASAPIExceptionResponse extends SubjectAreaOMASAPIRespo
     {
         this.exceptionErrorMessage = exceptionErrorMessage;
     }
-
 
     /**
      * Return the description of the action taken by the system as a result of the exception.
@@ -107,7 +127,6 @@ public class SubjectAreaOMASAPIExceptionResponse extends SubjectAreaOMASAPIRespo
         return exceptionSystemAction;
     }
 
-
     /**
      * Set up the description of the action taken by the system as a result of the exception.
      *
@@ -117,7 +136,6 @@ public class SubjectAreaOMASAPIExceptionResponse extends SubjectAreaOMASAPIRespo
     {
         this.exceptionSystemAction = exceptionSystemAction;
     }
-
 
     /**
      * Return the action that a user should take to resolve the problem.
@@ -129,7 +147,6 @@ public class SubjectAreaOMASAPIExceptionResponse extends SubjectAreaOMASAPIRespo
         return exceptionUserAction;
     }
 
-
     /**
      * Set up the action that a user should take to resolve the problem.
      *
@@ -138,18 +155,5 @@ public class SubjectAreaOMASAPIExceptionResponse extends SubjectAreaOMASAPIRespo
     public void setExceptionUserAction(String exceptionUserAction)
     {
         this.exceptionUserAction = exceptionUserAction;
-    }
-
-
-    @Override
-    public String toString()
-    {
-        return super.toString() +
-                "relatedHTTPCode=" + relatedHTTPCode +
-                ", exceptionClassName='" + exceptionClassName + '\'' +
-                ", exceptionErrorMessage='" + exceptionErrorMessage + '\'' +
-                ", exceptionSystemAction='" + exceptionSystemAction + '\'' +
-                ", exceptionUserAction='" + exceptionUserAction + '\''
-                ;
     }
 }
