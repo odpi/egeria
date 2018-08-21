@@ -382,7 +382,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                 relationship
         );
 
-        log.info("Created relationship of type" + relationshipType);
+        log.info("Created relationship " + relationshipType + "(" + entityType1 + ", " + entityType2 + ")");
     }
 
 
