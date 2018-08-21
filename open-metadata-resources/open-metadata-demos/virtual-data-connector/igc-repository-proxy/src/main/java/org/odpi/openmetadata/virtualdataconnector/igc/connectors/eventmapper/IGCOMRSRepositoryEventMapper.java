@@ -243,7 +243,6 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                         if (igcObject.getAssignedToTerms() != null) {
 
                             String glossaryTermID = igcObject.getAssignedToTerms().getItems().get(0).getId();
-                            String glossaryTermName = igcObject.getAssignedToTerms().getItems().get(0).getName();
 
                             createRelationship(
                                     "SemanticAssignment",
@@ -340,6 +339,8 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                 entityDetail
 
         );
+
+        log.info("Created " + typeName + "." + igcObject.getId());
     }
 
     /**
@@ -380,6 +381,8 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                 originatorOrganizationName,
                 relationship
         );
+
+        log.info("Created relationship of type" + relationshipType);
     }
 
 
