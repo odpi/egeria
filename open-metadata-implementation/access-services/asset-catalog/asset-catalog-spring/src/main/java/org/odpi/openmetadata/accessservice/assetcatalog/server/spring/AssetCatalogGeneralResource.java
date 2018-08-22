@@ -1,11 +1,9 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-package org.odpi.openmetadata.accessservice.assetcatalog.rest;
+package org.odpi.openmetadata.accessservice.assetcatalog.server.spring;
 
 import org.odpi.openmetadata.accessservice.assetcatalog.service.OMASCatalogRESTServices;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.rest.properties.TypeDefGalleryResponse;
 import org.odpi.openmetadata.repositoryservices.rest.properties.TypeDefResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,13 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/open-metadata/access-services/asset-catalog/users/{userId}/")
 public class AssetCatalogGeneralResource {
 
-    private static OMRSRepositoryConnector repositoryConnector;
-    private final OMASCatalogRESTServices restAPI;
-
-    @Autowired
-    public AssetCatalogGeneralResource(OMASCatalogRESTServices restAPI) {
-        this.restAPI = restAPI;
-    }
+    private OMASCatalogRESTServices restAPI = new OMASCatalogRESTServices();
 
     /**
      * @param userId the unique identifier for the user

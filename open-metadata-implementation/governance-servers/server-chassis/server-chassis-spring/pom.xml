@@ -55,19 +55,19 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>information-view-spring</artifactId>
+            <artifactId>asset-catalog-spring</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>asset-catalog-server</artifactId>
+            <artifactId>subject-area-spring</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
-  
-  <dependency>
+
+        <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>subject-area-spring</artifactId>
+            <artifactId>http-helper</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
 
@@ -75,7 +75,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>${spring.version}</version>
+            <version>${spring-boot.version}</version>
         </dependency>
 
         <!-- Spring Fox for Swagger API documentation generation -->
@@ -92,7 +92,22 @@
             <version>2.7.0</version>
         </dependency>
 
-
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

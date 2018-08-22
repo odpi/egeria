@@ -21,7 +21,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum ServerAssetUse implements Serializable {
     /**
       * The server capability is accountable for the maintenance and protection of the asset.

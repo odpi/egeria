@@ -33,7 +33,9 @@ import java.util.Map;
         "short_description",
         "long_description",
         "terms",
-        "DatabaseColumns"
+        "DatabaseColumns",
+        "data_connections",
+        "data_connectors"
 })
 
 //Can be used for database columns, glossaryterms and glossary categories.
@@ -89,12 +91,23 @@ public class IGCObject {
     private Terms terms;
     @JsonProperty("database_columns")
     private DatabaseColumns database_columns;
+    @JsonProperty("data_connectors")
+    private DataConnectors data_connectors;
 
 
+    @JsonProperty("data_connections")
+    private DataConnections data_connections;
 
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
+    @JsonProperty("data_connectors")
+    public DataConnectors getDataConnectors() { return data_connectors;
+    }
+
+    @JsonProperty("data_connections")
+    public DataConnections getDataConnections() { return data_connections;
+    }
 
     @JsonProperty("database_columns")
     public DatabaseColumns getDatabaseColumns(){ return database_columns;}

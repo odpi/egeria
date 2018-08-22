@@ -27,7 +27,6 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKn
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
-import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
@@ -37,15 +36,14 @@ import java.util.List;
  * Assess Service (OMAS).
  * This service provide the functionality to fetch asset relationships and details about specific relationships.
  */
-@Service
 public class AssetCatalogRelationshipService {
 
     private static OMRSMetadataCollection metadataCollection;
 
-    private Converter converter;
-    private ExceptionUtil exceptionUtil;
+    private Converter converter = new Converter();
+    private ExceptionUtil exceptionUtil = new ExceptionUtil();
 
-    public AssetCatalogRelationshipService(Converter converter, ExceptionUtil exceptionUtil) {
+    public AssetCatalogRelationshipService() {
         AccessServiceDescription myDescription = AccessServiceDescription.ASSET_CATALOG_OMAS;
 
         AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription.getAccessServiceCode(),
@@ -55,9 +53,6 @@ public class AssetCatalogRelationshipService {
                 AccessServiceOperationalStatus.ENABLED,
                 AssetCatalogAdmin.class.getName());
         OMAGAccessServiceRegistration.registerAccessService(myRegistration);
-
-        this.converter = converter;
-        this.exceptionUtil = exceptionUtil;
     }
 
     /**

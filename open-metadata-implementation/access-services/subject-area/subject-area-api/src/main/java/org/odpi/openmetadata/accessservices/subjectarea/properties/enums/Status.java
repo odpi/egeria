@@ -18,10 +18,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * defines its visibility to different types of queries. Most queries by default will only return instances in the
  * active status.
  * <ul>
- *     <li>UNKNOWN: the instance has not been initialized.</li>
- *     <li>PROPOSED: the instance has not yet been stored in the metadata collection.</li>
- *     <li>DRAFT: the instance is stored but not fully filled out so should not be used for normal queries.</li>
- *     <li>PREPARED: the instance is stored and complete and is ready to be moved to active status.</li>
  *     <li>ACTIVE: the instance is in active use.</li>
  *     <li>DELETED: the instance has been deleted and is waiting to be purged.  It is kept in the metadata collection
  *     to support a restore request.  It is not returned on normal queries.</li>
@@ -30,14 +26,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum Status implements Serializable
 {
-    UNKNOWN (0, "<Unknown>", "Unknown instance status."),
-    PROPOSED(1, "Proposed",  "Proposed instance to store in the metadata collection."),
-    DRAFT   (2, "Draft",     "Potentially incomplete draft of instance still being developed."),
-    PREPARED(3, "Prepared",  "Complete draft of instance waiting for approval."),
-    ACTIVE (10, "Active",    "Active instance in use."),
+    ACTIVE (15, "Active",    "Active instance in use."),
     DELETED(99, "Deleted",   "Instance that has been deleted and is no longer in use.");
 
     private static final long serialVersionUID = 1L;

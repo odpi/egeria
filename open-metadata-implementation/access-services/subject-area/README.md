@@ -22,6 +22,15 @@ The module structure for the Subject Area OMAS is as follows:
 * [subject-area-spring](subject-area-spring) supports the REST API using the [Spring](../../../developer-resources/Spring.md) libraries.
 * [subject-area-tools](subject-area-tools) supports code generation of POJO property objects from archive types.
 
+The implementation is not complete. 
+The following has been implemented : 
+
+* Java and REST API for create, get, update and delete for Glossary.
+* [GlossarySample](../../../open-metadata-resources/open-metadata-samples/open-metadata-subjectarea-client-samples/src/main/java/org/odpi/openmetadata/accessservices/subjectarea/samples/GlossarySample.java) is a sample that can be used to test the glossary java APIs. 
+
+## Example REST calls: 
+
+
 The implementation is not complete. The following has been implemented : 
 
 * REST API for create, get and update for Glossary.
@@ -29,6 +38,12 @@ The implementation is not complete. The following has been implemented :
 ## Example REST calls: 
 
 ### Create Glossary instance
+
+POST url: `localhost:8080/open-metadata/access-services/subject-area/users/{user}/glossaries`
+
+
+JSON body 
+=======
 
 POST url: `localhost:8080/open-metadata/access-services/subject-area/users/{user}/glossaries`
 
@@ -75,6 +90,8 @@ body:
 ```
 
 ### Get Glossary instance
+ Get Glossary instance (where {user} is the guid in the Glossary create response and {user} is the userid )
+
 
 GET url: `localhost:8080/open-metadata/access-services/subject-area/users/{user}/glossaries/{guid}`
 
@@ -82,4 +99,6 @@ GET url: `localhost:8080/open-metadata/access-services/subject-area/users/{user}
 
 ### Delete Glossary instance
 
-(where `{guid}` is the GUID in the Glossary create response)
+Delete Glossary instance (where {user} is the guid in the Glossary create response and {user} is the userid )
+DELETE url : localhost:8080/open-metadata/access-services/subject-area/users/{user}/glossaries/{guid}
+

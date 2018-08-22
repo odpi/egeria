@@ -223,8 +223,8 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServices{
                 response = OMASExceptionToResponse.convertInvalidParameterException(e);
             } catch (UserNotAuthorizedException e) {
                 response = OMASExceptionToResponse.convertUserNotAuthorizedException(e);
-            } catch (PropertyServerException e) {
-                response = OMASExceptionToResponse.convertPropertyServerException(e);
+            } catch (MetadataServerUncontactableException e) {
+                response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
             } catch (ClassificationException e) {
                 response = OMASExceptionToResponse.convertClassificationException(e);
             } catch (StatusNotSupportedException e) {
@@ -243,10 +243,12 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServices{
                 response = OMASExceptionToResponse.convertInvalidParameterException(e);
             } catch (UserNotAuthorizedException e) {
                 response = OMASExceptionToResponse.convertUserNotAuthorizedException(e);
-            } catch (PropertyServerException e) {
-                response = OMASExceptionToResponse.convertPropertyServerException(e);
+            } catch (MetadataServerUncontactableException e) {
+                response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
             } catch (UnrecognizedGUIDException e) {
                 response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
+            } catch (StatusNotSupportedException e) {
+                response = OMASExceptionToResponse.convertStatusNotSupportedException(e);
             }
         }
         if (response==null) {
@@ -326,8 +328,8 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServices{
             response = OMASExceptionToResponse.convertInvalidParameterException(e);
         } catch (UserNotAuthorizedException e) {
             response = OMASExceptionToResponse.convertUserNotAuthorizedException(e);
-        } catch (PropertyServerException e) {
-            response = OMASExceptionToResponse.convertPropertyServerException(e);
+        } catch (MetadataServerUncontactableException e) {
+            response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
         } catch (UnrecognizedGUIDException e) {
             response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
         } catch (FunctionNotSupportedException e) {
@@ -379,8 +381,8 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServices{
                 response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
             } catch (UserNotAuthorizedException e) {
                 response = OMASExceptionToResponse.convertUserNotAuthorizedException(e);
-            } catch (PropertyServerException e) {
-                response = OMASExceptionToResponse.convertPropertyServerException(e);
+            } catch (MetadataServerUncontactableException e) {
+                response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
             }
 
 
@@ -427,8 +429,8 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServices{
                 response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
             } catch (UserNotAuthorizedException e) {
                 response = OMASExceptionToResponse.convertUserNotAuthorizedException(e);
-            } catch (PropertyServerException e) {
-                response = OMASExceptionToResponse.convertPropertyServerException(e);
+            } catch (MetadataServerUncontactableException e) {
+                response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
             }
 
 
@@ -476,8 +478,8 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServices{
                 response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
             } catch (UserNotAuthorizedException e) {
                 response = OMASExceptionToResponse.convertUserNotAuthorizedException(e);
-            } catch (PropertyServerException e) {
-                response = OMASExceptionToResponse.convertPropertyServerException(e);
+            } catch (MetadataServerUncontactableException e) {
+                response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
             }
 
 
@@ -526,8 +528,8 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServices{
                 response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
             } catch (UserNotAuthorizedException e) {
                 response = OMASExceptionToResponse.convertUserNotAuthorizedException(e);
-            } catch (PropertyServerException e) {
-                response = OMASExceptionToResponse.convertPropertyServerException(e);
+            } catch (MetadataServerUncontactableException e) {
+                response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
             }
 
 
@@ -550,8 +552,8 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServices{
             try {
                 service.purgeGlossaryTermByGuid(userId, guid);
                 response = new VoidResponse();
-            } catch (PropertyServerException e) {
-                response = OMASExceptionToResponse.convertPropertyServerException(e);
+            } catch (MetadataServerUncontactableException e) {
+                response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
             } catch (InvalidParameterException e) {
                 response = OMASExceptionToResponse.convertInvalidParameterException(e);
             } catch (UnrecognizedGUIDException e) {
@@ -569,8 +571,8 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServices{
                 GlossaryTerm deletedGeneratedGlossaryTerm = GlossaryTermMapper.mapOmrsEntityDetailToGlossaryTerm(entityDetail);
                 org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term deletedTerm = TermMapper.mapOMRSBeantoTerm(deletedGeneratedGlossaryTerm);
                 response = new TermResponse(deletedTerm);
-            } catch (PropertyServerException e) {
-                response = OMASExceptionToResponse.convertPropertyServerException(e);
+            } catch (MetadataServerUncontactableException e) {
+                response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
             } catch (InvalidParameterException e) {
                 response = OMASExceptionToResponse.convertInvalidParameterException(e);
             } catch (UnrecognizedGUIDException e) {

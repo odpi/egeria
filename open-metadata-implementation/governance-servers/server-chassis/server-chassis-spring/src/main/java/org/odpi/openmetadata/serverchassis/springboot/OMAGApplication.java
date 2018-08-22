@@ -1,7 +1,9 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.serverchassis.springboot;
 
-import org.apache.log4j.BasicConfigurator;
+import org.odpi.openmetadata.http.HttpHelper;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -17,15 +19,25 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @ComponentScan({"org.odpi.openmetadata.*"})
 @EnableSwagger2
 @Configuration
-
 public class OMAGApplication
 {
+    @Value("${strict.ssl}")
+    Boolean strictSSL;
+
     public static void main(String[] args)
     {
-        BasicConfigurator.configure();
-
         SpringApplication.run(OMAGApplication.class, args);
     }
+
+    @Bean
+    public InitializingBean getInitialize(){
+        return () -> {
+            if(!strictSSL){
+                HttpHelper.noStrictSSL();
+            }
+        };
+    }
+
 
     @Bean
     public Docket egeriaAPI()
