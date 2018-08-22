@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -49,7 +50,7 @@
 
     <developers>
         <developer>
-            <id>mandychessell</id>
+            <id>mandy-chessell</id>
             <name>Mandy Chessell</name>
             <email>mandy_chessell@uk.ibm.com</email>
             <timezone>Europe/London</timezone>
