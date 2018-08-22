@@ -96,7 +96,7 @@
         <log4j.version>1.2.17</log4j.version>
         <slf4j.version>1.7.25</slf4j.version>
         <jackson.version>2.9.2</jackson.version>
-        <spring.version>1.5.7.RELEASE</spring.version>
+        <spring-boot.version>2.0.4.RELEASE</spring-boot.version>
         <spring-web.version>5.0.6.RELEASE</spring-web.version>
         <commons-io.version>2.4</commons-io.version>
         <commons-collections.version>3.2.2</commons-collections.version>
@@ -117,11 +117,6 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
 
@@ -236,6 +231,7 @@
                     <useEclipseDefaultExcludes>true</useEclipseDefaultExcludes>
                     <excludeSubProjects>true</excludeSubProjects>
                     <excludes>
+                        <exclude>**/banner.txt</exclude>
                         <exclude>**/*.json</exclude>
                         <exclude>**/*.log</exclude>
                         <exclude>**/*.iml</exclude>
