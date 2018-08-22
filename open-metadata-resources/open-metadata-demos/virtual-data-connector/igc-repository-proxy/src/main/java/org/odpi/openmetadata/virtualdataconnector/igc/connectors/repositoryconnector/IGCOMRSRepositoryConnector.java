@@ -98,7 +98,7 @@ public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector
      * @throws ConnectorCheckedException - there is a problem disconnecting the connector.
      */
     @Override
-    public void disconnect() throws ConnectorCheckedException
+    public void disconnect()
     {
         super.metadataCollection = new IGCOMRSMetadataCollection(this,
                 super.serverName,

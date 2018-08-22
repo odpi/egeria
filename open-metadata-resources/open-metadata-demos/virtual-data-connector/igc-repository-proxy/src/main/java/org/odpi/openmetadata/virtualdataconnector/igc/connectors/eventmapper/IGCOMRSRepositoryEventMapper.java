@@ -31,7 +31,6 @@ import java.util.*;
 
 public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase {
 
-
     private static final Logger log = LoggerFactory.getLogger(IGCOMRSRepositoryEventMapper.class);
     private IGCOMRSRepositoryConnector igcomrsRepositoryConnector;
     private String originatorServerName;
@@ -383,6 +382,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         );
 
         log.info("Created relationship " + relationshipType + "(" + entityType1 + ", " + entityType2 + ")");
+        log.info("Created relationship between " + entityId1 + " and " + entityId2);
     }
 
 

@@ -33,23 +33,22 @@ import java.util.List;
  * Requests to this metadata collection are translated to the IGC REST API calls and the results are
  * transformed to OMRS objects before returning to the caller.
  */
-public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase
-{
+public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
 
     //TODO Implement
+
     /**
      * Default constructor.
      *
-     * @param parentConnector - connector that this metadata collection supports.  The connector has the information
-     *                        to call the metadata repository.
-     * @param metadataCollectionId  - unique identifier for the repository.
+     * @param parentConnector      - connector that this metadata collection supports.  The connector has the information
+     *                             to call the metadata repository.
+     * @param metadataCollectionId - unique identifier for the repository.
      */
     public IGCOMRSMetadataCollection(IGCOMRSRepositoryConnector parentConnector,
-                                     String                            repositoryName,
+                                     String repositoryName,
                                      OMRSRepositoryHelper repositoryHelper,
                                      OMRSRepositoryValidator repositoryValidator,
-                                     String                     metadataCollectionId)
-    {
+                                     String metadataCollectionId) {
         /*
          * The metadata collection Id is the unique Id for the metadata collection.  It is managed by the super class.
          */
@@ -73,8 +72,8 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
     @Override
     public boolean verifyAttributeTypeDef(String userId, AttributeTypeDef attributeTypeDef) throws InvalidParameterException, RepositoryErrorException, TypeDefNotSupportedException, TypeDefConflictException, InvalidTypeDefException, UserNotAuthorizedException {
-        final String  methodName           = "verifyAttributeTypeDef";
-        final String  typeDefParameterName = "attributeTypeDef";
+        final String methodName = "verifyAttributeTypeDef";
+        final String typeDefParameterName = "attributeTypeDef";
 
         this.validateRepositoryConnector(methodName);
         parentConnector.validateRepositoryIsActive(methodName);
@@ -87,8 +86,8 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
     @Override
     public boolean verifyTypeDef(String userId, TypeDef typeDef) throws InvalidParameterException, RepositoryErrorException, TypeDefNotSupportedException, TypeDefConflictException, InvalidTypeDefException, UserNotAuthorizedException {
-        final String  methodName           = "verifyTypeDef";
-        final String  typeDefParameterName = "typeDef";
+        final String methodName = "verifyTypeDef";
+        final String typeDefParameterName = "typeDef";
 
         /*
          * Validate parameters
