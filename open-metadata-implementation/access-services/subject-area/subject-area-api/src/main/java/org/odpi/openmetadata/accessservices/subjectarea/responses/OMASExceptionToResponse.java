@@ -15,16 +15,15 @@ public class OMASExceptionToResponse {
         return response;
     }
 
-    public static SubjectAreaOMASAPIResponse convertPropertyServerException(PropertyServerException e) {
-        PropertyServerExceptionResponse response =new PropertyServerExceptionResponse(e);
-        return response;
-    }
-
     public static SubjectAreaOMASAPIResponse convertUnrecognizedGUIDException(UnrecognizedGUIDException e) {
         UnrecognizedGUIDExceptionResponse response = new  UnrecognizedGUIDExceptionResponse(e);
         return response;
     }
 
+    public static SubjectAreaOMASAPIResponse convertStatusNotSupportedException(StatusNotSupportedException e) {
+        StatusNotsupportedExceptionResponse response = new StatusNotsupportedExceptionResponse(e);
+        return response;
+    }
 
     public static SubjectAreaOMASAPIResponse convertFunctionNotSupportedException(FunctionNotSupportedException e) {
         FunctionNotSupportedExceptionResponse response = new   FunctionNotSupportedExceptionResponse(e);
@@ -49,6 +48,11 @@ public class OMASExceptionToResponse {
 
     public static SubjectAreaOMASAPIResponse convertEntityNotDeletedException(EntityNotDeletedException e) {
         EntityNotDeletedExceptionResponse response = new EntityNotDeletedExceptionResponse(e);
+        return response;
+    }
+
+    public static SubjectAreaOMASAPIResponse convertMetadataServerUncontactableException(MetadataServerUncontactableException e) {
+        MetadataServerUncontactableExceptionResponse response = new MetadataServerUncontactableExceptionResponse(e);
         return response;
     }
 }

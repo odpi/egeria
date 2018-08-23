@@ -103,4 +103,21 @@ public class GeneratorUtilities {
         }
         return isTopLevelGlossaryObject;
     }
+
+    /**
+     * delete files in the folder apart from the exclude file name.
+     * @param folder- folder under which to delete files
+     * @param excludeFile this file name should not be deleted
+     */
+    public static void deleteFilesInFolder(String folder, String excludeFile) {
+        System.err.println("folder="+folder);
+        File[] files = new File(folder).listFiles();
+        for (File file : files) {
+            if (file.isFile()) {
+                if (!file.getName().equals(excludeFile)) {
+                    file.delete();
+                }
+            }
+        }
+    }
 }

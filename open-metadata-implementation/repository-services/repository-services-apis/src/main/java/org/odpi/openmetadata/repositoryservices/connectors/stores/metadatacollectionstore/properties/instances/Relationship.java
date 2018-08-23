@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.Objects;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -83,10 +85,7 @@ public class Relationship extends InstanceHeader
 
         if (entityTwoProxy != null)
         {
-            if (entityTwoProxy.getGUID().equals(entityGUID))
-            {
-                return true;
-            }
+            return (entityTwoProxy.getGUID().equals(entityGUID));
         }
 
         return false;
@@ -99,7 +98,7 @@ public class Relationship extends InstanceHeader
      * @param entityGUID unique identifier for the entity to test.
      * @return String guid for the entity at the other end of the relationship.  Null if no matching entity found.
      */
-    public String getLinkedEntity(String  entityGUID)
+    public String returnLinkedEntity(String  entityGUID)
     {
         if ((entityGUID == null) || (entityOneProxy == null) || (entityTwoProxy == null))
         {
@@ -129,37 +128,6 @@ public class Relationship extends InstanceHeader
 
 
     /**
-     * Return an array of the unique identifiers for the entities at either end of the relationship.
-     *
-     * @return String array
-     */
-    public String [] getLinkedEntities()
-    {
-        String[] linkedEntityGUIDs = new String[2];
-
-        if (entityOneProxy == null)
-        {
-            linkedEntityGUIDs[0] = null;
-        }
-        else
-        {
-            linkedEntityGUIDs[0] = entityOneProxy.getGUID();
-        }
-
-        if (entityTwoProxy == null)
-        {
-            linkedEntityGUIDs[1] = null;
-        }
-        else
-        {
-            linkedEntityGUIDs[1] = entityTwoProxy.getGUID();
-        }
-
-        return linkedEntityGUIDs;
-    }
-
-
-    /**
      * Return a copy of all of the properties for this relationship.  Null means no properties exist.
      *
      * @return InstanceProperties
@@ -168,7 +136,11 @@ public class Relationship extends InstanceHeader
     {
         if (relationshipProperties == null)
         {
-            return relationshipProperties;
+            return null;
+        }
+        else if (relationshipProperties.getInstanceProperties() == null)
+        {
+            return null;
         }
         else
         {
@@ -194,6 +166,7 @@ public class Relationship extends InstanceHeader
      *
      * @return entityOnePropertyName String property name
      */
+    @Deprecated
     public String getEntityOnePropertyName() {
         return entityOnePropertyName;
     }
@@ -205,6 +178,7 @@ public class Relationship extends InstanceHeader
      *
      * @param entityOnePropertyName String property name
      */
+    @Deprecated
     public void setEntityOnePropertyName(String entityOnePropertyName)
     {
         this.entityOnePropertyName = entityOnePropertyName;
@@ -220,7 +194,7 @@ public class Relationship extends InstanceHeader
     {
         if (entityOneProxy == null)
         {
-            return entityOneProxy;
+            return null;
         }
         else
         {
@@ -243,6 +217,7 @@ public class Relationship extends InstanceHeader
      *
      * @return String property name
      */
+    @Deprecated
     public String getEntityTwoPropertyName() { return entityTwoPropertyName; }
 
 
@@ -252,6 +227,7 @@ public class Relationship extends InstanceHeader
      *
      * @param entityTwoPropertyName String property name
      */
+    @Deprecated
     public void setEntityTwoPropertyName(String entityTwoPropertyName) { this.entityTwoPropertyName = entityTwoPropertyName; }
 
 
@@ -264,7 +240,7 @@ public class Relationship extends InstanceHeader
     {
         if (entityTwoProxy == null)
         {
-            return entityTwoProxy;
+            return null;
         }
         else
         {
@@ -291,9 +267,7 @@ public class Relationship extends InstanceHeader
     {
         return "Relationship{" +
                 "relationshipProperties=" + relationshipProperties +
-                ", entityOneLabel='" + entityOnePropertyName + '\'' +
                 ", entityOneProxy=" + entityOneProxy +
-                ", entityTwoLabel='" + entityTwoPropertyName + '\'' +
                 ", entityTwoProxy=" + entityTwoProxy +
                 ", properties=" + getProperties() +
                 ", type=" + getType() +
@@ -309,5 +283,49 @@ public class Relationship extends InstanceHeader
                 ", version=" + getVersion() +
                 ", statusOnDelete=" + getStatusOnDelete() +
                 '}';
+    }
+
+
+    /**
+     * Validate that an object is equal depending on their stored values.
+     *
+     * @param objectToCompare object
+     * @return boolean result
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (!(objectToCompare instanceof Relationship))
+        {
+            return false;
+        }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        Relationship that = (Relationship) objectToCompare;
+        return Objects.equals(relationshipProperties, that.relationshipProperties) &&
+                Objects.equals(getEntityOneProxy(), that.getEntityOneProxy()) &&
+                Objects.equals(getEntityTwoProxy(), that.getEntityTwoProxy());
+    }
+
+
+    /**
+     * Return a hash code based on the values of this object.
+     *
+     * @return in hash code
+     */
+    @Override
+    public int hashCode()
+    {
+
+        return Objects.hash(super.hashCode(),
+                            relationshipProperties,
+                            getEntityOneProxy(),
+                            getEntityTwoProxy());
     }
 }

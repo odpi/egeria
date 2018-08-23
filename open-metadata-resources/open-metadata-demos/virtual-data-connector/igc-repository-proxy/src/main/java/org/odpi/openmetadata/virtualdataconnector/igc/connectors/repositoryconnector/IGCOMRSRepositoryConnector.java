@@ -3,9 +3,8 @@ package org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconn
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.virtualdataconnector.igc.connectors.eventmapper.IGCColumn;
-import org.odpi.openmetadata.virtualdataconnector.igc.connectors.eventmapper.IGCDatabaseDetailsResponse;
-import org.odpi.openmetadata.virtualdataconnector.igc.connectors.eventmapper.IGCPostObject;
+import org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconnector.jackson.IGCObject;
+import org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconnector.jackson.IGCPostObject;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.springframework.http.HttpEntity;
@@ -14,7 +13,11 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import javax.net.ssl.*;
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.X509Certificate;
 
 
 /**
@@ -28,9 +31,47 @@ public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector
      */
     public IGCOMRSRepositoryConnector()
     {
-
+        disableSslVerification();
     }
 
+
+    //https://stackoverflow.com/questions/19540289/how-to-fix-the-java-security-cert-certificateexception-no-subject-alternative
+    private static void disableSslVerification() {
+        try {
+            // Create a trust manager that does not validate certificate chains
+            TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
+                public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                    return null;
+                }
+
+                public void checkClientTrusted(X509Certificate[] certs, String authType) {
+                }
+
+                public void checkServerTrusted(X509Certificate[] certs, String authType) {
+                }
+            }
+            };
+
+            // Install the all-trusting trust manager
+            SSLContext sc = SSLContext.getInstance("SSL");
+            sc.init(null, trustAllCerts, new java.security.SecureRandom());
+            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+
+            // Create all-trusting host name verifier
+            HostnameVerifier allHostsValid = new HostnameVerifier() {
+                public boolean verify(String hostname, SSLSession session) {
+                    return true;
+                }
+            };
+
+            // Install the all-trusting host verifier
+            HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (KeyManagementException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Set up the unique Id for this metadata collection.
@@ -83,30 +124,11 @@ public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector
 
 
     /**
-     * Returns the metadata collection object that provides an OMRS abstraction of the metadata within
-     * a metadata repository.
-     *
-     * @return OMRSMetadataCollection - metadata information retrieved from the metadata repository.
-     */
-    public IGCPostObject getIGCMetadataCollection(String igcRID)
-    {
-        return genericIGCPostQuery(igcRID);
-
-    }
-
-
-
-    public IGCColumn queryIGCColumn(String igcRID) {
-        return (IGCColumn) genericIGCQuery(igcRID, IGCColumn.class);
-    }
-
-    /**
      * Query IGC for more information about an asset.
-     * @param igcRID
-     * @param responsePOJO
+     * @param igcRID The techncial ID of the asset.
      * @return
      */
-    private Object genericIGCQuery(String igcRID, Class responsePOJO) {
+    public IGCObject genericIGCQuery(String igcRID) {
 
         String url = this.connectionBean.getAdditionalProperties().get("igcApiGet") + igcRID;
 
@@ -117,14 +139,14 @@ public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector
 
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<String> entity = new HttpEntity<>(headers);
-        Object igcResponse = null;
+        IGCObject igcResponse = null;
         try {
             ResponseEntity<String> result = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
 
             String resultBody = result.getBody();
             ObjectMapper mapper = new ObjectMapper();
             try {
-                igcResponse = mapper.readValue(resultBody, responsePOJO);
+                igcResponse = mapper.readValue(resultBody, IGCObject.class);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -133,10 +155,16 @@ public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector
         catch(Exception e){
             e.printStackTrace();
         }
-        return igcResponse;
+        return  igcResponse;
     }
 
-    private IGCPostObject genericIGCPostQuery(String igcRID){
+    /**
+     * Returns the metadata collection object that provides an OMRS abstraction of the metadata within
+     * a metadata repository.
+     *
+     * @return OMRSMetadataCollection - metadata information retrieved from the metadata repository.
+     */
+    public IGCPostObject genericIGCPostQuery(String igcRID){
         String url = this.connectionBean.getAdditionalProperties().get("igcApiSearch") + igcRID;
         HttpHeaders headers = new HttpHeaders();
         headers.set("Cache-Control", "no-cache");

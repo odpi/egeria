@@ -80,4 +80,4 @@ With these frameworks and APIs in place,
 the Egeria function is divided into different packages to allow technology partners
 to connect into the open metadata and governance ecosystem.
 The integration options are described as five patterns
-([**native**, **caller**, **adapter**, **plug-in**, **special**](open-metadata-integration-patterns/README.md)).
+([native, caller, adapter, plug-in, special](open-metadata-integration-patterns/README.md)).

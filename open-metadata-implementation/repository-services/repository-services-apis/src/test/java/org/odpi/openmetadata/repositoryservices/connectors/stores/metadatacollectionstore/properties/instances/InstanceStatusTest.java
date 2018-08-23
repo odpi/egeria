@@ -53,6 +53,11 @@ public class InstanceStatusTest
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
 
+        testValue = InstanceStatus.PREPARED;
+        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
+        assertTrue(testValue.getName() != null);
+        assertTrue(testValue.getDescription() != null);
+
         testValue = InstanceStatus.PROPOSED;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
@@ -63,12 +68,67 @@ public class InstanceStatusTest
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
 
-        testValue = InstanceStatus.PREPARED;
+        testValue = InstanceStatus.APPROVED;
+        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
+        assertTrue(testValue.getName() != null);
+        assertTrue(testValue.getDescription() != null);
+
+        testValue = InstanceStatus.REJECTED;
+        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
+        assertTrue(testValue.getName() != null);
+        assertTrue(testValue.getDescription() != null);
+
+        testValue = InstanceStatus.APPROVED_CONCEPT;
+        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
+        assertTrue(testValue.getName() != null);
+        assertTrue(testValue.getDescription() != null);
+
+        testValue = InstanceStatus.UNDER_DEVELOPMENT;
+        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
+        assertTrue(testValue.getName() != null);
+        assertTrue(testValue.getDescription() != null);
+
+        testValue = InstanceStatus.DEVELOPMENT_COMPLETE;
+        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
+        assertTrue(testValue.getName() != null);
+        assertTrue(testValue.getDescription() != null);
+
+        testValue = InstanceStatus.APPROVED_FOR_DEPLOYMENT;
+        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
+        assertTrue(testValue.getName() != null);
+        assertTrue(testValue.getDescription() != null);
+
+        testValue = InstanceStatus.STANDBY;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
 
         testValue = InstanceStatus.ACTIVE;
+        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
+        assertTrue(testValue.getName() != null);
+        assertTrue(testValue.getDescription() != null);
+
+        testValue = InstanceStatus.FAILED;
+        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
+        assertTrue(testValue.getName() != null);
+        assertTrue(testValue.getDescription() != null);
+
+        testValue = InstanceStatus.DISABLED;
+        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
+        assertTrue(testValue.getName() != null);
+        assertTrue(testValue.getDescription() != null);
+
+        testValue = InstanceStatus.COMPLETE;
+        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
+        assertTrue(testValue.getName() != null);
+        assertTrue(testValue.getDescription() != null);
+
+        testValue = InstanceStatus.DEPRECATED;
+        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
+        assertTrue(testValue.getName() != null);
+        assertTrue(testValue.getDescription() != null);
+
+        testValue = InstanceStatus.OTHER;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
@@ -92,7 +152,7 @@ public class InstanceStatusTest
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(InstanceStatus.PREPARED);
+            jsonString = objectMapper.writeValueAsString(InstanceStatus.DEPRECATED);
         }
         catch (Throwable  exc)
         {
@@ -101,7 +161,7 @@ public class InstanceStatusTest
 
         try
         {
-            assertTrue(objectMapper.readValue(jsonString, InstanceStatus.class) == InstanceStatus.PREPARED);
+            assertTrue(objectMapper.readValue(jsonString, InstanceStatus.class) == InstanceStatus.DEPRECATED);
         }
         catch (Throwable  exc)
         {

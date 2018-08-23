@@ -55,7 +55,7 @@ public class InstanceGraphResponse extends OMRSAPIResponse
 
 
     /**
-     * Return the list of entities store in the graph.
+     * Return the list of entities stored in the graph.
      *
      * @return list of entities
      */
@@ -84,7 +84,7 @@ public class InstanceGraphResponse extends OMRSAPIResponse
 
 
     /**
-     * Set up the list of entities store in the graph.
+     * Set up the list of entities stored in the graph.
      *
      * @param entityElementList list of entities
      */

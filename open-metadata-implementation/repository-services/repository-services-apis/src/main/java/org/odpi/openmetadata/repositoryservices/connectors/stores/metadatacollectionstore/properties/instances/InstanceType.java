@@ -9,6 +9,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -36,6 +37,7 @@ public class InstanceType extends InstanceElementHeader
      */
     public InstanceType()
     {
+        super();
     }
 
 
@@ -69,9 +71,9 @@ public class InstanceType extends InstanceElementHeader
         this.typeDefVersion = typeDefVersion;
         this.typeDefDescription = typeDefDescription;
         this.typeDefDescriptionGUID = typeDefDescriptionGUID;
-        this.setTypeDefSuperTypes(typeDefSuperTypes);
-        this.setValidStatusList(validStatusList);
-        this.setValidInstanceProperties(validInstanceProperties);
+        this.typeDefSuperTypes = typeDefSuperTypes;
+        this.validStatusList = validStatusList;
+        this.validInstanceProperties = validInstanceProperties;
     }
 
 
@@ -82,17 +84,19 @@ public class InstanceType extends InstanceElementHeader
      */
     public InstanceType(InstanceType    template)
     {
+        super(template);
+
         if (template != null)
         {
-            typeDefCategory = template.getTypeDefCategory();
-            typeDefGUID = template.getTypeDefGUID();
-            typeDefName = template.getTypeDefName();
-            typeDefVersion = template.getTypeDefVersion();
-            typeDefDescription = template.getTypeDefDescription();
-            typeDefDescriptionGUID = template.getTypeDefDescriptionGUID();
-            setTypeDefSuperTypes(template.getTypeDefSuperTypes());
-            setValidStatusList(template.getValidStatusList());
-            setValidInstanceProperties(template.getValidInstanceProperties());
+            this.typeDefCategory = template.getTypeDefCategory();
+            this.typeDefGUID = template.getTypeDefGUID();
+            this.typeDefName = template.getTypeDefName();
+            this.typeDefVersion = template.getTypeDefVersion();
+            this.typeDefDescription = template.getTypeDefDescription();
+            this.typeDefDescriptionGUID = template.getTypeDefDescriptionGUID();
+            this.typeDefSuperTypes = template.getTypeDefSuperTypes();
+            this.validStatusList = template.getValidStatusList();
+            this.validInstanceProperties = template.getValidInstanceProperties();
         }
     }
 
@@ -180,9 +184,23 @@ public class InstanceType extends InstanceElementHeader
         {
             return null;
         }
+        else if (typeDefSuperTypes.isEmpty())
+        {
+            return null;
+        }
         else
         {
-            return new ArrayList<>(typeDefSuperTypes);
+            /*
+             * Ensure the exported typeDefLinks are not instances of a subclass.
+             */
+            List<TypeDefLink>  superTypes = new ArrayList<>();
+
+            for (TypeDefLink  typeDefLink: typeDefSuperTypes)
+            {
+                superTypes.add(new TypeDefLink(typeDefLink));
+            }
+
+            return superTypes;
         }
     }
 
@@ -194,14 +212,7 @@ public class InstanceType extends InstanceElementHeader
      */
     public void setTypeDefSuperTypes(List<TypeDefLink> typeDefSuperTypes)
     {
-        if (typeDefSuperTypes == null)
-        {
-            this.typeDefSuperTypes = null;
-        }
-        else
-        {
-            this.typeDefSuperTypes = new ArrayList<>(typeDefSuperTypes);
-        }
+        this.typeDefSuperTypes = typeDefSuperTypes;
     }
 
 
@@ -330,9 +341,59 @@ public class InstanceType extends InstanceElementHeader
                 ", typeDefVersion=" + typeDefVersion +
                 ", typeDefDescription='" + typeDefDescription + '\'' +
                 ", typeDefDescriptionGUID='" + typeDefDescriptionGUID + '\'' +
-                ", typeDefSuperTypes=" + typeDefSuperTypes +
-                ", validStatusList=" + validStatusList +
-                ", validInstanceProperties=" + validInstanceProperties +
+                ", typeDefSuperTypes=" + getTypeDefSuperTypes() +
+                ", validStatusList=" + getValidStatusList() +
+                ", validInstanceProperties=" + getValidInstanceProperties() +
                 '}';
+    }
+
+    /**
+     * Validate if the supplied object equals this object.
+     *
+     * @param objectToCompare test object
+     * @return boolean evaluation
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (!(objectToCompare instanceof InstanceType))
+        {
+            return false;
+        }
+        InstanceType that = (InstanceType) objectToCompare;
+        return getTypeDefVersion() == that.getTypeDefVersion() &&
+                getTypeDefCategory() == that.getTypeDefCategory() &&
+                Objects.equals(getTypeDefGUID(), that.getTypeDefGUID()) &&
+                Objects.equals(getTypeDefName(), that.getTypeDefName()) &&
+                Objects.equals(getTypeDefDescription(), that.getTypeDefDescription()) &&
+                Objects.equals(getTypeDefDescriptionGUID(), that.getTypeDefDescriptionGUID()) &&
+                Objects.equals(getTypeDefSuperTypes(), that.getTypeDefSuperTypes()) &&
+                Objects.equals(getValidStatusList(), that.getValidStatusList()) &&
+                Objects.equals(getValidInstanceProperties(), that.getValidInstanceProperties());
+    }
+
+
+    /**
+     * Return a hash code based on the values of this object.
+     *
+     * @return in hash code
+     */
+    @Override
+    public int hashCode()
+    {
+
+        return Objects.hash(getTypeDefCategory(),
+                            getTypeDefGUID(),
+                            getTypeDefName(),
+                            getTypeDefVersion(),
+                            getTypeDefDescription(),
+                            getTypeDefDescriptionGUID(),
+                            getTypeDefSuperTypes(),
+                            getValidStatusList(),
+                            getValidInstanceProperties());
     }
 }

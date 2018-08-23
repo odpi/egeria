@@ -40,6 +40,10 @@ public class ProjectResponse extends SubjectAreaOMASAPIResponse
     /**
      * Default constructor
      */
+    public ProjectResponse()
+    {
+        this.setResponseCategory(ResponseCategory.Project);
+    }
     public ProjectResponse(Project project)
     {
         this.project=project;

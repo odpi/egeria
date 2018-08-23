@@ -19,6 +19,7 @@
 package org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.Serializable;
@@ -39,7 +40,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.classificatio
  * refered to by governance rules, so that governance action classified entities can be governed consistently.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
-@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class  GovernanceActions implements Serializable {
     private Confidentiality confidentiality = null;

@@ -17,9 +17,9 @@ public abstract class OpenMetadataTestCase
 {
     private static final String  documentationRootURL = "https://odpi.github.io/egeria/open-metadata-compliance-suite/docs/";
 
-    private String  testCaseId;
-    private String  testCaseName;
-    private String  testCaseDescriptionURL;
+    protected String  testCaseId;
+    protected String  testCaseName;
+    protected String  testCaseDescriptionURL;
 
 
     protected List<String>  successfulAssertions = new ArrayList<>();
@@ -27,13 +27,45 @@ public abstract class OpenMetadataTestCase
 
     protected OpenMetadataTestCaseResult result = null;
 
+    /**
+     * Default constructor
+     */
+    public OpenMetadataTestCase()
+    {
+    }
+
+
+    /**
+     * Typical constructor
+     *
+     * @param workbenchId identifier of calling workbench
+     * @param testCaseId identifier of test case
+     * @param testCaseName name of test case
+     */
     public OpenMetadataTestCase(String workbenchId,
                                 String testCaseId,
                                 String testCaseName)
     {
         this.testCaseId = testCaseId;
         this.testCaseName = testCaseName;
-        this.testCaseDescriptionURL = documentationRootURL + workbenchId + "/" + testCaseId + ".md";
+        this.testCaseDescriptionURL = documentationRootURL + workbenchId + "/" + testCaseId + "-test-case.md";
+    }
+
+
+    /**
+     * Set up identifiers for test case.
+     *
+     * @param workbenchId identifier of calling workbench
+     * @param testCaseId identifier of test case
+     * @param testCaseName name of test case
+     */
+    protected void setTestCaseIds(String workbenchId,
+                                  String testCaseId,
+                                  String testCaseName)
+    {
+        this.testCaseId = testCaseId;
+        this.testCaseName = testCaseName;
+        this.testCaseDescriptionURL = documentationRootURL + workbenchId + "/" + testCaseId + "-test-case.md";
     }
 
 

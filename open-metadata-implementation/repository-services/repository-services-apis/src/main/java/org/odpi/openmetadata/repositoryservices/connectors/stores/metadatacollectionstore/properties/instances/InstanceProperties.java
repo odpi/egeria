@@ -7,10 +7,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSRuntimeException;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -168,7 +165,21 @@ public class InstanceProperties extends InstanceElementHeader
      */
     public Map<String, InstancePropertyValue> getInstanceProperties()
     {
-        return instanceProperties;
+        if (instanceProperties == null)
+        {
+            return null;
+        }
+        /*
+         * Commented out waiting for fix in SubjectAreaOMAS.
+        else if (instanceProperties.isEmpty())
+        {
+            return null;
+        }
+        */
+        else
+        {
+            return new HashMap<>(instanceProperties);
+        }
     }
 
 
@@ -179,7 +190,14 @@ public class InstanceProperties extends InstanceElementHeader
      */
     public void setInstanceProperties(Map<String, InstancePropertyValue> instanceProperties)
     {
-        this.instanceProperties = instanceProperties;
+        if (instanceProperties == null)
+        {
+            this.instanceProperties = new HashMap<>();
+        }
+        else
+        {
+            this.instanceProperties = instanceProperties;
+        }
     }
 
 
@@ -269,6 +287,43 @@ public class InstanceProperties extends InstanceElementHeader
                 ", propertyNames=" + getPropertyNames() +
                 ", propertyCount=" + getPropertyCount() +
                 '}';
+    }
+
+
+    /**
+     * Validate that an object is equal depending on their stored values.
+     *
+     * @param objectToCompare object
+     * @return boolean result
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (!(objectToCompare instanceof InstanceProperties))
+        {
+            return false;
+        }
+        InstanceProperties that = (InstanceProperties) objectToCompare;
+        return Objects.equals(getEffectiveFromTime(), that.getEffectiveFromTime()) &&
+                Objects.equals(getEffectiveToTime(), that.getEffectiveToTime()) &&
+                Objects.equals(getInstanceProperties(), that.getInstanceProperties());
+    }
+
+
+    /**
+     * Return a hash code based on the values of this object.
+     *
+     * @return in hash code
+     */
+    @Override
+    public int hashCode()
+    {
+
+        return Objects.hash(getEffectiveFromTime(), getEffectiveToTime(), getInstanceProperties());
     }
 }
 

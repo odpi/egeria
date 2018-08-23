@@ -1283,7 +1283,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                                     String identifier,
                                     String methodName) throws InvalidParameterException
     {
-        if ((standard == null) && (organization == null) || (identifier == null))
+        if ((standard == null) && (organization == null) && (identifier == null))
         {
             OMRSErrorCode errorCode = OMRSErrorCode.NO_EXTERNAL_ID;
 
@@ -1436,6 +1436,42 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                                                     errorCode.getSystemAction(),
                                                     errorCode.getUserAction());
             }
+        }
+    }
+
+
+    /**
+     * Validate that the asOfTime parameter is not null or for the future.
+     *
+     * @param sourceName source of the request (used for logging)
+     * @param parameterName name of the parameter that passed the guid.
+     * @param asOfTime unique name for a classification type
+     * @param methodName method receiving the call
+     * @throws InvalidParameterException asOfTime is for the future
+     */
+    public  void validateAsOfTimeNotNull(String sourceName,
+                                         String parameterName,
+                                         Date   asOfTime,
+                                         String methodName) throws InvalidParameterException
+    {
+        if (asOfTime == null)
+        {
+            OMRSErrorCode errorCode = OMRSErrorCode.NULL_AS_OF_TIME;
+            String errorMessage = errorCode.getErrorMessageId()
+                    + errorCode.getFormattedErrorMessage(methodName,
+                                                         parameterName,
+                                                         sourceName);
+
+            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                errorMessage,
+                                                errorCode.getSystemAction(),
+                                                errorCode.getUserAction());
+        }
+        else
+        {
+            this.validateAsOfTime(sourceName, parameterName, asOfTime, methodName);
         }
     }
 
@@ -2144,6 +2180,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
         {
             OMRSErrorCode errorCode = OMRSErrorCode.ENTITY_NOT_KNOWN;
             String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(guid,
+                                                                                                            methodName,
                                                                                                             sourceName);
 
             throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
@@ -2157,8 +2194,10 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
         if (! validEntity(sourceName, entity))
         {
             OMRSErrorCode errorCode = OMRSErrorCode.INVALID_ENTITY_FROM_STORE;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entity.toString(),
-                                                                                                            sourceName);
+            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(guid,
+                                                                                                            sourceName,
+                                                                                                            methodName,
+                                                                                                            entity.toString());
 
             throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
                                                this.getClass().getName(),
@@ -2190,6 +2229,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
         {
             OMRSErrorCode errorCode = OMRSErrorCode.ENTITY_NOT_KNOWN;
             String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(guid,
+                                                                                                            methodName,
                                                                                                             sourceName);
 
             throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
@@ -2203,8 +2243,10 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
         if (! validEntity(sourceName, entity))
         {
             OMRSErrorCode errorCode = OMRSErrorCode.INVALID_ENTITY_FROM_STORE;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entity.toString(),
-                                                                                                            sourceName);
+            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(guid,
+                                                                                                            sourceName,
+                                                                                                            methodName,
+                                                                                                            entity.toString());
 
             throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
                                                this.getClass().getName(),
@@ -2236,6 +2278,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
         {
             OMRSErrorCode errorCode = OMRSErrorCode.RELATIONSHIP_NOT_KNOWN;
             String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(guid,
+                                                                                                            methodName,
                                                                                                             sourceName);
 
             throw new RelationshipNotKnownException(errorCode.getHTTPErrorCode(),
@@ -2250,8 +2293,10 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
         if (! validRelationship(sourceName, relationship))
         {
             OMRSErrorCode errorCode = OMRSErrorCode.INVALID_RELATIONSHIP_FROM_STORE;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(relationship.toString(),
-                                                                                                            sourceName);
+            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(guid,
+                                                                                                            sourceName,
+                                                                                                            methodName,
+                                                                                                            relationship.toString());
 
             throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
                                                this.getClass().getName(),
@@ -2465,7 +2510,24 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                                        TypeDef        typeDef,
                                        String         methodName) throws StatusNotSupportedException
     {
-        if (instanceStatus != null)
+        if (instanceStatus == InstanceStatus.DELETED)
+        {
+            OMRSErrorCode errorCode = OMRSErrorCode.BAD_DELETE_INSTANCE_STATUS;
+            String errorMessage = errorCode.getErrorMessageId()
+                                + errorCode.getFormattedErrorMessage(instanceStatus.getName(),
+                                                                     instanceStatusParameterName,
+                                                                     methodName,
+                                                                     sourceName,
+                                                                     typeDef.getName());
+
+            throw new StatusNotSupportedException(errorCode.getHTTPErrorCode(),
+                                                  this.getClass().getName(),
+                                                  methodName,
+                                                  errorMessage,
+                                                  errorCode.getSystemAction(),
+                                                  errorCode.getUserAction());
+        }
+        else if (instanceStatus != null)
         {
             if (typeDef != null)
             {
@@ -2618,9 +2680,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
                 OMRSErrorCode errorCode = OMRSErrorCode.ENTITY_NOT_KNOWN;
                 String errorMessage = errorCode.getErrorMessageId()
-                                    + errorCode.getFormattedErrorMessage(methodName,
-                                                                         sourceName,
-                                                                         instance.getGUID());
+                                    + errorCode.getFormattedErrorMessage(instance.getGUID(), methodName, sourceName);
 
                 throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
                                                   this.getClass().getName(),
@@ -2699,13 +2759,13 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
     {
         if (instance != null)
         {
-            if (instance.getStatus() != InstanceStatus.DELETED)
+            if (instance.getStatus() == InstanceStatus.DELETED)
             {
                 OMRSErrorCode errorCode = OMRSErrorCode.RELATIONSHIP_NOT_KNOWN;
                 String errorMessage = errorCode.getErrorMessageId()
-                                    + errorCode.getFormattedErrorMessage(methodName,
-                                                                         sourceName,
-                                                                         instance.getGUID());
+                                    + errorCode.getFormattedErrorMessage(instance.getGUID(),
+                                                                         methodName,
+                                                                         sourceName);
 
                 throw new RelationshipNotKnownException(errorCode.getHTTPErrorCode(),
                                                           this.getClass().getName(),
@@ -2957,7 +3017,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
                 if (matchPropertyName != null)
                 {
-                    InstancePropertyValue matchPropertyValue = instanceProperties.getPropertyValue(matchPropertyName);
+                    InstancePropertyValue matchPropertyValue = matchProperties.getPropertyValue(matchPropertyName);
                     Iterator<String>      instancePropertyNames  = instanceProperties.getPropertyNames();
 
                     while (instancePropertyNames.hasNext())

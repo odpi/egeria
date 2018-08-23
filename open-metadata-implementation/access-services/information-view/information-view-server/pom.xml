@@ -47,6 +47,11 @@
             <artifactId>spring-context</artifactId>
             <version>4.3.11.RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>information-view-api</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 </project>

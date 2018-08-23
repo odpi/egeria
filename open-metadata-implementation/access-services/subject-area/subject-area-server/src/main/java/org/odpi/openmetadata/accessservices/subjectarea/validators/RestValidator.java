@@ -3,7 +3,8 @@ package org.odpi.openmetadata.accessservices.subjectarea.validators;
 
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.PropertyServerException;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.MetadataServerUncontactableException;
+
 
 /**
  * Validator methods used for rest
@@ -15,9 +16,8 @@ public class RestValidator {
      * @param className - name of the class making the call.
      * @param methodName - name of the method making the call.
      * @param omasServerURL - omas server url.
-     * @throws PropertyServerException - the org.odpi.openmetadata.accessservices.subjectarea.server URL is not set
      */
-    static public void validateOMASServerURLNotNull( String className,String methodName, String omasServerURL) throws PropertyServerException
+    static public void validateOMASServerURLNotNull( String className,String methodName, String omasServerURL) throws MetadataServerUncontactableException
     {
         if (omasServerURL == null)
         {
@@ -27,7 +27,7 @@ public class RestValidator {
             SubjectAreaErrorCode errorCode    = SubjectAreaErrorCode.SERVER_URL_NOT_SPECIFIED;
             String                 errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
 
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+            throw new MetadataServerUncontactableException(errorCode.getHTTPErrorCode(),
                     className,
                     methodName,
                     errorMessage,

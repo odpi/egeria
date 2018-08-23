@@ -36,8 +36,6 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorEx
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,15 +47,13 @@ import java.util.List;
  * Assess Service (OMAS).
  * This service provide the functionality to fetch asset's header, classification and properties.
  */
-@Service
 public class AssetCatalogAssetService {
 
     private static OMRSMetadataCollection metadataCollection;
-    private Converter converter;
-    private ExceptionUtil exceptionUtil;
+    private Converter converter = new Converter();
+    private ExceptionUtil exceptionUtil = new ExceptionUtil();
 
-    @Autowired
-    public AssetCatalogAssetService(Converter converter, ExceptionUtil exceptionUtil) {
+    public AssetCatalogAssetService() {
         AccessServiceDescription myDescription = AccessServiceDescription.ASSET_CATALOG_OMAS;
 
         AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription.getAccessServiceCode(),
@@ -67,9 +63,6 @@ public class AssetCatalogAssetService {
                 AccessServiceOperationalStatus.ENABLED,
                 AssetCatalogAdmin.class.getName());
         OMAGAccessServiceRegistration.registerAccessService(myRegistration);
-
-        this.converter = converter;
-        this.exceptionUtil = exceptionUtil;
     }
 
     /**
@@ -228,6 +221,8 @@ public class AssetCatalogAssetService {
 
         if (matchProperty != null) {
             matchProperties = converter.getMatchProperties(matchProperty, propertyValue);
+        } else {
+            matchProperties = converter.getMatchProperties("qualifiedName", propertyValue);
         }
         SequencingOrder sequencingOrder = converter.getSequencingOrder(orderType);
         AssetDescriptionResponse response = new AssetDescriptionResponse();
@@ -409,8 +404,13 @@ public class AssetCatalogAssetService {
                                                      SequenceOrderType orderType, String orderProperty, Status status) {
         SequencingOrder sequencingOrder = converter.getSequencingOrder(orderType);
         List<InstanceStatus> limitResultsByStatus = converter.getInstanceStatuses(status);
-        List<String> instanceTypes = new ArrayList<>();
-        instanceTypes.add(instanceType);
+
+        List<String> instanceTypes = null;
+        if (instanceType != null) {
+            instanceTypes = new ArrayList<>();
+            instanceTypes.add(instanceType);
+        }
+
         AssetDescriptionResponse response = new AssetDescriptionResponse();
 
         try {

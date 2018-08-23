@@ -62,7 +62,7 @@ public class RelationshipEndDef extends TypeDefElementHeader
     {
         if (entityType == null)
         {
-            return entityType;
+            return null;
         }
         else
         {
@@ -190,21 +190,21 @@ public class RelationshipEndDef extends TypeDefElementHeader
     /**
      * Verify that supplied object has the same properties.
      *
-     * @param o object to test
+     * @param objectToCompare object to test
      * @return result
      */
     @Override
-    public boolean equals(Object o)
+    public boolean equals(Object objectToCompare)
     {
-        if (this == o)
+        if (this == objectToCompare)
         {
             return true;
         }
-        if (!(o instanceof RelationshipEndDef))
+        if (!(objectToCompare instanceof RelationshipEndDef))
         {
             return false;
         }
-        RelationshipEndDef that = (RelationshipEndDef) o;
+        RelationshipEndDef that = (RelationshipEndDef) objectToCompare;
         return Objects.equals(getEntityType(), that.getEntityType()) &&
                 Objects.equals(getAttributeName(), that.getAttributeName()) &&
                 Objects.equals(getAttributeDescription(), that.getAttributeDescription()) &&
