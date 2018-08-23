@@ -253,19 +253,19 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                 case "Term":
                     if (igcKafkaEvent.getACTION().equals("CREATE")) { //Creation of a glossary term.
                         createEntity(igcObject, "GlossaryTerm", false);
-                        if (igcKafkaEvent.getACTION().equals("CREATE")) { //Creation of a  glossary category and assigment to its glossarycategory.
+                        if (igcKafkaEvent.getACTION().equals("CREATE")) { //Creation of a  glossary category and assignment to its glossary category.
                             createEntity(igcObject, "GlossaryCategory", false);
                             createRelationship(
                                     "TermCategorization",
-                                    igcObject.getId(),
-                                    "GlossaryCategory",
                                     igcObject.getContext().get(0).getId(),
+                                    "GlossaryCategory",
+                                    igcObject.getId(),
                                     "GlossaryTerm");
                         }
                     }
                     break;
                 case "Category":
-                    if (igcKafkaEvent.getACTION().equals("CREATE")) { //Creation of a  glossary category and assigment to its glossarycategory.
+                    if (igcKafkaEvent.getACTION().equals("CREATE")) { //Creation of a  glossary category.
                         createEntity(igcObject, "GlossaryCategory", false);
                     }
             }
