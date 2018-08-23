@@ -71,6 +71,7 @@ public class OMRSOperationalServices
     private String                         localServerName;         /* Initialized in constructor */
     private String                         localServerType;         /* Initialized in constructor */
     private String                         localOrganizationName;   /* Initialized in constructor */
+    private String                         localServerUserId;       /* Initialized in constructor */
     private String                         localServerURL;          /* Initialized in constructor */
     private int                            maxPageSize;             /* Initialized in constructor */
 
@@ -91,12 +92,14 @@ public class OMRSOperationalServices
      * @param localServerName name of the local server
      * @param localServerType type of the local server
      * @param organizationName name of the organization that owns the local server
+     * @param localServerUserId user id for this server to use if processing inbound messages.
      * @param localServerURL URL root for this server.
      * @param maxPageSize maximum number of records that can be requested on the pageSize parameter
      */
     public OMRSOperationalServices(String                   localServerName,
                                    String                   localServerType,
                                    String                   organizationName,
+                                   String                   localServerUserId,
                                    String                   localServerURL,
                                    int                      maxPageSize)
     {
@@ -106,6 +109,7 @@ public class OMRSOperationalServices
         this.localServerName = localServerName;
         this.localServerType = localServerType;
         this.localOrganizationName = organizationName;
+        this.localServerUserId = localServerUserId;
         this.localServerURL = localServerURL;
         this.maxPageSize = maxPageSize;
     }
@@ -980,6 +984,7 @@ public class OMRSOperationalServices
             localRepositoryConnector.setMaxPageSize(maxPageSize);
             localRepositoryConnector.setServerName(localServerName);
             localRepositoryConnector.setServerType(localServerType);
+            localRepositoryConnector.setServerUserId(localServerUserId);
             localRepositoryConnector.setOrganizationName(localOrganizationName);
             localRepositoryConnector.setRepositoryHelper(new OMRSRepositoryContentHelper(localRepositoryContentManager));
             localRepositoryConnector.setRepositoryValidator(new OMRSRepositoryContentValidator(localRepositoryContentManager));

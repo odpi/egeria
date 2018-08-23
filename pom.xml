@@ -243,6 +243,14 @@
                         <exclude>**/*.results</exclude>
                         <exclude>**/target/**</exclude>
                     </excludes>
+                    <licenseFamilies>
+                        <licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">
+                            <familyName>SPDX-License-Identifier: Apache-2.0</familyName>
+                        </licenseFamily>
+                        <licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">
+                            <familyName>SPDX-License-Identifier: CC-BY-4.0</familyName>
+                        </licenseFamily>
+                    </licenseFamilies>
                     <licenses>
                         <license implementation="org.apache.rat.analysis.license.SimplePatternBasedLicense">
                             <licenseFamilyCategory>SPDX</licenseFamilyCategory>
@@ -252,12 +260,15 @@
                                 <pattern>SPDX-License-Identifier: Apache-2.0</pattern>
                             </patterns>
                         </license>
+                        <license implementation="org.apache.rat.analysis.license.SimplePatternBasedLicense">
+                            <licenseFamilyCategory>SPDX</licenseFamilyCategory>
+                            <licenseFamilyName>SPDX-License-Identifier: CC-BY-4.0</licenseFamilyName>
+                            <notes></notes>
+                            <patterns>
+                                <pattern>SPDX-License-Identifier: CC-BY-4.0</pattern>
+                            </patterns>
+                        </license>
                     </licenses>
-                    <licenseFamilies>
-                        <licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">
-                            <familyName>SPDX-License-Identifier: Apache-2.0</familyName>
-                        </licenseFamily>
-                    </licenseFamilies>
                 </configuration>
                 <executions>
                     <execution>

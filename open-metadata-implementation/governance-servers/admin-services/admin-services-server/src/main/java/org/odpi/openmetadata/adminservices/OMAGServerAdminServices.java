@@ -1426,6 +1426,7 @@ public class OMAGServerAdminServices
             operationalServices = new OMRSOperationalServices(configuration.getLocalServerName(),
                                                               configuration.getLocalServerType(),
                                                               configuration.getOrganizationName(),
+                                                              configuration.getLocalServerUserId(),
                                                               configuration.getLocalServerURL(),
                                                               configuration.getMaxPageSize());
 
@@ -1458,7 +1459,7 @@ public class OMAGServerAdminServices
                                                                                               accessServiceConfig.getAccessServiceName(),
                                                                                               accessServiceConfig.getAccessServiceDescription(),
                                                                                               accessServiceConfig.getAccessServiceWiki()),
-                                                              "OMASUser");
+                                                              configuration.getLocalServerUserId());
                                 accessServiceAdminList.add(accessServiceAdmin);
                             }
                             catch (Throwable  error)

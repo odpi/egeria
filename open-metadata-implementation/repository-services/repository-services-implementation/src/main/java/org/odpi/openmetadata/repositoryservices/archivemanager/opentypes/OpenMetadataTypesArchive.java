@@ -89,7 +89,7 @@ public class OpenMetadataTypesArchive
      */
     public OpenMetadataArchive getOpenMetadataArchive()
     {
-        final String methodName = "getOpenMetadataArchive()";
+        final String methodName = "getOpenMetadataArchive";
 
         if (this.archiveBuilder != null)
         {
@@ -4583,7 +4583,7 @@ public class OpenMetadataTypesArchive
          */
         final String                     end1EntityType               = "Project";
         final String                     end1AttributeName            = "projectUse";
-        final String                     end1AttributeDescription     = "Collections related to this project.";
+        final String                     end1AttributeDescription     = "Projects that are in use by this project.";
         final String                     end1AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
@@ -4598,9 +4598,9 @@ public class OpenMetadataTypesArchive
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Collection";
+        final String                     end2EntityType               = "Referenceable";
         final String                     end2AttributeName            = "supportingResources";
-        final String                     end2AttributeDescription     = "Collections of resource supporting the project.";
+        final String                     end2AttributeDescription     = "Resources supporting the project.";
         final String                     end2AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
@@ -4655,7 +4655,7 @@ public class OpenMetadataTypesArchive
          */
         final String                     end1EntityType               = "Project";
         final String                     end1AttributeName            = "projectsImpactingAssets";
-        final String                     end1AttributeDescription     = "The projects that are making changes to these collections of assets or related items.";
+        final String                     end1AttributeDescription     = "The projects that are making changes to these assets or related items.";
         final String                     end1AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
@@ -4670,9 +4670,9 @@ public class OpenMetadataTypesArchive
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Collection";
+        final String                     end2EntityType               = "Referenceable";
         final String                     end2AttributeName            = "projectScope";
-        final String                     end2AttributeDescription     = "The collections of assets or related items that are being changed by this project.";
+        final String                     end2AttributeDescription     = "The assets or related items that are being changed by this project.";
         final String                     end2AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
@@ -4690,7 +4690,7 @@ public class OpenMetadataTypesArchive
         TypeDefAttribute       property;
 
         final String attribute1Name            = "scopeDescription";
-        final String attribute1Description     = "Description of how each collection is being changed by the project.";
+        final String attribute1Description     = "Description of how each item is being changed by the project.";
         final String attribute1DescriptionGUID = null;
 
         property = archiveHelper.getDateTypeDefAttribute(attribute1Name,
@@ -5439,7 +5439,7 @@ public class OpenMetadataTypesArchive
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Collection";
+        final String                     end2EntityType               = "Referenceable";
         final String                     end2AttributeName            = "supportingResources";
         final String                     end2AttributeDescription     = "The collections of resources created or used by this community.";
         final String                     end2AttributeDescriptionGUID = null;

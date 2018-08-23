@@ -67,6 +67,15 @@ public interface OMRSRepositoryEventMapper
 
 
     /**
+     * Set up the userId that the local server should use when processing events and there is no external user
+     * driving the operation.
+     *
+     * @param serverUserId string user id
+     */
+    void setServerUserId(String serverUserId);
+
+
+    /**
      * Set up the unique Id for this metadata collection.
      *
      * @param metadataCollectionId String unique Id

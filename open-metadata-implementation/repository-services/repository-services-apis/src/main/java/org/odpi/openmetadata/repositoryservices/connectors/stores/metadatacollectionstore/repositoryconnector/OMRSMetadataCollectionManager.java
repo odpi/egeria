@@ -96,6 +96,24 @@ public interface OMRSMetadataCollectionManager
 
 
     /**
+     * Return the userId that the local server should use when processing events and there is no external user
+     * driving the operation.
+     *
+     * @return user id
+     */
+    String getServerUserId();
+
+
+    /**
+     * Set up the userId that the local server should use when processing events and there is no external user
+     * driving the operation.
+     *
+     * @param serverUserId string user id
+     */
+    void setServerUserId(String serverUserId);
+
+
+    /**
      * Return the maximum PageSize
      *
      * @return maximum number of elements that can be retrieved on a request.

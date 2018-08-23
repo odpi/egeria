@@ -280,6 +280,29 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
 
 
     /**
+     * Set up the userId that the local server should use when processing events and there is no external user
+     * driving the operation.
+     *
+     * @param localServerUserId string user id
+     */
+    public void setServerUserId(String localServerUserId)
+    {
+        super.setServerUserId(localServerUserId);
+
+        if (realLocalConnector != null)
+        {
+            realLocalConnector.setServerUserId(localServerUserId);
+        }
+
+        if (realEventMapper != null)
+        {
+            realEventMapper.setServerUserId(localServerUserId);
+        }
+    }
+
+
+
+    /**
      * Set up the unique Id for this metadata collection.
      *
      * @param metadataCollectionId String unique Id
