@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <artifactId>open-metadata-packages</artifactId>
+        <groupId>org.odpi.egeria</groupId>
+        <version>0.1-SNAPSHOT</version>
+    </parent>
+
+    <name>Open Metadata Client Package</name>
+    <description>
+        Provides the basic package for calling egeria from a client.
+    </description>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>open-metadata-client-package</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>admin-services-client</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+        <!--
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>asset-catalog-client</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+        -->
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>asset-consumer-client</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>asset-owner-client</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+        <!--
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>community-profile-client</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+        -->
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>connected-asset-client</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>digital-architecture-client</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>data-infrastructure-client</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>data-platform-client</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>data-privacy-client</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>data-process-client</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>data-protection-client</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>data-science-client</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>dev-ops-client</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>discovery-engine-client</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>governance-engine-client</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>governance-program-client</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+        <!--
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>information-view-client</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+        -->
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>project-management-client</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>software-developer-client</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>stewardship-action-client</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>subject-area-client</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+    </dependencies>
+
+</project>
