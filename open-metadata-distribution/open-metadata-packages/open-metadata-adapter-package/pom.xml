@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <artifactId>open-metadata-packages</artifactId>
+        <groupId>org.odpi.egeria</groupId>
+        <version>0.1-SNAPSHOT</version>
+    </parent>
+
+    <name>Open Metadata Adapter Package</name>
+    <description>
+        Provides the basic package for building a repository proxy server
+    </description>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>open-metadata-adapter-package</artifactId>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>repository-services-spring</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>admin-services-server</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+    </dependencies>
+
+</project>
