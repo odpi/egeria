@@ -124,7 +124,7 @@ public class <$$uname$$> extends Classification {
    <$$$
        private <$$PropertyType$$> <$$PropertyName$$>;
        /**
-        * <$$AttrDescription$$>
+        * {@literal <$$AttrDescription$$> }
         * @return <$$PropertyType$$>
         */
        public <$$PropertyType$$> get<$$uPropertyName$$>() {

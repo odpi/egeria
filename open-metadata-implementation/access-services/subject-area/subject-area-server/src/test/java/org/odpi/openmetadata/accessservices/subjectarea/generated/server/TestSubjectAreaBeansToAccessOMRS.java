@@ -24127,7 +24127,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             InstanceType type1 = new InstanceType();
             type1.setTypeDefName("Community");
             InstanceType type2 = new InstanceType();
-            type2.setTypeDefName("Collection");
+            type2.setTypeDefName("Referenceable");
             entityProxy1.setType(type1);
             entityProxy2.setType(type2);
             mockRelationship.setEntityOneProxy(entityProxy1);
@@ -24177,7 +24177,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             InstanceType type1 = new InstanceType();
             type1.setTypeDefName("Community");
             InstanceType type2 = new InstanceType();
-            type2.setTypeDefName("Collection");
+            type2.setTypeDefName("Referenceable");
             entityProxy1.setType(type1);
             entityProxy2.setType(type2);
             mockRelationship.setEntityOneProxy(entityProxy1);
@@ -24224,7 +24224,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             InstanceType type1 = new InstanceType();
             type1.setTypeDefName("Community");
             InstanceType type2 = new InstanceType();
-            type2.setTypeDefName("Collection");
+            type2.setTypeDefName("Referenceable");
             entityProxy1.setType(type1);
             entityProxy2.setType(type2);
             mockRelationship.setEntityOneProxy(entityProxy1);
@@ -34977,7 +34977,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             InstanceType type1 = new InstanceType();
             type1.setTypeDefName("Project");
             InstanceType type2 = new InstanceType();
-            type2.setTypeDefName("Collection");
+            type2.setTypeDefName("Referenceable");
             entityProxy1.setType(type1);
             entityProxy2.setType(type2);
             mockRelationship.setEntityOneProxy(entityProxy1);
@@ -35036,7 +35036,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             InstanceType type1 = new InstanceType();
             type1.setTypeDefName("Project");
             InstanceType type2 = new InstanceType();
-            type2.setTypeDefName("Collection");
+            type2.setTypeDefName("Referenceable");
             entityProxy1.setType(type1);
             entityProxy2.setType(type2);
             mockRelationship.setEntityOneProxy(entityProxy1);
@@ -35092,7 +35092,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             InstanceType type1 = new InstanceType();
             type1.setTypeDefName("Project");
             InstanceType type2 = new InstanceType();
-            type2.setTypeDefName("Collection");
+            type2.setTypeDefName("Referenceable");
             entityProxy1.setType(type1);
             entityProxy2.setType(type2);
             mockRelationship.setEntityOneProxy(entityProxy1);
@@ -40532,7 +40532,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             InstanceType type1 = new InstanceType();
             type1.setTypeDefName("Project");
             InstanceType type2 = new InstanceType();
-            type2.setTypeDefName("Collection");
+            type2.setTypeDefName("Referenceable");
             entityProxy1.setType(type1);
             entityProxy2.setType(type2);
             mockRelationship.setEntityOneProxy(entityProxy1);
@@ -40591,7 +40591,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             InstanceType type1 = new InstanceType();
             type1.setTypeDefName("Project");
             InstanceType type2 = new InstanceType();
-            type2.setTypeDefName("Collection");
+            type2.setTypeDefName("Referenceable");
             entityProxy1.setType(type1);
             entityProxy2.setType(type2);
             mockRelationship.setEntityOneProxy(entityProxy1);
@@ -40647,7 +40647,7 @@ public class TestSubjectAreaBeansToAccessOMRS {
             InstanceType type1 = new InstanceType();
             type1.setTypeDefName("Project");
             InstanceType type2 = new InstanceType();
-            type2.setTypeDefName("Collection");
+            type2.setTypeDefName("Referenceable");
             entityProxy1.setType(type1);
             entityProxy2.setType(type2);
             mockRelationship.setEntityOneProxy(entityProxy1);

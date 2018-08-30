@@ -131,7 +131,7 @@ public class  <$$uname$$> implements Serializable {
        private <$$PropertyType$$> <$$PropertyName$$>;
        /**
         * <$$AttrDescription$$>
-        * @return <$$PropertyType$$>
+        * @return <$$PropertyTypeJavadoc$$>
         */
        public <$$PropertyType$$> get<$$uPropertyName$$>() {
            return this.<$$PropertyName$$>;
