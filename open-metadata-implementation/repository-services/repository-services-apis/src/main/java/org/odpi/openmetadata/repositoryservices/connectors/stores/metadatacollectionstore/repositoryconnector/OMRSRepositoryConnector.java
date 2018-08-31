@@ -19,6 +19,7 @@ public abstract class OMRSRepositoryConnector extends ConnectorBase implements O
     protected String                  serverName           = null;
     protected String                  serverType           = null;
     protected String                  organizationName     = null;
+    protected String                  serverUserId         = null;
     protected int                     maxPageSize          = 1000;
 
     protected String                  metadataCollectionId = null;
@@ -155,6 +156,30 @@ public abstract class OMRSRepositoryConnector extends ConnectorBase implements O
     public void setOrganizationName(String organizationName)
     {
         this.organizationName = organizationName;
+    }
+
+
+    /**
+     * Return the userId that the local server should use when processing events and there is no external user
+     * driving the operation.
+     *
+     * @return user id
+     */
+    public String getServerUserId()
+    {
+        return serverUserId;
+    }
+
+
+    /**
+     * Set up the userId that the local server should use when processing events and there is no external user
+     * driving the operation.
+     *
+     * @param localServerUserId string user id
+     */
+    public void setServerUserId(String localServerUserId)
+    {
+        this.serverUserId = localServerUserId;
     }
 
 

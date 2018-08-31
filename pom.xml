@@ -25,6 +25,10 @@
             <name>The Apache Software License, Version 2.0</name>
             <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
         </license>
+        <license>
+            <name>Creative Commons Attribution 4.0 International (CC BY 4.0)</name>
+            <url>https://creativecommons.org/licenses/by/4.0</url>
+        </license>
     </licenses>
 
     <organization>
@@ -240,6 +244,14 @@
                         <exclude>**/*.results</exclude>
                         <exclude>**/target/**</exclude>
                     </excludes>
+                    <licenseFamilies>
+                        <licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">
+                            <familyName>SPDX-License-Identifier: Apache-2.0</familyName>
+                        </licenseFamily>
+                        <licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">
+                            <familyName>SPDX-License-Identifier: CC-BY-4.0</familyName>
+                        </licenseFamily>
+                    </licenseFamilies>
                     <licenses>
                         <license implementation="org.apache.rat.analysis.license.SimplePatternBasedLicense">
                             <licenseFamilyCategory>SPDX</licenseFamilyCategory>
@@ -249,12 +261,15 @@
                                 <pattern>SPDX-License-Identifier: Apache-2.0</pattern>
                             </patterns>
                         </license>
+                        <license implementation="org.apache.rat.analysis.license.SimplePatternBasedLicense">
+                            <licenseFamilyCategory>SPDX</licenseFamilyCategory>
+                            <licenseFamilyName>SPDX-License-Identifier: CC-BY-4.0</licenseFamilyName>
+                            <notes></notes>
+                            <patterns>
+                                <pattern>SPDX-License-Identifier: CC-BY-4.0</pattern>
+                            </patterns>
+                        </license>
                     </licenses>
-                    <licenseFamilies>
-                        <licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">
-                            <familyName>SPDX-License-Identifier: Apache-2.0</familyName>
-                        </licenseFamily>
-                    </licenseFamilies>
                 </configuration>
                 <executions>
                     <execution>

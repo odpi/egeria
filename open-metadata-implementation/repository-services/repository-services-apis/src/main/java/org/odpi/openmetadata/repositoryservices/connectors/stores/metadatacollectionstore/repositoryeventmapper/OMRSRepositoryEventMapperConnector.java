@@ -3,19 +3,15 @@ package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacolle
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
-import org.odpi.openmetadata.frameworks.connectors.VirtualConnectorExtension;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
-import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
-import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +33,8 @@ public abstract class OMRSRepositoryEventMapperConnector extends ConnectorBase i
     protected String                       localServerName           = null;
     protected String                       localServerType           = null;
     protected String                       localOrganizationName     = null;
+    protected String                       localServerUserId         = null;
+
 
 
     private List<OpenMetadataTopicConnector> eventBusConnectors = new ArrayList<>();
@@ -120,6 +118,18 @@ public abstract class OMRSRepositoryEventMapperConnector extends ConnectorBase i
     public void setOrganizationName(String organizationName)
     {
         this.localOrganizationName = organizationName;
+    }
+
+
+    /**
+     * Set up the userId that the local server should use when processing events and there is no external user
+     * driving the operation.
+     *
+     * @param localServerUserId string user id
+     */
+    public void setServerUserId(String localServerUserId)
+    {
+        this.localServerUserId = localServerUserId;
     }
 
 

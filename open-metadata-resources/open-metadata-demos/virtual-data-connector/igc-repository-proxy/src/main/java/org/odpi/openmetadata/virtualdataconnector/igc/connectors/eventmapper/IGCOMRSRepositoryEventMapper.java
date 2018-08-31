@@ -133,7 +133,8 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         IGCObject igcDatabase = igcomrsRepositoryConnector.genericIGCQuery(igcTable.getContext().get(1).getId());
         IGCObject igcSchema = igcomrsRepositoryConnector.genericIGCQuery(igcTable.getContext().get(2).getId());
 
-        IGCObject igcEndpoint = igcomrsRepositoryConnector.genericIGCQuery(igcTable.getContext().get(0).getId());;
+        IGCObject igcEndpoint = igcomrsRepositoryConnector.genericIGCQuery(igcTable.getContext().get(0).getId());
+        ;
 
         createEntity(igcDatabase, "Database", false);
         createEntity(igcEndpoint, "Endpoint", false);
@@ -177,7 +178,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
 
         IGCObject igcConnection;
         //Propagate Connection/Connection type creations and relationships
-        for(Item connection : igcDatabase.getDataConnections().getItems()){
+        for (Item connection : igcDatabase.getDataConnections().getItems()) {
             igcConnection = igcomrsRepositoryConnector.genericIGCQuery(connection.getId());
             IGCObject igcConnectorType = igcomrsRepositoryConnector.genericIGCQuery(igcConnection.getDataConnectors().getId());
             createEntity(igcConnection, "Connection", false);
@@ -223,8 +224,6 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                     relationalTableTypeID,
                     "RelationalTableType");
         }
-
-
     }
 
     /**
@@ -235,7 +234,6 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
     private void processAsset(IGCKafkaEvent igcKafkaEvent) {
         try {
             IGCObject igcObject = igcomrsRepositoryConnector.genericIGCQuery(igcKafkaEvent.getASSETRID());
-            String technicalTerm = igcKafkaEvent.getASSETRID();
             switch (igcKafkaEvent.getASSETTYPE()) {
                 case "Database Column":
                     if (igcKafkaEvent.getACTION().equals("ASSIGNED_RELATIONSHIP") || igcKafkaEvent.getACTION().equals("MODIFY")) { //Relationship between a technical term and a glossary term.
@@ -245,7 +243,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
 
                             createRelationship(
                                     "SemanticAssignment",
-                                    technicalTerm,
+                                    igcObject.getId(),
                                     "RelationalColumn",
                                     glossaryTermID,
                                     "GlossaryTerm");
@@ -255,25 +253,21 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                 case "Term":
                     if (igcKafkaEvent.getACTION().equals("CREATE")) { //Creation of a glossary term.
                         createEntity(igcObject, "GlossaryTerm", false);
+                        if (igcKafkaEvent.getACTION().equals("CREATE")) { //Creation of a  glossary category and assignment to its glossary category.
+                            createEntity(igcObject, "GlossaryCategory", false);
+                            createRelationship(
+                                    "TermCategorization",
+                                    igcObject.getContext().get(0).getId(),
+                                    "GlossaryCategory",
+                                    igcObject.getId(),
+                                    "GlossaryTerm");
+                        }
                     }
                     break;
                 case "Category":
                     if (igcKafkaEvent.getACTION().equals("CREATE")) { //Creation of a  glossary category.
                         createEntity(igcObject, "GlossaryCategory", false);
                     }
-                    if (igcKafkaEvent.getACTION().equals("ASSIGNED_RELATIONSHIP")) { //Relationship between a glossary category and a glossary term.
-                        for (Item term : igcObject.getTerms().getItems()) {
-                            String glossaryTermID = term.getId();
-
-                            createRelationship(
-                                    "TermCategorization",
-                                    technicalTerm,
-                                    "GlossaryCategory",
-                                    glossaryTermID,
-                                    "GlossaryTerm");
-                        }
-                    }
-                    break;
             }
         } catch (Exception e) {
             e.printStackTrace();
