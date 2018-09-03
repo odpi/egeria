@@ -26,6 +26,7 @@
     <!-- POM packaging means that this module has sub-modules -->
     <packaging>pom</packaging>
     <modules>
+        <module>asset-catalog-api</module>
         <module>asset-catalog-client</module>
         <module>asset-catalog-server</module>
         <module>asset-catalog-spring</module>

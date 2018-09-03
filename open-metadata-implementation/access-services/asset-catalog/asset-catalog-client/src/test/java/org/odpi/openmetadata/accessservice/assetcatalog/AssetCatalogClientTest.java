@@ -16,10 +16,10 @@ import org.odpi.openmetadata.accessservice.assetcatalog.exception.InvalidParamet
 import org.odpi.openmetadata.accessservice.assetcatalog.exception.PropertyServerException;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.AssetDescription;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.Relationship;
-import org.odpi.openmetadata.accessservice.assetcatalog.model.responses.AssetCatalogOMASAPIResponse;
-import org.odpi.openmetadata.accessservice.assetcatalog.model.responses.AssetDescriptionResponse;
-import org.odpi.openmetadata.accessservice.assetcatalog.model.responses.ClassificationsResponse;
-import org.odpi.openmetadata.accessservice.assetcatalog.model.responses.RelationshipsResponse;
+import org.odpi.openmetadata.accessservice.assetcatalog.responses.AssetCatalogOMASAPIResponse;
+import org.odpi.openmetadata.accessservice.assetcatalog.responses.AssetDescriptionResponse;
+import org.odpi.openmetadata.accessservice.assetcatalog.responses.ClassificationsResponse;
+import org.odpi.openmetadata.accessservice.assetcatalog.responses.RelationshipsResponse;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -89,7 +89,7 @@ public class AssetCatalogClientTest {
         }
 
         checkResponse(response);
-        assertTrue(response.getAssetDescriptionList().size() == 1);
+        assertEquals(response.getAssetDescriptionList().size(), 1);
         assertEquals(defaultAssetId, response.getAssetDescriptionList().get(0).getGUID());
     }
 
@@ -106,7 +106,7 @@ public class AssetCatalogClientTest {
         }
 
         checkResponse(response);
-        assertTrue(response.getAssetDescriptionList().size() == 1);
+        assertEquals(response.getAssetDescriptionList().size(), 1);
         assertEquals(defaultAssetId, response.getAssetDescriptionList().get(0).getGUID());
     }
 
@@ -123,7 +123,7 @@ public class AssetCatalogClientTest {
         }
 
         checkResponse(response);
-        assertTrue(response.getAssetDescriptionList().size() == 1);
+        assertEquals(response.getAssetDescriptionList().size(), 1);
         assertEquals(defaultAssetId, response.getAssetDescriptionList().get(0).getGUID());
     }
 
@@ -398,7 +398,7 @@ public class AssetCatalogClientTest {
         verify(restTemplate, times(1)).getForObject(ArgumentMatchers.anyString(),
                 ArgumentMatchers.any(Class.class), ArgumentMatchers.<Object>any());
 
-        assertTrue(expectedResponse.getRelatedHTTPCode() == 200);
+        assertEquals(expectedResponse.getRelatedHTTPCode(), 200);
     }
 
 }
