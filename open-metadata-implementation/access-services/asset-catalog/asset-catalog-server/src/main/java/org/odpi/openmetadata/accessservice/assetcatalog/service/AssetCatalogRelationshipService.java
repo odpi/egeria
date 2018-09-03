@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservice.assetcatalog.service;
 import org.odpi.openmetadata.accessservice.assetcatalog.admin.AssetCatalogAdmin;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.SequenceOrderType;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.Status;
-import org.odpi.openmetadata.accessservice.assetcatalog.model.responses.RelationshipsResponse;
+import org.odpi.openmetadata.accessservice.assetcatalog.responses.RelationshipsResponse;
 import org.odpi.openmetadata.accessservice.assetcatalog.util.Converter;
 import org.odpi.openmetadata.accessservice.assetcatalog.util.ExceptionUtil;
 import org.odpi.openmetadata.adminservices.OMAGAccessServiceRegistration;

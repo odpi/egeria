@@ -1,28 +1,29 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-package org.odpi.openmetadata.accessservice.assetcatalog.model;
+package org.odpi.openmetadata.accessservice.assetcatalog.responses;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.odpi.openmetadata.accessservice.assetcatalog.model.AssetDescription;
+
+import java.io.Serializable;
+import java.util.List;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * Table object contains the properties for a RelationshipTable asset can be find in a database.
+ * AssetDescriptionResponse is the response structure used on the Asset Catalog OMAS REST API calls that returns a
+ * asset description object as a response.
  */
+@EqualsAndHashCode(callSuper = true)
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
-public class Table {
+public class AssetDescriptionResponse extends AssetCatalogOMASAPIResponse implements Serializable {
 
-    private String name;
-    private String typeName;
-    private String owner;
-
-    private String typeVersion;
-    private String typeEncodingStandard;
-    private String typeUsage;
+    private List<AssetDescription> assetDescriptionList;
 }

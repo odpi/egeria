@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservice.assetcatalog.util;
 
-import org.odpi.openmetadata.accessservice.assetcatalog.model.responses.AssetCatalogOMASAPIResponse;
+import org.odpi.openmetadata.accessservice.assetcatalog.responses.AssetCatalogOMASAPIResponse;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSCheckedExceptionBase;
 
 public class ExceptionUtil {

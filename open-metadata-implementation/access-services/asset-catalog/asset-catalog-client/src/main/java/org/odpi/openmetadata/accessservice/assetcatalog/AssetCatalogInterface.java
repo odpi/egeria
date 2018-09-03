@@ -3,9 +3,9 @@ package org.odpi.openmetadata.accessservice.assetcatalog;
 
 import org.odpi.openmetadata.accessservice.assetcatalog.exception.InvalidParameterException;
 import org.odpi.openmetadata.accessservice.assetcatalog.exception.PropertyServerException;
-import org.odpi.openmetadata.accessservice.assetcatalog.model.responses.AssetDescriptionResponse;
-import org.odpi.openmetadata.accessservice.assetcatalog.model.responses.ClassificationsResponse;
-import org.odpi.openmetadata.accessservice.assetcatalog.model.responses.RelationshipsResponse;
+import org.odpi.openmetadata.accessservice.assetcatalog.responses.AssetDescriptionResponse;
+import org.odpi.openmetadata.accessservice.assetcatalog.responses.ClassificationsResponse;
+import org.odpi.openmetadata.accessservice.assetcatalog.responses.RelationshipsResponse;
 
 /**
  * The Asset Catalog Open Metadata Access Service (OMAS) provides services to search for data assets including
