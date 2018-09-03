@@ -36,9 +36,9 @@ import java.util.stream.Collectors;
  */
 public class ColumnContextEventBuilder {
 
-    private OMRSRepositoryConnector enterpriseConnector;
-
     private static final Logger log = LoggerFactory.getLogger(ColumnContextEventBuilder.class);
+
+    private OMRSRepositoryConnector enterpriseConnector;
 
     /**
      * @param enterpriseConnector - combined connector for all repositories
@@ -94,7 +94,7 @@ public class ColumnContextEventBuilder {
             allEvents.addAll(getRelationalTableDetails(tableTypeGuid, parentTableRelationship, allColumns));
         }
         String tableTypeQualifiedName = EntityPropertiesUtils.getStringValueForProperty(tableTypeDetail.getProperties(), Constants.QUALIFIED_NAME);
-        allEvents = allEvents.stream().peek(e -> e.setTableTypeQualifiedName(tableTypeQualifiedName)).collect(Collectors.toList());
+        allEvents = allEvents.stream().peek(e -> e.getTableContext().setTableTypeQualifiedName(tableTypeQualifiedName)).collect(Collectors.toList());
         return allEvents;
     }
 
@@ -124,7 +124,7 @@ public class ColumnContextEventBuilder {
             List<ColumnContextEvent> events = getDbSchemaTypeDetails(tableGuid, schemaTypeRelationship);
             allEvents.addAll(events.stream().peek(e -> {
                 e.setTableName(tableName);
-                e.setTableQualifiedName(tableQualifiedName);
+                e.getTableContext().setTableQualifiedName(tableQualifiedName);
                 e.setTableColumns(allColumns);
             }).collect(Collectors.toList()));
         }
@@ -177,9 +177,8 @@ public class ColumnContextEventBuilder {
         log.debug("Load column type for entity with guid {}", columnEntity.getGUID());
         String relationshipTypeGuid = enterpriseConnector.getMetadataCollection().getTypeDefByName(Constants.USER_ID, Constants.SCHEMA_ATTRIBUTE_TYPE).getGUID();
         Relationship columnToColumnType = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.USER_ID, columnEntity.getGUID(), relationshipTypeGuid, 0, null, null, null, null, 0).get(0);
-        EntityDetail columnTypeEntity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, getOtherEntityGuid(columnEntity.getGUID(), columnToColumnType));
+        return enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, getOtherEntityGuid(columnEntity.getGUID(), columnToColumnType));
 
-        return columnTypeEntity;
     }
 
     /**
@@ -236,7 +235,7 @@ public class ColumnContextEventBuilder {
             allEvents.addAll(events);
         }
         InstanceProperties dbSchemaTypeProperties = relationships.get(0).getEntityTwoProxy().getUniqueProperties();
-        allEvents.stream().peek(e -> e.setSchemaTypeQualifiedName(EntityPropertiesUtils.getStringValueForProperty(dbSchemaTypeProperties, Constants.QUALIFIED_NAME))).collect(Collectors.toList());
+        allEvents.stream().peek(e -> e.getTableContext().setSchemaTypeQualifiedName(EntityPropertiesUtils.getStringValueForProperty(dbSchemaTypeProperties, Constants.QUALIFIED_NAME)));
 
         return allEvents;
     }
@@ -266,7 +265,7 @@ public class ColumnContextEventBuilder {
             List<ColumnContextEvent> events = getDatabaseDetails(deployedDatabaseSchemaGuid, relationship);
             allEvents.addAll(events.stream().peek(e -> {
                 e.setSchemaName(schemaName);
-                e.setSchemaQualifiedName(schemaQualifiedName);
+                e.getTableContext().setSchemaQualifiedName(schemaQualifiedName);
             }).collect(Collectors.toList()));
 
         }
@@ -294,8 +293,8 @@ public class ColumnContextEventBuilder {
         List<Relationship> relationships = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.USER_ID, databaseGuid, relationshipTypeGuid, 0, null, null, null, null, 0);
         for (Relationship relationship : relationships) {
             ColumnContextEvent event = getConnectionDetails(databaseGuid, relationship);
-            event.setDatabaseName(EntityPropertiesUtils.getStringValueForProperty(databaseEntityProperties, Constants.NAME));
-            event.setDatabaseQualifiedName(EntityPropertiesUtils.getStringValueForProperty(databaseEntityProperties, Constants.QUALIFIED_NAME));
+            event.getTableContext().setDatabaseName(EntityPropertiesUtils.getStringValueForProperty(databaseEntityProperties, Constants.NAME));
+            event.getTableContext().setDatabaseQualifiedName(EntityPropertiesUtils.getStringValueForProperty(databaseEntityProperties, Constants.QUALIFIED_NAME));
             allEvents.add(event);
         }
         return allEvents;
@@ -345,8 +344,7 @@ public class ColumnContextEventBuilder {
         String relationshipTypeGuid = enterpriseConnector.getMetadataCollection().getTypeDefByName(Constants.USER_ID, Constants.CONNECTION_CONNECTOR_TYPE).getGUID();
         Relationship relationshipToConnectorType = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.USER_ID, connectionEntityGuid, relationshipTypeGuid, 0, null, null, null, null, 0).get(0);
         String connectorTypeGuid = getOtherEntityGuid(connectionEntityGuid, relationshipToConnectorType);
-        EntityDetail connectorTypeDetail = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, connectorTypeGuid);
-        return connectorTypeDetail;
+        return enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, connectorTypeGuid);
 
     }
 

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class InformationViewOMASResource {
-    InformationViewOMASRegistration registration;
+    private final InformationViewOMASRegistration registration;
 
     public InformationViewOMASResource() {
         registration = new InformationViewOMASRegistration();

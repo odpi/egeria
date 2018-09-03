@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.odpi.openmetadata.accessservices.informationview.utils.Constants.RELATIONAL_COLUMN;
+import static org.odpi.openmetadata.accessservices.informationview.utils.Constants.SEMANTIC_ASSIGNMENT;
 
 
 public class EventPublisher implements OMRSInstanceEventProcessor {
@@ -32,7 +33,6 @@ public class EventPublisher implements OMRSInstanceEventProcessor {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private OpenMetadataTopic informationViewTopicConnector;
     private ColumnContextEventBuilder columnContextEventBuilder;
-
     private OMRSAuditLog auditLog;
 
     public EventPublisher(OpenMetadataTopic informationViewTopicConnector,
@@ -201,13 +201,14 @@ public class EventPublisher implements OMRSInstanceEventProcessor {
                                             String originatorServerType,
                                             String originatorOrganizationName,
                                             Relationship relationship) {
-        String guid;
 
-        if (relationship.getEntityOneProxy().getType().getTypeDefName().equals(RELATIONAL_COLUMN)) {
-            guid = relationship.getEntityOneProxy().getGUID();
-        } else {
-            guid = relationship.getEntityTwoProxy().getGUID();
-        }
+       //It should handle only semantic assignments for relational columns
+       if( !(relationship.getType().getTypeDefName().equals(SEMANTIC_ASSIGNMENT) && relationship.getEntityOneProxy().getType().getTypeDefName().equals(RELATIONAL_COLUMN))){
+           log.info("Event is ignored as the relationship is not a semantic assignment for a column");
+           return;
+       }
+
+        String guid = relationship.getEntityOneProxy().getGUID();
 
         List<ColumnContextEvent> events = new ArrayList<>();
         try {

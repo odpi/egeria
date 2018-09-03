@@ -23,12 +23,6 @@
 
     <dependencies>
 
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>information-view-server</artifactId>
-            <version>${open-metadata.version}</version>
-        </dependency>
-
     </dependencies>
 
 </project>

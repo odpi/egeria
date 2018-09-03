@@ -71,4 +71,13 @@ public class BusinessTerm {
     public void setQuery(String query) {
         this.query = query;
     }
+
+    @Override
+    public String toString() {
+        return "BusinessTerm{" +
+                "guid='" + guid + '\'' +
+                ", name='" + name + '\'' +
+                ", query='" + query + '\'' +
+                '}';
+    }
 }
