@@ -21,44 +21,7 @@ public class ColumnContextEvent {
     private ConnectionDetails connectionDetails;
     private List<ColumnDetails> tableColumns = new ArrayList<>();
 
-
-    /**
-     * Return the name of the table
-     *
-     * @return name of the table
-     */
-    public String getTableName() {
-        return tableContext.getTableName();
-    }
-
-    /**
-     * set up the name of the table
-     *
-     * @param tableName - name of the table
-     */
-    public void setTableName(String tableName) {
-        tableContext.setTableName(tableName);
-    }
-
-    /**
-     * Return the name of the schema
-     *
-     * @return name of the schema
-     */
-    public String getSchemaName() {
-        return tableContext.getSchemaName();
-    }
-
-    /**
-     * set up the name of the schema
-     *
-     * @param schemaName - name of the schema
-     */
-    public void setSchemaName(String schemaName) {
-        tableContext.setSchemaName(schemaName);
-    }
-
-    /**
+     /**
      * Return the connection details
      *
      * @return connection details

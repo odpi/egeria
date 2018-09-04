@@ -123,7 +123,7 @@ public class ColumnContextEventBuilder {
         for (Relationship schemaTypeRelationship : enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.USER_ID, tableEntity.getGUID(), relationshipTypeGuid, 0, null, null, null, null, 0)) {
             List<ColumnContextEvent> events = getDbSchemaTypeDetails(tableGuid, schemaTypeRelationship);
             allEvents.addAll(events.stream().peek(e -> {
-                e.setTableName(tableName);
+                e.getTableContext().setTableName(tableName);
                 e.getTableContext().setTableQualifiedName(tableQualifiedName);
                 e.setTableColumns(allColumns);
             }).collect(Collectors.toList()));
@@ -235,7 +235,7 @@ public class ColumnContextEventBuilder {
             allEvents.addAll(events);
         }
         InstanceProperties dbSchemaTypeProperties = relationships.get(0).getEntityTwoProxy().getUniqueProperties();
-        allEvents.stream().peek(e -> e.getTableContext().setSchemaTypeQualifiedName(EntityPropertiesUtils.getStringValueForProperty(dbSchemaTypeProperties, Constants.QUALIFIED_NAME)));
+        allEvents.stream().peek(e -> e.getTableContext().setSchemaTypeQualifiedName(EntityPropertiesUtils.getStringValueForProperty(dbSchemaTypeProperties, Constants.QUALIFIED_NAME))).collect(Collectors.toList());
 
         return allEvents;
     }
@@ -264,7 +264,7 @@ public class ColumnContextEventBuilder {
         for (Relationship relationship : dbRelationships) {
             List<ColumnContextEvent> events = getDatabaseDetails(deployedDatabaseSchemaGuid, relationship);
             allEvents.addAll(events.stream().peek(e -> {
-                e.setSchemaName(schemaName);
+                e.getTableContext().setSchemaName(schemaName);
                 e.getTableContext().setSchemaQualifiedName(schemaQualifiedName);
             }).collect(Collectors.toList()));
 
