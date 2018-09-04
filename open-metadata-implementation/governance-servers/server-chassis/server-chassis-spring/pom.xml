@@ -61,6 +61,18 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>information-view-spring</artifactId>
+            <version>${open-metadata.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-context</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>subject-area-spring</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
