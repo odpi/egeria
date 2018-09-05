@@ -575,7 +575,7 @@ public class OMAGServerAdminResource
     @RequestMapping(method = RequestMethod.POST, path = "/instance/configuration")
     public VoidResponse activateWithSuppliedConfig(@PathVariable String           userId,
                                                    @PathVariable String           serverName,
-                                                   @RequestParam OMAGServerConfig configuration)
+                                                   @RequestBody OMAGServerConfig configuration)
     {
         return adminAPI.activateWithSuppliedConfig(userId, serverName, configuration);
     }
