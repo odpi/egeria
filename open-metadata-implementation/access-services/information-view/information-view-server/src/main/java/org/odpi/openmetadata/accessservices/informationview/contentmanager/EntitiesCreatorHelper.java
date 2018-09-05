@@ -17,11 +17,10 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class EntitiesCreatorHelper {
@@ -40,7 +39,7 @@ public class EntitiesCreatorHelper {
      * Returns the newly created entity with the specified properties
      *
      * @param metadataCollectionId unique identifier for the metadata collection used for adding entities
-     * @param userName name of the user performing the add operation
+     * @param userName             name of the user performing the add operation
      * @param typeName             of the entity type def
      * @param instanceProperties   specific to the entity
      * @return the new entity added to the metadata collection
@@ -54,10 +53,10 @@ public class EntitiesCreatorHelper {
         try {
             entity = enterpriseConnector.getRepositoryHelper()
                     .getSkeletonEntity("",
-                    metadataCollectionId,
-                    InstanceProvenanceType.LOCAL_COHORT,
-                    userName,
-                    typeName);
+                            metadataCollectionId,
+                            InstanceProvenanceType.LOCAL_COHORT,
+                            userName,
+                            typeName);
             return enterpriseConnector.getMetadataCollection()
                     .addEntity(userName,
                             entity.getType().getTypeDefGUID(),
@@ -100,10 +99,10 @@ public class EntitiesCreatorHelper {
         try {
             relationship = enterpriseConnector.getRepositoryHelper()
                     .getSkeletonRelationship("",
-                    metadataCollectionId,
-                    InstanceProvenanceType.LOCAL_COHORT,
-                    Constants.USER_ID,
-                    typeName);
+                            metadataCollectionId,
+                            InstanceProvenanceType.LOCAL_COHORT,
+                            Constants.USER_ID,
+                            typeName);
             return enterpriseConnector.getMetadataCollection()
                     .addRelationship(Constants.USER_ID,
                             relationship.getType().getTypeDefGUID(),
@@ -131,7 +130,7 @@ public class EntitiesCreatorHelper {
     /**
      * Returns the entity of the specified type retrieved based on qualified name
      *
-     * @param typeName     name of the type def for the entity to be retrieved
+     * @param typeName      name of the type def for the entity to be retrieved
      * @param qualifiedName qualified name property of the entity to be retrieved
      * @return the existing entity with the given qualified name or null if it doesn't exist
      * @throws Exception
@@ -147,7 +146,7 @@ public class EntitiesCreatorHelper {
                             matchProperties,
                             MatchCriteria.ALL,
                             0,
-                            Arrays.asList(InstanceStatus.ACTIVE),
+                            Collections.singletonList(InstanceStatus.ACTIVE),
                             null,
                             null,
                             null,
@@ -171,14 +170,14 @@ public class EntitiesCreatorHelper {
     }
 
     /**
-     *Returns the entity filtered out from entities list based on qualified name
+     * Returns the entity filtered out from entities list based on qualified name
      *
      * @param existingEntities the list of entities to search in
-     * @param qualifiedName qualified name based on which the entity is retrieved
+     * @param qualifiedName    qualified name based on which the entity is retrieved
      * @return the entity that has the specified qualified name
      */
     private EntityDetail checkEntities(List<EntityDetail> existingEntities, String qualifiedName) {
-        if (existingEntities != null)
+        if (existingEntities != null && !existingEntities.isEmpty())
             return existingEntities.stream().filter(e -> qualifiedName.equals(EntityPropertiesUtils.getStringValueForProperty(e.getProperties(), Constants.QUALIFIED_NAME))).findFirst().get();
         return null;
     }
@@ -204,7 +203,7 @@ public class EntitiesCreatorHelper {
                             guid2,
                             relationshipTypeGuid,
                             0,
-                            Arrays.asList(InstanceStatus.ACTIVE),
+                            Collections.singletonList(InstanceStatus.ACTIVE),
                             null,
                             null,
                             null,
@@ -274,7 +273,7 @@ public class EntitiesCreatorHelper {
     }
 
     /**
-     *  Returns the relationship of the given type with the specified qualified name; if it doesn't already exists, it is created with the provided instance properties
+     * Returns the relationship of the given type with the specified qualified name; if it doesn't already exists, it is created with the provided instance properties
      *
      * @param relationshipType is the relationship type name
      * @param guid1            first end of the relationship
@@ -307,7 +306,7 @@ public class EntitiesCreatorHelper {
     /**
      * Returns the properties object for the given pair of key - value that can be used for retrieving
      *
-     * @param key - name of the property
+     * @param key   - name of the property
      * @param value - value of the property
      * @return properties with the given key - value pair
      */

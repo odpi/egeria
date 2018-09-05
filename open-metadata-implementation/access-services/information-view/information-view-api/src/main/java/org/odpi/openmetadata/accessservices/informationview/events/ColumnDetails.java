@@ -180,4 +180,19 @@ public class ColumnDetails {
     public void setQualifiedNameColumnType(String qualifiedNameColumnType) {
         this.qualifiedNameColumnType = qualifiedNameColumnType;
     }
+
+    @Override
+    public String toString() {
+        return "ColumnDetails{" +
+                "guid='" + guid + '\'' +
+                ", qualifiedName='" + qualifiedName + '\'' +
+                ", attributeName='" + attributeName + '\'' +
+                ", position=" + position +
+                ", cardinality='" + cardinality + '\'' +
+                ", defaultValueOverride='" + defaultValueOverride + '\'' +
+                ", type='" + type + '\'' +
+                ", qualifiedNameColumnType='" + qualifiedNameColumnType + '\'' +
+                ", businessTerm=" + businessTerm +
+                '}';
+    }
 }

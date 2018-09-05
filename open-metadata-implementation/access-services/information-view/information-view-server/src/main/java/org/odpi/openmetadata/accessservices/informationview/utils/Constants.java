@@ -34,7 +34,6 @@ public class Constants {
     public static final String INFO_VIEW_PREFIX = "iv_";
     public static final String TYPE_SUFFIX = "_type";
     public static final String CONNECTION_CONNECTOR_TYPE = "ConnectionConnectorType";
-    public static final String TOPIC_NAME = "topicName";
     public static final String RELATIONAL_COLUMN_TYPE = "RelationalColumnType";
     public static final String SCHEMA_QUERY_IMPLEMENTATION = "SchemaQueryImplementation";
     public static final String SEMANTIC_ASSIGNMENT = "SemanticAssignment";
@@ -46,4 +45,8 @@ public class Constants {
     public static final String CONNECTOR_PROVIDER_CLASSNAME = "connectorProviderClassName";
     public static final String GAIAN_DB_NODE_NAME = "GDName";
     public static final String USER_ID = "informationViewOmas";
+    public static final String CONNECTOR_TYPE = "ConnectorType";
+    public static final String DEPLOYED_DATABASE_SCHEMA = "DeployedDatabaseSchema";
+    public static final String ENDPOINT = "Endpoint";
+    public static final String CONNECTION = "Connection";
 }

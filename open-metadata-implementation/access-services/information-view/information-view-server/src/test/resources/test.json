@@ -1,0 +1,35 @@
+{
+  "protocolVersionId": "OMRS V1.0",
+  "eventCategory": "INSTANCE",
+  "originator": {
+    "serverName": ""
+  },
+  "eventOriginator": {
+    "serverName": ""
+  },
+  "instanceEventSection": {
+    "typeDefGUID": "",
+    "typeDefName": "",
+    "instanceGUID": "",
+    "entity": {},
+    "homeMetadataCollectionId": "",
+    "originalHomeMetadataCollectionId": "",
+    "originalTypeDefSummary": {},
+    "originalInstanceGUID": "",
+    "eventType": "NEW_RELATIONSHIP_EVENT",
+    "relationship": {
+      "entityOneProxy": {
+        "uniqueAttributes": {},
+        "guid": "123",
+        "type": {
+          "typeDefName": "RelationalColumn"
+        }
+      },
+      "entityTwoProxy": {
+        "uniqueAttributes": {},
+        "guid": "1234"
+      },
+      "properties": {}
+    }
+  }
+}

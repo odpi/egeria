@@ -24,8 +24,6 @@ public class InformationViewEnterpriseOmrsEventListener implements OMRSTopicList
     private OMRSInstanceEventProcessor instanceEventProcessor;
     private OMRSAuditLog auditLog;
 
-    private OMRSRepositoryConnector igcConnector;
-
     /**
      *
      * @param instanceEventProcessor

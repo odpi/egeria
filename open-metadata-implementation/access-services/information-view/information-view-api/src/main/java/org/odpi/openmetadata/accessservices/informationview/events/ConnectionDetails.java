@@ -165,4 +165,18 @@ public class ConnectionDetails {
     public void setEndpointQualifiedName(String endpointQualifiedName) {
         this.endpointQualifiedName = endpointQualifiedName;
     }
+
+    @Override
+    public String toString() {
+        return "ConnectionDetails{" +
+                "url='" + url + '\'' +
+                ", networkAddress='" + networkAddress + '\'' +
+                ", protocol='" + protocol + '\'' +
+                ", connectorProviderName='" + connectorProviderName + '\'' +
+                ", connectorProviderQualifiedName='" + connectorProviderQualifiedName + '\'' +
+                ", gaianNodeName='" + gaianNodeName + '\'' +
+                ", connectionQualifiedName='" + connectionQualifiedName + '\'' +
+                ", endpointQualifiedName='" + endpointQualifiedName + '\'' +
+                '}';
+    }
 }
