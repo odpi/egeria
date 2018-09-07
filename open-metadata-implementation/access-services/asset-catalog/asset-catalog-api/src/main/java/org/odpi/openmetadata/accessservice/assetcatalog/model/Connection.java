@@ -1,29 +1,39 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-package org.odpi.openmetadata.accessservice.assetcatalog.model.responses;
+package org.odpi.openmetadata.accessservice.assetcatalog.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import org.odpi.openmetadata.accessservice.assetcatalog.model.Classification;
 
 import java.io.Serializable;
-import java.util.List;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ClassificationsResponse is the response structure used on the Asset Catalog OMAS REST API calls that
- * returns a classification object as a response.
+ * The connection object contains the properties needed to access a specific data assets.
  */
-@EqualsAndHashCode(callSuper = true)
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
-public class ClassificationsResponse extends AssetCatalogOMASAPIResponse implements Serializable {
+public class Connection implements Serializable {
 
-    private List<Classification> classifications;
+    private static final long serialVersionUID = 1L;
+
+    private String displayName;
+    private String description;
+    private String guid;
+
+    private String connectorName;
+    private String connectorDescription;
+    private String connectorProvider;
+
+    private String dataSetName;
+    private Column column;
+    private Table table;
+    private Database database;
+    private Schema schema;
+    private Endpoint endpoint;
 }

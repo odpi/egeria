@@ -10,14 +10,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * Column object contains the name and the type of the column where a RelationshipColumn asset can be find in a database.
+ * The Database object contains details about a database where an asset can be found.
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
-public class Column {
-    private String name;
-    private DataType type;
+public class Database {
 
+    private String name;
+    private String guid;
+    private String description;
+    private String owner;
+    private String type;
 }

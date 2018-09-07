@@ -2,9 +2,8 @@
 package org.odpi.openmetadata.accessservice.assetcatalog.server.spring;
 
 
-import org.odpi.openmetadata.accessservice.assetcatalog.admin.AssetCatalogAdmin;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.Status;
-import org.odpi.openmetadata.accessservice.assetcatalog.model.responses.AssetDescriptionResponse;
+import org.odpi.openmetadata.accessservice.assetcatalog.responses.AssetDescriptionResponse;
 import org.odpi.openmetadata.accessservice.assetcatalog.service.OMASCatalogRESTServices;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.springframework.web.bind.annotation.PathVariable;

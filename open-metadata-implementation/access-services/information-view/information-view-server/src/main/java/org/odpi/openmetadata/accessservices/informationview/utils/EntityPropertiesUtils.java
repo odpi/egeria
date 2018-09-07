@@ -16,12 +16,12 @@ public class EntityPropertiesUtils {
         if (instanceProperties.getPropertyValue(name) instanceof PrimitivePropertyValue && ((PrimitivePropertyValue) instanceProperties.getPropertyValue(name)).getPrimitiveDefCategory() == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING) {
             return (String) ((PrimitivePropertyValue) instanceProperties.getPropertyValue(name)).getPrimitiveValue();
         }
-        return ""; //TODO throw exception as we expect string?
+        return "";
     }
 
-    public static Integer getIntegerValueForProperty(EntityDetail entityUniverse, String name) {
-        if (entityUniverse.getProperties().getPropertyValue(name) instanceof PrimitivePropertyValue && ((PrimitivePropertyValue) entityUniverse.getProperties().getPropertyValue(name)).getPrimitiveDefCategory() == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT) {
-            return (Integer) ((PrimitivePropertyValue) entityUniverse.getProperties().getPropertyValue(name)).getPrimitiveValue();
+    public static Integer getIntegerValueForProperty(InstanceProperties properties, String name) {
+        if (properties.getPropertyValue(name) instanceof PrimitivePropertyValue && ((PrimitivePropertyValue) properties.getPropertyValue(name)).getPrimitiveDefCategory() == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT) {
+            return (Integer) ((PrimitivePropertyValue) properties.getPropertyValue(name)).getPrimitiveValue();
         }
         return 0;
     }
@@ -31,34 +31,6 @@ public class EntityPropertiesUtils {
             return (MapPropertyValue) instanceProperties.getPropertyValue(name);
         }
         return null;
-    }
-
-    public static String buildQualifiedNameForSchemaType(EntityDetail rootEntity, String name) {
-        StringBuilder stringBuilder = new StringBuilder();
-        if (rootEntity != null) {
-            stringBuilder.append(getStringValueForProperty(rootEntity.getProperties(), Constants.QUALIFIED_NAME)).append(".");
-        }
-        return stringBuilder.append(Constants.INFO_VIEW_PREFIX).append(name).append(Constants.TYPE_SUFFIX).toString();
-    }
-
-    public static String buildQualifiedNameForSchemaAttribute(EntityDetail rootEntity, String name) {
-        StringBuilder stringBuilder = new StringBuilder();
-        if (rootEntity != null) {
-            stringBuilder.append(getStringValueForProperty(rootEntity.getProperties(), Constants.QUALIFIED_NAME)).append(".");
-        }
-
-        return stringBuilder.append(Constants.INFO_VIEW_PREFIX).append(name).toString();
-
-    }
-
-    public static String buildQualifiedNameForEndpoint(EntityDetail rootEntity, ConnectionDetails connectionDetails) {
-        String rootQualifiedName;
-        StringBuilder stringBuilder = new StringBuilder();
-        if (rootEntity != null) {
-            rootQualifiedName = getStringValueForProperty(rootEntity.getProperties(), Constants.QUALIFIED_NAME);
-            stringBuilder.append(rootQualifiedName).append(".");
-        }
-        return stringBuilder.append(Constants.INFO_VIEW_PREFIX).append(connectionDetails.getProtocol()).append(":").append(connectionDetails.getNetworkAddress()).toString();
     }
 
     public static PrimitivePropertyValue createPrimitiveStringPropertyValue(String value) {

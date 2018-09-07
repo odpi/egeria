@@ -150,22 +150,20 @@ public class InformationViewAdmin implements AccessServiceAdmin {
             ((Map) properties.get("consumer")).replace("kafka.omrs.topic.id", accessServiceInTopic.getQualifiedName());
             ((Map) properties.get("producer")).replace("kafka.omrs.topic.id", accessServiceOutTopic.getQualifiedName());
             accessServiceInTopic.setAdditionalProperties(properties);
-            if (accessServiceInTopic != null) {
-                try {
-                    return getTopicConnector(accessServiceInTopic);
-                } catch (Exception e) {
-                    InformationViewAuditCode auditCode = InformationViewAuditCode.ERROR_INITIALIZING_CONNECTION;
-                    auditLog.logRecord(actionDescription,
-                            auditCode.getLogMessageId(),
-                            auditCode.getSeverity(),
-                            auditCode.getFormattedLogMessage(accessServiceInTopic.toString()),
-                            null,
-                            auditCode.getSystemAction(),
-                            auditCode.getUserAction());
-                    throw e;
-                }
-
+            try {
+                return getTopicConnector(accessServiceInTopic);
+            } catch (Exception e) {
+                InformationViewAuditCode auditCode = InformationViewAuditCode.ERROR_INITIALIZING_CONNECTION;
+                auditLog.logRecord(actionDescription,
+                        auditCode.getLogMessageId(),
+                        auditCode.getSeverity(),
+                        auditCode.getFormattedLogMessage(accessServiceInTopic.toString()),
+                        null,
+                        auditCode.getSystemAction(),
+                        auditCode.getUserAction());
+                throw e;
             }
+
         }
         return null;
 
@@ -210,6 +208,11 @@ public class InformationViewAdmin implements AccessServiceAdmin {
      * Shutdown the access service.
      */
     public void shutdown() {
+        try {
+            informationViewTopicConnector.disconnect();
+        } catch (ConnectorCheckedException e) {
+            log.error("Error disconnecting information view topic connector");
+        }
         final String actionDescription = "shutdown";
         InformationViewAuditCode auditCode;
 

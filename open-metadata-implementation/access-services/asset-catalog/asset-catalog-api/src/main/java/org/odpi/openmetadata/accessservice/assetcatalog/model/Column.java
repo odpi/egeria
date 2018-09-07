@@ -6,33 +6,20 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * The connection object contains the properties needed to access a specific data assets.
+ * Column object contains the name and the type of the column where a RelationshipColumn asset can be find in a database.
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
-public class Connection implements Serializable {
+public class Column {
 
-    private static final long serialVersionUID = 1L;
+    private String guid;
+    private String name;
+    private DataType type;
 
-    private String displayName;
-    private String description;
-
-    private String connectorName;
-    private String connectorDescription;
-    private String connectorProvider;
-
-    private String dataSetName;
-    private Column column;
-    private Table table;
-    private Database database;
-    private Schema schema;
-    private Endpoint endpoint;
 }

@@ -5,21 +5,28 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import java.io.Serializable;
+import java.util.List;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * The Database object contains details about a database where an asset can be found.
+ * Relationship object holds properties that are used for displaying details about the classification.
  */
+@EqualsAndHashCode(callSuper = true)
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
-public class Database {
+public class Relationship extends Asset implements Serializable {
 
-    private String name;
-    private String description;
-    private String owner;
-    private String type;
+    private static final long serialVersionUID = 1L;
+
+    private Asset fromEntity;
+    private Asset toEntity;
+
+    private List<String> linkedEntities;
 }

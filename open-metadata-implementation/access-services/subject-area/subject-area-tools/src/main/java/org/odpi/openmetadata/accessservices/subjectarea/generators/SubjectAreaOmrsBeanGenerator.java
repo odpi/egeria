@@ -1077,11 +1077,21 @@ public class SubjectAreaOmrsBeanGenerator {
                 if (!loopPropertyLines.isEmpty()) {
 
                     for (int loopCounter = 0; loopCounter < loopPropertyLines.size(); loopCounter++) {
+                        String upperCaseType =GeneratorUtilities.uppercase1stLetter(attr.type);
+
                         String newLine = loopPropertyLines.get(loopCounter);
                         newLine = newLine.replaceAll(GeneratorUtilities.getRegexToken("PropertyName"), GeneratorUtilities.lowercase1stLetter(attr.name));
                         newLine = newLine.replaceAll(GeneratorUtilities.getRegexToken("uPropertyName"), GeneratorUtilities.uppercase1stLetter(attr.name));
                         newLine = replaceTokensInLineFromMap(replacementMap, newLine);
                         newLine = newLine.replaceAll(GeneratorUtilities.getRegexToken("PropertyType"), GeneratorUtilities.uppercase1stLetter(attr.type));
+                        String javadoc = upperCaseType;
+                        if (upperCaseType.equals("List<String>")) {
+                            javadoc ="{@code List<String> } ";
+                        } else if (upperCaseType.equals("Map<String,String>")) {
+                            javadoc ="{@code Map<String,String> } ";
+                        }
+                        newLine = newLine.replaceAll(GeneratorUtilities.getRegexToken("PropertyTypeJavadoc"),javadoc );
+
                         // TODO handle non String types
                         newLine = newLine.replaceAll(GeneratorUtilities.getRegexToken("AttrDescription"), attr.description);
                         outputFileWriter.write(newLine + "\n");

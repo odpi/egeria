@@ -129,4 +129,16 @@ public class DerivedColumnDetail {
     public void setType(String type) {
         this.type = type;
     }
+
+    @Override
+    public String toString() {
+        return "DerivedColumnDetail{" +
+                "attributeName='" + attributeName + '\'' +
+                ", position=" + position +
+                ", cardinality='" + cardinality + '\'' +
+                ", defaultValueOverride='" + defaultValueOverride + '\'' +
+                ", type='" + type + '\'' +
+                ", realColumn=" + realColumn +
+                '}';
+    }
 }
