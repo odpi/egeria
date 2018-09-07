@@ -97,7 +97,7 @@ public class OpenMetadataTestLab
 
         if ((args == null) || (args.length == 0))
         {
-            System.out.println("Please specific the server's URL root in the first parameter");
+            System.out.println("Please specify the server's URL root in the first parameter");
             System.exit(-1);
         }
 

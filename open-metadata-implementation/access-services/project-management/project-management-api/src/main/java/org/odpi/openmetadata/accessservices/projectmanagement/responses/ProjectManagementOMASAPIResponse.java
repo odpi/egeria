@@ -11,7 +11,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ProjectManagementOMASAPIResponse provides a common header for Project Management OMAS managed responses to its REST API.
+ * ProjectManagementOMASAPIResponse provides a common header for Project Management OMAS managed rest to its REST API.
  * It manages information about exceptions.  If no exception has been raised exceptionClassName is null.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)

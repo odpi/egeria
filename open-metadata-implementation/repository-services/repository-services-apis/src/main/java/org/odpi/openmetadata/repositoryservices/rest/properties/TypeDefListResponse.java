@@ -35,6 +35,8 @@ public class TypeDefListResponse extends OMRSAPIResponse
 
     /**
      * Copy/clone constructor
+     *
+     * @param template object to copy
      */
     public TypeDefListResponse(TypeDefListResponse   template)
     {

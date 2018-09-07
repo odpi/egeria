@@ -41,7 +41,7 @@ public class MapPropertyValue extends InstancePropertyValue
     {
         super(template);
 
-        if (template !=null)
+        if (template != null)
         {
             mapValues = template.getMapValues();
         }
@@ -86,7 +86,7 @@ public class MapPropertyValue extends InstancePropertyValue
     {
         if (mapValues == null)
         {
-            return mapValues;
+            return null;
         }
         else
         {

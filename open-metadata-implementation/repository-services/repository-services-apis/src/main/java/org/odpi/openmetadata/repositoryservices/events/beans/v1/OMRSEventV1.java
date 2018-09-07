@@ -57,7 +57,7 @@ public class OMRSEventV1 extends OMRSEventBean
     /**
      * Set up the timestamp for when the event was created.
      *
-     * @return date and time
+     * @param timestamp data/time for the event creation
      */
     public void setTimestamp(Date timestamp)
     {

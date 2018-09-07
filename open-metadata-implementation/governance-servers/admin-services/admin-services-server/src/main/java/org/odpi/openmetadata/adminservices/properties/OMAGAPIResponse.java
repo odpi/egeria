@@ -12,7 +12,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * OMAGAPIResponse provides a common header for OMAG managed responses to its REST API.
+ * OMAGAPIResponse provides a common header for OMAG managed rest to its REST API.
  * It manages information about exceptions.  If no exception has been raised exceptionClassName is null.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)

@@ -1151,6 +1151,7 @@ public interface OMRSRepositoryValidator
      *
      * @param matchProperties  the properties to match.
      * @param instanceHeader  the header properties from the instance.
+     * @param metadataCollectionId the identifier for the repository's metadata collection
      * @return integer count of the matching properties.
      */
     int countMatchingPropertyValues(InstanceProperties       matchProperties,

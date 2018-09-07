@@ -11,7 +11,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * DataPrivacyOMASAPIResponse provides a common header for Data Privacy OMAS managed responses to its REST API.
+ * DataPrivacyOMASAPIResponse provides a common header for Data Privacy OMAS managed rest to its REST API.
  * It manages information about exceptions.  If no exception has been raised exceptionClassName is null.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
