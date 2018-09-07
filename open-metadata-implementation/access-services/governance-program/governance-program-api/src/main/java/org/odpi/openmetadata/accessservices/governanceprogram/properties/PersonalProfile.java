@@ -16,8 +16,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * The PersonalProfile describes an individual who has (or will be) appointed to one of the
- * GovernanceResponsibilities defined in the governance program.  Information about the
- * personal profile is stored as an ActorProfile.
+ * GovernanceOfficer roles defined in the governance program.  Information about the
+ * personal profile is stored as an Person entity.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -26,8 +26,10 @@ public class PersonalProfile implements Serializable
 {
     private static final long          serialVersionUID = 1L;
 
+    private static final String        personalProfileTypeName = "Person";
+
     private String              guid                 = null;
-    private String              type                 = "Person";
+    private String              type                 = personalProfileTypeName;
     private String              employeeNumber       = null;
     private String              fullName             = null;
     private String              knownName            = null;

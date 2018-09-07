@@ -45,16 +45,18 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = LicenseType.class,       name = "LicenseType"),
                 @JsonSubTypes.Type(value = CertificationType.class, name = "CertificationType")
         })
-public abstract class GovernanceDefinition extends GovernanceDefinitionSummary
+public abstract class GovernanceDefinition extends GovernanceReferenceableHeader
 {
+    private String                           documentId           = null; /* qualifiedName */
+
+    private String                           summary              = null;
     private String                           description          = null;
     private String                           scope                = null;
     private GovernanceDefinitionStatus       status               = null;
     private String                           priority             = null;
     private List<String>                     implications         = null;
     private List<String>                     outcomes             = null;
-    private List<ExternalReference>          externalReferences   = null;
-    private Map<String, Object>              additionalProperties = null;
+
     private List<GovernanceDefinitionMetric> governanceMetrics    = null;
     private List<GovernanceZoneDefinition>   governanceZones      = null;
 
@@ -79,17 +81,64 @@ public abstract class GovernanceDefinition extends GovernanceDefinitionSummary
 
         if (template != null)
         {
+            this.documentId = template.getDocumentId();
+            this.summary = template.getSummary();
             this.description = template.getDescription();
             this.scope = template.getScope();
             this.status = template.getStatus();
             this.priority = template.getPriority();
             this.implications = template.getImplications();
             this.outcomes = template.getOutcomes();
-            this.externalReferences = template.getExternalReferences();
-            this.additionalProperties = template.getAdditionalProperties();
+
             this.governanceMetrics = template.getGovernanceMetrics();
             this.governanceZones = template.getGovernanceZones();
         }
+    }
+
+    /**
+     * Return the unique document Id for this governance definition.  This is human-readable/memorable
+     * value.
+     *
+     * @return String identifier
+     */
+    public String getDocumentId()
+    {
+        return documentId;
+    }
+
+
+    /**
+     * Set up the document Id for this governance definition.
+     *
+     * @param documentId String identifier
+     */
+    public void setDocumentId(String documentId)
+    {
+        this.documentId = documentId;
+    }
+
+
+    /**
+     * Return the summary for this governance definition. This should cover its essence.  Think of it as
+     * the executive summary.
+     *
+     * @return String short description
+     */
+    public String getSummary()
+    {
+        return summary;
+    }
+
+
+    /**
+     * Set up the summary of the governance definition.  This should cover its essence.  Think of it as
+     * the executive summary.
+     *
+     * @param summary String description
+     */
+    public void setSummary(String summary)
+    {
+        this.summary = summary;
     }
 
 
@@ -244,71 +293,6 @@ public abstract class GovernanceDefinition extends GovernanceDefinitionSummary
     }
 
 
-    /**
-     * Return the list of links to external documentation that are relevant to this governance definition.
-     *
-     * @return list of external references
-     */
-    public List<ExternalReference> getExternalReferences()
-    {
-        if (externalReferences == null)
-        {
-            return null;
-        }
-        else if (externalReferences.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return externalReferences;
-        }
-    }
-
-
-    /**
-     * Set up the list of links to external documentation that are relevant to this governance definition.
-     *
-     * @param externalReferences list of external references
-     */
-    public void setExternalReferences(List<ExternalReference> externalReferences)
-    {
-        this.externalReferences = externalReferences;
-    }
-
-
-    /**
-     * Return the map of properties that are not explicitly provided as properties on this bean.
-     *
-     * @return map from string to object.
-     */
-    public Map<String, Object> getAdditionalProperties()
-    {
-        if (additionalProperties == null)
-        {
-            return null;
-        }
-        else if (additionalProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(additionalProperties);
-        }
-    }
-
-
-    /**
-     * Set up the map of properties that are not explicitly provided as properties on this bean.
-     *
-     * @param additionalProperties map from string to object.
-     */
-    public void setAdditionalProperties(Map<String, Object> additionalProperties)
-    {
-        this.additionalProperties = additionalProperties;
-    }
-
 
     /**
      * Return the governance metrics that have been defined for this governance definition.
@@ -374,19 +358,19 @@ public abstract class GovernanceDefinition extends GovernanceDefinitionSummary
     public String toString()
     {
         return "GovernanceDefinition{" +
-                "description='" + description + '\'' +
+                "documentId='" + documentId + '\'' +
+                ", description='" + description + '\'' +
                 ", scope='" + scope + '\'' +
                 ", status=" + status +
                 ", priority='" + priority + '\'' +
                 ", implications=" + implications +
                 ", outcomes=" + outcomes +
-                ", externalReferences=" + externalReferences +
-                ", additionalProperties=" + additionalProperties +
                 ", governanceMetrics=" + governanceMetrics +
                 ", governanceZones=" + governanceZones +
+                ", externalReferences=" + getExternalReferences() +
+                ", additionalProperties=" + getAdditionalProperties() +
                 ", GUID='" + getGUID() + '\'' +
                 ", type='" + getType() + '\'' +
-                ", documentId='" + getDocumentId() + '\'' +
                 ", title='" + getTitle() + '\'' +
                 ", summary='" + getSummary() + '\'' +
                 '}';

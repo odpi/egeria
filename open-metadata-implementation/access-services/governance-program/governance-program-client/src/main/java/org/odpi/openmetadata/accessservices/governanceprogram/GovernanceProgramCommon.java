@@ -1,7 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservices.governanceprogram;
 
-
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.ExternalReference;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionStatus;
 
@@ -20,7 +19,7 @@ public interface GovernanceProgramCommon
     void assignExternalReferenceToGovernanceDefinition();
 
 
-    void setGovernanceDefinitionStatus(String    governanceDefinitionGUID,
+    void setGovernanceDefinitionStatus(String         governanceDefinitionGUID,
                                        GovernanceDefinitionStatus newStatus);
 
 

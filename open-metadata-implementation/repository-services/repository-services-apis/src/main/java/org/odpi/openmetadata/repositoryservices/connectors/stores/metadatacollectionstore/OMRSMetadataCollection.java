@@ -2137,7 +2137,8 @@ public abstract class OMRSMetadataCollection
      * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
      *                                  characteristics in the TypeDef for this relationship's type.
      * @throws EntityConflictException the new entity conflicts with an existing entity.
-     * @throws InvalidEntityException the new entity has invalid contents.* @throws RelationshipConflictException the new relationship conflicts with an existing relationship.
+     * @throws InvalidEntityException the new entity has invalid contents.
+     * @throws RelationshipConflictException the new relationship conflicts with an existing relationship.
      * @throws InvalidRelationshipException the new relationship has invalid contents.
      * @throws FunctionNotSupportedException the repository does not support reference copies of instances.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.

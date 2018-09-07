@@ -19,19 +19,20 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ExternalReference implements Serializable
 {
-    private static final long          serialVersionUID = 1L;
+    private static final long   serialVersionUID     = 1L;
 
     private String              guid                 = null;
+    private String              type                 = null;
     private List<String>        classifications      = null;
-    private String              localReferenceId     = null;
-    private Map<String, Object> additionalProperties = null;
     private String              externalReferenceId  = null;
-    private String              linkDescription      = null;
+    private String              localReferenceId     = null;
     private String              displayName          = null;
-    private String              uri                  = null;
+    private String              linkDescription      = null;
     private String              resourceDescription  = null;
+    private String              uri                  = null;
     private String              version              = null;
     private String              organization         = null;
+    private Map<String, Object> additionalProperties = null;
 
 
     /**
@@ -56,6 +57,7 @@ public class ExternalReference implements Serializable
              * Copy the values from the supplied template.
              */
             guid                 = template.getGUID();
+            type                 = template.getType();
             classifications      = template.getClassifications();
             localReferenceId     = template.getLocalReferenceId();
             additionalProperties = template.getAdditionalProperties();
@@ -92,6 +94,17 @@ public class ExternalReference implements Serializable
     }
 
 
+    public String getType()
+    {
+        return type;
+    }
+
+    public void setType(String type)
+    {
+        this.type = type;
+    }
+
+
     /**
      * Return the list of classifications associated with the external reference.
      *
@@ -125,19 +138,29 @@ public class ExternalReference implements Serializable
     }
 
 
+
+    /**
+     * Return the fully qualified name.
+     *
+     * @return String externalReferenceId
+     */
+    public String getExternalReferenceId() { return externalReferenceId; }
+
+
     /**
      * Set up the fully qualified name.
      *
-     * @param localReferenceId String name
+     * @param externalReferenceId String identifier
      */
-    public void setLocalReferenceId(String localReferenceId)
+    public void setExternalReferenceId(String externalReferenceId)
     {
-        this.localReferenceId = localReferenceId;
+        this.externalReferenceId = externalReferenceId;
     }
 
 
+
     /**
-     * Returns fully qualified name.
+     * Return the identifier given to this reference (with respect to this governance definition).
      *
      * @return localReferenceId
      */
@@ -148,73 +171,13 @@ public class ExternalReference implements Serializable
 
 
     /**
-     * Set up additional properties.
-     *
-     * @param additionalProperties Additional properties object
-     */
-    public void setAdditionalProperties(Map<String,Object> additionalProperties)
-    {
-        this.additionalProperties = additionalProperties;
-    }
-
-
-    /**
-     * Return a copy of the additional properties.  Null means no additional properties are available.
-     *
-     * @return AdditionalProperties
-     */
-    public Map<String,Object> getAdditionalProperties()
-    {
-        if (additionalProperties == null)
-        {
-            return null;
-        }
-        else if (additionalProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(additionalProperties);
-        }
-    }
-
-
-    /**
-     * Return the identifier given to this reference (with respect to this governance definition).
-     *
-     * @return String externalReferenceId
-     */
-    public String getExternalReferenceId() { return externalReferenceId; }
-
-
-    /**
      * Set up the identifier given to this reference (with respect to this governance definition).
      *
-     * @param externalReferenceId String identifier
+     * @param localReferenceId String name
      */
-    public void setExternalReferenceId(String externalReferenceId)
+    public void setLocalReferenceId(String localReferenceId)
     {
-        this.externalReferenceId = externalReferenceId;
-    }
-
-
-    /**
-     * Return the description of the reference (with respect to this governance definition).
-     *
-     * @return String link description.
-     */
-    public String getLinkDescription() { return linkDescription; }
-
-
-    /**
-     * Set up the description of the reference (with respect to the governance definition this reference is linked to).
-     *
-     * @param linkDescription String description
-     */
-    public void setLinkDescription(String linkDescription)
-    {
-        this.linkDescription = linkDescription;
+        this.localReferenceId = localReferenceId;
     }
 
 
@@ -238,6 +201,44 @@ public class ExternalReference implements Serializable
 
 
     /**
+     * Return the description of the reference (with respect to this governance definition).
+     *
+     * @return String link description.
+     */
+    public String getLinkDescription() { return linkDescription; }
+
+
+    /**
+     * Set up the description of the reference (with respect to the governance definition this reference is linked to).
+     *
+     * @param linkDescription String description
+     */
+    public void setLinkDescription(String linkDescription)
+    {
+        this.linkDescription = linkDescription;
+    }
+
+
+    /**
+     * Return the description of the resource that this external reference represents.
+     *
+     * @return String description
+     */
+    public String getResourceDescription() { return resourceDescription; }
+
+
+    /**
+     * Set up the description of the resource that this external reference represents.
+     *
+     * @param resourceDescription String description
+     */
+    public void setResourceDescription(String resourceDescription)
+    {
+        this.resourceDescription = resourceDescription;
+    }
+
+
+    /**
      * Return the URI used to retrieve the resource that this external reference represents.
      *
      * @return String URI
@@ -255,19 +256,6 @@ public class ExternalReference implements Serializable
         this.uri = uri;
     }
 
-
-    /**
-     * Return the description of the resource that this external reference represents.
-     *
-     * @return String resource description
-     */
-    public String getResourceDescription() { return resourceDescription; }
-
-
-    public void setResourceDescription(String resourceDescription)
-    {
-        this.resourceDescription = resourceDescription;
-    }
 
 
     /**
@@ -309,6 +297,39 @@ public class ExternalReference implements Serializable
 
 
     /**
+     * Set up additional properties.
+     *
+     * @param additionalProperties Additional properties object
+     */
+    public void setAdditionalProperties(Map<String,Object> additionalProperties)
+    {
+        this.additionalProperties = additionalProperties;
+    }
+
+
+    /**
+     * Return a copy of the additional properties.  Null means no additional properties are available.
+     *
+     * @return AdditionalProperties
+     */
+    public Map<String,Object> getAdditionalProperties()
+    {
+        if (additionalProperties == null)
+        {
+            return null;
+        }
+        else if (additionalProperties.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new HashMap<>(additionalProperties);
+        }
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -318,18 +339,18 @@ public class ExternalReference implements Serializable
     {
         return "ExternalReference{" +
                 "guid='" + guid + '\'' +
-                ", classifications=" + classifications +
-                ", localReferenceId='" + localReferenceId + '\'' +
-                ", additionalProperties=" + additionalProperties +
-                ", externalReferenceId='" + externalReferenceId + '\'' +
-                ", linkDescription='" + linkDescription + '\'' +
+                ", type=" + type +
                 ", displayName='" + displayName + '\'' +
+                ", externalReferenceId='" + externalReferenceId + '\'' +
+                ", localReferenceId='" + localReferenceId + '\'' +
+                ", URI='" + uri + '\'' +
+                ", classifications=" + classifications +
+                ", linkDescription='" + linkDescription + '\'' +
                 ", uri='" + uri + '\'' +
                 ", resourceDescription='" + resourceDescription + '\'' +
                 ", version='" + version + '\'' +
                 ", organization='" + organization + '\'' +
-                ", GUID='" + getGUID() + '\'' +
-                ", URI='" + getURI() + '\'' +
+                ", additionalProperties=" + additionalProperties +
                 '}';
     }
 
@@ -351,7 +372,8 @@ public class ExternalReference implements Serializable
             return false;
         }
         ExternalReference that = (ExternalReference) objectToCompare;
-        return Objects.equals(guid, that.guid) &&
+        return  Objects.equals(getGUID(), that.getGUID()) &&
+                Objects.equals(getType(), that.getType()) &&
                 Objects.equals(getClassifications(), that.getClassifications()) &&
                 Objects.equals(getLocalReferenceId(), that.getLocalReferenceId()) &&
                 Objects.equals(getAdditionalProperties(), that.getAdditionalProperties()) &&

@@ -15,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * defines its visibility to different types of queries.  Most queries by default will only return instances in the
  * active status.
  * <ul>
- *     <li><Unknown>: Unknown instance status.</li>
+ *     <li>Unknown: Unknown instance status.</li>
  *     <li>Draft: The content is incomplete.</li>
  *     <li>Proposed: The content is in review.</li>
  *     <li>Approved: The content is approved.</li>

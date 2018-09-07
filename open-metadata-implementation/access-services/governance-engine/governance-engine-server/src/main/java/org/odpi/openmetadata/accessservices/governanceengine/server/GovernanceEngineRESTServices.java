@@ -29,15 +29,15 @@ import java.util.List;
  * <p>
  * Governance engines such as Apache Ranger are interested in the classification of resources that they provide
  * access to. They are unlikely to be interested in all the nitty gritty properties of that resource, only knowing that
- * it is PI or SPI & perhaps masking or preventing access.
+ * it is PI or SPI and perhaps masking or preventing access.
  * <p>
  * They tend to use this information in two ways
- * > At policy authoring time - where knowing what tags are available is interesting to help in that definition process
- * > At data access time - where we need to know if resource X is protected in some way due to it's metadata ie classification
+ *  - At policy authoring time - where knowing what tags are available is interesting to help in that definition process
+ *  - At data access time - where we need to know if resource X is protected in some way due to it's metadata ie classification
  * <p>
  * Initially this OMAS client will provide information on those
- * > classifiers - we'll call them 'tags' here
- * > Managed assets - those resources - and in effect any tags associated with them. Details on the assets themselves are
+ *  - classifiers - we'll call them 'tags' here
+ *  - Managed assets - those resources - and in effect any tags associated with them. Details on the assets themselves are
  * better supported through the AssetConsumer OMAS API, and additionally the governance engine is not interested currently in HOW
  * the assets get classified - ie through the association of a classification directly to an asset, or via business terms,
  * so effectively flatten this
@@ -211,7 +211,7 @@ public class GovernanceEngineRESTServices {
      *
      * @param userId             - String - userId of user making request.
      * @param classification - this may be the qualifiedName or displayName of the connection.
-     * @param type
+     * @param type types to start query from
      * @return GovernedAssetComponentList or
      * InvalidParameterException - one of the parameters is null or invalid.
      * UnrecognizedConnectionNameException - there is no connection defined for this name.

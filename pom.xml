@@ -183,11 +183,13 @@
         </testResources>
 
         <plugins>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>${maven-javadoc-plugin.version}</version>
             </plugin>
+
             <!-- Validates maven & java versions -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -267,6 +269,11 @@
                             <notes></notes>
                             <patterns>
                                 <pattern>SPDX-License-Identifier: CC-BY-4.0</pattern>
+                            </patterns>
+                        </license>
+                        <license implementation="org.apache.rat.analysis.license.SimplePatternBasedLicense">
+                            <patterns>
+                                <pattern>Copyright Contributors to the Egeria project.</pattern>
                             </patterns>
                         </license>
                     </licenses>

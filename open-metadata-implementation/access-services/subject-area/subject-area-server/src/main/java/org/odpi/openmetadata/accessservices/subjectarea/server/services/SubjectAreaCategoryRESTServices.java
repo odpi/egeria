@@ -36,7 +36,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.generated.server.Subject
 //import org.odpi.openmetadata.accessservices.subjectarea.server.properties.category.Category;
 //import org.odpi.openmetadata.accessservices.subjectarea.server.properties.category.CategoryMapper;
 //import org.odpi.openmetadata.accessservices.subjectarea.server.properties.line.Line;
-//import org.odpi.openmetadata.accessservices.subjectarea.server.responses.*;
+//import org.odpi.openmetadata.accessservices.subjectarea.server.rest.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.slf4j.Logger;

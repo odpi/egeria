@@ -60,10 +60,10 @@ public enum AssetConsumerAuditCode
 
 
     /**
-     * The constructor for OMRSAuditCode expects to be passed one of the enumeration rows defined in
-     * OMRSAuditCode above.   For example:
+     * The constructor for AssetConsumerAuditCode expects to be passed one of the enumeration rows defined in
+     * AssetConsumerAuditCode above.   For example:
      *
-     *     OMRSAuditCode   auditCode = OMRSAuditCode.SERVER_NOT_AVAILABLE;
+     *     AssetConsumerAuditCode   auditCode = AssetConsumerAuditCode.SERVER_NOT_AVAILABLE;
      *
      * This will expand out to the 4 parameters shown below.
      *
@@ -118,7 +118,7 @@ public enum AssetConsumerAuditCode
     {
         if (log.isDebugEnabled())
         {
-            log.debug(String.format("<== OMRS Audit Code.getMessage(%s)", Arrays.toString(params)));
+            log.debug(String.format("<== AssetConsumer Audit Code.getMessage(%s)", Arrays.toString(params)));
         }
 
         MessageFormat mf = new MessageFormat(logMessage);
@@ -126,7 +126,7 @@ public enum AssetConsumerAuditCode
 
         if (log.isDebugEnabled())
         {
-            log.debug(String.format("==> OMRS Audit Code.getMessage(%s): %s", Arrays.toString(params), result));
+            log.debug(String.format("==> AssetConsumer Audit Code.getMessage(%s): %s", Arrays.toString(params), result));
         }
 
         return result;

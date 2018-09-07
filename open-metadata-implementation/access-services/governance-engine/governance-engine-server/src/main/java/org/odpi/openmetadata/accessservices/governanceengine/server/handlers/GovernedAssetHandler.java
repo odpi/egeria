@@ -46,6 +46,7 @@ public class GovernedAssetHandler {
      *
      * @param serviceName         - name of this service
      * @param repositoryConnector - connector to the property handlers.
+     * @throws MetadataServerException         - there is a problem retrieving information from the metadata server
      */
     public GovernedAssetHandler(String serviceName,
                                 OMRSRepositoryConnector repositoryConnector) throws MetadataServerException {
@@ -82,7 +83,7 @@ public class GovernedAssetHandler {
      * @throws InvalidParameterException       - one of the parameters is null or invalid.
      * @throws ClassificationNotFoundException - cannot find all the classifications specified
      * @throws TypeNotFoundException           - cannot find all the types specified
-     * @throws PropertyServerException         - there is a problem retrieving information from the metadata server
+     * @throws MetadataServerException         - there is a problem retrieving information from the metadata server
      * @throws UserNotAuthorizedException      - the requesting user is not authorized to issue this request.
      */
     public List<GovernedAsset> getGovernedAssets(String userId,

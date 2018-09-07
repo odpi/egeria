@@ -7,7 +7,11 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.*;
 
 /**
@@ -20,6 +24,9 @@ import java.util.*;
 public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 {
     private static OMRSRepositoryContentManager defaultRepositoryContentManager = null;
+
+    private static final Logger log = LoggerFactory.getLogger(OMRSRepositoryContentHelper.class);
+
 
     private OMRSRepositoryContentManager repositoryContentManager;
 
@@ -639,6 +646,7 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * @param organization name of the organization, null means any.
      * @param identifier identifier of the element in the standard, null means any.
      * @param methodName method receiving the call
+     * @return list of typeDefs
      */
     public  List<TypeDef> getMatchingActiveTypes(String sourceName,
                                                  String standard,
@@ -1583,21 +1591,27 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
         {
             InstancePropertyValue instancePropertyValue = properties.getPropertyValue(propertyName);
 
-            try
+            if (instancePropertyValue != null)
             {
-                if (instancePropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.PRIMITIVE)
+                try
                 {
-                    PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) instancePropertyValue;
-
-                    if (primitivePropertyValue.getPrimitiveDefCategory() == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING)
+                    if (instancePropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.PRIMITIVE)
                     {
-                        return primitivePropertyValue.getPrimitiveValue().toString();
+                        PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) instancePropertyValue;
+
+                        if (primitivePropertyValue.getPrimitiveDefCategory() == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING)
+                        {
+                            if (primitivePropertyValue.getPrimitiveValue() != null)
+                            {
+                                return primitivePropertyValue.getPrimitiveValue().toString();
+                            }
+                        }
                     }
                 }
-            }
-            catch (Throwable  error)
-            {
-                throwHelperLogicError(sourceName, methodName, thisMethodName);
+                catch (Throwable error)
+                {
+                    throwHelperLogicError(sourceName, methodName, thisMethodName);
+                }
             }
         }
 
@@ -1626,21 +1640,101 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
         {
             InstancePropertyValue instancePropertyValue = properties.getPropertyValue(propertyName);
 
-            try
+            if (instancePropertyValue != null)
             {
-                if (instancePropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.MAP)
+                try
                 {
-                    MapPropertyValue mapPropertyValue = (MapPropertyValue) instancePropertyValue;
+                    if (instancePropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.MAP)
+                    {
+                        MapPropertyValue mapPropertyValue = (MapPropertyValue) instancePropertyValue;
 
-                    return mapPropertyValue.getMapValues();
+                        log.debug("Retrieved map property " + propertyName);
+
+                        return mapPropertyValue.getMapValues();
+                    }
                 }
-            }
-            catch (Throwable  error)
-            {
-                throwHelperLogicError(sourceName, methodName, thisMethodName);
+                catch (Throwable error)
+                {
+                    throwHelperLogicError(sourceName, methodName, thisMethodName);
+                }
             }
         }
 
+        log.debug("Map property " + propertyName + " not present");
+        return null;
+    }
+
+
+    /**
+     * Return the requested property or null if property is not found.  If the property is not
+     * a string property then a logic exception is thrown
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested property
+     * @param properties properties from the instance.
+     * @param methodName method of caller
+     * @return string property value or null
+     */
+    public Map<String, Object> getMapFromProperty(String             sourceName,
+                                                  String             propertyName,
+                                                  InstanceProperties properties,
+                                                  String             methodName)
+    {
+        final String  thisMethodName = "getMapProperty";
+
+        if (properties != null)
+        {
+            InstancePropertyValue instancePropertyValue = properties.getPropertyValue(propertyName);
+
+            if (instancePropertyValue != null)
+            {
+                try
+                {
+                    if (instancePropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.MAP)
+                    {
+                        MapPropertyValue mapInstancePropertyValue = (MapPropertyValue) instancePropertyValue;
+
+                        log.debug("Retrieved map property " + propertyName);
+
+                        InstanceProperties wrappedMapValues = mapInstancePropertyValue.getMapValues();
+                        if (wrappedMapValues != null)
+                        {
+                            Map<String, InstancePropertyValue> instanceMapValues =
+                                    wrappedMapValues.getInstanceProperties();
+                            Map<String, Object>                resultingMap = new HashMap<>();
+
+                            for (String mapPropertyName : instanceMapValues.keySet())
+                            {
+                                InstancePropertyValue wrappedMapPropertyValue =
+                                        wrappedMapValues.getPropertyValue(mapPropertyName);
+
+                                if (wrappedMapPropertyValue != null)
+                                {
+                                    if (wrappedMapPropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.PRIMITIVE)
+                                    {
+                                        PrimitivePropertyValue primitivePropertyValue =
+                                                (PrimitivePropertyValue) wrappedMapPropertyValue;
+                                        resultingMap.put(mapPropertyName, primitivePropertyValue.getPrimitiveValue());
+                                    }
+                                    else
+                                    {
+                                        resultingMap.put(mapPropertyName, wrappedMapPropertyValue);
+                                    }
+                                }
+                            }
+
+                            return resultingMap;
+                        }
+                    }
+                }
+                catch (Throwable error)
+                {
+                    throwHelperLogicError(sourceName, methodName, thisMethodName);
+                }
+            }
+        }
+
+        log.debug("Map property " + propertyName + " not present");
         return null;
     }
 
@@ -1666,23 +1760,33 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
         {
             InstancePropertyValue instancePropertyValue = properties.getPropertyValue(propertyName);
 
-            try
+            if (instancePropertyValue != null)
             {
-                if (instancePropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.PRIMITIVE)
+                try
                 {
-                    PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) instancePropertyValue;
-
-                    if (primitivePropertyValue.getPrimitiveDefCategory() == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT)
+                    if (instancePropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.PRIMITIVE)
                     {
-                        return Integer.valueOf(primitivePropertyValue.getPrimitiveValue().toString());
+                        PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) instancePropertyValue;
+
+                        if (primitivePropertyValue.getPrimitiveDefCategory() == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT)
+                        {
+                            log.debug("Retrieved integer property " + propertyName);
+
+                            if (primitivePropertyValue.getPrimitiveValue() != null)
+                            {
+                                return Integer.valueOf(primitivePropertyValue.getPrimitiveValue().toString());
+                            }
+                        }
                     }
                 }
-            }
-            catch (Throwable  error)
-            {
-                throwHelperLogicError(sourceName, methodName, thisMethodName);
+                catch (Throwable error)
+                {
+                    throwHelperLogicError(sourceName, methodName, thisMethodName);
+                }
             }
         }
+
+        log.debug("Integer property " + propertyName + " not present");
 
         return 0;
     }
@@ -1709,23 +1813,33 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
         {
             InstancePropertyValue instancePropertyValue = properties.getPropertyValue(propertyName);
 
-            try
+            if (instancePropertyValue != null)
             {
-                if (instancePropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.PRIMITIVE)
+                try
                 {
-                    PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) instancePropertyValue;
-
-                    if (primitivePropertyValue.getPrimitiveDefCategory() == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN)
+                    if (instancePropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.PRIMITIVE)
                     {
-                        return Boolean.valueOf(primitivePropertyValue.getPrimitiveValue().toString());
+                        PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) instancePropertyValue;
+
+                        if (primitivePropertyValue.getPrimitiveDefCategory() == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN)
+                        {
+                            log.debug("Retrieved boolean property " + propertyName);
+
+                            if (primitivePropertyValue.getPrimitiveValue() != null)
+                            {
+                                return Boolean.valueOf(primitivePropertyValue.getPrimitiveValue().toString());
+                            }
+                        }
                     }
                 }
-            }
-            catch (Throwable  error)
-            {
-                throwHelperLogicError(sourceName, methodName, thisMethodName);
+                catch (Throwable error)
+                {
+                    throwHelperLogicError(sourceName, methodName, thisMethodName);
+                }
             }
         }
+
+        log.debug("Boolean property " + propertyName + " not present");
 
         return false;
     }
@@ -1750,24 +1864,36 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
     {
         InstanceProperties  resultingProperties;
 
-        if (properties == null)
+        if (propertyValue != null)
         {
-            resultingProperties = new InstanceProperties();
+            log.debug("Adding property " + propertyName + " for " + methodName);
+
+            if (properties == null)
+            {
+                log.debug("First property");
+
+                resultingProperties = new InstanceProperties();
+            }
+            else
+            {
+                resultingProperties = properties;
+            }
+
+
+            PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+
+            primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+            primitivePropertyValue.setPrimitiveValue(propertyValue);
+
+            resultingProperties.setProperty(propertyName, primitivePropertyValue);
+
+            return resultingProperties;
         }
         else
         {
-            resultingProperties = properties;
+            log.debug("Null property");
+            return properties;
         }
-
-
-        PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-
-        primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-        primitivePropertyValue.setPrimitiveValue(propertyValue);
-
-        resultingProperties.setProperty(propertyName, primitivePropertyValue);
-
-        return resultingProperties;
     }
 
 
@@ -1790,8 +1916,12 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
     {
         InstanceProperties  resultingProperties;
 
+        log.debug("Adding property " + propertyName + " for " + methodName);
+
         if (properties == null)
         {
+            log.debug("First property");
+
             resultingProperties = new InstanceProperties();
         }
         else
@@ -1830,8 +1960,12 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
     {
         InstanceProperties  resultingProperties;
 
+        log.debug("Adding property " + propertyName + " for " + methodName);
+
         if (properties == null)
         {
+            log.debug("First property");
+
             resultingProperties = new InstanceProperties();
         }
         else
@@ -1874,8 +2008,12 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
     {
         InstanceProperties  resultingProperties;
 
+        log.debug("Adding property " + propertyName + " for " + methodName);
+
         if (properties == null)
         {
+            log.debug("First property");
+
             resultingProperties = new InstanceProperties();
         }
         else
@@ -1893,6 +2031,179 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
         resultingProperties.setProperty(propertyName, enumPropertyValue);
 
         return resultingProperties;
+    }
+
+
+
+    /**
+     * Add the supplied property to an instance properties object.  If the instance property object
+     * supplied is null, a new instance properties object is created.
+     *
+     * @param sourceName name of caller
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param mapValues contents of the map
+     * @param methodName calling method name
+     * @return instance properties object.
+     */
+    public InstanceProperties addMapPropertyToInstance(String              sourceName,
+                                                       InstanceProperties  properties,
+                                                       String              propertyName,
+                                                       Map<String, Object> mapValues,
+                                                       String              methodName)
+    {
+        InstanceProperties  resultingProperties = null;
+
+        if (mapValues != null)
+        {
+        log.debug("Adding property " + propertyName + " for " + methodName);
+
+        if ((mapValues != null) && (! mapValues.isEmpty()))
+        {
+            if (properties == null)
+            {
+                resultingProperties = new InstanceProperties();
+            }
+            else
+            {
+                resultingProperties = properties;
+            }
+
+            InstanceProperties  mapInstanceProperties  = new InstanceProperties();
+            int                 propertyCount = 0;
+
+            for (String  mapPropertyName : mapValues.keySet())
+            {
+                Object   mapPropertyValue = mapValues.get(mapPropertyName);
+
+                if (mapPropertyValue instanceof String)
+                {
+                    PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+                    primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+                    primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
+                    mapInstanceProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                    propertyCount ++;
+                }
+                else if (mapPropertyValue instanceof Integer)
+                {
+                    PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+                    primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT);
+                    primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
+                    mapInstanceProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                    propertyCount ++;
+                }
+                else if (mapPropertyValue instanceof Long)
+                {
+                    PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+                    primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG);
+                    primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
+                    mapInstanceProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                    propertyCount ++;
+                }
+                else if (mapPropertyValue instanceof Short)
+                {
+                    PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+                    primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_SHORT);
+                    primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
+                    mapInstanceProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                    propertyCount ++;
+                }
+                else if (mapPropertyValue instanceof Date)
+                {
+                    PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+                    primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE);
+                    primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
+                    mapInstanceProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                    propertyCount ++;
+                }
+                else if (mapPropertyValue instanceof Character)
+                {
+                    PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+                    primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_CHAR);
+                    primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
+                    mapInstanceProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                    propertyCount ++;
+                }
+                else if (mapPropertyValue instanceof Byte)
+                {
+                    PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+                    primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BYTE);
+                    primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
+                    mapInstanceProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                    propertyCount ++;
+                }
+                else if (mapPropertyValue instanceof Boolean)
+                {
+                    PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+                    primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN);
+                    primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
+                    mapInstanceProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                    propertyCount ++;
+                }
+                else if (mapPropertyValue instanceof Float)
+                {
+                    PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+                    primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_FLOAT);
+                    primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
+                    mapInstanceProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                    propertyCount ++;
+                }
+                else if (mapPropertyValue instanceof BigDecimal)
+                {
+                    PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+                    primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGDECIMAL);
+                    primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
+                    mapInstanceProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                    propertyCount ++;
+                }
+                else if (mapPropertyValue instanceof BigInteger)
+                {
+                    PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+                    primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGINTEGER);
+                    primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
+                    mapInstanceProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                    propertyCount ++;
+                }
+                else if (mapPropertyValue instanceof Double)
+                {
+                    PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+                    primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DOUBLE);
+                    primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
+                    mapInstanceProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                    propertyCount ++;
+                }
+                else if (mapPropertyValue instanceof Map)
+                {
+                    MapPropertyValue mapProperty = new MapPropertyValue();
+                    mapProperty.setMapValues(this.addMapPropertyToInstance(sourceName, null, mapPropertyName, (Map)mapPropertyValue, methodName));
+                    mapInstanceProperties.setProperty(mapPropertyName, mapProperty);
+                    propertyCount ++;
+                }
+                else
+                {
+                    PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+                    primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_UNKNOWN);
+                    primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
+                    mapInstanceProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                    propertyCount ++;
+                }
+            }
+
+            if (propertyCount > 0)
+            {
+                MapPropertyValue mapPropertyValue = new MapPropertyValue();
+                mapPropertyValue.setMapValues(mapInstanceProperties);
+                resultingProperties.setProperty(propertyName, mapPropertyValue);
+            }
+        }
+
+        return resultingProperties;
+        }
+        else
+        {
+            log.debug("Null property");
+            return properties;
+        }
     }
 
 
