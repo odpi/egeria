@@ -2488,9 +2488,11 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                     return true;
                 }
             }
+
+            return false;
         }
 
-        return false;
+        return true;
     }
 
 
@@ -3137,6 +3139,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
      *
      * @param matchProperties  the properties to match.
      * @param instanceHeader  the header properties from the instance.
+     * @param metadataCollectionId the identifier for the repository's metadata collection
      * @return integer count of the matching properties.
      */
     public int countMatchingPropertyValues(InstanceProperties       matchProperties,

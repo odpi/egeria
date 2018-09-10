@@ -15,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GovernanceRelationship extends GovernanceDefinitionSummary
+public class GovernanceRelationship extends GovernanceHeader
 {
     private String rationale = null;
 
@@ -77,9 +77,7 @@ public class GovernanceRelationship extends GovernanceDefinitionSummary
                 "rationale='" + rationale + '\'' +
                 ", GUID='" + getGUID() + '\'' +
                 ", type='" + getType() + '\'' +
-                ", documentId='" + getDocumentId() + '\'' +
                 ", title='" + getTitle() + '\'' +
-                ", summary='" + getSummary() + '\'' +
                 '}';
     }
 

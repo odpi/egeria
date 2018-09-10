@@ -20,8 +20,20 @@
     </description>
 
     <artifactId>open-metadata-samples</artifactId>
+
     <packaging>pom</packaging>
     <modules>
-             <module>open-metadata-subject-area-client-samples</module>
+             <module>access-services-samples</module>
     </modules>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+
+    </dependencies>
+
 </project>

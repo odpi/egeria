@@ -40,6 +40,8 @@ public abstract class OMRSAPIPagedResponse extends OMRSAPIResponse
 
     /**
      * Copy/clone constructor
+     *
+     * @param template object to copy
      */
     public OMRSAPIPagedResponse(OMRSAPIPagedResponse template)
     {

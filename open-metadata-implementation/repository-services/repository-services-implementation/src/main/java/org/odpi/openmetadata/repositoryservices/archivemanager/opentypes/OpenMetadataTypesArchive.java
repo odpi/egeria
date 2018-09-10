@@ -3505,13 +3505,31 @@ public class OpenMetadataTypesArchive
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "karmaPoints";
-        final String attribute1Description     = "Points capturing a person's engagement with open metadata.";
+        final String attribute1Name            = "fullName";
+        final String attribute1Description     = "Full or official name of the individual (if different from known name.";
         final String attribute1DescriptionGUID = null;
 
-        property = archiveHelper.getIntTypeDefAttribute(attribute1Name,
-                                                        attribute1Description,
-                                                        attribute1DescriptionGUID);
+        final String attribute2Name            = "jobTitle";
+        final String attribute2Description     = "Role or level in the organization.";
+        final String attribute2DescriptionGUID = null;
+
+        final String attribute3Name            = "karmaPoints";
+        final String attribute3Description     = "Points capturing a person's engagement with open metadata.";
+        final String attribute3DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
+
+        property = archiveHelper.getIntTypeDefAttribute(attribute3Name,
+                                                        attribute3Description,
+                                                        attribute3DescriptionGUID);
         properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);
@@ -11942,15 +11960,15 @@ public class OpenMetadataTypesArchive
 
         elementDefs.add(elementDef);
 
-        final int    element9Ordinal         = 7;
-        final String element9Value           = "AssetManagement";
-        final String element9Description     = "The physical asset management governance domain.";
-        final String element9DescriptionGUID = null;
+        final int    element8Ordinal         = 7;
+        final String element8Value           = "AssetManagement";
+        final String element8Description     = "The physical asset management governance domain.";
+        final String element8DescriptionGUID = null;
 
-        elementDef = archiveHelper.getEnumElementDef(element9Ordinal,
-                                                     element9Value,
-                                                     element9Description,
-                                                     element9DescriptionGUID);
+        elementDef = archiveHelper.getEnumElementDef(element8Ordinal,
+                                                     element8Value,
+                                                     element8Description,
+                                                     element8DescriptionGUID);
 
         elementDefs.add(elementDef);
 
@@ -12168,7 +12186,7 @@ public class OpenMetadataTypesArchive
         final String                     end2AttributeName            = "personAppointed";
         final String                     end2AttributeDescription     = "The individual appointed as a governance officer.";
         final String                     end2AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
         relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
                                                                  end2AttributeName,
@@ -12191,7 +12209,7 @@ public class OpenMetadataTypesArchive
     private void add0405GovernanceDrivers()
     {
         this.archiveBuilder.addEntityDef(getGovernanceDriverEntity());
-        this.archiveBuilder.addEntityDef(getDataStrategyEntity());
+        this.archiveBuilder.addEntityDef(getGovernanceStrategyEntity());
         this.archiveBuilder.addEntityDef(getRegulationEntity());
     }
 
@@ -12213,11 +12231,11 @@ public class OpenMetadataTypesArchive
     }
 
 
-    private EntityDef getDataStrategyEntity()
+    private EntityDef getGovernanceStrategyEntity()
     {
         final String guid            = "3c34f121-07a6-4e95-a07d-9b0ef17b7bbf";
-        final String name            = "DataStrategy";
-        final String description     = "Defines how data and the supporting capabilities are supporting the business strategy.";
+        final String name            = "GovernanceStrategy";
+        final String description     = "Defines how the governance program and the supporting capabilities are supporting the business strategy.";
         final String descriptionGUID = null;
 
         final String superTypeName = "GovernanceDriver";

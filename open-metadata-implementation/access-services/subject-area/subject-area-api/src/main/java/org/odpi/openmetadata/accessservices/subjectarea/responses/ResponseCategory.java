@@ -2,11 +2,11 @@
 package org.odpi.openmetadata.accessservices.subjectarea.responses;
 
 /**
- * Types of responses
+ * Types of rest
  */
 public enum ResponseCategory {
     Unknown,
-    // valid responses
+    // valid rest
     Void,
     PossibleClassifications,
     PossibleRelationships,

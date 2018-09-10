@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>open-metadata-samples</artifactId>
+        <groupId>org.odpi.egeria</groupId>
+        <version>0.1-SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <name>Access Services Samples</name>
+    <description>
+        Samples showing how to call the Open Metadata Access Services (OMASs) clients.
+    </description>
+
+    <artifactId>access-services-samples</artifactId>
+
+    <packaging>pom</packaging>
+    <modules>
+        <module>governance-program-client-samples</module>
+        <module>subject-area-client-samples</module>
+    </modules>
+
+</project>

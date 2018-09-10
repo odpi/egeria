@@ -235,7 +235,6 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
      * Send the registry event to the OMRS Topic connector and manage errors
      *
      * @param registryEvent  properties of the event to send
-     * @return boolean flag to report if the call succeeded or not.
      * @throws ConnectorCheckedException the connector is not able to communicate with the event bus
      */
     public void sendRegistryEvent(OMRSRegistryEvent registryEvent) throws ConnectorCheckedException
@@ -267,7 +266,6 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
      * Send the TypeDef event to the OMRS Topic connector (providing TypeDef Events are enabled).
      *
      * @param typeDefEvent  properties of the event to send
-     * @return boolean flag to report if the call succeeded or not.
      * @throws ConnectorCheckedException the connector is not able to communicate with the event bus
      */
     public void sendTypeDefEvent(OMRSTypeDefEvent typeDefEvent) throws ConnectorCheckedException
@@ -300,7 +298,6 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
      * event is of the permitted type.
      *
      * @param instanceEvent  properties of the event to send
-     * @return boolean flag to report if the call succeeded or not.
      * @throws ConnectorCheckedException the connector is not able to communicate with the event bus
      */
     public void sendInstanceEvent(OMRSInstanceEvent instanceEvent) throws ConnectorCheckedException

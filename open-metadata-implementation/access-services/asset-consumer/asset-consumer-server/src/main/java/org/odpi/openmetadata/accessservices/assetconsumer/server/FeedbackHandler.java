@@ -330,7 +330,7 @@ public class FeedbackHandler
 
 
     /**
-     * Set up a property value for the StartRating enum property.
+     * Set up a property value for the StarRating enum property.
      *
      * @param properties - current properties
      * @param starRating - enum value

@@ -22,8 +22,6 @@
 
     <artifactId>open-metadata-compliance-suite</artifactId>
 
-    <packaging>pom</packaging>
-
     <dependencies>
 
         <!-- File I/O processing -->
@@ -38,6 +36,12 @@
             <groupId>commons-collections</groupId>
             <artifactId>commons-collections</artifactId>
             <version>${commons-collections.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${slf4j.version}</version>
         </dependency>
 
         <!-- REST Repository Connector -->

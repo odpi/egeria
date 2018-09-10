@@ -25,7 +25,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * SubjectAreaOMASAPIResponse provides a common header for Asset Consumer OMAS managed responses to its REST API.
+ * SubjectAreaOMASAPIResponse provides a common header for Asset Consumer OMAS managed rest to its REST API.
  * It manages information about exceptions.  If no exception has been raised exceptionClassName is null.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -42,7 +42,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = VoidResponse.class, name = "VoidResponse"),
                 @JsonSubTypes.Type(value = ProjectResponse.class, name = "ProjectResponse"),
                 /*
-                 Exception responses - note that each excpetion has the same 4 Exception orientated fields.
+                 Exception rest - note that each excpetion has the same 4 Exception orientated fields.
                  Ideally these should be in a superclass. Due to restrictions in the @JsonSubTypes processing it  is only possible to have
                  one level of inheritance at this time.
                  */

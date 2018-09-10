@@ -167,6 +167,7 @@ public interface OMRSRepositoryHelper
      * @param organization name of the organization, null means any.
      * @param identifier identifier of the element in the standard, null means any.
      * @param methodName method receiving the call
+     * @return list of typeDefs
      */
     List<TypeDef> getMatchingActiveTypes(String sourceName,
                                          String standard,
@@ -488,7 +489,7 @@ public interface OMRSRepositoryHelper
 
     /**
      * Return the requested property or null if property is not found.  If the property is not
-     * a string property then a logic exception is thrown
+     * a map property then a logic exception is thrown
      *
      * @param sourceName  source of call
      * @param propertyName  name of requested property
@@ -500,6 +501,23 @@ public interface OMRSRepositoryHelper
                                       String             propertyName,
                                       InstanceProperties properties,
                                       String             methodName);
+
+
+
+    /**
+     * Return the requested property or null if property is not found.  If the property is not
+     * a map property then a logic exception is thrown.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested property
+     * @param properties properties from the instance.
+     * @param methodName method of caller
+     * @return string property value or null
+     */
+    Map<String, Object> getMapFromProperty(String             sourceName,
+                                           String             propertyName,
+                                           InstanceProperties properties,
+                                           String             methodName);
 
 
     /**
@@ -608,4 +626,21 @@ public interface OMRSRepositoryHelper
                                                  String             symbolicName,
                                                  String             description,
                                                  String             methodName);
+
+    /**
+     * Add the supplied property to an instance properties object.  If the instance property object
+     * supplied is null, a new instance properties object is created.
+     *
+     * @param sourceName name of caller
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param mapValues contents of the map
+     * @param methodName calling method name
+     * @return instance properties object.
+     */
+    InstanceProperties addMapPropertyToInstance(String              sourceName,
+                                                InstanceProperties  properties,
+                                                String              propertyName,
+                                                Map<String, Object> mapValues,
+                                                String              methodName);
 }

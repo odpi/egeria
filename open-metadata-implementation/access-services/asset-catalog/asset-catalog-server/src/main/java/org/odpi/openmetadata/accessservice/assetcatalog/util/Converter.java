@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static org.odpi.openmetadata.accessservice.assetcatalog.util.Constants.QUALIFIED_NAME;
+import static org.odpi.openmetadata.accessservice.assetcatalog.util.Constants.NAME;
 
 public class Converter {
 
@@ -44,7 +44,7 @@ public class Converter {
         AssetDescription assetDescription = new AssetDescription();
         assetDescription.setGUID(entityDetail.getGUID());
         assetDescription.setMetadataCollectionId(entityDetail.getMetadataCollectionId());
-        assetDescription.setDisplayName((String) getPropertyValue(entityDetail.getProperties(), QUALIFIED_NAME));
+        assetDescription.setDisplayName((String) getPropertyValue(entityDetail.getProperties(), NAME));
 
         assetDescription.setCreatedBy(entityDetail.getCreatedBy());
         assetDescription.setCreateTime(entityDetail.getCreateTime());
@@ -109,9 +109,6 @@ public class Converter {
 
         relationship.setTypeDefName(rel.getType().getTypeDefName());
         relationship.setTypeDefDescription(rel.getType().getTypeDefDescription());
-
-        relationship.setFromEntityPropertyName(rel.getEntityOnePropertyName());
-        relationship.setToEntityPropertyName(rel.getEntityTwoPropertyName());
 
         relationship.setFromEntity(getAsset(rel.getEntityOneProxy()));
         relationship.setToEntity(getAsset(rel.getEntityTwoProxy()));
@@ -200,6 +197,9 @@ public class Converter {
         Asset asset = new Asset();
 
         asset.setGUID(entityProxy.getGUID());
+        if (entityProxy.getUniqueProperties() != null) {
+            asset.setName((String) getPropertyValue(entityProxy.getUniqueProperties(), NAME));
+        }
         asset.setMetadataCollectionId(entityProxy.getMetadataCollectionId());
         asset.setCreatedBy(entityProxy.getCreatedBy());
         asset.setCreateTime(entityProxy.getCreateTime());

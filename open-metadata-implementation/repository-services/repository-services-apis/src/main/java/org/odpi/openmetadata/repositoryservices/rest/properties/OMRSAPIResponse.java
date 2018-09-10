@@ -12,7 +12,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * OMRSRESTAPIResponse provides a common header for OMRS managed responses to the OMRS REST API.   It manages
+ * OMRSRESTAPIResponse provides a common header for OMRS managed rest to the OMRS REST API.   It manages
  * information about OMRS exceptions.  If no exception has been raised exceptionClassName is null.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)

@@ -13,13 +13,13 @@ import java.util.List;
  * asset and classification information in a suitable form for implementing policies
  *
  * This OMAS is mostly concerned with:
- *   -> A Classification Definition - this tells us what the classification type is, what parms it may have - and can be useful
+ *   - A Classification Definition - this tells us what the classification type is, what parms it may have - and can be useful
  *      for authoring and validation
- *   -> An asset , or part (hence we call it an asset component) that has a classification
+ *   - An asset , or part (hence we call it an asset component) that has a classification
  *
  *   Furthermore in order to scope queries we restrict by
- *   -> root classification - the node in the classification tree of where we are interested (for example all governance classifications)
- *   -> root type           - the base type that we are interested in
+ *   - root classification - the node in the classification tree of where we are interested (for example all governance classifications)
+ *   - root type           - the base type that we are interested in
  */
 
 //TODO Propose to extend the rootType to a list so we could get multiple types of asset(components) in a single call

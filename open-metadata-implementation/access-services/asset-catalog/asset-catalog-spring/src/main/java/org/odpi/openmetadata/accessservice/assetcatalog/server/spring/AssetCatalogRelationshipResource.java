@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservice.assetcatalog.server.spring;
 
 import org.odpi.openmetadata.accessservice.assetcatalog.model.SequenceOrderType;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.Status;
-import org.odpi.openmetadata.accessservice.assetcatalog.model.responses.RelationshipsResponse;
+import org.odpi.openmetadata.accessservice.assetcatalog.responses.RelationshipsResponse;
 import org.odpi.openmetadata.accessservice.assetcatalog.service.AssetCatalogRelationshipService;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

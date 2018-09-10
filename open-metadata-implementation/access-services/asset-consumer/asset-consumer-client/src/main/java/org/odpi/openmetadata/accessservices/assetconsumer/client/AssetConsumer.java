@@ -1020,12 +1020,12 @@ public class AssetConsumer implements AssetConsumerInterface
 
 
     /**
-     * Issue a PATCH REST call that returns a TypeDefResponse object.
+     * Issue a POST REST call that returns a guid object.
      *
      * @param methodName  name of the method being called
      * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
      * @param params  a list of parameters that are slotted into the url template
-     * @return TypeDefResponse
+     * @return GUIDResponse
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
     private GUIDResponse callGUIDPOSTRESTCall(String    methodName,

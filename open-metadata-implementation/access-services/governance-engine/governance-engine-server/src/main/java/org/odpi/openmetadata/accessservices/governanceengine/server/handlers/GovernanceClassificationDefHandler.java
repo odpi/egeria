@@ -33,6 +33,7 @@ public class GovernanceClassificationDefHandler {
      *
      * @param serviceName         - name of this service
      * @param repositoryConnector - connector to the metadata repository connector
+     * @throws MetadataServerException problem communicating with the repository
      */
     public GovernanceClassificationDefHandler(String serviceName,
                                               OMRSRepositoryConnector repositoryConnector) throws MetadataServerException {

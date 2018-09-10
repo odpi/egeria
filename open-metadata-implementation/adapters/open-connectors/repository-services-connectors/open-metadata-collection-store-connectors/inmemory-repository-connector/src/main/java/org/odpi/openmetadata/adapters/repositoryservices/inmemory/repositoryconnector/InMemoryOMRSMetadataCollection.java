@@ -1783,7 +1783,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
         {
             if (entity != null)
             {
-                if ((repositoryValidator.verifyInstanceType(entityTypeGUID, entity)) &&
+                if ((entity.getStatus() != InstanceStatus.DELETED) &&
+                    (repositoryValidator.verifyInstanceType(entityTypeGUID, entity)) &&
                     (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, entity)) &&
                     (repositoryValidator.verifyEntityIsClassified(limitResultsByClassification, entity)) &&
                     (repositoryValidator.verifyMatchingInstancePropertyValues(matchProperties,
@@ -1922,7 +1923,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
                 List<String>     classificationList = new ArrayList<>();
                 classificationList.add(classificationName);
 
-                if ((repositoryValidator.verifyInstanceType(entityTypeGUID, entity)) &&
+                if ((entity.getStatusOnDelete() != InstanceStatus.DELETED) &&
+                    (repositoryValidator.verifyInstanceType(entityTypeGUID, entity)) &&
                     (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, entity)) &&
                     (repositoryValidator.verifyEntityIsClassified(classificationList, entity)))
                 {
@@ -2041,7 +2043,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
         {
             if (entity != null)
             {
-                if ((repositoryValidator.verifyInstanceType(entityTypeGUID, entity)) &&
+                if ((entity.getStatus() == InstanceStatus.DELETED) &&
+                    (repositoryValidator.verifyInstanceType(entityTypeGUID, entity)) &&
                     (repositoryValidator.verifyInstancePropertiesMatchSearchCriteria(repositoryName,
                                                                                     entity.getProperties(),
                                                                                     searchCriteria,
@@ -2266,7 +2269,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
         {
             if (relationship != null)
             {
-                if ((repositoryValidator.verifyInstanceType(relationshipTypeGUID, relationship)) &&
+                if ((relationship.getStatus() == InstanceStatus.DELETED) &&
+                    (repositoryValidator.verifyInstanceType(relationshipTypeGUID, relationship)) &&
                     (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, relationship)) &&
                     (repositoryValidator.verifyMatchingInstancePropertyValues(matchProperties,
                                                                               relationship.getMetadataCollectionId(),
@@ -2362,7 +2366,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
         {
             if (relationship != null)
             {
-                if ((repositoryValidator.verifyInstanceType(relationshipTypeGUID, relationship)) &&
+                if ((relationship.getStatus() == InstanceStatus.DELETED) &&
+                    (repositoryValidator.verifyInstanceType(relationshipTypeGUID, relationship)) &&
                     (repositoryValidator.verifyInstancePropertiesMatchSearchCriteria(repositoryName,
                                                                                      relationship.getProperties(),
                                                                                      searchCriteria,
@@ -3055,6 +3060,46 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
         repositoryValidator.validateInstanceStatusForDelete(repositoryName, entity, methodName);
 
         /*
+         * Locate/delete relationships for entity
+         */
+        try
+        {
+            List<Relationship> relationships = this.getRelationshipsForEntity(userId,
+                                                                              obsoleteEntityGUID,
+                                                                              null,
+                                                                              0,
+                                                                              null,
+                                                                              null,
+                                                                              null,
+                                                                              null,
+                                                                              10000);
+
+
+            if (relationships != null)
+            {
+                for (Relationship relationship : relationships)
+                {
+                    if (relationship != null)
+                    {
+                        InstanceType type = relationship.getType();
+                        if (type != null)
+                        {
+                            this.deleteRelationship(userId,
+                                                    type.getTypeDefGUID(),
+                                                    type.getTypeDefName(),
+                                                    relationship.getGUID());
+                        }
+                    }
+                }
+            }
+        }
+        catch (Throwable  error)
+        {
+            // nothing to do - keep going
+        }
+
+
+        /*
          * A delete is a soft-delete that updates the status to DELETED.
          */
         EntityDetail   updatedEntity = new EntityDetail(entity);
@@ -3135,6 +3180,38 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
 
         repositoryValidator.validateEntityIsDeleted(repositoryName, entity, methodName);
 
+
+        /*
+         * Locate/purge relationships for entity
+         */
+        try
+        {
+            List<Relationship> relationships = this.getRelationshipsForEntity(userId,
+                                                                              deletedEntityGUID,
+                                                                              null,
+                                                                              0,
+                                                                              null,
+                                                                              null,
+                                                                              null,
+                                                                              null,
+                                                                              10000);
+
+
+            if (relationships != null)
+            {
+                for (Relationship relationship : relationships)
+                {
+                    if (relationship != null)
+                    {
+                        repositoryStore.removeRelationshipFromStore(relationship);
+                    }
+                }
+            }
+        }
+        catch (Throwable  error)
+        {
+            // nothing to do - keep going
+        }
 
         /*
          * Validation is complete - ok to remove the entity
@@ -3589,7 +3666,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
 
         repositoryValidator.validateEntityFromStore(repositoryName, entityOneGUID, entityOne, methodName);
         repositoryValidator.validateEntityIsNotDeleted(repositoryName, entityOne, methodName);
-
 
         EntityProxy   entityTwo = repositoryStore.getEntityProxy(entityTwoGUID);
 

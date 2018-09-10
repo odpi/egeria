@@ -47,7 +47,7 @@ public class SubjectAreaOMASGlossaryResource extends SubjectAreaRESTServices{
      * @param userId  userId under which the request is performed
      * @param suppliedGlossary
      * @return response, when successful contains the created glossary.
-     *  when not successful the following Exception responses can occur
+     *  when not successful the following Exception rest can occur
      * @throws UserNotAuthorizedException  the requesting user is not authorized to issue this request.
      * @throws MetadataServerUncontactableException  not able to communicate with a Metadata respository service.
      * @throws InvalidParameterException  one of the parameters is null or invalid.

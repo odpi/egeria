@@ -10,7 +10,7 @@ import org.odpi.openmetadata.accessservice.assetcatalog.model.Database;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.Endpoint;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.Schema;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.Table;
-import org.odpi.openmetadata.accessservice.assetcatalog.model.responses.AssetDescriptionResponse;
+import org.odpi.openmetadata.accessservice.assetcatalog.responses.AssetDescriptionResponse;
 import org.odpi.openmetadata.accessservice.assetcatalog.util.Converter;
 import org.odpi.openmetadata.adminservices.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
@@ -141,8 +141,10 @@ public class OMASCatalogRESTServices {
 
                     for (Relationship relationship : relationshipsToColumn) {
                         final EntityDetail relationalColumn = getThePairEntity(userId, entityDetail.getGUID(), relationship);
-                        Connection connection = getConnectionToAsset(userId, relationalColumn);
-                        connections.add(connection);
+                        if(relationalColumn != null) {
+                            Connection connection = getConnectionToAsset(userId, relationalColumn);
+                            connections.add(connection);
+                        }
                     }
                 }
             }
@@ -270,7 +272,9 @@ public class OMASCatalogRESTServices {
                 if (relationshipsToTables != null && !relationshipsToTables.isEmpty()) {
                     final EntityDetail relationalTable = getThePairEntity(userId, relationalTableType.getGUID(), relationshipsToTables.get(0));
                     //this is the RelationalTable
-                    processRelationalTable(userId, connection, table, relationalTable);
+                    if (relationalTable != null) {
+                        processRelationalTable(userId, connection, table, relationalTable);
+                    }
                 }
             }
         }
@@ -297,7 +301,8 @@ public class OMASCatalogRESTServices {
     }
 
     private void processRelationalTable(String userId, Connection connection, Table table, EntityDetail relationalTable) {
-        table.setName(getPropertyValue(relationalTable.getProperties(), QUALIFIED_NAME));
+        table.setName(getPropertyValue(relationalTable.getProperties(), NAME));
+        table.setGuid(relationalTable.getGUID());
         connection.setTable(table);
 
         //db schema type
@@ -312,7 +317,7 @@ public class OMASCatalogRESTServices {
                 if (relationshipsToDeployedDBSchema != null && !relationshipsToDeployedDBSchema.isEmpty()) {
                     final EntityDetail deployedDbSchema = getThePairEntity(userId, relationalDbSchemaType.getGUID(), relationshipsToDeployedDBSchema.get(0));
                     if (deployedDbSchema != null && deployedDbSchema.getProperties() != null) {
-                        schema.setDeployedDbSchemaName(getPropertyValue(deployedDbSchema.getProperties(), QUALIFIED_NAME));
+                        schema.setDeployedDbSchemaName(getPropertyValue(deployedDbSchema.getProperties(), NAME));
 
                         //data store
                         final List<Relationship> relationshipsToDataStore = getRelationshipByType(userId, deployedDbSchema.getGUID(), DATA_CONTENT_FOR_DATA_SET);
@@ -340,8 +345,9 @@ public class OMASCatalogRESTServices {
             final EntityDetail connectionEntity = getThePairEntity(userId, dataStore.getGUID(), relationshipsToConnection.get(0));
             InstanceProperties properties;
             if (connectionEntity != null && (properties = connectionEntity.getProperties()) != null) {
-                connection.setDisplayName(getPropertyValue(properties, QUALIFIED_NAME));
+                connection.setDisplayName(getPropertyValue(properties, NAME));
                 connection.setDescription(getPropertyValue(properties, DESCRIPTION));
+                connection.setGuid(connectionEntity.getGUID());
                 getConnectorType(userId, connection, connectionEntity);
                 buildEndpoint(userId, connection, connectionEntity);
             }
@@ -350,8 +356,11 @@ public class OMASCatalogRESTServices {
 
     private Column getColumn(String userId, EntityDetail relationalColumn) {
         Column column = new Column();
-        column.setName(getPropertyValue(relationalColumn.getProperties(), QUALIFIED_NAME));
+
+        column.setName(getPropertyValue(relationalColumn.getProperties(), NAME));
         column.setType(getColumnType(userId, relationalColumn));
+        column.setGuid(relationalColumn.getGUID());
+
         return column;
     }
 
@@ -360,8 +369,10 @@ public class OMASCatalogRESTServices {
 
         if (relationshipsToEndpoint != null && !relationshipsToEndpoint.isEmpty()) {
             final EntityDetail endpointEntity = getThePairEntity(userId, connectionEntity.getGUID(), relationshipsToEndpoint.get(0));
-            Endpoint endpoint = getEndpoint(endpointEntity);
-            connection.setEndpoint(endpoint);
+            if (endpointEntity != null) {
+                Endpoint endpoint = getEndpoint(endpointEntity);
+                connection.setEndpoint(endpoint);
+            }
         }
     }
 
@@ -372,7 +383,7 @@ public class OMASCatalogRESTServices {
             final EntityDetail connectorType = getThePairEntity(userId, connectionEntity.getGUID(), relationshipsToConnectorType.get(0));
             InstanceProperties properties;
             if (connectorType != null && (properties = connectorType.getProperties()) != null) {
-                connection.setConnectorName(getPropertyValue(properties, QUALIFIED_NAME));
+                connection.setConnectorName(getPropertyValue(properties, NAME));
                 connection.setConnectorDescription(getPropertyValue(properties, DESCRIPTION));
                 connection.setConnectorProvider(getPropertyValue(properties, CONNECTOR_PROVIDER_CLASS_NAME));
             }
@@ -392,6 +403,7 @@ public class OMASCatalogRESTServices {
     private void getTableTypeAttributes(Table table, EntityDetail relationalTableType) {
         InstanceProperties properties = relationalTableType.getProperties();
 
+        table.setGuid(relationalTableType.getGUID());
         table.setTypeName(getPropertyValue(properties, DISPLAY_NAME));
         table.setOwner(getPropertyValue(properties, OWNER));
         table.setTypeUsage(getPropertyValue(properties, USAGE));
@@ -403,6 +415,8 @@ public class OMASCatalogRESTServices {
         InstanceProperties properties = entityDb.getProperties();
 
         Schema schema = new Schema();
+
+        schema.setGuid(entityDb.getGUID());
         schema.setAuthor(getPropertyValue(properties, AUTHOR));
         schema.setName(getPropertyValue(properties, DISPLAY_NAME));
         schema.setEncodingStandard(getPropertyValue(properties, ENCODING_STANDARD));
@@ -414,7 +428,8 @@ public class OMASCatalogRESTServices {
         InstanceProperties properties = databaseEntity.getProperties();
 
         Database database = new Database();
-        database.setName(getPropertyValue(properties, QUALIFIED_NAME));
+        database.setGuid(databaseEntity.getGUID());
+        database.setName(getPropertyValue(properties, NAME));
         database.setDescription(getPropertyValue(properties, DESCRIPTION));
         database.setOwner(getPropertyValue(properties, OWNER));
         database.setType(getPropertyValue(properties, TYPE));
@@ -426,7 +441,8 @@ public class OMASCatalogRESTServices {
         InstanceProperties properties = endpointEntity.getProperties();
 
         Endpoint endpoint = new Endpoint();
-        endpoint.setName(getPropertyValue(properties, QUALIFIED_NAME));
+        endpoint.setGuid(endpointEntity.getGUID());
+        endpoint.setName(getPropertyValue(properties, NAME));
         endpoint.setDescription(getPropertyValue(properties, DESCRIPTION));
         endpoint.setNetworkAddress(getPropertyValue(properties, NETWORK_ADDRESS));
         endpoint.setProtocol(getPropertyValue(properties, PROTOCOL));
