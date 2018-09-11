@@ -2,26 +2,38 @@
 package org.odpi.openmetadata.virtualdataconnector.igc.connectors.eventmapper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryeventmapper.OMRSRepositoryEventMapperBase;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ClassificationOrigin;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryeventmapper.OMRSRepositoryEventMapperBase;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 import org.odpi.openmetadata.virtualdataconnector.igc.connectors.eventmapper.jackson.IGCKafkaEvent;
+import org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconnector.IGCOMRSRepositoryConnector;
 import org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconnector.jackson.IGCObject;
 import org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconnector.jackson.Item;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconnector.IGCOMRSRepositoryConnector;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 
 
 /**
@@ -134,7 +146,6 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         IGCObject igcSchema = igcomrsRepositoryConnector.genericIGCQuery(igcTable.getContext().get(2).getId());
 
         IGCObject igcEndpoint = igcomrsRepositoryConnector.genericIGCQuery(igcTable.getContext().get(0).getId());
-        ;
 
         createEntity(igcDatabase, "Database", false);
         createEntity(igcEndpoint, "Endpoint", false);
@@ -261,6 +272,12 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                                     "GlossaryCategory",
                                     igcObject.getId(),
                                     "GlossaryTerm");
+                        }
+                    } else if (igcKafkaEvent.getACTION().equals("MODIFY")) {
+                        if (igcObject.getRelatedTerms() != null && igcObject.getRelatedTerms().getItems() != null) {
+                            for (Item item : igcObject.getRelatedTerms().getItems()) {
+                                createClassification(igcObject, "Confidentiality", item);
+                            }
                         }
                     }
                     break;
@@ -399,6 +416,85 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         );
         entityProxy.setStatus(InstanceStatus.ACTIVE);
         return entityProxy;
+    }
+
+    private void createClassification(IGCObject igcObject, String classificationTypeName, Item item) throws TypeErrorException {
+
+        String entityType = "GlossaryTerm";
+        String methodName = "createClassification";
+
+        Classification classification = repositoryHelper.getNewClassification(
+                sourceName,
+                null,
+                classificationTypeName,
+                entityType,
+                ClassificationOrigin.PROPAGATED,
+                null,
+                null);
+
+        InstanceProperties classificationProperties = getClassificationProperties(item.getName());
+        classification.setProperties(classificationProperties);
+
+        EntityDetail skeletonEntity = repositoryHelper.getSkeletonEntity(sourceName,
+                metadataCollectionId,
+                InstanceProvenanceType.LOCAL_COHORT,
+                null,
+                entityType);
+        skeletonEntity.setGUID(igcObject.getId());
+
+        InstanceProperties instanceProperties = getInstanceProperties(igcObject, entityType);
+        skeletonEntity.setProperties(instanceProperties);
+
+        EntityDetail entity = repositoryHelper.addClassificationToEntity(
+                sourceName,
+                skeletonEntity,
+                classification,
+                methodName);
+
+        repositoryEventProcessor.processClassifiedEntityEvent(
+                sourceName,
+                metadataCollectionId,
+                originatorServerName,
+                originatorServerType,
+                originatorOrganizationName,
+                entity);
+    }
+
+    private InstanceProperties getClassificationProperties(String name) {
+        Map<String, InstancePropertyValue> properties = new HashMap<>();
+
+        EnumPropertyValue classificationLevel = new EnumPropertyValue();
+        classificationLevel.setSymbolicName(name);
+        properties.put("level", classificationLevel);
+
+        PrimitivePropertyValue source = new PrimitivePropertyValue();
+        source.setPrimitiveValue(sourceName);
+        source.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+        properties.put("source", source);
+
+
+        EnumPropertyValue status = new EnumPropertyValue();
+        status.setSymbolicName("Imported");
+        properties.put("status", status);
+
+        InstanceProperties instanceProperties = new InstanceProperties();
+        instanceProperties.setInstanceProperties(properties);
+
+        return instanceProperties;
+    }
+
+    private InstanceProperties getInstanceProperties(IGCObject igcObject, String entityType) {
+        Map<String, InstancePropertyValue> properties = new HashMap<>();
+
+        PrimitivePropertyValue qualifiedName = new PrimitivePropertyValue();
+        qualifiedName.setPrimitiveValue(entityType + ".qualifiedName." + igcObject.getId());
+        qualifiedName.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+        properties.put("qualifiedName", qualifiedName);
+
+        InstanceProperties instanceProperties = new InstanceProperties();
+        instanceProperties.setInstanceProperties(properties);
+
+        return instanceProperties;
     }
 
 }
