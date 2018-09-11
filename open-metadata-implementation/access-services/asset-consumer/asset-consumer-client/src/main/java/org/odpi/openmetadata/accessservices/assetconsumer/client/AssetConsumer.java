@@ -1,20 +1,19 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.client;
 
 import org.odpi.openmetadata.accessservices.assetconsumer.AssetConsumerInterface;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.AssetConsumerErrorCode;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions.*;
-import org.odpi.openmetadata.accessservices.assetconsumer.responses.AssetConsumerOMASAPIResponse;
-import org.odpi.openmetadata.accessservices.assetconsumer.responses.ConnectionResponse;
-import org.odpi.openmetadata.accessservices.assetconsumer.responses.VoidResponse;
+import org.odpi.openmetadata.accessservices.assetconsumer.rest.*;
 import org.odpi.openmetadata.accessservices.connectedasset.client.ConnectedAsset;
+import org.odpi.openmetadata.accessservices.connectedasset.ffdc.ConnectedAssetErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.CommentType;
-import org.odpi.openmetadata.accessservices.assetconsumer.responses.GUIDResponse;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.StarRating;
@@ -34,12 +33,14 @@ import java.util.Map;
  */
 public class AssetConsumer implements AssetConsumerInterface
 {
-    private String            omasServerURL;  /* Initialized in constructor */
+    private String           omasServerURL;  /* Initialized in constructor */
+    private NullRequestBody  nullRequestBody = new NullRequestBody();
+
 
     /**
      * Create a new AssetConsumer client.
      *
-     * @param newServerURL - the network address of the server running the OMAS REST services
+     * @param newServerURL  the network address of the server running the OMAS REST services
      */
     public AssetConsumer(String     newServerURL)
     {
@@ -50,9 +51,12 @@ public class AssetConsumer implements AssetConsumerInterface
     /**
      * Use the Open Connector Framework (OCF) to create a connector using the supplied connection.
      *
-     * @param requestedConnection - connection describing the required connector.
-     * @param methodName - name of the calling method.
+     * @param requestedConnection  connection describing the required connector.
+     * @param methodName  name of the calling method.
+     *
      * @return a new connector.
+     * @throws ConnectionCheckedException  there are issues with the values in the connection
+     * @throws ConnectorCheckedException the connector had an operational issue accessing the asset.
      */
     private Connector  getConnectorForConnection(String          userId,
                                                  Connection      requestedConnection,
@@ -122,8 +126,8 @@ public class AssetConsumer implements AssetConsumerInterface
     /**
      * Returns the connection object corresponding to the supplied connection name.
      *
-     * @param userId - String - userId of user making request.
-     * @param name - this may be the qualifiedName or displayName of the connection.
+     * @param userId  String - userId of user making request.
+     * @param name  this may be the qualifiedName or displayName of the connection.
      *
      * @return Connection retrieved from property server
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -162,8 +166,8 @@ public class AssetConsumer implements AssetConsumerInterface
     /**
      * Returns the connector corresponding to the supplied connection name.
      *
-     * @param userId - String - userId of user making request.
-     * @param connectionName - this may be the qualifiedName or displayName of the connection.
+     * @param userId String - userId of user making request.
+     * @param connectionName  this may be the qualifiedName or displayName of the connection.
      *
      * @return Connector - connector instance.
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -202,8 +206,8 @@ public class AssetConsumer implements AssetConsumerInterface
     /**
      * Returns the connection object corresponding to the supplied connection GUID.
      *
-     * @param userId - String - userId of user making request.
-     * @param guid - the unique id for the connection within the property server.
+     * @param userId String - userId of user making request.
+     * @param guid the unique id for the connection within the property server.
      *
      * @return Connection retrieved from the property server
      * InvalidParameterException one of the parameters is null or invalid.
@@ -240,11 +244,10 @@ public class AssetConsumer implements AssetConsumerInterface
     /**
      * Returns the connector corresponding to the supplied connection GUID.
      *
-     * @param userId - String - userId of user making request.
-     * @param connectionGUID - the unique id for the connection within the property server.
+     * @param userId  String - userId of user making request.
+     * @param connectionGUID  the unique id for the connection within the property server.
      *
      * @return Connector - connector instance.
-     *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UnrecognizedConnectionGUIDException the supplied GUID is not recognized by the property server.
      * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
@@ -277,24 +280,21 @@ public class AssetConsumer implements AssetConsumerInterface
     /**
      * Returns the connector corresponding to the supplied connection.
      *
-     * @param userId - String - userId of user making request.
-     * @param connection - the connection object that contains the properties needed to create the connection.
+     * @param userId  String  userId of user making request.  This userId is stored in the connector for
+     * @param connection  the connection object that contains the properties needed to create the connection.
      *
-     * @return Connector - connector instance
-     *
+     * @return Connector instance
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
      *                                      the creation of a connector.
      * @throws ConnectorCheckedException there are errors in the initialization of the connector.
      * @throws PropertyServerException there is a problem retrieving information from the property (metadata) server.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public Connector  getConnectorByConnection(String        userId,
                                                Connection    connection) throws InvalidParameterException,
                                                                                 ConnectionCheckedException,
                                                                                 ConnectorCheckedException,
-                                                                                PropertyServerException,
-                                                                                UserNotAuthorizedException
+                                                                                PropertyServerException
     {
         final  String  methodName = "getConnectorByConnection";
 
@@ -308,11 +308,10 @@ public class AssetConsumer implements AssetConsumerInterface
     /**
      * Returns a comprehensive collection of properties about the requested asset.
      *
-     * @param userId - String - userId of user making request.
-     * @param assetGUID - String - unique id for asset.
+     * @param userId  String - userId of user making request.
+     * @param assetGUID  String - unique id for asset.
      *
      * @return AssetUniverse - a comprehensive collection of properties about the asset.
-
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException There is a problem retrieving the asset properties from
      *                                   the property server.
@@ -330,7 +329,6 @@ public class AssetConsumer implements AssetConsumerInterface
         validateUserId(userId, methodName);
         validateGUID(assetGUID, guidParameter, methodName);
 
-        ConnectedAsset connectedAssetClient = new ConnectedAsset(omasServerURL);
 
         try
         {
@@ -338,7 +336,17 @@ public class AssetConsumer implements AssetConsumerInterface
              * Make use of the ConnectedAsset OMAS Service which provides the metadata services for the
              * Open Connector Framework (OCF).
              */
-            return connectedAssetClient.getAssetProperties(userId, assetGUID);
+            return new ConnectedAsset(omasServerURL, userId, assetGUID);
+        }
+        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+        {
+            throw new UserNotAuthorizedException(error.getReportedHTTPCode(),
+                                                 this.getClass().getName(),
+                                                 methodName,
+                                                 error.getErrorMessage(),
+                                                 error.getReportedSystemAction(),
+                                                 error.getReportedUserAction(),
+                                                 userId);
         }
         catch (Throwable error)
         {
@@ -359,13 +367,13 @@ public class AssetConsumer implements AssetConsumerInterface
     /**
      * Creates an Audit log record for the asset.  This log record is stored in the Asset's Audit Log.
      *
-     * @param userId - String - userId of user making request.
-     * @param assetGUID - String - unique id for the asset.
-     * @param connectorInstanceId - String - (optional) id of connector in use (if any).
-     * @param connectionName - String - (optional) name of the connection (extracted from the connector).
-     * @param connectorType - String - (optional) type of connector in use (if any).
-     * @param contextId - String - (optional) function name, or processId of the activity that the caller is performing.
-     * @param message - log record content.
+     * @param userId String - userId of user making request.
+     * @param assetGUID String - unique id for the asset.
+     * @param connectorInstanceId String - (optional) id of connector in use (if any).
+     * @param connectionName String - (optional) name of the connection (extracted from the connector).
+     * @param connectorType String - (optional) type of connector in use (if any).
+     * @param contextId String - (optional) function name, or processId of the activity that the caller is performing.
+     * @param message log record content.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException There is a problem adding the asset properties to
@@ -385,21 +393,24 @@ public class AssetConsumer implements AssetConsumerInterface
         final String   methodName = "addLogMessageToAsset";
         final String   guidParameter = "assetGUID";
 
-        final String   urlTemplate = "/{0}/asset/{1}/log-record?connectorInstanceId={2}&connectionName={3}&connectorType={4}&contextId={5}&message={6}";
+        final String   urlTemplate = "/{0}/assets/{1}/log-records";
 
         validateOMASServerURL(methodName);
         validateUserId(userId, methodName);
         validateGUID(assetGUID, guidParameter, methodName);
 
+        LogRecordRequestBody  requestBody = new LogRecordRequestBody();
+        requestBody.setConnectorInstanceId(connectorInstanceId);
+        requestBody.setConnectionName(connectionName);
+        requestBody.setConnectorType(connectorType);
+        requestBody.setContextId(contextId);
+        requestBody.setMessage(message);
+
         VoidResponse restResult = callVoidPostRESTCall(methodName,
                                                        omasServerURL + urlTemplate,
+                                                       requestBody,
                                                        userId,
-                                                       assetGUID,
-                                                       connectorInstanceId,
-                                                       connectionName,
-                                                       connectorType,
-                                                       contextId,
-                                                       message);
+                                                       assetGUID);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
@@ -411,12 +422,13 @@ public class AssetConsumer implements AssetConsumerInterface
     /**
      * Adds a new public tag to the asset's properties.
      *
-     * @param userId         - String - userId of user making request.
-     * @param assetGUID      - String - unique id for the asset.
-     * @param tagName        - String - name of the tag.
-     * @param tagDescription - String - (optional) description of the tag.  Setting a description, particularly in
+     * @param userId         String - userId of user making request.
+     * @param assetGUID      String - unique id for the asset.
+     * @param tagName        String - name of the tag.
+     * @param tagDescription String - (optional) description of the tag.  Setting a description, particularly in
      *                       a public tag makes the tag more valuable to other users and can act as an embryonic
      *                       glossary term.
+     *
      * @return String - GUID for new tag.
      * @throws InvalidParameterException  - one of the parameters is null or invalid.
      * @throws PropertyServerException    - There is a problem adding the asset properties to
@@ -434,19 +446,22 @@ public class AssetConsumer implements AssetConsumerInterface
         final String   guidParameter = "assetGUID";
         final String   nameParameter = "tagName";
 
-        final String   urlTemplate = "/{0}/asset/{1}/tags?tagName={2}&tagDescription={3}";
+        final String   urlTemplate = "/{0}/assets/{1}/tags";
 
         validateOMASServerURL(methodName);
         validateUserId(userId, methodName);
         validateGUID(assetGUID, guidParameter, methodName);
         validateName(tagName, nameParameter, methodName);
 
-        GUIDResponse restResult = callGUIDPOSTRESTCall(methodName,
+        TagRequestBody  requestBody = new TagRequestBody();
+        requestBody.setTagName(tagName);
+        requestBody.setTagDescription(tagDescription);
+
+        GUIDResponse restResult = callGUIDPostRESTCall(methodName,
                                                        omasServerURL + urlTemplate,
+                                                       requestBody,
                                                        userId,
-                                                       assetGUID,
-                                                       tagName,
-                                                       tagDescription);
+                                                       assetGUID);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
@@ -459,15 +474,16 @@ public class AssetConsumer implements AssetConsumerInterface
     /**
      * Adds a new private tag to the asset's properties.
      *
-     * @param userId         - String - userId of user making request.
-     * @param assetGUID      - String - unique id for the asset.
-     * @param tagName        - String - name of the tag.
-     * @param tagDescription - String - (optional) description of the tag.  Setting a description, particularly in
+     * @param userId         String - userId of user making request.
+     * @param assetGUID      String - unique id for the asset.
+     * @param tagName        String - name of the tag.
+     * @param tagDescription String - (optional) description of the tag.  Setting a description, particularly in
      *                       a public tag makes the tag more valuable to other users and can act as an embryonic
      *                       glossary term.
+     *
      * @return String - GUID for new tag.
-     * @throws InvalidParameterException  - one of the parameters is null or invalid.
-     * @throws PropertyServerException    - There is a problem adding the asset properties to
+     * @throws InvalidParameterException   one of the parameters is null or invalid.
+     * @throws PropertyServerException     There is a problem adding the asset properties to
      *                                    the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
@@ -482,19 +498,22 @@ public class AssetConsumer implements AssetConsumerInterface
         final String   guidParameter = "assetGUID";
         final String   nameParameter = "tagName";
 
-        final String   urlTemplate = "/{0}/asset/{1}/tags/private?tagName={2}&tagDescription={3}";
+        final String   urlTemplate = "/{0}/assets/{1}/tags/private";
 
         validateOMASServerURL(methodName);
         validateUserId(userId, methodName);
         validateGUID(assetGUID, guidParameter, methodName);
         validateName(tagName, nameParameter, methodName);
 
-        GUIDResponse restResult = callGUIDPOSTRESTCall(methodName,
+        TagRequestBody  requestBody = new TagRequestBody();
+        requestBody.setTagName(tagName);
+        requestBody.setTagDescription(tagDescription);
+
+        GUIDResponse restResult = callGUIDPostRESTCall(methodName,
                                                        omasServerURL + urlTemplate,
+                                                       requestBody,
                                                        userId,
-                                                       assetGUID,
-                                                       tagName,
-                                                       tagDescription);
+                                                       assetGUID);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
@@ -507,13 +526,12 @@ public class AssetConsumer implements AssetConsumerInterface
     /**
      * Adds a rating to the asset.
      *
-     * @param userId - String - userId of user making request.
-     * @param assetGUID - String - unique id for the asset.
-     * @param starRating - StarRating  - enumeration for none, one to five stars.
-     * @param review - String - user review of asset.
+     * @param userId       String - userId of user making request.
+     * @param assetGUID    String - unique id for the asset.
+     * @param starRating   StarRating  - enumeration for none, one to five stars.
+     * @param review       String - user review of asset.
      *
      * @return guid of new rating object.
-     *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException There is a problem adding the asset properties to
      *                                   the property server.
@@ -529,18 +547,21 @@ public class AssetConsumer implements AssetConsumerInterface
         final String   methodName  = "addRatingToAsset";
         final String   guidParameter = "assetGUID";
 
-        final String   urlTemplate = "/{0}/asset/{1}/ratings/?starRating={2}&review={3}";
+        final String   urlTemplate = "/{0}/assets/{1}/ratings";
 
         validateOMASServerURL(methodName);
         validateUserId(userId, methodName);
         validateGUID(assetGUID, guidParameter, methodName);
 
-        GUIDResponse restResult = callGUIDPOSTRESTCall(methodName,
+        RatingRequestBody  requestBody = new RatingRequestBody();
+        requestBody.setStarRating(starRating);
+        requestBody.setReview(review);
+
+        GUIDResponse restResult = callGUIDPostRESTCall(methodName,
                                                        omasServerURL + urlTemplate,
+                                                       requestBody,
                                                        userId,
-                                                       assetGUID,
-                                                       starRating,
-                                                       review);
+                                                       assetGUID);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
@@ -553,11 +574,10 @@ public class AssetConsumer implements AssetConsumerInterface
     /**
      * Adds a "Like" to the asset.
      *
-     * @param userId - String - userId of user making request.
-     * @param assetGUID - String - unique id for the asset
+     * @param userId     String - userId of user making request.
+     * @param assetGUID  String - unique id for the asset
      *
      * @return guid of new like object.
-     *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException There is a problem adding the asset properties to
      *                                   the property server.
@@ -571,14 +591,15 @@ public class AssetConsumer implements AssetConsumerInterface
         final String   methodName  = "addRatingToAsset";
         final String   guidParameter = "assetGUID";
 
-        final String   urlTemplate = "/{0}/asset/{1}/likes";
+        final String   urlTemplate = "/{0}/assets/{1}/likes";
 
         validateOMASServerURL(methodName);
         validateUserId(userId, methodName);
         validateGUID(assetGUID, guidParameter, methodName);
 
-        GUIDResponse restResult = callGUIDPOSTRESTCall(methodName,
+        GUIDResponse restResult = callGUIDPostRESTCall(methodName,
                                                        omasServerURL + urlTemplate,
+                                                       nullRequestBody,
                                                        userId,
                                                        assetGUID);
 
@@ -593,13 +614,12 @@ public class AssetConsumer implements AssetConsumerInterface
     /**
      * Adds a comment to the asset.
      *
-     * @param userId - String - userId of user making request.
-     * @param assetGUID - String - unique id for the asset.
-     * @param commentType - type of comment enum.
-     * @param commentText - String - the text of the comment.
+     * @param userId        String - userId of user making request.
+     * @param assetGUID     String - unique id for the asset.
+     * @param commentType   type of comment enum.
+     * @param commentText   String - the text of the comment.
      *
      * @return guid of new comment.
-     *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException There is a problem adding the asset properties to
      *                                   the property server.
@@ -615,18 +635,21 @@ public class AssetConsumer implements AssetConsumerInterface
         final String   methodName  = "addCommentToAsset";
         final String   guidParameter = "assetGUID";
 
-        final String   urlTemplate = "/{0}/asset/{1}/comments?commentType{2}&commentText={3}";
+        final String   urlTemplate = "/{0}/assets/{1}/comments";
 
         validateOMASServerURL(methodName);
         validateUserId(userId, methodName);
         validateGUID(assetGUID, guidParameter, methodName);
 
-        GUIDResponse restResult = callGUIDPOSTRESTCall(methodName,
+        CommentRequestBody  requestBody = new CommentRequestBody();
+        requestBody.setCommentType(commentType);
+        requestBody.setCommentText(commentText);
+
+        GUIDResponse restResult = callGUIDPostRESTCall(methodName,
                                                        omasServerURL + urlTemplate,
+                                                       requestBody,
                                                        userId,
-                                                       assetGUID,
-                                                       commentType,
-                                                       commentText);
+                                                       assetGUID);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
@@ -639,10 +662,10 @@ public class AssetConsumer implements AssetConsumerInterface
     /**
      * Adds a comment to the asset.
      *
-     * @param userId - String - userId of user making request.
-     * @param commentGUID - String - unique id for an existing comment.  Used to add a reply to a comment.
-     * @param commentType - type of comment enum.
-     * @param commentText - String - the text of the comment.
+     * @param userId        String - userId of user making request.
+     * @param commentGUID   String - unique id for an existing comment.  Used to add a reply to a comment.
+     * @param commentType   type of comment enum.
+     * @param commentText   String - the text of the comment.
      *
      * @return guid of new comment.
      *
@@ -660,18 +683,21 @@ public class AssetConsumer implements AssetConsumerInterface
     {
         final String   methodName  = "addCommentReply";
         final String   commentGUIDParameter = "commentGUID";
-        final String   urlTemplate = "/{0}/comments/{1}/reply?commentType={2}&commentText={3}";
+        final String   urlTemplate = "/{0}/comments/{1}/replies";
 
         validateOMASServerURL(methodName);
         validateUserId(userId, methodName);
         validateGUID(commentGUID, commentGUIDParameter, methodName);
 
-        GUIDResponse restResult = callGUIDPOSTRESTCall(methodName,
+        CommentRequestBody  requestBody = new CommentRequestBody();
+        requestBody.setCommentType(commentType);
+        requestBody.setCommentText(commentText);
+
+        GUIDResponse restResult = callGUIDPostRESTCall(methodName,
                                                        omasServerURL + urlTemplate,
+                                                       requestBody,
                                                        userId,
-                                                       commentGUID,
-                                                       commentType,
-                                                       commentText);
+                                                       commentGUID);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
@@ -684,8 +710,8 @@ public class AssetConsumer implements AssetConsumerInterface
     /**
      * Removes a tag from the asset that was added by this user.
      *
-     * @param userId - String - userId of user making request.
-     * @param tagGUID - String - unique id for the tag.
+     * @param userId    String - userId of user making request.
+     * @param tagGUID   String - unique id for the tag.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException There is a problem updating the asset properties in
@@ -708,6 +734,7 @@ public class AssetConsumer implements AssetConsumerInterface
 
         VoidResponse restResult = callVoidPostRESTCall(methodName,
                                                        omasServerURL + urlTemplate,
+                                                       nullRequestBody,
                                                        userId,
                                                        tagGUID);
 
@@ -720,8 +747,8 @@ public class AssetConsumer implements AssetConsumerInterface
     /**
      * Removes a tag from the asset that was added by this user.
      *
-     * @param userId - String - userId of user making request.
-     * @param tagGUID - String - unique id for the tag.
+     * @param userId   String - userId of user making request.
+     * @param tagGUID  String - unique id for the tag.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException There is a problem updating the asset properties in
@@ -744,6 +771,7 @@ public class AssetConsumer implements AssetConsumerInterface
 
         VoidResponse restResult = callVoidPostRESTCall(methodName,
                                                        omasServerURL + urlTemplate,
+                                                       nullRequestBody,
                                                        userId,
                                                        tagGUID);
 
@@ -756,8 +784,8 @@ public class AssetConsumer implements AssetConsumerInterface
     /**
      * Removes of a star rating that was added to the asset by this user.
      *
-     * @param userId - String - userId of user making request.
-     * @param ratingGUID - String - unique id for the rating object
+     * @param userId     String - userId of user making request.
+     * @param ratingGUID String - unique id for the rating object
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException There is a problem updating the asset properties in
@@ -780,6 +808,7 @@ public class AssetConsumer implements AssetConsumerInterface
 
         VoidResponse restResult = callVoidPostRESTCall(methodName,
                                                        omasServerURL + urlTemplate,
+                                                       nullRequestBody,
                                                        userId,
                                                        ratingGUID);
 
@@ -792,8 +821,8 @@ public class AssetConsumer implements AssetConsumerInterface
     /**
      * Removes a "Like" added to the asset by this user.
      *
-     * @param userId - String - userId of user making request.
-     * @param likeGUID - String - unique id for the like object
+     * @param userId    String - userId of user making request.
+     * @param likeGUID  String - unique id for the like object
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException There is a problem updating the asset properties in
@@ -816,6 +845,7 @@ public class AssetConsumer implements AssetConsumerInterface
 
         VoidResponse restResult = callVoidPostRESTCall(methodName,
                                                        omasServerURL + urlTemplate,
+                                                       nullRequestBody,
                                                        userId,
                                                        likeGUID);
 
@@ -828,8 +858,8 @@ public class AssetConsumer implements AssetConsumerInterface
     /**
      * Removes a comment added to the asset by this user.
      *
-     * @param userId - String - userId of user making request.
-     * @param commentGUID - String - unique id for the comment object
+     * @param userId        String - userId of user making request.
+     * @param commentGUID   String - unique id for the comment object.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException There is a problem updating the asset properties in
@@ -852,6 +882,7 @@ public class AssetConsumer implements AssetConsumerInterface
 
         VoidResponse restResult = callVoidPostRESTCall(methodName,
                                                        omasServerURL + urlTemplate,
+                                                       nullRequestBody,
                                                        userId,
                                                        commentGUID);
 
@@ -864,7 +895,8 @@ public class AssetConsumer implements AssetConsumerInterface
     /**
      * Throw an exception if a server URL has not been supplied on the constructor.
      *
-     * @param methodName - name of the method making the call.
+     * @param methodName  name of the method making the call.
+     *
      * @throws PropertyServerException the server URL is not set
      */
     private void validateOMASServerURL(String methodName) throws PropertyServerException
@@ -890,8 +922,9 @@ public class AssetConsumer implements AssetConsumerInterface
     /**
      * Throw an exception if the supplied userId is null
      *
-     * @param userId - user name to validate
-     * @param methodName - name of the method making the call.
+     * @param userId      user name to validate
+     * @param methodName  name of the method making the call.
+     *
      * @throws InvalidParameterException the userId is null
      */
     private void validateUserId(String userId,
@@ -917,9 +950,10 @@ public class AssetConsumer implements AssetConsumerInterface
     /**
      * Throw an exception if the supplied userId is null
      *
-     * @param guid - unique identifier to validate
-     * @param guidParameter - name of the parameter that passed the guid.
-     * @param methodName - name of the method making the call.
+     * @param guid           unique identifier to validate
+     * @param guidParameter  name of the parameter that passed the guid.
+     * @param methodName     name of the method making the call.
+     *
      * @throws InvalidParameterException the guid is null
      */
     private void validateGUID(String guid,
@@ -947,9 +981,10 @@ public class AssetConsumer implements AssetConsumerInterface
     /**
      * Throw an exception if the supplied userId is null
      *
-     * @param name - unique name to validate
-     * @param nameParameter - name of the parameter that passed the name.
-     * @param methodName - name of the method making the call.
+     * @param name           unique name to validate
+     * @param nameParameter  name of the parameter that passed the name.
+     * @param methodName     name of the method making the call.
+     *
      * @throws InvalidParameterException the guid is null
      */
     private void validateName(String name,
@@ -974,13 +1009,13 @@ public class AssetConsumer implements AssetConsumerInterface
     }
 
 
-
     /**
      * Issue a GET REST call that returns a Connection object.
      *
-     * @param methodName - name of the method being called
-     * @param urlTemplate - template of the URL for the REST API call with place-holders for the parameters
-     * @param params - a list of parameters that are slotted into the url template
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
      * @return ConnectionResponse
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
@@ -990,9 +1025,6 @@ public class AssetConsumer implements AssetConsumerInterface
     {
         ConnectionResponse restResult = new ConnectionResponse();
 
-        /*
-         * Issue the request
-         */
         try
         {
             RestTemplate restTemplate = new RestTemplate();
@@ -1023,69 +1055,72 @@ public class AssetConsumer implements AssetConsumerInterface
      * Issue a POST REST call that returns a guid object.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
-     * @param params  a list of parameters that are slotted into the url template
+     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody request body for the request.
+     * @param params  a list of parameters that are slotted into the url template.
+     *
      * @return GUIDResponse
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    private GUIDResponse callGUIDPOSTRESTCall(String    methodName,
+    private GUIDResponse callGUIDPostRESTCall(String    methodName,
                                               String    urlTemplate,
+                                              Object    requestBody,
                                               Object... params) throws PropertyServerException
     {
-        GUIDResponse restResult = new GUIDResponse();
-
-        /*
-         * Issue the request
-         */
-        try
-        {
-            RestTemplate restTemplate = new RestTemplate();
-
-            restResult = restTemplate.postForObject(urlTemplate, null, restResult.getClass(), params);
-        }
-        catch (Throwable error)
-        {
-            AssetConsumerErrorCode errorCode = AssetConsumerErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                     omasServerURL,
-                                                                                                     error.getMessage());
-
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction(),
-                                              error);
-        }
-
-        return restResult;
+        return (GUIDResponse)this.callRESTCall(methodName,
+                                               GUIDResponse.class,
+                                               urlTemplate,
+                                               requestBody,
+                                               params);
     }
 
 
     /**
      * Issue a POST REST call that returns a VoidResponse object.  This is typically a create
      *
-     * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
-     * @param params  a list of parameters that are slotted into the url template
+     * @param methodName  name of the method being called.
+     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody request body for the request.
+     * @param params  a list of parameters that are slotted into the url template.
+     *
      * @return VoidResponse
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
     private VoidResponse callVoidPostRESTCall(String    methodName,
                                               String    urlTemplate,
+                                              Object    requestBody,
                                               Object... params) throws PropertyServerException
     {
-        VoidResponse restResult = new VoidResponse();
+        return (VoidResponse)this.callRESTCall(methodName,
+                                               VoidResponse.class,
+                                               urlTemplate,
+                                               requestBody,
+                                               params);
+    }
 
-        /*
-         * Issue the request
-         */
+
+    /**
+     * Issue a POST REST call that returns a VoidResponse object.  This is typically a create
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody request body for the request.
+     * @param params  a list of parameters that are slotted into the url template.
+     *
+     * @return Object
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    private Object callRESTCall(String    methodName,
+                                Class     returnClass,
+                                String    urlTemplate,
+                                Object    requestBody,
+                                Object... params) throws PropertyServerException
+    {
         try
         {
-            RestTemplate restTemplate = new RestTemplate();
+            RestTemplate  restTemplate = new RestTemplate();
 
-            restResult = restTemplate.postForObject(urlTemplate, null, restResult.getClass(), params);
+            return restTemplate.postForObject(urlTemplate, requestBody, returnClass, params);
         }
         catch (Throwable error)
         {
@@ -1102,8 +1137,6 @@ public class AssetConsumer implements AssetConsumerInterface
                                               errorCode.getUserAction(),
                                               error);
         }
-
-        return restResult;
     }
 
 
@@ -1151,6 +1184,7 @@ public class AssetConsumer implements AssetConsumerInterface
      *
      * @param methodName  name of the method called
      * @param restResult  response from the rest call.  This generated in the remote server.
+     *
      * @throws InvalidParameterException encoded exception from the server
      */
     private void detectAndThrowInvalidParameterException(String                       methodName,
@@ -1189,6 +1223,7 @@ public class AssetConsumer implements AssetConsumerInterface
      *
      * @param methodName  name of the method called
      * @param restResult  response from the rest call.  This generated in the remote server.
+     *
      * @throws PropertyServerException encoded exception from the server
      */
     private void detectAndThrowPropertyServerException(String                       methodName,
@@ -1213,6 +1248,7 @@ public class AssetConsumer implements AssetConsumerInterface
      *
      * @param methodName  name of the method called
      * @param restResult  response from the rest call.  This generated in the remote server.
+     *
      * @throws UnrecognizedConnectionGUIDException encoded exception from the server
      */
     private void detectAndThrowUnrecognizedConnectionGUIDException(String                       methodName,
@@ -1251,6 +1287,7 @@ public class AssetConsumer implements AssetConsumerInterface
      *
      * @param methodName  name of the method called
      * @param restResult  response from the rest call.  This generated in the remote server.
+     *
      * @throws UnrecognizedConnectionNameException encoded exception from the server
      */
     private void detectAndThrowUnrecognizedConnectionNameException(String                       methodName,
@@ -1288,8 +1325,10 @@ public class AssetConsumer implements AssetConsumerInterface
     /**
      * Throw an UserNotAuthorizedException if it is encoded in the REST response.
      *
-     * @param methodName  name of the method called
-     * @param restResult  response from UserNotAuthorizedException encoded exception from the server
+     * @param methodName  name of the method called.
+     * @param restResult  response from UserNotAuthorizedException encoded exception from the server.
+     *
+     * @throws UserNotAuthorizedException encoded exception from the server
      */
     private void detectAndThrowUserNotAuthorizedException(String                       methodName,
                                                           AssetConsumerOMASAPIResponse restResult) throws UserNotAuthorizedException

@@ -1,7 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservices.governanceprogram.ffdc.exceptions;
 
-
 import java.util.Objects;
 
 /**

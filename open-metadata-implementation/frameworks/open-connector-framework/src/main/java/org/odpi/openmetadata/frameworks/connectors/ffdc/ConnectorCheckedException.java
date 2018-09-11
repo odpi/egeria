@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.ffdc;
-
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,10 +31,7 @@ public class ConnectorCheckedException extends OCFCheckedExceptionBase
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction);
 
-        if (log.isDebugEnabled())
-        {
-            log.debug(httpCode + ", " + className + ", " + actionDescription);
-        }
+        log.debug(httpCode + ", " + className + ", " + actionDescription);
     }
 
 
@@ -53,9 +50,6 @@ public class ConnectorCheckedException extends OCFCheckedExceptionBase
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
 
-        if (log.isDebugEnabled())
-        {
-            log.debug(httpCode + ", " + className + ", " + actionDescription + ", " + caughtError.toString());
-        }
+        log.debug(httpCode + ", " + className + ", " + actionDescription + ", " + caughtError.toString());
     }
 }

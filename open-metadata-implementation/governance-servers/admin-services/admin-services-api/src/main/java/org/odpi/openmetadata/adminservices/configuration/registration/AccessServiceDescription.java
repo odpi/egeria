@@ -9,48 +9,48 @@ import java.util.ArrayList;
  */
 public enum AccessServiceDescription implements Serializable
 {
-    ASSET_CATALOG_OMAS               (1000,   "AssetCatalog", "Search and understand your assets",
-                                              "https://cwiki.apache.org/confluence/display/ATLAS/Asset+Catalog+OMAS"),
-    ASSET_CONSUMER_OMAS              (1001,   "AssetConsumer", "Access assets through connectors",
-                                              "https://cwiki.apache.org/confluence/display/ATLAS/Asset+Consumer+OMAS"),
-    ASSET_OWNER_OMAS                 (1002,   "AssetOwner", "Manage an asset",
-                                              "https://cwiki.apache.org/confluence/display/ATLAS/Asset+Owner+OMAS"),
-    COMMUNITY_PROFILE_OMAS           (1003,   "CommunityProfile", "Define personal profile and collaborate",
-                                              "https://cwiki.apache.org/confluence/display/ATLAS/Community+Profile+OMAS"),
-    CONNECTED_ASSET_OMAS             (1004,   "ConnectedAsset", "Understand an asset",
-                                              "https://cwiki.apache.org/confluence/display/ATLAS/Connected+Asset+OMAS"),
-    DATA_PLATFORM_OMAS               (1005,   "DataPlatform", "Capture changes in the types of data stored in a data platform",
-                                              "https://cwiki.apache.org/confluence/display/ATLAS/Data+Platform+OMAS"),
-    DATA_SCIENCE_OMAS                (1006,   "DataScience", "Create and manage data science definitions and models",
-                                              "https://cwiki.apache.org/confluence/display/ATLAS/Data+Science+OMAS"),
+    ASSET_CATALOG_OMAS               (1000,   "Asset Catalog", "Search and understand your assets",
+                                              "https://odpi.github.io/egeria/open-metadata-implementation/access-services/asset-catalog/"),
+    ASSET_CONSUMER_OMAS              (1001,   "Asset Consumer", "Access assets through connectors",
+                                              "https://odpi.github.io/egeria/open-metadata-implementation/access-services/asset-consumer/"),
+    ASSET_OWNER_OMAS                 (1002,   "Asset Owner", "Manage an asset",
+                                              "https://odpi.github.io/egeria/open-metadata-implementation/access-services/asset-owner/"),
+    COMMUNITY_PROFILE_OMAS           (1003,   "Community Profile", "Define personal profile and collaborate",
+                                              "https://odpi.github.io/egeria/open-metadata-implementation/access-services/community-profile/"),
+    CONNECTED_ASSET_OMAS             (1004,   "Connected Asset", "Understand an asset",
+                                              "https://odpi.github.io/egeria/open-metadata-implementation/access-services/connected-asset/"),
+    DATA_INFRASTRUCTURE_OMAS         (1010,   "Data Infrastructure", "Manage information about the deployed IT infrastructure",
+                                              "https://odpi.github.io/egeria/open-metadata-implementation/access-services/data-infrastructure/"),
+    DATA_PLATFORM_OMAS               (1005,   "Data Platform", "Capture changes to the data stores and data set managed by a data platform",
+                                              "https://odpi.github.io/egeria/open-metadata-implementation/access-services/data-platform/"),
+    DATA_PRIVACY_OMAS                (1016,   "Data Privacy", "Manage governance of privacy",
+                                              "https://odpi.github.io/egeria/open-metadata-implementation/access-services/data-privacy/"),
+    DATA_PROCESS_OMAS                (1012,   "Data Process", "Exchange process models and lineage with a data engine",
+                                              "https://odpi.github.io/egeria/open-metadata-implementation/access-services/data-process/"),
+    DATA_PROTECTION_OMAS             (1013,   "Data Protection", "Set up rules to protect data",
+                                              "https://odpi.github.io/egeria/open-metadata-implementation/access-services/data-protection/"),
+    DATA_SCIENCE_OMAS                (1006,   "Data Science", "Create and manage data science definitions and models",
+                                              "https://odpi.github.io/egeria/open-metadata-implementation/access-services/data-science/"),
     DEVOPS_OMAS                      (1007,   "DevOps", "Manage a DevOps pipeline",
-                                              "https://cwiki.apache.org/confluence/display/ATLAS/DevOps+OMAS"),
-    GOVERNANCE_ENGINE_OMAS           (1008,   "GovernanceEngine", "Set up an operational governance engine",
-                                              "https://cwiki.apache.org/confluence/display/ATLAS/Governance+Engine+OMAS"),
-    GOVERNANCE_PROGRAM_OMAS          (1009,   "GovernanceProgram", "Manage the governance program",
-                                              "https://cwiki.apache.org/confluence/display/ATLAS/Governance+Program+OMAS"),
-    INFORMATION_INFRASTRUCTURE_OMAS  (1010,   "InformationInfrastructure", "Describe and plan IT infrastructure",
-                                              "https://cwiki.apache.org/confluence/display/ATLAS/Information+Infrastructure+OMAS"),
-    INFORMATION_LANDSCAPE_OMAS       (1011,   "InformationLandscape", "Design the information landscape",
-                                              "https://cwiki.apache.org/confluence/display/ATLAS/Information+Landscape+OMAS"),
-    INFORMATION_PROCESS_OMAS         (1012,   "InformationProcess", "Manage process definitions and lineage tracking",
-                                              "https://cwiki.apache.org/confluence/display/ATLAS/Information+Process+OMAS"),
-    INFORMATION_PROTECTION_OMAS      (1013,   "InformationProtection", "Manage information protection definitions and compliance",
-                                              "https://cwiki.apache.org/confluence/display/ATLAS/Information+Protection+OMAS"),
-    INFORMATION_VIEW_OMAS            (1014,   "InformationView", "Support information virtualization and data set definitions",
-                                              "https://cwiki.apache.org/confluence/display/ATLAS/Information+View+OMAS"),
-    METADATA_DISCOVERY_OMAS          (1015,   "MetadataDiscovery", "Support automated metadata discovery",
-                                              "https://cwiki.apache.org/confluence/display/ATLAS/Metadata+Discovery+OMAS"),
-    PRIVACY_OFFICE_OMAS              (1016,   "PrivacyOffice", "Manage privacy compliance",
-                                              "https://cwiki.apache.org/confluence/display/ATLAS/Privacy+Office+OMAS"),
-    PROJECT_MANAGEMENT_OMAS          (1017,   "ProjectManagement", "Manage data projects",
-                                              "https://cwiki.apache.org/confluence/display/ATLAS/Project+Management+OMAS"),
-    SOFTWARE_DEVELOPMENT_OMAS        (1018,   "SoftwareDevelopment", "Develop software with best practices",
-                                              "https://cwiki.apache.org/confluence/display/ATLAS/Software+Development+OMAS"),
-    STEWARDSHIP_ACTION_OMAS          (1019,   "StewardshipAction", "Manage exceptions and actions from open governance",
-                                              "https://cwiki.apache.org/confluence/display/ATLAS/Stewardship+Action+OMAS"),
-    SUBJECT_AREA_OMAS                (1020,   "SubjectArea", "Document knowledge about a subject area",
-                                              "https://cwiki.apache.org/confluence/display/ATLAS/Subject+Area+OMAS");
+                                              "https://odpi.github.io/egeria/open-metadata-implementation/access-services/dev-ops/"),
+    DIGITAL_ARCHITECTURE_OMAS        (1017,   "Digital Architecture", "Design of the digital services for an organization",
+                                              "https://odpi.github.io/egeria/open-metadata-implementation/access-services/digital-architecture/"),
+    DISCOVERY_ENGINE_OMAS            (1015,   "Discovery Engine", "Support for automated metadata discovery engines",
+                                              "https://odpi.github.io/egeria/open-metadata-implementation/access-services/discovery-engine/"),
+    GOVERNANCE_ENGINE_OMAS           (1008,   "Governance Engine", "Set up an operational governance engine",
+                                              "https://odpi.github.io/egeria/open-metadata-implementation/access-services/governance-engine/"),
+    GOVERNANCE_PROGRAM_OMAS          (1009,   "Governance Program", "Manage the governance program",
+                                              "https://odpi.github.io/egeria/open-metadata-implementation/access-services/governance-program/"),
+    INFORMATION_VIEW_OMAS            (1014,   "Information View", "Support information virtualization and data set definitions",
+                                              "https://odpi.github.io/egeria/open-metadata-implementation/access-services/information-view/"),
+    PROJECT_MANAGEMENT_OMAS          (1017,   "Project Management", "Manage data projects",
+                                              "https://odpi.github.io/egeria/open-metadata-implementation/access-services/project-management/"),
+    SOFTWARE_DEVELOPMENT_OMAS        (1018,   "Software Developer", "Develop software with best practices",
+                                              "https://odpi.github.io/egeria/open-metadata-implementation/access-services/software-developer/"),
+    STEWARDSHIP_ACTION_OMAS          (1019,   "Stewardship Action", "Manage exceptions and actions from open governance",
+                                              "https://odpi.github.io/egeria/open-metadata-implementation/access-services/stewardship-action/"),
+    SUBJECT_AREA_OMAS                (1020,   "Subject Area", "Document knowledge about a subject area",
+                                              "https://odpi.github.io/egeria/open-metadata-implementation/access-services/subject-area/");
 
     private static final long     serialVersionUID    = 1L;
 
@@ -74,18 +74,18 @@ public enum AccessServiceDescription implements Serializable
         accessServiceDescriptionList.add(AccessServiceDescription.ASSET_OWNER_OMAS);
         accessServiceDescriptionList.add(AccessServiceDescription.COMMUNITY_PROFILE_OMAS);
         accessServiceDescriptionList.add(AccessServiceDescription.CONNECTED_ASSET_OMAS);
+        accessServiceDescriptionList.add(AccessServiceDescription.DATA_INFRASTRUCTURE_OMAS);
         accessServiceDescriptionList.add(AccessServiceDescription.DATA_PLATFORM_OMAS);
+        accessServiceDescriptionList.add(AccessServiceDescription.DATA_PRIVACY_OMAS);
+        accessServiceDescriptionList.add(AccessServiceDescription.DATA_PROCESS_OMAS);
+        accessServiceDescriptionList.add(AccessServiceDescription.DATA_PROTECTION_OMAS);
         accessServiceDescriptionList.add(AccessServiceDescription.DATA_SCIENCE_OMAS);
         accessServiceDescriptionList.add(AccessServiceDescription.DEVOPS_OMAS);
+        accessServiceDescriptionList.add(AccessServiceDescription.DIGITAL_ARCHITECTURE_OMAS);
+        accessServiceDescriptionList.add(AccessServiceDescription.DISCOVERY_ENGINE_OMAS);
         accessServiceDescriptionList.add(AccessServiceDescription.GOVERNANCE_ENGINE_OMAS);
         accessServiceDescriptionList.add(AccessServiceDescription.GOVERNANCE_PROGRAM_OMAS);
-        accessServiceDescriptionList.add(AccessServiceDescription.INFORMATION_INFRASTRUCTURE_OMAS);
-        accessServiceDescriptionList.add(AccessServiceDescription.INFORMATION_LANDSCAPE_OMAS);
-        accessServiceDescriptionList.add(AccessServiceDescription.INFORMATION_PROCESS_OMAS);
-        accessServiceDescriptionList.add(AccessServiceDescription.INFORMATION_PROTECTION_OMAS);
         accessServiceDescriptionList.add(AccessServiceDescription.INFORMATION_VIEW_OMAS);
-        accessServiceDescriptionList.add(AccessServiceDescription.METADATA_DISCOVERY_OMAS);
-        accessServiceDescriptionList.add(AccessServiceDescription.PRIVACY_OFFICE_OMAS);
         accessServiceDescriptionList.add(AccessServiceDescription.PROJECT_MANAGEMENT_OMAS);
         accessServiceDescriptionList.add(AccessServiceDescription.SOFTWARE_DEVELOPMENT_OMAS);
         accessServiceDescriptionList.add(AccessServiceDescription.STEWARDSHIP_ACTION_OMAS);

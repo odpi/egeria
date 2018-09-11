@@ -4,6 +4,7 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 /**
  * ConnectedAssetProperties is associated with a Connector.  Connectors provide access to
@@ -101,8 +102,10 @@ public abstract class ConnectedAssetProperties extends AssetPropertyElementBase
      * metadata repository.
      *
      * @throws PropertyServerException there is a problem connecting to the server to retrieve metadata.
+     * @throws UserNotAuthorizedException the userId associated with the connector is not authorized to
+     *                                    access the asset properties.
      */
-    public abstract void refresh() throws PropertyServerException;
+    public abstract void refresh() throws PropertyServerException, UserNotAuthorizedException;
 
 
     /**

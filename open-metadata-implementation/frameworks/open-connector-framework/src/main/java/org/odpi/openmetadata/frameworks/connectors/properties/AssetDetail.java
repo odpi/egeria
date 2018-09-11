@@ -31,6 +31,15 @@ public class AssetDetail extends AssetSummary
 
 
     /**
+     * Default constructor only for subclasses
+     */
+    protected AssetDetail()
+    {
+        super();
+    }
+
+
+    /**
      * Typical constructor initialize superclasses
      *
      * @param assetBean details of this asset

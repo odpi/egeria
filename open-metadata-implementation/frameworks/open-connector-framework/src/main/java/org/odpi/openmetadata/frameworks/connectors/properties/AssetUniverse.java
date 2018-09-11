@@ -33,6 +33,15 @@ public class AssetUniverse extends AssetDetail
 
 
     /**
+     * Default constructor only for subclasses
+     */
+    protected AssetUniverse()
+    {
+        super();
+    }
+
+
+    /**
      * Typical Constructor
      *
      * @param assetBean details of this asset
@@ -150,7 +159,7 @@ public class AssetUniverse extends AssetDetail
     {
         if (meanings == null)
         {
-            return meanings;
+            return null;
         }
         else
         {
@@ -168,7 +177,7 @@ public class AssetUniverse extends AssetDetail
     {
         if (schema == null)
         {
-            return schema;
+            return null;
         }
         else
         {
@@ -186,7 +195,7 @@ public class AssetUniverse extends AssetDetail
     {
         if (analysis == null)
         {
-            return analysis;
+            return null;
         }
         else
         {
@@ -204,7 +213,7 @@ public class AssetUniverse extends AssetDetail
     {
         if (feedback == null)
         {
-            return feedback;
+            return null;
         }
         else
         {
@@ -222,7 +231,7 @@ public class AssetUniverse extends AssetDetail
     {
         if (knownLocations == null)
         {
-            return knownLocations;
+            return null;
         }
         else
         {
@@ -240,7 +249,7 @@ public class AssetUniverse extends AssetDetail
     {
         if (lineage == null)
         {
-            return lineage;
+            return null;
         }
         else
         {
@@ -258,7 +267,7 @@ public class AssetUniverse extends AssetDetail
     {
         if (relatedAssets == null)
         {
-            return relatedAssets;
+            return null;
         }
         else
         {

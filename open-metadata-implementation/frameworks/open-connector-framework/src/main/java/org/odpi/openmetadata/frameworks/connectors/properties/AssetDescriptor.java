@@ -22,6 +22,15 @@ public abstract class AssetDescriptor extends AssetPropertyElementBase
 
 
     /**
+     * Default constructor only for subclasses
+     */
+    protected AssetDescriptor()
+    {
+        super();
+    }
+
+
+    /**
      * Bean constructor - the asset descriptor is effectively empty - and the protected
      * set methods need to be called to add useful content to it.
      *

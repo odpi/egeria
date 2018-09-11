@@ -21,7 +21,7 @@ import java.util.Map;
  * ConnectionHandler retrieves Connection objects from the property server.  It runs server-side in the AssetConsumer
  * OMAS and retrieves Connections through the OMRSRepositoryConnector.
  */
-public class ConnectionHandler
+class ConnectionHandler
 {
     private static final String connectionTypeGUID                      = "114e9f8f-5ff3-4c32-bd37-a7eb42712253";
     private static final String connectionConnectorTypeRelationshipGUID = "e542cfc1-0b4b-42b9-9921-f0a5a88aaf96";
@@ -174,11 +174,7 @@ public class ConnectionHandler
                                                 serverName,
                                                 serviceName);
         }
-        catch (AmbiguousConnectionNameException  error)
-        {
-            throw error;
-        }
-        catch (UnrecognizedConnectionNameException  error)
+        catch (AmbiguousConnectionNameException | UnrecognizedConnectionNameException  error)
         {
             throw error;
         }
@@ -197,8 +193,8 @@ public class ConnectionHandler
     /**
      * Returns the connection object corresponding to the supplied connection GUID.
      *
-     * @param userId - String - userId of user making request.
-     * @param guid - the unique id for the connection within the property server.
+     * @param userId  String - userId of user making request.
+     * @param guid  the unique id for the connection within the property server.
      *
      * @return Connection retrieved from the property server
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -206,11 +202,11 @@ public class ConnectionHandler
      * @throws PropertyServerException there is a problem retrieving information from the property (metadata) server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public Connection getConnectionByGUID(String     userId,
-                                          String     guid) throws InvalidParameterException,
-                                                                  UnrecognizedConnectionGUIDException,
-                                                                  PropertyServerException,
-                                                                  UserNotAuthorizedException
+    Connection getConnectionByGUID(String     userId,
+                                   String     guid) throws InvalidParameterException,
+                                                           UnrecognizedConnectionGUIDException,
+                                                           PropertyServerException,
+                                                           UserNotAuthorizedException
     {
         final  String   methodName = "getConnectionByGUID";
         final  String   guidParameter = "guid";
@@ -284,9 +280,9 @@ public class ConnectionHandler
     /**
      * Return a Connection bean filled with values retrieved from the property server.
      *
-     * @param userId - name of user
-     * @param metadataCollection - accessor object for the property server
-     * @param connectionEntity - root entity object
+     * @param userId  name of user
+     * @param metadataCollection  accessor object for the property server
+     * @param connectionEntity  root entity object
      * @return Connection bean
      * @throws PropertyServerException a problem communicating with the property server
      */
@@ -338,9 +334,9 @@ public class ConnectionHandler
      * Return a ConnectorType bean filled with values retrieved from the property server for the connector type
      * associated with the supplied connection.
      *
-     * @param userId - name of user
-     * @param metadataCollection - accessor object for the property server
-     * @param connectionEntity - root entity object
+     * @param userId  name of user
+     * @param metadataCollection  accessor object for the property server
+     * @param connectionEntity  root entity object
      * @return ConnectorType bean
      * @throws PropertyServerException a problem communicating with the property server
      */
@@ -399,9 +395,9 @@ public class ConnectionHandler
      * Return an Endpoint bean filled with values retrieved from the property server for the endpoint
      * associated with the supplied connection.
      *
-     * @param userId - name of user
-     * @param metadataCollection - accessor object for the property server
-     * @param connectionEntity - root entity object
+     * @param userId  name of user
+     * @param metadataCollection  accessor object for the property server
+     * @param connectionEntity  root entity object
      * @return Endpoint bean
      * @throws PropertyServerException a problem communicating with the property server
      */
@@ -462,7 +458,7 @@ public class ConnectionHandler
     /**
      * Create an AssetElementType by extracting relevant information from the supplied instance.
      *
-     * @param instance - instance to extract properties from
+     * @param instance  instance to extract properties from
      * @return resulting elementType
      */
     private ElementType getElementType(InstanceHeader instance)
@@ -512,9 +508,9 @@ public class ConnectionHandler
     /**
      * Extract an additional properties object from the instance properties within a map property value.
      *
-     * @param propertyName - name of the property that is a map
-     * @param properties - instance properties containing the map property
-     * @param methodName - calling method
+     * @param propertyName  name of the property that is a map
+     * @param properties  instance properties containing the map property
+     * @param methodName  calling method
      * @return an AdditionalProperties object or null
      */
     private Map<String, Object> getAdditionalPropertiesFromEntity(String              propertyName,
@@ -580,11 +576,11 @@ public class ConnectionHandler
      * relationship so one entity (or null) is returned.  If lots of relationships are found then the
      * PropertyServerException is thrown.
      *
-     * @param userId - user making the request.
-     * @param anchorEntity - starting entity.
-     * @param relationshipTypeGUID - identifier for the relationship to follow
-     * @param metadataCollection - metadata collection to retrieve instances from
-     * @param methodName - name of calling method
+     * @param userId  user making the request.
+     * @param anchorEntity  starting entity.
+     * @param relationshipTypeGUID  identifier for the relationship to follow
+     * @param metadataCollection  metadata collection to retrieve instances from
+     * @param methodName  name of calling method
      * @return retrieved entity or null
      * @throws PropertyServerException problem access the property server
      */

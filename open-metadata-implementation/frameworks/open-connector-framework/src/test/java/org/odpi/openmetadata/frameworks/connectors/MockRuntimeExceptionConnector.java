@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.frameworks.connectors;
 
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -126,7 +127,7 @@ public abstract class MockRuntimeExceptionConnector extends ConnectorBase
      * @return ConnectedAssetProperties   connected asset properties
      * @throws PropertyServerException indicates a problem retrieving properties from a metadata repository
      */
-    public ConnectedAssetProperties getConnectedAssetProperties() throws PropertyServerException
+    public ConnectedAssetProperties getConnectedAssetProperties() throws PropertyServerException, UserNotAuthorizedException
     {
         log.debug("ConnectedAssetProperties requested: " + connectorInstanceId + ", " + connectionProperties.getQualifiedName() + "," + connectionProperties.getDisplayName());
 
