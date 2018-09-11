@@ -1,6 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors;
 
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -135,10 +137,12 @@ public abstract class ConnectorBase extends Connector
      * used to access the asset property values many times without a return to the metadata repository.
      * The cache of metadata can be refreshed simply by calling this getConnectedAssetProperties() method again.
      *
+     * @param userId userId of requesting user
      * @return ConnectedAssetProperties   connected asset properties
      * @throws PropertyServerException indicates a problem retrieving properties from a metadata repository
+     * @throws UserNotAuthorizedException indicates that the user is not authorized to access the asset properties.
      */
-    public ConnectedAssetProperties getConnectedAssetProperties() throws PropertyServerException
+    public ConnectedAssetProperties getConnectedAssetProperties(String userId) throws PropertyServerException, UserNotAuthorizedException
     {
         log.debug("ConnectedAssetProperties requested: " + connectorInstanceId + ", " + connectionProperties.getQualifiedName() + "," + connectionProperties.getDisplayName());
 

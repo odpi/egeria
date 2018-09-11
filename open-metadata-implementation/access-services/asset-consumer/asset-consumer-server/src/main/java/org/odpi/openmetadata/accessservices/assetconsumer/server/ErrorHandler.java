@@ -11,7 +11,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 /**
  * ErrorHandler provides common validation routines for the other handler classes
  */
-public class ErrorHandler
+class ErrorHandler
 {
     private OMRSRepositoryConnector repositoryConnector;
 
@@ -32,10 +32,11 @@ public class ErrorHandler
      *
      * @param userId  user name to validate
      * @param methodName  name of the method making the call.
+     *
      * @throws InvalidParameterException the userId is null
      */
-    public  void validateUserId(String userId,
-                                String methodName) throws InvalidParameterException
+    void validateUserId(String userId,
+                        String methodName) throws InvalidParameterException
     {
         if (userId == null)
         {
@@ -60,11 +61,12 @@ public class ErrorHandler
      * @param guid  unique identifier to validate
      * @param parameterName  name of the parameter that passed the guid.
      * @param methodName  name of the method making the call.
+     *
      * @throws InvalidParameterException the guid is null
      */
-    public  void validateGUID(String guid,
-                              String parameterName,
-                              String methodName) throws InvalidParameterException
+    void validateGUID(String guid,
+                      String parameterName,
+                      String methodName) throws InvalidParameterException
     {
         if (guid == null)
         {
@@ -89,11 +91,12 @@ public class ErrorHandler
      * @param enumValue  enum value to validate
      * @param parameterName  name of the parameter that passed the enum.
      * @param methodName  name of the method making the call.
+     *
      * @throws InvalidParameterException the enum is null
      */
-    public  void validateEnum(Object enumValue,
-                              String parameterName,
-                              String methodName) throws InvalidParameterException
+    void validateEnum(Object enumValue,
+                      String parameterName,
+                      String methodName) throws InvalidParameterException
     {
         if (enumValue == null)
         {
@@ -118,11 +121,12 @@ public class ErrorHandler
      * @param name  unique name to validate
      * @param parameterName  name of the parameter that passed the name.
      * @param methodName  name of the method making the call.
+     *
      * @throws InvalidParameterException the guid is null
      */
-    public  void validateName(String name,
-                              String parameterName,
-                              String methodName) throws InvalidParameterException
+    void validateName(String name,
+                      String parameterName,
+                      String methodName) throws InvalidParameterException
     {
         if (name == null)
         {
@@ -147,11 +151,12 @@ public class ErrorHandler
      * @param text  unique name to validate
      * @param parameterName  name of the parameter that passed the name.
      * @param methodName  name of the method making the call.
+     *
      * @throws InvalidParameterException the guid is null
      */
-    public  void validateText(String text,
-                              String parameterName,
-                              String methodName) throws InvalidParameterException
+    void validateText(String text,
+                      String parameterName,
+                      String methodName) throws InvalidParameterException
     {
         if (text == null)
         {
@@ -175,9 +180,10 @@ public class ErrorHandler
      *
      * @param methodName  name of the method being called
      * @return metadata collection that provides access to the properties in the property server
+     *
      * @throws PropertyServerException exception thrown if the repository connector
      */
-    public OMRSMetadataCollection validateRepositoryConnector(String   methodName) throws PropertyServerException
+    OMRSMetadataCollection validateRepositoryConnector(String   methodName) throws PropertyServerException
     {
         if (this.repositoryConnector == null)
         {
@@ -232,12 +238,13 @@ public class ErrorHandler
      * @param methodName  name of the method making the call.
      * @param serverName  name of this server
      * @param serviceName  name of this access service
+     *
      * @throws UserNotAuthorizedException the userId is unauthorised for the request
      */
-    public  void handleUnauthorizedUser(String userId,
-                                        String methodName,
-                                        String serverName,
-                                        String serviceName) throws UserNotAuthorizedException
+    void handleUnauthorizedUser(String userId,
+                                String methodName,
+                                String serverName,
+                                String serviceName) throws UserNotAuthorizedException
     {
         AssetConsumerErrorCode errorCode = AssetConsumerErrorCode.USER_NOT_AUTHORIZED;
         String                 errorMessage = errorCode.getErrorMessageId()
@@ -264,12 +271,13 @@ public class ErrorHandler
      * @param methodName  name of the method making the call.
      * @param serverName  name of this server
      * @param serviceName  name of this access service
+     *
      * @throws PropertyServerException unexpected exception from property server
      */
-    public  void handleRepositoryError(Throwable  error,
-                                       String     methodName,
-                                       String     serverName,
-                                       String     serviceName) throws PropertyServerException
+    void handleRepositoryError(Throwable  error,
+                               String     methodName,
+                               String     serverName,
+                               String     serviceName) throws PropertyServerException
     {
         AssetConsumerErrorCode errorCode = AssetConsumerErrorCode.PROPERTY_SERVER_ERROR;
         String                 errorMessage = errorCode.getErrorMessageId()
@@ -296,13 +304,14 @@ public class ErrorHandler
      * @param methodName  name of the method making the call
      * @param serverName name of this server
      * @param serviceName  name of this access service
+     *
      * @throws InvalidParameterException unexpected exception from property server
      */
-    public  void handleUnknownAsset(Throwable  error,
-                                    String     assetGUID,
-                                    String     methodName,
-                                    String     serverName,
-                                    String     serviceName) throws InvalidParameterException
+    void handleUnknownAsset(Throwable  error,
+                            String     assetGUID,
+                            String     methodName,
+                            String     serverName,
+                            String     serviceName) throws InvalidParameterException
     {
         AssetConsumerErrorCode errorCode = AssetConsumerErrorCode.UNKNOWN_ASSET;
         String                 errorMessage = errorCode.getErrorMessageId()

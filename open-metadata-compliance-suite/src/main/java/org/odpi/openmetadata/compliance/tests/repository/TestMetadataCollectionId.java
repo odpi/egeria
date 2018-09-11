@@ -22,6 +22,8 @@ public class TestMetadataCollectionId extends OpenMetadataRepositoryTestCase
 
     /**
      * Default constructor sets up superclass
+     *
+     * @param workbenchId name of the calling workbench
      */
     public TestMetadataCollectionId(String   workbenchId)
     {

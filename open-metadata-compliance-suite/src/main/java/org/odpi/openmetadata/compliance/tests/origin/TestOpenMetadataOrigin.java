@@ -24,6 +24,8 @@ public class TestOpenMetadataOrigin extends OpenMetadataOriginTestCase
 
     /**
      * Default constructor sets up superclass
+     *
+     * @param workbenchId name of the calling workbench
      */
     public TestOpenMetadataOrigin(String   workbenchId)
     {
