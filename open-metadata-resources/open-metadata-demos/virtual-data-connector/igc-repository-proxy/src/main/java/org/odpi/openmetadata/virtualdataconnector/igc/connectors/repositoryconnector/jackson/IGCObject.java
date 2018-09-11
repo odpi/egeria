@@ -14,6 +14,8 @@ import java.util.Map;
         "modified_on",
         "unique",
         "assigned_to_terms",
+        "related_terms",
+        "assigned_assets",
         "_context",
         "created_on",
         "allows_null_values",
@@ -32,7 +34,6 @@ import java.util.Map;
         "is_a_type_of",
         "short_description",
         "long_description",
-        "terms",
         "DatabaseColumns",
         "data_connections",
         "data_connectors"
@@ -87,8 +88,10 @@ public class IGCObject {
     private String short_description;
     @JsonProperty("long_description")
     private String long_description;
-    @JsonProperty("terms")
-    private Terms terms;
+    @JsonProperty("related_terms")
+    private Terms relatedTerms;
+    @JsonProperty("assigned_assets")
+    private Terms assigned_assets;
     @JsonProperty("database_columns")
     private DatabaseColumns database_columns;
     @JsonProperty("data_connectors")
@@ -99,25 +102,33 @@ public class IGCObject {
     private DataConnections data_connections;
 
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new HashMap<>();
 
     @JsonProperty("data_connectors")
-    public DataConnectors getDataConnectors() { return data_connectors;
+    public DataConnectors getDataConnectors() {
+        return data_connectors;
     }
 
     @JsonProperty("data_connections")
-    public DataConnections getDataConnections() { return data_connections;
+    public DataConnections getDataConnections() {
+        return data_connections;
     }
 
     @JsonProperty("database_columns")
-    public DatabaseColumns getDatabaseColumns(){ return database_columns;}
+    public DatabaseColumns getDatabaseColumns() {
+        return database_columns;
+    }
 
 
     @JsonProperty("short_description")
-    public String getShortDescription(){ return short_description;}
+    public String getShortDescription() {
+        return short_description;
+    }
 
     @JsonProperty("long_description")
-    public String getLongDescription(){ return long_description;}
+    public String getLongDescription() {
+        return long_description;
+    }
 
     @JsonProperty("created_by")
     public String getCreatedBy() {
@@ -320,7 +331,8 @@ public class IGCObject {
     }
 
     @JsonProperty("is_a_type_of")
-    public IsTypeOf getIsTypeOf() { return isTypeOf;
+    public IsTypeOf getIsTypeOf() {
+        return isTypeOf;
     }
 
     @JsonProperty("is_a_type_of")
@@ -329,9 +341,14 @@ public class IGCObject {
     }
 
 
-    @JsonProperty("terms")
-    public Terms getTerms() {
-        return terms;
+    @JsonProperty("assigned_assets")
+    public Terms getAssignedAssets() {
+        return assigned_assets;
+    }
+
+    @JsonProperty("related_terms")
+    public Terms getRelatedTerms() {
+        return relatedTerms;
     }
 
     @JsonAnyGetter
