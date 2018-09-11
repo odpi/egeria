@@ -1,4 +1,5 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Contributors to the Egeria project. -->
 
 # Egeria Community Guide
 

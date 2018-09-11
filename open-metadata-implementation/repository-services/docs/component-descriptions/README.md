@@ -1,4 +1,5 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Contributors to the Egeria project. -->
 
 # Open Metadata Repository Services (OMRS) components
 
@@ -20,9 +21,13 @@
 
 ### Event Management
 
-* **[Event Listener](event-listener.md)** - receives OMRS Events.
-* **[Event Manager](event-manager.md)** - manages the transfer of OMRS Events between subsystems.
-* **[Event Publisher](event-publisher.md)** - sends OMRS Events.
+* **[OMRS Repository Event Manager](event-manager.md)** - Manages the distribution of repository events
+(TypeDef and Instance Events) within the local server's OMRS components.
+* **[OMRS Event Listener](event-listener.md)** - Receives Registry and Repository (TypeDef and Instance)
+events from the OMRS Topic for a cohort.
+* **[OMRS Event Publisher](event-publisher.md)** - Sends Registry and Repository (TypeDef and Instance)
+events to the OMRS Topic.
+This may be the OMRS Topic for a cohort, or the OMRS Topic used by the Open Metadata Access Services (OMAS).
 
 ### Enterprise Repository Services
  
@@ -39,7 +44,7 @@ supported by these repositories.
 
 ### Local Repository Services
 
-* **[Local OMRS Repository Connector]()** - Implements the OMRS Repository Connector interface that supports access to the local metadata repository.
+* **[Local OMRS Repository Connector](local-repository-connector.md)** - Implements the OMRS Repository Connector interface that supports access to the local metadata repository.
   * Local OMRS Connector Provider - The OCF Connector Provider factory for the Local OMRS Repository Connector.
   * Local OMRS Metadata Collection - Manages metadata requests for the local repository.
 * **[Local OMRS Repository Content Manager](typedef-manager.md)** - Provides an in-memory cache of open metadata type definitions
@@ -60,11 +65,5 @@ open metadata repository cohort that the local server belongs to.
 it to act as a member of an open metadata repository cohort.
 * **[OMRS Cohort Registry](cohort-registry.md)** - Manages registration exchanges with other members of a
 cohort on behalf of the local server.
-* **[OMRS Event Listener](event-listener.md)** - Receives Registry and Repository (TypeDef and Instance)
-events from the OMRS Topic for a cohort.
-* **[OMRS Event Publisher](event-publisher.md)** - Sends Registry and Repository (TypeDef and Instance)
-events to the OMRS Topic.
-This may be the OMRS Topic for a cohort, or the OMRS Topic used by the Open Metadata Access Services (OMAS).
-* **[OMRS Repository Event Manager](event-manager.md)** - Manages the distribution of repository events
-(TypeDef and Instance Events) within the local server's OMRS components.
+
 
