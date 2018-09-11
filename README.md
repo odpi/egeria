@@ -37,7 +37,8 @@ The Egeria content is organized into the following modules:
     * **[data-process](open-metadata-implementation/access-services/data-process)** - exchange metadata with a data processing engine.
     * **[data-protection](open-metadata-implementation/access-services/data-protection)** - set up rules to protect data.
     * **[data-science](open-metadata-implementation/access-services/data-science)** - manage metadata for analytics.
-    * **[digital-architecture](open-metadata-implementation/access-services/digital-architecture)** - support the definition of data standards and models.    * **[dev-ops](open-metadata-implementation/access-services/dev-ops)** - manage metadata for a devOps pipeline.
+    * **[dev-ops](open-metadata-implementation/access-services/dev-ops)** - manage metadata for a devOps pipeline.
+    * **[digital-architecture](open-metadata-implementation/access-services/digital-architecture)** - support the definition of data standards and models.
     * **[discovery-engine](open-metadata-implementation/access-services/discovery-engine)** - manage metadata for metadata discovery services.
     * **[governance-engine](open-metadata-implementation/access-services/governance-engine)** - manage metadata for an operational governance engine.
     * **[governance-program](open-metadata-implementation/access-services/governance-program)** - set up and manage a governance program.
