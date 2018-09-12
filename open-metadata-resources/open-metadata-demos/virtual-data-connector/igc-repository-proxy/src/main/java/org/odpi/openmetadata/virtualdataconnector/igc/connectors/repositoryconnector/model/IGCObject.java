@@ -1,8 +1,14 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-package org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconnector.jackson;
+package org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconnector.model;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +21,7 @@ import java.util.Map;
         "unique",
         "assigned_to_terms",
         "related_terms",
-        "assigned_assets",
+        "assignedAssets",
         "_context",
         "created_on",
         "allows_null_values",
@@ -32,14 +38,13 @@ import java.util.Map;
         "odbc_type",
         "database_table_or_view",
         "is_a_type_of",
-        "short_description",
-        "long_description",
+        "shortDescription",
+        "longDescription",
         "DatabaseColumns",
-        "data_connections",
-        "data_connectors"
+        "dataConnections",
+        "dataConnectors"
 })
 
-//Can be used for database columns, glossaryterms and glossary categories.
 public class IGCObject {
 
     @JsonProperty("created_by")
@@ -53,7 +58,7 @@ public class IGCObject {
     @JsonProperty("assigned_to_terms")
     private AssignedToTerms assignedToTerms;
     @JsonProperty("_context")
-    private List<Context> context = null;
+    private List<Context> context = new ArrayList<>();
     @JsonProperty("created_on")
     private String createdOn;
     @JsonProperty("allows_null_values")
@@ -85,49 +90,47 @@ public class IGCObject {
     @JsonProperty("is_a_type_of")
     private IsTypeOf isTypeOf;
     @JsonProperty("short_description")
-    private String short_description;
+    private String shortDescription;
     @JsonProperty("long_description")
-    private String long_description;
+    private String longDescription;
     @JsonProperty("related_terms")
     private Terms relatedTerms;
     @JsonProperty("assigned_assets")
-    private Terms assigned_assets;
+    private Terms assignedAssets;
     @JsonProperty("database_columns")
-    private DatabaseColumns database_columns;
+    private DatabaseColumns databaseColumns;
     @JsonProperty("data_connectors")
-    private DataConnectors data_connectors;
-
-
+    private DataConnectors dataConnectors;
     @JsonProperty("data_connections")
-    private DataConnections data_connections;
+    private DataConnections dataConnections;
 
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<>();
 
     @JsonProperty("data_connectors")
     public DataConnectors getDataConnectors() {
-        return data_connectors;
+        return dataConnectors;
     }
 
     @JsonProperty("data_connections")
     public DataConnections getDataConnections() {
-        return data_connections;
+        return dataConnections;
     }
 
     @JsonProperty("database_columns")
     public DatabaseColumns getDatabaseColumns() {
-        return database_columns;
+        return databaseColumns;
     }
 
 
     @JsonProperty("short_description")
     public String getShortDescription() {
-        return short_description;
+        return shortDescription;
     }
 
     @JsonProperty("long_description")
     public String getLongDescription() {
-        return long_description;
+        return longDescription;
     }
 
     @JsonProperty("created_by")
@@ -343,7 +346,7 @@ public class IGCObject {
 
     @JsonProperty("assigned_assets")
     public Terms getAssignedAssets() {
-        return assigned_assets;
+        return assignedAssets;
     }
 
     @JsonProperty("related_terms")
@@ -361,4 +364,52 @@ public class IGCObject {
         this.additionalProperties.put(name, value);
     }
 
+
+    public String get_name() {
+        return _name;
+    }
+
+    public void set_name(String _name) {
+        this._name = _name;
+    }
+
+    public String get_type() {
+        return _type;
+    }
+
+    public void set_type(String _type) {
+        this._type = _type;
+    }
+
+    public void setShortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
+    }
+
+    public void setLongDescription(String longDescription) {
+        this.longDescription = longDescription;
+    }
+
+    public void setRelatedTerms(Terms relatedTerms) {
+        this.relatedTerms = relatedTerms;
+    }
+
+    public void setAssignedAssets(Terms assignedAssets) {
+        this.assignedAssets = assignedAssets;
+    }
+
+    public void setDatabaseColumns(DatabaseColumns databaseColumns) {
+        this.databaseColumns = databaseColumns;
+    }
+
+    public void setDataConnectors(DataConnectors dataConnectors) {
+        this.dataConnectors = dataConnectors;
+    }
+
+    public void setDataConnections(DataConnections dataConnections) {
+        this.dataConnections = dataConnections;
+    }
+
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
+        this.additionalProperties = additionalProperties;
+    }
 }

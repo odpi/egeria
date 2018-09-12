@@ -1,7 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-package org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconnector.jackson;
+package org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconnector.model;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.util.HashMap;
 import java.util.List;
@@ -13,9 +16,12 @@ import java.util.Map;
         "paging"
 })
 public class Terms {
-    @JsonProperty("items")
-    private List<Item> items = null;
 
+    @JsonProperty("items")
+    private List<Item> items;
+
+    @JsonProperty("paging")
+    private Paging paging;
 
     @JsonProperty("items")
     public List<Item> getItems() {
@@ -28,15 +34,10 @@ public class Terms {
     }
 
     @JsonProperty("paging")
-    private Paging paging;
-    @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-
-    @JsonProperty("paging")
     public void setPaging(Paging paging) {
         this.paging = paging;
     }
 
-
-
+    @JsonIgnore
+    private Map<String, Object> additionalProperties = new HashMap<>();
 }

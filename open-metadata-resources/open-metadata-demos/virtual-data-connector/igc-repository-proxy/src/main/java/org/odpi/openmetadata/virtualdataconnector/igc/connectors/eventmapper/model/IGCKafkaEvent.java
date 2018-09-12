@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-package org.odpi.openmetadata.virtualdataconnector.igc.connectors.eventmapper.jackson;
+package org.odpi.openmetadata.virtualdataconnector.igc.connectors.eventmapper.model;
 
 import com.fasterxml.jackson.annotation.*;
 
@@ -20,25 +20,24 @@ import java.util.Map;
 public class IGCKafkaEvent {
 
     @JsonProperty("ASSET_TYPE")
-    private String aSSETTYPE;
+    private String assetType;
     @JsonProperty("ASSET_RID")
-    private String aSSETRID;
+    private String assetRID;
     @JsonProperty("eventType")
     private String eventType;
     @JsonProperty("_isEncrypted")
     private Boolean isEncrypted;
     @JsonProperty("ASSET_CONTEXT")
-    private String aSSETCONTEXT;
+    private String assetContext;
     @JsonProperty("ACTION")
-    private String aCTION;
+    private String action;
     @JsonProperty("ASSET_NAME")
-    private String aSSETNAME;
+    private String assetName;
     @JsonProperty("createdRIDs")
     private String createdRIDs;
 
-
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new HashMap<>();
 
     @JsonProperty("createdRIDs")
     public String getDatacollectionRID() {
@@ -46,23 +45,23 @@ public class IGCKafkaEvent {
     }
 
     @JsonProperty("ASSET_TYPE")
-    public String getASSETTYPE() {
-        return aSSETTYPE;
+    public String getAssetType() {
+        return assetType;
     }
 
     @JsonProperty("ASSET_TYPE")
-    public void setASSETTYPE(String aSSETTYPE) {
-        this.aSSETTYPE = aSSETTYPE;
+    public void setAssetType(String assetType) {
+        this.assetType = assetType;
     }
 
     @JsonProperty("ASSET_RID")
-    public String getASSETRID() {
-        return aSSETRID;
+    public String getAssetRID() {
+        return assetRID;
     }
 
     @JsonProperty("ASSET_RID")
-    public void setASSETRID(String aSSETRID) {
-        this.aSSETRID = aSSETRID;
+    public void setAssetRID(String assetRID) {
+        this.assetRID = assetRID;
     }
 
     @JsonProperty("eventType")
@@ -86,33 +85,33 @@ public class IGCKafkaEvent {
     }
 
     @JsonProperty("ASSET_CONTEXT")
-    public String getASSETCONTEXT() {
-        return aSSETCONTEXT;
+    public String getAssetContext() {
+        return assetContext;
     }
 
     @JsonProperty("ASSET_CONTEXT")
-    public void setASSETCONTEXT(String aSSETCONTEXT) {
-        this.aSSETCONTEXT = aSSETCONTEXT;
+    public void setAssetContext(String assetContext) {
+        this.assetContext = assetContext;
     }
 
     @JsonProperty("ACTION")
-    public String getACTION() {
-        return aCTION;
+    public String getAction() {
+        return action;
     }
 
     @JsonProperty("ACTION")
-    public void setACTION(String aCTION) {
-        this.aCTION = aCTION;
+    public void setAction(String action) {
+        this.action = action;
     }
 
     @JsonProperty("ASSET_NAME")
-    public String getASSETNAME() {
-        return aSSETNAME;
+    public String getAssetName() {
+        return assetName;
     }
 
     @JsonProperty("ASSET_NAME")
-    public void setASSETNAME(String aSSETNAME) {
-        this.aSSETNAME = aSSETNAME;
+    public void setAssetName(String assetName) {
+        this.assetName = assetName;
     }
 
     @JsonAnyGetter
