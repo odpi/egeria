@@ -33,4 +33,6 @@ public class Constants {
     public static final String CONFIDENTIALITY = "Confidentiality";
     public static final String SEMANTIC_ASSIGNMENT = "SemanticAssignment";
     public static final String TERM_CATEGORIZATION = "TermCategorization";
+    public static final String FOREIGN_KEY = "ForeignKey";
+    public static final String PRIMARY_KEY = "PrimaryKey";
 }

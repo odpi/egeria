@@ -42,7 +42,10 @@ import java.util.Map;
         "longDescription",
         "DatabaseColumns",
         "dataConnections",
-        "dataConnectors"
+        "dataConnectors",
+        "defined_foreign_key",
+        "defined_foreign_key_references",
+        "defined_primary_key"
 })
 
 public class IGCObject {
@@ -103,6 +106,12 @@ public class IGCObject {
     private DataConnectors dataConnectors;
     @JsonProperty("data_connections")
     private DataConnections dataConnections;
+    @JsonProperty("defined_foreign_key")
+    private Boolean definedForeignKey;
+    @JsonProperty("defined_foreign_key_references")
+    private Terms definedForeignKeyReferences;
+    @JsonProperty("defined_primary_key")
+    private Terms definedPrimaryKey;
 
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<>();
@@ -411,5 +420,35 @@ public class IGCObject {
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+
+    @JsonProperty("defined_foreign_key")
+    public Boolean getDefinedForeignKey() {
+        return definedForeignKey;
+    }
+
+    @JsonProperty("defined_foreign_key")
+    public void setDefinedForeignKey(Boolean definedForeignKey) {
+        this.definedForeignKey = definedForeignKey;
+    }
+
+    @JsonProperty("defined_foreign_key_references")
+    public Terms getDefinedForeignKeyReferences() {
+        return definedForeignKeyReferences;
+    }
+
+    @JsonProperty("defined_foreign_key_references")
+    public void setDefinedForeignKeyReferences(Terms definedForeignKeyReferences) {
+        this.definedForeignKeyReferences = definedForeignKeyReferences;
+    }
+
+    @JsonProperty("defined_primary_key")
+    public Terms getDefinedPrimaryKey() {
+        return definedPrimaryKey;
+    }
+
+    @JsonProperty("defined_primary_key")
+    public void setDefinedPrimaryKey(Terms definedPrimaryKey) {
+        this.definedPrimaryKey = definedPrimaryKey;
     }
 }

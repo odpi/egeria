@@ -30,8 +30,10 @@ import org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconne
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -244,7 +246,20 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                     relationalTableTypeID,
                     RELATIONAL_TABLE_TYPE);
 
+            if (igcColumn.getDefinedForeignKey() != null && igcColumn.getDefinedForeignKey()) {
 
+                if (igcColumn.getDefinedForeignKeyReferences() != null &&
+                        igcColumn.getDefinedForeignKeyReferences().getItems() != null) {
+                    for (Item foreignKey : igcColumn.getDefinedForeignKeyReferences().getItems()) {
+                        createRelationship(
+                                FOREIGN_KEY,
+                                igcColumn.getId(),
+                                RELATIONAL_COLUMN,
+                                foreignKey.getId(),
+                                RELATIONAL_COLUMN);
+                    }
+                }
+            }
         }
     }
 
@@ -354,7 +369,13 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
 
         String username = igcObject.getCreatedBy();
         InstanceProperties instanceProperties = getEntityInstanceProperties(igcObject, typeName);
-        EntityDetail entityDetail = getEntityDetail(igcObject, typeName, avoidDuplicate, username, instanceProperties);
+
+        List<Classification> classifications = null;
+        if (typeName.equals(RELATIONAL_COLUMN) && igcObject.getDefinedPrimaryKey() != null) {
+            classifications = getPrimaryKeyClassification();
+        }
+
+        EntityDetail entityDetail = getEntityDetail(igcObject, typeName, avoidDuplicate, username, instanceProperties, classifications);
 
         this.repositoryEventProcessor.processNewEntityEvent(
                 sourceName,
@@ -417,7 +438,9 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
     }
 
     private EntityDetail getEntityDetail(IGCObject igcObject, String typeName, boolean avoidDuplicate, String username,
-                                         InstanceProperties instanceProperties) throws TypeErrorException {
+                                         InstanceProperties instanceProperties, List<Classification> classifications)
+            throws TypeErrorException {
+
         EntityDetail entityDetail = this.repositoryHelper.getNewEntity(
                 sourceName,
                 metadataCollectionId,
@@ -425,7 +448,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                 username,
                 typeName,
                 instanceProperties,
-                null
+                classifications
         );
 
         entityDetail.setStatus(InstanceStatus.ACTIVE);
@@ -439,16 +462,36 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         return entityDetail;
     }
 
+    private List<Classification> getPrimaryKeyClassification() throws TypeErrorException {
+
+        List<Classification> classificationList = new ArrayList<>(1);
+
+        Classification classification = repositoryHelper.getNewClassification(
+                sourceName,
+                null,
+                PRIMARY_KEY,
+                RELATIONAL_COLUMN,
+                ClassificationOrigin.PROPAGATED,
+                null,
+                null);
+        classificationList.add(classification);
+
+        return classificationList;
+    }
+
     private EntityDetail getEntityWithClassification(IGCObject igcObject, String classificationTypeName, Item item) throws TypeErrorException {
 
         Classification classification = getClassification(classificationTypeName, item);
-        InstanceProperties instanceProperties = getEntityInstanceProperties(igcObject, GLOSSARY_TERM);
-        EntityDetail skeletonEntity = getEntityDetail(igcObject, GLOSSARY_TERM, false, null, instanceProperties);
+        List<Classification> classifications = new ArrayList<>(1);
+        classifications.add(classification);
 
-        return repositoryHelper.addClassificationToEntity(sourceName,
-                skeletonEntity,
-                classification,
-                "createClassification");
+        InstanceProperties instanceProperties = getEntityInstanceProperties(igcObject, GLOSSARY_TERM);
+        return getEntityDetail(igcObject,
+                GLOSSARY_TERM,
+                false,
+                null,
+                instanceProperties,
+                classifications);
     }
 
     private Classification getClassification(String classificationTypeName, Item item) throws TypeErrorException {
