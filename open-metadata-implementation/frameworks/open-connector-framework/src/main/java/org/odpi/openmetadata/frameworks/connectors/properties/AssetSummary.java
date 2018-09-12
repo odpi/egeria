@@ -34,6 +34,16 @@ import java.util.Objects;
  */
 public class AssetSummary extends AssetDescriptor
 {
+
+    /**
+     * Default constructor only for subclasses
+     */
+    protected AssetSummary()
+    {
+        super();
+    }
+
+
     /**
      * Bean constructor - initializes AssetSummary using a bean returned by the REST interface.
      *

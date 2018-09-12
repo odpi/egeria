@@ -514,7 +514,7 @@ public class TestConnectorBroker
 
             MockConnector mockConnector = (MockConnector)newConnector;
             assertTrue(mockConnector.getMockConnectorData().contains("This is from the mock connector"));
-            assertTrue(mockConnector.getConnectedAssetProperties() == null);
+            assertTrue(mockConnector.getConnectedAssetProperties("TestUserId") == null);
         }
         catch (Throwable error)
         {
@@ -550,7 +550,7 @@ public class TestConnectorBroker
 
             MockConnector mockConnector = (MockConnector)newConnector;
             assertTrue(mockConnector.getMockConnectorData().contains("This is from the mock connector"));
-            assertTrue(mockConnector.getConnectedAssetProperties() == null);
+            assertTrue(mockConnector.getConnectedAssetProperties("TestUserId") == null);
         }
         catch (Throwable error)
         {

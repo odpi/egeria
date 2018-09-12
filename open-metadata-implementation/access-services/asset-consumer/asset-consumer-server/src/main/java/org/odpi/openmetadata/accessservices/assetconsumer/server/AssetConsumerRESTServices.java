@@ -1,21 +1,19 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.server;
 
 
+import org.odpi.openmetadata.accessservices.assetconsumer.rest.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.AssetConsumerErrorCode;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions.*;
-import org.odpi.openmetadata.accessservices.assetconsumer.responses.AssetConsumerOMASAPIResponse;
-import org.odpi.openmetadata.accessservices.assetconsumer.responses.ConnectionResponse;
-import org.odpi.openmetadata.accessservices.assetconsumer.responses.VoidResponse;
 import org.odpi.openmetadata.adminservices.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.CommentType;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceOperationalStatus;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
 import org.odpi.openmetadata.accessservices.assetconsumer.admin.AssetConsumerAdmin;
-import org.odpi.openmetadata.accessservices.assetconsumer.responses.GUIDResponse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.StarRating;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
@@ -69,15 +67,15 @@ public class AssetConsumerRESTServices
     /**
      * Returns the connection object corresponding to the supplied connection name.
      *
-     * @param userId  String - userId of user making request.
-     * @param name  this may be the qualifiedName or displayName of the connection.
+     * @param userId userId of user making request.
+     * @param name   this may be the qualifiedName or displayName of the connection.
      *
      * @return ConnectionResponse or
-     * InvalidParameterException one of the parameters is null or invalid.
-     * UnrecognizedConnectionNameException there is no connection defined for this name.
-     * AmbiguousConnectionNameException there is more than one connection defined for this name.
-     * PropertyServerException there is a problem retrieving information from the property (metadata) server.
-     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * InvalidParameterException - one of the parameters is null or invalid or
+     * UnrecognizedConnectionNameException - there is no connection defined for this name or
+     * AmbiguousConnectionNameException - there is more than one connection defined for this name or
+     * PropertyServerException - there is a problem retrieving information from the property (metadata) server or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public ConnectionResponse getConnectionByName(String   userId,
                                                   String   name)
@@ -127,14 +125,14 @@ public class AssetConsumerRESTServices
     /**
      * Returns the connection object corresponding to the supplied connection GUID.
      *
-     * @param userId  String - userId of user making request.
+     * @param userId userId of user making request.
      * @param guid  the unique id for the connection within the property server.
      *
      * @return ConnectionResponse or
-     * InvalidParameterException one of the parameters is null or invalid.
-     * UnrecognizedConnectionGUIDException the supplied GUID is not recognized by the metadata repository.
-     * PropertyServerException there is a problem retrieving information from the property (metadata) server.
-     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * InvalidParameterException - one of the parameters is null or invalid or
+     * UnrecognizedConnectionGUIDException - the supplied GUID is not recognized by the metadata repository or
+     * PropertyServerException - there is a problem retrieving information from the property (metadata) server or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public ConnectionResponse getConnectionByGUID(String     userId,
                                                   String     guid)
@@ -182,25 +180,21 @@ public class AssetConsumerRESTServices
      *
      * @param userId  String - userId of user making request.
      * @param guid  String - unique id for the asset.
-     * @param connectorInstanceId  String - (optional) id of connector in use (if any).
-     * @param connectionName  String - (optional) name of the connection (extracted from the connector).
-     * @param connectorType  String - (optional) type of connector in use (if any).
-     * @param contextId  String - (optional) function name, or processId of the activity that the caller is performing.
-     * @param message  log record content.
+     * @param requestBody containing:
+     * connectorInstanceId  (String - (optional) id of connector in use (if any)),
+     * connectionName  (String - (optional) name of the connection (extracted from the connector)),
+     * connectorType  (String - (optional) type of connector in use (if any)),
+     * contextId  (String - (optional) function name, or processId of the activity that the caller is performing),
+     * message  (log record content).
      *
      * @return VoidResponse or
-     * InvalidParameterException one of the parameters is null or invalid.
-     * PropertyServerException There is a problem adding the asset properties to
-     *                                   the metadata repository.
-     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * InvalidParameterException - one of the parameters is null or invalid or
+     * PropertyServerException - there is a problem adding the log message to the audit log for this asset or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public VoidResponse addLogMessageToAsset(String      userId,
-                                             String      guid,
-                                             String      connectorInstanceId,
-                                             String      connectionName,
-                                             String      connectorType,
-                                             String      contextId,
-                                             String      message)
+    public VoidResponse addLogMessageToAsset(String                userId,
+                                             String                guid,
+                                             LogRecordRequestBody  requestBody)
     {
         final String        methodName = "addLogMessageToAsset";
 
@@ -208,9 +202,25 @@ public class AssetConsumerRESTServices
 
         VoidResponse  response = new VoidResponse();
 
+
         try
         {
             this.validateInitialization(methodName);
+
+            String      connectorInstanceId = null;
+            String      connectionName = null;
+            String      connectorType = null;
+            String      contextId = null;
+            String      message = null;
+
+            if (requestBody != null)
+            {
+                connectorInstanceId = requestBody.getConnectorInstanceId();
+                connectionName = requestBody.getConnectionName();
+                connectorType = requestBody.getConnectorType();
+                contextId = requestBody.getContextId();
+                message = requestBody.getMessage();
+            }
 
             AuditLogHandler   auditLogHandler = new AuditLogHandler(accessServiceName,
                                                                     repositoryConnector);
@@ -247,21 +257,17 @@ public class AssetConsumerRESTServices
      *
      * @param userId  String - userId of user making request.
      * @param guid  String - unique id for the asset.
-     * @param tagName  String - name of the tag.
-     * @param tagDescription  String - (optional) description of the tag.  Setting a description, particularly in
-     *                       a public tag makes the tag more valuable to other users and can act as an embryonic
-     *                       glossary term.
+     * @param requestBody  contains the name of the tag and (optional) description of the tag.
      *
      * @return GUIDResponse or
-     * InvalidParameterException one of the parameters is null or invalid.
-     * PropertyServerException There is a problem adding the asset properties to
-     *                                   the metadata repository.
-     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * InvalidParameterException - one of the parameters is null or invalid or
+     * PropertyServerException - there is a problem adding the asset properties to
+     *                                   the metadata repository or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public GUIDResponse addTagToAsset(String      userId,
-                                      String      guid,
-                                      String      tagName,
-                                      String      tagDescription)
+    public GUIDResponse addTagToAsset(String          userId,
+                                      String          guid,
+                                      TagRequestBody  requestBody)
     {
         final String        methodName = "addTagToAsset";
 
@@ -273,10 +279,19 @@ public class AssetConsumerRESTServices
         {
             this.validateInitialization(methodName);
 
+            String      tagName = null;
+            String      tagDescription = null;
+
+            if (requestBody != null)
+            {
+                tagName = requestBody.getTagName();
+                tagDescription = requestBody.getTagDescription();
+            }
+
             FeedbackHandler   feedbackHandler = new FeedbackHandler(accessServiceName,
                                                                     repositoryConnector);
 
-            feedbackHandler.addTagToAsset(userId, guid, tagName, tagDescription);
+            response.setGUID(feedbackHandler.addTagToAsset(userId, guid, tagName, tagDescription));
         }
         catch (InvalidParameterException  error)
         {
@@ -300,23 +315,19 @@ public class AssetConsumerRESTServices
     /**
      * Adds a new private tag to the asset's properties.
      *
-     * @param userId  String - userId of user making request.
-     * @param guid  String - unique id for the asset.
-     * @param tagName  String - name of the tag.
-     * @param tagDescription  String - (optional) description of the tag.  Setting a description, particularly in
-     *                       a public tag makes the tag more valuable to other users and can act as an embryonic
-     *                       glossary term.
+     * @param userId       String - userId of user making request.
+     * @param guid         String - unique id for the asset.
+     * @param requestBody  contains the name of the tag and (optional) description of the tag.
      *
      * @return GUIDResponse or
-     * InvalidParameterException one of the parameters is null or invalid.
-     * PropertyServerException There is a problem adding the asset properties to
-     *                                   the metadata repository.
-     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * InvalidParameterException - one of the parameters is null or invalid or
+     * PropertyServerException - there is a problem adding the asset properties to
+     *                                   the metadata repository or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public GUIDResponse addPrivateTagToAsset(String      userId,
-                                             String      guid,
-                                             String      tagName,
-                                             String      tagDescription)
+    public GUIDResponse addPrivateTagToAsset(String          userId,
+                                             String          guid,
+                                             TagRequestBody  requestBody)
     {
         final String        methodName = "addPrivateTagToAsset";
 
@@ -328,10 +339,19 @@ public class AssetConsumerRESTServices
         {
             this.validateInitialization(methodName);
 
+            String      tagName = null;
+            String      tagDescription = null;
+
+            if (requestBody != null)
+            {
+                tagName = requestBody.getTagName();
+                tagDescription = requestBody.getTagDescription();
+            }
+
             FeedbackHandler   feedbackHandler = new FeedbackHandler(accessServiceName,
                                                                     repositoryConnector);
 
-            feedbackHandler.addPrivateTagToAsset(userId, guid, tagName, tagDescription);
+            response.setGUID(feedbackHandler.addPrivateTagToAsset(userId, guid, tagName, tagDescription));
         }
         catch (InvalidParameterException  error)
         {
@@ -355,21 +375,19 @@ public class AssetConsumerRESTServices
     /**
      * Adds a rating to the asset.
      *
-     * @param userId  String - userId of user making request.
-     * @param guid  String - unique id for the asset.
-     * @param starRating StarRating  - enumeration for none, one to five stars.
-     * @param review  String - user review of asset.
+     * @param userId      String - userId of user making request.
+     * @param guid        String - unique id for the asset.
+     * @param requestBody containing the StarRating and user review of asset.
      *
      * @return GUIDResponse or
-     * InvalidParameterException one of the parameters is null or invalid.
-     * PropertyServerException There is a problem adding the asset properties to
-     *                                   the metadata repository.
-     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * InvalidParameterException - one of the parameters is null or invalid or
+     * PropertyServerException - there is a problem adding the asset properties to
+     *                                   the metadata repository or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public GUIDResponse addRatingToAsset(String     userId,
-                                         String     guid,
-                                         StarRating starRating,
-                                         String     review)
+    public GUIDResponse addRatingToAsset(String            userId,
+                                         String            guid,
+                                         RatingRequestBody requestBody)
     {
         final String        methodName = "addRatingToAsset";
 
@@ -381,10 +399,19 @@ public class AssetConsumerRESTServices
         {
             this.validateInitialization(methodName);
 
+            StarRating starRating = null;
+            String     review = null;
+
+            if (requestBody != null)
+            {
+                starRating = requestBody.getStarRating();
+                review = requestBody.getReview();
+            }
+
             FeedbackHandler   feedbackHandler = new FeedbackHandler(accessServiceName,
                                                                     repositoryConnector);
 
-            feedbackHandler.addRatingToAsset(userId, guid, starRating, review);
+            response.setGUID(feedbackHandler.addRatingToAsset(userId, guid, starRating, review));
         }
         catch (InvalidParameterException  error)
         {
@@ -408,17 +435,19 @@ public class AssetConsumerRESTServices
     /**
      * Adds a "Like" to the asset.
      *
-     * @param userId  String - userId of user making request.
-     * @param guid  String - unique id for the asset
+     * @param userId      String - userId of user making request.
+     * @param guid        String - unique id for the asset.
+     * @param requestBody null request body to satisfy HTTP protocol.
      *
      * @return GUIDResponse or
-     * InvalidParameterException one of the parameters is null or invalid.
-     * PropertyServerException There is a problem adding the asset properties to
-     *                                   the metadata repository.
-     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * InvalidParameterException - one of the parameters is null or invalid or
+     * PropertyServerException - there is a problem adding the asset properties to
+     *                                   the metadata repository or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public GUIDResponse addLikeToAsset(String       userId,
-                                       String       guid)
+    public GUIDResponse addLikeToAsset(String          userId,
+                                       String          guid,
+                                       NullRequestBody requestBody)
     {
         final String        methodName = "addLikeToAsset";
 
@@ -433,7 +462,7 @@ public class AssetConsumerRESTServices
             FeedbackHandler   feedbackHandler = new FeedbackHandler(accessServiceName,
                                                                     repositoryConnector);
 
-            feedbackHandler.addLikeToAsset(userId, guid);
+            response.setGUID(feedbackHandler.addLikeToAsset(userId, guid));
         }
         catch (InvalidParameterException  error)
         {
@@ -459,19 +488,17 @@ public class AssetConsumerRESTServices
      *
      * @param userId  String - userId of user making request.
      * @param guid  String - unique id for the asset.
-     * @param commentType  type of comment enum.
-     * @param commentText  String - the text of the comment.
+     * @param requestBody containing type of comment enum and the text of the comment.
      *
      * @return GUIDResponse or
-     * InvalidParameterException one of the parameters is null or invalid.
-     * PropertyServerException There is a problem adding the asset properties to
-     *                                   the metadata repository.
-     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * InvalidParameterException - one of the parameters is null or invalid or
+     * PropertyServerException - there is a problem adding the asset properties to
+     *                                   the metadata repository or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public GUIDResponse addCommentToAsset(String      userId,
-                                          String      guid,
-                                          CommentType commentType,
-                                          String      commentText)
+    public GUIDResponse addCommentToAsset(String             userId,
+                                          String             guid,
+                                          CommentRequestBody requestBody)
     {
         final String        methodName = "addCommentToAsset";
 
@@ -483,10 +510,19 @@ public class AssetConsumerRESTServices
         {
             this.validateInitialization(methodName);
 
+            CommentType commentType = null;
+            String      commentText = null;
+
+            if (requestBody != null)
+            {
+                commentType = requestBody.getCommentType();
+                commentText = requestBody.getCommentText();
+            }
+
             FeedbackHandler   feedbackHandler = new FeedbackHandler(accessServiceName,
                                                                     repositoryConnector);
 
-            feedbackHandler.addCommentToAsset(userId, guid, commentType, commentText);
+            response.setGUID(feedbackHandler.addCommentToAsset(userId, guid, commentType, commentText));
         }
         catch (InvalidParameterException  error)
         {
@@ -508,23 +544,21 @@ public class AssetConsumerRESTServices
 
 
     /**
-     * Adds a comment to the asset.
+     * Adds a reply to a comment.
      *
-     * @param userId  String - userId of user making request.
+     * @param userId       String - userId of user making request.
      * @param commentGUID  String - unique id for an existing comment.  Used to add a reply to a comment.
-     * @param commentType  type of comment enum.
-     * @param commentText  String - the text of the comment.
+     * @param requestBody  containing type of comment enum and the text of the comment.
      *
      * @return GUIDResponse or
-     * InvalidParameterException one of the parameters is null or invalid.
-     * PropertyServerException There is a problem adding the asset properties to
-     *                                   the metadata repository.
-     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * InvalidParameterException - one of the parameters is null or invalid or
+     * PropertyServerException - there is a problem adding the asset properties to
+     *                                   the metadata repository or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public GUIDResponse addCommentReply(String      userId,
-                                        String      commentGUID,
-                                        CommentType commentType,
-                                        String      commentText)
+    public GUIDResponse addCommentReply(String             userId,
+                                        String             commentGUID,
+                                        CommentRequestBody requestBody)
     {
         final String        methodName = "addCommentReply";
 
@@ -536,10 +570,19 @@ public class AssetConsumerRESTServices
         {
             this.validateInitialization(methodName);
 
+            CommentType commentType = null;
+            String      commentText = null;
+
+            if (requestBody != null)
+            {
+                commentType = requestBody.getCommentType();
+                commentText = requestBody.getCommentText();
+            }
+
             FeedbackHandler   feedbackHandler = new FeedbackHandler(accessServiceName,
                                                                     repositoryConnector);
 
-            feedbackHandler.addCommentReply(userId, commentGUID, commentType, commentText);
+            response.setGUID(feedbackHandler.addCommentReply(userId, commentGUID, commentType, commentText));
         }
         catch (InvalidParameterException  error)
         {
@@ -563,17 +606,19 @@ public class AssetConsumerRESTServices
     /**
      * Removes a tag from the asset that was added by this user.
      *
-     * @param userId  String - userId of user making request.
-     * @param guid  String - unique id for the tag.
+     * @param userId       String - userId of user making request.
+     * @param guid         String - unique id for the tag.
+     * @param requestBody  containing type of comment enum and the text of the comment.
      *
      * @return VoidResponse or
-     * InvalidParameterException one of the parameters is null or invalid.
-     * PropertyServerException There is a problem updating the asset properties in
-     *                                   the metadata repository.
-     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * InvalidParameterException - one of the parameters is null or invalid or
+     * PropertyServerException - there is a problem updating the asset properties in
+     *                                   the metadata repository or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public VoidResponse   removeTag(String     userId,
-                                    String     guid)
+    public VoidResponse   removeTag(String          userId,
+                                    String          guid,
+                                    NullRequestBody requestBody)
     {
         final String        methodName = "removeTag";
 
@@ -612,17 +657,19 @@ public class AssetConsumerRESTServices
     /**
      * Removes a tag from the asset that was added by this user.
      *
-     * @param userId  String - userId of user making request.
-     * @param guid  String - unique id for the tag.
+     * @param userId      String - userId of user making request.
+     * @param guid        String - unique id for the tag.
+     * @param requestBody null request body needed to satisfy the HTTP Post request
      *
      * @return VoidResponse or
-     * InvalidParameterException one of the parameters is null or invalid.
-     * PropertyServerException There is a problem updating the asset properties in
-     *                                   the metadata repository.
-     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * InvalidParameterException - one of the parameters is null or invalid or
+     * PropertyServerException - there is a problem updating the asset properties in
+     *                                   the metadata repository or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public VoidResponse   removePrivateTag(String     userId,
-                                           String     guid)
+    public VoidResponse   removePrivateTag(String          userId,
+                                           String          guid,
+                                           NullRequestBody requestBody)
     {
         final String        methodName = "removePrivateTag";
 
@@ -659,19 +706,21 @@ public class AssetConsumerRESTServices
 
 
     /**
-     * Removes of a star rating that was added to the asset by this user.
+     * Removes a star rating that was added to the asset by this user.
      *
-     * @param userId  String - userId of user making request.
-     * @param guid  String - unique id for the rating object
+     * @param userId      String - userId of user making request.
+     * @param guid        String - unique id for the rating object
+     * @param requestBody null request body needed to satisfy the HTTP Post request
      *
      * @return VoidResponse or
-     * InvalidParameterException one of the parameters is null or invalid.
-     * PropertyServerException There is a problem updating the asset properties in
-     *                                   the metadata repository.
-     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * InvalidParameterException - one of the parameters is null or invalid or
+     * PropertyServerException - there is a problem updating the asset properties in
+     *                                   the metadata repository or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public VoidResponse   removeRating(String     userId,
-                                       String     guid)
+    public VoidResponse   removeRating(String          userId,
+                                       String          guid,
+                                       NullRequestBody requestBody)
     {
         final String        methodName = "removeRating";
 
@@ -712,14 +761,17 @@ public class AssetConsumerRESTServices
      *
      * @param userId  String - userId of user making request.
      * @param guid  String - unique id for the like object
+     * @param requestBody null request body needed to satisfy the HTTP Post request
+     *
      * @return VoidResponse or
-     * InvalidParameterException one of the parameters is null or invalid.
-     * PropertyServerException There is a problem updating the asset properties in
-     *                                   the metadata repository.
-     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * InvalidParameterException - one of the parameters is null or invalid or
+     * PropertyServerException - there is a problem updating the asset properties in
+     *                                   the metadata repository or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public VoidResponse   removeLike(String     userId,
-                                     String     guid)
+    public VoidResponse   removeLike(String          userId,
+                                     String          guid,
+                                     NullRequestBody requestBody)
     {
         final String        methodName = "removeLike";
 
@@ -760,14 +812,17 @@ public class AssetConsumerRESTServices
      *
      * @param userId  String - userId of user making request.
      * @param guid  String - unique id for the comment object
+     * @param requestBody null request body needed to satisfy the HTTP Post request
+     *
      * @return VoidResponse or
-     * InvalidParameterException one of the parameters is null or invalid.
-     * PropertyServerException There is a problem updating the asset properties in
-     *                                   the metadata repository.
-     * UserNotAuthorizedException the user does not have permission to perform this request.
+     * InvalidParameterException - one of the parameters is null or invalid or
+     * PropertyServerException - there is a problem updating the asset properties in
+     *                                   the metadata repository or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public VoidResponse   removeComment(String     userId,
-                                        String     guid)
+    public VoidResponse   removeComment(String          userId,
+                                        String          guid,
+                                        NullRequestBody requestBody)
     {
         final String        methodName = "removeComment";
 
