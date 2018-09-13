@@ -31,7 +31,7 @@ support different types of messaging infrastructure.
 
 ## OMRS Subsystems
 
-Inside the OMRS are 4 major groups of components:
+Inside the OMRS are 4 major subsystems (groups of components):
 
 ![Figure 2: Component Overview (level 1)](omrs-component-overview-level-1.png)
 > Figure 2: Component Overview (level 1)
