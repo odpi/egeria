@@ -6,7 +6,7 @@ In memory metadata repositories can be used with Egeria for demonstrations of Eg
 another metadata repository. This is <em>NOT</em> for production.
 
 
-![Figure 1:](Egeria cocoCohort for demo.png)
+![Figure 1:](Egeria-cocoCohort-for-demo.png)
 > Figure 1: Cohort set up for demo
         
     
@@ -21,7 +21,7 @@ Start an omagserver
 
 You can start the omag server in Intellij - here is the configuration for port 8080. 
 
-![Figure 2:](Intellij OMAGApplication run configuration.png)
+![Figure 2:](Intellij-OMAGApplication-run-configuration.png)
 > Figure 2: OMAG Application run configuration for port 8080
 
 In a similar way start a second omag server on port 8081 using -Dserver.port=8081
@@ -133,4 +133,4 @@ If you want to start a clean system, you should delete these files.
 
 ###Appendix
 
-Figure 1 is generated using https://www.draw.io/ using xml file Egeria cocoCohort for demo.xml  
+Figure 1 is generated using https://www.draw.io/ using xml file Egeria-cocoCohort-for-demo.xml  
