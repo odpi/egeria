@@ -1,3 +1,4 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
 Sample PostMan Scripts
 
 Postman is a useful tool for testing REST APIs. See https://www.getpostman.com/ for more information about Postman
