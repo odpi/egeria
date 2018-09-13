@@ -3,8 +3,6 @@ package org.odpi.openmetadata.virtualdataconnector.igc.connectors.eventmapper;
 
 import org.testng.annotations.Test;
 
-import static org.testng.Assert.*;
-
 public class IGCOMRSRepositoryEventMapperTest {
 
     @Test
