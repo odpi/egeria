@@ -39,4 +39,9 @@ public class DataConnections {
     public void setPaging(Paging paging) {
         this.paging = paging;
     }
+
+    @JsonProperty("paging")
+    public Paging getPaging() {
+        return paging;
+    }
 }

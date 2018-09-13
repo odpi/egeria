@@ -38,6 +38,11 @@ public class Terms {
         this.paging = paging;
     }
 
+    @JsonProperty("paging")
+    public Paging getPaging() {
+        return paging;
+    }
+
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<>();
 }
