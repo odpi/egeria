@@ -55,12 +55,6 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         this.repositoryValidator = repositoryValidator;
         this.repositoryHelper = repositoryHelper;
         this.repositoryName = repositoryName;
-        /*
-         * This is a temporary implementation to allow the structural implementation of the connectors to
-         * be committed before the metadata collection implementation is complete.
-         */
-
-//        throw new NotImplementedRuntimeException("IGCOMRSMetadataCollection", "constructor", "ATLAS-1774");
     }
 
     @Override
