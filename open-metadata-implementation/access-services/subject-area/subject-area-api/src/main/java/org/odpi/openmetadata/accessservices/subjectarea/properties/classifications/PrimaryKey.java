@@ -100,6 +100,7 @@ public class PrimaryKey extends Classification {
     }
 
        private KeyPattern keyPattern;
+       private String name;
        /**
         * Type of primary key.
         * @return KeyPattern
@@ -111,7 +112,13 @@ public class PrimaryKey extends Classification {
            this.keyPattern = keyPattern;
        }
 
+        public String getName() {
+            return name;
+        }
 
+        public void setName(String name) {
+            this.name = name;
+        }
 
     /**
       * Get the extra attributes - ones that are in addition to the standard types.
