@@ -130,7 +130,3 @@ myservera.cocoCohort.registrystore
 myserverb.cocoCohort.registrystore
 ```
 If you want to start a clean system, you should delete these files.
-
-###Appendix
-
-Figure 1 is generated using https://www.draw.io/ using xml file Egeria-cocoCohort-for-demo.xml  
