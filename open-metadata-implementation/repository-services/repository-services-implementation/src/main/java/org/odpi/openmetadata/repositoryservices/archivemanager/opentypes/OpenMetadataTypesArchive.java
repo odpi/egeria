@@ -17396,10 +17396,20 @@ public class OpenMetadataTypesArchive
         final String attribute1Description     = "Type of primary key.";
         final String attribute1DescriptionGUID = null;
 
+
+        final String attribute2Name            = "name";
+        final String attribute2Description     = "Display name for the primary key.";
+        final String attribute2DescriptionGUID = null;
+
         property = archiveHelper.getEnumTypeDefAttribute("KeyPattern",
                                                          attribute1Name,
                                                          attribute1Description,
                                                          attribute1DescriptionGUID);
+        properties.add(property);
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
         properties.add(property);
 
         classificationDef.setPropertiesDefinition(properties);
@@ -17495,6 +17505,9 @@ public class OpenMetadataTypesArchive
         final String attribute4Name            = "source";
         final String attribute4Description     = "Person, organization or automated process that created the relationship.";
         final String attribute4DescriptionGUID = null;
+        final String attribute5Name            = "name";
+        final String attribute5Description     = "Display name for the foreign key.";
+        final String attribute5DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -17511,6 +17524,10 @@ public class OpenMetadataTypesArchive
         property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
                                                            attribute4Description,
                                                            attribute4DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute5Name,
+                                                           attribute5Description,
+                                                           attribute5DescriptionGUID);
         properties.add(property);
 
         relationshipDef.setPropertiesDefinition(properties);

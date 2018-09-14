@@ -1,7 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-package org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconnector.jackson;
+package org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconnector.model;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.util.HashMap;
 import java.util.List;
@@ -47,7 +52,7 @@ public class DataConnectors {
     @JsonProperty("database_table_or_view.assigned_to_terms")
     private DatabaseTableOrViewAssignedToTerms databaseTableOrViewAssignedToTerms;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new HashMap<>();
 
     @JsonProperty("position")
     public Integer getPosition() {
@@ -129,7 +134,6 @@ public class DataConnectors {
         this.url = url;
     }
 
-
     @JsonProperty("length")
     public String getLength() {
         return length;
@@ -169,7 +173,6 @@ public class DataConnectors {
     public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
-
 }
 
 
