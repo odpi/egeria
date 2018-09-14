@@ -10,8 +10,6 @@ public class Constants {
     public static final String RELATIONAL_TABLE = "RelationalTable";
     public static final String RELATIONAL_DB_SCHEMA_TYPE = "RelationalDBSchemaType";
     public static final String RELATIONAL_TABLE_TYPE = "RelationalTableType";
-    public static final String RELATIONAL_DBSCHEMA_TYPE_RID = "RelationalDBSchemaType.rid.";
-    public static final String RELATIONAL_TABLE_TYPE_RID = "RelationalTableType.rid.";
     public static final String DATA_CONTENT_FOR_DATA_SET = "DataContentForDataSet";
     public static final String ASSET_SCHEMA_TYPE = "AssetSchemaType";
     public static final String ATTRIBUTE_FOR_SCHEMA = "AttributeForSchema";
@@ -22,7 +20,6 @@ public class Constants {
     public static final String CONNECTION_ENDPOINT = "ConnectionEndpoint";
     public static final String RELATIONAL_COLUMN = "RelationalColumn";
     public static final String RELATIONAL_COLUMN_TYPE = "RelationalColumnType";
-    public static final String RELATIONAL_COLUMN_TYPE_RID = "RelationalColumnType.rid.";
     public static final String DATABASE_COLUMN = "Database Column";
     public static final String TERM = "Term";
     public static final String CATEGORY = "Category";
