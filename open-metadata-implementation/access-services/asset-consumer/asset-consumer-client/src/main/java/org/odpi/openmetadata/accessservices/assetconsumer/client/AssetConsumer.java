@@ -7,7 +7,6 @@ import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.AssetConsumerErro
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.assetconsumer.rest.*;
 import org.odpi.openmetadata.accessservices.connectedasset.client.ConnectedAsset;
-import org.odpi.openmetadata.accessservices.connectedasset.ffdc.ConnectedAssetErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
@@ -144,7 +143,7 @@ public class AssetConsumer implements AssetConsumerInterface
                                                                  UserNotAuthorizedException
     {
         final String   methodName = "getConnectionByName";
-        final String   urlTemplate = "/{0}/connection/by-name/{1}";
+        final String   urlTemplate = "/open-metadata/access-services/asset-consumer/users/{0}/connection/by-name/{1}";
 
         validateOMASServerURL(methodName);
 
@@ -222,7 +221,7 @@ public class AssetConsumer implements AssetConsumerInterface
                                                                    UserNotAuthorizedException
     {
         final String   methodName  = "getConnectionByGUID";
-        final String   urlTemplate = "/{0}/connection/{1}";
+        final String   urlTemplate = "/open-metadata/access-services/asset-consumer/users/{0}/connection/{1}";
 
         validateOMASServerURL(methodName);
 
@@ -393,7 +392,7 @@ public class AssetConsumer implements AssetConsumerInterface
         final String   methodName = "addLogMessageToAsset";
         final String   guidParameter = "assetGUID";
 
-        final String   urlTemplate = "/{0}/assets/{1}/log-records";
+        final String   urlTemplate = "/open-metadata/access-services/asset-consumer/users/{0}/assets/{1}/log-records";
 
         validateOMASServerURL(methodName);
         validateUserId(userId, methodName);
@@ -446,7 +445,7 @@ public class AssetConsumer implements AssetConsumerInterface
         final String   guidParameter = "assetGUID";
         final String   nameParameter = "tagName";
 
-        final String   urlTemplate = "/{0}/assets/{1}/tags";
+        final String   urlTemplate = "/open-metadata/access-services/asset-consumer/users/{0}/assets/{1}/tags";
 
         validateOMASServerURL(methodName);
         validateUserId(userId, methodName);
@@ -498,7 +497,7 @@ public class AssetConsumer implements AssetConsumerInterface
         final String   guidParameter = "assetGUID";
         final String   nameParameter = "tagName";
 
-        final String   urlTemplate = "/{0}/assets/{1}/tags/private";
+        final String   urlTemplate = "/open-metadata/access-services/asset-consumer/users/{0}/assets/{1}/tags/private";
 
         validateOMASServerURL(methodName);
         validateUserId(userId, methodName);
@@ -547,7 +546,7 @@ public class AssetConsumer implements AssetConsumerInterface
         final String   methodName  = "addRatingToAsset";
         final String   guidParameter = "assetGUID";
 
-        final String   urlTemplate = "/{0}/assets/{1}/ratings";
+        final String   urlTemplate = "/open-metadata/access-services/asset-consumer/users/{0}/assets/{1}/ratings";
 
         validateOMASServerURL(methodName);
         validateUserId(userId, methodName);
@@ -591,7 +590,7 @@ public class AssetConsumer implements AssetConsumerInterface
         final String   methodName  = "addRatingToAsset";
         final String   guidParameter = "assetGUID";
 
-        final String   urlTemplate = "/{0}/assets/{1}/likes";
+        final String   urlTemplate = "/open-metadata/access-services/asset-consumer/users/{0}/assets/{1}/likes";
 
         validateOMASServerURL(methodName);
         validateUserId(userId, methodName);
@@ -635,7 +634,7 @@ public class AssetConsumer implements AssetConsumerInterface
         final String   methodName  = "addCommentToAsset";
         final String   guidParameter = "assetGUID";
 
-        final String   urlTemplate = "/{0}/assets/{1}/comments";
+        final String   urlTemplate = "/open-metadata/access-services/asset-consumer/users/{0}/assets/{1}/comments";
 
         validateOMASServerURL(methodName);
         validateUserId(userId, methodName);
@@ -683,7 +682,7 @@ public class AssetConsumer implements AssetConsumerInterface
     {
         final String   methodName  = "addCommentReply";
         final String   commentGUIDParameter = "commentGUID";
-        final String   urlTemplate = "/{0}/comments/{1}/replies";
+        final String   urlTemplate = "/open-metadata/access-services/asset-consumer/users/{0}/comments/{1}/replies";
 
         validateOMASServerURL(methodName);
         validateUserId(userId, methodName);
@@ -726,7 +725,7 @@ public class AssetConsumer implements AssetConsumerInterface
         final String   methodName = "removeTag";
         final String   guidParameter = "tagGUID";
 
-        final String   urlTemplate = "/{0}/tags/{guid}/delete";
+        final String   urlTemplate = "/open-metadata/access-services/asset-consumer/users/{0}/tags/{guid}/delete";
 
         validateOMASServerURL(methodName);
         validateUserId(userId, methodName);
@@ -763,7 +762,7 @@ public class AssetConsumer implements AssetConsumerInterface
         final String   methodName = "removePrivateTag";
         final String   guidParameter = "tagGUID";
 
-        final String   urlTemplate = "/{0}/tags/private/{guid}/delete";
+        final String   urlTemplate = "/open-metadata/access-services/asset-consumer/users/{0}/tags/private/{guid}/delete";
 
         validateOMASServerURL(methodName);
         validateUserId(userId, methodName);
@@ -800,7 +799,7 @@ public class AssetConsumer implements AssetConsumerInterface
         final String   methodName = "removeRating";
         final String   guidParameter = "ratingGUID";
 
-        final String   urlTemplate = "/{0}/ratings/{guid}/delete";
+        final String   urlTemplate = "/open-metadata/access-services/asset-consumer/users/{0}/ratings/{guid}/delete";
 
         validateOMASServerURL(methodName);
         validateUserId(userId, methodName);
@@ -837,7 +836,7 @@ public class AssetConsumer implements AssetConsumerInterface
         final String   methodName = "removeLike";
         final String   guidParameter = "likeGUID";
 
-        final String   urlTemplate = "/{0}/likes/{guid}/delete";
+        final String   urlTemplate = "/open-metadata/access-services/asset-consumer/users/{0}/likes/{guid}/delete";
 
         validateOMASServerURL(methodName);
         validateUserId(userId, methodName);
@@ -874,7 +873,7 @@ public class AssetConsumer implements AssetConsumerInterface
         final  String  methodName = "removeComment";
         final  String  guidParameter = "commentGUID";
 
-        final String   urlTemplate = "/{0}/comments/{guid}/delete";
+        final String   urlTemplate = "/open-metadata/access-services/asset-consumer/users/{0}/comments/{guid}/delete";
 
         validateOMASServerURL(methodName);
         validateUserId(userId, methodName);
