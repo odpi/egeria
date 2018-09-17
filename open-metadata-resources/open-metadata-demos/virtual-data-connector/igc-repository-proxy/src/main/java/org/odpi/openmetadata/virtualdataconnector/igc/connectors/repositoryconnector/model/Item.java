@@ -36,7 +36,7 @@ public class Item {
     @JsonProperty("_type")
     private String type;
     @JsonProperty("assigned_to_terms")
-    private AssignedToTerms assignedToTerms;
+    private Terms assignedToTerms;
     @JsonProperty("_id")
     private String id;
     @JsonProperty("_context")
@@ -85,12 +85,12 @@ public class Item {
     }
 
     @JsonProperty("assigned_to_terms")
-    public AssignedToTerms getAssignedToTerms() {
+    public Terms getAssignedToTerms() {
         return assignedToTerms;
     }
 
     @JsonProperty("assigned_to_terms")
-    public void setAssignedToTerms(AssignedToTerms assignedToTerms) {
+    public void setAssignedToTerms(Terms assignedToTerms) {
         this.assignedToTerms = assignedToTerms;
     }
 

@@ -25,6 +25,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 import org.odpi.openmetadata.virtualdataconnector.igc.connectors.eventmapper.model.IGCKafkaEvent;
 import org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconnector.IGCOMRSRepositoryConnector;
+import org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconnector.model.IGCColumn;
 import org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconnector.model.IGCObject;
 import org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconnector.model.Item;
 import org.slf4j.Logger;
@@ -233,7 +234,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
 
         //Propagate RelationalColumns and relationships
         for (Item column : igcTable.getDatabaseColumns().getItems()) {
-            IGCObject igcColumn = igcomrsRepositoryConnector.genericIGCQuery(column.getId());
+            IGCColumn igcColumn = igcomrsRepositoryConnector.getIGCColumn(column.getId());
 
             createEntity(igcColumn, RELATIONAL_COLUMN, false);
             createEntity(igcColumn, RELATIONAL_COLUMN_TYPE, true);
@@ -248,23 +249,20 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
 
             createRelationship(
                     ATTRIBUTE_FOR_SCHEMA,
-                    igcColumn.getId(),
-                    RELATIONAL_COLUMN,
                     relationalTableTypeID,
-                    RELATIONAL_TABLE_TYPE);
+                    RELATIONAL_TABLE_TYPE,
+                    igcColumn.getId(),
+                    RELATIONAL_COLUMN);
 
-            if (igcColumn.getDefinedForeignKey() != null && igcColumn.getDefinedForeignKey()) {
-
-                if (igcColumn.getDefinedForeignKeyReferences() != null &&
-                        igcColumn.getDefinedForeignKeyReferences().getItems() != null) {
-                    for (Item foreignKey : igcColumn.getDefinedForeignKeyReferences().getItems()) {
-                        createRelationship(
-                                FOREIGN_KEY,
-                                igcColumn.getId(),
-                                RELATIONAL_COLUMN,
-                                foreignKey.getId(),
-                                RELATIONAL_COLUMN);
-                    }
+            if (igcColumn.getDefinedForeignKey() != null &&
+                    igcColumn.getDefinedForeignKeyReferences() != null) {
+                for (Item foreignKey : igcColumn.getDefinedForeignKeyReferences().getItems()) {
+                    createRelationship(
+                            FOREIGN_KEY,
+                            igcColumn.getId(),
+                            RELATIONAL_COLUMN,
+                            foreignKey.getId(),
+                            RELATIONAL_COLUMN);
                 }
             }
         }
@@ -311,7 +309,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                     } else if (igcKafkaEvent.getAction().equals(MODIFY)) {
                         if (igcObject.getRelatedTerms() != null && igcObject.getRelatedTerms().getItems() != null) {
                             for (Item item : igcObject.getRelatedTerms().getItems()) {
-                                createClassification(igcObject, CONFIDENTIALITY, item);
+                                updateTerm(igcObject, CONFIDENTIALITY, item);
                             }
                         }
                     }
@@ -356,9 +354,9 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         log.info("Created relationship " + relationshipType + " between: " + entityId1 + " [" + entityType1 + "] and " + entityId2 + "[" + entityType2 + "]");
     }
 
-    private void createClassification(IGCObject igcObject, String classificationTypeName, Item item) throws TypeErrorException {
+    private void updateTerm(IGCObject igcObject, String classificationTypeName, Item item) throws TypeErrorException {
 
-        EntityDetail entity = getEntityWithClassification(igcObject, classificationTypeName, item);
+        EntityDetail entity = createClassificationForGlossaryTerm(igcObject.getId(), classificationTypeName, item);
 
         repositoryEventProcessor.processClassifiedEntityEvent(
                 sourceName,
@@ -371,24 +369,49 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         log.info("Classification created " + classificationTypeName + " for " + igcObject.getId());
     }
 
-    private void createEntity(IGCObject igcObject, String typeName, boolean avoidDuplicate) throws TypeErrorException {
 
-        String username = igcObject.getCreatedBy();
-        InstanceProperties instanceProperties = getEntityProperties(typeName, igcObject.getId());
+    private void createEntity(IGCColumn igcColumn, String typeName, boolean avoidDuplicate) throws TypeErrorException {
 
         List<Classification> classifications = new ArrayList<>();
-        if (typeName.equals(RELATIONAL_COLUMN) && igcObject.getDefinedPrimaryKey() != null) {
+        if (typeName.equals(RELATIONAL_COLUMN) && igcColumn.getDefinedPrimaryKey() != null) {
             classifications = getPrimaryKeyClassification();
-        } else if (typeName.equals(GLOSSARY_TERM)) {
-            if (igcObject.getRelatedTerms() != null && igcObject.getRelatedTerms().getItems() != null) {
-                for (Item item : igcObject.getRelatedTerms().getItems()) {
-                    classifications.addAll(getClassification(CONFIDENTIALITY, item.getName()));
-                }
-            }
         }
 
-        EntityDetail entityDetail = getEntityDetail(igcObject, typeName, avoidDuplicate, username, instanceProperties, classifications);
+        InstanceProperties instanceProperties = getEntityProperties(typeName,
+                igcColumn.getId(),
+                igcColumn.getName(),
+                igcColumn.getShortDescription(),
+                igcColumn.getLongDescription());
 
+        EntityDetail entityDetail = getEntityDetail(igcColumn.getId(), typeName, avoidDuplicate, igcColumn.getCreatedBy(), instanceProperties, classifications);
+
+        sendNewEntityEvent(typeName, entityDetail);
+    }
+
+    private void createEntity(IGCObject igcObject, String typeName, boolean avoidDuplicate) throws TypeErrorException {
+
+        List<Classification> classifications = new ArrayList<>();
+        if (typeName.equals(GLOSSARY_TERM) && igcObject.getRelatedTerms() != null) {
+            classifications = getConfidentialityClassification(igcObject);
+        }
+
+        InstanceProperties instanceProperties = getEntityProperties(typeName,
+                igcObject.getId(),
+                igcObject.getName(),
+                igcObject.getShortDescription(),
+                igcObject.getLongDescription());
+
+        EntityDetail entityDetail = getEntityDetail(igcObject.getId(),
+                typeName,
+                avoidDuplicate,
+                igcObject.getCreatedBy(),
+                instanceProperties,
+                classifications);
+
+        sendNewEntityEvent(typeName, entityDetail);
+    }
+
+    private void sendNewEntityEvent(String typeName, EntityDetail entityDetail) {
         this.repositoryEventProcessor.processNewEntityEvent(
                 sourceName,
                 metadataCollectionId,
@@ -399,7 +422,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
 
         );
 
-        log.info("Created " + typeName + "." + igcObject.getId());
+        log.info("Created " + typeName + "." + entityDetail.getGUID());
     }
 
 
@@ -421,8 +444,8 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         entityProxyOne.setGUID(entityId1);
         entityProxyTwo.setGUID(entityId2);
 
-        entityProxyOne.setUniqueProperties(getEntityProperties(entityType2, entityId2));
-        entityProxyTwo.setUniqueProperties(getEntityProperties(entityType2, entityId2));
+        entityProxyOne.setUniqueProperties(getMandatoryProperty(entityType2, entityId2));
+        entityProxyTwo.setUniqueProperties(getMandatoryProperty(entityType2, entityId2));
 
         relationship.setEntityOneProxy(entityProxyOne);
         relationship.setEntityTwoProxy(entityProxyTwo);
@@ -453,7 +476,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         return entityProxy;
     }
 
-    private EntityDetail getEntityDetail(IGCObject igcObject, String typeName, boolean avoidDuplicate, String username,
+    private EntityDetail getEntityDetail(String id, String typeName, boolean avoidDuplicate, String username,
                                          InstanceProperties instanceProperties, List<Classification> classifications)
             throws TypeErrorException {
 
@@ -470,9 +493,9 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         entityDetail.setStatus(InstanceStatus.ACTIVE);
 
         if (avoidDuplicate) {
-            entityDetail.setGUID(typeName + "." + igcObject.getId());
+            entityDetail.setGUID(typeName + "." + id);
         } else {
-            entityDetail.setGUID(igcObject.getId());
+            entityDetail.setGUID(id);
         }
 
         return entityDetail;
@@ -495,12 +518,23 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         return classificationList;
     }
 
-    private EntityDetail getEntityWithClassification(IGCObject igcObject, String classificationTypeName, Item item) throws TypeErrorException {
+    private List<Classification> getConfidentialityClassification(IGCObject igcObject) throws TypeErrorException {
+        List<Classification> classifications = new ArrayList<>();
+
+        if (igcObject.getRelatedTerms().getItems() != null) {
+            for (Item item : igcObject.getRelatedTerms().getItems()) {
+                classifications.addAll(getClassification(CONFIDENTIALITY, item.getName()));
+            }
+        }
+        return classifications;
+    }
+
+    private EntityDetail createClassificationForGlossaryTerm(String id, String classificationTypeName, Item item) throws TypeErrorException {
 
         List<Classification> classifications = getClassification(classificationTypeName, item.getName());
 
-        InstanceProperties instanceProperties = getEntityProperties(GLOSSARY_TERM, igcObject.getId());
-        return getEntityDetail(igcObject,
+        InstanceProperties instanceProperties = getMandatoryProperty(GLOSSARY_TERM, id);
+        return getEntityDetail(id,
                 GLOSSARY_TERM,
                 false,
                 null,
@@ -528,12 +562,35 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         return classifications;
     }
 
-    private InstanceProperties getEntityProperties(String typeName, String id) {
+
+    private InstanceProperties getMandatoryProperty(String typeName, String id) {
+        Map<String, InstancePropertyValue> properties = new HashMap<>();
+        PrimitivePropertyValue qualifiedName = getStringPropertyValue(typeName + ".qualifiedName." + id);
+        properties.put("qualifiedName", qualifiedName);
+
+        InstanceProperties instanceProperties = new InstanceProperties();
+        instanceProperties.setInstanceProperties(properties);
+        return instanceProperties;
+    }
+
+
+    private InstanceProperties getEntityProperties(String typeName, String id, String name, String shortDescription, String longDescription) {
         Map<String, InstancePropertyValue> properties = new HashMap<>();
 
         PrimitivePropertyValue qualifiedName = getStringPropertyValue(typeName + ".qualifiedName." + id);
         properties.put("qualifiedName", qualifiedName);
-        //TODO: add display name
+
+        PrimitivePropertyValue displayName = getStringPropertyValue(name);
+        properties.put("displayName", displayName);
+
+        PrimitivePropertyValue name_property = getStringPropertyValue(name);
+        properties.put("name", name_property);
+
+        PrimitivePropertyValue summary = getStringPropertyValue(shortDescription);
+        properties.put("summary", summary);
+
+        PrimitivePropertyValue description = getStringPropertyValue(longDescription);
+        properties.put("description", description);
 
         InstanceProperties instanceProperties = new InstanceProperties();
         instanceProperties.setInstanceProperties(properties);
