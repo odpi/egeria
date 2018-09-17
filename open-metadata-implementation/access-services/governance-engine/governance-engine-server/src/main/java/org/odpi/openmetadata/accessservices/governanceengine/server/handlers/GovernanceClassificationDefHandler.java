@@ -6,6 +6,7 @@ import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernanceClassificationDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -89,21 +90,26 @@ public class GovernanceClassificationDefHandler {
         try {
             List<TypeDef> typeDefsByCategory = metadataCollection.findTypeDefsByCategory(userId, TypeDefCategory.CLASSIFICATION_DEF);
             //TODO Needs to restrict classifications by parent - for now returns ALL classifications
-            typeDefsByCategory.forEach((td) -> {
-                //TODO federation: resolve what to do if we have duplicate names (with different definitions)
-                GovernanceClassificationDef gcd = new GovernanceClassificationDef();
-                gcd.setName(td.getName());
-                Map<String, String> gdca = new HashMap<>();
-                //Get the parms
-                td.getPropertiesDefinition().forEach((tda) -> {
-                    // TODO Mapping of types between OMRS and Ranger should be abstracted
-                    // TODO Mapping of alpha name is fragile - temporary for initial debug. Could just map primitive
-                    // types
-                    gdca.put(tda.getAttributeName(), tda.getAttributeType().getName());
+            if (typeDefsByCategory!=null) {
+                typeDefsByCategory.forEach((td) -> {
+                    //TODO federation: resolve what to do if we have duplicate names (with different definitions)
+                    GovernanceClassificationDef gcd = new GovernanceClassificationDef();
+                    gcd.setName(td.getName());
+                    Map<String, String> gdca = new HashMap<>();
+                    //Get the parms
+                    List<TypeDefAttribute> prop = td.getPropertiesDefinition();
+                    if (prop!=null) {
+                        prop.forEach((tda) -> {
+                            // TODO Mapping of types between OMRS and Ranger should be abstracted
+                            // TODO Mapping of alpha name is fragile - temporary for initial debug. Could just map primitive
+                            // types
+                            gdca.put(tda.getAttributeName(), tda.getAttributeType().getName());
+                        });
+                    }
+                    gcd.setAttributeDefinitions(gdca);
+                    defsToReturn.add(gcd);
                 });
-                gcd.setAttributeDefinitions(gdca);
-                defsToReturn.add(gcd);
-            });
+            }
 
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
 

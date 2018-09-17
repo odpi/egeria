@@ -29,7 +29,7 @@ public final class GovernanceEngineValidator {
      * @param methodName - name of the method making the call.
      * @throws InvalidParameterException - the userId is null
      */
-    public void validateUserId(String userId,
+    public static void validateUserId(String userId,
                                String methodName) throws InvalidParameterException {
         if (StringUtils.isEmpty(userId)) {
             GovernanceEngineErrorCode errorCode = GovernanceEngineErrorCode.EMPTY_USER_ID;
@@ -55,7 +55,7 @@ public final class GovernanceEngineValidator {
      * @param methodName    - name of the method making the call.
      * @throws InvalidParameterException - the guid is null
      */
-    public void validateGUID(String guid,
+    public static void validateGUID(String guid,
                              String parameterName,
                              String methodName) throws InvalidParameterException {
         if (StringUtils.isEmpty(guid)) {
@@ -81,7 +81,7 @@ public final class GovernanceEngineValidator {
      * @param methodName         - name of the method making the call.
      * @throws InvalidParameterException - the guid is null
      */
-    public void validateClassification(List<String> rootClassification,
+    public static void validateClassification(List<String> rootClassification,
                                        String parameterName,
                                        String methodName) throws InvalidParameterException {
 
@@ -97,7 +97,7 @@ public final class GovernanceEngineValidator {
      * @param methodName    - name of the method making the call.
      * @throws InvalidParameterException - the guid is null
      */
-    public void validateType(List<String> rootAssetType,
+    public static void validateType(List<String> rootAssetType,
                              String parameterName,
                              String methodName) throws InvalidParameterException {
         // NULL is valid, so no further checks for now
