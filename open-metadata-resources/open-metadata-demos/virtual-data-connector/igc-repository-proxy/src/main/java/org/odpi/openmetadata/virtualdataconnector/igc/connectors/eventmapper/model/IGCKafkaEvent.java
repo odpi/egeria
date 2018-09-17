@@ -8,7 +8,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -45,8 +47,18 @@ public class IGCKafkaEvent {
     private Map<String, Object> additionalProperties = new HashMap<>();
 
     @JsonProperty("createdRIDs")
-    public String getDatacollectionRID() {
-        return createdRIDs.split(":")[1];
+    public List<String> getDatacollectionRID() {
+
+        List<String> ids = new ArrayList<>();
+        String[] dataCollections = createdRIDs.split(",");
+        for (String collections : dataCollections) {
+            String[] split = collections.split(":");
+            if (split.length == 2) {
+                ids.add(split[1]);
+            }
+        }
+
+        return ids;
     }
 
     @JsonProperty("ASSET_TYPE")

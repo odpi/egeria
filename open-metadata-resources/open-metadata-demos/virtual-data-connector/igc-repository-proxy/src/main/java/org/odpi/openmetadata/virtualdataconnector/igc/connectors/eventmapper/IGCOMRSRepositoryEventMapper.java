@@ -155,10 +155,17 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
      * Propagate the importation of databases into IGC through the OMRS.
      *
      * @param igcKafkaEvent A Kafka event originating from IGC
-     * @throws TypeErrorException
+     * @throws TypeErrorException requested type for an instance is not represented by a known TypeDef.
      */
     private void processIMAM(IGCKafkaEvent igcKafkaEvent) throws TypeErrorException {
-        IGCObject igcTable = igcomrsRepositoryConnector.genericIGCQuery(igcKafkaEvent.getDatacollectionRID());
+        List<String> createdRIDs = igcKafkaEvent.getDatacollectionRID();
+        for (String id : createdRIDs) {
+            createSchema(id);
+        }
+    }
+
+    private void createSchema(String id) throws TypeErrorException {
+        IGCObject igcTable = igcomrsRepositoryConnector.genericIGCQuery(id);
         IGCObject igcEndpoint = igcomrsRepositoryConnector.genericIGCQuery(igcTable.getContext().get(0).getId());
         IGCObject igcDatabase = igcomrsRepositoryConnector.genericIGCQuery(igcTable.getContext().get(1).getId());
         IGCObject igcSchema = igcomrsRepositoryConnector.genericIGCQuery(igcTable.getContext().get(2).getId());
@@ -171,8 +178,8 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         createEntity(igcSchema, RELATIONAL_DB_SCHEMA_TYPE, true);
         createEntity(igcTable, RELATIONAL_TABLE_TYPE, true);
 
-        String relationalDBSchemaTypeID = RELATIONAL_DBSCHEMA_TYPE_RID + igcSchema.getId();
-        String relationalTableTypeID = RELATIONAL_TABLE_TYPE_RID + igcTable.getId();
+        String relationalDBSchemaTypeID = RELATIONAL_DB_SCHEMA_TYPE + "." + igcSchema.getId();
+        String relationalTableTypeID = RELATIONAL_TABLE_TYPE + "." + igcTable.getId();
 
         createRelationship(
                 DATA_CONTENT_FOR_DATA_SET,
@@ -230,18 +237,18 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
 
             createEntity(igcColumn, RELATIONAL_COLUMN, false);
             createEntity(igcColumn, RELATIONAL_COLUMN_TYPE, true);
-            String relationalColumnTypeID = RELATIONAL_COLUMN_TYPE_RID + igcColumn.getId();
+            String relationalColumnTypeID = RELATIONAL_COLUMN_TYPE + "." + igcColumn.getId();
 
             createRelationship(
                     SCHEMA_ATTRIBUTE_TYPE,
-                    igcTable.getId(),
+                    igcColumn.getId(),
                     RELATIONAL_COLUMN,
                     relationalColumnTypeID,
                     RELATIONAL_COLUMN_TYPE);
 
             createRelationship(
                     ATTRIBUTE_FOR_SCHEMA,
-                    igcTable.getId(),
+                    igcColumn.getId(),
                     RELATIONAL_COLUMN,
                     relationalTableTypeID,
                     RELATIONAL_TABLE_TYPE);
@@ -346,8 +353,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                 relationship
         );
 
-        log.info("Created relationship " + relationshipType + "(" + entityType1 + ", " + entityType2 + ")");
-        log.info("Created relationship between " + entityId1 + " and " + entityId2);
+        log.info("Created relationship " + relationshipType + " between: " + entityId1 + " [" + entityType1 + "] and " + entityId2 + "[" + entityType2 + "]");
     }
 
     private void createClassification(IGCObject igcObject, String classificationTypeName, Item item) throws TypeErrorException {
@@ -368,11 +374,17 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
     private void createEntity(IGCObject igcObject, String typeName, boolean avoidDuplicate) throws TypeErrorException {
 
         String username = igcObject.getCreatedBy();
-        InstanceProperties instanceProperties = getEntityInstanceProperties(igcObject, typeName);
+        InstanceProperties instanceProperties = getEntityProperties(typeName, igcObject.getId());
 
-        List<Classification> classifications = null;
+        List<Classification> classifications = new ArrayList<>();
         if (typeName.equals(RELATIONAL_COLUMN) && igcObject.getDefinedPrimaryKey() != null) {
             classifications = getPrimaryKeyClassification();
+        } else if (typeName.equals(GLOSSARY_TERM)) {
+            if (igcObject.getRelatedTerms() != null && igcObject.getRelatedTerms().getItems() != null) {
+                for (Item item : igcObject.getRelatedTerms().getItems()) {
+                    classifications.addAll(getClassification(CONFIDENTIALITY, item.getName()));
+                }
+            }
         }
 
         EntityDetail entityDetail = getEntityDetail(igcObject, typeName, avoidDuplicate, username, instanceProperties, classifications);
@@ -409,6 +421,9 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         entityProxyOne.setGUID(entityId1);
         entityProxyTwo.setGUID(entityId2);
 
+        entityProxyOne.setUniqueProperties(getEntityProperties(entityType2, entityId2));
+        entityProxyTwo.setUniqueProperties(getEntityProperties(entityType2, entityId2));
+
         relationship.setEntityOneProxy(entityProxyOne);
         relationship.setEntityTwoProxy(entityProxyTwo);
 
@@ -423,6 +438,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
      * @throws TypeErrorException the type name is not recognized as an entity type
      */
     private EntityProxy newEntityProxy(String typeName) throws TypeErrorException {
+
         EntityProxy entityProxy = this.repositoryHelper.getNewEntityProxy(
                 sourceName,
                 metadataCollectionId,
@@ -454,7 +470,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         entityDetail.setStatus(InstanceStatus.ACTIVE);
 
         if (avoidDuplicate) {
-            entityDetail.setGUID(typeName + ".rid." + igcObject.getId());
+            entityDetail.setGUID(typeName + "." + igcObject.getId());
         } else {
             entityDetail.setGUID(igcObject.getId());
         }
@@ -481,11 +497,9 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
 
     private EntityDetail getEntityWithClassification(IGCObject igcObject, String classificationTypeName, Item item) throws TypeErrorException {
 
-        Classification classification = getClassification(classificationTypeName, item);
-        List<Classification> classifications = new ArrayList<>(1);
-        classifications.add(classification);
+        List<Classification> classifications = getClassification(classificationTypeName, item.getName());
 
-        InstanceProperties instanceProperties = getEntityInstanceProperties(igcObject, GLOSSARY_TERM);
+        InstanceProperties instanceProperties = getEntityProperties(GLOSSARY_TERM, igcObject.getId());
         return getEntityDetail(igcObject,
                 GLOSSARY_TERM,
                 false,
@@ -494,7 +508,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                 classifications);
     }
 
-    private Classification getClassification(String classificationTypeName, Item item) throws TypeErrorException {
+    private List<Classification> getClassification(String classificationTypeName, String name) throws TypeErrorException {
 
         Classification classification = repositoryHelper.getNewClassification(
                 sourceName,
@@ -505,29 +519,21 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                 null,
                 null);
 
-        InstanceProperties classificationProperties = getClassificationProperties(item.getName());
+        InstanceProperties classificationProperties = getClassificationProperties(name);
         classification.setProperties(classificationProperties);
 
-        return classification;
+        List<Classification> classifications = new ArrayList<>(1);
+        classifications.add(classification);
+
+        return classifications;
     }
 
-    private InstanceProperties getEntityInstanceProperties(IGCObject igcObject, String typeName) {
+    private InstanceProperties getEntityProperties(String typeName, String id) {
         Map<String, InstancePropertyValue> properties = new HashMap<>();
 
-        PrimitivePropertyValue qualifiedName = getStringPropertyValue(typeName + ".qualifiedName." + igcObject.getId());
+        PrimitivePropertyValue qualifiedName = getStringPropertyValue(typeName + ".qualifiedName." + id);
         properties.put("qualifiedName", qualifiedName);
-
-        PrimitivePropertyValue displayName = getStringPropertyValue(igcObject.getName());
-        properties.put("displayName", displayName);
-
-        PrimitivePropertyValue name = getStringPropertyValue(igcObject.getName());
-        properties.put("name", name);
-
-        PrimitivePropertyValue summary = getStringPropertyValue(igcObject.getShortDescription());
-        properties.put("summary", summary);
-
-        PrimitivePropertyValue description = getStringPropertyValue(igcObject.getLongDescription());
-        properties.put("description", description);
+        //TODO: add display name
 
         InstanceProperties instanceProperties = new InstanceProperties();
         instanceProperties.setInstanceProperties(properties);
