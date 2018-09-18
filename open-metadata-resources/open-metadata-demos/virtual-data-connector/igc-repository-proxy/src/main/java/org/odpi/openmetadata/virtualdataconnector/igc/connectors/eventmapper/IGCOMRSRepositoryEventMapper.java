@@ -141,7 +141,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
 
     }
 
-    private void processEvent(IGCKafkaEvent igcKafkaEvent) throws TypeErrorException {
+    private void processEvent(IGCKafkaEvent igcKafkaEvent) {
         switch (igcKafkaEvent.getEventType()) {
             case IMAM_SHARE_EVENT:
                 processIMAM(igcKafkaEvent);
@@ -156,16 +156,19 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
      * Propagate the importation of databases into IGC through the OMRS.
      *
      * @param igcKafkaEvent A Kafka event originating from IGC
-     * @throws TypeErrorException requested type for an instance is not represented by a known TypeDef.
      */
-    private void processIMAM(IGCKafkaEvent igcKafkaEvent) throws TypeErrorException {
+    private void processIMAM(IGCKafkaEvent igcKafkaEvent) {
+        log.info("Process IMAM started!");
+
         List<String> createdRIDs = igcKafkaEvent.getDatacollectionRID();
         for (String id : createdRIDs) {
             createSchema(id);
         }
+
+        log.info("Process IMAM ended!");
     }
 
-    private void createSchema(String id) throws TypeErrorException {
+    private void createSchema(String id) {
         IGCObject igcTable = igcomrsRepositoryConnector.genericIGCQuery(id);
         IGCObject igcEndpoint = igcomrsRepositoryConnector.genericIGCQuery(igcTable.getContext().get(0).getId());
         IGCObject igcDatabase = igcomrsRepositoryConnector.genericIGCQuery(igcTable.getContext().get(1).getId());
@@ -233,7 +236,8 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         }
 
         //Propagate RelationalColumns and relationships
-        for (Item column : igcTable.getDatabaseColumns().getItems()) {
+        IGCObject databaseColumns = igcomrsRepositoryConnector.getDatabaseColumns(id, DEFAULT_PAGE_SIZE);
+        for (Item column : databaseColumns.getDatabaseColumns().getItems()) {
             IGCColumn igcColumn = igcomrsRepositoryConnector.getIGCColumn(column.getId());
 
             createEntity(igcColumn, RELATIONAL_COLUMN, false);
@@ -277,6 +281,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         try {
             IGCObject igcObject = igcomrsRepositoryConnector.genericIGCQuery(igcKafkaEvent.getAssetRID());
 
+            log.info("Process Asset Type: " + igcKafkaEvent.getAssetType() + " id = " + igcObject.getId() + " action = " + igcKafkaEvent.getAction());
             switch (igcKafkaEvent.getAssetType()) {
                 case DATABASE_COLUMN:
                     //Relationship between a technical term and a glossary term.
@@ -297,15 +302,13 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                     if (igcKafkaEvent.getAction().equals(CREATE)) {
                         //Creation of a glossary term.
                         createEntity(igcObject, GLOSSARY_TERM, false);
-                        if (igcKafkaEvent.getAction().equals(CREATE)) {
-                            //Creation of a  glossary category and assignment to its glossary category.
-                            createEntity(igcObject, GLOSSARY_CATEGORY, false);
-                            createRelationship(TERM_CATEGORIZATION,
-                                    igcObject.getContext().get(0).getId(),
-                                    GLOSSARY_CATEGORY,
-                                    igcObject.getId(),
-                                    GLOSSARY_TERM);
-                        }
+                        //Creation of a  glossary category and assignment to its glossary category.
+                        createEntity(igcObject, GLOSSARY_CATEGORY, false);
+                        createRelationship(TERM_CATEGORIZATION,
+                                igcObject.getContext().get(0).getId(),
+                                GLOSSARY_CATEGORY,
+                                igcObject.getId(),
+                                GLOSSARY_TERM);
                     } else if (igcKafkaEvent.getAction().equals(MODIFY)) {
                         if (igcObject.getRelatedTerms() != null && igcObject.getRelatedTerms().getItems() != null) {
                             for (Item item : igcObject.getRelatedTerms().getItems()) {
@@ -320,7 +323,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                     }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.info("Unable to process Asset: " + e.getMessage());
         }
     }
 
@@ -332,15 +335,26 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
      * @param entityType1      name of the type
      * @param entityId2        String unique identifier
      * @param entityType2      name of the type
-     * @throws TypeErrorException The type name is not recognized as a relationship type.
      */
     private void createRelationship(String relationshipType, String entityId1, String entityType1,
-                                    String entityId2, String entityType2) throws TypeErrorException {
+                                    String entityId2, String entityType2) {
 
-        Relationship relationship = getRelationship(
-                relationshipType,
+        Relationship relationship = getRelationship(relationshipType,
                 entityId1, entityType1,
                 entityId2, entityType2);
+
+        if (relationship == null) {
+            log.info("Unable to create a new relationship !" + relationshipType
+                    + " between: " + entityId1 + " [" + entityType1 + "] and " + entityId2 + "[" + entityType2 + "]");
+            return;
+        }
+
+        sendNewRelationshipEvent(relationship);
+
+        log.info("[New Relationship Event] Created " + relationshipType + " between: " + entityId1 + " [" + entityType1 + "] and " + entityId2 + "[" + entityType2 + "]");
+    }
+
+    private void sendNewRelationshipEvent(Relationship relationship) {
 
         this.repositoryEventProcessor.processNewRelationshipEvent(
                 sourceName,
@@ -351,10 +365,9 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                 relationship
         );
 
-        log.info("Created relationship " + relationshipType + " between: " + entityId1 + " [" + entityType1 + "] and " + entityId2 + "[" + entityType2 + "]");
     }
 
-    private void updateTerm(IGCObject igcObject, String classificationTypeName, Item item) throws TypeErrorException {
+    private void updateTerm(IGCObject igcObject, String classificationTypeName, Item item) {
 
         EntityDetail entity = createClassificationForGlossaryTerm(igcObject.getId(), classificationTypeName, item);
 
@@ -369,8 +382,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         log.info("Classification created " + classificationTypeName + " for " + igcObject.getId());
     }
 
-
-    private void createEntity(IGCColumn igcColumn, String typeName, boolean avoidDuplicate) throws TypeErrorException {
+    private void createEntity(IGCColumn igcColumn, String typeName, boolean avoidDuplicate) {
 
         List<Classification> classifications = new ArrayList<>();
         if (typeName.equals(RELATIONAL_COLUMN) && igcColumn.getDefinedPrimaryKey() != null) {
@@ -388,7 +400,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         sendNewEntityEvent(typeName, entityDetail);
     }
 
-    private void createEntity(IGCObject igcObject, String typeName, boolean avoidDuplicate) throws TypeErrorException {
+    private void createEntity(IGCObject igcObject, String typeName, boolean avoidDuplicate) {
 
         List<Classification> classifications = new ArrayList<>();
         if (typeName.equals(GLOSSARY_TERM) && igcObject.getRelatedTerms() != null) {
@@ -412,6 +424,12 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
     }
 
     private void sendNewEntityEvent(String typeName, EntityDetail entityDetail) {
+
+        if (entityDetail == null) {
+            log.info("Unable to create an entity" + typeName);
+            return;
+        }
+
         this.repositoryEventProcessor.processNewEntityEvent(
                 sourceName,
                 metadataCollectionId,
@@ -422,103 +440,119 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
 
         );
 
-        log.info("Created " + typeName + "." + entityDetail.getGUID());
+        log.info("[Entity] create new entity with type =  " + typeName + " guid = " + entityDetail.getGUID());
     }
 
 
     private Relationship getRelationship(String relationshipType, String entityId1,
-                                         String entityType1, String entityId2, String entityType2) throws TypeErrorException {
+                                         String entityType1, String entityId2, String entityType2) {
 
-        Relationship relationship = this.repositoryHelper.getNewRelationship(
-                sourceName,
-                metadataCollectionId,
-                InstanceProvenanceType.LOCAL_COHORT,
-                null,
-                relationshipType,
-                null
-        );
+        Relationship relationship = null;
+        try {
+            relationship = this.repositoryHelper.getNewRelationship(
+                    sourceName,
+                    metadataCollectionId,
+                    InstanceProvenanceType.LOCAL_COHORT,
+                    null,
+                    relationshipType,
+                    null);
 
-        EntityProxy entityProxyOne = newEntityProxy(entityType1);
-        EntityProxy entityProxyTwo = newEntityProxy(entityType2);
 
-        entityProxyOne.setGUID(entityId1);
-        entityProxyTwo.setGUID(entityId2);
+        } catch (TypeErrorException e) {
+            log.info("Unable to create Relationship [type = " + relationshipType + "] :" + e.getErrorMessage());
+        }
 
-        entityProxyOne.setUniqueProperties(getMandatoryProperty(entityType2, entityId2));
-        entityProxyTwo.setUniqueProperties(getMandatoryProperty(entityType2, entityId2));
+        if (relationship != null) {
+            EntityProxy entityProxyOne = newEntityProxy(entityType1);
+            EntityProxy entityProxyTwo = newEntityProxy(entityType2);
 
-        relationship.setEntityOneProxy(entityProxyOne);
-        relationship.setEntityTwoProxy(entityProxyTwo);
+            if (entityProxyOne != null && entityProxyTwo != null) {
+                entityProxyOne.setGUID(entityId1);
+                entityProxyTwo.setGUID(entityId2);
+
+                entityProxyOne.setUniqueProperties(getMandatoryProperty(entityType2, entityId2));
+                entityProxyTwo.setUniqueProperties(getMandatoryProperty(entityType2, entityId2));
+
+                relationship.setEntityOneProxy(entityProxyOne);
+                relationship.setEntityTwoProxy(entityProxyTwo);
+            }
+        }
 
         return relationship;
     }
 
-    /**
-     * Return a filled out entity.
-     *
-     * @param typeName name of the type
-     * @return an entity that is filled out
-     * @throws TypeErrorException the type name is not recognized as an entity type
-     */
-    private EntityProxy newEntityProxy(String typeName) throws TypeErrorException {
+    private EntityProxy newEntityProxy(String typeName) {
 
-        EntityProxy entityProxy = this.repositoryHelper.getNewEntityProxy(
-                sourceName,
-                metadataCollectionId,
-                InstanceProvenanceType.LOCAL_COHORT,
-                null,
-                typeName,
-                null,
-                null
-        );
-        entityProxy.setStatus(InstanceStatus.ACTIVE);
+        try {
+            EntityProxy entityProxy = this.repositoryHelper.getNewEntityProxy(
+                    sourceName,
+                    metadataCollectionId,
+                    InstanceProvenanceType.LOCAL_COHORT,
+                    null,
+                    typeName,
+                    null,
+                    null);
+            entityProxy.setStatus(InstanceStatus.ACTIVE);
 
-        return entityProxy;
+            return entityProxy;
+        } catch (TypeErrorException e) {
+            log.info("Unable to create Entity Proxy [type = " + typeName + "] :" + e.getErrorMessage());
+        }
+
+        return null;
     }
 
     private EntityDetail getEntityDetail(String id, String typeName, boolean avoidDuplicate, String username,
-                                         InstanceProperties instanceProperties, List<Classification> classifications)
-            throws TypeErrorException {
+                                         InstanceProperties instanceProperties, List<Classification> classifications) {
 
-        EntityDetail entityDetail = this.repositoryHelper.getNewEntity(
-                sourceName,
-                metadataCollectionId,
-                InstanceProvenanceType.LOCAL_COHORT,
-                username,
-                typeName,
-                instanceProperties,
-                classifications
-        );
 
-        entityDetail.setStatus(InstanceStatus.ACTIVE);
+        try {
+            EntityDetail entityDetail = this.repositoryHelper.getNewEntity(
+                    sourceName,
+                    metadataCollectionId,
+                    InstanceProvenanceType.LOCAL_COHORT,
+                    username,
+                    typeName,
+                    instanceProperties,
+                    classifications);
+            entityDetail.setStatus(InstanceStatus.ACTIVE);
 
-        if (avoidDuplicate) {
-            entityDetail.setGUID(typeName + "." + id);
-        } else {
-            entityDetail.setGUID(id);
+            if (avoidDuplicate) {
+                entityDetail.setGUID(typeName + "." + id);
+            } else {
+                entityDetail.setGUID(id);
+            }
+
+            return entityDetail;
+        } catch (TypeErrorException e) {
+            log.info("Unable to create Entity [type = " + typeName + "] :" + e.getErrorMessage());
         }
-
-        return entityDetail;
+        return null;
     }
 
-    private List<Classification> getPrimaryKeyClassification() throws TypeErrorException {
+    private List<Classification> getPrimaryKeyClassification() {
 
         List<Classification> classificationList = new ArrayList<>(1);
 
-        Classification classification = repositoryHelper.getNewClassification(
-                sourceName,
-                null,
-                PRIMARY_KEY,
-                RELATIONAL_COLUMN,
-                ClassificationOrigin.PROPAGATED,
-                null,
-                null);
-        classificationList.add(classification);
+        try {
+            Classification classification = repositoryHelper.getNewClassification(
+                    sourceName,
+                    null,
+                    PRIMARY_KEY,
+                    RELATIONAL_COLUMN,
+                    ClassificationOrigin.PROPAGATED,
+                    null,
+                    null);
+
+            classificationList.add(classification);
+        } catch (TypeErrorException e) {
+            log.info("Unable to create Primary Key Classification :" + e.getErrorMessage());
+        }
 
         return classificationList;
     }
 
-    private List<Classification> getConfidentialityClassification(IGCObject igcObject) throws TypeErrorException {
+    private List<Classification> getConfidentialityClassification(IGCObject igcObject) {
         List<Classification> classifications = new ArrayList<>();
 
         if (igcObject.getRelatedTerms().getItems() != null) {
@@ -529,7 +563,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         return classifications;
     }
 
-    private EntityDetail createClassificationForGlossaryTerm(String id, String classificationTypeName, Item item) throws TypeErrorException {
+    private EntityDetail createClassificationForGlossaryTerm(String id, String classificationTypeName, Item item) {
 
         List<Classification> classifications = getClassification(classificationTypeName, item.getName());
 
@@ -542,22 +576,26 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                 classifications);
     }
 
-    private List<Classification> getClassification(String classificationTypeName, String name) throws TypeErrorException {
-
-        Classification classification = repositoryHelper.getNewClassification(
-                sourceName,
-                null,
-                classificationTypeName,
-                GLOSSARY_TERM,
-                ClassificationOrigin.PROPAGATED,
-                null,
-                null);
-
-        InstanceProperties classificationProperties = getClassificationProperties(name);
-        classification.setProperties(classificationProperties);
+    private List<Classification> getClassification(String classificationTypeName, String name) {
 
         List<Classification> classifications = new ArrayList<>(1);
-        classifications.add(classification);
+
+        try {
+            Classification classification = repositoryHelper.getNewClassification(
+                    sourceName,
+                    null,
+                    classificationTypeName,
+                    GLOSSARY_TERM,
+                    ClassificationOrigin.PROPAGATED,
+                    null,
+                    null);
+
+            InstanceProperties classificationProperties = getClassificationProperties(name);
+            classification.setProperties(classificationProperties);
+            classifications.add(classification);
+        } catch (TypeErrorException e) {
+            log.info("Unable to create Classification [type = " + classificationTypeName + "] :" + e.getErrorMessage());
+        }
 
         return classifications;
     }
