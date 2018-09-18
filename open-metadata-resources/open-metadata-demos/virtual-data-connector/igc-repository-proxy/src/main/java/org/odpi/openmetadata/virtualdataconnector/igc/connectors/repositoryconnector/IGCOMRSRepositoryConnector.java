@@ -23,6 +23,8 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
 
+import static org.odpi.openmetadata.virtualdataconnector.igc.connectors.eventmapper.model.Constants.DEFAULT_PAGE_SIZE;
+
 
 /**
  * The IGCOMRSRepositoryConnector is a connector to a remote IBM Information Governance Catalog (IGC) repository.
@@ -123,54 +125,45 @@ public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector {
     public IGCObject genericIGCQuery(String igcRID) {
 
         String url = this.connectionBean.getAdditionalProperties().get("igcApiGet") + igcRID;
+
+        return getIgcObject(url);
+    }
+
+    public IGCObject getDatabaseColumns(String igcRID, Integer pageSize) {
+
+        if (pageSize == null) {
+            pageSize = DEFAULT_PAGE_SIZE;
+        }
+        String url = this.connectionBean.getAdditionalProperties()
+                .get("igcApiGet") + igcRID + "/database_columns?begin=0&pageSize=" + pageSize;
+
+        IGCObject igcObjectMapper = getIgcObject(url);
+
+        Integer numTotal = igcObjectMapper.getDatabaseColumns().getPaging().getNumTotal();
+        if (pageSize < numTotal) {
+            url = this.connectionBean.getAdditionalProperties()
+                    .get("igcApiGet") + igcRID + "/database_columns?begin=0&pageSize=" + numTotal;
+            return getIgcObject(url);
+        }
+
+        return igcObjectMapper;
+    }
+
+    private IGCObject getIgcObject(String url) {
         HttpEntity<String> entity = new HttpEntity<>(getHttpHeaders());
-
         String resultBody = getHttpResult(url, entity);
-
         return (IGCObject) getIGCObjectMapper(resultBody, IGCObject.class);
     }
+
 
     public IGCColumn getIGCColumn(String igcRID) {
 
         String url = this.connectionBean.getAdditionalProperties().get("igcApiGet") + igcRID;
-        HttpEntity<String> entity = new HttpEntity<>(getHttpHeaders());
 
+        HttpEntity<String> entity = new HttpEntity<>(getHttpHeaders());
         String resultBody = getHttpResult(url, entity);
 
         return (IGCColumn) getIGCObjectMapper(resultBody, IGCColumn.class);
-    }
-
-    /**
-     * Returns the metadata collection object that provides an OMRS abstraction of the metadata within
-     * a metadata repository.
-     *
-     * @return OMRSMetadataCollection - metadata information retrieved from the metadata repository.
-     */
-    public Terms genericIGCPostQuery(String igcRID) {
-        String url = this.connectionBean.getAdditionalProperties().get("igcApiSearch") + igcRID;
-        HttpHeaders headers = getHttpHeaders();
-
-        String requestBody = "{\n" +
-                "  \"pageSize\": \"100\",\n" +
-                "  \"properties\": [\"modified_on\",\"name\", \"position\", \"assigned_to_terms\", \"data_type\", \"length\", \"database_table_or_view.assigned_to_terms\"],\n" +
-                "  \"types\": [\"database_column\"],\n" +
-                "  \"where\":\n" +
-                "  {\n" +
-                "    \"operator\": \"and\",\n" +
-                "    \"conditions\": [\n" +
-                "      {\n" +
-                "        \"property\": \"database_table_or_view\",\n" +
-                "        \"operator\": \"=\",\n" +
-                "        \"value\": \"" + igcRID + "\"\n" +
-                "      }\n" +
-                "    ]\n" +
-                "   }\n" +
-                "}";
-
-        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
-
-        String resultBody = postHttpResult(url, entity);
-        return (Terms) getIGCObjectMapper(resultBody, Terms.class);
     }
 
     private HttpHeaders getHttpHeaders() {
@@ -190,13 +183,6 @@ public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector {
 
         ResponseEntity<String> result = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
 
-        return result.getBody();
-    }
-
-    private String postHttpResult(String url, HttpEntity<String> entity) {
-        RestTemplate restTemplate = new RestTemplate();
-
-        ResponseEntity<String> result = restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
         return result.getBody();
     }
 

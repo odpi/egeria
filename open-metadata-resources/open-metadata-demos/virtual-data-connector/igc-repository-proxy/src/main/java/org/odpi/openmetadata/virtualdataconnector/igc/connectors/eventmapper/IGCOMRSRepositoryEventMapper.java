@@ -233,7 +233,8 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         }
 
         //Propagate RelationalColumns and relationships
-        for (Item column : igcTable.getDatabaseColumns().getItems()) {
+        IGCObject databaseColumns = igcomrsRepositoryConnector.getDatabaseColumns(id, DEFAULT_PAGE_SIZE);
+        for (Item column : databaseColumns.getDatabaseColumns().getItems()) {
             IGCColumn igcColumn = igcomrsRepositoryConnector.getIGCColumn(column.getId());
 
             createEntity(igcColumn, RELATIONAL_COLUMN, false);
