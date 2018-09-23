@@ -34,7 +34,6 @@ public class ConnectedAsset extends AssetUniverse
      * @param userId  String - userId of user making request.
      * @param assetGUID  String - unique id for asset.
      *
-     * @return AssetUniverse - a comprehensive collection of properties about the asset.
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UnrecognizedAssetGUIDException the assetGUID is not recognized
      * @throws PropertyServerException There is a problem retrieving the asset properties from

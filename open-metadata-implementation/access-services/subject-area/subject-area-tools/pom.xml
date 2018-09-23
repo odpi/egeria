@@ -8,7 +8,7 @@
     <parent>
         <artifactId>subject-area</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>0.1-SNAPSHOT</version>
+        <version>0.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -16,11 +16,6 @@
 
     <artifactId>subject-area-tools</artifactId>
     <dependencies>
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>repository-services-implementation</artifactId>
-            <version>${open-metadata.version}</version>
-        </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>repository-services-implementation</artifactId>
