@@ -123,14 +123,13 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
             log.info("Started IGC Event Mapper");
 
             final Consumer<Long, String> consumer = createConsumer();
+            ObjectMapper mapper = new ObjectMapper();
+
             while (true) {
                 try {
-                    ConsumerRecords<Long, String> records = consumer.poll(100);
-                    for (ConsumerRecord<Long, String> record : records) {
-                        ObjectMapper mapper = new ObjectMapper();
-                        IGCKafkaEvent igcKafkaEvent = mapper.readValue(record.value(), IGCKafkaEvent.class);
-                        log.info("Consumer Record: {}", record.value());
-
+                    ConsumerRecords<Long, String> events = consumer.poll(100);
+                    for (ConsumerRecord<Long, String> event : events) {
+                        IGCKafkaEvent igcKafkaEvent = getIGCKafkaEvent(mapper, event);
                         processEvent(igcKafkaEvent);
                     }
                 } catch (Exception e) {
@@ -139,6 +138,13 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
             }
         }
 
+    }
+
+    private IGCKafkaEvent getIGCKafkaEvent(ObjectMapper mapper, ConsumerRecord<Long, String> event) throws java.io.IOException {
+        final String eventContent = event.value();
+        log.info("Consumer Record: {}", eventContent);
+
+        return mapper.readValue(eventContent, IGCKafkaEvent.class);
     }
 
     private void processEvent(IGCKafkaEvent igcKafkaEvent) {
