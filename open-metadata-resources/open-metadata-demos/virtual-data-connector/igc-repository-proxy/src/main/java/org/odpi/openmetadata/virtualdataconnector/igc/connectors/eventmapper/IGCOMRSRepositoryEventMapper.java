@@ -654,12 +654,12 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
     }
 
     private PrimitivePropertyValue getStringPropertyValue(String value) {
-        PrimitivePropertyValue qualifiedName = new PrimitivePropertyValue();
+        PrimitivePropertyValue propertyValue = new PrimitivePropertyValue();
 
-        qualifiedName.setPrimitiveValue(value);
-        qualifiedName.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+        propertyValue.setPrimitiveValue(value);
+        propertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
 
-        return qualifiedName;
+        return propertyValue;
     }
 
     private EnumPropertyValue getEnumPropertyValue(String value) {
