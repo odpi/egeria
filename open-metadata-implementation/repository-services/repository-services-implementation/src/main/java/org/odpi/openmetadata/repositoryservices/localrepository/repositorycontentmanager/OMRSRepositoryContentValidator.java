@@ -2963,32 +2963,24 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
      * @param entity entity to test.
      * @return boolean result
      */
-    public boolean verifyEntityIsClassified(List<String>   requiredClassifications,
-                                            EntitySummary  entity)
-    {
-        if (requiredClassifications != null)
-        {
+    public boolean verifyEntityIsClassified(List<String> requiredClassifications,
+                                            EntitySummary entity) {
+        if (requiredClassifications != null) {
             List<Classification> entityClassifications = entity.getClassifications();
-
-            for (String requiredClassification : requiredClassifications)
-            {
-                if (requiredClassification != null)
-                {
-                    for (Classification entityClassification : entityClassifications)
-                    {
-                        if (entityClassification != null)
-                        {
-                            if (requiredClassification.equals(entityClassification.getName()))
-                            {
-                                return true;
+            if (entityClassifications != null) {
+                for (String requiredClassification : requiredClassifications) {
+                    if (requiredClassification != null) {
+                        for (Classification entityClassification : entityClassifications) {
+                            if (entityClassification != null) {
+                                if (requiredClassification.equals(entityClassification.getName())) {
+                                    return true;
+                                }
                             }
                         }
                     }
                 }
             }
-        }
-        else
-        {
+        } else {
             return true;
         }
 
