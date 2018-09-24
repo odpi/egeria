@@ -2,9 +2,8 @@
 package org.odpi.openmetadata.accessservice.assetcatalog.admin;
 
 import org.odpi.openmetadata.accessservice.assetcatalog.auditlog.AssetCatalogAuditCode;
-import org.odpi.openmetadata.accessservice.assetcatalog.service.AssetCatalogAssetService;
 import org.odpi.openmetadata.accessservice.assetcatalog.service.AssetCatalogRelationshipService;
-import org.odpi.openmetadata.accessservice.assetcatalog.service.OMASCatalogRESTServices;
+import org.odpi.openmetadata.accessservice.assetcatalog.service.AssetCatalogService;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
@@ -20,7 +19,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 public class AssetCatalogAdmin implements AccessServiceAdmin {
 
     private OMRSAuditLog auditLog;
-    
+
     /**
      * Initialize the access service.
      *
@@ -29,13 +28,12 @@ public class AssetCatalogAdmin implements AccessServiceAdmin {
      * @param repositoryConnector                  - connector for querying the cohort repositories
      * @param auditLog                             - audit log component for logging messages.
      * @param serverUserName                       - user id to use on OMRS calls where there is no end user.
-     * @throws OMAGConfigurationErrorException - invalid parameters in the configuration properties.
      */
     public void initialize(AccessServiceConfig accessServiceConfigurationProperties,
                            OMRSTopicConnector enterpriseOMRSTopicConnector,
                            OMRSRepositoryConnector repositoryConnector,
                            OMRSAuditLog auditLog,
-                           String serverUserName) throws OMAGConfigurationErrorException {
+                           String serverUserName) {
 
         final String actionDescription = "initialize";
         AssetCatalogAuditCode auditCode = AssetCatalogAuditCode.SERVICE_INITIALIZING;
@@ -47,9 +45,9 @@ public class AssetCatalogAdmin implements AccessServiceAdmin {
                 auditCode.getSystemAction(),
                 auditCode.getUserAction());
 
-        AssetCatalogAssetService.setRepositoryConnector(repositoryConnector);
-        AssetCatalogRelationshipService.setRepositoryConnector(repositoryConnector);
-        OMASCatalogRESTServices.setRepositoryConnector(repositoryConnector);
+        String serverName = accessServiceConfigurationProperties.getAccessServiceName();
+        AssetCatalogService.setRepositoryConnector(repositoryConnector, serverName);
+        AssetCatalogRelationshipService.setRepositoryConnector(repositoryConnector, serverName);
 
         this.auditLog = auditLog;
 

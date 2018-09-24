@@ -37,15 +37,97 @@ public enum AssetCatalogErrorCode {
             "The system is unable to connect to the OMAS Server to populate the ConnectedAssetProperties object.",
             "Retry the request when the OMAS Service is available."),
 
-    PARAMETER_NULL(400, "OMAS-ASSET-CATALOG-400-003 ",
-            "The parameter {0} passed on the {0} operation is null",
+    PARAMETER_NULL(400, "OMAS-ASSET-CATALOG-400-002 ",
+            "The parameter for {0} passed on the {0} operation is null",
             "The system is unable to process the request without this parameter.",
             "Correct the code in the caller to provide the parameter for this operation."),
 
-    NULL_USER_ID(400, "OMAS-ASSET-CATALOG-400-004 ",
+    NULL_USER_ID(400, "OMAS-ASSET-CATALOG-400-003 ",
             "The user identifier (user id) passed on the {0} operation is null",
             "The system is unable to process the request without a user id.",
             "Correct the code in the caller to provide the user id."),
+
+    OMRS_NOT_INITIALIZED(404, "OMAS-ASSET-CATALOG-404-001 ",
+            "The open metadata repository services are not initialized for the {0} operation",
+            "The system is unable to connect to the open metadata property server.",
+            "Check that the server where the Asset Consumer OMAS is running initialized correctly.  " +
+                    "Correct any errors discovered and retry the request when the open metadata services are available."),
+
+    OMRS_NOT_AVAILABLE(404, "OMAS-ASSET-CATALOG-002 ",
+            "The open metadata repository services are not available for the {0} operation",
+            "The system is unable to connect to the open metadata property server.",
+            "Check that the server where the Asset Consumer OMAS is running initialized correctly.  " +
+                    "Correct any errors discovered and retry the request when the open metadata services are available."),
+
+    NO_METADATA_COLLECTION(404, "OMAS-ASSET-CATALOG-404-003 ",
+            "The repository connector {0} is not returning a metadata collection object",
+            "The system is unable to access any metadata.",
+            "Check that the open metadata server URL is correct and the server is running.  Report the error to the system administrator."),
+
+    RELATIONSHIP_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-004 ",
+            "The requested relationship {0} is not found in OMAS Server {1}",
+            "The system is unable to populate the requested relationship.",
+            "Check that the unique identifier for the relationship is correct."),
+
+    RELATIONSHIPS_WITH_PROPERTY_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-005 ",
+            "There is no relationship with property {0} available in OMAS Server {1}",
+            "The system is unable to populate the requested relationship with the given property.",
+            "Check that the property for the relationship is correct."),
+
+    RELATIONSHIPS_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-006 ",
+            "There is no relationship for the asset {0} available in OMAS Server {1}",
+            "The system is unable to find a relationship with the given property value.",
+            "Provide a new criteria for the current search."),
+
+    ASSET_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-007 ",
+            "The requested asset {0} is not found in OMAS Server {1}",
+            "The system is unable to populate the requested asset.",
+            "Check that the unique identifier for the asset is correct."),
+
+    CLASSIFICATION_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-008 ",
+            "The requested asset {0} has not classification in OMAS Server {1}",
+            "The system is unable to retrieve the classifications for the given asset.",
+            "Check that the unique identifier for the asset is correct."),
+
+    ASSET_WITH_CLASSIFICATION_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-009 ",
+            "There is no asset available for with given classification {0} in OMAS Server {1}",
+            "The system is unable to retrieve the assets with the specified classification.",
+            "Check that the identifier for the classification is correct."),
+
+    ASSET_WITH_PROPERTY_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-010 ",
+            "There is no asset available for with given property {0} in OMAS Server {1}",
+            "The system is unable to retrieve the assets with the specified property.",
+            "Check that the unique identifier for the property is correct."),
+
+    ASSET_NEIGHBORHOOD_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-011 ",
+            "There is no assets or relationships available in the neighbourhood of asset {0} in OMAS Server {1}",
+            "The system is unable to retrieve the neighbourhood for the given asset.",
+            "Check that the unique identifier for the asset is correct."),
+
+    NO_ASSET_FROM_NEIGHBORHOOD_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-012 ",
+            "There is no assets available in the neighbourhood of asset {0} in OMAS Server {1}",
+            "The system is unable to retrieve the assets neighborhood from the specified asset identifier.",
+            "Check that the unique identifier for the asset is correct."),
+
+    NO_RELATIONSHIPS_FROM_NEIGHBORHOOD_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-013 ",
+            "There is no relationships available in the neighbourhood of asset {0} in OMAS Server {1}",
+            "The system is unable to retrieve the neighborhood relationships for the specified asset identifier.",
+            "Check that the unique identifier for the asset is correct."),
+
+    NO_RELATED_ASSETS(404, "OMAS-ASSET-CATALOG-404-014 ",
+            "There is no assets that are connected directly or indirectly to the asset identified {0} in OMAS Server {1}",
+            "The system is unable to retrieve the classifications for the given asset.",
+            "Check that the unique identifier for the asset is correct."),
+
+    LINKING_RELATIONSHIPS_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-015 ",
+            "There is no intermediate relationships that connect the {0} with the {1} in OMAS Server {2}",
+            "The system is unable to retrieve the classifications for the given asset.",
+            "Check that the unique identifier for the asset is correct."),
+
+    LINKING_ASSETS_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-016 ",
+            "There is no intermediate assets that connect the {0} with the {1} in OMAS Server {2}",
+            "The system is unable to retrieve the classifications for the given asset.",
+            "Check that the unique identifier for the asset is correct."),
 
     SERVICE_NOT_INITIALIZED(503, "OMAS-ASSET-CATALOG-503-003 ",
             "The access service has not been initialized and can not support REST API call {0}",
