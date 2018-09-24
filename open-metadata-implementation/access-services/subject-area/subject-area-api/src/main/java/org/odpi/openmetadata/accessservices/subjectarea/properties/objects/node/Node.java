@@ -81,8 +81,8 @@ public class Node implements Serializable {
 
 
     /**
-     * get the projects
-     * @return
+     * The projects associated with this Node
+     * @return {@code Set<String> }
      */
     public Set<String> getProjects() {
         return projects;
@@ -100,6 +100,10 @@ public class Node implements Serializable {
         this.systemAttributes = systemAttributes;
     }
 
+    /**
+     * description of Node
+     * @return description
+     */
     public String getDescription() {
         return description;
     }
@@ -107,7 +111,10 @@ public class Node implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-
+    /**
+     * The classifications associated with this Node
+     * @return {@code List<Classification> }
+     */
     public List<Classification> getClassifications() {
         return classifications;
     }

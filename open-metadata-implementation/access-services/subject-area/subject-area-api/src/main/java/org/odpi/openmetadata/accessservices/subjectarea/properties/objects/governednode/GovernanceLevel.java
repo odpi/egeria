@@ -78,7 +78,7 @@ public class GovernanceLevel {
 
     /**
      * The level of this classification.
-     * @return
+     * @return level of classification
      */
     public GovernanceClassificationLevel getLevel() {
         return level;

@@ -122,8 +122,8 @@ public class DataStoreEncoding extends Classification {
 
        private String encoding;
        /**
-        * Encoding type.
-        * @return String
+        * {@literal Encoding type. }
+        * @return {@code String }
         */
        public String getEncoding() {
            return this.encoding;
@@ -135,8 +135,8 @@ public class DataStoreEncoding extends Classification {
 
        private String language;
        /**
-        * Language used in the encoding.
-        * @return String
+        * {@literal Language used in the encoding. }
+        * @return {@code String }
         */
        public String getLanguage() {
            return this.language;
@@ -148,8 +148,8 @@ public class DataStoreEncoding extends Classification {
 
        private String description;
        /**
-        * Description the encoding.
-        * @return String
+        * {@literal Description the encoding. }
+        * @return {@code String }
         */
        public String getDescription() {
            return this.description;
@@ -161,8 +161,8 @@ public class DataStoreEncoding extends Classification {
 
        private String steward;
        /**
-        * Person, organization or engine that defined the encoding.
-        * @return String
+        * {@literal Person, organization or engine that defined the encoding. }
+        * @return {@code String }
         */
        public String getSteward() {
            return this.steward;
@@ -174,8 +174,8 @@ public class DataStoreEncoding extends Classification {
 
        private String source;
        /**
-        * Source of the encoding.
-        * @return String
+        * {@literal Source of the encoding. }
+        * @return {@code String }
         */
        public String getSource() {
            return this.source;
@@ -187,8 +187,8 @@ public class DataStoreEncoding extends Classification {
 
        private Map<String,String> properties;
        /**
-        * Additional properties for the encoding.
-        * @return Map<String,String>
+        * {@literal Additional properties for the encoding. }
+        * @return {@code Map<String,String> }
         */
        public Map<String,String> getProperties() {
            return this.properties;

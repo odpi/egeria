@@ -34,7 +34,7 @@ abstract public class Classification implements Serializable {
     protected String classificationName = null;
     /**
      * Get the core attributes
-     * @return
+     * @return core attributes
      */
     public SystemAttributes getSystemAttributes() {
         return systemAttributes;

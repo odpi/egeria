@@ -97,8 +97,8 @@ public class GovernanceMeasurementsResultsDataSet extends Classification {
 
        private String description;
        /**
-        * Description of the use of the data set for governance metrics.
-        * @return String
+        * {@literal Description of the use of the data set for governance metrics. }
+        * @return {@code String }
         */
        public String getDescription() {
            return this.description;

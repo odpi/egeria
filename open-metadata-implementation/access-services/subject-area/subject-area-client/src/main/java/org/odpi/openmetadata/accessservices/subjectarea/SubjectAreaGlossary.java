@@ -13,7 +13,7 @@ public interface SubjectAreaGlossary
     /**
      * Create a Glossary
      * @param userId  userId under which the request is performed
-     * @param suppliedGlossary
+     * @param suppliedGlossary details of glossary to create
      * @return the created glossary.
      *
      * Exceptions returned by the server
@@ -22,7 +22,6 @@ public interface SubjectAreaGlossary
      * @throws UnrecognizedGUIDException  the supplied guid was not recognised
      * @throws ClassificationException Error processing a classification
      * @throws FunctionNotSupportedException   Function not supported
-     * @throws StatusNotSupportedException A status value is not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -64,10 +63,10 @@ public interface SubjectAreaGlossary
      * @param guid             guid of the glossary to update
      * @param suppliedGlossary glossary to be updated
      * @return replaced glossary
-     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws FunctionNotSupportedException        Function not supported
      * @throws InvalidParameterException            one of the parameters is null or invalid.
+     * @throws UnrecognizedNameException
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -87,10 +86,10 @@ public interface SubjectAreaGlossary
      * @param guid             guid of the glossary to update
      * @param suppliedGlossary glossary to be updated
      * @return updated glossary
-     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws FunctionNotSupportedException        Function not supported
+     * @throws FunctionNotSupportedException        function not supported
      * @throws InvalidParameterException            one of the parameters is null or invalid.
+     * @throws UnrecognizedNameException            unrecognised name
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server

@@ -77,14 +77,14 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServices {
      * @param userId           userId under which the request is performed
      * @param suppliedGlossary
      * @return response, when successful contains the created glossary.
-     * when not successful the following Exception rest can occur
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
-     * @throws ClassificationException              Error processing a classification
-     * @throws FunctionNotSupportedException        Function not supported
-     * @throws StatusNotSupportedException          A status value is not supported
+     * when not successful the following Exception responses can occur
+     *  UserNotAuthorizedException           the requesting user is not authorized to issue this request.
+     *  MetadataServerUncontactableException not able to communicate with a Metadata respository service.
+     *  InvalidParameterException            one of the parameters is null or invalid.
+     *  UnrecognizedGUIDException            the supplied guid was not recognised
+     *  ClassificationException              Error processing a classification
+     *  FunctionNotSupportedException        Function not supported
+     *  StatusNotSupportedException          A status value is not supported
      */
     public SubjectAreaOMASAPIResponse createGlossary(String userId, org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary suppliedGlossary) {
         final String methodName = "createGlossary";
@@ -181,12 +181,12 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServices {
      * @param userId userId under which the request is performed
      * @param guid   guid of the glossary to get
      * @return response which when successful contains the glossary with the requested guid
-     * when not successful the following Exceptions can occur
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
-     * @throws FunctionNotSupportedException        Function not supported
+     * when not successful the following Exception responses can occur
+     *  UserNotAuthorizedException           the requesting user is not authorized to issue this request.
+     *  MetadataServerUncontactableException not able to communicate with a Metadata respository service.
+     *  InvalidParameterException            one of the parameters is null or invalid.
+     *  UnrecognizedGUIDException            the supplied guid was not recognised
+     *  FunctionNotSupportedException        Function not supported
      */
     public SubjectAreaOMASAPIResponse getGlossaryByGuid(String userId, String guid) {
         final String methodName = "getGlossary";
@@ -266,12 +266,12 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServices {
      * @param guid             guid of the glossary to update
      * @param suppliedGlossary glossary to be updated
      * @return a response which when successful contains the updated glossary
-     * when not successful the following Exceptions can occur
-     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws FunctionNotSupportedException        Function not supported
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
+     * when not successful the following Exception responses can occur
+     *  UnrecognizedGUIDException            the supplied guid was not recognised
+     *  UserNotAuthorizedException           the requesting user is not authorized to issue this request.
+     *  FunctionNotSupportedException        Function not supported
+     *  InvalidParameterException            one of the parameters is null or invalid.
+     *  MetadataServerUncontactableException not able to communicate with a Metadata respository service.
      */
     public SubjectAreaOMASAPIResponse updateGlossary(String userId, String guid, Glossary suppliedGlossary, boolean isReplace) {
         final String methodName = "updateGlossary";
@@ -366,10 +366,10 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServices {
      * @param userId userId under which the request is performed
      * @param name   find the glossary with this name.
      * @return the requested glossary.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * @throws FunctionNotSupportedException        Function not supported
+     *  InvalidParameterException            one of the parameters is null or invalid.
+     *  UserNotAuthorizedException           the requesting user is not authorized to issue this request.
+     *  MetadataServerUncontactableException not able to communicate with a Metadata respository service.
+     *  FunctionNotSupportedException        Function not supported
      */
     public SubjectAreaOMASAPIResponse getGlossaryByName(String userId, String name) {
         final String methodName = "getGlossaryByName";
@@ -476,19 +476,19 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServices {
      * A soft delete means that the glossary instance will exist in a deleted state in the repository after the delete operation. This means
      * that it is possible to undo the delete.
      * A hard delete means that the glossary will not exist after the operation.
-     * when not successful the following Exceptions can occur
+     * when not successful the following Exception responses can occur
      *
      * @param userId  userId under which the request is performed
      * @param guid    guid of the glossary to be deleted.
      * @param isPurge true indicates a hard delete, false is a soft delete.
      * @return a void response
-     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
-     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws EntityNotDeletedException            a soft delete was issued but the glossary was not deleted.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the glossary was not purged
+     *  UnrecognizedGUIDException            the supplied guid was not recognised
+     *  UserNotAuthorizedException           the requesting user is not authorized to issue this request.
+     *  FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
+     *  InvalidParameterException            one of the parameters is null or invalid.
+     *  MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
+     *  EntityNotDeletedException            a soft delete was issued but the glossary was not deleted.
+     *  GUIDNotPurgedException               a hard delete was issued but the glossary was not purged
      */
     public SubjectAreaOMASAPIResponse deleteGlossary(String userId, String guid, Boolean isPurge) {
         final String methodName = "deleteGlossary";
