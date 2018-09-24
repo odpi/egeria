@@ -106,7 +106,7 @@ public class GovernedNode extends Node implements Serializable {
      * If governance action classifications (Retention, Confidence, Confidentiality or Criticality) are supplied then remove them
      * from the classifications and add to the appropriate named field. e.g. Retention will be set in the retention field.
      *
-     * @param classifications
+     * @param classifications the list of classifications to set on the GovernedNode.
      */
     public void setClassifications(List<Classification> classifications) {
         if (classifications!=null && classifications.size() >0) {

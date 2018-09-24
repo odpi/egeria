@@ -97,8 +97,8 @@ public class CyberLocation extends Classification {
 
        private String address;
        /**
-        * Network address of the location.
-        * @return String
+        * {@literal Network address of the location. }
+        * @return {@code String }
         */
        public String getAddress() {
            return this.address;

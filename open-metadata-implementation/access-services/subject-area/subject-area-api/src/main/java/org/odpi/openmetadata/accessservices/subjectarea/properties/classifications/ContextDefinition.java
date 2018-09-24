@@ -102,8 +102,8 @@ public class ContextDefinition extends Classification {
 
        private String description;
        /**
-        * Description for how the context is used.
-        * @return String
+        * {@literal Description for how the context is used. }
+        * @return {@code String }
         */
        public String getDescription() {
            return this.description;
@@ -115,8 +115,8 @@ public class ContextDefinition extends Classification {
 
        private String scope;
        /**
-        * Scope of influence of the context.
-        * @return String
+        * {@literal Scope of influence of the context. }
+        * @return {@code String }
         */
        public String getScope() {
            return this.scope;

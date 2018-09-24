@@ -63,6 +63,7 @@ public class SubjectAreaBeansToAccessOMRS  {
     /**
      * Fetch complete definition of an <$$EntityName$$> given its GUID.
      * The limit and offset paging parameters limit the number elements returned in each of the <$$lowerCasePluralEntityName$$> relationships.
+     * @param userId user identity
      * @param entityGuid GUID for the entity
      * @return <$$uEntityName$$>
      * @throws MetadataServerUncontactableException
@@ -92,6 +93,7 @@ public class SubjectAreaBeansToAccessOMRS  {
     }
     /**
      * Create new <$$EntityName$$>.
+     * @param userId user identity
      * @param <$$EntityName$$>
      * @return <$$uEntityName$$>
      * @throws MetadataServerUncontactableException
@@ -126,14 +128,13 @@ public class SubjectAreaBeansToAccessOMRS  {
         return created<$$uEntityName$$>;
     }
     /**
-     * Update <$$EntityName$$> 
-     * @param <$$EntityName$$>
+     * Update <$$EntityName$$>
+     * @param userId user identity
+     * @param <$$EntityName$$>   <$$EntityName$$> to update
      * @return <$$uEntityName$$>
      * @throws MetadataServerUncontactableException
      * @throws UserNotAuthorizedException
      * @throws InvalidParameterException
-     * @throws ClassificationException
-     * @throws StatusNotSupportedException
      */
     public <$$uEntityName$$> update<$$uEntityName$$>(String userId, <$$uEntityName$$> <$$EntityName$$>)
          throws MetadataServerUncontactableException, UserNotAuthorizedException, InvalidParameterException,UnrecognizedGUIDException
@@ -163,6 +164,7 @@ public class SubjectAreaBeansToAccessOMRS  {
      * deleted. Soft deletion support os optional, so this call may fail. Soft deletes can be undone using the restore call.
      * If it is required that an entity is really deleted (a hard delete) then the purge call should be used.
      *
+     * @param userId user identity
      * @param  entityGuid GUID for the <$$EntityName$$>
      * @return <$$uEntityName$$>
      * @throws MetadataServerUncontactableException
@@ -195,9 +197,8 @@ public class SubjectAreaBeansToAccessOMRS  {
     /**
      * Purge an <$$EntityName$$> identified by its GUID. Delete is a hard delete, this means that the <$$EntityName$$> is really
      * deleted .
-     *
+     * @param userId user identity
      * @param  entityGuid GUID for the <$$EntityName$$>
-     * @return <$$uEntityName$$>
      * @throws MetadataServerUncontactableException
      * @throws UserNotAuthorizedException
      * @throws InvalidParameterException
@@ -226,6 +227,7 @@ public class SubjectAreaBeansToAccessOMRS  {
 
     /**
      * Add classifications to the supplied <$$EntityName$$>
+     * @param userId user identity
      * @param entityGuid
      * @param classifications
      * @throws MetadataServerUncontactableException
@@ -265,6 +267,7 @@ public class SubjectAreaBeansToAccessOMRS  {
 
     /**
      * Updates classifications to an existing <$$EntityName$$> represented by a guid.
+     * @param userId user identity
      * @param  entityGuid globally unique identifier for the <$$EntityName$$>
      * @return classification for the given <$$EntityName$$> guid
      * @throws MetadataServerUncontactableException
@@ -335,8 +338,10 @@ public class SubjectAreaBeansToAccessOMRS  {
 
     /**
      * Deletes a given classification from an existing <$$EntityName$$> represented by a guid.
+     * @param userId user identity
      * @param entityGuid  globally unique identifier for the <$$EntityName$$>
      * @param name name of the classification
+     * @return deleted <$$uEntityName$$>  classification
      * @throws MetadataServerUncontactableException
      * @throws UserNotAuthorizedException
      * @throws InvalidParameterException
@@ -365,7 +370,9 @@ public class SubjectAreaBeansToAccessOMRS  {
 
     /**
       * Get the relationships associated with entity <$$EntityName$$> represented by a guid.
+      * @param userId user identity
       * @param entityGuid  globally unique identifier for the <$$EntityName$$>
+      * @return {@code List<Line> }
       * @throws MetadataServerUncontactableException
       * @throws UserNotAuthorizedException
       * @throws InvalidParameterException
@@ -407,8 +414,10 @@ public class SubjectAreaBeansToAccessOMRS  {
 
      <$$RELATIONSHIP$
     /**
-      * Create relationship
-      * @param <$$uRelationshipName$$> relationship to create
+      * Create <$$uRelationshipName$$> relationship
+      * @param userId user identity
+      * @param relationship <$$uRelationshipName$$> relationship to create
+      * @return created <$$uRelationshipName$$> relationship
       * @throws MetadataServerUncontactableException
       * @throws UserNotAuthorizedException
       * @throws InvalidParameterException
@@ -432,8 +441,10 @@ public class SubjectAreaBeansToAccessOMRS  {
         return reclassified<$$uRelationshipName$$>;
     }
     /**
-      * get relationship
-      * @param <$$uRelationshipName$$> relationship
+      * Get <$$uRelationshipName$$> relationship
+      * @param userId user identity
+      * @param relationshipGuid relationship guid
+      * @return <$$uRelationshipName$$> relationship
       * @throws MetadataServerUncontactableException
       * @throws UserNotAuthorizedException
       * @throws InvalidParameterException
@@ -456,8 +467,10 @@ public class SubjectAreaBeansToAccessOMRS  {
             return got<$$uRelationshipName$$>;
       }
     /**
-      * update relationship
-      * @param <$$uRelationshipName$$> relationship
+      * Update <$$uRelationshipName$$> relationship
+      * @param userId user identity
+      * @param <$$RelationshipName$$> relationship
+      * @return  <$$uRelationshipName$$> relationship
       * @throws MetadataServerUncontactableException
       * @throws UserNotAuthorizedException
       * @throws InvalidParameterException
@@ -482,7 +495,8 @@ public class SubjectAreaBeansToAccessOMRS  {
         return updated<$$uRelationshipName$$>;
     }
     /**
-      * delete relationship
+      * Delete <$$uRelationshipName$$> relationship
+      * @param userId user identity
       * @param relationshipGuid relationshipGuid
       * @throws MetadataServerUncontactableException
       * @throws UserNotAuthorizedException
@@ -512,7 +526,8 @@ public class SubjectAreaBeansToAccessOMRS  {
              }
      }
     /**
-      * purge relationship
+      * Purge <$$uRelationshipName$$> relationship
+      * @param userId user identity
       * @param relationshipGuid relationshipGuid
       * @throws MetadataServerUncontactableException
       * @throws UserNotAuthorizedException

@@ -14,12 +14,13 @@ public class UnexpectedResponseException extends SubjectAreaCheckedExceptionBase
     /**
      * This is the typical constructor used for creating a unexpectedResponseCategoryNotPurgedException.
      *
-     * @param httpCode          - http response code to use if this exception flows over a rest call
-     * @param className         - name of class reporting error
-     * @param actionDescription - description of function it was performing when error detected
-     * @param errorMessage      - description of error
-     * @param systemAction      - actions of the system as a result of the error
-     * @param userAction        - instructions for correcting the error
+     * @param httpCode           http response code to use if this exception flows over a rest call
+     * @param className          name of class reporting error
+     * @param actionDescription  description of function it was performing when error detected
+     * @param errorMessage       description of error
+     * @param systemAction       actions of the system as a result of the error
+     * @param userAction         instructions for correcting the error
+     * @param unexpectedResponseCategory unexpected response category
      */
     public UnexpectedResponseException(int httpCode, String className, String actionDescription, String errorMessage, String systemAction, String userAction, String unexpectedResponseCategory) {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction);
@@ -30,13 +31,14 @@ public class UnexpectedResponseException extends SubjectAreaCheckedExceptionBase
     /**
      * This is the constructor used for creating a unexpectedResponseCategory.
      *
-     * @param httpCode          - http response code to use if this exception flows over a rest call
-     * @param className         - name of class reporting error
-     * @param actionDescription - description of function it was performing when error detected
-     * @param errorMessage      - description of error
-     * @param systemAction      - actions of the system as a result of the error
-     * @param userAction        - instructions for correcting the error
-     * @param caughtError       - the error that resulted in this exception.
+     * @param httpCode          http response code to use if this exception flows over a rest call
+     * @param className         name of class reporting error
+     * @param actionDescription description of function it was performing when error detected
+     * @param errorMessage      description of error
+     * @param systemAction      actions of the system as a result of the error
+     * @param userAction        instructions for correcting the error
+     * @param caughtError       the error that resulted in this exception.
+     * @param unexpectedResponseCategory unexpected response category
      */
     public UnexpectedResponseException(int httpCode, String className, String actionDescription, String errorMessage, String systemAction, String userAction, String unexpectedResponseCategory, Throwable caughtError) {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);

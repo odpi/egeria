@@ -37,7 +37,7 @@ public class RelationshipEnd implements Serializable {
 
     /**
      * This guid of the is the related end of this reference
-     * @return
+     * @return guid of the end
      */
     public String getEndGuid() {
         return EndGuid;
@@ -49,7 +49,7 @@ public class RelationshipEnd implements Serializable {
 
     /**
      * This is the relationship guid associated with this reference
-     * @return
+     * @return relationship guid
      */
     public String getRelationshipGuid() {
         return relationshipGuid;
@@ -61,7 +61,7 @@ public class RelationshipEnd implements Serializable {
 
     /**
      * This is the related ends type name
-     * @return
+     * @return the related ends name
      */
     public String getTypeName() {
         return typeName;

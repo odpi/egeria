@@ -97,8 +97,8 @@ public class CanonicalVocabulary extends Classification {
 
        private String scope;
        /**
-        * Scope of influence for this canonical glossary.
-        * @return String
+        * {@literal Scope of influence for this canonical glossary. }
+        * @return {@code String }
         */
        public String getScope() {
            return this.scope;

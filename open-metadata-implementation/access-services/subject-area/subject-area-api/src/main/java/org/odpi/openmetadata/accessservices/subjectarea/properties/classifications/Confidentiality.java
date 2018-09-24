@@ -130,8 +130,8 @@ public class Confidentiality extends Classification {
 
        private GovernanceClassificationStatus status;
        /**
-        * Status of this classification.
-        * @return GovernanceClassificationStatus
+        * {@literal Status of this classification. }
+        * @return {@code GovernanceClassificationStatus }
         */
        public GovernanceClassificationStatus getStatus() {
            return this.status;
@@ -143,8 +143,8 @@ public class Confidentiality extends Classification {
 
        private Integer confidence;
        /**
-        * Level of confidence in the classification (0=none -> 100=excellent).
-        * @return Integer
+        * {@literal Level of confidence in the classification (0=none -> 100=excellent). }
+        * @return {@code Integer }
         */
        public Integer getConfidence() {
            return this.confidence;
@@ -156,8 +156,8 @@ public class Confidentiality extends Classification {
 
        private String steward;
        /**
-        * Person responsible for maintaining this classification.
-        * @return String
+        * {@literal Person responsible for maintaining this classification. }
+        * @return {@code String }
         */
        public String getSteward() {
            return this.steward;
@@ -169,8 +169,8 @@ public class Confidentiality extends Classification {
 
        private String source;
        /**
-        * Source of the classification.
-        * @return String
+        * {@literal Source of the classification. }
+        * @return {@code String }
         */
        public String getSource() {
            return this.source;
@@ -182,8 +182,8 @@ public class Confidentiality extends Classification {
 
        private String notes;
        /**
-        * Information relating to the classification.
-        * @return String
+        * {@literal Information relating to the classification. }
+        * @return {@code String }
         */
        public String getNotes() {
            return this.notes;
@@ -195,8 +195,8 @@ public class Confidentiality extends Classification {
 
        private ConfidentialityLevel level;
        /**
-        * Level of confidentiality.
-        * @return ConfidentialityLevel
+        * {@literal Level of confidentiality. }
+        * @return {@code ConfidentialityLevel }
         */
        public ConfidentialityLevel getLevel() {
            return this.level;

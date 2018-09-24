@@ -42,8 +42,6 @@ public class TestSubjectAreaGlossaryRESTServices {
         Glossary g = new Glossary();
         g.setName("ff");
         String json =objectMapper.writeValueAsString(g);
-        int u=0;
-
     }
 
     @Test

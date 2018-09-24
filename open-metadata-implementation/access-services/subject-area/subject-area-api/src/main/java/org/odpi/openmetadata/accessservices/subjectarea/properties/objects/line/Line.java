@@ -68,7 +68,7 @@ public class Line implements Serializable {
     }
     /**
      * Create a typedRelationship from an omrs relationship
-     * @param omrsRelationship
+     * @param omrsRelationship omrs relationship
      */
     public Line(Relationship omrsRelationship) {
         if (this.systemAttributes ==null) {
@@ -205,8 +205,8 @@ public class Line implements Serializable {
 
     /**
      * Create an omrs relationship with the basic fields filled in.
-     * @param line
-     * @return
+     * @param line this is a line to create the relationship from
+     * @return Relationship the created omrs relationship
      */
     public static Relationship createOmrsRelationship(Line line) {
         Relationship omrsRelationship = new Relationship();

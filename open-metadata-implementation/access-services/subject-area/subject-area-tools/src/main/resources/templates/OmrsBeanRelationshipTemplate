@@ -133,8 +133,8 @@ public class <$$uname$$> extends Line {
      <$$$
          private <$$PropertyType$$> <$$PropertyName$$>;
          /**
-          * <$$AttrDescription$$>
-          * @return <$$PropertyType$$>
+          * {literal <$$AttrDescription$$> }
+          * @return {@code <$$PropertyType$$> }
           */
          public <$$PropertyType$$> get<$$uPropertyName$$>() {
              return this.<$$PropertyName$$>;

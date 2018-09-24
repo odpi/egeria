@@ -106,8 +106,8 @@ public class Folder extends Classification {
 
        private OrderBy orderBy;
        /**
-        * Definition for how elements in the collection should be ordered.
-        * @return OrderBy
+        * {@literal Definition for how elements in the collection should be ordered. }
+        * @return {@code OrderBy }
         */
        public OrderBy getOrderBy() {
            return this.orderBy;
@@ -119,8 +119,8 @@ public class Folder extends Classification {
 
        private String otherPropertyName;
        /**
-        * Name of property to use for ordering.
-        * @return String
+        * {@literal Name of property to use for ordering. }
+        * @return {@code String }
         */
        public String getOtherPropertyName() {
            return this.otherPropertyName;

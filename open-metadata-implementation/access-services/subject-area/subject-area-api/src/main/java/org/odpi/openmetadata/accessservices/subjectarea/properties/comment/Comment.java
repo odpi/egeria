@@ -52,8 +52,8 @@ public class Comment implements Serializable {
 
 
     /**
-     * Get the system attributes
-     * @return
+     * Get the system attributes associated with the Comment.
+     * @return system attributes
      */
     public SystemAttributes getSystemAttributes() {
         return systemAttributes;
@@ -162,7 +162,7 @@ public class Comment implements Serializable {
        private Map<String,String> additionalProperties;
        /**
         * Additional properties for the element.
-        * @return Map<String,String>
+        * @return {@code Map<String,String> }
         */
        public Map<String,String> getAdditionalProperties() {
            return this.additionalProperties;
@@ -181,22 +181,23 @@ public class Comment implements Serializable {
 
     /**
      * Get the extra attributes - ones that are in addition to the standard types.
-     * @return
+     * @return {@code Map<String,String> }
      */
     public Map<String, Object> getExtraAttributes() {
         return extraAttributes;
     }
 
      /**
-     * Classifications
-     * @return
+     * Classifications associated with the Comment
+     * @return list of classifications
      */
     public List<Classification> getClassifications() {
         return classifications;
     }
     /**
       * Extra classifications are classifications that are not in the open metadata model - we include the OMRS Classifications.
-      */
+     * @return {@code Map<String,Classification> }
+     */
     public Map<String, Classification> getExtraClassifications() {
         return extraClassifications;
     }

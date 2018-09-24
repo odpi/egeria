@@ -72,7 +72,7 @@ $Relationship$$>
     private String <$$PropertyName$$>;
     /**
      * <$$AttrDescription$$>
-     * @return
+     * @return <$$uPropertyName$$>
      */
     public String get<$$uPropertyName$$>() {
         return this.<$$PropertyName$$>;

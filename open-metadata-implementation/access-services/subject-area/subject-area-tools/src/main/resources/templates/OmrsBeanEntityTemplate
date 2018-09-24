@@ -130,8 +130,8 @@ public class  <$$uname$$> implements Serializable {
    <$$$
        private <$$PropertyType$$> <$$PropertyName$$>;
        /**
-        * <$$AttrDescription$$>
-        * @return <$$PropertyTypeJavadoc$$>
+        * {@literal <$$AttrDescription$$> }
+        * @return {@code <$$PropertyTypeJavadoc$$> }
         */
        public <$$PropertyType$$> get<$$uPropertyName$$>() {
            return this.<$$PropertyName$$>;
