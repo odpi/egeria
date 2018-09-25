@@ -11,6 +11,8 @@ import org.odpi.openmetadata.accessservices.governanceengine.api.objects.Governa
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAsset;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
@@ -118,15 +120,31 @@ public class GovernedAssetHandler {
     }
 
     private void addToAssetListByType(List<GovernedAsset> assetsToReturn, String type,
-                                      List<String>classification, String userId ) {
+                                      List<String> classification, String userId) {
+
 
         // We know the type, let's do this by classification now
-
         if (classification == null) {
-            addToAssetListByClassification(assetsToReturn, type,null, userId);
+            List<TypeDef> allClassifications = null;
+            //TypeDef classificationtypedef;
+
+            try {
+                allClassifications = metadataCollection.findTypeDefsByCategory(userId,
+                        TypeDefCategory.CLASSIFICATION_DEF);
+            } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException e) {
+            } catch (RepositoryErrorException e) {
+            } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
+            }
+
+            if (allClassifications != null) {
+                allClassifications.forEach((classificationTypedef) -> {
+                    addToAssetListByClassification(assetsToReturn, type, classificationTypedef.getName(), userId);
+                });
+            }
+
         } else {
             classification.forEach((classificationsearch) -> {
-                addToAssetListByClassification(assetsToReturn, type,classificationsearch, userId);
+                addToAssetListByClassification(assetsToReturn, type, classificationsearch, userId);
             });
         }
 
@@ -141,14 +159,15 @@ public class GovernedAssetHandler {
 
         String typeGuid = getTypeGuidFromTypeName(type,userId);
 
-
+// findEntitiesByClassification requires a specific type to be provided.
             try {
+
                 entities = metadataCollection.findEntitiesByClassification(userId, typeGuid,
                         classification,
-                        null, null, 0,
+                        null, null,0,
                         null,
-                        null, null, null, 0);
-
+                        null, null, null, 0);//TODO Handle exceptions from findEntitiesByClassification
+                //TODO remove stack traces
             } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException e) {
                 e.printStackTrace();
             } catch (TypeErrorException e) {
@@ -176,6 +195,7 @@ public class GovernedAssetHandler {
 
         }
     }
+
 
     private void addClassificationInfoToEntry(GovernedAsset entry, EntityDetail entity,
                                               String classification) {
@@ -246,9 +266,9 @@ public class GovernedAssetHandler {
 
     private String getTypeGuidFromTypeName(String type, String userId) {
 
-        String guid = new String();
+        String guid = null;
 
-        // TODO Decided how to handle exceptions. For now we'll ensure an empty String is returned
+        // TODO Decided how to handle exceptions. For now we'll return null
         try {
             guid = metadataCollection.getTypeDefByName(userId, type).getGUID();
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException e) {
