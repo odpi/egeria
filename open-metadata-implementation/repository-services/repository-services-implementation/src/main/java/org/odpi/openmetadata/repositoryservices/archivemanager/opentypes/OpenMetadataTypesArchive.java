@@ -17427,13 +17427,31 @@ public class OpenMetadataTypesArchive
 
         final String linkedToEntity = "RelationalTable";
 
-        return archiveHelper.getClassificationDef(guid,
-                                                  name,
-                                                  null,
-                                                  description,
-                                                  descriptionGUID,
-                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
-                                                  false);
+        ClassificationDef classificationDef =  archiveHelper.getClassificationDef(guid,
+                                                                                  name,
+                                                                                  null,
+                                                                                  description,
+                                                                                  descriptionGUID,
+                                                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                                                  false);
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "expression";
+        final String attribute1Description     = "Expression of the view.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+
+        classificationDef.setPropertiesDefinition(properties);
+
+        return classificationDef;          
     }
 
 

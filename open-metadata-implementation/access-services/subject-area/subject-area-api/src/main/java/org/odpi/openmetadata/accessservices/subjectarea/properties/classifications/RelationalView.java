@@ -44,12 +44,12 @@ public class RelationalView extends Classification {
 
 
  public static final String[] PROPERTY_NAMES_SET_VALUES = new String[] {
-
+	    "expression",
     // Terminate the list
         null
     };
     public static final String[] ATTRIBUTE_NAMES_SET_VALUES = new String[] {
-
+    	"expression",
      // Terminate the list
         null
     };
@@ -84,13 +84,29 @@ public class RelationalView extends Classification {
         EnumPropertyValue enumPropertyValue=null;
         MapPropertyValue mapPropertyValue=null;
         PrimitivePropertyValue primitivePropertyValue=null;
+        primitivePropertyValue = new PrimitivePropertyValue();
+        primitivePropertyValue.setPrimitiveValue(expression);
+        instanceProperties.setProperty("expression",primitivePropertyValue);
+        
         if (log.isDebugEnabled()) {
                log.debug("<== Method: " + methodName);
         }
         return instanceProperties;
     }
 
+    private String expression;
 
+    /**
+     * {@literal Expression of the view. }
+     * @return String
+     */
+    public String getExpression() {
+        return this.expression;
+    }
+    public void setExpression(String expression)  {
+        this.expression = expression;
+    }    
+    
     /**
       * Get the extra attributes - ones that are in addition to the standard types.
       * @return extra attributes
