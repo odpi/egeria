@@ -205,6 +205,8 @@ public class GovernedAssetHandler {
 
         // Get the current list of assigned classification
          List<GovernanceClassificationUsage> usageList = entry.getAssignedGovernanceClassifications();
+         if (usageList == null)
+                usageList = new ArrayList<GovernanceClassificationUsage>();
 
         // Add the new assignment locally (in case of copying)
         GovernanceClassificationUsage usage = new GovernanceClassificationUsage();
@@ -225,15 +227,19 @@ public class GovernedAssetHandler {
 
             // And now let's pull in the properties
             Map<String,String> m = new HashMap<>();
-            Map<String, InstancePropertyValue> ip=entityClassification.getProperties().getInstanceProperties();
 
-            //mapping them to our map
-            ip.entrySet().stream().forEach(props -> {
-                // TODO Mapping of types between OMRS and Ranger should be abstracted
-                // TODO Mapping of alpha name is fragile - temporary for initial debug
-                m.put(props.getKey(),props.getValue().toString());
-            });
-
+            InstanceProperties ip2 = entityClassification.getProperties();
+            if (ip2!=null) {
+                Map<String, InstancePropertyValue> ip = ip2.getInstanceProperties();
+                if (ip != null) {
+                    //mapping them to our map
+                    ip.entrySet().stream().forEach(props -> {
+                        // TODO Mapping of types between OMRS and Ranger should be abstracted
+                        // TODO Mapping of alpha name is fragile - temporary for initial debug
+                        m.put(props.getKey(), props.getValue().toString());
+                    });
+                }
+            }
             // And set them back
             usage.setAttributeValues(m);
             usageList.add(usage);
