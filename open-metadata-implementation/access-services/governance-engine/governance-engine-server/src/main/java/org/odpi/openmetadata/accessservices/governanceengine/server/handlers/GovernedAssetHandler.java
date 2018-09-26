@@ -9,6 +9,7 @@ import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions
 import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernanceClassificationUsage;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAsset;
+import org.odpi.openmetadata.accessservices.governanceengine.server.util.PropertyUtils;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
@@ -236,7 +237,9 @@ public class GovernedAssetHandler {
                     ip.entrySet().stream().forEach(props -> {
                         // TODO Mapping of types between OMRS and Ranger should be abstracted
                         // TODO Mapping of alpha name is fragile - temporary for initial debug
-                        m.put(props.getKey(), props.getValue().toString());
+                        //m.put(props.getKey(), props.getValue().toString());
+                        m.put(props.getKey(), PropertyUtils.getStringForPropertyValue(props.getValue()));
+
                     });
                 }
             }
