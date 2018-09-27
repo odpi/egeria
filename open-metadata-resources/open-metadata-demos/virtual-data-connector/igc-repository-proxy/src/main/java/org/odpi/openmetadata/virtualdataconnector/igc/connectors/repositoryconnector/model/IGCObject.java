@@ -21,7 +21,7 @@ import java.util.Map;
         "unique",
         "assigned_to_terms",
         "related_terms",
-        "assignedAssets",
+        "assigned_assets",
         "_context",
         "created_on",
         "allows_null_values",
@@ -38,11 +38,14 @@ import java.util.Map;
         "odbc_type",
         "database_table_or_view",
         "is_a_type_of",
-        "shortDescription",
-        "longDescription",
-        "DatabaseColumns",
-        "dataConnections",
-        "dataConnectors"
+        "short_description",
+        "long_description",
+        "database_columns",
+        "usage",
+        "example",
+        "abbreviation",
+        "data_connections",
+        "data_connectors"
 })
 
 public class IGCObject {
@@ -103,6 +106,12 @@ public class IGCObject {
     private DataConnectors dataConnectors;
     @JsonProperty("data_connections")
     private DataConnections dataConnections;
+    @JsonProperty("usage")
+    private String usage;
+    @JsonProperty("example")
+    private String example;
+    @JsonProperty("abbreviation")
+    private String abbreviation;
 
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<>();
@@ -410,4 +419,35 @@ public class IGCObject {
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
+
+    @JsonProperty("usage")
+    public String getUsage() {
+        return usage;
+    }
+
+    @JsonProperty("usage")
+    public void setUsage(String usage) {
+        this.usage = usage;
+    }
+
+    @JsonProperty("example")
+    public String getExample() {
+        return example;
+    }
+
+    @JsonProperty("example")
+    public void setExample(String example) {
+        this.example = example;
+    }
+
+    @JsonProperty("abbreviation")
+    public String getAbbreviation() {
+        return abbreviation;
+    }
+
+    @JsonProperty("abbreviation")
+    public void setAbbreviation(String abbreviation) {
+        this.abbreviation = abbreviation;
+    }
+
 }
