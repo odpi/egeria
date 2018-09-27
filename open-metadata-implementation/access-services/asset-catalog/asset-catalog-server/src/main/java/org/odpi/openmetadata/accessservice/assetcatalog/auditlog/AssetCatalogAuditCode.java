@@ -25,12 +25,6 @@ public enum AssetCatalogAuditCode {
             "The local server has started up the Asset Catalog OMAS.",
             "No action is required.  This is part of the normal operation of the server."),
 
-    SERVICE_REGISTERED_WITH_TOPIC("OMAS-ASSET-CATALOG-0002",
-            OMRSAuditLogRecordSeverity.INFO,
-            "The Asset Catalog Open Metadata Access Service (OMAS) is registering a listener with the OMRS Topic",
-            "The Asset Catalog OMAS is registering to receive events from the connected open metadata repositories.",
-            "No action is required.  This is part of the normal operation of the server."),
-
     SERVICE_INITIALIZED("OMAS-ASSET-CATALOG-0003",
             OMRSAuditLogRecordSeverity.INFO,
             "The Asset Catalog Open Metadata Access Service (OMAS) is initialized",
