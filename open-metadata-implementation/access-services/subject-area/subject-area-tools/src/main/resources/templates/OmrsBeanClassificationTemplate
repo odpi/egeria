@@ -125,7 +125,7 @@ public class <$$uname$$> extends Classification {
        private <$$PropertyType$$> <$$PropertyName$$>;
        /**
         * {@literal <$$AttrDescription$$> }
-        * @return <$$PropertyType$$>
+        * @return {@code <$$PropertyTypeJavadoc$$> }
         */
        public <$$PropertyType$$> get<$$uPropertyName$$>() {
            return this.<$$PropertyName$$>;

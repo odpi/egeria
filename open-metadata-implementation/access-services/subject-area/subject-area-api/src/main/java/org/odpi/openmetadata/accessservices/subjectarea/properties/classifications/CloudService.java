@@ -102,8 +102,8 @@ public class CloudService extends Classification {
 
        private String offeringName;
        /**
-        * Commercial name of the service.
-        * @return String
+        * {@literal Commercial name of the service. }
+        * @return {@code String }
         */
        public String getOfferingName() {
            return this.offeringName;
@@ -115,8 +115,8 @@ public class CloudService extends Classification {
 
        private String type;
        /**
-        * Description of the type of the service.
-        * @return String
+        * {@literal Description of the type of the service. }
+        * @return {@code String }
         */
        public String getType() {
            return this.type;

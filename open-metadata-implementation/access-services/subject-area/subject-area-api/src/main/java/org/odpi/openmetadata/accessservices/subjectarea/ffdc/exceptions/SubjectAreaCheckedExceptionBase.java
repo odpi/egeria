@@ -28,12 +28,12 @@ public class SubjectAreaCheckedExceptionBase extends Exception
     /**
      * This is the typical constructor used for creating a SubjectAreaCheckedExceptionBase.
      *
-     * @param httpCode - http response code to use if this exception flows over a rest call
-     * @param className - name of class reporting error
-     * @param actionDescription - description of function it was performing when error detected
-     * @param errorMessage - description of error
-     * @param systemAction - actions of the system as a result of the error
-     * @param userAction - instructions for correcting the error
+     * @param httpCode http response code to use if this exception flows over a rest call
+     * @param className name of class reporting error
+     * @param actionDescription description of function it was performing when error detected
+     * @param errorMessage description of error
+     * @param systemAction actions of the system as a result of the error
+     * @param userAction instructions for correcting the error
      */
     public SubjectAreaCheckedExceptionBase(int    httpCode,
                                            String className,
@@ -56,13 +56,13 @@ public class SubjectAreaCheckedExceptionBase extends Exception
      * This is the  constructor used for creating a SubjectAreaCheckedExceptionBase
      * that resulted from a previous error.
      *
-     * @param httpCode - http response code to use if this exception flows over a rest call
-     * @param className - name of class reporting error
-     * @param actionDescription - description of function it was performing when error detected
-     * @param errorMessage - description of error
-     * @param systemAction - actions of the system as a result of the error
-     * @param userAction - instructions for correcting the error
-     * @param caughtError - the error that resulted in this exception.
+     * @param httpCode http response code to use if this exception flows over a rest call
+     * @param className name of class reporting error
+     * @param actionDescription description of function it was performing when error detected
+     * @param errorMessage description of error
+     * @param systemAction actions of the system as a result of the error
+     * @param userAction instructions for correcting the error
+     * @param caughtError the error that resulted in this exception.
      */
     public SubjectAreaCheckedExceptionBase(int       httpCode,
                                            String    className,

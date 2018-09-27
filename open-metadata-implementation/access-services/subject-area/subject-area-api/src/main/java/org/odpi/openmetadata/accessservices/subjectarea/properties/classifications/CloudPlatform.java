@@ -97,8 +97,8 @@ public class CloudPlatform extends Classification {
 
        private String type;
        /**
-        * Type of cloud platform.
-        * @return String
+        * {@literal Type of cloud platform. }
+        * @return {@code String }
         */
        public String getType() {
            return this.type;

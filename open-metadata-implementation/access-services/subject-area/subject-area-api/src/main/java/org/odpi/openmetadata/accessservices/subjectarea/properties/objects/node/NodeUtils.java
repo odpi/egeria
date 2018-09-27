@@ -24,8 +24,8 @@ public class NodeUtils {
     private static final String className = NodeUtils.class.getName();
     /**
      * Found a goverance classification in the supplied classifications - reject this.
-     * @param classificationName
-     * @throws InvalidParameterException
+     * @param classificationName name of classification
+     * @throws InvalidParameterException Governance classification supplied as classifications.
      */
     public static void foundGovernanceClassifications(String classificationName) throws InvalidParameterException {
         SubjectAreaErrorCode errorCode    = SubjectAreaErrorCode.GOVERNANCE_CLASSIFICATION_SUPPLIED_IN_CLASSIFICATIONS;

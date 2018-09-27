@@ -97,8 +97,8 @@ public class RepositoryProxy extends Classification {
 
        private String type;
        /**
-        * Type of repository proxy.
-        * @return String
+        * {@literal Type of repository proxy. }
+        * @return {@code String }
         */
        public String getType() {
            return this.type;

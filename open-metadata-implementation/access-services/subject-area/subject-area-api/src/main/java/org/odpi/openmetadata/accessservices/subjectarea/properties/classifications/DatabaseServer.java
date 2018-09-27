@@ -107,8 +107,8 @@ public class DatabaseServer extends Classification {
 
        private String type;
        /**
-        * Type of database server.
-        * @return String
+        * {@literal Type of database server. }
+        * @return {@code String }
         */
        public String getType() {
            return this.type;
@@ -120,8 +120,8 @@ public class DatabaseServer extends Classification {
 
        private String version;
        /**
-        * Version of the database server software.
-        * @return String
+        * {@literal Version of the database server software. }
+        * @return {@code String }
         */
        public String getVersion() {
            return this.version;
@@ -133,8 +133,8 @@ public class DatabaseServer extends Classification {
 
        private String source;
        /**
-        * Source of the database software.
-        * @return String
+        * {@literal Source of the database software. }
+        * @return {@code String }
         */
        public String getSource() {
            return this.source;

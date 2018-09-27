@@ -38,11 +38,11 @@ public class SubjectAreaOmrsBeanGenerator {
     // Changes the API properties should be considered if the generate files change either due to the archive types changing or the generator or templates changing.
     // if the API classifications properties need to be changed in line with the generated files then set regenAPIFiles to true.
     private boolean regenAPIFiles = false;
+    public static final String OPEN_METADATA_IMPLEMENTATION = "open-metadata-implementation";
 
-
-    public static final String SUBJECTAREA_OMAS_SERVER = "open-metadata-implementation/access-services/subject-area/subject-area-server";
-    public static final String SUBJECTAREA_OMAS_API =    "open-metadata-implementation/access-services/subject-area/subject-area-api";
-    public static final String GENERATOR = "open-metadata-implementation/access-services/subject-area/subject-area-tools";
+    public static final String SUBJECTAREA_OMAS_SERVER = OPEN_METADATA_IMPLEMENTATION +"/access-services/subject-area/subject-area-server";
+    public static final String SUBJECTAREA_OMAS_API =    OPEN_METADATA_IMPLEMENTATION +"/access-services/subject-area/subject-area-api";
+    public static final String GENERATOR = OPEN_METADATA_IMPLEMENTATION +"/access-services/subject-area/subject-area-tools";
 
     public static final String CLASSIFICATIONS = "classifications";
     public static final String RELATIONSHIPS = "relationships";
@@ -117,10 +117,30 @@ public class SubjectAreaOmrsBeanGenerator {
      * @throws IOException
      */
     public static void main(String[] args) throws IOException {
-        // make sure we have the generation folders
-        initializeFoldersandFiles();
-        // run the generation
-        generate(args);
+        if (checkCurrentFolder()) {
+            // make sure we have the generation folders
+            initializeFoldersandFiles();
+            // run the generation
+            generate(args);
+        }
+    }
+
+    /**
+     * check that the current folder is as expected
+     * @return where we have a valid folder to be able to generate in
+     */
+    private static boolean checkCurrentFolder() {
+        // only run the generator if the current directory looks as expected.
+        File curDir = new File(".");
+        File[] filesList = curDir.listFiles();
+        boolean validCurrentFolder =false;
+        for(File f : filesList){
+            String folderName = f.getName();
+            if (folderName.equals(OPEN_METADATA_IMPLEMENTATION)) {
+                validCurrentFolder = true;
+            }
+        }
+        return validCurrentFolder;
     }
 
     private static void initializeFoldersandFiles() throws FileNotFoundException {
@@ -1077,19 +1097,14 @@ public class SubjectAreaOmrsBeanGenerator {
                 if (!loopPropertyLines.isEmpty()) {
 
                     for (int loopCounter = 0; loopCounter < loopPropertyLines.size(); loopCounter++) {
-                        String upperCaseType =GeneratorUtilities.uppercase1stLetter(attr.type);
 
                         String newLine = loopPropertyLines.get(loopCounter);
                         newLine = newLine.replaceAll(GeneratorUtilities.getRegexToken("PropertyName"), GeneratorUtilities.lowercase1stLetter(attr.name));
                         newLine = newLine.replaceAll(GeneratorUtilities.getRegexToken("uPropertyName"), GeneratorUtilities.uppercase1stLetter(attr.name));
                         newLine = replaceTokensInLineFromMap(replacementMap, newLine);
                         newLine = newLine.replaceAll(GeneratorUtilities.getRegexToken("PropertyType"), GeneratorUtilities.uppercase1stLetter(attr.type));
-                        String javadoc = upperCaseType;
-                        if (upperCaseType.equals("List<String>")) {
-                            javadoc ="{@code List<String> } ";
-                        } else if (upperCaseType.equals("Map<String,String>")) {
-                            javadoc ="{@code Map<String,String> } ";
-                        }
+                        // Use the attribute type with the first lestter capitalized as the javadoc
+                        String javadoc = GeneratorUtilities.uppercase1stLetter(attr.type);
                         newLine = newLine.replaceAll(GeneratorUtilities.getRegexToken("PropertyTypeJavadoc"),javadoc );
 
                         // TODO handle non String types

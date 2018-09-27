@@ -39,10 +39,10 @@ public class InputValidator {
 
     /**
      * Throw an exception if the supplied userId is null
-     *
-     * @param methodName - name of the method making the call.
-     *                     * @param userId - user name to validate
-     * @throws InvalidParameterException - the userId is null
+     * @param className name of the class
+     * @param methodName name of the method making the call.
+     * @param userId user name to validate
+     * @throws InvalidParameterException the userId is null
      */
     static public void validateUserIdNotNull(
                                       String className,
@@ -66,8 +66,11 @@ public class InputValidator {
 
     /**
      * Validate the supplied string can be converted to a Status and return that status. If it cannot be converted then null is returned.
+     * @param className - name of the class making the call.
+     * @param methodName - name of the method making the call.
      * @param statusName - the String name to convert to a Status
      * @return Status or null.
+     * @throws InvalidParameterException invalid status
      */
     static public Status validateStatusAndCheckNotDeleted(
             String className,

@@ -39,8 +39,8 @@ public class SystemAttributes implements Serializable {
     }
 
     /**
-     * Status indicates the state of the object - the values are specified in the Status enumeration
-     * @return
+     * Status indicates the status of the object - the values are specified in the Status enumeration
+     * @return status of the object
      */
     public Status getStatus() {
         return status;
@@ -52,7 +52,7 @@ public class SystemAttributes implements Serializable {
 
     /**
      * User who created this object
-     * @return
+     * @return user who created this.
      */
     public String getCreatedBy() {
         return createdBy;
@@ -63,8 +63,8 @@ public class SystemAttributes implements Serializable {
     }
 
     /**
-     * User who lasted updated this object
-     * @return
+     * User who last updated this object
+     * @return use who last updated this
      */
     public String getUpdatedBy() {
         return updatedBy;
