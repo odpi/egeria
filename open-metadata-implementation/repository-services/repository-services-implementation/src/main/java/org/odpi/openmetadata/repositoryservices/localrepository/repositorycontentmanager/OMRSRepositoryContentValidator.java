@@ -2989,9 +2989,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                     }
                 }
             }
-        }
-        else
-        {
+        } else {
             return true;
         }
         return false;
