@@ -25,6 +25,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 import org.odpi.openmetadata.virtualdataconnector.igc.connectors.eventmapper.model.IGCKafkaEvent;
 import org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconnector.IGCOMRSRepositoryConnector;
+import org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconnector.model.Context;
 import org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconnector.model.IGCColumn;
 import org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconnector.model.IGCObject;
 import org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconnector.model.Item;
@@ -180,13 +181,19 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         IGCObject igcDatabase = igcomrsRepositoryConnector.genericIGCQuery(igcTable.getContext().get(1).getId());
         IGCObject igcSchema = igcomrsRepositoryConnector.genericIGCQuery(igcTable.getContext().get(2).getId());
 
-        createEntity(igcDatabase, DATABASE, false);
-        createEntity(igcEndpoint, ENDPOINT, false);
-        createEntity(igcSchema, DEPLOYED_DATABASE_SCHEMA, false);
-        createEntity(igcTable, RELATIONAL_TABLE, false);
+        String tableQualifiedName = getQualifiedName(igcTable.getContext(), igcTable.getName());
+        String tableTypeQualifiedName = getTypeQualifiedName(tableQualifiedName);
+        String dbSchemaQualifiedName = getQualifiedName(igcSchema.getContext(), igcSchema.getName());
+        String dbSchemaTypeQualifiedName = getTypeQualifiedName(dbSchemaQualifiedName);
+        String databaseQualifiedName = getQualifiedName(igcDatabase.getContext(), igcDatabase.getName());
+        String endpointQualifiedName = getQualifiedName(null, igcEndpoint.getName());
 
-        createEntity(igcSchema, RELATIONAL_DB_SCHEMA_TYPE, true);
-        createEntity(igcTable, RELATIONAL_TABLE_TYPE, true);
+        createEntity(igcDatabase, false, DATABASE, databaseQualifiedName);
+        createEntity(igcEndpoint, false, ENDPOINT, endpointQualifiedName);
+        createEntity(igcSchema, false, DEPLOYED_DATABASE_SCHEMA, dbSchemaQualifiedName);
+        createEntity(igcTable, false, RELATIONAL_TABLE, tableQualifiedName);
+        createEntity(igcSchema, true, RELATIONAL_DB_SCHEMA_TYPE, dbSchemaTypeQualifiedName);
+        createEntity(igcTable, true, RELATIONAL_TABLE_TYPE, tableTypeQualifiedName);
 
         String relationalDBSchemaTypeID = RELATIONAL_DB_SCHEMA_TYPE + "." + igcSchema.getId();
         String relationalTableTypeID = RELATIONAL_TABLE_TYPE + "." + igcTable.getId();
@@ -223,8 +230,12 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         for (Item connection : igcDatabase.getDataConnections().getItems()) {
             IGCObject igcConnection = igcomrsRepositoryConnector.genericIGCQuery(connection.getId());
             IGCObject igcConnectorType = igcomrsRepositoryConnector.genericIGCQuery(igcConnection.getDataConnectors().getId());
-            createEntity(igcConnection, CONNECTION, false);
-            createEntity(igcConnectorType, CONNECTOR_TYPE, false);
+
+            String connectionQualifiedName = getConnectionQualifiedName(igcConnection);
+            createEntity(igcConnection, false, CONNECTION, connectionQualifiedName);
+
+            String connectorTypeQualifiedName = getConnectorQualifiedName(igcConnectorType);
+            createEntity(igcConnectorType, false, CONNECTOR_TYPE, connectorTypeQualifiedName);
 
             createRelationship(
                     CONNECTION_CONNECTOR_TYPE,
@@ -246,8 +257,11 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         for (Item column : databaseColumns.getDatabaseColumns().getItems()) {
             IGCColumn igcColumn = igcomrsRepositoryConnector.getIGCColumn(column.getId());
 
-            createEntity(igcColumn, RELATIONAL_COLUMN, false);
-            createEntity(igcColumn, RELATIONAL_COLUMN_TYPE, true);
+            String columnQualifiedName = getQualifiedName(igcColumn.getContext(), igcColumn.getName());
+            createEntity(igcColumn, RELATIONAL_COLUMN, false, columnQualifiedName);
+
+            String columnTypeQualifiedName = getTypeQualifiedName(columnQualifiedName);
+            createEntity(igcColumn, RELATIONAL_COLUMN_TYPE, true, columnTypeQualifiedName);
             String relationalColumnTypeID = RELATIONAL_COLUMN_TYPE + "." + igcColumn.getId();
 
             createRelationship(
@@ -307,21 +321,26 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                 case TERM:
                     if (igcKafkaEvent.getAction().equals(CREATE)) {
                         //Creation of a glossary term.
-                        createEntity(igcObject, GLOSSARY_TERM, false);
+                        String glossaryTermName = igcObject.getName();
+                        createEntity(igcObject, false, GLOSSARY_TERM, glossaryTermName);
+
                         //Creation of a  glossary category and assignment to its glossary category.
-                        createEntity(igcObject, GLOSSARY_CATEGORY, false);
+                        final String glossaryCategoryName = getGlossaryCategoryName(igcObject);
+                        createEntity(igcObject, false, GLOSSARY_CATEGORY, glossaryCategoryName);
+
                         createRelationship(TERM_CATEGORIZATION,
                                 igcObject.getContext().get(0).getId(),
                                 GLOSSARY_CATEGORY,
                                 igcObject.getId(),
                                 GLOSSARY_TERM);
                     } else if (igcKafkaEvent.getAction().equals(MODIFY)) {
-                        updateGlossaryTerm(igcObject);
+                        updateGlossaryTerm(igcObject, igcObject.getName());
                     }
                     break;
                 case CATEGORY:
                     if (igcKafkaEvent.getAction().equals(CREATE)) {
-                        createEntity(igcObject, GLOSSARY_CATEGORY, false);
+                        final String glossaryCategoryName = getGlossaryCategoryName(igcObject);
+                        createEntity(igcObject, false, GLOSSARY_CATEGORY, glossaryCategoryName);
                     }
             }
         } catch (Exception e) {
@@ -369,10 +388,10 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
 
     }
 
-    private void updateGlossaryTerm(IGCObject igcObject) {
+    private void updateGlossaryTerm(IGCObject igcObject, String qualifiedName) {
 
         final List<Classification> classifications = createClassifications(igcObject, CONFIDENTIALITY);
-        InstanceProperties instanceProperties = getEntityProperties(GLOSSARY_TERM, igcObject);
+        InstanceProperties instanceProperties = getEntityProperties(GLOSSARY_TERM, igcObject, qualifiedName);
 
         EntityDetail entity = getEntityDetail(igcObject.getId(),
                 GLOSSARY_TERM,
@@ -399,16 +418,15 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         log.info("[Entity] update the entity with type = " + entity.getType().getTypeDefName() + "; guid = " + entity.getGUID());
     }
 
-    private void createEntity(IGCColumn igcColumn, String typeName, boolean avoidDuplicate) {
+    private void createEntity(IGCColumn igcColumn, String typeName, boolean avoidDuplicate, String qualifiedName) {
 
         List<Classification> classifications = new ArrayList<>();
         if (typeName.equals(RELATIONAL_COLUMN) && igcColumn.getDefinedPrimaryKey() != null) {
             classifications = getPrimaryKeyClassification();
         }
 
-        InstanceProperties instanceProperties = getEntityProperties(typeName,
-                igcColumn.getId(),
-                igcColumn.getName(),
+        InstanceProperties instanceProperties = getEntityProperties(
+                qualifiedName,
                 igcColumn.getShortDescription(),
                 igcColumn.getLongDescription());
 
@@ -417,14 +435,14 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         sendNewEntityEvent(typeName, entityDetail);
     }
 
-    private void createEntity(IGCObject igcObject, String typeName, boolean avoidDuplicate) {
+    private void createEntity(IGCObject igcObject, boolean avoidDuplicate, String typeName, String qualifiedName) {
 
         List<Classification> classifications = new ArrayList<>();
         if (GLOSSARY_TERM.equals(typeName)) {
             classifications = createClassifications(igcObject, CONFIDENTIALITY);
         }
 
-        InstanceProperties instanceProperties = getEntityProperties(typeName, igcObject);
+        InstanceProperties instanceProperties = getEntityProperties(typeName, igcObject, qualifiedName);
 
         EntityDetail entityDetail = getEntityDetail(igcObject.getId(),
                 typeName,
@@ -572,7 +590,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         if (igcObject.getRelatedTerms() != null && igcObject.getRelatedTerms().getItems() != null) {
             for (Item item : igcObject.getRelatedTerms().getItems()) {
                 final Classification classification = getClassification(classificationTypeName, item.getName());
-                if(classification != null){
+                if (classification != null) {
                     classifications.add(classification);
                 }
             }
@@ -614,15 +632,14 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         return instanceProperties;
     }
 
-    private InstanceProperties getEntityProperties(String typeName, IGCObject igcObject) {
+    private InstanceProperties getEntityProperties(String typeName, IGCObject igcObject, String qualifiedName) {
 
-        InstanceProperties instanceProperties = getEntityProperties(typeName,
-                igcObject.getId(),
-                igcObject.getName(),
+        InstanceProperties instanceProperties = getEntityProperties(
+                qualifiedName,
                 igcObject.getShortDescription(),
                 igcObject.getLongDescription());
 
-
+        log.info("Entity qualified Name: " + qualifiedName);
         if (GLOSSARY_TERM.equals(typeName)) {
             Map<String, InstancePropertyValue> properties = new HashMap<>();
 
@@ -634,7 +651,6 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
 
             PrimitivePropertyValue usage = getStringPropertyValue(igcObject.getUsage());
             properties.put("usage", usage);
-
             Map<String, InstancePropertyValue> instanceProperties1 = instanceProperties.getInstanceProperties();
             properties.putAll(instanceProperties1);
             instanceProperties.setInstanceProperties(properties);
@@ -644,10 +660,10 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
     }
 
 
-    private InstanceProperties getEntityProperties(String typeName, String id, String name, String shortDescription, String longDescription) {
+    private InstanceProperties getEntityProperties(String name, String shortDescription, String longDescription) {
         Map<String, InstancePropertyValue> properties = new HashMap<>();
 
-        PrimitivePropertyValue qualifiedName = getStringPropertyValue(typeName + ".qualifiedName." + id);
+        PrimitivePropertyValue qualifiedName = getStringPropertyValue(name);
         properties.put("qualifiedName", qualifiedName);
 
         PrimitivePropertyValue displayName = getStringPropertyValue(name);
@@ -698,5 +714,44 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         return propertyValue;
     }
 
+    private String getGlossaryCategoryName(IGCObject igcObject) {
+        final Map<String, Object> additionalProperties = igcObject.getAdditionalProperties();
+        final HashMap<String, String> parent_category
+                = (HashMap<String, String>) additionalProperties.get("parent_category");
+        return parent_category.get("_name") + "." + igcObject.getName();
+    }
+
+    private String getConnectionQualifiedName(IGCObject igcObject) {
+        final Map<String, Object> additionalProperties = igcObject.getAdditionalProperties();
+        final String property = (String) additionalProperties.get("connection_string");
+
+        return property + "." + CONNECTION;
+    }
+
+    private String getConnectorQualifiedName(IGCObject igcConnectorType) {
+        return igcConnectorType.getName();
+    }
+
+    private String getQualifiedName(List<Context> contexts, String defaultName) {
+
+        if (contexts == null || contexts.isEmpty()) {
+            return defaultName;
+        }
+
+        StringBuilder contextName = new StringBuilder();
+        for (Context context : contexts) {
+            if (context.getType().equals("host")) {
+                contextName.append(context.getName() + "." + CONNECTION + ".");
+            } else {
+                contextName.append(context.getName() + ".");
+            }
+        }
+
+        return contextName.toString() + defaultName;
+    }
+
+    private String getTypeQualifiedName(String typeName) {
+        return typeName + TYPE;
+    }
 }
 
