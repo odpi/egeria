@@ -58,7 +58,9 @@ public class Converter {
         assetDescription.setStatus(getStatus(entityDetail.getStatus().getName()));
 
         assetDescription.setProperties(getProperties(entityDetail.getProperties()));
-        assetDescription.setClassifications(toClassifications(entityDetail.getClassifications()));
+        if (entityDetail.getClassifications() != null) {
+            assetDescription.setClassifications(toClassifications(entityDetail.getClassifications()));
+        }
 
         return assetDescription;
     }
@@ -152,7 +154,9 @@ public class Converter {
         for (org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification classificationEntity : classificationsFromEntity) {
             Classification classification = new Classification();
             classification.setName(classificationEntity.getName());
-            classification.setOrigin(classificationEntity.getClassificationOrigin().getDescription());
+            if (classificationEntity.getClassificationOrigin() != null && classificationEntity.getClassificationOrigin().getDescription() != null) {
+                classification.setOrigin(classificationEntity.getClassificationOrigin().getDescription());
+            }
             classification.setOriginGUID(classificationEntity.getClassificationOriginGUID());
 
             classification.setCreatedBy(classificationEntity.getCreatedBy());

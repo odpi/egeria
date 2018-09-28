@@ -5,7 +5,6 @@ import org.odpi.openmetadata.accessservice.assetcatalog.admin.AssetCatalogAdmin;
 import org.odpi.openmetadata.accessservice.assetcatalog.exception.AssetCatalogErrorCode;
 import org.odpi.openmetadata.accessservice.assetcatalog.exception.AssetNotFoundException;
 import org.odpi.openmetadata.accessservice.assetcatalog.exception.ClassificationNotFoundException;
-import org.odpi.openmetadata.accessservice.assetcatalog.exception.PropertyServerException;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.AssetDescription;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.Column;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.Connection;
@@ -70,7 +69,6 @@ public class AssetCatalogService {
 
     private Converter converter = new Converter();
     private ExceptionHandler exceptionUtil = new ExceptionHandler();
-    private RepositoryValidatorHandler repositoryHandler;
 
     public AssetCatalogService() {
         AccessServiceDescription myDescription = AccessServiceDescription.ASSET_CATALOG_OMAS;
@@ -82,7 +80,6 @@ public class AssetCatalogService {
                 AccessServiceOperationalStatus.ENABLED,
                 AssetCatalogAdmin.class.getName());
         OMAGAccessServiceRegistration.registerAccessService(myRegistration);
-        repositoryHandler = new RepositoryValidatorHandler(repositoryConnector);
     }
 
     /**
@@ -110,7 +107,7 @@ public class AssetCatalogService {
                 | InvalidParameterException
                 | RepositoryErrorException e) {
             exceptionUtil.captureOMRSCheckedExceptionBase(response, e);
-        } catch (PropertyServerException | AssetNotFoundException e) {
+        } catch (AssetNotFoundException e) {
             exceptionUtil.captureAssetCatalogExeption(response, e);
         }
 
@@ -132,7 +129,7 @@ public class AssetCatalogService {
                 | InvalidParameterException
                 | RepositoryErrorException e) {
             exceptionUtil.captureOMRSCheckedExceptionBase(response, e);
-        } catch (PropertyServerException | AssetNotFoundException e) {
+        } catch (AssetNotFoundException e) {
             exceptionUtil.captureAssetCatalogExeption(response, e);
         }
 
@@ -152,7 +149,7 @@ public class AssetCatalogService {
                 | EntityProxyOnlyException
                 | RepositoryErrorException e) {
             exceptionUtil.captureOMRSCheckedExceptionBase(response, e);
-        } catch (PropertyServerException | AssetNotFoundException | ClassificationNotFoundException e) {
+        } catch (AssetNotFoundException | ClassificationNotFoundException e) {
             exceptionUtil.captureAssetCatalogExeption(response, e);
         }
 
@@ -189,7 +186,7 @@ public class AssetCatalogService {
                 | PagingErrorException
                 | PropertyErrorException e) {
             exceptionUtil.captureOMRSCheckedExceptionBase(response, e);
-        } catch (PropertyServerException | AssetNotFoundException e) {
+        } catch (AssetNotFoundException e) {
             exceptionUtil.captureAssetCatalogExeption(response, e);
         }
 
@@ -222,7 +219,7 @@ public class AssetCatalogService {
                 | PagingErrorException
                 | TypeErrorException e) {
             exceptionUtil.captureOMRSCheckedExceptionBase(response, e);
-        } catch (PropertyServerException | AssetNotFoundException e) {
+        } catch (AssetNotFoundException e) {
             exceptionUtil.captureAssetCatalogExeption(response, e);
         }
 
@@ -254,7 +251,7 @@ public class AssetCatalogService {
                 | UserNotAuthorizedException
                 | FunctionNotSupportedException e) {
             exceptionUtil.captureOMRSCheckedExceptionBase(response, e);
-        } catch (PropertyServerException | AssetNotFoundException e) {
+        } catch (AssetNotFoundException e) {
             exceptionUtil.captureAssetCatalogExeption(response, e);
         }
 
@@ -283,7 +280,7 @@ public class AssetCatalogService {
                 | PropertyErrorException
                 | TypeErrorException e) {
             exceptionUtil.captureOMRSCheckedExceptionBase(response, e);
-        } catch (PropertyServerException | AssetNotFoundException e) {
+        } catch (AssetNotFoundException e) {
             exceptionUtil.captureAssetCatalogExeption(response, e);
         }
 
@@ -314,7 +311,7 @@ public class AssetCatalogService {
                 | FunctionNotSupportedException
                 | EntityNotKnownException e) {
             exceptionUtil.captureOMRSCheckedExceptionBase(response, e);
-        } catch (PropertyServerException | AssetNotFoundException e) {
+        } catch (AssetNotFoundException e) {
             exceptionUtil.captureAssetCatalogExeption(response, e);
         }
 
@@ -330,7 +327,7 @@ public class AssetCatalogService {
             assetDescription = converter.getAssetDescription(entityDetails);
         } catch (UserNotAuthorizedException | RepositoryErrorException | EntityProxyOnlyException | InvalidParameterException | EntityNotKnownException e) {
             exceptionUtil.captureOMRSCheckedExceptionBase(response, e);
-        } catch (PropertyServerException | AssetNotFoundException e) {
+        } catch (AssetNotFoundException e) {
             exceptionUtil.captureAssetCatalogExeption(response, e);
         }
 
@@ -353,7 +350,7 @@ public class AssetCatalogService {
                 | PropertyErrorException
                 | PagingErrorException e) {
             exceptionUtil.captureOMRSCheckedExceptionBase(response, e);
-        } catch (PropertyServerException | AssetNotFoundException e) {
+        } catch (AssetNotFoundException e) {
             exceptionUtil.captureAssetCatalogExeption(response, e);
         }
 
@@ -375,7 +372,7 @@ public class AssetCatalogService {
                 | UserNotAuthorizedException
                 | FunctionNotSupportedException e) {
             exceptionUtil.captureOMRSCheckedExceptionBase(response, e);
-        } catch (PropertyServerException | AssetNotFoundException e) {
+        } catch (AssetNotFoundException e) {
             exceptionUtil.captureAssetCatalogExeption(response, e);
         }
 
@@ -395,7 +392,7 @@ public class AssetCatalogService {
                 | FunctionNotSupportedException
                 | UserNotAuthorizedException e) {
             exceptionUtil.captureOMRSCheckedExceptionBase(response, e);
-        } catch (PropertyServerException | AssetNotFoundException e) {
+        } catch (AssetNotFoundException e) {
             exceptionUtil.captureAssetCatalogExeption(response, e);
         }
 
@@ -424,7 +421,7 @@ public class AssetCatalogService {
                 | PagingErrorException
                 | RepositoryErrorException e) {
             exceptionUtil.captureOMRSCheckedExceptionBase(response, e);
-        } catch (PropertyServerException | AssetNotFoundException e) {
+        } catch (AssetNotFoundException e) {
             exceptionUtil.captureAssetCatalogExeption(response, e);
         }
 
@@ -446,7 +443,7 @@ public class AssetCatalogService {
 
         AssetDescriptionResponse response = new AssetDescriptionResponse();
         try {
-            OMRSMetadataCollection metadataCollection = repositoryHandler.getMetadataCollection();
+            OMRSMetadataCollection metadataCollection = repositoryConnector.getMetadataCollection();
 
             List<EntityDetail> matchCriteriaEntities = findEntitiesBySearchCriteria(metadataCollection, userId, searchCriteria);
             List<AssetDescription> assetDescriptions = new ArrayList<>(matchCriteriaEntities.size());
@@ -483,15 +480,16 @@ public class AssetCatalogService {
             }
 
             response.setAssetDescriptionList(assetDescriptions);
-        } catch (PropertyServerException e) {
-            exceptionUtil.captureAssetCatalogExeption(response, e);
+        } catch (RepositoryErrorException | PropertyErrorException | TypeErrorException | FunctionNotSupportedException | UserNotAuthorizedException
+                | InvalidParameterException | PagingErrorException e) {
+            exceptionUtil.captureOMRSCheckedExceptionBase(response, e);
         }
 
         return response;
     }
 
-    private EntitySummary getEntitySummary(String userId, String assetId) throws UserNotAuthorizedException, RepositoryErrorException, InvalidParameterException, EntityNotKnownException, PropertyServerException, AssetNotFoundException {
-        OMRSMetadataCollection metadataCollection = repositoryHandler.getMetadataCollection();
+    private EntitySummary getEntitySummary(String userId, String assetId) throws UserNotAuthorizedException, RepositoryErrorException, InvalidParameterException, EntityNotKnownException, AssetNotFoundException {
+        OMRSMetadataCollection metadataCollection = repositoryConnector.getMetadataCollection();
 
         EntitySummary entitySummary = metadataCollection.getEntitySummary(userId, assetId);
         if (entitySummary == null) {
@@ -510,8 +508,8 @@ public class AssetCatalogService {
         return entitySummary;
     }
 
-    private EntityDetail getEntityDetails(String userId, String assetId) throws UserNotAuthorizedException, RepositoryErrorException, EntityProxyOnlyException, InvalidParameterException, EntityNotKnownException, PropertyServerException, AssetNotFoundException {
-        OMRSMetadataCollection metadataCollection = repositoryHandler.getMetadataCollection();
+    private EntityDetail getEntityDetails(String userId, String assetId) throws UserNotAuthorizedException, RepositoryErrorException, EntityProxyOnlyException, InvalidParameterException, EntityNotKnownException, AssetNotFoundException {
+        OMRSMetadataCollection metadataCollection = repositoryConnector.getMetadataCollection();
         EntityDetail entityDetail = metadataCollection.getEntityDetail(userId, assetId);
 
         if (entityDetail == null) {
@@ -530,7 +528,7 @@ public class AssetCatalogService {
         return entityDetail;
     }
 
-    private List<Classification> getAssetClassifications(String userId, String assetId) throws UserNotAuthorizedException, EntityNotKnownException, InvalidParameterException, RepositoryErrorException, EntityProxyOnlyException, PropertyServerException, AssetNotFoundException, ClassificationNotFoundException {
+    private List<Classification> getAssetClassifications(String userId, String assetId) throws UserNotAuthorizedException, EntityNotKnownException, InvalidParameterException, RepositoryErrorException, EntityProxyOnlyException, AssetNotFoundException, ClassificationNotFoundException {
         EntitySummary asset = getEntityDetails(userId, assetId);
 
         if (asset.getClassifications() == null || asset.getClassifications().isEmpty()) {
@@ -549,9 +547,9 @@ public class AssetCatalogService {
         return asset.getClassifications();
     }
 
-    private String getTypeID(String userId, String relationshipType) throws PropertyServerException, AssetNotFoundException {
+    private String getTypeID(String userId, String relationshipType) throws AssetNotFoundException, RepositoryErrorException {
 
-        OMRSMetadataCollection metadataCollection = repositoryHandler.getMetadataCollection();
+        OMRSMetadataCollection metadataCollection = repositoryConnector.getMetadataCollection();
 
         if (relationshipType == null) {
             AssetCatalogErrorCode errorCode = AssetCatalogErrorCode.PARAMETER_NULL;
@@ -588,8 +586,8 @@ public class AssetCatalogService {
             RepositoryErrorException,
             PropertyErrorException,
             TypeErrorException,
-            PagingErrorException, PropertyServerException, AssetNotFoundException {
-        OMRSMetadataCollection metadataCollection = repositoryHandler.getMetadataCollection();
+            PagingErrorException, AssetNotFoundException {
+        OMRSMetadataCollection metadataCollection = repositoryConnector.getMetadataCollection();
 
         List<Relationship> relationshipsForEntity = metadataCollection.getRelationshipsForEntity(
                 userId,
@@ -618,7 +616,9 @@ public class AssetCatalogService {
     }
 
     private List<EntityDetail> getEntitiesFromNeighborhood(String userId, String entityGUID, List<String> entityTypesGuid,
-                                                           List<String> relationshipTypes, Status relationshipStatus, Integer level) throws UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PropertyServerException, AssetNotFoundException {
+                                                           List<String> relationshipTypes, Status relationshipStatus, Integer level) throws
+            UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException,
+            PropertyErrorException, TypeErrorException, AssetNotFoundException {
 
         InstanceGraph entityNeighborhood = getAssetNeighborhood(userId, entityGUID, entityTypesGuid, relationshipTypes, relationshipStatus, level);
 
@@ -640,7 +640,9 @@ public class AssetCatalogService {
     }
 
     private List<Relationship> getRelationshipsFromAssetNeighborhood(String userId, String entityGUID, List<String> entityTypesGuid,
-                                                                     List<String> relationshipTypes, Status relationshipStatus, Integer level) throws InvalidParameterException, PropertyErrorException, AssetNotFoundException, EntityNotKnownException, FunctionNotSupportedException, PropertyServerException, UserNotAuthorizedException, TypeErrorException, RepositoryErrorException {
+                                                                     List<String> relationshipTypes, Status relationshipStatus, Integer level)
+            throws InvalidParameterException, PropertyErrorException, AssetNotFoundException, EntityNotKnownException, FunctionNotSupportedException,
+            UserNotAuthorizedException, TypeErrorException, RepositoryErrorException {
         InstanceGraph entityNeighborhood = getAssetNeighborhood(userId, entityGUID, entityTypesGuid, relationshipTypes, relationshipStatus, level);
 
         List<Relationship> entities = entityNeighborhood.getRelationships();
@@ -669,8 +671,8 @@ public class AssetCatalogService {
             InvalidParameterException,
             RepositoryErrorException,
             PropertyErrorException,
-            TypeErrorException, PropertyServerException, AssetNotFoundException {
-        OMRSMetadataCollection metadataCollection = repositoryHandler.getMetadataCollection();
+            TypeErrorException, AssetNotFoundException {
+        OMRSMetadataCollection metadataCollection = repositoryConnector.getMetadataCollection();
 
         List<InstanceStatus> limitResultsByStatus = converter.getInstanceStatuses(relationshipStatus);
 
@@ -700,40 +702,37 @@ public class AssetCatalogService {
         return entityNeighborhood;
     }
 
-    private List<EntityDetail> findEntitiesBySearchCriteria(OMRSMetadataCollection metadataCollection, String userId, String searchCriteria) {
+    private List<EntityDetail> findEntitiesBySearchCriteria(OMRSMetadataCollection metadataCollection, String userId, String searchCriteria) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
         List<EntityDetail> entities = new ArrayList<>();
         //TODO: entityType should be GLOSSARY_TERM, ASSET, SCHEMA ELEMENT
-        entities.addAll(findEntitiesByType(metadataCollection, userId, searchCriteria, null));
+        entities.addAll(findEntitiesByType(metadataCollection, userId, searchCriteria, GLOSSARY_TERM));
+        entities.addAll(findEntitiesByType(metadataCollection, userId, searchCriteria, ASSET));
+        entities.addAll(findEntitiesByType(metadataCollection, userId, searchCriteria, SCHEMA_ELEMENT));
         return entities;
     }
 
-    private List<EntityDetail> findEntitiesByType(OMRSMetadataCollection metadataCollection, String userId, String searchCriteria, String entityType) {
+    private List<EntityDetail> findEntitiesByType(OMRSMetadataCollection metadataCollection, String userId, String searchCriteria, String entityType) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
 
         String GUID = null;
         if (entityType != null) {
             GUID = getTypeByName(metadataCollection, userId, entityType);
         }
 
-        try {
-            List<EntityDetail> entitiesByPropertyValue = metadataCollection.findEntitiesByPropertyValue(userId,
-                    GUID,
-                    searchCriteria,
-                    0,
-                    null,
-                    null,
-                    null,
-                    null,
-                    SequencingOrder.ANY,
-                    0);
+
+        List<EntityDetail> entitiesByPropertyValue = metadataCollection.findEntitiesByPropertyValue(userId,
+                GUID,
+                searchCriteria,
+                0,
+                null,
+                null,
+                null,
+                null,
+                SequencingOrder.ANY,
+                0);
 
             if (entitiesByPropertyValue != null) {
                 return entitiesByPropertyValue;
             }
-
-        } catch (InvalidParameterException | UserNotAuthorizedException | FunctionNotSupportedException
-                | PagingErrorException | PropertyErrorException | RepositoryErrorException | TypeErrorException e) {
-            e.printStackTrace();
-        }
 
         return new ArrayList<>();
     }
@@ -1014,8 +1013,8 @@ public class AssetCatalogService {
 
     private List<EntityDetail> findEntitiesByClassifications(String userId, String assetTypeId,
                                                              String classificationName, Integer limit, Integer offset,
-                                                             String orderProperty, SequenceOrderType orderType, Status status) throws PropertyServerException, ClassificationErrorException, UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, AssetNotFoundException {
-        OMRSMetadataCollection metadataCollection = repositoryHandler.getMetadataCollection();
+                                                             String orderProperty, SequenceOrderType orderType, Status status) throws ClassificationErrorException, UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, AssetNotFoundException {
+        OMRSMetadataCollection metadataCollection = repositoryConnector.getMetadataCollection();
         List<InstanceStatus> instanceStatuses = converter.getInstanceStatuses(status);
         SequencingOrder sequencingOrder = converter.getSequencingOrder(orderType);
 
@@ -1051,8 +1050,8 @@ public class AssetCatalogService {
                                                       String matchProperty, String propertyValue,
                                                       Integer limit, Integer offset,
                                                       SequenceOrderType orderType, String orderProperty,
-                                                      Status status) throws PropertyServerException, UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, AssetNotFoundException {
-        OMRSMetadataCollection metadataCollection = repositoryHandler.getMetadataCollection();
+                                                      Status status) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, AssetNotFoundException {
+        OMRSMetadataCollection metadataCollection = repositoryConnector.getMetadataCollection();
         List<InstanceStatus> limitResultsByStatus = converter.getInstanceStatuses(status);
         InstanceProperties matchProperties;
 
@@ -1092,9 +1091,9 @@ public class AssetCatalogService {
         return entitiesByProperty;
     }
 
-    private List<Relationship> getLinkingRelationshipsBetweenAssets(String userId, String startAssetId, String endAssetId) throws PropertyServerException, UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, AssetNotFoundException {
+    private List<Relationship> getLinkingRelationshipsBetweenAssets(String userId, String startAssetId, String endAssetId) throws UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, AssetNotFoundException {
 
-        OMRSMetadataCollection metadataCollection = repositoryHandler.getMetadataCollection();
+        OMRSMetadataCollection metadataCollection = repositoryConnector.getMetadataCollection();
         List<InstanceStatus> limitByStatus = converter.getInstanceStatuses(null);
 
         InstanceGraph linkingEntities = metadataCollection.getLinkingEntities(userId,
@@ -1118,9 +1117,9 @@ public class AssetCatalogService {
         return linkingEntities.getRelationships();
     }
 
-    private List<EntityDetail> getIntermediateAssets(String userId, String startAssetId, String endAssetId) throws UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, PropertyServerException, AssetNotFoundException {
+    private List<EntityDetail> getIntermediateAssets(String userId, String startAssetId, String endAssetId) throws UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, AssetNotFoundException {
 
-        OMRSMetadataCollection metadataCollection = repositoryHandler.getMetadataCollection();
+        OMRSMetadataCollection metadataCollection = repositoryConnector.getMetadataCollection();
         List<InstanceStatus> limitByStatus = converter.getInstanceStatuses(null);
 
         InstanceGraph linkingEntities = metadataCollection.getLinkingEntities(userId,
@@ -1140,14 +1139,14 @@ public class AssetCatalogService {
                     errorCode.getSystemAction(),
                     errorCode.getUserAction());
         }
-        
+
         return linkingEntities.getEntities();
     }
 
     private List<EntityDetail> getRelatedAsset(String userId, String startAssetId, String instanceType,
                                                Integer limit, Integer offset,
-                                               SequenceOrderType orderType, String orderProperty, Status status) throws PropertyServerException, UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, AssetNotFoundException {
-        OMRSMetadataCollection metadataCollection = repositoryHandler.getMetadataCollection();
+                                               SequenceOrderType orderType, String orderProperty, Status status) throws UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, AssetNotFoundException {
+        OMRSMetadataCollection metadataCollection = repositoryConnector.getMetadataCollection();
         SequencingOrder sequencingOrder = converter.getSequencingOrder(orderType);
         List<InstanceStatus> limitResultsByStatus = converter.getInstanceStatuses(status);
 
