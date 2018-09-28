@@ -2048,6 +2048,11 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
          * be returned if there are no results from any repository.
          */
         Map<String, Relationship>     combinedResults               = new HashMap<>();
+        /*
+         * The following flag is required, so that if we find an entity with no relationships then this is not an error
+         */
+        boolean successfullyFoundEntity = false;
+
 
         InvalidParameterException     invalidParameterException     = null;
         EntityNotKnownException       entityNotKnownException       = null;
@@ -2082,7 +2087,7 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
                                                                                               sequencingProperty,
                                                                                               sequencingOrder,
                                                                                               pageSize);
-
+                    successfullyFoundEntity =true;
                     /*
                      * Step through the list of returned relationships and remove duplicates.
                      */
@@ -2124,7 +2129,7 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
         }
 
 
-        if (combinedResults.isEmpty())
+        if (combinedResults.isEmpty() && !successfullyFoundEntity)
         {
             throwCapturedRepositoryErrorException(repositoryErrorException);
             throwCapturedUserNotAuthorizedException(userNotAuthorizedException);
@@ -4907,12 +4912,11 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
                                                                                    PropertyErrorException,
                                                                                    EntityNotKnownException,
                                                                                    StatusNotSupportedException,
-                                                                                   UserNotAuthorizedException
-    {
-        final String  methodName = "addRelationship";
-        final String  guidParameterName = "relationshipTypeGUID";
-        final String  propertiesParameterName       = "initialProperties";
-        final String  initialStatusParameterName    = "initialStatus";
+                                                                                   UserNotAuthorizedException {
+        final String methodName = "addRelationship";
+        final String guidParameterName = "relationshipTypeGUID";
+        final String propertiesParameterName = "initialProperties";
+        final String initialStatusParameterName = "initialStatus";
 
         /*
          * Validate parameters
@@ -4923,22 +4927,22 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
         repositoryValidator.validateUserId(repositoryName, userId, methodName);
         repositoryValidator.validateTypeGUID(repositoryName, guidParameterName, relationshipTypeGUID, methodName);
 
-        TypeDef  typeDef = repositoryHelper.getTypeDef(repositoryName, guidParameterName, relationshipTypeGUID, methodName);
+        TypeDef typeDef = repositoryHelper.getTypeDef(repositoryName, guidParameterName, relationshipTypeGUID, methodName);
 
         repositoryValidator.validateTypeDefForInstance(repositoryName, guidParameterName, typeDef, methodName);
 
 
         repositoryValidator.validatePropertiesForType(repositoryName,
-                                                      propertiesParameterName,
-                                                      typeDef,
-                                                      initialProperties,
-                                                      methodName);
+                propertiesParameterName,
+                typeDef,
+                initialProperties,
+                methodName);
 
         repositoryValidator.validateInstanceStatus(repositoryName,
-                                                   initialStatusParameterName,
-                                                   initialStatus,
-                                                   typeDef,
-                                                   methodName);
+                initialStatusParameterName,
+                initialStatus,
+                typeDef,
+                methodName);
 
         /*
          * Validation complete, ok to create new instance
@@ -4947,79 +4951,175 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
          * the shape of the cohort are reflected immediately.
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
+        Relationship relationship = null;
 
+        TypeErrorException stashedTypeError = null;
+        RepositoryErrorException stashedRepositoryError = null;
+        InvalidParameterException invalidParameterException = null;
+        EntityNotKnownException entityNotKnownException = null;
+        TypeErrorException typeErrorException = null;
+        PropertyErrorException propertyErrorException = null;
+        StatusNotSupportedException statusNotSupportedException = null;
+        UserNotAuthorizedException userNotAuthorizedException = null;
+        RepositoryErrorException repositoryErrorException = null;
+        Throwable anotherException = null;
+
+        EntityProxy entity1proxy = null;
+        EntityProxy entity2proxy = null;
         /*
-         * Ready to process the request.  Create requests occur in the first repository that accepts the call.
-         * Some repositories may produce exceptions.  These exceptions are saved and will be returned if
-         * there are no positive results from any repository.
+         * Spin through the cohort connectors to find the entities associated with each end of the relationship. These are stored as proxies in case proxies
+         * need to be created prior to adding the relationship
          */
-        InvalidParameterException    invalidParameterException    = null;
-        EntityNotKnownException      entityNotKnownException      = null;
-        TypeErrorException           typeErrorException           = null;
-        PropertyErrorException       propertyErrorException       = null;
-        StatusNotSupportedException  statusNotSupportedException  = null;
-        UserNotAuthorizedException   userNotAuthorizedException   = null;
-        RepositoryErrorException     repositoryErrorException     = null;
-        Throwable                    anotherException             = null;
-
-        /*
-         * Loop through the metadata collections extracting the typedefs from each repository.
-         */
-        for (OMRSRepositoryConnector cohortConnector : cohortConnectors)
-        {
-            if (cohortConnector != null)
-            {
-                OMRSMetadataCollection   metadataCollection = cohortConnector.getMetadataCollection();
-
+        for (OMRSRepositoryConnector cohortConnector : cohortConnectors) {
+            if (cohortConnector != null) {
+                OMRSMetadataCollection metadataCollection = cohortConnector.getMetadataCollection();
                 validateMetadataCollection(metadataCollection, methodName);
-
-                try
-                {
+                /*
+                 * if we have already found the end 1 then no need to look further for it
+                 */
+                if (entity1proxy == null) {
+                    try {
+                        EntitySummary entitySummary = metadataCollection.getEntitySummary(userId, entityOneGUID);
+                        entity1proxy = new EntityProxy(entitySummary);
+                    } catch (EntityNotKnownException e) {
                     /*
-                     * Issue the request and return if it succeeds
+                     * did not find - carry on looking
                      */
-                    return metadataCollection.addRelationship(userId,
-                                                              relationshipTypeGUID,
-                                                              initialProperties,
-                                                              entityOneGUID,
-                                                              entityTwoGUID,
-                                                              initialStatus);
+                    }
                 }
-                catch (InvalidParameterException error)
-                {
-                    invalidParameterException = error;
-                }
-                catch (EntityNotKnownException error)
-                {
-                    entityNotKnownException = error;
-                }
-                catch (TypeErrorException error)
-                {
-                    typeErrorException = error;
-                }
-                catch (StatusNotSupportedException error)
-                {
-                    statusNotSupportedException = error;
-                }
-                catch (PropertyErrorException error)
-                {
-                    propertyErrorException = error;
-                }
-                catch (RepositoryErrorException error)
-                {
-                    repositoryErrorException = error;
-                }
-                catch (UserNotAuthorizedException error)
-                {
-                    userNotAuthorizedException = error;
-                }
-                catch (Throwable error)
-                {
-                    anotherException = error;
+                /*
+                 * if we have already found the end 2 then no need to look further for it
+                 */
+                if (entity2proxy == null) {
+                    try {
+                        EntitySummary entitySummary = metadataCollection.getEntitySummary(userId, entityTwoGUID);
+                        entity2proxy = new EntityProxy(entitySummary);
+                    } catch (EntityNotKnownException e) {
+                    /*
+                    * did not find - carry on looking
+                    */
+                    }
                 }
             }
         }
 
+        try {
+            if (entity1proxy == null) {
+                OMRSErrorCode errorCode = OMRSErrorCode.ENTITY_NOT_KNOWN;
+                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityOneGUID,
+                        methodName, repositoryName);
+
+                throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
+                        this.getClass().getName(),
+                        methodName,
+                        errorMessage,
+                        errorCode.getSystemAction(),
+                        errorCode.getUserAction());
+            }
+            if (entity2proxy == null) {
+                OMRSErrorCode errorCode = OMRSErrorCode.ENTITY_NOT_KNOWN;
+                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityTwoGUID,
+                        methodName,
+                        repositoryName);
+
+                throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
+                        this.getClass().getName(),
+                        methodName,
+                        errorMessage,
+                        errorCode.getSystemAction(),
+                        errorCode.getUserAction());
+            }
+
+            /*
+             * At this stage we have 2 valid ends of the relationship. Now try each metadataCollection, to add proxies for each end if necessary
+             * and then add the relationship. The addRelationship may fail because the metadataCollection doe snot support the type or
+             * with a Repository error (for example it does not support proxies).
+             */
+
+            for (OMRSRepositoryConnector cohortConnector : cohortConnectors) {
+                if (relationship == null) {
+                    OMRSMetadataCollection metadataCollection = cohortConnector.getMetadataCollection();
+                    /*
+                     * we have a valid entity for each end and we have a metadatacollectionid we are about to add the relationship to.
+                     * For each end - check whether we have an entity, if not create a proxy.
+                     */
+
+                    boolean validEnds = true;
+                    try {
+                        metadataCollection.getEntitySummary(userId, entityOneGUID);
+                    } catch (EntityNotKnownException e) {
+                        try {
+                            metadataCollection.addEntityProxy(userId, entity1proxy);
+                        }catch (RepositoryErrorException error) {
+                            /*
+                             * this repository returned an error for example if it does not support proxies
+                             * try another repository
+                             */
+                            stashedRepositoryError = error;
+                            validEnds = false;
+                        }
+                    }
+                    try {
+                        metadataCollection.getEntitySummary(userId, entityTwoGUID);
+                    } catch (EntityNotKnownException e) {
+                        try {
+                            metadataCollection.addEntityProxy(userId, entity2proxy);
+                        }catch (RepositoryErrorException error) {
+                            /*
+                             * this repository returned an error for example if it does not support proxies
+                             * try another repository
+                             */
+                            stashedRepositoryError = error;
+                            validEnds = false;
+
+                        }
+                    }
+                    if (validEnds) {
+                    /*
+                     * Both ends are valid for the repository, so issue the request
+                     */
+                        try {
+                            relationship = metadataCollection.addRelationship(userId,
+                                    relationshipTypeGUID,
+                                    initialProperties,
+                                    entityOneGUID,
+                                    entityTwoGUID,
+                                    initialStatus);
+                        /*
+                         *  Some errors occur because a particular repository is not capable of running the addRelationship. In these cases
+                         *  there may be otehr repositories that are cabable, so we keep looking for a suitable repository.
+                         *
+                         * Note there maybe more Exceptions like this - they can be added if required.
+                         */
+                        } catch (TypeErrorException error) {
+                            stashedTypeError = error;
+                            /*
+                             * An entity or relationship type was not supported by this repository, so try another repository
+                             */
+                        } catch (RepositoryErrorException error) {
+                            stashedRepositoryError = error;
+                            /*
+                             * this repository returned an error -  so try another repository
+                             */
+                        }
+                    }
+                }
+            }
+        } catch (InvalidParameterException error) {
+            invalidParameterException = error;
+        } catch (EntityNotKnownException error) {
+            entityNotKnownException = error;
+        } catch (StatusNotSupportedException error) {
+            statusNotSupportedException = error;
+        } catch (PropertyErrorException error) {
+            propertyErrorException = error;
+        } catch (RepositoryErrorException error) {
+            repositoryErrorException = error;
+        } catch (UserNotAuthorizedException error) {
+            userNotAuthorizedException = error;
+        } catch (Throwable error) {
+            anotherException = error;
+        }
         throwCapturedEntityNotKnownException(entityNotKnownException);
         throwCapturedRepositoryErrorException(repositoryErrorException);
         throwCapturedUserNotAuthorizedException(userNotAuthorizedException);
@@ -5029,9 +5129,247 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
         throwCapturedStatusNotSupportedException(statusNotSupportedException);
         throwCapturedInvalidParameterException(invalidParameterException);
 
-        return null;
+        /*
+         * if a relationship was not created and an error was received  while checking repositories - then throw that error.
+         */
+        if (relationship == null) {
+            if (stashedTypeError != null) {
+                throwCapturedTypeErrorException(stashedTypeError);
+            } else {
+                throwCapturedRepositoryErrorException(stashedRepositoryError);
+            }
+        }
+        return relationship;
     }
 
+    /**
+     *
+     * Process the addRelationship request. The addRelationship call is issued to each repository.
+     * Some repositories may produce exceptions.  These exceptions are saved and will be returned if
+     * there are no positive results from any repository.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param relationshipTypeGUID unique identifier (guid) for the new relationship's type.
+     * @param initialProperties initial list of properties for the new entity, null means no properties.
+     * @param entityOneGUID the unique identifier of one of the entities that the relationship is connecting together.
+     * @param entityTwoGUID the unique identifier of the other entity that the relationship is connecting together.
+     * @param initialStatus initial status. This is typically DRAFT, PREPARED or ACTIVE.
+     * @param methodName api call for use when constructing error messages
+     * @param cohortConnectors - connectors to all the known repositories
+     * @return Relationship structure with the new header, requested entities and properties.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                 the metadata collection is stored.
+     * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                  characteristics in the TypeDef for this relationship's type.
+     * @throws EntityNotKnownException one of the requested entities is not known in the metadata collection.
+     * @throws StatusNotSupportedException the metadata repository hosting the metadata collection does not support
+     *                                     the requested status.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public Relationship processAddRelationship(String userId,
+                                                String relationshipTypeGUID,
+                                                InstanceProperties initialProperties,
+                                                String entityOneGUID,
+                                                String entityTwoGUID,
+                                                InstanceStatus initialStatus,
+                                                String methodName,
+                                                List<OMRSRepositoryConnector> cohortConnectors)
+            throws RepositoryErrorException,
+            InvalidParameterException,
+            UserNotAuthorizedException,
+            EntityNotKnownException,
+            TypeErrorException,
+            PropertyErrorException,
+            StatusNotSupportedException
+    {
+
+
+        Relationship relationship = null;
+        TypeErrorException stashedTypeError = null;
+        RepositoryErrorException stashedRepositoryErrorException = null;
+        InvalidParameterException invalidParameterException = null;
+        EntityNotKnownException entityNotKnownException = null;
+        TypeErrorException typeErrorException = null;
+        PropertyErrorException propertyErrorException = null;
+        StatusNotSupportedException statusNotSupportedException = null;
+        UserNotAuthorizedException userNotAuthorizedException = null;
+        RepositoryErrorException repositoryErrorException = null;
+        Throwable anotherException = null;
+
+        EntityProxy entity1proxy = null;
+        EntityProxy entity2proxy = null;
+        /*
+         * Spin through the cohort connectors to find the entities associated with each end of the relationship. These are stored as proxies in case proxies
+         * need to be created prior to adding the relationship
+         */
+        for (OMRSRepositoryConnector cohortConnector : cohortConnectors) {
+            if (cohortConnector != null) {
+                OMRSMetadataCollection metadataCollection = cohortConnector.getMetadataCollection();
+                validateMetadataCollection(metadataCollection, methodName);
+                /*
+                 * if we have already found the end 1 then no need to look further for it
+                 */
+                if (entity1proxy == null) {
+                    try {
+                        EntitySummary entitySummary = metadataCollection.getEntitySummary(userId, entityOneGUID);
+                        entity1proxy = new EntityProxy(entitySummary);
+                    } catch (EntityNotKnownException e) {
+                /*
+                 * did not find - carry on looking
+                 */
+                    }
+                }
+                /*
+                 * if we have already found the end 2 then no need to look further for it
+                 */
+                if (entity2proxy == null) {
+                    try {
+                        EntitySummary entitySummary = metadataCollection.getEntitySummary(userId, entityTwoGUID);
+                        entity2proxy = new EntityProxy(entitySummary);
+                    } catch (EntityNotKnownException e) {
+                    /*
+                    * did not find - carry on looking
+                    */
+                    }
+                }
+            }
+        }
+
+        try {
+            if (entity1proxy == null) {
+                OMRSErrorCode errorCode = OMRSErrorCode.ENTITY_NOT_KNOWN;
+                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityOneGUID,
+                        methodName, repositoryName);
+
+                throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
+                        this.getClass().getName(),
+                        methodName,
+                        errorMessage,
+                        errorCode.getSystemAction(),
+                        errorCode.getUserAction());
+            }
+            if (entity2proxy == null) {
+                OMRSErrorCode errorCode = OMRSErrorCode.ENTITY_NOT_KNOWN;
+                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityTwoGUID,
+                        methodName,
+                        repositoryName);
+
+                throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
+                        this.getClass().getName(),
+                        methodName,
+                        errorMessage,
+                        errorCode.getSystemAction(),
+                        errorCode.getUserAction());
+            }
+
+            /*
+             * At this stage we have 2 valid ends of the relationship. Now try each metadataCollection, to add proxies for each end if necessary
+              * and then add the relationship. The addRelationship may fail because the metadataCollection doe snot support the type or
+              * with a Repository error (for example it does not support proxies).
+             */
+
+            for (OMRSRepositoryConnector cohortConnector : cohortConnectors) {
+                if (relationship == null) {
+                    OMRSMetadataCollection metadataCollection = cohortConnector.getMetadataCollection();
+                    /**
+                     * we have a valid entity for each end and we have a metadatacollectionid we are about to add the relationship to.
+                     * For each end - check whether we have an entity, if not create a proxy.
+                     */
+
+                    boolean validEnds = true;
+                    try {
+                        metadataCollection.getEntitySummary(userId, entityOneGUID);
+                    } catch (EntityNotKnownException e) {
+                        try {
+                            metadataCollection.addEntityProxy(userId, entity1proxy);
+                        }catch (RepositoryErrorException error) {
+                            /*
+                             * this repository returned an error for example if it does not support proxies
+                             * try another repository
+                             */
+                            stashedRepositoryErrorException = error;
+                            validEnds = false;
+                        }
+                    }
+                    try {
+                        metadataCollection.getEntitySummary(userId, entityTwoGUID);
+                    } catch (EntityNotKnownException e) {
+                        try {
+                            metadataCollection.addEntityProxy(userId, entity2proxy);
+                        }catch (RepositoryErrorException error) {
+                            /*
+                             * this repository returned an error for example if it does not support proxies
+                             * try another repository
+                             */
+                            stashedRepositoryErrorException = error;
+                            validEnds = false;
+
+                        }
+                    }
+                    if (validEnds) {
+                    /*
+                     * Both ends are valid for the repository, so issue the request
+                     */
+                        try {
+                            relationship = metadataCollection.addRelationship(userId,
+                                    relationshipTypeGUID,
+                                    initialProperties,
+                                    entityOneGUID,
+                                    entityTwoGUID,
+                                    initialStatus);
+                        } catch (TypeErrorException error) {
+                            stashedTypeError = error;
+                            /*
+                             * An entity or relationship type was not supported by this repository, so try another repository
+                             */
+                        } catch (RepositoryErrorException error) {
+                            stashedRepositoryErrorException = error;
+                            /*
+                             * this repository returned an error -  so try another repository
+                             */
+                        }
+                    }
+                }
+            }
+        } catch (InvalidParameterException error) {
+            invalidParameterException = error;
+        } catch (EntityNotKnownException error) {
+            entityNotKnownException = error;
+        } catch (StatusNotSupportedException error) {
+            statusNotSupportedException = error;
+        } catch (PropertyErrorException error) {
+            propertyErrorException = error;
+        } catch (RepositoryErrorException error) {
+            repositoryErrorException = error;
+        } catch (UserNotAuthorizedException error) {
+            userNotAuthorizedException = error;
+        } catch (Throwable error) {
+            anotherException = error;
+        }
+        throwCapturedEntityNotKnownException(entityNotKnownException);
+        throwCapturedRepositoryErrorException(repositoryErrorException);
+        throwCapturedUserNotAuthorizedException(userNotAuthorizedException);
+        throwCapturedThrowableException(anotherException, methodName);
+        throwCapturedTypeErrorException(typeErrorException);
+        throwCapturedPropertyErrorException(propertyErrorException);
+        throwCapturedStatusNotSupportedException(statusNotSupportedException);
+        throwCapturedInvalidParameterException(invalidParameterException);
+
+        /*
+         * if a relationship was not created and an error was received  while checking repositories - then throw that error.
+         */
+        if (relationship == null) {
+            if (stashedTypeError != null) {
+                throwCapturedTypeErrorException(stashedTypeError);
+            } else {
+                throwCapturedRepositoryErrorException(stashedRepositoryErrorException);
+            }
+        }
+        return relationship;
+    }
 
     /**
      * Update the status of a specific relationship.
