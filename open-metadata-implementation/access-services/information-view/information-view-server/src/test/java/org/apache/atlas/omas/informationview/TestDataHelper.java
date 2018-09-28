@@ -206,7 +206,7 @@ public class TestDataHelper {
     public InstanceProperties createInstancePropertiesForEndpoint() {
         InstanceProperties instanceProperties = new InstanceProperties();
         createStringPropertyValue(instanceProperties, Constants.PROTOCOL, PROTOCOL_VALUE);
-        createStringPropertyValue(instanceProperties, Constants.ADDRESS, HOSTNAME_VALUE + ":" + PORT_VALUE);
+        createStringPropertyValue(instanceProperties, Constants.NETWORK_ADDRESS, HOSTNAME_VALUE + ":" + PORT_VALUE);
 
         return instanceProperties;
     }
@@ -380,7 +380,6 @@ public class TestDataHelper {
         event.setConnectionDetails(connectionDetails);
         connectionDetails.setNetworkAddress(HOSTNAME_VALUE + ":" + TestDataHelper.PORT_VALUE);
         connectionDetails.setProtocol(PROTOCOL_VALUE);
-        connectionDetails.setUrl(URL_VALUE);
         connectionDetails.setConnectorProviderName(PROVIDER_CLASS_NAME);
         connectionDetails.setEndpointQualifiedName("jdbc:derby:localhost:9393");
         connectionDetails.setConnectionQualifiedName("jdbc:derby:localhost:9393.connection");

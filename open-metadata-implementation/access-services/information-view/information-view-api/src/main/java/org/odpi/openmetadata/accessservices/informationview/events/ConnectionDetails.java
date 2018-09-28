@@ -14,32 +14,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ConnectionDetails {
 
-    private String url;
     private String networkAddress;
     private String protocol;
+    private String user;
     private String connectorProviderName;
     private String connectorProviderQualifiedName;
-    private String gaianNodeName;
     private String connectionQualifiedName;
     private String endpointQualifiedName;
 
-    /**
-     * Return the url of the connection
-     *
-     * @return url of the connection
-     */
-    public String getUrl() {
-        return url;
-    }
-
-    /**
-     * set up the url of the connection
-     *
-     * @param url - url of the connection
-     */
-    public void setUrl(String url) {
-        this.url = url;
-    }
 
     /**
      * Return the address of the connection
@@ -95,23 +77,6 @@ public class ConnectionDetails {
         this.connectorProviderName = connectorProviderName;
     }
 
-    /**
-     * Return the gaian node name of the connection
-     *
-     * @return gaian node name of the connection
-     */
-    public String getGaianNodeName() {
-        return gaianNodeName;
-    }
-
-    /**
-     * set up the gaian node name of the connection
-     *
-     * @param gaianNodeName - gaian node name of the connection
-     */
-    public void setGaianNodeName(String gaianNodeName) {
-        this.gaianNodeName = gaianNodeName;
-    }
 
     /**
      * Return the connector provider qualified name for the connection
@@ -166,17 +131,32 @@ public class ConnectionDetails {
         this.endpointQualifiedName = endpointQualifiedName;
     }
 
+    /**
+     *
+     * @return user to use ro connect
+     */
+    public String getUser() {
+        return user;
+    }
+
+    /**
+     *
+     * @param user to connect
+     */
+    public void setUser(String user) {
+        this.user = user;
+    }
+
     @Override
     public String toString() {
         return "ConnectionDetails{" +
-                "url='" + url + '\'' +
                 ", networkAddress='" + networkAddress + '\'' +
                 ", protocol='" + protocol + '\'' +
                 ", connectorProviderName='" + connectorProviderName + '\'' +
                 ", connectorProviderQualifiedName='" + connectorProviderQualifiedName + '\'' +
-                ", gaianNodeName='" + gaianNodeName + '\'' +
                 ", connectionQualifiedName='" + connectionQualifiedName + '\'' +
                 ", endpointQualifiedName='" + endpointQualifiedName + '\'' +
+                ", user='" + user + '\'' +
                 '}';
     }
 }

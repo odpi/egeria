@@ -40,7 +40,7 @@ public class Constants {
     public static final String RELATIONAL_TABLE_TYPE = "RelationalTableType";
     public static final String URL = "url";
     public static final String PROTOCOL = "protocol";
-    public static final String ADDRESS = "networkAddress";
+    public static final String NETWORK_ADDRESS = "networkAddress";
     public static final String ADDITIONAL_PROPERTIES = "additionalProperties";
     public static final String CONNECTOR_PROVIDER_CLASSNAME = "connectorProviderClassName";
     public static final String GAIAN_DB_NODE_NAME = "GDName";
@@ -49,4 +49,10 @@ public class Constants {
     public static final String DEPLOYED_DATABASE_SCHEMA = "DeployedDatabaseSchema";
     public static final String ENDPOINT = "Endpoint";
     public static final String CONNECTION = "Connection";
+    public static final String SOFTWARE_SERVER = "SoftwareServer";
+    public static final String DATABASE_SERVER = "DatabaseServer";
+    public static final String SERVER_ENDPOINT = "ServerEndpoint";
+    public static final String SOFTWARE_SERVER_CAPABILITY = "SoftwareServerCapability";
+    public static final String ENGINE = "Engine";
+    public static final String REPORTING_ENGINE = "ReportingEngine";
 }

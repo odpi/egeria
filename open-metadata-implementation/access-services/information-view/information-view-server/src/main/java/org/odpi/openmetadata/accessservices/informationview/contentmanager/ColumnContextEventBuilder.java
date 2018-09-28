@@ -361,17 +361,16 @@ public class ColumnContextEventBuilder {
         ColumnContextEvent columnContextEvent = new ColumnContextEvent();
         ConnectionDetails connectionDetails = new ConnectionDetails();
         columnContextEvent.setConnectionDetails(connectionDetails);
-        String address = EntityPropertiesUtils.getStringValueForProperty(endpointEntity.getProperties(), Constants.ADDRESS);
+        String address = EntityPropertiesUtils.getStringValueForProperty(endpointEntity.getProperties(), Constants.NETWORK_ADDRESS);
 
         connectionDetails.setNetworkAddress(address);
         connectionDetails.setProtocol(EntityPropertiesUtils.getStringValueForProperty(endpointEntity.getProperties(), Constants.PROTOCOL));
-        connectionDetails.setUrl(EntityPropertiesUtils.getStringValueForProperty(endpointEntity.getProperties(), Constants.URL));
         connectionDetails.setEndpointQualifiedName(EntityPropertiesUtils.getStringValueForProperty(endpointEntity.getProperties(), Constants.QUALIFIED_NAME));
 
-        MapPropertyValue additionalProperties = EntityPropertiesUtils.getMapValueForProperty(endpointEntity.getProperties(), Constants.ADDITIONAL_PROPERTIES);
-        if (additionalProperties != null && additionalProperties.getMapValues() != null) {
-            connectionDetails.setGaianNodeName(EntityPropertiesUtils.getStringValueForProperty(additionalProperties.getMapValues(), Constants.GAIAN_DB_NODE_NAME));
-        }
+//        MapPropertyValue additionalProperties = EntityPropertiesUtils.getMapValueForProperty(endpointEntity.getProperties(), Constants.ADDITIONAL_PROPERTIES);
+//        if (additionalProperties != null && additionalProperties.getMapValues() != null) {
+//            connectionDetails.setGaianNodeName(EntityPropertiesUtils.getStringValueForProperty(additionalProperties.getMapValues(), Constants.GAIAN_DB_NODE_NAME));
+//        }
         return columnContextEvent;
     }
 
