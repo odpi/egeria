@@ -3,7 +3,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions;
 
 
 /**
- * The InvalidParameterException is thrown by the SubjectArea OMAS when a parameters is null or an invalid
+ * The InvalidParameterException is thrown by the SubjectArea OMAS when a parameter is null or an invalid
  * value.
  */
 public class InvalidParameterException extends SubjectAreaCheckedExceptionBase

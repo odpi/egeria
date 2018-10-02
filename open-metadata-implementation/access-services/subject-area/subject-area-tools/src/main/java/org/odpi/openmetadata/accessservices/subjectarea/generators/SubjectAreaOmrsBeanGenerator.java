@@ -40,9 +40,10 @@ public class SubjectAreaOmrsBeanGenerator {
     private boolean regenAPIFiles = false;
     public static final String OPEN_METADATA_IMPLEMENTATION = "open-metadata-implementation";
 
-    public static final String SUBJECTAREA_OMAS_SERVER = OPEN_METADATA_IMPLEMENTATION +"/access-services/subject-area/subject-area-server";
-    public static final String SUBJECTAREA_OMAS_API =    OPEN_METADATA_IMPLEMENTATION +"/access-services/subject-area/subject-area-api";
-    public static final String GENERATOR = OPEN_METADATA_IMPLEMENTATION +"/access-services/subject-area/subject-area-tools";
+
+    public static final String SUBJECTAREA_OMAS_SERVER = "open-metadata-implementation/access-services/subject-area/subject-area-server";
+    public static final String SUBJECTAREA_OMAS_API =    "open-metadata-implementation/access-services/subject-area/subject-area-api";
+    public static final String GENERATOR = "open-metadata-implementation/access-services/subject-area/subject-area-tools";
 
     public static final String CLASSIFICATIONS = "classifications";
     public static final String RELATIONSHIPS = "relationships";
@@ -51,6 +52,7 @@ public class SubjectAreaOmrsBeanGenerator {
     public static final String ENUMS = "enums";
 
     public static final String GENERATION_CLASSIFICATION_FACTORY_CLASS_NAME = "ClassificationFactory.java";
+    public static final String GENERATION_OMRS_RELATIONSHIP_TO_LINES_CLASS_NAME="OMRSRelationshipToLines.java";
 
     public static final String TEMPLATES_FOLDER = GENERATOR + "/src/main/resources/templates/";
     public static final String SRC_SUBJECT_AREA = "/src/main/java/org/odpi/openmetadata/accessservices/subjectarea/";
@@ -74,7 +76,7 @@ public class SubjectAreaOmrsBeanGenerator {
     public static final String GENERATION_RELATIONSHIPS_FOLDER = GENERATION_FOLDER + "/" + RELATIONSHIPS + "/";
 
     public static final String GENERATION_CLASSIFICATION_FACTORY_FILE_NAME = GENERATION_CLASSIFICATIONS_FOLDER + GENERATION_CLASSIFICATION_FACTORY_CLASS_NAME;
-
+    public static final String GENERATION_OMRS_RELATIONSHIP_TO_LINES_FILE_NAME = GENERATION_RELATIONSHIPS_FOLDER + GENERATION_OMRS_RELATIONSHIP_TO_LINES_CLASS_NAME;
     //template names
     // this is the template for a Reference - i.e. something that contains the relationship attributes and is our view of the relationship
     public static final String OMAS_REFERENCE_TEMPLATE = TEMPLATES_FOLDER + "OmrsBeanReferenceTemplate";
@@ -88,7 +90,7 @@ public class SubjectAreaOmrsBeanGenerator {
     public static final String OMAS_RELATIONSHIP_TEMPLATE = TEMPLATES_FOLDER + "OmrsBeanRelationshipTemplate";
     // ths is the template to be able to create an omrsBean enum
     public static final String OMAS_ENUM_TEMPLATE = TEMPLATES_FOLDER + "OmrsBeanEnumTemplate";
-
+    public static final String OMAS_RELATIONSHIP_TO_LINES_TEMPLATE = TEMPLATES_FOLDER + "OMRSRelationshipToLinesTemplate";
     // Entity mapper
     public static final String OMAS_ENTITY_MAPPER_TEMPLATE = TEMPLATES_FOLDER + "OmrsBeanEntityMapperTemplate";
     // Entity mapper
@@ -158,6 +160,10 @@ public class SubjectAreaOmrsBeanGenerator {
             classificationFactoryFile.delete();
         }
 
+        File relationshipToLinesFile = new File(GENERATION_OMRS_RELATIONSHIP_TO_LINES_FILE_NAME);
+        if (relationshipToLinesFile.exists()) {
+            relationshipToLinesFile.delete();
+        }
     }
 
     /**
@@ -193,7 +199,10 @@ public class SubjectAreaOmrsBeanGenerator {
         generator.generateEnumFiles();
         // generate the classification files and their attributes
         generator.generateClassificationFiles();
+        // generate the classification factory
         generator.generateClassificationFactory();
+        // generate OMRSRelationshipToLines.
+        generator.generateOMRSRelationshipToLines();
         // generate the entity and attribute files
         generator.generateEntityRelatedFiles(omrsBeanModel.getOmrsBeanEntityAttributeMap());
         // generate relationships and their attributes
@@ -202,7 +211,7 @@ public class SubjectAreaOmrsBeanGenerator {
         generator.generateReferenceFiles();
         // generate the omrs beans accessor file
         generator.generateOMRSBeansAccessorFile();
-        // generate the omras beans test file
+        // generate the omrs beans test file
         generator.generateOMRSBeansAccessorTestFile();
     }
 
@@ -294,6 +303,44 @@ public class SubjectAreaOmrsBeanGenerator {
                     for (int loopCounter = 0; loopCounter < loopLines.size(); loopCounter++) {
                         String newLine = loopLines.get(loopCounter);
                         newLine = newLine.replaceAll(GeneratorUtilities.getRegexToken("uClassification"), GeneratorUtilities.uppercase1stLetter(classificationName));
+                        outputFileWriter.write(newLine + "\n");
+                    }
+                }
+            } else {
+                outputFileWriter.write(line + "\n");
+            }
+            line = reader.readLine();
+        }
+        reader.close();
+
+        outputFileWriter.close();
+    }
+
+
+    private void generateOMRSRelationshipToLines() throws IOException {
+        FileWriter outputFileWriter = new FileWriter(GENERATION_OMRS_RELATIONSHIP_TO_LINES_FILE_NAME);
+        BufferedReader reader = new BufferedReader(new FileReader(OMAS_RELATIONSHIP_TO_LINES_TEMPLATE));
+        String line = reader.readLine();
+        while (line != null) {
+            List<String> loopLines = new ArrayList();
+
+            if (line.contains(" <$$RELATIONSHIP$")) {
+                // read all the lines in the loop
+                String loopline = reader.readLine();
+                while (loopline != null) {
+                    //stash the lines for the loop and spit them out for each relationship
+                    if (loopline.contains(" $$RELATIONSHIP$>")) {
+                        break;
+                    }
+                    loopLines.add(loopline);
+                    loopline = reader.readLine();
+                }
+                // for each relationship write out the loop line
+                for (String relationshipName : omrsBeanModel.getOmrsBeanRelationshipMap().keySet()) {
+                    for (int loopCounter = 0; loopCounter < loopLines.size(); loopCounter++) {
+                        String newLine = loopLines.get(loopCounter);
+                        newLine = newLine.replaceAll(GeneratorUtilities.getRegexToken("uRelationshipName"), GeneratorUtilities.uppercase1stLetter(relationshipName));
+                        newLine = newLine.replaceAll(GeneratorUtilities.getRegexToken("RelationshipName"), GeneratorUtilities.lowercase1stLetter(relationshipName));
                         outputFileWriter.write(newLine + "\n");
                     }
                 }
@@ -896,6 +943,7 @@ public class SubjectAreaOmrsBeanGenerator {
             replacementMap.put("entityProxy1Type", omrsBeanRelationship.entityProxy1Type);
             replacementMap.put("entityProxy2Name", omrsBeanRelationship.entityProxy2Name);
             replacementMap.put("entityProxy2Type", omrsBeanRelationship.entityProxy2Type);
+            replacementMap.put("typeDefGuid", omrsBeanRelationship.typeDefGuid);
 
             writeAttributesToFile(attrList, replacementMap, outputFileWriter, reader, line);
             line = reader.readLine();
@@ -964,9 +1012,6 @@ public class SubjectAreaOmrsBeanGenerator {
             String outputFolder = this.createEntityJavaFolderIfRequired(entityName);
             final String topReferenceFileName = outputFolder + "/" + entityName + "References.java";
             final List<OmrsBeanAttribute> omrsBeanAttributes = omrsBeanReferencesAsAttributesByEntity.get(entityName);
-            if (org.odpi.openmetadata.accessservices.subjectarea.utils.GeneratorUtilities.lowercase1stLetter(entityName).equals("GlossaryTerm")) {
-                int p= 0;
-            }
             generateTopReferenceFile(entityName, omrsBeanAttributes, topReferenceFileName);
         }
     }
@@ -1103,8 +1148,14 @@ public class SubjectAreaOmrsBeanGenerator {
                         newLine = newLine.replaceAll(GeneratorUtilities.getRegexToken("uPropertyName"), GeneratorUtilities.uppercase1stLetter(attr.name));
                         newLine = replaceTokensInLineFromMap(replacementMap, newLine);
                         newLine = newLine.replaceAll(GeneratorUtilities.getRegexToken("PropertyType"), GeneratorUtilities.uppercase1stLetter(attr.type));
-                        // Use the attribute type with the first lestter capitalized as the javadoc
+                        /* Use the attribute type with the first letter capitalized as the javadoc
+                         * We surround this with the {@code annotation for < and > characters - otherwise the javadoc would be invalid.
+                         */
                         String javadoc = GeneratorUtilities.uppercase1stLetter(attr.type);
+
+                        if (javadoc.contains("<") || javadoc.contains(">")) {
+                            javadoc ="{@code " + javadoc + " }";
+                        }
                         newLine = newLine.replaceAll(GeneratorUtilities.getRegexToken("PropertyTypeJavadoc"),javadoc );
 
                         // TODO handle non String types

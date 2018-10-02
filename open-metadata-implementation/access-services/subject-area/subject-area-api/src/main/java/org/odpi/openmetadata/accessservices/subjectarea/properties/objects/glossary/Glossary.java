@@ -26,6 +26,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.commo
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.governednode.GovernedNode;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.node.Node;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.node.NodeType;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.IconSummary;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.ProjectSummary;
 
 
 import java.util.List;
@@ -119,7 +121,7 @@ public class Glossary extends GovernedNode{
      * The projects associated with this glossary.
      * @return
      */
-    public Set<String> getProjects() {
+    public Set<ProjectSummary> getProjects() {
         return super.getProjects();
     }
     /**
@@ -143,11 +145,11 @@ public class Glossary extends GovernedNode{
     }
     @Override
     /**
-     * The icon associated with this glossary.
+     * The icons associated with this glossary.
      * @return the url of the icon.
      */
-    public String getIcon() {
-        return super.getIcon();
+    public Set<IconSummary> getIcons() {
+        return super.getIcons();
     }
 
     @Override
@@ -190,6 +192,9 @@ public class Glossary extends GovernedNode{
 
     @Override
     public int hashCode() {
-        return ((Node)this).hashCode();
+        int result = super.hashCode();
+        result = 31 * result + (usage != null ? usage.hashCode() : 0);
+        result = 31 * result + (language != null ? language.hashCode() : 0);
+        return result;
     }
 }

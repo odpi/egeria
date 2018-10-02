@@ -59,7 +59,6 @@ public class TermMapper {
         omrsBean.setDescription(term.getDescription());
         omrsBean.setDisplayName(term.getName());
         omrsBean.setSummary(term.getSummary());
-        omrsBean.setGlossaryName(term.getGlossaryName());
         // map classifications
         List<Classification> classifications = term.getClassifications();
         if (classifications==null) {

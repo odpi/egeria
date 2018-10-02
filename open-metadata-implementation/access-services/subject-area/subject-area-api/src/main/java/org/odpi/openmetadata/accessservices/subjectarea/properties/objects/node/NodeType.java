@@ -77,11 +77,21 @@ public enum NodeType implements Serializable {
     Category
     ,
     /**
+     * Project
+     */
+    Project
+    ,
+    /**
+     * Asset
+     */
+    Asset
+    ,
+    /**
      * SubjectArea
      */
     SubjectArea
     ,
-    // TODO Consider other types like classification, asset, comment,
+    // TODO Consider other types like classification, comment,
 
     /**
      * Unknown type of node.

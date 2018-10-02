@@ -1,8 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservices.subjectarea.utils;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.MetadataServerUncontactableException;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.VoidResponse;
@@ -35,12 +37,12 @@ public class RestCaller {
     /**
      * Issue a POST REST call that returns a SubjectAreaOMASAPIResponse object.
      *
-     * @param className name of the calling class
-     * @param methodName  name of the calling method
-     * @param requestBody body of the rest request
-     * @param url  the URL for the REST API call
-     * @return SubjectAreaOMASAPIResponse    list of governed asset components
-     * @throws MetadataServerUncontactableException something went wrong with the REST call stack.
+     * @param className = name of the calling class
+     * @param methodName  - name of the calling method
+     * @param requestBody - body of the rest request
+     * @param url -  the URL for the REST API call
+     * @return SubjectAreaOMASAPIResponse    - list of governed asset components
+     * @throws MetadataServerUncontactableException - something went wrong with the REST call stack.
      */
     public static SubjectAreaOMASAPIResponse issuePost(String className,
                                                        String methodName,
@@ -55,11 +57,11 @@ public class RestCaller {
      * Issue a PUT REST call that returns a SubjectAreaOMASAPIResponse object.
      *
      * @param className = name of the calling class
-     * @param methodName  name of the calling method
-     * @param requestBody body of the rest request
-     * @param url  the URL for the REST API call
-     * @return SubjectAreaOMASAPIResponse    list of governed asset components
-     * @throws MetadataServerUncontactableException something went wrong with the REST call stack.
+     * @param methodName  - name of the calling method
+     * @param requestBody - body of the rest request
+     * @param url -  the URL for the REST API call
+     * @return SubjectAreaOMASAPIResponse    - list of governed asset components
+     * @throws MetadataServerUncontactableException - something went wrong with the REST call stack.
      */
     public static SubjectAreaOMASAPIResponse issuePut(String className,
                                                        String methodName,
@@ -76,8 +78,8 @@ public class RestCaller {
      * @param className name of the calling class
      * @param methodName  name of the calling method
      * @param url url for the server
-     * @return SubjectAreaOMASAPIResponse    list of governed asset components
-     * @throws MetadataServerUncontactableException something went wrong with the REST call stack.
+     * @return SubjectAreaOMASAPIResponse    - list of governed asset components
+     * @throws MetadataServerUncontactableException - something went wrong with the REST call stack.
      */
     public static SubjectAreaOMASAPIResponse issueDelete(String className,
                                                       String methodName,
@@ -90,12 +92,12 @@ public class RestCaller {
     /**
      * Issue a rest exchange call with a rest body.
      * @param className = name of the calling class
-     * @param methodName  name of the calling method
-     * @param httpMethod http method
-     * @param requestBody body of the rest request
-     * @param url  the URL for the REST API call
-     * @return SubjectAreaOMASAPIResponse    list of governed asset components
-     * @throws MetadataServerUncontactableException something went wrong with the REST call stack.
+     * @param methodName  - name of the calling method
+     * @param httpMethod - http method
+     * @param requestBody - body of the rest request
+     * @param url -  the URL for the REST API call
+     * @return SubjectAreaOMASAPIResponse    - list of governed asset components
+     * @throws MetadataServerUncontactableException - something went wrong with the REST call stack.
      */
     private static SubjectAreaOMASAPIResponse issueExchangeWithBody(String className,
                                                                     String methodName,
@@ -114,11 +116,11 @@ public class RestCaller {
     /**
      * Issue a rest exchange call without a rest body.
      * @param className = name of the calling class
-     * @param methodName  name of the calling method
-     * @param httpMethod http method
-     * @param url  the URL for the REST API call
-     * @return SubjectAreaOMASAPIResponse    list of governed asset components
-     * @throws MetadataServerUncontactableException something went wrong with the REST call stack.
+     * @param methodName  - name of the calling method
+     * @param httpMethod - http method
+     * @param url -  the URL for the REST API call
+     * @return SubjectAreaOMASAPIResponse    - list of governed asset components
+     * @throws MetadataServerUncontactableException - something went wrong with the REST call stack.
      */
     private static SubjectAreaOMASAPIResponse issueExchangeWithoutBody(String className,
                                                                     String methodName,
@@ -175,5 +177,26 @@ public class RestCaller {
                     ioException);
         }
         return restResponse;
+    }
+
+    /**
+     * Throw a subject area exception indicating that the supplied json could not be parsed.
+     * @param className
+     * @param methodName
+     * @param error
+     * @throws InvalidParameterException
+     */
+    public static void throwJsonParseError (String className, String methodName,  JsonProcessingException error) throws InvalidParameterException {
+        SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.UNABLE_TO_PARSE_SUPPLIED_JSON;
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                error.getMessage());
+
+        throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                className,
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction(),
+                error);
     }
 }

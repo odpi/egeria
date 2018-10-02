@@ -41,7 +41,7 @@ public class Line implements Serializable {
     protected static final long serialVersionUID = 1L;
     private SystemAttributes systemAttributes = null;
     private Map<String, Object> extraAttributes;
-
+    protected String typeDefGuid;
     protected LineType lineType;
     protected String entity1Name;
     protected String entity1Type;
@@ -57,6 +57,11 @@ public class Line implements Serializable {
 
     protected String guid;
     protected String name;
+
+    /**
+     * Default constructor
+     */
+    public Line() {}
     public Line(String name) {
         this.name=name;
         this.lineType=LineType.Other;
@@ -87,6 +92,14 @@ public class Line implements Serializable {
         this.entity2Name = omrsRelationship.getEntityTwoPropertyName();
         this.entity2Type = omrsRelationship.getEntityTwoProxy().getType().getTypeDefName();
         this.entity2Guid = omrsRelationship.getEntityTwoProxy().getGUID();
+    }
+
+    public String getTypeDefGuid() {
+        return typeDefGuid;
+    }
+
+    public void setTypeDefGuid(String typeDefGuid) {
+        this.typeDefGuid = typeDefGuid;
     }
 
     public LineType getLineType() {
@@ -212,7 +225,9 @@ public class Line implements Serializable {
         Relationship omrsRelationship = new Relationship();
         InstanceType typeOfRelationship = new InstanceType();
         typeOfRelationship.setTypeDefName(line.getName());
+        typeOfRelationship.setTypeDefGUID(line.getTypeDefGuid());
         omrsRelationship.setType(typeOfRelationship);
+
 
         SystemAttributes systemAttributes = line.getSystemAttributes();
         if (systemAttributes ==null) {
@@ -228,20 +243,17 @@ public class Line implements Serializable {
             omrsRelationship.setVersion(systemAttributes.getVersion());
         }
         line.setSystemAttributes(systemAttributes);
-        // set names of ends
-        omrsRelationship.setEntityOnePropertyName(line.getEntity2Name());
-        omrsRelationship.setEntityTwoPropertyName(line.getEntity1Name());
         //set proxy 1
         EntityProxy entityOne = new EntityProxy();
-        entityOne.setGUID(line.getEntity2Guid());
-        String type1 = line.getEntity2Type();
+        entityOne.setGUID(line.getEntity1Guid());
+        String type1 = line.getEntity1Type();
         InstanceType instancetype1 = new InstanceType();
         instancetype1.setTypeDefName(type1);
         entityOne.setType(instancetype1);
         //set proxy 2
         EntityProxy entityTwo = new EntityProxy();
-        entityTwo.setGUID(line.getEntity1Guid());
-        String type2 = line.getEntity1Type();
+        entityTwo.setGUID(line.getEntity2Guid());
+        String type2 = line.getEntity2Type();
         InstanceType instancetype2 = new InstanceType();
         instancetype2.setTypeDefName(type2);
         entityTwo.setType(instancetype2);

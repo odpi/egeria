@@ -28,6 +28,7 @@ public class OmrsBeanRelationship {
     public String entityProxy2Guid;
     public String entityProxy2Type = null;
     public String entityProxy2Name = null;
+    public String typeDefGuid =null;
     public List<OmrsBeanAttribute> attrList = null;
     public String description;
     public String modelName = null;

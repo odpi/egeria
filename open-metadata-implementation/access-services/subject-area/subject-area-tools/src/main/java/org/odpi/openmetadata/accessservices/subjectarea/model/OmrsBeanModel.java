@@ -192,6 +192,7 @@ public class OmrsBeanModel {
             omrsBeanRelationship.entityProxy1Type = relationshipDef.getEndDef1().getEntityType().getName();
             omrsBeanRelationship.entityProxy2Name = relationshipDef.getEndDef2().getAttributeName();
             omrsBeanRelationship.entityProxy2Type = relationshipDef.getEndDef2().getEntityType().getName();
+            omrsBeanRelationship.typeDefGuid = relationshipDef.getGUID();
             omrsBeanRelationship.label = relationshipDefName;
             nametoRelationshipMap.put(relationshipDefName, omrsBeanRelationship);
         }
@@ -425,7 +426,7 @@ public class OmrsBeanModel {
         return this.nametoRelationshipMap.get(name);
     }
 
-    public Map<String, OmrsBeanRelationship> getOMASRelationshipMap() {
+    public Map<String, OmrsBeanRelationship> getOmrsBeanRelationshipMap() {
         return this.nametoRelationshipMap;
     }
 

@@ -6,14 +6,23 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.gloss
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 
 /**
- * The SubjectAreaImpl Open Metadata Access Service (OMAS).
+ * The SubjectArea Open Metadata Access Service (OMAS) API for glossaries.
  */
 public interface SubjectAreaGlossary
 {
     /**
-     * Create a Glossary
-     * @param userId  userId under which the request is performed
-     * @param suppliedGlossary details of glossary to create
+     * Create a Glossary. There are specializations of glossaries that can also be created using this operation.
+     * To create a specialization, you should specify a nodeType other than Glossary in the supplied glossary.
+     * <p>
+     * Valid nodeTypes for this request are:
+     * <ul>
+     *     <li>Taxonomy to create a Taxonomy </li>
+     *     <li>CanonicalGlossary to create a canonical glossary </li>
+     *     <li>TaxonomyAndCanonicalGlossary to create a glossary that is both a taxonomy and a canonical glosary </li>
+     *     <li>Glossary to create a glossary that is not a taxonomy or a canonical glossary</li>
+     * </ul>
+     * @param userid unique identifier for requesting user, under which the request is performed
+     * @param suppliedGlossary Glossary to create
      * @return the created glossary.
      *
      * Exceptions returned by the server
@@ -28,12 +37,12 @@ public interface SubjectAreaGlossary
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-    public Glossary createGlossary(String userId, Glossary suppliedGlossary) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, UnrecognizedGUIDException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException;
+    public Glossary createGlossary(String userid, Glossary suppliedGlossary) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, UnrecognizedGUIDException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException;
 
 
     /**
      * Get a glossary by guid.
-     * @param userId userId under which the request is performed
+     * @param userid unique identifier for requesting user, under which the request is performed
      * @param guid guid of the glossary to get
      * @return Glossary with the requested guid
      *
@@ -48,7 +57,7 @@ public interface SubjectAreaGlossary
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-    public  Glossary getGlossaryByGuid( String userId, String guid) throws MetadataServerUncontactableException, UnrecognizedGUIDException, UserNotAuthorizedException, InvalidParameterException, FunctionNotSupportedException, UnexpectedResponseException;
+    public  Glossary getGlossaryByGuid( String userid, String guid) throws MetadataServerUncontactableException, UnrecognizedGUIDException, UserNotAuthorizedException, InvalidParameterException, FunctionNotSupportedException, UnexpectedResponseException;
 
     /**
      * Replace a Glossary. This means to override all the existing attributes with the supplied attributes.
@@ -59,20 +68,19 @@ public interface SubjectAreaGlossary
      * qualified names to mismatch the Glossary name.
      * Status is not updated using this call.
      *
-     * @param userId           userId under which the request is performed
+     * @param userid           unique identifier for requesting user, under which the request is performed
      * @param guid             guid of the glossary to update
      * @param suppliedGlossary glossary to be updated
      * @return replaced glossary
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws FunctionNotSupportedException        Function not supported
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedNameException
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public Glossary replaceGlossary(String userId, String guid, Glossary suppliedGlossary) throws UnexpectedResponseException, UserNotAuthorizedException, UnrecognizedNameException, FunctionNotSupportedException, InvalidParameterException, MetadataServerUncontactableException;
+    public Glossary replaceGlossary(String userid, String guid, Glossary suppliedGlossary) throws UnexpectedResponseException, UserNotAuthorizedException, UnrecognizedNameException, FunctionNotSupportedException, InvalidParameterException, MetadataServerUncontactableException;
     /**
      * Update a Glossary. This means to update the glossary with any non-null attributes from the supplied glossary.
      * <p>
@@ -82,20 +90,19 @@ public interface SubjectAreaGlossary
      * qualified names to mismatch the Glossary name.
      * Status is not updated using this call.
      *
-     * @param userId           userId under which the request is performed
+     * @param userid           unique identifier for requesting user, under which the request is performed
      * @param guid             guid of the glossary to update
      * @param suppliedGlossary glossary to be updated
      * @return updated glossary
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws FunctionNotSupportedException        function not supported
+     * @throws FunctionNotSupportedException        Function not supported
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedNameException            unrecognised name
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public Glossary updateGlossary(String userId, String guid, Glossary suppliedGlossary) throws UnexpectedResponseException, UserNotAuthorizedException, UnrecognizedNameException, FunctionNotSupportedException, InvalidParameterException, MetadataServerUncontactableException;
+    public Glossary updateGlossary(String userid, String guid, Glossary suppliedGlossary) throws UnexpectedResponseException, UserNotAuthorizedException, UnrecognizedNameException, FunctionNotSupportedException, InvalidParameterException, MetadataServerUncontactableException;
 
     /**
      * Delete a Glossary instance
@@ -105,7 +112,7 @@ public interface SubjectAreaGlossary
      * A delete (also known as a soft delete) means that the glossary instance will exist in a deleted state in the repository after the delete operation. This means
      * that it is possible to undo the delete.
      *
-     * @param userId userId under which the request is performed
+     * @param userid unique identifier for requesting user, under which the request is performed
      * @param guid guid of the glossary to be deleted.
      * @return the deleted glossary
      * @throws UnrecognizedGUIDException the supplied guid was not recognised
@@ -116,7 +123,7 @@ public interface SubjectAreaGlossary
      * @throws MetadataServerUncontactableException unable to contact server
      */
 
-    public Glossary deleteGlossary(String userId,String guid) throws InvalidParameterException,
+    public Glossary deleteGlossary(String userid,String guid) throws InvalidParameterException,
             MetadataServerUncontactableException,
             UserNotAuthorizedException,
             UnrecognizedGUIDException,
@@ -131,7 +138,7 @@ public interface SubjectAreaGlossary
      *
      * A purge means that the glossary will not exist after the operation.
      *
-     * @param userId userId under which the request is performed
+     * @param userid unique identifier for requesting user, under which the request is performed
      * @param guid guid of the glossary to be deleted.
      *
      * @throws UnrecognizedGUIDException the supplied guid was not recognised
@@ -141,7 +148,7 @@ public interface SubjectAreaGlossary
      * @throws MetadataServerUncontactableException unable to contact server
      */
 
-    public  void purgeGlossary(String userId,String guid) throws InvalidParameterException,
+    public  void purgeGlossary(String userid,String guid) throws InvalidParameterException,
             UserNotAuthorizedException,
             MetadataServerUncontactableException,
             UnrecognizedGUIDException,

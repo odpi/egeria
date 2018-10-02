@@ -20,38 +20,31 @@ package org.odpi.openmetadata.accessservices.subjectarea.properties.objects.cate
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.governednode.GovernedNode;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.node.Node;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.node.NodeType;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.CategorySummary;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
 
 public class Category extends GovernedNode{
-    private String glossaryName =null;
-    private String parentCategoryGuid;
-    private String parentCategoryName;
+    private GlossarySummary glossary =null;
+    private CategorySummary parentCategory;
 
     public Category() {
         nodeType = NodeType.Category;
     }
 
-    public String getGlossaryName() {
-        return glossaryName;
+    public GlossarySummary getGlossary() {
+        return glossary;
     }
 
-    public void setGlossaryName(String glossaryName) {
-        this.glossaryName = glossaryName;
+    public void setGlossary(GlossarySummary glossary) {
+        this.glossary = glossary;
     }
 
-    public String getParentCategoryGuid() {
-        return parentCategoryGuid;
+    public CategorySummary getParentCategory() {
+        return parentCategory;
     }
 
-    public void setParentCategoryGuid(String parentCategoryGuid) {
-        this.parentCategoryGuid = parentCategoryGuid;
-    }
-
-    public String getParentCategoryName() {
-        return parentCategoryName;
-    }
-
-    public void setParentCategoryName(String parentCategoryName) {
-        this.parentCategoryName = parentCategoryName;
+    public void setParentCategory(CategorySummary parentCategory) {
+        this.parentCategory = parentCategory;
     }
 
     @Override
@@ -63,9 +56,14 @@ public class Category extends GovernedNode{
         sb.append(super.toString(sb));
 
 
-        if (glossaryName!=null ){
-            sb.append(", glossaryName=");
-            sb.append(glossaryName);
+        if (glossary!=null ){
+            sb.append(", glossary=");
+            sb.append(glossary.toString(sb));
+
+        }
+        if (parentCategory!=null ){
+            sb.append(", parent Category=");
+            sb.append(parentCategory.toString(sb));
 
         }
         sb.append('}');
@@ -79,14 +77,15 @@ public class Category extends GovernedNode{
         Category category = (Category) o;
         Node node = (Node) o;
         if (!(node.equals((Node)o))) return false;
-        if (glossaryName != null ? !glossaryName.equals(category.glossaryName) : category.glossaryName != null) return false;
+        if (glossary != null ? !glossary.equals(category.glossary) : category.glossary != null) return false;
         return  true;
     }
 
     @Override
     public int hashCode() {
-        int  result = ((Node)this).hashCode();
-        result = 31 * result + (glossaryName != null ? glossaryName.hashCode() : 0);
+        int  result =super.hashCode();
+        result = 31 * result + (glossary != null ? glossary.hashCode() : 0);
+        result = 31 * result + (parentCategory != null ? parentCategory.hashCode() : 0);
         return result;
     }
 

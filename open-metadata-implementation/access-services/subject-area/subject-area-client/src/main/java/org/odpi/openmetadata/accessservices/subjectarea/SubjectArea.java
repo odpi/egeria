@@ -7,7 +7,7 @@ package org.odpi.openmetadata.accessservices.subjectarea;
 public interface SubjectArea
 {
     /**
-     * Get the subject area glossary API class - use this class to issue glossary calls.
+     * Get the subject area API class
      * @return subject area glossary API class
      */
     public SubjectAreaGlossary getSubjectAreaGlossary();

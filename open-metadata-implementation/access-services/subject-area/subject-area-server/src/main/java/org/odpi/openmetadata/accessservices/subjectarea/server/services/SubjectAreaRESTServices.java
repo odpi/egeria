@@ -18,20 +18,19 @@
 package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 
 
-import org.odpi.openmetadata.accessservices.subjectarea.responses.OMASExceptionToResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.PossibleClassificationsResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.PossibleRelationshipsResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 import org.odpi.openmetadata.accessservices.subjectarea.admin.SubjectAreaAdmin;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.MetadataServerUncontactableException;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.UnrecognizedGUIDException;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.UserNotAuthorizedException;
-
-import org.odpi.openmetadata.accessservices.subjectarea.validators.RestValidator;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.OMASExceptionToResponse;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.PossibleClassificationsResponse;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.PossibleRelationshipsResponse;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
+import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
+import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
+import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
 import org.odpi.openmetadata.adminservices.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceOperationalStatus;
@@ -39,7 +38,6 @@ import org.odpi.openmetadata.adminservices.configuration.registration.AccessServ
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -116,8 +114,8 @@ public class SubjectAreaRESTServices {
         SubjectAreaOMASAPIResponse response=null;
 
         try {
-            RestValidator.validateUserIdNotNull(className,methodName,userId);
-            RestValidator.validateGUIDNotNull(className,methodName,guid,"guid");
+            InputValidator.validateUserIdNotNull(className,methodName,userId);
+            InputValidator.validateGUIDNotNull(className,methodName,guid,"guid");
         } catch (InvalidParameterException invalidParameterException) {
             response = OMASExceptionToResponse.convertInvalidParameterException(invalidParameterException);
         }
