@@ -60,18 +60,18 @@ public class ConnectionDetails {
     }
 
     /**
-     * Return the connector provider name of the connection
+     * Return the connector provider foreignKeyName of the connection
      *
-     * @return connector provider name of the connection
+     * @return connector provider foreignKeyName of the connection
      */
     public String getConnectorProviderName() {
         return connectorProviderName;
     }
 
     /**
-     * set up the connector provider name of the connection
+     * set up the connector provider foreignKeyName of the connection
      *
-     * @param connectorProviderName - connector provider name of the connection
+     * @param connectorProviderName - connector provider foreignKeyName of the connection
      */
     public void setConnectorProviderName(String connectorProviderName) {
         this.connectorProviderName = connectorProviderName;
@@ -79,53 +79,53 @@ public class ConnectionDetails {
 
 
     /**
-     * Return the connector provider qualified name for the connection
+     * Return the connector provider qualified foreignKeyName for the connection
      *
-     * @return connector provider qualified name
+     * @return connector provider qualified foreignKeyName
      */
     public String getConnectorProviderQualifiedName() {
         return connectorProviderQualifiedName;
     }
 
     /**
-     * set up the connector provider qualified name of the connection
+     * set up the connector provider qualified foreignKeyName of the connection
      *
-     * @param connectorProviderQualifiedName - qualified name of the connector provider
+     * @param connectorProviderQualifiedName - qualified foreignKeyName of the connector provider
      */
     public void setConnectorProviderQualifiedName(String connectorProviderQualifiedName) {
         this.connectorProviderQualifiedName = connectorProviderQualifiedName;
     }
     /**
-     * Return the qualified name of the connection
+     * Return the qualified foreignKeyName of the connection
      *
-     * @return qualified name of the connection
+     * @return qualified foreignKeyName of the connection
      */
     public String getConnectionQualifiedName() {
         return connectionQualifiedName;
     }
 
     /**
-     * set up the connection qualified name
+     * set up the connection qualified foreignKeyName
      *
-     * @param connectionQualifiedName - qualified name of the connection
+     * @param connectionQualifiedName - qualified foreignKeyName of the connection
      */
     public void setConnectionQualifiedName(String connectionQualifiedName) {
         this.connectionQualifiedName = connectionQualifiedName;
     }
 
     /**
-     * Return the qualified name of the endpoint
+     * Return the qualified foreignKeyName of the endpoint
      *
-     * @return qualified name of the endpoint
+     * @return qualified foreignKeyName of the endpoint
      */
     public String getEndpointQualifiedName() {
         return endpointQualifiedName;
     }
 
     /**
-     * set up the endpoint qualified name
+     * set up the endpoint qualified foreignKeyName
      *
-     * @param endpointQualifiedName - qualified name of the endpoint
+     * @param endpointQualifiedName - qualified foreignKeyName of the endpoint
      */
     public void setEndpointQualifiedName(String endpointQualifiedName) {
         this.endpointQualifiedName = endpointQualifiedName;

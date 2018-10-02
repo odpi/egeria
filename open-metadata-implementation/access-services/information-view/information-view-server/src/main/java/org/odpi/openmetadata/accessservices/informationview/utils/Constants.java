@@ -26,9 +26,13 @@ public class Constants {
     public static final String DISPLAY_NAME = "displayName";
     public static final String AUTHOR = "author";
     public static final String USAGE = "usage";
+    public static final String SUMMARY = "summary";
+    public static final String ABBREVIATION = "abbreviation";
     public static final String ENCODING_STANDARD = "encodingStandard";
     public static final String DATA_TYPE = "dataType";
     public static final String ELEMENT_POSITION_NAME = "position";
+    public static final String IS_NULLABLE = "isNullable";
+    public static final String IS_UNIQUE = "isUnique";
     public static final String QUERY = "query";
     public static final String FORMULA = "formula";
     public static final String INFO_VIEW_PREFIX = "iv_";
@@ -39,6 +43,7 @@ public class Constants {
     public static final String SEMANTIC_ASSIGNMENT = "SemanticAssignment";
     public static final String RELATIONAL_TABLE_TYPE = "RelationalTableType";
     public static final String URL = "url";
+    public static final String EXAMPLES = "examples";
     public static final String PROTOCOL = "protocol";
     public static final String NETWORK_ADDRESS = "networkAddress";
     public static final String ADDITIONAL_PROPERTIES = "additionalProperties";
@@ -55,4 +60,6 @@ public class Constants {
     public static final String SOFTWARE_SERVER_CAPABILITY = "SoftwareServerCapability";
     public static final String ENGINE = "Engine";
     public static final String REPORTING_ENGINE = "ReportingEngine";
+    public static final String PRIMARY_KEY = "PrimaryKey";
+    public static final String FOREIGN_KEY = "ForeignKey";
 }

@@ -17,6 +17,16 @@ public class BusinessTerm {
     private String guid;
     private String name;
     private String query;
+    private String description;
+    private String abbreviation;
+    private String usage;
+    private String summary;
+    private String examples;
+    private String displayName;
+    private String qualifiedName;
+
+
+
 
     /**
      * Return the guid of the business term
@@ -37,18 +47,18 @@ public class BusinessTerm {
     }
 
     /**
-     * Return the name of the business term
+     * Return the foreignKeyName of the business term
      *
-     * @return name of the business term
+     * @return foreignKeyName of the business term
      */
     public String getName() {
         return name;
     }
 
     /**
-     * set up the name of the business term
+     * set up the foreignKeyName of the business term
      *
-     * @param name - name of the business term
+     * @param name - foreignKeyName of the business term
      */
     public void setName(String name) {
         this.name = name;
@@ -72,12 +82,75 @@ public class BusinessTerm {
         this.query = query;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getAbbreviation() {
+        return abbreviation;
+    }
+
+    public void setAbbreviation(String abbreviation) {
+        this.abbreviation = abbreviation;
+    }
+
+    public String getUsage() {
+        return usage;
+    }
+
+    public void setUsage(String usage) {
+        this.usage = usage;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
+
+    public String getExamples() {
+        return examples;
+    }
+
+    public void setExamples(String examples) {
+        this.examples = examples;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public String getQualifiedName() {
+        return qualifiedName;
+    }
+
+    public void setQualifiedName(String qualifiedName) {
+        this.qualifiedName = qualifiedName;
+    }
+
     @Override
     public String toString() {
         return "BusinessTerm{" +
                 "guid='" + guid + '\'' +
                 ", name='" + name + '\'' +
                 ", query='" + query + '\'' +
+                ", description='" + description + '\'' +
+                ", abbreviation='" + abbreviation + '\'' +
+                ", usage='" + usage + '\'' +
+                ", summary='" + summary + '\'' +
+                ", examples='" + examples + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", qualifiedName='" + qualifiedName + '\'' +
                 '}';
     }
 }
