@@ -19,7 +19,7 @@
     helm charts for kubernetes deployment, or can be used standalone
 </description>
 
-<artifactId>egeria-docker-selfbuild<artifactId>
+<artifactId>egeria-docker-selfbuild</artifactId>
 
 <packaging>pom</packaging>
 
