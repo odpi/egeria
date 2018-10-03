@@ -455,7 +455,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         InstanceProperties instanceProperties = getEntityProperties(
                 qualifiedName,
                 igcColumn.getShortDescription(),
-                igcColumn.getLongDescription());
+                igcColumn.getLongDescription(), igcColumn.getName());
 
         List<Classification> classifications = new ArrayList<>();
         if (typeName.equals(RELATIONAL_COLUMN)) {
@@ -674,7 +674,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         InstanceProperties instanceProperties = getEntityProperties(
                 qualifiedName,
                 igcObject.getShortDescription(),
-                igcObject.getLongDescription());
+                igcObject.getLongDescription(), igcObject.getName());
 
         if (GLOSSARY_TERM.equals(typeName)) {
             Map<String, InstancePropertyValue> glossaryTermInstanceProperties = getGlossaryTermInstanceProperties(igcObject);
@@ -731,13 +731,13 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
     }
 
 
-    private InstanceProperties getEntityProperties(String name, String shortDescription, String longDescription) {
+    private InstanceProperties getEntityProperties(String name, String shortDescription, String longDescription, String defaultName) {
         Map<String, InstancePropertyValue> properties = new HashMap<>();
 
         PrimitivePropertyValue qualifiedName = getStringPropertyValue(name);
         properties.put("qualifiedName", qualifiedName);
 
-        PrimitivePropertyValue displayName = getStringPropertyValue(name);
+        PrimitivePropertyValue displayName = getStringPropertyValue(defaultName);
         properties.put("displayName", displayName);
 
         PrimitivePropertyValue summary = getStringPropertyValue(shortDescription);
