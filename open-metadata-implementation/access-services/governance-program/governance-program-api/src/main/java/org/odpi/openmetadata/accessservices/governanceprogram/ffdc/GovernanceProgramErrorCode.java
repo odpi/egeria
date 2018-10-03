@@ -145,7 +145,7 @@ public enum GovernanceProgramErrorCode
             "Use the content of the relationship to determine if the relationship is malformed and to what extent.  If the relationship if properly formed " +
                                                  "then the issue is in the Governance Program OMAS.  " +
                                                  "If the relationship is incomplete then use the metadata collection id to determine which " +
-                                                 "repository is in error.  Raise an Egeria JIRA and report your findings."),
+                                                 "repository is in error.  Raise an Egeria Github issue and report your findings."),
     NULL_RESPONSE_FROM_API(503, "OMAS-GOVERNANCE-PROGRAM-503-001 ",
             "A null response was received from REST API call {0} to server {1}",
             "The system has issued a call to an open metadata access service REST API in a remote server and has received a null response.",
