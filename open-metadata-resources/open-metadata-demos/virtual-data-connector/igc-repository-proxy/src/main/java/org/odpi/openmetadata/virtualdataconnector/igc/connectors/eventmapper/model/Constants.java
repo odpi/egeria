@@ -22,6 +22,7 @@ public class Constants {
     public static final String RELATIONAL_COLUMN_TYPE = "RelationalColumnType";
     public static final String DATABASE_COLUMN = "Database Column";
     public static final String TERM = "Term";
+    public static final String TYPE = "_type";
     public static final String CATEGORY = "Category";
     public static final String CREATE = "CREATE";
     public static final String MODIFY = "MODIFY";
