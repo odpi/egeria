@@ -3664,15 +3664,16 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
         /*
          * See if there is a proxy for entity 1
          */
-        EntityProxy  entityOneProxy = repositoryStore.getEntityProxy(entityOneGUID);
+        EntityProxy entityOneProxy = repositoryStore.getEntityProxy(entityOneGUID);
 
         /*
          * if not see if there is an entity for entity 1
          *
          */
-        if (entityOneProxy == null) {
+        if (entityOneProxy == null)
+        {
             EntityDetail entityOneDetail = repositoryStore.getEntity(entityOneGUID);
-            entityOneProxy =  repositoryHelper.getNewEntityProxy(repositoryName, entityOneDetail);
+            entityOneProxy = repositoryHelper.getNewEntityProxy(repositoryName, entityOneDetail);
         }
 
         repositoryValidator.validateEntityFromStore(repositoryName, entityOneGUID, entityOneProxy, methodName);
@@ -3681,14 +3682,15 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
         /*
          * See if there is a proxy for entity 2
          */
-        EntityProxy   entityTwoProxy = repositoryStore.getEntityProxy(entityTwoGUID);
+        EntityProxy entityTwoProxy = repositoryStore.getEntityProxy(entityTwoGUID);
 
         /*
          * If not see if there is an entity for entity 2
          */
-        if (entityTwoProxy == null) {
+        if (entityTwoProxy == null)
+        {
             EntityDetail entityTwoDetail = repositoryStore.getEntity(entityTwoGUID);
-            entityTwoProxy =  repositoryHelper.getNewEntityProxy(repositoryName, entityTwoDetail);
+            entityTwoProxy = repositoryHelper.getNewEntityProxy(repositoryName, entityTwoDetail);
         }
         repositoryValidator.validateEntityFromStore(repositoryName, entityTwoGUID, entityTwoProxy, methodName);
         repositoryValidator.validateEntityIsNotDeleted(repositoryName, entityTwoProxy, methodName);
