@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-/* Copyright Contributors to the Egeria project. */
+/* Copyright Contributors to the ODPi Egeria project. */
 
 package org.odpi.openmetadata.accessservices.assetconsumer.rest;
 
@@ -24,9 +24,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes
         ({
-                @JsonSubTypes.Type(value = ConnectionResponse.class, name = "ConnectionResponse"),
-                @JsonSubTypes.Type(value = GUIDResponse.class,       name = "GUIDResponse"),
-                @JsonSubTypes.Type(value = VoidResponse.class,       name = "VoidResponse")
+                @JsonSubTypes.Type(value = ConnectionResponse.class,           name = "ConnectionResponse"),
+                @JsonSubTypes.Type(value = AssetListResponse.class,            name = "AssetListResponse"),
+                @JsonSubTypes.Type(value = NoteLogResponse.class,              name = "NoteLogResponse"),
+                @JsonSubTypes.Type(value = CommentConversationResponse.class,  name = "CommentConversationResponse"),
+                @JsonSubTypes.Type(value = GUIDResponse.class,                 name = "GUIDResponse"),
+                @JsonSubTypes.Type(value = VoidResponse.class,                 name = "VoidResponse")
         })
 public abstract class AssetConsumerOMASAPIResponse implements java.io.Serializable
 {

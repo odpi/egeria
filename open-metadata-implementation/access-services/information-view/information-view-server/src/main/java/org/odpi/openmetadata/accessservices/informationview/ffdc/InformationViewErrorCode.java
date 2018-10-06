@@ -80,13 +80,13 @@ public enum InformationViewErrorCode {
 
     public String getFormattedErrorMessage(String... params) {//TODO this should be moved to common code base
 
-        log.debug(String.format("<== OCFErrorCode.getMessage(%s)", Arrays.toString(params)));
+        log.debug(String.format("<== InformationViewErrorCode.getMessage(%s)", Arrays.toString(params)));
 
 
         MessageFormat mf = new MessageFormat(errorMessage);
         String result = mf.format(params);
 
-        log.debug(String.format("==> OCFErrorCode.getMessage(%s): %s", Arrays.toString(params), result));
+        log.debug(String.format("==> InformationViewErrorCode.getMessage(%s): %s", Arrays.toString(params), result));
 
         return result;
     }

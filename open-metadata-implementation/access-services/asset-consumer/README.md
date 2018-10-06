@@ -1,32 +1,39 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project.  -->
 
 # Asset Consumer Open Metadata Access Service (OMAS)
 
-The Asset Consumer OMAS provides services for an application
-accessing assets such as:
+The Asset Consumer OMAS provides services to an individual that wants to work
+with assets such as:
 
-* data stores
+* data stores, data sets and data feeds
+* reports
 * APIs
 * functions such as analytical services
 
-The Asset Consumer REST API supports:
+It supports:
 
-* the retrieval of connection metadata
-* the adding of feedback to specific assets
-* an audit log for the asset
+* the retrieval of open metadata connection objects.
+* the creation of a connector based on the properties in a connection object.
+* the retrieval of properties about an asset.
+* the adding of feedback (comments, ratings, tags and likes) to specific assets.
+* the adding of an audit log record for the asset.
+* the management of personal collections of assets that are of interest to the individual.
+* the management of notifications relating to changes to the assets in these collections.
+* the publishing of notifications about assets as configured above.
 
-The Asset Consumer Java client supports all of the operations of the REST API.
-It adds the capability to act as a factory for connectors to assets.
-The Java client takes the name or id of a connection, looks up the properties
-of the connection and, using the Open Connector Framework (OCF), it creates a new
-connector instance and returns it to the caller.
+Using the Asset Consumer OMAS results in Karma Points being awarded
+to the individual.  These are maintained in the individual's profile.
+A karma point is awarded for each contribution of metadata
+through the API.
 
-In addition it can add and remove feedback (tags, ratings, comments, likes) from
-the asset description.
-
-The caller can use the connector to access metadata about the
+The connectors returned by the Asset Consumer OMAS are Open Connector
+Framework (OCF) connectors.  The caller can use the connector to access
+the contents of the asset itself and the properties about the
 asset it is accessing.   This service is provided by the
 [Connected Asset OMAS](../connected-asset/README.md).
+
+## Internals
 
 The module structure for the Asset Consumer OMAS is as follows:
 

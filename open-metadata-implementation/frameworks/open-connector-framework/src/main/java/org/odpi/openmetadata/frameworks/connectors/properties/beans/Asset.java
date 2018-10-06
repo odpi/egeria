@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -29,6 +30,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *     (Sourced from attribute description within Asset - model 0010)</li>
  *     <li>owner - name of the person or organization that owns the asset.
  *     (Sourced from attribute owner within Asset - model 0010)</li>
+ *     <li>zoneMembership - name of the person or organization that owns the asset.
+ *     (Sourced from attribute zoneMembership within Asset - model 0010)</li>
  *     <li>classifications - list of classifications assigned to the asset</li>
  *     <li>assetProperties - list of properties assigned to the asset from the Asset subclasses</li>
  *     <li>additionalProperties - list of properties assigned to the asset as additional properties</li>
@@ -43,6 +46,7 @@ public class Asset extends Referenceable
     protected String               shortDescription = null;
     protected String               description      = null;
     protected String               owner            = null;
+    protected List<String>         zoneMembership   = null;
     protected Map<String,Object>   assetProperties  = null;
 
 
@@ -69,6 +73,7 @@ public class Asset extends Referenceable
             shortDescription = templateAsset.getShortDescription();
             description = templateAsset.getDescription();
             owner = templateAsset.getOwner();
+            zoneMembership = templateAsset.getZoneMembership();
             assetProperties = templateAsset.getAssetProperties();
         }
     }
@@ -163,6 +168,39 @@ public class Asset extends Referenceable
 
 
     /**
+     * Return the names of the zones that this asset is a member of.
+     *
+     * @return list of zone names
+     */
+    public List<String> getZoneMembership()
+    {
+        if (zoneMembership == null)
+        {
+            return null;
+        }
+        else if (zoneMembership.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new ArrayList<>(zoneMembership);
+        }
+    }
+
+
+    /**
+     * Set up the names of the zones that this asset is a member of.
+     *
+     * @param zoneMembership list of zone names
+     */
+    public void setZoneMembership(List<String> zoneMembership)
+    {
+        this.zoneMembership = zoneMembership;
+    }
+
+
+    /**
      * Set up asset properties.
      *
      * @param assetProperties asset properties map
@@ -210,7 +248,8 @@ public class Asset extends Referenceable
                 ", shortDescription='" + shortDescription + '\'' +
                 ", description='" + description + '\'' +
                 ", owner='" + owner + '\'' +
-                ", classifications=" + classifications +
+                ", classifications=" + classifications + '\'' +
+                ", zoneMembership=" + zoneMembership + '\'' +
                 ", assetProperties=" + assetProperties +
                 '}';
     }
@@ -242,6 +281,7 @@ public class Asset extends Referenceable
                 Objects.equals(getShortDescription(), asset.getShortDescription()) &&
                 Objects.equals(getDescription(), asset.getDescription()) &&
                 Objects.equals(getOwner(), asset.getOwner()) &&
+                Objects.equals(getZoneMembership(), asset.getZoneMembership()) &&
                 Objects.equals(getAssetProperties(), asset.getAssetProperties());
     }
 }

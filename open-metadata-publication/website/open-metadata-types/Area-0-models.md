@@ -1,5 +1,5 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
-<!-- Copyright Contributors to the Egeria project. -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
 
 # Area 0 Models - Common definitions and infrastructure
 

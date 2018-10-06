@@ -232,15 +232,12 @@ public class AssetConsumerPublisher
 
         if (entity != null)
         {
-            asset.setURL(entity.getInstanceURL());
             asset.setGUID(entity.getGUID());
 
             InstanceType  instanceType = entity.getType();
             if (instanceType != null)
             {
-                asset.setTypeId(instanceType.getTypeDefGUID());
                 asset.setTypeName(instanceType.getTypeDefName());
-                asset.setTypeVersion(instanceType.getTypeDefVersion());
                 asset.setTypeDescription(instanceType.getTypeDefDescription());
             }
 

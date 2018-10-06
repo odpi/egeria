@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector;
 
 
@@ -643,4 +644,40 @@ public interface OMRSRepositoryHelper
                                                 String              propertyName,
                                                 Map<String, Object> mapValues,
                                                 String              methodName);
+
+
+    /**
+     * Returns the type name from an instance (entity, relationship or classification).
+     *
+     * @param instance instance to read
+     * @return String type name
+     * @throws InvalidParameterException if the parameters are null or invalid
+     * @throws RepositoryErrorException if the instance does not have a type name
+     */
+    String   getTypeName(InstanceAuditHeader      instance) throws RepositoryErrorException,
+                                                                   InvalidParameterException;
+
+
+    /**
+     * Return the guid of an entity linked to end 1 of the relationship.
+     *
+     * @param relationship relationship to parse
+     * @return String unique identifier
+     * @throws RepositoryErrorException
+     * @throws InvalidParameterException
+     */
+    String  getEnd1EntityGUID(Relationship   relationship) throws RepositoryErrorException,
+                                                                  InvalidParameterException;
+
+
+    /**
+     * Return the guid of an entity linked to end 2 of the relationship.
+     *
+     * @param relationship relationship to parse
+     * @return String unique identifier
+     * @throws RepositoryErrorException
+     * @throws InvalidParameterException
+     */
+    String  getEnd2EntityGUID(Relationship   relationship) throws RepositoryErrorException,
+                                                                  InvalidParameterException;
 }

@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-/* Copyright Contributors to the Egeria project. */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.server;
 
 
@@ -163,6 +163,241 @@ public class AssetConsumerRESTServices
         catch (UnrecognizedConnectionGUIDException error)
         {
             captureUnrecognizedConnectionGUIDException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Return the profile for this user.
+     *
+     * @param userId userId of the user making the request.
+     *
+     * @return profile response object or
+     * InvalidParameterException the userId is null or invalid or
+     * NoProfileForUserException the user does not have a profile or
+     * PropertyServerException there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public MyProfileResponse getMyProfile(String userId)
+    {
+        final String   methodName = "getMyProfile";
+
+        log.debug("Calling method: " + methodName);
+
+        MyProfileResponse  response = new MyProfileResponse();
+
+        try
+        {
+            this.validateInitialization(methodName);
+
+            MyProfileHandler   handler = new MyProfileHandler(accessServiceName, repositoryConnector);
+
+            response.setPersonalProfile(handler.getMyProfile(userId));
+        }
+        catch (InvalidParameterException  error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (NoProfileForUserException  error)
+        {
+            captureNoProfileForUserException(response, error);
+        }
+        catch (PropertyServerException  error)
+        {
+            capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Create or update the profile for the requesting user.
+     *
+     * @param userId the name of the calling user.
+     * @param requestBody properties for the new profile.
+     * @return void response or
+     * InvalidParameterException - one of the parameters is invalid or
+     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse updateMyProfile(String               userId,
+                                        MyProfileRequestBody requestBody)
+    {
+        final String   methodName = "updateMyProfile";
+
+        log.debug("Calling method: " + methodName);
+
+        VoidResponse  response = new VoidResponse();
+
+        try
+        {
+            this.validateInitialization(methodName);
+
+            String              employeeNumber       = null;
+            String              fullName             = null;
+            String              knownName            = null;
+            String              jobTitle             = null;
+            String              jobRoleDescription   = null;
+            Map<String, Object> additionalProperties = null;
+
+            if (requestBody != null)
+            {
+                employeeNumber = requestBody.getEmployeeNumber();
+                fullName = requestBody.getFullName();
+                knownName = requestBody.getKnownName();
+                jobTitle = requestBody.getJobTitle();
+                jobRoleDescription = requestBody.getJobRoleDescription();
+                additionalProperties = requestBody.getAdditionalProperties();
+            }
+
+            MyProfileHandler   handler = new MyProfileHandler(accessServiceName, repositoryConnector);
+
+            handler.updateMyProfile(userId, employeeNumber, fullName, knownName, jobTitle, jobRoleDescription, additionalProperties);
+        }
+        catch (InvalidParameterException  error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException  error)
+        {
+            capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Return a list of assets that the specified user has added to their favorites list.
+     *
+     * @param userId     userId of user making request.
+     * @param startFrom  index of the list ot start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return list of asset details or
+     * InvalidParameterException one of the parameters is invalid or
+     * PropertyServerException there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public AssetListResponse getMyAssets(String    userId,
+                                         int       startFrom,
+                                         int       pageSize)
+    {
+        // todo
+        return null;
+    }
+
+
+    /**
+     * Add an asset to the identified user's list of favorite assets.
+     *
+     * @param userId          userId of user making request.
+     * @param assetGUID       unique identifier of the asset.
+     * @param nullRequestBody null request body
+     *
+     * @return void response or
+     * InvalidParameterException one of the parameters is invalid or
+     * PropertyServerException there is a problem updating information in the property server(s) or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse  addToMyAssets(String           userId,
+                                       String           assetGUID,
+                                       NullRequestBody  nullRequestBody)
+    {
+        // todo
+        return null;
+    }
+
+
+    /**
+     * Remove an asset from identified user's list of favorite assets.
+     *
+     * @param userId          userId of user making request.
+     * @param assetGUID       unique identifier of the asset.
+     * @param nullRequestBody null request body
+     *
+     * @return void response or
+     * InvalidParameterException one of the parameters is invalid or
+     * PropertyServerException there is a problem updating information in the property server(s) or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse  removeFromMyAssets(String           userId,
+                                            String           assetGUID,
+                                            NullRequestBody  nullRequestBody)
+    {
+        // todo
+        return null;
+
+    }
+
+
+    /**
+     * Returns the unique identifier for the asset connected to the connection.
+     *
+     * @param userId the userId of the requesting user.
+     * @param connectionGUID  uniqueId for the connection.
+     *
+     * @return unique identifier of asset or
+     * InvalidParameterException - one of the parameters is null or invalid or
+     * PropertyServerException - there is a problem retrieving the connected asset properties from the property server or
+     * UnrecognizedConnectionGUIDException - the supplied GUID is not recognized by the property server or
+     * NoConnectedAssetException - there is no asset associated with this connection or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public GUIDResponse getAssetForConnection(String   userId,
+                                              String   connectionGUID)
+    {
+        final String        methodName = "getAssetForConnection";
+
+        log.debug("Calling method: " + methodName);
+
+        GUIDResponse  response = new GUIDResponse();
+
+        try
+        {
+            this.validateInitialization(methodName);
+
+            ConnectionHandler   connectionHandler = new ConnectionHandler(accessServiceName,
+                                                                          repositoryConnector);
+
+            response.setGUID(connectionHandler.getAssetForConnection(userId, connectionGUID));
+        }
+        catch (InvalidParameterException  error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException  error)
+        {
+            capturePropertyServerException(response, error);
+        }
+        catch (UnrecognizedConnectionGUIDException error)
+        {
+            captureUnrecognizedConnectionGUIDException(response, error);
+        }
+        catch (NoConnectedAssetException error)
+        {
+            captureNoConnectedAssetException(response, error);
         }
         catch (UserNotAuthorizedException error)
         {
@@ -998,6 +1233,31 @@ public class AssetConsumerRESTServices
      * @param response  REST Response
      * @param error returned response.
      */
+    private void captureNoConnectedAssetException(AssetConsumerOMASAPIResponse     response,
+                                                  NoConnectedAssetException        error)
+    {
+        String  connectionGUID = error.getConnectionGUID();
+
+        if (connectionGUID != null)
+        {
+            Map<String, Object>  exceptionProperties = new HashMap<>();
+
+            exceptionProperties.put("connectionGUID", connectionGUID);
+            captureCheckedException(response, error, error.getClass().getName(), exceptionProperties);
+        }
+        else
+        {
+            captureCheckedException(response, error, error.getClass().getName());
+        }
+    }
+
+
+    /**
+     * Set the exception information into the response.
+     *
+     * @param response  REST Response
+     * @param error returned response.
+     */
     private void captureUnrecognizedConnectionNameException(AssetConsumerOMASAPIResponse        response,
                                                             UnrecognizedConnectionNameException error)
     {
@@ -1043,6 +1303,31 @@ public class AssetConsumerRESTServices
 
 
     /**
+     * Set the exception information into the response.
+     *
+     * @param response  REST Response
+     * @param error returned response.
+     */
+    private void captureNoProfileForUserException(AssetConsumerOMASAPIResponse response,
+                                                  NoProfileForUserException    error)
+    {
+        String  userId = error.getUserId();
+
+        if (userId != null)
+        {
+            Map<String, Object>  exceptionProperties = new HashMap<>();
+
+            exceptionProperties.put("userId", userId);
+            captureCheckedException(response, error, error.getClass().getName(), exceptionProperties);
+        }
+        else
+        {
+            captureCheckedException(response, error, error.getClass().getName());
+        }
+    }
+
+
+    /**
      * Validate that this access service has been initialized before attempting to process a request.
      *
      * @param methodName  name of method called.
@@ -1053,7 +1338,7 @@ public class AssetConsumerRESTServices
         if (repositoryConnector == null)
         {
             AssetConsumerErrorCode errorCode = AssetConsumerErrorCode.SERVICE_NOT_INITIALIZED;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
+            String                 errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
 
             throw new PropertyServerException(errorCode.getHTTPErrorCode(),
                                                           this.getClass().getName(),

@@ -1,7 +1,9 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 
 import java.util.Objects;
@@ -22,8 +24,8 @@ public class RelatedAsset extends AssetReferenceable
      * @param assetBean bean containing basic properties
      * @param relatedAssetProperties client for retrieving properties from the server
      */
-    protected RelatedAsset(Asset                  assetBean,
-                           RelatedAssetProperties relatedAssetProperties)
+    public RelatedAsset(Asset                  assetBean,
+                        RelatedAssetProperties relatedAssetProperties)
     {
         super(assetBean);
 
@@ -47,9 +49,9 @@ public class RelatedAsset extends AssetReferenceable
      * @param assetBean bean containing basic properties
      * @param relatedAssetProperties client for retrieving properties from the server
      */
-    protected RelatedAsset(AssetDescriptor        parentAsset,
-                           Asset                  assetBean,
-                           RelatedAssetProperties relatedAssetProperties)
+    public RelatedAsset(AssetDescriptor        parentAsset,
+                        Asset                  assetBean,
+                        RelatedAssetProperties relatedAssetProperties)
     {
         super(assetBean);
 
@@ -138,9 +140,10 @@ public class RelatedAsset extends AssetReferenceable
      * Return the detailed properties for a related asset.
      *
      * @return a refreshed version of the RelatedAssetProperties
+     * @throws UserNotAuthorizedException the calling user does not have access to the asset.
      * @throws PropertyServerException problems communicating with the property (metadata) server
      */
-    public RelatedAssetProperties getRelatedAssetProperties() throws PropertyServerException
+    public RelatedAssetProperties getRelatedAssetProperties() throws PropertyServerException, UserNotAuthorizedException
     {
         if (relatedAssetProperties != null)
         {

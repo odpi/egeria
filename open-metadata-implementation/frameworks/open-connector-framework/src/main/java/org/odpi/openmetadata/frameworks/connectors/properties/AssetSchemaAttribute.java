@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaAttribute;
@@ -17,8 +18,8 @@ import java.util.Objects;
  */
 public class AssetSchemaAttribute extends AssetReferenceable
 {
-    protected SchemaAttribute     schemaAttributeBean;
-    protected AssetSchemaElement  assetSchemaType;
+    protected SchemaAttribute schemaAttributeBean;
+    protected AssetSchemaType assetSchemaType;
 
 
     /**
@@ -28,7 +29,7 @@ public class AssetSchemaAttribute extends AssetReferenceable
      * @param assetSchemaType type for this schema attribute
      */
     public AssetSchemaAttribute(SchemaAttribute     schemaAttributeBean,
-                                AssetSchemaElement  assetSchemaType)
+                                AssetSchemaType assetSchemaType)
     {
         super(schemaAttributeBean);
 
@@ -66,7 +67,7 @@ public class AssetSchemaAttribute extends AssetReferenceable
      */
     public AssetSchemaAttribute(AssetDescriptor     parentAsset,
                                 SchemaAttribute     schemaAttributeBean,
-                                AssetSchemaElement  assetSchemaType)
+                                AssetSchemaType assetSchemaType)
     {
         super(parentAsset, schemaAttributeBean);
 
@@ -114,7 +115,7 @@ public class AssetSchemaAttribute extends AssetReferenceable
         {
             this.schemaAttributeBean = template.getSchemaAttributeBean();
 
-            AssetSchemaElement assetSchemaType = template.getAttributeType();
+            AssetSchemaType assetSchemaType = template.getAttributeType();
             if (assetSchemaType == null)
             {
                 this.assetSchemaType = null;
@@ -181,7 +182,7 @@ public class AssetSchemaAttribute extends AssetReferenceable
      *
      * @return SchemaElement
      */
-    public AssetSchemaElement getAttributeType()
+    public AssetSchemaType getAttributeType()
     {
         if (assetSchemaType == null)
         {

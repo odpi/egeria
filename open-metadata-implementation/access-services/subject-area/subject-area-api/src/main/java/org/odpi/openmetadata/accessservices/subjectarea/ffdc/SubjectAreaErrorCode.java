@@ -394,14 +394,14 @@ public enum SubjectAreaErrorCode {
      */
     public String getFormattedErrorMessage(String... params) {
         if (log.isDebugEnabled()) {
-            log.debug(String.format("<== OCFErrorCode.getMessage(%s)", Arrays.toString(params)));
+            log.debug(String.format("<== SubjectAreaErrorCode.getMessage(%s)", Arrays.toString(params)));
         }
 
         MessageFormat mf = new MessageFormat(errorMessage);
         String result = mf.format(params);
 
         if (log.isDebugEnabled()) {
-            log.debug(String.format("==> OCFErrorCode.getMessage(%s): %s", Arrays.toString(params), result));
+            log.debug(String.format("==> SubjectAreaErrorCode.getMessage(%s): %s", Arrays.toString(params), result));
         }
 
         return result;

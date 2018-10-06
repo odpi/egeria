@@ -1,12 +1,9 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-/* Copyright Contributors to the Egeria project. */
+/* Copyright Contributors to the ODPi Egeria project. */
 
 package org.odpi.openmetadata.accessservices.connectedasset.client;
 
 import org.odpi.openmetadata.accessservices.connectedasset.ffdc.ConnectedAssetErrorCode;
-import org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions.InvalidParameterException;
-import org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions.NoConnectedAssetException;
-import org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions.UnrecognizedConnectionGUIDException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,31 +37,9 @@ public class ConnectedAssetProperties extends org.odpi.openmetadata.frameworks.c
     private String               omasServerURL = null;
     private String               connectorInstanceId = null;
     private ConnectionProperties connection = null;
+    private String               assetGUID = null;
 
     private static final Logger log = LoggerFactory.getLogger(ConnectedAssetProperties.class);
-
-
-    /**
-     * Returns the unique identifier for the asset connected to the connection.
-     *
-     * @param userId the userId of the requesting user.
-     * @param connectionGUID  uniqueId for the connection.
-     *
-     * @return unique identifer for the asset.
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving the connected asset properties from the property server.
-     * @throws UnrecognizedConnectionGUIDException the supplied GUID is not recognized by the property server.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    private String getAssetForConnection(String   userId,
-                                         String   connectionGUID) throws InvalidParameterException,
-                                                                         UnrecognizedConnectionGUIDException,
-                                                                         NoConnectedAssetException,
-                                                                         PropertyServerException,
-                                                                         UserNotAuthorizedException
-    {
-        return null;
-    }
 
 
     /**
@@ -74,11 +49,13 @@ public class ConnectedAssetProperties extends org.odpi.openmetadata.frameworks.c
      * @param omasServerURL  url of server
      * @param connectorInstanceId  unique identifier of connector.
      * @param connection  connection information for connector.
+     * @param assetGUID  String   unique id for connected asset.
      */
     public ConnectedAssetProperties(String               userId,
                                     String               omasServerURL,
                                     String               connectorInstanceId,
-                                    ConnectionProperties connection)
+                                    ConnectionProperties connection,
+                                    String               assetGUID)
     {
         super();
 
@@ -86,6 +63,7 @@ public class ConnectedAssetProperties extends org.odpi.openmetadata.frameworks.c
         this.omasServerURL = omasServerURL;
         this.connectorInstanceId = connectorInstanceId;
         this.connection = connection;
+        this.assetGUID = assetGUID;
     }
 
 
@@ -104,6 +82,7 @@ public class ConnectedAssetProperties extends org.odpi.openmetadata.frameworks.c
             this.connection = templateProperties.connection;
             this.connectorInstanceId = templateProperties.connectorInstanceId;
             this.omasServerURL = templateProperties.omasServerURL;
+            this.assetGUID = templateProperties.assetGUID;
         }
     }
 
@@ -125,9 +104,7 @@ public class ConnectedAssetProperties extends org.odpi.openmetadata.frameworks.c
 
         try
         {
-            assetProperties = new ConnectedAsset(omasServerURL,
-                                                 userId,
-                                                 this.getAssetForConnection(userId, connection.getGUID()));
+            assetProperties = new ConnectedAsset(omasServerURL, userId, assetGUID);
         }
         catch (UserNotAuthorizedException  error)
         {
@@ -151,6 +128,25 @@ public class ConnectedAssetProperties extends org.odpi.openmetadata.frameworks.c
                                               error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + assetProperties.toString());
+        log.debug("Returning from method: " + methodName + " having retrieved: " + assetProperties.toString());
+    }
+
+
+    /**
+     * Standard toString method.
+     *
+     * @return JSON style description of variables.
+     */
+    @Override
+    public String toString()
+    {
+        return "ConnectedAssetProperties{" +
+                "userId='" + userId + '\'' +
+                ", omasServerURL='" + omasServerURL + '\'' +
+                ", connectorInstanceId='" + connectorInstanceId + '\'' +
+                ", connection=" + connection +
+                ", assetGUID='" + assetGUID + '\'' +
+                ", assetProperties=" + assetProperties +
+                '}';
     }
 }

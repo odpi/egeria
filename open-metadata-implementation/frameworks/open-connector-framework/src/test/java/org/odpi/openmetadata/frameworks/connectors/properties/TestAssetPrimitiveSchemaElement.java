@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
@@ -13,7 +14,7 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 /**
- * Validate that the AssetPrimitiveSchemaElement can function as a facade for its bean.
+ * Validate that the AssetPrimitiveSchemaType can function as a facade for its bean.
  */
 public class TestAssetPrimitiveSchemaElement
 {
@@ -39,7 +40,7 @@ public class TestAssetPrimitiveSchemaElement
      *
      * @return filled in object
      */
-    private AssetPrimitiveSchemaElement getTestObject()
+    private AssetPrimitiveSchemaType getTestObject()
     {
         PrimitiveSchemaElement testBean = new PrimitiveSchemaElement();
 
@@ -59,7 +60,7 @@ public class TestAssetPrimitiveSchemaElement
         testBean.setDataType("TestDataType");
         testBean.setDefaultValue("TestDefaultValue");
 
-        return new AssetPrimitiveSchemaElement(testBean, assetMeanings);
+        return new AssetPrimitiveSchemaType(testBean, assetMeanings);
     }
 
 
@@ -68,7 +69,7 @@ public class TestAssetPrimitiveSchemaElement
      *
      * @return filled in object
      */
-    private AssetPrimitiveSchemaElement getDifferentObject()
+    private AssetPrimitiveSchemaType getDifferentObject()
     {
         PrimitiveSchemaElement testBean = new PrimitiveSchemaElement();
 
@@ -88,7 +89,7 @@ public class TestAssetPrimitiveSchemaElement
         testBean.setDataType("TestDataType");
         testBean.setDefaultValue("TestDefaultValue");
 
-        return new AssetPrimitiveSchemaElement(testBean, assetMeanings);
+        return new AssetPrimitiveSchemaType(testBean, assetMeanings);
     }
 
 
@@ -98,7 +99,7 @@ public class TestAssetPrimitiveSchemaElement
      *
      * @return filled in object
      */
-    private AssetPrimitiveSchemaElement getAnotherDifferentObject()
+    private AssetPrimitiveSchemaType getAnotherDifferentObject()
     {
         PrimitiveSchemaElement testBean = new PrimitiveSchemaElement();
 
@@ -118,7 +119,7 @@ public class TestAssetPrimitiveSchemaElement
         testBean.setDataType("TestDifferentDataType");
         testBean.setDefaultValue("TestDefaultValue");
 
-        return new AssetPrimitiveSchemaElement(testBean, assetMeanings);
+        return new AssetPrimitiveSchemaType(testBean, assetMeanings);
     }
 
 
@@ -127,7 +128,7 @@ public class TestAssetPrimitiveSchemaElement
      *
      * @return filled in object
      */
-    private AssetPrimitiveSchemaElement getYetAnotherDifferentObject()
+    private AssetPrimitiveSchemaType getYetAnotherDifferentObject()
     {
         PrimitiveSchemaElement testBean = new PrimitiveSchemaElement();
 
@@ -147,7 +148,7 @@ public class TestAssetPrimitiveSchemaElement
         testBean.setDataType("TestDataType");
         testBean.setDefaultValue("TestDefaultValue");
 
-        return new AssetPrimitiveSchemaElement(new AssetSummary(new Asset()), testBean, assetMeanings);
+        return new AssetPrimitiveSchemaType(new AssetSummary(new Asset()), testBean, assetMeanings);
     }
 
 
@@ -156,7 +157,7 @@ public class TestAssetPrimitiveSchemaElement
      *
      * @param resultObject object returned by the test
      */
-    private void validateResultObject(AssetPrimitiveSchemaElement  resultObject)
+    private void validateResultObject(AssetPrimitiveSchemaType resultObject)
     {
         assertTrue(resultObject.getType().getElementTypeBean().equals(type));
         assertTrue(resultObject.getGUID().equals("TestGUID"));
@@ -182,7 +183,7 @@ public class TestAssetPrimitiveSchemaElement
      *
      * @param nullObject object to test
      */
-    private void validateNullObject(AssetPrimitiveSchemaElement  nullObject)
+    private void validateNullObject(AssetPrimitiveSchemaType nullObject)
     {
         assertTrue(nullObject.getType() == null);
         assertTrue(nullObject.getGUID() == null);
@@ -208,42 +209,42 @@ public class TestAssetPrimitiveSchemaElement
      */
     @Test public void testNullObject()
     {
-        PrimitiveSchemaElement          nullBean;
-        AssetPrimitiveSchemaElement     nullObject;
-        AssetPrimitiveSchemaElement     nullTemplate;
-        AssetDescriptor parentAsset;
+        PrimitiveSchemaElement   nullBean;
+        AssetPrimitiveSchemaType nullObject;
+        AssetPrimitiveSchemaType nullTemplate;
+        AssetDescriptor          parentAsset;
 
         nullBean = null;
-        nullObject = new AssetPrimitiveSchemaElement(nullBean, null);
+        nullObject = new AssetPrimitiveSchemaType(nullBean, null);
         validateNullObject(nullObject);
 
         nullBean = new PrimitiveSchemaElement();
-        nullObject = new AssetPrimitiveSchemaElement(nullBean, null);
+        nullObject = new AssetPrimitiveSchemaType(nullBean, null);
         validateNullObject(nullObject);
 
         nullBean = new PrimitiveSchemaElement(null);
-        nullObject = new AssetPrimitiveSchemaElement(nullBean, null);
+        nullObject = new AssetPrimitiveSchemaType(nullBean, null);
         validateNullObject(nullObject);
 
         parentAsset = null;
         nullBean = null;
-        nullObject = new AssetPrimitiveSchemaElement(parentAsset, nullBean, null);
+        nullObject = new AssetPrimitiveSchemaType(parentAsset, nullBean, null);
         validateNullObject(nullObject);
 
         nullBean = new PrimitiveSchemaElement();
-        nullObject = new AssetPrimitiveSchemaElement(parentAsset, nullBean, null);
+        nullObject = new AssetPrimitiveSchemaType(parentAsset, nullBean, null);
         validateNullObject(nullObject);
 
         nullBean = new PrimitiveSchemaElement(null);
-        nullObject = new AssetPrimitiveSchemaElement(parentAsset, nullBean, null);
+        nullObject = new AssetPrimitiveSchemaType(parentAsset, nullBean, null);
         validateNullObject(nullObject);
 
         nullTemplate = null;
-        nullObject = new AssetPrimitiveSchemaElement(parentAsset, nullTemplate);
+        nullObject = new AssetPrimitiveSchemaType(parentAsset, nullTemplate);
         validateNullObject(nullObject);
 
-        nullTemplate = new AssetPrimitiveSchemaElement(parentAsset, nullBean, null);;
-        nullObject = new AssetPrimitiveSchemaElement(parentAsset, nullTemplate);
+        nullTemplate = new AssetPrimitiveSchemaType(parentAsset, nullBean, null);;
+        nullObject = new AssetPrimitiveSchemaType(parentAsset, nullTemplate);
         validateNullObject(nullObject);
     }
 
@@ -253,14 +254,14 @@ public class TestAssetPrimitiveSchemaElement
      */
     @Test public void testMeaningsAttributesLinks()
     {
-        AssetMeanings               meanings   = null;
-        AssetPrimitiveSchemaElement testObject = new AssetPrimitiveSchemaElement(null, meanings);
+        AssetMeanings            meanings   = null;
+        AssetPrimitiveSchemaType testObject = new AssetPrimitiveSchemaType(null, meanings);
 
         assertTrue(testObject.getAssetMeanings() == null);
 
         meanings = new MockAssetMeanings(null, 23, 60);
 
-        testObject = new AssetPrimitiveSchemaElement(null, meanings);
+        testObject = new AssetPrimitiveSchemaType(null, meanings);
 
         assertTrue(testObject.getAssetMeanings() != null);
     }
@@ -276,7 +277,7 @@ public class TestAssetPrimitiveSchemaElement
         assertFalse(getTestObject().equals("DummyString"));
         assertTrue(getTestObject().equals(getTestObject()));
 
-        AssetPrimitiveSchemaElement  sameObject = getTestObject();
+        AssetPrimitiveSchemaType sameObject = getTestObject();
         assertTrue(sameObject.equals(sameObject));
 
         assertFalse(getTestObject().equals(getDifferentObject()));
@@ -299,9 +300,9 @@ public class TestAssetPrimitiveSchemaElement
      */
     @Test public void testClone()
     {
-        validateResultObject(new AssetPrimitiveSchemaElement(null, getTestObject()));
+        validateResultObject(new AssetPrimitiveSchemaType(null, getTestObject()));
 
-        validateResultObject((AssetPrimitiveSchemaElement) getTestObject().cloneAssetSchemaElement(null));
+        validateResultObject((AssetPrimitiveSchemaType) getTestObject().cloneAssetSchemaElement(null));
     }
 
 

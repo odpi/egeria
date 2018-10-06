@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceprogram.samples;
 
 import org.apache.log4j.varia.NullAppender;
@@ -7,10 +8,7 @@ import org.odpi.openmetadata.accessservices.governanceprogram.ffdc.exceptions.In
 import org.odpi.openmetadata.accessservices.governanceprogram.ffdc.exceptions.PropertyServerException;
 import org.odpi.openmetadata.accessservices.governanceprogram.ffdc.exceptions.UnrecognizedGUIDException;
 import org.odpi.openmetadata.accessservices.governanceprogram.ffdc.exceptions.UserNotAuthorizedException;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDomain;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceOfficer;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceOfficerAppointee;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.PersonalProfile;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.*;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -30,7 +28,6 @@ public class GovernanceLeadershipSample
     private static final String infraGovForITAppointmentId = "CHIEF-SYS-ARCH";
     private static final String projLeadForITAppointmentId = "CHIEF-SW-PROJ-MGR";
 
-
     private static final String julesKeeperEmpNo  = "026";
     private static final String ivorPadlockEmpNo  = "008";
     private static final String faithBrokerEmpNo  = "010";
@@ -38,6 +35,15 @@ public class GovernanceLeadershipSample
     private static final String garyGeekeEmpNo    = "015";
     private static final String pollyTaskerEmpNo  = "005";
     private static final String reggieMintEmpNo   = "018";
+
+
+    private static final String julesKeeperUserId  = "julesKeeper";
+    private static final String ivorPadlockUserId  = "ivorPadlock";
+    private static final String faithBrokerUserId  = "faithBroker";
+    private static final String erinOverviewUserId = "erinOverview";
+    private static final String garyGeekeUserId    = "garyGeeke";
+    private static final String pollyTaskerUserId  = "pollyTasker";
+    private static final String reggieMintUserId   = "reggieMint";
 
 
     /*
@@ -85,6 +91,44 @@ public class GovernanceLeadershipSample
 
         System.out.println("----------------------------");
         System.out.println("Profile: " + guid);
+
+        List<UserIdentity>  userIdentities = profile.getAssociatedUserIds();
+        if (userIdentities == null)
+        {
+            System.out.println("  UserId: null <ERROR>");
+        }
+        else if (userIdentities.size() == 0)
+        {
+            System.out.println("  UserIds: empty <ERROR>");
+        }
+        else if (userIdentities.size() == 1)
+        {
+            UserIdentity   userIdentity = userIdentities.get(0);
+            if (userIdentity == null)
+            {
+                System.out.println("  UserId: empty <ERROR>");
+            }
+            else
+            {
+                System.out.println("  UserId: " + userIdentity.getUserId());
+            }
+        }
+        else
+        {
+            System.out.print("  UserIds:");
+            for (UserIdentity  userIdentity : userIdentities)
+            {
+                if (userIdentity == null)
+                {
+                    System.out.print(" <empty ERROR>");
+                }
+                else
+                {
+                    System.out.print(" " + userIdentity.getUserId());
+                }
+            }
+            System.out.println();
+        }
         System.out.println("  Employee Id: " + profile.getEmployeeNumber());
         System.out.println("  Full Name: " + profile.getFullName());
         System.out.println("  Known Name: " + profile.getKnownName());
@@ -152,6 +196,7 @@ public class GovernanceLeadershipSample
         julesAdditionalProperties.put(contactTypePropertyName, "Employee");
 
         String julesKeeperProfileGUID = client.createPersonalProfile(clientUserId,
+                                                                     julesKeeperUserId,
                                                                      julesKeeperEmpNo,
                                                                      "Julian Keeper",
                                                                      "Jules Keeper",
@@ -167,6 +212,7 @@ public class GovernanceLeadershipSample
         ivorAdditionalProperties.put(contactTypePropertyName, "Employee");
 
         String ivorPadlockProfileGUID  = client.createPersonalProfile(clientUserId,
+                                                                      ivorPadlockUserId,
                                                                       ivorPadlockEmpNo,
                                                                       null,  /* optional property */
                                                                       "Ivor Padlock",
@@ -244,6 +290,7 @@ public class GovernanceLeadershipSample
         faithAdditionalProperties.put(contactTypePropertyName, "Employee");
 
         String faithBrokerProfileGUID  = client.createPersonalProfile(clientUserId,
+                                                                     faithBrokerUserId,
                                                                      faithBrokerEmpNo,
                                                                      "Faith Charity Broker",
                                                                      "Faith Broker",
@@ -336,6 +383,7 @@ public class GovernanceLeadershipSample
         erinAdditionalProperties.put(workLocationPropertyName, 2);
         erinAdditionalProperties.put(contactTypePropertyName, "Employee");
         String erinOverviewProfileGUID  = client.createPersonalProfile(clientUserId,
+                                                                       erinOverviewUserId,
                                                                        erinOverviewEmpNo,
                                                                       null,  /* optional property */
                                                                       "Erin Overview",
@@ -374,6 +422,7 @@ public class GovernanceLeadershipSample
         garyAdditionalProperties.put(workLocationPropertyName, 1);
         garyAdditionalProperties.put(contactTypePropertyName, "Employee");
         String garyGeekeProfileGUID  = client.createPersonalProfile(clientUserId,
+                                                                    garyGeekeUserId,
                                                                     garyGeekeEmpNo,
                                                                     null,  /* optional property */
                                                                     "Gary Geeke",
@@ -411,12 +460,13 @@ public class GovernanceLeadershipSample
         pollyAdditionalProperties.put(workLocationPropertyName, 1);
         pollyAdditionalProperties.put(contactTypePropertyName, "Employee");
         String pollyTaskerProfileGUID  = client.createPersonalProfile(clientUserId,
-                                                                    pollyTaskerEmpNo,
-                                                                    null,  /* optional property */
-                                                                    "Polly Tasker",
-                                                                    "Lead Project Manager for IT",
-                                                                    "Manages IT projects for Coco Pharmaceuticals.",
-                                                                    pollyAdditionalProperties);
+                                                                      pollyTaskerUserId,
+                                                                      pollyTaskerEmpNo,
+                                                                      null,  /* optional property */
+                                                                      "Polly Tasker",
+                                                                      "Lead Project Manager for IT",
+                                                                      "Manages IT projects for Coco Pharmaceuticals.",
+                                                                      pollyAdditionalProperties);
 
         this.printPersonalProfile(client, clientUserId, pollyTaskerProfileGUID);
         System.out.println("Creating SDLC governance officer");
@@ -448,12 +498,13 @@ public class GovernanceLeadershipSample
         reggieAdditionalProperties.put(workLocationPropertyName, 1);
         reggieAdditionalProperties.put(contactTypePropertyName, "Employee");
         String reggieMintProfileGUID  = client.createPersonalProfile(clientUserId,
-                                                                      reggieMintEmpNo,
-                                                                      "Reginald S P Mint",  /* optional property */
-                                                                      "Reggie Mint",
-                                                                      "Chief Finance Officer",
-                                                                      "Manages finance for Coco Pharmaceuticals.",
-                                                                      reggieAdditionalProperties);
+                                                                     reggieMintUserId,
+                                                                     reggieMintEmpNo,
+                                                                     "Reginald S P Mint",  /* optional property */
+                                                                     "Reggie Mint",
+                                                                     "Chief Finance Officer",
+                                                                     "Manages finance for Coco Pharmaceuticals.",
+                                                                     reggieAdditionalProperties);
 
         this.printPersonalProfile(client, clientUserId, pollyTaskerProfileGUID);
         System.out.println("Creating corporate governance officer");

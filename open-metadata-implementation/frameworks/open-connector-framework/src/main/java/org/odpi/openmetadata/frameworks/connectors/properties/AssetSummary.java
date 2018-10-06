@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
@@ -169,6 +170,14 @@ public class AssetSummary extends AssetDescriptor
     {
         return assetBean.getOwner();
     }
+
+
+    /**
+     * Return the names of the zones that this asset is a member of.
+     *
+     * @return list of zone names
+     */
+    public List<String> getZoneMembership() { return assetBean.getZoneMembership(); }
 
 
     /**

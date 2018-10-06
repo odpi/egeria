@@ -1,11 +1,11 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Classification;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Schema;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class TestAssetUniverse
     private AssetLicenses               licenses               = null;
     private AssetCertifications         certifications         = null;
     private AssetMeanings               meanings               = null;
-    private AssetSchemaElement          schema                 = null;
+    private AssetSchemaType             schema                 = null;
     private AssetAnnotations            analysis               = null;
     private AssetFeedback               feedback               = null;
     private AssetLocations              knownLocations         = null;
@@ -171,13 +171,13 @@ public class TestAssetUniverse
      */
     @Test public void testBeanConstructorWithNulls()
     {
-        AssetMeanings      meanings       = null;
-        AssetSchemaElement schema         = null;
-        AssetAnnotations   analysis       = null;
-        AssetFeedback      feedback       = null;
-        AssetLocations     knownLocations = null;
-        AssetLineage       lineage        = null;
-        RelatedAssets      relatedAssets  = null;
+        AssetMeanings    meanings       = null;
+        AssetSchemaType  schema         = null;
+        AssetAnnotations analysis       = null;
+        AssetFeedback    feedback       = null;
+        AssetLocations   knownLocations = null;
+        AssetLineage     lineage        = null;
+        RelatedAssets    relatedAssets  = null;
 
         AssetUniverse testObject = new AssetUniverse(new Asset(),
                                                      externalIdentifiers,
@@ -210,13 +210,13 @@ public class TestAssetUniverse
      */
     @Test public void testBeanConstructor()
     {
-        AssetInformalTags           informalTags           = new MockAssetInformalTags(null, 15, 50);
-        AssetLikes                  likes                  = new MockAssetLikes(null, 15, 50);
-        AssetRatings                ratings                = new MockAssetRatings(null, 15, 50);
-        AssetComments               comments               = new MockAssetComments(null, 15, 50);
-        AssetMeanings               meanings               = new MockAssetMeanings(null, 15, 50);
-        AssetSchemaElement          schema                 = new AssetPrimitiveSchemaElement(null, meanings);
-        AssetAnnotations            analysis               = new MockAssetAnnotations(null, 15, 50);
+        AssetInformalTags informalTags = new MockAssetInformalTags(null, 15, 50);
+        AssetLikes        likes        = new MockAssetLikes(null, 15, 50);
+        AssetRatings      ratings      = new MockAssetRatings(null, 15, 50);
+        AssetComments     comments     = new MockAssetComments(null, 15, 50);
+        AssetMeanings     meanings     = new MockAssetMeanings(null, 15, 50);
+        AssetSchemaType   schema       = new AssetPrimitiveSchemaType(null, meanings);
+        AssetAnnotations  analysis     = new MockAssetAnnotations(null, 15, 50);
         AssetFeedback               feedback               = new AssetFeedback(null,
                                                                                informalTags,
                                                                                likes,
@@ -258,13 +258,13 @@ public class TestAssetUniverse
     @Test
     public void testToString()
     {
-        AssetInformalTags           informalTags           = new MockAssetInformalTags(null, 15, 50);
-        AssetLikes                  likes                  = new MockAssetLikes(null, 15, 50);
-        AssetRatings                ratings                = new MockAssetRatings(null, 15, 50);
-        AssetComments               comments               = new MockAssetComments(null, 15, 50);
-        AssetMeanings               meanings               = new MockAssetMeanings(null, 15, 50);
-        AssetSchemaElement          schema                 = new AssetPrimitiveSchemaElement(null, meanings);
-        AssetAnnotations            analysis               = new MockAssetAnnotations(null, 15, 50);
+        AssetInformalTags informalTags = new MockAssetInformalTags(null, 15, 50);
+        AssetLikes        likes        = new MockAssetLikes(null, 15, 50);
+        AssetRatings      ratings      = new MockAssetRatings(null, 15, 50);
+        AssetComments     comments     = new MockAssetComments(null, 15, 50);
+        AssetMeanings     meanings     = new MockAssetMeanings(null, 15, 50);
+        AssetSchemaType   schema       = new AssetPrimitiveSchemaType(null, meanings);
+        AssetAnnotations  analysis     = new MockAssetAnnotations(null, 15, 50);
         AssetFeedback               feedback               = new AssetFeedback(null,
                                                                                informalTags,
                                                                                likes,

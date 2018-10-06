@@ -241,6 +241,7 @@
                         <exclude>**/banner.txt</exclude>
                         <exclude>**/*.json</exclude>
                         <exclude>**/*.log</exclude>
+                        <exclude>**/*.csv</exclude>
                         <exclude>**/*.iml</exclude>
                         <exclude>**/*.registrystore</exclude>
                         <exclude>**/*.results</exclude>
@@ -273,7 +274,7 @@
                         </license>
                         <license implementation="org.apache.rat.analysis.license.SimplePatternBasedLicense">
                             <patterns>
-                                <pattern>Copyright Contributors to the Egeria project.</pattern>
+                                <pattern>Copyright Contributors to the ODPi Egeria project.</pattern>
                             </patterns>
                         </license>
                     </licenses>

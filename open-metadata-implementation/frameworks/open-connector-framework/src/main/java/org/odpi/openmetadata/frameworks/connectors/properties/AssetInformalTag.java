@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.InformalTag;
@@ -28,7 +29,7 @@ public class AssetInformalTag extends AssetElementHeader
      *
      * @param informalTagBean bean containing the properties
      */
-    protected AssetInformalTag(InformalTag   informalTagBean)
+    public AssetInformalTag(InformalTag   informalTagBean)
     {
         super(informalTagBean);
 
@@ -49,8 +50,8 @@ public class AssetInformalTag extends AssetElementHeader
      * @param parentAsset descriptor for parent asset
      * @param informalTagBean bean containing the properties
      */
-    protected AssetInformalTag(AssetDescriptor  parentAsset,
-                               InformalTag      informalTagBean)
+    public AssetInformalTag(AssetDescriptor  parentAsset,
+                            InformalTag      informalTagBean)
     {
         super(parentAsset, informalTagBean);
 

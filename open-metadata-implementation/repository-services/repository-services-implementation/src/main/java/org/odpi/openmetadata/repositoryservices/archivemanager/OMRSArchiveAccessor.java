@@ -1,74 +1,140 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.archivemanager;
 
-
 import org.odpi.openmetadata.repositoryservices.archivemanager.opentypes.OpenMetadataTypesArchive;
-        import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveTypeStore;
-        import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveTypeStore;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 
-        import java.util.*;
+import java.util.*;
 
-        import java.util.ArrayList;
-        import java.util.Date;
 
 /**
- * OMRSArchiveAccessor provides utility methods to help accessing open metadata archive content.
+ * OMRSArchiveAccessor provides utility methods to help access the content of an open metadata archive.
  */
 public class OMRSArchiveAccessor
 {
-    private final Map<String,EntityDef> entityDefs= new HashMap<>();
-    private final Map<String,ClassificationDef> classificationDefs= new HashMap<>();
-    private final Map<String,RelationshipDef> relationshipDefs= new HashMap<>();
-    private final Map<String,EnumDef> enumDefs= new HashMap<>();
+    private final Map<String, EntityDef>         entityDefs         = new HashMap<>();
+    private final Map<String, ClassificationDef> classificationDefs = new HashMap<>();
+    private final Map<String, RelationshipDef>   relationshipDefs   = new HashMap<>();
+    private final Map<String, EnumDef>           enumDefs           = new HashMap<>();
 
-    OpenMetadataTypesArchive openMetadataTypesArchive =null;
-    OpenMetadataArchiveTypeStore typeStore = null;
+    private OpenMetadataArchive          openMetadataArchive;
+    private OpenMetadataArchiveTypeStore typeStore;
+
     private static OMRSArchiveAccessor instance = null;
 
-    public static OMRSArchiveAccessor getInstance() {
-        if (instance == null) {
-            instance = new  OMRSArchiveAccessor(new OpenMetadataTypesArchive());
+    /**
+     * Return a special singleton for the open metadata types archive (note not thread safe).
+     *
+     * @return OMRSArchiveAccessor instance loaded with the open metadata types
+     */
+    public static OMRSArchiveAccessor getInstance()
+    {
+        if (instance == null)
+        {
+            instance = new OMRSArchiveAccessor(new OpenMetadataTypesArchive().getOpenMetadataArchive());
         }
         return instance;
     }
 
-    private OMRSArchiveAccessor(OpenMetadataTypesArchive openMetadataTypesArchive) {
-        this.openMetadataTypesArchive = openMetadataTypesArchive;
-        this.typeStore = this.openMetadataTypesArchive.getOpenMetadataArchive().getArchiveTypeStore();
 
-        // break down these types so we can consume them.
-        for (TypeDef omTypeDef : this.typeStore.getNewTypeDefs()) {
-            switch (omTypeDef.getCategory()) {
+
+    /**
+     * Parse the supplied archive.
+     *
+     * @param openMetadataArchive archive object
+     */
+    public OMRSArchiveAccessor(OpenMetadataArchive openMetadataArchive)
+    {
+        this.openMetadataArchive = openMetadataArchive;
+        this.typeStore = this.openMetadataArchive.getArchiveTypeStore();
+
+        /*
+         * break down these types so we can consume them.
+         */
+        for (TypeDef typeDef : this.typeStore.getNewTypeDefs())
+        {
+            switch (typeDef.getCategory())
+            {
                 case ENTITY_DEF:
-                    this.entityDefs.put(omTypeDef.getName(), ((EntityDef) omTypeDef));
+                    this.entityDefs.put(typeDef.getName(), ((EntityDef) typeDef));
                     break;
                 case CLASSIFICATION_DEF:
-                    this.classificationDefs.put(omTypeDef.getName(), ((ClassificationDef) omTypeDef));
+                    this.classificationDefs.put(typeDef.getName(), ((ClassificationDef) typeDef));
                     break;
                 case RELATIONSHIP_DEF:
-                    this.relationshipDefs.put(omTypeDef.getName(), (RelationshipDef) omTypeDef);
+                    this.relationshipDefs.put(typeDef.getName(), (RelationshipDef) typeDef);
                     break;
             }
         }
-        for (AttributeTypeDef omAttrTypeDef : this.typeStore.getAttributeTypeDefs()) {
-            switch (omAttrTypeDef.getCategory()) {
+
+        for (AttributeTypeDef attributeTypeDef : this.typeStore.getAttributeTypeDefs())
+        {
+            switch (attributeTypeDef.getCategory())
+            {
                 case ENUM_DEF:
-                    enumDefs.put(omAttrTypeDef.getName(), ((EnumDef) omAttrTypeDef));
+                    enumDefs.put(attributeTypeDef.getName(), ((EnumDef) attributeTypeDef));
                     break;
-// We are not interested in primitives or collections  do we need to capture the primitives or the collections (maps and arrays) here ?
+
                 case PRIMITIVE:
-//                   do nothing
+                    // todo
                     break;
                 case COLLECTION:
-//                   do nothing
+                    // todo
                     break;
             }
 
         }
-
     }
-    public EntityDef getEntityDefByName(String typeName) {
+
+
+    /**
+     * Return the entity type definition for the supplied name.
+     *
+     * @param typeName name of type
+     * @return EntityDef object from the archive
+     */
+    public EntityDef getEntityDefByName(String typeName)
+    {
         return entityDefs.get(typeName);
+    }
+
+
+    /**
+     * Return the relationship type definition for the supplied name.
+     *
+     * @param typeName name of type
+     * @return RelationshipDef object from the archive
+     */
+    public RelationshipDef getRelationshipDefByName(String typeName)
+    {
+        return relationshipDefs.get(typeName);
+    }
+
+
+    /**
+     * Return the classification type definition for the supplied name.
+     *
+     * @param typeName name of type
+     * @return ClassificationDef object from the archive
+     */
+    public ClassificationDef getClassificationDefByName(String typeName)
+    {
+        return classificationDefs.get(typeName);
+    }
+
+
+    /**
+     * Return the enumeration type definition for the supplied name.
+     *
+     * @param typeName name of type
+     * @return EnumDef object from the archive
+     */
+    public EnumDef getEnumDefByName(String typeName)
+    {
+        return enumDefs.get(typeName);
     }
 }
 
