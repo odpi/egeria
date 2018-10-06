@@ -2,38 +2,40 @@
 package org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconnector;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconnector.jackson.IGCObject;
-import org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconnector.jackson.IGCPostObject;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+import org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconnector.model.IGCColumn;
+import org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconnector.model.IGCObject;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import javax.net.ssl.*;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
 
+import static org.odpi.openmetadata.virtualdataconnector.igc.connectors.eventmapper.model.Constants.DEFAULT_PAGE_SIZE;
+
 
 /**
  * The IGCOMRSRepositoryConnector is a connector to a remote IBM Information Governance Catalog (IGC) repository.
  */
-public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector
-{
+public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector {
 
     /**
      * Default constructor used by the OCF Connector Provider.
      */
-    public IGCOMRSRepositoryConnector()
-    {
+    public IGCOMRSRepositoryConnector() {
         disableSslVerification();
     }
-
 
     //https://stackoverflow.com/questions/19540289/how-to-fix-the-java-security-cert-certificateexception-no-subject-alternative
     private static void disableSslVerification() {
@@ -58,17 +60,11 @@ public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector
             HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
 
             // Create all-trusting host name verifier
-            HostnameVerifier allHostsValid = new HostnameVerifier() {
-                public boolean verify(String hostname, SSLSession session) {
-                    return true;
-                }
-            };
+            HostnameVerifier allHostsValid = (hostname, session) -> true;
 
             // Install the all-trusting host verifier
             HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (KeyManagementException e) {
+        } catch (NoSuchAlgorithmException | KeyManagementException e) {
             e.printStackTrace();
         }
     }
@@ -78,8 +74,7 @@ public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector
      *
      * @param metadataCollectionId - String unique Id
      */
-    public void setMetadataCollectionId(String     metadataCollectionId)
-    {
+    public void setMetadataCollectionId(String metadataCollectionId) {
         this.metadataCollectionId = metadataCollectionId;
 
         /*
@@ -94,12 +89,9 @@ public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector
 
     /**
      * Free up any resources held since the connector is no longer needed.
-     *
-     * @throws ConnectorCheckedException - there is a problem disconnecting the connector.
      */
     @Override
-    public void disconnect()
-    {
+    public void disconnect() {
         super.metadataCollection = new IGCOMRSMetadataCollection(this,
                 super.serverName,
                 repositoryHelper,
@@ -113,94 +105,95 @@ public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector
      *
      * @return OMRSMetadataCollection - metadata information retrieved from the metadata repository.
      */
-    public OMRSMetadataCollection getMetadataCollection()
-    {
-        if (metadataCollection == null)
-        {
+    public OMRSMetadataCollection getMetadataCollection() {
+
+        if (metadataCollection == null) {
             throw new NullPointerException("Local metadata collection id is not set up");
         }
+
         return metadataCollection;
     }
 
 
     /**
      * Query IGC for more information about an asset.
+     *
      * @param igcRID The techncial ID of the asset.
-     * @return
+     * @return IGCObject
      */
     public IGCObject genericIGCQuery(String igcRID) {
 
         String url = this.connectionBean.getAdditionalProperties().get("igcApiGet") + igcRID;
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Cache-Control", "no-cache");
-        headers.set("Authorization", "Basic " + this.connectionBean.getAdditionalProperties().get("authorization"));
-        headers.set("Proxy-Authorization", "Basic " +  this.connectionBean.getAdditionalProperties().get("authorization"));
-
-        RestTemplate restTemplate = new RestTemplate();
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-        IGCObject igcResponse = null;
-        try {
-            ResponseEntity<String> result = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
-
-            String resultBody = result.getBody();
-            ObjectMapper mapper = new ObjectMapper();
-            try {
-                igcResponse = mapper.readValue(resultBody, IGCObject.class);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
-        return  igcResponse;
+        return getIgcObject(url);
     }
 
-    /**
-     * Returns the metadata collection object that provides an OMRS abstraction of the metadata within
-     * a metadata repository.
-     *
-     * @return OMRSMetadataCollection - metadata information retrieved from the metadata repository.
-     */
-    public IGCPostObject genericIGCPostQuery(String igcRID){
-        String url = this.connectionBean.getAdditionalProperties().get("igcApiSearch") + igcRID;
+    public IGCObject getDatabaseColumns(String igcRID, Integer pageSize) {
+
+        if (pageSize == null) {
+            pageSize = DEFAULT_PAGE_SIZE;
+        }
+        String url = this.connectionBean.getAdditionalProperties()
+                .get("igcApiGet") + igcRID + "/database_columns?begin=0&pageSize=" + pageSize;
+
+        IGCObject igcObjectMapper = getIgcObject(url);
+
+        Integer numTotal = igcObjectMapper.getDatabaseColumns().getPaging().getNumTotal();
+        if (pageSize < numTotal) {
+            url = this.connectionBean.getAdditionalProperties()
+                    .get("igcApiGet") + igcRID + "/database_columns?begin=0&pageSize=" + numTotal;
+            return getIgcObject(url);
+        }
+
+        return igcObjectMapper;
+    }
+
+    private IGCObject getIgcObject(String url) {
+        HttpEntity<String> entity = new HttpEntity<>(getHttpHeaders());
+        String resultBody = getHttpResult(url, entity);
+        return (IGCObject) getIGCObjectMapper(resultBody, IGCObject.class);
+    }
+
+
+    public IGCColumn getIGCColumn(String igcRID) {
+
+        String url = this.connectionBean.getAdditionalProperties().get("igcApiGet") + igcRID;
+
+        HttpEntity<String> entity = new HttpEntity<>(getHttpHeaders());
+        String resultBody = getHttpResult(url, entity);
+
+        return (IGCColumn) getIGCObjectMapper(resultBody, IGCColumn.class);
+    }
+
+    private HttpHeaders getHttpHeaders() {
         HttpHeaders headers = new HttpHeaders();
+
         headers.set("Cache-Control", "no-cache");
-        headers.set("Authorization", "Basic " +  this.connectionBean.getAdditionalProperties().get("authorization"));
-        headers.set("Proxy-Authorization", "Basic " +  this.connectionBean.getAdditionalProperties().get("authorization"));
+        headers.set("Authorization", "Basic " + this.connectionBean.getAdditionalProperties().get("authorization"));
+        headers.set("Proxy-Authorization", "Basic " + this.connectionBean.getAdditionalProperties().get("authorization"));
         headers.set("Content-Type", "application/json");
 
+        return headers;
+    }
+
+
+    private String getHttpResult(String url, HttpEntity<String> entity) {
         RestTemplate restTemplate = new RestTemplate();
-        String requestBody = "{\n" +
-                "  \"pageSize\": \"100\",\n" +
-                "  \"properties\": [\"modified_on\",\"name\", \"position\", \"assigned_to_terms\", \"data_type\", \"length\", \"database_table_or_view.assigned_to_terms\"],\n" +
-                "  \"types\": [\"database_column\"],\n" +
-                "  \"where\":\n" +
-                "  {\n" +
-                "    \"operator\": \"and\",\n" +
-                "    \"conditions\": [\n" +
-                "      {\n" +
-                "        \"property\": \"database_table_or_view\",\n" +
-                "        \"operator\": \"=\",\n" +
-                "        \"value\": \"" + igcRID + "\"\n" +
-                "      }\n" +
-                "    ]\n" +
-                "   }\n" +
-                "}";
-        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
-        ResponseEntity<String> result = restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
-        String resultBody = result.getBody();
 
-        ObjectMapper mapper = new ObjectMapper();
+        ResponseEntity<String> result = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
 
-        IGCPostObject igcPostObject = null;
+        return result.getBody();
+    }
+
+    private Object getIGCObjectMapper(String resultBody, Class objectClass) {
         try {
-            igcPostObject = mapper.readValue(resultBody, IGCPostObject.class);
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.readValue(resultBody, objectClass);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return igcPostObject;
+        return null;
     }
+
 }

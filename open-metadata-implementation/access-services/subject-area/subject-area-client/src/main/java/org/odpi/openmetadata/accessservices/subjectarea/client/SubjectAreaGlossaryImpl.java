@@ -44,7 +44,7 @@ public class SubjectAreaGlossaryImpl implements org.odpi.openmetadata.accessserv
     /**
      * Create a Glossary
      * @param userId  userId under which the request is performed
-     * @param suppliedGlossary
+     * @param suppliedGlossary details of glossary to create
      * @return the created glossary.
      *
      * Exceptions returned by the server
@@ -181,7 +181,6 @@ public class SubjectAreaGlossaryImpl implements org.odpi.openmetadata.accessserv
      * @param suppliedGlossary glossary to be updated
      * @return replaced glossary
      *
-     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws FunctionNotSupportedException        Function not supported
      * @throws InvalidParameterException            one of the parameters is null or invalid.
@@ -221,7 +220,6 @@ public class SubjectAreaGlossaryImpl implements org.odpi.openmetadata.accessserv
      * @param suppliedGlossary glossary to be updated
      * @return a response which when successful contains the updated glossary
      * when not successful the following Exceptions can occur
-     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws FunctionNotSupportedException        Function not supported
      * @throws InvalidParameterException            one of the parameters is null or invalid.

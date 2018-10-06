@@ -4,16 +4,14 @@ package org.odpi.openmetadata.accessservices.governanceengine.server.handlers;
 
 
 import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.errorcode.GovernanceEngineErrorCode;
-import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.UserNotAuthorizedException;
-import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernanceClassificationDef;
+import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.*;
+import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernanceClassificationUsage;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAsset;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.accessservices.governanceengine.server.util.PropertyUtils;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
@@ -46,7 +44,7 @@ public class GovernedAssetHandler {
      *
      * @param serviceName         - name of this service
      * @param repositoryConnector - connector to the property handlers.
-     * @throws MetadataServerException         - there is a problem retrieving information from the metadata server
+     * @throws MetadataServerException - there is a problem retrieving information from the metadata server
      */
     public GovernedAssetHandler(String serviceName,
                                 OMRSRepositoryConnector repositoryConnector) throws MetadataServerException {
@@ -78,7 +76,7 @@ public class GovernedAssetHandler {
      *
      * @param userId         - String - userId of user making request.
      * @param classification - classifications to start query from .
-     * @param type - types to start query from.
+     * @param type           - types to start query from.
      * @return List of Governed Access
      * @throws InvalidParameterException       - one of the parameters is null or invalid.
      * @throws ClassificationNotFoundException - cannot find all the classifications specified
@@ -93,8 +91,10 @@ public class GovernedAssetHandler {
         final String methodName = "getGovernedAssets";
         final String classificationParameter = "classification";
         final String typeParameter = "type";
+
         List<GovernedAsset> assetsToReturn = new ArrayList<>();
-        List<GovernanceClassificationDef> interestingClassifications = new ArrayList<>();
+
+
 
         errorHandler.validateUserId(userId, methodName);
         errorHandler.validateClassification(classification, classificationParameter, methodName);
@@ -103,86 +103,190 @@ public class GovernedAssetHandler {
         //TODO: Add tighter query using type and classification (TBD)
 
         //TODO Refactoring of common code with GovernanceClassificationDefs
-        // Get all classifications, to determine which we are interested in
-        try {
-            List<TypeDef> typeDefsByCategory = metadataCollection.findTypeDefsByCategory(userId, TypeDefCategory.CLASSIFICATION_DEF);
-            // We just need the name and parameter
-            //TODO Needs to restrict classifications by parent - for now returns ALL classifications
-            typeDefsByCategory.forEach((td) -> {
-                //TODO federation: resolve what to do if we have duplicate names (with different definitions)
-                GovernanceClassificationDef gcd = new GovernanceClassificationDef();
-                gcd.setName(td.getName());
-                Map<String, String> gdca = new HashMap<>();
-                //Get the parms
-                td.getPropertiesDefinition().forEach((tda) -> {
-                    // TODO Mapping of types between OMRS and Ranger should be abstracted
-                    // TODO Mapping of alpha name is fragile - temporary for initial debug
-                    gdca.put(tda.getAttributeName(), tda.getAttributeType().getName());
+
+        if (type==null)
+        {
+            addToAssetListByType(assetsToReturn,null,classification,userId);
+        }
+        else
+        {
+            type.forEach((typesearch) -> {
+                // TODO Mapping of types between OMRS and Ranger should be abstracted
+                // TODO Mapping of alpha name is fragile - temporary for initial debug
+                addToAssetListByType(assetsToReturn,typesearch,classification,userId);
+            });
+        }
+
+        return assetsToReturn;
+    }
+
+    private void addToAssetListByType(List<GovernedAsset> assetsToReturn, String type,
+                                      List<String> classification, String userId) {
+
+
+        // We know the type, let's do this by classification now
+        if (classification == null) {
+            List<TypeDef> allClassifications = null;
+            //TypeDef classificationtypedef;
+
+            try {
+                allClassifications = metadataCollection.findTypeDefsByCategory(userId,
+                        TypeDefCategory.CLASSIFICATION_DEF);
+            } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException e) {
+            } catch (RepositoryErrorException e) {
+            } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
+            }
+
+            if (allClassifications != null) {
+                allClassifications.forEach((classificationTypedef) -> {
+                    addToAssetListByClassification(assetsToReturn, type, classificationTypedef.getName(), userId);
                 });
-                gcd.setAttributeDefinitions(gdca);
-                interestingClassifications.add(gcd);
+            }
 
-                //TODO Need to iterate through all possible asset types - for now we will take first in the list
-                String assetTypeToSearchFor="";
-                if (type.size() >= 1)
-                    assetTypeToSearchFor = new String(type.get(0));
+        } else {
+            classification.forEach((classificationsearch) -> {
+                addToAssetListByClassification(assetsToReturn, type, classificationsearch, userId);
+            });
+        }
 
-                // TODO Pagination & sort order is needed in these APIs - for now do not specify limits
-                //TODO restrict to active entities only
-                List<EntityDetail> entities = new ArrayList<>();
+        return;
+    }
 
-                // Java Streams can't deal with checked exceptions
-                try {
-                    entities = metadataCollection.findEntitiesByClassification(userId, assetTypeToSearchFor,
-                            td.getName(),
-                            null, null, 0,
-                            null,
-                            null, null, null, 0);
-                } catch (Exception e) {
-                    // We could only throw a RuntimeException here - consider using
-                    // wrapping, or unroll the iterator.
-                    // for now will catch and just return empty set (not good enough!)
-                                        // TODO Manage exceptions in Java Streams
-                }
+    private void addToAssetListByClassification(List<GovernedAsset> assetsToReturn,
+                                                String type,String classification, String userId) {
 
 
-                // Now for each entity we need to get it's fq name, and/or follow through to the schema
-                entities.forEach(entityDetail -> {
-                    String resourceName = getGovernanceResourceNameFromEntity(entityDetail);
-                });
+        List<EntityDetail> entities =null;
+
+        String typeGuid = getTypeGuidFromTypeName(type,userId);
+
+// findEntitiesByClassification requires a specific type to be provided.
+            try {
+
+                entities = metadataCollection.findEntitiesByClassification(userId, typeGuid,
+                        classification,
+                        null, null,0,
+                        null,
+                        null, null, null, 0);//TODO Handle exceptions from findEntitiesByClassification
+                //TODO remove stack traces
+            } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException e) {
+                e.printStackTrace();
+            } catch (TypeErrorException e) {
+                e.printStackTrace();
+            } catch (RepositoryErrorException e) {
+                e.printStackTrace();
+            } catch (ClassificationErrorException e) {
+                e.printStackTrace();
+            } catch (PropertyErrorException e) {
+                e.printStackTrace();
+            } catch (PagingErrorException e) {
+                e.printStackTrace();
+            } catch (FunctionNotSupportedException e) {
+                e.printStackTrace();
+            } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
+                e.printStackTrace();
+            }
+
+            // We have the asset -- add to return
+        if (entities!=null) {
+            entities.forEach((entity) -> {
+                GovernedAsset entry=addEntityIfDoesntExist(assetsToReturn,entity);
+                addClassificationInfoToEntry(entry,entity,classification);
             });
 
-            // for the interested classifications, get all entities assigned that classification
-
-            // Return the data
-
         }
-        // TODO - Common catch pattern
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
+    }
 
-                 GovernanceEngineErrorCode errorCode = GovernanceEngineErrorCode.USER_NOT_AUTHORIZED;
-                 String errorMessage =
-                         errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(userId, methodName);
 
-                 throw new UserNotAuthorizedException(errorCode.getHTTPErrorCode(),
-                         this.getClass().getName(),
-                         methodName,
-                         errorMessage,
-                         errorCode.getSystemAction(),
-                         errorCode.getUserAction());
-             } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException | RepositoryErrorException e) {
+    private void addClassificationInfoToEntry(GovernedAsset entry, EntityDetail entity,
+                                              String classification) {
+        // Just add this classification info - the current methods are convoluted, but useful to prove out concept
+        // and understand the API. Also consideration to be made to using the metadata collection helpers/extending
+        // TODO Refactor
 
-                 GovernanceEngineErrorCode errorCode = GovernanceEngineErrorCode.METADATA_QUERY_ERROR;
-                 String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
+        // Get the current list of assigned classification
+         List<GovernanceClassificationUsage> usageList = entry.getAssignedGovernanceClassifications();
+         if (usageList == null)
+                usageList = new ArrayList<GovernanceClassificationUsage>();
 
-                 throw new MetadataServerException(errorCode.getHTTPErrorCode(),
-                         this.getClass().getName(),
-                         methodName,
-                         errorMessage,
-                         errorCode.getSystemAction(),
-                         errorCode.getUserAction());
-             }
-        return assetsToReturn;
+        // Add the new assignment locally (in case of copying)
+        GovernanceClassificationUsage usage = new GovernanceClassificationUsage();
+
+        // Only work on the classification passed to this method (inefficient)
+        // Demonstration using a set rather than list may work a lot better - skip for now to avoid method sig changes
+
+        Classification entityClassification = entity.getClassifications().stream()
+                .filter(c -> classification.equals(c.getName()))
+                .findAny()
+                .orElse(null);
+
+        // Now found it in the of assigned classifications for this entity
+        if (entityClassification!=null) {
+
+            // So now let's add into the assigned classifications list
+            usage.setName(classification);
+
+            // And now let's pull in the properties
+            Map<String,String> m = new HashMap<>();
+
+            InstanceProperties ip2 = entityClassification.getProperties();
+            if (ip2!=null) {
+                Map<String, InstancePropertyValue> ip = ip2.getInstanceProperties();
+                if (ip != null) {
+                    //mapping them to our map
+                    ip.entrySet().stream().forEach(props -> {
+                        // TODO Mapping of types between OMRS and Ranger should be abstracted
+                        // TODO Mapping of alpha name is fragile - temporary for initial debug
+                        //m.put(props.getKey(), props.getValue().toString());
+                        m.put(props.getKey(), PropertyUtils.getStringForPropertyValue(props.getValue()));
+
+                    });
+                }
+            }
+            // And set them back
+            usage.setAttributeValues(m);
+            usageList.add(usage);
+            // Now push it back to the list
+            entry.setAssignedGovernanceClassifications(usageList);
+        }
+    }
+
+    private GovernedAsset addEntityIfDoesntExist(List<GovernedAsset> assetsToReturn, EntityDetail entity) {
+
+        GovernedAsset ga = new GovernedAsset();
+        ga.setGuid(entity.getGUID());
+        ga.setType(entity.getType().getTypeDefName());
+
+        //TODO get name of entity - use this as a key
+        ga.setFqName(getGovernanceResourceNameFromEntity(entity));
+        // See if we can find this asset in the list - if not we'll add
+        GovernedAsset existingEntry = assetsToReturn.stream()
+                .filter(govasset -> ga.getGuid().equals(govasset.getGuid()))
+                .findAny()
+                .orElse(null);
+        if (existingEntry==null) {
+            assetsToReturn.add(ga);
+            existingEntry=ga;
+        }
+        return(existingEntry);
+
+
+    }
+
+    private String getTypeGuidFromTypeName(String type, String userId) {
+
+        String guid = null;
+
+        // TODO Decided how to handle exceptions. For now we'll return null
+        try {
+            guid = metadataCollection.getTypeDefByName(userId, type).getGUID();
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException e) {
+        } catch (RepositoryErrorException e) {
+        } catch (TypeDefNotKnownException e) {
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
+        }
+
+        return(guid);
     }
 
     private String getGovernanceResourceNameFromEntity(EntityDetail entityDetail) {
@@ -216,10 +320,10 @@ public class GovernedAssetHandler {
      * @param userId    - String - userId of user making request.
      * @param assetGuid - guid of the asset component.
      * @return Connection retrieved from property handlers
-     * @throws InvalidParameterException       - one of the parameters is null or invalid.
-     * @throws GuidNotFoundException           - specified guid is not found
-     * @throws MetadataServerException         - there is a problem retrieving information from the metadata server.
-     * @throws UserNotAuthorizedException      - the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  - one of the parameters is null or invalid.
+     * @throws GuidNotFoundException      - specified guid is not found
+     * @throws MetadataServerException    - there is a problem retrieving information from the metadata server.
+     * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public GovernedAsset getGovernedAsset(String userId,
                                           String assetGuid

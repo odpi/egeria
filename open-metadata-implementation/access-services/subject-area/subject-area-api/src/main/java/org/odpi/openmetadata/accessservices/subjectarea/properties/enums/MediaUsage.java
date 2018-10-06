@@ -21,6 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum MediaUsage implements Serializable {
     /**
       * Provides a small image to represent the asset in tree views and graphs.

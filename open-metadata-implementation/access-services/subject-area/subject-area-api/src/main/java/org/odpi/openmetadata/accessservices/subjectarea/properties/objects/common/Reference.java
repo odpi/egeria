@@ -50,7 +50,7 @@ public class  Reference implements Serializable {
 
     /**
      * the type of relationship
-     * @return
+     * @return relationship type
      */
     public String getRelationship_Type() {
         return relationship_Type;
@@ -63,7 +63,7 @@ public class  Reference implements Serializable {
 
     /**
      * Attributes associated with the relationship itself
-     * @return
+     * @return relationship attributes
      */
     public Map<String, Object> getRelationshipAttributes() {
         return relationshipAttributes;
@@ -76,8 +76,8 @@ public class  Reference implements Serializable {
     private Map<String, Object> relationshipAttributes;
 
     /**
-     * This guid of the is the related end of this reference
-     * @return
+     * This guid of the related end of this reference
+     * @return related end guid
      */
     public String getRelatedEndGuid() {
         return relatedEndGuid;
@@ -89,7 +89,7 @@ public class  Reference implements Serializable {
 
     /**
      * This is the relationship guid associated with this reference
-     * @return
+     * @return relationship guid
      */
     public String getRelationshipGuid() {
         return relationshipGuid;
@@ -101,7 +101,7 @@ public class  Reference implements Serializable {
 
     /**
      * This is the related ends type name
-     * @return
+     * @return related ends type name
      */
     public String getRelatedEndType() {
         return relatedEndType;
@@ -175,7 +175,7 @@ public class  Reference implements Serializable {
 
     /**
      * Get a map of the unique attributes. i.e. the attributes whose values must are all different.
-     * @return
+     * @return {@code Map<String,Object> }
      */
     public Map<String, Object> getUniqueAttributes() {
         return uniqueAttributes;
@@ -204,7 +204,7 @@ public class  Reference implements Serializable {
 
     /**
      * get the name of the reference
-     * @return
+     * @return reference name
      */
     public String getReferenceName() {
         return referenceName;

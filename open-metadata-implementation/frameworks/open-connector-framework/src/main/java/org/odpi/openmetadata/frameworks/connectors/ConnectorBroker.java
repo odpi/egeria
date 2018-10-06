@@ -252,6 +252,11 @@ public class ConnectorBroker
             if (arguments != null)
             {
                 Map<String, Object>  additionalProperties = connectionBean.getAdditionalProperties();
+                if (additionalProperties == null)
+                {
+                    additionalProperties = new HashMap<>();
+                }
+
                 Iterator<String>     argumentNames = arguments.getPropertyNames();
 
                 while (argumentNames.hasNext())
@@ -259,6 +264,11 @@ public class ConnectorBroker
                     String  argumentName = argumentNames.next();
 
                     additionalProperties.put(argumentName, arguments.getProperty(argumentName));
+                }
+
+                if (additionalProperties.isEmpty())
+                {
+                    additionalProperties = null;
                 }
 
                 connectionBean.setAdditionalProperties(additionalProperties);

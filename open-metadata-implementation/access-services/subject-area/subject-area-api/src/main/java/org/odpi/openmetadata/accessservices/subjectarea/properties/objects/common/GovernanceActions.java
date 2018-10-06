@@ -49,6 +49,7 @@ public class  GovernanceActions implements Serializable {
     private Criticality criticality=null;
     /**
      *  Defines the level of confidentiality.
+     *  @return confidentiality
      */
     public Confidentiality getConfidentiality() {
         return confidentiality;
@@ -59,6 +60,7 @@ public class  GovernanceActions implements Serializable {
     }
     /**
      *  Defines the level of confidence.
+     *  @return confidence
      */
     public Confidence getConfidence() {
         return confidence;
@@ -69,6 +71,7 @@ public class  GovernanceActions implements Serializable {
     }
     /**
      *  Defines the level of retention.
+     *  @return retention
      */
     public Retention getRetention() {
         return retention;
@@ -79,6 +82,7 @@ public class  GovernanceActions implements Serializable {
     }
     /**
      *  Defines the level of criticality.
+     *  @return criticality
      */
     public Criticality getCriticality() {
         return criticality;

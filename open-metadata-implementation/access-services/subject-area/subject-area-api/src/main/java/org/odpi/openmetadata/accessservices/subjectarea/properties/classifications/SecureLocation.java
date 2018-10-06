@@ -102,8 +102,8 @@ public class SecureLocation extends Classification {
 
        private String description;
        /**
-        * Description of the security at this location.
-        * @return String
+        * {@literal Description of the security at this location. }
+        * @return {@code String }
         */
        public String getDescription() {
            return this.description;
@@ -115,8 +115,8 @@ public class SecureLocation extends Classification {
 
        private String level;
        /**
-        * Level of security at this location.
-        * @return String
+        * {@literal Level of security at this location. }
+        * @return {@code String }
         */
        public String getLevel() {
            return this.level;

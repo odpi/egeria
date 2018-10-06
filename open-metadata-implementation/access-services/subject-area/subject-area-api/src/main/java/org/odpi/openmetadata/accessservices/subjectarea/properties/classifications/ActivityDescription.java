@@ -101,8 +101,8 @@ public class ActivityDescription extends Classification {
 
        private ActivityType activityType;
        /**
-        * Classification of the activity.
-        * @return ActivityType
+        * {@literal Classification of the activity. }
+        * @return {@code ActivityType }
         */
        public ActivityType getActivityType() {
            return this.activityType;

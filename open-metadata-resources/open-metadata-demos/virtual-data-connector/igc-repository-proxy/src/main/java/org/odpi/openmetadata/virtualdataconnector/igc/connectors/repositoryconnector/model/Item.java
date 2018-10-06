@@ -1,7 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-package org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconnector.jackson;
+package org.odpi.openmetadata.virtualdataconnector.igc.connectors.repositoryconnector.model;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,7 +27,7 @@ import java.util.Map;
         "_name",
         "database_table_or_view.assigned_to_terms"
 })
-public class DataConnectors {
+public class Item {
 
     @JsonProperty("position")
     private Integer position;
@@ -31,11 +36,11 @@ public class DataConnectors {
     @JsonProperty("_type")
     private String type;
     @JsonProperty("assigned_to_terms")
-    private AssignedToTerms assignedToTerms;
+    private Terms assignedToTerms;
     @JsonProperty("_id")
     private String id;
     @JsonProperty("_context")
-    private List<Context> context = null;
+    private List<Context> context;
     @JsonProperty("data_type")
     private String dataType;
     @JsonProperty("_url")
@@ -47,7 +52,7 @@ public class DataConnectors {
     @JsonProperty("database_table_or_view.assigned_to_terms")
     private DatabaseTableOrViewAssignedToTerms databaseTableOrViewAssignedToTerms;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new HashMap<>();
 
     @JsonProperty("position")
     public Integer getPosition() {
@@ -80,12 +85,12 @@ public class DataConnectors {
     }
 
     @JsonProperty("assigned_to_terms")
-    public AssignedToTerms getAssignedToTerms() {
+    public Terms getAssignedToTerms() {
         return assignedToTerms;
     }
 
     @JsonProperty("assigned_to_terms")
-    public void setAssignedToTerms(AssignedToTerms assignedToTerms) {
+    public void setAssignedToTerms(Terms assignedToTerms) {
         this.assignedToTerms = assignedToTerms;
     }
 
@@ -170,6 +175,9 @@ public class DataConnectors {
         this.additionalProperties.put(name, value);
     }
 
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
+        this.additionalProperties = additionalProperties;
+    }
 }
 
 

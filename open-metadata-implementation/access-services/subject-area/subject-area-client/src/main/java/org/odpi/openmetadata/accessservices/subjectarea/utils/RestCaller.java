@@ -35,12 +35,12 @@ public class RestCaller {
     /**
      * Issue a POST REST call that returns a SubjectAreaOMASAPIResponse object.
      *
-     * @param className = name of the calling class
-     * @param methodName  - name of the calling method
-     * @Param requestBody - body of the rest request
-     * @param url -  the URL for the REST API call
-     * @return SubjectAreaOMASAPIResponse    - list of governed asset components
-     * @throws MetadataServerUncontactableException - something went wrong with the REST call stack.
+     * @param className name of the calling class
+     * @param methodName  name of the calling method
+     * @param requestBody body of the rest request
+     * @param url  the URL for the REST API call
+     * @return SubjectAreaOMASAPIResponse    list of governed asset components
+     * @throws MetadataServerUncontactableException something went wrong with the REST call stack.
      */
     public static SubjectAreaOMASAPIResponse issuePost(String className,
                                                        String methodName,
@@ -55,11 +55,11 @@ public class RestCaller {
      * Issue a PUT REST call that returns a SubjectAreaOMASAPIResponse object.
      *
      * @param className = name of the calling class
-     * @param methodName  - name of the calling method
-     * @Param requestBody - body of the rest request
-     * @param url -  the URL for the REST API call
-     * @return SubjectAreaOMASAPIResponse    - list of governed asset components
-     * @throws MetadataServerUncontactableException - something went wrong with the REST call stack.
+     * @param methodName  name of the calling method
+     * @param requestBody body of the rest request
+     * @param url  the URL for the REST API call
+     * @return SubjectAreaOMASAPIResponse    list of governed asset components
+     * @throws MetadataServerUncontactableException something went wrong with the REST call stack.
      */
     public static SubjectAreaOMASAPIResponse issuePut(String className,
                                                        String methodName,
@@ -75,10 +75,9 @@ public class RestCaller {
      *
      * @param className name of the calling class
      * @param methodName  name of the calling method
-     * @Param requestBody body of the rest request
      * @param url url for the server
-     * @return SubjectAreaOMASAPIResponse    - list of governed asset components
-     * @throws MetadataServerUncontactableException - something went wrong with the REST call stack.
+     * @return SubjectAreaOMASAPIResponse    list of governed asset components
+     * @throws MetadataServerUncontactableException something went wrong with the REST call stack.
      */
     public static SubjectAreaOMASAPIResponse issueDelete(String className,
                                                       String methodName,
@@ -91,12 +90,12 @@ public class RestCaller {
     /**
      * Issue a rest exchange call with a rest body.
      * @param className = name of the calling class
-     * @param methodName  - name of the calling method
-     * @param httpMethod - http method
-     * @Param requestBody - body of the rest request
-     * @param url -  the URL for the REST API call
-     * @return SubjectAreaOMASAPIResponse    - list of governed asset components
-     * @throws MetadataServerUncontactableException - something went wrong with the REST call stack.
+     * @param methodName  name of the calling method
+     * @param httpMethod http method
+     * @param requestBody body of the rest request
+     * @param url  the URL for the REST API call
+     * @return SubjectAreaOMASAPIResponse    list of governed asset components
+     * @throws MetadataServerUncontactableException something went wrong with the REST call stack.
      */
     private static SubjectAreaOMASAPIResponse issueExchangeWithBody(String className,
                                                                     String methodName,
@@ -115,12 +114,11 @@ public class RestCaller {
     /**
      * Issue a rest exchange call without a rest body.
      * @param className = name of the calling class
-     * @param methodName  - name of the calling method
-     * @param httpMethod - http method
-     * @Param requestBody - body of the rest request
-     * @param url -  the URL for the REST API call
-     * @return SubjectAreaOMASAPIResponse    - list of governed asset components
-     * @throws MetadataServerUncontactableException - something went wrong with the REST call stack.
+     * @param methodName  name of the calling method
+     * @param httpMethod http method
+     * @param url  the URL for the REST API call
+     * @return SubjectAreaOMASAPIResponse    list of governed asset components
+     * @throws MetadataServerUncontactableException something went wrong with the REST call stack.
      */
     private static SubjectAreaOMASAPIResponse issueExchangeWithoutBody(String className,
                                                                     String methodName,

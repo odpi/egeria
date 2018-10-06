@@ -24,6 +24,15 @@ public class GovernedAsset {
 
     private String guid; // GUID of the asset that has been classified (TODO: Not sure what we'll put here for part of an asset)
     private String fqname; // Fully qualified Common name of the asset for example MYDATABASE.MYTABLE.MYCOLUMN
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     private String type; // The asset type (name)
     private String owner;// asset owner
 

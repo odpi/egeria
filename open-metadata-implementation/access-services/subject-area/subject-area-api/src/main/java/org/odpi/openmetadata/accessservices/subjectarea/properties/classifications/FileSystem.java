@@ -102,8 +102,8 @@ public class FileSystem extends Classification {
 
        private String format;
        /**
-        * Format of the file system.
-        * @return String
+        * {@literal Format of the file system. }
+        * @return {@code String }
         */
        public String getFormat() {
            return this.format;
@@ -115,8 +115,8 @@ public class FileSystem extends Classification {
 
        private String encryption;
        /**
-        * Level of encryption used on the filesystem (if any).
-        * @return String
+        * {@literal Level of encryption used on the filesystem (if any). }
+        * @return {@code String }
         */
        public String getEncryption() {
            return this.encryption;

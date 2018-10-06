@@ -102,8 +102,8 @@ public class MetadataServer extends Classification {
 
        private String format;
        /**
-        * format of supported metadata.
-        * @return String
+        * {@literal format of supported metadata. }
+        * @return {@code String }
         */
        public String getFormat() {
            return this.format;
@@ -115,8 +115,8 @@ public class MetadataServer extends Classification {
 
        private String type;
        /**
-        * Type of metadata server.
-        * @return String
+        * {@literal Type of metadata server. }
+        * @return {@code String }
         */
        public String getType() {
            return this.type;

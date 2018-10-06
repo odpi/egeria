@@ -45,11 +45,13 @@ public class PrimaryKey extends Classification {
 
  public static final String[] PROPERTY_NAMES_SET_VALUES = new String[] {
         "keyPattern",
+        "name",
 
     // Terminate the list
         null
     };
     public static final String[] ATTRIBUTE_NAMES_SET_VALUES = new String[] {
+        "name",
 
      // Terminate the list
         null
@@ -93,6 +95,9 @@ public class PrimaryKey extends Classification {
         }
         MapPropertyValue mapPropertyValue=null;
         PrimitivePropertyValue primitivePropertyValue=null;
+        primitivePropertyValue = new PrimitivePropertyValue();
+        primitivePropertyValue.setPrimitiveValue(name);
+        instanceProperties.setProperty("name",primitivePropertyValue);
         if (log.isDebugEnabled()) {
                log.debug("<== Method: " + methodName);
         }
@@ -101,14 +106,27 @@ public class PrimaryKey extends Classification {
 
        private KeyPattern keyPattern;
        /**
-        * Type of primary key.
-        * @return KeyPattern
+        * {@literal Type of primary key. }
+        * @return {@code KeyPattern }
         */
        public KeyPattern getKeyPattern() {
            return this.keyPattern;
        }
        public void setKeyPattern(KeyPattern keyPattern)  {
            this.keyPattern = keyPattern;
+       }
+
+
+       private String name;
+       /**
+        * {@literal Display name for the primary key. }
+        * @return {@code String }
+        */
+       public String getName() {
+           return this.name;
+       }
+       public void setName(String name)  {
+           this.name = name;
        }
 
 

@@ -9,7 +9,7 @@
     <parent>
         <artifactId>egeria</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>0.1-SNAPSHOT</version>
+        <version>0.2-SNAPSHOT</version>
     </parent>
 
     <name>Open Metadata Compliance Suite</name>
@@ -60,5 +60,35 @@
         </dependency>
 
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <mainClass>org.odpi.openmetadata.compliance.OpenMetadataTestLab</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>assemble-all</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
