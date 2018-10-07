@@ -2208,6 +2208,105 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 
 
     /**
+     * Returns the type name from an instance (entity, relationship or classification).
+     *
+     * @param instance instance to read
+     * @return String type name
+     * @throws InvalidParameterException if the parameters are null or invalid
+     * @throws RepositoryErrorException if the instance does not have a type name
+     */
+    public String   getTypeName(InstanceAuditHeader      instance) throws RepositoryErrorException,
+                                                                          InvalidParameterException
+    {
+        final String methodName = "getTypeName";
+
+        if (instance != null)
+        {
+            InstanceType type = instance.getType();
+
+            if (type != null)
+            {
+                if (type.getTypeDefName() != null)
+                {
+                    return type.getTypeDefName();
+                }
+            }
+
+            throwRepositoryContentError(methodName, instance);
+        }
+
+        throwParameterError(methodName);
+        return null;
+    }
+
+
+    /**
+     * Return the guid of an entity linked to end 1 of the relationship.
+     *
+     * @param relationship relationship to parse
+     * @return String unique identifier
+     * @throws RepositoryErrorException
+     * @throws InvalidParameterException
+     */
+    public String  getEnd1EntityGUID(Relationship   relationship) throws RepositoryErrorException,
+                                                                         InvalidParameterException
+    {
+        final String methodName = "getEnd1EntityGUID";
+
+        if (relationship != null)
+        {
+            EntityProxy entityProxy = relationship.getEntityOneProxy();
+
+            if (entityProxy != null)
+            {
+                if (entityProxy.getGUID() != null)
+                {
+                    return entityProxy.getGUID();
+                }
+            }
+
+            throwRepositoryContentError(methodName, relationship);
+        }
+
+        throwParameterError(methodName);
+        return null;
+    }
+
+
+    /**
+     * Return the guid of an entity linked to end 2 of the relationship.
+     *
+     * @param relationship relationship to parse
+     * @return String unique identifier
+     * @throws RepositoryErrorException
+     * @throws InvalidParameterException
+     */
+    public String  getEnd2EntityGUID(Relationship   relationship) throws RepositoryErrorException,
+                                                                         InvalidParameterException
+    {
+        final String methodName = "getEnd2EntityGUID";
+
+        if (relationship != null)
+        {
+            EntityProxy entityProxy = relationship.getEntityTwoProxy();
+
+            if (entityProxy != null)
+            {
+                if (entityProxy.getGUID() != null)
+                {
+                    return entityProxy.getGUID();
+                }
+            }
+
+            throwRepositoryContentError(methodName, relationship);
+        }
+
+        throwParameterError(methodName);
+        return null;
+    }
+
+
+    /**
      * Throws a logic error exception when the repository helper is called with invalid parameters.
      * Normally this means the repository helper methods have been called in the wrong order.
      *
@@ -2231,6 +2330,52 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
                                           errorCode.getSystemAction(),
                                           errorCode.getUserAction());
     }
+
+
+    /**
+     * Throws a logic error exception when the repository validator is called with invalid parameters.
+     * Normally this means the repository validator methods have been called in the wrong order.
+     *
+     * @param methodName local method that detected the error
+     * @throws InvalidParameterException for an invalid parameter - this is typically a logic error
+     */
+    private void throwParameterError(String     methodName) throws InvalidParameterException
+    {
+        OMRSErrorCode errorCode = OMRSErrorCode.NULL_PARAMETER;
+        String errorMessage     = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
+
+        throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                                          this.getClass().getName(),
+                                          methodName,
+                                          errorMessage,
+                                          errorCode.getSystemAction(),
+                                          errorCode.getUserAction());
+    }
+
+
+    /**
+     * Throws a logic error exception when the repository validator is called with invalid parameters.
+     * Normally this means the repository validator methods have been called in the wrong order.
+     *
+     * @param methodName local method that detected the error
+     * @param instance instance in error
+     * @throws RepositoryErrorException there is an invalid instance
+     */
+    private void throwRepositoryContentError(String              methodName,
+                                             InstanceAuditHeader instance) throws RepositoryErrorException
+    {
+        OMRSErrorCode errorCode = OMRSErrorCode.INVALID_INSTANCE;
+        String errorMessage     = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                                                                                                     instance.toString());
+
+        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                                          this.getClass().getName(),
+                                          methodName,
+                                          errorMessage,
+                                          errorCode.getSystemAction(),
+                                          errorCode.getUserAction());
+    }
+
 
 
     /**

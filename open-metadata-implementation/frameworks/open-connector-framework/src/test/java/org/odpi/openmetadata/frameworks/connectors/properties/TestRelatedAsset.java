@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
@@ -17,12 +18,12 @@ import static org.testng.Assert.assertTrue;
  */
 public class TestRelatedAsset
 {
-    private ElementType            type                 = new ElementType();
-    private List<Classification>   classifications      = new ArrayList<>();
-    private Map<String, Object>    additionalProperties = new HashMap<>();
-    private Map<String, Object>    assetProperties = new HashMap<>();
-    private PrimitiveSchemaElement schemaType           = new PrimitiveSchemaElement();
-    private AssetSchemaElement     attributeSchemaType  = null;
+    private ElementType            type                   = new ElementType();
+    private List<Classification>   classifications        = new ArrayList<>();
+    private Map<String, Object>    additionalProperties   = new HashMap<>();
+    private Map<String, Object>    assetProperties        = new HashMap<>();
+    private PrimitiveSchemaElement schemaType             = new PrimitiveSchemaElement();
+    private AssetSchemaType        attributeSchemaType    = null;
     private RelatedAssetProperties relatedAssetProperties = null;
 
 

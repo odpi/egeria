@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.server;
 
 
@@ -26,6 +27,7 @@ class ConnectionHandler
     private static final String connectionTypeGUID                      = "114e9f8f-5ff3-4c32-bd37-a7eb42712253";
     private static final String connectionConnectorTypeRelationshipGUID = "e542cfc1-0b4b-42b9-9921-f0a5a88aaf96";
     private static final String connectionEndpointRelationshipGUID      = "887a7132-d6bc-4b92-a483-e80b60c86fb2";
+    private static final String connectionToAssetRelationshipGUID       = "e777d660-8dbe-453e-8b83-903771f054c0";
     private static final String qualifiedNamePropertyName               = "qualifiedName";
     private static final String displayNamePropertyName                 = "displayName";
     private static final String additionalPropertiesName                = "additionalProperties";
@@ -275,6 +277,151 @@ class ConnectionHandler
     }
 
 
+    /**
+     * Returns the unique identifier for the asset connected to the connection.
+     *
+     * @param userId the userId of the requesting user.
+     * @param connectionGUID  uniqueId for the connection.
+     *
+     * @return unique identifier of asset or
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving the connected asset properties from the property server.
+     * @throws UnrecognizedConnectionGUIDException the supplied GUID is not recognized by the property server.
+     * @throws NoConnectedAssetException there is no asset associated with this connection.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    String getAssetForConnection(String   userId,
+                                 String   connectionGUID) throws InvalidParameterException,
+                                                                 UnrecognizedConnectionGUIDException,
+                                                                 NoConnectedAssetException,
+                                                                 PropertyServerException,
+                                                                 UserNotAuthorizedException
+    {
+        final  String   methodName = "getAssetForConnection";
+        final  String   guidParameter = "connectionGUID";
+
+        errorHandler.validateUserId(userId, methodName);
+        errorHandler.validateGUID(connectionGUID, guidParameter, methodName);
+
+        OMRSMetadataCollection  metadataCollection = errorHandler.validateRepositoryConnector(methodName);
+        String                  assetGUID = null;
+
+        try
+        {
+            List<Relationship> relationships = metadataCollection.getRelationshipsForEntity(userId,
+                                                                                            connectionGUID,
+                                                                                            null,
+                                                                                            0,
+                                                                                            null,
+                                                                                            null,
+                                                                                            null,
+                                                                                            null,
+                                                                                            0);
+            Relationship      assetRelationship = null;
+
+            for (Relationship  retrievedRelationship : relationships)
+            {
+                if (retrievedRelationship != null)
+                {
+                    InstanceType  type = retrievedRelationship.getType();
+
+                    if (type != null)
+                    {
+                        if (connectionToAssetRelationshipGUID.equals(type.getTypeDefGUID()))
+                        {
+                            if (assetRelationship == null)
+                            {
+                                assetRelationship = retrievedRelationship;
+                            }
+                            else
+                            {
+                                AssetConsumerErrorCode errorCode = AssetConsumerErrorCode.MULTIPLE_ASSETS_FOUND;
+                                String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(connectionGUID);
+
+                                throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+                                                                    this.getClass().getName(),
+                                                                    methodName,
+                                                                    errorMessage,
+                                                                    errorCode.getSystemAction(),
+                                                                    errorCode.getUserAction());
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (assetRelationship == null)
+            {
+                AssetConsumerErrorCode errorCode = AssetConsumerErrorCode.ASSET_NOT_FOUND;
+                String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(connectionGUID);
+
+                throw new NoConnectedAssetException(errorCode.getHTTPErrorCode(),
+                                                              this.getClass().getName(),
+                                                              methodName,
+                                                              errorMessage,
+                                                              errorCode.getSystemAction(),
+                                                              errorCode.getUserAction(),
+                                                              connectionGUID);
+            }
+
+            EntityProxy  end2 = assetRelationship.getEntityTwoProxy();
+
+            if (end2 != null)
+            {
+                return end2.getGUID();
+            }
+            else
+            {
+                AssetConsumerErrorCode errorCode = AssetConsumerErrorCode.NULL_END2_RETURNED;
+                String                 errorMessage = errorCode.getErrorMessageId()
+                                     + errorCode.getFormattedErrorMessage(connectionToAssetRelationshipGUID,
+                                                                          assetRelationship.getGUID(),
+                                                                          assetRelationship.toString());
+
+                throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+                                                  this.getClass().getName(),
+                                                  methodName,
+                                                  errorMessage,
+                                                  errorCode.getSystemAction(),
+                                                  errorCode.getUserAction());
+            }
+        }
+        catch (NoConnectedAssetException | PropertyServerException error)
+        {
+            throw error;
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException error)
+        {
+            AssetConsumerErrorCode errorCode = AssetConsumerErrorCode.CONNECTION_NOT_FOUND;
+            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(connectionGUID,
+                                                                                                            serverName,
+                                                                                                            error.getErrorMessage());
+
+            throw new UnrecognizedConnectionGUIDException(errorCode.getHTTPErrorCode(),
+                                                          this.getClass().getName(),
+                                                          methodName,
+                                                          errorMessage,
+                                                          errorCode.getSystemAction(),
+                                                          errorCode.getUserAction(),
+                                                          connectionGUID);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        {
+            errorHandler.handleUnauthorizedUser(userId,
+                                                methodName,
+                                                serverName,
+                                                serviceName);
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error,
+                                               methodName,
+                                               serverName,
+                                               serviceName);
+        }
+
+        return assetGUID;
+    }
 
 
     /**

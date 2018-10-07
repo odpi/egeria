@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.properties;
 
 import com.fasterxml.jackson.annotation.*;
@@ -21,6 +22,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = Asset.class, name = "Asset"),
+        @JsonSubTypes.Type(value = AssetCollection.class, name = "AssetCollection"),
+        @JsonSubTypes.Type(value = MyProfile.class, name = "MyProfile"),
+        @JsonSubTypes.Type(value = UserIdentity.class, name = "UserIdentity"),
         @JsonSubTypes.Type(value = Classification.class, name = "Classification")
 })
 public abstract class AssetConsumerElementHeader implements Serializable

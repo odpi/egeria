@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-/* Copyright Contributors to the Egeria project. */
+/* Copyright Contributors to the ODPi Egeria project. */
 
 package org.odpi.openmetadata.accessservices.assetconsumer.rest;
 
@@ -20,6 +20,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = LogRecordRequestBody.class, name = "LogRecordRequestBody"),
+                @JsonSubTypes.Type(value = MyProfileRequestBody.class, name = "MyProfileRequestBody"),
+                @JsonSubTypes.Type(value = AssetCollectionRequestBody.class, name = "AssetCollectionRequestBody"),
                 @JsonSubTypes.Type(value = TagRequestBody.class, name = "TagRequestBody"),
                 @JsonSubTypes.Type(value = CommentRequestBody.class, name = "CommentRequestBody"),
                 @JsonSubTypes.Type(value = RatingRequestBody.class, name = "RatingRequestBody")

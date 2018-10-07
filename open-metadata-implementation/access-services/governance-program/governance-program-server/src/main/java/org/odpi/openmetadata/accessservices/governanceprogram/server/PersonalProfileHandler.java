@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 
 /**
- * PersonalProfileHandler retrieves Person objects from the property server.  It runs server-side in the GovernanceProgram
+ * PersonalProfileHandler manages Person objects from the property server.  It runs server-side in the GovernanceProgram
  * OMAS and retrieves entities and relationships through the OMRSRepositoryConnector.
  */
 class PersonalProfileHandler
@@ -146,7 +146,16 @@ class PersonalProfileHandler
             personalProfile = new PersonalProfile();
 
             personalProfile.setGUID(entity.getGUID());
-            personalProfile.setType(personalDetailsTypeName);
+
+            InstanceType   instanceType = entity.getType();
+            if (instanceType != null)
+            {
+                personalProfile.setType(instanceType.getTypeDefName());
+            }
+            else
+            {
+                personalProfile.setType(personalDetailsTypeName);
+            }
 
             InstanceProperties instanceProperties = entity.getProperties();
 
@@ -176,6 +185,7 @@ class PersonalProfileHandler
      * have a profile in open metadata.
      *
      * @param userId the name of the calling user.
+     * @param profileUserId userId of the individual whose profile this is.
      * @param employeeNumber personnel/serial/unique employee number of the individual.
      * @param fullName full name of the person.
      * @param knownName known name or nickname of the individual.
@@ -188,6 +198,7 @@ class PersonalProfileHandler
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     String createPersonalProfile(String              userId,
+                                 String              profileUserId,
                                  String              employeeNumber,
                                  String              fullName,
                                  String              knownName,

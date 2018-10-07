@@ -59,7 +59,6 @@ public class OMAGServerAdminServices
     private static final String      defaultInTopicName = "InTopic";
     private static final String      defaultOutTopicName = "OutTopic";
 
-    private OMAGServerConfigStore    serverConfigStore      = null;
     private OMRSOperationalServices  operationalServices    = null;
     private List<AccessServiceAdmin> accessServiceAdminList = new ArrayList<>();
 
@@ -1839,6 +1838,52 @@ public class OMAGServerAdminServices
 
 
     /**
+     * Retrieve the connection to the config file.
+     *
+     * @param serverName  name of the server
+     * @param methodName  method requesting the server details
+     * @return configuration connector file
+     * @throws OMAGInvalidParameterException
+     */
+    private  OMAGServerConfigStore getServerConfigStore(String   serverName,
+                                                        String   methodName) throws OMAGInvalidParameterException
+    {
+        OMAGServerConfigStore    serverConfigStore      = null;
+
+        ConnectorConfigurationFactory connectorConfigurationFactory = new ConnectorConfigurationFactory();
+
+        Connection connection = connectorConfigurationFactory.getServerConfigConnection(serverName);
+
+        try
+        {
+
+            ConnectorBroker connectorBroker = new ConnectorBroker();
+
+            Connector connector = connectorBroker.getConnector(connection);
+
+            serverConfigStore = (OMAGServerConfigStore) connector;
+        }
+        catch (Throwable   error)
+        {
+            OMAGErrorCode errorCode    = OMAGErrorCode.BAD_CONFIG_FILE;
+            String        errorMessage = errorCode.getErrorMessageId()
+                    + errorCode.getFormattedErrorMessage(serverName, methodName, error.getMessage());
+
+            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    errorMessage,
+                                                    errorCode.getSystemAction(),
+                                                    errorCode.getUserAction(),
+                                                    error);
+        }
+
+
+        return serverConfigStore;
+    }
+
+
+    /**
      * Retrieve any saved configuration for this server.
      *
      * @param serverName  name of the server
@@ -1849,38 +1894,14 @@ public class OMAGServerAdminServices
     private  OMAGServerConfig   getServerConfig(String   serverName,
                                                 String   methodName) throws OMAGInvalidParameterException
     {
-        if (serverConfigStore == null)
+        OMAGServerConfigStore   serverConfigStore = getServerConfigStore(serverName, methodName);
+        OMAGServerConfig        serverConfig      = null;
+
+
+        if (serverConfigStore != null)
         {
-            ConnectorConfigurationFactory connectorConfigurationFactory = new ConnectorConfigurationFactory();
-
-            Connection connection = connectorConfigurationFactory.getServerConfigConnection(serverName);
-
-            try
-            {
-
-                ConnectorBroker connectorBroker = new ConnectorBroker();
-
-                Connector connector = connectorBroker.getConnector(connection);
-
-                serverConfigStore = (OMAGServerConfigStore) connector;
-            }
-            catch (Throwable   error)
-            {
-                OMAGErrorCode errorCode    = OMAGErrorCode.BAD_CONFIG_FILE;
-                String        errorMessage = errorCode.getErrorMessageId()
-                                           + errorCode.getFormattedErrorMessage(serverName, methodName, error.getMessage());
-
-                throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
-                                                        this.getClass().getName(),
-                                                        methodName,
-                                                        errorMessage,
-                                                        errorCode.getSystemAction(),
-                                                        errorCode.getUserAction(),
-                                                        error);
-            }
+            serverConfig = serverConfigStore.retrieveServerConfig();
         }
-
-        OMAGServerConfig serverConfig = serverConfigStore.retrieveServerConfig();
 
         if (serverConfig == null)
         {
@@ -1890,6 +1911,7 @@ public class OMAGServerAdminServices
         serverConfig.setLocalServerName(serverName);
 
         return serverConfig;
+
     }
 
 
@@ -1905,15 +1927,12 @@ public class OMAGServerAdminServices
                                    String            methodName,
                                    OMAGServerConfig  serverConfig) throws OMAGInvalidParameterException
     {
-        if (serverConfigStore == null)
-        {
-            /*
-             * Using getServerConfig to setup the connector the the config store
-             */
-            this.getServerConfig(serverName, methodName);
-        }
+        OMAGServerConfigStore   serverConfigStore = getServerConfigStore(serverName, methodName);
 
-        serverConfigStore.saveServerConfig(serverConfig);
+        if (serverConfigStore != null)
+        {
+            serverConfigStore.saveServerConfig(serverConfig);
+        }
     }
 
 

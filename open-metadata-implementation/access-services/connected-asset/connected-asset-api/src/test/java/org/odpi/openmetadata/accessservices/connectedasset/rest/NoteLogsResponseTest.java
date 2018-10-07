@@ -1,8 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.connectedasset.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.NoteLog;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -18,9 +18,9 @@ import static org.testng.Assert.assertTrue;
  */
 public class NoteLogsResponseTest
 {
-    private Map<String, Object> exceptionProperties = new HashMap<>();
-    private List<NoteLog>       responseList        = new ArrayList<>();
-    private NoteLog             responseObject      = new NoteLog();
+    private Map<String, Object>         exceptionProperties = new HashMap<>();
+    private List<NoteLogResponse>       responseList        = new ArrayList<>();
+    private NoteLogResponse             responseObject      = new NoteLogResponse();
 
 
     /**
@@ -28,7 +28,7 @@ public class NoteLogsResponseTest
      */
     public NoteLogsResponseTest()
     {
-        responseObject.setGUID("TestGUID");
+        responseObject.setNoteCount(9);
         responseList.add(responseObject);
     }
 

@@ -3,11 +3,11 @@ package org.odpi.openmetadata.accessservices.connectedasset.client;
 
 import org.odpi.openmetadata.accessservices.connectedasset.ffdc.ConnectedAssetErrorCode;
 import org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions.*;
+import org.odpi.openmetadata.accessservices.connectedasset.rest.AssetResponse;
 import org.odpi.openmetadata.accessservices.connectedasset.rest.ConnectedAssetOMASAPIResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.*;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
@@ -27,14 +27,34 @@ public class ConnectedAsset extends AssetUniverse
     private String                    omasServerURL;
 
 
+    /*
+     * Current counts of all of the attached elements
+     */
+    private int   annotationCount            = 0;
+    private int   certificationCount         = 0;
+    private int   commentCount               = 0;
+    private int   connectionCount            = 0;
+    private int   externalIdentifierCount    = 0;
+    private int   externalReferencesCount    = 0;
+    private int   informalTagCount           = 0;
+    private int   licenseCount               = 0;
+    private int   likeCount                  = 0;
+    private int   knownLocationsCount        = 0;
+    private int   meaningsCount              = 0;
+    private int   noteLogsCount              = 0;
+    private int   ratingsCount               = 0;
+    private int   relatedAssetCount          = 0;
+    private int   relatedMediaReferenceCount = 0;
+    private int   schemaCount                = 0;
+
+
     /**
-     * Default Constructor used once a connector is created.
+     * Constructor used by Asset Consumer OMAS and Connected AssetProperties.refresh().
      *
-     * @param omasServerURL  unique id for the connector instance
-     * @param userId  String - userId of user making request.
-     * @param assetGUID  String - unique id for asset.
+     * @param omasServerURL  url used to call the server.
+     * @param userId  userId of user making request.
+     * @param assetGUID  unique id for asset.
      *
-     * @return AssetUniverse - a comprehensive collection of properties about the asset.
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UnrecognizedAssetGUIDException the assetGUID is not recognized
      * @throws PropertyServerException There is a problem retrieving the asset properties from
@@ -52,8 +72,19 @@ public class ConnectedAsset extends AssetUniverse
 
         this.omasServerURL = omasServerURL;
 
-        super.assetBean = this.getAssetBasics(userId, assetGUID);
-        super.externalIdentifiers = this.getNewExternalIdentifiers(userId, assetGUID);
+        AssetResponse assetResponse = this.getAssetSummary(userId, assetGUID);
+
+        super.assetBean = assetResponse.getAsset();
+
+        if (assetResponse.getExternalIdentifierCount() > 0)
+        {
+            super.externalIdentifiers = new ConnectedAssetExternalIdentifiers(userId,
+                                                                              omasServerURL,
+                                                                              assetGUID,
+                                                                              this,
+                                                                              assetResponse.getExternalIdentifierCount(),
+                                                                              100);
+        }
         super.relatedMediaReferences = this.getNewRelatedMediaReferences(userId, assetGUID);
         super.noteLogs = this.getNewNoteLogs(userId, assetGUID);
         super.externalReferences = this.getNewExternalReferences(userId, assetGUID);
@@ -83,13 +114,47 @@ public class ConnectedAsset extends AssetUniverse
      * @throws PropertyServerException there is a problem retrieving the asset properties from the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    private Asset getAssetBasics(String   userId,
-                                 String   assetGUID) throws InvalidParameterException,
-                                                            UnrecognizedAssetGUIDException,
-                                                            PropertyServerException,
-                                                            UserNotAuthorizedException
+    private AssetResponse getAssetSummary(String   userId,
+                                          String   assetGUID) throws InvalidParameterException,
+                                                                     UnrecognizedAssetGUIDException,
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
     {
-        return null;
+        final String   methodName = "getAssetSummary";
+        final String   urlTemplate = "/open-metadata/access-services/connected-asset/users/{0}/assets/by-connection/{1}";
+
+        validateOMASServerURL(methodName);
+
+        AssetResponse  restResult = null;
+
+        try
+        {
+            RestTemplate restTemplate = new RestTemplate();
+
+            restResult = restTemplate.getForObject(urlTemplate, AssetResponse.class, userId, assetGUID);
+        }
+        catch (Throwable error)
+        {
+            ConnectedAssetErrorCode errorCode = ConnectedAssetErrorCode.CLIENT_SIDE_REST_API_ERROR;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                                                                                                     omasServerURL,
+                                                                                                     error.getMessage());
+
+            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+                                              this.getClass().getName(),
+                                              methodName,
+                                              errorMessage,
+                                              errorCode.getSystemAction(),
+                                              errorCode.getUserAction(),
+                                              error);
+        }
+
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowUnrecognizedAssetGUIDException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+        this.detectAndThrowPropertyServerException(methodName, restResult);
+
+        return restResult;
     }
 
 
@@ -142,8 +207,8 @@ public class ConnectedAsset extends AssetUniverse
         return null;
     }
 
-    private AssetSchema  getNewSchema(String   userId,
-                                      String   assetGUID)
+    private AssetComplexSchemaType getNewSchema(String   userId,
+                                                String   assetGUID)
     {
         return null;
     }
@@ -180,27 +245,111 @@ public class ConnectedAsset extends AssetUniverse
 
 
     /**
-     * Issue a POST REST call that returns a CountResponse object.  This is typically a create
+     * Throw an exception if a server URL has not been supplied on the constructor.
+     *
+     * @param methodName  name of the method making the call.
+     *
+     * @throws PropertyServerException the server URL is not set
+     */
+    void validateOMASServerURL(String methodName) throws PropertyServerException
+    {
+        if (omasServerURL == null)
+        {
+            /*
+             * It is not possible to retrieve a connection without knowledge of where the OMAS Server is located.
+             */
+            ConnectedAssetErrorCode errorCode    = ConnectedAssetErrorCode.SERVER_URL_NOT_SPECIFIED;
+            String                  errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
+
+            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+                                              this.getClass().getName(),
+                                              methodName,
+                                              errorMessage,
+                                              errorCode.getSystemAction(),
+                                              errorCode.getUserAction());
+        }
+    }
+
+
+    /**
+     * Throw an exception if the supplied userId is null
+     *
+     * @param userId      user name to validate
+     * @param methodName  name of the method making the call.
+     *
+     * @throws InvalidParameterException the userId is null
+     */
+    void validateUserId(String userId,
+                        String methodName) throws InvalidParameterException
+    {
+        if (userId == null)
+        {
+            ConnectedAssetErrorCode errorCode   = ConnectedAssetErrorCode.NULL_USER_ID;
+            String                 errorMessage = errorCode.getErrorMessageId()
+                                                + errorCode.getFormattedErrorMessage(methodName);
+
+            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                errorMessage,
+                                                errorCode.getSystemAction(),
+                                                errorCode.getUserAction(),
+                                                "userId");
+        }
+    }
+
+
+    /**
+     * Throw an exception if the supplied userId is null
+     *
+     * @param guid           unique identifier to validate
+     * @param guidParameter  name of the parameter that passed the guid.
+     * @param methodName     name of the method making the call.
+     *
+     * @throws InvalidParameterException the guid is null
+     */
+    void validateGUID(String guid,
+                      String guidParameter,
+                      String methodName) throws InvalidParameterException
+    {
+        if (guid == null)
+        {
+            ConnectedAssetErrorCode errorCode    = ConnectedAssetErrorCode.NULL_GUID;
+            String                  errorMessage = errorCode.getErrorMessageId()
+                                  + errorCode.getFormattedErrorMessage(guidParameter, methodName);
+
+            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                errorMessage,
+                                                errorCode.getSystemAction(),
+                                                errorCode.getUserAction(),
+                                                guidParameter);
+        }
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a response object.
      *
      * @param methodName  name of the method being called.
+     * @param returnClass class of the response object.
      * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters.
-     * @param requestBody request body for the request.
      * @param params  a list of parameters that are slotted into the url template.
      *
      * @return Object
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    private Object callRESTCall(String    methodName,
-                                Class     returnClass,
-                                String    urlTemplate,
-                                Object    requestBody,
-                                Object... params) throws PropertyServerException
+    Object callGetRESTCall(String    methodName,
+                           Class     returnClass,
+                           String    urlTemplate,
+                           Object... params) throws PropertyServerException
     {
         try
         {
-            RestTemplate restTemplate = new RestTemplate();
+            RestTemplate  restTemplate = new RestTemplate();
 
-            return restTemplate.postForObject(urlTemplate, requestBody, returnClass, params);
+            return restTemplate.getForObject(urlTemplate, returnClass, params);
         }
         catch (Throwable error)
         {
@@ -228,8 +377,8 @@ public class ConnectedAsset extends AssetUniverse
      *
      * @throws InvalidParameterException encoded exception from the server
      */
-    private void detectAndThrowInvalidParameterException(String                        methodName,
-                                                         ConnectedAssetOMASAPIResponse restResult) throws InvalidParameterException
+    void detectAndThrowInvalidParameterException(String                        methodName,
+                                                 ConnectedAssetOMASAPIResponse restResult) throws InvalidParameterException
     {
         final String   exceptionClassName = InvalidParameterException.class.getName();
 
@@ -267,8 +416,8 @@ public class ConnectedAsset extends AssetUniverse
      *
      * @throws PropertyServerException encoded exception from the server
      */
-    private void detectAndThrowPropertyServerException(String                        methodName,
-                                                       ConnectedAssetOMASAPIResponse restResult) throws PropertyServerException
+    void detectAndThrowPropertyServerException(String                        methodName,
+                                               ConnectedAssetOMASAPIResponse restResult) throws PropertyServerException
     {
         final String   exceptionClassName = PropertyServerException.class.getName();
 
@@ -292,8 +441,8 @@ public class ConnectedAsset extends AssetUniverse
      *
      * @throws UnrecognizedAssetGUIDException encoded exception from the server
      */
-    private void detectAndThrowUnrecognizedAssetGUIDException(String                        methodName,
-                                                              ConnectedAssetOMASAPIResponse restResult) throws UnrecognizedAssetGUIDException
+    void detectAndThrowUnrecognizedAssetGUIDException(String                        methodName,
+                                                      ConnectedAssetOMASAPIResponse restResult) throws UnrecognizedAssetGUIDException
     {
         final String   exceptionClassName = UnrecognizedAssetGUIDException.class.getName();
 
@@ -331,8 +480,8 @@ public class ConnectedAsset extends AssetUniverse
      *
      * @throws UserNotAuthorizedException encoded exception from the server
      */
-    private void detectAndThrowUserNotAuthorizedException(String                        methodName,
-                                                          ConnectedAssetOMASAPIResponse restResult) throws UserNotAuthorizedException
+    void detectAndThrowUserNotAuthorizedException(String                        methodName,
+                                                  ConnectedAssetOMASAPIResponse restResult) throws UserNotAuthorizedException
     {
         final String   exceptionClassName = UserNotAuthorizedException.class.getName();
 

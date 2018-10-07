@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-/* Copyright Contributors to the Egeria project. */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.connectedasset.rest;
 
 import com.fasterxml.jackson.annotation.*;
@@ -42,6 +42,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = RelatedAssetsResponse.class, name = "RelatedAssetsResponse"),
                 @JsonSubTypes.Type(value = RelatedMediaReferencesResponse.class, name = "RelatedMediaReferencesResponse"),
                 @JsonSubTypes.Type(value = SchemaResponse.class, name = "SchemaResponse"),
+                @JsonSubTypes.Type(value = VoidResponse.class, name = "VoidResponse"),
                 @JsonSubTypes.Type(value = CountResponse.class, name = "CountResponse")
         })
 public abstract class ConnectedAssetOMASAPIResponse implements java.io.Serializable

@@ -3507,7 +3507,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
      *
      * @param sourceName source of the request (used for logging)
      * @param originatingMethodName method that called the repository validator
-     * @param localMethodName local method that deleted the error
+     * @param localMethodName local method that detected the error
      */
     private void throwValidatorLogicError(String     sourceName,
                                           String     originatingMethodName,
@@ -3537,10 +3537,10 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
      * @param localMethodName local method that deleted the error
      * @return boolean
      */
-    public boolean isATypeOf(String             sourceName,
-                             InstanceHeader     instance,
-                             String             typeName,
-                             String             localMethodName)
+    public boolean isATypeOf(String               sourceName,
+                             InstanceAuditHeader  instance,
+                             String               typeName,
+                             String               localMethodName)
     {
         final String   methodName = "isATypeOf";
 
@@ -3554,18 +3554,18 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
             throwValidatorLogicError(sourceName, methodName, localMethodName);
         }
 
-        InstanceType   entityType = instance.getType();
+        InstanceType   instanceType = instance.getType();
 
-        if (entityType != null)
+        if (instanceType != null)
         {
-            String   entityTypeName = entityType.getTypeDefName();
+            String   entityTypeName = instanceType.getTypeDefName();
 
             if (typeName.equals(entityTypeName))
             {
                 return true;
             }
 
-            List<TypeDefLink> superTypes = entityType.getTypeDefSuperTypes();
+            List<TypeDefLink> superTypes = instanceType.getTypeDefSuperTypes();
 
             if (superTypes != null)
             {
@@ -3583,5 +3583,77 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
         }
 
         return false;
+    }
+
+
+    /**
+     * Validate that either zero or one entities were returned from a find request.  This is typically when searching
+     * for entities of a specific type using one of its unique properties.
+     *
+     * @param findResults list of entities returned from the search.
+     * @param typeName name of the type of entities requested.
+     * @param serviceName service that requested the entities.
+     * @param methodName calling method.
+     */
+    public void validateAtMostOneEntityResult(List<EntityDetail>   findResults,
+                                              String               typeName,
+                                              String               serviceName,
+                                              String               methodName) throws RepositoryErrorException
+    {
+        if (findResults != null)
+        {
+            if (findResults.size() > 1)
+            {
+                OMRSErrorCode errorCode = OMRSErrorCode.MULTIPLE_ENTITIES_FOUND;
+                String        errorMessage = errorCode.getErrorMessageId()
+                                           + errorCode.getFormattedErrorMessage(typeName,
+                                                                                serviceName,
+                                                                                methodName,
+                                                                                findResults.toString());
+
+                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                                                   this.getClass().getName(),
+                                                   methodName,
+                                                   errorMessage,
+                                                   errorCode.getSystemAction(),
+                                                   errorCode.getUserAction());
+            }
+        }
+    }
+
+
+    /**
+     * Validate that either zero or one relationships were returned from a find request.  This is typically when searching
+     * for relationships of a specific type where the cardinality is set to AT_MOST_ONE in the RelationshipEndCardinality.
+     *
+     * @param findResults list of relationships returned from the search.
+     * @param typeName name of the type of relationships requested.
+     * @param serviceName service that requested the relationships.
+     * @param methodName calling method.
+     */
+    public void validateAtMostOneRelationshipResult(List<Relationship>   findResults,
+                                                    String               typeName,
+                                                    String               serviceName,
+                                                    String               methodName) throws RepositoryErrorException
+    {
+        if (findResults != null)
+        {
+            if (findResults.size() > 1)
+            {
+                OMRSErrorCode errorCode = OMRSErrorCode.MULTIPLE_RELATIONSHIPS_FOUND;
+                String        errorMessage = errorCode.getErrorMessageId()
+                                           + errorCode.getFormattedErrorMessage(typeName,
+                                                                                serviceName,
+                                                                                methodName,
+                                                                                findResults.toString());
+
+                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                                                   this.getClass().getName(),
+                                                   methodName,
+                                                   errorMessage,
+                                                   errorCode.getSystemAction(),
+                                                   errorCode.getUserAction());
+            }
+        }
     }
 }

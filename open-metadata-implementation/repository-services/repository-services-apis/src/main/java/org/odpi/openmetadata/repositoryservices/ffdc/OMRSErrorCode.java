@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.ffdc;
 
 import org.slf4j.Logger;
@@ -274,6 +275,14 @@ public enum OMRSErrorCode
             "Type definition with guid {0} and name {1} conflicts with an existing type definition in open metadata repository {2}",
             "The system is unable to verify the supplied type definition because has different values from the type already defined in the repository.",
             "Review the supplied and stored types to locate the conflict and then ensure they are aligned by patching or deleting one of the type definitions."),
+    NULL_PARAMETER(400, "OMRS-REPOSITORY-400-060 ",
+            "The repository helper method {0} has been called with a null parameter",
+            "The system is unable to process the request because it needs the parameter value.",
+            "This is probably a logic error in Egeria. Raise a git issue to get this investigated and fixed."),
+    INVALID_INSTANCE(400, "OMRS-REPOSITORY-400-061 ",
+            "An invalid instance has been detected by repository helper method {0}.  The instance is {1}",
+            "The system is unable to work with the supplied instance because key values are missing from its contents.",
+            "This is probably a logic error in Egeria. Raise a git issue to get this investigated and fixed."),
     NULL_USER_NAME(400, "OMRS-REST-API-400-001 ",
             "The OMRS REST API for server {0} has been called with a null user name (userId)",
             "The system is unable to access the local metadata repository.",
@@ -496,6 +505,14 @@ public enum OMRSErrorCode
             "The system is not able to process the requested method because it is not supported by the " +
                                      "Open Metadata Repository Services (OMRS) Enterprise Repository Services.",
             "Correct the application that called this method."),
+    MULTIPLE_ENTITIES_FOUND(409, "OMRS-METADATA-COLLECTION-409-001 ",
+            "Multiple instances of type {0} have been returned to {2} of service {1} when there should be one at most.  These are examples of the entities returned: {3}",
+            "The type model defines certain properties as unique.  This means only one instance of this type with that property value should be returned.",
+            "Investigate why multiple instances exist and either delete the duplicates, or change the values in it so the unique properties are unique."),
+    MULTIPLE_RELATIONSHIPS_FOUND(409, "OMRS-METADATA-COLLECTION-409-002 ",
+            "Multiple instances of type {0} have been returned to {2} of service {1} when there should be one at most.  These are examples of the entities returned: {3}",
+            "The type model defines how many relationships are allowed to connect with a specific entity instance.  This is an example of where the limit has been exceeded.",
+            "Investigate why multiple instances exist and delete the duplicates."),
     INVALID_PRIMITIVE_CLASS_NAME(500, "OMRS-METADATA-COLLECTION-500-001 ",
             "The Java class \'{0}\' for PrimitiveDefCategory {1} is not known",
             "There is an internal error in Java class PrimitiveDefCategory as it has been set up with an invalid class.",

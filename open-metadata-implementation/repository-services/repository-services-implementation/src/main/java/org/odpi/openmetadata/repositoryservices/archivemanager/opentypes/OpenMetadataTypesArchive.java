@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.archivemanager.opentypes;
 
 
@@ -360,6 +361,9 @@ public class OpenMetadataTypesArchive
         final String attribute3Name            = "owner";
         final String attribute3Description     = "User name of the person or process that owns the asset.";
         final String attribute3DescriptionGUID = null;
+        final String attribute4Name            = "zoneMembership";
+        final String attribute4Description     = "The list of zones that this asset belongs to.";
+        final String attribute4DescriptionGUID = null;
 
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
@@ -373,6 +377,10 @@ public class OpenMetadataTypesArchive
         property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
                                                            attribute3Description,
                                                            attribute3DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getArrayStringTypeDefAttribute(attribute4Name,
+                                                                attribute4Description,
+                                                                attribute4DescriptionGUID);
         properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);
@@ -3547,30 +3555,11 @@ public class OpenMetadataTypesArchive
 
         final String superTypeName = "Referenceable";
 
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(superTypeName),
-                                                                description,
-                                                                descriptionGUID);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "userId";
-        final String attribute1Description     = "Authentication name.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-
-        entityDef.setPropertiesDefinition(properties);
-
-        return entityDef;
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
     }
 
 
@@ -3859,23 +3848,6 @@ public class OpenMetadataTypesArchive
                                                                  end2Cardinality);
         relationshipDef.setEndDef2(relationshipEndDef);
 
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "userId";
-        final String attribute1Description     = "Authentication name used by the user.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-
-        relationshipDef.setPropertiesDefinition(properties);
-
         return relationshipDef;
     }
 
@@ -4104,7 +4076,7 @@ public class OpenMetadataTypesArchive
     private RelationshipDef getCollectionMembershipRelationship()
     {
         final String guid            = "5cabb76a-e25b-4bb5-8b93-768bbac005af";
-        final String name            = "CollectionMember";
+        final String name            = "CollectionMembership";
         final String description     = "Identifies a member of a collection.";
         final String descriptionGUID = null;
 
@@ -4151,6 +4123,30 @@ public class OpenMetadataTypesArchive
                                                                  end2AttributeDescriptionGUID,
                                                                  end2Cardinality);
         relationshipDef.setEndDef2(relationshipEndDef);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "membershipRationale";
+        final String attribute1Description     = "Description of how the asset is used, or why it is useful in this collection.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "watchAsset";
+        final String attribute2Description     = "Indicator whether the actor should receive notifications of changes to the asset properties.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                            attribute2Description,
+                                                            attribute2DescriptionGUID);
+        properties.add(property);
+
+        relationshipDef.setPropertiesDefinition(properties);
 
         return relationshipDef;
     }
@@ -4216,10 +4212,17 @@ public class OpenMetadataTypesArchive
         final String attribute1Name            = "collectionUse";
         final String attribute1Description     = "Description of how the collection is used, or why it is useful.";
         final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "watchMembership";
+        final String attribute2Description     = "Indicator whether the actor should receive notifications of changes within the membership.";
+        final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
                                                            attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                            attribute2Description,
+                                                            attribute2DescriptionGUID);
         properties.add(property);
 
         relationshipDef.setPropertiesDefinition(properties);
@@ -13628,7 +13631,6 @@ public class OpenMetadataTypesArchive
         this.archiveBuilder.addEntityDef(getGovernanceZoneEntity());
 
         this.archiveBuilder.addRelationshipDef(getZoneGovernanceRelationship());
-        this.archiveBuilder.addRelationshipDef(getZoneMembershipRelationship());
     }
 
 
@@ -13723,62 +13725,6 @@ public class OpenMetadataTypesArchive
         final String                     end2EntityType               = "GovernanceDefinition";
         final String                     end2AttributeName            = "governedBy";
         final String                     end2AttributeDescription     = "Governance definitions for this zone.";
-        final String                     end2AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 end2Cardinality);
-        relationshipDef.setEndDef2(relationshipEndDef);
-
-
-        return relationshipDef;
-    }
-
-
-    private RelationshipDef getZoneMembershipRelationship()
-    {
-        final String guid            = "8866f770-3f8f-4062-ad2a-2841d4f7ceab";
-        final String name            = "ZoneMembership";
-        final String description     = "Defines that an asset is a member of a specific governance zone.";
-        final String descriptionGUID = null;
-
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
-                                                                                null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                classificationPropagationRule);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1EntityType               = "GovernanceZone";
-        final String                     end1AttributeName            = "zones";
-        final String                     end1AttributeDescription     = "The governance zones that his asset is a member of.";
-        final String                     end1AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 end1Cardinality);
-        relationshipDef.setEndDef1(relationshipEndDef);
-
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2EntityType               = "Asset";
-        final String                     end2AttributeName            = "zoneMembers";
-        final String                     end2AttributeDescription     = "The assets that are members for this zone.";
         final String                     end2AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
