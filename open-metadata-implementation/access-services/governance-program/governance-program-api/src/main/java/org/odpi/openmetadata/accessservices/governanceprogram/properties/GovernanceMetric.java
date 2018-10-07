@@ -170,7 +170,8 @@ public class GovernanceMetric implements Serializable
 
     /**
      * Set up the description of this governance metric.
-     * @param description
+     *
+     * @param description text
      */
     public void setDescription(String description)
     {

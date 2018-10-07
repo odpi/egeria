@@ -13,7 +13,6 @@ import java.util.Objects;
  *     A schema provides information about how the data is structured in the asset.  Schemas are typically
  *     described as nested structures of linked schema elements.  Schemas can also be reused in other schemas.
  * </p>
- * <p>
  *     SchemaElement is an abstract class - used to enable the most accurate and precise mapping of the
  *     elements in a schema to the asset.
  *     <ul>
@@ -23,7 +22,6 @@ import java.util.Objects;
  *         <li>DerivedSchemaElement is for an attribute that is derived from other schema attributes</li>
  *     </ul>
  *     Most assets will be linked to a AssetComplexSchemaType.
- * </p>
  * <p>
  *     Schema elements can be linked to one another using SchemaLink.
  * </p>

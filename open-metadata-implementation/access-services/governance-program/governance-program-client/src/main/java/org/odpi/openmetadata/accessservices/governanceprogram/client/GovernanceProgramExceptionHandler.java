@@ -91,6 +91,7 @@ public class GovernanceProgramExceptionHandler
      *
      * @param guid  unique identifier to validate
      * @param guidParameter  name of the parameter that passed the guid.
+     * @param expectedTypeName name of the type for the instance that should have been retrieved.
      * @param methodName  name of the method making the call.
      * @throws UnrecognizedGUIDException the guid is null
      */
@@ -369,6 +370,7 @@ public class GovernanceProgramExceptionHandler
      *
      * @param methodName  name of the method called
      * @param restResult  response from UserNotAuthorizedException encoded exception from the server
+     * @throws UserNotAuthorizedException encoded exception from the server
      */
     public  void detectAndThrowUserNotAuthorizedException(String                           methodName,
                                                           GovernanceProgramOMASAPIResponse restResult) throws UserNotAuthorizedException

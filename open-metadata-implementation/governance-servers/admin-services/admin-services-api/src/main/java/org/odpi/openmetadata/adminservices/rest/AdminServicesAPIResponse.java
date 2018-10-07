@@ -1,10 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.adminservices.properties;
+
+package org.odpi.openmetadata.adminservices.rest;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -13,7 +13,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * OMAGAPIResponse provides a common header for OMAG managed rest to its REST API.
+ * AdminServicesAPIResponse provides a common header for admin services managed response to its REST API.
  * It manages information about exceptions.  If no exception has been raised exceptionClassName is null.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -22,28 +22,25 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
-@JsonSubTypes(
-        {
-                @JsonSubTypes.Type(value = OMAGServerConfigResponse.class, name = "OMAGServerConfigResponse"),
-                @JsonSubTypes.Type(value = VoidResponse.class, name = "VoidResponse"),
-
+@JsonSubTypes
+        ({
+                @JsonSubTypes.Type(value = ConnectionResponse.class, name = "ConnectionResponse")
         })
-public abstract class OMAGAPIResponse implements Serializable
+public abstract class AdminServicesAPIResponse implements java.io.Serializable
 {
-    protected int                 relatedHTTPCode       = 200;
-    protected String              exceptionClassName    = null;
-    protected String              exceptionErrorMessage = null;
-    protected String              exceptionSystemAction = null;
-    protected String              exceptionUserAction   = null;
-    protected Map<String, Object> exceptionProperties   = null;
+    private static final long    serialVersionUID = 1L;
 
-    private static final long     serialVersionUID = 1L;
-
+    private int                  relatedHTTPCode = 200;
+    private String               exceptionClassName = null;
+    private String               exceptionErrorMessage = null;
+    private String               exceptionSystemAction = null;
+    private String               exceptionUserAction = null;
+    private Map<String, Object>  exceptionProperties = null;
 
     /**
      * Default constructor
      */
-    public OMAGAPIResponse()
+    public AdminServicesAPIResponse()
     {
     }
 
@@ -53,16 +50,16 @@ public abstract class OMAGAPIResponse implements Serializable
      *
      * @param template object to copy
      */
-    public OMAGAPIResponse(OMAGAPIResponse   template)
+    public AdminServicesAPIResponse(AdminServicesAPIResponse  template)
     {
-        if (template != null)
+        if (template !=null)
         {
-            relatedHTTPCode = template.getRelatedHTTPCode();
-            exceptionClassName = template.getExceptionClassName();
-            exceptionErrorMessage = template.getExceptionErrorMessage();
-            exceptionSystemAction = template.getExceptionSystemAction();
-            exceptionUserAction = template.getExceptionUserAction();
-            exceptionProperties = template.getExceptionProperties();
+            this.relatedHTTPCode = template.getRelatedHTTPCode();
+            this.exceptionClassName = template.getExceptionClassName();
+            this.exceptionErrorMessage = template.getExceptionErrorMessage();
+            this.exceptionSystemAction = template.getExceptionSystemAction();
+            this.exceptionUserAction = template.getExceptionUserAction();
+            this.exceptionProperties = template.getExceptionProperties();
         }
     }
 
@@ -176,10 +173,11 @@ public abstract class OMAGAPIResponse implements Serializable
         this.exceptionUserAction = exceptionUserAction;
     }
 
+
     /**
-     * Return any additional properties associated with the exception.
+     * Return the additional properties stored by the exceptions.
      *
-     * @return map of properties
+     * @return property map
      */
     public Map<String, Object> getExceptionProperties()
     {
@@ -193,15 +191,15 @@ public abstract class OMAGAPIResponse implements Serializable
         }
         else
         {
-            return new HashMap<>(exceptionProperties);
+            return new HashMap(exceptionProperties);
         }
     }
 
 
     /**
-     * Set up any additional properties associated with the exception.
+     * Set up the additional properties stored by the exceptions.
      *
-     * @param exceptionProperties
+     * @param exceptionProperties property map
      */
     public void setExceptionProperties(Map<String, Object> exceptionProperties)
     {
@@ -210,14 +208,14 @@ public abstract class OMAGAPIResponse implements Serializable
 
 
     /**
-     * Standard toString method.
+     * JSON-like toString
      *
-     * @return print out of variables in a JSON-style
+     * @return string containing the property names and values
      */
     @Override
     public String toString()
     {
-        return "OMAGAPIResponse{" +
+        return "AdminServicesAPIResponse{" +
                 "relatedHTTPCode=" + relatedHTTPCode +
                 ", exceptionClassName='" + exceptionClassName + '\'' +
                 ", exceptionErrorMessage='" + exceptionErrorMessage + '\'' +
@@ -229,10 +227,10 @@ public abstract class OMAGAPIResponse implements Serializable
 
 
     /**
-     * Compare the values of the supplied object with those stored in the current object.
+     * Return comparison result based on the content of the properties.
      *
-     * @param objectToCompare supplied object
-     * @return boolean result of comparison
+     * @param objectToCompare test object
+     * @return result of comparison
      */
     @Override
     public boolean equals(Object objectToCompare)
@@ -241,11 +239,11 @@ public abstract class OMAGAPIResponse implements Serializable
         {
             return true;
         }
-        if (!(objectToCompare instanceof OMAGAPIResponse))
+        if (!(objectToCompare instanceof AdminServicesAPIResponse))
         {
             return false;
         }
-        OMAGAPIResponse that = (OMAGAPIResponse) objectToCompare;
+        AdminServicesAPIResponse that = (AdminServicesAPIResponse) objectToCompare;
         return getRelatedHTTPCode() == that.getRelatedHTTPCode() &&
                 Objects.equals(getExceptionClassName(), that.getExceptionClassName()) &&
                 Objects.equals(getExceptionErrorMessage(), that.getExceptionErrorMessage()) &&
@@ -256,14 +254,13 @@ public abstract class OMAGAPIResponse implements Serializable
 
 
     /**
-     * Create a hash code for this element type.
+     * Return hash code for this object
      *
      * @return int hash code
      */
     @Override
     public int hashCode()
     {
-
         return Objects.hash(getRelatedHTTPCode(),
                             getExceptionClassName(),
                             getExceptionErrorMessage(),

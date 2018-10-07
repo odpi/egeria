@@ -36,6 +36,8 @@ public class AssetOwnerEvent extends AssetOwnerEventHeader
 
     /**
      * Copy/clone constructor
+     *
+     * @param template object to copy
      */
     public AssetOwnerEvent(AssetOwnerEvent template)
     {
