@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions;
 
 /**
  * The UnrecognizedGUIDException is thrown by the Subject Area OMAS when the unique identifier (guid)
- * used to request an objects either unrecognized, or is the identifier for a different type of object.
+ * used to request an object is either unrecognized, or is the identifier for a different type of object.
  */
 public class UnrecognizedGUIDException extends SubjectAreaCheckedExceptionBase {
     private String guid=null;

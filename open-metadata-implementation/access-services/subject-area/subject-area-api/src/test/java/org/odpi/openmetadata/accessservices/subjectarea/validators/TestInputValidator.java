@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.validators;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.node.NodeType;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -100,5 +101,24 @@ public class TestInputValidator {
                 fail("inserts not correct");
             }
         }
+    }
+    @Test
+    public void testValidateNodeType() throws InvalidParameterException {
+
+        NodeType nodetype = NodeType.Glossary;
+        validateNodeTypeforGlossary(NodeType.Glossary);
+        validateNodeTypeforGlossary(NodeType.Taxonomy);
+        validateNodeTypeforGlossary(NodeType.TaxonomyAndCanonicalGlossary);
+        validateNodeTypeforGlossary(NodeType.CanonicalGlossary);
+        validateNodeTypeforGlossary(null);
+        try {
+            validateNodeTypeforGlossary(NodeType.Term);
+            assertFalse(false, "Error incorrect nodetype accepted");
+        } catch (InvalidParameterException e) {
+
+        }
+    }
+    private void validateNodeTypeforGlossary (NodeType nodetype) throws InvalidParameterException {
+        InputValidator.validateNodeType("classa","method1",nodetype, NodeType.Glossary,NodeType.Taxonomy,NodeType.TaxonomyAndCanonicalGlossary, NodeType.CanonicalGlossary);
     }
 }

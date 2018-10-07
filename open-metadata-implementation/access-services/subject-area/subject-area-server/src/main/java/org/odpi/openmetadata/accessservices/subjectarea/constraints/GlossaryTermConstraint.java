@@ -25,24 +25,9 @@ public class GlossaryTermConstraint implements SubjectAreaConstraint{
 
         GlossaryTerm glossaryTerm=(GlossaryTerm)artifact;
 
-        String glossaryName =glossaryTerm.getGlossaryName();
         String displayName =glossaryTerm.getDisplayName();
 
-        if (glossaryName==null) {
-            // error glossary is mandatory
-            SubjectAreaErrorCode errorCode    = SubjectAreaErrorCode.GLOSSARY_TERM_CREATE_WITHOUT_GLOSSARY;
-            String errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage(className,
-                    methodName);
-            log.error(errorMessage);
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                    className,
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
-
-        } else if (displayName == null ) {
+        if (displayName == null ) {
             // error need a display name
             SubjectAreaErrorCode errorCode    = SubjectAreaErrorCode.GLOSSARY_TERM_CREATE_WITHOUT_NAME;
             String errorMessage = errorCode.getErrorMessageId()
