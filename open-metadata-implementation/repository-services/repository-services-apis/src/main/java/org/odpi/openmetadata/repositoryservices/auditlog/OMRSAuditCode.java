@@ -552,35 +552,35 @@ public enum OMRSAuditCode
                         "Unable to send or receive a registry event because the event processor is null",
                         "The local server is unable to properly manage registration events for the metadata " +
                                 "repository cohort.",
-                        "This is an internal logic error.  Raise a JIRA, including the audit log, to get this fixed."),
+                        "This is an internal logic error.  Raise a Git Issue, including the audit log, to get this fixed."),
 
     NULL_TYPEDEF_PROCESSOR("OMRS-AUDIT-9007",
                        OMRSAuditLogRecordSeverity.EXCEPTION,
                        "Unable to send or receive a TypeDef event because the event processor is null",
                        "The local server is unable to properly manage the exchange of TypeDefs for the metadata " +
                                "repository cohort.",
-                       "This is an internal logic error.  Raise a JIRA, including the audit log, to get this fixed."),
+                       "This is an internal logic error.  Raise a Git Issue, including the audit log, to get this fixed."),
 
     NULL_INSTANCE_PROCESSOR("OMRS-AUDIT-9008",
                         OMRSAuditLogRecordSeverity.EXCEPTION,
                         "Unable to send or receive a metadata instance event because the event processor is null",
                         "The local server is unable to properly manage the replication of metadata instances for " +
                                 "the metadata repository cohort.",
-                        "This is an internal logic error.  Raise a JIRA, including the audit log, to get this fixed."),
+                        "This is an internal logic error.  Raise a Git Issue, including the audit log, to get this fixed."),
 
     NULL_OMRS_CONFIG("OMRS-AUDIT-9009",
                         OMRSAuditLogRecordSeverity.EXCEPTION,
                             "Unable to initialize part of the Open Metadata Repository Service (OMRS) because the configuration is null",
                             "The local server is unable to properly manage the replication of metadata instances for " +
                                     "the metadata repository cohort.",
-                            "This is an internal logic error.  Raise a JIRA, including the audit log, to get this fixed."),
+                            "This is an internal logic error.  Raise a Git Issue, including the audit log, to get this fixed."),
 
     SENT_UNKNOWN_EVENT("OMRS-AUDIT-9010",
                         OMRSAuditLogRecordSeverity.EXCEPTION,
                         "Unable to send an event because the event is of an unknown type",
                         "The local server may not be communicating properly with other servers in " +
                                 "the metadata repository cohort.",
-                        "This is an internal logic error.  Raise a JIRA, including the audit log, to get this fixed."),
+                        "This is an internal logic error.  Raise a Git Issue, including the audit log, to get this fixed."),
     UNEXPECTED_EXCEPTION_FROM_EVENT("OMRS-AUDIT-9011",
                        OMRSAuditLogRecordSeverity.EXCEPTION,
                        "An incoming event of type {0} from {1} ({2}) generated an exception with message {3}",
