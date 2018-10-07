@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices;
 
 import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationFactory;
@@ -6,13 +7,10 @@ import org.odpi.openmetadata.adminservices.configuration.properties.*;
 import org.odpi.openmetadata.adminservices.properties.OMAGAPIResponse;
 import org.odpi.openmetadata.adminservices.properties.OMAGServerConfigResponse;
 import org.odpi.openmetadata.adminservices.properties.VoidResponse;
-import org.odpi.openmetadata.frameworks.connectors.Connector;
-import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceOperationalStatus;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
-import org.odpi.openmetadata.adminservices.store.OMAGServerConfigStore;
 import org.odpi.openmetadata.adminservices.ffdc.OMAGErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGCheckedExceptionBase;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
@@ -62,7 +60,7 @@ public class OMAGServerAdminServices
     private OMRSOperationalServices  operationalServices    = null;
     private List<AccessServiceAdmin> accessServiceAdminList = new ArrayList<>();
 
-
+    private OMAGServerAdminStoreServices   configStore = new OMAGServerAdminStoreServices();
 
     /*
      * =============================================================
@@ -73,9 +71,9 @@ public class OMAGServerAdminServices
      * Set up the root URL for this server that is used to construct full URL paths to calls for
      * this server's REST interfaces.  The default value is "localhost:8080".
      *
-     * @param userId - user that is issuing the request.
-     * @param serverName - local server name.
-     * @param url - String url.
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param url  String url.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or serverURLRoot parameter.
@@ -93,11 +91,11 @@ public class OMAGServerAdminServices
             validateUserId(userId, serverName, methodName);
             validateServerName(serverName, methodName);
 
-            OMAGServerConfig serverConfig = this.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
 
             serverConfig.setLocalServerURL(url);
 
-            this.saveServerConfig(serverName, methodName, serverConfig);
+            configStore.saveServerConfig(serverName, methodName, serverConfig);
         }
         catch (OMAGInvalidParameterException  error)
         {
@@ -116,9 +114,9 @@ public class OMAGServerAdminServices
      * Set up the descriptive type of the server.  This value is added to distributed events to
      * make it easier to understand the source of events.  The default value is "Open Metadata and Governance Server".
      *
-     * @param userId - user that is issuing the request.
-     * @param serverName - local server name.
-     * @param typeName - short description for the type of server.
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param typeName  short description for the type of server.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or serverType parameter.
@@ -136,11 +134,11 @@ public class OMAGServerAdminServices
             validateServerName(serverName, methodName);
             validateUserId(userId, serverName, methodName);
 
-            OMAGServerConfig serverConfig = this.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
 
             serverConfig.setLocalServerType(typeName);
 
-            this.saveServerConfig(serverName, methodName, serverConfig);
+            configStore.saveServerConfig(serverName, methodName, serverConfig);
         }
         catch (OMAGInvalidParameterException  error)
         {
@@ -159,9 +157,9 @@ public class OMAGServerAdminServices
      * Set up the name of the organization that is running this server.  This value is added to distributed events to
      * make it easier to understand the source of events.  The default value is null.
      *
-     * @param userId - user that is issuing the request.
-     * @param serverName - local server name.
-     * @param name - String name of the organization.
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param name  String name of the organization.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or organizationName parameter.
@@ -179,11 +177,11 @@ public class OMAGServerAdminServices
             validateServerName(serverName, methodName);
             validateUserId(userId, serverName, methodName);
 
-            OMAGServerConfig serverConfig = this.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
 
             serverConfig.setOrganizationName(name);
 
-            this.saveServerConfig(serverName, methodName, serverConfig);
+            configStore.saveServerConfig(serverName, methodName, serverConfig);
         }
         catch (OMAGInvalidParameterException  error)
         {
@@ -202,9 +200,9 @@ public class OMAGServerAdminServices
      * Set up the user id to use when there is no external user driving the work (for example when processing events
      * from another server).
      *
-     * @param userId - user that is issuing the request.
-     * @param serverName - local server name.
-     * @param serverUserId - String user is for the server.
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param serverUserId  String user is for the server.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or serverURLRoot parameter.
@@ -222,11 +220,11 @@ public class OMAGServerAdminServices
             validateUserId(userId, serverName, methodName);
             validateServerName(serverName, methodName);
 
-            OMAGServerConfig serverConfig = this.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
 
             serverConfig.setLocalServerUserId(serverUserId);
 
-            this.saveServerConfig(serverName, methodName, serverConfig);
+            configStore.saveServerConfig(serverName, methodName, serverConfig);
         }
         catch (OMAGInvalidParameterException  error)
         {
@@ -270,11 +268,11 @@ public class OMAGServerAdminServices
 
             if (maxPageSize > 0)
             {
-                OMAGServerConfig serverConfig = this.getServerConfig(serverName, methodName);
+                OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
 
                 serverConfig.setMaxPageSize(maxPageSize);
 
-                this.saveServerConfig(serverName, methodName, serverConfig);
+                configStore.saveServerConfig(serverName, methodName, serverConfig);
             }
             else
             {
@@ -339,7 +337,7 @@ public class OMAGServerAdminServices
             /*
              * Retrieve the existing configuration and validate it is ok to set up event bus.
              */
-            OMAGServerConfig serverConfig   = this.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig   = configStore.getServerConfig(serverName, methodName);
             validateNewEventBusAllowed(serverName, serverConfig, methodName);
 
             EventBusConfig   eventBusConfig = new EventBusConfig();
@@ -353,7 +351,7 @@ public class OMAGServerAdminServices
             /*
              * Save the config away
              */
-            this.saveServerConfig(serverName, methodName, serverConfig);
+            configStore.saveServerConfig(serverName, methodName, serverConfig);
 
         }
         catch (OMAGInvalidParameterException  error)
@@ -401,7 +399,7 @@ public class OMAGServerAdminServices
             validateServerName(serverName, methodName);
             validateUserId(userId, serverName, methodName);
 
-            OMAGServerConfig serverConfig = this.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
 
             EventBusConfig            eventBusConfig           = validateEventBusIsSet(serverName, serverConfig, methodName);
             List<AccessServiceConfig> accessServiceConfigList  = new ArrayList<>();
@@ -539,7 +537,7 @@ public class OMAGServerAdminServices
             validateServerName(serverName, methodName);
             validateUserId(userId, serverName, methodName);
 
-            OMAGServerConfig serverConfig = this.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
 
             OMRSConfigurationFactory configurationFactory     = new OMRSConfigurationFactory();
 
@@ -586,7 +584,7 @@ public class OMAGServerAdminServices
             validateServerName(serverName, methodName);
             validateUserId(userId, serverName, methodName);
 
-            OMAGServerConfig serverConfig = this.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
             EventBusConfig eventBusConfig = validateEventBusIsSet(serverName, serverConfig, methodName);
 
             OMRSConfigurationFactory configurationFactory     = new OMRSConfigurationFactory();
@@ -678,7 +676,7 @@ public class OMAGServerAdminServices
             validateServerName(serverName, methodName);
             validateUserId(userId, serverName, methodName);
 
-            OMAGServerConfig serverConfig = this.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
 
             OMRSConfigurationFactory configurationFactory     = new OMRSConfigurationFactory();
             LocalRepositoryConfig localRepositoryConfig
@@ -732,7 +730,7 @@ public class OMAGServerAdminServices
             validateServerName(serverName, methodName);
             validateUserId(userId, serverName, methodName);
 
-            OMAGServerConfig serverConfig = this.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
 
             ConnectorConfigurationFactory connectorConfigurationFactory = new ConnectorConfigurationFactory();
 
@@ -782,7 +780,7 @@ public class OMAGServerAdminServices
             validateServerName(serverName, methodName);
             validateUserId(userId, serverName, methodName);
 
-            OMAGServerConfig serverConfig = this.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
 
             RepositoryServicesConfig repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
             LocalRepositoryConfig    localRepositoryConfig    = null;
@@ -917,7 +915,7 @@ public class OMAGServerAdminServices
             validateUserId(userId, serverName, methodName);
             validateCohortName(cohortName, serverName, methodName);
 
-            OMAGServerConfig serverConfig    = this.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig    = configStore.getServerConfig(serverName, methodName);
 
             EventBusConfig   eventBusConfig  = validateEventBusIsSet(serverName, serverConfig, methodName);
 
@@ -1026,11 +1024,11 @@ public class OMAGServerAdminServices
             validateServerName(serverName, methodName);
             validateUserId(userId, serverName, methodName);
 
-            OMAGServerConfig serverConfig = this.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
 
             serverConfig.setAccessServicesConfig(accessServicesConfig);
 
-            this.saveServerConfig(serverName, methodName, serverConfig);
+            configStore.saveServerConfig(serverName, methodName, serverConfig);
         }
         catch (OMAGInvalidParameterException  error)
         {
@@ -1068,7 +1066,7 @@ public class OMAGServerAdminServices
             validateServerName(serverName, methodName);
             validateUserId(userId, serverName, methodName);
 
-            OMAGServerConfig serverConfig = this.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
 
             RepositoryServicesConfig repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
 
@@ -1091,7 +1089,7 @@ public class OMAGServerAdminServices
              * Save the open metadata repository services config in the server's config
              */
             serverConfig.setRepositoryServicesConfig(repositoryServicesConfig);
-            this.saveServerConfig(serverName, methodName, serverConfig);
+            configStore.saveServerConfig(serverName, methodName, serverConfig);
         }
         catch (OMAGInvalidParameterException  error)
         {
@@ -1132,7 +1130,7 @@ public class OMAGServerAdminServices
             validateServerName(serverName, methodName);
             validateUserId(userId, serverName, methodName);
 
-            OMAGServerConfig serverConfig = this.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
 
             RepositoryServicesConfig repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
 
@@ -1150,7 +1148,7 @@ public class OMAGServerAdminServices
             }
 
             serverConfig.setRepositoryServicesConfig(repositoryServicesConfig);
-            this.saveServerConfig(serverName, methodName, serverConfig);
+            configStore.saveServerConfig(serverName, methodName, serverConfig);
         }
         catch (OMAGInvalidParameterException  error)
         {
@@ -1192,7 +1190,7 @@ public class OMAGServerAdminServices
             validateUserId(userId, serverName, methodName);
             validateCohortName(cohortName, serverName, methodName);
 
-            OMAGServerConfig         serverConfig = this.getServerConfig(serverName, methodName);
+            OMAGServerConfig         serverConfig = configStore.getServerConfig(serverName, methodName);
             OMRSConfigurationFactory configurationFactory = new OMRSConfigurationFactory();
             RepositoryServicesConfig repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
             List<CohortConfig>       existingCohortConfigs = null;
@@ -1259,7 +1257,7 @@ public class OMAGServerAdminServices
             }
 
             serverConfig.setRepositoryServicesConfig(repositoryServicesConfig);
-            this.saveServerConfig(serverName, methodName, serverConfig);
+            configStore.saveServerConfig(serverName, methodName, serverConfig);
         }
         catch (OMAGInvalidParameterException  error)
         {
@@ -1301,7 +1299,7 @@ public class OMAGServerAdminServices
             validateServerName(serverName, methodName);
             validateUserId(userId, serverName, methodName);
 
-            response.setOMAGServerConfig(this.getServerConfig(serverName, methodName));
+            response.setOMAGServerConfig(configStore.getServerConfig(serverName, methodName));
         }
         catch (OMAGInvalidParameterException  error)
         {
@@ -1343,7 +1341,7 @@ public class OMAGServerAdminServices
             validateServerName(serverName, methodName);
             validateUserId(userId, serverName, methodName);
 
-            this.activateWithSuppliedConfig(userId, serverName, this.getServerConfig(serverName, methodName));
+            this.activateWithSuppliedConfig(userId, serverName, configStore.getServerConfig(serverName, methodName));
         }
         catch (OMAGInvalidParameterException  error)
         {
@@ -1397,7 +1395,7 @@ public class OMAGServerAdminServices
             }
             else
             {
-                this.saveServerConfig(serverName, methodName, configuration);
+                configStore.saveServerConfig(serverName, methodName, configuration);
             }
 
             /*
@@ -1536,8 +1534,8 @@ public class OMAGServerAdminServices
     /**
      * Temporarily deactivate any open metadata and governance services.
      *
-     * @param userId - user that is issuing the request
-     * @param serverName - local server name
+     * @param userId  user that is issuing the request
+     * @param serverName  local server name
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException the serverName is invalid.
@@ -1634,7 +1632,7 @@ public class OMAGServerAdminServices
                 operationalServices = null;
             }
 
-            this.saveServerConfig(serverName, methodName, null);
+            configStore.saveServerConfig(serverName, methodName, null);
         }
         catch (OMAGInvalidParameterException  error)
         {
@@ -1837,103 +1835,6 @@ public class OMAGServerAdminServices
     }
 
 
-    /**
-     * Retrieve the connection to the config file.
-     *
-     * @param serverName  name of the server
-     * @param methodName  method requesting the server details
-     * @return configuration connector file
-     * @throws OMAGInvalidParameterException
-     */
-    private  OMAGServerConfigStore getServerConfigStore(String   serverName,
-                                                        String   methodName) throws OMAGInvalidParameterException
-    {
-        OMAGServerConfigStore    serverConfigStore      = null;
-
-        ConnectorConfigurationFactory connectorConfigurationFactory = new ConnectorConfigurationFactory();
-
-        Connection connection = connectorConfigurationFactory.getServerConfigConnection(serverName);
-
-        try
-        {
-
-            ConnectorBroker connectorBroker = new ConnectorBroker();
-
-            Connector connector = connectorBroker.getConnector(connection);
-
-            serverConfigStore = (OMAGServerConfigStore) connector;
-        }
-        catch (Throwable   error)
-        {
-            OMAGErrorCode errorCode    = OMAGErrorCode.BAD_CONFIG_FILE;
-            String        errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage(serverName, methodName, error.getMessage());
-
-            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
-                                                    this.getClass().getName(),
-                                                    methodName,
-                                                    errorMessage,
-                                                    errorCode.getSystemAction(),
-                                                    errorCode.getUserAction(),
-                                                    error);
-        }
-
-
-        return serverConfigStore;
-    }
-
-
-    /**
-     * Retrieve any saved configuration for this server.
-     *
-     * @param serverName  name of the server
-     * @param methodName  method requesting the server details
-     * @return  configuration properties
-     * @throws OMAGInvalidParameterException problem with the configuration file
-     */
-    private  OMAGServerConfig   getServerConfig(String   serverName,
-                                                String   methodName) throws OMAGInvalidParameterException
-    {
-        OMAGServerConfigStore   serverConfigStore = getServerConfigStore(serverName, methodName);
-        OMAGServerConfig        serverConfig      = null;
-
-
-        if (serverConfigStore != null)
-        {
-            serverConfig = serverConfigStore.retrieveServerConfig();
-        }
-
-        if (serverConfig == null)
-        {
-            serverConfig = new OMAGServerConfig();
-        }
-
-        serverConfig.setLocalServerName(serverName);
-
-        return serverConfig;
-
-    }
-
-
-    /**
-     * Save the Server config ...
-     *
-     * @param serverName  name of the server
-     * @param methodName  method requesting the server details
-     * @param serverConfig  properties to save
-     * @throws OMAGInvalidParameterException problem with the config file
-     */
-    private  void saveServerConfig(String            serverName,
-                                   String            methodName,
-                                   OMAGServerConfig  serverConfig) throws OMAGInvalidParameterException
-    {
-        OMAGServerConfigStore   serverConfigStore = getServerConfigStore(serverName, methodName);
-
-        if (serverConfigStore != null)
-        {
-            serverConfigStore.saveServerConfig(serverConfig);
-        }
-    }
 
 
     /**

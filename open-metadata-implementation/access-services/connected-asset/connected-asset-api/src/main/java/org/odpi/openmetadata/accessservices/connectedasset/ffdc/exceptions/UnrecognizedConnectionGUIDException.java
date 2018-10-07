@@ -23,6 +23,7 @@ public class UnrecognizedConnectionGUIDException extends ConnectedAssetCheckedEx
      * @param errorMessage  description of error
      * @param systemAction  actions of the system as a result of the error
      * @param userAction  instructions for correcting the error
+     * @param connectionGUID unique identifier that is unrecognized
      */
     public UnrecognizedConnectionGUIDException(int    httpCode,
                                                String className,

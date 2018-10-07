@@ -1,9 +1,9 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.adminservices.properties;
+package org.odpi.openmetadata.adminservices.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;
@@ -13,17 +13,18 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 /**
- * Validate that the ConnectorType bean can be cloned, compared, serialized, deserialized and printed as a String.
+ * Validate that the ConnectionResponse bean can be cloned, compared, serialized, deserialized and printed as a String.
  */
-public class TestVoidResponse
+public class ConnectionResponseTest
 {
-    private Map<String, Object>  additionalProperties           = new HashMap<>();
+    private Connection          connection = new Connection();
+    private Map<String, Object> additionalProperties = new HashMap<>();
 
 
     /**
      * Default constructor
      */
-    public TestVoidResponse()
+    public ConnectionResponseTest()
     {
 
     }
@@ -34,17 +35,19 @@ public class TestVoidResponse
      *
      * @return filled in object
      */
-    private VoidResponse getTestObject()
+    private ConnectionResponse getTestObject()
     {
-        VoidResponse testObject = new VoidResponse();
+        ConnectionResponse testObject = new ConnectionResponse();
 
-        testObject.setExceptionClassName(OMAGInvalidParameterException.class.getName());
+        testObject.setExceptionClassName(NullPointerException.class.getName());
         testObject.setExceptionErrorMessage("TestErrorMessage");
         testObject.setExceptionSystemAction("TestSystemAction");
         testObject.setExceptionUserAction("TestUserAction");
 
         testObject.setRelatedHTTPCode(400);
         testObject.setExceptionProperties(additionalProperties);
+
+        testObject.setConnection(connection);
 
         return testObject;
     }
@@ -55,15 +58,18 @@ public class TestVoidResponse
      *
      * @param resultObject object returned by the test
      */
-    private void validateResultObject(VoidResponse  resultObject)
+    private void validateResultObject(ConnectionResponse  resultObject)
     {
-        assertTrue(resultObject.getExceptionClassName().equals(OMAGInvalidParameterException.class.getName()));
+        assertTrue(resultObject.getExceptionClassName().equals(NullPointerException.class.getName()));
         assertTrue(resultObject.getExceptionErrorMessage().equals("TestErrorMessage"));
         assertTrue(resultObject.getExceptionSystemAction().equals("TestSystemAction"));
         assertTrue(resultObject.getExceptionUserAction().equals("TestUserAction"));
 
         assertTrue(resultObject.getRelatedHTTPCode() == 400);
         assertTrue(resultObject.getExceptionProperties() == null);
+
+        assertTrue(resultObject.getConnection().equals(connection));
+
     }
 
 
@@ -72,7 +78,7 @@ public class TestVoidResponse
      */
     @Test public void testNullObject()
     {
-        VoidResponse    nullObject = new VoidResponse();
+        ConnectionResponse    nullObject = new ConnectionResponse();
 
         assertTrue(nullObject.getRelatedHTTPCode() == 200);
         assertTrue(nullObject.getExceptionClassName() == null);
@@ -80,8 +86,9 @@ public class TestVoidResponse
         assertTrue(nullObject.getExceptionSystemAction() == null);
         assertTrue(nullObject.getExceptionUserAction() == null);
         assertTrue(nullObject.getExceptionProperties() == null);
+        assertTrue(nullObject.getConnection() == null);
 
-        nullObject = new VoidResponse(null);
+        nullObject = new ConnectionResponse(null);
 
         assertTrue(nullObject.getRelatedHTTPCode() == 200);
         assertTrue(nullObject.getExceptionClassName() == null);
@@ -89,6 +96,8 @@ public class TestVoidResponse
         assertTrue(nullObject.getExceptionSystemAction() == null);
         assertTrue(nullObject.getExceptionUserAction() == null);
         assertTrue(nullObject.getExceptionProperties() == null);
+        assertTrue(nullObject.getConnection() == null);
+
     }
 
 
@@ -98,24 +107,24 @@ public class TestVoidResponse
     @Test public void testExceptionProperties()
     {
         Map<String, Object>   propertyMap;
-        VoidResponse          testObject = new VoidResponse();
+        ConnectionResponse    testObject = new ConnectionResponse();
 
         assertTrue(testObject.getExceptionProperties() == null);
 
         propertyMap = null;
-        testObject = new VoidResponse();
+        testObject = new ConnectionResponse();
         testObject.setExceptionProperties(propertyMap);
 
         assertTrue(testObject.getExceptionProperties() == null);
 
         propertyMap = new HashMap<>();
-        testObject = new VoidResponse();
+        testObject = new ConnectionResponse();
         testObject.setExceptionProperties(propertyMap);
 
         assertTrue(testObject.getExceptionProperties() == null);
 
         propertyMap.put("propertyName", "propertyValue");
-        testObject = new VoidResponse();
+        testObject = new ConnectionResponse();
         testObject.setExceptionProperties(propertyMap);
 
         Map<String, Object>   retrievedPropertyMap = testObject.getExceptionProperties();
@@ -136,10 +145,10 @@ public class TestVoidResponse
         assertFalse(getTestObject().equals("DummyString"));
         assertTrue(getTestObject().equals(getTestObject()));
 
-        VoidResponse  sameObject = getTestObject();
+        ConnectionResponse  sameObject = getTestObject();
         assertTrue(sameObject.equals(sameObject));
 
-        VoidResponse  differentObject = getTestObject();
+        ConnectionResponse  differentObject = getTestObject();
         differentObject.setExceptionErrorMessage("Different");
         assertFalse(getTestObject().equals(differentObject));
     }
@@ -151,6 +160,12 @@ public class TestVoidResponse
     @Test public void testHashCode()
     {
         assertTrue(getTestObject().hashCode() == getTestObject().hashCode());
+
+        ConnectionResponse  testObject = getTestObject();
+
+        testObject.setConnection(null);
+
+        assertTrue(testObject.hashCode() != 0);
     }
 
 
@@ -159,7 +174,7 @@ public class TestVoidResponse
      */
     @Test public void testClone()
     {
-        validateResultObject(new VoidResponse(getTestObject()));
+        validateResultObject(new ConnectionResponse(getTestObject()));
     }
 
 
@@ -186,7 +201,7 @@ public class TestVoidResponse
 
         try
         {
-            validateResultObject(objectMapper.readValue(jsonString, VoidResponse.class));
+            validateResultObject(objectMapper.readValue(jsonString, ConnectionResponse.class));
         }
         catch (Throwable  exc)
         {
@@ -196,7 +211,7 @@ public class TestVoidResponse
         /*
          * Through superclass
          */
-        OMAGAPIResponse superObject = getTestObject();
+        AdminServicesAPIResponse superObject = getTestObject();
 
         try
         {
@@ -209,7 +224,7 @@ public class TestVoidResponse
 
         try
         {
-            validateResultObject((VoidResponse) objectMapper.readValue(jsonString, OMAGAPIResponse.class));
+            validateResultObject((ConnectionResponse) objectMapper.readValue(jsonString, AdminServicesAPIResponse.class));
         }
         catch (Throwable  exc)
         {
@@ -223,6 +238,6 @@ public class TestVoidResponse
      */
     @Test public void testToString()
     {
-        assertTrue(getTestObject().toString().contains("VoidResponse"));
+        assertTrue(getTestObject().toString().contains("ConnectionResponse"));
     }
 }

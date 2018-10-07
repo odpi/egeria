@@ -87,6 +87,7 @@ public class ConnectedAsset extends AssetUniverse
         }
         super.relatedMediaReferences = this.getNewRelatedMediaReferences(userId, assetGUID);
         super.noteLogs = this.getNewNoteLogs(userId, assetGUID);
+        super.externalIdentifiers = this.getNewExternalIdentifiers(userId, assetGUID);
         super.externalReferences = this.getNewExternalReferences(userId, assetGUID);
         super.connections = this.getNewConnections(userId, assetGUID);
         super.licenses = this.getNewLicenses(userId, assetGUID);
@@ -207,8 +208,8 @@ public class ConnectedAsset extends AssetUniverse
         return null;
     }
 
-    private AssetComplexSchemaType getNewSchema(String   userId,
-                                                String   assetGUID)
+    private AssetSchemaType getNewSchema(String   userId,
+                                         String   assetGUID)
     {
         return null;
     }

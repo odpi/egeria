@@ -39,6 +39,8 @@ public class UserIdentity implements Serializable
 
     /**
      * Copy/clone constructor
+     *
+     * @param template object to copy
      */
     public UserIdentity(UserIdentity template)
     {

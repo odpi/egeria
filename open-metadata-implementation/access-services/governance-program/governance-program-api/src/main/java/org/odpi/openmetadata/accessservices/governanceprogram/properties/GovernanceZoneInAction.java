@@ -48,7 +48,7 @@ public class GovernanceZoneInAction extends GovernanceZone
     /**
      * Return the count of assets that are associated with the zone.
      *
-     * @return
+     * @return int count
      */
     public int getZoneMembershipCount()
     {
@@ -67,5 +67,19 @@ public class GovernanceZoneInAction extends GovernanceZone
      *
      * @return string containing the properties and their values
      */
-
+    @Override
+    public String toString()
+    {
+        return "GovernanceZoneInAction{" +
+                "zoneMembershipCount=" + zoneMembershipCount +
+                ", associatedGovernanceDefinitions=" + getAssociatedGovernanceDefinitions() +
+                ", GUID='" + getGUID() + '\'' +
+                ", classifications=" + getClassifications() +
+                ", qualifiedName='" + getQualifiedName() + '\'' +
+                ", displayName='" + getDisplayName() + '\'' +
+                ", description='" + getDescription() + '\'' +
+                ", criteria='" + getCriteria() + '\'' +
+                ", additionalProperties=" + getAdditionalProperties() +
+                '}';
+    }
 }

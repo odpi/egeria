@@ -42,6 +42,8 @@ public class GovernanceOfficerAppointee implements Serializable
 
     /**
      * Copy/clone constructor
+     *
+     * @param template object to copy
      */
     public GovernanceOfficerAppointee(GovernanceOfficerAppointee  template)
     {

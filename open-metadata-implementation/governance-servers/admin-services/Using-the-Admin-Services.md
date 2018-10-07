@@ -1,8 +1,11 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project.  -->
+
 
 # Open metadata administration services user guide
 
-An Open Metadata and Governance (OMAG) Server hosts a variety of open metadata and governance capabilities.
+An Open Metadata and Governance (OMAG) Server hosts a variety of open metadata
+and governance capabilities.
 The capabilities that are enabled in a specific instance of the OMAG Server
 are defined in a JSON configuration document that is read when the open metadata
 capabilities are activated in the running server.
@@ -11,7 +14,7 @@ instances of the OMAG Server running, each performing a different role.
 Each of these instances would therefore use a different configuration document.
 The correct configuration document to use is identified by the server name.
 This is passed on the URL of every admin services API request along with the user
-id of the administrator.   By default, the configuration file is called:
+id of the administrator.  By default, the configuration is stored in a file called:
 
 ```
 omag.server.{servername}.config
@@ -54,6 +57,81 @@ The example commands that follow assume:
 * The user id of the administrator is `garygeeke`.
 * The name of the open metadata server is `cocoMDS1`.
 
+### Overriding the location for storing configuration documents
+
+By default, configuration documents are stored in the admin server's home directory.
+The file name is 
+```
+omag.server.{servername}.config
+```
+where server name is the name of the server (cocoMDS1 for example)
+passed on the url of the configuration request.
+
+The management of the configuration documents on the disk is implemented by a connector.
+To change the connector used for the configuration
+(and hence where and how configuration documents are stored), use the following URL
+with the connection object of the new connector as the request body.
+
+```
+POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/stores/connection
+{
+    "class": "Connection",
+    "type": 
+    {
+        "class": "ElementType",
+        "elementTypeId": "114e9f8f-5ff3-4c32-bd37-a7eb42712253",
+        "elementTypeName": "Connection",
+        "elementTypeVersion": 1,
+        "elementTypeDescription": "A set of properties to identify and configure a connector instance.",
+        "elementOrigin": "CONFIGURATION"
+    },
+    "guid": "12137087-2b13-4c4e-b840-97c4282f7416",
+    "qualifiedName": "InTopic",
+    "displayName": "InTopic",
+    "description": "InTopic",
+    "connectorType": 
+    {
+        "class": "ConnectorType",
+        "type": 
+        {
+            "class": "ElementType",
+            "elementTypeId": "954421eb-33a6-462d-a8ca-b5709a1bd0d4",
+            "elementTypeName": "ConnectorType",
+            "elementTypeVersion": 1,
+            "elementTypeDescription": "A set of properties describing a type of connector.",
+            "elementOrigin": "LOCAL_COHORT"
+        },
+        "guid": "3851e8d0-e343-400c-82cb-3918fed81da6",
+        "qualifiedName": "Kafka Open Metadata Topic Connector",
+        "displayName": "Kafka Open Metadata Topic Connector",
+        "description": "Kafka Open Metadata Topic Connector supports string based events over an Apache Kafka event bus.",
+        "connectorProviderClassName": "org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider"
+    },
+    "endpoint": 
+    {
+        "class": "Endpoint",
+        "type": 
+        {
+            "class": "ElementType",
+            "elementTypeId": "dbc20663-d705-4ff0-8424-80c262c6b8e7",
+            "elementTypeName": "Endpoint",
+            "elementTypeVersion": 1,
+            "elementTypeDescription": "Description of the network address and related information needed to call a software service.",
+            "elementOrigin": "CONFIGURATION"
+        },
+        "guid": "b4ae2f8c-5f65-4ed7-8762-1ef2aa958db5",
+        "qualifiedName": "open-metadata/ConfigTopic",
+        "displayName": "open-metadata/ConfigTopic",
+        "description": "ConfigTopic",
+        "address": "open-metadata/admin-services/ConfigTopic"
+    }
+}
+```
+
+The admin services also support a GET request to inspect the setting of the connection
+and a DELETE request to clear the connection setting back to null (default).
+Both requests use the same URL.
+
 ### Setting descriptive properties for a server
 
 The descriptive properties are used in logging and events originating
@@ -90,7 +168,7 @@ any properties needed to configure it.
 
 The following command creates information about the event bus.
 It is possible to add arbitrary name/value pairs as JSON in the
-request body.
+request body.  The correct properties to use are defined in the connector type.
 
 ```
 POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/event-bus
