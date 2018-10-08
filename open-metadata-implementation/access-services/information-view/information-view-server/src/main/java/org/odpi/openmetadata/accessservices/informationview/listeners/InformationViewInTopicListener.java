@@ -149,7 +149,7 @@ public class InformationViewInTopicListener implements OpenMetadataTopicListener
                         Constants.INFORMATION_VIEW_OMAS_NAME,
                         new InstanceProperties());
 
-                String qualifiedNameForDbSchemaType = qualifiedNameForInformationView + "." + event.getTableContext().getSchemaName() + Constants.TYPE_SUFFIX;
+                String qualifiedNameForDbSchemaType = qualifiedNameForInformationView +  Constants.TYPE_SUFFIX;
                 InstanceProperties dbSchemaTypeProperties = new EntityPropertiesBuilder()
                         .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForDbSchemaType)
                         .withStringProperty(Constants.DISPLAY_NAME, event.getTableContext().getSchemaName() + Constants.TYPE_SUFFIX)
@@ -201,7 +201,7 @@ public class InformationViewInTopicListener implements OpenMetadataTopicListener
 
                 for (DerivedColumnDetail derivedColumn : event.getDerivedColumns()) {
 
-                    String qualifiedNameColumnType = qualifiedNameForTable + "." + derivedColumn.getRealColumn().getAttributeName() + Constants.TYPE_SUFFIX;
+                    String qualifiedNameColumnType = qualifiedNameForTable + "." + derivedColumn.getAttributeName() + Constants.TYPE_SUFFIX;
                     InstanceProperties columnTypeProperties = new EntityPropertiesBuilder()
                             .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameColumnType)
                             .withStringProperty(Constants.DISPLAY_NAME, derivedColumn.getAttributeName() + Constants.TYPE_SUFFIX)
@@ -214,7 +214,7 @@ public class InformationViewInTopicListener implements OpenMetadataTopicListener
                             qualifiedNameColumnType,
                             columnTypeProperties);
 
-                    String qualifiedNameForColumn = qualifiedNameForTable + "." + derivedColumn.getRealColumn().getAttributeName();
+                    String qualifiedNameForColumn = qualifiedNameForTable + "." + derivedColumn.getAttributeName();
                     InstanceProperties columnProperties = new EntityPropertiesBuilder()
                             .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForColumn)
                             .withStringProperty(Constants.ATTRIBUTE_NAME, derivedColumn.getAttributeName())

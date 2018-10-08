@@ -113,7 +113,7 @@ public class ReportCreator {
                     new InstanceProperties());
 
 
-            String qualifiedNameForComplexSchemaType = qualifiedNameForReport + Constants.TYPE_SUFFIX;//TODO
+            String qualifiedNameForComplexSchemaType = qualifiedNameForReport + Constants.TYPE_SUFFIX;
             InstanceProperties complexSchemaTypeProperties = new EntityPropertiesBuilder()
                     .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForComplexSchemaType)
                     .build();

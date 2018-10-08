@@ -27,7 +27,6 @@ import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 
-@Ignore
 public class ColumnContextBuilderTest {
 
     @Mock
@@ -111,6 +110,8 @@ public class ColumnContextBuilderTest {
         typeDef = helper.buildRelationshipType(Constants.SCHEMA_QUERY_IMPLEMENTATION, SCHEMA_QUERY_IMPLEMENTATION_REL_TYPE_GUID);
         when(omrsMetadataCollection.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
         typeDef = helper.buildRelationshipType(Constants.SEMANTIC_ASSIGNMENT, SEMANTIC_ASSIGNMENT_REL_TYPE_GUID);
+        when(omrsMetadataCollection.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
+        typeDef = helper.buildRelationshipType(Constants.FOREIGN_KEY, FOREIGN_KEY_REL_TYPE_GUID);
         when(omrsMetadataCollection.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
     }
 
