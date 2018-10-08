@@ -89,6 +89,7 @@ public class GovernanceProgramRESTServices
         {
             this.validateInitialization(methodName);
 
+            String              profileUserId = null;
             String              employeeNumber = null;
             String              fullName = null;
             String              knownName = null;
@@ -98,6 +99,7 @@ public class GovernanceProgramRESTServices
 
             if (requestBody != null)
             {
+                profileUserId = requestBody.getUserId();
                 employeeNumber = requestBody.getEmployeeNumber();
                 fullName = requestBody.getFullName();
                 knownName = requestBody.getKnownName();
@@ -110,6 +112,7 @@ public class GovernanceProgramRESTServices
                                                                           repositoryConnector);
 
             response.setGUID(handler.createPersonalProfile(userId,
+                                                           profileUserId,
                                                            employeeNumber,
                                                            fullName,
                                                            knownName,

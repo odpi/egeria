@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceprogram.client;
 
 
@@ -25,7 +26,7 @@ public class GovernanceProgramExceptionHandler
     /**
      * Create a new GovernanceProgramExceptionHandler.
      *
-     * @param newServerURL - the network address of the server running the OMAS REST services
+     * @param newServerURL  the network address of the server running the OMAS REST services
      */
     public GovernanceProgramExceptionHandler(String   newServerURL)
     {
@@ -36,7 +37,7 @@ public class GovernanceProgramExceptionHandler
     /**
      * Throw an exception if a server URL has not been supplied on the constructor.
      *
-     * @param methodName - name of the method making the call.
+     * @param methodName  name of the method making the call.
      * @throws PropertyServerException the server URL is not set
      */
     public  void validateOMASServerURL(String methodName) throws PropertyServerException
@@ -62,8 +63,8 @@ public class GovernanceProgramExceptionHandler
     /**
      * Throw an exception if the supplied userId is null
      *
-     * @param userId - user name to validate
-     * @param methodName - name of the method making the call.
+     * @param userId  user name to validate
+     * @param methodName  name of the method making the call.
      * @throws UserNotAuthorizedException the userId is null
      */
     public  void validateUserId(String userId,
@@ -88,9 +89,10 @@ public class GovernanceProgramExceptionHandler
     /**
      * Throw an exception if the supplied guid is null
      *
-     * @param guid - unique identifier to validate
-     * @param guidParameter - name of the parameter that passed the guid.
-     * @param methodName - name of the method making the call.
+     * @param guid  unique identifier to validate
+     * @param guidParameter  name of the parameter that passed the guid.
+     * @param expectedTypeName name of the type for the instance that should have been retrieved.
+     * @param methodName  name of the method making the call.
      * @throws UnrecognizedGUIDException the guid is null
      */
     public  void validateGUID(String guid,
@@ -120,9 +122,9 @@ public class GovernanceProgramExceptionHandler
     /**
      * Throw an exception if the supplied name is null
      *
-     * @param name - unique name to validate
-     * @param nameParameter - name of the parameter that passed the name.
-     * @param methodName - name of the method making the call.
+     * @param name  unique name to validate
+     * @param nameParameter name of the parameter that passed the name.
+     * @param methodName name of the method making the call.
      * @throws InvalidParameterException the guid is null
      */
     public  void validateName(String name,
@@ -368,6 +370,7 @@ public class GovernanceProgramExceptionHandler
      *
      * @param methodName  name of the method called
      * @param restResult  response from UserNotAuthorizedException encoded exception from the server
+     * @throws UserNotAuthorizedException encoded exception from the server
      */
     public  void detectAndThrowUserNotAuthorizedException(String                           methodName,
                                                           GovernanceProgramOMASAPIResponse restResult) throws UserNotAuthorizedException

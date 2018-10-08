@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.ffdc;
 
 import org.slf4j.Logger;
@@ -72,6 +73,14 @@ public enum AssetConsumerErrorCode
             "The text field value passed on the {0} parameter of the {1} operation is null",
             "The system is unable to process the request without this text field value.",
             "Correct the code in the caller to provide the name."),
+    NEGATIVE_START_FROM(400, "OMAS-ASSET-CONSUMER-400-012 ",
+            "The starting point for the results, passed on the {0} parameter of the {1} operation, is negative",
+            "The system is unable to process the request with this invalid value.  It should be zero for the start of the values, or a number greater than 0 to start partway down the list",
+            "Correct the code in the caller to provide a non-negative value."),
+    EMPTY_PAGE_SIZE(400, "OMAS-ASSET-CONSUMER-400-013 ",
+            "The number of records to return, passed on the {0} parameter of the {1} operation, is less than 1",
+            "The system is unable to process the request with this page size value.",
+            "Correct the code in the caller to provide a page size of 1 or greater."),
     SERVER_NOT_AVAILABLE(404, "OMAS-ASSET-CONSUMER-404-001 ",
             "The OMAS Service {0} is not available",
             "The system is unable to connect to the OMAS Server.",
@@ -99,13 +108,29 @@ public enum AssetConsumerErrorCode
             "The system is unable to populate the requested connection object.",
             "Check that the connection name and the OMAS Server URL is correct.  Retry the request when the connection is available in the OMAS Service"),
     ASSET_NOT_FOUND(404, "OMAS-ASSET-CONSUMER-404-007 ",
-            "The requested asset {0} is not found for connection {1}",
-            "The system is unable to populate the asset properties object because none of the open metadata repositories are returning the asset's properties.",
+            "A connected asset is not found for connection {0}",
+            "The system is unable to populate the connected asset properties because none of the open metadata repositories are returning an asset linked to this connection.",
             "Verify that the OMAS Service running and the connection definition in use is linked to the Asset definition in the metadata repository. Then retry the request."),
-    UNKNOWN_ASSET(404, "OMAS-ASSET-CONSUMER-404-008 ",
+    MULTIPLE_ASSETS_FOUND(404, "OMAS-ASSET-CONSUMER-404-008 ",
+            "Multiple assets are connected to connection {0}",
+            "The system is unable to populate the connected asset properties because the open metadata repositories have many links to assets defined for this connection.  The service is unsure which one to use.",
+            "Investigate why multiple assets are connected to this connection.  If the related connector is able to serve up many assets then create a virtual asset to cover its collection of assets and link it to the connection. Then link the assets currently linked to this connection to the virtual asset instead. Then retry the request."),
+    UNKNOWN_ASSET(404, "OMAS-ASSET-CONSUMER-404-009 ",
             "The asset with unique identifier {0} is not found for method {1} of access service {2} in open metadata server {3}, error message was: {4}",
             "The system is unable to update information associated with the asset because none of the connected open metadata repositories recognize the asset's unique identifier.",
             "The unique identifier of the asset is supplied by the caller.  Verify that the caller's logic is correct, and that there are no errors being reported by the open metadata repository. Once all errors have been resolved, retry the request."),
+    INSTANCE_NOT_FOUND_BY_GUID(404, "OMAS-ASSET-CONSUMER-404-010 ",
+            "The asset consumer OMAS {0} method is not able to retrieve a {1} record with a unique identifier of {2} for userId {3} from server {4}",
+            "The record is not stored in the property server.",
+            "Check that the unique identifier is correct and the property server(s) supporting the assets is/are running."),
+    MULTIPLE_USER_IDENTITIES_FOUND(404, "OMAS-ASSET-CONSUMER-404-011 ",
+            "Multiple user identity entities have been found for userId {0}.  This includes {1}",
+            "There are multiple user identity entities for the requesting user.  The service is unsure which one to use.",
+            "Remove all but one of user identity entities for this userId and retry the request."),
+    NO_PROFILE_FOR_USER(404, "OMAS-ASSET-CONSUMER-404-012 ",
+            "No profile exists for userId {0}.",
+            "The service was unable to locate a profile for this user.",
+            "Use the updateMyProfile method to add a profile and retry the request."),
     NULL_CONNECTION_RETURNED(500, "OMAS-ASSET-CONSUMER-500-001 ",
             "The requested connection named {0} is not returned by the open metadata Server {1}",
             "The system is unable to create a connector because the OMAS Server is not returning the Connection properties.",
@@ -114,6 +139,14 @@ public enum AssetConsumerErrorCode
             "The requested connector for connection named {0} is not returned by the OMAS Server {1}",
             "The system is unable to create a connector.",
             "Verify that the OMAS server is running and the connection definition is correctly configured."),
+    NULL_END2_RETURNED(500, "OMAS-ASSET-CONSUMER-500-003 ",
+            "A relationship of type {0} and unique identifier of {1} has a null entity proxy 2.  Relationship contents are: {2}",
+            "The system is unable to retrieve the asset.",
+            "This is a logic error in the open metadata repositories as it is not valid to have a relationship without two entity proxies that represent the entities that is connects.  Gather as much information about the usage of the metadata.  Use the metadata collection id to identify which server owns the relationship and raise an issue."),
+    UNABLE_TO_CREATE_USER_IDENTITY(500, "OMAS-ASSET-CONSUMER-500-004 ",
+            "Unable to create new user identity for user id {0}",
+            "The system returned a null from the addEntity request.",
+            "Verify that the OMAS server running and their are no errors on the server side."),
     NULL_RESPONSE_FROM_API(503, "OMAS-ASSET-CONSUMER-503-001 ",
             "A null response was received from REST API call {0} to server {1}",
             "The system has issued a call to an open metadata access service REST API in a remote server and has received a null response.",
@@ -125,7 +158,11 @@ public enum AssetConsumerErrorCode
     SERVICE_NOT_INITIALIZED(503, "OMAS-ASSET-CONSUMER-503-003 ",
             "The access service has not been initialized and can not support REST API call {0}",
             "The server has received a call to one of its open metadata access services but is unable to process it because the access service is not active.",
-            "If the server is supposed to have this access service activated, correct the server configuration and restart the server.")
+            "If the server is supposed to have this access service activated, correct the server configuration and restart the server."),
+    EXCEPTION_RESPONSE_FROM_API(503, "OMAS-ASSET-CONSUMER-503-004 ",
+            "A {0} exception was received from REST API call {1} to server {2}: error message was: {3}",
+            "The system has issued a call to an open metadata access service REST API in a remote server and has received an exception response.",
+            "The error message should indicate the cause of the error.  Otherwise look for errors in the remote server's audit log and console to understand and correct the source of the error.")
     ;
 
 
@@ -198,12 +235,12 @@ public enum AssetConsumerErrorCode
      */
     public String getFormattedErrorMessage(String... params)
     {
-        log.debug(String.format("<== OCFErrorCode.getMessage(%s)", Arrays.toString(params)));
+        log.debug(String.format("<== AssetConsumerErrorCode.getMessage(%s)", Arrays.toString(params)));
 
         MessageFormat mf = new MessageFormat(errorMessage);
         String result = mf.format(params);
 
-        log.debug(String.format("==> OCFErrorCode.getMessage(%s): %s", Arrays.toString(params), result));
+        log.debug(String.format("==> AssetConsumerErrorCode.getMessage(%s): %s", Arrays.toString(params), result));
 
         return result;
     }

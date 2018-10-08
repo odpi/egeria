@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFErrorCode;
@@ -49,7 +50,7 @@ public abstract class AssetCertifications extends AssetPropertyIteratorBase impl
      * @param template object to clone
      * @return new cloned object.
      */
-    protected AssetCertification cloneElement(AssetDescriptor parentAsset, AssetPropertyBase template)
+    protected AssetPropertyBase cloneElement(AssetDescriptor parentAsset, AssetPropertyBase template)
     {
         return new AssetCertification(parentAsset, (AssetCertification)template);
     }

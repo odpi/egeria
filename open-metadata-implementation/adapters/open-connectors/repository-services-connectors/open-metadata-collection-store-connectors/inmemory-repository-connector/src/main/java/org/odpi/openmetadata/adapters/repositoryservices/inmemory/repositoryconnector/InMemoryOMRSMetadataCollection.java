@@ -3661,21 +3661,43 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
                                                                           userId,
                                                                           typeDef.getName(),
                                                                           initialProperties);
+        /*
+         * See if there is a proxy for entity 1
+         */
+        EntityProxy entityOneProxy = repositoryStore.getEntityProxy(entityOneGUID);
 
-        EntityProxy   entityOne = repositoryStore.getEntityProxy(entityOneGUID);
+        /*
+         * if not see if there is an entity for entity 1
+         *
+         */
+        if (entityOneProxy == null)
+        {
+            EntityDetail entityOneDetail = repositoryStore.getEntity(entityOneGUID);
+            entityOneProxy = repositoryHelper.getNewEntityProxy(repositoryName, entityOneDetail);
+        }
 
-        repositoryValidator.validateEntityFromStore(repositoryName, entityOneGUID, entityOne, methodName);
-        repositoryValidator.validateEntityIsNotDeleted(repositoryName, entityOne, methodName);
+        repositoryValidator.validateEntityFromStore(repositoryName, entityOneGUID, entityOneProxy, methodName);
+        repositoryValidator.validateEntityIsNotDeleted(repositoryName, entityOneProxy, methodName);
 
-        EntityProxy   entityTwo = repositoryStore.getEntityProxy(entityTwoGUID);
+        /*
+         * See if there is a proxy for entity 2
+         */
+        EntityProxy entityTwoProxy = repositoryStore.getEntityProxy(entityTwoGUID);
 
-        repositoryValidator.validateEntityFromStore(repositoryName, entityTwoGUID, entityTwo, methodName);
-        repositoryValidator.validateEntityIsNotDeleted(repositoryName, entityTwo, methodName);
+        /*
+         * If not see if there is an entity for entity 2
+         */
+        if (entityTwoProxy == null)
+        {
+            EntityDetail entityTwoDetail = repositoryStore.getEntity(entityTwoGUID);
+            entityTwoProxy = repositoryHelper.getNewEntityProxy(repositoryName, entityTwoDetail);
+        }
+        repositoryValidator.validateEntityFromStore(repositoryName, entityTwoGUID, entityTwoProxy, methodName);
+        repositoryValidator.validateEntityIsNotDeleted(repositoryName, entityTwoProxy, methodName);
+        repositoryValidator.validateRelationshipEnds(repositoryName, entityOneProxy, entityTwoProxy, typeDef, methodName);
 
-        repositoryValidator.validateRelationshipEnds(repositoryName, entityOne, entityTwo, typeDef, methodName);
-
-        relationship.setEntityOneProxy(entityOne);
-        relationship.setEntityTwoProxy(entityTwo);
+        relationship.setEntityOneProxy(entityOneProxy);
+        relationship.setEntityTwoProxy(entityTwoProxy);
 
         /*
          * If an initial status is supplied then override the default value.

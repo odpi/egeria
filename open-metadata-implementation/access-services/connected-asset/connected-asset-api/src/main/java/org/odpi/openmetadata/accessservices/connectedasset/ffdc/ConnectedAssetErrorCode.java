@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-/* Copyright Contributors to the Egeria project. */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.connectedasset.ffdc;
 
 import org.slf4j.Logger;
@@ -148,7 +148,11 @@ public enum ConnectedAssetErrorCode
     SERVICE_NOT_INITIALIZED(503, "OMAS-CONNECTED-ASSET-503-003 ",
             "The access service has not been initialized and can not support REST API call {0}",
             "The server has received a call to one of its open metadata access services but is unable to process it because the access service is not active.",
-            "If the server is supposed to have this access service activated, correct the server configuration and restart the server.")
+            "If the server is supposed to have this access service activated, correct the server configuration and restart the server."),
+    EXCEPTION_RESPONSE_FROM_API(503, "OMAS-CONNECTED-ASSET-503-004 ",
+            "A {0} exception was received from REST API call {1} to server {2}: error message was: {3}",
+            "The system has issued a call to an open metadata access service REST API in a remote server and has received an exception response.",
+            "The error message should indicate the cause of the error.  Otherwise look for errors in the remote server's audit log and console to understand and correct the source of the error.")
 
     ;
 
@@ -221,12 +225,12 @@ public enum ConnectedAssetErrorCode
      */
     public String getFormattedErrorMessage(String... params)
     {
-        log.debug(String.format("<== OCFErrorCode.getMessage(%s)", Arrays.toString(params)));
+        log.debug(String.format("<== ConnectedAssetErrorCode.getMessage(%s)", Arrays.toString(params)));
 
         MessageFormat mf = new MessageFormat(errorMessage);
         String result = mf.format(params);
 
-        log.debug(String.format("==> OCFErrorCode.getMessage(%s): %s", Arrays.toString(params), result));
+        log.debug(String.format("==> ConnectedAssetErrorCode.getMessage(%s): %s", Arrays.toString(params), result));
 
         return result;
     }

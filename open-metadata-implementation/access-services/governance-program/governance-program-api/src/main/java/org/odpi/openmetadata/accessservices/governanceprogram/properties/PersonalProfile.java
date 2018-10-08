@@ -6,9 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -26,15 +24,14 @@ public class PersonalProfile implements Serializable
 {
     private static final long          serialVersionUID = 1L;
 
-    private static final String        personalProfileTypeName = "Person";
-
     private String              guid                 = null;
-    private String              type                 = personalProfileTypeName;
+    private String              type                 = null;
     private String              employeeNumber       = null;
     private String              fullName             = null;
     private String              knownName            = null;
     private String              jobTitle             = null;
     private String              jobRoleDescription   = null;
+    private List<UserIdentity>  associatedUserIds    = null;
     private Map<String, Object> additionalProperties = null;
 
 
@@ -232,6 +229,38 @@ public class PersonalProfile implements Serializable
     }
 
 
+    /**
+     * Return the userIds associated with the profile.
+     *
+     * @return list of userIds
+     */
+    public List<UserIdentity> getAssociatedUserIds()
+    {
+        if (associatedUserIds == null)
+        {
+            return null;
+        }
+        else if (associatedUserIds.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new ArrayList<>(associatedUserIds);
+        }
+    }
+
+
+    /**
+     * Set up the userIds associated with the profile.
+     *
+     * @param associatedUserIds list of userIds
+     */
+    public void setAssociatedUserIds(List<UserIdentity> associatedUserIds)
+    {
+        this.associatedUserIds = associatedUserIds;
+    }
+
 
     /**
      * Set up additional properties.
@@ -282,7 +311,8 @@ public class PersonalProfile implements Serializable
                 ", knownName='" + knownName + '\'' +
                 ", jobTitle='" + jobTitle + '\'' +
                 ", jobRoleDescription='" + jobRoleDescription + '\'' +
-                ", additionalProperties=" + additionalProperties +
+                ", associatedUserIds=" + associatedUserIds + '\'' +
+                ", additionalProperties=" + additionalProperties + '\'' +
                 ", GUID='" + getGUID() + '\'' +
                 '}';
     }
@@ -313,6 +343,7 @@ public class PersonalProfile implements Serializable
                 Objects.equals(getKnownName(), that.getKnownName()) &&
                 Objects.equals(getJobTitle(), that.getJobTitle()) &&
                 Objects.equals(getJobRoleDescription(), that.getJobRoleDescription()) &&
+                Objects.equals(getAssociatedUserIds(), that.getAssociatedUserIds()) &&
                 Objects.equals(getAdditionalProperties(), that.getAdditionalProperties());
     }
 

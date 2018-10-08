@@ -1,7 +1,12 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project.  -->
 
 # Asset Consumer Open Metadata Access Service (OMAS) API
 
-The Asset Consumer OMAS supports a REST API for requests for asset metadata.
 The Asset Consumer OMAS API provides the shared Java classes between the
-server and client.
+server and client.  This includes:
+
+* Event Types and Payloads
+* Exceptions and Error Codes
+* Property Beans for Assets and Asset Collections
+* Request Bodies and Responses for the REST API.

@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFErrorCode;
@@ -22,8 +23,8 @@ public abstract class AssetNotes extends AssetPropertyIteratorBase implements It
      *                     cached in the element list at any one time.  If a number less than one is supplied, 1 is used.
      */
     public AssetNotes(AssetDescriptor parentAsset,
-                      int                          totalElementCount,
-                      int                          maxCacheSize)
+                      int             totalElementCount,
+                      int             maxCacheSize)
     {
         super(parentAsset, totalElementCount, maxCacheSize);
     }

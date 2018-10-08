@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache 2.0 */
-/* Copyright Contributors to the Egeria project. */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceprogram.properties;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -42,6 +42,8 @@ public class GovernanceOfficerAppointee implements Serializable
 
     /**
      * Copy/clone constructor
+     *
+     * @param template object to copy
      */
     public GovernanceOfficerAppointee(GovernanceOfficerAppointee  template)
     {

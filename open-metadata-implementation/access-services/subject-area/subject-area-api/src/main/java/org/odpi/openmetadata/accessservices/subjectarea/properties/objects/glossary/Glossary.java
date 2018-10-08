@@ -1,20 +1,4 @@
-/**
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -26,6 +10,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.commo
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.governednode.GovernedNode;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.node.Node;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.node.NodeType;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.IconSummary;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.ProjectSummary;
 
 
 import java.util.List;
@@ -119,7 +105,7 @@ public class Glossary extends GovernedNode{
      * The projects associated with this glossary.
      * @return
      */
-    public Set<String> getProjects() {
+    public Set<ProjectSummary> getProjects() {
         return super.getProjects();
     }
     /**
@@ -143,11 +129,11 @@ public class Glossary extends GovernedNode{
     }
     @Override
     /**
-     * The icon associated with this glossary.
+     * The icons associated with this glossary.
      * @return the url of the icon.
      */
-    public String getIcon() {
-        return super.getIcon();
+    public Set<IconSummary> getIcons() {
+        return super.getIcons();
     }
 
     @Override
@@ -190,6 +176,9 @@ public class Glossary extends GovernedNode{
 
     @Override
     public int hashCode() {
-        return ((Node)this).hashCode();
+        int result = super.hashCode();
+        result = 31 * result + (usage != null ? usage.hashCode() : 0);
+        result = 31 * result + (language != null ? language.hashCode() : 0);
+        return result;
     }
 }

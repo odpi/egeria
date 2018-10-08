@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-/* Copyright Contributors to the Egeria project. */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.connectedasset.rest;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -15,14 +15,35 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * AssetResponse is the response structure used on the OMAS REST API calls that return a
- * asset bean object as a response.
+ * asset bean object as a response.  It also returns counts of the number of connected
+ * elements for the asset.  This can be implemented cheaply as a single pass through
+ * the relationships linked to the asset and, assuming that the AssetUniverse structure
+ * is sparsely populated, and most callers only assess a specific subset of the information,
+ * it reduces the number of server calls needed to populate the AssetUniverse.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AssetResponse extends ConnectedAssetOMASAPIResponse
 {
-    private Asset asset = null;
+    private Asset asset                      = null;
+    private int   annotationCount            = 0;
+    private int   certificationCount         = 0;
+    private int   commentCount               = 0;
+    private int   connectionCount            = 0;
+    private int   externalIdentifierCount    = 0;
+    private int   externalReferencesCount    = 0;
+    private int   informalTagCount           = 0;
+    private int   licenseCount               = 0;
+    private int   likeCount                  = 0;
+    private int   knownLocationsCount        = 0;
+    private int   meaningsCount              = 0;
+    private int   noteLogsCount              = 0;
+    private int   ratingsCount               = 0;
+    private int   relatedAssetCount          = 0;
+    private int   relatedMediaReferenceCount = 0;
+    private int   schemaCount                = 0;
+
 
     /**
      * Default constructor
@@ -44,7 +65,23 @@ public class AssetResponse extends ConnectedAssetOMASAPIResponse
 
         if (template != null)
         {
-            this.asset = template.getAsset();
+            this.asset                      = template.getAsset();
+            this.annotationCount            = template.getAnnotationCount();
+            this.certificationCount         = template.getCertificationCount();
+            this.commentCount               = template.getCommentCount();
+            this.connectionCount            = template.getConnectionCount();
+            this.externalIdentifierCount    = template.getExternalIdentifierCount();
+            this.externalReferencesCount    = template.getExternalReferencesCount();
+            this.informalTagCount           = template.getInformalTagCount();
+            this.licenseCount               = template.getLicenseCount();
+            this.likeCount                  = template.getLikeCount();
+            this.knownLocationsCount        = template.getKnownLocationsCount();
+            this.meaningsCount              = template.getMeaningsCount();
+            this.noteLogsCount              = template.getNoteLogsCount();
+            this.ratingsCount               = template.getRatingsCount();
+            this.relatedAssetCount          = template.getRelatedAssetCount();
+            this.relatedMediaReferenceCount = template.getRelatedMediaReferenceCount();
+            this.schemaCount                = template.getSchemaCount();
         }
     }
 
@@ -72,6 +109,358 @@ public class AssetResponse extends ConnectedAssetOMASAPIResponse
 
 
     /**
+     * Return the count of attached annotations.
+     *
+     * @return count
+     */
+    public int getAnnotationCount()
+    {
+        return annotationCount;
+    }
+
+
+    /**
+     * Set up the count of attached annotations.
+     *
+     * @param annotationCount count
+     */
+    public void setAnnotationCount(int annotationCount)
+    {
+        this.annotationCount = annotationCount;
+    }
+
+
+    /**
+     * Return the count of attached certification.
+     *
+     * @return count
+     */
+    public int getCertificationCount()
+    {
+        return certificationCount;
+    }
+
+
+    /**
+     * Set up the count of attached certifications for the asset.
+     *
+     * @param certificationCount count
+     */
+    public void setCertificationCount(int certificationCount)
+    {
+        this.certificationCount = certificationCount;
+    }
+
+
+    /**
+     * Return the count of attached comments.
+     *
+     * @return count
+     */
+    public int getCommentCount()
+    {
+        return commentCount;
+    }
+
+
+    /**
+     * Set up the count of attached comments.
+     *
+     * @param commentCount count
+     */
+    public void setCommentCount(int commentCount)
+    {
+        this.commentCount = commentCount;
+    }
+
+
+    /**
+     * Return the count of connections for the asset.
+     *
+     * @return count
+     */
+    public int getConnectionCount()
+    {
+        return connectionCount;
+    }
+
+
+    /**
+     * Set up the count of connections.
+     *
+     * @param connectionCount count
+     */
+    public void setConnectionCount(int connectionCount)
+    {
+        this.connectionCount = connectionCount;
+    }
+
+
+    /**
+     * Return the count of external identifiers for this asset.
+     *
+     * @return count
+     */
+    public int getExternalIdentifierCount()
+    {
+        return externalIdentifierCount;
+    }
+
+
+    /**
+     * Set up the count of external identifiers for this asset.
+     *
+     * @param externalIdentifierCount count
+     */
+    public void setExternalIdentifierCount(int externalIdentifierCount)
+    {
+        this.externalIdentifierCount = externalIdentifierCount;
+    }
+
+
+    /**
+     * Return the count of attached external references.
+     *
+     * @return count
+     */
+    public int getExternalReferencesCount()
+    {
+        return externalReferencesCount;
+    }
+
+
+    /**
+     * Set up the count of attached external references.
+     *
+     * @param externalReferencesCount count
+     */
+    public void setExternalReferencesCount(int externalReferencesCount)
+    {
+        this.externalReferencesCount = externalReferencesCount;
+    }
+
+
+    /**
+     * Return the count of attached informal tags.
+     *
+     * @return count
+     */
+    public int getInformalTagCount()
+    {
+        return informalTagCount;
+    }
+
+
+    /**
+     * Set up the count of attached informal tags.
+     *
+     * @param informalTagCount count
+     */
+    public void setInformalTagCount(int informalTagCount)
+    {
+        this.informalTagCount = informalTagCount;
+    }
+
+
+    /**
+     * Return the count of license for this asset.
+     *
+     * @return count
+     */
+    public int getLicenseCount()
+    {
+        return licenseCount;
+    }
+
+
+    /**
+     * Set up the count of licenses for this asset.
+     *
+     * @param licenseCount count
+     */
+    public void setLicenseCount(int licenseCount)
+    {
+        this.licenseCount = licenseCount;
+    }
+
+
+    /**
+     * Return the number of likes for the asset.
+     *
+     * @return count
+     */
+    public int getLikeCount()
+    {
+        return likeCount;
+    }
+
+
+    /**
+     * Set up the count of likes for the asset.
+     *
+     * @param likeCount count
+     */
+    public void setLikeCount(int likeCount)
+    {
+        this.likeCount = likeCount;
+    }
+
+
+    /**
+     * Return the count of known locations.
+     *
+     * @return count
+     */
+    public int getKnownLocationsCount()
+    {
+        return knownLocationsCount;
+    }
+
+
+    /**
+     * Set up the count of known locations.
+     *
+     * @param knownLocationsCount count
+     */
+    public void setKnownLocationsCount(int knownLocationsCount)
+    {
+        this.knownLocationsCount = knownLocationsCount;
+    }
+
+
+    /**
+     * Return the count of attached meanings.
+     *
+     * @return count
+     */
+    public int getMeaningsCount()
+    {
+        return meaningsCount;
+    }
+
+
+    /**
+     * Set up the count of attached meanings.
+     *
+     * @param meaningsCount count
+     */
+    public void setMeaningsCount(int meaningsCount)
+    {
+        this.meaningsCount = meaningsCount;
+    }
+
+
+    /**
+     * Return the count of attached note logs.
+     *
+     * @return count
+     */
+    public int getNoteLogsCount()
+    {
+        return noteLogsCount;
+    }
+
+
+    /**
+     * Set up the count of attached note logs.
+     *
+     * @param noteLogsCount count
+     */
+    public void setNoteLogsCount(int noteLogsCount)
+    {
+        this.noteLogsCount = noteLogsCount;
+    }
+
+
+    /**
+     * Return the count of attached ratings.
+     *
+     * @return count
+     */
+    public int getRatingsCount()
+    {
+        return ratingsCount;
+    }
+
+
+    /**
+     * Set up the count of attach ratings.
+     *
+     * @param ratingsCount count
+     */
+    public void setRatingsCount(int ratingsCount)
+    {
+        this.ratingsCount = ratingsCount;
+    }
+
+
+    /**
+     * Return the count of related assets.
+     *
+     * @return count
+     */
+    public int getRelatedAssetCount()
+    {
+        return relatedAssetCount;
+    }
+
+
+    /**
+     * Set up the count of related assets.
+     *
+     * @param relatedAssetCount count
+     */
+    public void setRelatedAssetCount(int relatedAssetCount)
+    {
+        this.relatedAssetCount = relatedAssetCount;
+    }
+
+
+    /**
+     * Return the count of related media references.
+     *
+     * @return count
+     */
+    public int getRelatedMediaReferenceCount()
+    {
+        return relatedMediaReferenceCount;
+    }
+
+
+    /**
+     * Set up the count of related media references.
+     *
+     * @param relatedMediaReferenceCount count
+     */
+    public void setRelatedMediaReferenceCount(int relatedMediaReferenceCount)
+    {
+        this.relatedMediaReferenceCount = relatedMediaReferenceCount;
+    }
+
+
+    /**
+     * Return the count of attached schema (expect 0 or 1).
+     *
+     * @return count
+     */
+    public int getSchemaCount()
+    {
+        return schemaCount;
+    }
+
+
+    /**
+     * Set up the count of attached schema (expect 0 or 1).
+     *
+     * @param schemaCount count
+     */
+    public void setSchemaCount(int schemaCount)
+    {
+        this.schemaCount = schemaCount;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -80,7 +469,23 @@ public class AssetResponse extends ConnectedAssetOMASAPIResponse
     public String toString()
     {
         return "AssetResponse{" +
-                "Asset='" + getAsset() + '\'' +
+                "asset=" + asset +
+                ", annotationCount=" + annotationCount +
+                ", certificationCount=" + certificationCount +
+                ", commentCount=" + commentCount +
+                ", connectionCount=" + connectionCount +
+                ", externalIdentifierCount=" + externalIdentifierCount +
+                ", externalReferencesCount=" + externalReferencesCount +
+                ", informalTagCount=" + informalTagCount +
+                ", licenseCount=" + licenseCount +
+                ", likeCount=" + likeCount +
+                ", knownLocationsCount=" + knownLocationsCount +
+                ", meaningsCount=" + meaningsCount +
+                ", noteLogsCount=" + noteLogsCount +
+                ", ratingsCount=" + ratingsCount +
+                ", relatedAssetCount=" + relatedAssetCount +
+                ", relatedMediaReferenceCount=" + relatedMediaReferenceCount +
+                ", schemaCount=" + schemaCount +
                 ", relatedHTTPCode=" + getRelatedHTTPCode() +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
@@ -104,7 +509,7 @@ public class AssetResponse extends ConnectedAssetOMASAPIResponse
         {
             return true;
         }
-        if (!(objectToCompare instanceof AssetResponse))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -113,7 +518,23 @@ public class AssetResponse extends ConnectedAssetOMASAPIResponse
             return false;
         }
         AssetResponse that = (AssetResponse) objectToCompare;
-        return Objects.equals(asset, that.asset);
+        return getAnnotationCount() == that.getAnnotationCount() &&
+                getCertificationCount() == that.getCertificationCount() &&
+                getCommentCount() == that.getCommentCount() &&
+                getConnectionCount() == that.getConnectionCount() &&
+                getExternalIdentifierCount() == that.getExternalIdentifierCount() &&
+                getExternalReferencesCount() == that.getExternalReferencesCount() &&
+                getInformalTagCount() == that.getInformalTagCount() &&
+                getLicenseCount() == that.getLicenseCount() &&
+                getLikeCount() == that.getLikeCount() &&
+                getKnownLocationsCount() == that.getKnownLocationsCount() &&
+                getMeaningsCount() == that.getMeaningsCount() &&
+                getNoteLogsCount() == that.getNoteLogsCount() &&
+                getRatingsCount() == that.getRatingsCount() &&
+                getRelatedAssetCount() == that.getRelatedAssetCount() &&
+                getRelatedMediaReferenceCount() == that.getRelatedMediaReferenceCount() &&
+                getSchemaCount() == that.getSchemaCount() &&
+                Objects.equals(getAsset(), that.getAsset());
     }
 
 
@@ -125,6 +546,11 @@ public class AssetResponse extends ConnectedAssetOMASAPIResponse
     @Override
     public int hashCode()
     {
-        return Objects.hash(asset);
+        return Objects.hash(super.hashCode(), getAsset(), getAnnotationCount(), getCertificationCount(),
+                            getCommentCount(),
+                            getConnectionCount(), getExternalIdentifierCount(), getExternalReferencesCount(),
+                            getInformalTagCount(), getLicenseCount(), getLikeCount(), getKnownLocationsCount(),
+                            getMeaningsCount(), getNoteLogsCount(), getRatingsCount(), getRelatedAssetCount(),
+                            getRelatedMediaReferenceCount(), getSchemaCount());
     }
 }
