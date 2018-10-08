@@ -29,52 +29,42 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ForeignKey {
-    String columnGuid;
-    String foreignKeyName;
-    String columnName;
-    String tableName;
+public class ConnectionProperties {
 
+    private String model;
+    private String query;
+    private String networkAddress;
 
-    public String getColumnGuid() {
-        return columnGuid;
+    public String getModel() {
+        return model;
     }
 
-    public void setColumnGuid(String columnGuid) {
-        this.columnGuid = columnGuid;
+    public void setModel(String model) {
+        this.model = model;
     }
 
-    public String getForeignKeyName() {
-        return foreignKeyName;
+    public String getQuery() {
+        return query;
     }
 
-    public void setForeignKeyName(String foreignKeyName) {
-        this.foreignKeyName = foreignKeyName;
+    public void setQuery(String query) {
+        this.query = query;
     }
 
-    public String getColumnName() {
-        return columnName;
+    public String getNetworkAddress() {
+        return networkAddress;
     }
 
-    public void setColumnName(String columnName) {
-        this.columnName = columnName;
-    }
-
-    public String getTableName() {
-        return tableName;
-    }
-
-    public void setTableName(String tableName) {
-        this.tableName = tableName;
+    public void setNetworkAddress(String networkAddress) {
+        this.networkAddress = networkAddress;
     }
 
     @Override
     public String toString() {
-        return "ForeignKey{" +
-                "columnGuid='" + columnGuid + '\'' +
-                ", foreignKeyName='" + foreignKeyName + '\'' +
-                ", columnName='" + columnName + '\'' +
-                ", tableName='" + tableName + '\'' +
+        return "ConnectionProperties{" +
+                "model='" + model + '\'' +
+                ", query='" + query + '\'' +
+                ", networkAddress='" + networkAddress + '\'' +
                 '}';
     }
 }

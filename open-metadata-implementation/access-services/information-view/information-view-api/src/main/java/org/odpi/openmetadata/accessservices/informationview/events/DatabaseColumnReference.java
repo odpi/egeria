@@ -29,52 +29,31 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ForeignKey {
-    String columnGuid;
-    String foreignKeyName;
-    String columnName;
-    String tableName;
+public class DatabaseColumnReference {
+    private String name;
+    private String sourceId;
 
-
-    public String getColumnGuid() {
-        return columnGuid;
+    public String getName() {
+        return name;
     }
 
-    public void setColumnGuid(String columnGuid) {
-        this.columnGuid = columnGuid;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getForeignKeyName() {
-        return foreignKeyName;
+    public String getSourceId() {
+        return sourceId;
     }
 
-    public void setForeignKeyName(String foreignKeyName) {
-        this.foreignKeyName = foreignKeyName;
-    }
-
-    public String getColumnName() {
-        return columnName;
-    }
-
-    public void setColumnName(String columnName) {
-        this.columnName = columnName;
-    }
-
-    public String getTableName() {
-        return tableName;
-    }
-
-    public void setTableName(String tableName) {
-        this.tableName = tableName;
+    public void setSourceId(String sourceId) {
+        this.sourceId = sourceId;
     }
 
     @Override
     public String toString() {
-        return "ForeignKey{" +
-                "columnGuid='" + columnGuid + '\'' +
-                ", foreignKeyName='" + foreignKeyName + '\'' +
-                ", columnName='" + columnName + '\'' +
-                ", tableName='" + tableName + '\'' +
+        return "DatabaseColumnReference{" +
+                "name='" + name + '\'' +
+                ", sourceId='" + sourceId + '\'' +
                 '}';
     }
 }

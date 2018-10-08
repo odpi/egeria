@@ -10,7 +10,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
-@JsonInclude(JsonInclude.Include.ALWAYS)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ConnectionDetails {
 
@@ -21,6 +21,8 @@ public class ConnectionDetails {
     private String connectorProviderQualifiedName;
     private String connectionQualifiedName;
     private String endpointQualifiedName;
+    private String type;
+
 
 
     /**
@@ -147,6 +149,15 @@ public class ConnectionDetails {
         this.user = user;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+
     @Override
     public String toString() {
         return "ConnectionDetails{" +
@@ -157,6 +168,7 @@ public class ConnectionDetails {
                 ", connectionQualifiedName='" + connectionQualifiedName + '\'' +
                 ", endpointQualifiedName='" + endpointQualifiedName + '\'' +
                 ", user='" + user + '\'' +
+                ", type='" + type + '\'' +
                 '}';
     }
 }

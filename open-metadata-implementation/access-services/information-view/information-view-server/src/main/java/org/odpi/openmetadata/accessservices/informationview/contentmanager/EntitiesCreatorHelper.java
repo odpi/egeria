@@ -18,6 +18,16 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -200,19 +210,7 @@ public class EntitiesCreatorHelper {
                                          String guid2) throws Exception {
         List<Relationship> relationships;
         try {
-            String relationshipTypeGuid = enterpriseConnector.getMetadataCollection()
-                    .getTypeDefByName(Constants.USER_ID, relationshipType)
-                    .getGUID();
-            relationships = enterpriseConnector.getMetadataCollection()
-                    .getRelationshipsForEntity(Constants.USER_ID,
-                            guid2,
-                            relationshipTypeGuid,
-                            0,
-                            Collections.singletonList(InstanceStatus.ACTIVE),
-                            null,
-                            null,
-                            null,
-                            0);
+            relationships = getRelationships(relationshipType, guid2);
         } catch (Exception e) {
             InformationViewErrorCode auditCode = InformationViewErrorCode.GET_RELATIONSHIP_EXCEPTION;
             auditLog.logException("getRelationship",
@@ -233,6 +231,24 @@ public class EntitiesCreatorHelper {
                     return relationship;
             }
         return null;
+    }
+
+    public List<Relationship> getRelationships(String relationshipType, String guid2) throws InvalidParameterException, RepositoryErrorException, TypeDefNotKnownException, UserNotAuthorizedException, TypeErrorException, EntityNotKnownException, PropertyErrorException, PagingErrorException, FunctionNotSupportedException {
+        List<Relationship> relationships;
+        String relationshipTypeGuid = enterpriseConnector.getMetadataCollection()
+                .getTypeDefByName(Constants.USER_ID, relationshipType)
+                .getGUID();
+        relationships = enterpriseConnector.getMetadataCollection()
+                .getRelationshipsForEntity(Constants.USER_ID,
+                        guid2,
+                        relationshipTypeGuid,
+                        0,
+                        Collections.singletonList(InstanceStatus.ACTIVE),
+                        null,
+                        null,
+                        null,
+                        0);
+        return relationships;
     }
 
     /**
@@ -267,10 +283,10 @@ public class EntitiesCreatorHelper {
     /**
      * Returns the entity of the given type with the specified qualified name; if it doesn't already exists, it is created with the provided instance properties
      *
-     * @param typeName      is the entity type
-     * @param qualifiedName - qualified name property of the entity, unique for the same entity type
-     * @param properties    specific to the entity type
-     * @param classifications    classifications to be added to entity
+     * @param typeName        is the entity type
+     * @param qualifiedName   - qualified name property of the entity, unique for the same entity type
+     * @param properties      specific to the entity type
+     * @param classifications classifications to be added to entity
      * @return the existing entity with the given qualified name or the newly created entity with the given qualified name
      * @throws Exception
      */
@@ -348,9 +364,8 @@ public class EntitiesCreatorHelper {
                             entityTypeName);
             classification.setProperties(classificationProperties);
             return classification;
-        }
-        catch (Exception e) {
-            log.error(e.getMessage(),e);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
             InformationViewErrorCode auditCode = InformationViewErrorCode.ADD_CLASSIFICATION;
             auditLog.logException("getClassification",
                     auditCode.getErrorMessageId(),
@@ -364,4 +379,11 @@ public class EntitiesCreatorHelper {
             throw new Exception(e);
         }
     }
+
+    public EntityDetail getEntity(String guid) throws RepositoryErrorException, UserNotAuthorizedException, EntityProxyOnlyException, InvalidParameterException, EntityNotKnownException {
+
+        return enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, guid);
+
+    }
+
 }

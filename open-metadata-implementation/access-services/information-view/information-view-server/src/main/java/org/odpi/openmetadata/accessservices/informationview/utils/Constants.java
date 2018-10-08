@@ -4,13 +4,15 @@ package org.odpi.openmetadata.accessservices.informationview.utils;
 
 public class Constants {
 
-    //This will be deleted when model is available and configuration for omas
+
     public static final String INFORMATION_VIEW_OMAS_NAME = "InformationViewOmas";
     public static final String INFORMATION_VIEW = "InformationView";
     public static final String RELATIONAL_TABLE = "RelationalTable";
     public static final String RELATIONAL_COLUMN = "RelationalColumn";
+    public static final String BUSINESS_TERM = "GlossaryTerm";
     public static final String RELATIONAL_DB_SCHEMA_TYPE = "RelationalDBSchemaType";
     public static final String DERIVED_RELATIONAL_COLUMN = "DerivedRelationalColumn";
+    public static final String DERIVED_SCHEMA_ATTRIBUTE = "DerivedSchemaAttribute";
     public static final String DATA_STORE = "DataStore";
     public static final String QUALIFIED_NAME = "qualifiedName";
     public static final String OWNER = "owner";
@@ -62,4 +64,11 @@ public class Constants {
     public static final String REPORTING_ENGINE = "ReportingEngine";
     public static final String PRIMARY_KEY = "PrimaryKey";
     public static final String FOREIGN_KEY = "ForeignKey";
+    public static final String DEPLOYED_REPORT = "DeployedReport";
+    public static final String ID = "id";
+    public static final String COMPLEX_SCHEMA_TYPE = "ComplexSchemaType";
+    public static final String LAST_MODIFIER = "lastModifier";
+    public static final String LAST_MODIFIED_TIME = "lastModifiedTime";
+    public static final String CREATE_TIME = "createdTime";
+    public static final String SCHEMA_ATTRIBUTE = "SchemaAttribute";
 }
