@@ -6,20 +6,17 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>open-metadata-samples</artifactId>
+        <artifactId>egeria</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>0.1-SNAPSHOT</version>
+        <version>0.2-SNAPSHOT</version>
     </parent>
-
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>open-metadata-subject-area-client-samples</artifactId>
-
-    <name>Subject Area Client Samples</name>
+    <artifactId>open-metadata-fvt-omas-subject-area</artifactId>
+    <name>Subject Area OMAS Client Samples</name>
     <description>
-        Sample for the Subject Area Open Metadata Access Service (OMAS) client.
+        FVT resources for the Subject Area Open Metadata Access Service (OMAS).
     </description>
-
     <dependencies>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
@@ -27,5 +24,4 @@
             <version>${open-metadata.version}</version>
         </dependency>
     </dependencies>
-
 </project>

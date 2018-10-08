@@ -6,23 +6,21 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>open-metadata-samples</artifactId>
+        <artifactId>egeria</artifactId>
         <groupId>org.odpi.egeria</groupId>
         <version>0.2-SNAPSHOT</version>
     </parent>
-
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Access Services Samples</name>
+    <name>Open Metadata Access Service FVT Resources</name>
     <description>
-        Samples showing how to call the Open Metadata Access Services (OMASs) clients.
+        The open metadata Access Services Functional Verification Test (FVT) resources.
     </description>
 
-    <artifactId>access-services-samples</artifactId>
-
+    <artifactId>open-metadata-fvt</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>governance-program-client-samples</module>
+        <module>access-services-fvt</module>
     </modules>
 
 </project>

@@ -4,4 +4,4 @@
   
 The open metadata samples provides samples and associated tutorials.
 
-* **[Subject Area Client API Sample](open-metadata-subject-area-client-samples/README.md)**
+* **[Subject Area Client API Sample](subject-area-client/README.md)**

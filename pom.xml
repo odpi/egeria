@@ -85,6 +85,7 @@
         <module>open-metadata-distribution</module>
         <module>open-metadata-publication</module>
         <module>open-metadata-resources</module>
+        <module>open-metadata-test</module>
 
     </modules>
 
