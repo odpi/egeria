@@ -7,7 +7,9 @@ import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidP
 import org.odpi.openmetadata.accessservices.subjectarea.generated.entities.RelatedMedia.RelatedMedia;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.enums.MediaUsage;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.references.ReferenceableToRelatedMedia.RelatedMediaReference;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.server.SubjectAreaBeansToAccessOMRS;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.Status;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.IconSummary;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
@@ -21,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -97,21 +100,28 @@ public class SubjectAreaUtils {
         primitivePropertyValue.setPrimitiveValue(value);
         instanceProperties.setProperty(key, primitivePropertyValue);
     }
-    public static String getIcon(@PathVariable String userId, Set<RelatedMediaReference> relatedMediaReferenceSet) {
-        String iconUrl =null;
+
+    /**
+     * This method finds associated icons
+     * @param userId userid under which the the operation is performed
+     * @param relatedMediaReferenceSet related media references.
+     * @return
+     */
+    public static Set<IconSummary> getIconSummaries(@PathVariable String userId, Set<RelatedMediaReference> relatedMediaReferenceSet) {
+        Set<IconSummary> icons =new HashSet<>();
         if (relatedMediaReferenceSet !=null && !relatedMediaReferenceSet.isEmpty()) {
             for (RelatedMediaReference relatedMediaReference : relatedMediaReferenceSet) {
-
                 RelatedMedia relatedMedia =  relatedMediaReference.getRelatedMedia();
-                //TODO issue call to server to get the relatedMedia content.
-                // TODO can we use the the relatedMedia
-//                if (relatedMedia.getMediaUsage().equals(MediaUsage.ICON)) {
-//                    iconUrl = relatedMedia.getUrl();
-//                    break;
-//                }
+                if (relatedMedia.getMediaUsage().equals(MediaUsage.Icon)) {IconSummary icon = new IconSummary();
+                    icon.setGuid(relatedMedia.getSystemAttributes().getGUID());
+                    icon.setRelationshipguid(relatedMediaReference.getRelationshipGuid());
+                    icon.setUrl(relatedMedia.getUrl());
+                    icon.setQualifiedName(relatedMedia.getQualifiedName());
+                    icons.add(icon);
+                }
             }
         }
-        return iconUrl;
+        return icons;
     }
     public static SubjectAreaOMASAPIResponse checkStatusNotDeleted(Status status, SubjectAreaErrorCode errorCode) {
         final String methodName = "checkStatusNotDeleted";

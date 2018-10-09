@@ -4,6 +4,8 @@ package org.odpi.openmetadata.accessservices.subjectarea.validators;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.Status;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.node.NodeType;
 
 /**
  * Methods used for rest API input validation
@@ -169,6 +171,36 @@ public class InputValidator {
                     errorMessage,
                     errorCode.getSystemAction(),
                     errorCode.getUserAction());
+        }
+    }
+
+    public static void validateNodeType(Object... args) throws InvalidParameterException {
+        if (args.length <4) return;
+        boolean isValid = false;
+        String className = (String) args[0];
+        String methodName = (String) args[1];
+        NodeType nodeTypeToCheck = (NodeType) args[2];
+
+        if(nodeTypeToCheck !=null) {
+            for (int i =3;i<args.length;i++) {
+                if (nodeTypeToCheck.equals(args[i])) {
+                    isValid = true;
+                }
+            }
+            if (!isValid) {
+                SubjectAreaErrorCode errorCode    = SubjectAreaErrorCode.INVALID_NODETYPE;
+                String errorMessage = errorCode.getErrorMessageId()
+                        + errorCode.getFormattedErrorMessage( nodeTypeToCheck.name(),
+                        methodName);
+
+                throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                        className,
+                        methodName,
+                        errorMessage,
+                        errorCode.getSystemAction(),
+                        errorCode.getUserAction());
+            }
+
         }
     }
 }

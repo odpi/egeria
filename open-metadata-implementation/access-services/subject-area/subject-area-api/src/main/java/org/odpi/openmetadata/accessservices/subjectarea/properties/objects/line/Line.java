@@ -1,20 +1,4 @@
-/**
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- * <p>
- * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -41,7 +25,7 @@ public class Line implements Serializable {
     protected static final long serialVersionUID = 1L;
     private SystemAttributes systemAttributes = null;
     private Map<String, Object> extraAttributes;
-
+    protected String typeDefGuid;
     protected LineType lineType;
     protected String entity1Name;
     protected String entity1Type;
@@ -57,6 +41,11 @@ public class Line implements Serializable {
 
     protected String guid;
     protected String name;
+
+    /**
+     * Default constructor
+     */
+    public Line() {}
     public Line(String name) {
         this.name=name;
         this.lineType=LineType.Other;
@@ -87,6 +76,14 @@ public class Line implements Serializable {
         this.entity2Name = omrsRelationship.getEntityTwoPropertyName();
         this.entity2Type = omrsRelationship.getEntityTwoProxy().getType().getTypeDefName();
         this.entity2Guid = omrsRelationship.getEntityTwoProxy().getGUID();
+    }
+
+    public String getTypeDefGuid() {
+        return typeDefGuid;
+    }
+
+    public void setTypeDefGuid(String typeDefGuid) {
+        this.typeDefGuid = typeDefGuid;
     }
 
     public LineType getLineType() {
@@ -212,7 +209,9 @@ public class Line implements Serializable {
         Relationship omrsRelationship = new Relationship();
         InstanceType typeOfRelationship = new InstanceType();
         typeOfRelationship.setTypeDefName(line.getName());
+        typeOfRelationship.setTypeDefGUID(line.getTypeDefGuid());
         omrsRelationship.setType(typeOfRelationship);
+
 
         SystemAttributes systemAttributes = line.getSystemAttributes();
         if (systemAttributes ==null) {
@@ -228,20 +227,17 @@ public class Line implements Serializable {
             omrsRelationship.setVersion(systemAttributes.getVersion());
         }
         line.setSystemAttributes(systemAttributes);
-        // set names of ends
-        omrsRelationship.setEntityOnePropertyName(line.getEntity2Name());
-        omrsRelationship.setEntityTwoPropertyName(line.getEntity1Name());
         //set proxy 1
         EntityProxy entityOne = new EntityProxy();
-        entityOne.setGUID(line.getEntity2Guid());
-        String type1 = line.getEntity2Type();
+        entityOne.setGUID(line.getEntity1Guid());
+        String type1 = line.getEntity1Type();
         InstanceType instancetype1 = new InstanceType();
         instancetype1.setTypeDefName(type1);
         entityOne.setType(instancetype1);
         //set proxy 2
         EntityProxy entityTwo = new EntityProxy();
-        entityTwo.setGUID(line.getEntity1Guid());
-        String type2 = line.getEntity1Type();
+        entityTwo.setGUID(line.getEntity2Guid());
+        String type2 = line.getEntity2Type();
         InstanceType instancetype2 = new InstanceType();
         instancetype2.setTypeDefName(type2);
         entityTwo.setType(instancetype2);
