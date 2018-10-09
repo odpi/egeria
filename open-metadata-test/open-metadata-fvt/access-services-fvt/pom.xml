@@ -6,26 +6,21 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>access-services-samples</artifactId>
+        <artifactId>egeria</artifactId>
         <groupId>org.odpi.egeria</groupId>
         <version>0.2-SNAPSHOT</version>
     </parent>
-
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>subject-area-client-samples</artifactId>
-
-    <name>Subject Area OMAS Client Samples</name>
+    <name>Open Metadata Test Resources</name>
     <description>
-        Sample for the Subject Area Open Metadata Access Service (OMAS) client.
+        The open metadata test resources contains Functional Verification Test (FVT) and System Verification Test (SVT)resource.
     </description>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>subject-area-client</artifactId>
-            <version>${open-metadata.version}</version>
-        </dependency>
-    </dependencies>
+    <artifactId>access-services-fvt</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>subject-area-fvt</module>
+    </modules>
 
 </project>
