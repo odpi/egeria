@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices;
 
 import org.slf4j.Logger;
@@ -17,10 +18,7 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicProvider;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 
 /**
@@ -286,7 +284,6 @@ public class ConnectorConfigurationFactory
 
         final String endpointDescription = "OMRS default repository REST API endpoint.";
 
-        String endpointAddress = localServerURL;
         String endpointName    = "DefaultRepositoryRESTAPI.Endpoint." + localServerName;
 
         Endpoint endpoint = new Endpoint();
@@ -296,7 +293,7 @@ public class ConnectorConfigurationFactory
         endpoint.setQualifiedName(endpointName);
         endpoint.setDisplayName(endpointName);
         endpoint.setDescription(endpointDescription);
-        endpoint.setAddress(endpointAddress);
+        endpoint.setAddress(localServerURL);
 
         final String connectorTypeDescription   = "OMRS default repository REST API connector type.";
         final String connectorTypeJavaClassName = OMRSRESTRepositoryConnectorProvider.class.getName();
@@ -494,10 +491,11 @@ public class ConnectorConfigurationFactory
      * Return the embedded connections for an event based virtual connector
      *
      * @param eventSource display name of the connector
-     * @param arguments - override properties for the event bus connection
+     * @param arguments  override properties for the event bus connection
      * @param eventBusConnectorProviderClassName name of connector provider class that controls the type of connector used.
-     * @param topicURLRoot - root URL of the topic - this is prepended to the topic name
-     * @param topicName - name of the topic
+     * @param topicURLRoot  root URL of the topic - this is prepended to the topic name
+     * @param topicName  name of the topic
+     * @param serverId identifier of the server - used to pick up the right offset for the inbound messages.
      * @param eventBusAdditionalProperties - additional properties for the event bus connection
      * @return List of EmbeddedConnection object
      */
@@ -506,6 +504,7 @@ public class ConnectorConfigurationFactory
                                                                    String              eventBusConnectorProviderClassName,
                                                                    String              topicURLRoot,
                                                                    String              topicName,
+                                                                   String              serverId,
                                                                    Map<String, Object> eventBusAdditionalProperties)
     {
         EmbeddedConnection     embeddedConnection = new EmbeddedConnection();
@@ -513,6 +512,7 @@ public class ConnectorConfigurationFactory
                                                                                       eventBusConnectorProviderClassName,
                                                                                       topicURLRoot,
                                                                                       topicName,
+                                                                                      serverId,
                                                                                       eventBusAdditionalProperties);
 
         embeddedConnection.setDisplayName(eventSource);
@@ -530,17 +530,19 @@ public class ConnectorConfigurationFactory
      * Return the event bus connection substituting default values where they are missing from the event bus
      * configuration.
      *
-     * @param connectionName - name to use in the connection object
+     * @param connectionName  name to use in the connection object
      * @param connectorProviderClassName name of connector provider class that controls the type of connector used.
-     * @param topicURLRoot - root URL of the topic - this is prepended to the topic name
-     * @param topicName - name of the topic
-     * @param additionalProperties - additional properties for the connection
+     * @param topicURLRoot  root URL of the topic - this is prepended to the topic name
+     * @param topicName  name of the topic
+     * @param serverId identifier of the server - used to pick up the right offset for the inbound messages.
+     * @param additionalProperties  additional properties for the connection
      * @return Connection object
      */
     public Connection getDefaultEventBusConnection(String               connectionName,
                                                    String               connectorProviderClassName,
                                                    String               topicURLRoot,
                                                    String               topicName,
+                                                   String               serverId,
                                                    Map<String, Object>  additionalProperties)
     {
         Endpoint endpoint = null;
@@ -572,6 +574,13 @@ public class ConnectorConfigurationFactory
             connectorTypeJavaClassName = connectorProviderClassName;
         }
 
+        if (additionalProperties == null)
+        {
+            additionalProperties = new HashMap<>();
+        }
+
+        additionalProperties.put(KafkaOpenMetadataTopicProvider.serverIdPropertyName, serverId);
+
         Connection connection = new Connection();
 
         connection.setType(this.getConnectionType());
@@ -594,6 +603,7 @@ public class ConnectorConfigurationFactory
      * @param additionalProperties name value property pairs for the topic connection
      * @param eventBusConnectorProvider class name of the event bus connector's provider
      * @param topicURLRoot root name for the topic URL
+     * @param serverId identifier of the server - used to pick up the right offset for the inbound messages.
      * @param eventBusAdditionalProperties name value property pairs for the event bus connection
      * @return Connection object
      */
@@ -601,6 +611,7 @@ public class ConnectorConfigurationFactory
                                                                    Map<String, Object> additionalProperties,
                                                                    String              eventBusConnectorProvider,
                                                                    String              topicURLRoot,
+                                                                   String              serverId,
                                                                    Map<String, Object> eventBusAdditionalProperties)
     {
         final String connectorTypeGUID = "3653df37-23a5-4dd0-9fff-d1b906301007";
@@ -638,6 +649,7 @@ public class ConnectorConfigurationFactory
                                                                         eventBusConnectorProvider,
                                                                         topicURLRoot,
                                                                         defaultEventMapperTopicName,
+                                                                        serverId,
                                                                         eventBusAdditionalProperties));
 
         return connection;
@@ -648,9 +660,11 @@ public class ConnectorConfigurationFactory
      * Return the default connection for the enterprise OMRS topic.  This uses an in-memory event bus connector
      *
      * @param localServerName   name of local server
+     * @param serverId identifier of the server - used to pick up the right offset for the inbound messages.
      * @return Connection object
      */
-    public Connection getDefaultEnterpriseOMRSTopicConnection(String              localServerName)
+    public Connection getDefaultEnterpriseOMRSTopicConnection(String              localServerName,
+                                                              String              serverId)
     {
         final String connectorTypeGUID = "6536cb46-61f0-4f2d-abb4-2dadede30520";
         final String connectionGUID    = "2084ee90-717b-49a1-938e-8f9d49567b8e";
@@ -689,6 +703,7 @@ public class ConnectorConfigurationFactory
                                                                         InMemoryOpenMetadataTopicProvider.class.getName(),
                                                                         "",
                                                                         topicName,
+                                                                        serverId,
                                                                         null));
 
         return connection;
@@ -702,6 +717,7 @@ public class ConnectorConfigurationFactory
      * @param additionalProperties name value property pairs for the topic connection
      * @param eventBusConnectorProvider class name of the event bus connector's provider
      * @param topicURLRoot root name for the topic URL
+     * @param serverId identifier of the server - used to pick up the right offset for the inbound messages.
      * @param eventBusAdditionalProperties name value property pairs for the event bus connection
      * @return Connection object
      */
@@ -709,6 +725,7 @@ public class ConnectorConfigurationFactory
                                                           Map<String, Object> additionalProperties,
                                                           String              eventBusConnectorProvider,
                                                           String              topicURLRoot,
+                                                          String              serverId,
                                                           Map<String, Object> eventBusAdditionalProperties)
     {
         final String connectorTypeGUID = "32843dd8-2597-4296-831c-674af0d8b837";
@@ -746,6 +763,7 @@ public class ConnectorConfigurationFactory
                                                                         eventBusConnectorProvider,
                                                                         topicURLRoot,
                                                                         defaultCohortTopicConnectorRootName + cohortName + defaultOMRSTopicLeafName,
+                                                                        serverId,
                                                                         eventBusAdditionalProperties));
 
         return connection;

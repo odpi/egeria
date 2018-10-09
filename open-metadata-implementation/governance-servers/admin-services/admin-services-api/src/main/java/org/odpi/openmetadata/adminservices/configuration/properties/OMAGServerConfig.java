@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -19,6 +20,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *
  * The OMAG server configuration has the following properties:
  * <ul>
+ *     <li>
+ *         localServerId - Unique identifier for this server.
+ *     </li>
  *     <li>
  *         localServerName - meaningful name for the server for use in messages and UIs.
  *         Ideally this value is unique to aid administrators in understanding the behavior of the local
@@ -43,6 +47,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *     <li>
  *         localServerURL - network address of the server (typically URL and port number).
  *     </li>
+ *     <li>
+ *         localServerUserId - UserId to use for server initiated REST calls.
+ *     </li>
  * </ul>
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -65,6 +72,7 @@ public class OMAGServerConfig implements Serializable
     /*
      * Values in use by this server.
      */
+    private String                    localServerId            = UUID.randomUUID().toString();
     private String                    localServerName          = null;
     private String                    localServerType          = defaultLocalServerType;
     private String                    organizationName         = defaultLocalOrganizationName;
@@ -92,6 +100,7 @@ public class OMAGServerConfig implements Serializable
      */
     public OMAGServerConfig(OMAGServerConfig  template)
     {
+        localServerId = template.getLocalServerId();
         localServerName = template.getLocalServerName();
         localServerType = template.getLocalServerType();
         localServerURL = template.getLocalServerURL();
@@ -99,6 +108,28 @@ public class OMAGServerConfig implements Serializable
         maxPageSize = template.getMaxPageSize();
         accessServicesConfig = template.getAccessServicesConfig();
         repositoryServicesConfig = template.getRepositoryServicesConfig();
+    }
+
+
+    /**
+     * Return an unique identifier for this server.
+     *
+     * @return string guid
+     */
+    public String getLocalServerId()
+    {
+        return localServerId;
+    }
+
+
+    /**
+     * Set up a unique identifier for this server.
+     *
+     * @param localServerId string guid
+     */
+    public void setLocalServerId(String localServerId)
+    {
+        this.localServerId = localServerId;
     }
 
 
