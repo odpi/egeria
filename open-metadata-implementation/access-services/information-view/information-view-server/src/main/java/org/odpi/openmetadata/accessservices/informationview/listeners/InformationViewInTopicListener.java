@@ -9,14 +9,17 @@ import org.odpi.openmetadata.accessservices.informationview.events.InformationVi
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesBuilder;
-import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesUtils;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class InformationViewInTopicListener implements OpenMetadataTopicListener {
 
@@ -54,13 +57,86 @@ public class InformationViewInTopicListener implements OpenMetadataTopicListener
         }
         if (event != null) {
             try {
-                EntityDetail dataStore = entitiesCreatorHelper.getEntity(Constants.DATA_STORE,
-                        event.getTableContext().getDatabaseQualifiedName());
 
-                String qualifiedNameForInformationView = Constants.INFO_VIEW_PREFIX + event.getTableContext().getSchemaQualifiedName();
+                String qualifiedNameForSoftwareServer = event.getConnectionDetails().getNetworkAddress().split(":")[0];
+                InstanceProperties softwareServerProperties = new EntityPropertiesBuilder()
+                        .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForSoftwareServer)
+                        .withStringProperty(Constants.NAME, qualifiedNameForSoftwareServer)
+                        .build();
+                List<Classification> classificationList = new ArrayList();
+                classificationList.add(entitiesCreatorHelper.buildClassification(Constants.DATABASE_SERVER, Constants.SOFTWARE_SERVER, new InstanceProperties()));
+                EntityDetail softwareServerEntity = entitiesCreatorHelper.addEntity(Constants.SOFTWARE_SERVER,
+                        qualifiedNameForSoftwareServer, softwareServerProperties, classificationList);
+
+
+                String qualifiedNameForEndpoint = event.getConnectionDetails().getProtocol() + event.getConnectionDetails().getNetworkAddress() ;
+                InstanceProperties endpointProperties = new EntityPropertiesBuilder()
+                        .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForEndpoint)
+                        .withStringProperty(Constants.NAME, qualifiedNameForEndpoint)
+                        .withStringProperty(Constants.NETWORK_ADDRESS, event.getConnectionDetails().getNetworkAddress() )
+                        .withStringProperty(Constants.PROTOCOL, event.getConnectionDetails().getProtocol())
+                        .build();
+                EntityDetail endpointEntity = entitiesCreatorHelper.addEntity(Constants.ENDPOINT,
+                                                                    qualifiedNameForEndpoint,
+                                                                    endpointProperties);
+
+
+                entitiesCreatorHelper.addRelationship(Constants.SERVER_ENDPOINT,
+                        softwareServerEntity.getGUID(),
+                        endpointEntity.getGUID(),
+                        Constants.INFORMATION_VIEW_OMAS_NAME,
+                        new InstanceProperties());
+
+                String qualifiedNameForConnection = qualifiedNameForEndpoint + "." + event.getConnectionDetails().getUser();
+                InstanceProperties connectionProperties = new EntityPropertiesBuilder()
+                        .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForConnection)
+                        .withStringProperty(Constants.DESCRIPTION, "Connection to " + qualifiedNameForConnection)
+                        .build();
+                EntityDetail connectionEntity = entitiesCreatorHelper.addEntity(Constants.CONNECTION,
+                        qualifiedNameForConnection, connectionProperties);
+
+
+                entitiesCreatorHelper.addRelationship(Constants.CONNECTION_TO_ENDPOINT,
+                        endpointEntity.getGUID(),
+                        connectionEntity.getGUID(),
+                        Constants.INFORMATION_VIEW_OMAS_NAME,
+                        new InstanceProperties());
+
+
+                String qualifiedNameForConnectorType = event.getConnectionDetails().getConnectorProviderQualifiedName();
+                InstanceProperties connectorTypeProperties = new EntityPropertiesBuilder()
+                        .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForConnectorType)
+                        .withStringProperty(Constants.CONNECTOR_PROVIDER_CLASSNAME, event.getConnectionDetails().getConnectorProviderName())
+                        .build();
+                EntityDetail connectorTypeEntity = entitiesCreatorHelper.addEntity(Constants.CONNECTOR_TYPE,
+                        qualifiedNameForConnectorType, connectorTypeProperties);
+
+                entitiesCreatorHelper.addRelationship(Constants.CONNECTION_CONNECTOR_TYPE,
+                        connectionEntity.getGUID(),
+                        connectorTypeEntity.getGUID(),
+                        Constants.INFORMATION_VIEW_OMAS_NAME,
+                        new InstanceProperties());
+
+                String qualifiedNameForDataStore = qualifiedNameForConnection + "." + event.getTableContext().getDatabaseName();
+                InstanceProperties dataStoreProperties = new EntityPropertiesBuilder()
+                        .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForDataStore)
+                        .withStringProperty(Constants.NAME, event.getTableContext().getDatabaseName())
+                        .build();
+                EntityDetail dataStore = entitiesCreatorHelper.addEntity(Constants.DATA_STORE,
+                        qualifiedNameForDataStore, dataStoreProperties);
+
+
+                entitiesCreatorHelper.addRelationship(Constants.CONNECTION_TO_ASSET,
+                        connectionEntity.getGUID(),
+                        dataStore.getGUID(),
+                        Constants.INFORMATION_VIEW_OMAS_NAME,
+                        new InstanceProperties());
+
+
+                String qualifiedNameForInformationView = qualifiedNameForDataStore + "." + event.getTableContext().getSchemaName();
                 InstanceProperties ivProperties = new EntityPropertiesBuilder()
                         .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForInformationView)
-                        .withStringProperty(Constants.NAME, Constants.INFO_VIEW_PREFIX + event.getTableContext().getSchemaName())
+                        .withStringProperty(Constants.NAME, event.getTableContext().getSchemaName())
                         .withStringProperty(Constants.OWNER, "")
                         .withStringProperty(Constants.DESCRIPTION, "This asset is an " + "information " + "view")
                         .build();
@@ -73,10 +149,10 @@ public class InformationViewInTopicListener implements OpenMetadataTopicListener
                         Constants.INFORMATION_VIEW_OMAS_NAME,
                         new InstanceProperties());
 
-                String qualifiedNameForDbSchemaType = Constants.INFO_VIEW_PREFIX + event.getTableContext().getSchemaTypeQualifiedName();
+                String qualifiedNameForDbSchemaType = qualifiedNameForInformationView +  Constants.TYPE_SUFFIX;
                 InstanceProperties dbSchemaTypeProperties = new EntityPropertiesBuilder()
                         .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForDbSchemaType)
-                        .withStringProperty(Constants.DISPLAY_NAME, Constants.INFO_VIEW_PREFIX + event.getTableContext().getSchemaName() + Constants.TYPE_SUFFIX)
+                        .withStringProperty(Constants.DISPLAY_NAME, event.getTableContext().getSchemaName() + Constants.TYPE_SUFFIX)
                         .withStringProperty(Constants.AUTHOR, "")
                         .withStringProperty(Constants.USAGE, "")
                         .withStringProperty(Constants.ENCODING_STANDARD, "").build();
@@ -90,10 +166,10 @@ public class InformationViewInTopicListener implements OpenMetadataTopicListener
                         Constants.INFORMATION_VIEW_OMAS_NAME,
                         new InstanceProperties());
 
-                String qualifiedNameForTableType = Constants.INFO_VIEW_PREFIX + event.getTableContext().getTableTypeQualifiedName();
+                String qualifiedNameForTableType = qualifiedNameForInformationView + "." + event.getTableContext().getTableName() + Constants.TYPE_SUFFIX;
                 InstanceProperties tableTypeProperties = new EntityPropertiesBuilder()
                         .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForTableType)
-                        .withStringProperty(Constants.DISPLAY_NAME, Constants.INFO_VIEW_PREFIX + event.getTableContext().getTableName() + Constants.TYPE_SUFFIX)
+                        .withStringProperty(Constants.DISPLAY_NAME, event.getTableContext().getTableName() + Constants.TYPE_SUFFIX)
                         .withStringProperty(Constants.AUTHOR, "")
                         .withStringProperty(Constants.USAGE, "")
                         .withStringProperty(Constants.ENCODING_STANDARD, "")
@@ -102,10 +178,10 @@ public class InformationViewInTopicListener implements OpenMetadataTopicListener
                         qualifiedNameForTableType,
                         tableTypeProperties);
 
-                String qualifiedNameForTable = Constants.INFO_VIEW_PREFIX + event.getTableContext().getTableQualifiedName();
+                String qualifiedNameForTable = qualifiedNameForInformationView + "." + event.getTableContext().getTableName();
                 InstanceProperties tableProperties = new EntityPropertiesBuilder()
                         .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForTable)
-                        .withStringProperty(Constants.ATTRIBUTE_NAME, Constants.INFO_VIEW_PREFIX + event.getTableContext().getTableName())
+                        .withStringProperty(Constants.ATTRIBUTE_NAME, event.getTableContext().getTableName())
                         .build();
                 EntityDetail tableEntity = entitiesCreatorHelper.addEntity(Constants.RELATIONAL_TABLE,
                         qualifiedNameForTable,
@@ -125,10 +201,10 @@ public class InformationViewInTopicListener implements OpenMetadataTopicListener
 
                 for (DerivedColumnDetail derivedColumn : event.getDerivedColumns()) {
 
-                    String qualifiedNameColumnType = Constants.INFO_VIEW_PREFIX + derivedColumn.getRealColumn().getQualifiedNameColumnType();
+                    String qualifiedNameColumnType = qualifiedNameForTable + "." + derivedColumn.getAttributeName() + Constants.TYPE_SUFFIX;
                     InstanceProperties columnTypeProperties = new EntityPropertiesBuilder()
                             .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameColumnType)
-                            .withStringProperty(Constants.DISPLAY_NAME, Constants.INFO_VIEW_PREFIX + derivedColumn.getAttributeName() + Constants.TYPE_SUFFIX)
+                            .withStringProperty(Constants.DISPLAY_NAME, derivedColumn.getAttributeName() + Constants.TYPE_SUFFIX)
                             .withStringProperty(Constants.AUTHOR, "")
                             .withStringProperty(Constants.USAGE, "")
                             .withStringProperty(Constants.ENCODING_STANDARD, "")
@@ -138,7 +214,7 @@ public class InformationViewInTopicListener implements OpenMetadataTopicListener
                             qualifiedNameColumnType,
                             columnTypeProperties);
 
-                    String qualifiedNameForColumn = EntityPropertiesUtils.getStringValueForProperty(columnTypeEntity.getProperties(), Constants.QUALIFIED_NAME) + "." + derivedColumn.getAttributeName();
+                    String qualifiedNameForColumn = qualifiedNameForTable + "." + derivedColumn.getAttributeName();
                     InstanceProperties columnProperties = new EntityPropertiesBuilder()
                             .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForColumn)
                             .withStringProperty(Constants.ATTRIBUTE_NAME, derivedColumn.getAttributeName())
