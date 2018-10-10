@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector;
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
@@ -1238,8 +1239,44 @@ public interface OMRSRepositoryValidator
      * @param localMethodName  local method that deleted the error
      * @return  boolean
      */
-    boolean isATypeOf(String             sourceName,
-                      InstanceHeader     instance,
-                      String             typeName,
-                      String             localMethodName);
+    boolean isATypeOf(String              sourceName,
+                      InstanceAuditHeader instance,
+                      String              typeName,
+                      String              localMethodName);
+
+    /*
+     * ===========================================
+     * Validation of results from the repository
+     * ===========================================
+     */
+
+
+    /**
+     * Validate that either zero or one entities were returned from a find request.  This is typically when searching
+     * for entities of a specific type using one of its unique properties.
+     *
+     * @param findResults list of entities returned from the search.
+     * @param typeName name of the type of entities requested.
+     * @param serviceName service that requested the entities.
+     * @param methodName calling method.
+     */
+    void validateAtMostOneEntityResult(List<EntityDetail>   findResults,
+                                       String               typeName,
+                                       String               serviceName,
+                                       String               methodName) throws RepositoryErrorException;
+
+
+    /**
+     * Validate that either zero or one relationships were returned from a find request.  This is typically when searching
+     * for relationships of a specific type where the cardinality is set to AT_MOST_ONE in the RelationshipEndCardinality.
+     *
+     * @param findResults list of relationships returned from the search.
+     * @param typeName name of the type of relationships requested.
+     * @param serviceName service that requested the relationships.
+     * @param methodName calling method.
+     */
+    void validateAtMostOneRelationshipResult(List<Relationship>   findResults,
+                                             String               typeName,
+                                             String               serviceName,
+                                             String               methodName) throws RepositoryErrorException;
 }

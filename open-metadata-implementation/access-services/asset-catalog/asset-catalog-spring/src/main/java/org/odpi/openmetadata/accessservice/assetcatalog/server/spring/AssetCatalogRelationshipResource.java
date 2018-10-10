@@ -1,9 +1,9 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservice.assetcatalog.server.spring;
 
-
 import org.odpi.openmetadata.accessservice.assetcatalog.model.SequenceOrderType;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.Status;
+import org.odpi.openmetadata.accessservice.assetcatalog.responses.RelationshipResponse;
 import org.odpi.openmetadata.accessservice.assetcatalog.responses.RelationshipsResponse;
 import org.odpi.openmetadata.accessservice.assetcatalog.service.AssetCatalogRelationshipService;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,8 +33,8 @@ public class AssetCatalogRelationshipResource {
     @RequestMapping(method = RequestMethod.GET,
             path = "/{relationshipId}",
             produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public RelationshipsResponse getRelationship(@PathVariable("userId") String userId,
-                                                 @PathVariable("relationshipId") String relationshipId) {
+    public RelationshipResponse getRelationship(@PathVariable("userId") String userId,
+                                                @PathVariable("relationshipId") String relationshipId) {
         return relationshipService.getRelationshipById(userId, relationshipId);
     }
 

@@ -17,8 +17,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 
 //omrs bean
+import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
-import org.odpi.openmetadata.accessservices.subjectarea.validators.RestValidator;
 import org.odpi.openmetadata.accessservices.subjectarea.constraints.SubjectAreaConstraintsFactory;
 import org.odpi.openmetadata.accessservices.subjectarea.constraints.SubjectAreaConstraint;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
@@ -34,6 +34,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.generated.entities.<$$uE
 import org.odpi.openmetadata.accessservices.subjectarea.generated.entities.<$$uEntityName$$>.<$$uEntityName$$>Mapper;
 $$$>
 // omrs bean relationship specific imports
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.OMRSRelationshipToLines;
 <$$RELATIONSHIP$
 import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.<$$uRelationshipName$$>.<$$uRelationshipName$$>;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.<$$uRelationshipName$$>.<$$uRelationshipName$$>Mapper;
@@ -63,12 +64,13 @@ public class SubjectAreaBeansToAccessOMRS  {
     /**
      * Fetch complete definition of an <$$EntityName$$> given its GUID.
      * The limit and offset paging parameters limit the number elements returned in each of the <$$lowerCasePluralEntityName$$> relationships.
+     * @param userId user identity
      * @param entityGuid GUID for the entity
      * @return <$$uEntityName$$>
-     * @throws MetadataServerUncontactableException
-     * @throws UserNotAuthorizedException
-     * @throws InvalidParameterException
-     * @throws UnrecognizedGUIDException
+     * @throws MetadataServerUncontactableException not able to communicate with the metadata server.
+     * @throws UserNotAuthorizedException the userId passed on the request is not authorized to perform the requested action. 
+     * @throws InvalidParameterException a parameter is null or an invalid value.
+     * @throws UnrecognizedGUIDException the unique identifier (guid) used to request an object is either unrecognized, or is the identifier for a different type of object. the unique identifier (guid) used to request an object is either unrecognized, or is the identifier for a different type of object.
      */
     public <$$uEntityName$$> get<$$uEntityName$$>ById(String userId,String entityGuid)
         throws MetadataServerUncontactableException, UserNotAuthorizedException, InvalidParameterException, UnrecognizedGUIDException
@@ -77,8 +79,8 @@ public class SubjectAreaBeansToAccessOMRS  {
         if (log.isDebugEnabled()) {
           log.debug("==> Method: " + methodName + ",userId="+userId+",guid="+entityGuid);
         }
-        RestValidator.validateUserIdNotNull(className,methodName,userId);
-        RestValidator.validateGUIDNotNull(className,methodName,entityGuid,"entityGuid");
+        InputValidator.validateUserIdNotNull(className,methodName,userId);
+        InputValidator.validateGUIDNotNull(className,methodName,entityGuid,"entityGuid");
 
         EntityDetail omrsEntityDetail = oMRSAPIHelper.callOMRSGetEntityByGuid(userId,entityGuid);
             
@@ -92,13 +94,14 @@ public class SubjectAreaBeansToAccessOMRS  {
     }
     /**
      * Create new <$$EntityName$$>.
+     * @param userId user identity
      * @param <$$EntityName$$>
      * @return <$$uEntityName$$>
-     * @throws MetadataServerUncontactableException
-     * @throws UserNotAuthorizedException
-     * @throws InvalidParameterException
+     * @throws MetadataServerUncontactableException not able to communicate with the metadata server.
+     * @throws UserNotAuthorizedException the userId passed on the request is not authorized to perform the requested action. 
+     * @throws InvalidParameterException a parameter is null or an invalid value.
      * @throws ClassificationException
-     * @throws StatusNotSupportedException
+     * @throws StatusNotSupportedException  status is not supported
      */
 
     public <$$uEntityName$$> create<$$uEntityName$$>(String userId,<$$uEntityName$$> <$$EntityName$$>)
@@ -109,7 +112,7 @@ public class SubjectAreaBeansToAccessOMRS  {
         if (log.isDebugEnabled()) {
            log.debug("==> Method: " + methodName + ",userId=" + userId);
         }
-        RestValidator.validateUserIdNotNull(className,methodName,userId);
+        InputValidator.validateUserIdNotNull(className,methodName,userId);
 
         SubjectAreaConstraint constraint = SubjectAreaConstraintsFactory.getSubjectAreaConstraint("<$$uEntityName$$>");
         if (constraint!=null) {
@@ -126,14 +129,13 @@ public class SubjectAreaBeansToAccessOMRS  {
         return created<$$uEntityName$$>;
     }
     /**
-     * Update <$$EntityName$$> 
-     * @param <$$EntityName$$>
+     * Update <$$EntityName$$>
+     * @param userId user identity
+     * @param <$$EntityName$$>   <$$EntityName$$> to update
      * @return <$$uEntityName$$>
-     * @throws MetadataServerUncontactableException
-     * @throws UserNotAuthorizedException
-     * @throws InvalidParameterException
-     * @throws ClassificationException
-     * @throws StatusNotSupportedException
+     * @throws MetadataServerUncontactableException not able to communicate with the metadata server.
+     * @throws UserNotAuthorizedException the userId passed on the request is not authorized to perform the requested action. 
+     * @throws InvalidParameterException a parameter is null or an invalid value.
      */
     public <$$uEntityName$$> update<$$uEntityName$$>(String userId, <$$uEntityName$$> <$$EntityName$$>)
          throws MetadataServerUncontactableException, UserNotAuthorizedException, InvalidParameterException,UnrecognizedGUIDException
@@ -143,9 +145,9 @@ public class SubjectAreaBeansToAccessOMRS  {
             if (log.isDebugEnabled()) {
                 log.debug("==> Method: " + methodName + ",userId=" + userId);
             }
-            RestValidator.validateUserIdNotNull(className,methodName,userId);
+            InputValidator.validateUserIdNotNull(className,methodName,userId);
             EntityDetail entityDetail = <$$uEntityName$$>Mapper.map<$$uEntityName$$>ToOmrsEntityDetail(<$$EntityName$$>);
-            RestValidator.validateGUIDNotNull(className,methodName,entityDetail.getGUID(),"guid");
+            InputValidator.validateGUIDNotNull(className,methodName,entityDetail.getGUID(),"guid");
 
             // TODO the type guid needs to be set in the supplied entityDetail
 
@@ -163,13 +165,14 @@ public class SubjectAreaBeansToAccessOMRS  {
      * deleted. Soft deletion support os optional, so this call may fail. Soft deletes can be undone using the restore call.
      * If it is required that an entity is really deleted (a hard delete) then the purge call should be used.
      *
+     * @param userId user identity
      * @param  entityGuid GUID for the <$$EntityName$$>
      * @return <$$uEntityName$$>
-     * @throws MetadataServerUncontactableException
-     * @throws UserNotAuthorizedException
-     * @throws InvalidParameterException
-     * @throws FunctionNotSupportedException
-     * @throws UnrecognizedGUIDException
+     * @throws MetadataServerUncontactableException not able to communicate with the metadata server.
+     * @throws UserNotAuthorizedException the userId passed on the request is not authorized to perform the requested action. 
+     * @throws InvalidParameterException a parameter is null or an invalid value.
+     * @throws FunctionNotSupportedException a function is not supported.
+     * @throws UnrecognizedGUIDException the unique identifier (guid) used to request an object is either unrecognized, or is the identifier for a different type of object.
      */
 
     public EntityDetail delete<$$uEntityName$$>ByGuid(String userId,final String entityGuid)
@@ -179,8 +182,8 @@ public class SubjectAreaBeansToAccessOMRS  {
          if (log.isDebugEnabled()) {
               log.debug("==> Method: " + methodName + ",userId="+userId+",guid="+entityGuid);
          }
-         RestValidator.validateUserIdNotNull(className,methodName,userId);
-         RestValidator.validateGUIDNotNull(className,methodName,entityGuid,"entityGuid");
+         InputValidator.validateUserIdNotNull(className,methodName,userId);
+         InputValidator.validateGUIDNotNull(className,methodName,entityGuid,"entityGuid");
 
          EntityDetail omrsEntityDetail = oMRSAPIHelper.callOMRSGetEntityByGuid(userId,entityGuid);
          String typeName = omrsEntityDetail.getType().getTypeDefName();
@@ -195,15 +198,15 @@ public class SubjectAreaBeansToAccessOMRS  {
     /**
      * Purge an <$$EntityName$$> identified by its GUID. Delete is a hard delete, this means that the <$$EntityName$$> is really
      * deleted .
-     *
+     * @param userId user identity
      * @param  entityGuid GUID for the <$$EntityName$$>
-     * @return <$$uEntityName$$>
-     * @throws MetadataServerUncontactableException
-     * @throws UserNotAuthorizedException
-     * @throws InvalidParameterException
-     * @throws UnrecognizedGUIDException
-     * @throws EntityNotDeletedException
-     * @throws GUIDNotPurgedException
+     * @throws MetadataServerUncontactableException not able to communicate with the metadata server.
+     * @throws UserNotAuthorizedException the userId passed on the request is not authorized to perform the requested action. 
+     * @throws InvalidParameterException a parameter is null or an invalid value.
+     * @throws UnrecognizedGUIDException the unique identifier (guid) used to request an object is either unrecognized, or is the identifier for a different type of object.
+     * @throws EntityNotDeletedException the entity was not deleted
+     * @throws GUIDNotPurgedException the unique identifier (guid) used to purge an object did not result in the object being purged.
+     
      */
     public void purge<$$uEntityName$$>ByGuid(String userId,final String entityGuid)
            throws MetadataServerUncontactableException, UserNotAuthorizedException, InvalidParameterException, UnrecognizedGUIDException, EntityNotDeletedException, GUIDNotPurgedException {
@@ -212,8 +215,8 @@ public class SubjectAreaBeansToAccessOMRS  {
          if (log.isDebugEnabled()) {
               log.debug("==> Method: " + methodName + ",userId="+userId+",guid="+entityGuid);
          }
-         RestValidator.validateUserIdNotNull(className,methodName,userId);
-         RestValidator.validateGUIDNotNull(className,methodName,entityGuid,"entityGuid");
+         InputValidator.validateUserIdNotNull(className,methodName,userId);
+         InputValidator.validateGUIDNotNull(className,methodName,entityGuid,"entityGuid");
 
          EntityDetail omrsEntityDetail = oMRSAPIHelper.callOMRSGetEntityByGuid(userId,entityGuid);
          String typeName = omrsEntityDetail.getType().getTypeDefName();
@@ -226,12 +229,13 @@ public class SubjectAreaBeansToAccessOMRS  {
 
     /**
      * Add classifications to the supplied <$$EntityName$$>
+     * @param userId user identity
      * @param entityGuid
      * @param classifications
-     * @throws MetadataServerUncontactableException
-     * @throws UserNotAuthorizedException
-     * @throws InvalidParameterException
-     * @throws UnrecognizedGUIDException
+     * @throws MetadataServerUncontactableException not able to communicate with the metadata server.
+     * @throws UserNotAuthorizedException the userId passed on the request is not authorized to perform the requested action. 
+     * @throws InvalidParameterException a parameter is null or an invalid value.
+     * @throws UnrecognizedGUIDException the unique identifier (guid) used to request an object is either unrecognized, or is the identifier for a different type of object.
      * @throws ClassificationException
      */
      public <$$uEntityName$$> add<$$uEntityName$$>Classifications(String userId,final String entityGuid, List<Classification> classifications)
@@ -241,13 +245,13 @@ public class SubjectAreaBeansToAccessOMRS  {
          if (log.isDebugEnabled()) {
              log.debug("==> Method: " + methodName + ",userId="+userId+",guid="+entityGuid);
          }
-         RestValidator.validateUserIdNotNull(className,methodName,userId);
+         InputValidator.validateUserIdNotNull(className,methodName,userId);
 
 
          for (Classification classification:classifications) {
              InstanceProperties instanceProperties = classification.obtainInstanceProperties();
              String name =classification.getClassificationName();
-             RestValidator.validateNameNotNull(className,methodName,name,"classifications");
+             InputValidator.validateNameNotNull(className,methodName,name,"classifications");
              oMRSAPIHelper.callOMRSClassifyEntity(userId,
                  entityGuid,
                  name,
@@ -265,12 +269,13 @@ public class SubjectAreaBeansToAccessOMRS  {
 
     /**
      * Updates classifications to an existing <$$EntityName$$> represented by a guid.
+     * @param userId user identity
      * @param  entityGuid globally unique identifier for the <$$EntityName$$>
      * @return classification for the given <$$EntityName$$> guid
-     * @throws MetadataServerUncontactableException
-     * @throws UserNotAuthorizedException
-     * @throws InvalidParameterException
-     * @throws UnrecognizedGUIDException
+     * @throws MetadataServerUncontactableException not able to communicate with the metadata server.
+     * @throws UserNotAuthorizedException the userId passed on the request is not authorized to perform the requested action. 
+     * @throws InvalidParameterException a parameter is null or an invalid value.
+     * @throws UnrecognizedGUIDException the unique identifier (guid) used to request an object is either unrecognized, or is the identifier for a different type of object.
      * @throws ClassificationException
      */
     public <$$uEntityName$$> update<$$uEntityName$$>Classification(String userId, final String entityGuid, List<Classification> classificationsToUpdate)
@@ -280,8 +285,8 @@ public class SubjectAreaBeansToAccessOMRS  {
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId="+userId+",guid="+entityGuid);
         }
-        RestValidator.validateUserIdNotNull(className,methodName,userId);
-        RestValidator.validateGUIDNotNull(className,methodName,entityGuid,"entityGuid");
+        InputValidator.validateUserIdNotNull(className,methodName,userId);
+        InputValidator.validateGUIDNotNull(className,methodName,entityGuid,"entityGuid");
 
             EntityDetail omrsEntityDetail = oMRSAPIHelper.callOMRSGetEntityByGuid(userId,entityGuid);
 
@@ -335,12 +340,14 @@ public class SubjectAreaBeansToAccessOMRS  {
 
     /**
      * Deletes a given classification from an existing <$$EntityName$$> represented by a guid.
+     * @param userId user identity
      * @param entityGuid  globally unique identifier for the <$$EntityName$$>
      * @param name name of the classification
-     * @throws MetadataServerUncontactableException
-     * @throws UserNotAuthorizedException
-     * @throws InvalidParameterException
-     * @throws UnrecognizedGUIDException
+     * @return deleted <$$uEntityName$$>  classification
+     * @throws MetadataServerUncontactableException not able to communicate with the metadata server.
+     * @throws UserNotAuthorizedException the userId passed on the request is not authorized to perform the requested action. 
+     * @throws InvalidParameterException a parameter is null or an invalid value.
+     * @throws UnrecognizedGUIDException the unique identifier (guid) used to request an object is either unrecognized, or is the identifier for a different type of object.
      * @throws ClassificationException
      */
     public <$$uEntityName$$> delete<$$uEntityName$$>Classification(String userId,String entityGuid, final String name)
@@ -350,8 +357,8 @@ public class SubjectAreaBeansToAccessOMRS  {
        if (log.isDebugEnabled()) {
            log.debug("==> Method: " + methodName + ",userId="+userId+",guid="+entityGuid+",name="+name);
        }
-       RestValidator.validateUserIdNotNull(className,methodName,userId);
-       RestValidator.validateGUIDNotNull(className,methodName,entityGuid,"entityGuid");
+       InputValidator.validateUserIdNotNull(className,methodName,userId);
+       InputValidator.validateGUIDNotNull(className,methodName,entityGuid,"entityGuid");
 
 
        oMRSAPIHelper.callOMRSDeClassifyEntity(userId, entityGuid,name);
@@ -365,14 +372,16 @@ public class SubjectAreaBeansToAccessOMRS  {
 
     /**
       * Get the relationships associated with entity <$$EntityName$$> represented by a guid.
+      * @param userId user identity
       * @param entityGuid  globally unique identifier for the <$$EntityName$$>
-      * @throws MetadataServerUncontactableException
-      * @throws UserNotAuthorizedException
-      * @throws InvalidParameterException
-      * @throws UnrecognizedGUIDException
-      * @throws FunctionNotSupportedException
+      * @return {@code List<Line> }
+      * @throws MetadataServerUncontactableException not able to communicate with the metadata server.
+      * @throws UserNotAuthorizedException the userId passed on the request is not authorized to perform the requested action. 
+      * @throws InvalidParameterException a parameter is null or an invalid value.
+      * @throws UnrecognizedGUIDException the unique identifier (guid) used to request an object is either unrecognized, or is the identifier for a different type of object.
+      * @throws FunctionNotSupportedException a function is not supported.
       */
-     public List<Line> get<$$uEntityName$$>Relationships(String userId,String entityGuid)
+     public Set<Line> get<$$uEntityName$$>Relationships(String userId,String entityGuid)
          throws MetadataServerUncontactableException,
           UserNotAuthorizedException,
           InvalidParameterException,
@@ -382,20 +391,14 @@ public class SubjectAreaBeansToAccessOMRS  {
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId="+userId+",guid="+entityGuid);
         }
-        RestValidator.validateUserIdNotNull(className,methodName,userId);
-        RestValidator.validateGUIDNotNull(className,methodName,entityGuid,"entityGuid");
+        InputValidator.validateUserIdNotNull(className,methodName,userId);
+        InputValidator.validateGUIDNotNull(className,methodName,entityGuid,"entityGuid");
 
-        List<Line> lines = new ArrayList<>();
+        Set<Line> lines = null;
 
         List<Relationship> omrsRelationships = oMRSAPIHelper.callGetRelationshipsForEntity( userId,entityGuid);
         if (omrsRelationships !=null) {
-            for (Relationship omrsRelationship:omrsRelationships){
-                String name = omrsRelationship.getType().getTypeDefName();
-                   if (name.equals("AcceptedAnswer")) {
-                    AcceptedAnswer acceptedAnswer= AcceptedAnswerMapper.mapOmrsRelationshipToAcceptedAnswer(omrsRelationship);
-                    lines.add(acceptedAnswer);
-                }
-            }
+            lines =  OMRSRelationshipToLines.convert(omrsRelationships);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId+",guid="+entityGuid);
@@ -407,13 +410,15 @@ public class SubjectAreaBeansToAccessOMRS  {
 
      <$$RELATIONSHIP$
     /**
-      * Create relationship
-      * @param <$$uRelationshipName$$> relationship to create
-      * @throws MetadataServerUncontactableException
-      * @throws UserNotAuthorizedException
-      * @throws InvalidParameterException
-      * @throws  UnrecognizedGUIDException
-      * @throws StatusNotSupportedException
+      * Create <$$uRelationshipName$$> relationship
+      * @param userId user identity
+      * @param relationship <$$uRelationshipName$$> relationship to create
+      * @return created <$$uRelationshipName$$> relationship
+      * @throws MetadataServerUncontactableException not able to communicate with the metadata server.
+      * @throws UserNotAuthorizedException the userId passed on the request is not authorized to perform the requested action. 
+      * @throws InvalidParameterException a parameter is null or an invalid value.
+      * @throws UnrecognizedGUIDException the unique identifier (guid) used to request an object is either unrecognized, or is the identifier for a different type of object.
+      * @throws StatusNotSupportedException  status is not supported
       */
     public <$$uRelationshipName$$> create<$$uRelationshipName$$>Relationship(String userId,<$$uRelationshipName$$> relationship)
           throws MetadataServerUncontactableException, UserNotAuthorizedException, InvalidParameterException,  UnrecognizedGUIDException,StatusNotSupportedException {
@@ -421,23 +426,25 @@ public class SubjectAreaBeansToAccessOMRS  {
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId="+userId+",relationship="+relationship);
         }
-        RestValidator.validateUserIdNotNull(className,methodName,userId);
+        InputValidator.validateUserIdNotNull(className,methodName,userId);
 
         Relationship omrsRelationship = <$$uRelationshipName$$>Mapper.map<$$uRelationshipName$$>ToOmrsRelationship(relationship);
         Relationship returnedRelationship = oMRSAPIHelper.callOMRSAddRelationship(userId,omrsRelationship);
-        <$$uRelationshipName$$> reclassified<$$uRelationshipName$$> =  <$$uRelationshipName$$>Mapper.mapOmrsRelationshipTo<$$uRelationshipName$$>(returnedRelationship);
+        <$$uRelationshipName$$> returned<$$uRelationshipName$$> =  <$$uRelationshipName$$>Mapper.mapOmrsRelationshipTo<$$uRelationshipName$$>(returnedRelationship);
         if (log.isDebugEnabled()) {
             log.debug("<== successful Method: " + methodName + ",userId="+userId+",relationship="+relationship);
         }
-        return reclassified<$$uRelationshipName$$>;
+        return returned<$$uRelationshipName$$>;
     }
     /**
-      * get relationship
-      * @param <$$uRelationshipName$$> relationship
-      * @throws MetadataServerUncontactableException
-      * @throws UserNotAuthorizedException
-      * @throws InvalidParameterException
-      * @throws UnrecognizedGUIDException
+      * Get <$$uRelationshipName$$> relationship
+      * @param userId user identity
+      * @param relationshipGuid relationship guid
+      * @return <$$uRelationshipName$$> relationship
+      * @throws MetadataServerUncontactableException not able to communicate with the metadata server.
+      * @throws UserNotAuthorizedException the userId passed on the request is not authorized to perform the requested action. 
+      * @throws InvalidParameterException a parameter is null or an invalid value.
+      * @throws UnrecognizedGUIDException the unique identifier (guid) used to request an object is either unrecognized, or is the identifier for a different type of object.
       */
     public <$$uRelationshipName$$> get<$$uRelationshipName$$>RelationshipByGuid( String userId, String relationshipGuid)
          throws MetadataServerUncontactableException, UserNotAuthorizedException, InvalidParameterException, UnrecognizedGUIDException {
@@ -445,8 +452,8 @@ public class SubjectAreaBeansToAccessOMRS  {
             if (log.isDebugEnabled()) {
                 log.debug("==> Method: " + methodName + ",userId="+userId+",relationshipGuid="+relationshipGuid);
             }
-            RestValidator.validateUserIdNotNull(className,methodName,userId);
-            RestValidator.validateGUIDNotNull(className,methodName,relationshipGuid,"relationshipGuid");
+            InputValidator.validateUserIdNotNull(className,methodName,userId);
+            InputValidator.validateGUIDNotNull(className,methodName,relationshipGuid,"relationshipGuid");
 
             Relationship returnedRelationship = oMRSAPIHelper.callOMRSGetRelationshipByGuid(userId,relationshipGuid);
             <$$uRelationshipName$$> got<$$uRelationshipName$$> = <$$uRelationshipName$$>Mapper.mapOmrsRelationshipTo<$$uRelationshipName$$>(returnedRelationship);
@@ -456,13 +463,15 @@ public class SubjectAreaBeansToAccessOMRS  {
             return got<$$uRelationshipName$$>;
       }
     /**
-      * update relationship
-      * @param <$$uRelationshipName$$> relationship
-      * @throws MetadataServerUncontactableException
-      * @throws UserNotAuthorizedException
-      * @throws InvalidParameterException
-      * @throws UnrecognizedGUIDException
-      * @throws StatusNotSupportedException
+      * Update <$$uRelationshipName$$> relationship
+      * @param userId user identity
+      * @param <$$RelationshipName$$> relationship
+      * @return  <$$uRelationshipName$$> relationship
+      * @throws MetadataServerUncontactableException not able to communicate with the metadata server.
+      * @throws UserNotAuthorizedException the userId passed on the request is not authorized to perform the requested action. 
+      * @throws InvalidParameterException a parameter is null or an invalid value.
+      * @throws UnrecognizedGUIDException the unique identifier (guid) used to request an object is either unrecognized, or is the identifier for a different type of object.
+      * @throws StatusNotSupportedException  status is not supported
       */
       public <$$uRelationshipName$$> update<$$uRelationshipName$$>Relationship(String userId,<$$uRelationshipName$$> <$$RelationshipName$$>)
             throws UserNotAuthorizedException, MetadataServerUncontactableException, InvalidParameterException, StatusNotSupportedException, UnrecognizedGUIDException {
@@ -470,7 +479,7 @@ public class SubjectAreaBeansToAccessOMRS  {
         if (log.isDebugEnabled()) {
            log.debug("==> Method: " + methodName + ",userId="+userId);
         }
-        RestValidator.validateUserIdNotNull(className,methodName,userId);
+        InputValidator.validateUserIdNotNull(className,methodName,userId);
 
 
         Relationship omrsRelationship = <$$uRelationshipName$$>Mapper.map<$$uRelationshipName$$>ToOmrsRelationship(<$$RelationshipName$$>);
@@ -482,13 +491,14 @@ public class SubjectAreaBeansToAccessOMRS  {
         return updated<$$uRelationshipName$$>;
     }
     /**
-      * delete relationship
+      * Delete <$$uRelationshipName$$> relationship
+      * @param userId user identity
       * @param relationshipGuid relationshipGuid
-      * @throws MetadataServerUncontactableException
-      * @throws UserNotAuthorizedException
-      * @throws InvalidParameterException
-      * @throws UnrecognizedGUIDException
-      * @throws FunctionNotSupportedException
+      * @throws MetadataServerUncontactableException not able to communicate with the metadata server.
+      * @throws UserNotAuthorizedException the userId passed on the request is not authorized to perform the requested action. 
+      * @throws InvalidParameterException a parameter is null or an invalid value.
+      * @throws UnrecognizedGUIDException the unique identifier (guid) used to request an object is either unrecognized, or is the identifier for a different type of object.
+      * @throws FunctionNotSupportedException a function is not supported.
       */
      public void delete<$$uRelationshipName$$>RelationshipById(String userId,String relationshipGuid)
               throws MetadataServerUncontactableException, UserNotAuthorizedException, InvalidParameterException, FunctionNotSupportedException, UnrecognizedGUIDException {
@@ -496,8 +506,8 @@ public class SubjectAreaBeansToAccessOMRS  {
             if (log.isDebugEnabled()) {
                 log.debug("==> Method: " + methodName + ",userId="+userId+",guid="+relationshipGuid);
             }
-             RestValidator.validateUserIdNotNull(className,methodName,userId);
-             RestValidator.validateGUIDNotNull(className,methodName,relationshipGuid,"relationshipGuid");
+             InputValidator.validateUserIdNotNull(className,methodName,userId);
+             InputValidator.validateGUIDNotNull(className,methodName,relationshipGuid,"relationshipGuid");
 
              Relationship relationship =  oMRSAPIHelper.callOMRSGetRelationshipByGuid(userId,relationshipGuid);
              String typeGuid = relationship.getType().getTypeDefGUID();
@@ -512,14 +522,16 @@ public class SubjectAreaBeansToAccessOMRS  {
              }
      }
     /**
-      * purge relationship
+      * Purge <$$uRelationshipName$$> relationship
+      * @param userId user identity
       * @param relationshipGuid relationshipGuid
-      * @throws MetadataServerUncontactableException
-      * @throws UserNotAuthorizedException
-      * @throws InvalidParameterException
-      * @throws UnrecognizedGUIDException
+      * @throws MetadataServerUncontactableException not able to communicate with the metadata server.
+      * @throws UserNotAuthorizedException the userId passed on the request is not authorized to perform the requested action. 
+      * @throws InvalidParameterException a parameter is null or an invalid value.
+      * @throws UnrecognizedGUIDException the unique identifier (guid) used to request an object is either unrecognized, or is the identifier for a different type of object.
       * @throws RelationshipNotDeletedException
-      * @throws GUIDNotPurgedException
+      * @throws GUIDNotPurgedException the unique identifier (guid) used to purge an object did not result in the object being purged.
+    
       */
      public void purge<$$uRelationshipName$$>RelationshipById(String userId,String relationshipGuid)
             throws MetadataServerUncontactableException, UserNotAuthorizedException, InvalidParameterException, UnrecognizedGUIDException, RelationshipNotDeletedException, GUIDNotPurgedException {
@@ -527,8 +539,8 @@ public class SubjectAreaBeansToAccessOMRS  {
             if (log.isDebugEnabled()) {
                 log.debug("==> Method: " + methodName + ",userId="+userId+",guid="+relationshipGuid);
             }
-            RestValidator.validateUserIdNotNull(className,methodName,userId);
-            RestValidator.validateGUIDNotNull(className,methodName,relationshipGuid,"relationshipGuid");
+            InputValidator.validateUserIdNotNull(className,methodName,userId);
+            InputValidator.validateGUIDNotNull(className,methodName,relationshipGuid,"relationshipGuid");
 
             Relationship relationship =  oMRSAPIHelper.callOMRSGetRelationshipByGuid(userId,relationshipGuid);
             String typeGuid = relationship.getType().getTypeDefGUID();

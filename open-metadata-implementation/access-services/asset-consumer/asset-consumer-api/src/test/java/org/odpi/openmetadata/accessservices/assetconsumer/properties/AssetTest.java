@@ -58,11 +58,8 @@ public class AssetTest
     {
         Asset testObject = new Asset();
 
-        testObject.setURL(url);
         testObject.setGUID(guid);
-        testObject.setTypeId(typeId);
         testObject.setTypeName(typeName);
-        testObject.setTypeVersion(typeVersion);
         testObject.setTypeDescription(typeDescription);
         testObject.setQualifiedName(qualifiedName);
         testObject.setDisplayName(displayName);
@@ -82,13 +79,8 @@ public class AssetTest
      */
     private void validateResultObject(Asset  resultObject)
     {
-        assertTrue(resultObject.getURL().equals(url));
         assertTrue(resultObject.getGUID().equals(guid));
-        assertTrue(resultObject.getTypeId().equals(typeId));
         assertTrue(resultObject.getTypeName().equals(typeName));
-
-        assertTrue(resultObject.getTypeVersion() == typeVersion);
-
         assertTrue(resultObject.getTypeDescription().equals(typeDescription));
         assertTrue(resultObject.getQualifiedName().equals(qualifiedName));
         assertTrue(resultObject.getDisplayName().equals(displayName));
@@ -106,11 +98,8 @@ public class AssetTest
     {
         Asset    nullObject = new Asset();
 
-        assertTrue(nullObject.getURL() == null);
         assertTrue(nullObject.getGUID() == null);
-        assertTrue(nullObject.getTypeId() == null);
         assertTrue(nullObject.getTypeName() == null);
-        assertTrue(nullObject.getTypeVersion() == 0);
         assertTrue(nullObject.getTypeDescription() == null);
         assertTrue(nullObject.getQualifiedName() == null);
         assertTrue(nullObject.getDisplayName() == null);
@@ -121,11 +110,8 @@ public class AssetTest
 
         nullObject = new Asset(null);
 
-        assertTrue(nullObject.getURL() == null);
         assertTrue(nullObject.getGUID() == null);
-        assertTrue(nullObject.getTypeId() == null);
         assertTrue(nullObject.getTypeName() == null);
-        assertTrue(nullObject.getTypeVersion() == 0);
         assertTrue(nullObject.getTypeDescription() == null);
         assertTrue(nullObject.getQualifiedName() == null);
         assertTrue(nullObject.getDisplayName() == null);

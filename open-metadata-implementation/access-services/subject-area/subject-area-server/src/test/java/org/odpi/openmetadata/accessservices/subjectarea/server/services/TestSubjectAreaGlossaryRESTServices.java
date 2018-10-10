@@ -125,7 +125,7 @@ public class TestSubjectAreaGlossaryRESTServices {
         SubjectAreaOMASAPIResponse response = subjectAreaGlossaryOmasREST.createGlossary(testuserid, requestedGlossary);
         assertTrue(response.getResponseCategory().equals(ResponseCategory.InvalidParameterException));
         InvalidParameterExceptionResponse invalidExResponse = (InvalidParameterExceptionResponse)response;
-        assertTrue(invalidExResponse.getExceptionErrorMessage().contains("OMAS-SUBJECTAREA-400-028"));
+        assertTrue(invalidExResponse.getExceptionErrorMessage().contains("OMAS-SUBJECTAREA-400-060"));
 
         // check with an empty string
         requestedGlossary.setName("");
@@ -133,7 +133,7 @@ public class TestSubjectAreaGlossaryRESTServices {
         response = subjectAreaGlossaryOmasREST.createGlossary(testuserid, requestedGlossary);
         assertTrue(response.getResponseCategory().equals(ResponseCategory.InvalidParameterException));
         invalidExResponse = (InvalidParameterExceptionResponse)response;
-        assertTrue(invalidExResponse.getExceptionErrorMessage().contains("OMAS-SUBJECTAREA-400-028"));
+        assertTrue(invalidExResponse.getExceptionErrorMessage().contains("OMAS-SUBJECTAREA-400-060"));
     }
 
     @Test

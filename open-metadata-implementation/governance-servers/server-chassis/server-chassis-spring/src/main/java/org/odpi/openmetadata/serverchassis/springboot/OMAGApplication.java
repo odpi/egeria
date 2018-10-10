@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.serverchassis.springboot;
 
 import org.odpi.openmetadata.http.HttpHelper;
@@ -30,9 +31,11 @@ public class OMAGApplication
     }
 
     @Bean
-    public InitializingBean getInitialize(){
+    public InitializingBean getInitialize()
+    {
         return () -> {
-            if(!strictSSL){
+            if (!strictSSL)
+            {
                 HttpHelper.noStrictSSL();
             }
         };

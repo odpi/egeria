@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.events;
 
 import org.slf4j.Logger;
@@ -11,7 +12,9 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
 
-
+/**
+ * OMRSTypeDefEvent provides the wrapper for an event that relates to a type definition (TypeDef).
+ */
 public class OMRSTypeDefEvent extends OMRSEvent
 {
     /*

@@ -97,8 +97,8 @@ public class SubjectArea extends Classification {
 
        private String name;
        /**
-        * Name of the subject area.
-        * @return String
+        * {@literal Name of the subject area. }
+        * @return {@code String }
         */
        public String getName() {
            return this.name;

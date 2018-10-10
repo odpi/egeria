@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
@@ -13,7 +14,7 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 /**
- * Validate that the AssetDerivedSchemaElement can function as a facade for its bean.
+ * Validate that the AssetDerivedSchemaType can function as a facade for its bean.
  */
 public class TestAssetDerivedSchemaElement
 {
@@ -44,7 +45,7 @@ public class TestAssetDerivedSchemaElement
      *
      * @return filled in object
      */
-    private AssetDerivedSchemaElement getTestObject()
+    private AssetDerivedSchemaType getTestObject()
     {
         DerivedSchemaElement testBean = new DerivedSchemaElement();
 
@@ -63,7 +64,7 @@ public class TestAssetDerivedSchemaElement
 
         testBean.setFormula("TestFormula");
 
-        return new AssetDerivedSchemaElement(testBean, assetMeanings, schemaImplementationQueries);
+        return new AssetDerivedSchemaType(testBean, assetMeanings, schemaImplementationQueries);
     }
 
 
@@ -72,7 +73,7 @@ public class TestAssetDerivedSchemaElement
      *
      * @return filled in object
      */
-    private AssetDerivedSchemaElement getDifferentObject()
+    private AssetDerivedSchemaType getDifferentObject()
     {
         DerivedSchemaElement testBean = new DerivedSchemaElement();
 
@@ -91,7 +92,7 @@ public class TestAssetDerivedSchemaElement
 
         testBean.setFormula("TestFormula");
 
-        return new AssetDerivedSchemaElement(testBean, assetMeanings, schemaImplementationQueries);
+        return new AssetDerivedSchemaType(testBean, assetMeanings, schemaImplementationQueries);
     }
 
 
@@ -101,7 +102,7 @@ public class TestAssetDerivedSchemaElement
      *
      * @return filled in object
      */
-    private AssetDerivedSchemaElement getAnotherDifferentObject()
+    private AssetDerivedSchemaType getAnotherDifferentObject()
     {
         DerivedSchemaElement testBean = new DerivedSchemaElement();
 
@@ -120,7 +121,7 @@ public class TestAssetDerivedSchemaElement
 
         testBean.setFormula("TestDifferentFormula");
 
-        return new AssetDerivedSchemaElement(testBean, assetMeanings, schemaImplementationQueries);
+        return new AssetDerivedSchemaType(testBean, assetMeanings, schemaImplementationQueries);
     }
 
 
@@ -129,7 +130,7 @@ public class TestAssetDerivedSchemaElement
      *
      * @return filled in object
      */
-    private AssetDerivedSchemaElement getYetAnotherDifferentObject()
+    private AssetDerivedSchemaType getYetAnotherDifferentObject()
     {
         DerivedSchemaElement testBean = new DerivedSchemaElement();
 
@@ -148,7 +149,7 @@ public class TestAssetDerivedSchemaElement
 
         testBean.setFormula("TestFormula");
 
-        return new AssetDerivedSchemaElement(new AssetSummary(new Asset()), testBean, assetMeanings, schemaImplementationQueries);
+        return new AssetDerivedSchemaType(new AssetSummary(new Asset()), testBean, assetMeanings, schemaImplementationQueries);
     }
 
 
@@ -157,7 +158,7 @@ public class TestAssetDerivedSchemaElement
      *
      * @return filled in object
      */
-    private AssetDerivedSchemaElement getAndYetAnotherDifferentObject()
+    private AssetDerivedSchemaType getAndYetAnotherDifferentObject()
     {
         DerivedSchemaElement testBean = new DerivedSchemaElement();
 
@@ -176,7 +177,7 @@ public class TestAssetDerivedSchemaElement
 
         testBean.setFormula("TestFormula");
 
-        return new AssetDerivedSchemaElement(new AssetSummary(new Asset()), testBean, assetMeanings, null);
+        return new AssetDerivedSchemaType(new AssetSummary(new Asset()), testBean, assetMeanings, null);
     }
 
 
@@ -185,7 +186,7 @@ public class TestAssetDerivedSchemaElement
      *
      * @param resultObject object returned by the test
      */
-    private void validateResultObject(AssetDerivedSchemaElement  resultObject)
+    private void validateResultObject(AssetDerivedSchemaType resultObject)
     {
         assertTrue(resultObject.getType().getElementTypeBean().equals(type));
         assertTrue(resultObject.getGUID().equals("TestGUID"));
@@ -211,7 +212,7 @@ public class TestAssetDerivedSchemaElement
      *
      * @param nullObject object to test
      */
-    private void validateNullObject(AssetDerivedSchemaElement  nullObject)
+    private void validateNullObject(AssetDerivedSchemaType nullObject)
     {
         assertTrue(nullObject.getType() == null);
         assertTrue(nullObject.getGUID() == null);
@@ -237,42 +238,42 @@ public class TestAssetDerivedSchemaElement
      */
     @Test public void testNullObject()
     {
-        DerivedSchemaElement          nullBean;
-        AssetDerivedSchemaElement     nullObject;
-        AssetDerivedSchemaElement     nullTemplate;
-        AssetDescriptor               parentAsset;
+        DerivedSchemaElement   nullBean;
+        AssetDerivedSchemaType nullObject;
+        AssetDerivedSchemaType nullTemplate;
+        AssetDescriptor        parentAsset;
 
         nullBean = null;
-        nullObject = new AssetDerivedSchemaElement(nullBean, null, null);
+        nullObject = new AssetDerivedSchemaType(nullBean, null, null);
         validateNullObject(nullObject);
 
         nullBean = new DerivedSchemaElement();
-        nullObject = new AssetDerivedSchemaElement(nullBean, null, null);
+        nullObject = new AssetDerivedSchemaType(nullBean, null, null);
         validateNullObject(nullObject);
 
         nullBean = new DerivedSchemaElement(null);
-        nullObject = new AssetDerivedSchemaElement(nullBean, null, null);
+        nullObject = new AssetDerivedSchemaType(nullBean, null, null);
         validateNullObject(nullObject);
 
         parentAsset = null;
         nullBean = null;
-        nullObject = new AssetDerivedSchemaElement(parentAsset, nullBean, null, null);
+        nullObject = new AssetDerivedSchemaType(parentAsset, nullBean, null, null);
         validateNullObject(nullObject);
 
         nullBean = new DerivedSchemaElement();
-        nullObject = new AssetDerivedSchemaElement(parentAsset, nullBean, null, null);
+        nullObject = new AssetDerivedSchemaType(parentAsset, nullBean, null, null);
         validateNullObject(nullObject);
 
         nullBean = new DerivedSchemaElement(null);
-        nullObject = new AssetDerivedSchemaElement(parentAsset, nullBean, null, null);
+        nullObject = new AssetDerivedSchemaType(parentAsset, nullBean, null, null);
         validateNullObject(nullObject);
 
         nullTemplate = null;
-        nullObject = new AssetDerivedSchemaElement(parentAsset, nullTemplate);
+        nullObject = new AssetDerivedSchemaType(parentAsset, nullTemplate);
         validateNullObject(nullObject);
 
-        nullTemplate = new AssetDerivedSchemaElement(parentAsset, nullBean, null,  null);;
-        nullObject = new AssetDerivedSchemaElement(parentAsset, nullTemplate);
+        nullTemplate = new AssetDerivedSchemaType(parentAsset, nullBean, null, null);;
+        nullObject = new AssetDerivedSchemaType(parentAsset, nullTemplate);
         validateNullObject(nullObject);
     }
 
@@ -286,12 +287,12 @@ public class TestAssetDerivedSchemaElement
         AssetSchemaImplementationQueries schemaImplementationQueries = new MockAssetSchemaImplementationQueries(null,
                                                                                                                 12,
                                                                                                                 56);
-        AssetDerivedSchemaElement        testObject                  = new AssetDerivedSchemaElement(null, null, null);
+        AssetDerivedSchemaType testObject = new AssetDerivedSchemaType(null, null, null);
 
         assertTrue(testObject.getAssetMeanings() == null);
         assertTrue(testObject.getQueries() == null);
 
-        testObject = new AssetDerivedSchemaElement(null, meanings, schemaImplementationQueries);
+        testObject = new AssetDerivedSchemaType(null, meanings, schemaImplementationQueries);
 
         assertTrue(testObject.getAssetMeanings() != null);
         assertTrue(testObject.getQueries() != null);
@@ -308,7 +309,7 @@ public class TestAssetDerivedSchemaElement
         assertFalse(getTestObject().equals("DummyString"));
         assertTrue(getTestObject().equals(getTestObject()));
 
-        AssetDerivedSchemaElement  sameObject = getTestObject();
+        AssetDerivedSchemaType sameObject = getTestObject();
         assertTrue(sameObject.equals(sameObject));
 
         assertFalse(getTestObject().equals(getDifferentObject()));
@@ -332,9 +333,9 @@ public class TestAssetDerivedSchemaElement
      */
     @Test public void testClone()
     {
-        validateResultObject(new AssetDerivedSchemaElement(null, getTestObject()));
+        validateResultObject(new AssetDerivedSchemaType(null, getTestObject()));
 
-        validateResultObject((AssetDerivedSchemaElement) getTestObject().cloneAssetSchemaElement(null));
+        validateResultObject((AssetDerivedSchemaType) getTestObject().cloneAssetSchemaElement(null));
     }
 
     /**

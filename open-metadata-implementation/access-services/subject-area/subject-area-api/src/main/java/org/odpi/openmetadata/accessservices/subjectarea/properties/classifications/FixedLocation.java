@@ -107,8 +107,8 @@ public class FixedLocation extends Classification {
 
        private String coordinates;
        /**
-        * Geographical coordinates of this location.
-        * @return String
+        * {@literal Geographical coordinates of this location. }
+        * @return {@code String }
         */
        public String getCoordinates() {
            return this.coordinates;
@@ -120,8 +120,8 @@ public class FixedLocation extends Classification {
 
        private String address;
        /**
-        * Postal address of this location.
-        * @return String
+        * {@literal Postal address of this location. }
+        * @return {@code String }
         */
        public String getAddress() {
            return this.address;
@@ -133,8 +133,8 @@ public class FixedLocation extends Classification {
 
        private String timezone;
        /**
-        * Timezone for the location.
-        * @return String
+        * {@literal Timezone for the location. }
+        * @return {@code String }
         */
        public String getTimezone() {
            return this.timezone;

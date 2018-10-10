@@ -78,6 +78,8 @@ public class ErrorCodeTest
         testSingleErrorCodeValues(AssetConsumerErrorCode.PROPERTY_SERVER_ERROR);
         testSingleErrorCodeValues(AssetConsumerErrorCode.NULL_ENUM);
         testSingleErrorCodeValues(AssetConsumerErrorCode.NULL_TEXT);
+        testSingleErrorCodeValues(AssetConsumerErrorCode.NEGATIVE_START_FROM);
+        testSingleErrorCodeValues(AssetConsumerErrorCode.EMPTY_PAGE_SIZE);
         testSingleErrorCodeValues(AssetConsumerErrorCode.SERVER_NOT_AVAILABLE);
         testSingleErrorCodeValues(AssetConsumerErrorCode.OMRS_NOT_INITIALIZED);
         testSingleErrorCodeValues(AssetConsumerErrorCode.OMRS_NOT_AVAILABLE);
@@ -85,12 +87,15 @@ public class ErrorCodeTest
         testSingleErrorCodeValues(AssetConsumerErrorCode.CONNECTION_NOT_FOUND);
         testSingleErrorCodeValues(AssetConsumerErrorCode.PROXY_CONNECTION_FOUND);
         testSingleErrorCodeValues(AssetConsumerErrorCode.ASSET_NOT_FOUND);
+        testSingleErrorCodeValues(AssetConsumerErrorCode.MULTIPLE_ASSETS_FOUND);
         testSingleErrorCodeValues(AssetConsumerErrorCode.UNKNOWN_ASSET);
         testSingleErrorCodeValues(AssetConsumerErrorCode.NULL_CONNECTION_RETURNED);
         testSingleErrorCodeValues(AssetConsumerErrorCode.NULL_CONNECTOR_RETURNED);
+        testSingleErrorCodeValues(AssetConsumerErrorCode.NULL_END2_RETURNED);
         testSingleErrorCodeValues(AssetConsumerErrorCode.NULL_RESPONSE_FROM_API);
         testSingleErrorCodeValues(AssetConsumerErrorCode.CLIENT_SIDE_REST_API_ERROR);
         testSingleErrorCodeValues(AssetConsumerErrorCode.SERVICE_NOT_INITIALIZED);
+        testSingleErrorCodeValues(AssetConsumerErrorCode.EXCEPTION_RESPONSE_FROM_API);
     }
 
 

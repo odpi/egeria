@@ -18,6 +18,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 //omrs beans
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.LineType;
 
 /**
  * <$$uname$$> is a relationship between an entity of type <$$entityProxy1Type$$> and an entity of type <$$entityProxy2Type$$>.
@@ -74,27 +75,30 @@ public class <$$uname$$> extends Line {
 
     
     public <$$uname$$>() {
-        super("<$$uname$$>");
-        super.entity1Name = "<$$entityProxy1Name$$>";
-        super.entity1Type = "<$$entityProxy1Type$$>";
-        super.entity2Name = "<$$entityProxy2Name$$>";
-        super.entity2Type = "<$$entityProxy2Type$$>";
+       name = "<$$uname$$>";
+       // set the LineType if this is a LineType enum value.
+       try {
+           lineType = LineType.valueOf(name);
+        }
+        catch (IllegalArgumentException e) {
+           lineType = LineType.Other;
+        }
+        entity1Name = "<$$entityProxy1Name$$>";
+        entity1Type = "<$$entityProxy1Type$$>";
+        entity2Name = "<$$entityProxy2Name$$>";
+        entity2Type = "<$$entityProxy2Type$$>";
+        typeDefGuid = "<$$typeDefGuid$$>";
     }
 
     public <$$uname$$>(Relationship omrsRelationship) {
         super(omrsRelationship);
-
-        if (!omrsRelationship.getEntityOnePropertyName().equals("<$$entityProxy1Name$$>")){
-            //error
+        name = "<$$uname$$>";
+       // set the LineType if this is a LineType enum value.
+       try {
+           lineType = LineType.valueOf(name);
         }
-        if (!omrsRelationship.getEntityTwoPropertyName().equals("<$$entityProxy2Name$$>")){
-            //error
-        }
-        if (!omrsRelationship.getEntityOneProxy().getType().getTypeDefName().equals("<$$entityProxy1Type$$>")){
-            //error
-        }
-        if (!omrsRelationship.getEntityTwoProxy().getType().getTypeDefName().equals("<$$entityProxy2Type$$>")){
-            //error
+        catch (IllegalArgumentException e) {
+           lineType = LineType.Other;
         }
     }
 
@@ -132,10 +136,10 @@ public class <$$uname$$> extends Line {
 
      <$$$
          private <$$PropertyType$$> <$$PropertyName$$>;
-         /**
-          * <$$AttrDescription$$>
-          * @return <$$PropertyType$$>
-          */
+        /**
+            * {@literal <$$AttrDescription$$> }
+            * @return {@code <$$PropertyTypeJavadoc$$> }
+            */
          public <$$PropertyType$$> get<$$uPropertyName$$>() {
              return this.<$$PropertyName$$>;
          }

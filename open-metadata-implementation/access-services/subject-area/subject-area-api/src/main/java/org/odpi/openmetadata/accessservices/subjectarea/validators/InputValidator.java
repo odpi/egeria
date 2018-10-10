@@ -4,6 +4,8 @@ package org.odpi.openmetadata.accessservices.subjectarea.validators;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.Status;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.node.NodeType;
 
 /**
  * Methods used for rest API input validation
@@ -39,10 +41,10 @@ public class InputValidator {
 
     /**
      * Throw an exception if the supplied userId is null
-     *
-     * @param methodName - name of the method making the call.
-     *                     * @param userId - user name to validate
-     * @throws InvalidParameterException - the userId is null
+     * @param className name of the class
+     * @param methodName name of the method making the call.
+     * @param userId user name to validate
+     * @throws InvalidParameterException the userId is null
      */
     static public void validateUserIdNotNull(
                                       String className,
@@ -66,8 +68,11 @@ public class InputValidator {
 
     /**
      * Validate the supplied string can be converted to a Status and return that status. If it cannot be converted then null is returned.
+     * @param className - name of the class making the call.
+     * @param methodName - name of the method making the call.
      * @param statusName - the String name to convert to a Status
      * @return Status or null.
+     * @throws InvalidParameterException invalid status
      */
     static public Status validateStatusAndCheckNotDeleted(
             String className,
@@ -166,6 +171,36 @@ public class InputValidator {
                     errorMessage,
                     errorCode.getSystemAction(),
                     errorCode.getUserAction());
+        }
+    }
+
+    public static void validateNodeType(Object... args) throws InvalidParameterException {
+        if (args.length <4) return;
+        boolean isValid = false;
+        String className = (String) args[0];
+        String methodName = (String) args[1];
+        NodeType nodeTypeToCheck = (NodeType) args[2];
+
+        if(nodeTypeToCheck !=null) {
+            for (int i =3;i<args.length;i++) {
+                if (nodeTypeToCheck.equals(args[i])) {
+                    isValid = true;
+                }
+            }
+            if (!isValid) {
+                SubjectAreaErrorCode errorCode    = SubjectAreaErrorCode.INVALID_NODETYPE;
+                String errorMessage = errorCode.getErrorMessageId()
+                        + errorCode.getFormattedErrorMessage( nodeTypeToCheck.name(),
+                        methodName);
+
+                throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                        className,
+                        methodName,
+                        errorMessage,
+                        errorCode.getSystemAction(),
+                        errorCode.getUserAction());
+            }
+
         }
     }
 }

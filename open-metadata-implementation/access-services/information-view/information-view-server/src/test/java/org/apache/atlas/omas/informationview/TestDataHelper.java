@@ -33,14 +33,13 @@ public class TestDataHelper {
     public static final String DATABASE_NAME = "databaseTest";
     public static final String HOSTNAME_VALUE = "localhost";
     public static final String PORT_VALUE = "9393";
-    public static final String PROTOCOL_VALUE = "jdbc:derby";
+    public static final String PROTOCOL_VALUE = "jdbc:derby://";
     public static final String SCHEMA_NAME = "schema";
-    public static final String PROTOCOL = "jdbc:derby";
-    public static final String URL_VALUE = "jdbc:derby:localhost:8090";
     public static final String PROVIDER_CLASS_NAME = "GaianConnectorProvider";
     public static final String BUSINESS_TERM_GUID = "businessTermGuid";
     public static final String REAL_COLUMN_GUID = "realColumnGuid";
     public static final String CONNECTION_ENDPOINT_REL_TYPE_GUID = "ConnectionEndpointTypeGuid";
+    public static final String SERVER_ENDPOINT_REL_TYPE_GUID = "ServerEndpointTypeGuid";
     public static final String CONNECTION_CONNECTOR_REL_TYPE_GUID = "ConnectionConnectorTypeGuid";
     public static final String CONNECTION_ASSET_REL_TYPE_GUID = "ConnectionAssetTypeGuid";
     public static final String DATA_CONTENT_DATASET_REL_TYPE_GUID = "DataContentForDatasetTypeGuid";
@@ -49,6 +48,8 @@ public class TestDataHelper {
     public static final String ATTRIBUTE_FOR_SCHEMA_REL_TYPE_GUID = "AttributeForSchemaTypeGuid";
     public static final String SCHEMA_QUERY_IMPLEMENTATION_REL_TYPE_GUID = "SchemaQueryImplementationTypeGuid";
     public static final String SEMANTIC_ASSIGNMENT_REL_TYPE_GUID = "SemanticAssignmentTypeGuid";
+    public static final String FOREIGN_KEY_REL_TYPE_GUID = "ForeignKeyGuid";
+    public static final String DATABASE_SERVER_TYPE_GUID = "DatabaseServerGuid";
     public static String GUID_COLUMN = "guid_column";
     public static String GUID_TABLE = "guid_table";
 
@@ -206,7 +207,7 @@ public class TestDataHelper {
     public InstanceProperties createInstancePropertiesForEndpoint() {
         InstanceProperties instanceProperties = new InstanceProperties();
         createStringPropertyValue(instanceProperties, Constants.PROTOCOL, PROTOCOL_VALUE);
-        createStringPropertyValue(instanceProperties, Constants.ADDRESS, HOSTNAME_VALUE + ":" + PORT_VALUE);
+        createStringPropertyValue(instanceProperties, Constants.NETWORK_ADDRESS, HOSTNAME_VALUE + ":" + PORT_VALUE);
 
         return instanceProperties;
     }
@@ -380,11 +381,11 @@ public class TestDataHelper {
         event.setConnectionDetails(connectionDetails);
         connectionDetails.setNetworkAddress(HOSTNAME_VALUE + ":" + TestDataHelper.PORT_VALUE);
         connectionDetails.setProtocol(PROTOCOL_VALUE);
-        connectionDetails.setUrl(URL_VALUE);
         connectionDetails.setConnectorProviderName(PROVIDER_CLASS_NAME);
         connectionDetails.setEndpointQualifiedName("jdbc:derby:localhost:9393");
         connectionDetails.setConnectionQualifiedName("jdbc:derby:localhost:9393.connection");
         connectionDetails.setConnectorProviderQualifiedName("jdbc:derby:localhost:9393.connection.GaianConnectorProvider_type");
+        connectionDetails.setUser("Connection");
         event.getTableContext().setSchemaName(SCHEMA_NAME);
         event.getTableContext().setSchemaQualifiedName("jdbc:derby:localhost:9393.connection.databaseTest.schema");
         event.getTableContext().setSchemaTypeQualifiedName("jdbc:derby:localhost:9393.connection.databaseTest.schema.schema_type");

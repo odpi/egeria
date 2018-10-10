@@ -1,5 +1,5 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
-<!-- Copyright Contributors to the Egeria project. -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
 
 # Egeria Maintainers
 
@@ -20,4 +20,5 @@ The current Egeria maintainers are:
 | Ruxandra Gabriela Rosu | ruxandra-gabriela.rosu@ing.com |
 | Daniela Valentina Otelea | daniela-valentina.otelea@ing.com |
 | Constantin Nastase | constantin.nastase@ing.com |
+| Wu Yue Feng | wyf1116@gmail.com |
 

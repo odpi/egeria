@@ -1,8 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.connectedasset.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Comment;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -18,9 +18,9 @@ import static org.testng.Assert.assertTrue;
  */
 public class CommentsResponseTest
 {
-    private Map<String, Object> exceptionProperties = new HashMap<>();
-    private List<Comment>       responseList        = new ArrayList<>();
-    private Comment             responseObject      = new Comment();
+    private Map<String, Object>         exceptionProperties = new HashMap<>();
+    private List<CommentResponse>       responseList        = new ArrayList<>();
+    private CommentResponse             responseObject      = new CommentResponse();
 
 
     /**
@@ -28,7 +28,7 @@ public class CommentsResponseTest
      */
     public CommentsResponseTest()
     {
-        responseObject.setGUID("TestGUID");
+        responseObject.setReplyCount(10);
         responseList.add(responseObject);
     }
 

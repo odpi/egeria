@@ -1,5 +1,5 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
-<!-- Copyright Contributors to the Egeria project. -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
 
 # Egeria Community Guide
 
@@ -107,7 +107,7 @@ When you create your own branch, use a name that describes that the branch is fo
 
 You can also see that 'origin' will point to your GitHub fork, whilst 'upstream' points to the Egeria master branch:
 
-```
+```bash
 $ git remote -v
 
 origin https://github.com/USER/egeria (fetch)
@@ -127,7 +127,7 @@ for git control.  Use `git add` to add all of the files you want included.
 
 For example:
 
-```
+```bash
 $ git status
 
 On branch example-branch

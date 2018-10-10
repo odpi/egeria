@@ -1,20 +1,4 @@
-/**
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservices.subjectarea.properties.comment;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -52,8 +36,8 @@ public class Comment implements Serializable {
 
 
     /**
-     * Get the system attributes
-     * @return
+     * Get the system attributes associated with the Comment.
+     * @return system attributes
      */
     public SystemAttributes getSystemAttributes() {
         return systemAttributes;
@@ -162,7 +146,7 @@ public class Comment implements Serializable {
        private Map<String,String> additionalProperties;
        /**
         * Additional properties for the element.
-        * @return Map<String,String>
+        * @return {@code Map<String,String> }
         */
        public Map<String,String> getAdditionalProperties() {
            return this.additionalProperties;
@@ -181,22 +165,23 @@ public class Comment implements Serializable {
 
     /**
      * Get the extra attributes - ones that are in addition to the standard types.
-     * @return
+     * @return {@code Map<String,String> }
      */
     public Map<String, Object> getExtraAttributes() {
         return extraAttributes;
     }
 
      /**
-     * Classifications
-     * @return
+     * Classifications associated with the Comment
+     * @return list of classifications
      */
     public List<Classification> getClassifications() {
         return classifications;
     }
     /**
       * Extra classifications are classifications that are not in the open metadata model - we include the OMRS Classifications.
-      */
+     * @return {@code Map<String,Classification> }
+     */
     public Map<String, Classification> getExtraClassifications() {
         return extraClassifications;
     }

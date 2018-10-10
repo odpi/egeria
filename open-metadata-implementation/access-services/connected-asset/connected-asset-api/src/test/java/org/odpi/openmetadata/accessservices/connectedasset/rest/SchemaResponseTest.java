@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.connectedasset.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -47,6 +48,7 @@ public class SchemaResponseTest
         testObject.setExceptionProperties(exceptionProperties);
 
         testObject.setSchema(schemaBean);
+        testObject.setSchemaAttributeCount(10);
 
         return testObject;
     }
@@ -68,6 +70,7 @@ public class SchemaResponseTest
         assertTrue(resultObject.getExceptionProperties() == null);
 
         assertTrue(resultObject.getSchema().equals(schemaBean));
+        assertTrue(resultObject.getSchemaAttributeCount() == 10);
 
     }
 
@@ -86,6 +89,7 @@ public class SchemaResponseTest
         assertTrue(nullObject.getExceptionUserAction() == null);
         assertTrue(nullObject.getExceptionProperties() == null);
         assertTrue(nullObject.getSchema() == null);
+        assertTrue(nullObject.getSchemaAttributeCount() == 0);
 
         nullObject = new SchemaResponse(null);
 
@@ -96,6 +100,7 @@ public class SchemaResponseTest
         assertTrue(nullObject.getExceptionUserAction() == null);
         assertTrue(nullObject.getExceptionProperties() == null);
         assertTrue(nullObject.getSchema() == null);
+        assertTrue(nullObject.getSchemaAttributeCount() == 0);
 
     }
 

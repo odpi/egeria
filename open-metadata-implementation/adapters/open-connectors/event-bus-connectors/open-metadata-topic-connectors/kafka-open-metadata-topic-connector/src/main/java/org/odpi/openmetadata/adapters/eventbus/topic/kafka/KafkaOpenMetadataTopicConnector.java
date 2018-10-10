@@ -1,7 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.adapters.eventbus.topic.kafka;
 
-import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFErrorCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

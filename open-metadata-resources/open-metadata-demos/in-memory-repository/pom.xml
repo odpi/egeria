@@ -8,14 +8,14 @@
 <parent>
     <artifactId>open-metadata-demos</artifactId>
     <groupId>org.odpi.egeria</groupId>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.2-SNAPSHOT</version>
 </parent>
 
 <modelVersion>4.0.0</modelVersion>
 
 <name>In Memory repository Demo</name>
 <description>
-    Demonstration of two in memory repositories in a cohort, showcasing metadata syncronization using only Egeria code and Kafka.
+    Demonstration of two in memory repositories in a cohort, showcasing metadata synchronization using only Egeria code and Kafka.
 </description>
 
 <artifactId>in-memory-repository</artifactId>

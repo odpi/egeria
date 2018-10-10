@@ -1,20 +1,4 @@
-/**
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservices.subjectarea.properties.objects.node;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -22,6 +6,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SystemAttributes;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.IconSummary;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.ProjectSummary;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,7 +22,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * TODO
+ * A Node is an entity in the subject area omas that has a type {@code  NodeType}, name, qualified name and description.
+ * A node may be in one or more projects.
+ * <p>
+ * Nodes can be connected with {@code Line }s to form graphs. As they may be visualised, so a node has an associated
+ * icon.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -45,7 +36,7 @@ public class Node implements Serializable {
     private static final String className = Node.class.getName();
     protected NodeType nodeType = NodeType.Unknown;
 
-    private Set<String> projects = null;
+    private Set<ProjectSummary> projects = null;
     private String name =null;
     private String qualifiedName =null;
     private SystemAttributes systemAttributes=null;
@@ -53,8 +44,12 @@ public class Node implements Serializable {
     private String description =null;
     protected List<Classification> classifications = null;
 
-    private String icon = null;
+    private Set<IconSummary> icons = null;
 
+    /**
+     * Node type
+     * @return the type of the node
+     */
     public NodeType getNodeType() {
         return nodeType;
     }
@@ -63,6 +58,10 @@ public class Node implements Serializable {
         this.nodeType = nodeType;
     }
 
+    /**
+     * The name of the node
+     * @return name
+     */
     public String getName() {
         return name;
     }
@@ -70,7 +69,10 @@ public class Node implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
-
+    /**
+     * The qualified name of the node.
+     * @return qualified name
+     */
     public String getQualifiedName() {
         return qualifiedName;
     }
@@ -79,16 +81,15 @@ public class Node implements Serializable {
         this.qualifiedName = qualifiedName;
     }
 
-
     /**
      * get the projects
-     * @return
+     * @return associated projects
      */
-    public Set<String> getProjects() {
+    public Set<ProjectSummary> getProjects() {
         return projects;
     }
 
-    public void setProjects(Set<String> projects) {
+    public void setProjects(Set<ProjectSummary> projects) {
         this.projects = projects;
     }
 
@@ -100,6 +101,10 @@ public class Node implements Serializable {
         this.systemAttributes = systemAttributes;
     }
 
+    /**
+     * Description of the node
+     * @return description
+     */
     public String getDescription() {
         return description;
     }
@@ -108,16 +113,24 @@ public class Node implements Serializable {
         this.description = description;
     }
 
+    /**
+     * List of associated classifications
+     * @return {@code List<Classification>  }
+     */
     public List<Classification> getClassifications() {
         return classifications;
     }
 
-    public String getIcon() {
-        return icon;
+    /**
+     * icon summary
+     * @return icon
+     */
+    public Set<IconSummary> getIcons() {
+        return icons;
     }
 
-    public void setIcon(String icon) {
-        this.icon = icon;
+    public void setIcons(Set<IconSummary> icons) {
+        this.icons = icons;
     }
 
     public Map<String, String> getAdditionalProperties() {
@@ -127,8 +140,6 @@ public class Node implements Serializable {
     public void setAdditionalProperties(Map<String, String> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
-
-
 
     public StringBuilder toString(StringBuilder sb) {
         if (sb == null) {
@@ -147,8 +158,8 @@ public class Node implements Serializable {
             sb.append(", descripion=").append(description);
         }
 
-        if (icon != null) {
-            sb.append(", icon='").append(icon).append('\'');
+        if (icons != null) {
+            sb.append(", icon='").append(icons).append('\'');
         }
 
         sb.append('}');
@@ -173,7 +184,8 @@ public class Node implements Serializable {
         if (qualifiedName != null ? !qualifiedName.equals(node.qualifiedName) : node.qualifiedName != null)
             return false;
         if (description != null ? !description.equals(node.description) : node.description != null) return false;
-        return  (icon != null ? !icon.equals(node.icon) : node.icon != null)== false;
+        //TODO deal with icon set properly
+        return  (icons != null ? !icons.equals(node.icons) : node.icons != null)== false;
 
     }
 
@@ -182,7 +194,8 @@ public class Node implements Serializable {
         int result = name != null ? name.hashCode() : 0;
         result = 31 * result + (qualifiedName != null ? qualifiedName.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (icon != null ? icon.hashCode() : 0);
+        //TODO deal with icon set properly
+        result = 31 * result + (icons != null ? icons.hashCode() : 0);
         return result;
     }
 

@@ -97,8 +97,8 @@ public class Taxonomy extends Classification {
 
        private String organizingPrinciple;
        /**
-        * Characteristics that influence the organization of the taxonomy.
-        * @return String
+        * {@literal Characteristics that influence the organization of the taxonomy. }
+        * @return {@code String }
         */
        public String getOrganizingPrinciple() {
            return this.organizingPrinciple;

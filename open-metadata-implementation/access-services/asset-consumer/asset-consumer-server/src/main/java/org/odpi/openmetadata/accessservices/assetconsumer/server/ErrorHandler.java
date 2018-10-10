@@ -1,9 +1,11 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.server;
 
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.AssetConsumerErrorCode;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions.PropertyServerException;
+import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions.UnrecognizedGUIDException;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
@@ -122,7 +124,7 @@ class ErrorHandler
      * @param parameterName  name of the parameter that passed the name.
      * @param methodName  name of the method making the call.
      *
-     * @throws InvalidParameterException the guid is null
+     * @throws InvalidParameterException the name is null
      */
     void validateName(String name,
                       String parameterName,
@@ -152,7 +154,7 @@ class ErrorHandler
      * @param parameterName  name of the parameter that passed the name.
      * @param methodName  name of the method making the call.
      *
-     * @throws InvalidParameterException the guid is null
+     * @throws InvalidParameterException the text is null
      */
     void validateText(String text,
                       String parameterName,
@@ -171,6 +173,55 @@ class ErrorHandler
                                                 errorCode.getSystemAction(),
                                                 errorCode.getUserAction(),
                                                 "text");
+        }
+    }
+
+
+    /**
+     * Throw an exception if the supplied paging values don't make sense.
+     *
+     * @param startFrom  index of the list ot start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param methodName  name of the method making the call.
+     *
+     * @throws InvalidParameterException the guid is null
+     */
+    void validatePaging(int    startFrom,
+                        int    pageSize,
+                        String methodName) throws InvalidParameterException
+    {
+        final  String   startFromParameterName = "startFrom";
+        final  String   pageSizeParameterName = "pageSize";
+
+        if (startFrom < 0)
+        {
+            AssetConsumerErrorCode errorCode    = AssetConsumerErrorCode.NEGATIVE_START_FROM;
+            String                 errorMessage = errorCode.getErrorMessageId()
+                                                + errorCode.getFormattedErrorMessage(startFromParameterName, methodName);
+
+            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                errorMessage,
+                                                errorCode.getSystemAction(),
+                                                errorCode.getUserAction(),
+                                                startFromParameterName);
+        }
+
+
+        if (pageSize < 1)
+        {
+            AssetConsumerErrorCode errorCode    = AssetConsumerErrorCode.EMPTY_PAGE_SIZE;
+            String                 errorMessage = errorCode.getErrorMessageId()
+                                                + errorCode.getFormattedErrorMessage(pageSizeParameterName, methodName);
+
+            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                errorMessage,
+                                                errorCode.getSystemAction(),
+                                                errorCode.getUserAction(),
+                                                pageSizeParameterName);
         }
     }
 
@@ -328,6 +379,41 @@ class ErrorHandler
                                             errorCode.getSystemAction(),
                                             errorCode.getUserAction(),
                                             "assetGUID");
+
+    }
+
+
+    /**
+     * Throw an exception if the supplied guid is not recognized
+     *
+     * @param userId  user name to validate
+     * @param methodName  name of the method making the call.
+     * @param serverName  name of this server
+     * @param expectedType  name of object to return
+     * @throws UnrecognizedGUIDException the guid is not recognized
+     */
+    void handleUnrecognizedGUIDException(String userId,
+                                         String methodName,
+                                         String serverName,
+                                         String expectedType,
+                                         String guid) throws UnrecognizedGUIDException
+    {
+        AssetConsumerErrorCode errorCode = AssetConsumerErrorCode.INSTANCE_NOT_FOUND_BY_GUID;
+        String                 errorMessage = errorCode.getErrorMessageId()
+                                            + errorCode.getFormattedErrorMessage(methodName,
+                                                                                 expectedType,
+                                                                                 guid,
+                                                                                 userId,
+                                                                                 serverName);
+
+        throw new UnrecognizedGUIDException(errorCode.getHTTPErrorCode(),
+                                            this.getClass().getName(),
+                                            methodName,
+                                            errorMessage,
+                                            errorCode.getSystemAction(),
+                                            errorCode.getUserAction(),
+                                            expectedType,
+                                            guid);
 
     }
 }

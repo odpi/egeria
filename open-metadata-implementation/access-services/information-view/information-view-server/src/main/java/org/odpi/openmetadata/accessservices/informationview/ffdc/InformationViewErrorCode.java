@@ -47,6 +47,10 @@ public enum InformationViewErrorCode {
     PARSE_EVENT("OMAS-INFORMATIONVIEW-009",
             "Event could not be parsed",
             "The system is unable to process the request.",
+            "Verify the topic event."),
+    ADD_CLASSIFICATION("OMAS-INFORMATIONVIEW-010",
+            "Unable to create classification {0} for entity of type {1}",
+            "The system is unable to process the request.",
             "Verify the topic event.");
     private static final Logger log = LoggerFactory.getLogger(InformationViewErrorCode.class);
     private String errorMessageId;
@@ -80,13 +84,13 @@ public enum InformationViewErrorCode {
 
     public String getFormattedErrorMessage(String... params) {//TODO this should be moved to common code base
 
-        log.debug(String.format("<== OCFErrorCode.getMessage(%s)", Arrays.toString(params)));
+        log.debug(String.format("<== InformationViewErrorCode.getMessage(%s)", Arrays.toString(params)));
 
 
         MessageFormat mf = new MessageFormat(errorMessage);
         String result = mf.format(params);
 
-        log.debug(String.format("==> OCFErrorCode.getMessage(%s): %s", Arrays.toString(params), result));
+        log.debug(String.format("==> InformationViewErrorCode.getMessage(%s): %s", Arrays.toString(params), result));
 
         return result;
     }

@@ -1,7 +1,9 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 
 /**
@@ -113,8 +115,10 @@ public abstract class RelatedAssetProperties extends AssetPropertyElementBase
      * metadata repository.
      *
      * @throws PropertyServerException there is a problem connecting to the server to retrieve metadata.
+     * @throws UserNotAuthorizedException the userId associated with the connector is not authorized to
+     *                                    access the asset properties.
      */
-    public abstract void refresh() throws PropertyServerException;
+    public abstract void refresh() throws PropertyServerException, UserNotAuthorizedException;
 
 
     /**

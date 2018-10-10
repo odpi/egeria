@@ -112,8 +112,8 @@ public class ExceptionBacklog extends Classification {
 
        private String notes;
        /**
-        * Notes on usage, purpose and type of exception backlog.
-        * @return String
+        * {@literal Notes on usage, purpose and type of exception backlog. }
+        * @return {@code String }
         */
        public String getNotes() {
            return this.notes;
@@ -125,8 +125,8 @@ public class ExceptionBacklog extends Classification {
 
        private String steward;
        /**
-        * Unique identifier of the person or team responsible for this exception backlog.
-        * @return String
+        * {@literal Unique identifier of the person or team responsible for this exception backlog. }
+        * @return {@code String }
         */
        public String getSteward() {
            return this.steward;
@@ -138,8 +138,8 @@ public class ExceptionBacklog extends Classification {
 
        private String process;
        /**
-        * Unique identifier of the automated process that processes this exception backlog.
-        * @return String
+        * {@literal Unique identifier of the automated process that processes this exception backlog. }
+        * @return {@code String }
         */
        public String getProcess() {
            return this.process;
@@ -151,8 +151,8 @@ public class ExceptionBacklog extends Classification {
 
        private String source;
        /**
-        * Source of the exception backlog.
-        * @return String
+        * {@literal Source of the exception backlog. }
+        * @return {@code String }
         */
        public String getSource() {
            return this.source;

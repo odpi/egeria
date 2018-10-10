@@ -1,5 +1,5 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
-<!-- Copyright Contributors to the Egeria project. -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
 
 # Egeria Operations
 
@@ -135,9 +135,26 @@ This release will be available to include in products and other technology throu
 
 In between official releases, the latest build is also available to developers, through the Egeria site.
 
-### Release Process
+## Egeria project releases
 
-* TBD
+The Egeria team aim to create an official release of the open metadata and governance capability twice a year.
+This release will be available to include in products and other technology through
+[Maven's Central Repository](https://search.maven.org), or through a download from the ODPi site.
+
+In between official releases, the latest build is also available to developers, through the Egeria site.
+
+### Release Process Overview
+
+New releases can be created by Egeria maintainers that have the appropriate access
+on [Maven Central](https://oss.sonatype.org) and are set up to sign the release with gpg2.
+
+Creating a new release has the following stages:
+
+* Creating a branch of master for the release code.
+* Within the branch removing "-SNAPSHOT" from all of the Egeria version numbers in the pom files and committing with a pull request.
+* Pushing the release to [Maven Central](https://oss.sonatype.org).
+* Documenting the release with a [Git Release](https://github.com/odpi/egeria/releases).
+* Incrementing the release numbers in the pom files in master and committing through a pull request.
 
 ## Conflict resolution and voting
 

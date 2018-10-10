@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-/* Copyright Contributors to the Egeria project. */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions;
 
 
@@ -23,6 +23,7 @@ public class UnrecognizedAssetGUIDException extends ConnectedAssetCheckedExcepti
      * @param errorMessage  description of error
      * @param systemAction  actions of the system as a result of the error
      * @param userAction  instructions for correcting the error
+     * @param assetGUID unique identifier that is unrecognized
      */
     public UnrecognizedAssetGUIDException(int    httpCode,
                                           String className,

@@ -43,11 +43,8 @@ public class AssetConsumerEventTest
      */
     public AssetConsumerEventTest()
     {
-        asset.setURL(url);
         asset.setGUID(guid);
-        asset.setTypeId(typeId);
         asset.setTypeName(typeName);
-        asset.setTypeVersion(typeVersion);
         asset.setTypeDescription(typeDescription);
         asset.setQualifiedName(qualifiedName);
         asset.setDisplayName(displayName);

@@ -13,6 +13,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -109,6 +110,8 @@ public class ColumnContextBuilderTest {
         typeDef = helper.buildRelationshipType(Constants.SCHEMA_QUERY_IMPLEMENTATION, SCHEMA_QUERY_IMPLEMENTATION_REL_TYPE_GUID);
         when(omrsMetadataCollection.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
         typeDef = helper.buildRelationshipType(Constants.SEMANTIC_ASSIGNMENT, SEMANTIC_ASSIGNMENT_REL_TYPE_GUID);
+        when(omrsMetadataCollection.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
+        typeDef = helper.buildRelationshipType(Constants.FOREIGN_KEY, FOREIGN_KEY_REL_TYPE_GUID);
         when(omrsMetadataCollection.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
     }
 

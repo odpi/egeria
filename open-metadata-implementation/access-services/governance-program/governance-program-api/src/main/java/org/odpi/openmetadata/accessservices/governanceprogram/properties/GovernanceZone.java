@@ -1,9 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservices.governanceprogram.properties;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.*;
 
 import java.util.List;
 
@@ -17,6 +15,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "class")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = GovernanceZoneInAction.class, name = "GovernanceZoneInAction")
+})
 public class GovernanceZone extends GovernanceZoneDefinition
 {
     private List<GovernanceDefinition>  associatedGovernanceDefinitions = null;
@@ -43,8 +48,9 @@ public class GovernanceZone extends GovernanceZoneDefinition
 
 
     /**
+     * List the governance definitions that control assets in this zone.
      *
-     * @return
+     * @return list of definitions
      */
     public List<GovernanceDefinition> getAssociatedGovernanceDefinitions()
     {
@@ -63,5 +69,18 @@ public class GovernanceZone extends GovernanceZoneDefinition
      *
      * @return string containing the properties and their values
      */
-
+    @Override
+    public String toString()
+    {
+        return "GovernanceZone{" +
+                "associatedGovernanceDefinitions=" + associatedGovernanceDefinitions +
+                ", GUID='" + getGUID() + '\'' +
+                ", classifications=" + getClassifications() +
+                ", qualifiedName='" + getQualifiedName() + '\'' +
+                ", displayName='" + getDisplayName() + '\'' +
+                ", description='" + getDescription() + '\'' +
+                ", criteria='" + getCriteria() + '\'' +
+                ", additionalProperties=" + getAdditionalProperties() +
+                '}';
+    }
 }

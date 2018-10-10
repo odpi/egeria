@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.events;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -12,16 +13,21 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * AssetConsumerEventType describes the different types of events produced by the Asset Consumer OMAS.
+ * Each asset consumer (a person) can associate asset collections with their profile.  The notifications
+ * they receive come from the assets that are members of these collections.  The asset consumer
+ * may turn these notifications on and off either at the collection level or at the individual asset.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum AssetConsumerEventType implements Serializable
 {
-    UNKNOWN_ASSET_CONSUMER_EVENT  (0,  "UnknownEvent",  "An event that is not recognized by the local server."),
-    NEW_ASSET_EVENT               (1,  "NewAsset",      "A new asset has been defined."),
-    UPDATED_ASSET_EVENT           (2,  "UpdatedAsset",  "An existing asset has been updated."),
-    DELETED_ASSET_EVENT           (3,  "DeletedAsset",  "An existing asset has been deleted.");
+    UNKNOWN_ASSET_CONSUMER_EVENT  (0,  "UnknownEvent",   "An event that is not recognized by the local server."),
+    NEW_ASSET_EVENT               (1,  "NewAsset",       "A new asset has been defined."),
+    UPDATED_ASSET_EVENT           (2,  "UpdatedAsset",   "An existing asset has been updated."),
+    DELETED_ASSET_EVENT           (3,  "DeletedAsset",   "An existing asset has been deleted."),
+    NEW_ASSET_MEMBER_EVENT        (4,  "NewAssetMember", "A new asset has been added to one of the asset consumer's collections.");
+
 
 
     private static final long     serialVersionUID = 1L;

@@ -69,27 +69,6 @@ public class ConnectedAssetOMASResource
 
 
     /**
-     * Returns the count of annotations for the asset.
-     *
-     * @param userId       String   userId of user making request.
-     * @param assetGUID    String   unique id for asset.
-     *
-     * @return a count of annotations  or
-     * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
-     * PropertyServerException - there is a problem retrieving the asset properties from the property server or
-     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/annotations/count")
-
-    public CountResponse countAnnotations(@PathVariable String  userId,
-                                          @PathVariable String  assetGUID)
-    {
-        return restAPI.countAnnotations(userId, assetGUID);
-    }
-
-
-    /**
      * Returns the list of certifications for the asset.
      *
      * @param userId       String   userId of user making request.
@@ -111,27 +90,6 @@ public class ConnectedAssetOMASResource
                                                     @RequestParam int     maxElements)
     {
         return restAPI.getCertifications(userId, assetGUID, elementStart, maxElements);
-    }
-
-
-    /**
-     * Returns the count of certifications for the asset.
-     *
-     * @param userId       String   userId of user making request.
-     * @param assetGUID    String   unique id for asset.
-     *
-     * @return a count of certifications or
-     * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
-     * PropertyServerException - there is a problem retrieving the asset properties from the property server or
-     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/certifications/count")
-
-    public CountResponse countCertifications(@PathVariable String  userId,
-                                             @PathVariable String  assetGUID)
-    {
-        return restAPI.countCertifications(userId, assetGUID);
     }
 
 
@@ -161,23 +119,27 @@ public class ConnectedAssetOMASResource
 
 
     /**
-     * Returns the count of comments for the asset.
+     * Returns the list of comments for the asset.
      *
      * @param userId       String   userId of user making request.
-     * @param assetGUID    String   unique id for asset.
+     * @param commentGUID  String   unique id for the root comment.
+     * @param elementStart int      starting position for fist returned element.
+     * @param maxElements  int      maximum number of elements to return on the call.
      *
-     * @return a count of comments or
+     * @return a list of comments or
      * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
      * UnrecognizedAssetGUIDException - the GUID is null or invalid or
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/comments/count")
+    @RequestMapping(method = RequestMethod.GET, path = "/comments/{commentGUID}/replies")
 
-    public CountResponse countComments(@PathVariable String  userId,
-                                       @PathVariable String  assetGUID)
+    public CommentsResponse getCommentReplies(@PathVariable String  userId,
+                                              @PathVariable String  commentGUID,
+                                              @RequestParam int     elementStart,
+                                              @RequestParam int     maxElements)
     {
-        return restAPI.countComments(userId, assetGUID);
+        return restAPI.getCommentReplies(userId, commentGUID, elementStart, maxElements);
     }
 
 
@@ -207,27 +169,6 @@ public class ConnectedAssetOMASResource
 
 
     /**
-     * Returns the count of connections for the asset.
-     *
-     * @param userId       String   userId of user making request.
-     * @param assetGUID    String   unique id for asset.
-     *
-     * @return a count of connections or
-     * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
-     * PropertyServerException - there is a problem retrieving the asset properties from the property server or
-     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/connections/count")
-
-    public CountResponse countConnections(@PathVariable String  userId,
-                                          @PathVariable String  assetGUID)
-    {
-        return restAPI.countConnections(userId, assetGUID);
-    }
-
-
-    /**
      * Returns the list of external identifiers for the asset.
      *
      * @param userId       String   userId of user making request.
@@ -249,27 +190,6 @@ public class ConnectedAssetOMASResource
                                                               @RequestParam int     maxElements)
     {
         return restAPI.getExternalIdentifiers(userId, assetGUID, elementStart, maxElements);
-    }
-
-
-    /**
-     * Returns the count of external identifiers for the asset.
-     *
-     * @param userId       String   userId of user making request.
-     * @param assetGUID    String   unique id for asset.
-     *
-     * @return a count of external identifiers or
-     * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
-     * PropertyServerException - there is a problem retrieving the asset properties from the property server or
-     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/external-identifiers/count")
-
-    public CountResponse countExternalIdentifiers(@PathVariable String  userId,
-                                                 @PathVariable String  assetGUID)
-    {
-        return restAPI.countExternalIdentifiers(userId, assetGUID);
     }
 
 
@@ -299,27 +219,6 @@ public class ConnectedAssetOMASResource
 
 
     /**
-     * Returns the count of external references for the asset.
-     *
-     * @param userId       String   userId of user making request.
-     * @param assetGUID    String   unique id for asset.
-     *
-     * @return a count of external references or
-     * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
-     * PropertyServerException - there is a problem retrieving the asset properties from the property server or
-     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/external-references/count")
-
-    public CountResponse countExternalReferences(@PathVariable String  userId,
-                                                 @PathVariable String  assetGUID)
-    {
-        return restAPI.countExternalReferences(userId, assetGUID);
-    }
-
-
-    /**
      * Returns the list of informal tags for the asset.
      *
      * @param userId       String   userId of user making request.
@@ -341,27 +240,6 @@ public class ConnectedAssetOMASResource
                                                 @RequestParam int     maxElements)
     {
         return restAPI.getInformalTags(userId, assetGUID, elementStart, maxElements);
-    }
-
-
-    /**
-     * Returns the count of informal tags for the asset.
-     *
-     * @param userId       String   userId of user making request.
-     * @param assetGUID    String   unique id for asset.
-     *
-     * @return a count of informal tags or
-     * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
-     * PropertyServerException - there is a problem retrieving the asset properties from the property server or
-     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/informal-tags/count")
-
-    public CountResponse countInformalTags(@PathVariable String  userId,
-                                           @PathVariable String  assetGUID)
-    {
-        return restAPI.countInformalTags(userId, assetGUID);
     }
 
 
@@ -391,27 +269,6 @@ public class ConnectedAssetOMASResource
 
 
     /**
-     * Returns the count of licenses for the asset.
-     *
-     * @param userId       String   userId of user making request.
-     * @param assetGUID    String   unique id for asset.
-     *
-     * @return a count of informal tags or
-     * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
-     * PropertyServerException - there is a problem retrieving the asset properties from the property server or
-     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/licenses/count")
-
-    public CountResponse getLicenses(@PathVariable String  userId,
-                                     @PathVariable String  assetGUID)
-    {
-        return restAPI.countLicenses(userId, assetGUID);
-    }
-
-
-    /**
      * Returns the list of likes for the asset.
      *
      * @param userId       String   userId of user making request.
@@ -433,27 +290,6 @@ public class ConnectedAssetOMASResource
                                   @RequestParam int     maxElements)
     {
         return restAPI.getLikes(userId, assetGUID, elementStart, maxElements);
-    }
-
-
-    /**
-     * Returns the count of likes for the asset.
-     *
-     * @param userId       String   userId of user making request.
-     * @param assetGUID    String   unique id for asset.
-     *
-     * @return a count of likes or
-     * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
-     * PropertyServerException - there is a problem retrieving the asset properties from the property server or
-     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/likes/count")
-
-    public CountResponse countLikes(@PathVariable String  userId,
-                                    @PathVariable String  assetGUID)
-    {
-        return restAPI.countLikes(userId, assetGUID);
     }
 
 
@@ -483,27 +319,6 @@ public class ConnectedAssetOMASResource
 
 
     /**
-     * Returns the count of known locations for the asset.
-     *
-     * @param userId       String   userId of user making request.
-     * @param assetGUID    String   unique id for asset.
-     *
-     * @return a count of locations or
-     * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
-     * PropertyServerException - there is a problem retrieving the asset properties from the property server or
-     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/known-locations/count")
-
-    public CountResponse countKnownLocations(@PathVariable String  userId,
-                                             @PathVariable String  assetGUID)
-    {
-        return restAPI.countKnownLocations(userId, assetGUID);
-    }
-
-
-    /**
      * Returns the list of meanings for the asset.
      *
      * @param userId       String   userId of user making request.
@@ -525,27 +340,6 @@ public class ConnectedAssetOMASResource
                                         @RequestParam int     maxElements)
     {
         return restAPI.getMeanings(userId, assetGUID, elementStart, maxElements);
-    }
-
-
-    /**
-     * Returns the count of meanings for the asset.
-     *
-     * @param userId       String   userId of user making request.
-     * @param assetGUID    String   unique id for asset.
-     *
-     * @return a count of meanings or
-     * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
-     * PropertyServerException - there is a problem retrieving the asset properties from the property server or
-     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/meanings/count")
-
-    public CountResponse countMeanings(@PathVariable String  userId,
-                                       @PathVariable String  assetGUID)
-    {
-        return restAPI.countMeanings(userId, assetGUID);
     }
 
 
@@ -575,31 +369,10 @@ public class ConnectedAssetOMASResource
 
 
     /**
-     * Returns the count of note logs for the asset.
-     *
-     * @param userId       String   userId of user making request.
-     * @param assetGUID    String   unique id for asset.
-     *
-     * @return a count of note logs or
-     * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
-     * PropertyServerException - there is a problem retrieving the asset properties from the property server or
-     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/note-logs/count")
-
-    public CountResponse countNoteLogs(@PathVariable String  userId,
-                                       @PathVariable String  assetGUID)
-    {
-        return restAPI.countNoteLogs(userId, assetGUID);
-    }
-
-
-    /**
      * Returns the list of notes for the asset.
      *
      * @param userId       String   userId of user making request.
-     * @param assetGUID    String   unique id for asset.
+     * @param noteLogGUID  String   unique id for note log.
      * @param elementStart int      starting position for fist returned element.
      * @param maxElements  int      maximum number of elements to return on the call.
      *
@@ -609,35 +382,14 @@ public class ConnectedAssetOMASResource
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/notes")
+    @RequestMapping(method = RequestMethod.GET, path = "/note-log/{noteLogGUID}/notes")
 
     public NotesResponse getNotes(@PathVariable String  userId,
-                                  @PathVariable String  assetGUID,
+                                  @PathVariable String  noteLogGUID,
                                   @RequestParam int     elementStart,
                                   @RequestParam int     maxElements)
     {
-        return restAPI.getNotes(userId, assetGUID, elementStart, maxElements);
-    }
-
-
-    /**
-     * Returns the count of notes for the asset.
-     *
-     * @param userId       String   userId of user making request.
-     * @param assetGUID    String   unique id for asset.
-     *
-     * @return a count of notes or
-     * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
-     * PropertyServerException - there is a problem retrieving the asset properties from the property server or
-     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/notes/count")
-
-    public CountResponse countNotes(@PathVariable String  userId,
-                                    @PathVariable String  assetGUID)
-    {
-        return restAPI.countNotes(userId, assetGUID);
+        return restAPI.getNotes(userId, noteLogGUID, elementStart, maxElements);
     }
 
 
@@ -667,27 +419,6 @@ public class ConnectedAssetOMASResource
 
 
     /**
-     * Returns the count of ratings for the asset.
-     *
-     * @param userId       String   userId of user making request.
-     * @param assetGUID    String   unique id for asset.
-     *
-     * @return a count of ratings or
-     * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
-     * PropertyServerException - there is a problem retrieving the asset properties from the property server or
-     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/ratings/count")
-
-    public CountResponse countRatings(@PathVariable String  userId,
-                                      @PathVariable String  assetGUID)
-    {
-        return restAPI.countRatings(userId, assetGUID);
-    }
-
-
-    /**
      * Returns the list of related assets for the asset.
      *
      * @param userId       String   userId of user making request.
@@ -713,27 +444,6 @@ public class ConnectedAssetOMASResource
 
 
     /**
-     * Returns the count of related assets for the asset.
-     *
-     * @param userId       String   userId of user making request.
-     * @param assetGUID    String   unique id for asset.
-     *
-     * @return a count of related assets or
-     * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
-     * PropertyServerException - there is a problem retrieving the asset properties from the property server or
-     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/related-assets/count")
-
-    public CountResponse countRelatedAssets(@PathVariable String  userId,
-                                            @PathVariable String  assetGUID)
-    {
-        return restAPI.countRelatedAssets(userId, assetGUID);
-    }
-
-
-    /**
      * Returns the list of related media references for the asset.
      *
      * @param userId       String   userId of user making request.
@@ -755,27 +465,6 @@ public class ConnectedAssetOMASResource
                                                                     @RequestParam int     maxElements)
     {
         return restAPI.getRelatedMediaReferences(userId, assetGUID, elementStart, maxElements);
-    }
-
-
-    /**
-     * Returns the count of related media references for the asset.
-     *
-     * @param userId       String   userId of user making request.
-     * @param assetGUID    String   unique id for asset.
-     *
-     * @return a count of related media references or
-     * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
-     * PropertyServerException - there is a problem retrieving the asset properties from the property server or
-     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/related-media-references/count")
-
-    public CountResponse countRelatedMediaReferences(@PathVariable String  userId,
-                                                     @PathVariable String  assetGUID)
-    {
-        return restAPI.countRelatedMediaReferences(userId, assetGUID);
     }
 
 

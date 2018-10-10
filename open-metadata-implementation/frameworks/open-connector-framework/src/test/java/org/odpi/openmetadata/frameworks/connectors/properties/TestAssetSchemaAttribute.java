@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
@@ -21,7 +22,7 @@ public class TestAssetSchemaAttribute
     private List<Classification>   classifications      = new ArrayList<>();
     private Map<String, Object>    additionalProperties = new HashMap<>();
     private PrimitiveSchemaElement schemaType           = new PrimitiveSchemaElement();
-    private AssetSchemaElement     attributeSchemaType  = null;
+    private AssetSchemaType        attributeSchemaType  = null;
 
 
     /**
@@ -141,7 +142,7 @@ public class TestAssetSchemaAttribute
         testBean.setElementPosition(7);
         testBean.setAttributeType(schemaType);
 
-        return new AssetSchemaAttribute(testBean, new MockAssetSchemaElement(null, new PrimitiveSchemaElement(), null));
+        return new AssetSchemaAttribute(testBean, new MockAssetSchemaType(null, new PrimitiveSchemaElement(), null));
     }
 
 
@@ -234,9 +235,9 @@ public class TestAssetSchemaAttribute
     {
         AssetDescriptor         parentAsset         = new AssetSummary(new Asset());
 
-        AssetMeanings          meanings             = new MockAssetMeanings(null, 2, 7);
-        PrimitiveSchemaElement schemaType           = new PrimitiveSchemaElement();
-        AssetSchemaElement     attributeSchemaType  = new AssetPrimitiveSchemaElement(schemaType, meanings);
+        AssetMeanings          meanings            = new MockAssetMeanings(null, 2, 7);
+        PrimitiveSchemaElement schemaType          = new PrimitiveSchemaElement();
+        AssetSchemaType        attributeSchemaType = new AssetPrimitiveSchemaType(schemaType, meanings);
 
         SchemaAttribute        testBean = new SchemaAttribute();
         testBean.setAttributeType(schemaType);

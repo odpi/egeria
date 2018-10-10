@@ -97,8 +97,8 @@ public class CloudProvider extends Classification {
 
        private String providerName;
        /**
-        * Name of the cloud provider.
-        * @return String
+        * {@literal Name of the cloud provider. }
+        * @return {@code String }
         */
        public String getProviderName() {
            return this.providerName;

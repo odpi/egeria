@@ -1,8 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
 
 import java.util.Objects;
 
@@ -24,7 +24,7 @@ import java.util.Objects;
 public class AssetUniverse extends AssetDetail
 {
     protected AssetMeanings      meanings       = null;
-    protected AssetSchemaElement schema         = null;
+    protected AssetSchemaType    schema         = null;
     protected AssetAnnotations   analysis       = null;
     protected AssetFeedback      feedback       = null;
     protected AssetLocations     knownLocations = null;
@@ -69,7 +69,7 @@ public class AssetUniverse extends AssetDetail
                          AssetLicenses               licenses,
                          AssetCertifications         certifications,
                          AssetMeanings               meanings,
-                         AssetSchemaElement          schema,
+                         AssetSchemaType             schema,
                          AssetAnnotations            analysis,
                          AssetFeedback               feedback,
                          AssetLocations              knownLocations,
@@ -110,13 +110,13 @@ public class AssetUniverse extends AssetDetail
              * Create the top-level property objects for this new asset using the values from the template.
              * The get methods create clones of the returned objects so no need to duplicate objects here.
              */
-            AssetMeanings      templateMeanings      = templateAssetUniverse.getMeanings();
-            AssetSchemaElement templateSchema        = templateAssetUniverse.getSchema();
-            AssetAnnotations   templateAnalysis      = templateAssetUniverse.getAnalysis();
-            AssetFeedback      templateFeedback      = templateAssetUniverse.getFeedback();
-            AssetLocations     templateLocations     = templateAssetUniverse.getKnownLocations();
-            AssetLineage       templateLineage       = templateAssetUniverse.getLineage();
-            RelatedAssets      templateRelatedAssets = templateAssetUniverse.getRelatedAssets();
+            AssetMeanings    templateMeanings      = templateAssetUniverse.getMeanings();
+            AssetSchemaType  templateSchema        = templateAssetUniverse.getSchema();
+            AssetAnnotations templateAnalysis      = templateAssetUniverse.getAnalysis();
+            AssetFeedback    templateFeedback      = templateAssetUniverse.getFeedback();
+            AssetLocations   templateLocations     = templateAssetUniverse.getKnownLocations();
+            AssetLineage     templateLineage       = templateAssetUniverse.getLineage();
+            RelatedAssets    templateRelatedAssets = templateAssetUniverse.getRelatedAssets();
 
             if (templateMeanings != null)
             {
@@ -173,7 +173,7 @@ public class AssetUniverse extends AssetDetail
      *
      * @return SchemaElement schema object to query the schema associated with the connected asset.
      */
-    public AssetSchemaElement getSchema()
+    public AssetSchemaType getSchema()
     {
         if (schema == null)
         {
