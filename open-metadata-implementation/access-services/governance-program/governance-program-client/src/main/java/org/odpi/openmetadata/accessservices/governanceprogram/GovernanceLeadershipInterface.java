@@ -20,6 +20,7 @@ public interface GovernanceLeadershipInterface
      * have a profile in open metadata.
      *
      * @param userId the name of the calling user.
+     * @param profileUserId userId of the individual whose profile this is.
      * @param employeeNumber personnel/serial/unique employee number of the individual.
      * @param fullName full name of the person.
      * @param knownName known name or nickname of the individual.
@@ -32,6 +33,7 @@ public interface GovernanceLeadershipInterface
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     String createPersonalProfile(String              userId,
+                                 String              profileUserId,
                                  String              employeeNumber,
                                  String              fullName,
                                  String              knownName,

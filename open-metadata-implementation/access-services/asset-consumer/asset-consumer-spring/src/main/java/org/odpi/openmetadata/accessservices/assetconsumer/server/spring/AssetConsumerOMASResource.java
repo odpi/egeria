@@ -1,10 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-/* Copyright Contributors to the Egeria project. */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.server.spring;
 
 import org.odpi.openmetadata.accessservices.assetconsumer.rest.*;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.CommentType;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.StarRating;
 import org.odpi.openmetadata.accessservices.assetconsumer.server.AssetConsumerRESTServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -69,6 +67,132 @@ public class AssetConsumerOMASResource
                                                   @PathVariable String     guid)
     {
         return restAPI.getConnectionByGUID(userId, guid);
+    }
+
+
+    /**
+     * Returns the unique identifier for the asset connected to the connection.
+     *
+     * @param userId the userId of the requesting user.
+     * @param connectionGUID  uniqueId for the connection.
+     *
+     * @return unique identifier of asset or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * PropertyServerException there is a problem retrieving the connected asset properties from the property server or
+     * UnrecognizedConnectionGUIDException the supplied GUID is not recognized by the property server or
+     * NoConnectedAssetException there is no asset associated with this connection or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/assets/by-connection/{connectionGUID}")
+
+    public GUIDResponse getAssetForConnection(@PathVariable String   userId,
+                                              @PathVariable String   connectionGUID)
+    {
+        return restAPI.getAssetForConnection(userId, connectionGUID);
+    }
+
+
+    /**
+     * Return the profile for this user.
+     *
+     * @param userId userId of the user making the request.
+     *
+     * @return profile response object or
+     * InvalidParameterException the userId is null or invalid or
+     * NoProfileForUserException the user does not have a profile or
+     * PropertyServerException there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/my-profile")
+
+    public MyProfileResponse getMyProfile(@PathVariable String userId)
+    {
+        return restAPI.getMyProfile(userId);
+    }
+
+
+    /**
+     * Create or update the profile for the requesting user.
+     *
+     * @param userId the name of the calling user.
+     * @param requestBody properties for the new profile.
+     * @return void response or
+     * InvalidParameterException - one of the parameters is invalid or
+     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/my-profile")
+
+    public VoidResponse updateMyProfile(String               userId,
+                                        MyProfileRequestBody requestBody)
+    {
+        return restAPI.updateMyProfile(userId, requestBody);
+    }
+
+
+    /**
+     * Return a list of assets that the specified user has added to their favorites list.
+     *
+     * @param userId     userId of user making request.
+     * @param startFrom  index of the list ot start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return list of asset details or
+     * InvalidParameterException one of the parameters is invalid or
+     * PropertyServerException there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/my-assets")
+
+    public AssetListResponse getMyAssets(@PathVariable String    userId,
+                                         @RequestParam int       startFrom,
+                                         @RequestParam int       pageSize)
+    {
+        return restAPI.getMyAssets(userId, startFrom, pageSize);
+    }
+
+
+    /**
+     * Add an asset to the identified user's list of favorite assets.
+     *
+     * @param userId          userId of user making request.
+     * @param assetGUID       unique identifier of the asset.
+     * @param nullRequestBody null request body
+     *
+     * @return void response or
+     * InvalidParameterException one of the parameters is invalid or
+     * PropertyServerException there is a problem updating information in the property server(s) or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/my-assets/{assetGUID}")
+
+    public VoidResponse  addToMyAssets(@PathVariable String           userId,
+                                       @PathVariable String           assetGUID,
+                                       @RequestBody  NullRequestBody  nullRequestBody)
+    {
+        return restAPI.addToMyAssets(userId, assetGUID, nullRequestBody);
+    }
+
+
+    /**
+     * Remove an asset from identified user's list of favorite assets.
+     *
+     * @param userId          userId of user making request.
+     * @param assetGUID       unique identifier of the asset.
+     * @param nullRequestBody null request body
+     *
+     * @return void response or
+     * InvalidParameterException one of the parameters is invalid or
+     * PropertyServerException there is a problem updating information in the property server(s) or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/my-assets/{assetGUID}/delete")
+
+    public VoidResponse  removeFromMyAssets(@PathVariable String           userId,
+                                            @PathVariable String           assetGUID,
+                                            @RequestBody  NullRequestBody  nullRequestBody)
+    {
+        return restAPI.removeFromMyAssets(userId, assetGUID, nullRequestBody);
     }
 
 

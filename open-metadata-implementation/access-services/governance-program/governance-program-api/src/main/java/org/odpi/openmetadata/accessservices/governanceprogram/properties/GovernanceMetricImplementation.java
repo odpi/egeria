@@ -43,6 +43,8 @@ public class GovernanceMetricImplementation implements Serializable
 
     /**
      * Copy/clone constructor
+     *
+     * @param template object to copy
      */
     public GovernanceMetricImplementation(GovernanceMetricImplementation  template)
     {
@@ -210,7 +212,7 @@ public class GovernanceMetricImplementation implements Serializable
     /**
      * Set up the display name for the data set.
      *
-     * @param dataSetDisplayName
+     * @param dataSetDisplayName string name
      */
     public void setDataSetDisplayName(String dataSetDisplayName)
     {

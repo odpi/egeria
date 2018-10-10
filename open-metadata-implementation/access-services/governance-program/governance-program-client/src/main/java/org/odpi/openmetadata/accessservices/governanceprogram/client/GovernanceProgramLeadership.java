@@ -1,9 +1,9 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceprogram.client;
 
 
 import org.odpi.openmetadata.accessservices.governanceprogram.GovernanceLeadershipInterface;
-import org.odpi.openmetadata.accessservices.governanceprogram.ffdc.GovernanceProgramErrorCode;
 import org.odpi.openmetadata.accessservices.governanceprogram.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.ExternalReference;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDomain;
@@ -28,7 +28,7 @@ public class GovernanceProgramLeadership implements GovernanceLeadershipInterfac
     private static final String  governanceOfficerTypeName = "GovernanceOfficer";
 
 
-    private String                            omasServerURL;  /* Initialized in constructor */
+    private String                            omasServerURL;    /* Initialized in constructor */
     private GovernanceProgramExceptionHandler exceptionHandler; /* Initialized in constructor */
 
     /**
@@ -48,6 +48,7 @@ public class GovernanceProgramLeadership implements GovernanceLeadershipInterfac
      * have a profile in open metadata.
      *
      * @param userId the name of the calling user.
+     * @param profileUserId userId of the individual whose profile this is.
      * @param employeeNumber personnel/serial/unique employee number of the individual.
      * @param fullName full name of the person.
      * @param knownName known name or nickname of the individual.
@@ -60,6 +61,7 @@ public class GovernanceProgramLeadership implements GovernanceLeadershipInterfac
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     public String createPersonalProfile(String              userId,
+                                        String              profileUserId,
                                         String              employeeNumber,
                                         String              fullName,
                                         String              knownName,
@@ -72,15 +74,18 @@ public class GovernanceProgramLeadership implements GovernanceLeadershipInterfac
         final String   methodName = "createPersonalProfile";
         final String   urlTemplate = "/open-metadata/access-services/governance-program/users/{0}/leadership/personal-profiles";
 
+        final String   profileUserIdParameterName = "profileUserId";
         final String   employeeNumberParameterName = "employeeNumber";
         final String   knownNameParameterName = "knownName";
 
         exceptionHandler.validateOMASServerURL(methodName);
         exceptionHandler.validateUserId(userId, methodName);
+        exceptionHandler.validateName(profileUserId, profileUserIdParameterName, methodName);
         exceptionHandler.validateName(employeeNumber, employeeNumberParameterName, methodName);
         exceptionHandler.validateName(knownName, knownNameParameterName, methodName);
 
         PersonalDetailsRequestBody  requestBody = new PersonalDetailsRequestBody();
+        requestBody.setUserId(profileUserId);
         requestBody.setEmployeeNumber(employeeNumber);
         requestBody.setFullName(fullName);
         requestBody.setKnownName(knownName);

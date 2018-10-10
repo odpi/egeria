@@ -34,12 +34,14 @@ http://localhost:8080/open-metadata/repository-services ...
 
 Then for each method/operation, the rest of the URL is defined and mapped.
 
-```java
+```
 @RequestMapping(method = RequestMethod.GET, path = "/metadata-collection-id")
 
 public MetadataCollectionIdResponse getMetadataCollectionId()
 {
-   // ... implementation here
+   /*
+    * ... implementation here
+    */
 }
 ```
 

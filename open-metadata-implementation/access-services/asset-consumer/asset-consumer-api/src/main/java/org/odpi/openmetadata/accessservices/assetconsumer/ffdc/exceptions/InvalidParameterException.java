@@ -1,11 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions;
 
 
 import java.util.Objects;
 
 /**
- * The InvalidParameterException is thrown by the OMAS when a parameters is null or an invalid value.
+ * The InvalidParameterException is thrown by the OMAS when a parameter is null or an invalid value.
  */
 public class InvalidParameterException extends AssetConsumerCheckedExceptionBase
 {

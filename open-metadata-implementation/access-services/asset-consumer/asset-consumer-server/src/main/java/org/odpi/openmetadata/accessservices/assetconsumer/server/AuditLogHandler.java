@@ -1,11 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.server;
 
-import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.AssetConsumerErrorCode;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions.PropertyServerException;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions.UserNotAuthorizedException;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-/* Copyright Contributors to the Egeria project. */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.connectedasset.rest;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -25,7 +25,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CommentsResponse extends ConnectedAssetOMASAPIResponse
 {
-    private List<Comment> responseObjects = null;
+    private List<CommentResponse> responseObjects = null;
 
 
     /**
@@ -58,7 +58,7 @@ public class CommentsResponse extends ConnectedAssetOMASAPIResponse
      *
      * @return list of response objects
      */
-    public List<Comment> getList()
+    public List<CommentResponse> getList()
     {
         if (responseObjects == null)
         {
@@ -80,7 +80,7 @@ public class CommentsResponse extends ConnectedAssetOMASAPIResponse
      *
      * @param responseObjects list of response objects
      */
-    public void setList(List<Comment> responseObjects)
+    public void setList(List<CommentResponse> responseObjects)
     {
         this.responseObjects = responseObjects;
     }

@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-/* Copyright Contributors to the Egeria project. */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.connectedasset.rest;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -22,7 +22,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SchemaResponse extends ConnectedAssetOMASAPIResponse
 {
-    private Schema schema = null;
+    private Schema schema               = null;
+    private int    schemaAttributeCount = 0;
 
 
     /**
@@ -46,6 +47,7 @@ public class SchemaResponse extends ConnectedAssetOMASAPIResponse
         if (template != null)
         {
             this.schema = template.getSchema();
+            this.schemaAttributeCount = template.getSchemaAttributeCount();
         }
     }
 
@@ -73,6 +75,29 @@ public class SchemaResponse extends ConnectedAssetOMASAPIResponse
 
 
     /**
+     * Return the number of schema attributes in this schema.
+     *
+     * @return int
+     */
+    public int getSchemaAttributeCount()
+    {
+        return schemaAttributeCount;
+    }
+
+
+    /**
+     * Set up the number of schema elements in this schema.
+     *
+     * @param schemaAttributeCount int
+     *
+     */
+    public void setSchemaAttributeCount(int schemaAttributeCount)
+    {
+        this.schemaAttributeCount = schemaAttributeCount;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -81,7 +106,8 @@ public class SchemaResponse extends ConnectedAssetOMASAPIResponse
     public String toString()
     {
         return "SchemaResponse{" +
-                "responseObject='" + getSchema() + '\'' +
+                "schema=" + schema +
+                ", schemaAttributeCount=" + schemaAttributeCount +
                 ", relatedHTTPCode=" + getRelatedHTTPCode() +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
@@ -105,7 +131,7 @@ public class SchemaResponse extends ConnectedAssetOMASAPIResponse
         {
             return true;
         }
-        if (!(objectToCompare instanceof SchemaResponse))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -114,9 +140,9 @@ public class SchemaResponse extends ConnectedAssetOMASAPIResponse
             return false;
         }
         SchemaResponse that = (SchemaResponse) objectToCompare;
-        return Objects.equals(schema, that.schema);
+        return getSchemaAttributeCount() == that.getSchemaAttributeCount() &&
+                Objects.equals(getSchema(), that.getSchema());
     }
-
 
     /**
      * Return hash code for this object
@@ -126,6 +152,6 @@ public class SchemaResponse extends ConnectedAssetOMASAPIResponse
     @Override
     public int hashCode()
     {
-        return Objects.hash(schema);
+        return Objects.hash(super.hashCode(), getSchema(), getSchemaAttributeCount());
     }
 }

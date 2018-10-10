@@ -17,6 +17,7 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
@@ -36,6 +37,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorEx
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.rest.properties.TypeLimitedFindRequest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -47,6 +49,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
+
 
 public class InformationViewOmasListenerTest {
 
@@ -62,8 +65,10 @@ public class InformationViewOmasListenerTest {
     private static final String TABLETYPE_TYPE_GUID = "tableTypeTypeGuid";
     private static final String TABLE_TYPE_GUID = "tableTypeGuid";
     private static final String BUSINESS_TERM_GUID = "businessTermGuid";
+    private static final String SOFTWARE_SERVER_TYPE_GUID = "softwareServerTypeGuid";
 
     private static final String DERIVED_COLUMN_GUID = "derivedColumnGuid";
+    private static final String SOFTWARE_SERVER_GUID = "softwareServerGuid";
     private static final String ENDPOINT_GUID = "endpointGuid";
     private static final String CONNECTION_GUID = "connectionGuid";
     private static final String CONNECTOR_GUID = "connectorGuid";
@@ -72,16 +77,17 @@ public class InformationViewOmasListenerTest {
     private static final String TABLETYPE_GUID = "tableTypeGuid";
     private static final String TABLE_GUID = "tableGuid";
 
-    private static final String ENDPOINT_QUALIFIED_NAME = "jdbc:derby:localhost:9393";
-    private static final String CONNECTION_QUALIFIED_NAME = "jdbc:derby:localhost:9393.connection";
-    private static final String CONNECTOR_TYPE_QUALIFIED_NAME = "jdbc:derby:localhost:9393.connection.GaianConnectorProvider_type";
-    private static final String DATABASE_QUALIFIED_NAME = "jdbc:derby:localhost:9393.connection.databaseTest";
-    private static final String INFORMATION_VIEW_QUALIFIED_NAME = "iv_jdbc:derby:localhost:9393.connection.databaseTest.schema";
-    private static final String DB_SCHEMA_QUALIFIED_NAME = "iv_jdbc:derby:localhost:9393.connection.databaseTest.schema.schema_type";
-    private static final String TABLE_TYPE_QUALIFIED_NAME = "iv_jdbc:derby:localhost:9393.connection.databaseTest.schema.schema_type.customer_table_type";
-    private static final String TABLE_QUALIFIED_NAME = "iv_jdbc:derby:localhost:9393.connection.databaseTest.schema.schema_type.customer_table_type.customer_table";
-    private static final String DERIVED_COLUMN_QUALIFIED_NAME = "iv_jdbc:derby:localhost:9393.connection.databaseTest.schema.schema_type.customer_table_type.customer_table.client_name_type.client_name";
-    private static final String DERIVED_COLUMN_TYPE_QUALIFIED_NAME = "iv_jdbc:derby:localhost:9393.connection.databaseTest.schema.schema_type.customer_table_type.customer_table.client_name_type";
+    private static final String SOFTWARE_SERVER_QUALIFIED_NAME = "localhost";
+    private static final String ENDPOINT_QUALIFIED_NAME = "jdbc:derby://localhost:9393";
+    private static final String CONNECTION_QUALIFIED_NAME = "jdbc:derby://localhost:9393.Connection";
+    private static final String CONNECTOR_TYPE_QUALIFIED_NAME = "jdbc:derby://localhost:9393.Connection.GaianConnectorProvider_type";
+    private static final String DATABASE_QUALIFIED_NAME = "jdbc:derby://localhost:9393.Connection.databaseTest";
+    private static final String INFORMATION_VIEW_QUALIFIED_NAME = "jdbc:derby://localhost:9393.Connection.databaseTest.schema";
+    private static final String DB_SCHEMA_TYPE_QUALIFIED_NAME = "jdbc:derby://localhost:9393.Connection.databaseTest.schema_type";
+    private static final String TABLE_TYPE_QUALIFIED_NAME = "jdbc:derby://localhost:9393.Connection.databaseTest.schema.customer_table_type";
+    private static final String TABLE_QUALIFIED_NAME = "jdbc:derby://localhost:9393.Connection.databaseTest.schema.customer_table";
+    private static final String DERIVED_COLUMN_QUALIFIED_NAME = "jdbc:derby://localhost:9393.Connection.databaseTest.schema.customer_table.client_name";
+    private static final String DERIVED_COLUMN_TYPE_QUALIFIED_NAME = "jdbc:derby://localhost:9393.Connection.databaseTest.schema.customer_table.client_name_type";
     private static final String IV_PREFIX = "iv_";
 
     private InformationViewInTopicListener listener;
@@ -94,6 +100,8 @@ public class InformationViewOmasListenerTest {
     private EntityDetail connection;
     @Mock
     private EntityDetail endpoint;
+    @Mock
+    private EntityDetail softwareServer;
     @Mock
     private EntityDetail connectorType;
     @Mock
@@ -118,8 +126,13 @@ public class InformationViewOmasListenerTest {
     private OMRSAuditLog auditLog;
 
 
+    private ArgumentCaptor<InstanceProperties> softwareServerInstanceProperties;
+    private ArgumentCaptor<InstanceProperties> endpointInstanceProperties;
+    private ArgumentCaptor<InstanceProperties> connectionInstanceProperties;
+    private ArgumentCaptor<InstanceProperties> connectorTypeInstanceProperties;
+    private ArgumentCaptor<InstanceProperties> dataStoreInstanceProperties;
     private ArgumentCaptor<InstanceProperties> informationViewInstanceProperties;
-    private ArgumentCaptor<InstanceProperties> dbSchemaInstanceProperties;
+    private ArgumentCaptor<InstanceProperties> dbSchemaTypeInstanceProperties;
     private ArgumentCaptor<InstanceProperties> tableTypeInstanceProperties;
     private ArgumentCaptor<InstanceProperties> tableInstanceProperties;
     private ArgumentCaptor<InstanceProperties> derivedColumnInstanceProperties;
@@ -139,28 +152,60 @@ public class InformationViewOmasListenerTest {
         buildInstanceTypes();
         buildRelationshipsTypes();
         buildEntities();
+        buildClassifications();
         captureRepositoryCalls();
 
 
     }
 
+    private void buildClassifications() throws TypeErrorException {
+        addClassification(Constants.DATABASE_SERVER, DATABASE_SERVER_TYPE_GUID, Constants.SOFTWARE_SERVER);
+    }
+
+    private void addClassification(String classificationTypeName, String classificationTypeGuid, String entityTypeName) throws TypeErrorException {
+        Classification skeletonClassification = mock(Classification.class);
+        InstanceType mockType = mock(InstanceType.class);
+        when(mockType.getTypeDefGUID()).thenReturn(classificationTypeGuid);
+        when(skeletonClassification.getType()).thenReturn(mockType);
+        when(skeletonClassification.getStatus()).thenReturn(InstanceStatus.ACTIVE);
+        when(helper.getSkeletonClassification("",
+                Constants.USER_ID,
+                classificationTypeName,
+                entityTypeName))
+                .thenReturn(skeletonClassification);
+    }
+
     private void captureRepositoryCalls() throws InvalidParameterException, RepositoryErrorException, TypeErrorException, PropertyErrorException, ClassificationErrorException, StatusNotSupportedException, UserNotAuthorizedException, EntityNotKnownException {
 
+        softwareServerInstanceProperties = ArgumentCaptor.forClass(InstanceProperties.class);
+        endpointInstanceProperties = ArgumentCaptor.forClass(InstanceProperties.class);
+        connectionInstanceProperties = ArgumentCaptor.forClass(InstanceProperties.class);
+        connectorTypeInstanceProperties = ArgumentCaptor.forClass(InstanceProperties.class);
+        dataStoreInstanceProperties = ArgumentCaptor.forClass(InstanceProperties.class);
         informationViewInstanceProperties = ArgumentCaptor.forClass(InstanceProperties.class);
-        dbSchemaInstanceProperties = ArgumentCaptor.forClass(InstanceProperties.class);
+        dbSchemaTypeInstanceProperties = ArgumentCaptor.forClass(InstanceProperties.class);
         tableTypeInstanceProperties = ArgumentCaptor.forClass(InstanceProperties.class);
         tableInstanceProperties = ArgumentCaptor.forClass(InstanceProperties.class);
         derivedColumnInstanceProperties = ArgumentCaptor.forClass(InstanceProperties.class);
         derivedColumnTypeInstanceProperties = ArgumentCaptor.forClass(InstanceProperties.class);
 
 
-        mockAddEntityCall(INFORMATION_VIEW_TYPE_GUID, "InformationView", informationViewInstanceProperties, this.informationView);
-        mockAddEntityCall(DB_SCHEMA_TYPE_GUID, "RelationalDBSchemaType", dbSchemaInstanceProperties, this.dbSchemaType);
-        mockAddEntityCall(TABLETYPE_TYPE_GUID, "RelationalTableType", tableTypeInstanceProperties, this.tableType);
-        mockAddEntityCall(TABLE_TYPE_GUID, "RelationalTable", tableInstanceProperties, this.table);
-        mockAddEntityCall(DERIVED_COLUMN_TYPE_GUID, "DerivedRelationalColumn", derivedColumnInstanceProperties, this.derivedColumn);
-        mockAddEntityCall(COLUMNTYPE_TYPE_GUID, "RelationalColumnType", derivedColumnTypeInstanceProperties, this.derivedColumnType);
+        mockAddEntityCall(SOFTWARE_SERVER_TYPE_GUID, Constants.SOFTWARE_SERVER, softwareServerInstanceProperties, this.softwareServer);
+        mockAddEntityCall(ENDPOINT_TYPE_GUID, Constants.ENDPOINT, endpointInstanceProperties, this.endpoint);
+        mockAddEntityCall(CONNECTION_TYPE_GUID, Constants.CONNECTION, connectionInstanceProperties, this.connection);
+        mockAddEntityCall(CONNECTOR_TYPE_GUID, Constants.CONNECTOR_TYPE, connectorTypeInstanceProperties, this.connectorType);
+        mockAddEntityCall(DATABASE_TYPE_GUID, Constants.DATA_STORE, dataStoreInstanceProperties, this.database);
+        mockAddEntityCall(INFORMATION_VIEW_TYPE_GUID, Constants.INFORMATION_VIEW, informationViewInstanceProperties, this.informationView);
+        mockAddEntityCall(DB_SCHEMA_TYPE_GUID, Constants.RELATIONAL_DB_SCHEMA_TYPE, dbSchemaTypeInstanceProperties, this.dbSchemaType);
+        mockAddEntityCall(TABLETYPE_TYPE_GUID, Constants.RELATIONAL_TABLE_TYPE, tableTypeInstanceProperties, this.tableType);
+        mockAddEntityCall(TABLE_TYPE_GUID, Constants.RELATIONAL_TABLE, tableInstanceProperties, this.table);
+        mockAddEntityCall(DERIVED_COLUMN_TYPE_GUID, Constants.DERIVED_RELATIONAL_COLUMN, derivedColumnInstanceProperties, this.derivedColumn);
+        mockAddEntityCall(COLUMNTYPE_TYPE_GUID, Constants.RELATIONAL_COLUMN_TYPE, derivedColumnTypeInstanceProperties, this.derivedColumnType);
 
+        mockAddRelationshipCall(Constants.SERVER_ENDPOINT, SERVER_ENDPOINT_REL_TYPE_GUID);
+        mockAddRelationshipCall(Constants.CONNECTION_TO_ENDPOINT, CONNECTION_ENDPOINT_REL_TYPE_GUID);
+        mockAddRelationshipCall(Constants.CONNECTION_CONNECTOR_TYPE, CONNECTION_CONNECTOR_REL_TYPE_GUID);
+        mockAddRelationshipCall(Constants.CONNECTION_TO_ASSET, CONNECTION_ASSET_REL_TYPE_GUID);
         mockAddRelationshipCall(Constants.DATA_CONTENT_FOR_DATASET, DATA_CONTENT_DATASET_REL_TYPE_GUID);
         mockAddRelationshipCall(Constants.ASSET_SCHEMA_TYPE, ASSET_SCHEMA_REL_TYPE_GUID);
         mockAddRelationshipCall(Constants.SCHEMA_ATTRIBUTE_TYPE, SCHEMA_ATTRIBUTE_TYPE_REL_TYPE_GUID);
@@ -192,7 +237,7 @@ public class InformationViewOmasListenerTest {
         when(skeletonEntity.getType()).thenReturn(mockType);
         when(skeletonEntity.getStatus()).thenReturn(InstanceStatus.ACTIVE);
         when(skeletonEntity.getClassifications()).thenReturn(new ArrayList<>());
-        when(helper.getSkeletonEntity("",
+        when(helper.getSkeletonEntity(Constants.INFORMATION_VIEW_OMAS_NAME,
                 "",
                 InstanceProvenanceType.LOCAL_COHORT,
                 Constants.USER_ID,
@@ -202,6 +247,7 @@ public class InformationViewOmasListenerTest {
 
     private void buildEntities() throws Exception {
 
+        when(softwareServer.getGUID()).thenReturn(SOFTWARE_SERVER_GUID);
         when(endpoint.getGUID()).thenReturn(ENDPOINT_GUID);
         when(connection.getGUID()).thenReturn(CONNECTION_GUID);
         when(connectorType.getGUID()).thenReturn(CONNECTOR_GUID);
@@ -213,6 +259,8 @@ public class InformationViewOmasListenerTest {
         when(derivedColumn.getGUID()).thenReturn(DERIVED_COLUMN_GUID);
         when(derivedColumnType.getGUID()).thenReturn(DERIVED_COLUMN_TYPE_GUID);
 
+        InstanceProperties softwareServerInstanceProperties = buildInstanceProperties(SOFTWARE_SERVER_QUALIFIED_NAME);
+        when(softwareServer.getProperties()).thenReturn(softwareServerInstanceProperties);
         InstanceProperties endpointInstanceProperties = buildInstanceProperties(ENDPOINT_QUALIFIED_NAME);
         when(endpoint.getProperties()).thenReturn(endpointInstanceProperties);
         InstanceProperties connectionInstanceProperties = buildInstanceProperties(CONNECTION_QUALIFIED_NAME);
@@ -221,7 +269,7 @@ public class InformationViewOmasListenerTest {
         when(connectorType.getProperties()).thenReturn(connectorTypeInstanceProperties);
         InstanceProperties databaseInstanceProperties = buildInstanceProperties(DATABASE_QUALIFIED_NAME);
         when(database.getProperties()).thenReturn(databaseInstanceProperties);
-        InstanceProperties dbSchemaTypeInstanceProperties = buildInstanceProperties(DB_SCHEMA_QUALIFIED_NAME);
+        InstanceProperties dbSchemaTypeInstanceProperties = buildInstanceProperties(DB_SCHEMA_TYPE_QUALIFIED_NAME);
         when(dbSchemaType.getProperties()).thenReturn(dbSchemaTypeInstanceProperties);
         InstanceProperties informationViewInstanceProperties = buildInstanceProperties(INFORMATION_VIEW_QUALIFIED_NAME);
         when(informationView.getProperties()).thenReturn(informationViewInstanceProperties);
@@ -260,7 +308,11 @@ public class InformationViewOmasListenerTest {
 
     private void buildInstanceTypes() throws Exception {
 
-        TypeDef typeDef = testDataHelper.buildInstanceType(Constants.ENDPOINT, ENDPOINT_TYPE_GUID);
+        TypeDef typeDef = testDataHelper.buildInstanceType(Constants.SOFTWARE_SERVER, SOFTWARE_SERVER_TYPE_GUID);
+        when(omrsMetadataCollection.getTypeDefByName(Constants.USER_ID, Constants.SOFTWARE_SERVER)).thenReturn(typeDef);
+        when(helper.getTypeDefByName("", typeDef.getName())).thenReturn(typeDef);
+
+        typeDef = testDataHelper.buildInstanceType(Constants.ENDPOINT, ENDPOINT_TYPE_GUID);
         when(omrsMetadataCollection.getTypeDefByName(Constants.USER_ID, Constants.ENDPOINT)).thenReturn(typeDef);
         when(helper.getTypeDefByName("", typeDef.getName())).thenReturn(typeDef);
 
@@ -304,7 +356,9 @@ public class InformationViewOmasListenerTest {
 
     private void buildRelationshipsTypes() throws Exception {
 
-        TypeDef typeDef = testDataHelper.buildRelationshipType(Constants.CONNECTION_TO_ENDPOINT, TestDataHelper.CONNECTION_ENDPOINT_REL_TYPE_GUID);
+        TypeDef typeDef = testDataHelper.buildRelationshipType(Constants.SERVER_ENDPOINT, TestDataHelper.SERVER_ENDPOINT_REL_TYPE_GUID);
+        when(omrsMetadataCollection.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
+        typeDef = testDataHelper.buildRelationshipType(Constants.CONNECTION_TO_ENDPOINT, TestDataHelper.CONNECTION_ENDPOINT_REL_TYPE_GUID);
         when(omrsMetadataCollection.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
         typeDef = testDataHelper.buildRelationshipType(Constants.CONNECTION_CONNECTOR_TYPE, TestDataHelper.CONNECTION_CONNECTOR_REL_TYPE_GUID);
         when(omrsMetadataCollection.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
@@ -328,13 +382,16 @@ public class InformationViewOmasListenerTest {
     @Test
     public void testListener() throws StatusNotSupportedException, UserNotAuthorizedException, EntityNotKnownException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, JsonProcessingException, ClassificationErrorException {
 
+        TypeLimitedFindRequest type = (new TypeLimitedFindRequest());
+        type.setTypeGUID("dbc20663-d705-4ff0-8424-80c262c6b8e7");
+
         InformationViewEvent informationViewEvent = testDataHelper.buildEvent();
         listener.processEvent(new ObjectMapper().writeValueAsString(informationViewEvent));
 
         verify(omrsMetadataCollection, Mockito.times(1)).addEntity(eq(Constants.USER_ID), eq(INFORMATION_VIEW_TYPE_GUID), informationViewInstanceProperties.capture(), any(ArrayList.class), eq(InstanceStatus.ACTIVE));
 
         assertEquals(EntityPropertiesUtils.getStringValueForProperty(informationViewInstanceProperties.getValue(), Constants.QUALIFIED_NAME), INFORMATION_VIEW_QUALIFIED_NAME);
-        assertEquals(EntityPropertiesUtils.getStringValueForProperty(dbSchemaInstanceProperties.getValue(), Constants.QUALIFIED_NAME), DB_SCHEMA_QUALIFIED_NAME);
+        assertEquals(EntityPropertiesUtils.getStringValueForProperty(dbSchemaTypeInstanceProperties.getValue(), Constants.QUALIFIED_NAME), DB_SCHEMA_TYPE_QUALIFIED_NAME);
         assertEquals(EntityPropertiesUtils.getStringValueForProperty(tableTypeInstanceProperties.getValue(), Constants.QUALIFIED_NAME), TABLE_TYPE_QUALIFIED_NAME);
         assertEquals(EntityPropertiesUtils.getStringValueForProperty(tableInstanceProperties.getValue(), Constants.QUALIFIED_NAME), TABLE_QUALIFIED_NAME);
         assertEquals(EntityPropertiesUtils.getStringValueForProperty(derivedColumnInstanceProperties.getValue(), Constants.QUALIFIED_NAME), DERIVED_COLUMN_QUALIFIED_NAME);

@@ -63,7 +63,9 @@ public class <$$uname$$>References implements Serializable {
        * @param entityGuid
        * @throws InvalidParameterException
        */
-     public <$$uname$$>References(String entityGuid, List<Line> lines) throws InvalidParameterException {
+     public <$$uname$$>References(String entityGuid, Set<Line> lines) throws InvalidParameterException {
+
+        if (lines !=null) {
          for (Line relationship: lines) {
             for (int i=0;i< RELATIONSHIP_NAMES_SET_VALUES.length; i++) {
                if (relationship.getName().equals(RELATIONSHIP_NAMES_SET_VALUES[i])) {
@@ -89,6 +91,7 @@ public class <$$uname$$>References implements Serializable {
                  }
              }
          }
+        }
      }
 
     public static final Set<String> REFERENCE_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(REFERENCE_NAMES_SET_VALUES)));

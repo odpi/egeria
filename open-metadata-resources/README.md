@@ -1,5 +1,5 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
-<!-- Copyright Contributors to the Egeria project. -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
   
 # Open Metadata Resources
   
@@ -10,3 +10,5 @@ instructions to run a demo.
 
 * **[open-metadata-samples](open-metadata-samples)** - provides samples of
 different types of plugin components.
+
+* **[open-metadata-fvt](open-metadata-fvt)** - provides resources to run FVT (Functional verification testing). 

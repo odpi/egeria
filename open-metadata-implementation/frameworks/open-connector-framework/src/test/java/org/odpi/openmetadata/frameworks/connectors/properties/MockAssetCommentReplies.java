@@ -1,7 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.properties;
-
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 
 import java.util.ArrayList;
 import java.util.List;

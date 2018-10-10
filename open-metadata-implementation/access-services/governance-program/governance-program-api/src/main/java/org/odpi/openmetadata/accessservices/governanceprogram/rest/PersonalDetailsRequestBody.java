@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceprogram.rest;
 
 import com.fasterxml.jackson.annotation.*;
@@ -19,6 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class PersonalDetailsRequestBody extends GovernanceProgramOMASAPIRequestBody
 {
+    private String              userId               = null;
     private String              employeeNumber       = null;
     private String              fullName             = null;
     private String              knownName            = null;
@@ -46,6 +48,7 @@ public class PersonalDetailsRequestBody extends GovernanceProgramOMASAPIRequestB
 
         if (template != null)
         {
+            this.userId = template.getUserId();
             this.employeeNumber = template.getEmployeeNumber();
             this.fullName = template.getFullName();
             this.knownName = template.getKnownName();
@@ -53,6 +56,28 @@ public class PersonalDetailsRequestBody extends GovernanceProgramOMASAPIRequestB
             this.jobRoleDescription = template.getJobRoleDescription();
             this.additionalProperties = template.getAdditionalProperties();
         }
+    }
+
+
+    /**
+     * Return the anchoring userId for this profile.
+     *
+     * @return string
+     */
+    public String getUserId()
+    {
+        return userId;
+    }
+
+
+    /**
+     * Set up the anchoring userId for this profile.
+     *
+     * @param userId string
+     */
+    public void setUserId(String userId)
+    {
+        this.userId = userId;
     }
 
 
@@ -217,6 +242,7 @@ public class PersonalDetailsRequestBody extends GovernanceProgramOMASAPIRequestB
     public String toString()
     {
         return "PersonalDetailsRequestBody{" +
+                ", userId='" + userId + '\'' +
                 ", employeeNumber='" + employeeNumber + '\'' +
                 ", fullName='" + fullName + '\'' +
                 ", knownName='" + knownName + '\'' +
@@ -245,7 +271,8 @@ public class PersonalDetailsRequestBody extends GovernanceProgramOMASAPIRequestB
             return false;
         }
         PersonalDetailsRequestBody that = (PersonalDetailsRequestBody) objectToCompare;
-        return  Objects.equals(getEmployeeNumber(), that.getEmployeeNumber()) &&
+        return  Objects.equals(getUserId(), that.getUserId()) &&
+                Objects.equals(getEmployeeNumber(), that.getEmployeeNumber()) &&
                 Objects.equals(getFullName(), that.getFullName()) &&
                 Objects.equals(getKnownName(), that.getKnownName()) &&
                 Objects.equals(getJobTitle(), that.getJobTitle()) &&
@@ -262,6 +289,7 @@ public class PersonalDetailsRequestBody extends GovernanceProgramOMASAPIRequestB
     @Override
     public int hashCode()
     {
-        return 0;
+        return Objects.hash(getUserId(), getEmployeeNumber(), getFullName(), getKnownName(), getJobTitle(),
+                            getJobRoleDescription(), getAdditionalProperties());
     }
 }

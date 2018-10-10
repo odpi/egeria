@@ -1,9 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.properties;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,18 +20,23 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "class")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Asset.class, name = "AssetCollectionMember")
+})
 public class Asset extends AssetConsumerElementHeader
 {
-    private String               url                  = null;
     private String               guid                 = null;
-    private String               typeId               = null;
     private String               typeName             = null;
-    private long                 typeVersion          = 0;
     private String               typeDescription      = null;
     private String               qualifiedName        = null;
     private String               displayName          = null;
     private String               description          = null;
     private String               owner                = null;
+    private List<String>         zoneMembership       = null;
     private Map<String, Object>  additionalProperties = null;
     private List<Classification> classifications      = null;
 
@@ -42,6 +46,7 @@ public class Asset extends AssetConsumerElementHeader
      */
     public Asset()
     {
+        super();
     }
 
 
@@ -54,41 +59,17 @@ public class Asset extends AssetConsumerElementHeader
 
         if (template != null)
         {
-            this.url = template.getURL();
             this.guid = template.getGUID();
-            this.typeId = template.getTypeId();
             this.typeName = template.getTypeName();
-            this.typeVersion = template.getTypeVersion();
             this.typeDescription = template.getTypeDescription();
             this.qualifiedName = template.getQualifiedName();
             this.displayName = template.getDisplayName();
             this.description = template.getDescription();
             this.owner = template.getOwner();
+            this.zoneMembership = template.getZoneMembership();
             this.additionalProperties = template.getAdditionalProperties();
             this.classifications = template.getClassifications();
         }
-    }
-
-
-    /**
-     * Return the URL for this asset.
-     *
-     * @return URL string
-     */
-    public String getURL()
-    {
-        return url;
-    }
-
-
-    /**
-     * Set up the URL for this asset.
-     *
-     * @param url URL string
-     */
-    public void setURL(String url)
-    {
-        this.url = url;
     }
 
 
@@ -115,28 +96,6 @@ public class Asset extends AssetConsumerElementHeader
 
 
     /**
-     * Return the unique identifier for this Asset's type.
-     *
-     * @return string guid for type
-     */
-    public String getTypeId()
-    {
-        return typeId;
-    }
-
-
-    /**
-     * Set up the unique identifier for this Asset's type.
-     *
-     * @param typeId string guid for type
-     */
-    public void setTypeId(String typeId)
-    {
-        this.typeId = typeId;
-    }
-
-
-    /**
      * Return the name for this Asset's type.
      *
      * @return string name
@@ -155,28 +114,6 @@ public class Asset extends AssetConsumerElementHeader
     public void setTypeName(String typeName)
     {
         this.typeName = typeName;
-    }
-
-
-    /**
-     * Return the version number for this Asset's type.
-     *
-     * @return long
-     */
-    public long getTypeVersion()
-    {
-        return typeVersion;
-    }
-
-
-    /**
-     * Set up the version number for this Asset's type.
-     *
-     * @param typeVersion long
-     */
-    public void setTypeVersion(long typeVersion)
-    {
-        this.typeVersion = typeVersion;
     }
 
 
@@ -293,6 +230,39 @@ public class Asset extends AssetConsumerElementHeader
 
 
     /**
+     * Return the names of the zones that this asset is a member of.
+     *
+     * @return list of zone names
+     */
+    public List<String> getZoneMembership()
+    {
+        if (zoneMembership == null)
+        {
+            return null;
+        }
+        else if (zoneMembership.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return zoneMembership;
+        }
+    }
+
+
+    /**
+     * Set up the names of the zones that this asset is a member of.
+     *
+     * @param zoneMembership list of zone names
+     */
+    public void setZoneMembership(List<String> zoneMembership)
+    {
+        this.zoneMembership = zoneMembership;
+    }
+
+
+    /**
      * Return any additional properties associated with the asset.
      *
      * @return map of property names to property values
@@ -309,7 +279,7 @@ public class Asset extends AssetConsumerElementHeader
         }
         else
         {
-            return additionalProperties;
+            return new HashMap<>(additionalProperties);
         }
     }
 
@@ -367,16 +337,14 @@ public class Asset extends AssetConsumerElementHeader
     public String toString()
     {
         return "Asset{" +
-                "url='" + url + '\'' +
-                ", guid='" + guid + '\'' +
-                ", typeId='" + typeId + '\'' +
+                "guid='" + guid + '\'' +
                 ", typeName='" + typeName + '\'' +
-                ", typeVersion=" + typeVersion +
                 ", typeDescription='" + typeDescription + '\'' +
                 ", qualifiedName='" + qualifiedName + '\'' +
                 ", displayName='" + displayName + '\'' +
                 ", description='" + description + '\'' +
                 ", owner='" + owner + '\'' +
+                ", zoneMembership='" + zoneMembership + '\'' +
                 ", additionalProperties='" + additionalProperties + '\'' +
                 ", classifications='" + classifications + '\'' +
                 '}';
@@ -401,10 +369,7 @@ public class Asset extends AssetConsumerElementHeader
             return false;
         }
         Asset asset = (Asset) objectToCompare;
-        return getTypeVersion() == asset.getTypeVersion() &&
-                Objects.equals(getURL(), asset.getURL()) &&
-                Objects.equals(getGUID(), asset.getGUID()) &&
-                Objects.equals(getTypeId(), asset.getTypeId()) &&
+        return  Objects.equals(getGUID(), asset.getGUID()) &&
                 Objects.equals(getTypeName(), asset.getTypeName()) &&
                 Objects.equals(getTypeDescription(), asset.getTypeDescription()) &&
                 Objects.equals(getQualifiedName(), asset.getQualifiedName()) &&
@@ -426,16 +391,14 @@ public class Asset extends AssetConsumerElementHeader
     public int hashCode()
     {
 
-        return Objects.hash(getURL(),
-                            getGUID(),
-                            getTypeId(),
+        return Objects.hash(getGUID(),
                             getTypeName(),
-                            getTypeVersion(),
                             getTypeDescription(),
                             getQualifiedName(),
                             getDisplayName(),
                             getDescription(),
                             getOwner(),
+                            getZoneMembership(),
                             getAdditionalProperties(),
                             getClassifications());
     }

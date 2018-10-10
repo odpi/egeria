@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
@@ -13,7 +14,7 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 /**
- * Validate that the AssetMapSchemaElement can function as a facade for its bean.
+ * Validate that the AssetMapSchemaType can function as a facade for its bean.
  */
 public class TestAssetMapSchemaElement
 {
@@ -21,15 +22,15 @@ public class TestAssetMapSchemaElement
     private List<Classification> classifications      = new ArrayList<>();
     private Map<String, Object>  additionalProperties = new HashMap<>();
 
-    private AssetMeanings      assetMeanings  = new MockAssetMeanings(null,
+    private AssetMeanings   assetMeanings  = new MockAssetMeanings(null,
                                                                       23,
                                                                       50);
-    private AssetSchemaElement mapFromElement = new MockAssetSchemaElement(null,
-                                                                           null,
-                                                                           null);
-    private AssetSchemaElement mapToElement   = new MockAssetSchemaElement(null,
-                                                                           null,
-                                                                           null);
+    private AssetSchemaType mapFromElement = new MockAssetSchemaType(null,
+                                                                     null,
+                                                                     null);
+    private AssetSchemaType mapToElement   = new MockAssetSchemaType(null,
+                                                                     null,
+                                                                     null);
 
 
     /**
@@ -46,7 +47,7 @@ public class TestAssetMapSchemaElement
      *
      * @return filled in object
      */
-    private AssetMapSchemaElement getTestObject()
+    private AssetMapSchemaType getTestObject()
     {
         MapSchemaElement testBean = new MapSchemaElement();
 
@@ -63,7 +64,7 @@ public class TestAssetMapSchemaElement
         testBean.setUsage("TestUsage");
         testBean.setVersionNumber("TestVersionNumber");
 
-        return new AssetMapSchemaElement(testBean, mapFromElement, mapToElement, assetMeanings);
+        return new AssetMapSchemaType(testBean, mapFromElement, mapToElement, assetMeanings);
     }
 
 
@@ -72,7 +73,7 @@ public class TestAssetMapSchemaElement
      *
      * @return filled in object
      */
-    private AssetMapSchemaElement getDifferentObject()
+    private AssetMapSchemaType getDifferentObject()
     {
         MapSchemaElement testBean = new MapSchemaElement();
 
@@ -89,7 +90,7 @@ public class TestAssetMapSchemaElement
         testBean.setUsage("TestUsage");
         testBean.setVersionNumber("TestVersionNumber");
 
-        return new AssetMapSchemaElement(testBean, mapFromElement, mapToElement, assetMeanings);
+        return new AssetMapSchemaType(testBean, mapFromElement, mapToElement, assetMeanings);
     }
 
 
@@ -99,7 +100,7 @@ public class TestAssetMapSchemaElement
      *
      * @return filled in object
      */
-    private AssetMapSchemaElement getAnotherDifferentObject()
+    private AssetMapSchemaType getAnotherDifferentObject()
     {
         MapSchemaElement testBean = new MapSchemaElement();
 
@@ -116,7 +117,7 @@ public class TestAssetMapSchemaElement
         testBean.setUsage("TestUsage");
         testBean.setVersionNumber("TestVersionNumber");
 
-        return new AssetMapSchemaElement(testBean, mapFromElement, null, assetMeanings);
+        return new AssetMapSchemaType(testBean, mapFromElement, null, assetMeanings);
     }
 
 
@@ -125,7 +126,7 @@ public class TestAssetMapSchemaElement
      *
      * @return filled in object
      */
-    private AssetMapSchemaElement getYetAnotherDifferentObject()
+    private AssetMapSchemaType getYetAnotherDifferentObject()
     {
         MapSchemaElement testBean = new MapSchemaElement();
 
@@ -142,7 +143,7 @@ public class TestAssetMapSchemaElement
         testBean.setUsage("TestUsage");
         testBean.setVersionNumber("TestVersionNumber");
 
-        return new AssetMapSchemaElement(new AssetSummary(new Asset()), testBean, mapFromElement, mapToElement, assetMeanings);
+        return new AssetMapSchemaType(new AssetSummary(new Asset()), testBean, mapFromElement, mapToElement, assetMeanings);
     }
 
 
@@ -151,7 +152,7 @@ public class TestAssetMapSchemaElement
      *
      * @param resultObject object returned by the test
      */
-    private void validateResultObject(AssetMapSchemaElement  resultObject)
+    private void validateResultObject(AssetMapSchemaType resultObject)
     {
         assertTrue(resultObject.getType().getElementTypeBean().equals(type));
         assertTrue(resultObject.getGUID().equals("TestGUID"));
@@ -177,7 +178,7 @@ public class TestAssetMapSchemaElement
      *
      * @param nullObject object to test
      */
-    private void validateNullObject(AssetMapSchemaElement  nullObject)
+    private void validateNullObject(AssetMapSchemaType nullObject)
     {
         assertTrue(nullObject.getType() == null);
         assertTrue(nullObject.getGUID() == null);
@@ -203,42 +204,42 @@ public class TestAssetMapSchemaElement
      */
     @Test public void testNullObject()
     {
-        MapSchemaElement          nullBean;
-        AssetMapSchemaElement     nullObject;
-        AssetMapSchemaElement     nullTemplate;
-        AssetDescriptor parentAsset;
+        MapSchemaElement   nullBean;
+        AssetMapSchemaType nullObject;
+        AssetMapSchemaType nullTemplate;
+        AssetDescriptor    parentAsset;
 
         nullBean = null;
-        nullObject = new AssetMapSchemaElement(nullBean, null, null, null);
+        nullObject = new AssetMapSchemaType(nullBean, null, null, null);
         validateNullObject(nullObject);
 
         nullBean = new MapSchemaElement();
-        nullObject = new AssetMapSchemaElement(nullBean, null, null, null);
+        nullObject = new AssetMapSchemaType(nullBean, null, null, null);
         validateNullObject(nullObject);
 
         nullBean = new MapSchemaElement(null);
-        nullObject = new AssetMapSchemaElement(nullBean, null, null, null);
+        nullObject = new AssetMapSchemaType(nullBean, null, null, null);
         validateNullObject(nullObject);
 
         parentAsset = null;
         nullBean = null;
-        nullObject = new AssetMapSchemaElement(parentAsset, nullBean, null, null, null);
+        nullObject = new AssetMapSchemaType(parentAsset, nullBean, null, null, null);
         validateNullObject(nullObject);
 
         nullBean = new MapSchemaElement();
-        nullObject = new AssetMapSchemaElement(parentAsset, nullBean, null, null, null);
+        nullObject = new AssetMapSchemaType(parentAsset, nullBean, null, null, null);
         validateNullObject(nullObject);
 
         nullBean = new MapSchemaElement(null);
-        nullObject = new AssetMapSchemaElement(parentAsset, nullBean, null, null, null);
+        nullObject = new AssetMapSchemaType(parentAsset, nullBean, null, null, null);
         validateNullObject(nullObject);
 
         nullTemplate = null;
-        nullObject = new AssetMapSchemaElement(parentAsset, nullTemplate);
+        nullObject = new AssetMapSchemaType(parentAsset, nullTemplate);
         validateNullObject(nullObject);
 
-        nullTemplate = new AssetMapSchemaElement(parentAsset, nullBean, null, null, null);;
-        nullObject = new AssetMapSchemaElement(parentAsset, nullTemplate);
+        nullTemplate = new AssetMapSchemaType(parentAsset, nullBean, null, null, null);;
+        nullObject = new AssetMapSchemaType(parentAsset, nullTemplate);
         validateNullObject(nullObject);
     }
 
@@ -248,21 +249,21 @@ public class TestAssetMapSchemaElement
      */
     @Test public void testMeaningsMapValues()
     {
-        AssetMeanings      meanings = null;
-        AssetSchemaElement mapFrom  = null;
-        AssetSchemaElement mapTo    = null;
+        AssetMeanings   meanings = null;
+        AssetSchemaType mapFrom  = null;
+        AssetSchemaType mapTo    = null;
 
-        AssetMapSchemaElement  testObject = new AssetMapSchemaElement(null, mapFrom, mapTo, meanings);
+        AssetMapSchemaType testObject = new AssetMapSchemaType(null, mapFrom, mapTo, meanings);
 
         assertTrue(testObject.getAssetMeanings() == null);
         assertTrue(testObject.getMapFromElement() == null);
         assertTrue(testObject.getMapToElement() == null);
 
         meanings = new MockAssetMeanings(null, 23, 60);
-        mapFrom = new MockAssetSchemaElement(null, null, null);
-        mapTo  = new MockAssetSchemaElement(null, null, null);
+        mapFrom = new MockAssetSchemaType(null, null, null);
+        mapTo  = new MockAssetSchemaType(null, null, null);
 
-        testObject = new AssetMapSchemaElement(new AssetSummary(new Asset()), null, mapFrom, mapTo, meanings);
+        testObject = new AssetMapSchemaType(new AssetSummary(new Asset()), null, mapFrom, mapTo, meanings);
 
         assertTrue(testObject.getAssetMeanings() != null);
         assertTrue(testObject.getMapFromElement() != null);
@@ -280,7 +281,7 @@ public class TestAssetMapSchemaElement
         assertFalse(getTestObject().equals("DummyString"));
         assertTrue(getTestObject().equals(getTestObject()));
 
-        AssetMapSchemaElement  sameObject = getTestObject();
+        AssetMapSchemaType sameObject = getTestObject();
         assertTrue(sameObject.equals(sameObject));
 
         assertFalse(getTestObject().equals(getDifferentObject()));
@@ -303,9 +304,9 @@ public class TestAssetMapSchemaElement
      */
     @Test public void testClone()
     {
-        validateResultObject(new AssetMapSchemaElement(null, getTestObject()));
+        validateResultObject(new AssetMapSchemaType(null, getTestObject()));
 
-        validateResultObject((AssetMapSchemaElement)getTestObject().cloneAssetSchemaElement(null));
+        validateResultObject((AssetMapSchemaType)getTestObject().cloneAssetSchemaElement(null));
 
 
     }

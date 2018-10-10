@@ -1,5 +1,5 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
-<!-- Copyright Contributors to the Egeria project. -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
   
 # Egeria - Open Metadata and Governance
   
@@ -67,9 +67,9 @@ The Egeria content is organized into the following modules:
     * **[authentication-plugins](open-metadata-implementation/adapters/authentication-plugins)** support extensions to technology such as LDAP that are used to verify the identity of an individual or service requesting access to data/metadata.
     * **[governance-engines-plugins](open-metadata-implementation/adapters/governance-engines-plugins)** support plugins to governance engines to enable them to use open metadata settings in their validation and enforcement decisions, and the resulting actions they take.
   * **[frameworks](open-metadata-implementation/frameworks)** - frameworks that support pluggable components.
-    * **[Open Connector Framework (OCF)](open-metadata-implementation/frameworks/open-connector-framework)** provides the interfaces and base implementations for components (called connectors) that access data-related assets. OCF connectors also provide detailed metadata about the assets they access.
-    * **[Open Discovery Framework (ODF)](open-metadata-implementation/frameworks/open-discovery-framework)** provides the interfaces and base implementations for components (called discovery services) that access data-related assets and extract characteristics about the data that can be stored in an open metadata repository.
-    * **[Governance Action Framework (GAF)](open-metadata-implementation/frameworks/governance-action-framework)** provides the interfaces and base implementations for components (called governance actions) that take action to correct a situation that is harmful the data, or the organization in some way.
+    * **[open-connector-framework](open-metadata-implementation/frameworks/open-connector-framework)** provides the interfaces and base implementations for components (called connectors) that access data-related assets. OCF connectors also provide detailed metadata about the assets they access.
+    * **[open-discovery-framework](open-metadata-implementation/frameworks/open-discovery-framework)** provides the interfaces and base implementations for components (called discovery services) that access data-related assets and extract characteristics about the data that can be stored in an open metadata repository.
+    * **[governance-action-framework](open-metadata-implementation/frameworks/governance-action-framework)** provides the interfaces and base implementations for components (called governance actions) that take action to correct a situation that is harmful the data, or the organization in some way.
   * **[governance-servers](open-metadata-implementation/governance-servers)** - servers and daemons to run open metadata and governance function.
     * **[server-chassis](open-metadata-implementation/governance-servers/server-chassis)** - the server chassis provides an "empty" server to host the open metadata services.
     * **[admin-services](open-metadata-implementation/governance-servers/admin-services)** - the admin services support the configuration of the open metadata server chassis.  This configuration determines which of the open metadata services are active.

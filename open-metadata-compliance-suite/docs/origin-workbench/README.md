@@ -1,5 +1,5 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
-<!-- Copyright Contributors to the Egeria project. -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
 
   
 # Open Metadata Origin Test Workbench

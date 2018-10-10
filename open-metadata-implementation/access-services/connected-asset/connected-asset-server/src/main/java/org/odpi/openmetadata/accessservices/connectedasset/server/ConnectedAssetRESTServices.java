@@ -31,6 +31,7 @@ public class ConnectedAssetRESTServices
         ConnectedAssetRESTServices.repositoryConnector = repositoryConnector;
     }
 
+
     /**
      * Default constructor
      */
@@ -60,6 +61,24 @@ public class ConnectedAssetRESTServices
      */
     public AssetResponse getAssetSummary(String   userId,
                                          String   assetGUID)
+    {
+        return null;
+    }
+
+
+    /**
+     * Returns the basic information about the asset.
+     *
+     * @param userId             userId of user making request.
+     * @param connectionGUID     unique id for connection.
+     *
+     * @return a bean with the basic properties about the asset or
+     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
+     * PropertyServerException - there is a problem retrieving the asset properties from the property server or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public GUIDResponse getAssetIdForConnection(String   userId,
+                                                String   connectionGUID)
     {
         return null;
     }
@@ -167,6 +186,29 @@ public class ConnectedAssetRESTServices
                                         String  assetGUID,
                                         int     elementStart,
                                         int     maxElements)
+    {
+        return null;
+    }
+
+
+    /**
+     * Returns the list of replies to a comment.
+     *
+     * @param userId       String   userId of user making request.
+     * @param commentGUID  String   unique id for root comment.
+     * @param elementStart int      starting position for fist returned element.
+     * @param maxElements  int      maximum number of elements to return on the call.
+     *
+     * @return a list of comments or
+     * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
+     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
+     * PropertyServerException - there is a problem retrieving the asset properties from the property server or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public CommentsResponse getCommentReplies(String  userId,
+                                              String  commentGUID,
+                                              int     elementStart,
+                                              int     maxElements)
     {
         return null;
     }
@@ -570,10 +612,10 @@ public class ConnectedAssetRESTServices
 
 
     /**
-     * Returns the list of notes for the asset.
+     * Returns the list of notes for a note log.
      *
      * @param userId       String   userId of user making request.
-     * @param assetGUID    String   unique id for asset.
+     * @param noteLogGUID  String   unique id for the note log.
      * @param elementStart int      starting position for fist returned element.
      * @param maxElements  int      maximum number of elements to return on the call.
      *
@@ -584,7 +626,7 @@ public class ConnectedAssetRESTServices
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public NotesResponse getNotes(String  userId,
-                                  String  assetGUID,
+                                  String  noteLogGUID,
                                   int     elementStart,
                                   int     maxElements)
     {
