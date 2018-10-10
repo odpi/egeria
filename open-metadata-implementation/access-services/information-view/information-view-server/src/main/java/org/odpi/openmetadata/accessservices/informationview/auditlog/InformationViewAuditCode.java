@@ -24,10 +24,10 @@ public enum InformationViewAuditCode {
             "The Information View OMAS is registering to receive events from the connected open metadata repositories.",
             "No action is required.  This is part of the normal operation of the server."),
 
-    SERVICE_REGISTERED_WITH_IV_TOPIC("OMAS-INFORMATION_VIEW-0003",
+    SERVICE_REGISTERED_WITH_IV_IN_TOPIC("OMAS-INFORMATION_VIEW-0003",
             OMRSAuditLogRecordSeverity.INFO,
-            "The Information View Open Metadata Access Service (OMAS) is registering a listener with the Information View Topic",
-            "The Information View OMAS is registering to receive events from the connected open metadata repositories.",
+            "The Information View Open Metadata Access Service (OMAS) is registering a listener with the Information View Topic In topic",
+            "The Information View OMAS is registering to receive events from Information View OMAS IN topic.",
             "No action is required.  This is part of the normal operation of the server."),
 
     SERVICE_INITIALIZED("OMAS-INFORMATION_VIEW-0004",

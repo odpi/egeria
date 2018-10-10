@@ -25,21 +25,20 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSConfigErrorEx
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Map;
-
 
 public class InformationViewAdmin implements AccessServiceAdmin {
 
     private static final Logger log = LoggerFactory.getLogger(InformationViewAdmin.class);
     private EventPublisher eventPublisher;
     private OMRSRepositoryConnector enterpriseConnector;
-    private OpenMetadataTopicConnector informationViewTopicConnector;
+    private OpenMetadataTopicConnector informationViewInTopicConnector;
     private OMRSTopicConnector enterpriseOMRSTopicConnector = null;
     private OpenMetadataTopicListener informationViewInTopicListener;
     private EntitiesCreatorHelper entitiesCreatorHelper;
     private ColumnContextEventBuilder columnContextEventBuilder;
     private InformationViewEnterpriseOmrsEventListener informationViewEnterpriseOmrsEventListener;
     private OMRSAuditLog auditLog;
+    private OpenMetadataTopicConnector informationViewOutTopicConnector;
 
 
     /**
@@ -71,7 +70,8 @@ public class InformationViewAdmin implements AccessServiceAdmin {
         this.enterpriseConnector = enterpriseOMRSRepositoryConnector;
         this.auditLog = auditLog;
 
-        informationViewTopicConnector = initializeInformationViewTopicConnector(accessServiceConfigurationProperties.getAccessServiceInTopic(), accessServiceConfigurationProperties.getAccessServiceOutTopic());
+        informationViewInTopicConnector = initializeInformationViewTopicConnector(accessServiceConfigurationProperties.getAccessServiceInTopic());
+        informationViewOutTopicConnector = initializeInformationViewTopicConnector(accessServiceConfigurationProperties.getAccessServiceOutTopic());
 
 
         entitiesCreatorHelper = new EntitiesCreatorHelper(this.enterpriseConnector,
@@ -87,14 +87,14 @@ public class InformationViewAdmin implements AccessServiceAdmin {
                     auditCode.getSystemAction(),
                     auditCode.getUserAction());
             columnContextEventBuilder = new ColumnContextEventBuilder(this.enterpriseConnector);
-            eventPublisher = new EventPublisher(informationViewTopicConnector, columnContextEventBuilder, auditLog);
+            eventPublisher = new EventPublisher(informationViewOutTopicConnector, columnContextEventBuilder, auditLog);
             informationViewEnterpriseOmrsEventListener = new InformationViewEnterpriseOmrsEventListener(eventPublisher, auditLog);
             this.enterpriseOMRSTopicConnector.registerListener(informationViewEnterpriseOmrsEventListener);
         }
 
 
-        if (informationViewTopicConnector != null) {
-            auditCode = InformationViewAuditCode.SERVICE_REGISTERED_WITH_IV_TOPIC;
+        if (informationViewInTopicConnector != null) {
+            auditCode = InformationViewAuditCode.SERVICE_REGISTERED_WITH_IV_IN_TOPIC;
             auditLog.logRecord(actionDescription,
                     auditCode.getLogMessageId(),
                     auditCode.getSeverity(),
@@ -103,9 +103,40 @@ public class InformationViewAdmin implements AccessServiceAdmin {
                     auditCode.getSystemAction(),
                     auditCode.getUserAction());
             informationViewInTopicListener = new InformationViewInTopicListener(entitiesCreatorHelper, auditLog);
-            this.informationViewTopicConnector.registerListener(informationViewInTopicListener);
+            this.informationViewInTopicConnector.registerListener(informationViewInTopicListener);
             try {
-                informationViewTopicConnector.start();
+                informationViewInTopicConnector.start();
+            } catch (ConnectorCheckedException e) {
+                auditCode = InformationViewAuditCode.ERROR_INITIALIZING_INFORMATION_VIEW_TOPIC_CONNECTION;
+                auditLog.logRecord(actionDescription,
+                        auditCode.getLogMessageId(),
+                        auditCode.getSeverity(),
+                        auditCode.getFormattedLogMessage(),
+                        null,
+                        auditCode.getSystemAction(),
+                        auditCode.getUserAction());
+                throw new OMAGConfigurationErrorException(400,
+                        InformationViewAdmin.class.getSimpleName(),
+                        actionDescription,
+                        auditCode.getFormattedLogMessage(),
+                        auditCode.getSystemAction(),
+                        auditCode.getUserAction()
+                );
+            }
+        }
+
+        if (informationViewOutTopicConnector != null) {
+            auditCode = InformationViewAuditCode.SERVICE_REGISTERED_WITH_IV_IN_TOPIC;
+            auditLog.logRecord(actionDescription,
+                    auditCode.getLogMessageId(),
+                    auditCode.getSeverity(),
+                    auditCode.getFormattedLogMessage(),
+                    null,
+                    auditCode.getSystemAction(),
+                    auditCode.getUserAction());
+
+            try {
+                informationViewOutTopicConnector.start();
             } catch (ConnectorCheckedException e) {
                 auditCode = InformationViewAuditCode.ERROR_INITIALIZING_INFORMATION_VIEW_TOPIC_CONNECTION;
                 auditLog.logRecord(actionDescription,
@@ -139,25 +170,20 @@ public class InformationViewAdmin implements AccessServiceAdmin {
     /**
      * Returns the topic created based on connection properties
      *
-     * @param accessServiceInTopic  properties of the topic
-     * @param accessServiceOutTopic
+     * @param topicConnection  properties of the topic
      * @return the topic created based on the connection properties
      */
-    private OpenMetadataTopicConnector initializeInformationViewTopicConnector(Connection accessServiceInTopic, Connection accessServiceOutTopic) {
+    private OpenMetadataTopicConnector initializeInformationViewTopicConnector(Connection topicConnection) {
         final String actionDescription = "initialize";
-        if (accessServiceInTopic != null) {
-            Map<String, Object> properties = accessServiceInTopic.getAdditionalProperties();
-            ((Map) properties.get("consumer")).replace("kafka.omrs.topic.id", accessServiceInTopic.getQualifiedName());
-            ((Map) properties.get("producer")).replace("kafka.omrs.topic.id", accessServiceOutTopic.getQualifiedName());
-            accessServiceInTopic.setAdditionalProperties(properties);
+        if (topicConnection != null) {
             try {
-                return getTopicConnector(accessServiceInTopic);
+                return getTopicConnector(topicConnection);
             } catch (Exception e) {
                 InformationViewAuditCode auditCode = InformationViewAuditCode.ERROR_INITIALIZING_CONNECTION;
                 auditLog.logRecord(actionDescription,
                         auditCode.getLogMessageId(),
                         auditCode.getSeverity(),
-                        auditCode.getFormattedLogMessage(accessServiceInTopic.toString()),
+                        auditCode.getFormattedLogMessage(topicConnection.toString()),
                         null,
                         auditCode.getSystemAction(),
                         auditCode.getUserAction());
@@ -209,7 +235,7 @@ public class InformationViewAdmin implements AccessServiceAdmin {
      */
     public void shutdown() {
         try {
-            informationViewTopicConnector.disconnect();
+            informationViewInTopicConnector.disconnect();
         } catch (ConnectorCheckedException e) {
             log.error("Error disconnecting information view topic connector");
         }
