@@ -152,9 +152,9 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
 
         if (IMAM_SHARE_EVENT.equals(igcKafkaEvent.getEventType())) {
             processIMAM(igcKafkaEvent);
+        } else {
+            process(igcKafkaEvent);
         }
-
-        process(igcKafkaEvent);
     }
 
     /**
