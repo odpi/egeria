@@ -125,37 +125,6 @@ public class InformationViewAdmin implements AccessServiceAdmin {
             }
         }
 
-        if (informationViewOutTopicConnector != null) {
-            auditCode = InformationViewAuditCode.SERVICE_REGISTERED_WITH_IV_IN_TOPIC;
-            auditLog.logRecord(actionDescription,
-                    auditCode.getLogMessageId(),
-                    auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(),
-                    null,
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction());
-
-            try {
-                informationViewOutTopicConnector.start();
-            } catch (ConnectorCheckedException e) {
-                auditCode = InformationViewAuditCode.ERROR_INITIALIZING_INFORMATION_VIEW_TOPIC_CONNECTION;
-                auditLog.logRecord(actionDescription,
-                        auditCode.getLogMessageId(),
-                        auditCode.getSeverity(),
-                        auditCode.getFormattedLogMessage(),
-                        null,
-                        auditCode.getSystemAction(),
-                        auditCode.getUserAction());
-                throw new OMAGConfigurationErrorException(400,
-                        InformationViewAdmin.class.getSimpleName(),
-                        actionDescription,
-                        auditCode.getFormattedLogMessage(),
-                        auditCode.getSystemAction(),
-                        auditCode.getUserAction()
-                );
-            }
-        }
-
         auditCode = InformationViewAuditCode.SERVICE_INITIALIZED;
         auditLog.logRecord(actionDescription,
                 auditCode.getLogMessageId(),
