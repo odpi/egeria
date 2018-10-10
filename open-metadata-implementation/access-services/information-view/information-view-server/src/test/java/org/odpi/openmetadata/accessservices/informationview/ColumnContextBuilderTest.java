@@ -1,5 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-package org.apache.atlas.omas.informationview;
+/* Copyright Contributors to the ODPi Egeria project. */
+package org.odpi.openmetadata.accessservices.informationview;
 
 
 import org.mockito.Mock;
@@ -13,14 +14,13 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static org.apache.atlas.omas.informationview.TestDataHelper.*;
+import static org.odpi.openmetadata.accessservices.informationview.TestDataHelper.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;

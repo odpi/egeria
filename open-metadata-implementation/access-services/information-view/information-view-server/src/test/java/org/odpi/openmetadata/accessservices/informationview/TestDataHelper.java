@@ -1,5 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-package org.apache.atlas.omas.informationview;
+/* Copyright Contributors to the ODPi Egeria project. */
+package org.odpi.openmetadata.accessservices.informationview;
 
 
 import org.odpi.openmetadata.accessservices.informationview.events.BusinessTerm;

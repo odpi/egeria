@@ -1,5 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-package org.apache.atlas.omas.informationview;
+/* Copyright Contributors to the ODPi Egeria project. */
+package org.odpi.openmetadata.accessservices.informationview;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -44,7 +45,6 @@ import org.testng.annotations.Test;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import static org.apache.atlas.omas.informationview.TestDataHelper.*;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
@@ -159,7 +159,7 @@ public class InformationViewOmasListenerTest {
     }
 
     private void buildClassifications() throws TypeErrorException {
-        addClassification(Constants.DATABASE_SERVER, DATABASE_SERVER_TYPE_GUID, Constants.SOFTWARE_SERVER);
+        addClassification(Constants.DATABASE_SERVER, TestDataHelper.DATABASE_SERVER_TYPE_GUID, Constants.SOFTWARE_SERVER);
     }
 
     private void addClassification(String classificationTypeName, String classificationTypeGuid, String entityTypeName) throws TypeErrorException {
@@ -202,18 +202,18 @@ public class InformationViewOmasListenerTest {
         mockAddEntityCall(DERIVED_COLUMN_TYPE_GUID, Constants.DERIVED_RELATIONAL_COLUMN, derivedColumnInstanceProperties, this.derivedColumn);
         mockAddEntityCall(COLUMNTYPE_TYPE_GUID, Constants.RELATIONAL_COLUMN_TYPE, derivedColumnTypeInstanceProperties, this.derivedColumnType);
 
-        mockAddRelationshipCall(Constants.SERVER_ENDPOINT, SERVER_ENDPOINT_REL_TYPE_GUID);
-        mockAddRelationshipCall(Constants.CONNECTION_TO_ENDPOINT, CONNECTION_ENDPOINT_REL_TYPE_GUID);
-        mockAddRelationshipCall(Constants.CONNECTION_CONNECTOR_TYPE, CONNECTION_CONNECTOR_REL_TYPE_GUID);
-        mockAddRelationshipCall(Constants.CONNECTION_TO_ASSET, CONNECTION_ASSET_REL_TYPE_GUID);
-        mockAddRelationshipCall(Constants.DATA_CONTENT_FOR_DATASET, DATA_CONTENT_DATASET_REL_TYPE_GUID);
-        mockAddRelationshipCall(Constants.ASSET_SCHEMA_TYPE, ASSET_SCHEMA_REL_TYPE_GUID);
-        mockAddRelationshipCall(Constants.SCHEMA_ATTRIBUTE_TYPE, SCHEMA_ATTRIBUTE_TYPE_REL_TYPE_GUID);
-        mockAddRelationshipCall(Constants.ATTRIBUTE_FOR_SCHEMA, ATTRIBUTE_FOR_SCHEMA_REL_TYPE_GUID);
-        mockAddRelationshipCall(Constants.SCHEMA_QUERY_IMPLEMENTATION, SCHEMA_QUERY_IMPLEMENTATION_REL_TYPE_GUID);
-        mockAddRelationshipCall(Constants.SCHEMA_ATTRIBUTE_TYPE, SCHEMA_ATTRIBUTE_TYPE_REL_TYPE_GUID);
-        mockAddRelationshipCall(Constants.SEMANTIC_ASSIGNMENT, SEMANTIC_ASSIGNMENT_REL_TYPE_GUID);
-        mockAddRelationshipCall(Constants.ATTRIBUTE_FOR_SCHEMA, ATTRIBUTE_FOR_SCHEMA_REL_TYPE_GUID);
+        mockAddRelationshipCall(Constants.SERVER_ENDPOINT, TestDataHelper.SERVER_ENDPOINT_REL_TYPE_GUID);
+        mockAddRelationshipCall(Constants.CONNECTION_TO_ENDPOINT, TestDataHelper.CONNECTION_ENDPOINT_REL_TYPE_GUID);
+        mockAddRelationshipCall(Constants.CONNECTION_CONNECTOR_TYPE, TestDataHelper.CONNECTION_CONNECTOR_REL_TYPE_GUID);
+        mockAddRelationshipCall(Constants.CONNECTION_TO_ASSET, TestDataHelper.CONNECTION_ASSET_REL_TYPE_GUID);
+        mockAddRelationshipCall(Constants.DATA_CONTENT_FOR_DATASET, TestDataHelper.DATA_CONTENT_DATASET_REL_TYPE_GUID);
+        mockAddRelationshipCall(Constants.ASSET_SCHEMA_TYPE, TestDataHelper.ASSET_SCHEMA_REL_TYPE_GUID);
+        mockAddRelationshipCall(Constants.SCHEMA_ATTRIBUTE_TYPE, TestDataHelper.SCHEMA_ATTRIBUTE_TYPE_REL_TYPE_GUID);
+        mockAddRelationshipCall(Constants.ATTRIBUTE_FOR_SCHEMA, TestDataHelper.ATTRIBUTE_FOR_SCHEMA_REL_TYPE_GUID);
+        mockAddRelationshipCall(Constants.SCHEMA_QUERY_IMPLEMENTATION, TestDataHelper.SCHEMA_QUERY_IMPLEMENTATION_REL_TYPE_GUID);
+        mockAddRelationshipCall(Constants.SCHEMA_ATTRIBUTE_TYPE, TestDataHelper.SCHEMA_ATTRIBUTE_TYPE_REL_TYPE_GUID);
+        mockAddRelationshipCall(Constants.SEMANTIC_ASSIGNMENT, TestDataHelper.SEMANTIC_ASSIGNMENT_REL_TYPE_GUID);
+        mockAddRelationshipCall(Constants.ATTRIBUTE_FOR_SCHEMA, TestDataHelper.ATTRIBUTE_FOR_SCHEMA_REL_TYPE_GUID);
 
     }
 
@@ -364,7 +364,7 @@ public class InformationViewOmasListenerTest {
         when(omrsMetadataCollection.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
         typeDef = testDataHelper.buildRelationshipType(Constants.CONNECTION_TO_ASSET, TestDataHelper.CONNECTION_ASSET_REL_TYPE_GUID);
         when(omrsMetadataCollection.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
-        typeDef = testDataHelper.buildRelationshipType(Constants.DATA_CONTENT_FOR_DATASET, DATA_CONTENT_DATASET_REL_TYPE_GUID);
+        typeDef = testDataHelper.buildRelationshipType(Constants.DATA_CONTENT_FOR_DATASET, TestDataHelper.DATA_CONTENT_DATASET_REL_TYPE_GUID);
         when(omrsMetadataCollection.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
         typeDef = testDataHelper.buildRelationshipType(Constants.ASSET_SCHEMA_TYPE, TestDataHelper.ASSET_SCHEMA_REL_TYPE_GUID);
         when(omrsMetadataCollection.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
@@ -397,7 +397,7 @@ public class InformationViewOmasListenerTest {
         assertEquals(EntityPropertiesUtils.getStringValueForProperty(derivedColumnInstanceProperties.getValue(), Constants.QUALIFIED_NAME), DERIVED_COLUMN_QUALIFIED_NAME);
         assertEquals(EntityPropertiesUtils.getStringValueForProperty(derivedColumnTypeInstanceProperties.getValue(), Constants.QUALIFIED_NAME), DERIVED_COLUMN_TYPE_QUALIFIED_NAME);
 
-        verify(omrsMetadataCollection, Mockito.times(1)).addRelationship(eq(Constants.USER_ID), eq(DATA_CONTENT_DATASET_REL_TYPE_GUID), any(InstanceProperties.class), eq(DATABASE_GUID), eq(INFORMATION_VIEW_GUID), eq(InstanceStatus.ACTIVE));
+        verify(omrsMetadataCollection, Mockito.times(1)).addRelationship(eq(Constants.USER_ID), eq(TestDataHelper.DATA_CONTENT_DATASET_REL_TYPE_GUID), any(InstanceProperties.class), eq(DATABASE_GUID), eq(INFORMATION_VIEW_GUID), eq(InstanceStatus.ACTIVE));
         verify(omrsMetadataCollection, Mockito.times(1)).addRelationship(eq(Constants.USER_ID), eq(TestDataHelper.ASSET_SCHEMA_REL_TYPE_GUID), any(InstanceProperties.class), eq(INFORMATION_VIEW_GUID), eq(DB_SCHEMA_TYPE_GUID), eq(InstanceStatus.ACTIVE));
         verify(omrsMetadataCollection, Mockito.times(1)).addRelationship(eq(Constants.USER_ID), eq(TestDataHelper.SCHEMA_ATTRIBUTE_TYPE_REL_TYPE_GUID), any(InstanceProperties.class), eq(TABLE_GUID), eq(TABLE_TYPE_GUID), eq(InstanceStatus.ACTIVE));
         verify(omrsMetadataCollection, Mockito.times(1)).addRelationship(eq(Constants.USER_ID), eq(TestDataHelper.SCHEMA_ATTRIBUTE_TYPE_REL_TYPE_GUID), any(InstanceProperties.class), eq(DERIVED_COLUMN_GUID), eq(DERIVED_COLUMN_TYPE_GUID), eq(InstanceStatus.ACTIVE));
