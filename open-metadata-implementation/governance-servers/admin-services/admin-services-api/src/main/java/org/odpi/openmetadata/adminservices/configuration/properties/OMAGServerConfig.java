@@ -103,9 +103,11 @@ public class OMAGServerConfig implements Serializable
         localServerId = template.getLocalServerId();
         localServerName = template.getLocalServerName();
         localServerType = template.getLocalServerType();
-        localServerURL = template.getLocalServerURL();
         organizationName = template.getOrganizationName();
+        localServerURL = template.getLocalServerURL();
+        localServerUserId = template.getLocalServerUserId();
         maxPageSize = template.getMaxPageSize();
+        eventBusConfig = template.getEventBusConfig();
         accessServicesConfig = template.getAccessServicesConfig();
         repositoryServicesConfig = template.getRepositoryServicesConfig();
     }
