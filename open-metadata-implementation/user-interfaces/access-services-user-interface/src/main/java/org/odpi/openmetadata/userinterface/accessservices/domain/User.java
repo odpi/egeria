@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-package org.odpi.openmetadata.accessservices.ui.domain;
+package org.odpi.openmetadata.userinterface.accessservices.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

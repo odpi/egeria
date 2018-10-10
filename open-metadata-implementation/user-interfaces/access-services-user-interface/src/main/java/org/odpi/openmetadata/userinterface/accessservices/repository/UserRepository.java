@@ -1,8 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-package org.odpi.openmetadata.accessservices.ui.repository;
+package org.odpi.openmetadata.userinterface.accessservices.repository;
 
 
-import org.odpi.openmetadata.accessservices.ui.domain.User;
+import org.odpi.openmetadata.userinterface.accessservices.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

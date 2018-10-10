@@ -1,8 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-package org.odpi.openmetadata.accessservices.ui.auth;
+package org.odpi.openmetadata.userinterface.accessservices.auth;
 
-import org.odpi.openmetadata.accessservices.ui.domain.User;
-import org.odpi.openmetadata.accessservices.ui.repository.UserRepository;
+import org.odpi.openmetadata.userinterface.accessservices.domain.User;
+import org.odpi.openmetadata.userinterface.accessservices.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AccountStatusUserDetailsChecker;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

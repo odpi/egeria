@@ -1,12 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-package org.odpi.openmetadata.accessservices.ui.auth;
+package org.odpi.openmetadata.userinterface.accessservices.auth;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.odpi.openmetadata.accessservices.ui.domain.User;
+import org.odpi.openmetadata.userinterface.accessservices.domain.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
