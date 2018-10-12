@@ -6,13 +6,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>egeria</artifactId>
+        <artifactId>access-services-fvt</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>0.2-SNAPSHOT</version>
+        <version>0.3-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>open-metadata-fvt-omas-subject-area</artifactId>
+    <artifactId>subject-area-fvt</artifactId>
     <name>Subject Area OMAS Client Samples</name>
     <description>
         FVT resources for the Subject Area Open Metadata Access Service (OMAS).
