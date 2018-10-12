@@ -16,7 +16,7 @@
 
     <groupId>org.odpi.egeria</groupId>
     <artifactId>egeria</artifactId>
-    <version>0.2-SNAPSHOT</version>
+    <version>0.2</version>
 
     <url>https://odpi.github.io/Egeria</url>
 
@@ -94,7 +94,7 @@
     </prerequisites>
 
     <properties>
-        <open-metadata.version>0.2-SNAPSHOT</open-metadata.version>
+        <open-metadata.version>0.2</open-metadata.version>
 
         <!-- Level of Java  -->
         <maven.compiler.source>1.8</maven.compiler.source>
