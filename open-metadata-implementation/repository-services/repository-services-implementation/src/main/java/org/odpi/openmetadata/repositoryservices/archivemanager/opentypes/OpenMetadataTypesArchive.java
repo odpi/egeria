@@ -8696,6 +8696,7 @@ public class OpenMetadataTypesArchive
     {
         this.archiveBuilder.addEntityDef(getFormEntity());
         this.archiveBuilder.addEntityDef(getReportEntity());
+        this.archiveBuilder.addEntityDef(getDeployedReportEntity());
     }
 
 
@@ -8730,6 +8731,81 @@ public class OpenMetadataTypesArchive
                                                  this.archiveBuilder.getEntityDef(superTypeName),
                                                  description,
                                                  descriptionGUID);
+    }
+
+
+
+    private EntityDef getDeployedReportEntity()
+    {
+        final String guid            = "e9077f4f-955b-4d7b-b1f7-12ee769ff0c3";
+        final String name            = "DeployedReport";
+        final String description     = "A collection if data items that describe a situation.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "Report";
+
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
+                name,
+                this.archiveBuilder.getEntityDef(superTypeName),
+                description,
+                descriptionGUID);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "id";
+        final String attribute1Description     = "Id of report.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "author";
+        final String attribute2Description     = "Author of the report.";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "url";
+        final String attribute3Description     = "url of the report.";
+        final String attribute3DescriptionGUID = null;
+        final String attribute4Name            = "createdTime";
+        final String attribute4Description     = "Report create time.";
+        final String attribute4DescriptionGUID = null;
+        final String attribute5Name            = "lastModifiedTime";
+        final String attribute5Description     = "Report last modified time.";
+        final String attribute5DescriptionGUID = null;
+        final String attribute6Name            = "lastModifier";
+        final String attribute6Description     = "Report last modifier.";
+        final String attribute6DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                attribute1Description,
+                attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                attribute2Description,
+                attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                attribute3Description,
+                attribute3DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getDateTypeDefAttribute(attribute4Name,
+                attribute4Description,
+                attribute4DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getDateTypeDefAttribute(attribute5Name,
+                attribute5Description,
+                attribute5DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute6Name,
+                attribute6Description,
+                attribute6DescriptionGUID);
+        properties.add(property);
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
+
+
+
     }
 
 

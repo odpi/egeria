@@ -81,10 +81,8 @@ public class ReportCreator {
                     .withStringProperty(Constants.AUTHOR, payload.getAuthor())
                     .withStringProperty(Constants.ID, payload.getId())
                     .withStringProperty(Constants.URL, payload.getReportUrl())
-                    .withStringProperty(Constants.LAST_MODIFIED_TIME, payload.getLastModifiedTime())
                     .withStringProperty(Constants.LAST_MODIFIER, payload.getLastModifier())
-                    .withStringProperty(Constants.CREATE_TIME, payload.getCreatedTime())
-                    .build();
+                    .build();//TODO change payload dates type from string to long and add createTime as instance property
             EntityDetail report = entitiesCreatorHelper.addEntity(Constants.DEPLOYED_REPORT,
                     qualifiedNameForReport, reportProperties, null);
 
