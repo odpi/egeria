@@ -429,12 +429,14 @@ public class OMAGServerAdminServices
                                                                                                eventBusConfig.getConnectorProvider(),
                                                                                                eventBusConfig.getTopicURLRoot(),
                                                                                                registration.getAccessServiceInTopic(),
+                                                                                               serverConfig.getLocalServerId(),
                                                                                                eventBusConfig.getAdditionalProperties()));
                             accessServiceConfig.setAccessServiceOutTopic(
                                     connectorConfigurationFactory.getDefaultEventBusConnection(defaultOutTopicName,
                                                                                                eventBusConfig.getConnectorProvider(),
                                                                                                eventBusConfig.getTopicURLRoot(),
                                                                                                registration.getAccessServiceOutTopic(),
+                                                                                               serverConfig.getLocalServerId(),
                                                                                                eventBusConfig.getAdditionalProperties()));
 
                             accessServiceConfigList.add(accessServiceConfig);
@@ -446,7 +448,8 @@ public class OMAGServerAdminServices
                  * Now set up the enterprise repository services.
                  */
                 OMRSConfigurationFactory configurationFactory = new OMRSConfigurationFactory();
-                enterpriseAccessConfig = configurationFactory.getDefaultEnterpriseAccessConfig(serverConfig.getLocalServerName());
+                enterpriseAccessConfig = configurationFactory.getDefaultEnterpriseAccessConfig(serverConfig.getLocalServerName(),
+                                                                                               serverConfig.getLocalServerId());
             }
 
             if (accessServiceConfigList.isEmpty())
@@ -597,6 +600,7 @@ public class OMAGServerAdminServices
                                                                                                   additionalProperties,
                                                                                                   eventBusConfig.getConnectorProvider(),
                                                                                                   eventBusConfig.getTopicURLRoot(),
+                                                                                                  serverConfig.getLocalServerId(),
                                                                                                   eventBusConfig.getAdditionalProperties()));
         }
         catch (OMAGInvalidParameterException  error)
@@ -929,6 +933,7 @@ public class OMAGServerAdminServices
                                                                                        additionalProperties,
                                                                                        eventBusConfig.getConnectorProvider(),
                                                                                        eventBusConfig.getTopicURLRoot(),
+                                                                                       serverConfig.getLocalServerId(),
                                                                                        eventBusConfig.getAdditionalProperties());
 
 
