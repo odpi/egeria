@@ -267,6 +267,7 @@
                         <exclude>**/*.registrystore</exclude>
                         <exclude>**/*.results</exclude>
                         <exclude>**/target/**</exclude>
+                        <exclude>**/rat/**</exclude>
                     </excludes>
                     <licenseFamilies>
                         <licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">
