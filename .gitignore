@@ -39,6 +39,7 @@ pom.xml.releaseBackup
 *.ipr
 *.iws
 .idea
+venv
 
 # Eclipse
 .cache
