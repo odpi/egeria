@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.informationview.events;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -19,7 +20,6 @@ public class ReportRequestBody {
 
 
     private ConnectionDetails sourceConnectionDetails;
-    private ConnectionProperties ssasConnectionProperties;
     private Map<String, Source> sources;
 
     private String id;
@@ -42,7 +42,6 @@ public class ReportRequestBody {
     public String toString() {
         return "ReportRequestBody{" +
                 "sourceConnectionDetails=" + sourceConnectionDetails +
-                ", ssasConnectionProperties=" + ssasConnectionProperties +
                 ", sources=" + sources +
                 ", id='" + id + '\'' +
                 ", createdTime='" + createdTime + '\'' +
@@ -71,14 +70,6 @@ public class ReportRequestBody {
 
     public void setSourceConnectionDetails(ConnectionDetails sourceConnectionDetails) {
         this.sourceConnectionDetails = sourceConnectionDetails;
-    }
-
-    public ConnectionProperties getSsasConnectionProperties() {
-        return ssasConnectionProperties;
-    }
-
-    public void setSsasConnectionProperties(ConnectionProperties ssasConnectionProperties) {
-        this.ssasConnectionProperties = ssasConnectionProperties;
     }
 
     public String getId() {

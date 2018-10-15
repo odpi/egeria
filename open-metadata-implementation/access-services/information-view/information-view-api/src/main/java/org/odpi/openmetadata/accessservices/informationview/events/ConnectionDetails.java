@@ -1,10 +1,13 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 
 package org.odpi.openmetadata.accessservices.informationview.events;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+
+import java.util.Map;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -22,7 +25,7 @@ public class ConnectionDetails {
     private String connectionQualifiedName;
     private String endpointQualifiedName;
     private String type;
-
+    private Map<String, String> additionalProperties;
 
 
     /**
@@ -97,6 +100,7 @@ public class ConnectionDetails {
     public void setConnectorProviderQualifiedName(String connectorProviderQualifiedName) {
         this.connectorProviderQualifiedName = connectorProviderQualifiedName;
     }
+
     /**
      * Return the qualified foreignKeyName of the connection
      *
@@ -134,7 +138,6 @@ public class ConnectionDetails {
     }
 
     /**
-     *
      * @return user to use ro connect
      */
     public String getUser() {
@@ -142,7 +145,6 @@ public class ConnectionDetails {
     }
 
     /**
-     *
      * @param user to connect
      */
     public void setUser(String user) {
@@ -157,18 +159,26 @@ public class ConnectionDetails {
         this.type = type;
     }
 
+    public Map<String, String> getAdditionalProperties() {
+        return additionalProperties;
+    }
+
+    public void setAdditionalProperties(Map<String, String> additionalProperties) {
+        this.additionalProperties = additionalProperties;
+    }
 
     @Override
     public String toString() {
         return "ConnectionDetails{" +
-                ", networkAddress='" + networkAddress + '\'' +
+                "networkAddress='" + networkAddress + '\'' +
                 ", protocol='" + protocol + '\'' +
+                ", user='" + user + '\'' +
                 ", connectorProviderName='" + connectorProviderName + '\'' +
                 ", connectorProviderQualifiedName='" + connectorProviderQualifiedName + '\'' +
                 ", connectionQualifiedName='" + connectionQualifiedName + '\'' +
                 ", endpointQualifiedName='" + endpointQualifiedName + '\'' +
-                ", user='" + user + '\'' +
                 ", type='" + type + '\'' +
+                ", additionalProperties=" + additionalProperties +
                 '}';
     }
 }

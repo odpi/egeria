@@ -1,9 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.informationview.events;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+
+import java.util.List;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -13,12 +16,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ReportColumn {
 
-
     private String attributeName;
     private String aggregation;
     private String sectionName;
     private String formula;
-    private DatabaseColumnReference realColumn;
+    private List<SourceReference> sourceReference;
 
     public String getAttributeName() {
         return attributeName;
@@ -52,14 +54,13 @@ public class ReportColumn {
         this.formula = formula;
     }
 
-    public DatabaseColumnReference getRealColumn() {
-        return realColumn;
+    public List<SourceReference> getSourceReference() {
+        return sourceReference;
     }
 
-    public void setRealColumn(DatabaseColumnReference realColumn) {
-        this.realColumn = realColumn;
+    public void setSourceReference(List<SourceReference> sourceReference) {
+        this.sourceReference = sourceReference;
     }
-
 
     @Override
     public String toString() {
@@ -68,7 +69,7 @@ public class ReportColumn {
                 ", aggregation='" + aggregation + '\'' +
                 ", sectionName='" + sectionName + '\'' +
                 ", formula='" + formula + '\'' +
-                ", realColumn=" + realColumn +
+                ", sourceReference=" + sourceReference +
                 '}';
     }
 }

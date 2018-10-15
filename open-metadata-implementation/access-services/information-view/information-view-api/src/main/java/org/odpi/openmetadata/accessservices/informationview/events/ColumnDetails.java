@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 
 package org.odpi.openmetadata.accessservices.informationview.events;
 
@@ -23,12 +24,13 @@ public class ColumnDetails {
     private String defaultValueOverride;
     private String type;
     private String qualifiedNameColumnType;
-    private BusinessTerm businessTerm;
-    private ForeignKey foreignKey;
     private String primaryKeyName;
     private boolean isUnique;
     private boolean isPrimaryKey;
     private boolean isNullable;
+    private BusinessTerm businessTerm;
+    private ForeignKey foreignKey;
+
 
 
     /**

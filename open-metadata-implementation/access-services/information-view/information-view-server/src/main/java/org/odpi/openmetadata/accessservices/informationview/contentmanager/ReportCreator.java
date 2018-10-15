@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.informationview.contentmanager;
 
 import org.odpi.openmetadata.accessservices.informationview.events.ConnectionDetails;
-import org.odpi.openmetadata.accessservices.informationview.events.DatabaseColumnReference;
+import org.odpi.openmetadata.accessservices.informationview.events.SourceReference;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportColumn;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportRequestBody;
 import org.odpi.openmetadata.accessservices.informationview.events.Source;
@@ -164,7 +164,7 @@ public class ReportCreator {
     private void createDerivedRelationalColumn(EntityDetail parentEntity, String parentQualifiedName, List<ReportColumn> reportColumnList, ConnectionDetails sourceConnectionDetails, Map<String, Source> sources) throws Exception {
         for (ReportColumn reportColumn : reportColumnList) {
 
-            EntityDetail realColumn = entitiesCreatorHelper.getEntity(Constants.RELATIONAL_COLUMN, getQualifiedNameForRealColumn(reportColumn.getRealColumn(), sourceConnectionDetails, sources));
+            EntityDetail realColumn = entitiesCreatorHelper.getEntity(Constants.RELATIONAL_COLUMN, getQualifiedNameForRealColumn(reportColumn.getSourceReference(), sourceConnectionDetails, sources));
             if (realColumn != null) {
 
                 log.info("real database column found.");
@@ -225,7 +225,7 @@ public class ReportCreator {
         }
     }
 
-    private String getQualifiedNameForRealColumn(DatabaseColumnReference realColumn, ConnectionDetails sourceConnectionDetails, Map<String, Source> sources) {
+    private String getQualifiedNameForRealColumn(SourceReference realColumn, ConnectionDetails sourceConnectionDetails, Map<String, Source> sources) {
         Source source = sources.get(realColumn.getSourceId());
         String qualifiedName = sourceConnectionDetails.getNetworkAddress() + "." + "Connection." + source.getDatabaseName() + "." + source.getSchemaName() + "." + source.getTableName() + ".";
         qualifiedName += realColumn.getName();
