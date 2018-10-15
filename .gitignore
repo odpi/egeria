@@ -82,5 +82,6 @@ omag.server.*.config
 open-metadata-implementation/access-services/subject-area/subject-area-server/src/main/java/org/odpi/openmetadata/accessservices/subjectarea/generated/**
 open-metadata-implementation/access-services/subject-area/subject-area-server/src/test/java/org/odpi/openmetadata/accessservices/subjectarea/generated/**
 
-
+# Ignore private maven repo (jenkins)
+.repository
 
