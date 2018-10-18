@@ -63,4 +63,13 @@ public class InformationViewEvent {
     public TableContext getTableContext() {
         return tableContext;
     }
+
+    @Override
+    public String toString() {
+        return "InformationViewEvent{" +
+                "tableContext=" + tableContext +
+                ", connectionDetails=" + connectionDetails +
+                ", derivedColumns=" + derivedColumns +
+                '}';
+    }
 }
