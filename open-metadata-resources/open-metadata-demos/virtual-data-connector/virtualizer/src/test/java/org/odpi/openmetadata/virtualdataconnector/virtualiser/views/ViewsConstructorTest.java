@@ -74,7 +74,7 @@ public class ViewsConstructorTest extends AbstractTestNGSpringContextTests {
         String business = JsonReadHelper.readFile(new File(classLoader.getResource(BUSINESS).getFile()));
         String technical = JsonReadHelper.readFile(new File(classLoader.getResource(TECHNICAL).getFile()));
         JSONAssert.assertEquals(business, mapper.writeValueAsString(views.get(0)), false);
-        //JSONAssert.assertEquals(mapper.readValue(technical, InformationViewEvent.class).toString(), mapper.writeValueAsString(views.get(1)), false);
+        JSONAssert.assertEquals(technical, mapper.writeValueAsString(views.get(1)), false);
     }
 
 }
