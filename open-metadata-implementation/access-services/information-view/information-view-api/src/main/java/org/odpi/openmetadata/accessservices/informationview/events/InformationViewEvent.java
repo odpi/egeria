@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 
 package org.odpi.openmetadata.accessservices.informationview.events;
 
@@ -61,14 +62,5 @@ public class InformationViewEvent {
 
     public TableContext getTableContext() {
         return tableContext;
-    }
-
-    @Override
-    public String toString() {
-        return "InformationViewEvent{" +
-                "tableContext=" + tableContext +
-                ", connectionDetails=" + connectionDetails +
-                ", derivedColumns=" + derivedColumns +
-                '}';
     }
 }
