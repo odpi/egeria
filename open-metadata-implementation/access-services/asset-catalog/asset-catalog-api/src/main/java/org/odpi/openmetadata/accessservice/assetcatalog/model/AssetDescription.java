@@ -34,5 +34,5 @@ public class AssetDescription extends Asset implements Serializable {
     private Map<String, Object> properties;
     private List<Classification> classifications;
     private List<Relationship> relationships;
-    private List<Connection> connection;
+    private List<Context> contexts;
 }

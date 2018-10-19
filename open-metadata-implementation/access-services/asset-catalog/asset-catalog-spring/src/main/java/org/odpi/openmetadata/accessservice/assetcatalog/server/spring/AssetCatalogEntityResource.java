@@ -6,6 +6,8 @@ import org.odpi.openmetadata.accessservice.assetcatalog.model.SequenceOrderType;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.Status;
 import org.odpi.openmetadata.accessservice.assetcatalog.responses.AssetDescriptionResponse;
 import org.odpi.openmetadata.accessservice.assetcatalog.responses.ClassificationsResponse;
+import org.odpi.openmetadata.accessservice.assetcatalog.responses.ColumnContextResponse;
+import org.odpi.openmetadata.accessservice.assetcatalog.responses.DatabaseContextResponse;
 import org.odpi.openmetadata.accessservice.assetcatalog.responses.RelationshipsResponse;
 import org.odpi.openmetadata.accessservice.assetcatalog.service.AssetCatalogService;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
@@ -371,5 +373,15 @@ public class AssetCatalogEntityResource {
                                                  @RequestParam(required = false, value = "status") Status status,
                                                  @RequestParam(required = false, value = "excludeDeleted") Boolean excludeDeleted) {
         return assetService.searchAssets(userId, searchCriteria);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/get-columns-for-glossary-term/{assetId}")
+    public ColumnContextResponse searchAssets(@PathVariable("userId") String userId, @PathVariable("assetId") String assetId) {
+        return assetService.getRelationalColumnsForGlossaryTerm(userId, assetId);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/get-database-context/{assetName}")
+    public DatabaseContextResponse getDatabaseContext(@PathVariable("userId") String userId, @PathVariable("assetName") String assetName) {
+        return assetService.getDatabaseContext(userId, assetName);
     }
 }

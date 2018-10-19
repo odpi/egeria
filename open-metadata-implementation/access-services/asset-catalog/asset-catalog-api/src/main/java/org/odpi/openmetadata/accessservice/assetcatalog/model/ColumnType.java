@@ -9,18 +9,16 @@ import lombok.Data;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
-/**
- * A Schema object provides information about a data asset.
- */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
-public class Schema {
+public class ColumnType {
 
-    private String name;
-    private String guid;
-    private String encodingStandard;
-    private String versionNr;
-    private String author;
+    private String columnGuid;
+    private String columnQualifiedName;
+    private String columnAttributeName;
+    private String columnType;
+    private String columnQualifiedNameColumnType;
+
 }
