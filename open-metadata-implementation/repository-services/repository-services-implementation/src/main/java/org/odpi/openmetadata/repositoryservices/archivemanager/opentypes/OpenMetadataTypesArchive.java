@@ -8695,7 +8695,6 @@ public class OpenMetadataTypesArchive
     private void add0239Reports()
     {
         this.archiveBuilder.addEntityDef(getFormEntity());
-        this.archiveBuilder.addEntityDef(getReportEntity());
         this.archiveBuilder.addEntityDef(getDeployedReportEntity());
     }
 
@@ -8717,22 +8716,6 @@ public class OpenMetadataTypesArchive
     }
 
 
-    private EntityDef getReportEntity()
-    {
-        final String guid            = "e9077f4f-955b-4d7b-b1f7-12ee769ee0c3";
-        final String name            = "Report";
-        final String description     = "A collection if data items that describe a situation.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "DataSet";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
-    }
-
 
 
     private EntityDef getDeployedReportEntity()
@@ -8742,7 +8725,7 @@ public class OpenMetadataTypesArchive
         final String description     = "A collection if data items that describe a situation.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "Report";
+        final String superTypeName = "DataSet";
 
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
                 name,
