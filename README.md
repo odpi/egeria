@@ -95,3 +95,4 @@ bound to any corporate affiliation.
 Participants are bound the ODPi's [Code of Conduct](https://github.com/odpi/specs/wiki/ODPi-Code-of-Conduct).
 The governance of the project is described in more detail in the
 [Egeria Operations](./Egeria-Operations.md).
+
