@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.virtualdataconnector.virtualiser;
 
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import org.odpi.openmetadata.virtualdataconnector.virtualiser.ffdc.VirtualiserCheckedException;
 import org.odpi.openmetadata.virtualdataconnector.virtualiser.gaian.GaianQueryConstructor;
 import org.odpi.openmetadata.virtualdataconnector.virtualiser.kafka.KafkaVirtualiserConsumer;
@@ -19,8 +18,6 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.util.Collections;
 import java.util.Properties;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * Virtualiser is used to update Gaian and create business view and technical view for Information View OMAS
@@ -43,7 +40,6 @@ public class KafkaVirtualiser{
     @Autowired
     private GaianQueryConstructor gaianQueryConstructor;
 
-    private static final String THREADNAME_PREFIX = KafkaVirtualiser.class.getSimpleName();
 
     /**
      * use Kafka consumer to listen to Information View Out Topic
@@ -61,10 +57,9 @@ public class KafkaVirtualiser{
 
         final Consumer<Long, String> consumer = new KafkaConsumer<>(props);
         consumer.subscribe(Collections.singletonList(informationViewOutTopic));
-        ExecutorService executorService = Executors.newFixedThreadPool(1, new ThreadFactoryBuilder()
-                .setNameFormat(THREADNAME_PREFIX + " thread-%d").build());
-        executorService.submit(new KafkaVirtualiserConsumer("KafkaVirtualiserConsumer",
-                consumer, gaianQueryConstructor, viewsConstructor));
+        KafkaVirtualiserConsumer kafkaVirtualiserConsumer = new KafkaVirtualiserConsumer("KafkaVirtualiserConsumer", consumer, gaianQueryConstructor, viewsConstructor);
+        Thread thread = new Thread(kafkaVirtualiserConsumer);
+        thread.start();
 
     }
 

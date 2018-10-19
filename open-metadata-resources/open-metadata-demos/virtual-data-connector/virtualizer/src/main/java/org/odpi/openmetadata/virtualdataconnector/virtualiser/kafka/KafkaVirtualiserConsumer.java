@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.virtualdataconnector.virtualiser.kafka;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import kafka.utils.ShutdownableThread;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -24,7 +23,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * to ViewsConstructor and GaianQueryConstructor.
  */
 
-public class KafkaVirtualiserConsumer extends ShutdownableThread {
+public class KafkaVirtualiserConsumer implements Runnable {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
     private final AtomicBoolean shouldRun = new AtomicBoolean(false);
@@ -34,16 +33,14 @@ public class KafkaVirtualiserConsumer extends ShutdownableThread {
     private ViewsConstructor viewsConstructor;
 
     public KafkaVirtualiserConsumer(String name, Consumer consumer, GaianQueryConstructor gaianQueryConstructor, ViewsConstructor viewsConstructor) {
-        super(name, false);
         this.consumer = consumer;
         this.gaianQueryConstructor = gaianQueryConstructor;
         this.viewsConstructor = viewsConstructor;
     }
 
     @Override
-    public void doWork() {
+    public void run() {
 
-        final String methodName = "doWork";
         shouldRun.set(true);
 
         try {
