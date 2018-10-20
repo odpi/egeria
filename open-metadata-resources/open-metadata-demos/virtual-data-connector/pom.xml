@@ -26,6 +26,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>igc-repository-proxy</module>
+        <module>virtualizer</module>
     </modules>
 
 </project>
