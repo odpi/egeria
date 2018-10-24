@@ -25,15 +25,4 @@ public class Connection implements Serializable {
     private String displayName;
     private String description;
     private String guid;
-
-    private String connectorName;
-    private String connectorDescription;
-    private String connectorProvider;
-
-    private String dataSetName;
-    private Column column;
-    private Table table;
-    private Database database;
-    private Schema schema;
-    private Endpoint endpoint;
 }
