@@ -639,7 +639,8 @@ public class SubjectAreaOmrsBeanGenerator {
 
                                     attrLine = attrLine.replaceAll(GeneratorUtilities.getRegexToken("uAttrType"), uppercaseattributeType);
 
-                                    //TODO do other types date and int and array are used in the json models
+                                    //TODO do other types as required
+                                    // AttrValue is used as the default value for the unit tests
                                     String attrValue = "";
                                     if (uppercaseattributeType.equals("STRING")) {
                                         attrLine = attrLine.replaceAll(GeneratorUtilities.getRegexToken("AttrType"), "String");
@@ -651,6 +652,9 @@ public class SubjectAreaOmrsBeanGenerator {
                                     } else if (uppercaseattributeType.equals("INT")) {
                                         attrLine = attrLine.replaceAll(GeneratorUtilities.getRegexToken("AttrType"), "Integer");
                                         attrValue = "new Integer(" + attributeNumber + ")";
+                                    } else if (uppercaseattributeType.equals("BOOLEAN")) {
+                                        attrLine = attrLine.replaceAll(GeneratorUtilities.getRegexToken("AttrType"), "Boolean");
+                                        attrValue = "new Boolean(true)";
                                     } else {
                                         attrValue = "";
                                     }

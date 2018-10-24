@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 
 package org.odpi.openmetadata.accessservices.informationview.events;
 
@@ -10,36 +11,20 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
-@JsonInclude(JsonInclude.Include.ALWAYS)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ConnectionDetails {
 
-    private String url;
     private String networkAddress;
     private String protocol;
+    private String user;
     private String connectorProviderName;
     private String connectorProviderQualifiedName;
-    private String gaianNodeName;
     private String connectionQualifiedName;
     private String endpointQualifiedName;
+    private String type;
 
-    /**
-     * Return the url of the connection
-     *
-     * @return url of the connection
-     */
-    public String getUrl() {
-        return url;
-    }
 
-    /**
-     * set up the url of the connection
-     *
-     * @param url - url of the connection
-     */
-    public void setUrl(String url) {
-        this.url = url;
-    }
 
     /**
      * Return the address of the connection
@@ -78,105 +63,113 @@ public class ConnectionDetails {
     }
 
     /**
-     * Return the connector provider name of the connection
+     * Return the connector provider foreignKeyName of the connection
      *
-     * @return connector provider name of the connection
+     * @return connector provider foreignKeyName of the connection
      */
     public String getConnectorProviderName() {
         return connectorProviderName;
     }
 
     /**
-     * set up the connector provider name of the connection
+     * set up the connector provider foreignKeyName of the connection
      *
-     * @param connectorProviderName - connector provider name of the connection
+     * @param connectorProviderName - connector provider foreignKeyName of the connection
      */
     public void setConnectorProviderName(String connectorProviderName) {
         this.connectorProviderName = connectorProviderName;
     }
 
-    /**
-     * Return the gaian node name of the connection
-     *
-     * @return gaian node name of the connection
-     */
-    public String getGaianNodeName() {
-        return gaianNodeName;
-    }
 
     /**
-     * set up the gaian node name of the connection
+     * Return the connector provider qualified foreignKeyName for the connection
      *
-     * @param gaianNodeName - gaian node name of the connection
-     */
-    public void setGaianNodeName(String gaianNodeName) {
-        this.gaianNodeName = gaianNodeName;
-    }
-
-    /**
-     * Return the connector provider qualified name for the connection
-     *
-     * @return connector provider qualified name
+     * @return connector provider qualified foreignKeyName
      */
     public String getConnectorProviderQualifiedName() {
         return connectorProviderQualifiedName;
     }
 
     /**
-     * set up the connector provider qualified name of the connection
+     * set up the connector provider qualified foreignKeyName of the connection
      *
-     * @param connectorProviderQualifiedName - qualified name of the connector provider
+     * @param connectorProviderQualifiedName - qualified foreignKeyName of the connector provider
      */
     public void setConnectorProviderQualifiedName(String connectorProviderQualifiedName) {
         this.connectorProviderQualifiedName = connectorProviderQualifiedName;
     }
     /**
-     * Return the qualified name of the connection
+     * Return the qualified foreignKeyName of the connection
      *
-     * @return qualified name of the connection
+     * @return qualified foreignKeyName of the connection
      */
     public String getConnectionQualifiedName() {
         return connectionQualifiedName;
     }
 
     /**
-     * set up the connection qualified name
+     * set up the connection qualified foreignKeyName
      *
-     * @param connectionQualifiedName - qualified name of the connection
+     * @param connectionQualifiedName - qualified foreignKeyName of the connection
      */
     public void setConnectionQualifiedName(String connectionQualifiedName) {
         this.connectionQualifiedName = connectionQualifiedName;
     }
 
     /**
-     * Return the qualified name of the endpoint
+     * Return the qualified foreignKeyName of the endpoint
      *
-     * @return qualified name of the endpoint
+     * @return qualified foreignKeyName of the endpoint
      */
     public String getEndpointQualifiedName() {
         return endpointQualifiedName;
     }
 
     /**
-     * set up the endpoint qualified name
+     * set up the endpoint qualified foreignKeyName
      *
-     * @param endpointQualifiedName - qualified name of the endpoint
+     * @param endpointQualifiedName - qualified foreignKeyName of the endpoint
      */
     public void setEndpointQualifiedName(String endpointQualifiedName) {
         this.endpointQualifiedName = endpointQualifiedName;
     }
 
+    /**
+     *
+     * @return user to use ro connect
+     */
+    public String getUser() {
+        return user;
+    }
+
+    /**
+     *
+     * @param user to connect
+     */
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+
     @Override
     public String toString() {
         return "ConnectionDetails{" +
-                "url='" + url + '\'' +
                 ", networkAddress='" + networkAddress + '\'' +
                 ", protocol='" + protocol + '\'' +
                 ", connectorProviderName='" + connectorProviderName + '\'' +
                 ", connectorProviderQualifiedName='" + connectorProviderQualifiedName + '\'' +
-                ", gaianNodeName='" + gaianNodeName + '\'' +
                 ", connectionQualifiedName='" + connectionQualifiedName + '\'' +
                 ", endpointQualifiedName='" + endpointQualifiedName + '\'' +
+                ", user='" + user + '\'' +
+                ", type='" + type + '\'' +
                 '}';
     }
 }

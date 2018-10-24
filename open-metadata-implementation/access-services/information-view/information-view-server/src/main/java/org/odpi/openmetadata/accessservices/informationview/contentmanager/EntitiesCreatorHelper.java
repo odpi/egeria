@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 
 package org.odpi.openmetadata.accessservices.informationview.contentmanager;
 
@@ -10,6 +11,7 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
@@ -17,6 +19,16 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,6 +50,7 @@ public class EntitiesCreatorHelper {
     /**
      * Returns the newly created entity with the specified properties
      *
+     * @param sourceName
      * @param metadataCollectionId unique identifier for the metadata collection used for adding entities
      * @param userName             name of the user performing the add operation
      * @param typeName             of the entity type def
@@ -48,15 +61,18 @@ public class EntitiesCreatorHelper {
     private EntityDetail addEntity(String metadataCollectionId,
                                    String userName,
                                    String typeName,
-                                   InstanceProperties instanceProperties) throws Exception {
+                                   InstanceProperties instanceProperties,
+                                   List<Classification> classifications,
+                                   String sourceName) throws Exception {
         EntityDetail entity;
         try {
             entity = enterpriseConnector.getRepositoryHelper()
-                    .getSkeletonEntity("",
+                    .getSkeletonEntity(sourceName,
                             metadataCollectionId,
                             InstanceProvenanceType.LOCAL_COHORT,
                             userName,
                             typeName);
+            entity.setClassifications(classifications);
             return enterpriseConnector.getMetadataCollection()
                     .addEntity(userName,
                             entity.getType().getTypeDefGUID(),
@@ -178,7 +194,7 @@ public class EntitiesCreatorHelper {
      */
     private EntityDetail checkEntities(List<EntityDetail> existingEntities, String qualifiedName) {
         if (existingEntities != null && !existingEntities.isEmpty())
-            return existingEntities.stream().filter(e -> qualifiedName.equals(EntityPropertiesUtils.getStringValueForProperty(e.getProperties(), Constants.QUALIFIED_NAME))).findFirst().get();
+            return existingEntities.stream().filter(e -> qualifiedName.equals(EntityPropertiesUtils.getStringValueForProperty(e.getProperties(), Constants.QUALIFIED_NAME))).findFirst().orElse(null);
         return null;
     }
 
@@ -195,19 +211,7 @@ public class EntitiesCreatorHelper {
                                          String guid2) throws Exception {
         List<Relationship> relationships;
         try {
-            String relationshipTypeGuid = enterpriseConnector.getMetadataCollection()
-                    .getTypeDefByName(Constants.USER_ID, relationshipType)
-                    .getGUID();
-            relationships = enterpriseConnector.getMetadataCollection()
-                    .getRelationshipsForEntity(Constants.USER_ID,
-                            guid2,
-                            relationshipTypeGuid,
-                            0,
-                            Collections.singletonList(InstanceStatus.ACTIVE),
-                            null,
-                            null,
-                            null,
-                            0);
+            relationships = getRelationships(relationshipType, guid2);
         } catch (Exception e) {
             InformationViewErrorCode auditCode = InformationViewErrorCode.GET_RELATIONSHIP_EXCEPTION;
             auditLog.logException("getRelationship",
@@ -228,6 +232,24 @@ public class EntitiesCreatorHelper {
                     return relationship;
             }
         return null;
+    }
+
+    public List<Relationship> getRelationships(String relationshipType, String guid2) throws InvalidParameterException, RepositoryErrorException, TypeDefNotKnownException, UserNotAuthorizedException, TypeErrorException, EntityNotKnownException, PropertyErrorException, PagingErrorException, FunctionNotSupportedException {
+        List<Relationship> relationships;
+        String relationshipTypeGuid = enterpriseConnector.getMetadataCollection()
+                .getTypeDefByName(Constants.USER_ID, relationshipType)
+                .getGUID();
+        relationships = enterpriseConnector.getMetadataCollection()
+                .getRelationshipsForEntity(Constants.USER_ID,
+                        guid2,
+                        relationshipTypeGuid,
+                        0,
+                        Collections.singletonList(InstanceStatus.ACTIVE),
+                        null,
+                        null,
+                        null,
+                        0);
+        return relationships;
     }
 
     /**
@@ -256,11 +278,28 @@ public class EntitiesCreatorHelper {
     public EntityDetail addEntity(String typeName,
                                   String qualifiedName,
                                   InstanceProperties properties) throws Exception {
+        return addEntity(typeName, qualifiedName, properties, null);
+    }
+
+    /**
+     * Returns the entity of the given type with the specified qualified name; if it doesn't already exists, it is created with the provided instance properties
+     *
+     * @param typeName        is the entity type
+     * @param qualifiedName   - qualified name property of the entity, unique for the same entity type
+     * @param properties      specific to the entity type
+     * @param classifications classifications to be added to entity
+     * @return the existing entity with the given qualified name or the newly created entity with the given qualified name
+     * @throws Exception
+     */
+    public EntityDetail addEntity(String typeName,
+                                  String qualifiedName,
+                                  InstanceProperties properties,
+                                  List<Classification> classifications) throws Exception {
         EntityDetail entityDetail;
 
         entityDetail = getEntity(typeName, qualifiedName);
         if (entityDetail == null) {
-            entityDetail = addEntity("", Constants.USER_ID, typeName, properties);
+            entityDetail = addEntity("", Constants.USER_ID, typeName, properties, classifications, Constants.INFORMATION_VIEW_OMAS_NAME);
             log.info("Entity with qualified name {} added", qualifiedName);
             log.info("Entity: {}", entityDetail);
         } else {
@@ -317,5 +356,35 @@ public class EntitiesCreatorHelper {
         return instanceProperties;
     }
 
+    public Classification buildClassification(String classificationTypeName, String entityTypeName, InstanceProperties classificationProperties) throws Exception {
+        try {
+            Classification classification = enterpriseConnector.getRepositoryHelper()
+                    .getSkeletonClassification("",
+                            Constants.USER_ID,
+                            classificationTypeName,
+                            entityTypeName);
+            classification.setProperties(classificationProperties);
+            return classification;
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            InformationViewErrorCode auditCode = InformationViewErrorCode.ADD_CLASSIFICATION;
+            auditLog.logException("getClassification",
+                    auditCode.getErrorMessageId(),
+                    OMRSAuditLogRecordSeverity.EXCEPTION,
+                    auditCode.getFormattedErrorMessage(classificationTypeName, entityTypeName),
+                    e.getMessage(),
+                    auditCode.getSystemAction(),
+                    auditCode.getUserAction(),
+                    e);
+
+            throw new Exception(e);
+        }
+    }
+
+    public EntityDetail getEntity(String guid) throws RepositoryErrorException, UserNotAuthorizedException, EntityProxyOnlyException, InvalidParameterException, EntityNotKnownException {
+
+        return enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, guid);
+
+    }
 
 }
