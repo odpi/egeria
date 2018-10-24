@@ -18,6 +18,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @Data
 public class Database {
 
+    private String dataSetName;
     private String name;
     private String guid;
     private String description;

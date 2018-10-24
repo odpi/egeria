@@ -6,21 +6,33 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
+import java.io.Serializable;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
-/**
- * A Schema object provides information about a data asset.
- */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
-public class Schema {
+public class ColumnContext implements Serializable {
 
-    private String name;
-    private String guid;
-    private String encodingStandard;
-    private String versionNr;
-    private String author;
+    private static final long serialVersionUID = 1L;
+
+    private String columnGuid;
+    private String columnQualifiedName;
+    private String columnAttributeName;
+    private String columnType;
+    private String columnQualifiedNameColumnType;
+
+    private String tableName;
+    private String tableQualifiedName;
+    private String tableTypeQualifiedName;
+
+    private String schemaName;
+    private String schemaQualifiedName;
+    private String schemaTypeQualifiedName;
+
+    private String databaseName;
+    private String databaseQualifiedName;
 }
