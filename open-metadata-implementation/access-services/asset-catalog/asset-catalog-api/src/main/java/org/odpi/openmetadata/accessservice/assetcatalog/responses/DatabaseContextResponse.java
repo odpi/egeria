@@ -9,6 +9,7 @@ import lombok.EqualsAndHashCode;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.DatabaseContext;
 
 import java.io.Serializable;
+import java.util.List;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -20,5 +21,5 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @Data
 public class DatabaseContextResponse extends AssetCatalogOMASAPIResponse implements Serializable {
 
-    DatabaseContext context;
+    List<DatabaseContext> databaseContexts;
 }

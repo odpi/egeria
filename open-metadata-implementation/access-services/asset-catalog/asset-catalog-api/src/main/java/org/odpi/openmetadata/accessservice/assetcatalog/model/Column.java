@@ -20,6 +20,9 @@ public class Column {
 
     private String guid;
     private String name;
+    private String attributeName;
+
     private DataType type;
+    private String qualifiedNameColumnType;
 
 }

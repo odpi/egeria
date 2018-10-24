@@ -22,5 +22,5 @@ public class TableContext {
     private String tableQualifiedName;
     private String tableTypeQualifiedName;
 
-    List<ColumnType> columns = new ArrayList<>();
+    List<Column> columns = new ArrayList<>();
 }
