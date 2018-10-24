@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.informationview.contentmanager;
 
 
@@ -6,11 +7,12 @@ import org.odpi.openmetadata.accessservices.informationview.events.BusinessTerm;
 import org.odpi.openmetadata.accessservices.informationview.events.ColumnContextEvent;
 import org.odpi.openmetadata.accessservices.informationview.events.ColumnDetails;
 import org.odpi.openmetadata.accessservices.informationview.events.ConnectionDetails;
+import org.odpi.openmetadata.accessservices.informationview.events.ForeignKey;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesUtils;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.MapPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
@@ -73,7 +75,7 @@ public class ColumnContextEventBuilder {
     /**
      * Returns the list of column contexts populated with table type details
      *
-     * @param guidColumn                     of the column entity
+     * @param guidColumn               of the column entity
      * @param relationshipToParentType is the link to the table type entity
      * @return the list of contexts with table type details populated
      * @throws InvalidParameterException
@@ -153,6 +155,13 @@ public class ColumnContextEventBuilder {
             columnDetails.setPosition(EntityPropertiesUtils.getIntegerValueForProperty(columnEntity.getProperties(), Constants.ELEMENT_POSITION_NAME));
             columnDetails.setGuid(columnEntity.getGUID());
             columnDetails.setBusinessTerm(getBusinessTermAssociated(columnEntity));
+            columnDetails.setPrimaryKeyName(getPrimaryKeyClassification(columnEntity));//TODO
+            if (columnDetails.getPrimaryKeyName() != null && !columnDetails.getPrimaryKeyName().isEmpty()) {
+                columnDetails.setPrimaryKey(true);
+            }
+            columnDetails.setNullable(EntityPropertiesUtils.getBooleanValueForProperty(columnEntity.getProperties(), Constants.IS_NULLABLE));
+            columnDetails.setUnique(EntityPropertiesUtils.getBooleanValueForProperty(columnEntity.getProperties(), Constants.IS_UNIQUE));
+            columnDetails.setForeignKey(getForeignKey(columnEntity));
             EntityDetail columnTypeUniverse = getColumnType(columnEntity);
             columnDetails.setType(EntityPropertiesUtils.getStringValueForProperty(columnTypeUniverse.getProperties(), Constants.DATA_TYPE));
             columnDetails.setQualifiedNameColumnType(EntityPropertiesUtils.getStringValueForProperty(columnTypeUniverse.getProperties(), Constants.QUALIFIED_NAME));
@@ -161,6 +170,55 @@ public class ColumnContextEventBuilder {
         }
 
         return allColumns;
+    }
+
+    private ForeignKey getForeignKey(EntityDetail columnEntity) throws RepositoryErrorException, InvalidParameterException, TypeDefNotKnownException, UserNotAuthorizedException, TypeErrorException, FunctionNotSupportedException, EntityNotKnownException, PagingErrorException, PropertyErrorException, EntityProxyOnlyException, RelationshipNotKnownException {
+
+        log.debug("Load foreign keys for entity with guid {}", columnEntity.getGUID());
+        String relationshipTypeGuid = enterpriseConnector.getMetadataCollection().getTypeDefByName(Constants.USER_ID, Constants.FOREIGN_KEY).getGUID();
+        List<Relationship> columnForeignKeys = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.USER_ID, columnEntity.getGUID(), relationshipTypeGuid, 0, null, null, null, null, 0);
+        if (columnForeignKeys == null || columnForeignKeys.isEmpty()) {
+            return null;
+        }
+
+        Relationship relationship = columnForeignKeys.get(0);
+        if(relationship.getEntityTwoProxy().getGUID().equals(columnEntity.getGUID())){
+            return null;
+        }
+
+        EntityDetail foreignKeyEntity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, getOtherEntityGuid(columnEntity.getGUID(), relationship));
+
+        ForeignKey foreignKey = new ForeignKey();
+
+        foreignKey.setColumnGuid(relationship.getEntityTwoProxy().getGUID());
+        foreignKey.setForeignKeyName(EntityPropertiesUtils.getStringValueForProperty(foreignKeyEntity.getProperties(), Constants.NAME));
+        EntityDetail otherColumnEntity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, relationship.getEntityTwoProxy().getGUID());
+        foreignKey.setColumnName(EntityPropertiesUtils.getStringValueForProperty(otherColumnEntity.getProperties(), Constants.NAME));
+        foreignKey.setTableName(getTableForColumn(otherColumnEntity));
+        return foreignKey;
+
+
+    }
+
+    private String getTableForColumn(EntityDetail columnEntity) throws InvalidParameterException, TypeDefNotKnownException, PropertyErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, EntityProxyOnlyException, UserNotAuthorizedException, TypeErrorException, RepositoryErrorException {
+        log.debug("Load table for column with guid {}", columnEntity.getGUID());
+        String relationshipTypeGuid = enterpriseConnector.getMetadataCollection().getTypeDefByName(Constants.USER_ID, Constants.ATTRIBUTE_FOR_SCHEMA).getGUID();
+        Relationship columnToTableType = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.USER_ID, columnEntity.getGUID(), relationshipTypeGuid, 0, null, null, null, null, 0).get(0);
+        EntityDetail tableTypeEntity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, getOtherEntityGuid(columnEntity.getGUID(), columnToTableType));
+
+        relationshipTypeGuid = enterpriseConnector.getMetadataCollection().getTypeDefByName(Constants.USER_ID, Constants.SCHEMA_ATTRIBUTE_TYPE).getGUID();
+        Relationship relationshipToTable = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.USER_ID, tableTypeEntity.getGUID(), relationshipTypeGuid, 0, null, null, null, null, 0).get(0);
+        EntityDetail tableEntity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, getOtherEntityGuid(tableTypeEntity.getGUID(), relationshipToTable));
+
+        return EntityPropertiesUtils.getStringValueForProperty(tableEntity.getProperties(), Constants.NAME);
+    }
+
+    private String getPrimaryKeyClassification(EntityDetail columnEntity) {
+        if(columnEntity.getClassifications() == null || columnEntity.getClassifications().isEmpty()){
+            return null;
+        }
+        Classification classification = columnEntity.getClassifications().stream().filter(e -> e.getName().equals(Constants.PRIMARY_KEY)).findFirst().orElse(null);
+        return classification != null ? EntityPropertiesUtils.getStringValueForProperty(classification.getProperties(), Constants.NAME) : null;
     }
 
     /**
@@ -207,6 +265,14 @@ public class ColumnContextEventBuilder {
             businessTerm.setGuid(btGuid);
             businessTerm.setName(EntityPropertiesUtils.getStringValueForProperty(btDetail.getProperties(), Constants.DISPLAY_NAME));
             businessTerm.setQuery(EntityPropertiesUtils.getStringValueForProperty(btDetail.getProperties(), Constants.QUERY));
+            businessTerm.setDisplayName(EntityPropertiesUtils.getStringValueForProperty(btDetail.getProperties(), Constants.DISPLAY_NAME));
+            businessTerm.setAbbreviation(EntityPropertiesUtils.getStringValueForProperty(btDetail.getProperties(), Constants.ABBREVIATION));
+            businessTerm.setExamples(EntityPropertiesUtils.getStringValueForProperty(btDetail.getProperties(), Constants.EXAMPLES));
+            businessTerm.setDescription(EntityPropertiesUtils.getStringValueForProperty(btDetail.getProperties(), Constants.DESCRIPTION));
+            businessTerm.setUsage(EntityPropertiesUtils.getStringValueForProperty(btDetail.getProperties(), Constants.USAGE));
+            businessTerm.setSummary(EntityPropertiesUtils.getStringValueForProperty(btDetail.getProperties(), Constants.SUMMARY));
+            businessTerm.setQualifiedName(EntityPropertiesUtils.getStringValueForProperty(btDetail.getProperties(), Constants.QUALIFIED_NAME));
+
         }
         return businessTerm;
     }
@@ -361,17 +427,16 @@ public class ColumnContextEventBuilder {
         ColumnContextEvent columnContextEvent = new ColumnContextEvent();
         ConnectionDetails connectionDetails = new ConnectionDetails();
         columnContextEvent.setConnectionDetails(connectionDetails);
-        String address = EntityPropertiesUtils.getStringValueForProperty(endpointEntity.getProperties(), Constants.ADDRESS);
+        String address = EntityPropertiesUtils.getStringValueForProperty(endpointEntity.getProperties(), Constants.NETWORK_ADDRESS);
 
         connectionDetails.setNetworkAddress(address);
         connectionDetails.setProtocol(EntityPropertiesUtils.getStringValueForProperty(endpointEntity.getProperties(), Constants.PROTOCOL));
-        connectionDetails.setUrl(EntityPropertiesUtils.getStringValueForProperty(endpointEntity.getProperties(), Constants.URL));
         connectionDetails.setEndpointQualifiedName(EntityPropertiesUtils.getStringValueForProperty(endpointEntity.getProperties(), Constants.QUALIFIED_NAME));
 
-        MapPropertyValue additionalProperties = EntityPropertiesUtils.getMapValueForProperty(endpointEntity.getProperties(), Constants.ADDITIONAL_PROPERTIES);
-        if (additionalProperties != null && additionalProperties.getMapValues() != null) {
-            connectionDetails.setGaianNodeName(EntityPropertiesUtils.getStringValueForProperty(additionalProperties.getMapValues(), Constants.GAIAN_DB_NODE_NAME));
-        }
+//        MapPropertyValue additionalProperties = EntityPropertiesUtils.getMapValueForProperty(endpointEntity.getProperties(), Constants.ADDITIONAL_PROPERTIES);
+//        if (additionalProperties != null && additionalProperties.getMapValues() != null) {
+//            connectionDetails.setGaianNodeName(EntityPropertiesUtils.getStringValueForProperty(additionalProperties.getMapValues(), Constants.GAIAN_DB_NODE_NAME));
+//        }
         return columnContextEvent;
     }
 

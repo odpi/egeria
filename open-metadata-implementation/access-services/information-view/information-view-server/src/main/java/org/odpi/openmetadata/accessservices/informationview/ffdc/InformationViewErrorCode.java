@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 
 package org.odpi.openmetadata.accessservices.informationview.ffdc;
 
@@ -46,6 +47,10 @@ public enum InformationViewErrorCode {
             "Verify the topic event."),
     PARSE_EVENT("OMAS-INFORMATIONVIEW-009",
             "Event could not be parsed",
+            "The system is unable to process the request.",
+            "Verify the topic event."),
+    ADD_CLASSIFICATION("OMAS-INFORMATIONVIEW-010",
+            "Unable to create classification {0} for entity of type {1}",
             "The system is unable to process the request.",
             "Verify the topic event.");
     private static final Logger log = LoggerFactory.getLogger(InformationViewErrorCode.class);

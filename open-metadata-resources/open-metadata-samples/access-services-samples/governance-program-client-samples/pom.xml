@@ -8,7 +8,7 @@
     <parent>
         <artifactId>access-services-samples</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>0.2-SNAPSHOT</version>
+        <version>0.3-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>

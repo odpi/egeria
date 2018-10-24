@@ -16,7 +16,7 @@
 
     <groupId>org.odpi.egeria</groupId>
     <artifactId>egeria</artifactId>
-    <version>0.2-SNAPSHOT</version>
+    <version>0.3-SNAPSHOT</version>
 
     <url>https://odpi.github.io/Egeria</url>
 
@@ -85,6 +85,7 @@
         <module>open-metadata-distribution</module>
         <module>open-metadata-publication</module>
         <module>open-metadata-resources</module>
+        <module>open-metadata-test</module>
 
     </modules>
 
@@ -93,7 +94,7 @@
     </prerequisites>
 
     <properties>
-        <open-metadata.version>0.2-SNAPSHOT</open-metadata.version>
+        <open-metadata.version>0.3-SNAPSHOT</open-metadata.version>
 
         <!-- Level of Java  -->
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -266,6 +267,8 @@
                         <exclude>**/*.registrystore</exclude>
                         <exclude>**/*.results</exclude>
                         <exclude>**/target/**</exclude>
+                        <exclude>**/venv/**</exclude>
+                        <exclude>**/.repository/**</exclude>
                     </excludes>
                     <licenseFamilies>
                         <licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">
@@ -316,6 +319,9 @@
     <profiles>
         <profile>
             <id>release</id>
+            <properties>
+                <gpg.executable>gpg2</gpg.executable>
+            </properties>
             <build>
                 <plugins>
 

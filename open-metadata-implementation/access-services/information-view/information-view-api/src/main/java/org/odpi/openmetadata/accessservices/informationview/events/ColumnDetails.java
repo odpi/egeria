@@ -1,16 +1,18 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 
 package org.odpi.openmetadata.accessservices.informationview.events;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
-@JsonInclude(JsonInclude.Include.ALWAYS)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ColumnDetails {
 
@@ -23,20 +25,26 @@ public class ColumnDetails {
     private String type;
     private String qualifiedNameColumnType;
     private BusinessTerm businessTerm;
+    private ForeignKey foreignKey;
+    private String primaryKeyName;
+    private boolean isUnique;
+    private boolean isPrimaryKey;
+    private boolean isNullable;
+
 
     /**
-     * Return the name of the column
+     * Return the foreignKeyName of the column
      *
-     * @return name of the column
+     * @return foreignKeyName of the column
      */
     public String getAttributeName() {
         return attributeName;
     }
 
     /**
-     * set up the name of the column
+     * set up the foreignKeyName of the column
      *
-     * @param attributeName - name of the column
+     * @param attributeName - foreignKeyName of the column
      */
     public void setAttributeName(String attributeName) {
         this.attributeName = attributeName;
@@ -146,39 +154,83 @@ public class ColumnDetails {
     }
 
     /**
-     * Return the qualified name of the column
+     * Return the qualified foreignKeyName of the column
      *
-     * @return qualified name of the column
+     * @return qualified foreignKeyName of the column
      */
     public String getQualifiedName() {
         return qualifiedName;
     }
 
     /**
-     * set up the qualified name of the column
+     * set up the qualified foreignKeyName of the column
      *
-     * @param qualifiedName - qualified name of the column
+     * @param qualifiedName - qualified foreignKeyName of the column
      */
     public void setQualifiedName(String qualifiedName) {
         this.qualifiedName = qualifiedName;
     }
 
     /**
-     * Return the qualified name of the column type
+     * Return the qualified foreignKeyName of the column type
      *
-     * @return qualified name of the column type
+     * @return qualified foreignKeyName of the column type
      */
     public String getQualifiedNameColumnType() {
         return qualifiedNameColumnType;
     }
 
     /**
-     * set up the qualified name of the column type
+     * set up the qualified foreignKeyName of the column type
      *
-     * @param qualifiedNameColumnType - qualified name of the column type
+     * @param qualifiedNameColumnType - qualified foreignKeyName of the column type
      */
     public void setQualifiedNameColumnType(String qualifiedNameColumnType) {
         this.qualifiedNameColumnType = qualifiedNameColumnType;
+    }
+
+
+    public String getPrimaryKeyName() {
+        return primaryKeyName;
+    }
+
+    public void setPrimaryKeyName(String primaryKeyName) {
+        this.primaryKeyName = primaryKeyName;
+    }
+
+    public ForeignKey getForeignKey() {
+        return foreignKey;
+    }
+
+    public void setForeignKey(ForeignKey foreignKey) {
+        this.foreignKey = foreignKey;
+    }
+
+    @JsonProperty("isUnique")
+    public boolean isUnique() {
+        return isUnique;
+    }
+
+    public void setUnique(boolean unique) {
+        isUnique = unique;
+    }
+
+    @JsonProperty("isPrimaryKey")
+    public boolean isPrimaryKey() {
+        return isPrimaryKey;
+    }
+
+    public void setPrimaryKey(boolean primaryKey) {
+        isPrimaryKey = primaryKey;
+    }
+
+    @JsonProperty("isNullable")
+    public boolean isNullable() {
+        return isNullable;
+    }
+
+    public void setNullable(boolean nullable) {
+        isNullable = nullable;
     }
 
     @Override
