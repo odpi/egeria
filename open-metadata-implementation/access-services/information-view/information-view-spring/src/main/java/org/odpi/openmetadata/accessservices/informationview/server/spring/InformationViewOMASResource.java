@@ -4,9 +4,9 @@ package org.odpi.openmetadata.accessservices.informationview.server.spring;
 
 
 import org.odpi.openmetadata.accessservices.informationview.events.ReportRequestBody;
+import org.odpi.openmetadata.accessservices.informationview.responses.VoidResponse;
 import org.odpi.openmetadata.accessservices.informationview.server.InformationViewOMASRegistration;
 import org.odpi.openmetadata.accessservices.informationview.server.InformationViewRestServices;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,9 +27,9 @@ public class InformationViewOMASResource {
 
 
     @RequestMapping(method = RequestMethod.POST, path = "/report")
-    public void submitReport(@PathVariable("userId") String userId,
-                             @RequestBody ReportRequestBody requestBody) {
-        restAPI.submitReport(userId, requestBody);
+    public VoidResponse submitReport(@PathVariable("userId") String userId,
+                                     @RequestBody ReportRequestBody requestBody) {
+        return restAPI.submitReport(userId, requestBody);
     }
 
 }
