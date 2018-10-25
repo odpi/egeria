@@ -52,7 +52,11 @@ public enum InformationViewErrorCode {
     ADD_CLASSIFICATION("OMAS-INFORMATIONVIEW-010",
             "Unable to create classification {0} for entity of type {1}",
             "The system is unable to process the request.",
-            "Verify the topic event.");
+            "Verify the topic event."),
+    REPORT_CREATION_EXCEPTION("OMAS-INFORMATIONVIEW-011",
+            "Unable to create report based on received json {0}",
+            "The system is unable to process the request.",
+            "Verify the post request.");
     private static final Logger log = LoggerFactory.getLogger(InformationViewErrorCode.class);
     private String errorMessageId;
     private String errorMessage;
