@@ -119,16 +119,17 @@ public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector {
      * Query IGC for more information about an asset.
      *
      * @param igcRID The techncial ID of the asset.
+     * @param igcURL
+     * @param igcAuthorization
      * @return IGCObject
      */
-    public IGCObject genericIGCQuery(String igcRID) {
+    public IGCObject genericIGCQuery(String igcRID, String igcURL, String igcAuthorization) {
+        String url = igcURL + igcRID;
 
-        String url = this.connectionBean.getAdditionalProperties().get("igcApiGet") + igcRID;
-
-        return getIgcObject(url);
+        return getIgcObject(url, igcAuthorization);
     }
 
-    public IGCObject getDatabaseColumns(String igcRID, Integer pageSize) {
+    public IGCObject getDatabaseColumns(String igcRID, Integer pageSize, String igcAuthorization) {
 
         if (pageSize == null) {
             pageSize = DEFAULT_PAGE_SIZE;
@@ -136,41 +137,40 @@ public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector {
         String url = this.connectionBean.getAdditionalProperties()
                 .get("igcApiGet") + igcRID + "/database_columns?begin=0&pageSize=" + pageSize;
 
-        IGCObject igcObjectMapper = getIgcObject(url);
+        IGCObject igcObjectMapper = getIgcObject(url, igcAuthorization);
 
         Integer numTotal = igcObjectMapper.getDatabaseColumns().getPaging().getNumTotal();
         if (pageSize < numTotal) {
             url = this.connectionBean.getAdditionalProperties()
                     .get("igcApiGet") + igcRID + "/database_columns?begin=0&pageSize=" + numTotal;
-            return getIgcObject(url);
+            return getIgcObject(url, igcAuthorization);
         }
 
         return igcObjectMapper;
     }
 
-    private IGCObject getIgcObject(String url) {
-        HttpEntity<String> entity = new HttpEntity<>(getHttpHeaders());
+    private IGCObject getIgcObject(String url, String igcAuthorization) {
+        HttpEntity<String> entity = new HttpEntity<>(getHttpHeaders(igcAuthorization));
         String resultBody = getHttpResult(url, entity);
         return (IGCObject) getIGCObjectMapper(resultBody, IGCObject.class);
     }
 
 
-    public IGCColumn getIGCColumn(String igcRID) {
+    public IGCColumn getIGCColumn(String igcRID, String igcURL, String igcAuthorization) {
+        String url = igcURL + igcRID;
 
-        String url = this.connectionBean.getAdditionalProperties().get("igcApiGet") + igcRID;
-
-        HttpEntity<String> entity = new HttpEntity<>(getHttpHeaders());
+        HttpEntity<String> entity = new HttpEntity<>(getHttpHeaders(igcAuthorization));
         String resultBody = getHttpResult(url, entity);
 
         return (IGCColumn) getIGCObjectMapper(resultBody, IGCColumn.class);
     }
 
-    private HttpHeaders getHttpHeaders() {
+    private HttpHeaders getHttpHeaders(String authorization) {
         HttpHeaders headers = new HttpHeaders();
 
         headers.set("Cache-Control", "no-cache");
-        headers.set("Authorization", "Basic " + this.connectionBean.getAdditionalProperties().get("authorization"));
-        headers.set("Proxy-Authorization", "Basic " + this.connectionBean.getAdditionalProperties().get("authorization"));
+        headers.set("Authorization", "Basic " + authorization);
+        headers.set("Proxy-Authorization", "Basic " + authorization);
         headers.set("Content-Type", "application/json");
 
         return headers;
