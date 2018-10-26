@@ -25,7 +25,7 @@
     <artifactId>access-services-user-interface</artifactId>
 
     <properties>
-        <polymer-extension></polymer-extension>
+        <polymer-extersion>polymer</polymer-extersion>
     </properties>
 
     <dependencies>
@@ -215,7 +215,7 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <polymer-extersion>.cmd</polymer-extersion>
+                <polymer-extersion>polymer.cmd</polymer-extersion>
             </properties>
         </profile>
     </profiles>
