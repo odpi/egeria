@@ -57,6 +57,8 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
     private String originatorServerType;
     private String sourceName;
     private String originatorOrganizationName;
+    private String igcURL;
+    private String igcAuthorization;
 
     /**
      * Default constructor
@@ -106,6 +108,9 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         final Properties props = new Properties();
 
         String address = this.connectionBean.getEndpoint().getAddress().split("/")[0];
+        igcURL = (String) this.connectionBean.getAdditionalProperties().get("igcApiGet");
+        igcAuthorization = (String) this.connectionBean.getAdditionalProperties().get("authorization");
+
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, address);
         props.put(ConsumerConfig.GROUP_ID_CONFIG, "kafka_IGC_Consumer");
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
@@ -174,10 +179,10 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
     }
 
     private void createSchema(String id) {
-        IGCObject igcTable = igcomrsRepositoryConnector.genericIGCQuery(id);
-        IGCObject igcEndpoint = igcomrsRepositoryConnector.genericIGCQuery(igcTable.getContext().get(0).getId());
-        IGCObject igcDatabase = igcomrsRepositoryConnector.genericIGCQuery(igcTable.getContext().get(1).getId());
-        IGCObject igcSchema = igcomrsRepositoryConnector.genericIGCQuery(igcTable.getContext().get(2).getId());
+        IGCObject igcTable = igcomrsRepositoryConnector.genericIGCQuery(id, igcURL, igcAuthorization);
+        IGCObject igcEndpoint = igcomrsRepositoryConnector.genericIGCQuery(igcTable.getContext().get(0).getId(), igcURL, igcAuthorization);
+        IGCObject igcDatabase = igcomrsRepositoryConnector.genericIGCQuery(igcTable.getContext().get(1).getId(), igcURL, igcAuthorization);
+        IGCObject igcSchema = igcomrsRepositoryConnector.genericIGCQuery(igcTable.getContext().get(2).getId(), igcURL, igcAuthorization);
 
         String tableQualifiedName = getQualifiedName(igcTable.getContext(), igcTable.getName());
         String tableTypeQualifiedName = getTypeQualifiedName(tableQualifiedName);
@@ -211,8 +216,8 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
 
         //Propagate Connection/Connection type creations and relationships
         for (Item connection : igcDatabase.getDataConnections().getItems()) {
-            IGCObject igcConnection = igcomrsRepositoryConnector.genericIGCQuery(connection.getId());
-            IGCObject igcConnectorType = igcomrsRepositoryConnector.genericIGCQuery(igcConnection.getDataConnectors().getId());
+            IGCObject igcConnection = igcomrsRepositoryConnector.genericIGCQuery(connection.getId(), igcURL, igcAuthorization);
+            IGCObject igcConnectorType = igcomrsRepositoryConnector.genericIGCQuery(igcConnection.getDataConnectors().getId(), igcURL, igcAuthorization);
 
             String connectionQualifiedName = getConnectionQualifiedName(igcConnection);
             createEntity(igcConnection, false, CONNECTION, connectionQualifiedName);
@@ -229,9 +234,9 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         }
 
         //Propagate RelationalColumns and relationships
-        IGCObject databaseColumns = igcomrsRepositoryConnector.getDatabaseColumns(id, DEFAULT_PAGE_SIZE);
+        IGCObject databaseColumns = igcomrsRepositoryConnector.getDatabaseColumns(id, DEFAULT_PAGE_SIZE, igcAuthorization);
         for (Item column : databaseColumns.getDatabaseColumns().getItems()) {
-            IGCColumn igcColumn = igcomrsRepositoryConnector.getIGCColumn(column.getId());
+            IGCColumn igcColumn = igcomrsRepositoryConnector.getIGCColumn(column.getId(), igcURL, igcAuthorization);
 
             String columnQualifiedName = getQualifiedName(igcColumn.getContext(), igcColumn.getName());
             createEntity(igcColumn, RELATIONAL_COLUMN, false, columnQualifiedName);
@@ -249,7 +254,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                     igcColumn.getDefinedForeignKeyReferences() != null) {
                 for (Item foreignKey : igcColumn.getDefinedForeignKeyReferences().getItems()) {
                     final String foreignKeyId = foreignKey.getId();
-                    IGCColumn foreignKeyRelationalColumn = igcomrsRepositoryConnector.getIGCColumn(foreignKeyId);
+                    IGCColumn foreignKeyRelationalColumn = igcomrsRepositoryConnector.getIGCColumn(foreignKeyId, igcURL, igcAuthorization);
                     String foreignKeyQualifiedName = getQualifiedName(foreignKeyRelationalColumn.getContext(), foreignKeyRelationalColumn.getName());
 
                     EntityProxy foreignKeyProxy = newEntityProxy(RELATIONAL_COLUMN, foreignKeyQualifiedName, foreignKeyId);
@@ -266,7 +271,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
      */
     private void process(IGCKafkaEvent igcKafkaEvent) {
         try {
-            IGCObject igcObject = igcomrsRepositoryConnector.genericIGCQuery(igcKafkaEvent.getAssetRID());
+            IGCObject igcObject = igcomrsRepositoryConnector.genericIGCQuery(igcKafkaEvent.getAssetRID(), igcURL, igcAuthorization);
 
             log.info("Process Asset Type: {} id = {} action = {}", igcKafkaEvent.getAssetType(), igcObject.getId(), igcKafkaEvent.getAction());
             switch (igcKafkaEvent.getAssetType()) {
@@ -275,7 +280,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                     if (igcKafkaEvent.getAction().equals("ASSIGNED_RELATIONSHIP")
                             || igcKafkaEvent.getAction().equalsIgnoreCase(MODIFY) && igcObject.getAssignedToTerms() != null) {
                         String glossaryTermID = igcObject.getAssignedToTerms().getItems().get(0).getId();
-                        IGCObject glossaryTerm = igcomrsRepositoryConnector.genericIGCQuery(glossaryTermID);
+                        IGCObject glossaryTerm = igcomrsRepositoryConnector.genericIGCQuery(glossaryTermID, igcURL, igcAuthorization);
 
                         String glossaryTermName = getGlossaryTermName(glossaryTerm);
                         String columnQualifiedName = getQualifiedName(igcObject.getContext(), igcObject.getName());
