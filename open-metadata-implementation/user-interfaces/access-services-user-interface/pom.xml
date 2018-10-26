@@ -25,7 +25,7 @@
     <artifactId>access-services-user-interface</artifactId>
 
     <properties>
-        <polymer-extersion>polymer</polymer-extersion>
+        <polymer-script>polymer</polymer-script>
     </properties>
 
     <dependencies>
@@ -143,7 +143,7 @@
                                     <goal>exec</goal>
                                 </goals>
                                 <configuration>
-                                    <executable>${pom.basedir}/tools/node_modules/.bin/{polymer-extersion}</executable>
+                                    <executable>${pom.basedir}/tools/node_modules/.bin/{polymer-script}</executable>
                                     <arguments>
                                         <argument>build</argument>
                                     </arguments>
@@ -215,7 +215,7 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <polymer-extersion>polymer.cmd</polymer-extersion>
+                <polymer-script>polymer.cmd</polymer-script>
             </properties>
         </profile>
     </profiles>
