@@ -24,6 +24,10 @@
 
     <artifactId>access-services-user-interface</artifactId>
 
+    <properties>
+        <polymer-extension></polymer-extension>
+    </properties>
+
     <dependencies>
         <!-- Spring boot -->
         <dependency>
