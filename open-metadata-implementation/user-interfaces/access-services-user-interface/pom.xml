@@ -143,9 +143,9 @@
                                     <goal>exec</goal>
                                 </goals>
                                 <configuration>
-                                    <executable>${pom.basedir}/tools/node_modules/.bin/${polymer-script}</executable>
+                                    <executable>tools/node_modules/.bin/${polymer-script}</executable>
                                     <arguments>
-                                        <argument>build</argument>
+                                        <argument> build</argument>
                                     </arguments>
                                     <workingDirectory>src/main/static</workingDirectory>
                                 </configuration>
@@ -195,6 +195,7 @@
                         <configuration>
                             <excludes>
                                 <exclude>**/node/**</exclude>
+                                <exclude>**/resources/public/**</exclude>
                                 <exclude>**/node_modules/**</exclude>
                                 <exclude>**/static/**</exclude>
                                 <exclude>**/src/*</exclude>
@@ -239,7 +240,7 @@
         </plugins>
         <resources>
             <resource>
-                <directory>src/static</directory>
+                <directory>src/main/static</directory>
                 <includes>
                     <include>build/**</include>
                 </includes>
