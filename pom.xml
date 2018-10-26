@@ -267,6 +267,9 @@
                         <exclude>**/target/**</exclude>
                         <exclude>**/venv/**</exclude>
                         <exclude>**/.repository/**</exclude>
+                        <exclude>**/charts/**/charts/**</exclude>
+                        <exclude>**/log</exclude>
+                        <exclude>**/*.lock</exclude>
                     </excludes>
                     <licenseFamilies>
                         <licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">
