@@ -819,4 +819,3 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         return typeName + TYPE;
     }
 }
-
