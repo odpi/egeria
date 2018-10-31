@@ -6,7 +6,6 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>virtualizer</artifactId>
-    <version>${open-metadata.version}</version>
     <name>Virtualizer</name>
     <description>Virtualizer updates Gaian and communicates with Information View OMAS</description>
 
@@ -124,6 +123,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
+                <version>${surefire.plugin.version}</version>
             </plugin>
 
             <plugin>
