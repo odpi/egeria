@@ -72,6 +72,10 @@ public class Term extends GovernedNode implements Serializable {
         this.glossary = glossary;
     }
 
+    /**
+     * The short description of the glossary term.
+     * @return String
+     */
     public String getSummary() {
         return summary;
     }
@@ -80,6 +84,10 @@ public class Term extends GovernedNode implements Serializable {
         this.summary = summary;
     }
 
+    /**
+     * How this glossary term is abbreviated.
+     * @return String
+     */
     public String getAbbreviation() {
         return abbreviation;
     }
@@ -88,6 +96,10 @@ public class Term extends GovernedNode implements Serializable {
         this.abbreviation = abbreviation;
     }
 
+    /**
+     * Examples of this glossary term in use.
+     * @return String
+     */
     public String getExamples() {
         return examples;
     }
@@ -96,6 +108,10 @@ public class Term extends GovernedNode implements Serializable {
         this.examples = examples;
     }
 
+    /**
+     * Further guidance on the use of this glossary term.
+     * @return String
+     */
     public String getUsage() {
         return usage;
     }
@@ -104,6 +120,10 @@ public class Term extends GovernedNode implements Serializable {
         this.usage = usage;
     }
 
+    /**
+     * Assets assigned this semantic term.
+     * @return <code>AssetSummary</code>
+     */
     public Set<AssetSummary> getAssets() {
         return assets;
     }
@@ -112,6 +132,11 @@ public class Term extends GovernedNode implements Serializable {
         this.assets = assets;
     }
 
+
+    /**
+     * Glossary categories that this term is linked to.
+     * @return <code>Set&lt;CategorySumamry&gt;</code>
+     */
     public Set<CategorySummary> getCategories() {
         return categories;
     }
@@ -120,6 +145,10 @@ public class Term extends GovernedNode implements Serializable {
         this.categories = categories;
     }
 
+    /**
+     * Identifies a glossary term that describes a type of spine object.
+     * @return <code>true</code> if spine object, false otherwise.
+     */
     public boolean isSpineObject() {
         return isSpineObject;
     }
@@ -128,6 +157,10 @@ public class Term extends GovernedNode implements Serializable {
         isSpineObject = spineObject;
     }
 
+    /**
+     * Identifies a glossary term that describes an attribute of a spine object.
+      * @return <code>true</code> if spine object, false otherwise.
+     */
     public boolean isSpineAttribute() {
         return isSpineAttribute;
     }
@@ -136,6 +169,10 @@ public class Term extends GovernedNode implements Serializable {
         isSpineAttribute = spineAttribute;
     }
 
+    /**
+     * Identifies a glossary term that describes an attribute that can be used to identify an instance.
+     * @return <code>true</code> if term is an identifier, false otherwise.
+     */
     public boolean isObjectIdentifier() {
         return isObjectIdentifier;
     }
