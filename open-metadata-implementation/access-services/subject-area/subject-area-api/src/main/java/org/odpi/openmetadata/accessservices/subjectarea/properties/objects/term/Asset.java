@@ -20,6 +20,10 @@ public class Asset {
 //    private String description=null;
 //    private String icon=null;
 
+    /**
+     * Display name for the asset.
+     * @return <code>String</code>
+     */
     public String getName() {
         return name;
     }
@@ -28,6 +32,10 @@ public class Asset {
         this.name = name;
     }
 
+    /**
+     * The unique identifier for this asset.
+     * @return <code>String</code>
+     */
     public String getGuid() {
         return guid;
     }
