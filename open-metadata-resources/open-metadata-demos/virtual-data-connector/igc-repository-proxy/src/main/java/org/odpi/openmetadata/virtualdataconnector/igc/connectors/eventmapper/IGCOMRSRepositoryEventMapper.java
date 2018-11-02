@@ -353,7 +353,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                     break;
                 case CATEGORY:
                     if (igcKafkaEvent.getAction().equals(CREATE)) {
-                        final String glossaryCategoryName = getGlossaryCategoryName(igcObject);
+                        String glossaryCategoryName = getGlossaryCategoryName(igcObject);
                         createEntity(igcObject, false, GLOSSARY_CATEGORY, glossaryCategoryName);
                     }
                     break;
@@ -773,9 +773,19 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
     }
 
     private String getGlossaryCategoryName(IGCObject igcObject) {
-        final Map<String, Object> additionalProperties = igcObject.getAdditionalProperties();
-        final HashMap<String, String> parentCategory = (HashMap<String, String>) additionalProperties.get("parent_category");
-        return parentCategory.get("_name");
+        String categoryName;
+        if (igcObject.getName() == null) {
+            throw new NullPointerException("There is no name on the object, cannot process");
+        } else {
+            final Map<String, Object> additionalProperties = igcObject.getAdditionalProperties();
+            final HashMap<String, String> parentCategory = (HashMap<String, String>) additionalProperties.get("parent_category");
+            if (parentCategory == null || parentCategory.get("_name") == null){
+                categoryName = igcObject.getName();
+            } else {
+                categoryName = parentCategory.get("_name");
+            }
+        }
+        return categoryName;
     }
 
     private String getGlossaryTermName(String glossaryCategoryName, String name) {
