@@ -353,7 +353,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                     break;
                 case CATEGORY:
                     if (igcKafkaEvent.getAction().equals(CREATE)) {
-                        String glossaryCategoryName = getGlossaryCategoryName(igcObject);
+                        final String glossaryCategoryName = getGlossaryCategoryName(igcObject);
                         createEntity(igcObject, false, GLOSSARY_CATEGORY, glossaryCategoryName);
                     }
                     break;
