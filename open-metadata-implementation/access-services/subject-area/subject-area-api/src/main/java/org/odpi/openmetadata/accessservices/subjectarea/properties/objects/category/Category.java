@@ -15,6 +15,10 @@ public class Category extends GovernedNode{
         nodeType = NodeType.Category;
     }
 
+    /**
+     * The owning glossary for this category.
+     * @return <code>GlossarySummary</code>
+     */
     public GlossarySummary getGlossary() {
         return glossary;
     }
@@ -23,6 +27,10 @@ public class Category extends GovernedNode{
         this.glossary = glossary;
     }
 
+    /**
+     * "Identifies the parent category."
+     * @return <code>CategorySummary</code>
+     */
     public CategorySummary getParentCategory() {
         return parentCategory;
     }
