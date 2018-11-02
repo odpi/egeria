@@ -37,5 +37,8 @@ image:
 kafka:
   external:
     enabled: true
-    type: LoadBalancer
+    type: NodePort
 
+service:
+  #LoadBalancer is another option (not for IBM Cloud free cluster)
+  type: NodePort
