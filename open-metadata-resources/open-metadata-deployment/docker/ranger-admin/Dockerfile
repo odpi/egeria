@@ -1,19 +1,12 @@
-#
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the Egeria project.
 # ---
 # Docker configuration file for Ranger
-#
-# Nigel Jones
-# may 2017
-#
-# Caveats:
-#   * Lots of hardcoded paths
-#   * No containers in use yet so data will be lost each time
 # ---
 
 # Let's use UBUNTU
 FROM            ubuntu:18.04
 
-# any problems let me know
 MAINTAINER      Nigel Jones <nigel.l.jones+gh@gmail.com>
 
 # Will use these more in future
