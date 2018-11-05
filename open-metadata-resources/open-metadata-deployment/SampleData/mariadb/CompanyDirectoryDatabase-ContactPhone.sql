@@ -9,4 +9,4 @@ CREATE TABLE ContactPhone (
   Number VARCHAR(40) NOT NULL
 ) ;
 
-load data infile '/Users/jonesn/VDCData/CompanyDirectoryDatabase-ContactPhone.csv' into table ContactPhone columns terminated by ';' ignore 1 lines;
+load data infile '/tmp/_mariadbimport-ocopharma_tmp/CompanyDirectoryDatabase-ContactPhone.csv' into table ContactPhone columns terminated by ';' ignore 1 lines;

@@ -15,4 +15,4 @@ CREATE TABLE PatientTable (
 
 ) ;
 
-load data infile '/Users/jonesn/VDCData/PatientDatabase-PatientTable.csv' into table PatientTable columns terminated by ';' ignore 1 lines;
+load data infile '/tmp/_mariadbimport-ocopharma_tmp/PatientDatabase-PatientTable.csv' into table PatientTable columns terminated by ';' ignore 1 lines;

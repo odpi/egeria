@@ -30,4 +30,4 @@ CREATE TABLE EmpSalaryAnalysis (
 
 ) ;
 
-load data infile '/Users/jonesn/VDCData/EmpSalaryAnalysisDatabase-EmpSalaryAnalysis.csv' into table EmpSalaryAnalysis columns terminated by ';' ignore 1 lines;
+load data infile '/tmp/_mariadbimport-ocopharma_tmp/EmpSalaryAnalysisDatabase-EmpSalaryAnalysis.csv' into table EmpSalaryAnalysis columns terminated by ';' ignore 1 lines;

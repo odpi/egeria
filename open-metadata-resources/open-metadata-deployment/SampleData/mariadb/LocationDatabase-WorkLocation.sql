@@ -18,4 +18,4 @@ CREATE TABLE WorkLocation (
 
 ) ;
 
-load data infile '/Users/jonesn/VDCData/LocationDatabase-WorkLocation.csv' into table WorkLocation columns terminated by ';' ignore 1 lines;
+load data infile '/tmp/_mariadbimport-ocopharma_tmp/LocationDatabase-WorkLocation.csv' into table WorkLocation columns terminated by ';' ignore 1 lines;

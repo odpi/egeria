@@ -9,4 +9,4 @@ CREATE TABLE ContactEmail (
   Email VARCHAR(120) NOT NULL
 ) ;
 
-load data infile '/Users/jonesn/VDCData/CompanyDirectoryDatabase-ContactEmail.csv' into table ContactEmail columns terminated by ';' ignore 1 lines;
+load data infile '/tmp/_mariadbimport-ocopharma_tmp/CompanyDirectoryDatabase-ContactEmail.csv' into table ContactEmail columns terminated by ';' ignore 1 lines;
