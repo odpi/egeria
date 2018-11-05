@@ -1,3 +1,5 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
 ***Sample Data***
 
 0. Install mariadb. Scipts assume user root, no password, local

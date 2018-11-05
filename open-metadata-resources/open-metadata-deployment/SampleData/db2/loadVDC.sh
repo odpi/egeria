@@ -1,4 +1,6 @@
 #!/bin/sh
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the ODPi Egeria project.
 echo 'Deleting old DBs'
 echo '---'
 db2 -td$ -f dropdb.sql1
