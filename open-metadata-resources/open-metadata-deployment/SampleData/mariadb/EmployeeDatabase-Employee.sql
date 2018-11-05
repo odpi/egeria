@@ -14,4 +14,4 @@ CREATE TABLE Employee (
   LOCCODE INT NOT NULL
 ) ;
 
-load data infile '/Users/jonesn/VDCData/EmployeeDatabase-Employee.csv' into table Employee columns terminated by ';' ignore 1 lines;
+load data infile '/tmp/_mariadbimport-ocopharma_tmp/EmployeeDatabase-Employee.csv' into table Employee columns terminated by ';' ignore 1 lines;

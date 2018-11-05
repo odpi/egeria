@@ -13,4 +13,4 @@ CREATE TABLE ContactList (
   WorkLocation INT NOT NULL
 ) ;
 
-load data infile '/Users/jonesn/VDCData/CompanyDirectoryDatabase-ContactList.csv' into table ContactList columns terminated by ';' ignore 1 lines;
+load data infile '/tmp/_mariadbimport-ocopharma_tmp/CompanyDirectoryDatabase-ContactList.csv' into table ContactList columns terminated by ';' ignore 1 lines;

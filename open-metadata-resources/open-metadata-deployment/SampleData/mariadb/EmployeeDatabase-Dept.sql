@@ -9,4 +9,4 @@ CREATE TABLE Dept (
   MANAGER INT
 ) ;
 
-load data infile '/Users/jonesn/VDCData/EmployeeDatabase-Dept.csv' into table Dept columns terminated by ';' ignore 1 lines ( DEPCODE,DEPNAME,@VMANAGER ) SET MANAGER = nullif(@VMANAGER,0) ;
+load data infile '/tmp/_mariadbimport-ocopharma_tmp/EmployeeDatabase-Dept.csv' into table Dept columns terminated by ';' ignore 1 lines ( DEPCODE,DEPNAME,@VMANAGER ) SET MANAGER = nullif(@VMANAGER,0) ;
