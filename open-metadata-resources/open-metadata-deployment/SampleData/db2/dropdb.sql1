@@ -1,0 +1,5 @@
+drop database CDD$
+drop database ESAD$
+drop database ED$
+drop database LD$
+drop database PD$
