@@ -155,55 +155,10 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         if (IMAM_SHARE_EVENT.equals(eventType)) {
             processIMAM(igcKafkaEvent);
         }
-//        else if (IGC_IMPORTED_ASSET_EVENT.equals(eventType)){
-//            processAssetImport(igcKafkaEvent);
-//        }
         else {
             process(igcKafkaEvent);
         }
     }
-
-    /**
-     * Generate the OMRS topic for IGC events of importing assets
-     *
-     * @param igcKafkaEvent A Kafka event originating from IGC when importing assets
-     */
-//    private void processAssetImport(IGCKafkaEvent igcKafkaEvent) {
-//        log.info("Process Asset Import started!");
-//
-//        try {
-//            IGCObject igcObject = igcomrsRepositoryConnector.genericIGCQuery(igcKafkaEvent.getAssetRID());
-//
-//            log.info("Process Asset Type: " + igcKafkaEvent.getAssetType() + " id = " + igcObject.getId() + " action = " + igcKafkaEvent.getAction());
-//            switch (igcKafkaEvent.getAssetType()) {
-//                case TERM:{
-//
-//                    log.info("A term in the import action is to be processed.");
-//
-//                    String glossaryCategoryName = getGlossaryCategoryName(igcObject);
-//                    String glossaryTermName = getGlossaryTermName(glossaryCategoryName, igcObject.getName());
-//
-//                    createEntity(igcObject, false, GLOSSARY_TERM, glossaryTermName);
-//
-//                    EntityProxy glossaryCategoryProxy = newEntityProxy(GLOSSARY_CATEGORY, glossaryCategoryName, igcObject.getContext().get(0).getId());
-//                    EntityProxy glossaryTermProxy = newEntityProxy(GLOSSARY_TERM, glossaryTermName, igcObject.getId());
-//                    createRelationship(TERM_CATEGORIZATION, glossaryCategoryProxy, glossaryTermProxy);
-//
-//                    break;
-//                }
-//                case CATEGORY:{
-//
-//                    log.info("A category in the import action is to be processed.");
-//
-//                    String glossaryCategoryName = igcObject.getName();
-//                    log.info("The glossary name is " +  glossaryCategoryName);
-//                    createEntity(igcObject, false, GLOSSARY_CATEGORY, glossaryCategoryName);
-//                }
-//            }
-//        } catch (Exception e) {
-//            log.info("Unable to process Asset: " + e.getMessage());
-//        }
-//    }
 
     /**
      * Propagate the importation of databases into IGC through the OMRS.
