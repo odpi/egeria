@@ -1,4 +1,6 @@
 #!/bin/sh
+# SPDX-License-Identifier: Apache-2.0 
+# Copyright Contributors to the ODPi Egeria project. 
 TMPDIR=/tmp/_mariadbimport-ocopharma_tmp
 rm -fr $TMPDIR
 mkdir -p $TMPDIR
