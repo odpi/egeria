@@ -45,7 +45,11 @@ RUN git clone http://github.com/apache/ranger.git -b ranger-1.2
 
  # Remove -DskipTests if unit tests are to be included - build the code...
 WORKDIR /root/ranger
-RUN mvn -DskipTests=true clean compile package install assembly:assembly
+
+# -Pall is normally used on non-linux platforms as it skips the native security plugins. However the -Plinux profile
+# is currently pulling in a later maven assembly plugin as of 2018.11.05 which is breaking the build/packaging for
+# the 1.2 branch....
+RUN mvn -Pall -DskipTests=true clean compile package install assembly:assembly
 
 # We have now built the latest ranger from source - let's unpack and setup the admin server & UI
 
