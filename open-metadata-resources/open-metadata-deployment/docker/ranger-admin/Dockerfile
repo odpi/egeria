@@ -41,11 +41,10 @@ ENV PATH /root/apache-maven-3.5.4/bin:/usr/lib/jvm/java-8-openjdk-amd64/bin:/usr
 WORKDIR /root
 
  # Pull down Ranger and build it
-RUN git clone http://github.com/apache/ranger.git -b master
+RUN git clone http://github.com/apache/ranger.git -b ranger-1.2
 
  # Remove -DskipTests if unit tests are to be included - build the code...
 WORKDIR /root/ranger
-#RUN mvn -DskipTests=true -Pall clean compile package install 
 RUN mvn -DskipTests=true clean compile package install assembly:assembly
 
 # We have now built the latest ranger from source - let's unpack and setup the admin server & UI
