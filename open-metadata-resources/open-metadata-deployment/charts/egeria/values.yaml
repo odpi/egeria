@@ -8,7 +8,7 @@ image:
   egeria:
     repository: planetf1/egeria-standalone
     tag: latest
-    pullPolicy: always
+    pullPolicy: IfNotPresent
 
   nameOverride: ""
   fullnameOverride: ""
