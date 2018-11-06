@@ -1,0 +1,41 @@
+# <!-- SPDX-License-Identifier: Apache-2.0 -->
+# Copyright Contributors to the Egeria project.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  name: {{ include "myapp.fullname" . }}-atlas-deployment
+  labels:
+    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    helm.sh/chart: {{ include "myapp.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: atlas-service
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "myapp.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app.kubernetes.io/component: atlas-service
+
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/name: {{ include "myapp.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/component: atlas-service
+
+    spec:
+      containers:
+      - image: "{{ .Values.image.atlas.repository }}:{{ .Values.image.atlas.tag }}"
+        ImagePullPolicy: Always
+        name: {{ .Chart.Name }}-atlas
+        ports:
+        - containerPort: 21000
+        resources: {}
+      restartPolicy: Always
+status: {}

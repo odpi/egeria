@@ -150,9 +150,12 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
 
     private void processEvent(IGCKafkaEvent igcKafkaEvent) {
 
-        if (IMAM_SHARE_EVENT.equals(igcKafkaEvent.getEventType())) {
+        String eventType = igcKafkaEvent.getEventType();
+
+        if (IMAM_SHARE_EVENT.equals(eventType)) {
             processIMAM(igcKafkaEvent);
-        } else {
+        }
+        else {
             process(igcKafkaEvent);
         }
     }
@@ -287,7 +290,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                     break;
                 case TERM:
                     if (igcKafkaEvent.getAction().equals(CREATE)) {
-                        String glossaryCategoryName = getGlossaryCategoryName(igcObject);
+                        String glossaryCategoryName = getParentCategoryName(igcObject);
                         String glossaryTermName = getGlossaryTermName(glossaryCategoryName, igcObject.getName());
 
                         createEntity(igcObject, false, GLOSSARY_TERM, glossaryTermName);
@@ -297,7 +300,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                         EntityProxy glossaryTermProxy = newEntityProxy(GLOSSARY_TERM, glossaryTermName, igcObject.getId());
                         createRelationship(TERM_CATEGORIZATION, glossaryCategoryProxy, glossaryTermProxy);
                     } else if (igcKafkaEvent.getAction().equals(MODIFY)) {
-                        String glossaryCategoryName = getGlossaryCategoryName(igcObject);
+                        String glossaryCategoryName = getParentCategoryName(igcObject);
                         String glossaryTermName = getGlossaryTermName(glossaryCategoryName, igcObject.getName());
 
                         updateGlossaryTerm(igcObject, glossaryTermName);
@@ -305,7 +308,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                     break;
                 case CATEGORY:
                     if (igcKafkaEvent.getAction().equals(CREATE)) {
-                        final String glossaryCategoryName = getGlossaryCategoryName(igcObject);
+                        final String glossaryCategoryName = igcObject.getName();
                         createEntity(igcObject, false, GLOSSARY_CATEGORY, glossaryCategoryName);
                     }
                     break;
@@ -724,7 +727,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         return propertyValue;
     }
 
-    private String getGlossaryCategoryName(IGCObject igcObject) {
+    private String getParentCategoryName(IGCObject igcObject) {
         final Map<String, Object> additionalProperties = igcObject.getAdditionalProperties();
         final HashMap<String, String> parentCategory = (HashMap<String, String>) additionalProperties.get("parent_category");
         return parentCategory.get("_name");
@@ -735,7 +738,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
     }
 
     private String getGlossaryTermName(IGCObject igcObject) {
-        return getGlossaryCategoryName(igcObject) + "." + igcObject.getName();
+        return getParentCategoryName(igcObject) + "." + igcObject.getName();
     }
 
     private String getConnectionQualifiedName(IGCObject igcObject) {
@@ -771,4 +774,3 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         return typeName + TYPE;
     }
 }
-
