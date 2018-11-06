@@ -24,10 +24,6 @@
 
     <artifactId>access-services-user-interface</artifactId>
 
-    <properties>
-        <polymer-script>polymer</polymer-script>
-    </properties>
-
     <dependencies>
         <!-- Spring boot -->
         <dependency>
@@ -143,8 +139,10 @@
                                     <goal>exec</goal>
                                 </goals>
                                 <configuration>
-                                    <executable>${basedir}/tools/node_modules/.bin/${polymer-script}</executable>
+                                    <executable>${basedir}/tools/node/node</executable>
                                     <arguments>
+                                        <!--<argument>${basedir}/tools/node_modules/.bin/${polymer-script}</argument>-->
+                                        <argument>${basedir}/tools/node_modules/polymer-cli/bin/polymer.js</argument>
                                         <argument>build</argument>
                                     </arguments>
                                     <workingDirectory>${basedir}/src/main/static</workingDirectory>
@@ -207,18 +205,7 @@
                 </plugins>
             </build>
         </profile>
-        <profile>
-            <id>platform-windows</id>
-            <activation>
-                <os>
-                    <family>windows</family>
-                </os>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <polymer-script>polymer.cmd</polymer-script>
-            </properties>
-        </profile>
+
     </profiles>
 
     <build>
@@ -238,13 +225,5 @@
                 </configuration>
             </plugin>
         </plugins>
-        <resources>
-            <resource>
-                <directory>src/main/static</directory>
-                <includes>
-                    <include>build/**</include>
-                </includes>
-            </resource>
-        </resources>
     </build>
 </project>
