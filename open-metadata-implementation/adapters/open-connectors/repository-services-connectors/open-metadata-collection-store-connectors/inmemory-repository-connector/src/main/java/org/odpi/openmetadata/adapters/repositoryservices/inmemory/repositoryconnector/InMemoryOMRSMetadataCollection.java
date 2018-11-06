@@ -2535,23 +2535,28 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
             }
         }
 
-        /*
-         * Perform operation
-         */
-        // todo
-        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
 
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName, this.getClass().getName(), repositoryName);
 
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                                           this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+
+
+        // timewarp the stores
+        Map<String, EntityDetail>   entityStore = repositoryStore.timeWarpEntityStore(asOfTime);
+        Map<String, Relationship>   relationshipStore = repositoryStore.timeWarpRelationshipStore(asOfTime);
+
+        InMemoryEntityNeighbourhood inMemoryEntityNeighbourhood = new InMemoryEntityNeighbourhood(
+                this.repositoryValidator,
+                entityStore,
+                relationshipStore,
+                entityGUID,
+                entityTypeGUIDs,
+                relationshipTypeGUIDs,
+                limitResultsByStatus,
+                limitResultsByClassification,
+                level);
+        Set<String> entitySet = new HashSet<>();
+        entitySet.add(entityGUID);
+        return inMemoryEntityNeighbourhood.createInstanceGraph();
     }
-
-
     /**
      * Return the list of entities that are of the types listed in entityTypeGUIDs and are connected, either directly or
      * indirectly to the entity identified by startEntityGUID.
