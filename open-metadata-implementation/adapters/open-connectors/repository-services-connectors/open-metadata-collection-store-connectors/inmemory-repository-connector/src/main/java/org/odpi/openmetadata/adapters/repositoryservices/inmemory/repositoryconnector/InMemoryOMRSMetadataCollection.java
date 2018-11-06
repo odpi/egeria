@@ -2534,17 +2534,12 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
                                                                methodName);
             }
         }
-
-
-
-
-
         // timewarp the stores
         Map<String, EntityDetail>   entityStore = repositoryStore.timeWarpEntityStore(asOfTime);
         Map<String, Relationship>   relationshipStore = repositoryStore.timeWarpRelationshipStore(asOfTime);
 
         InMemoryEntityNeighbourhood inMemoryEntityNeighbourhood = new InMemoryEntityNeighbourhood(
-                this.repositoryValidator,
+                repositoryValidator,
                 entityStore,
                 relationshipStore,
                 entityGUID,
@@ -2553,8 +2548,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
                 limitResultsByStatus,
                 limitResultsByClassification,
                 level);
-        Set<String> entitySet = new HashSet<>();
-        entitySet.add(entityGUID);
         return inMemoryEntityNeighbourhood.createInstanceGraph();
     }
     /**
