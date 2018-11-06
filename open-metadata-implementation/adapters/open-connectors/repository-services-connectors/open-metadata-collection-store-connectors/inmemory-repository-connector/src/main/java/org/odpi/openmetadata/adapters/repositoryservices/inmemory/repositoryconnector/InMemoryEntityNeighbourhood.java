@@ -4,8 +4,6 @@ package org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositorycon
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 
 import java.util.*;
 
@@ -46,11 +44,8 @@ public class InMemoryEntityNeighbourhood
      * @param limitResultsByClassification List of classifications that must be present on all returned entities.
      * @param level                        the number of the relationships out from the starting entity that the query will traverse to
      *                                     gather results.
-     * @throws RepositoryErrorException  there is a problem communicating with the metadata repository where
-     *                                   the metadata collection is stored.
-     * @throws InvalidParameterException one of the parameters is invalid or null.
      */
-    public InMemoryEntityNeighbourhood(OMRSRepositoryValidator repositoryValidator, Map<String, EntityDetail> entityStore, Map<String, Relationship> relationshipStore, String rootEntityGUID, List<String> entityTypeGUIDs, List<String> relationshipTypeGUIDs, List<InstanceStatus> limitResultsByStatus, List<String> limitResultsByClassification, int level) throws RepositoryErrorException, InvalidParameterException
+    public InMemoryEntityNeighbourhood(OMRSRepositoryValidator repositoryValidator, Map<String, EntityDetail> entityStore, Map<String, Relationship> relationshipStore, String rootEntityGUID, List<String> entityTypeGUIDs, List<String> relationshipTypeGUIDs, List<InstanceStatus> limitResultsByStatus, List<String> limitResultsByClassification, int level)
     {
         this.repositoryValidator = repositoryValidator;
         this.entityStore = entityStore;
@@ -60,10 +55,10 @@ public class InMemoryEntityNeighbourhood
         this.relationshipTypeGUIDs = relationshipTypeGUIDs;
         this.limitResultsByStatus = limitResultsByStatus;
         this.limitResultsByClassification = limitResultsByClassification;
-        // limit the level
-        if (level < 1 || level > 10)
+        // limit the level to 100 in case the algorithm gets into a circularity - hoefully this is sufficiently high for in memory demo use cases.
+        if (level < 1 || level > 100)
         {
-            level = 10;
+            level = 100;
         }
         this.level = level;
         initializeMaps();
@@ -71,12 +66,8 @@ public class InMemoryEntityNeighbourhood
 
     /**
      * Initialize maps that help us traverse between entities and relationships using their guids
-     *
-     * @throws RepositoryErrorException  there is a problem communicating with the metadata repository where
-     *                                   the metadata collection is stored.
-     * @throws InvalidParameterException one of the parameters is invalid or null.
      */
-    private void initializeMaps() throws RepositoryErrorException, InvalidParameterException
+    private void initializeMaps()
     {
         for (Relationship relationship : relationshipStore.values())
         {
@@ -120,15 +111,12 @@ public class InMemoryEntityNeighbourhood
     }
 
     /**
-     * Verify that the supplied relationship and the 2 entities that enclose it are valid , bying chaecking the scoping conditions
+     * Verify that the supplied relationship and the 2 entities that enclose it are valid , by checking the scoping conditions
      *
      * @param relationship relationship to verify
      * @return true if valid otherwise false
-     * @throws RepositoryErrorException  there is a problem communicating with the metadata repository where
-     *                                   the metadata collection is stored.
-     * @throws InvalidParameterException one of the parameters is invalid or null.
      */
-    private boolean verifyRelationshipForEntityNeighbourhood(Relationship relationship) throws RepositoryErrorException, InvalidParameterException
+    private boolean verifyRelationshipForEntityNeighbourhood(Relationship relationship)
     {
         boolean valid = false;
         boolean validEntity1 = false;
@@ -204,11 +192,8 @@ public class InMemoryEntityNeighbourhood
      * Create the instance graph
      *
      * @return InstanceGraph  the instance graph that contains the entities and relationships that radiate out from the supplied entity GUID.
-     * @throws RepositoryErrorException  there is a problem communicating with the metadata repository where
-     *                                   the metadata collection is stored.
-     * @throws InvalidParameterException one of the parameters is invalid or null.
      */
-    public InstanceGraph createInstanceGraph() throws RepositoryErrorException, InvalidParameterException
+    public InstanceGraph createInstanceGraph()
     {
         Set<String> entities = new HashSet<>();
         Set<String> visitedEntities = new HashSet<>();
@@ -235,17 +220,14 @@ public class InMemoryEntityNeighbourhood
     }
 
     /**
-     * Create the graph populates amps with entities and relationships that are required in the instance graph. This is a recursive method that is called for each level that is required.
+     * CreateGraph populates maps with entities and relationships that are required in the instance graph. This is a recursive method that is called for each level that is required.
      *
      * @param entities             the entities on which we need to find the relationships out to the radiated level out.
      * @param visitedEntities      the entities that have already been visited (seen)
      * @param visitedRelationships the relationship that have already been visited (seen)
      * @param currentLevel         the current level
-     * @throws RepositoryErrorException  there is a problem communicating with the metadata repository where
-     *                                   the metadata collection is stored.
-     * @throws InvalidParameterException one of the parameters is invalid or null.
      */
-    private void createGraph(Set<String> entities, Set visitedEntities, Set visitedRelationships, int currentLevel) throws RepositoryErrorException, InvalidParameterException
+    private void createGraph(Set<String> entities, Set visitedEntities, Set visitedRelationships, int currentLevel)
     {
         Set<String> nextEntitySet = new HashSet<>();
         for (String entityGuid : entities)
@@ -266,7 +248,7 @@ public class InMemoryEntityNeighbourhood
                             final String end1Guid = getEnd1EntityGUID(relationship);
                             final String end2Guid = getEnd2EntityGUID(relationship);
                             graphRelationships.add(relationshipGuid);
-                            // add the entities - one end wil already be there so will be replaced.
+                            // add the entities - one end will already be there so will be replaced.
                             graphEntities.add(end1Guid);
                             graphEntities.add(end2Guid);
                             // if we have not see the other end then we need to traverse to it.
@@ -302,8 +284,6 @@ public class InMemoryEntityNeighbourhood
      */
     private String getEnd1EntityGUID(Relationship relationship)
     {
-        final String methodName = "getEnd1EntityGUID";
-
         if (relationship != null)
         {
             EntityProxy entityProxy = relationship.getEntityOneProxy();
@@ -320,15 +300,13 @@ public class InMemoryEntityNeighbourhood
     }
 
     /**
-     * Return the guid of an entity linked to end 1 of the relationship.
+     * Return the guid of an entity linked to end 2 of the relationship.
      *
      * @param relationship relationship to parse
      * @return String unique identifier
      */
     private String getEnd2EntityGUID(Relationship relationship)
     {
-        final String methodName = "getEnd2EntityGUID";
-
         if (relationship != null)
         {
             EntityProxy entityProxy = relationship.getEntityTwoProxy();

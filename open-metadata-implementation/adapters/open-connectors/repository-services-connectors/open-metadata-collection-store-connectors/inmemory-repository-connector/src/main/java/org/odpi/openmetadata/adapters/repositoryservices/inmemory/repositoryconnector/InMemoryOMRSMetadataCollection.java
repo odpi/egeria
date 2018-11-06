@@ -2534,7 +2534,9 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
                                                                methodName);
             }
         }
-        // timewarp the stores
+        /*
+         * timewarp the stores
+         */
         Map<String, EntityDetail>   entityStore = repositoryStore.timeWarpEntityStore(asOfTime);
         Map<String, Relationship>   relationshipStore = repositoryStore.timeWarpRelationshipStore(asOfTime);
 
