@@ -6,8 +6,8 @@
 
 image:
   ranger:
-    repository: planetf1/ranger-docker_ranger-admin
-    tag: latest
+    repository: planetf1/ranger-admin-egeriavdc
+    tag: 0.2.0
     pullPolicy: IfNotPresent
 
   mariadb:
