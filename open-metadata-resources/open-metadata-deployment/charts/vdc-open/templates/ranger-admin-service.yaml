@@ -13,7 +13,7 @@ metadata:
 
   name: {{ include "myapp.fullname" . }}-ranger-service
 spec:
-  type: NodePort
+  type: "{{ .Values.service.type }}"
   ports:
   - name: "ranger-admin"
     port: 6080

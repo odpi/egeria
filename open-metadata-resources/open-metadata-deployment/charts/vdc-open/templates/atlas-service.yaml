@@ -13,7 +13,7 @@ metadata:
   name: atlas
 
 spec:
-  type: NodePort
+  type: "{{ .Values.service.type }}"
   ports:
   - name: "atlas"
     port: 21000
