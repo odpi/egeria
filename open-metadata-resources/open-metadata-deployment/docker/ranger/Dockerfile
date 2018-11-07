@@ -17,7 +17,7 @@ LABEL org.label-schema.schema-version = "1.0"
 # Will use these more in future
 # -- command line parameters & defaults to set
 ARG		 rootpw
-ENV		 rootpw			 $(rootpw:-admin999}
+ENV		 rootpw			 ${rootpw:-admin999}
 
 ARG		 build
 ENV		 build 			 ${build:-2.0.0-SNAPSHOT}
@@ -152,7 +152,7 @@ EXPOSE          6080 6182 6083 6183
 # Build launch script which can be started from docker-compose
 # TODO - this could be moved to a dist. script
 
-RUN echo "#/bin/sh" > /opt/ranger-${build}-admin/ranger-docker-start.sh
+RUN echo "#!/bin/sh" > /opt/ranger-${build}-admin/ranger-docker-start.sh
 RUN echo "export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64"  >> /opt/ranger-${build}-admin/ranger-docker-start.sh
 RUN echo "export PATH=${JAVA_HOME}:$PATH"  >> /opt/ranger-${build}-admin/ranger-docker-start.sh
 
