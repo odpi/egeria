@@ -68,21 +68,161 @@
 
     </dependencies>
 
+    <profiles>
+
+        <profile>
+            <id>user-interface</id>
+            <activation>
+                <!--
+                IMPORTANT!!!
+                activation with jdk is used because setting activeByDefault true is ignored if other profile is activated,
+                and we have windows profile active in order to set polymer extension foe windows.
+                https://issues.apache.org/jira/browse/MNG-3229
+
+                To deactivate this profile, use:
+                mvn clean install -P !user-interface
+                -->
+                <jdk>[1.8,1.9)</jdk>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                        <version>1.6</version>
+                        <executions>
+                            <execution>
+                                <id>install node and npm</id>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>install-node-and-npm</goal>
+                                </goals>
+                                <configuration>
+                                    <nodeVersion>v10.12.0</nodeVersion>
+                                    <npmVersion>6.4.1</npmVersion>
+                                    <workingDirectory>tools</workingDirectory>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>install polymer-cli</id>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>install polymer-cli</arguments>
+                                    <workingDirectory>tools</workingDirectory>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>npm install</id>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>install ../src/main/static</arguments>
+                                    <workingDirectory>tools</workingDirectory>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <version>1.6.0</version>
+                        <executions>
+                            <execution>
+                                <id>Polymer build</id>
+                                <phase>process-resources</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>${basedir}/tools/node/node</executable>
+                                    <arguments>
+                                        <argument>${basedir}/tools/node_modules/polymer-cli/bin/polymer.js</argument>
+                                        <argument>build</argument>
+                                    </arguments>
+                                    <workingDirectory>${basedir}/src/main/static</workingDirectory>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <version>3.1.0</version>
+                        <executions>
+                            <execution>
+                                <id>copy-resources</id>
+                                <phase>process-resources</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${basedir}/target</outputDirectory>
+                                    <includeEmptyDirs>true</includeEmptyDirs>
+                                    <resources>
+                                        <resource>
+                                            <targetPath>${basedir}/src/main/resources/public</targetPath>
+                                            <directory>${basedir}/src/main/static/build/es6-bundled</directory>
+                                            <filtering>false</filtering>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <version>${spring-boot.version}</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>repackage</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.rat</groupId>
+                        <artifactId>apache-rat-plugin</artifactId>
+                        <configuration>
+                            <excludes>
+                                <exclude>**/node/**</exclude>
+                                <exclude>**/resources/public/**</exclude>
+                                <exclude>**/node_modules/**</exclude>
+                                <exclude>**/static/**</exclude>
+                                <exclude>**/src/*</exclude>
+                                <exclude>**/*.json</exclude>
+                                <exclude>**/banner.txt</exclude>
+                            </excludes>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+    </profiles>
+
     <build>
         <plugins>
             <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring-boot.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                <groupId>org.apache.rat</groupId>
+                <artifactId>apache-rat-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>**/node/**</exclude>
+                        <exclude>**/node_modules/**</exclude>
+                        <exclude>**/static/**</exclude>
+                        <exclude>**/src/*</exclude>
+                        <exclude>**/*.json</exclude>
+                        <exclude>**/banner.txt</exclude>
+                    </excludes>
+                </configuration>
             </plugin>
         </plugins>
     </build>
-
 </project>
