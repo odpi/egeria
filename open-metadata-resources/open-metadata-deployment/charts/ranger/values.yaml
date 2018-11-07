@@ -7,11 +7,11 @@
 image:
   ranger:
     repository: planetf1/ranger-admin-egeriavdc
-    tag: 0.2.0
+    tag: 0.2.1
     pullPolicy: IfNotPresent
 
   mariadb:
-    repository: planetf1/ranger-docker_mariadb
+    repository: mariadb
     tag: latest
     pullPolicy: IfNotPresent
 
