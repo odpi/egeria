@@ -290,7 +290,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                     break;
                 case TERM:
                     if (igcKafkaEvent.getAction().equals(CREATE)) {
-                        String glossaryCategoryName = getParentCategoryName(igcObject);
+                        String glossaryCategoryName = getGlossaryParentCategoryName(igcObject);
                         String glossaryTermName = getGlossaryTermName(glossaryCategoryName, igcObject.getName());
 
                         createEntity(igcObject, false, GLOSSARY_TERM, glossaryTermName);
@@ -300,7 +300,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                         EntityProxy glossaryTermProxy = newEntityProxy(GLOSSARY_TERM, glossaryTermName, igcObject.getId());
                         createRelationship(TERM_CATEGORIZATION, glossaryCategoryProxy, glossaryTermProxy);
                     } else if (igcKafkaEvent.getAction().equals(MODIFY)) {
-                        String glossaryCategoryName = getParentCategoryName(igcObject);
+                        String glossaryCategoryName = getGlossaryParentCategoryName(igcObject);
                         String glossaryTermName = getGlossaryTermName(glossaryCategoryName, igcObject.getName());
 
                         updateGlossaryTerm(igcObject, glossaryTermName);
@@ -727,7 +727,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         return propertyValue;
     }
 
-    private String getParentCategoryName(IGCObject igcObject) {
+    private String getGlossaryParentCategoryName(IGCObject igcObject) {
         final Map<String, Object> additionalProperties = igcObject.getAdditionalProperties();
         final HashMap<String, String> parentCategory = (HashMap<String, String>) additionalProperties.get("parent_category");
         return parentCategory.get("_name");
@@ -738,7 +738,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
     }
 
     private String getGlossaryTermName(IGCObject igcObject) {
-        return getParentCategoryName(igcObject) + "." + igcObject.getName();
+        return getGlossaryParentCategoryName(igcObject) + "." + igcObject.getName();
     }
 
     private String getConnectionQualifiedName(IGCObject igcObject) {
