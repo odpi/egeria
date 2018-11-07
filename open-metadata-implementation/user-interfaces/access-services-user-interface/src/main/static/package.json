@@ -1,9 +1,9 @@
 {
   "name": "egeria-ui",
   "version": "0.0.1",
-  "description": "A starting point for Polymer apps",
-  "author": "The Polymer Authors",
-  "license": "BSD-3-Clause",
+  "description": "Egeria UI application",
+  "author": "Egeria contributors",
+  "license": "SPDX: Apache-2.0",
   "repository": "Polymer/polymer-starter-kit",
   "scripts": {
     "start": "polymer serve",
