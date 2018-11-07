@@ -94,4 +94,6 @@ open-metadata-implementation/access-services/subject-area/subject-area-server/sr
 # exclude temporary lock files
 *.lock
 log
+# m2 repo used by linux foundation build
+**/m2repo*/**
 
