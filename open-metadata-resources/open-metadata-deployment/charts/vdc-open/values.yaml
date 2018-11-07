@@ -7,7 +7,7 @@
 image:
   ranger:
     repository: planetf1/ranger-admin-egeriavdc
-    tag: 0.2.0
+    tag: 0.2.1
     pullPolicy: IfNotPresent
 
   mariadb:
@@ -39,3 +39,7 @@ kafka:
     enabled: true
     type: LoadBalancer
 
+    # Network configuration
+service:
+  #LoadBalancer is another option (not for IBM Cloud free cluster)
+  type: NodePort
