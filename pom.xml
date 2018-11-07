@@ -270,6 +270,8 @@
                         <exclude>**/charts/**/charts/**</exclude>
                         <exclude>**/log</exclude>
                         <exclude>**/*.lock</exclude>
+                        <exclude>**/m2repo*/**</exclude>
+                        <exclude>**/venv/**</exclude>
                     </excludes>
                     <licenseFamilies>
                         <licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">
