@@ -11,18 +11,18 @@ image:
     pullPolicy: IfNotPresent
 
   mariadb:
-    repository: planetf1/ranger-docker_mariadb
+    repository: mariadb
     tag: latest
     pullPolicy: IfNotPresent
 
   egeria:
-    repository: planetf1/egeria-standalone
-    tag: latest
+    repository: planetf1/egeria-egeriavdc
+    tag: 0.1.0
     pullPolicy: IfNotPresent
 
   gaian:
-    repository: planetf1/gaian
-    tag: latest
+    repository: planetf1/gaian-egeriavdc
+    tag: 0.1.0
     pullPolicy: IfNotPresent
 
   atlas:
