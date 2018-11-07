@@ -1,15 +1,13 @@
 # <!-- SPDX-License-Identifier: Apache-2.0 -->
 # Copyright Contributors to the Egeria project.
-name: rangeregeria
-description: Simple ranger setup. Standalone, with mariadb. Non-persistant. Egeria added
+name: vdc-open
+description: Egeria VDC Environment using open components only including egeria, ranger, atlas etc
 version: 0.0.1
 keywords:
-  - apache-ranger, ranger, security, odpi, egeria, open-metadata
+  - apache-ranger, ranger, security, odpi, egeria, open-metadata,vdc, virtualization
 sources:
-  - https://github.com/planetf1/ranger-docker
-  - https://github.com/apache/ranger
   - https://github.com/odpi/egeria
-home: https://github.com/planetf1/ranger-docker
+home: https://github.com/odpi/egeria
 maintainers:
   - name: Nigel Jones
     email: nigel.l.jones+gh@gmail.com
