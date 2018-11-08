@@ -43,7 +43,7 @@ public class KafkaVirtualiser{
 
     /**
      * use Kafka consumer to listen to Information View Out Topic
-     * @throws VirtualiserCheckedException when Jackson is not able to parse or map and interrupted I/O options
+     * NOTE: this may throw VirtualiserCheckedException when Jackson is not able to parse or map and interrupted I/O options
      */
     @PostConstruct
     public void listenToIVOMAS() {

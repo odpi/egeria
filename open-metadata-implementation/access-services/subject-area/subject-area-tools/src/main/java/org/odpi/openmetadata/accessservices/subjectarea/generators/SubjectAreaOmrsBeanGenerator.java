@@ -21,7 +21,7 @@ public class SubjectAreaOmrsBeanGenerator {
     // The API properties should not be generated as part of the normal build.
     // Changes the API properties should be considered if the generate files change either due to the archive types changing or the generator or templates changing.
     // if the API classifications properties need to be changed in line with the generated files then set regenAPIFiles to true.
-    private boolean regenAPIFiles = false;
+    private boolean regenAPIFiles = true;
     public static final String OPEN_METADATA_IMPLEMENTATION = "open-metadata-implementation";
 
 
