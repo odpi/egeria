@@ -94,7 +94,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
      * @return kafka consumer object
      */
     private Consumer<Long, String> createConsumer() {
-        final Properties props = getProperties();
+        final Properties props = getKafkaProperties();
         final Consumer<Long, String> consumer = new KafkaConsumer<>(props);
 
         String topicName = this.connectionBean.getEndpoint().getAddress().split("/")[1];
@@ -102,7 +102,12 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         return consumer;
     }
 
-    private Properties getProperties() {
+    /**
+     * Get properties for the kafka consumer.
+     *
+     * @return kafka properties
+     */
+    private Properties getKafkaProperties() {
         final Properties props = new Properties();
 
         String address = this.connectionBean.getEndpoint().getAddress().split("/")[0];
@@ -117,7 +122,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
     private class ConsumerThread implements Runnable {
 
         /**
-         * Read the Kafka events originating from IGC.
+         * Read IGC Infosphere topic Kafka events.
          */
         @Override
         public void run() {
@@ -141,6 +146,15 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
 
     }
 
+
+    /**
+     * Read IGC Infosphere topic Kafka events.
+     *
+     * @param mapper Jackson mapper for reading JSON
+     * @param event An IGC Infosphere Kafka event
+     * @return POJO containing all relevant variables of an IGC Infosphere topic event.
+     * @throws java.io.IOException
+     */
     private IGCKafkaEvent getIGCKafkaEvent(ObjectMapper mapper, ConsumerRecord<Long, String> event) throws java.io.IOException {
         final String eventContent = event.value();
         log.info("Consumer Record: {}", eventContent);
@@ -148,6 +162,12 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         return mapper.readValue(eventContent, IGCKafkaEvent.class);
     }
 
+
+    /**
+     * Distinguish IGC Infosphere topic events between IMAM imports and 'regular'  events.
+     *
+     * @param igcKafkaEvent IGC Infosphere topic event
+     */
     private void processEvent(IGCKafkaEvent igcKafkaEvent) {
 
         String eventType = igcKafkaEvent.getEventType();
@@ -170,13 +190,21 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
 
         List<String> createdRIDs = igcKafkaEvent.getDatacollectionRID();
         for (String id : createdRIDs) {
-            createSchema(id);
+            createSchemaIMAM(id);
         }
 
         log.info("Process IMAM ended!");
     }
 
-    private void createSchema(String id) {
+    /**
+     * Propagate an IGC schema and all other IGC assets thats are relevant, such as the IGC endpoint, database, and any foreign keys.
+     * First, all assets are obtrieved using a chain of IGC Connector queries.
+     * Then the creation of these entities is propagated through OMRS.
+     * Finally the relationship between the entities is propagated.
+     *
+     * @param id The RID of the IGC Schema that is to be propagated.
+     */
+    private void createSchemaIMAM(String id) {
         IGCObject igcTable = igcomrsRepositoryConnector.genericIGCQuery(id);
         IGCObject igcEndpoint = igcomrsRepositoryConnector.genericIGCQuery(igcTable.getContext().get(0).getId());
         IGCObject igcDatabase = igcomrsRepositoryConnector.genericIGCQuery(igcTable.getContext().get(1).getId());
@@ -214,56 +242,78 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
 
         //Propagate Connection/Connection type creations and relationships
         for (Item connection : igcDatabase.getDataConnections().getItems()) {
-            IGCObject igcConnection = igcomrsRepositoryConnector.genericIGCQuery(connection.getId());
-            IGCObject igcConnectorType = igcomrsRepositoryConnector.genericIGCQuery(igcConnection.getDataConnectors().getId());
-
-            String connectionQualifiedName = getConnectionQualifiedName(igcConnection);
-            createEntity(igcConnection, false, CONNECTION, connectionQualifiedName);
-
-            String connectorTypeQualifiedName = getConnectorQualifiedName(igcConnectorType);
-            createEntity(igcConnectorType, false, CONNECTOR_TYPE, connectorTypeQualifiedName);
-
-            EntityProxy connectionProxy = newEntityProxy(CONNECTION, connectionQualifiedName, igcConnection.getId());
-            EntityProxy connectorTypeProxy = newEntityProxy(CONNECTOR_TYPE, connectorTypeQualifiedName, igcConnectorType.getId());
-            createRelationship(CONNECTION_CONNECTOR_TYPE, connectionProxy, connectorTypeProxy);
-
-            EntityProxy endpointProxy = newEntityProxy(ENDPOINT, endpointQualifiedName, igcEndpoint.getId());
-            createRelationship(CONNECTION_ENDPOINT, endpointProxy, connectionProxy);
+            propagateConnectionAssets(igcEndpoint, endpointQualifiedName, connection);
         }
 
         //Propagate RelationalColumns and relationships
         IGCObject databaseColumns = igcomrsRepositoryConnector.getDatabaseColumns(id, DEFAULT_PAGE_SIZE);
         for (Item column : databaseColumns.getDatabaseColumns().getItems()) {
-            IGCColumn igcColumn = igcomrsRepositoryConnector.getIGCColumn(column.getId());
+            propagateRelationalColumnAssets(relationalTableTypeProxy, column);
+        }
+    }
 
-            String columnQualifiedName = getQualifiedName(igcColumn.getContext(), igcColumn.getName());
-            createEntity(igcColumn, RELATIONAL_COLUMN, false, columnQualifiedName);
+    /**
+     * Propagate the creation of Connection/Connection entities.
+     *
+     * @param igcEndpoint               An IGC endpoint
+     * @param endpointQualifiedName     The qualified name of the endpoint
+     * @param connection                AN IGC connection
+     */
+    private void propagateConnectionAssets(IGCObject igcEndpoint, String endpointQualifiedName, Item connection) {
+        IGCObject igcConnection = igcomrsRepositoryConnector.genericIGCQuery(connection.getId());
+        IGCObject igcConnectorType = igcomrsRepositoryConnector.genericIGCQuery(igcConnection.getDataConnectors().getId());
 
-            String columnTypeQualifiedName = getTypeQualifiedName(columnQualifiedName);
-            createEntity(igcColumn, RELATIONAL_COLUMN_TYPE, true, columnTypeQualifiedName);
-            String relationalColumnTypeID = RELATIONAL_COLUMN_TYPE + "." + igcColumn.getId();
+        String connectionQualifiedName = getConnectionQualifiedName(igcConnection);
+        createEntity(igcConnection, false, CONNECTION, connectionQualifiedName);
 
-            EntityProxy relationalColumnProxy = newEntityProxy(RELATIONAL_COLUMN, columnQualifiedName, igcColumn.getId());
-            EntityProxy relationalColumnTypeProxy = newEntityProxy(RELATIONAL_COLUMN_TYPE, columnTypeQualifiedName, relationalColumnTypeID);
-            createRelationship(SCHEMA_ATTRIBUTE_TYPE, relationalColumnProxy, relationalColumnTypeProxy);
-            createRelationship(ATTRIBUTE_FOR_SCHEMA, relationalTableTypeProxy, relationalColumnProxy);
+        String connectorTypeQualifiedName = getConnectorQualifiedName(igcConnectorType);
+        createEntity(igcConnectorType, false, CONNECTOR_TYPE, connectorTypeQualifiedName);
 
-            if (igcColumn.getDefinedForeignKey() != null &&
-                    igcColumn.getDefinedForeignKeyReferences() != null) {
-                for (Item foreignKey : igcColumn.getDefinedForeignKeyReferences().getItems()) {
-                    final String foreignKeyId = foreignKey.getId();
-                    IGCColumn foreignKeyRelationalColumn = igcomrsRepositoryConnector.getIGCColumn(foreignKeyId);
-                    String foreignKeyQualifiedName = getQualifiedName(foreignKeyRelationalColumn.getContext(), foreignKeyRelationalColumn.getName());
+        EntityProxy connectionProxy = newEntityProxy(CONNECTION, connectionQualifiedName, igcConnection.getId());
+        EntityProxy connectorTypeProxy = newEntityProxy(CONNECTOR_TYPE, connectorTypeQualifiedName, igcConnectorType.getId());
+        createRelationship(CONNECTION_CONNECTOR_TYPE, connectionProxy, connectorTypeProxy);
 
-                    EntityProxy foreignKeyProxy = newEntityProxy(RELATIONAL_COLUMN, foreignKeyQualifiedName, foreignKeyId);
-                    createRelationship(FOREIGN_KEY, relationalColumnProxy, foreignKeyProxy);
-                }
+        EntityProxy endpointProxy = newEntityProxy(ENDPOINT, endpointQualifiedName, igcEndpoint.getId());
+        createRelationship(CONNECTION_ENDPOINT, endpointProxy, connectionProxy);
+    }
+
+    /**
+     * Propagate the creation of RelationalColumn  entities.
+     *
+     * @param relationalTableTypeProxy  EntityProxy summarizes an entity instance.  It is used to describe one of the
+     *                                  entities connected together by a relationship.
+     * @param column                    An IGC column
+     */
+    private void propagateRelationalColumnAssets(EntityProxy relationalTableTypeProxy, Item column) {
+        IGCColumn igcColumn = igcomrsRepositoryConnector.getIGCColumn(column.getId());
+
+        String columnQualifiedName = getQualifiedName(igcColumn.getContext(), igcColumn.getName());
+        createColumnEntity(igcColumn, false, RELATIONAL_COLUMN,columnQualifiedName);
+
+        String columnTypeQualifiedName = getTypeQualifiedName(columnQualifiedName);
+        createColumnEntity(igcColumn, true, RELATIONAL_COLUMN_TYPE, columnTypeQualifiedName);
+        String relationalColumnTypeID = RELATIONAL_COLUMN_TYPE + "." + igcColumn.getId();
+
+        EntityProxy relationalColumnProxy = newEntityProxy(RELATIONAL_COLUMN, columnQualifiedName, igcColumn.getId());
+        EntityProxy relationalColumnTypeProxy = newEntityProxy(RELATIONAL_COLUMN_TYPE, columnTypeQualifiedName, relationalColumnTypeID);
+        createRelationship(SCHEMA_ATTRIBUTE_TYPE, relationalColumnProxy, relationalColumnTypeProxy);
+        createRelationship(ATTRIBUTE_FOR_SCHEMA, relationalTableTypeProxy, relationalColumnProxy);
+
+        if (igcColumn.getDefinedForeignKey() != null &&
+                igcColumn.getDefinedForeignKeyReferences() != null) {
+            for (Item foreignKey : igcColumn.getDefinedForeignKeyReferences().getItems()) {
+                final String foreignKeyId = foreignKey.getId();
+                IGCColumn foreignKeyRelationalColumn = igcomrsRepositoryConnector.getIGCColumn(foreignKeyId);
+                String foreignKeyQualifiedName = getQualifiedName(foreignKeyRelationalColumn.getContext(), foreignKeyRelationalColumn.getName());
+
+                EntityProxy foreignKeyProxy = newEntityProxy(RELATIONAL_COLUMN, foreignKeyQualifiedName, foreignKeyId);
+                createRelationship(FOREIGN_KEY, relationalColumnProxy, foreignKeyProxy);
             }
         }
     }
 
     /**
-     * Process individual IGC Kafka events and publish them through OMRS.
+     * Process individual IGC Kafka events and publish them via OMRS.
      *
      * @param igcKafkaEvent a Kafka event originating from IGC.
      */
@@ -277,39 +327,19 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                     //Relationship between a technical term and a glossary term.
                     if (igcKafkaEvent.getAction().equals("ASSIGNED_RELATIONSHIP")
                             || igcKafkaEvent.getAction().equalsIgnoreCase(MODIFY) && igcObject.getAssignedToTerms() != null) {
-                        String glossaryTermID = igcObject.getAssignedToTerms().getItems().get(0).getId();
-                        IGCObject glossaryTerm = igcomrsRepositoryConnector.genericIGCQuery(glossaryTermID);
-
-                        String glossaryTermName = getGlossaryTermName(glossaryTerm);
-                        String columnQualifiedName = getQualifiedName(igcObject.getContext(), igcObject.getName());
-
-                        EntityProxy relationalColumnProxy = newEntityProxy(RELATIONAL_COLUMN, columnQualifiedName, igcObject.getId());
-                        EntityProxy glossaryTermProxy = newEntityProxy(GLOSSARY_TERM, glossaryTermName, glossaryTermID);
-                        createRelationship(SEMANTIC_ASSIGNMENT, relationalColumnProxy, glossaryTermProxy);
+                        processAssignedRelationship(igcObject);
                     }
                     break;
                 case TERM:
                     if (igcKafkaEvent.getAction().equals(CREATE)) {
-                        String glossaryCategoryName = getParentCategoryName(igcObject);
-                        String glossaryTermName = getGlossaryTermName(glossaryCategoryName, igcObject.getName());
-
-                        createEntity(igcObject, false, GLOSSARY_TERM, glossaryTermName);
-                        createEntity(igcObject, false, GLOSSARY_CATEGORY, glossaryCategoryName);
-
-                        EntityProxy glossaryCategoryProxy = newEntityProxy(GLOSSARY_CATEGORY, glossaryCategoryName, igcObject.getContext().get(0).getId());
-                        EntityProxy glossaryTermProxy = newEntityProxy(GLOSSARY_TERM, glossaryTermName, igcObject.getId());
-                        createRelationship(TERM_CATEGORIZATION, glossaryCategoryProxy, glossaryTermProxy);
+                        processTermCreation(igcObject);
                     } else if (igcKafkaEvent.getAction().equals(MODIFY)) {
-                        String glossaryCategoryName = getParentCategoryName(igcObject);
-                        String glossaryTermName = getGlossaryTermName(glossaryCategoryName, igcObject.getName());
-
-                        updateGlossaryTerm(igcObject, glossaryTermName);
+                        processTermModification(igcObject);
                     }
                     break;
                 case CATEGORY:
                     if (igcKafkaEvent.getAction().equals(CREATE)) {
-                        final String glossaryCategoryName = igcObject.getName();
-                        createEntity(igcObject, false, GLOSSARY_CATEGORY, glossaryCategoryName);
+                        processCategoryCreation(igcObject);
                     }
                     break;
                 default:
@@ -323,6 +353,117 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
 
     }
 
+    /**
+     * Propagate the creation of an IGC category.
+     *
+     * @param igcObject An IGC asset
+     */
+    private void processCategoryCreation(IGCObject igcObject) {
+        final String glossaryCategoryName = igcObject.getName();
+        createEntity(igcObject, false, GLOSSARY_CATEGORY, glossaryCategoryName);
+    }
+
+    /**
+     * Propagate the modification of an IGC term.
+     *
+     * @param igcObject An IGC asset
+     */
+    private void processTermModification(IGCObject igcObject) {
+        String glossaryCategoryName = getParentCategoryName(igcObject);
+        String glossaryTermName = getGlossaryTermName(glossaryCategoryName, igcObject.getName());
+        updateGlossaryTerm(igcObject, glossaryTermName);
+    }
+
+    /**
+     * Update a glossary term.
+     *
+     * @param igcObject An IGC asset
+     * @param qualifiedName A mandatory property of OMRS entities
+     */
+    private void updateGlossaryTerm(IGCObject igcObject, String qualifiedName) {
+        final List<Classification> classifications = createClassifications(igcObject, CONFIDENTIALITY);
+        InstanceProperties instanceProperties = getEntityProperties(GLOSSARY_TERM, igcObject, qualifiedName);
+
+        EntityDetail entity = getEntityDetail(igcObject.getId(),
+                GLOSSARY_TERM,
+                false,
+                igcObject.getCreatedBy(),
+                instanceProperties,
+                classifications);
+
+        if (entity != null) {
+            sendUpdateEntityEvent(entity);
+        }
+    }
+
+    /**
+     * Publish a new version of an entity via OMRS.
+     *
+     * @param  entity EntityDetail stores all of the type-specific properties for the entity.  These properties can be
+     *                requested in an InstanceProperties object on request.
+     */
+    private void sendUpdateEntityEvent(EntityDetail entity) {
+        repositoryEventProcessor.processUpdatedEntityEvent(
+                sourceName,
+                metadataCollectionId,
+                originatorServerName,
+                originatorServerType,
+                originatorOrganizationName,
+                null,
+                entity
+        );
+
+        log.info("[Entity] update the entity with type = {}; guid = {}", entity.getType().getTypeDefName(), entity.getGUID());
+    }
+
+    /**
+     * Propagate the creation of an IGC term.
+     *
+     * @param igcObject An IGC asset
+     */
+    private void processTermCreation(IGCObject igcObject) {
+        String glossaryCategoryName = getParentCategoryName(igcObject);
+        String glossaryTermName = getGlossaryTermName(glossaryCategoryName, igcObject.getName());
+
+        createEntity(igcObject, false, GLOSSARY_TERM, glossaryTermName);
+        createEntity(igcObject, false, GLOSSARY_CATEGORY, glossaryCategoryName);
+
+        EntityProxy glossaryCategoryProxy = newEntityProxy(GLOSSARY_CATEGORY, glossaryCategoryName, igcObject.getContext().get(0).getId());
+        EntityProxy glossaryTermProxy = newEntityProxy(GLOSSARY_TERM, glossaryTermName, igcObject.getId());
+        createRelationship(TERM_CATEGORIZATION, glossaryCategoryProxy, glossaryTermProxy);
+    }
+
+    /**
+     * Propagate the assignment between a business and a technical asset, or the modification of an existing assignment.
+     *
+     * @param igcObject An IGC asset
+     */
+    private void processAssignedRelationship(IGCObject igcObject) {
+        String glossaryTermID = igcObject.getAssignedToTerms().getItems().get(0).getId();
+        IGCObject glossaryTerm = igcomrsRepositoryConnector.genericIGCQuery(glossaryTermID);
+
+        String glossaryTermName = getGlossaryTermName(glossaryTerm);
+        String columnQualifiedName = getQualifiedName(igcObject.getContext(), igcObject.getName());
+
+        EntityProxy relationalColumnProxy = newEntityProxy(RELATIONAL_COLUMN, columnQualifiedName, igcObject.getId());
+        EntityProxy glossaryTermProxy = newEntityProxy(GLOSSARY_TERM, glossaryTermName, glossaryTermID);
+        createRelationship(SEMANTIC_ASSIGNMENT, relationalColumnProxy, glossaryTermProxy);
+    }
+
+    /**
+     * Create and propagate the relationship between two entity proxies. An entityProxy summarizes an entity instance.
+     * A proxy is used instead of the original entity to be prepared for a situation where a receiving repository has
+     * no knowledge of the original entity yet.
+     *
+     * @param relationshipType The pre-defined OMRS type of the relationship between the two proxy entities. Note that
+     *                         proxy one and proxy two are not interchangable! Refer to the the Egeria documentation for
+     *                         the correct order for each relationship type.
+     *
+     * @param entityProxyOne    EntityProxy summarizes an entity instance.  It is used to describe one of the entities
+     *                          connected together by a relationship.
+     * @param entityProxyTwo    EntityProxy summarizes an entity instance.  It is used to describe one of the entities
+     *                         connected together by a relationship.
+     */
     private void createRelationship(String relationshipType, EntityProxy entityProxyOne, EntityProxy entityProxyTwo) {
 
         Relationship relationship = getRelationship(relationshipType);
@@ -348,6 +489,18 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                 relationshipType, entityProxyOneType, entityProxyOneType, entityProxyTwoGUID, entityProxyTwoType);
     }
 
+    /**
+     * Add the entity proxies to the relationship object. A proxy is used instead of the original entity to be prepared
+     * for a situation where a receiving repository has no knowledge of the original entity yet.
+     *
+     * @param relationship Relationship is a POJO that manages the properties of an open metadata relationship.
+     *                     This includes information
+     *                     about the relationship type, the two entities it connects and the properties it holds.
+     * @param entityProxyOne EntityProxy summarizes an entity instance.  It is used to describe one of the entities
+     *                       connected together by a relationship.
+     * @param entityProxyTwo EntityProxy summarizes an entity instance.  It is used to describe one of the entities
+     *                       connected together by a relationship.
+     */
     private void setEndsOfRelationship(Relationship relationship, EntityProxy entityProxyOne, EntityProxy entityProxyTwo) {
         if (entityProxyOne != null && entityProxyTwo != null) {
             relationship.setEntityOneProxy(entityProxyOne);
@@ -355,6 +508,13 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         }
     }
 
+    /**
+     * Publish a relationship via OMRS.
+     *
+     * @param relationship Relationship is a POJO that manages the properties of an open metadata relationship. This
+     *                     includes information about the relationship type, the two entities it connects and the
+     *                     properties it holds.
+     */
     private void sendNewRelationshipEvent(Relationship relationship) {
 
         this.repositoryEventProcessor.processNewRelationshipEvent(
@@ -365,43 +525,51 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                 originatorOrganizationName,
                 relationship
         );
-
     }
 
-    private void updateGlossaryTerm(IGCObject igcObject, String qualifiedName) {
+    /**
+     * Create and publish a new entity based on an IGC asset.
+     *
+     * @param igcObject         An IGC asset
+     * @param avoidDuplicate    Some concepts which are represented as a single asset in IGC, are divided into several
+     *                          entities in OMRS. Every OMRS entity needs a unique ID however. The avoidDuplicate switch
+     *                          allows a derived entity to obtain a unique id, even when multiple entities are
+     *                          derived from the same IGC asset.
+     * @param typeName          The pre-defined type of the Egeria entity
+     * @param qualifiedName     The qualified name of the entity
+     */
+    private void createEntity(IGCObject igcObject, boolean avoidDuplicate, String typeName, String qualifiedName) {
 
-        final List<Classification> classifications = createClassifications(igcObject, CONFIDENTIALITY);
-        InstanceProperties instanceProperties = getEntityProperties(GLOSSARY_TERM, igcObject, qualifiedName);
+        List<Classification> classifications = new ArrayList<>();
+        if (GLOSSARY_TERM.equals(typeName)) {
+            classifications = createClassifications(igcObject, CONFIDENTIALITY);
+        }
 
-        EntityDetail entity = getEntityDetail(igcObject.getId(),
-                GLOSSARY_TERM,
-                false,
+        InstanceProperties instanceProperties = getEntityProperties(typeName, igcObject, qualifiedName);
+
+        EntityDetail entityDetail = getEntityDetail(igcObject.getId(),
+                typeName,
+                avoidDuplicate,
                 igcObject.getCreatedBy(),
                 instanceProperties,
                 classifications);
 
-        if (entity != null) {
-            sendUpdateEntityEvent(entity);
-        }
-
+        sendNewEntityEvent(typeName, entityDetail);
     }
 
-    private void sendUpdateEntityEvent(EntityDetail entity) {
 
-        repositoryEventProcessor.processUpdatedEntityEvent(
-                sourceName,
-                metadataCollectionId,
-                originatorServerName,
-                originatorServerType,
-                originatorOrganizationName,
-                null,
-                entity
-        );
-
-        log.info("[Entity] update the entity with type = {}; guid = {}", entity.getType().getTypeDefName(), entity.getGUID());
-    }
-
-    private void createEntity(IGCColumn igcColumn, String typeName, boolean avoidDuplicate, String qualifiedName) {
+    /**
+     * Create and publish a new entity based on an IGC asset.
+     *
+     * @param igcColumn         An IGC column asset
+     * @param avoidDuplicate    Some concepts which are represented as a single asset in IGC, are divided into several
+     *                          entities in OMRS. Every OMRS entity needs a unique ID however. The avoidDuplicate switch
+     *                          allows a derived entity to obtain a unique id, even when multiple entities are
+     *                          derived from the same IGC asset.
+     * @param typeName          The pre-defined type of the Egeria entity
+     * @param qualifiedName     A mandatory property of OMRS entities
+     */
+    private void createColumnEntity(IGCColumn igcColumn, boolean avoidDuplicate, String typeName, String qualifiedName) {
 
         InstanceProperties instanceProperties = getEntityProperties(
                 qualifiedName,
@@ -422,25 +590,13 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         sendNewEntityEvent(typeName, entityDetail);
     }
 
-    private void createEntity(IGCObject igcObject, boolean avoidDuplicate, String typeName, String qualifiedName) {
-
-        List<Classification> classifications = new ArrayList<>();
-        if (GLOSSARY_TERM.equals(typeName)) {
-            classifications = createClassifications(igcObject, CONFIDENTIALITY);
-        }
-
-        InstanceProperties instanceProperties = getEntityProperties(typeName, igcObject, qualifiedName);
-
-        EntityDetail entityDetail = getEntityDetail(igcObject.getId(),
-                typeName,
-                avoidDuplicate,
-                igcObject.getCreatedBy(),
-                instanceProperties,
-                classifications);
-
-        sendNewEntityEvent(typeName, entityDetail);
-    }
-
+    /**
+     * Publish a new entity via OMRS.
+     *
+     * @param typeName          The pre-defined type of the Egeria entity
+     * @param entityDetail      EntityDetail stores all of the type-specific properties for the entity.  These
+     *                          properties can be requested in an InstanceProperties object on request.
+     */
     private void sendNewEntityEvent(String typeName, EntityDetail entityDetail) {
 
         if (entityDetail == null) {
@@ -462,6 +618,17 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
     }
 
 
+    /**
+     * Create a new Relationship object via the OMRS Helper.
+     *
+     * @param relationshipType The pre-defined OMRS type of the relationship between the two proxy entities. Note that
+     *                         proxy one and proxy two are not interchangable! Refer to the the Egeria documentation for
+     *                         the correct order for each relationship type.
+     *
+     * @return                 Relationship is a POJO that manages the properties of an open metadata relationship.
+     *                         This includes information  about the relationship type, the two entities it connects and
+     *                         the properties it holds.
+     */
     private Relationship getRelationship(String relationshipType) {
 
         try {
@@ -481,6 +648,16 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         return null;
     }
 
+    /**
+     * Create a new entity proxy. An EntityProxy summarizes an entity instance. It is used to describe one of the
+     * entities connected together by a relationship.  A proxy is used instead of the original entity to be prepared for
+     * situation where a receiving repository has no knowledge of the original entity yet.
+     *
+     * @param typeName          The pre-defined type of the Egeria entity
+     * @param qualifiedName     A mandatory property of OMRS entities
+     * @param entityGuid        The unique id of an Egeria entity, roughly comparable to the IGC's RID
+     * @return                  An entity proxy object
+     */
     private EntityProxy newEntityProxy(String typeName, String qualifiedName, String entityGuid) {
 
         try {
@@ -504,7 +681,22 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         return null;
     }
 
-    private EntityDetail getEntityDetail(String id, String typeName, boolean avoidDuplicate, String username,
+    /**
+     * Create a new Entitydetail object via the OMRS Helper.
+     * @param entityGUID            The unique id of an Egeria entity, roughly comparable to the IGC's RID
+     * @param typeName              The pre-defined type of the Egeria entity
+     * @param avoidDuplicate        Some concepts which are represented as a single asset in IGC, are divided into
+     *                              several entities in OMRS. Every OMRS entity needs a unique ID however. The
+     *                              avoidDuplicate switch allows a derived entity to obtain a unique id, even when
+     *                              multiple entities are derived from the same IGC asset.
+     * @param username              The creator of the IGC asset
+     * @param instanceProperties    Properties of the entity, e.g. qualified name
+     * @param classifications       The Classification class stores information about a classification assigned to an
+     *                              entity.  The Classification class stores a name, properties, and the owner of the
+     *                              classification.
+     * @return                      An entityDetail Object
+     */
+    private EntityDetail getEntityDetail(String entityGUID, String typeName, boolean avoidDuplicate, String username,
                                          InstanceProperties instanceProperties, List<Classification> classifications) {
 
         try {
@@ -519,9 +711,9 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
             entityDetail.setStatus(InstanceStatus.ACTIVE);
 
             if (avoidDuplicate) {
-                entityDetail.setGUID(typeName + "." + id);
+                entityDetail.setGUID(typeName + "." + entityGUID);
             } else {
-                entityDetail.setGUID(id);
+                entityDetail.setGUID(entityGUID);
             }
 
             return entityDetail;
