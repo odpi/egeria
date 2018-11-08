@@ -8,9 +8,12 @@ import org.odpi.openmetadata.accessservices.informationview.events.ReportColumn;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportRequestBody;
 import org.odpi.openmetadata.accessservices.informationview.events.Source;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.ReportCreationException;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesBuilder;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesUtils;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -29,13 +32,15 @@ public class ReportCreator {
 
     private static final Logger log = LoggerFactory.getLogger(ReportCreator.class);
     private EntitiesCreatorHelper entitiesCreatorHelper;
+    private OMRSAuditLog auditLog;
 
 
-    public ReportCreator(EntitiesCreatorHelper entitiesCreatorHelper) {
+    public ReportCreator(EntitiesCreatorHelper entitiesCreatorHelper, OMRSAuditLog auditLog) {
         this.entitiesCreatorHelper = entitiesCreatorHelper;
+        this.auditLog = auditLog;
     }
 
-    public void createReportModel(ReportRequestBody payload) {
+    public void createReportModel(ReportRequestBody payload) throws ReportCreationException{
 
         try {
             log.info("Creating report based on payload {}", payload);
@@ -111,8 +116,26 @@ public class ReportCreator {
 
 
         } catch (Exception e) {
-            log.error("Exception processing event REST call", e);
-            InformationViewErrorCode auditCode = InformationViewErrorCode.PROCESS_EVENT_EXCEPTION;
+            log.error("Exception creating report", e);
+            InformationViewErrorCode auditCode = InformationViewErrorCode.REPORT_CREATION_EXCEPTION;
+
+
+            auditLog.logException("processEvent",
+                    auditCode.getErrorMessageId(),
+                    OMRSAuditLogRecordSeverity.EXCEPTION,
+                    auditCode.getErrorMessage(),
+                    "json {" + payload + "}",
+                    auditCode.getSystemAction(),
+                    auditCode.getUserAction(),
+                    e);
+            throw new ReportCreationException(404,
+                                              "ReportCreator",
+                                              "createReport",
+                                              "Unable to create report: " + e.getMessage(),
+                                              "The system is unable to process the request.",
+                                              "Correct the payload submitted to request.",
+                                              "");//TODO extract to code exception class
+
         }
 
     }

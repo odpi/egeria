@@ -16,7 +16,7 @@
 
     <groupId>org.odpi.egeria</groupId>
     <artifactId>egeria</artifactId>
-    <version>0.2-SNAPSHOT</version>
+    <version>0.3-SNAPSHOT</version>
 
     <url>https://odpi.github.io/Egeria</url>
 
@@ -89,12 +89,9 @@
 
     </modules>
 
-    <prerequisites>
-        <maven>3.0.4</maven>
-    </prerequisites>
 
     <properties>
-        <open-metadata.version>0.2-SNAPSHOT</open-metadata.version>
+        <open-metadata.version>0.3-SNAPSHOT</open-metadata.version>
 
         <!-- Level of Java  -->
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -121,6 +118,7 @@
         <maven-enforcer-plugin.version>3.0.0-M1</maven-enforcer-plugin.version>
         <maven-javadoc-plugin.version>3.0.1</maven-javadoc-plugin.version>
         <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
+        <surefire.plugin.version>2.22.1</surefire.plugin.version>
 
     </properties>
 
@@ -267,6 +265,14 @@
                         <exclude>**/*.registrystore</exclude>
                         <exclude>**/*.results</exclude>
                         <exclude>**/target/**</exclude>
+                        <exclude>**/venv/**</exclude>
+                        <exclude>**/.repository/**</exclude>
+                        <exclude>**/charts/**/charts/**</exclude>
+                        <exclude>**/log</exclude>
+                        <exclude>**/*.lock</exclude>
+                        <exclude>**/m2repo*/**</exclude>
+                        <exclude>**/venv/**</exclude>
+                        <exclude>**/archives/patches/egeria.patch</exclude>
                     </excludes>
                     <licenseFamilies>
                         <licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">
@@ -317,6 +323,9 @@
     <profiles>
         <profile>
             <id>release</id>
+            <properties>
+                <gpg.executable>gpg2</gpg.executable>
+            </properties>
             <build>
                 <plugins>
 

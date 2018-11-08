@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.eventbus.topic.inmemory;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -10,12 +11,16 @@ import java.util.List;
 
 /**
  * InMemoryOpenMetadataTopicConnector provides a concrete implementation of the OpenMetadataTopicConnector that
- * uses an in-memory list as the event/messaging infrastructure.
+ * uses an in-memory list as the event/messaging infrastructure.  This connector is used internally
+ * in the OMRS to pass events received on the OMRS Topic to the OMAS Topic Listeners.
  */
 public class InMemoryOpenMetadataTopicConnector extends OpenMetadataTopicConnector
 {
     private volatile List<String> inMemoryOMRSTopic = new ArrayList<>();
 
+    /**
+     * Constructor
+     */
     public InMemoryOpenMetadataTopicConnector()
     {
         super();

@@ -9,7 +9,7 @@
     <parent>
         <artifactId>asset-catalog</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>0.2-SNAPSHOT</version>
+        <version>0.3-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -24,7 +24,6 @@
     <properties>
         <junit.platform.version>1.2.0</junit.platform.version>
         <junit.jupiter.version>5.2.0</junit.jupiter.version>
-        <surefire.plugin.version>2.20.1</surefire.plugin.version>
         <junit.surefire.version>1.2.0</junit.surefire.version>
         <mockito.junit.version>2.19.0</mockito.junit.version>
         <junit.version>4.12</junit.version>
