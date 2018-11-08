@@ -190,7 +190,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
 
         List<String> createdRIDs = igcKafkaEvent.getDatacollectionRID();
         for (String id : createdRIDs) {
-            createSchema(id);
+            createSchemaIMAM(id);
         }
 
         log.info("Process IMAM ended!");
@@ -204,7 +204,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
      *
      * @param id The RID of the IGC Schema that is to be propagated.
      */
-    private void createSchema(String id) {
+    private void createSchemaIMAM(String id) {
         IGCObject igcTable = igcomrsRepositoryConnector.genericIGCQuery(id);
         IGCObject igcEndpoint = igcomrsRepositoryConnector.genericIGCQuery(igcTable.getContext().get(0).getId());
         IGCObject igcDatabase = igcomrsRepositoryConnector.genericIGCQuery(igcTable.getContext().get(1).getId());
@@ -242,50 +242,72 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
 
         //Propagate Connection/Connection type creations and relationships
         for (Item connection : igcDatabase.getDataConnections().getItems()) {
-            IGCObject igcConnection = igcomrsRepositoryConnector.genericIGCQuery(connection.getId());
-            IGCObject igcConnectorType = igcomrsRepositoryConnector.genericIGCQuery(igcConnection.getDataConnectors().getId());
-
-            String connectionQualifiedName = getConnectionQualifiedName(igcConnection);
-            createEntity(igcConnection, false, CONNECTION, connectionQualifiedName);
-
-            String connectorTypeQualifiedName = getConnectorQualifiedName(igcConnectorType);
-            createEntity(igcConnectorType, false, CONNECTOR_TYPE, connectorTypeQualifiedName);
-
-            EntityProxy connectionProxy = newEntityProxy(CONNECTION, connectionQualifiedName, igcConnection.getId());
-            EntityProxy connectorTypeProxy = newEntityProxy(CONNECTOR_TYPE, connectorTypeQualifiedName, igcConnectorType.getId());
-            createRelationship(CONNECTION_CONNECTOR_TYPE, connectionProxy, connectorTypeProxy);
-
-            EntityProxy endpointProxy = newEntityProxy(ENDPOINT, endpointQualifiedName, igcEndpoint.getId());
-            createRelationship(CONNECTION_ENDPOINT, endpointProxy, connectionProxy);
+            propagateConnectionAssets(igcEndpoint, endpointQualifiedName, connection);
         }
 
         //Propagate RelationalColumns and relationships
         IGCObject databaseColumns = igcomrsRepositoryConnector.getDatabaseColumns(id, DEFAULT_PAGE_SIZE);
         for (Item column : databaseColumns.getDatabaseColumns().getItems()) {
-            IGCColumn igcColumn = igcomrsRepositoryConnector.getIGCColumn(column.getId());
+            propagateRelationalColumnAssets(relationalTableTypeProxy, column);
+        }
+    }
 
-            String columnQualifiedName = getQualifiedName(igcColumn.getContext(), igcColumn.getName());
-            createColumnEntity(igcColumn, false, RELATIONAL_COLUMN,columnQualifiedName);
+    /**
+     * Propagate the creation of Connection/Connection entities.
+     *
+     * @param igcEndpoint               An IGC endpoint
+     * @param endpointQualifiedName     The qualified name of the endpoint
+     * @param connection                AN IGC connection
+     */
+    private void propagateConnectionAssets(IGCObject igcEndpoint, String endpointQualifiedName, Item connection) {
+        IGCObject igcConnection = igcomrsRepositoryConnector.genericIGCQuery(connection.getId());
+        IGCObject igcConnectorType = igcomrsRepositoryConnector.genericIGCQuery(igcConnection.getDataConnectors().getId());
 
-            String columnTypeQualifiedName = getTypeQualifiedName(columnQualifiedName);
-            createColumnEntity(igcColumn, true, RELATIONAL_COLUMN_TYPE, columnTypeQualifiedName);
-            String relationalColumnTypeID = RELATIONAL_COLUMN_TYPE + "." + igcColumn.getId();
+        String connectionQualifiedName = getConnectionQualifiedName(igcConnection);
+        createEntity(igcConnection, false, CONNECTION, connectionQualifiedName);
 
-            EntityProxy relationalColumnProxy = newEntityProxy(RELATIONAL_COLUMN, columnQualifiedName, igcColumn.getId());
-            EntityProxy relationalColumnTypeProxy = newEntityProxy(RELATIONAL_COLUMN_TYPE, columnTypeQualifiedName, relationalColumnTypeID);
-            createRelationship(SCHEMA_ATTRIBUTE_TYPE, relationalColumnProxy, relationalColumnTypeProxy);
-            createRelationship(ATTRIBUTE_FOR_SCHEMA, relationalTableTypeProxy, relationalColumnProxy);
+        String connectorTypeQualifiedName = getConnectorQualifiedName(igcConnectorType);
+        createEntity(igcConnectorType, false, CONNECTOR_TYPE, connectorTypeQualifiedName);
 
-            if (igcColumn.getDefinedForeignKey() != null &&
-                    igcColumn.getDefinedForeignKeyReferences() != null) {
-                for (Item foreignKey : igcColumn.getDefinedForeignKeyReferences().getItems()) {
-                    final String foreignKeyId = foreignKey.getId();
-                    IGCColumn foreignKeyRelationalColumn = igcomrsRepositoryConnector.getIGCColumn(foreignKeyId);
-                    String foreignKeyQualifiedName = getQualifiedName(foreignKeyRelationalColumn.getContext(), foreignKeyRelationalColumn.getName());
+        EntityProxy connectionProxy = newEntityProxy(CONNECTION, connectionQualifiedName, igcConnection.getId());
+        EntityProxy connectorTypeProxy = newEntityProxy(CONNECTOR_TYPE, connectorTypeQualifiedName, igcConnectorType.getId());
+        createRelationship(CONNECTION_CONNECTOR_TYPE, connectionProxy, connectorTypeProxy);
 
-                    EntityProxy foreignKeyProxy = newEntityProxy(RELATIONAL_COLUMN, foreignKeyQualifiedName, foreignKeyId);
-                    createRelationship(FOREIGN_KEY, relationalColumnProxy, foreignKeyProxy);
-                }
+        EntityProxy endpointProxy = newEntityProxy(ENDPOINT, endpointQualifiedName, igcEndpoint.getId());
+        createRelationship(CONNECTION_ENDPOINT, endpointProxy, connectionProxy);
+    }
+
+    /**
+     * Propagate the creation of RelationalColumn  entities.
+     *
+     * @param relationalTableTypeProxy  EntityProxy summarizes an entity instance.  It is used to describe one of the
+     *                                  entities connected together by a relationship.
+     * @param column                    An IGC column
+     */
+    private void propagateRelationalColumnAssets(EntityProxy relationalTableTypeProxy, Item column) {
+        IGCColumn igcColumn = igcomrsRepositoryConnector.getIGCColumn(column.getId());
+
+        String columnQualifiedName = getQualifiedName(igcColumn.getContext(), igcColumn.getName());
+        createColumnEntity(igcColumn, false, RELATIONAL_COLUMN,columnQualifiedName);
+
+        String columnTypeQualifiedName = getTypeQualifiedName(columnQualifiedName);
+        createColumnEntity(igcColumn, true, RELATIONAL_COLUMN_TYPE, columnTypeQualifiedName);
+        String relationalColumnTypeID = RELATIONAL_COLUMN_TYPE + "." + igcColumn.getId();
+
+        EntityProxy relationalColumnProxy = newEntityProxy(RELATIONAL_COLUMN, columnQualifiedName, igcColumn.getId());
+        EntityProxy relationalColumnTypeProxy = newEntityProxy(RELATIONAL_COLUMN_TYPE, columnTypeQualifiedName, relationalColumnTypeID);
+        createRelationship(SCHEMA_ATTRIBUTE_TYPE, relationalColumnProxy, relationalColumnTypeProxy);
+        createRelationship(ATTRIBUTE_FOR_SCHEMA, relationalTableTypeProxy, relationalColumnProxy);
+
+        if (igcColumn.getDefinedForeignKey() != null &&
+                igcColumn.getDefinedForeignKeyReferences() != null) {
+            for (Item foreignKey : igcColumn.getDefinedForeignKeyReferences().getItems()) {
+                final String foreignKeyId = foreignKey.getId();
+                IGCColumn foreignKeyRelationalColumn = igcomrsRepositoryConnector.getIGCColumn(foreignKeyId);
+                String foreignKeyQualifiedName = getQualifiedName(foreignKeyRelationalColumn.getContext(), foreignKeyRelationalColumn.getName());
+
+                EntityProxy foreignKeyProxy = newEntityProxy(RELATIONAL_COLUMN, foreignKeyQualifiedName, foreignKeyId);
+                createRelationship(FOREIGN_KEY, relationalColumnProxy, foreignKeyProxy);
             }
         }
     }
@@ -539,7 +561,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
     /**
      * Create and publish a new entity based on an IGC asset.
      *
-     * @param igcColumn         IGC Infosphere topic event
+     * @param igcColumn         An IGC column asset
      * @param avoidDuplicate    Some concepts which are represented as a single asset in IGC, are divided into several
      *                          entities in OMRS. Every OMRS entity needs a unique ID however. The avoidDuplicate switch
      *                          allows a derived entity to obtain a unique id, even when multiple entities are
