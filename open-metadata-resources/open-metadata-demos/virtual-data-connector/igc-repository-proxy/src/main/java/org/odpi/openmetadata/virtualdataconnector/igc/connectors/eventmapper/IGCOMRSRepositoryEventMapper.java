@@ -103,7 +103,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
     }
 
     /**
-     * Get proeprties for the kafka consumer.
+     * Get properties for the kafka consumer.
      *
      * @return kafka properties
      */
