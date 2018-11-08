@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.server.spring;
 
 
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 /**
- * The SubjectAreaRESTServices provides the org.odpi.openmetadata.accessservices.subjectarea.server-side implementation of the SubjectArea Open Metadata
+ * The SubjectAreaRESTServices provides the org.odpi.openmetadata.accessservices.subjectarea.server-side implementation of the SubjectAreaDefinition Open Metadata
  * Assess Service (OMAS).  This interface provides category authoring interfaces for subject area experts.
  */
 @RestController
@@ -31,7 +32,7 @@ public class SubjectAreaCategoryRESTResource extends SubjectAreaRESTServices{
      * <p>
      * Valid nodeTypes for this request are:
      * <ul>
-     *     <li>SubjectArea to create a Category that represents a subject area </li>
+     *     <li>SubjectAreaDefinition to create a Category that represents a subject area </li>
      *     <li>Category to create a category that is not a subject area</li>
      * </ul>
      *

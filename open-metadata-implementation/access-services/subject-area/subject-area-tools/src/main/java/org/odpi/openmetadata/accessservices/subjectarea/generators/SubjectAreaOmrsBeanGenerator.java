@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.generators;
 
 import org.odpi.openmetadata.accessservices.subjectarea.model.*;
@@ -21,7 +22,7 @@ public class SubjectAreaOmrsBeanGenerator {
     // The API properties should not be generated as part of the normal build.
     // Changes the API properties should be considered if the generate files change either due to the archive types changing or the generator or templates changing.
     // if the API classifications properties need to be changed in line with the generated files then set regenAPIFiles to true.
-    private boolean regenAPIFiles = false;
+    private boolean regenAPIFiles = true;
     public static final String OPEN_METADATA_IMPLEMENTATION = "open-metadata-implementation";
 
 
@@ -40,7 +41,7 @@ public class SubjectAreaOmrsBeanGenerator {
 
     public static final String TEMPLATES_FOLDER = GENERATOR + "/src/main/resources/templates/";
     public static final String SRC_SUBJECT_AREA = "/src/main/java/org/odpi/openmetadata/accessservices/subjectarea/";
-    public static final String GENERATION_FOLDER = SUBJECTAREA_OMAS_SERVER + SRC_SUBJECT_AREA + "/generated";
+    public static final String GENERATION_FOLDER = SUBJECTAREA_OMAS_SERVER + SRC_SUBJECT_AREA + "generated";
     public static final String GENERATION_REST_FOLDER = GENERATION_FOLDER + "/server/";
     public static final String GENERATION_REST_TEST_FOLDER = SUBJECTAREA_OMAS_SERVER + "/src/test/java/org/odpi" +
             "/openmetadata/accessservices/subjectarea/generated/server/Test";
@@ -54,8 +55,21 @@ public class SubjectAreaOmrsBeanGenerator {
     public static final String GENERATION_ENUMS_FOLDER = GENERATION_FOLDER + "/" + ENUMS + "/";
     public static final String GENERATION_CLASSIFICATIONS_FOLDER = GENERATION_FOLDER + "/" + CLASSIFICATIONS + "/";
 
-    public static final String SUBJECTAREA_OMAS_API_CLASSIFICATION_FOLDER =  SUBJECTAREA_OMAS_API + SRC_SUBJECT_AREA + "/properties/classifications";
-    public static final String SUBJECTAREA_OMAS_API_ENUM_FOLDER =  SUBJECTAREA_OMAS_API + SRC_SUBJECT_AREA + "/properties/enums";
+    public static final String SUBJECTAREA_OMAS_API_CLASSIFICATION_FOLDER =  SUBJECTAREA_OMAS_API + SRC_SUBJECT_AREA + "properties/classifications";
+    public static final String SUBJECTAREA_OMAS_API_ENUM_FOLDER =  SUBJECTAREA_OMAS_API + SRC_SUBJECT_AREA + "properties/enums";
+    public static final String SUBJECTAREA_OMAS_API_RELATIONSHIP_FOLDER =  SUBJECTAREA_OMAS_API + SRC_SUBJECT_AREA + "properties/relationships";
+
+    public static final String SUBJECTAREA_OMAS_GEN_PKG_BASE = "org.odpi.openmetadata.accessservices.subjectarea.generated.";
+    public static final String SUBJECTAREA_OMAS_API_PKG_BASE = "org.odpi.openmetadata.accessservices.subjectarea.properties.";
+
+    public static final String SUBJECTAREA_OMAS_GEN_PKG_ENUMS = SUBJECTAREA_OMAS_GEN_PKG_BASE+ENUMS;
+    public static final String SUBJECTAREA_OMAS_GEN_PKG_CLASSIFICATIONS = SUBJECTAREA_OMAS_GEN_PKG_BASE+CLASSIFICATIONS;
+    public static final String SUBJECTAREA_OMAS_GEN_PKG_RELATIONSHIPS = SUBJECTAREA_OMAS_GEN_PKG_BASE+RELATIONSHIPS;
+
+    public static final String SUBJECTAREA_OMAS_API_PKG_ENUMS = SUBJECTAREA_OMAS_API_PKG_BASE+ENUMS;
+    public static final String SUBJECTAREA_OMAS_API_PKG_CLASSIFICATIONS = SUBJECTAREA_OMAS_API_PKG_BASE+CLASSIFICATIONS;
+    public static final String SUBJECTAREA_OMAS_API_PKG_RELATIONSHIPS = SUBJECTAREA_OMAS_API_PKG_BASE+RELATIONSHIPS;
+
 
     public static final String GENERATION_RELATIONSHIPS_FOLDER = GENERATION_FOLDER + "/" + RELATIONSHIPS + "/";
 
@@ -203,8 +217,8 @@ public class SubjectAreaOmrsBeanGenerator {
 
         Map<String, List<OmrsBeanEnumValue>> enumsMap = omrsBeanModel.getEnumsMap();
         for (String enumName : enumsMap.keySet()) {
-            final String enumFileName = GENERATION_ENUMS_FOLDER + "/" + enumName + ".java";
-            generateEnumFile(enumName, enumsMap.get(enumName), enumFileName,"org.odpi.openmetadata.accessservices.subjectarea.generated.enums");
+            final String enumFileName = GENERATION_ENUMS_FOLDER + enumName + ".java";
+            generateEnumFile(enumName, enumsMap.get(enumName), enumFileName,SUBJECTAREA_OMAS_GEN_PKG_ENUMS);
         }
         if (this.regenAPIFiles) {
             repopulateAPIEnums(enumsMap.keySet());
@@ -218,33 +232,29 @@ public class SubjectAreaOmrsBeanGenerator {
         Map<String, List<OmrsBeanEnumValue>> enumsMap = omrsBeanModel.getEnumsMap();
         for (String enumName : enumNames) {
             final String enumPropertyFileName = SUBJECTAREA_OMAS_API_ENUM_FOLDER + "/" + enumName + ".java";
-            generateEnumFile(enumName, enumsMap.get(enumName),enumPropertyFileName,"org.odpi.openmetadata.accessservices.subjectarea.properties.enums");
+            generateEnumFile(enumName, enumsMap.get(enumName),enumPropertyFileName,SUBJECTAREA_OMAS_API_PKG_ENUMS);
         }
-
     }
 
     private void generateClassificationFiles() throws IOException {
         Map<String, List<OmrsBeanAttribute>> omrsBeanAttributeMap = omrsBeanModel.getOmrsBeanClassificationAttributeMap();
+        if (this.regenAPIFiles)
+        {
+            // delete all but the classification java file.
+            GeneratorUtilities.deleteFilesInFolder(SUBJECTAREA_OMAS_API_CLASSIFICATION_FOLDER, "Classification.java");
+        }
         for (String classificationName : omrsBeanAttributeMap.keySet()) {
 
             String outputFolder = this.createClassificationJavaFolderIfRequired(classificationName);
             final String classificationFileName = outputFolder + "/" + classificationName + ".java";
             final String classificationMapperFileName = outputFolder + "/" + classificationName + "Mapper.java";
-            generateClassificationFile(classificationName, classificationFileName,"org.odpi.openmetadata.accessservices.subjectarea.generated.classifications." + classificationName);
+            generateClassificationFile(classificationName, classificationFileName,SUBJECTAREA_OMAS_GEN_PKG_CLASSIFICATIONS+"."+classificationName);
+            // generate the Classification files
+            if (this.regenAPIFiles) {
+                final String classificationPropertyFileName = SUBJECTAREA_OMAS_API_CLASSIFICATION_FOLDER + "/" + classificationName + ".java";
+                generateClassificationFile(classificationName, classificationPropertyFileName,SUBJECTAREA_OMAS_API_PKG_CLASSIFICATIONS);
+            }
             generateClassificationMapperFile(classificationName, classificationMapperFileName);
-        }
-        if (this.regenAPIFiles) {
-            repopulateAPIClassifications(omrsBeanAttributeMap.keySet());
-        }
-    }
-    private void repopulateAPIClassifications(Set<String> classificationNames) throws IOException {
-        // delete all but the classification java file.
-        GeneratorUtilities.deleteFilesInFolder(SUBJECTAREA_OMAS_API_CLASSIFICATION_FOLDER, "Classification.java");
-        // generate the Classification files
-
-        for (String classificationName : classificationNames) {
-            final String classificationPropertyFileName = SUBJECTAREA_OMAS_API_CLASSIFICATION_FOLDER + "/" + classificationName + ".java";
-            generateClassificationFile(classificationName, classificationPropertyFileName,"org.odpi.openmetadata.accessservices.subjectarea.properties.classifications");
         }
     }
     private void generateClassificationMapperFile(String classificationName, String fileName) throws IOException {
@@ -346,10 +356,19 @@ public class SubjectAreaOmrsBeanGenerator {
             String outputFolder = this.createRelationshipJavaFolderIfRequired(relationshipName);
             final String relationshipFileName = outputFolder + "/" + relationshipName + ".java";
             OmrsBeanRelationship omrsBeanRelationship = omrsBeanModel.getOmrsBeanRelationshipByName(relationshipName);
-            generateRelationshipFile(omrsBeanRelationship, relationshipFileName);
+            generateRelationshipFile(omrsBeanRelationship, relationshipFileName,SUBJECTAREA_OMAS_GEN_PKG_RELATIONSHIPS +"."+relationshipName);
+            if (this.regenAPIFiles) {
+                //regenerate the API file if required.
+                final String relationshipPropertyFileName = SUBJECTAREA_OMAS_API_RELATIONSHIP_FOLDER + "/" + relationshipName + ".java";
+                generateRelationshipFile(omrsBeanRelationship,relationshipPropertyFileName,SUBJECTAREA_OMAS_API_PKG_RELATIONSHIPS);
+
+            }
+
             final String relationshipMapperFileName = outputFolder + "/" + relationshipName + "Mapper.java";
             generateRelationshipMapperFile(omrsBeanRelationship, relationshipMapperFileName);
         }
+
+
     }
     private void generateEntityRelatedFiles(Map<String, List<OmrsBeanAttribute>> omrsBeanAttributeMap) throws IOException {
         for (String entityName : omrsBeanAttributeMap.keySet()) {
@@ -361,8 +380,8 @@ public class SubjectAreaOmrsBeanGenerator {
         }
     }
 
-    /*e*
-     * Genr
+    /**
+     * Generate the top reference file
      * @param entityName
      * @param omrsBeanAttributes
      * @param topReferenceFileName
@@ -911,7 +930,7 @@ public class SubjectAreaOmrsBeanGenerator {
         outputFileWriter.close();
     }
 
-    private void generateRelationshipFile(OmrsBeanRelationship omrsBeanRelationship, String fileName) throws IOException {
+    private void generateRelationshipFile(OmrsBeanRelationship omrsBeanRelationship, String fileName,String pkg) throws IOException {
 
         FileWriter outputFileWriter = new FileWriter(fileName);
         String relationshipName = omrsBeanRelationship.label;
@@ -927,6 +946,7 @@ public class SubjectAreaOmrsBeanGenerator {
             replacementMap.put("description", this.omrsBeanModel.getTypeDefDescription(GeneratorUtilities.uppercase1stLetter(GeneratorUtilities.uppercase1stLetter(relationshipName))));
 
             replacementMap.put("name", relationshipName);
+            replacementMap.put("package",pkg);
             replacementMap.put("entityProxy1Name", omrsBeanRelationship.entityProxy1Name);
             replacementMap.put("entityProxy1Type", omrsBeanRelationship.entityProxy1Type);
             replacementMap.put("entityProxy2Name", omrsBeanRelationship.entityProxy2Name);

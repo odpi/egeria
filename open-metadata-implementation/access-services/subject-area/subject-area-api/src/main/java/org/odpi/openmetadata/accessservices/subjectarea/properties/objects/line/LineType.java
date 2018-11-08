@@ -9,7 +9,7 @@ public enum LineType {
     UsedInContext,
     Translation,
     PreferredTerm,
-    IsTaxonomy,
+    //IsTaxonomy,??
     ValidValue,
     ReplacementTerm,
     TermTYPEDBYRelationship,

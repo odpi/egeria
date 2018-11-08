@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea;
 
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
@@ -6,7 +7,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.gloss
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 
 /**
- * The SubjectArea Open Metadata Access Service (OMAS) API for glossaries.
+ * The SubjectAreaDefinition Open Metadata Access Service (OMAS) API for glossaries.
  */
 public interface SubjectAreaGlossary
 {

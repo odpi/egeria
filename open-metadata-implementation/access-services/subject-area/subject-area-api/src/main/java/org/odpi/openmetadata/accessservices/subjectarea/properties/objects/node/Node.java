@@ -43,6 +43,28 @@ public class Node implements Serializable {
     private Map<String,String> additionalProperties;
     private String description =null;
     protected List<Classification> classifications = null;
+    private boolean isSubjectArea = false;
+    private String subjectAreaName = null;
+
+    public boolean isSubjectArea()
+    {
+        return isSubjectArea;
+    }
+
+    public void setSubjectArea(boolean subjectArea)
+    {
+        isSubjectArea = subjectArea;
+    }
+
+    public String getSubjectAreaName()
+    {
+        return subjectAreaName;
+    }
+
+    public void setSubjectAreaName(String subjectAreaName)
+    {
+        this.subjectAreaName = subjectAreaName;
+    }
 
     private Set<IconSummary> icons = null;
 

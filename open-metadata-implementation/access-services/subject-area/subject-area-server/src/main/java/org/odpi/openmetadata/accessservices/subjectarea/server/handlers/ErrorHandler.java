@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.server.handlers;
 
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
@@ -287,7 +288,7 @@ public class ErrorHandler
                                     String     assetGUID,
                                     String     methodName,
                                     String     serverName,
-                                    String     serviceName) throws InvalidParameterException, UnrecognizedGUIDException {
+                                    String     serviceName) throws UnrecognizedGUIDException {
         SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.GUID_DOES_NOT_EXIST;
         String                 errorMessage = errorCode.getErrorMessageId()
                                             + errorCode.getFormattedErrorMessage(assetGUID,
@@ -446,6 +447,7 @@ public class ErrorHandler
         SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.METADATA_SERVER_UNCONTACTABLE_ERROR;
         String                 errorMessage = errorCode.getErrorMessageId()
                 + errorCode.getFormattedErrorMessage(e.getMessage(),
+                e.getErrorMessage(),
                 methodName,
                 serviceName,
                 serverName);
@@ -533,7 +535,7 @@ public class ErrorHandler
     public static void handleEntityNotDeletedException(org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotDeletedException e, String methodName, String serverName, String serviceName,String guid) throws GUIDNotPurgedException {
         SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.GUID_NOT_PURGED_ERROR;
         String                 errorMessage = errorCode.getErrorMessageId()
-                + errorCode.getFormattedErrorMessage(methodName);
+                + errorCode.getFormattedErrorMessage(methodName,guid);
 
         throw new GUIDNotPurgedException(errorCode.getHTTPErrorCode(),
                 className,
@@ -555,7 +557,7 @@ public class ErrorHandler
     public static void handleRelationshipNotKnownException(String guid, String methodName, String serverName, String serviceName)  throws UnrecognizedGUIDException {
         SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.GUID_DOES_NOT_EXIST;
         String                 errorMessage = errorCode.getErrorMessageId()
-                + errorCode.getFormattedErrorMessage(methodName);
+                + errorCode.getFormattedErrorMessage(guid,methodName);
 
         UnrecognizedGUIDException uge =  new UnrecognizedGUIDException(errorCode.getHTTPErrorCode(),
                 className,
@@ -611,5 +613,19 @@ public class ErrorHandler
                 errorCode.getUserAction(),
                 guid);
 
+    }
+
+    public void handleMetadataServerUnContactable(MetadataServerUncontactableException e, String methodName, String serverName, String serviceName) throws MetadataServerUncontactableException
+    {
+        SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.METADATA_SERVER_UNCONTACTABLE_ERROR;
+        String                 errorMessage = errorCode.getErrorMessageId()
+                + errorCode.getFormattedErrorMessage(methodName);
+
+        throw new MetadataServerUncontactableException(errorCode.getHTTPErrorCode(),
+                className,
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
     }
 }

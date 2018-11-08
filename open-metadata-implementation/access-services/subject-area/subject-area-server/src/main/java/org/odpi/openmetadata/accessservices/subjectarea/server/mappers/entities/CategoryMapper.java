@@ -1,5 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-package org.odpi.openmetadata.accessservices.subjectarea.server.mappers;
+/* Copyright Contributors to the ODPi Egeria project. */
+package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities;
 
 
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
@@ -21,7 +22,7 @@ import java.util.List;
 
 
 /**
- * Static mapping methods to map between the Category and the generated GlossaryCategory.
+ * Static mapping methods to map between the Category and the generated GlossaryCategory (the omrsBean).
  * These mapping methods map classifications and attributes that directly map to OMRS.
  *
  */
@@ -30,9 +31,10 @@ public class CategoryMapper {
     private static final String className = CategoryMapper.class.getName();
 
     /**
-     * Map the Category to the generated GlossaryCategory
-     * @return he generated GlossaryCategory
-     * @throws InvalidParameterException
+     * Map the Category to the omrsBean
+     * @param category category exposed in the API
+     * @return omrs bean
+     * @throws InvalidParameterException one of the parameters is null or invalid.
      */
     static public GlossaryCategory mapCategoryToOMRSBean(Category category) throws InvalidParameterException {
 

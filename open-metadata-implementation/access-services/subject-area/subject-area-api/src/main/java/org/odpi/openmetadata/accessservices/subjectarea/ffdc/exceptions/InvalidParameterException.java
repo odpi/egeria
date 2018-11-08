@@ -1,9 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions;
 
 
 /**
- * The InvalidParameterException is thrown by the SubjectArea OMAS when a parameter is null or an invalid
+ * The InvalidParameterException is thrown by the SubjectAreaDefinition OMAS when a parameter is null or an invalid
  * value.
  */
 public class InvalidParameterException extends SubjectAreaCheckedExceptionBase

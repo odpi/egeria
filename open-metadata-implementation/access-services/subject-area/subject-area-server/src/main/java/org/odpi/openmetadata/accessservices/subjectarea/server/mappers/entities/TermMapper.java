@@ -1,5 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-package org.odpi.openmetadata.accessservices.subjectarea.server.mappers;
+/* Copyright Contributors to the ODPi Egeria project. */
+package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities;
 
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.classifications.Confidence.Confidence;
@@ -27,10 +28,10 @@ public class TermMapper {
     private static final String className = TermMapper.class.getName();
 
     /**
-     * map Node to GlossaryTerm local attributes
+     * map Term to GlossaryTerm
      * @param term
-     * @return
-     * @throws InvalidParameterException
+     * @return GlossaryTerm
+     * @throws InvalidParameterException one of the parameters is null or invalid.
      */
     static public GlossaryTerm mapTermToOMRSBean(Term term) throws InvalidParameterException {
 
@@ -82,6 +83,11 @@ public class TermMapper {
         return omrsBean;
     }
 
+    /**
+     * convert an OMRSBean to a Term
+     * @param omrsBean
+     * @return Term
+     */
     public static Term mapOMRSBeantoTerm(GlossaryTerm omrsBean) {
         Term term = new Term();
         term.setClassifications(omrsBean.getClassifications());

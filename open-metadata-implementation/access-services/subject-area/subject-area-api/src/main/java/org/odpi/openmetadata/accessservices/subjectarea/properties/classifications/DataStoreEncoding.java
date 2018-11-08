@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 
 package org.odpi.openmetadata.accessservices.subjectarea.properties.classifications;
 import org.slf4j.Logger;
@@ -188,7 +189,7 @@ public class DataStoreEncoding extends Classification {
        private Map<String,String> properties;
        /**
         * {@literal Additional properties for the encoding. }
-        * @return {@code Map<String,String> }
+        * @return {@code {@code Map<String,String> } }
         */
        public Map<String,String> getProperties() {
            return this.properties;
