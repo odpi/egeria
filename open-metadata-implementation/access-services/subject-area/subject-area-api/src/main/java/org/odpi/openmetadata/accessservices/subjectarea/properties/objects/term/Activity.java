@@ -32,6 +32,10 @@ public class Activity extends Term implements Serializable {
         nodeType = NodeType.Activity;
     }
 
+    /**
+     * Different types of activities.
+     * @return <code>ActivityType</code>
+     */
     public ActivityType getActivityType() {
         return activityType;
     }

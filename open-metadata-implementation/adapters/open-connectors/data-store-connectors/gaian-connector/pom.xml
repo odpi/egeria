@@ -9,7 +9,7 @@
     <parent>
         <artifactId>data-store-connectors</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>0.2-SNAPSHOT</version>
+        <version>0.3-SNAPSHOT</version>
     </parent>
 
     <name>Gaian Connector</name>

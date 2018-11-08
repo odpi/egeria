@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.admin;
 
 import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationFactory;
@@ -179,6 +180,7 @@ public class OMRSConfigurationFactory
      * @param additionalProperties name value property pairs for the topic connection
      * @param eventBusConnectorProvider class name of the event bus connector's provider
      * @param topicURLRoot root name for the topic URL
+     * @param serverId identifier of the server - used to pick up the right offset for the inbound messages.
      * @param eventBusAdditionalProperties name value property pairs for the event bus connection
      * @return LocalRepositoryConfig object
      */
@@ -187,6 +189,7 @@ public class OMRSConfigurationFactory
                                                                     Map<String, Object> additionalProperties,
                                                                     String              eventBusConnectorProvider,
                                                                     String              topicURLRoot,
+                                                                    String              serverId,
                                                                     Map<String, Object> eventBusAdditionalProperties)
     {
         LocalRepositoryConfig localRepositoryConfig = this.getDefaultLocalRepositoryConfig(localServerName,
@@ -200,6 +203,7 @@ public class OMRSConfigurationFactory
                                                                                                                     additionalProperties,
                                                                                                                     eventBusConnectorProvider,
                                                                                                                     topicURLRoot,
+                                                                                                                    serverId,
                                                                                                                     eventBusAdditionalProperties));
 
         return localRepositoryConfig;
@@ -228,15 +232,17 @@ public class OMRSConfigurationFactory
      * Return the default settings for the enterprise repository services' configuration.
      *
      * @param localServerName name of the local server
+     * @param localServerId identifier of the server - used to pick up the right offset for the inbound messages.
      * @return EnterpriseAccessConfig parameters
      */
-    public EnterpriseAccessConfig getDefaultEnterpriseAccessConfig(String              localServerName)
+    public EnterpriseAccessConfig getDefaultEnterpriseAccessConfig(String      localServerName,
+                                                                   String      localServerId)
     {
         EnterpriseAccessConfig enterpriseAccessConfig = new EnterpriseAccessConfig();
 
         enterpriseAccessConfig.setEnterpriseMetadataCollectionId(UUID.randomUUID().toString());
         enterpriseAccessConfig.setEnterpriseMetadataCollectionName(localServerName + defaultEnterpriseMetadataCollectionName);
-        enterpriseAccessConfig.setEnterpriseOMRSTopicConnection(connectorConfigurationFactory.getDefaultEnterpriseOMRSTopicConnection(localServerName));
+        enterpriseAccessConfig.setEnterpriseOMRSTopicConnection(connectorConfigurationFactory.getDefaultEnterpriseOMRSTopicConnection(localServerName, localServerId));
         enterpriseAccessConfig.setEnterpriseOMRSTopicProtocolVersion(this.getDefaultEnterpriseOMRSTopicProtocolVersion());
 
         return enterpriseAccessConfig;
@@ -251,6 +257,7 @@ public class OMRSConfigurationFactory
      * @param additionalProperties name value property pairs for the topic connection
      * @param eventBusConnectorProvider class name of the event bus connector's provider
      * @param topicURLRoot root name for the topic URL
+     * @param serverId identifier of the server - used to pick up the right offset for the inbound messages.
      * @param eventBusAdditionalProperties name value property pairs for the event bus connection
      * @return default values in a CohortConfig object
      */
@@ -259,6 +266,7 @@ public class OMRSConfigurationFactory
                                                Map<String, Object> additionalProperties,
                                                String              eventBusConnectorProvider,
                                                String              topicURLRoot,
+                                               String              serverId,
                                                Map<String, Object> eventBusAdditionalProperties)
     {
         CohortConfig cohortConfig  = new CohortConfig();
@@ -275,6 +283,7 @@ public class OMRSConfigurationFactory
                                                                                                                     additionalProperties,
                                                                                                                     eventBusConnectorProvider,
                                                                                                                     topicURLRoot,
+                                                                                                                    serverId,
                                                                                                                     eventBusAdditionalProperties));
         cohortConfig.setCohortOMRSTopicProtocolVersion(this.getDefaultCohortOMRSTopicProtocolVersion());
         cohortConfig.setEventsToProcessRule(this.getDefaultEventsToProcessRule());
