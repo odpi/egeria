@@ -32,6 +32,7 @@ public class <$$uEntityName$$>Mapper {
     private static final String className = <$$uEntityName$$>Mapper.class.getName();
    /**
     * @param omrsEntityDetail the supplied EntityDetail
+    * @throws InvalidParameterException a parameter is null or an invalid value.
     * @return equivalent <$$uEntityName$$>
     */
    static public org.odpi.openmetadata.accessservices.subjectarea.generated.entities.<$$uEntityName$$>.<$$uEntityName$$> mapOmrsEntityDetailTo<$$uEntityName$$>(EntityDetail omrsEntityDetail) throws InvalidParameterException{

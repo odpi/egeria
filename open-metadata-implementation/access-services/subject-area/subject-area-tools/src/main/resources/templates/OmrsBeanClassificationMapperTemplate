@@ -33,6 +33,7 @@ public class <$$uClassificationName$$>Mapper {
     private static final String className = <$$uClassificationName$$>Mapper.class.getName();
    /**
     * @param omrsClassification - the supplied omrs classification
+    * @throws InvalidParameterException a parameter is null or an invalid value.
     * @return equivalent <$$uClassificationName$$>
     */
    static public org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.<$$uClassificationName$$> mapOmrsToOmas(Classification omrsClassification) throws InvalidParameterException{
