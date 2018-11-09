@@ -33,10 +33,10 @@ public class GlossaryMapper {
 
     /**
      * Map Glossary to Generated Glossary.
-     * @param glossary
-     * @param oMRSAPIHelper
-     * @return
-     * @throws InvalidParameterException
+     * @param glossary Glossary to map to OMRS.
+     * @param oMRSAPIHelper OMRSAPIHelper to use in mapping.
+     * @return Glossary after mapping.
+     * @throws InvalidParameterException if the glossary or helper is invalid.
      */
     static public org.odpi.openmetadata.accessservices.subjectarea.generated.entities.Glossary.Glossary mapGlossaryToOMRSBean(Glossary glossary, OMRSAPIHelper oMRSAPIHelper) throws InvalidParameterException {
 
@@ -109,8 +109,8 @@ public class GlossaryMapper {
 
     /**
      * map the generated OMRS bean for glossary to the Glossary exposed in the API.
-     * @param omrsBean
-     * @return
+     * @param omrsBean bean to use to create Glossary entity.
+     * @return Glossary created from OMRSBean.
      */
     public static Glossary mapOMRSBeantoGlossary(org.odpi.openmetadata.accessservices.subjectarea.generated.entities.Glossary.Glossary omrsBean) {
         Glossary glossary = new Glossary();

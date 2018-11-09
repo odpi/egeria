@@ -20,9 +20,9 @@ import java.util.Set;
 public class OMRSRelationshipToLines {
     /**
      * convert omrs Relationships into Lines
-     * @param omrsRelationships
+     * @param omrsRelationships relationships to convert.
      * @return a set of Lines which can be used by the Subject Area OMAS API
-     * @throws InvalidParameterException
+     * @throws InvalidParameterException  a parameter is null or an invalid value.
      */
     public static Set<Line> convert(List<Relationship> omrsRelationships) throws InvalidParameterException {
         Set<Line> lines = new HashSet<>();
