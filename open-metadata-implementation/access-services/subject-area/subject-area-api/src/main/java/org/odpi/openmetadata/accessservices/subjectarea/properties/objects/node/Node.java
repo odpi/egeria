@@ -43,7 +43,6 @@ public class Node implements Serializable {
     private Map<String,String> additionalProperties;
     private String description =null;
     protected List<Classification> classifications = null;
-
     private Set<IconSummary> icons = null;
 
     /**
