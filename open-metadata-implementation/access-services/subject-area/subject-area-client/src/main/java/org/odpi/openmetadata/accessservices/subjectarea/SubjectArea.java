@@ -1,8 +1,9 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea;
 
 /**
- * The SubjectArea Open Metadata Access Service (OMAS).
+ * The SubjectAreaDefinition Open Metadata Access Service (OMAS).
  */
 public interface SubjectArea
 {

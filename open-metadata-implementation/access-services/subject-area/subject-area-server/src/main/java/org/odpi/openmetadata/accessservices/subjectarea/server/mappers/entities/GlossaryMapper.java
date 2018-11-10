@@ -1,5 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-package org.odpi.openmetadata.accessservices.subjectarea.server.mappers;
+/* Copyright Contributors to the ODPi Egeria project. */
+package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities;
 
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification;
@@ -32,13 +33,12 @@ public class GlossaryMapper {
     private static final String className = GlossaryMapper.class.getName();
 
     /**
-     * Map Glossary to Generated Glossary.
-     * @param glossary Glossary to map to OMRS.
-     * @param oMRSAPIHelper OMRSAPIHelper to use in mapping.
-     * @return Glossary after mapping.
-     * @throws InvalidParameterException if the glossary or helper is invalid.
+     * Map Glossary to OMRS bean Glossary.
+     * @param glossary the API glossary object
+     * @return omrsBean the omrs bean equivalent to the glossary
+     * @throws InvalidParameterException one of the parameters is null or invalid.
      */
-    static public org.odpi.openmetadata.accessservices.subjectarea.generated.entities.Glossary.Glossary mapGlossaryToOMRSBean(Glossary glossary, OMRSAPIHelper oMRSAPIHelper) throws InvalidParameterException {
+    static public org.odpi.openmetadata.accessservices.subjectarea.generated.entities.Glossary.Glossary mapGlossaryToOMRSBean(Glossary glossary) throws InvalidParameterException {
 
 
         org.odpi.openmetadata.accessservices.subjectarea.generated.entities.Glossary.Glossary omrsBean = new org.odpi.openmetadata.accessservices.subjectarea.generated.entities.Glossary.Glossary();
@@ -109,8 +109,8 @@ public class GlossaryMapper {
 
     /**
      * map the generated OMRS bean for glossary to the Glossary exposed in the API.
-     * @param omrsBean bean to use to create Glossary entity.
-     * @return Glossary created from OMRSBean.
+     * @param omrsBean supplied omrs bean representation of Glossary
+     * @return Glossary the API Glossary object
      */
     public static Glossary mapOMRSBeantoGlossary(org.odpi.openmetadata.accessservices.subjectarea.generated.entities.Glossary.Glossary omrsBean) {
         Glossary glossary = new Glossary();

@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.client;
 
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
@@ -34,6 +35,7 @@ public class SubjectAreaImpl implements SubjectArea
      * Default Constructor used once a connector is created.
      *
      * @param omasServerURL - unique id for the connector instance
+     * @throws InvalidParameterException            one of the parameters is null or invalid.
      */
     public SubjectAreaImpl(String   omasServerURL) throws InvalidParameterException {
        String methodName = "SubjectAreaImpl";
