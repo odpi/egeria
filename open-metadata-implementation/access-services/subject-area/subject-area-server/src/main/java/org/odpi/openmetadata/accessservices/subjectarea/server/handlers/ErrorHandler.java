@@ -157,6 +157,7 @@ public class ErrorHandler
      * Check that there is a repository connector.
      *
      * @param methodName - name of the method being called
+     * @param repositoryConnector - connector used to reference repository.
      * @return metadata collection that provides access to the properties in the property server
      * @throws MetadataServerUncontactableException - exception thrown if the repository connector
      */
@@ -280,8 +281,8 @@ public class ErrorHandler
      * @param methodName - name of the method making the call
      * @param serverName - name of this server
      * @param serviceName - name of this access service
-
      * @throws UnrecognizedGUIDException - unexpected exception from property server
+     * @throws InvalidParameterException - if a parameter is not valid or missing.
      */
     public static  void handleUnknownAsset(Throwable  error,
                                     String     assetGUID,
@@ -309,10 +310,10 @@ public class ErrorHandler
     /**
      * convert OMRS exception to OMAS Exception
      * @param e - exception to handle
-     * @param methodName
-     * @param serverName
-     * @param serviceName
-     * @throws InvalidParameterException
+     * @param methodName - name of the method making the call
+     * @param serverName - name of this server
+     * @param serviceName - name of this access service
+     * @throws InvalidParameterException if any of the parameters are invalid.
      */
     public static void handleInvalidParameterException(org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException e, String methodName, String serverName, String serviceName) throws InvalidParameterException {
         SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.INVALID_PARAMETER;
@@ -330,11 +331,11 @@ public class ErrorHandler
     /**
      * Invalid type name
      * convert OMRS exception to OMAS Exception
-     * @param typeName
-     * @param methodName
-     * @param serverName
-     * @param serviceName
-     * @throws InvalidParameterException
+     * @param typeName - type of asset
+     * @param methodName - name of the method making the call
+     * @param serverName - name of this server
+     * @param serviceName - name of this access service
+     * @throws InvalidParameterException if any of the parameters are invalid.
      */
     public static void handleTypeDefNotKnownException(String typeName, String methodName, String serverName, String serviceName) throws InvalidParameterException {
         SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.TYPEDEF_NOT_KNOWN;
@@ -352,10 +353,10 @@ public class ErrorHandler
     /**
      * convert OMRS exception to OMAS Exception
      * @param e - exception to handle
-     * @param methodName
-     * @param serverName
-     * @param serviceName
-     * @throws InvalidParameterException
+     * @param methodName - name of the method making the call
+     * @param serverName - name of this server
+     * @param serviceName - name of this access service
+     * @throws InvalidParameterException if any of the parameters are invalid.
      */
     public static void handlePropertyErrorException(org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException e, String methodName, String serverName, String serviceName) throws InvalidParameterException {
         SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.TYPEDEF_NOT_KNOWN;
@@ -372,11 +373,11 @@ public class ErrorHandler
 
     /**
      *
-     * @param e
-     * @param methodName
-     * @param serverName
-     * @param serviceName
-     * @throws ClassificationException
+     * @param e - exception to handle
+     * @param methodName - name of the method making the call
+     * @param serverName - name of this server
+     * @param serviceName - name of this access service
+     * @throws ClassificationException - unable to use classification.
      */
     public static void handleClassificationErrorException(org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException e, String methodName, String serverName, String serviceName) throws ClassificationException {
         SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.CLASSIFICATION_ERROR;
@@ -393,11 +394,11 @@ public class ErrorHandler
 
     /**
      * status is not known
-     * @param e
-     * @param methodName
-     * @param serverName
-     * @param serviceName
-     * @throws StatusNotSupportedException
+     * @param e - exception to handle
+     * @param methodName - name of the method making the call
+     * @param serverName - name of this server
+     * @param serviceName - name of this access service
+     * @throws StatusNotSupportedException - the status is not supported.
      */
     public static void handleStatusNotSupportedException(org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException e, String methodName, String serverName, String serviceName) throws StatusNotSupportedException {
         SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.STATUS_NOT_SUPPORTED_ERROR;
@@ -414,11 +415,11 @@ public class ErrorHandler
 
     /**
      * Entity not known
-     * @param guid
-     * @param methodName
-     * @param serverName
-     * @param serviceName
-     * @throws UnrecognizedGUIDException
+     * @param guid - the GUID of the entity.
+     * @param methodName - name of the method making the call
+     * @param serverName - name of this server
+     * @param serviceName - name of this access service
+     * @throws UnrecognizedGUIDException if the GUID invalid.
      */
     public static void handleEntityNotKnownError(String guid, String methodName, String serverName, String serviceName) throws UnrecognizedGUIDException {
         SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.ENTITY_NOT_KNOWN_ERROR;
@@ -437,10 +438,10 @@ public class ErrorHandler
     /**
      * convert OMRS exception to OMAS Exception
      * @param e - exception to handle
-     * @param methodName
-     * @param serverName
-     * @param serviceName
-     * @throws MetadataServerUncontactableException
+     * @param methodName - name of the method making the call
+     * @param serverName - name of this server
+     * @param serviceName - name of this access service
+     * @throws MetadataServerUncontactableException - unable to contact the server.
      */
     public static void handleEntityProxyOnlyException(org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException e, String methodName, String serverName, String serviceName) throws MetadataServerUncontactableException {
         SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.METADATA_SERVER_UNCONTACTABLE_ERROR;
@@ -461,10 +462,10 @@ public class ErrorHandler
     /**
      * convert OMRS exception to OMAS Exception
      * @param e - exception to handle
-     * @param methodName
-     * @param serverName
-     * @param serviceName
-     * @throws InvalidParameterException
+     * @param methodName - name of the method making the call
+     * @param serverName - name of this server
+     * @param serviceName - name of this access service
+     * @throws InvalidParameterException if any of the parameters are invalid.
      */
     public static void handleTypeErrorException(org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException e , String methodName, String serverName, String serviceName) throws InvalidParameterException {
         SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.TYPEDEF_ERROR;
@@ -482,10 +483,10 @@ public class ErrorHandler
     /**
      * convert OMRS exception to OMAS Exception
      * @param e - exception to handle
-     * @param methodName
-     * @param serverName
-     * @param serviceName
-     * @throws FunctionNotSupportedException
+     * @param methodName - name of the method making the call
+     * @param serverName - name of this server
+     * @param serviceName - name of this access service
+     * @throws FunctionNotSupportedException - the function is not supported.
      */
     public static void handleFunctionNotSupportedException(org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e, String methodName, String serverName, String serviceName) throws FunctionNotSupportedException {
         SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.FUNCTION_NOT_SUPPORTED;
@@ -503,10 +504,10 @@ public class ErrorHandler
     /**
      * convert OMRS exception to OMAS Exception
      * @param e - exception to handle
-     * @param methodName
-     * @param serverName
-     * @param serviceName
-     * @throws InvalidParameterException
+     * @param methodName - name of the method making the call
+     * @param serverName - name of this server
+     * @param serviceName - name of this access service
+     * @throws InvalidParameterException if any of the parameters are invalid.
      */
     public static void handlePagingErrorException(org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException e, String methodName, String serverName, String serviceName) throws InvalidParameterException {
         SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.PAGING_ERROR;
@@ -524,11 +525,11 @@ public class ErrorHandler
     /**
      * convert OMRS exception to OMAS Exception
      * @param e - exception to handle
-     * @param methodName
-     * @param serverName
-     * @param serviceName
-     * @param guid
-     * @throws GUIDNotPurgedException
+     * @param methodName - name of the method making the call
+     * @param serverName - name of this server
+     * @param serviceName - name of this access service
+     * @param guid - the GUID of the entity.
+     * @throws GUIDNotPurgedException - The entity could not be purged
      */
     public static void handleEntityNotDeletedException(org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotDeletedException e, String methodName, String serverName, String serviceName,String guid) throws GUIDNotPurgedException {
         SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.GUID_NOT_PURGED_ERROR;
@@ -546,11 +547,11 @@ public class ErrorHandler
 
     /**
      * relationship not known
-     * @param guid
-     * @param methodName
-     * @param serverName
-     * @param serviceName
-     * @throws UnrecognizedGUIDException
+     * @param guid - the GUID of the entity.
+     * @param methodName - name of the method making the call
+     * @param serverName - name of this server
+     * @param serviceName - name of this access service
+     * @throws UnrecognizedGUIDException - The entity could not be resolved
      */
     public static void handleRelationshipNotKnownException(String guid, String methodName, String serverName, String serviceName)  throws UnrecognizedGUIDException {
         SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.GUID_DOES_NOT_EXIST;
@@ -568,12 +569,12 @@ public class ErrorHandler
 
     /**
      * relationship not deleted
-     * @param e
-     * @param methodName
-     * @param serverName
-     * @param serviceName
-     * @param guid
-     * @throws GUIDNotPurgedException
+     * @param e - exception originating this error.
+     * @param methodName - name of the method making the call
+     * @param serverName - name of this server
+     * @param serviceName - name of this access service
+     * @param guid - the GUID of the entity.
+     * @throws GUIDNotPurgedException - The entity could not be purged
      */
     public static void handleRelationshipNotDeletedException(org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotDeletedException e, String methodName, String serverName, String serviceName,String guid) throws  GUIDNotPurgedException {
         SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.GUID_NOT_PURGED_ERROR;
@@ -591,11 +592,11 @@ public class ErrorHandler
 
     /**
      * Entity not deleted
-     * @param guid
-     * @param methodName
-     * @param serverName
-     * @param serviceName
-     * @throws GUIDNotPurgedException
+     * @param guid - the GUID of the entity.
+     * @param methodName - name of the method making the call
+     * @param serverName - name of this server
+     * @param serviceName - name of this access service
+     * @throws GUIDNotPurgedException - The entity could not be purged
      */
 
     public static void handleEntityNotDeletedException(String guid, String methodName, String serverName, String serviceName) throws GUIDNotPurgedException {

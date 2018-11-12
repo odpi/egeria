@@ -101,6 +101,7 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServices{
      * <li> InvalidParameterException one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException  not able to communicate with a Metadata respository service.</li>
      * </ul>
+     * @return SubjectAreaOMASAPIResponse if successful update.
      */
     @RequestMapping(method = RequestMethod.PUT, path = "/users/{userid}/glossaries/{guid}")
     public  SubjectAreaOMASAPIResponse updateGlossary(@PathVariable String userid,@PathVariable String guid,Glossary glossary,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {

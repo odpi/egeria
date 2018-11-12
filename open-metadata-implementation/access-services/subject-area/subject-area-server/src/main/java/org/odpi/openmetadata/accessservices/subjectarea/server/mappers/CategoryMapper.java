@@ -31,8 +31,9 @@ public class CategoryMapper {
 
     /**
      * Map the Category to the generated GlossaryCategory
-     * @return he generated GlossaryCategory
-     * @throws InvalidParameterException
+     * @param category Category to map to OMRS.
+     * @return the generated GlossaryCategory
+     * @throws InvalidParameterException if the category is not valid.
      */
     static public GlossaryCategory mapCategoryToOMRSBean(Category category) throws InvalidParameterException {
 
