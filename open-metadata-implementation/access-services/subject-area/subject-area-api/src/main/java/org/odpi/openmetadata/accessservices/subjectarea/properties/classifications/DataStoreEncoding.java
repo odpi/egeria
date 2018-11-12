@@ -188,7 +188,7 @@ public class DataStoreEncoding extends Classification {
        private Map<String,String> properties;
        /**
         * {@literal Additional properties for the encoding. }
-        * @return {@code Map<String,String> }
+        * @return {@code {@code Map<String,String> } }
         */
        public Map<String,String> getProperties() {
            return this.properties;

@@ -267,6 +267,12 @@
                         <exclude>**/target/**</exclude>
                         <exclude>**/venv/**</exclude>
                         <exclude>**/.repository/**</exclude>
+                        <exclude>**/charts/**/charts/**</exclude>
+                        <exclude>**/log</exclude>
+                        <exclude>**/*.lock</exclude>
+                        <exclude>**/m2repo*/**</exclude>
+                        <exclude>**/venv/**</exclude>
+                        <exclude>**/archives/patches/egeria.patch</exclude>
                     </excludes>
                     <licenseFamilies>
                         <licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">

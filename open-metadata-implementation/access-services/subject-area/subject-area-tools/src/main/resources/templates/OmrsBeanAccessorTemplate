@@ -95,12 +95,12 @@ public class SubjectAreaBeansToAccessOMRS  {
     /**
      * Create new <$$EntityName$$>.
      * @param userId user identity
-     * @param <$$EntityName$$>
-     * @return <$$uEntityName$$>
+     * @param <$$EntityName$$> the input entity with values.
+     * @return <$$uEntityName$$> the created entity.
      * @throws MetadataServerUncontactableException not able to communicate with the metadata server.
      * @throws UserNotAuthorizedException the userId passed on the request is not authorized to perform the requested action. 
      * @throws InvalidParameterException a parameter is null or an invalid value.
-     * @throws ClassificationException
+     * @throws ClassificationException a classification does not match constraints.
      * @throws StatusNotSupportedException  status is not supported
      */
 
@@ -132,10 +132,11 @@ public class SubjectAreaBeansToAccessOMRS  {
      * Update <$$EntityName$$>
      * @param userId user identity
      * @param <$$EntityName$$>   <$$EntityName$$> to update
-     * @return <$$uEntityName$$>
+     * @return <$$uEntityName$$> the updated entity
      * @throws MetadataServerUncontactableException not able to communicate with the metadata server.
      * @throws UserNotAuthorizedException the userId passed on the request is not authorized to perform the requested action. 
      * @throws InvalidParameterException a parameter is null or an invalid value.
+     * @throws UnrecognizedGUIDException the unique identifier (guid) used to request an object is either unrecognized, or is the identifier for a different type of object. the unique identifier (guid) used to request an object is either unrecognized, or is the identifier for a different type of object.
      */
     public <$$uEntityName$$> update<$$uEntityName$$>(String userId, <$$uEntityName$$> <$$EntityName$$>)
          throws MetadataServerUncontactableException, UserNotAuthorizedException, InvalidParameterException,UnrecognizedGUIDException
@@ -230,13 +231,14 @@ public class SubjectAreaBeansToAccessOMRS  {
     /**
      * Add classifications to the supplied <$$EntityName$$>
      * @param userId user identity
-     * @param entityGuid
-     * @param classifications
+     * @param entityGuid the GUID value for <$$EntityName$$>
+     * @param classifications the classifications to apply.
      * @throws MetadataServerUncontactableException not able to communicate with the metadata server.
      * @throws UserNotAuthorizedException the userId passed on the request is not authorized to perform the requested action. 
      * @throws InvalidParameterException a parameter is null or an invalid value.
      * @throws UnrecognizedGUIDException the unique identifier (guid) used to request an object is either unrecognized, or is the identifier for a different type of object.
-     * @throws ClassificationException
+     * @throws ClassificationException a classification does not match constraints.
+     * @return <$$uEntityName$$> if added, exceptions otherwise.
      */
      public <$$uEntityName$$> add<$$uEntityName$$>Classifications(String userId,final String entityGuid, List<Classification> classifications)
            throws MetadataServerUncontactableException, UserNotAuthorizedException, InvalidParameterException, ClassificationException, UnrecognizedGUIDException {
@@ -270,13 +272,14 @@ public class SubjectAreaBeansToAccessOMRS  {
     /**
      * Updates classifications to an existing <$$EntityName$$> represented by a guid.
      * @param userId user identity
-     * @param  entityGuid globally unique identifier for the <$$EntityName$$>
+     * @param entityGuid globally unique identifier for the <$$EntityName$$>
+     * @param classificationsToUpdate the set of classifications to update on the <$$EntityName$$>
      * @return classification for the given <$$EntityName$$> guid
      * @throws MetadataServerUncontactableException not able to communicate with the metadata server.
      * @throws UserNotAuthorizedException the userId passed on the request is not authorized to perform the requested action. 
      * @throws InvalidParameterException a parameter is null or an invalid value.
      * @throws UnrecognizedGUIDException the unique identifier (guid) used to request an object is either unrecognized, or is the identifier for a different type of object.
-     * @throws ClassificationException
+     * @throws ClassificationException a classification does not match constraints.
      */
     public <$$uEntityName$$> update<$$uEntityName$$>Classification(String userId, final String entityGuid, List<Classification> classificationsToUpdate)
         throws MetadataServerUncontactableException, UserNotAuthorizedException, InvalidParameterException, ClassificationException,  UnrecognizedGUIDException {
@@ -348,7 +351,7 @@ public class SubjectAreaBeansToAccessOMRS  {
      * @throws UserNotAuthorizedException the userId passed on the request is not authorized to perform the requested action. 
      * @throws InvalidParameterException a parameter is null or an invalid value.
      * @throws UnrecognizedGUIDException the unique identifier (guid) used to request an object is either unrecognized, or is the identifier for a different type of object.
-     * @throws ClassificationException
+     * @throws ClassificationException a classification does not match constraints.
      */
     public <$$uEntityName$$> delete<$$uEntityName$$>Classification(String userId,String entityGuid, final String name)
         throws MetadataServerUncontactableException, UserNotAuthorizedException, InvalidParameterException, ClassificationException,  UnrecognizedGUIDException {
@@ -529,7 +532,7 @@ public class SubjectAreaBeansToAccessOMRS  {
       * @throws UserNotAuthorizedException the userId passed on the request is not authorized to perform the requested action. 
       * @throws InvalidParameterException a parameter is null or an invalid value.
       * @throws UnrecognizedGUIDException the unique identifier (guid) used to request an object is either unrecognized, or is the identifier for a different type of object.
-      * @throws RelationshipNotDeletedException
+      * @throws RelationshipNotDeletedException the relationship could not be deleted.
       * @throws GUIDNotPurgedException the unique identifier (guid) used to purge an object did not result in the object being purged.
     
       */

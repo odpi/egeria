@@ -46,7 +46,7 @@ public class GaianQueryConstructor {
      *
      * @param columnContextEvent json file from Information View OMAS
      * @return whether create or remove tables correctly
-     * @throws VirtualiserCheckedException when there is no Logical Table created for the table in the Gaian node
+     * or it could throw VirtualiserCheckedException when there is no Logical Table created for the table in the Gaian node
      */
     public Map<String, String> notifyGaian(ColumnContextEvent columnContextEvent) {
         if (columnContextEvent == null) {
