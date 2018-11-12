@@ -14,6 +14,10 @@ import java.util.List;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
+/**
+ * DatabaseContextResponse is the response structure used on the Asset Catalog OMAS REST API calls that
+ * returns a the whole context for a database object as a response.
+ */
 @EqualsAndHashCode(callSuper = true)
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
