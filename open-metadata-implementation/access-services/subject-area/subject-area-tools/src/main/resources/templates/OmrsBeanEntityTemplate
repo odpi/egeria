@@ -47,7 +47,7 @@ public class  <$$uname$$> implements Serializable {
 
     /**
      * Get the system attributes
-     * @return
+     * @return SystemAttributes if populated, null otherwise.
      */
     public SystemAttributes getSystemAttributes() {
         return systemAttributes;
@@ -151,7 +151,7 @@ public class  <$$uname$$> implements Serializable {
 
     /**
      * Get the extra attributes - ones that are in addition to the standard types.
-     * @return
+     * @return Map of attributes or null if not populated.
      */
     public Map<String, Object> getExtraAttributes() {
         return extraAttributes;
@@ -159,13 +159,14 @@ public class  <$$uname$$> implements Serializable {
 
      /**
      * Classifications
-     * @return
+     * @return List of Classifications if populated or null otherwise.
      */
     public List<Classification> getClassifications() {
         return classifications;
     }
     /**
       * Extra classifications are classifications that are not in the open metadata model - we include the OMRS Classifications.
+      * @return Map of classifications if found, null otherwise.
       */
     public Map<String, org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification> getExtraClassifications() {
         return extraClassifications;
