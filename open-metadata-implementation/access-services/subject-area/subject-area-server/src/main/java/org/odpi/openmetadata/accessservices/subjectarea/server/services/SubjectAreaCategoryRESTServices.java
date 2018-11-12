@@ -523,10 +523,11 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServices{
     /**
      * Check that the requested name is not already used in a sibling category. Category children name should be unique under a parent.
      * @param userid user idendifier
-     * @param methodName
+     * @param methodName method called
      * @param suppliedCategoryName non-null category name
      * @param suppliedCategoryParentGuid parent category guid. Do nothing if null.
      * @param errorCode error code to use if there is an existing sibling categorey with the same name.
+     * @return SubjectAreaOMASAPIResponse if valid, null otherwwise.
      */
     public SubjectAreaOMASAPIResponse checkSiblingCategoryNames(String userid, String methodName, String suppliedCategoryName, String suppliedCategoryParentGuid, SubjectAreaErrorCode errorCode) {
         SubjectAreaOMASAPIResponse response = null;

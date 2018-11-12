@@ -30,6 +30,7 @@ public class RestValidator {
      * @param className - name of the class making the call.
      * @param methodName - name of the method making the call.
      * @param omasServerURL - omas server url.
+     * @throws MetadataServerUncontactableException - if the server is not reachable.
      */
     static public void validateOMASServerURLNotNull( String className,String methodName, String omasServerURL) throws MetadataServerUncontactableException
     {
@@ -56,11 +57,11 @@ public class RestValidator {
     /**
      * This method validated for creation.
      * TODO need another method for update where we could use the relationship guid.
-     * @param methodName
-     * @param suppliedGlossary
-     * @param glossaryRESTServices
-     * @param userId
-     * @return
+     * @param methodName - method called.
+     * @param suppliedGlossary - glossary to validate against.
+     * @param glossaryRESTServices - rest services for glossary.
+     * @param userId - current user.
+     * @return SubjectAreaOMASAPIResponse if valid.
      */
     static public SubjectAreaOMASAPIResponse validateGlossarySummaryDuringCreation(String methodName,
                                                                                    GlossarySummary suppliedGlossary,
@@ -178,11 +179,11 @@ public class RestValidator {
     /**
      * This method validated for creation.
      * TODO need another method for update where we could use the relationship guid.
-     * @param methodName
-     * @param suppliedCategory
-     * @param categoryRESTServices
-     * @param userId
-     * @return
+     * @param methodName - method called
+     * @param suppliedCategory - Category to validate.
+     * @param categoryRESTServices - rest interface.
+     * @param userId - current user.
+     * @return SubjectAreaOMASAPIResponse if valid.
      */
     static public SubjectAreaOMASAPIResponse validateCategorySummaryDuringCreation(String methodName,
                                                                                    CategorySummary suppliedCategory,

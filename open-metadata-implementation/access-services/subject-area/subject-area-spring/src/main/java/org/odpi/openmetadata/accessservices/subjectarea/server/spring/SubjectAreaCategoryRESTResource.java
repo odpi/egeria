@@ -98,6 +98,7 @@ public class SubjectAreaCategoryRESTResource extends SubjectAreaRESTServices{
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
+     * @return SubjectAreaOMASAPIResponse if successful update.
      */
     @RequestMapping(method = RequestMethod.PUT, path = "/users/{userid}/categories/{guid}")
     public SubjectAreaOMASAPIResponse updateCategory(@PathVariable String userid,@PathVariable String guid, Category suppliedCategory, @RequestParam(value = "isReplace", required=false) Boolean isReplace) {
