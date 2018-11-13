@@ -1,8 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservice.assetcatalog.exception;
 
-import lombok.Getter;
-
 import java.text.MessageFormat;
 
 /**
@@ -24,7 +22,6 @@ import java.text.MessageFormat;
  * <li>UserAction - describes how a AssetConsumerInterface should correct the error</li>
  * </ul>
  */
-@Getter
 public enum AssetCatalogErrorCode {
 
     NO_SEARCH_RESULTS(204, "OMAS-ASSET-CATALOG-204-001 ",
@@ -151,5 +148,25 @@ public enum AssetCatalogErrorCode {
     public String getFormattedErrorMessage(String... params) {
         MessageFormat mf = new MessageFormat(errorMessage);
         return mf.format(params);
+    }
+
+    public int getHttpErrorCode() {
+        return httpErrorCode;
+    }
+
+    public String getErrorMessageId() {
+        return errorMessageId;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public String getSystemAction() {
+        return systemAction;
+    }
+
+    public String getUserAction() {
+        return userAction;
     }
 }

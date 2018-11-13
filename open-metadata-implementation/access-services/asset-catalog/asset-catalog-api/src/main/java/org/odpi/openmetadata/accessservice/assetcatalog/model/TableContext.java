@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservice.assetcatalog.model;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,12 +18,43 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@Data
 public class TableContext {
 
     private String tableName;
     private String tableQualifiedName;
     private String tableTypeQualifiedName;
 
-    List<Column> columns = new ArrayList<>();
+    private List<Column> columns = new ArrayList<>();
+
+    public String getTableName() {
+        return tableName;
+    }
+
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
+    }
+
+    public String getTableQualifiedName() {
+        return tableQualifiedName;
+    }
+
+    public void setTableQualifiedName(String tableQualifiedName) {
+        this.tableQualifiedName = tableQualifiedName;
+    }
+
+    public String getTableTypeQualifiedName() {
+        return tableTypeQualifiedName;
+    }
+
+    public void setTableTypeQualifiedName(String tableTypeQualifiedName) {
+        this.tableTypeQualifiedName = tableTypeQualifiedName;
+    }
+
+    public List<Column> getColumns() {
+        return columns;
+    }
+
+    public void setColumns(List<Column> columns) {
+        this.columns = columns;
+    }
 }
