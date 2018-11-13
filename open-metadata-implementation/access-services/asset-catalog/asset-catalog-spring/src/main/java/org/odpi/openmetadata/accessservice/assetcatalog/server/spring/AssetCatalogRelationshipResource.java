@@ -14,8 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * The AssetCatalogRelationshipResource provides the server-side implementation of the Asset Catalog Open Metadata
- * Assess Service (OMAS).
- * This interface facilitates the searching for asset's relationships, fetch the details about a specific relationship.
+ * Assess Service (OMAS). This interface facilitates the searching for asset's relationships, fetch the details about a specific relationship.
  */
 @RestController
 @RequestMapping("/open-metadata/access-services/asset-catalog/users/{userId}/relationships")

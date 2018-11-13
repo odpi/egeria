@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservice.assetcatalog.responses;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Data;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -16,7 +15,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@Data
 public class AssetCatalogOMASAPIResponse {
 
     protected AssetCatalogOMASAPIResponse() {
@@ -31,20 +29,60 @@ public class AssetCatalogOMASAPIResponse {
     /**
      * the fully-qualified Java class name to use to recreate the exception
      */
-    protected String exceptionClassName = null;
+    protected String exceptionClassName;
 
     /**
      * the error message associated with the exception.
      */
-    protected String exceptionErrorMessage = null;
+    protected String exceptionErrorMessage;
 
     /**
      * the description of the action taken by the system as a result of the exception.
      */
-    protected String exceptionSystemAction = null;
+    protected String exceptionSystemAction;
 
     /**
      * the action that a user should take to resolve the problem.
      */
-    protected String exceptionUserAction = null;
+    protected String exceptionUserAction;
+
+    public int getRelatedHTTPCode() {
+        return relatedHTTPCode;
+    }
+
+    public void setRelatedHTTPCode(int relatedHTTPCode) {
+        this.relatedHTTPCode = relatedHTTPCode;
+    }
+
+    public String getExceptionClassName() {
+        return exceptionClassName;
+    }
+
+    public void setExceptionClassName(String exceptionClassName) {
+        this.exceptionClassName = exceptionClassName;
+    }
+
+    public String getExceptionErrorMessage() {
+        return exceptionErrorMessage;
+    }
+
+    public void setExceptionErrorMessage(String exceptionErrorMessage) {
+        this.exceptionErrorMessage = exceptionErrorMessage;
+    }
+
+    public String getExceptionSystemAction() {
+        return exceptionSystemAction;
+    }
+
+    public void setExceptionSystemAction(String exceptionSystemAction) {
+        this.exceptionSystemAction = exceptionSystemAction;
+    }
+
+    public String getExceptionUserAction() {
+        return exceptionUserAction;
+    }
+
+    public void setExceptionUserAction(String exceptionUserAction) {
+        this.exceptionUserAction = exceptionUserAction;
+    }
 }

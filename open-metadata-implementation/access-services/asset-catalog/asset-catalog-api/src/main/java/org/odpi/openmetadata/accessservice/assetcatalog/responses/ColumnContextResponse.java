@@ -4,8 +4,6 @@ package org.odpi.openmetadata.accessservice.assetcatalog.responses;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.ColumnContext;
 
 import java.io.Serializable;
@@ -18,12 +16,18 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * AssetDescriptionResponse is the response structure used on the Asset Catalog OMAS REST API calls that returns a
  * asset description object as a response.
  */
-@EqualsAndHashCode(callSuper = true)
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@Data
 public class ColumnContextResponse extends AssetCatalogOMASAPIResponse implements Serializable {
 
     private List<ColumnContext> assetDescriptionList;
+
+    public List<ColumnContext> getAssetDescriptionList() {
+        return assetDescriptionList;
+    }
+
+    public void setAssetDescriptionList(List<ColumnContext> assetDescriptionList) {
+        this.assetDescriptionList = assetDescriptionList;
+    }
 }
