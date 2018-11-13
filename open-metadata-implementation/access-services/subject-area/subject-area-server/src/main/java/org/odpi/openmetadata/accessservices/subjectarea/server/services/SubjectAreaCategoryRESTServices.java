@@ -175,7 +175,7 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServices{
         String categoryGuid=null;
 
         if (response==null) {
-                response = checkSiblingCategoryNames(userid, methodName, suppliedCategoryName, suppliedCategoryParentGuid, SubjectAreaErrorCode.GLOSSARY_CATEGORY_CREATE_FAILED_CATEGORY_NAME_ALREADY_USED);
+            response = checkSiblingCategoryNames(userid, methodName, suppliedCategoryName, suppliedCategoryParentGuid, SubjectAreaErrorCode.GLOSSARY_CATEGORY_CREATE_FAILED_CATEGORY_NAME_ALREADY_USED);
         }
         if (response==null) {
             try {
@@ -268,7 +268,7 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServices{
         return response;
     }
 
-    
+
     /**
      * Get a Category
      * @param userid unique identifier for requesting user, under which the request is performed
@@ -410,76 +410,76 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServices{
         }
         if (response ==null) {
 
-        SubjectAreaBeansToAccessOMRS service = new SubjectAreaBeansToAccessOMRS();
-        service.setOMRSAPIHelper(this.oMRSAPIHelper);
-        response = getCategory(userid, guid);
-        if (response.getResponseCategory().equals(ResponseCategory.Category)) {
-            org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category originalCategory = ((CategoryResponse) response).getCategory();
-            if (originalCategory.getSystemAttributes() != null) {
-                Status status = originalCategory.getSystemAttributes().getStatus();
-                SubjectAreaOMASAPIResponse deleteCheckResponse = SubjectAreaUtils.checkStatusNotDeleted(status, SubjectAreaErrorCode.GLOSSARY_UPDATE_FAILED_ON_DELETED_GLOSSARY);
-                if (deleteCheckResponse != null) {
-                    response = deleteCheckResponse;
+            SubjectAreaBeansToAccessOMRS service = new SubjectAreaBeansToAccessOMRS();
+            service.setOMRSAPIHelper(this.oMRSAPIHelper);
+            response = getCategory(userid, guid);
+            if (response.getResponseCategory().equals(ResponseCategory.Category)) {
+                org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category originalCategory = ((CategoryResponse) response).getCategory();
+                if (originalCategory.getSystemAttributes() != null) {
+                    Status status = originalCategory.getSystemAttributes().getStatus();
+                    SubjectAreaOMASAPIResponse deleteCheckResponse = SubjectAreaUtils.checkStatusNotDeleted(status, SubjectAreaErrorCode.GLOSSARY_UPDATE_FAILED_ON_DELETED_GLOSSARY);
+                    if (deleteCheckResponse != null) {
+                        response = deleteCheckResponse;
+                    }
                 }
-            }
-            if (suppliedCategory.getSystemAttributes() != null) {
-                Status status = suppliedCategory.getSystemAttributes().getStatus();
-                SubjectAreaOMASAPIResponse deleteCheckResponse = SubjectAreaUtils.checkStatusNotDeleted(status, SubjectAreaErrorCode.STATUS_UPDATE_TO_DELETED_NOT_ALLOWED);
-                if (deleteCheckResponse != null) {
-                    response = deleteCheckResponse;
+                if (suppliedCategory.getSystemAttributes() != null) {
+                    Status status = suppliedCategory.getSystemAttributes().getStatus();
+                    SubjectAreaOMASAPIResponse deleteCheckResponse = SubjectAreaUtils.checkStatusNotDeleted(status, SubjectAreaErrorCode.STATUS_UPDATE_TO_DELETED_NOT_ALLOWED);
+                    if (deleteCheckResponse != null) {
+                        response = deleteCheckResponse;
+                    }
                 }
-            }
-            if (response != null) {
-                Category updateCategory = originalCategory;
-                if (isReplace) {
-                    // copy over attributes
-                    updateCategory.setName(suppliedCategory.getName());
-                    updateCategory.setQualifiedName(suppliedCategory.getQualifiedName());
-                    updateCategory.setDescription(suppliedCategory.getDescription());
-                    updateCategory.setAdditionalProperties(suppliedCategory.getAdditionalProperties());
-                    //TODO handle governance classifications and other classifications
-                } else {
-                    // copy over attributes if specified
-                    if (suppliedCategory.getName() != null) {
+                if (response != null) {
+                    Category updateCategory = originalCategory;
+                    if (isReplace) {
+                        // copy over attributes
                         updateCategory.setName(suppliedCategory.getName());
-                    }
-                    if (suppliedCategory.getQualifiedName() != null) {
                         updateCategory.setQualifiedName(suppliedCategory.getQualifiedName());
-                    }
-                    if (suppliedCategory.getDescription() != null) {
                         updateCategory.setDescription(suppliedCategory.getDescription());
-                    }
-
-                    if (suppliedCategory.getAdditionalProperties() != null) {
                         updateCategory.setAdditionalProperties(suppliedCategory.getAdditionalProperties());
+                        //TODO handle classifications
+                    } else {
+                        // copy over attributes if specified
+                        if (suppliedCategory.getName() != null) {
+                            updateCategory.setName(suppliedCategory.getName());
+                        }
+                        if (suppliedCategory.getQualifiedName() != null) {
+                            updateCategory.setQualifiedName(suppliedCategory.getQualifiedName());
+                        }
+                        if (suppliedCategory.getDescription() != null) {
+                            updateCategory.setDescription(suppliedCategory.getDescription());
+                        }
+
+                        if (suppliedCategory.getAdditionalProperties() != null) {
+                            updateCategory.setAdditionalProperties(suppliedCategory.getAdditionalProperties());
+                        }
+                        //TODO handle classifications
                     }
-                    //TODO handle governance classifications and other classifications
-                }
-                org.odpi.openmetadata.accessservices.subjectarea.generated.entities.GlossaryCategory.GlossaryCategory generatedCategory = null;
-                try {
-                    generatedCategory = CategoryMapper.mapCategoryToOMRSBean(updateCategory);
-                    org.odpi.openmetadata.accessservices.subjectarea.generated.entities.GlossaryCategory.GlossaryCategory updatedGeneratedCategory = null;
+                    org.odpi.openmetadata.accessservices.subjectarea.generated.entities.GlossaryCategory.GlossaryCategory generatedCategory = null;
                     try {
-                        updatedGeneratedCategory = service.updateGlossaryCategory(userid, generatedCategory);
-                    } catch (MetadataServerUncontactableException e) {
-                        response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
-                    } catch (UserNotAuthorizedException e) {
-                        response = OMASExceptionToResponse.convertUserNotAuthorizedException(e);
-                    } catch (UnrecognizedGUIDException e) {
-                        response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
+                        generatedCategory = CategoryMapper.mapCategoryToOMRSBean(updateCategory);
+                        org.odpi.openmetadata.accessservices.subjectarea.generated.entities.GlossaryCategory.GlossaryCategory updatedGeneratedCategory = null;
+                        try {
+                            updatedGeneratedCategory = service.updateGlossaryCategory(userid, generatedCategory);
+                        } catch (MetadataServerUncontactableException e) {
+                            response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
+                        } catch (UserNotAuthorizedException e) {
+                            response = OMASExceptionToResponse.convertUserNotAuthorizedException(e);
+                        } catch (UnrecognizedGUIDException e) {
+                            response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
+                        }
+                        org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category updatedCategory = CategoryMapper.mapOMRSBeantoCategory(updatedGeneratedCategory);
+                        if (suppliedCategory.getNodeType() == NodeType.SubjectAreaDefinition) {
+                            response = new SubjectAreaDefinitionResponse(new SubjectAreaDefinition(updatedCategory));
+                        } else
+                        {
+                            response = new CategoryResponse(updatedCategory);
+                        }
+                    } catch (InvalidParameterException e) {
+                        response = OMASExceptionToResponse.convertInvalidParameterException(e);
                     }
-                    org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category updatedCategory = CategoryMapper.mapOMRSBeantoCategory(updatedGeneratedCategory);
-                    if (suppliedCategory.getNodeType() == NodeType.SubjectAreaDefinition) {
-                        response = new SubjectAreaDefinitionResponse(new SubjectAreaDefinition(updatedCategory));
-                    } else
-                    {
-                        response = new CategoryResponse(updatedCategory);
-                    }
-                } catch (InvalidParameterException e) {
-                    response = OMASExceptionToResponse.convertInvalidParameterException(e);
                 }
             }
-        }
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userid=" + userid + ",response=" + response);

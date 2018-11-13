@@ -8,7 +8,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.node.
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.CategorySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
 
-public class Category extends GovernedNode{
+public class Category extends Node{
     private GlossarySummary glossary =null;
     private CategorySummary parentCategory;
 

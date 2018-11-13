@@ -22,4 +22,9 @@ public interface SubjectArea
      * @return subject area category API class
      */
     public SubjectAreaCategory getSubjectAreaCategory();
+    /**
+     * Get the subject area relationship API class - use this class to issue relationship calls.
+     * @return subject area relationship API class
+     */
+    public SubjectAreaRelationship getSubjectAreaRelationship();
 }

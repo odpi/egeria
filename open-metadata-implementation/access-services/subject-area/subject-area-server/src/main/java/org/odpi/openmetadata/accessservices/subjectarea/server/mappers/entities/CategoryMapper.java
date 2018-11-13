@@ -64,22 +64,6 @@ public class CategoryMapper {
             }
         }
 
-        GovernanceActions governanceActions = category.getGovernanceActions();
-        if (governanceActions != null) {
-            if (governanceActions.getRetention() != null) {
-                classifications.add(governanceActions.getRetention());
-            }
-            if (governanceActions.getConfidence() != null) {
-                classifications.add(governanceActions.getConfidence());
-            }
-            if (governanceActions.getConfidentiality() != null) {
-                classifications.add(governanceActions.getConfidentiality());
-            }
-            if (governanceActions.getCriticality() != null) {
-                classifications.add(governanceActions.getCriticality());
-            }
-        }
-
         omrsBean.setClassifications(classifications);
         return omrsBean;
     }
