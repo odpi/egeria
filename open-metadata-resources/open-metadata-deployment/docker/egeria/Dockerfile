@@ -1,10 +1,19 @@
 # SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the Egeria project.
 #
 # Initial, simple, Egeria install - using all defaults. In-memory repository only (no persistence)
 # Built entirely from source, and within the container environment
 # Though this adds time to the build of the dockerfile, it ensures consistency & currency
 # The build will take a while, as maven dependencies need to be loaded afresh into ~/.m2
 FROM ubuntu:18.04
+
+# Image metadata following http://label-schema.org/rc1/
+LABEL org.label-schema.name = "EgeriaForEgeriaVDC"
+LABEL org.label-schema.description="Egeria service to support Egeria VDC demos"
+LABEL org.label-schema.url="https://github.com/odpi/egeria/"
+LABEL org.label-schema.vcs="https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-metadata-deployment/docker/egeria"
+LABEL org.label-schema.version="0.1.0"
+LABEL org.label-schema.schema-version = "1.0"
 
 # Install Git,java sdk (openjdk) & maven -- needed to built Egeria
 RUN apt-get update && apt-get install -y openjdk-8-jdk maven git

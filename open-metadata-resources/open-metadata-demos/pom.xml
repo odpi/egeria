@@ -24,7 +24,6 @@
     <modules>
         <module>virtual-data-connector</module>
         <module>in-memory-repository</module>
-        <module>egeria-docker-selfbuild</module>
     </modules>
 
 
