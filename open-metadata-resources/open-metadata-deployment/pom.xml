@@ -15,7 +15,7 @@
 
 <name>Open Metadata Deployment</name>
 <description>
-Helm charts to deploy Egeria and associated components
+Helm charts to deploy Egeria and associated components such as docker image build scripts
 </description>
 
 <artifactId>open-metadata-deployment</artifactId>

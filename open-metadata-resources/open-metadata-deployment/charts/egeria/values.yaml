@@ -6,8 +6,8 @@
 
 image:
   egeria:
-    repository: planetf1/egeria-standalone
-    tag: latest
+    repository: planetf1/egeria-egeriavdc
+    tag: 0.1.0
     pullPolicy: IfNotPresent
 
   nameOverride: ""
