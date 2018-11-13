@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.subjectarea.fvt;
 
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
+import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaRelationship;
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaTerm;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaImpl;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
@@ -27,7 +28,8 @@ public class TermRelationshipsFVT
     private static final String DEFAULT_TEST_TERM_NAME = "Test term A1";
     private static final String DEFAULT_TEST_TERM_NAME2 = "Test term B1";
     private static final String DEFAULT_TEST_TERM_NAME3 = "Test term C1";
-    private static SubjectAreaTerm subjectAreaTerm = null;
+    private static SubjectAreaRelationship subjectAreaRelationship = null;
+    private static SubjectAreaTerm subjectAreaTerm  =null;
 
     public static void main(String args[])
     {
@@ -56,15 +58,15 @@ public class TermRelationshipsFVT
                 synonym.setSteward("Stew");
                 synonym.setEntity1Guid(term1.getSystemAttributes().getGUID());
                 synonym.setEntity2Guid(term2.getSystemAttributes().getGUID());
-                Synonym createdSynonym = subjectAreaTerm.createSynonymRelationship(USERID,term1.getSystemAttributes().getGUID(),synonym);
+                Synonym createdSynonym = subjectAreaRelationship.createSynonymRelationship(USERID, synonym);
                 System.out.println("Created Synonym " + createdSynonym);
                 String guid = createdSynonym.getGuid();
 
-                subjectAreaTerm.getSynonymRelationship(USERID,guid);
+                subjectAreaRelationship.getSynonymRelationship(USERID,guid);
                 System.out.println("Got Synonym " + createdSynonym);
-                subjectAreaTerm.deleteSynonymRelationship(USERID,guid);
+                subjectAreaRelationship.deleteSynonymRelationship(USERID,guid);
                 System.out.println("Soft deleted Synonym with guid="+guid );
-                subjectAreaTerm.purgeSynonymRelationship(USERID,guid);
+                subjectAreaRelationship.purgeSynonymRelationship(USERID,guid);
                 System.out.println("Hard deleted Synonym with guid="+guid );
             }
             if (term1 != null && term3 !=null)
@@ -76,15 +78,15 @@ public class TermRelationshipsFVT
                 antonym.setSteward("Stew");
                 antonym.setEntity1Guid(term1.getSystemAttributes().getGUID());
                 antonym.setEntity2Guid(term3.getSystemAttributes().getGUID());
-                Antonym createdAntonym = subjectAreaTerm.createAntonymRelationship(USERID,term1.getSystemAttributes().getGUID(),antonym);
+                Antonym createdAntonym = subjectAreaRelationship.createAntonymRelationship(USERID, antonym);
                 System.out.println("Created Antonym " + createdAntonym);
                 String guid = createdAntonym.getGuid();
 
-                subjectAreaTerm.getAntonymRelationship(USERID,guid);
+                subjectAreaRelationship.getAntonymRelationship(USERID,guid);
                 System.out.println("Got Antonym " + createdAntonym);
-                subjectAreaTerm.deleteAntonymRelationship(USERID,guid);
+                subjectAreaRelationship.deleteAntonymRelationship(USERID,guid);
                 System.out.println("Soft deleted Antonym with guid="+guid );
-                subjectAreaTerm.purgeAntonymRelationship(USERID,guid);
+                subjectAreaRelationship.purgeAntonymRelationship(USERID,guid);
                 System.out.println("Hard deleted Antonym with guid="+guid );
             }
             if (term1 != null && term3 !=null)
@@ -96,15 +98,15 @@ public class TermRelationshipsFVT
                 relatedterm.setSteward("Stew");
                 relatedterm.setEntity1Guid(term1.getSystemAttributes().getGUID());
                 relatedterm.setEntity2Guid(term3.getSystemAttributes().getGUID());
-                RelatedTermRelationship createdRelatedTermRelationship = subjectAreaTerm.createRelatedTermRelationship(USERID,term1.getSystemAttributes().getGUID(),relatedterm);
+                RelatedTermRelationship createdRelatedTermRelationship = subjectAreaRelationship.createRelatedTermRelationship(USERID, relatedterm);
                 System.out.println("Created RelatedTermRelationship " + createdRelatedTermRelationship);
                 String guid = createdRelatedTermRelationship.getGuid();
 
-                subjectAreaTerm.getRelatedTermRelationship(USERID,guid);
+                subjectAreaRelationship.getRelatedTermRelationship(USERID,guid);
                 System.out.println("Got RelatedTermRelationship " + createdRelatedTermRelationship);
-                subjectAreaTerm.deleteRelatedTermRelationship(USERID,guid);
+                subjectAreaRelationship.deleteRelatedTermRelationship(USERID,guid);
                 System.out.println("Soft deleted RelatedTermRelationship with guid="+guid );
-                subjectAreaTerm.purgeRelatedTermRelationship(USERID,guid);
+                subjectAreaRelationship.purgeRelatedTermRelationship(USERID,guid);
                 System.out.println("Hard deleted RelatedTermRelationship with guid="+guid );
             }
 
@@ -140,13 +142,13 @@ public class TermRelationshipsFVT
     }
 
     /**
-     * Call this to initialise the term FVT
+     * Call this to initialise the relationship FVT
      *
      * @param url supplied base url for the subject area OMAS
      * @throws InvalidParameterException a parameter is null or an invalid value.
      */
     public static void initialiseTermRelationshipsFVT(String url) throws InvalidParameterException
     {
-        subjectAreaTerm = new SubjectAreaImpl(url).getSubjectAreaTerm();
+        subjectAreaRelationship = new SubjectAreaImpl(url).getSubjectAreaRelationship();
     }
 }

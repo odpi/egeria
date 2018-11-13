@@ -52,40 +52,10 @@ public class GlossaryMapper {
         omrsBean.setUsage(glossary.getUsage());
         omrsBean.setAdditionalProperties((glossary.getAdditionalProperties()));
         List<Classification> classifications = glossary.getClassifications();
-        // glossary Classifications should not contain any governance classifications, but it is possible that the requester added them there by mistake.
         if (classifications==null) {
             classifications = new ArrayList<>();
         }
-        for (Classification classification : classifications) {
-            final String classificationName = classification.getClassificationName();
-            if (classificationName.equals(new Confidentiality().getClassificationName())) {
-                NodeUtils.foundGovernanceClassifications(classificationName);
-            } else if (classificationName.equals(new Confidence().getClassificationName())) {
-                NodeUtils.foundGovernanceClassifications(classificationName);
-            } else if (classificationName.equals(new Criticality().getClassificationName())) {
-                NodeUtils.foundGovernanceClassifications(classificationName);
-            } else if (classificationName.equals(new Retention().getClassificationName())) {
-                NodeUtils.foundGovernanceClassifications(classificationName);
-            }
-        }
 
-        GovernanceActions governanceActions = glossary.getGovernanceActions();
-        if (governanceActions ==null) {
-            governanceActions =new GovernanceActions();
-            glossary.setGovernanceActions(governanceActions);
-        }
-        if (governanceActions.getRetention() !=null) {
-            classifications.add(governanceActions.getRetention());
-        }
-        if (governanceActions.getConfidence() !=null) {
-            classifications.add(governanceActions.getConfidence());
-        }
-        if (governanceActions.getConfidentiality() !=null) {
-            classifications.add(governanceActions.getConfidentiality());
-        }
-        if (governanceActions.getCriticality() !=null) {
-            classifications.add(governanceActions.getCriticality());
-        }
         NodeType nodeType = glossary.getNodeType();
         if (nodeType !=null) {
 

@@ -24,6 +24,5 @@ public class SubjectAreaDefinition extends Category{
         this.setDescription(category.getDescription());
         this.setQualifiedName(category.getQualifiedName());
         this.setSystemAttributes(category.getSystemAttributes());
-        this.setGovernanceActions(category.getGovernanceActions());
     }
 }
