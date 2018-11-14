@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 
 package org.odpi.openmetadata.accessservices.subjectarea.properties.classifications;
 import org.slf4j.Logger;
@@ -103,7 +104,7 @@ public class MetadataServer extends Classification {
        private String format;
        /**
         * {@literal format of supported metadata. }
-        * @return {@code String }
+        * @return {$$PropertyTypeJavadoc$$ }
         */
        public String getFormat() {
            return this.format;
@@ -116,7 +117,7 @@ public class MetadataServer extends Classification {
        private String type;
        /**
         * {@literal Type of metadata server. }
-        * @return {@code String }
+        * @return {$$PropertyTypeJavadoc$$ }
         */
        public String getType() {
            return this.type;
