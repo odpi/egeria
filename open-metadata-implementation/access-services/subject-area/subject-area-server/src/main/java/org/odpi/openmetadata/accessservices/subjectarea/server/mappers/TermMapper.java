@@ -28,9 +28,9 @@ public class TermMapper {
 
     /**
      * map Node to GlossaryTerm local attributes
-     * @param term
-     * @return
-     * @throws InvalidParameterException
+     * @param term Term to map from.
+     * @return GlossaryTerm after mapping.
+     * @throws InvalidParameterException if term is invalid.
      */
     static public GlossaryTerm mapTermToOMRSBean(Term term) throws InvalidParameterException {
 

@@ -59,9 +59,9 @@ public class <$$uname$$>References implements Serializable {
        * Relationships have cardinality. There are 2 sorts of cardinality relevant here, whether the relationship can be related to one or many
        * entities.
        *
-       * @param lines
-       * @param entityGuid
-       * @throws InvalidParameterException
+       * @param lines the relationship lines.
+       * @param entityGuid The GUID of the entity.
+       * @throws InvalidParameterException a parameter is null or an invalid value.
        */
      public <$$uname$$>References(String entityGuid, Set<Line> lines) throws InvalidParameterException {
 
