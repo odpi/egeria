@@ -1,9 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.responses;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.UnrecognizedGUIDException;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.UnrecognizedNameException;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -22,11 +21,30 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         {
                 @JsonSubTypes.Type(value = CategoryResponse.class, name = "CategoryResponse"),
                 @JsonSubTypes.Type(value = GlossaryResponse.class, name = "GlossaryResponse"),
+                @JsonSubTypes.Type(value = SubjectAreaDefinitionResponse.class, name = "SubjectAreaDefinitionResponse"),
                 @JsonSubTypes.Type(value = TermResponse.class, name = "TermResponse"),
                 @JsonSubTypes.Type(value = VoidResponse.class, name = "VoidResponse"),
                 @JsonSubTypes.Type(value = ProjectResponse.class, name = "ProjectResponse"),
+
+                // Relationships
+
+                // LibraryTermReferenceRelationship
+
+                // term to term relationship responses
+                @JsonSubTypes.Type(value = TermHASARelationshipResponse.class, name = "TermHASARelationshipResponse"),
+                @JsonSubTypes.Type(value = RelatedTermRelationshipResponse.class, name = "RelatedTermRelationshipResponse"),
+                @JsonSubTypes.Type(value = SynonymRelationshipResponse.class, name = "SynonymRelationshipResponse"),
+                @JsonSubTypes.Type(value = AntonymRelationshipResponse.class, name = "AntonymRelationshipResponse"),
+                @JsonSubTypes.Type(value = PreferredTermRelationshipResponse.class, name = "PreferredTermRelationshipResponse"),
+                @JsonSubTypes.Type(value = TermReplacementRelationshipResponse.class, name = "TermReplacementRelationshipResponse"),
+                @JsonSubTypes.Type(value = TermTranslationRelationshipResponse.class, name = "TermTranslationRelationshipResponse"),
+                @JsonSubTypes.Type(value = TermValidValueRelationshipResponse.class, name = "TermValidValueRelationshipResponse"),
+                @JsonSubTypes.Type(value = TermUsedInContextRelationshipResponse.class, name = "TermUsedInContextRelationshipResponse"),
+                @JsonSubTypes.Type(value = TermISATYPEOFRelationshipResponse.class, name = "TermISATYPEOFRelationshipResponse"),
+                @JsonSubTypes.Type(value = TermTYPEDBYRelationshipResponse.class, name = "TermTYPEDBYRelationshipResponse"),
+
                 /*
-                 Exception rest - note that each excpetion has the same 4 Exception orientated fields.
+                 Exception rest - note that each exception has the same 4 Exception orientated fields.
                  Ideally these should be in a superclass. Due to restrictions in the @JsonSubTypes processing it  is only possible to have
                  one level of inheritance at this time.
                  */
@@ -43,6 +61,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = UnrecognizedGUIDExceptionResponse.class, name = "UnrecognizedGUIDExceptionResponse") ,
                 @JsonSubTypes.Type(value = UnrecognizedNameExceptionResponse.class, name = "UnrecognizedNameExceptionResponse") ,
                 @JsonSubTypes.Type(value = UserNotAuthorizedExceptionResponse.class, name = "UserNotAuthorizedExceptionResponse")
+
         })
 public abstract class SubjectAreaOMASAPIResponse
 {
