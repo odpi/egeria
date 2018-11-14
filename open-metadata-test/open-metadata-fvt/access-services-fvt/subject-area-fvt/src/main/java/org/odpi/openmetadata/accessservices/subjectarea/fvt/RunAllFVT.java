@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.fvt;
 
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
@@ -27,6 +28,8 @@ public class RunAllFVT
             TermFVT.main(argsForSamples);
             CategoryFVT.main(argsForSamples);
             CategoryHierarchyFVT.main(argsForSamples);
+            TermRelationshipsFVT.main(argsForSamples);
+            SubjectAreaDefinitionCategoryFVT.main(argsForSamples);
             System.out.println("Samples all run");
         } catch (IOException e)
         {

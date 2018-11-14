@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.server.spring;
 
 
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 /**
- * The SubjectAreaRESTServices provides the org.odpi.openmetadata.accessservices.subjectarea.server-side implementation of the SubjectArea Open Metadata
+ * The SubjectAreaRESTServices provides the org.odpi.openmetadata.accessservices.subjectarea.server-side implementation of the SubjectAreaDefinition Open Metadata
  * Assess Service (OMAS).  This interface provides category authoring interfaces for subject area experts.
  */
 @RestController
@@ -31,7 +32,7 @@ public class SubjectAreaCategoryRESTResource extends SubjectAreaRESTServices{
      * <p>
      * Valid nodeTypes for this request are:
      * <ul>
-     *     <li>SubjectArea to create a Category that represents a subject area </li>
+     *     <li>SubjectAreaDefinition to create a Category that represents a subject area </li>
      *     <li>Category to create a category that is not a subject area</li>
      * </ul>
      *
@@ -90,6 +91,7 @@ public class SubjectAreaCategoryRESTResource extends SubjectAreaRESTServices{
      * @param guid             guid of the category to update
      * @param suppliedCategory     category to be updated
      * @param isReplace flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
+     * @return Category response containing the updated Category
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
@@ -98,7 +100,6 @@ public class SubjectAreaCategoryRESTResource extends SubjectAreaRESTServices{
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
-     * @return SubjectAreaOMASAPIResponse if successful update.
      */
     @RequestMapping(method = RequestMethod.PUT, path = "/users/{userid}/categories/{guid}")
     public SubjectAreaOMASAPIResponse updateCategory(@PathVariable String userid,@PathVariable String guid, Category suppliedCategory, @RequestParam(value = "isReplace", required=false) Boolean isReplace) {

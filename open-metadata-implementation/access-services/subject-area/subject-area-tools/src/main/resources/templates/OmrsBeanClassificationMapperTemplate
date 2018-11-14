@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 
 // This is a generated file - do not edit - changes should be made to the templates amd/or generator to generate this file with changes.
 
@@ -33,8 +34,8 @@ public class <$$uClassificationName$$>Mapper {
     private static final String className = <$$uClassificationName$$>Mapper.class.getName();
    /**
     * @param omrsClassification - the supplied omrs classification
-    * @throws InvalidParameterException a parameter is null or an invalid value.
     * @return equivalent <$$uClassificationName$$>
+    * @throws InvalidParameterException null or invalid parameter
     */
    static public org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.<$$uClassificationName$$> mapOmrsToOmas(Classification omrsClassification) throws InvalidParameterException{
         String classificationTypeName = omrsClassification.getName();
