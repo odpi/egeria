@@ -61,6 +61,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/node_modules/**").permitAll()
                 .antMatchers("/*.html").permitAll()
                 .antMatchers("/*.js").permitAll()
+                .antMatchers("/*.json").permitAll()
                 .antMatchers("/favicon.ico").permitAll()
                 .antMatchers("/h2/**").permitAll()
                 .antMatchers("/css/**").permitAll()

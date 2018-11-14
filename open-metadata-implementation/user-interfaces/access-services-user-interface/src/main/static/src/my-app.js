@@ -1,8 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-import { setPassiveTouchGestures, setRootPath } from '@polymer/polymer/lib/utils/settings.js';
+import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
+import {setPassiveTouchGestures, setRootPath} from '@polymer/polymer/lib/utils/settings.js';
 import '@polymer/app-layout/app-drawer/app-drawer.js';
 import '@polymer/app-layout/app-drawer-layout/app-drawer-layout.js';
 import '@polymer/app-layout/app-header/app-header.js';
@@ -15,6 +15,7 @@ import '@polymer/iron-pages/iron-pages.js';
 import '@polymer/iron-selector/iron-selector.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import './my-icons.js';
+import './token-ajax';
 
 // Gesture events like tap and track generated from touch will not be
 // preventable, allowing for better scrolling performance.
@@ -25,12 +26,12 @@ setPassiveTouchGestures(true);
 setRootPath(MyAppGlobals.rootPath);
 
 class MyApp extends PolymerElement {
-  static get template() {
-    return html`
+    static get template() {
+        return html`
       <style>
         :host {
-          --app-primary-color: #4285f4;
-          --app-secondary-color: black;
+          --app-primary-color: 	#71ccdc;
+          --app-secondary-color: #24272a;
 
           display: block;
         }
@@ -61,11 +62,13 @@ class MyApp extends PolymerElement {
         }
 
         .drawer-list a.iron-selected {
-          color: black;
+          color: #24272a;
           font-weight: bold;
         }
       </style>
 
+      <token-ajax id="ajax" url="/api/vdc" token="{{token}}"></token-ajax>  
+        
       <app-location route="{{route}}" url-space-regex="^[[rootPath]]">
       </app-location>
 
@@ -75,7 +78,7 @@ class MyApp extends PolymerElement {
       <app-drawer-layout fullbleed="" narrow="{{narrow}}">
         <!-- Drawer content -->
         <app-drawer id="drawer" slot="drawer" swipe-open="[[narrow]]">
-          <app-toolbar>Menu</app-toolbar>
+          <app-toolbar><img src="../images/ODPi_Egeria_Logo_trademark.jpg" height="60" style="margin: 2px 0"/> </app-toolbar>
           <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
             <a name="view1" href="[[rootPath]]view1">View One</a>
             <a name="view2" href="[[rootPath]]view2">View Two</a>
@@ -89,11 +92,12 @@ class MyApp extends PolymerElement {
           <app-header slot="header" condenses="" reveals="" effects="waterfall">
             <app-toolbar>
               <paper-icon-button icon="my-icons:menu" drawer-toggle=""></paper-icon-button>
-              <div main-title="">My App</div>
+              <div main-title="">Asset search UI</div>
             </app-toolbar>
           </app-header>
 
           <iron-pages selected="[[page]]" attr-for-selected="name" role="main">
+            <login-view name="login"></login-view>
             <my-view1 name="view1"></my-view1>
             <my-view2 name="view2"></my-view2>
             <my-view3 name="view3"></my-view3>
@@ -102,65 +106,73 @@ class MyApp extends PolymerElement {
         </app-header-layout>
       </app-drawer-layout>
     `;
-  }
-
-  static get properties() {
-    return {
-      page: {
-        type: String,
-        reflectToAttribute: true,
-        observer: '_pageChanged'
-      },
-      routeData: Object,
-      subroute: Object
-    };
-  }
-
-  static get observers() {
-    return [
-      '_routePageChanged(routeData.page)'
-    ];
-  }
-
-  _routePageChanged(page) {
-     // Show the corresponding page according to the route.
-     //
-     // If no page was found in the route data, page will be an empty string.
-     // Show 'view1' in that case. And if the page doesn't exist, show 'view404'.
-    if (!page) {
-      this.page = 'view1';
-    } else if (['view1', 'view2', 'view3'].indexOf(page) !== -1) {
-      this.page = page;
-    } else {
-      this.page = 'view404';
     }
 
-    // Close a non-persistent drawer when the page & route are changed.
-    if (!this.$.drawer.persistent) {
-      this.$.drawer.close();
-    }
-  }
+    static get properties() {
+        return {
+            page: {
+                type: String,
+                reflectToAttribute: true,
+                observer: '_pageChanged'
+            },
+            routeData: Object,
+            subroute: Object,
+            pages: {
+                type: Array,
+                value: ['login', 'view1', 'view2', 'view3']
+            }
 
-  _pageChanged(page) {
-    // Import the page component on demand.
-    //
-    // Note: `polymer build` doesn't like string concatenation in the import
-    // statement, so break it up.
-    switch (page) {
-      case 'view1':
-        import('./my-view1.js');
-        break;
-      case 'view2':
-        import('./my-view2.js');
-        break;
-      case 'view3':
-        import('./my-view3.js');
-        break;
-      case 'view404':
-        import('./my-view404.js');
-        break;
+        };
     }
-  }
+
+    static get observers() {
+        return [
+            '_routePageChanged(routeData.page)'
+        ];
+    }
+
+    _routePageChanged(page) {
+        // Show the corresponding page according to the route.
+        //
+        // If no page was found in the route data, page will be an empty string.
+        // Show 'view1' in that case. And if the page doesn't exist, show 'view404'.
+        if (!page) {
+            this.page = 'login';
+        } else if (this.pages.indexOf(page) !== -1) {
+            this.page = page;
+        } else {
+            this.page = 'view404';
+        }
+
+        // Close a non-persistent drawer when the page & route are changed.
+        if (!this.$.drawer.persistent) {
+            this.$.drawer.close();
+        }
+    }
+
+    _pageChanged(page) {
+        // Import the page component on demand.
+        //
+        // Note: `polymer build` doesn't like string concatenation in the import
+        // statement, so break it up.
+        switch (page) {
+            case 'login':
+                import('./login-view.js');
+                break;
+            case 'view1':
+                import('./my-view1.js');
+                break;
+            case 'view2':
+                import('./my-view2.js');
+                break;
+            case 'view3':
+                import('./my-view3.js');
+                break;
+            case 'view404':
+                import('./my-view404.js');
+                break;
+        }
+    }
 }
 
 window.customElements.define('my-app', MyApp);

@@ -144,7 +144,7 @@
                         <executions>
                             <execution>
                                 <id>Polymer build</id>
-                                <phase>process-resources</phase>
+                                <phase>generate-resources</phase>
                                 <goals>
                                     <goal>exec</goal>
                                 </goals>
@@ -166,18 +166,16 @@
                         <executions>
                             <execution>
                                 <id>copy-resources</id>
-                                <phase>process-resources</phase>
+                                <phase>generate-resources</phase>
                                 <goals>
                                     <goal>copy-resources</goal>
                                 </goals>
                                 <configuration>
-                                    <outputDirectory>${basedir}/target</outputDirectory>
-                                    <includeEmptyDirs>true</includeEmptyDirs>
+                                    <outputDirectory>${basedir}/src/main/resources/public</outputDirectory>
                                     <resources>
                                         <resource>
-                                            <targetPath>${basedir}/src/main/resources/public</targetPath>
-                                            <directory>${basedir}/src/main/static/build/es6-bundled</directory>
-                                            <filtering>false</filtering>
+                                            <directory>${basedir}/src/main/static/build/default</directory>
+                                            <filtering>true</filtering>
                                         </resource>
                                     </resources>
                                 </configuration>

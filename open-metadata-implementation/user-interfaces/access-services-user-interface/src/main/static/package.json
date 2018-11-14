@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "description": "Egeria UI application",
   "author": "Egeria contributors",
-  "license": "SPDX: Apache-2.0",
-  "repository": "Polymer/polymer-starter-kit",
+  "license": "Apache-2.0",
+  "repository": "odpi/egrias",
   "scripts": {
     "start": "polymer serve",
     "build": "polymer build",
@@ -13,20 +13,21 @@
     "test:integration": "polymer build # test that psk builds without error with the CLI"
   },
   "dependencies": {
-    "@polymer/app-layout": "^3.0.0-pre.15",
-    "@polymer/app-route": "^3.0.0-pre.15",
-    "@polymer/iron-flex-layout": "^3.0.0-pre.15",
-    "@polymer/iron-iconset-svg": "^3.0.0-pre.15",
-    "@polymer/iron-media-query": "^3.0.0-pre.15",
-    "@polymer/iron-pages": "^3.0.0-pre.15",
-    "@polymer/iron-selector": "^3.0.0-pre.15",
-    "@polymer/paper-icon-button": "^3.0.0-pre.15",
-    "@polymer/polymer": "^3.0.0",
-    "@webcomponents/webcomponentsjs": "^2.0.0"
-  },
-  "devDependencies": {
-    "polymer-cli": "^1.8.1",
-    "wct-browser-legacy": "^1.0.0"
+    "@polymer/app-layout": "^3.0.1",
+    "@polymer/app-route": "^3.0.1",
+    "@polymer/iron-ajax": "^3.0.1",
+    "@polymer/iron-flex-layout": "^3.0.1",
+    "@polymer/iron-form": "^3.0.1",
+    "@polymer/iron-iconset-svg": "^3.0.1",
+    "@polymer/iron-media-query": "^3.0.1",
+    "@polymer/iron-pages": "^3.0.1",
+    "@polymer/iron-selector": "^3.0.1",
+    "@polymer/paper-button": "^3.0.1",
+    "@polymer/paper-icon-button": "^3.0.1",
+    "@polymer/paper-input": "^3.0.1",
+    "@polymer/paper-material": "^3.0.1",
+    "@polymer/polymer": "^3.1.0",
+    "@webcomponents/webcomponentsjs": "^2.1.3"
   },
   "engines": {
     "node": ">=8.0"
