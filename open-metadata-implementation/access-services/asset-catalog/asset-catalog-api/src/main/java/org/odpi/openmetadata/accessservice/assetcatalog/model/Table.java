@@ -20,7 +20,6 @@ public class Table {
     private String guid;
     private String typeName;
     private String owner;
-
     private String typeVersion;
     private String typeEncodingStandard;
     private String typeUsage;

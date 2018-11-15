@@ -17,9 +17,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class Connector {
 
     private String name;
-
     private String description;
-
     private String provider;
 
     public String getName() {

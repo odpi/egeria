@@ -8,8 +8,9 @@ import org.odpi.openmetadata.accessservice.assetcatalog.exception.PropertyServer
 import org.odpi.openmetadata.accessservice.assetcatalog.exception.RelationshipNotFoundException;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.SequenceOrderType;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.Status;
-import org.odpi.openmetadata.accessservice.assetcatalog.responses.RelationshipResponse;
-import org.odpi.openmetadata.accessservice.assetcatalog.responses.RelationshipsResponse;
+import org.odpi.openmetadata.accessservice.assetcatalog.model.rest.body.SearchParameters;
+import org.odpi.openmetadata.accessservice.assetcatalog.model.rest.responses.RelationshipResponse;
+import org.odpi.openmetadata.accessservice.assetcatalog.model.rest.responses.RelationshipsResponse;
 import org.odpi.openmetadata.accessservice.assetcatalog.util.Converter;
 import org.odpi.openmetadata.accessservice.assetcatalog.util.ExceptionHandler;
 import org.odpi.openmetadata.adminservices.OMAGAccessServiceRegistration;
@@ -90,11 +91,31 @@ public class AssetCatalogRelationshipService {
     }
 
 
-    public RelationshipsResponse getRelationshipByProperty(String userId, String relationshipTypeGUID, String matchProperty,
-                                                           String propertyValue, Integer pageSize, Integer fromElement, SequenceOrderType orderType,
-                                                           String orderProperty, Status status) {
+    public RelationshipsResponse getRelationshipByProperty(String userId, String matchProperty,
+                                                           SearchParameters searchParameters) {
         RelationshipsResponse response = new RelationshipsResponse();
         try {
+
+            String relationshipTypeGUID = null;
+            String propertyValue = null;
+            Integer pageSize = 0;
+            Integer fromElement = 0;
+            SequenceOrderType orderType = null;
+            String orderProperty = null;
+            Status status = null;
+
+            if (searchParameters != null) {
+                fromElement = searchParameters.getOffset();
+                pageSize = searchParameters.getLimit();
+                orderType = searchParameters.getOrderType();
+                orderProperty = searchParameters.getOrderProperty();
+                propertyValue = searchParameters.getPropertyValue();
+                status = searchParameters.getStatus();
+                if (searchParameters.getTypes() != null && !searchParameters.getTypes().isEmpty()) {
+                    relationshipTypeGUID = searchParameters.getTypes().get(0);
+                }
+            }
+
             List<Relationship> relationshipsByProperty = getRelationshipsByProperty(userId,
                     relationshipTypeGUID,
                     matchProperty,
@@ -122,12 +143,32 @@ public class AssetCatalogRelationshipService {
 
 
     public RelationshipsResponse searchForRelationships(String userId, String relationshipTypeGUID,
-                                                        String searchCriteria, Integer pageSize, Integer fromElement,
-                                                        String orderProperty, SequenceOrderType orderType, Status status) {
+                                                        String searchCriteria, SearchParameters searchParameters) {
         RelationshipsResponse response = new RelationshipsResponse();
 
         try {
-            List<Relationship> relationships = searchRelationships(userId, relationshipTypeGUID, searchCriteria, pageSize, fromElement, orderProperty, orderType, status);
+            Integer pageSize = 0;
+            Integer fromElement = 0;
+            SequenceOrderType orderType = null;
+            String orderProperty = null;
+            Status status = null;
+
+            if (searchParameters != null) {
+                fromElement = searchParameters.getOffset();
+                pageSize = searchParameters.getLimit();
+                orderType = searchParameters.getOrderType();
+                orderProperty = searchParameters.getOrderProperty();
+                status = searchParameters.getStatus();
+            }
+
+            List<Relationship> relationships = searchRelationships(userId,
+                    relationshipTypeGUID,
+                    searchCriteria,
+                    pageSize,
+                    fromElement,
+                    orderProperty,
+                    orderType,
+                    status);
             response.setRelationships(converter.toRelationships(relationships));
         } catch (PropertyServerException | RelationshipNotFoundException e) {
             exceptionHandler.captureAssetCatalogExeption(response, e);
@@ -140,7 +181,7 @@ public class AssetCatalogRelationshipService {
                 | PagingErrorException e) {
             exceptionHandler.captureOMRSCheckedExceptionBase(response, e);
         }
-        
+
         return response;
     }
 
@@ -164,7 +205,6 @@ public class AssetCatalogRelationshipService {
 
         return relationship;
     }
-
 
     private List<Relationship> getRelationshipsByProperty(String userId, String relationshipTypeGUID, String matchProperty, String propertyValue, Integer pageSize, Integer fromElement, SequenceOrderType orderType, String orderProperty, Status status) throws PropertyServerException, InvalidParameterException, TypeErrorException, RepositoryErrorException, PropertyErrorException, PagingErrorException, FunctionNotSupportedException, UserNotAuthorizedException, RelationshipNotFoundException {
         OMRSMetadataCollection metadataCollection = repositoryHandler.getMetadataCollection();
