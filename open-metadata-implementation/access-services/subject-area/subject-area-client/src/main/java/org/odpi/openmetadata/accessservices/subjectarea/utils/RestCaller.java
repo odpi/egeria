@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -17,7 +18,7 @@ import java.util.Arrays;
 /**
  * Methods to issue rest calls for the SubjectAreaOMAS using the RestTemplate Spring API
  *
- * TODO there is no security that are added to these rest calls at this time.
+ * TODO there is no security that is added to these rest calls at this time.
  */
 public class RestCaller {
     /**
@@ -179,13 +180,6 @@ public class RestCaller {
         return restResponse;
     }
 
-    /**
-     * Throw a subject area exception indicating that the supplied json could not be parsed.
-     * @param className
-     * @param methodName
-     * @param error
-     * @throws InvalidParameterException
-     */
     public static void throwJsonParseError (String className, String methodName,  JsonProcessingException error) throws InvalidParameterException {
         SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.UNABLE_TO_PARSE_SUPPLIED_JSON;
         String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,

@@ -166,6 +166,7 @@ public class OpenMetadataTypesArchive
     private void addStandardCollectionDefs()
     {
         this.archiveBuilder.addCollectionDef(getMapStringStringCollectionDef());
+        this.archiveBuilder.addCollectionDef(getMapStringObjectCollectionDef());
         this.archiveBuilder.addCollectionDef(getArrayStringCollectionDef());
         this.archiveBuilder.addCollectionDef(getArrayIntCollectionDef());
 
@@ -188,6 +189,25 @@ public class OpenMetadataTypesArchive
                                                  descriptionGUID,
                                                  PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING,
                                                  PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+    }
+
+
+    /**
+     * Defines the "map<string,string>" type.
+     *
+     * @return CollectionDef for this type
+     */
+    private CollectionDef getMapStringObjectCollectionDef()
+    {
+        final String guid            = "8fa603dd-c2c5-43fc-8ff4-92141f2414ad";
+        final String description     = "A map from String to Object.";
+        final String descriptionGUID = null;
+
+        return archiveHelper.getMapCollectionDef(guid,
+                                                 description,
+                                                 descriptionGUID,
+                                                 PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING,
+                                                 PrimitiveDefCategory.OM_PRIMITIVE_TYPE_UNKNOWN);
     }
 
 
@@ -11417,7 +11437,7 @@ public class OpenMetadataTypesArchive
                                                            attribute2Description,
                                                            attribute2DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute("TermRelationshipStatus",
+        property = archiveHelper.getEnumTypeDefAttribute("TermAssignmentStatus",
                                                          attribute3Name,
                                                          attribute3Description,
                                                          attribute3DescriptionGUID);
@@ -15748,6 +15768,7 @@ public class OpenMetadataTypesArchive
         this.add0534RelationalSchemas();
         this.add0535EventSchemas();
         this.add0536APISchemas();
+        this.add0540DataClasses();
         this.add0550LogicSpecificationModel();
         this.add0560MappingModel();
         this.add0565ModelElements();
@@ -17877,6 +17898,452 @@ public class OpenMetadataTypesArchive
         return relationshipDef;
     }
 
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    /**
+     * 0540 Data Class definitions
+     */
+    private void add0540DataClasses()
+    {
+        this.archiveBuilder.addEnumDef(getDataClassAssignmentStatusEnum());
+
+        this.archiveBuilder.addEntityDef(getDataClassEntity());
+
+        this.archiveBuilder.addRelationshipDef(getDataClassHierarchyRelationship());
+        this.archiveBuilder.addRelationshipDef(getDataClassCompositionRelationship());
+        this.archiveBuilder.addRelationshipDef(getDataClassAssignmentRelationship());
+
+    }
+
+
+    private EnumDef getDataClassAssignmentStatusEnum()
+    {
+        final String guid            = "2611892f-0527-478f-8843-a3aa2b9abb47";
+        final String name            = "DataClassAssignmentStatus";
+        final String description     = "Defines the provenance and confidence of a data class assignment.";
+        final String descriptionGUID = null;
+
+        EnumDef enumDef = archiveHelper.getEmptyEnumDef(guid, name, description, descriptionGUID);
+
+        ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
+        EnumElementDef            elementDef;
+
+        final int    element1Ordinal         = 0;
+        final String element1Value           = "Discovered";
+        final String element1Description     = "The data class assignment was discovered by an automated process.";
+        final String element1DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
+                                                     element1Value,
+                                                     element1Description,
+                                                     element1DescriptionGUID);
+        elementDefs.add(elementDef);
+
+        final int    element2Ordinal         = 1;
+        final String element2Value           = "Proposed";
+        final String element2Description     = "The data class assignment was proposed by a subject matter expert.";
+        final String element2DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
+                                                     element2Value,
+                                                     element2Description,
+                                                     element2DescriptionGUID);
+        elementDefs.add(elementDef);
+
+        final int    element3Ordinal         = 2;
+        final String element3Value           = "Imported";
+        final String element3Description     = "The data class assignment was imported from another metadata system.";
+        final String element3DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element3Ordinal,
+                                                     element3Value,
+                                                     element3Description,
+                                                     element3DescriptionGUID);
+        elementDefs.add(elementDef);
+
+        final int    element4Ordinal         = 3;
+        final String element4Value           = "Validated";
+        final String element4Description     = "The data class assignment has been validated and approved by a subject matter expert.";
+        final String element4DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element4Ordinal,
+                                                     element4Value,
+                                                     element4Description,
+                                                     element4DescriptionGUID);
+        elementDefs.add(elementDef);
+
+        final int    element5Ordinal         = 4;
+        final String element5Value           = "Deprecated";
+        final String element5Description     = "The data class assignment should no longer be used.";
+        final String element5DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element5Ordinal,
+                                                     element5Value,
+                                                     element5Description,
+                                                     element5DescriptionGUID);
+        elementDefs.add(elementDef);
+
+        final int    element6Ordinal         = 5;
+        final String element6Value           = "Obsolete";
+        final String element6Description     = "The data class assignment must no longer be used.";
+        final String element6DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element6Ordinal,
+                                                     element6Value,
+                                                     element6Description,
+                                                     element6DescriptionGUID);
+        elementDefs.add(elementDef);
+
+        final int    element99Ordinal         = 99;
+        final String element99Value           = "Other";
+        final String element99Description     = "Another data class assignment status.";
+        final String element99DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element99Ordinal,
+                                                     element99Value,
+                                                     element99Description,
+                                                     element99DescriptionGUID);
+        elementDefs.add(elementDef);
+
+        enumDef.setElementDefs(elementDefs);
+
+        return enumDef;
+    }
+
+
+    private EntityDef  getDataClassEntity()
+    {
+        final String guid            = "6bc727dc-e855-4979-8736-78ac3cfcd32f";
+        final String name            = "DataClass";
+        final String description     = "A logical data type specification.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "Referenceable";
+
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
+                                                                name,
+                                                                this.archiveBuilder.getEntityDef(superTypeName),
+                                                                description,
+                                                                descriptionGUID);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "name";
+        final String attribute1Description     = "Display name of the data class.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "description";
+        final String attribute2Description     = "Description of the data class.";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "classCode";
+        final String attribute3Description     = "Name of processing class that can identify the data class.";
+        final String attribute3DescriptionGUID = null;
+        final String attribute4Name            = "userDefined";
+        final String attribute4Description     = "Defined by owning organization rather than vendor.";
+        final String attribute4DescriptionGUID = null;
+        final String attribute5Name            = "namespace";
+        final String attribute5Description     = "Logical group for this data class.";
+        final String attribute5DescriptionGUID = null;
+        final String attribute6Name            = "specification";
+        final String attribute6Description     = "Parsing string used to identify values of this data class.";
+        final String attribute6DescriptionGUID = null;
+        final String attribute7Name            = "specificationDetails";
+        final String attribute7Description     = "Additional properties used in the specification.";
+        final String attribute7DescriptionGUID = null;
+        final String attribute8Name            = "dataType";
+        final String attribute8Description     = "Typical data type used to store this value.";
+        final String attribute8DescriptionGUID = null;
+        final String attribute9Name            = "defaultThreshold";
+        final String attribute9Description     = "Match threshold that a data field is expected to achieve to be assigned this data class.";
+        final String attribute9DescriptionGUID = null;
+        final String attribute10Name            = "example";
+        final String attribute10Description     = "Example of a data value that matches this data class.";
+        final String attribute10DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                                                           attribute3Description,
+                                                           attribute3DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getBooleanTypeDefAttribute(attribute4Name,
+                                                            attribute4Description,
+                                                            attribute4DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute5Name,
+                                                           attribute5Description,
+                                                           attribute5DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute6Name,
+                                                           attribute6Description,
+                                                           attribute6DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getMapStringObjectTypeDefAttribute(attribute7Name,
+                                                                    attribute7Description,
+                                                                    attribute7DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute8Name,
+                                                           attribute8Description,
+                                                           attribute8DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getFloatTypeDefAttribute(attribute9Name,
+                                                          attribute9Description,
+                                                          attribute9DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute10Name,
+                                                           attribute10Description,
+                                                           attribute10DescriptionGUID);
+        properties.add(property);
+
+
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
+    }
+
+    private RelationshipDef getDataClassHierarchyRelationship()
+    {
+        final String guid            = "6b947ccc-1a70-4785-9ca3-d6326bc51291";
+        final String name            = "DataClassHierarchy";
+        final String description     = "Links a data class to another in a parent child hierarchy.";
+        final String descriptionGUID = null;
+
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
+
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
+                                                                                name,
+                                                                                null,
+                                                                                description,
+                                                                                descriptionGUID,
+                                                                                classificationPropagationRule);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = "DataClass";
+        final String                     end1AttributeName            = "superDataClass";
+        final String                     end1AttributeDescription     = "Data class that is the more abstract.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 end1Cardinality);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "DataClass";
+        final String                     end2AttributeName            = "subDataClasses";
+        final String                     end2AttributeDescription     = "Data classes that are more concrete.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 end2Cardinality);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        return relationshipDef;
+    }
+
+
+    private RelationshipDef getDataClassCompositionRelationship()
+    {
+        final String guid            = "767fb343-4699-49c1-a0f8-af6da78505f8";
+        final String name            = "DataClassComposition";
+        final String description     = "Links a data class to another in a part of hierarchy.";
+        final String descriptionGUID = null;
+
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
+
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
+                                                                                name,
+                                                                                null,
+                                                                                description,
+                                                                                descriptionGUID,
+                                                                                classificationPropagationRule);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = "DataClass";
+        final String                     end1AttributeName            = "partOfDataClasses";
+        final String                     end1AttributeDescription     = "Data classes that includes other data classes in its definition.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 end1Cardinality);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "DataClass";
+        final String                     end2AttributeName            = "madeOfDataClasses";
+        final String                     end2AttributeDescription     = "Data classes that provide part of another data class's definitions.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 end2Cardinality);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        return relationshipDef;
+    }
+
+
+    private RelationshipDef getDataClassAssignmentRelationship()
+    {
+        final String guid            = "4df37335-7f0c-4ced-82df-3b2fd07be1bd";
+        final String name            = "DataClassAssignment";
+        final String description     = "Links a data class to an asset or schema element to define its logical data type.";
+        final String descriptionGUID = null;
+
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
+
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
+                                                                                name,
+                                                                                null,
+                                                                                description,
+                                                                                descriptionGUID,
+                                                                                classificationPropagationRule);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = "Referenceable";
+        final String                     end1AttributeName            = "elementsAssignedToDataClass";
+        final String                     end1AttributeDescription     = "Elements identified as managing data values that match the specification of a data class.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 end1Cardinality);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "DataClass";
+        final String                     end2AttributeName            = "dataClassesAssignedToElement";
+        final String                     end2AttributeDescription     = "Logical data type for this element.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 end2Cardinality);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "method";
+        final String attribute1Description     = "Method used to identify data class.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "status";
+        final String attribute2Description     = "The status of the relationship.";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "partialMatch";
+        final String attribute3Description     = "Are there data values outside of the data class specification?";
+        final String attribute3DescriptionGUID = null;
+        final String attribute4Name            = "confidence";
+        final String attribute4Description     = "Level of confidence in the correctness of the data class assignment.";
+        final String attribute4DescriptionGUID = null;
+        final String attribute5Name            = "threshold";
+        final String attribute5Description     = "What was the threshold result used to determine that the data class matched.";
+        final String attribute5DescriptionGUID = null;
+        final String attribute6Name            = "valueFrequency";
+        final String attribute6Description     = "How often does the data class specification match the data values.";
+        final String attribute6DescriptionGUID = null;
+        final String attribute7Name            = "steward";
+        final String attribute7Description     = "Person responsible for validating the data class assignment.";
+        final String attribute7DescriptionGUID = null;
+        final String attribute8Name            = "source";
+        final String attribute8Description     = "Person, organization or automated process that created the data class assignment.";
+        final String attribute8DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getEnumTypeDefAttribute("DataClassAssignmentStatus",
+                                                         attribute2Name,
+                                                         attribute2Description,
+                                                         attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getBooleanTypeDefAttribute(attribute3Name,
+                                                            attribute3Description,
+                                                            attribute3DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getIntTypeDefAttribute(attribute4Name,
+                                                        attribute4Description,
+                                                        attribute4DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getFloatTypeDefAttribute(attribute5Name,
+                                                           attribute5Description,
+                                                           attribute5DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getLongTypeDefAttribute(attribute6Name,
+                                                         attribute6Description,
+                                                         attribute6DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute7Name,
+                                                           attribute7Description,
+                                                           attribute7DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute8Name,
+                                                           attribute8Description,
+                                                           attribute8DescriptionGUID);
+        properties.add(property);
+
+        relationshipDef.setPropertiesDefinition(properties);
+
+        return relationshipDef;
+    }
 
     /*
      * -------------------------------------------------------------------------------------------------------
