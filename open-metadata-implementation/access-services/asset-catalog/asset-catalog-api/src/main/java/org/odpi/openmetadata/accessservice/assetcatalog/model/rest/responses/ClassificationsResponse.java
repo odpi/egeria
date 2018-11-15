@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-package org.odpi.openmetadata.accessservice.assetcatalog.responses;
+package org.odpi.openmetadata.accessservice.assetcatalog.model.rest.responses;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

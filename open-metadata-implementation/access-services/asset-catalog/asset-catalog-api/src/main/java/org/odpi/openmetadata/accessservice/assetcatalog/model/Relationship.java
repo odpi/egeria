@@ -23,7 +23,6 @@ public class Relationship extends Asset implements Serializable {
 
     private Asset fromEntity;
     private Asset toEntity;
-
     private List<String> linkedEntities;
 
     public Asset getFromEntity() {

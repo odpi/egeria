@@ -21,16 +21,12 @@ public class Asset {
     private String GUID;
     private String metadataCollectionId;
     private String name;
-
     private String createdBy;
     private Date createTime;
-
     private String updatedBy;
     private Date updateTime;
-
     private Long version;
     private Status status;
-
     private String typeDefName;
     private String typeDefDescription;
 

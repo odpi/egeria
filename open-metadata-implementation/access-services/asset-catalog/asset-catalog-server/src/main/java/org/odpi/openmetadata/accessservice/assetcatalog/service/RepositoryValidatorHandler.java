@@ -6,6 +6,9 @@ import org.odpi.openmetadata.accessservice.assetcatalog.exception.PropertyServer
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
+/**
+ * RepositoryValidatorHandler provides common validation for repository interaction.
+ */
 public class RepositoryValidatorHandler {
 
     private OMRSRepositoryConnector repositoryConnector;
@@ -14,6 +17,13 @@ public class RepositoryValidatorHandler {
         this.repositoryConnector = repositoryConnector;
     }
 
+    /**
+     * Returns the metadata collection object that provides an OMRS abstraction of the metadata within a metadata repository.
+     *
+     * @return OMRSMetadataCollection the metadata collection object that provides an OMRS abstraction of the metadata within
+     * a metadata repository.
+     * @throws PropertyServerException Asset Catalog OMAS when it is not able to communicate with the property server.
+     */
     public OMRSMetadataCollection getMetadataCollection() throws PropertyServerException {
         String className = this.getClass().getName();
         String methodName = "getMetadataCollection";

@@ -16,10 +16,10 @@ import org.odpi.openmetadata.accessservice.assetcatalog.exception.InvalidParamet
 import org.odpi.openmetadata.accessservice.assetcatalog.exception.PropertyServerException;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.AssetDescription;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.Relationship;
-import org.odpi.openmetadata.accessservice.assetcatalog.responses.AssetCatalogOMASAPIResponse;
-import org.odpi.openmetadata.accessservice.assetcatalog.responses.AssetDescriptionResponse;
-import org.odpi.openmetadata.accessservice.assetcatalog.responses.ClassificationsResponse;
-import org.odpi.openmetadata.accessservice.assetcatalog.responses.RelationshipsResponse;
+import org.odpi.openmetadata.accessservice.assetcatalog.model.rest.responses.AssetCatalogOMASAPIResponse;
+import org.odpi.openmetadata.accessservice.assetcatalog.model.rest.responses.AssetDescriptionResponse;
+import org.odpi.openmetadata.accessservice.assetcatalog.model.rest.responses.ClassificationsResponse;
+import org.odpi.openmetadata.accessservice.assetcatalog.model.rest.responses.RelationshipsResponse;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
