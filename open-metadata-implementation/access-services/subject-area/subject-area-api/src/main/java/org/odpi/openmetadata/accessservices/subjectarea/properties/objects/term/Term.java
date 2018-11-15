@@ -253,7 +253,7 @@ public class Term extends GovernedNode implements Serializable {
         int  result = super.hashCode();
         result = 31 * result + (summary != null ? summary.hashCode() : 0);
         result = 31 * result + (glossary!= null ? glossary.hashCode() : 0);
-        // not including assets and categories in hashcode as they ar relationships
+        // not including assets, terms and categories in hashcode as they are relationships
         if (this.isSpineAttribute) {
             result = 31 * result + "isSpineAttribute".hashCode();
         }

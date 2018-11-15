@@ -22,7 +22,7 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown=true)
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.PROPERTY)
-abstract public class Classification implements Serializable {
+public class Classification implements Serializable {
     protected static final long serialVersionUID = 1L;
 
     public static long getSerialVersionUID() {
@@ -48,5 +48,5 @@ abstract public class Classification implements Serializable {
         return this.classificationName;
     }
 
-    abstract public InstanceProperties obtainInstanceProperties();
+    public InstanceProperties obtainInstanceProperties() { return null;}
 }

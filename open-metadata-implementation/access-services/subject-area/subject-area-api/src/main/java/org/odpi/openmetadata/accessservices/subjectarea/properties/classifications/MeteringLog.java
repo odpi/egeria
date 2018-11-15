@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 
 package org.odpi.openmetadata.accessservices.subjectarea.properties.classifications;
 import org.slf4j.Logger;
@@ -108,7 +109,7 @@ public class MeteringLog extends Classification {
        private String notes;
        /**
         * {@literal Notes on usage, purpose and type of exception backlog. }
-        * @return {@code String }
+        * @return {$$PropertyTypeJavadoc$$ }
         */
        public String getNotes() {
            return this.notes;
@@ -121,7 +122,7 @@ public class MeteringLog extends Classification {
        private String process;
        /**
         * {@literal Unique identifier of the automated process that processes this exception backlog. }
-        * @return {@code String }
+        * @return {$$PropertyTypeJavadoc$$ }
         */
        public String getProcess() {
            return this.process;
@@ -134,7 +135,7 @@ public class MeteringLog extends Classification {
        private String source;
        /**
         * {@literal Source of the exception backlog. }
-        * @return {@code String }
+        * @return {$$PropertyTypeJavadoc$$ }
         */
        public String getSource() {
            return this.source;
