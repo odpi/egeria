@@ -45,6 +45,7 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
                                                      OMRSTypeDefManager
 {
     private LocalOMRSRepositoryConnector    localRepositoryConnector       = null;
+    private String                          localServerName                = null;
     private OMRSRepositoryEventManager      outboundRepositoryEventManager = null;
     private OMRSRepositoryConnector         realLocalConnector             = null;
     private OMRSRepositoryEventExchangeRule saveExchangeRule               = null;
@@ -91,7 +92,12 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
                                     OMRSRepositoryEventExchangeRule   saveExchangeRule,
                                     OMRSRepositoryEventManager        outboundRepositoryEventManager)
     {
-        this.localRepositoryConnector = localRepositoryConnector;
+        if (localRepositoryConnector != null)
+        {
+            this.localRepositoryConnector = localRepositoryConnector;
+            this.localServerName = localRepositoryConnector.getLocalServerName();
+        }
+
         this.realLocalConnector = realLocalConnector;
         this.saveExchangeRule = saveExchangeRule;
         this.outboundRepositoryEventManager = outboundRepositoryEventManager;
@@ -817,7 +823,7 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
      */
     public String getEntityURL(String  sourceName, String guid)
     {
-        return OMRSRepositoryRESTServices.getEntityURL(guid);
+        return OMRSRepositoryRESTServices.getEntityURL(localServerName, guid);
     }
 
 
@@ -830,7 +836,7 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
      */
     public String getRelationshipURL(String  sourceName, String guid)
     {
-        return OMRSRepositoryRESTServices.getRelationshipURL(guid);
+        return OMRSRepositoryRESTServices.getRelationshipURL(localServerName, guid);
     }
 
 

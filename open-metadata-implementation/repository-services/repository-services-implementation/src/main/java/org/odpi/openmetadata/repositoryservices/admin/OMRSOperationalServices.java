@@ -346,7 +346,9 @@ public class OMRSOperationalServices
              * Set up the OMRS REST Services with the local repository so it is able to process incoming REST
              * calls.
              */
-            OMRSRepositoryRESTServices.setLocalRepository(localRepositoryConnector, localServerURL);
+            OMRSRepositoryRESTServices.setLocalRepository(localServerName,
+                                                          localRepositoryConnector,
+                                                          localServerURL);
         }
 
 

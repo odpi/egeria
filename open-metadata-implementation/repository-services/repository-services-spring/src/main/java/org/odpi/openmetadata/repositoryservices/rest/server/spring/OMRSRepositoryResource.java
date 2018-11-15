@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.rest.server.spring;
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -61,7 +62,7 @@ import java.util.Date;
  * </ul>
  */
 @RestController
-@RequestMapping("/open-metadata/repository-services")
+@RequestMapping("/open-metadata/repository-services/servers/{serverName}")
 public class OMRSRepositoryResource
 {
     private OMRSRepositoryRESTServices  restAPI = new OMRSRepositoryRESTServices();
@@ -83,14 +84,15 @@ public class OMRSRepositoryResource
      * metadata repository with the metadata repository cohort.  It is also the identifier used to
      * identify the home repository of a metadata instance.
      *
+     * @param serverName unique identifier for requested server.
      * @return String metadata collection id.
      * or RepositoryErrorException if there is a problem communicating with the metadata repository.
      */
     @RequestMapping(method = RequestMethod.GET, path = "/metadata-collection-id")
 
-    public MetadataCollectionIdResponse      getMetadataCollectionId()
+    public MetadataCollectionIdResponse      getMetadataCollectionId(@PathVariable String   serverName)
     {
-        return restAPI.getMetadataCollectionId();
+        return restAPI.getMetadataCollectionId(serverName);
     }
 
 
@@ -105,6 +107,7 @@ public class OMRSRepositoryResource
      * type definitions.  Full type definitions (TypeDefs) describe types for entities, relationships
      * and classifications.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @return TypeDefGalleryResponse:
      * List of different categories of type definitions or
@@ -113,9 +116,10 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/types/all")
 
-    public TypeDefGalleryResponse getAllTypes(@PathVariable String   userId)
+    public TypeDefGalleryResponse getAllTypes(@PathVariable String   serverName,
+                                              @PathVariable String   userId)
     {
-        return restAPI.getAllTypes(userId);
+        return restAPI.getAllTypes(serverName, userId);
     }
 
 
@@ -124,6 +128,7 @@ public class OMRSRepositoryResource
      * method allows wildcard character to be included in the name.  These are * (asterisk) for an
      * arbitrary string of characters and ampersand for an arbitrary character.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param name name of the TypeDefs to return (including wildcard characters).
      * @return TypeDefGalleryResponse:
@@ -134,16 +139,18 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/types/by-name")
 
-    public TypeDefGalleryResponse findTypesByName(@PathVariable String userId,
-                                                  @RequestParam String name)
+    public TypeDefGalleryResponse findTypesByName(@PathVariable String   serverName,
+                                                  @PathVariable String   userId,
+                                                  @RequestParam String   name)
     {
-        return restAPI.findTypesByName(userId, name);
+        return restAPI.findTypesByName(serverName, userId, name);
     }
 
 
     /**
      * Returns all of the TypeDefs for a specific category.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param category find parameters used to limit the returned results.
      * @return TypeDefListResponse:
@@ -154,16 +161,18 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/types/typedefs/by-category")
 
-    public TypeDefListResponse findTypeDefsByCategory(@PathVariable String                     userId,
-                                                      @RequestBody  TypeDefCategory            category)
+    public TypeDefListResponse findTypeDefsByCategory(@PathVariable String           serverName,
+                                                      @PathVariable String           userId,
+                                                      @RequestBody  TypeDefCategory  category)
     {
-        return restAPI.findTypeDefsByCategory(userId, category);
+        return restAPI.findTypeDefsByCategory(serverName, userId, category);
     }
 
 
     /**
      * Returns all of the AttributeTypeDefs for a specific category.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param category find parameters used to limit the returned results.
      * @return AttributeTypeDefListResponse:
@@ -174,16 +183,18 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/types/attribute-typedefs/by-category")
 
-    public AttributeTypeDefListResponse findAttributeTypeDefsByCategory(@PathVariable String                   userId,
+    public AttributeTypeDefListResponse findAttributeTypeDefsByCategory(@PathVariable String                   serverName,
+                                                                        @PathVariable String                   userId,
                                                                         @RequestBody  AttributeTypeDefCategory category)
     {
-        return restAPI.findAttributeTypeDefsByCategory(userId, category);
+        return restAPI.findAttributeTypeDefsByCategory(serverName, userId, category);
     }
 
 
     /**
      * Return the TypeDefs that have the properties matching the supplied match criteria.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param matchCriteria TypeDefProperties a list of property names.
      * @return TypeDefListResponse:
@@ -194,16 +205,18 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/types/typedefs/by-property")
 
-    public TypeDefListResponse findTypeDefsByProperty(@PathVariable String            userId,
+    public TypeDefListResponse findTypeDefsByProperty(@PathVariable String            serverName,
+                                                      @PathVariable String            userId,
                                                       @RequestBody  TypeDefProperties matchCriteria)
     {
-        return restAPI.findTypeDefsByProperty(userId, matchCriteria);
+        return restAPI.findTypeDefsByProperty(serverName, userId, matchCriteria);
     }
 
 
     /**
      * Return the types that are linked to the elements from the specified standard.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param standard name of the standard null means any.
      * @param organization name of the organization null means any.
@@ -216,18 +229,20 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/types/typedefs/by-external-id")
 
-    public TypeDefListResponse findTypesByExternalID(@PathVariable                   String    userId,
+    public TypeDefListResponse findTypesByExternalID(@PathVariable                   String    serverName,
+                                                     @PathVariable                   String    userId,
                                                      @RequestParam(required = false) String    standard,
                                                      @RequestParam(required = false) String    organization,
                                                      @RequestParam(required = false) String    identifier)
     {
-        return restAPI.findTypesByExternalID(userId, standard, organization, identifier);
+        return restAPI.findTypesByExternalID(serverName, userId, standard, organization, identifier);
     }
 
 
     /**
      * Return the TypeDefs that match the search criteria.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param searchCriteria String search criteria.
      * @return TypeDefListResponse:
@@ -238,16 +253,18 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/types/typedefs/by-property-value")
 
-    public TypeDefListResponse searchForTypeDefs(@PathVariable String userId,
+    public TypeDefListResponse searchForTypeDefs(@PathVariable String serverName,
+                                                 @PathVariable String userId,
                                                  @RequestParam String searchCriteria)
     {
-        return restAPI.searchForTypeDefs(userId, searchCriteria);
+        return restAPI.searchForTypeDefs(serverName, userId, searchCriteria);
     }
 
 
     /**
      * Return the TypeDef identified by the GUID.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param guid String unique id of the TypeDef.
      * @return TypeDefResponse:
@@ -260,16 +277,18 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/types/typedef/{guid}")
 
-    public TypeDefResponse getTypeDefByGUID(@PathVariable String    userId,
+    public TypeDefResponse getTypeDefByGUID(@PathVariable String    serverName,
+                                            @PathVariable String    userId,
                                             @PathVariable String    guid)
     {
-        return restAPI.getTypeDefByGUID(userId, guid);
+        return restAPI.getTypeDefByGUID(serverName, userId, guid);
     }
 
 
     /**
      * Return the AttributeTypeDef identified by the GUID.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param guid String unique id of the TypeDef
      * @return AttributeTypeDefResponse:
@@ -282,10 +301,11 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/types/attribute-typedef/{guid}")
 
-    public AttributeTypeDefResponse getAttributeTypeDefByGUID(@PathVariable String    userId,
+    public AttributeTypeDefResponse getAttributeTypeDefByGUID(@PathVariable String    serverName,
+                                                              @PathVariable String    userId,
                                                               @PathVariable String    guid)
     {
-        return restAPI.getAttributeTypeDefByGUID(userId, guid);
+        return restAPI.getAttributeTypeDefByGUID(serverName, userId, guid);
     }
 
 
@@ -293,6 +313,7 @@ public class OMRSRepositoryResource
     /**
      * Return the TypeDef identified by the unique name.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param name String name of the TypeDef.
      * @return TypeDefResponse:
@@ -305,16 +326,18 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/types/typedef/name/{name}")
 
-    public TypeDefResponse getTypeDefByName(@PathVariable String    userId,
+    public TypeDefResponse getTypeDefByName(@PathVariable String    serverName,
+                                            @PathVariable String    userId,
                                             @PathVariable String    name)
     {
-        return restAPI.getTypeDefByName(userId, name);
+        return restAPI.getTypeDefByName(serverName, userId, name);
     }
 
 
     /**
      * Return the AttributeTypeDef identified by the unique name.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param name String name of the TypeDef.
      * @return AttributeTypeDefResponse:
@@ -327,16 +350,18 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/types/attribute-typedef/name/{name}")
 
-    public  AttributeTypeDefResponse getAttributeTypeDefByName(@PathVariable String    userId,
+    public  AttributeTypeDefResponse getAttributeTypeDefByName(@PathVariable String    serverName,
+                                                               @PathVariable String    userId,
                                                                @PathVariable String    name)
     {
-        return restAPI.getAttributeTypeDefByName(userId, name);
+        return restAPI.getAttributeTypeDefByName(serverName, userId, name);
     }
 
 
     /**
      * Create a collection of related types.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param newTypes TypeDefGalleryResponse structure describing the new AttributeTypeDefs and TypeDefs.
      * @return VoidResponse:
@@ -353,16 +378,18 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/types")
 
-    public  VoidResponse addTypeDefGallery(@PathVariable String         userId,
+    public  VoidResponse addTypeDefGallery(@PathVariable String         serverName,
+                                           @PathVariable String         userId,
                                            @RequestBody  TypeDefGallery newTypes)
     {
-        return restAPI.addTypeDefGallery(userId, newTypes);
+        return restAPI.addTypeDefGallery(serverName, userId, newTypes);
     }
 
 
     /**
      * Create a definition of a new TypeDef.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param newTypeDef TypeDef structure describing the new TypeDef.
      * @return VoidResponse:
@@ -379,16 +406,18 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/types/typedef")
 
-    public VoidResponse addTypeDef(@PathVariable String  userId,
-                                   @RequestBody  TypeDef newTypeDef)
+    public VoidResponse addTypeDef(@PathVariable String    serverName,
+                                   @PathVariable String    userId,
+                                   @RequestBody  TypeDef   newTypeDef)
     {
-        return restAPI.addTypeDef(userId, newTypeDef);
+        return restAPI.addTypeDef(serverName, userId, newTypeDef);
     }
 
 
     /**
      * Create a definition of a new AttributeTypeDef.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param newAttributeTypeDef TypeDef structure describing the new TypeDef.
      * @return VoidResponse:
@@ -405,16 +434,18 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/types/attribute-typedef")
 
-    public  VoidResponse addAttributeTypeDef(@PathVariable String             userId,
+    public  VoidResponse addAttributeTypeDef(@PathVariable String             serverName,
+                                             @PathVariable String             userId,
                                              @RequestBody  AttributeTypeDef   newAttributeTypeDef)
     {
-        return restAPI.addAttributeTypeDef(userId, newAttributeTypeDef);
+        return restAPI.addAttributeTypeDef(serverName, userId, newAttributeTypeDef);
     }
 
 
     /**
      * Verify that a definition of a TypeDef is either new or matches the definition already stored.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param typeDef TypeDef structure describing the TypeDef to test.
      * @return BooleanResponse:
@@ -429,16 +460,18 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/types/typedef/compatibility")
 
-    public BooleanResponse verifyTypeDef(@PathVariable String       userId,
-                                         @RequestBody  TypeDef      typeDef)
+    public BooleanResponse verifyTypeDef(@PathVariable String    serverName,
+                                         @PathVariable String    userId,
+                                         @RequestBody  TypeDef   typeDef)
     {
-        return restAPI.verifyTypeDef(userId, typeDef);
+        return restAPI.verifyTypeDef(serverName, userId, typeDef);
     }
 
 
     /**
      * Verify that a definition of an AttributeTypeDef is either new or matches the definition already stored.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param attributeTypeDef TypeDef structure describing the TypeDef to test.
      * @return BooleanResponse:
@@ -453,10 +486,11 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/types/attribute-typedef/compatibility")
 
-    public  BooleanResponse verifyAttributeTypeDef(@PathVariable String            userId,
+    public  BooleanResponse verifyAttributeTypeDef(@PathVariable String            serverName,
+                                                   @PathVariable String            userId,
                                                    @RequestBody  AttributeTypeDef  attributeTypeDef)
     {
-        return restAPI.verifyAttributeTypeDef(userId, attributeTypeDef);
+        return restAPI.verifyAttributeTypeDef(serverName, userId, attributeTypeDef);
     }
 
 
@@ -464,6 +498,7 @@ public class OMRSRepositoryResource
      * Update one or more properties of the TypeDef.  The TypeDefPatch controls what types of updates
      * are safe to make to the TypeDef.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param typeDefPatch TypeDef patch describing change to TypeDef.
      * @return TypeDefResponse:
@@ -479,10 +514,11 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/types/typedef/update")
 
-    public TypeDefResponse updateTypeDef(@PathVariable String       userId,
+    public TypeDefResponse updateTypeDef(@PathVariable String       serverName,
+                                         @PathVariable String       userId,
                                          @RequestBody  TypeDefPatch typeDefPatch)
     {
-        return restAPI.updateTypeDef(userId, typeDefPatch);
+        return restAPI.updateTypeDef(serverName, userId, typeDefPatch);
     }
 
 
@@ -490,6 +526,7 @@ public class OMRSRepositoryResource
      * Delete the TypeDef.  This is only possible if the TypeDef has never been used to create instances or any
      * instances of this TypeDef have been purged from the metadata collection.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param guid String unique identifier for the TypeDef.
      * @param name String unique name for the TypeDef.
@@ -507,11 +544,12 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/types/typedef/{guid}")
 
-    public VoidResponse deleteTypeDef(@PathVariable String    userId,
+    public VoidResponse deleteTypeDef(@PathVariable String    serverName,
+                                      @PathVariable String    userId,
                                       @PathVariable String    guid,
                                       @RequestParam String    name)
     {
-        return restAPI.deleteTypeDef(userId, guid, name);
+        return restAPI.deleteTypeDef(serverName, userId, guid, name);
     }
 
 
@@ -519,6 +557,7 @@ public class OMRSRepositoryResource
      * Delete an AttributeTypeDef.  This is only possible if the AttributeTypeDef has never been used to create
      * instances or any instances of this AttributeTypeDef have been purged from the metadata collection.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param guid String unique identifier for the AttributeTypeDef.
      * @param name String unique name for the AttributeTypeDef.
@@ -536,11 +575,12 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/types/attribute-typedef/{guid}")
 
-    public VoidResponse deleteAttributeTypeDef(@PathVariable String    userId,
+    public VoidResponse deleteAttributeTypeDef(@PathVariable String    serverName,
+                                               @PathVariable String    userId,
                                                @PathVariable String    guid,
                                                @RequestParam String    name)
     {
-        return restAPI.deleteAttributeTypeDef(userId, guid, name);
+        return restAPI.deleteAttributeTypeDef(serverName, userId, guid, name);
     }
 
 
@@ -549,6 +589,7 @@ public class OMRSRepositoryResource
      * TypeDefs are discovered to have the same guid.  This is extremely unlikely but not impossible so
      * the open metadata protocol has provision for this.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param originalTypeDefGUID the original guid of the TypeDef.
      * @param requestParameters the original name of the TypeDef, the new identifier for the TypeDef and the
@@ -565,11 +606,12 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/types/typedef/{originalTypeDefGUID}/identifier")
 
-    public  TypeDefResponse reIdentifyTypeDef(@PathVariable String                   userId,
+    public  TypeDefResponse reIdentifyTypeDef(@PathVariable String                   serverName,
+                                              @PathVariable String                   userId,
                                               @PathVariable String                   originalTypeDefGUID,
                                               @RequestBody  TypeDefReIdentifyRequest requestParameters)
     {
-        return restAPI.reIdentifyTypeDef(userId,
+        return restAPI.reIdentifyTypeDef(serverName, userId,
                                          originalTypeDefGUID,
                                          requestParameters);
     }
@@ -580,6 +622,7 @@ public class OMRSRepositoryResource
      * TypeDefs are discovered to have the same guid.  This is extremely unlikely but not impossible so
      * the open metadata protocol has provision for this.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param originalAttributeTypeDefGUID the original guid of the AttributeTypeDef.
      * @param requestParameters the original name of the AttributeTypeDef and the new identifier for the AttributeTypeDef
@@ -596,11 +639,12 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/types/attribute-typedef/{originalAttributeTypeDefGUID}/identifier")
 
-    public  AttributeTypeDefResponse reIdentifyAttributeTypeDef(@PathVariable String                    userId,
+    public  AttributeTypeDefResponse reIdentifyAttributeTypeDef(@PathVariable String                    serverName,
+                                                                @PathVariable String                    userId,
                                                                 @PathVariable String                    originalAttributeTypeDefGUID,
                                                                 @RequestBody  TypeDefReIdentifyRequest  requestParameters)
     {
-        return restAPI.reIdentifyAttributeTypeDef(userId,
+        return restAPI.reIdentifyAttributeTypeDef(serverName, userId,
                                                   originalAttributeTypeDefGUID,
                                                   requestParameters);
     }
@@ -615,6 +659,7 @@ public class OMRSRepositoryResource
      * Returns a boolean indicating if the entity is stored in the metadata collection.  This entity may be a full
      * entity object, or an entity proxy.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param guid String unique identifier for the entity
      * @return the entity details if the entity is found in the metadata collection; otherwise return null
@@ -625,10 +670,11 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/instances/entity/{guid}/existence")
 
-    public EntityDetailResponse isEntityKnown(@PathVariable String     userId,
+    public EntityDetailResponse isEntityKnown(@PathVariable String     serverName,
+                                              @PathVariable String     userId,
                                               @PathVariable String     guid)
     {
-        return restAPI.isEntityKnown(userId, guid);
+        return restAPI.isEntityKnown(serverName, userId, guid);
     }
 
 
@@ -636,6 +682,7 @@ public class OMRSRepositoryResource
      * Return the header and classifications for a specific entity.  The returned entity summary may be from
      * a full entity object or an entity proxy.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param guid String unique identifier for the entity
      * @return EntitySummary structure or
@@ -647,10 +694,11 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/instances/entity/{guid}/summary")
 
-    public EntitySummaryResponse getEntitySummary(@PathVariable String     userId,
+    public EntitySummaryResponse getEntitySummary(@PathVariable String     serverName,
+                                                  @PathVariable String     userId,
                                                   @PathVariable String     guid)
     {
-        return restAPI.getEntitySummary(userId, guid);
+        return restAPI.getEntitySummary(serverName, userId, guid);
     }
 
 
@@ -658,6 +706,7 @@ public class OMRSRepositoryResource
      * Return the header, classifications and properties of a specific entity.  This method supports anonymous
      * access to an instance.  The call may fail if the metadata is secured.
      *
+     * @param serverName unique identifier for requested server.
      * @param guid String unique identifier for the entity.
      * @return EntityDetailResponse:
      * EntityDetail structure or
@@ -670,15 +719,17 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/users/instances/entity/{guid}")
 
-    public EntityDetailResponse getEntityDetail(@PathVariable String     guid)
+    public EntityDetailResponse getEntityDetail(@PathVariable String    serverName,
+                                                @PathVariable String    guid)
     {
-        return restAPI.getEntityDetail(null, guid);
+        return restAPI.getEntityDetail(serverName,null, guid);
     }
 
 
     /**
      * Return the header, classifications and properties of a specific entity.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param guid String unique identifier for the entity.
      * @return EntityDetailResponse:
@@ -692,16 +743,18 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/instances/entity/{guid}")
 
-    public EntityDetailResponse getEntityDetail(@PathVariable String     userId,
-                                                @PathVariable String     guid)
+    public EntityDetailResponse getEntityDetail(@PathVariable String    serverName,
+                                                @PathVariable String    userId,
+                                                @PathVariable String    guid)
     {
-        return restAPI.getEntityDetail(userId, guid);
+        return restAPI.getEntityDetail(serverName, userId, guid);
     }
 
 
     /**
      * Return a historical version of an entity includes the header, classifications and properties of the entity.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param guid String unique identifier for the entity.
      * @param asOfTime the time used to determine which version of the entity that is desired.
@@ -718,17 +771,19 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/instances/entity/{guid}/history")
 
-    public  EntityDetailResponse getEntityDetail(@PathVariable String     userId,
+    public  EntityDetailResponse getEntityDetail(@PathVariable String     serverName,
+                                                 @PathVariable String     userId,
                                                  @PathVariable String     guid,
                                                  @RequestParam Date       asOfTime)
     {
-        return restAPI.getEntityDetail(userId, guid, asOfTime);
+        return restAPI.getEntityDetail(serverName, userId, guid, asOfTime);
     }
 
 
     /**
      * Return the relationships for a specific entity.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param entityGUID String unique identifier for the entity.
      * @param findRequestParameters find parameters used to limit the returned results.
@@ -746,11 +801,12 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entity/{entityGUID}/relationships")
 
-    public RelationshipListResponse getRelationshipsForEntity(@PathVariable String                     userId,
+    public RelationshipListResponse getRelationshipsForEntity(@PathVariable String                     serverName,
+                                                              @PathVariable String                     userId,
                                                               @PathVariable String                     entityGUID,
                                                               @RequestBody  TypeLimitedFindRequest     findRequestParameters)
     {
-        return restAPI.getRelationshipsForEntity(userId,
+        return restAPI.getRelationshipsForEntity(serverName, userId,
                                                  entityGUID,
                                                  findRequestParameters);
     }
@@ -759,6 +815,7 @@ public class OMRSRepositoryResource
     /**
      * Return the relationships for a specific entity.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param entityGUID String unique identifier for the entity.
      * @param findRequestParameters find parameters used to limit the returned results.
@@ -776,11 +833,12 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entity/{entityGUID}/relationships/history")
 
-    public RelationshipListResponse getRelationshipsForEntityHistory(@PathVariable String                            userId,
+    public RelationshipListResponse getRelationshipsForEntityHistory(@PathVariable String                            serverName,
+                                                                     @PathVariable String                            userId,
                                                                      @PathVariable String                            entityGUID,
                                                                      @RequestBody  TypeLimitedHistoricalFindRequest  findRequestParameters)
     {
-        return restAPI.getRelationshipsForEntityHistory(userId,
+        return restAPI.getRelationshipsForEntityHistory(serverName, userId,
                                                         entityGUID,
                                                         findRequestParameters);
     }
@@ -790,6 +848,7 @@ public class OMRSRepositoryResource
      * Return a list of entities that match the supplied properties according to the match criteria.  The results
      * can be returned over many pages.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param findRequestParameters find parameters used to limit the returned results.
      * @return EntityListResponse:
@@ -807,10 +866,11 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entities/by-property")
 
-    public  EntityListResponse findEntitiesByProperty(@PathVariable  String                    userId,
-                                                      @RequestBody   EntityPropertyFindRequest findRequestParameters)
+    public  EntityListResponse findEntitiesByProperty(@PathVariable String                    serverName,
+                                                      @PathVariable String                    userId,
+                                                      @RequestBody  EntityPropertyFindRequest findRequestParameters)
     {
-        return restAPI.findEntitiesByProperty(userId, findRequestParameters);
+        return restAPI.findEntitiesByProperty(serverName, userId, findRequestParameters);
     }
 
 
@@ -818,6 +878,7 @@ public class OMRSRepositoryResource
      * Return a list of entities that match the supplied properties according to the match criteria.  The results
      * can be returned over many pages.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param findRequestParameters find parameters used to limit the returned results.
      * @return EntityListResponse:
@@ -835,16 +896,18 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entities/by-property/history")
 
-    public  EntityListResponse findEntitiesByPropertyHistory(@PathVariable  String                              userId,
-                                                             @RequestBody   EntityPropertyHistoricalFindRequest findRequestParameters)
+    public  EntityListResponse findEntitiesByPropertyHistory(@PathVariable String                              serverName,
+                                                             @PathVariable String                              userId,
+                                                             @RequestBody  EntityPropertyHistoricalFindRequest findRequestParameters)
     {
-        return restAPI.findEntitiesByPropertyHistory(userId, findRequestParameters);
+        return restAPI.findEntitiesByPropertyHistory(serverName, userId, findRequestParameters);
     }
 
 
     /**
      * Return a list of entities that have the requested type of classification attached.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param classificationName name of the classification a null is not valid.
      * @param findRequestParameters find parameters used to limit the returned results.
@@ -864,17 +927,19 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entities/by-classification/{classificationName}")
 
-    public  EntityListResponse findEntitiesByClassification(@PathVariable String                   userId,
+    public  EntityListResponse findEntitiesByClassification(@PathVariable String                   serverName,
+                                                            @PathVariable String                   userId,
                                                             @PathVariable String                   classificationName,
                                                             @RequestBody  PropertyMatchFindRequest findRequestParameters)
     {
-        return restAPI.findEntitiesByClassification(userId, classificationName, findRequestParameters);
+        return restAPI.findEntitiesByClassification(serverName, userId, classificationName, findRequestParameters);
     }
 
 
     /**
      * Return a list of entities that have the requested type of classification attached.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param classificationName name of the classification a null is not valid.
      * @param findRequestParameters find parameters used to limit the returned results.
@@ -894,11 +959,12 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entities/by-classification/{classificationName}/history")
 
-    public  EntityListResponse findEntitiesByClassificationHistory(@PathVariable String                             userId,
+    public  EntityListResponse findEntitiesByClassificationHistory(@PathVariable String                             serverName,
+                                                                   @PathVariable String                             userId,
                                                                    @PathVariable String                             classificationName,
                                                                    @RequestBody  PropertyMatchHistoricalFindRequest findRequestParameters)
     {
-        return restAPI.findEntitiesByClassificationHistory(userId, classificationName, findRequestParameters);
+        return restAPI.findEntitiesByClassificationHistory(serverName, userId, classificationName, findRequestParameters);
     }
 
 
@@ -906,6 +972,7 @@ public class OMRSRepositoryResource
      * Return a list of entities whose string based property values match the search criteria.  The
      * search criteria may include regex style wild cards.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param searchCriteria String expression of the characteristics of the required relationships.
      * @param findRequestParameters find parameters used to limit the returned results.
@@ -924,11 +991,12 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entities/by-property-value")
 
-    public  EntityListResponse findEntitiesByPropertyValue(@PathVariable  String                    userId,
-                                                           @RequestParam  String                    searchCriteria,
-                                                           @RequestBody   EntityPropertyFindRequest findRequestParameters)
+    public  EntityListResponse findEntitiesByPropertyValue(@PathVariable String                    serverName,
+                                                           @PathVariable String                    userId,
+                                                           @RequestParam String                    searchCriteria,
+                                                           @RequestBody  EntityPropertyFindRequest findRequestParameters)
     {
-        return restAPI.findEntitiesByPropertyValue(userId, searchCriteria, findRequestParameters);
+        return restAPI.findEntitiesByPropertyValue(serverName, userId, searchCriteria, findRequestParameters);
     }
 
 
@@ -936,6 +1004,7 @@ public class OMRSRepositoryResource
      * Return a list of entities whose string based property values match the search criteria.  The
      * search criteria may include regex style wild cards.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param searchCriteria String expression of the characteristics of the required relationships.
      * @param findRequestParameters find parameters used to limit the returned results.
@@ -954,17 +1023,19 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entities/by-property-value/history")
 
-    public  EntityListResponse findEntitiesByPropertyValueHistory(@PathVariable  String                              userId,
-                                                                  @RequestParam  String                              searchCriteria,
-                                                                  @RequestBody   EntityPropertyHistoricalFindRequest findRequestParameters)
+    public  EntityListResponse findEntitiesByPropertyValueHistory(@PathVariable String                              serverName,
+                                                                  @PathVariable String                              userId,
+                                                                  @RequestParam String                              searchCriteria,
+                                                                  @RequestBody  EntityPropertyHistoricalFindRequest findRequestParameters)
     {
-        return restAPI.findEntitiesByPropertyValueHistory(userId, searchCriteria, findRequestParameters);
+        return restAPI.findEntitiesByPropertyValueHistory(serverName, userId, searchCriteria, findRequestParameters);
     }
 
 
     /**
      * Returns a boolean indicating if the relationship is stored in the metadata collection.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param guid String unique identifier for the relationship.
      * @return RelationshipResponse:
@@ -976,10 +1047,11 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/instances/relationship/{guid}/existence")
 
-    public RelationshipResponse  isRelationshipKnown(@PathVariable String     userId,
+    public RelationshipResponse  isRelationshipKnown(@PathVariable String     serverName,
+                                                     @PathVariable String     userId,
                                                      @PathVariable String     guid)
     {
-        return restAPI.isRelationshipKnown(userId, guid);
+        return restAPI.isRelationshipKnown(serverName, userId, guid);
     }
 
 
@@ -987,6 +1059,7 @@ public class OMRSRepositoryResource
      * Return a requested relationship.  This is the anonymous form for repository.  The call may fail if security is
      * required.
      *
+     * @param serverName unique identifier for requested server.
      * @param guid String unique identifier for the relationship.
      * @return RelationshipResponse:
      * A relationship structure or
@@ -999,15 +1072,17 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/users/instances/relationship/{guid}")
 
-    public RelationshipResponse getRelationship(@PathVariable String    guid)
+    public RelationshipResponse getRelationship(@PathVariable String     serverName,
+                                                @PathVariable String     guid)
     {
-        return restAPI.getRelationship(null, guid);
+        return restAPI.getRelationship(serverName, null, guid);
     }
 
 
     /**
      * Return a requested relationship.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param guid String unique identifier for the relationship.
      * @return RelationshipResponse:
@@ -1021,16 +1096,18 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/instances/relationship/{guid}")
 
-    public RelationshipResponse getRelationship(@PathVariable String    userId,
-                                                @PathVariable String    guid)
+    public RelationshipResponse getRelationship(@PathVariable String     serverName,
+                                                @PathVariable String     userId,
+                                                @PathVariable String     guid)
     {
-        return restAPI.getRelationship(userId, guid);
+        return restAPI.getRelationship(serverName, userId, guid);
     }
 
 
     /**
      * Return a historical version of a relationship.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param guid String unique identifier for the relationship.
      * @param asOfTime the time used to determine which version of the entity that is desired.
@@ -1046,11 +1123,12 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/instances/relationship/{guid}/history")
 
-    public  RelationshipResponse getRelationship(@PathVariable String    userId,
+    public  RelationshipResponse getRelationship(@PathVariable String    serverName,
+                                                 @PathVariable String    userId,
                                                  @PathVariable String    guid,
                                                  @RequestParam Date      asOfTime)
     {
-        return restAPI.getRelationship(userId, guid, asOfTime);
+        return restAPI.getRelationship(serverName, userId, guid, asOfTime);
     }
 
 
@@ -1058,6 +1136,7 @@ public class OMRSRepositoryResource
      * Return a list of relationships that match the requested properties by the matching criteria.   The results
      * can be broken into pages.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user
      * @param findRequestParameters find parameters used to limit the returned results.
      * @return RelationshipListResponse:
@@ -1074,10 +1153,11 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/relationships/by-property")
 
-    public  RelationshipListResponse findRelationshipsByProperty(@PathVariable String                   userId,
+    public  RelationshipListResponse findRelationshipsByProperty(@PathVariable String                   serverName,
+                                                                 @PathVariable String                   userId,
                                                                  @RequestBody  PropertyMatchFindRequest findRequestParameters)
     {
-        return restAPI.findRelationshipsByProperty(userId, findRequestParameters);
+        return restAPI.findRelationshipsByProperty(serverName, userId, findRequestParameters);
     }
 
 
@@ -1085,6 +1165,7 @@ public class OMRSRepositoryResource
      * Return a list of relationships that match the requested properties by the matching criteria.   The results
      * can be broken into pages.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user
      * @param findRequestParameters find parameters used to limit the returned results.
      * @return RelationshipListResponse:
@@ -1101,16 +1182,18 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/relationships/by-property/history")
 
-    public  RelationshipListResponse findRelationshipsByPropertyHistory(@PathVariable String                             userId,
+    public  RelationshipListResponse findRelationshipsByPropertyHistory(@PathVariable String                             serverName,
+                                                                        @PathVariable String                             userId,
                                                                         @RequestBody  PropertyMatchHistoricalFindRequest findRequestParameters)
     {
-        return restAPI.findRelationshipsByPropertyHistory(userId, findRequestParameters);
+        return restAPI.findRelationshipsByPropertyHistory(serverName, userId, findRequestParameters);
     }
 
 
     /**
      * Return a list of relationships that match the search criteria.  The results can be paged.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param searchCriteria String expression of the characteristics of the required relationships.
      * @param findRequestParameters find parameters used to limit the returned results.
@@ -1127,17 +1210,19 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/relationships/by-property-value")
 
-    public  RelationshipListResponse findRelationshipsByPropertyValue(@PathVariable  String                    userId,
-                                                                      @RequestParam  String                    searchCriteria,
-                                                                      @RequestBody   TypeLimitedFindRequest    findRequestParameters)
+    public  RelationshipListResponse findRelationshipsByPropertyValue(@PathVariable String     serverName,
+                                                                      @PathVariable String                    userId,
+                                                                      @RequestParam String                    searchCriteria,
+                                                                      @RequestBody  TypeLimitedFindRequest    findRequestParameters)
     {
-        return restAPI.findRelationshipsByPropertyValue(userId, searchCriteria, findRequestParameters);
+        return restAPI.findRelationshipsByPropertyValue(serverName, userId, searchCriteria, findRequestParameters);
     }
 
 
     /**
      * Return a list of relationships that match the search criteria.  The results can be paged.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param searchCriteria String expression of the characteristics of the required relationships.
      * @param findRequestParameters find parameters used to limit the returned results.
@@ -1154,17 +1239,19 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/relationships/by-property-value/history")
 
-    public  RelationshipListResponse findRelationshipsByPropertyValueHistory(@PathVariable  String                              userId,
-                                                                             @RequestParam  String                              searchCriteria,
-                                                                             @RequestBody   TypeLimitedHistoricalFindRequest    findRequestParameters)
+    public  RelationshipListResponse findRelationshipsByPropertyValueHistory(@PathVariable String                              serverName,
+                                                                             @PathVariable String                              userId,
+                                                                             @RequestParam String                              searchCriteria,
+                                                                             @RequestBody  TypeLimitedHistoricalFindRequest    findRequestParameters)
     {
-        return restAPI.findRelationshipsByPropertyValueHistory(userId, searchCriteria, findRequestParameters);
+        return restAPI.findRelationshipsByPropertyValueHistory(serverName, userId, searchCriteria, findRequestParameters);
     }
 
 
     /**
      * Return all of the relationships and intermediate entities that connect the startEntity with the endEntity.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param startEntityGUID The entity that is used to anchor the query.
      * @param endEntityGUID the other entity that defines the scope of the query.
@@ -1182,18 +1269,20 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entities/from-entity/{startEntityGUID}/by-linkage")
 
-    public  InstanceGraphResponse getLinkingEntities(@PathVariable String                    userId,
-                                                     @PathVariable String                    startEntityGUID,
-                                                     @RequestParam String                    endEntityGUID,
-                                                     @RequestBody  OMRSAPIFindRequest        findRequestParameters)
+    public  InstanceGraphResponse getLinkingEntities(@PathVariable String             serverName,
+                                                     @PathVariable String             userId,
+                                                     @PathVariable String             startEntityGUID,
+                                                     @RequestParam String             endEntityGUID,
+                                                     @RequestBody  OMRSAPIFindRequest findRequestParameters)
     {
-        return restAPI.getLinkingEntities(userId, startEntityGUID, endEntityGUID, findRequestParameters);
+        return restAPI.getLinkingEntities(serverName, userId, startEntityGUID, endEntityGUID, findRequestParameters);
     }
 
 
     /**
      * Return all of the relationships and intermediate entities that connect the startEntity with the endEntity.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param startEntityGUID The entity that is used to anchor the query.
      * @param endEntityGUID the other entity that defines the scope of the query.
@@ -1211,12 +1300,13 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entities/from-entity/{startEntityGUID}/by-linkage/history")
 
-    public  InstanceGraphResponse getLinkingEntitiesHistory(@PathVariable String                              userId,
-                                                            @PathVariable String                              startEntityGUID,
-                                                            @RequestParam String                              endEntityGUID,
-                                                            @RequestBody  OMRSAPIHistoricalFindRequest        findRequestParameters)
+    public  InstanceGraphResponse getLinkingEntitiesHistory(@PathVariable String                        serverName,
+                                                            @PathVariable String                        userId,
+                                                            @PathVariable String                        startEntityGUID,
+                                                            @RequestParam String                        endEntityGUID,
+                                                            @RequestBody  OMRSAPIHistoricalFindRequest  findRequestParameters)
     {
-        return restAPI.getLinkingEntitiesHistory(userId, startEntityGUID, endEntityGUID, findRequestParameters);
+        return restAPI.getLinkingEntitiesHistory(serverName, userId, startEntityGUID, endEntityGUID, findRequestParameters);
     }
 
 
@@ -1224,6 +1314,7 @@ public class OMRSRepositoryResource
      * Return the entities and relationships that radiate out from the supplied entity GUID.
      * The results are scoped both the instance type guids and the level.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param entityGUID the starting point of the query.
      * @param level the number of the relationships out from the starting entity that the query will traverse to
@@ -1242,12 +1333,13 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entities/from-entity/{entityGUID}/by-neighborhood")
 
-    public  InstanceGraphResponse getEntityNeighborhood(@PathVariable  String                        userId,
-                                                        @PathVariable  String                        entityGUID,
-                                                        @RequestParam  int                           level,
-                                                        @RequestBody   EntityNeighborhoodFindRequest findRequestParameters)
+    public  InstanceGraphResponse getEntityNeighborhood(@PathVariable String                        serverName,
+                                                        @PathVariable String                        userId,
+                                                        @PathVariable String                        entityGUID,
+                                                        @RequestParam int                           level,
+                                                        @RequestBody  EntityNeighborhoodFindRequest findRequestParameters)
     {
-        return restAPI.getEntityNeighborhood(userId, entityGUID, level, findRequestParameters);
+        return restAPI.getEntityNeighborhood(serverName, userId, entityGUID, level, findRequestParameters);
     }
 
 
@@ -1255,6 +1347,7 @@ public class OMRSRepositoryResource
      * Return the entities and relationships that radiate out from the supplied entity GUID.
      * The results are scoped both the instance type guids and the level.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param entityGUID the starting point of the query.
      * @param level the number of the relationships out from the starting entity that the query will traverse to
@@ -1273,12 +1366,13 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entities/from-entity/{entityGUID}/by-neighborhood/history")
 
-    public  InstanceGraphResponse getEntityNeighborhoodHistory(@PathVariable  String                                  userId,
-                                                               @PathVariable  String                                  entityGUID,
-                                                               @RequestParam  int                                     level,
-                                                               @RequestBody   EntityNeighborhoodHistoricalFindRequest findRequestParameters)
+    public  InstanceGraphResponse getEntityNeighborhoodHistory(@PathVariable String                                  serverName,
+                                                               @PathVariable String                                  userId,
+                                                               @PathVariable String                                  entityGUID,
+                                                               @RequestParam int                                     level,
+                                                               @RequestBody  EntityNeighborhoodHistoricalFindRequest findRequestParameters)
     {
-        return restAPI.getEntityNeighborhoodHistory(userId, entityGUID, level, findRequestParameters);
+        return restAPI.getEntityNeighborhoodHistory(serverName, userId, entityGUID, level, findRequestParameters);
     }
 
 
@@ -1286,6 +1380,7 @@ public class OMRSRepositoryResource
      * Return the list of entities that are of the types listed in instanceTypes and are connected, either directly or
      * indirectly to the entity identified by startEntityGUID.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param startEntityGUID unique identifier of the starting entity.
      * @param findRequestParameters find parameters used to limit the returned results.
@@ -1307,11 +1402,12 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entities/from-entity/{startEntityGUID}/by-relationship")
 
-    public  EntityListResponse getRelatedEntities(@PathVariable  String                      userId,
-                                                  @PathVariable  String                      startEntityGUID,
-                                                  @RequestBody   RelatedEntitiesFindRequest  findRequestParameters)
+    public  EntityListResponse getRelatedEntities(@PathVariable String                      serverName,
+                                                  @PathVariable String                      userId,
+                                                  @PathVariable String                      startEntityGUID,
+                                                  @RequestBody  RelatedEntitiesFindRequest  findRequestParameters)
     {
-        return restAPI.getRelatedEntities(userId, startEntityGUID, findRequestParameters);
+        return restAPI.getRelatedEntities(serverName, userId, startEntityGUID, findRequestParameters);
     }
 
 
@@ -1319,6 +1415,7 @@ public class OMRSRepositoryResource
      * Return the list of entities that are of the types listed in instanceTypes and are connected, either directly or
      * indirectly to the entity identified by startEntityGUID.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param startEntityGUID unique identifier of the starting entity.
      * @param findRequestParameters find parameters used to limit the returned results.
@@ -1340,11 +1437,12 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entities/from-entity/{startEntityGUID}/by-relationship/history")
 
-    public  EntityListResponse getRelatedEntitiesHistory(@PathVariable  String                                userId,
-                                                         @PathVariable  String                                startEntityGUID,
-                                                         @RequestBody   RelatedEntitiesHistoricalFindRequest  findRequestParameters)
+    public  EntityListResponse getRelatedEntitiesHistory(@PathVariable String                                serverName,
+                                                         @PathVariable String                                userId,
+                                                         @PathVariable String                                startEntityGUID,
+                                                         @RequestBody  RelatedEntitiesHistoricalFindRequest  findRequestParameters)
     {
-        return restAPI.getRelatedEntitiesHistory(userId, startEntityGUID, findRequestParameters);
+        return restAPI.getRelatedEntitiesHistory(serverName, userId, startEntityGUID, findRequestParameters);
     }
 
     /* ======================================================
@@ -1354,6 +1452,7 @@ public class OMRSRepositoryResource
     /**
      * Create a new entity and put it in the requested state.  The new entity is returned.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param requestBody parameters for the new entity
      * @return EntityDetailResponse:
@@ -1374,10 +1473,11 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entity")
 
-    public EntityDetailResponse addEntity(@PathVariable  String               userId,
-                                          @RequestBody   EntityCreateRequest  requestBody)
+    public EntityDetailResponse addEntity(@PathVariable String               serverName,
+                                          @PathVariable String               userId,
+                                          @RequestBody  EntityCreateRequest  requestBody)
     {
-        return restAPI.addEntity(userId, requestBody);
+        return restAPI.addEntity(serverName, userId, requestBody);
     }
 
 
@@ -1385,6 +1485,7 @@ public class OMRSRepositoryResource
      * Create an entity proxy in the metadata collection.  This is used to store relationships that span metadata
      * repositories.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param entityProxy details of entity to add.
      * @return VoidResponse:
@@ -1405,16 +1506,18 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entity-proxy")
 
-    public VoidResponse addEntityProxy(@PathVariable String      userId,
+    public VoidResponse addEntityProxy(@PathVariable String      serverName,
+                                       @PathVariable String      userId,
                                        @RequestBody  EntityProxy entityProxy)
     {
-        return restAPI.addEntityProxy(userId, entityProxy);
+        return restAPI.addEntityProxy(serverName, userId, entityProxy);
     }
 
 
     /**
      * Update the status for a specific entity.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param entityGUID unique identifier (guid) for the requested entity.
      * @param newStatus new InstanceStatus for the entity.
@@ -1430,17 +1533,19 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entity/{entityGUID}/status")
 
-    public EntityDetailResponse updateEntityStatus(@PathVariable String           userId,
+    public EntityDetailResponse updateEntityStatus(@PathVariable String           serverName,
+                                                   @PathVariable String           userId,
                                                    @PathVariable String           entityGUID,
                                                    @RequestBody  InstanceStatus   newStatus)
     {
-        return restAPI.updateEntityStatus(userId, entityGUID, newStatus);
+        return restAPI.updateEntityStatus(serverName, userId, entityGUID, newStatus);
     }
 
 
     /**
      * Update selected properties in an entity.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param entityGUID String unique identifier (guid) for the entity.
      * @param propertiesRequestBody a list of properties to change.
@@ -1456,17 +1561,19 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entity/{entityGUID}/properties")
 
-    public EntityDetailResponse updateEntityProperties(@PathVariable String                      userId,
+    public EntityDetailResponse updateEntityProperties(@PathVariable String                      serverName,
+                                                       @PathVariable String                      userId,
                                                        @PathVariable String                      entityGUID,
                                                        @RequestBody  InstancePropertiesRequest   propertiesRequestBody)
     {
-        return restAPI.updateEntityProperties(userId, entityGUID, propertiesRequestBody);
+        return restAPI.updateEntityProperties(serverName, userId, entityGUID, propertiesRequestBody);
     }
 
 
     /**
      * Undo the last update to an entity and return the previous content.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param entityGUID String unique identifier (guid) for the entity.
      * @return EntityDetailResponse:
@@ -1480,10 +1587,11 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/instances/entity/{entityGUID}/previous")
 
-    public EntityDetailResponse undoEntityUpdate(@PathVariable String  userId,
+    public EntityDetailResponse undoEntityUpdate(@PathVariable String  serverName,
+                                                 @PathVariable String  userId,
                                                  @PathVariable String  entityGUID)
     {
-        return restAPI.undoEntityUpdate(userId, entityGUID);
+        return restAPI.undoEntityUpdate(serverName, userId, entityGUID);
     }
 
 
@@ -1493,6 +1601,7 @@ public class OMRSRepositoryResource
      * To completely eliminate the entity from the graph requires a call to the purgeEntity() method after the delete call.
      * The restoreEntity() method will switch an entity back to Active status to restore the entity to normal use.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param obsoleteEntityGUID String unique identifier (guid) for the entity.
      * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
@@ -1508,17 +1617,19 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entity/{obsoleteEntityGUID}/delete")
 
-    public EntityDetailResponse  deleteEntity(@PathVariable String                        userId,
+    public EntityDetailResponse  deleteEntity(@PathVariable String                        serverName,
+                                              @PathVariable String                        userId,
                                               @PathVariable String                        obsoleteEntityGUID,
                                               @RequestBody  TypeDefValidationForRequest   typeDefValidationForRequest)
     {
-        return restAPI.deleteEntity(userId, obsoleteEntityGUID, typeDefValidationForRequest);
+        return restAPI.deleteEntity(serverName, userId, obsoleteEntityGUID, typeDefValidationForRequest);
     }
 
 
     /**
      * Permanently removes a deleted entity from the metadata collection.  This request can not be undone.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param deletedEntityGUID String unique identifier (guid) for the entity.
      * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
@@ -1533,17 +1644,19 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entity/{deletedEntityGUID}/purge")
 
-    public VoidResponse purgeEntity(@PathVariable String                        userId,
+    public VoidResponse purgeEntity(@PathVariable String                        serverName,
+                                    @PathVariable String                        userId,
                                     @PathVariable String                        deletedEntityGUID,
                                     @RequestBody  TypeDefValidationForRequest   typeDefValidationForRequest)
     {
-        return restAPI.purgeEntity(userId, deletedEntityGUID, typeDefValidationForRequest);
+        return restAPI.purgeEntity(serverName, userId, deletedEntityGUID, typeDefValidationForRequest);
     }
 
 
     /**
      * Restore the requested entity to the state it was before it was deleted.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param deletedEntityGUID String unique identifier (guid) for the entity.
      * @return EntityDetailResponse:
@@ -1558,16 +1671,18 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/instances/entity/{deletedEntityGUID}/restore")
 
-    public EntityDetailResponse restoreEntity(@PathVariable String    userId,
+    public EntityDetailResponse restoreEntity(@PathVariable String    serverName,
+                                              @PathVariable String    userId,
                                               @PathVariable String    deletedEntityGUID)
     {
-        return restAPI.restoreEntity(userId, deletedEntityGUID);
+        return restAPI.restoreEntity(serverName, userId, deletedEntityGUID);
     }
 
 
     /**
      * Add the requested classification to a specific entity.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param entityGUID String unique identifier (guid) for the entity.
      * @param classificationName String name for the classification.
@@ -1586,18 +1701,20 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entity/{entityGUID}/classification/{classificationName}")
 
-    public EntityDetailResponse classifyEntity(@PathVariable String                      userId,
+    public EntityDetailResponse classifyEntity(@PathVariable String                      serverName,
+                                               @PathVariable String                      userId,
                                                @PathVariable String                      entityGUID,
                                                @PathVariable String                      classificationName,
                                                @RequestBody  InstancePropertiesRequest   propertiesRequestBody)
     {
-        return restAPI.classifyEntity(userId, entityGUID, classificationName, propertiesRequestBody);
+        return restAPI.classifyEntity(serverName, userId, entityGUID, classificationName, propertiesRequestBody);
     }
 
 
     /**
      * Remove a specific classification from an entity.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param entityGUID String unique identifier (guid) for the entity.
      * @param classificationName String name for the classification.
@@ -1613,18 +1730,20 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entity/{entityGUID}/classification/{classificationName}/delete")
 
-    public EntityDetailResponse declassifyEntity(@PathVariable String          userId,
+    public EntityDetailResponse declassifyEntity(@PathVariable String          serverName,
+                                                 @PathVariable String          userId,
                                                  @PathVariable String          entityGUID,
                                                  @PathVariable String          classificationName,
                                                  @RequestBody  OMRSAPIRequest  requestBody)
     {
-        return restAPI.declassifyEntity(userId, entityGUID, classificationName);
+        return restAPI.declassifyEntity(serverName, userId, entityGUID, classificationName);
     }
 
 
     /**
      * Update one or more properties in one of an entity's classifications.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param entityGUID String unique identifier (guid) for the entity.
      * @param classificationName String name for the classification.
@@ -1642,18 +1761,20 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entity/{entityGUID}/classification/{classificationName}/properties")
 
-    public EntityDetailResponse updateEntityClassification(@PathVariable String                      userId,
+    public EntityDetailResponse updateEntityClassification(@PathVariable String                      serverName,
+                                                           @PathVariable String                      userId,
                                                            @PathVariable String                      entityGUID,
                                                            @PathVariable String                      classificationName,
                                                            @RequestBody  InstancePropertiesRequest   propertiesRequestBody)
     {
-        return restAPI.updateEntityClassification(userId, entityGUID, classificationName, propertiesRequestBody);
+        return restAPI.updateEntityClassification(serverName, userId, entityGUID, classificationName, propertiesRequestBody);
     }
 
 
     /**
      * Add a new relationship between two entities to the metadata collection.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param createRequestParameters parameters used to fill out the new relationship
      * @return RelationshipResponse:
@@ -1672,16 +1793,18 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/relationship")
 
-    public RelationshipResponse addRelationship(@PathVariable String                    userId,
+    public RelationshipResponse addRelationship(@PathVariable String                    serverName,
+                                                @PathVariable String                    userId,
                                                 @RequestBody  RelationshipCreateRequest createRequestParameters)
     {
-        return restAPI.addRelationship(userId, createRequestParameters);
+        return restAPI.addRelationship(serverName, userId, createRequestParameters);
     }
 
 
     /**
      * Update the status of a specific relationship.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param relationshipGUID String unique identifier (guid) for the relationship.
      * @param newStatus new InstanceStatus for the relationship.
@@ -1697,17 +1820,19 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/relationship/{relationshipGUID}/status")
 
-    public RelationshipResponse updateRelationshipStatus(@PathVariable String           userId,
+    public RelationshipResponse updateRelationshipStatus(@PathVariable String           serverName,
+                                                         @PathVariable String           userId,
                                                          @PathVariable String           relationshipGUID,
                                                          @RequestBody  InstanceStatus   newStatus)
     {
-        return restAPI.updateRelationshipStatus(userId, relationshipGUID, newStatus);
+        return restAPI.updateRelationshipStatus(serverName, userId, relationshipGUID, newStatus);
     }
 
 
     /**
      * Update the properties of a specific relationship.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param relationshipGUID String unique identifier (guid) for the relationship.
      * @param propertiesRequestBody list of the properties to update.
@@ -1723,17 +1848,19 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/relationship/{relationshipGUID}/properties")
 
-    public RelationshipResponse updateRelationshipProperties(@PathVariable String                      userId,
+    public RelationshipResponse updateRelationshipProperties(@PathVariable String                      serverName,
+                                                             @PathVariable String                      userId,
                                                              @PathVariable String                      relationshipGUID,
                                                              @RequestBody  InstancePropertiesRequest   propertiesRequestBody)
     {
-        return restAPI.updateRelationshipProperties(userId, relationshipGUID, propertiesRequestBody);
+        return restAPI.updateRelationshipProperties(serverName, userId, relationshipGUID, propertiesRequestBody);
     }
 
 
     /**
      * Undo the latest change to a relationship (either a change of properties or status).
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param relationshipGUID String unique identifier (guid) for the relationship.
      * @return RelationshipResponse:
@@ -1747,10 +1874,11 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/instances/relationship/{relationshipGUID}/previous")
 
-    public RelationshipResponse undoRelationshipUpdate(@PathVariable String  userId,
+    public RelationshipResponse undoRelationshipUpdate(@PathVariable String  serverName,
+                                                       @PathVariable String  userId,
                                                        @PathVariable String  relationshipGUID)
     {
-        return restAPI.undoRelationshipUpdate(userId, relationshipGUID);
+        return restAPI.undoRelationshipUpdate(serverName, userId, relationshipGUID);
     }
 
 
@@ -1759,6 +1887,7 @@ public class OMRSRepositoryResource
      * DELETED and it is no longer available for queries.  To remove the relationship permanently from the
      * metadata collection, use purgeRelationship().
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param obsoleteRelationshipGUID String unique identifier (guid) for the relationship.
      * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
@@ -1774,17 +1903,19 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/relationship/{obsoleteRelationshipGUID}/delete")
 
-    public RelationshipResponse deleteRelationship(@PathVariable String                        userId,
+    public RelationshipResponse deleteRelationship(@PathVariable String                        serverName,
+                                                   @PathVariable String                        userId,
                                                    @PathVariable String                        obsoleteRelationshipGUID,
                                                    @RequestBody  TypeDefValidationForRequest   typeDefValidationForRequest)
     {
-        return restAPI.deleteRelationship(userId, obsoleteRelationshipGUID, typeDefValidationForRequest);
+        return restAPI.deleteRelationship(serverName, userId, obsoleteRelationshipGUID, typeDefValidationForRequest);
     }
 
 
     /**
      * Permanently delete the relationship from the repository.  There is no means to undo this request.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param deletedRelationshipGUID String unique identifier (guid) for the relationship.
      * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
@@ -1799,11 +1930,12 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/relationship/{deletedRelationshipGUID}/purge")
 
-    public VoidResponse purgeRelationship(@PathVariable String                        userId,
+    public VoidResponse purgeRelationship(@PathVariable String                        serverName,
+                                          @PathVariable String                        userId,
                                           @PathVariable String                        deletedRelationshipGUID,
                                           @RequestBody  TypeDefValidationForRequest   typeDefValidationForRequest)
     {
-        return restAPI.purgeRelationship(userId, deletedRelationshipGUID, typeDefValidationForRequest);
+        return restAPI.purgeRelationship(serverName, userId, deletedRelationshipGUID, typeDefValidationForRequest);
     }
 
 
@@ -1811,6 +1943,7 @@ public class OMRSRepositoryResource
      * Restore a deleted relationship into the metadata collection.  The new status will be ACTIVE and the
      * restored details of the relationship are returned to the caller.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param deletedRelationshipGUID String unique identifier (guid) for the relationship.
      * @return RelationshipResponse:
@@ -1825,10 +1958,11 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/instances/relationship/{deletedRelationshipGUID}/restore")
 
-    public RelationshipResponse restoreRelationship(@PathVariable String    userId,
+    public RelationshipResponse restoreRelationship(@PathVariable String    serverName,
+                                                    @PathVariable String    userId,
                                                     @PathVariable String    deletedRelationshipGUID)
     {
-        return restAPI.restoreRelationship(userId, deletedRelationshipGUID);
+        return restAPI.restoreRelationship(serverName, userId, deletedRelationshipGUID);
     }
 
 
@@ -1842,6 +1976,7 @@ public class OMRSRepositoryResource
      * entities are discovered to have the same guid.  This is extremely unlikely but not impossible so
      * the open metadata protocol has provision for this.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param entityGUID the existing identifier for the entity.
      * @param newEntityGUID new unique identifier for the entity.
@@ -1857,12 +1992,13 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entity/{entityGUID}/identity")
 
-    public EntityDetailResponse reIdentifyEntity(@PathVariable String                        userId,
+    public EntityDetailResponse reIdentifyEntity(@PathVariable String                        serverName,
+                                                 @PathVariable String                        userId,
                                                  @PathVariable String                        entityGUID,
                                                  @RequestParam String                        newEntityGUID,
                                                  @RequestBody  TypeDefValidationForRequest   typeDefValidationForRequest)
     {
-        return restAPI.reIdentifyEntity(userId, entityGUID, newEntityGUID, typeDefValidationForRequest);
+        return restAPI.reIdentifyEntity(serverName, userId, entityGUID, newEntityGUID, typeDefValidationForRequest);
     }
 
 
@@ -1871,6 +2007,7 @@ public class OMRSRepositoryResource
      * type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
      * added.)  However, the type can be changed to any compatible type and the properties adjusted.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param entityGUID the unique identifier for the entity to change.
      * @param typeDefChangeRequest the details of the current and new type.
@@ -1889,11 +2026,12 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entity/{entityGUID}/type")
 
-    public EntityDetailResponse reTypeEntity(@PathVariable String                userId,
+    public EntityDetailResponse reTypeEntity(@PathVariable String                serverName,
+                                             @PathVariable String                userId,
                                              @PathVariable String                entityGUID,
                                              @RequestBody  TypeDefChangeRequest  typeDefChangeRequest)
     {
-        return restAPI.reTypeEntity(userId, entityGUID, typeDefChangeRequest);
+        return restAPI.reTypeEntity(serverName, userId, entityGUID, typeDefChangeRequest);
     }
 
 
@@ -1902,6 +2040,7 @@ public class OMRSRepositoryResource
      * becomes permanently unavailable, or if the user community updating this entity move to working
      * from a different repository in the open metadata repository cohort.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param entityGUID the unique identifier for the entity to change.
      * @param homeMetadataCollectionId the existing identifier for this entity's home.
@@ -1918,13 +2057,14 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entity/{entityGUID}/home/{homeMetadataCollectionId}")
 
-    public EntityDetailResponse reHomeEntity(@PathVariable String                        userId,
+    public EntityDetailResponse reHomeEntity(@PathVariable String                        serverName,
+                                             @PathVariable String                        userId,
                                              @PathVariable String                        entityGUID,
                                              @PathVariable String                        homeMetadataCollectionId,
                                              @RequestParam String                        newHomeMetadataCollectionId,
                                              @RequestBody  TypeDefValidationForRequest   typeDefValidationForRequest)
     {
-        return restAPI.reHomeEntity(userId,
+        return restAPI.reHomeEntity(serverName, userId,
                                     entityGUID,
                                     homeMetadataCollectionId,
                                     newHomeMetadataCollectionId,
@@ -1937,6 +2077,7 @@ public class OMRSRepositoryResource
      * relationships are discovered to have the same guid.  This is extremely unlikely but not impossible so
      * the open metadata protocol has provision for this.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param relationshipGUID the existing identifier for the relationship.
      * @param newRelationshipGUID  the new unique identifier for the relationship.
@@ -1953,12 +2094,13 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/relationship/{relationshipGUID}/identity")
 
-    public RelationshipResponse reIdentifyRelationship(@PathVariable String                        userId,
+    public RelationshipResponse reIdentifyRelationship(@PathVariable String                        serverName,
+                                                       @PathVariable String                        userId,
                                                        @PathVariable String                        relationshipGUID,
                                                        @RequestParam String                        newRelationshipGUID,
                                                        @RequestBody  TypeDefValidationForRequest   typeDefValidationForRequest)
     {
-        return restAPI.reIdentifyRelationship(userId, relationshipGUID, newRelationshipGUID, typeDefValidationForRequest);
+        return restAPI.reIdentifyRelationship(serverName, userId, relationshipGUID, newRelationshipGUID, typeDefValidationForRequest);
     }
 
 
@@ -1967,6 +2109,7 @@ public class OMRSRepositoryResource
      * type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
      * added.)  However, the type can be changed to any compatible type.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param relationshipGUID the unique identifier for the relationship.
      * @param typeDefChangeRequest the details of the current and new type.
@@ -1985,11 +2128,12 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/relationship/{relationshipGUID}/type")
 
-    public RelationshipResponse reTypeRelationship(@PathVariable String                userId,
+    public RelationshipResponse reTypeRelationship(@PathVariable String                serverName,
+                                                   @PathVariable String                userId,
                                                    @PathVariable String                relationshipGUID,
                                                    @RequestBody  TypeDefChangeRequest  typeDefChangeRequest)
     {
-        return restAPI.reTypeRelationship(userId, relationshipGUID, typeDefChangeRequest);
+        return restAPI.reTypeRelationship(serverName, userId, relationshipGUID, typeDefChangeRequest);
     }
 
 
@@ -1998,6 +2142,7 @@ public class OMRSRepositoryResource
      * becomes permanently unavailable, or if the user community updating this relationship move to working
      * from a different repository in the open metadata repository cohort.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param relationshipGUID the unique identifier for the relationship.
      * @param homeMetadataCollectionId the existing identifier for this relationship's home.
@@ -2015,13 +2160,14 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/relationship/{relationshipGUID}/home")
 
-    public RelationshipResponse reHomeRelationship(@PathVariable String                        userId,
+    public RelationshipResponse reHomeRelationship(@PathVariable String                        serverName,
+                                                   @PathVariable String                        userId,
                                                    @PathVariable String                        relationshipGUID,
                                                    @RequestParam String                        homeMetadataCollectionId,
                                                    @RequestParam String                        newHomeMetadataCollectionId,
                                                    @RequestBody  TypeDefValidationForRequest   typeDefValidationForRequest)
     {
-        return restAPI.reHomeRelationship(userId,
+        return restAPI.reHomeRelationship(serverName, userId,
                                           relationshipGUID,
                                           homeMetadataCollectionId,
                                           newHomeMetadataCollectionId,
@@ -2039,6 +2185,7 @@ public class OMRSRepositoryResource
      * Save the entity as a reference copy.  The id of the home metadata collection is already set up in the
      * entity.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param entity details of the entity to save.
      * @return VoidResponse:
@@ -2059,10 +2206,11 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entities/reference-copy")
 
-    public VoidResponse saveEntityReferenceCopy(@PathVariable String       userId,
+    public VoidResponse saveEntityReferenceCopy(@PathVariable String       serverName,
+                                                @PathVariable String       userId,
                                                 @RequestBody  EntityDetail entity)
     {
-        return restAPI.saveEntityReferenceCopy(userId, entity);
+        return restAPI.saveEntityReferenceCopy(serverName, userId, entity);
     }
 
 
@@ -2071,6 +2219,7 @@ public class OMRSRepositoryResource
      * remove reference copies from the local cohort, repositories that have left the cohort,
      * or entities that have come from open metadata archives.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting server.
      * @param entityGUID the unique identifier for the entity.
      * @param homeMetadataCollectionId identifier of the metadata collection that is the home to this entity.
@@ -2088,12 +2237,13 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entities/reference-copy/{entityGUID}/purge")
 
-    public VoidResponse purgeEntityReferenceCopy(@PathVariable String                        userId,
+    public VoidResponse purgeEntityReferenceCopy(@PathVariable String                        serverName,
+                                                 @PathVariable String                        userId,
                                                  @PathVariable String                        entityGUID,
                                                  @RequestParam String                        homeMetadataCollectionId,
                                                  @RequestBody  TypeDefValidationForRequest   typeDefValidationForRequest)
     {
-        return restAPI.purgeEntityReferenceCopy(userId, entityGUID, homeMetadataCollectionId, typeDefValidationForRequest);
+        return restAPI.purgeEntityReferenceCopy(serverName, userId, entityGUID, homeMetadataCollectionId, typeDefValidationForRequest);
     }
 
 
@@ -2101,6 +2251,7 @@ public class OMRSRepositoryResource
      * The local repository has requested that the repository that hosts the home metadata collection for the
      * specified entity sends out the details of this entity so the local repository can create a reference copy.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting server.
      * @param entityGUID unique identifier of requested entity.
      * @param homeMetadataCollectionId identifier of the metadata collection that is the home to this entity.
@@ -2118,12 +2269,13 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entities/reference-copy/{entityGUID}/refresh")
 
-    public VoidResponse refreshEntityReferenceCopy(@PathVariable String                        userId,
+    public VoidResponse refreshEntityReferenceCopy(@PathVariable String                        serverName,
+                                                   @PathVariable String                        userId,
                                                    @PathVariable String                        entityGUID,
                                                    @RequestParam String                        homeMetadataCollectionId,
                                                    @RequestBody  TypeDefValidationForRequest   typeDefValidationForRequest)
     {
-        return restAPI.refreshEntityReferenceCopy(userId,
+        return restAPI.refreshEntityReferenceCopy(serverName, userId,
                                                   entityGUID,
                                                   homeMetadataCollectionId,
                                                   typeDefValidationForRequest);
@@ -2134,6 +2286,7 @@ public class OMRSRepositoryResource
      * Save the relationship as a reference copy.  The id of the home metadata collection is already set up in the
      * relationship.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting userId.
      * @param relationship relationship to save.
      * @return VoidResponse:
@@ -2156,13 +2309,12 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/relationships/reference-copy")
 
-    public VoidResponse saveRelationshipReferenceCopy(@PathVariable String         userId,
+    public VoidResponse saveRelationshipReferenceCopy(@PathVariable String         serverName,
+                                                      @PathVariable String         userId,
                                                       @RequestBody  Relationship   relationship)
     {
-        return restAPI.saveRelationshipReferenceCopy(userId, relationship);
+        return restAPI.saveRelationshipReferenceCopy(serverName, userId, relationship);
     }
-
-
 
 
     /**
@@ -2170,6 +2322,7 @@ public class OMRSRepositoryResource
      * remove reference copies from the local cohort, repositories that have left the cohort,
      * or relationships that have come from open metadata archives.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting server.
      * @param relationshipGUID the unique identifier for the relationship.
      * @param homeMetadataCollectionId unique identifier for the home repository for this relationship.
@@ -2187,12 +2340,13 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/relationships/reference-copy/{relationshipGUID}/purge")
 
-    public VoidResponse purgeRelationshipReferenceCopy(@PathVariable String                        userId,
+    public VoidResponse purgeRelationshipReferenceCopy(@PathVariable String                        serverName,
+                                                       @PathVariable String                        userId,
                                                        @PathVariable String                        relationshipGUID,
                                                        @RequestParam String                        homeMetadataCollectionId,
                                                        @RequestBody  TypeDefValidationForRequest   typeDefValidationForRequest)
     {
-        return restAPI.purgeRelationshipReferenceCopy(userId,
+        return restAPI.purgeRelationshipReferenceCopy(serverName, userId,
                                                       relationshipGUID,
                                                       homeMetadataCollectionId,
                                                       typeDefValidationForRequest);
@@ -2204,6 +2358,7 @@ public class OMRSRepositoryResource
      * specified relationship sends out the details of this relationship so the local repository can create a
      * reference copy.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting server.
      * @param relationshipGUID unique identifier of the relationship.
      * @param homeMetadataCollectionId unique identifier for the home repository for this relationship.
@@ -2221,12 +2376,13 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/relationships/reference-copy/{relationshipGUID}/refresh")
 
-    public VoidResponse refreshRelationshipReferenceCopy(@PathVariable String                        userId,
+    public VoidResponse refreshRelationshipReferenceCopy(@PathVariable String                        serverName,
+                                                         @PathVariable String                        userId,
                                                          @PathVariable String                        relationshipGUID,
                                                          @RequestParam String                        homeMetadataCollectionId,
                                                          @RequestBody  TypeDefValidationForRequest   typeDefValidationForRequest)
     {
-        return restAPI.refreshRelationshipReferenceCopy(userId,
+        return restAPI.refreshRelationshipReferenceCopy(serverName, userId,
                                                         relationshipGUID,
                                                         homeMetadataCollectionId,
                                                         typeDefValidationForRequest);
@@ -2238,6 +2394,7 @@ public class OMRSRepositoryResource
      * The id of the home metadata collection is already set up in the instances.
      * Any instances from the home metadata collection are ignored.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting server.
      * @param instances instances to save or
      * InvalidParameterException the relationship is null or
@@ -2258,9 +2415,10 @@ public class OMRSRepositoryResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances")
 
-    public VoidResponse  saveInstanceReferenceCopies(@PathVariable String                 userId,
+    public VoidResponse  saveInstanceReferenceCopies(@PathVariable String                 serverName,
+                                                     @PathVariable String                 userId,
                                                      @RequestBody  InstanceGraphRequest   instances)
     {
-        return restAPI.saveInstanceReferenceCopies(userId, instances);
+        return restAPI.saveInstanceReferenceCopies(serverName, userId, instances);
     }
 }
