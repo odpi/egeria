@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category;
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.governednode.GovernedNode;
@@ -7,7 +8,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.node.
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.CategorySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
 
-public class Category extends GovernedNode{
+public class Category extends Node{
     private GlossarySummary glossary =null;
     private CategorySummary parentCategory;
 

@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 
 // This is a generated file - do not edit - changes should be made to the templates amd/or generator to generate this file with changes.
 
@@ -8,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 
 import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.<$$uRelationshipName$$>.<$$uRelationshipName$$>;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.*;
@@ -27,32 +29,45 @@ public class <$$uRelationshipName$$>Mapper {
        private static final String className = <$$uRelationshipName$$>Mapper.class.getName();
 
        public static <$$uRelationshipName$$> mapOmrsRelationshipTo<$$uRelationshipName$$>(Relationship omrsRelationship)  throws InvalidParameterException {
-     
-               if ("<$$uRelationshipName$$>".equals(omrsRelationship.getType().getTypeDefName())) {
-                   <$$uRelationshipName$$> <$$RelationshipName$$> = new <$$uRelationshipName$$>(omrsRelationship);
+                String methodName = "mapOmrsRelationshipTo<$$uRelationshipName$$>";
 
-                   SystemAttributes systemAttributes = new SystemAttributes();
-                   InstanceStatus instanceStatus =  omrsRelationship.getStatus();
-                   Status omrsBeanStatus = SubjectAreaUtils.convertInstanceStatusToStatus(instanceStatus);
-                   systemAttributes.setStatus(omrsBeanStatus);
-                   systemAttributes.setCreatedBy(omrsRelationship.getCreatedBy());
-                   systemAttributes.setUpdatedBy(omrsRelationship.getUpdatedBy());
-                   systemAttributes.setCreateTime(omrsRelationship.getCreateTime());
-                   systemAttributes.setUpdateTime(omrsRelationship.getUpdateTime());
-                   systemAttributes.setVersion(omrsRelationship.getVersion());
-                   systemAttributes.setGUID(omrsRelationship.getGUID());
-                   <$$RelationshipName$$>.setSystemAttributes(systemAttributes);
+               if (!"<$$uRelationshipName$$>".equals(omrsRelationship.getType().getTypeDefName())) {
+                      SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.INVALID_RELATIOMSHIP_GUID_WRONG_TYPE;
+                      String errorMessage = errorCode.getErrorMessageId()
+                          + errorCode.getFormattedErrorMessage(className,
+                          methodName,omrsRelationship.getGUID(),"TermHASARelationship");
+                      log.error(errorMessage);
+                      throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                                className,
+                                methodName,
+                                errorMessage,
+                                errorCode.getSystemAction(),
+                                errorCode.getUserAction());
+               }
+               <$$uRelationshipName$$> <$$RelationshipName$$> = new <$$uRelationshipName$$>(omrsRelationship);
 
-                   InstanceProperties omrsRelationshipProperties = omrsRelationship.getProperties();
-                   Iterator omrsPropertyIterator = omrsRelationshipProperties.getPropertyNames();
-                   while (omrsPropertyIterator.hasNext()) {
-                       String name = (String) omrsPropertyIterator.next();
-                       //TODO check if this is a property we expect or whether the type has been added to.
-                       // this is a property we expect
-                       InstancePropertyValue value = omrsRelationshipProperties.getPropertyValue(name);
-                       // supplied guid matches the expected type
-                       Object actualValue;
-                       switch (value.getInstancePropertyCategory()) {
+               SystemAttributes systemAttributes = new SystemAttributes();
+               InstanceStatus instanceStatus =  omrsRelationship.getStatus();
+               Status omrsBeanStatus = SubjectAreaUtils.convertInstanceStatusToStatus(instanceStatus);
+               systemAttributes.setStatus(omrsBeanStatus);
+               systemAttributes.setCreatedBy(omrsRelationship.getCreatedBy());
+               systemAttributes.setUpdatedBy(omrsRelationship.getUpdatedBy());
+               systemAttributes.setCreateTime(omrsRelationship.getCreateTime());
+               systemAttributes.setUpdateTime(omrsRelationship.getUpdateTime());
+               systemAttributes.setVersion(omrsRelationship.getVersion());
+               systemAttributes.setGUID(omrsRelationship.getGUID());
+               <$$RelationshipName$$>.setSystemAttributes(systemAttributes);
+
+               InstanceProperties omrsRelationshipProperties = omrsRelationship.getProperties();
+               Iterator omrsPropertyIterator = omrsRelationshipProperties.getPropertyNames();
+               while (omrsPropertyIterator.hasNext()) {
+                    String name = (String) omrsPropertyIterator.next();
+                    //TODO check if this is a property we expect or whether the type has been added to.
+                    // this is a property we expect
+                    InstancePropertyValue value = omrsRelationshipProperties.getPropertyValue(name);
+                    // supplied guid matches the expected type
+                    Object actualValue;
+                    switch (value.getInstancePropertyCategory()) {
                                                case PRIMITIVE:
                                                    PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) value;
                                                    actualValue = primitivePropertyValue.getPrimitiveValue();
@@ -122,15 +137,10 @@ public class <$$uRelationshipName$$>Mapper {
                                                case UNKNOWN:
                                                    // error
                                                    break;
-                                           }
+                    }
                        
-                                       }   // end while
-                                       return <$$RelationshipName$$>;
-
-                   } else {
-                       // TODO wrong type for this guid
-                   }
-                   return null;
+               }   // end while
+               return <$$RelationshipName$$>;
        }
        public static Relationship map<$$uRelationshipName$$>ToOmrsRelationship(<$$uRelationshipName$$> <$$RelationshipName$$>) {
            Relationship omrsRelationship = Line.createOmrsRelationship(<$$RelationshipName$$>);

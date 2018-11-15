@@ -1,9 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions;
 
 
 /**
- * The  FunctionNotSupportedException is thrown by the SubjectArea OMAS due to a function not being supported.
+ * The  FunctionNotSupportedException is thrown by the Subject Area OMAS due to a function not being supported.
  * value.
  */
 public class FunctionNotSupportedException extends SubjectAreaCheckedExceptionBase

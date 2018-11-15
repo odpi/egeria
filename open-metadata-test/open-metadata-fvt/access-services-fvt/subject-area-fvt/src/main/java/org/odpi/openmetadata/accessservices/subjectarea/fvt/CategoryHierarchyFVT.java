@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.fvt;
 
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
@@ -149,7 +150,7 @@ public class CategoryHierarchyFVT
      * @param categoryName name of the category to create
      * @param glossaryGuid guid of the glossary to associate with this category
      * @return created category
-     * @throws SubjectAreaCheckedExceptionBase
+     * @throws SubjectAreaCheckedExceptionBase error
      */
     public static Category createCategoryWithGlossaryGuid(String categoryName, String glossaryGuid) throws SubjectAreaCheckedExceptionBase
     {
@@ -220,8 +221,8 @@ public class CategoryHierarchyFVT
     /**
      * Call this to initialise the glossary FVT
      *
-     * @param url server url
-     * @throws InvalidParameterException
+     * @param url supplied base url for the subject area OMAS
+     * @throws InvalidParameterException a parameter is null or an invalid value.
      */
     public static void initialiseCategoryFVT(String url) throws InvalidParameterException
     {
