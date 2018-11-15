@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 
 package org.odpi.openmetadata.accessservices.subjectarea.properties.classifications;
 import org.slf4j.Logger;
@@ -103,7 +104,7 @@ public class ContextDefinition extends Classification {
        private String description;
        /**
         * {@literal Description for how the context is used. }
-        * @return {@code String }
+        * @return {$$PropertyTypeJavadoc$$ }
         */
        public String getDescription() {
            return this.description;
@@ -116,7 +117,7 @@ public class ContextDefinition extends Classification {
        private String scope;
        /**
         * {@literal Scope of influence of the context. }
-        * @return {@code String }
+        * @return {$$PropertyTypeJavadoc$$ }
         */
        public String getScope() {
            return this.scope;

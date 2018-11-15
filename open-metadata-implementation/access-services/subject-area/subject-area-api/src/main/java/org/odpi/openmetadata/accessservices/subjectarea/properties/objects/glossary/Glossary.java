@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -26,7 +27,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class Glossary extends GovernedNode{
+public class Glossary extends Node{
     public Glossary() {
         nodeType = NodeType.Glossary;
     }
@@ -119,15 +120,7 @@ public class Glossary extends GovernedNode{
     public List<Classification> getClassifications() {
         return super.getClassifications();
     }
-    /**
-     * Retention
-     * @return retention
-     */
-    @Override
-    public GovernanceActions getGovernanceActions() {
-        return super.getGovernanceActions();
-    }
-    @Override
+      @Override
     /**
      * The icons associated with this glossary.
      * @return the url of the icon.

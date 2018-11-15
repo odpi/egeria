@@ -1,9 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions;
 
 
 /**
- * The EntityNotDeletedException is thrown by the SubjectArea OMAS when an entity is not deleted
+ * The EntityNotDeletedException is thrown by the Subject Area OMAS when an entity is not deleted
  * value.
  */
 public class EntityNotDeletedException extends SubjectAreaCheckedExceptionBase
