@@ -1,8 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.classifications.SubjectArea.SubjectArea;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.entities.GlossaryCategory.GlossaryCategory;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.entities.GlossaryCategory.GlossaryCategoryReferences;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.references.GlossaryCategoryToGlossary.AnchorReference;
@@ -13,13 +15,14 @@ import org.odpi.openmetadata.accessservices.subjectarea.generated.server.Subject
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.Status;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.SubjectAreaDefinition;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.node.NodeType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.IconSummary;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
-import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.CategoryMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.CategoryMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
 import org.odpi.openmetadata.accessservices.subjectarea.validators.RestValidator;
@@ -36,7 +39,7 @@ import java.util.Set;
 
 
 /**
- * The SubjectAreaRESTServices provides the org.odpi.openmetadata.accessservices.subjectarea.server-side implementation of the SubjectArea Open Metadata
+ * The SubjectAreaRESTServices provides the org.odpi.openmetadata.accessservices.subjectarea.server-side implementation of the SubjectAreaDefinition Open Metadata
  * Assess Service (OMAS).  This interface provides glossary authoring interfaces for subject area experts.
  */
 
@@ -59,7 +62,7 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServices{
      * <p>
      * Valid nodeTypes for this request are:
      * <ul>
-     *     <li>SubjectArea to create a Category that represents a subject area </li>
+     *     <li>SubjectAreaDefinition to create a Category that represents a subject area </li>
      *     <li>Category to create a category that is not a subject area</li>
      * </ul>
      *
@@ -94,7 +97,7 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServices{
         SubjectAreaOMASAPIResponse response = null;
         try {
             InputValidator.validateUserIdNotNull(className,methodName,userid);
-            InputValidator.validateNodeType(className,methodName,suppliedCategory.getNodeType(), NodeType.Category,NodeType.SubjectArea);
+            InputValidator.validateNodeType(className,methodName,suppliedCategory.getNodeType(), NodeType.Category,NodeType.SubjectAreaDefinition);
         } catch (InvalidParameterException e) {
             response = OMASExceptionToResponse.convertInvalidParameterException(e);
         }
@@ -169,11 +172,10 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServices{
             }
         }
         GlossaryCategory newGlossaryCategory = null;
-        List<Classification> classifications = new ArrayList<>();
         String categoryGuid=null;
 
         if (response==null) {
-                response = checkSiblingCategoryNames(userid, methodName, suppliedCategoryName, suppliedCategoryParentGuid, SubjectAreaErrorCode.GLOSSARY_CATEGORY_CREATE_FAILED_CATEGORY_NAME_ALREADY_USED);
+            response = checkSiblingCategoryNames(userid, methodName, suppliedCategoryName, suppliedCategoryParentGuid, SubjectAreaErrorCode.GLOSSARY_CATEGORY_CREATE_FAILED_CATEGORY_NAME_ALREADY_USED);
         }
         if (response==null) {
             try {
@@ -232,6 +234,29 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServices{
                 response = OMASExceptionToResponse.convertStatusNotSupportedException(e);
             }
         }
+        if  (response==null && suppliedCategory.getNodeType()== NodeType.SubjectAreaDefinition) {
+            try
+            {
+                List<Classification> classifications = new ArrayList<>();
+                classifications.add(new SubjectArea());
+                service.addGlossaryCategoryClassifications(userid,categoryGuid,classifications);
+            } catch (MetadataServerUncontactableException e)
+            {
+                response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
+            } catch (UserNotAuthorizedException e)
+            {
+                response = OMASExceptionToResponse.convertUserNotAuthorizedException(e);
+            } catch (InvalidParameterException e)
+            {
+                response = OMASExceptionToResponse.convertInvalidParameterException(e);
+            } catch (ClassificationException e)
+            {
+                response = OMASExceptionToResponse.convertClassificationException(e);
+            } catch (UnrecognizedGUIDException e)
+            {
+                response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
+            }
+        }
 
         if (response==null) {
             // We could perform other relationship creation here. I suggest not - and we encourage users to use relationship creation API
@@ -243,11 +268,11 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServices{
         return response;
     }
 
-    
+
     /**
      * Get a Category
      * @param userid unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the category to get
+     * @param guid   guid of the category to get. This could be a guid for a SubjectAreaDefintion, which is type of category
      * @return response which when successful contains the category with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
@@ -274,14 +299,33 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServices{
         } catch (InvalidParameterException e) {
             response = OMASExceptionToResponse.convertInvalidParameterException(e);
         }
+        NodeType nodeType = NodeType.Category;
         if (response==null) {
             try {
                 glossaryCategory = subjectAreaOmasREST.getGlossaryCategoryById(userid, guid);
                 Category gotCategory = CategoryMapper.mapOMRSBeantoCategory(glossaryCategory);
-                List<Classification> classifications = glossaryCategory.getClassifications();
+                List<Classification> classifications = new ArrayList();
                 // set the GlossaryCategory classifications into the Node
-                gotCategory.setClassifications(classifications);
+                if (glossaryCategory.getClassifications()!=null) {
+                    for (Classification classification : glossaryCategory.getClassifications())
+                    {
+                        if (classification.getClassificationName().equals("SubjectArea"))
+                        {
+                            nodeType = NodeType.SubjectAreaDefinition;
+                        } else
+                        {
+                            classifications.add(classification);
+                        }
+                    }
+                    if (classifications.size()>0)
+                    {
+                        gotCategory.setClassifications(classifications);
+                    } else {
+                        // ensure there are no classifications
+                        gotCategory.setClassifications(null);
+                    }
 
+                }
                 Set<Line> categoryRelationships = subjectAreaOmasREST.getGlossaryCategoryRelationships(userid, guid);
                 GlossaryCategoryReferences glossaryCategoryReferences = new GlossaryCategoryReferences(guid, categoryRelationships);
                 if (response == null) {
@@ -305,8 +349,13 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServices{
                         glossarySummary.setRelationshipType(anchorReference.getRelationship_Type());
                         gotCategory.setGlossary(glossarySummary);
                     }
-
-                    response = new CategoryResponse(gotCategory);
+                    if (nodeType == NodeType.Category)
+                    {
+                        response = new CategoryResponse(gotCategory);
+                    } else {
+                        SubjectAreaDefinition subjectAreaDefintion =new SubjectAreaDefinition(gotCategory);
+                        response = new SubjectAreaDefinitionResponse(subjectAreaDefintion);
+                    }
                 }
             } catch (InvalidParameterException e) {
                 response = OMASExceptionToResponse.convertInvalidParameterException(e);
@@ -354,78 +403,83 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServices{
         SubjectAreaOMASAPIResponse response = null;
         try {
             InputValidator.validateUserIdNotNull(className,methodName,userid);
-            InputValidator.validateNodeType(className,methodName,suppliedCategory.getNodeType(), NodeType.Category,NodeType.SubjectArea);
+            InputValidator.validateNodeType(className,methodName,suppliedCategory.getNodeType(), NodeType.Category,NodeType.SubjectAreaDefinition);
             InputValidator.validateGUIDNotNull(className,methodName,guid,"guid");
         } catch (InvalidParameterException e) {
             response = OMASExceptionToResponse.convertInvalidParameterException(e);
         }
         if (response ==null) {
 
-        SubjectAreaBeansToAccessOMRS service = new SubjectAreaBeansToAccessOMRS();
-        service.setOMRSAPIHelper(this.oMRSAPIHelper);
-        response = getCategory(userid, guid);
-        if (response.getResponseCategory().equals(ResponseCategory.Category)) {
-            org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category originalCategory = ((CategoryResponse) response).getCategory();
-            if (originalCategory.getSystemAttributes() != null) {
-                Status status = originalCategory.getSystemAttributes().getStatus();
-                SubjectAreaOMASAPIResponse deleteCheckResponse = SubjectAreaUtils.checkStatusNotDeleted(status, SubjectAreaErrorCode.GLOSSARY_UPDATE_FAILED_ON_DELETED_GLOSSARY);
-                if (deleteCheckResponse != null) {
-                    response = deleteCheckResponse;
+            SubjectAreaBeansToAccessOMRS service = new SubjectAreaBeansToAccessOMRS();
+            service.setOMRSAPIHelper(this.oMRSAPIHelper);
+            response = getCategory(userid, guid);
+            if (response.getResponseCategory().equals(ResponseCategory.Category)) {
+                org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category originalCategory = ((CategoryResponse) response).getCategory();
+                if (originalCategory.getSystemAttributes() != null) {
+                    Status status = originalCategory.getSystemAttributes().getStatus();
+                    SubjectAreaOMASAPIResponse deleteCheckResponse = SubjectAreaUtils.checkStatusNotDeleted(status, SubjectAreaErrorCode.GLOSSARY_UPDATE_FAILED_ON_DELETED_GLOSSARY);
+                    if (deleteCheckResponse != null) {
+                        response = deleteCheckResponse;
+                    }
                 }
-            }
-            if (suppliedCategory.getSystemAttributes() != null) {
-                Status status = suppliedCategory.getSystemAttributes().getStatus();
-                SubjectAreaOMASAPIResponse deleteCheckResponse = SubjectAreaUtils.checkStatusNotDeleted(status, SubjectAreaErrorCode.STATUS_UPDATE_TO_DELETED_NOT_ALLOWED);
-                if (deleteCheckResponse != null) {
-                    response = deleteCheckResponse;
+                if (suppliedCategory.getSystemAttributes() != null) {
+                    Status status = suppliedCategory.getSystemAttributes().getStatus();
+                    SubjectAreaOMASAPIResponse deleteCheckResponse = SubjectAreaUtils.checkStatusNotDeleted(status, SubjectAreaErrorCode.STATUS_UPDATE_TO_DELETED_NOT_ALLOWED);
+                    if (deleteCheckResponse != null) {
+                        response = deleteCheckResponse;
+                    }
                 }
-            }
-            if (response != null) {
-                Category updateCategory = originalCategory;
-                if (isReplace) {
-                    // copy over attributes
-                    updateCategory.setName(suppliedCategory.getName());
-                    updateCategory.setQualifiedName(suppliedCategory.getQualifiedName());
-                    updateCategory.setDescription(suppliedCategory.getDescription());
-                    updateCategory.setAdditionalProperties(suppliedCategory.getAdditionalProperties());
-                    //TODO handle governance classifications and other classifications
-                } else {
-                    // copy over attributes if specified
-                    if (suppliedCategory.getName() != null) {
+                if (response != null) {
+                    Category updateCategory = originalCategory;
+                    if (isReplace) {
+                        // copy over attributes
                         updateCategory.setName(suppliedCategory.getName());
-                    }
-                    if (suppliedCategory.getQualifiedName() != null) {
                         updateCategory.setQualifiedName(suppliedCategory.getQualifiedName());
-                    }
-                    if (suppliedCategory.getDescription() != null) {
                         updateCategory.setDescription(suppliedCategory.getDescription());
-                    }
-
-                    if (suppliedCategory.getAdditionalProperties() != null) {
                         updateCategory.setAdditionalProperties(suppliedCategory.getAdditionalProperties());
+                        //TODO handle classifications
+                    } else {
+                        // copy over attributes if specified
+                        if (suppliedCategory.getName() != null) {
+                            updateCategory.setName(suppliedCategory.getName());
+                        }
+                        if (suppliedCategory.getQualifiedName() != null) {
+                            updateCategory.setQualifiedName(suppliedCategory.getQualifiedName());
+                        }
+                        if (suppliedCategory.getDescription() != null) {
+                            updateCategory.setDescription(suppliedCategory.getDescription());
+                        }
+
+                        if (suppliedCategory.getAdditionalProperties() != null) {
+                            updateCategory.setAdditionalProperties(suppliedCategory.getAdditionalProperties());
+                        }
+                        //TODO handle classifications
                     }
-                    //TODO handle governance classifications and other classifications
-                }
-                org.odpi.openmetadata.accessservices.subjectarea.generated.entities.GlossaryCategory.GlossaryCategory generatedCategory = null;
-                try {
-                    generatedCategory = CategoryMapper.mapCategoryToOMRSBean(updateCategory);
-                    org.odpi.openmetadata.accessservices.subjectarea.generated.entities.GlossaryCategory.GlossaryCategory updatedGeneratedCategory = null;
+                    org.odpi.openmetadata.accessservices.subjectarea.generated.entities.GlossaryCategory.GlossaryCategory generatedCategory = null;
                     try {
-                        updatedGeneratedCategory = service.updateGlossaryCategory(userid, generatedCategory);
-                    } catch (MetadataServerUncontactableException e) {
-                        response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
-                    } catch (UserNotAuthorizedException e) {
-                        response = OMASExceptionToResponse.convertUserNotAuthorizedException(e);
-                    } catch (UnrecognizedGUIDException e) {
-                        response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
+                        generatedCategory = CategoryMapper.mapCategoryToOMRSBean(updateCategory);
+                        org.odpi.openmetadata.accessservices.subjectarea.generated.entities.GlossaryCategory.GlossaryCategory updatedGeneratedCategory = null;
+                        try {
+                            updatedGeneratedCategory = service.updateGlossaryCategory(userid, generatedCategory);
+                        } catch (MetadataServerUncontactableException e) {
+                            response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
+                        } catch (UserNotAuthorizedException e) {
+                            response = OMASExceptionToResponse.convertUserNotAuthorizedException(e);
+                        } catch (UnrecognizedGUIDException e) {
+                            response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
+                        }
+                        org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category updatedCategory = CategoryMapper.mapOMRSBeantoCategory(updatedGeneratedCategory);
+                        if (suppliedCategory.getNodeType() == NodeType.SubjectAreaDefinition) {
+                            response = new SubjectAreaDefinitionResponse(new SubjectAreaDefinition(updatedCategory));
+                        } else
+                        {
+                            response = new CategoryResponse(updatedCategory);
+                        }
+                    } catch (InvalidParameterException e) {
+                        response = OMASExceptionToResponse.convertInvalidParameterException(e);
                     }
-                    org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category updatedCategory = CategoryMapper.mapOMRSBeantoCategory(updatedGeneratedCategory);
-                    response = new CategoryResponse(updatedCategory);
-                } catch (InvalidParameterException e) {
-                    response = OMASExceptionToResponse.convertInvalidParameterException(e);
                 }
             }
-        }
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userid=" + userid + ",response=" + response);
@@ -435,7 +489,7 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServices{
     }
 
     /**
-     * Delete a Category instance
+     * Delete a Category or SubjectAreaDefinition instance
      * <p>
      * There are 2 types of deletion, a soft delete and a hard delete (also known as a purge). All repositories support hard deletes. Soft deletes support
      * is optional. Soft delete is the default.
@@ -499,8 +553,36 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServices{
                     // TODO check whether we have any terms
                     EntityDetail entityDetail = service.deleteGlossaryCategoryByGuid(userid, guid);
                     deletedGeneratedCategory = org.odpi.openmetadata.accessservices.subjectarea.generated.entities.GlossaryCategory.GlossaryCategoryMapper.mapOmrsEntityDetailToGlossaryCategory(entityDetail);
+                    NodeType nodeType= NodeType.Category;
+
+                    if (deletedGeneratedCategory.getClassifications() !=null)
+                    {
+                        List<Classification> classifications = new ArrayList();
+                        for (Classification classification : deletedGeneratedCategory.getClassifications())
+                        {
+                            if (classification.getClassificationName().equals("SubjectArea"))
+                            {
+                                nodeType = NodeType.SubjectAreaDefinition;
+                            } else
+                            {
+                                classifications.add(classification);
+                            }
+                        }
+                        if (classifications.size() > 0)
+                        {
+                            deletedGeneratedCategory.setClassifications(classifications);
+                        } else
+                        {
+                            // ensure there are no classifications
+                            deletedGeneratedCategory.setClassifications(null);
+                        }
+                    }
                     org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category deletedCategory = CategoryMapper.mapOMRSBeantoCategory(deletedGeneratedCategory);
-                    response = new CategoryResponse(deletedCategory);
+                    if (nodeType == NodeType.SubjectAreaDefinition) {
+                        response = new SubjectAreaDefinitionResponse(new SubjectAreaDefinition(deletedCategory));
+                    } else{
+                        response = new CategoryResponse(deletedCategory);
+                    }
                 } catch (MetadataServerUncontactableException e) {
                     response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
                 } catch (UserNotAuthorizedException e) {
@@ -523,11 +605,11 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServices{
     /**
      * Check that the requested name is not already used in a sibling category. Category children name should be unique under a parent.
      * @param userid user idendifier
-     * @param methodName method called
+     * @param methodName method name
      * @param suppliedCategoryName non-null category name
      * @param suppliedCategoryParentGuid parent category guid. Do nothing if null.
      * @param errorCode error code to use if there is an existing sibling categorey with the same name.
-     * @return SubjectAreaOMASAPIResponse if valid, null otherwwise.
+     * @return null if successful , otehrwise a response containing the error
      */
     public SubjectAreaOMASAPIResponse checkSiblingCategoryNames(String userid, String methodName, String suppliedCategoryName, String suppliedCategoryParentGuid, SubjectAreaErrorCode errorCode) {
         SubjectAreaOMASAPIResponse response = null;

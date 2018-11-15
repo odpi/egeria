@@ -1,9 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions;
 
 
 /**
- * The RelationshipNotDeletedException is thrown by the SubjectArea OMAS when an relationship is not deleted
+ * The RelationshipNotDeletedException is thrown by the Subject Area OMAS when an relationship is not deleted
  * value.
  */
 public class RelationshipNotDeletedException extends SubjectAreaCheckedExceptionBase

@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 
 package org.odpi.openmetadata.accessservices.subjectarea.properties.classifications;
 import org.slf4j.Logger;
@@ -103,7 +104,7 @@ public class CloudService extends Classification {
        private String offeringName;
        /**
         * {@literal Commercial name of the service. }
-        * @return {@code String }
+        * @return {$$PropertyTypeJavadoc$$ }
         */
        public String getOfferingName() {
            return this.offeringName;
@@ -116,7 +117,7 @@ public class CloudService extends Classification {
        private String type;
        /**
         * {@literal Description of the type of the service. }
-        * @return {@code String }
+        * @return {$$PropertyTypeJavadoc$$ }
         */
        public String getType() {
            return this.type;

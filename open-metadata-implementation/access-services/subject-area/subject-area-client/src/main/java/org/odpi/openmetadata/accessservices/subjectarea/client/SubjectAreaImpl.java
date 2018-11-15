@@ -1,10 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.client;
 
-import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
-import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaCategory;
-import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaGlossary;
-import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaTerm;
+import org.odpi.openmetadata.accessservices.subjectarea.*;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
 import org.slf4j.Logger;
@@ -24,6 +22,7 @@ public class SubjectAreaImpl implements SubjectArea
     private final SubjectAreaTermImpl termAPI;
     private final SubjectAreaCategoryImpl categoryAPI;
     private final SubjectAreaGlossaryImpl glossaryAPI;
+    public final  SubjectAreaRelationshipImpl relationshipAPI;
     /*
      * The URL of the server where OMAS is active
      */
@@ -34,6 +33,7 @@ public class SubjectAreaImpl implements SubjectArea
      * Default Constructor used once a connector is created.
      *
      * @param omasServerURL - unique id for the connector instance
+     * @throws InvalidParameterException            one of the parameters is null or invalid.
      */
     public SubjectAreaImpl(String   omasServerURL) throws InvalidParameterException {
        String methodName = "SubjectAreaImpl";
@@ -42,43 +42,45 @@ public class SubjectAreaImpl implements SubjectArea
         this.glossaryAPI = new SubjectAreaGlossaryImpl(omasServerURL);
         this.termAPI = new SubjectAreaTermImpl(omasServerURL);
         this.categoryAPI = new SubjectAreaCategoryImpl(omasServerURL);
+        this.relationshipAPI = new SubjectAreaRelationshipImpl(omasServerURL);
     }
 
     /**
      * Get the Category API. Use this API to author Glossary Categories.
      * @return SubjectAreaCategoryImpl
      */
-    public SubjectAreaCategory getCategoryAPI() {
+    @Override
+    public SubjectAreaCategory getSubjectAreaCategory() {
         return categoryAPI;
     }
     /**
      * Get the Glossary API. Use this API to author Glossaries
      * @return SubjectAreaGlossaryImpl
      */
-    public SubjectAreaGlossary getGlossaryAPI() {
+    @Override
+    public SubjectAreaGlossary getSubjectAreaGlossary() {
         return glossaryAPI;
     }
     /**
      * Get the Term API. Use this API to author Glossary Terms.
      * @return SubjectAreaTermImpl
      */
-    public SubjectAreaTerm getTermAPI() {
-        return termAPI;
-    }
 
-    @Override
-    public SubjectAreaGlossary getSubjectAreaGlossary() {
-        return this.glossaryAPI;
-    }
-
+    /**
+     * Get the Relationship API. Use this API to author Glossary Terms.
+     * @return SubjectAreaRelationshipImpl
+     */
     @Override
     public SubjectAreaTerm getSubjectAreaTerm() {
-
         return this.termAPI;
     }
-
+    /**
+     * Get the subject area relationship API class - use this class to issue relationship calls.
+     * @return subject area relationship API class
+     */
     @Override
-    public SubjectAreaCategory getSubjectAreaCategory() {
-        return categoryAPI;
+    public SubjectAreaRelationship getSubjectAreaRelationship() {
+        return this.relationshipAPI;
     }
+
 }
