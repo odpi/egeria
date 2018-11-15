@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.server.spring;
 
 
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 /**
- * The SubjectAreaRESTServices provides the org.odpi.openmetadata.accessservices.subjectarea.server-side implementation of the SubjectArea Open Metadata
+ * The SubjectAreaRESTServices provides the org.odpi.openmetadata.accessservices.subjectarea.server-side implementation of the SubjectAreaDefinition Open Metadata
  * Assess Service (OMAS).  This interface provides glossary authoring interfaces for subject area experts.
  */
 @RestController
@@ -93,6 +94,7 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServices{
      * @param guid guid of the glossary to update
      * @param glossary glossary to be updated
      * @param isReplace flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.     * @return a response which when successful contains the updated glossary
+     * @return glossary response
      *  when not successful the following Exception responses can occur
      * <ul>
      * <li> UnrecognizedGUIDException the supplied guid was not recognised</li>
@@ -101,7 +103,6 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServices{
      * <li> InvalidParameterException one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException  not able to communicate with a Metadata respository service.</li>
      * </ul>
-     * @return SubjectAreaOMASAPIResponse if successful update.
      */
     @RequestMapping(method = RequestMethod.PUT, path = "/users/{userid}/glossaries/{guid}")
     public  SubjectAreaOMASAPIResponse updateGlossary(@PathVariable String userid,@PathVariable String guid,Glossary glossary,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {

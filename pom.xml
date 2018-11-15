@@ -273,6 +273,8 @@
                         <exclude>**/m2repo*/**</exclude>
                         <exclude>**/venv/**</exclude>
                         <exclude>**/archives/patches/egeria.patch</exclude>
+                        <exclude>**/docs/**/*.xml</exclude>
+                        <exclude>**/website/**/*.xml</exclude>
                     </excludes>
                     <licenseFamilies>
                         <licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">
