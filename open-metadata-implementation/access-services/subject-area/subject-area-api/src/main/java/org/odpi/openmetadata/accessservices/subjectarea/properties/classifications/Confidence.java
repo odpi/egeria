@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 
 package org.odpi.openmetadata.accessservices.subjectarea.properties.classifications;
 import org.slf4j.Logger;
@@ -131,7 +132,7 @@ public class Confidence extends Classification {
        private GovernanceClassificationStatus status;
        /**
         * {@literal Status of this classification. }
-        * @return {@code GovernanceClassificationStatus }
+        * @return {$$PropertyTypeJavadoc$$ }
         */
        public GovernanceClassificationStatus getStatus() {
            return this.status;
@@ -144,7 +145,7 @@ public class Confidence extends Classification {
        private Integer confidence;
        /**
         * {@literal Level of confidence in the classification (0=none -> 100=excellent). }
-        * @return {@code Integer }
+        * @return {$$PropertyTypeJavadoc$$ }
         */
        public Integer getConfidence() {
            return this.confidence;
@@ -157,7 +158,7 @@ public class Confidence extends Classification {
        private String steward;
        /**
         * {@literal Person responsible for maintaining this classification. }
-        * @return {@code String }
+        * @return {$$PropertyTypeJavadoc$$ }
         */
        public String getSteward() {
            return this.steward;
@@ -170,7 +171,7 @@ public class Confidence extends Classification {
        private String source;
        /**
         * {@literal Source of the classification. }
-        * @return {@code String }
+        * @return {$$PropertyTypeJavadoc$$ }
         */
        public String getSource() {
            return this.source;
@@ -183,7 +184,7 @@ public class Confidence extends Classification {
        private String notes;
        /**
         * {@literal Information relating to the classification. }
-        * @return {@code String }
+        * @return {$$PropertyTypeJavadoc$$ }
         */
        public String getNotes() {
            return this.notes;
@@ -196,7 +197,7 @@ public class Confidence extends Classification {
        private ConfidenceLevel level;
        /**
         * {@literal Level of confidence in the quality of this data. }
-        * @return {@code ConfidenceLevel }
+        * @return {$$PropertyTypeJavadoc$$ }
         */
        public ConfidenceLevel getLevel() {
            return this.level;

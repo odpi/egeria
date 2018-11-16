@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.validators;
 
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
@@ -30,7 +31,7 @@ public class RestValidator {
      * @param className - name of the class making the call.
      * @param methodName - name of the method making the call.
      * @param omasServerURL - omas server url.
-     * @throws MetadataServerUncontactableException - if the server is not reachable.
+     * @throws MetadataServerUncontactableException not able to communicate with the metadata server.
      */
     static public void validateOMASServerURLNotNull( String className,String methodName, String omasServerURL) throws MetadataServerUncontactableException
     {
@@ -57,11 +58,11 @@ public class RestValidator {
     /**
      * This method validated for creation.
      * TODO need another method for update where we could use the relationship guid.
-     * @param methodName - method called.
+     * @param methodName - method making the call
      * @param suppliedGlossary - glossary to validate against.
      * @param glossaryRESTServices - rest services for glossary.
      * @param userId - current user.
-     * @return SubjectAreaOMASAPIResponse if valid.
+     * @return SubjectAreaOMASAPIResponse this response is of type ResponseCategory.Category.Glossary if successful, otherwise there is an error response.
      */
     static public SubjectAreaOMASAPIResponse validateGlossarySummaryDuringCreation(String methodName,
                                                                                    GlossarySummary suppliedGlossary,
@@ -179,11 +180,11 @@ public class RestValidator {
     /**
      * This method validated for creation.
      * TODO need another method for update where we could use the relationship guid.
-     * @param methodName - method called
-     * @param suppliedCategory - Category to validate.
-     * @param categoryRESTServices - rest interface.
+     * @param methodName - method making the call
+     * @param suppliedCategory - category to validate against.
+     * @param categoryRESTServices - rest services for glossary.
      * @param userId - current user.
-     * @return SubjectAreaOMASAPIResponse if valid.
+     * @return SubjectAreaOMASAPIResponse this response is of type ResponseCategory.Category.Caregory if successful, otherwise there is an error response.
      */
     static public SubjectAreaOMASAPIResponse validateCategorySummaryDuringCreation(String methodName,
                                                                                    CategorySummary suppliedCategory,
