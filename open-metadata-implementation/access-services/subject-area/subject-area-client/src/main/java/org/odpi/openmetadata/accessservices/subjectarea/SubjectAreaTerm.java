@@ -1,18 +1,20 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea;
 
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.*;
 
 /**
- * The SubjectArea Open Metadata Access Service (OMAS) API for terms.
+ * The SubjectAreaDefinition Open Metadata Access Service (OMAS) API for terms.
  */
 public interface SubjectAreaTerm
 {
 
     /**
      * Create a Term
-     * @param userid unique identifier for requesting user, under which the request is performed
+     * @param userId unique identifier for requesting user, under which the request is performed
      * @param suppliedTerm Term to create
      * @return the created term.
      *
@@ -27,8 +29,8 @@ public interface SubjectAreaTerm
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-    public Term createTerm(String userid, Term suppliedTerm)
-            throws MetadataServerUncontactableException,
+    public Term createTerm(String userId, Term suppliedTerm)
+            throws MetadataServerUncontactableException,UnexpectedResponseException,
             InvalidParameterException,
             UserNotAuthorizedException,
             ClassificationException,
@@ -37,7 +39,7 @@ public interface SubjectAreaTerm
 
     /**
      * Get a term by guid.
-     * @param userid unique identifier for requesting user, under which the request is performed
+     * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid guid of the term to get
      * @return the requested term.
      *
@@ -51,8 +53,8 @@ public interface SubjectAreaTerm
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-    public  Term getTermByGuid( String userid, String guid)
-            throws MetadataServerUncontactableException,
+    public  Term getTermByGuid( String userId, String guid)
+            throws MetadataServerUncontactableException,UnexpectedResponseException,
             UserNotAuthorizedException,
             InvalidParameterException,
             FunctionNotSupportedException,
@@ -63,7 +65,7 @@ public interface SubjectAreaTerm
      * <p>
      * Status is not updated using this call.
      *
-     * @param userid           unique identifier for requesting user, under which the request is performed
+     * @param userId           unique identifier for requesting user, under which the request is performed
      * @param guid             guid of the term to update
      * @param suppliedTerm term to be updated
      * @return replaced term
@@ -76,10 +78,9 @@ public interface SubjectAreaTerm
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public Term replaceTerm(String userid, String guid, Term suppliedTerm) throws
+    public Term replaceTerm(String userId, String guid, Term suppliedTerm) throws
             UnexpectedResponseException,
             UserNotAuthorizedException,
-            UnrecognizedNameException,
             FunctionNotSupportedException,
             InvalidParameterException,
             MetadataServerUncontactableException;
@@ -92,7 +93,7 @@ public interface SubjectAreaTerm
      * qualified names to mismatch the Term name.
      * Status is not updated using this call.
      *
-     * @param userid           unique identifier for requesting user, under which the request is performed
+     * @param userId           unique identifier for requesting user, under which the request is performed
      * @param guid             guid of the term to update
      * @param suppliedTerm term to be updated
      * @return a response which when successful contains the updated term
@@ -105,9 +106,8 @@ public interface SubjectAreaTerm
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public Term updateTerm(String userid, String guid, Term suppliedTerm) throws UnexpectedResponseException,
+    public Term updateTerm(String userId, String guid, Term suppliedTerm) throws UnexpectedResponseException,
             UserNotAuthorizedException,
-            UnrecognizedNameException,
             FunctionNotSupportedException,
             InvalidParameterException,
             MetadataServerUncontactableException;
@@ -118,38 +118,51 @@ public interface SubjectAreaTerm
      * A delete (also known as a soft delete) means that the term instance will exist in a deleted state in the repository after the delete operation. This means
      * that it is possible to undo the delete.
      *
-     * @param userid unique identifier for requesting user, under which the request is performed
+     * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid guid of the term to be deleted.
      * @return the deleted term
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws FunctionNotSupportedException   Function not supported this indicates that a soft delete was issued but the repository does not support it.
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws EntityNotDeletedException a delete was issued but the term was not deleted.
-     * @throws MetadataServerUncontactableException unable to contact server
+     * @param userId userId under which the request is performed
+     * @param guid guid of the term to be deleted.
+     * @return the deleted term
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
+     * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
+     * @throws InvalidParameterException            one of the parameters is null or invalid.
+     * @throws MetadataServerUncontactableException not able to communicate with a Metadata repository service. There is a problem retrieving properties from the metadata repository.
+     * @throws EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-    public Term deleteTerm(String userid,String guid) throws InvalidParameterException,
-            MetadataServerUncontactableException,
+    public Term deleteTerm(String userId,String guid) throws InvalidParameterException,
+            MetadataServerUncontactableException,UnexpectedResponseException,
             UserNotAuthorizedException,
             FunctionNotSupportedException,
-            UnexpectedResponseException,
-            EntityNotDeletedException;
+            EntityNotDeletedException,
+            UnrecognizedGUIDException;
     /**
      * Purge a Term instance
      *
      * A purge means that the term will not exist after the operation.
      *
-     * @param userid unique identifier for requesting user, under which the request is performed
+     * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid guid of the term to be deleted.
      *
+     * Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws GUIDNotPurgedException a hard delete was issued but the term was not purged
-     * @throws MetadataServerUncontactableException unable to contact server
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public  void purgeTerm(String userid,String guid) throws InvalidParameterException,
+    public  void purgeTerm(String userId,String guid) throws InvalidParameterException,
             UserNotAuthorizedException,
-            MetadataServerUncontactableException,
+            MetadataServerUncontactableException,UnexpectedResponseException,
             GUIDNotPurgedException,
-            UnexpectedResponseException;
+            UnrecognizedGUIDException;
 }

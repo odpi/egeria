@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 
 package org.odpi.openmetadata.accessservices.subjectarea.properties.classifications;
 import org.slf4j.Logger;
@@ -146,7 +147,7 @@ public class Retention extends Classification {
        private GovernanceClassificationStatus status;
        /**
         * {@literal Status of this classification. }
-        * @return {@code GovernanceClassificationStatus }
+        * @return {$$PropertyTypeJavadoc$$ }
         */
        public GovernanceClassificationStatus getStatus() {
            return this.status;
@@ -159,7 +160,7 @@ public class Retention extends Classification {
        private Integer confidence;
        /**
         * {@literal Level of confidence in the classification (0=none -> 100=excellent). }
-        * @return {@code Integer }
+        * @return {$$PropertyTypeJavadoc$$ }
         */
        public Integer getConfidence() {
            return this.confidence;
@@ -172,7 +173,7 @@ public class Retention extends Classification {
        private String steward;
        /**
         * {@literal Person responsible for maintaining this classification. }
-        * @return {@code String }
+        * @return {$$PropertyTypeJavadoc$$ }
         */
        public String getSteward() {
            return this.steward;
@@ -185,7 +186,7 @@ public class Retention extends Classification {
        private String source;
        /**
         * {@literal Source of the classification. }
-        * @return {@code String }
+        * @return {$$PropertyTypeJavadoc$$ }
         */
        public String getSource() {
            return this.source;
@@ -198,7 +199,7 @@ public class Retention extends Classification {
        private String notes;
        /**
         * {@literal Information relating to the classification. }
-        * @return {@code String }
+        * @return {$$PropertyTypeJavadoc$$ }
         */
        public String getNotes() {
            return this.notes;
@@ -211,7 +212,7 @@ public class Retention extends Classification {
        private RetentionBasis basis;
        /**
         * {@literal Basis on which the retention period is defined. }
-        * @return {@code RetentionBasis }
+        * @return {$$PropertyTypeJavadoc$$ }
         */
        public RetentionBasis getBasis() {
            return this.basis;
@@ -224,7 +225,7 @@ public class Retention extends Classification {
        private String associatedGUID;
        /**
         * {@literal Related entity used to determine the retention period. }
-        * @return {@code String }
+        * @return {$$PropertyTypeJavadoc$$ }
         */
        public String getAssociatedGUID() {
            return this.associatedGUID;
@@ -237,7 +238,7 @@ public class Retention extends Classification {
        private Date archiveAfter;
        /**
         * {@literal Related entity used to determine the retention period. }
-        * @return {@code Date }
+        * @return {$$PropertyTypeJavadoc$$ }
         */
        public Date getArchiveAfter() {
            return this.archiveAfter;
@@ -250,7 +251,7 @@ public class Retention extends Classification {
        private Date deleteAfter;
        /**
         * {@literal Related entity used to determine the retention period. }
-        * @return {@code Date }
+        * @return {$$PropertyTypeJavadoc$$ }
         */
        public Date getDeleteAfter() {
            return this.deleteAfter;

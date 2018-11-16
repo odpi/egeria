@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.model;
 
 import org.odpi.openmetadata.accessservices.subjectarea.utils.GeneratorUtilities;
@@ -171,7 +172,6 @@ public class OmrsBeanModel {
             omrsBeanRelationshipAttributesMap.put(relationshipDefName, omrsBeanattributeList);
             OmrsBeanRelationship omrsBeanRelationship = new OmrsBeanRelationship();
             omrsBeanRelationship.description = relationshipDef.getDescription();
-
             omrsBeanRelationship.entityProxy1Name = relationshipDef.getEndDef1().getAttributeName();
             omrsBeanRelationship.entityProxy1Type = relationshipDef.getEndDef1().getEntityType().getName();
             omrsBeanRelationship.entityProxy2Name = relationshipDef.getEndDef2().getAttributeName();
