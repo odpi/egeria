@@ -1,0 +1,20 @@
+HDR;RECTYPE;SERVICE;EMPSTATUS;FNAME;LNAME;PNUM;DEPT;LVL;LOCATION;LOCCODE;HOL;ROLE;ETYPE;SALARY;BONUS;SNUM;STREET;CITY;STATE;TAX;TAXP
+0;3809890;11;5;Zach;Now;133777;9999;9;New York;3;27;Founder;1;123800;5600;27;Code St;Harlem;NY;1;3
+0;3809890;11;5;Steve;Starter;439222;9999;9;Amsterdam;1;27;Founder;1;123800;5600;1833;Wilhelmdreef;Amsterdam-Zuidoost;North Holland;1;1
+0;3809890;11;5;Terri;Daring;371803;9999;9;London;2;27;Founder;1;123800;5600;32;Wibble Rd;Corterville;Greater London;1;2
+0;3809890;10;7;Tanya;Tidy;209482;4051;2;New York;3;27;Data Steward;1;43800;215;27;Code St;Harlem;NY;1;3
+0;3809890;9;7;Polly;Tasker;338575;2373;7;Amsterdam;1;27;IT Project Leader;1;46781;560;32;Wibble Rd;Corterville;North Holland;1;1
+0;3809890;9;7;Tessa;Tube;302145;2343;7;New York;3;27;Lead Researcher;1;78934;1500;27;Code St;Harlem;NY;1;3
+0;3809890;9;7;Callie;Quartile;328080;4051;5;New York;3;27;Data Scientist;1;56944;45;27;Code St;Harlem;NY;1;3
+0;3809890;9;7;Ivor;Padlock;499888;2373;8;Amsterdam;1;27;Chief Security Officer;1;86453;4000;1833;Wilhelmdreef;Amsterdam-Zuidoost;North Holland;1;1
+0;3809890;9;6;Bob;Nitter;458109;3082;4;Amsterdam;1;15;Application Developer;0;34504;150;1833;Wilhelmdreef;Amsterdam-Zuidoost;North Holland;1;1
+0;3809890;9;5;Faith;Broker;139870;2373;8;Amsterdam;1;27;Human Resources and Compliance Director;1;84355;4000;1833;Wilhelmdreef;Amsterdam-Zuidoost;North Holland;1;1
+0;3809890;8;6;Sally;Counter;457911;6877;2;London;2;20;Payment Clerk;0;23568;500;32;Wibble Rd;Corterville;Greater London;1;2
+0;3809890;8;7;Lemmie;Stage;818928;3082;4;Amsterdam;1;27;DataStage Specialist;1;45324;300;1833;Wilhelmdreef;Amsterdam-Zuidoost;North Holland;1;1
+0;3809890;8;7;Erin;Overview;324713;7432;7;London;2;27;Information Architect;1;87452;2000;32;Wibble Rd;Corterville;Greater London;1;2
+0;3809890;6;7;Harry;Hopeful;144994;2343;6;New York;3;27;Sales Specialist, New York;1;56340;25465;27;Code St;Harlem;NY;1;3
+0;3809890;6;7;Gary;Geeke;199995;3082;6;Amsterdam;1;27;IT Infrastructure Lead;1;54650;500;1833;Wilhelmdreef;Amsterdam-Zuidoost;North Holland;1;1
+0;3809890;5;5;Reggie;Mint;188888;5656;8;London;2;27;Chief Finance Officer (CFO);1;125640;4100;32;Wibble Rd;Corterville;Greater London;1;2
+0;3809890;2;7;Peter;Profile;986419;7432;5;London;2;27;Information Analyst;1;34520;450;32;Wibble Rd;Corterville;Greater London;1;2
+0;3809890;2;7;Tom;Tally;896522;6788;7;London;2;27;Accounts Manager, Finance HQ;1;65432;800;32;Wibble Rd;Corterville;Greater London;1;2
+0;3809890;0;5;Jules;Keeper;296776;5656;8;London;2;27;Chief Data Officer (CDO);1;11230;4000;32;Wibble Rd;Corterville;Greater London;1;2
