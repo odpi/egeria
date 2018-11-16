@@ -20,7 +20,6 @@ public enum DataType implements Serializable {
     STRING(11, "string", "java.lang.String"),
     DATE(12, "date", "java.util.Date");
 
-
     private static final long serialVersionUID = 1L;
 
     private int code;
