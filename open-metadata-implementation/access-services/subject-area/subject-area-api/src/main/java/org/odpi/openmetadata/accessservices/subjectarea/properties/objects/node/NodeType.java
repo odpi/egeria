@@ -71,9 +71,9 @@ public enum NodeType implements Serializable {
     Asset
     ,
     /**
-     * SubjectArea
+     * SubjectAreaDefinition
      */
-    SubjectArea
+    SubjectAreaDefinition
     ,
     // TODO Consider other types like classification, comment,
 
