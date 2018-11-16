@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.ffdc;
 
 import org.slf4j.Logger;
@@ -31,11 +32,11 @@ public enum SubjectAreaErrorCode {
     SERVER_URL_NOT_SPECIFIED(400, "OMAS-SUBJECTAREA-400-001 ",
             "The OMAS Server URL is null",
             "The system is unable to connect to the OMAS Server to retrieve metadata properties.",
-            "Ensure a valid OMAS Server URL is passed to the SubjectArea when it is created."),
+            "Ensure a valid OMAS Server URL is passed to the Subject Area OMAS when it is created."),
     SERVER_URL_MALFORMED(400, "OMAS-SUBJECTAREA-400-002 ",
             "The OMAS Server URL {0} is not in a recognized format",
             "The system is unable to connect to the OMAS Server to retrieve metadata properties.",
-            "Ensure a valid OMAS Server URL is passed to the SubjectArea when it is created."),
+            "Ensure a valid OMAS Server URL is passed to the Subject Area OMAS when it is created."),
     NULL_USER_ID(400, "OMAS-SUBJECTAREA-400-003 ",
             "The user identifier (user id) passed on the {0} operation is null",
             "The system is unable to process the request without a user id.",
@@ -49,7 +50,7 @@ public enum SubjectAreaErrorCode {
             "The system is unable to process the request without a name.",
             "Correct the code in the caller to provide the name."),
     GUID_DOES_NOT_EXIST(400, "OMAS-SUBJECTAREA-400-006 ",
-            "The unique identifier (guid) {0} passed on the {1} parameter of the {2} operation does not exist in the metadata repository",
+            "The unique identifier (guid) {0} passed on the {1} operation does not exist in the metadata repository",
             "The system is unable to process the request without a guid that exists.",
             "Correct the code in the caller to provide a guid that exists on the metadata server."),
     UPDATE_REQUESTED_ON_A_NON_EXISTENT_CLASSIFICATION(400, "OMAS-SUBJECTAREA-400-007 ",
@@ -61,11 +62,11 @@ public enum SubjectAreaErrorCode {
             "The system is unable to process a request due to the attribute value having the incorrect type.",
             "Correct the code in the caller to supply the attribute value with an appropriate type."),
     USER_NOT_AUTHORIZED(400, "OMAS-SUBJECTAREA-400-009 ",
-            "User {0} is not authorized to issue the {1} request for open metadata access service {3} on org.odpi.openmetadata.accessservices.subjectarea.server {4}",
+            "User {0} is not authorized to issue the {1} request for open metadata access service {2} on org.odpi.openmetadata.accessservices.subjectarea.server {3}",
             "The system is unable to process the request.",
             "Verify the access rights of the user."),
     METADATA_SERVER_UNCONTACTABLE_ERROR(400, "OMAS-SUBJECTAREA-400-010 ",
-            "An unexpected error with message \'{0}\' was returned by the property org.odpi.openmetadata.accessservices.subjectarea.server during {1} request for open metadata access service {2} on org.odpi.openmetadata.accessservices.subjectarea.server {3}",
+            "An unexpected error with message {0} was returned by the property org.odpi.openmetadata.accessservices.subjectarea.server during {1} request for open metadata access service {2} on org.odpi.openmetadata.accessservices.subjectarea.server {3}",
             "The system is unable to process the request.",
             "Verify the access rights of the user."),
     NULL_ENUM(400, "OMAS-SUBJECTAREA-400-011 ",
@@ -302,6 +303,10 @@ public enum SubjectAreaErrorCode {
             "The returned nodeType {0} did not equal the requested nodeType {1} ",
             "The system returned an invalid nodetype  in the response.",
             "Raising a github issue on the system."),
+    INVALID_RELATIOMSHIP_GUID_WRONG_TYPE(400, "OMAS-SUBJECTAREA-400-070 ",
+            "A get was issued for a relationship with guid {0}. The returned relationship was not of the required type {1} ",
+            "The system returned an invalid nodetype  in the response.",
+            "Raising a github issue on the system."),
 
     OMRS_NOT_INITIALIZED(404, "OMAS-SUBJECTAREA-404-001 ",
             "The open metadata repository services are not initialized for the {0} operation",
@@ -355,11 +360,11 @@ public enum SubjectAreaErrorCode {
             "A client-side exception was received from API call {0} to repository {1}.  The error message was {2}",
             "The org.odpi.openmetadata.accessservices.subjectarea.server has issued a call to the open metadata access service REST API in a remote org.odpi.openmetadata.accessservices.subjectarea.server and has received an exception from the local client libraries.",
             "Look for errors in the local org.odpi.openmetadata.accessservices.subjectarea.server's console to understand and correct the source of the error. This could be due to the url being incorrect or the server not being up."),
-    CLIENT_SIDE_API_REST_RESPONSE_ERROR(503, "OMAS-SUBJECTAREA-503-002 ",
+    CLIENT_SIDE_API_REST_RESPONSE_ERROR(503, "OMAS-SUBJECTAREA-503-003 ",
             "The rest call successfully completed, but the response content could not be interpretted for API call {0} to repository {1}.  The error message was {2}",
             "REST API in a remote org.odpi.openmetadata.accessservices.subjectarea.server completed, but the response returned was not as expected.",
             "Look for errors in the local org.odpi.openmetadata.accessservices.subjectarea.server's console to understand and correct the source of the error."),
-    SERVICE_NOT_INITIALIZED(504, "OMAS-SUBJECTAREA-503-003 ",
+    SERVICE_NOT_INITIALIZED(504, "OMAS-SUBJECTAREA-503-004 ",
             "The access service has not been initialized and can not support REST API call {0}",
             "The org.odpi.openmetadata.accessservices.subjectarea.server has received a call to one of its open metadata access services but is unable to process it because the access service is not active.",
             "If the org.odpi.openmetadata.accessservices.subjectarea.server is supposed to have this access service activated, correct the org.odpi.openmetadata.accessservices.subjectarea.server configuration and restart the org.odpi.openmetadata.accessservices.subjectarea.server.");

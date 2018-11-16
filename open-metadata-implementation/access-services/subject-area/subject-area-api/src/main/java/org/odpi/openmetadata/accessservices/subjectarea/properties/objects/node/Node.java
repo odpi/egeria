@@ -4,7 +4,8 @@ package org.odpi.openmetadata.accessservices.subjectarea.properties.objects.node
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.*;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.GovernanceActions;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SystemAttributes;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.IconSummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.ProjectSummary;
@@ -13,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -43,7 +45,6 @@ public class Node implements Serializable {
     private Map<String,String> additionalProperties;
     private String description =null;
     protected List<Classification> classifications = null;
-
     private Set<IconSummary> icons = null;
 
     /**
@@ -120,7 +121,15 @@ public class Node implements Serializable {
     public List<Classification> getClassifications() {
         return classifications;
     }
-
+    /**
+     * If governance action classifications (Retention, Confidence, Confidentiality or Criticality) are supplied then remove them
+     * from the classifications and add to the appropriate named field. e.g. Retention will be set in the retention field.
+     *
+     * @param classifications the list of classifications to set on the GovernedNode.
+     */
+    public void setClassifications(List<Classification> classifications) {
+        this.classifications=classifications;
+    }
     /**
      * icon summary
      * @return icon
@@ -166,6 +175,7 @@ public class Node implements Serializable {
 
         return sb;
     }
+
 
     @Override
     public String toString() {
