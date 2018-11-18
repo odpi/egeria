@@ -1,9 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions;
 
 
 /**
- * The StatusNotSupportedException is thrown by the SubjectArea OMAS when a status is not supported.
+ * The StatusNotSupportedException is thrown by the Subject Area OMAS when a status is not supported.
  * value.
  */
 public class StatusNotSupportedException extends SubjectAreaCheckedExceptionBase

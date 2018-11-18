@@ -143,7 +143,7 @@ public abstract class OpenMetadataRepositoryTestCase extends OpenMetadataTestCas
 
 
     /**
-     * Return the instance properties defined for the TypeDef.
+     * Return instance properties for the properties defined in the TypeDef, but do not include properties from supertypes.
      *
      * @param typeDefAttributes  attributes defined for a specific type
      * @return properties for an instance of this type
@@ -181,6 +181,131 @@ public abstract class OpenMetadataRepositoryTestCase extends OpenMetadataTestCas
 
 
         return properties;
+    }
+
+    /**
+     * Return instance properties for the properties defined in the TypeDef and all of its supertypes
+     *
+     * @param typeDef  the definition of the type
+     * @return properties for an instance of this type
+     */
+    protected InstanceProperties  getAllPropertiesForInstance(String userId, TypeDef typeDef) throws Exception {
+
+        InstanceProperties   properties = null;
+
+        // Recursively gather all the TypeDefAttributes for the supertype hierarchy...
+        List<TypeDefAttribute> allTypeDefAttributes = getPropertiesForTypeDef(userId, typeDef);
+
+        if (allTypeDefAttributes != null)
+        {
+            Map<String, InstancePropertyValue> propertyMap = new HashMap<>();
+
+
+            for (TypeDefAttribute  typeDefAttribute : allTypeDefAttributes)
+            {
+                String                   attributeName = typeDefAttribute.getAttributeName();
+                AttributeTypeDef         attributeType = typeDefAttribute.getAttributeType();
+                AttributeTypeDefCategory category = attributeType.getCategory();
+
+                switch(category)
+                {
+                    case PRIMITIVE:
+                        PrimitiveDef  primitiveDef = (PrimitiveDef)attributeType;
+                        propertyMap.put(attributeName, this.getPrimitivePropertyValue(attributeName, primitiveDef));
+                        break;
+                }
+            }
+
+            if (! propertyMap.isEmpty())
+            {
+                properties = new InstanceProperties();
+                properties.setInstanceProperties(propertyMap);
+            }
+        }
+
+        return properties;
+
+    }
+
+    /**
+     * Return instance properties for only the mandatory properties defined in the TypeDef and all of its supertypes
+     *
+     * @param typeDef  the definition of the type
+     * @return properties for an instance of this type
+     */
+    protected InstanceProperties  getMinPropertiesForInstance(String userId, TypeDef typeDef) throws Exception {
+
+        // Recursively gather all the TypeDefAttributes for the supertype hierarchy...
+        List<TypeDefAttribute> allTypeDefAttributes = getPropertiesForTypeDef(userId, typeDef);
+        Map<String, InstancePropertyValue> propertyMap = new HashMap<>();
+
+        if (allTypeDefAttributes != null)
+        {
+            for (TypeDefAttribute  typeDefAttribute : allTypeDefAttributes)
+            {
+                String                   attributeName = typeDefAttribute.getAttributeName();
+                AttributeTypeDef         attributeType = typeDefAttribute.getAttributeType();
+                AttributeTypeDefCategory category = attributeType.getCategory();
+                AttributeCardinality     attributeCardinality = typeDefAttribute.getAttributeCardinality();
+
+                if (attributeCardinality == AttributeCardinality.AT_LEAST_ONE_ORDERED    ||
+                    attributeCardinality == AttributeCardinality.AT_LEAST_ONE_UNORDERED) {
+
+                    switch (category) {
+                        case PRIMITIVE:
+                            PrimitiveDef primitiveDef = (PrimitiveDef) attributeType;
+                            propertyMap.put(attributeName, this.getPrimitivePropertyValue(attributeName, primitiveDef));
+                            break;
+                    }
+                }
+            }
+        }
+
+        /* Get an InstanceProperties, even if there are no properties in the propertyMap - you cannot pass a null
+         * to updateEntityProperties. So if necessary, pass an empty InstanceProperties object.
+         */
+        InstanceProperties properties = new InstanceProperties();
+        properties.setInstanceProperties(propertyMap);
+
+        return properties;
+
+    }
+
+    /**
+     * Recursively walk the supertype hierarchy starting at the given typeDef, and collect all the TypeDefAttributes
+     *
+     * @param userId   the userId of the caller, needed for retrieving type definitions
+     * @param typeDef  the definition of the type
+     * @return properties for an instance of this type
+     */
+    protected List<TypeDefAttribute> getPropertiesForTypeDef(String userId, TypeDef typeDef) throws Exception {
+
+        OMRSMetadataCollection metadataCollection = this.getMetadataCollection();
+
+        List<TypeDefAttribute> propDefs = new ArrayList<>();
+
+        // Look at the supertype (if any) first and then get any properties for the current type def
+
+        // Move up the supertype hierarchy until you hit the top
+        if (typeDef.getSuperType() != null) {
+
+            // Get the supertype's type def
+            TypeDefLink superTypeDefLink = typeDef.getSuperType();
+            String superTypeName = superTypeDefLink.getName();
+            TypeDef superTypeDef = metadataCollection.getTypeDefByName(userId, superTypeName);
+            List<TypeDefAttribute> inheritedProps = getPropertiesForTypeDef(userId, superTypeDef);
+            if (inheritedProps != null && !inheritedProps.isEmpty()) {
+                propDefs.addAll(inheritedProps);
+            }
+
+        }
+        // Add any properties defined for the current type
+        List<TypeDefAttribute> currentTypePropDefs = typeDef.getPropertiesDefinition();
+        if (currentTypePropDefs != null && !currentTypePropDefs.isEmpty()) {
+            propDefs.addAll(currentTypePropDefs);
+        }
+
+        return propDefs;
     }
 
 
@@ -250,7 +375,11 @@ public abstract class OpenMetadataRepositoryTestCase extends OpenMetadataTestCas
                                        OMRSMetadataCollection   metadataCollection,
                                        EntityDef                entityDef) throws Exception
     {
-        InstanceProperties properties = this.getPropertiesForInstance(entityDef.getPropertiesDefinition());
+        /* Supply all properties for the instance, including those inherited from supertypes, since they may be mandatory.
+         * An alternative here would be to use getMinPropertiesForInstance, but providing all properties creates a logically
+         * complete entity
+         */
+        InstanceProperties properties = this.getAllPropertiesForInstance(userId, entityDef);
 
         return metadataCollection.addEntity(userId, entityDef.getGUID(), properties, null, null );
     }
