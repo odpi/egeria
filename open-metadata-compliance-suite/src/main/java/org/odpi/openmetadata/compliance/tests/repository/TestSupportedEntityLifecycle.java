@@ -8,10 +8,10 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownExc
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -57,9 +57,9 @@ public class TestSupportedEntityLifecycle extends OpenMetadataRepositoryTestCase
     private static final String assertion16    = testCaseId + "-16";
     private static final String assertionMsg16 = " entity can not be set to DELETED status.";
     private static final String assertion17    = testCaseId + "-17";
-    private static final String assertionMsg17 = " entity properties cleared to null.";
+    private static final String assertionMsg17 = " entity properties cleared to min.";
     private static final String assertion18    = testCaseId + "-18";
-    private static final String assertionMsg18 = " entity with no properties version number is ";
+    private static final String assertionMsg18 = " entity with min properties version number is ";
     private static final String assertion19    = testCaseId + "-19";
     private static final String assertionMsg19 = " entity has properties restored.";
     private static final String assertion20    = testCaseId + "-20";
@@ -107,9 +107,15 @@ public class TestSupportedEntityLifecycle extends OpenMetadataRepositoryTestCase
 
         String   testTypeName = entityDef.getName();
 
+        /* Generate property values for all the type's defined properties, including inherited properties
+         * This ensures that any properties defined as mandatory by Egeria property cardinality are provided
+         * thereby getting into the connector-logic beyond the property validation. It also creates an
+         * entity that is logically complete - versus an instance with just the locally-defined properties.
+         */
+
         EntityDetail newEntity = metadataCollection.addEntity(testUserId,
                                                               entityDef.getGUID(),
-                                                              super.getPropertiesForInstance(entityDef.getPropertiesDefinition()),
+                                                              super.getAllPropertiesForInstance(testUserId, entityDef),
                                                               null,
                                                               null);
 
@@ -133,7 +139,7 @@ public class TestSupportedEntityLifecycle extends OpenMetadataRepositoryTestCase
         }
 
         /*
-         * The metadata collection should be set up and consistently
+         * The metadata collection should be set up and consistent
          */
         assertCondition(((newEntity.getMetadataCollectionId() != null) && newEntity.getMetadataCollectionId().equals(this.metadataCollectionId)),
                         assertion7, testTypeName + assertionMsg7);
@@ -187,21 +193,40 @@ public class TestSupportedEntityLifecycle extends OpenMetadataRepositoryTestCase
             assertCondition((true), assertion16, testTypeName + assertionMsg16);
         }
 
-        if ((newEntity.getProperties() != null) && (newEntity.getProperties().getInstanceProperties() != null) && (! newEntity.getProperties().getInstanceProperties().isEmpty()))
-        {
-            EntityDetail noPropertiesEntity = metadataCollection.updateEntityProperties(testUserId,
-                                                                                        newEntity.getGUID(),
-                                                                                        new InstanceProperties());
-            assertCondition(((noPropertiesEntity != null) &&
-                                    ((noPropertiesEntity.getProperties() == null) || (noPropertiesEntity.getProperties().getInstanceProperties() == null) || (noPropertiesEntity.getProperties().getInstanceProperties().isEmpty()))),
-                            assertion17,
-                            testTypeName + assertionMsg17);
-            assertCondition(((noPropertiesEntity != null) && (noPropertiesEntity.getVersion() == nextVersion)),
+        /* Modify the entity such that it has the minimum set of properties possible. If any properties are defined as
+         * mandatory (based on their cardinality) then provide them - in order to exercise the connector more fully.
+         * All optional properties are removed.
+         */
+
+        if ( ( newEntity.getProperties() != null) &&
+             ( newEntity.getProperties().getInstanceProperties() != null) &&
+             (!newEntity.getProperties().getInstanceProperties().isEmpty())) {
+
+            InstanceProperties minEntityProps = super.getMinPropertiesForInstance(testUserId, entityDef);
+
+            EntityDetail minPropertiesEntity = metadataCollection.updateEntityProperties(testUserId,
+                                                                                         newEntity.getGUID(),
+                                                                                         minEntityProps);
+
+
+            /* Check that the returned entity has the desired properties.
+             * Even when there are no properties the minEntityProps will be a (non-null) InstanceProperties - containing
+             * a property map, which may be empty.
+             * The returned EntityDetail may contain a null if there are no properties (i.e. no InstanceProperties object), but
+             * also tolerate an InstanceProperties with no map or an empty map.
+             */
+
+            assertCondition(((minPropertiesEntity != null) && doPropertiesMatch(minEntityProps, minPropertiesEntity.getProperties())),
+                    assertion17, testTypeName + assertionMsg17);
+
+            // Check that the returned entity has tha new version number...
+            assertCondition(((minPropertiesEntity != null) && (minPropertiesEntity.getVersion() == nextVersion)),
                             assertion18,
-                            testTypeName + assertionMsg18 + nextVersion);
+                           testTypeName + assertionMsg18 + nextVersion);
+
             nextVersion++;
 
-
+            // Test the ability (or not) to undo the changes just made
             try
             {
                 EntityDetail undoneEntity = metadataCollection.undoEntityUpdate(testUserId, newEntity.getGUID());
@@ -283,4 +308,66 @@ public class TestSupportedEntityLifecycle extends OpenMetadataRepositoryTestCase
 
         super.result.setDiscoveredProperties(discoveredProperties);
     }
+
+
+    /*
+     * First param is the target which must always be a non-null InstanceProperties
+     * Second param is the actual to be compared against first param - can be null, or empty....
+     */
+    private boolean doPropertiesMatch(InstanceProperties firstInstanceProps, InstanceProperties secondInstanceProps) {
+
+        boolean matchProperties = false;
+        boolean noProperties = false;
+
+        if ( (secondInstanceProps == null) ||
+                (secondInstanceProps.getInstanceProperties() == null) ||
+                (secondInstanceProps.getInstanceProperties().isEmpty())) {
+            noProperties = true;
+        }
+
+        if (noProperties) {
+
+            if (firstInstanceProps.getInstanceProperties().isEmpty()) {
+                matchProperties = true;
+            }
+
+        } else {
+            // non-empty, perform matching
+
+            Map<String, InstancePropertyValue> secondPropertiesMap = secondInstanceProps.getInstanceProperties();
+            Map<String, InstancePropertyValue> firstPropertiesMap = firstInstanceProps.getInstanceProperties();
+
+            boolean matchSizes = ( secondPropertiesMap.size() == firstPropertiesMap.size() );
+
+            if (matchSizes) {
+
+                Set<String> secondPropertiesKeySet = secondPropertiesMap.keySet();
+                Set<String> firstPropertiesKeySet = firstPropertiesMap.keySet();
+
+                boolean matchKeys = secondPropertiesKeySet.containsAll(firstPropertiesKeySet) &&
+                        firstPropertiesKeySet.containsAll(secondPropertiesKeySet);
+
+                if (matchKeys) {
+
+                    // Assume the values match and prove it if they don't...
+                    boolean matchValues = true;
+
+                    Iterator<String> secondPropertiesKeyIter = secondPropertiesKeySet.iterator();
+                    while (secondPropertiesKeyIter.hasNext()) {
+                        String key = secondPropertiesKeyIter.next();
+                        if (!(secondPropertiesMap.get(key).equals(firstPropertiesMap.get(key)))) {
+                            matchValues = false;
+                        }
+                    }
+
+                    // If all property values matched....
+                    if (matchValues) {
+                        matchProperties = true;
+                    }
+                }
+            }
+        }
+        return matchProperties;
+    }
+
 }
