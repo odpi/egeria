@@ -14,7 +14,7 @@ import java.util.Map;
 
 /**
  * OMAGServerAdminResource provides the spring annotations for the server-side
- * implementation of the administrative interface for
+ * implementation of the configuration interface for
  * an Open Metadata and Governance (OMAG) Server.  It provides all of the
  * configuration properties for the Open Metadata Access Services (OMASs) and delegates administration requests
  * to the Open Metadata Repository Services (OMRS).
@@ -30,14 +30,6 @@ import java.util.Map;
  * Advanced Configuration - provides access to all configuration properties to provide
  * fine-grained control of the server.
  * </li>
- * <li>
- * Initialization and shutdown - these methods control the initialization and shutdown of the
- * open metadata and governance service instance based on the supplied configuration.
- * </li>
- * <li>
- * Operational status and control - these methods query the status of the open metadata and governance
- * services as well as the audit log.
- * </li>
  * </ul>
  */
 @RestController
@@ -45,24 +37,6 @@ import java.util.Map;
 public class OMAGServerAdminResource
 {
     private OMAGServerAdminServices adminAPI = new OMAGServerAdminServices();
-
-
-    /*
-     * =============================================================
-     * Help the client discover the type of the server
-     */
-
-
-    /**
-     * Return the origin of this server implementation.
-     *
-     * @return OMAG Server Origin
-     */
-    @RequestMapping(method = RequestMethod.GET, path = "/server-origin")
-    public String getServerOrigin()
-    {
-        return "Egeria OMAG Server";
-    }
 
 
     /*
