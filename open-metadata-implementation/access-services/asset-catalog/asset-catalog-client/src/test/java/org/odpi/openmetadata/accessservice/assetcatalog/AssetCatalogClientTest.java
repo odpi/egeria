@@ -40,7 +40,7 @@ public class AssetCatalogClientTest {
     private static final String defaultUserId = "zebra91";
     private static final String defaultAssetId = "66d7f872-19bd-439c-98ae-c3fe49d8f420";
     private static final String defaultRelationshipId = "c7184523-7ca5-4876-9210-fe1bb1b55cd7";
-
+    private static final String defaultRelationshipType = "SemanticAssignment";
     @Mock
     private RestTemplate restTemplate;
 
@@ -64,7 +64,7 @@ public class AssetCatalogClientTest {
         Throwable thrown = assertThrows(InvalidParameterException.class, () ->
                 assetCatalog.getAssetSummary("", defaultAssetId));
 
-        assertTrue(thrown.getMessage().contains("OMAS-ASSET-CATALOG-400-004"));
+        assertTrue(thrown.getMessage().contains("OMAS-ASSET-CATALOG-400-003"));
     }
 
     @DisplayName("Asset Catalog - Test Invalid Parameter Id")
@@ -73,7 +73,7 @@ public class AssetCatalogClientTest {
         Throwable thrown = assertThrows(InvalidParameterException.class, () ->
                 assetCatalog.getAssetSummary(defaultUserId, ""));
 
-        assertTrue(thrown.getMessage().contains("OMAS-ASSET-CATALOG-400-003"));
+        assertTrue(thrown.getMessage().contains("OMAS-ASSET-CATALOG-400-002"));
     }
 
     @Test
@@ -142,6 +142,20 @@ public class AssetCatalogClientTest {
         checkResponse(response);
     }
 
+    @Test
+    @DisplayName("Asset Relationships for relationship type")
+    void getAssetRelationshipsForTypeTest() {
+        defaultRelationshipExpected();
+
+        RelationshipsResponse response = new RelationshipsResponse();
+        try {
+            response = assetCatalog.getAssetRelationshipsForType(defaultUserId, defaultAssetId, defaultRelationshipType);
+        } catch (AssetCatalogException e) {
+            e.printStackTrace();
+        }
+
+        checkResponse(response);
+    }
 
     @Test
     @DisplayName("Asset Classifications")
