@@ -11,20 +11,43 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 public abstract class OpenMetadataOriginTestCase extends OpenMetadataTestCase
 {
+    private String serverName = null;
     private String serverURLRoot = null;
 
     /**
      * Constructor passes the standard descriptive information to the superclass.
      *
-     * @param workbenchId - identifier of the workbench used to build the documentation URL.
-     * @param testCaseId - id of the test case
-     * @param testCaseName - name of the test case
+     * @param workbenchId  identifier of the workbench used to build the documentation URL.
+     * @param testCaseId  id of the test case
+     * @param testCaseName  name of the test case
      */
     protected OpenMetadataOriginTestCase(String workbenchId,
                                          String testCaseId,
                                          String testCaseName)
     {
         super(workbenchId, testCaseId, testCaseName);
+    }
+
+
+    /**
+     * Return the name of the server.
+     *
+     * @return string server name
+     */
+    public String getServerName()
+    {
+        return serverName;
+    }
+
+
+    /**
+     * Set up the name of the server.
+     *
+     * @param serverName string server name
+     */
+    public void setServerName(String serverName)
+    {
+        this.serverName = serverName;
     }
 
 
