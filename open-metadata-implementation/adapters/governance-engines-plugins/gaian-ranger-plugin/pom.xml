@@ -19,14 +19,6 @@
         <artifactId>governance-engines-plugins</artifactId>
     </parent>
 
-    <!-- Additional repos (for example gaian, derby - see the repo directory -->
-    <repositories>
-        <repository>
-            <id>0.rgp-local</id>
-            <name>Local project repo</name>
-	    <url>file://${project.basedir}/../../../../repo</url>
-        </repository>
-    </repositories>
 
     <!-- dependency management migrated here initially - TODO consolidation -->
     <dependencyManagement>

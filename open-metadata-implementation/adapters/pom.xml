@@ -43,6 +43,106 @@
             <artifactId>commons-collections</artifactId>
             <version>${commons-collections.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.googlecode.maven-download-plugin</groupId>
+            <artifactId>download-maven-plugin</artifactId>
+            <version>${maven-download.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>${maven-antrun.version}</version>
+        </dependency>
     </dependencies>
+
+    <!-- The following steps obtain the required Gaian libraries by retrieving, unpacking the distribution and installing into the local maven repo -->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.googlecode.maven-download-plugin</groupId>
+                <artifactId>download-maven-plugin</artifactId>
+                <version>${maven-download.version}</version>
+                <inherited>false</inherited>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>wget</goal>
+                        </goals>
+                        <configuration>
+                            <url>
+                                https://github.com/gaiandb/gaiandb/blob/master/build/GAIANDB_V2.1.8_20160523.zip?raw=true
+                            </url>
+                            <outputFileName>GAIANDB_V2.1.8_20160523.zip</outputFileName>
+                            <outputDirectory>${project.build.directory}</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <inherited>false</inherited>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <tasks>
+                                <unzip src="${project.build.directory}/GAIANDB_V2.1.8_20160523.zip"
+                                       dest="${project.build.directory}">
+                                    <patternset>
+                                        <include name="**/GAIANDB.jar"/>
+                                        <include name="**/derby.jar"/>
+                                    </patternset>
+                                </unzip>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-install-plugin</artifactId>
+                <version>${maven-install.version}</version>
+                <inherited>false</inherited>
+                <executions>
+                    <execution>
+                        <id>install-derby</id>
+                        <configuration>
+                            <groupId>org.apache.derby</groupId>
+                            <artifactId>derby</artifactId>
+                            <version>10.8.3.1</version>
+                            <packaging>jar</packaging>
+                            <file>${project.build.directory}/lib/derby.jar</file>
+                            <generatePom>true</generatePom>
+                        </configuration>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                    </execution>
+                    <execution>
+                        <id>install-gaian</id>
+                        <configuration>
+                            <groupId>com.ibm.gaiandb</groupId>
+                            <artifactId>gaian</artifactId>
+                            <version>2.1.8</version>
+                            <packaging>jar</packaging>
+                            <file>${project.build.directory}/lib/GAIANDB.jar</file>
+                            <generatePom>true</generatePom>
+                        </configuration>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
 
 </project>
