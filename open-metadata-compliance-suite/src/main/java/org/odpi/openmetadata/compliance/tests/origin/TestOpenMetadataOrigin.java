@@ -1,7 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.compliance.tests.origin;
 
-import org.odpi.openmetadata.compliance.OpenMetadataTestCase;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
@@ -13,7 +12,6 @@ import java.util.Map;
 public class TestOpenMetadataOrigin extends OpenMetadataOriginTestCase
 {
     private static final  String testUserId = "ComplianceTestUser";
-    private static final  String testServerName = "ComplianceTestServer";
 
     private static final  String testCaseId = "repository-origin";
     private static final  String testCaseName = "Repository origin test case";
@@ -40,7 +38,7 @@ public class TestOpenMetadataOrigin extends OpenMetadataOriginTestCase
      */
     protected void run() throws Exception
     {
-        final String urlTemplate = "/open-metadata/admin-services/users/" + testUserId + "/servers/" + testServerName + "/server-origin";
+        final String urlTemplate = "/servers/" + super.getServerName() + "/open-metadata/admin-services/users/" + testUserId + "/server-origin";
 
         RestTemplate restTemplate = new RestTemplate();
 
