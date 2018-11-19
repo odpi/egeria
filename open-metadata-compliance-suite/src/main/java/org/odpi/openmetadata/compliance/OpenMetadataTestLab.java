@@ -161,7 +161,7 @@ public class OpenMetadataTestLab
         }
         else
         {
-            System.out.println("Server at " + serverURLRoot + " is not yet an open metadata repository");
+            System.out.println(serverName + " server at " + serverURLRoot + " is not yet an open metadata repository");
             System.exit(1);
         }
     }
