@@ -125,11 +125,11 @@ public class OMRSAuditLog
         {
             if ((severity == OMRSAuditLogRecordSeverity.ERROR) || (severity == OMRSAuditLogRecordSeverity.EXCEPTION))
             {
-                log.error(logMessageId + " " + logMessage);
+                log.error(originator.getServerName() + " " + logMessageId + " " + logMessage);
             }
             else
             {
-                log.info(logMessageId + " " + logMessage);
+                log.info(originator.getServerName() + " " + logMessageId + " " + logMessage);
             }
         }
         else
