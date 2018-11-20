@@ -38,7 +38,7 @@ public class TestOpenMetadataOrigin extends OpenMetadataOriginTestCase
      */
     protected void run() throws Exception
     {
-        final String urlTemplate = "/servers/" + super.getServerName() + "/open-metadata/admin-services/users/" + testUserId + "/server-origin";
+        final String urlTemplate = "/open-metadata/admin-services/users/" + testUserId + "/servers/" + super.getServerName() + "/server-origin";
 
         RestTemplate restTemplate = new RestTemplate();
 
