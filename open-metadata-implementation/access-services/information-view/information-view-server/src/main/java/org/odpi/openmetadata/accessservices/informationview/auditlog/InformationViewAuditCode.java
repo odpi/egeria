@@ -13,7 +13,7 @@ import java.util.Arrays;
 
 public enum InformationViewAuditCode {
 
-    SERVICE_INITIALIZING("OMAS-INFORMATION_VIEW-0001",
+    SERVICE_INITIALIZING("OMAS-INFORMATION-VIEW-0001",
             OMRSAuditLogRecordSeverity.INFO,
             "The Information View Open Metadata Access Service (OMAS) is initializing a new server instance",
             "The local server has started up a new instance of the Information View OMAS.",
