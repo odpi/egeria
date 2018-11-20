@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  * discover the type of the server.
  */
 @RestController
-@RequestMapping("/servers/{serverName}/open-metadata/admin-services/users/{userId}")
+@RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}")
 public class OMAGServerOriginResource
 {
     OMAGServerOriginServices   originAPI = new OMAGServerOriginServices();
