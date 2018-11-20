@@ -3,8 +3,11 @@
 package org.odpi.openmetadata.accessservices.informationview.events;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.util.List;
 import java.util.Map;
@@ -17,20 +20,16 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ReportRequestBody {
-
-
-    private ConnectionDetails sourceConnectionDetails;
-    private Map<String, Source> sources;
-
+    private List< Source> sources;
     private String id;
-    private String createdTime;
+    private Long createdTime;
     private String author;
     private String reportName;
     private String reportPath;
     private String reportUrl;
     private String lastModifier;
-    private String lastModifiedTime;
-    private List<ReportColumn> reportColumns;
+    private Long lastModifiedTime;
+    private List<ReportElement> reportElements;
     private Map<String, Object> additionalProperties;
 
     /**
@@ -41,7 +40,6 @@ public class ReportRequestBody {
     @Override
     public String toString() {
         return "ReportRequestBody{" +
-                "sourceConnectionDetails=" + sourceConnectionDetails +
                 ", sources=" + sources +
                 ", id='" + id + '\'' +
                 ", createdTime='" + createdTime + '\'' +
@@ -51,7 +49,7 @@ public class ReportRequestBody {
                 ", reportUrl='" + reportUrl + '\'' +
                 ", lastModifier='" + lastModifier + '\'' +
                 ", lastModifiedTime='" + lastModifiedTime + '\'' +
-                ", reportColumns=" + reportColumns +
+                ", reportElements=" + reportElements +
                 ", additionalProperties=" + additionalProperties +
                 '}';
     }
@@ -63,15 +61,6 @@ public class ReportRequestBody {
 
     }
 
-
-    public ConnectionDetails getSourceConnectionDetails() {
-        return sourceConnectionDetails;
-    }
-
-    public void setSourceConnectionDetails(ConnectionDetails sourceConnectionDetails) {
-        this.sourceConnectionDetails = sourceConnectionDetails;
-    }
-
     public String getId() {
         return id;
     }
@@ -80,11 +69,11 @@ public class ReportRequestBody {
         this.id = id;
     }
 
-    public String getCreatedTime() {
+    public Long getCreatedTime() {
         return createdTime;
     }
 
-    public void setCreatedTime(String createdTime) {
+    public void setCreatedTime(Long createdTime) {
         this.createdTime = createdTime;
     }
 
@@ -128,22 +117,21 @@ public class ReportRequestBody {
         this.lastModifier = lastModifier;
     }
 
-    public String getLastModifiedTime() {
+    public Long getLastModifiedTime() {
         return lastModifiedTime;
     }
 
-    public void setLastModifiedTime(String lastModifiedTime) {
+    public void setLastModifiedTime(Long lastModifiedTime) {
         this.lastModifiedTime = lastModifiedTime;
     }
 
-    public Map<String, Source> getSources() {
+    public List<Source> getSources() {
         return sources;
     }
 
-    public void setSources(Map<String, Source> sources) {
+    public void setSources(List<Source> sources) {
         this.sources = sources;
     }
-
 
     public Map<String, Object> getAdditionalProperties() {
         return additionalProperties;
@@ -153,12 +141,12 @@ public class ReportRequestBody {
         this.additionalProperties = additionalProperties;
     }
 
-    public List<ReportColumn> getReportColumns() {
-        return reportColumns;
+    public List<ReportElement> getReportElements() {
+        return reportElements;
     }
 
-    public void setReportColumns(List<ReportColumn> reportColumns) {
-        this.reportColumns = reportColumns;
+    public void setReportElements(List<ReportElement> reportElements) {
+        this.reportElements = reportElements;
     }
 
 

@@ -25,6 +25,7 @@ public class BusinessTerm {
     private String examples;
     private String displayName;
     private String qualifiedName;
+    private GlossaryCategory glossaryCategory;
 
 
 
@@ -139,6 +140,14 @@ public class BusinessTerm {
         this.qualifiedName = qualifiedName;
     }
 
+    public GlossaryCategory getGlossaryCategory() {
+        return glossaryCategory;
+    }
+
+    public void setGlossaryCategory(GlossaryCategory glossaryCategory) {
+        this.glossaryCategory = glossaryCategory;
+    }
+
     @Override
     public String toString() {
         return "BusinessTerm{" +
@@ -152,6 +161,7 @@ public class BusinessTerm {
                 ", examples='" + examples + '\'' +
                 ", displayName='" + displayName + '\'' +
                 ", qualifiedName='" + qualifiedName + '\'' +
+                ", glossaryCategory=" + glossaryCategory +
                 '}';
     }
 }
