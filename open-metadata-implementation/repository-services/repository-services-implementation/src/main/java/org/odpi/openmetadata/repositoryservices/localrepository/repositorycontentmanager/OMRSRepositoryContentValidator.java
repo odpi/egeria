@@ -22,23 +22,9 @@ import java.util.Map;
  */
 public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 {
-    private static OMRSRepositoryContentManager    defaultRepositoryContentManager = null;
-
-    private        OMRSRepositoryContentManager    repositoryContentManager;
-
     private static final Logger log = LoggerFactory.getLogger(OMRSRepositoryContentValidator.class);
 
-
-
-    /**
-     * Default constructor.  This is deprecated as a repository connector should get its repository validator
-     * from its superclass.
-     */
-    @Deprecated
-    public OMRSRepositoryContentValidator()
-    {
-        repositoryContentManager = defaultRepositoryContentManager;
-    }
+    private        OMRSRepositoryContentManager    repositoryContentManager;
 
 
     /**
@@ -54,18 +40,6 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
         this.repositoryContentManager = repositoryContentManager;
 
         validateRepositoryContentManager(methodName);
-    }
-
-    /**
-     * Set up the local repository's content manager.  This maintains a cache of the local repository's type
-     * definitions and rules to provide helpers and validators for TypeDefs and instances that are
-     * exchanged amongst the open metadata repositories and open metadata access services (OMAS).
-     *
-     * @param repositoryContentManager link to repository content manager.
-     */
-    public static synchronized void setRepositoryContentManager(OMRSRepositoryContentManager  repositoryContentManager)
-    {
-        OMRSRepositoryContentHelper.setRepositoryContentManager(repositoryContentManager);
     }
 
 

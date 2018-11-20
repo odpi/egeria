@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.connectedasset.server.spring;
 
 import org.odpi.openmetadata.accessservices.connectedasset.rest.*;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
  * The ConnectedAssetRESTServices is the server-side implementation of the Connected Asset OMAS REST interface.
  */
 @RestController
-@RequestMapping("/open-metadata/access-services/connected-asset/users/{userId}")
+@RequestMapping("/servers/{serverName}/open-metadata/access-services/connected-asset/users/{userId}")
 public class ConnectedAssetOMASResource
 {
     private ConnectedAssetRESTServices restAPI = new ConnectedAssetRESTServices();
@@ -19,13 +20,13 @@ public class ConnectedAssetOMASResource
      */
     public ConnectedAssetOMASResource()
     {
-
     }
 
 
     /**
      * Returns the basic information about the asset.
      *
+     * @param serverName String   name of server instance to call.
      * @param userId     String   userId of user making request.
      * @param assetGUID  String   unique id for asset.
      *
@@ -36,16 +37,18 @@ public class ConnectedAssetOMASResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}")
 
-    public AssetResponse getAssetSummary(@PathVariable String   userId,
+    public AssetResponse getAssetSummary(@PathVariable String   serverName,
+                                         @PathVariable String   userId,
                                          @PathVariable String   assetGUID)
     {
-        return restAPI.getAssetSummary(userId, assetGUID);
+        return restAPI.getAssetSummary(serverName, userId, assetGUID);
     }
 
 
     /**
      * Returns the list of annotations for the asset.
      *
+     * @param serverName   String   name of server instance to call.
      * @param userId       String   userId of user making request.
      * @param assetGUID    String   unique id for asset.
      * @param elementStart int      starting position for fist returned element.
@@ -59,18 +62,20 @@ public class ConnectedAssetOMASResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/annotations")
 
-    public AnnotationsResponse getAnnotations(@PathVariable String  userId,
+    public AnnotationsResponse getAnnotations(@PathVariable String  serverName,
+                                              @PathVariable String  userId,
                                               @PathVariable String  assetGUID,
                                               @RequestParam int     elementStart,
                                               @RequestParam int     maxElements)
     {
-        return restAPI.getAnnotations(userId, assetGUID, elementStart, maxElements);
+        return restAPI.getAnnotations(serverName, userId, assetGUID, elementStart, maxElements);
     }
 
 
     /**
      * Returns the list of certifications for the asset.
      *
+     * @param serverName   String   name of server instance to call.
      * @param userId       String   userId of user making request.
      * @param assetGUID    String   unique id for asset.
      * @param elementStart int      starting position for fist returned element.
@@ -84,18 +89,20 @@ public class ConnectedAssetOMASResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/certifications")
 
-    public CertificationsResponse getCertifications(@PathVariable String  userId,
+    public CertificationsResponse getCertifications(@PathVariable String  serverName,
+                                                    @PathVariable String  userId,
                                                     @PathVariable String  assetGUID,
                                                     @RequestParam int     elementStart,
                                                     @RequestParam int     maxElements)
     {
-        return restAPI.getCertifications(userId, assetGUID, elementStart, maxElements);
+        return restAPI.getCertifications(serverName, userId, assetGUID, elementStart, maxElements);
     }
 
 
     /**
      * Returns the list of comments for the asset.
      *
+     * @param serverName   String   name of server instance to call.
      * @param userId       String   userId of user making request.
      * @param assetGUID    String   unique id for asset.
      * @param elementStart int      starting position for fist returned element.
@@ -109,18 +116,20 @@ public class ConnectedAssetOMASResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/comments")
 
-    public CommentsResponse getComments(@PathVariable String  userId,
+    public CommentsResponse getComments(@PathVariable String  serverName,
+                                        @PathVariable String  userId,
                                         @PathVariable String  assetGUID,
                                         @RequestParam int     elementStart,
                                         @RequestParam int     maxElements)
     {
-        return restAPI.getComments(userId, assetGUID, elementStart, maxElements);
+        return restAPI.getComments(serverName, userId, assetGUID, elementStart, maxElements);
     }
 
 
     /**
      * Returns the list of comments for the asset.
      *
+     * @param serverName   String   name of server instance to call.
      * @param userId       String   userId of user making request.
      * @param commentGUID  String   unique id for the root comment.
      * @param elementStart int      starting position for fist returned element.
@@ -134,18 +143,20 @@ public class ConnectedAssetOMASResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/comments/{commentGUID}/replies")
 
-    public CommentsResponse getCommentReplies(@PathVariable String  userId,
+    public CommentsResponse getCommentReplies(@PathVariable String  serverName,
+                                              @PathVariable String  userId,
                                               @PathVariable String  commentGUID,
                                               @RequestParam int     elementStart,
                                               @RequestParam int     maxElements)
     {
-        return restAPI.getCommentReplies(userId, commentGUID, elementStart, maxElements);
+        return restAPI.getCommentReplies(serverName, userId, commentGUID, elementStart, maxElements);
     }
 
 
     /**
      * Returns the list of connections for the asset.
      *
+     * @param serverName   String   name of server instance to call.
      * @param userId       String   userId of user making request.
      * @param assetGUID    String   unique id for asset.
      * @param elementStart int      starting position for fist returned element.
@@ -159,18 +170,20 @@ public class ConnectedAssetOMASResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/connections")
 
-    public ConnectionsResponse getConnections(@PathVariable String  userId,
+    public ConnectionsResponse getConnections(@PathVariable String  serverName,
+                                              @PathVariable String  userId,
                                               @PathVariable String  assetGUID,
                                               @RequestParam int     elementStart,
                                               @RequestParam int     maxElements)
     {
-        return restAPI.getConnections(userId, assetGUID, elementStart, maxElements);
+        return restAPI.getConnections(serverName, userId, assetGUID, elementStart, maxElements);
     }
 
 
     /**
      * Returns the list of external identifiers for the asset.
      *
+     * @param serverName   String   name of server instance to call.
      * @param userId       String   userId of user making request.
      * @param assetGUID    String   unique id for asset.
      * @param elementStart int      starting position for fist returned element.
@@ -184,18 +197,20 @@ public class ConnectedAssetOMASResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/external-identifiers")
 
-    public ExternalIdentifiersResponse getExternalIdentifiers(@PathVariable String  userId,
+    public ExternalIdentifiersResponse getExternalIdentifiers(@PathVariable String  serverName,
+                                                              @PathVariable String  userId,
                                                               @PathVariable String  assetGUID,
                                                               @RequestParam int     elementStart,
                                                               @RequestParam int     maxElements)
     {
-        return restAPI.getExternalIdentifiers(userId, assetGUID, elementStart, maxElements);
+        return restAPI.getExternalIdentifiers(serverName, userId, assetGUID, elementStart, maxElements);
     }
 
 
     /**
      * Returns the list of external references for the asset.
      *
+     * @param serverName   String   name of server instance to call.
      * @param userId       String   userId of user making request.
      * @param assetGUID    String   unique id for asset.
      * @param elementStart int      starting position for fist returned element.
@@ -209,18 +224,20 @@ public class ConnectedAssetOMASResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/external-references")
 
-    public ExternalReferencesResponse getExternalReferences(@PathVariable String  userId,
+    public ExternalReferencesResponse getExternalReferences(@PathVariable String  serverName,
+                                                            @PathVariable String  userId,
                                                             @PathVariable String  assetGUID,
                                                             @RequestParam int     elementStart,
                                                             @RequestParam int     maxElements)
     {
-        return restAPI.getExternalReferences(userId, assetGUID, elementStart, maxElements);
+        return restAPI.getExternalReferences(serverName, userId, assetGUID, elementStart, maxElements);
     }
 
 
     /**
      * Returns the list of informal tags for the asset.
      *
+     * @param serverName   String   name of server instance to call.
      * @param userId       String   userId of user making request.
      * @param assetGUID    String   unique id for asset.
      * @param elementStart int      starting position for fist returned element.
@@ -234,18 +251,20 @@ public class ConnectedAssetOMASResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/informal-tags")
 
-    public InformalTagsResponse getInformalTags(@PathVariable String  userId,
+    public InformalTagsResponse getInformalTags(@PathVariable String  serverName,
+                                                @PathVariable String  userId,
                                                 @PathVariable String  assetGUID,
                                                 @RequestParam int     elementStart,
                                                 @RequestParam int     maxElements)
     {
-        return restAPI.getInformalTags(userId, assetGUID, elementStart, maxElements);
+        return restAPI.getInformalTags(serverName, userId, assetGUID, elementStart, maxElements);
     }
 
 
     /**
      * Returns the list of licenses for the asset.
      *
+     * @param serverName   String   name of server instance to call.
      * @param userId       String   userId of user making request.
      * @param assetGUID    String   unique id for asset.
      * @param elementStart int      starting position for fist returned element.
@@ -259,18 +278,20 @@ public class ConnectedAssetOMASResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/licenses")
 
-    public LicensesResponse getLicenses(@PathVariable String  userId,
+    public LicensesResponse getLicenses(@PathVariable String  serverName,
+                                        @PathVariable String  userId,
                                         @PathVariable String  assetGUID,
                                         @RequestParam int     elementStart,
                                         @RequestParam int     maxElements)
     {
-        return restAPI.getLicenses(userId, assetGUID, elementStart, maxElements);
+        return restAPI.getLicenses(serverName, userId, assetGUID, elementStart, maxElements);
     }
 
 
     /**
      * Returns the list of likes for the asset.
      *
+     * @param serverName   String   name of server instance to call.
      * @param userId       String   userId of user making request.
      * @param assetGUID    String   unique id for asset.
      * @param elementStart int      starting position for fist returned element.
@@ -284,18 +305,20 @@ public class ConnectedAssetOMASResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/likes")
 
-    public LikesResponse getLikes(@PathVariable String  userId,
+    public LikesResponse getLikes(@PathVariable String  serverName,
+                                  @PathVariable String  userId,
                                   @PathVariable String  assetGUID,
                                   @RequestParam int     elementStart,
                                   @RequestParam int     maxElements)
     {
-        return restAPI.getLikes(userId, assetGUID, elementStart, maxElements);
+        return restAPI.getLikes(serverName, userId, assetGUID, elementStart, maxElements);
     }
 
 
     /**
      * Returns the list of known locations for the asset.
      *
+     * @param serverName   String   name of server instance to call.
      * @param userId       String   userId of user making request.
      * @param assetGUID    String   unique id for asset.
      * @param elementStart int      starting position for fist returned element.
@@ -309,18 +332,20 @@ public class ConnectedAssetOMASResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/known-locations")
 
-    public LocationsResponse getKnownLocations(@PathVariable String  userId,
+    public LocationsResponse getKnownLocations(@PathVariable String  serverName,
+                                               @PathVariable String  userId,
                                                @PathVariable String  assetGUID,
                                                @RequestParam int     elementStart,
                                                @RequestParam int     maxElements)
     {
-        return restAPI.getKnownLocations(userId, assetGUID, elementStart, maxElements);
+        return restAPI.getKnownLocations(serverName, userId, assetGUID, elementStart, maxElements);
     }
 
 
     /**
      * Returns the list of meanings for the asset.
      *
+     * @param serverName   String   name of server instance to call.
      * @param userId       String   userId of user making request.
      * @param assetGUID    String   unique id for asset.
      * @param elementStart int      starting position for fist returned element.
@@ -334,18 +359,20 @@ public class ConnectedAssetOMASResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/meanings")
 
-    public MeaningsResponse getMeanings(@PathVariable String  userId,
+    public MeaningsResponse getMeanings(@PathVariable String  serverName,
+                                        @PathVariable String  userId,
                                         @PathVariable String  assetGUID,
                                         @RequestParam int     elementStart,
                                         @RequestParam int     maxElements)
     {
-        return restAPI.getMeanings(userId, assetGUID, elementStart, maxElements);
+        return restAPI.getMeanings(serverName, userId, assetGUID, elementStart, maxElements);
     }
 
 
     /**
      * Returns the list of note logs for the asset.
      *
+     * @param serverName   String   name of server instance to call.
      * @param userId       String   userId of user making request.
      * @param assetGUID    String   unique id for asset.
      * @param elementStart int      starting position for fist returned element.
@@ -359,18 +386,20 @@ public class ConnectedAssetOMASResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/note-logs")
 
-    public NoteLogsResponse getNoteLogs(@PathVariable String  userId,
+    public NoteLogsResponse getNoteLogs(@PathVariable String  serverName,
+                                        @PathVariable String  userId,
                                         @PathVariable String  assetGUID,
                                         @RequestParam int     elementStart,
                                         @RequestParam int     maxElements)
     {
-        return restAPI.getNoteLogs(userId, assetGUID, elementStart, maxElements);
+        return restAPI.getNoteLogs(serverName, userId, assetGUID, elementStart, maxElements);
     }
 
 
     /**
      * Returns the list of notes for the asset.
      *
+     * @param serverName   String   name of server instance to call.
      * @param userId       String   userId of user making request.
      * @param noteLogGUID  String   unique id for note log.
      * @param elementStart int      starting position for fist returned element.
@@ -384,18 +413,20 @@ public class ConnectedAssetOMASResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/note-log/{noteLogGUID}/notes")
 
-    public NotesResponse getNotes(@PathVariable String  userId,
+    public NotesResponse getNotes(@PathVariable String  serverName,
+                                  @PathVariable String  userId,
                                   @PathVariable String  noteLogGUID,
                                   @RequestParam int     elementStart,
                                   @RequestParam int     maxElements)
     {
-        return restAPI.getNotes(userId, noteLogGUID, elementStart, maxElements);
+        return restAPI.getNotes(serverName, userId, noteLogGUID, elementStart, maxElements);
     }
 
 
     /**
      * Returns the list of ratings for the asset.
      *
+     * @param serverName   String   name of server instance to call.
      * @param userId       String   userId of user making request.
      * @param assetGUID    String   unique id for asset.
      * @param elementStart int      starting position for fist returned element.
@@ -409,18 +440,20 @@ public class ConnectedAssetOMASResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/ratings")
 
-    public RatingsResponse getRatings(@PathVariable String  userId,
+    public RatingsResponse getRatings(@PathVariable String  serverName,
+                                      @PathVariable String  userId,
                                       @PathVariable String  assetGUID,
                                       @RequestParam int     elementStart,
                                       @RequestParam int     maxElements)
     {
-        return restAPI.getRatings(userId, assetGUID, elementStart, maxElements);
+        return restAPI.getRatings(serverName, userId, assetGUID, elementStart, maxElements);
     }
 
 
     /**
      * Returns the list of related assets for the asset.
      *
+     * @param serverName   String   name of server instance to call.
      * @param userId       String   userId of user making request.
      * @param assetGUID    String   unique id for asset.
      * @param elementStart int      starting position for fist returned element.
@@ -434,18 +467,20 @@ public class ConnectedAssetOMASResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/related-assets")
 
-    public RelatedAssetsResponse getRelatedAssets(@PathVariable String  userId,
+    public RelatedAssetsResponse getRelatedAssets(@PathVariable String  serverName,
+                                                  @PathVariable String  userId,
                                                   @PathVariable String  assetGUID,
                                                   @RequestParam int     elementStart,
                                                   @RequestParam int     maxElements)
     {
-        return restAPI.getRelatedAssets(userId, assetGUID, elementStart, maxElements);
+        return restAPI.getRelatedAssets(serverName, userId, assetGUID, elementStart, maxElements);
     }
 
 
     /**
      * Returns the list of related media references for the asset.
      *
+     * @param serverName   String   name of server instance to call.
      * @param userId       String   userId of user making request.
      * @param assetGUID    String   unique id for asset.
      * @param elementStart int      starting position for fist returned element.
@@ -459,18 +494,20 @@ public class ConnectedAssetOMASResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/related-media-references")
 
-    public RelatedMediaReferencesResponse getRelatedMediaReferences(@PathVariable String  userId,
+    public RelatedMediaReferencesResponse getRelatedMediaReferences(@PathVariable String  serverName,
+                                                                    @PathVariable String  userId,
                                                                     @PathVariable String  assetGUID,
                                                                     @RequestParam int     elementStart,
                                                                     @RequestParam int     maxElements)
     {
-        return restAPI.getRelatedMediaReferences(userId, assetGUID, elementStart, maxElements);
+        return restAPI.getRelatedMediaReferences(serverName, userId, assetGUID, elementStart, maxElements);
     }
 
 
     /**
      * Returns the schema for the asset.
      *
+     * @param serverName   String   name of server instance to call.
      * @param userId       String   userId of user making request.
      * @param assetGUID    String   unique id for asset.
      * @param elementStart int      starting position for fist returned element.
@@ -484,12 +521,13 @@ public class ConnectedAssetOMASResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/schema")
 
-    public SchemaResponse getSchema(@PathVariable String  userId,
+    public SchemaResponse getSchema(@PathVariable String  serverName,
+                                    @PathVariable String  userId,
                                     @PathVariable String  assetGUID,
                                     @RequestParam int     elementStart,
                                     @RequestParam int     maxElements)
     {
-        return restAPI.getSchema(userId, assetGUID, elementStart, maxElements);
+        return restAPI.getSchema(serverName, userId, assetGUID, elementStart, maxElements);
     }
 
 }

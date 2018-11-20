@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.connectedasset.rest.ConnectedAssetOM
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.*;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
@@ -22,35 +23,18 @@ import java.util.Map;
 public class ConnectedAsset extends AssetUniverse
 {
     /*
-     * The URL of the server where OMAS is active
+     * The name and URL of the server where OMAS is active
      */
+    private String                    serverName;
     private String                    omasServerURL;
 
-
-    /*
-     * Current counts of all of the attached elements
-     */
-    private int   annotationCount            = 0;
-    private int   certificationCount         = 0;
-    private int   commentCount               = 0;
-    private int   connectionCount            = 0;
-    private int   externalIdentifierCount    = 0;
-    private int   externalReferencesCount    = 0;
-    private int   informalTagCount           = 0;
-    private int   licenseCount               = 0;
-    private int   likeCount                  = 0;
-    private int   knownLocationsCount        = 0;
-    private int   meaningsCount              = 0;
-    private int   noteLogsCount              = 0;
-    private int   ratingsCount               = 0;
-    private int   relatedAssetCount          = 0;
-    private int   relatedMediaReferenceCount = 0;
-    private int   schemaCount                = 0;
+    private final int   maxCacheSize = 100;
 
 
     /**
      * Constructor used by Asset Consumer OMAS and Connected AssetProperties.refresh().
      *
+     * @param serverName  name of the server.
      * @param omasServerURL  url used to call the server.
      * @param userId  userId of user making request.
      * @param assetGUID  unique id for asset.
@@ -61,7 +45,8 @@ public class ConnectedAsset extends AssetUniverse
      *                                   the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public ConnectedAsset(String   omasServerURL,
+    public ConnectedAsset(String   serverName,
+                          String   omasServerURL,
                           String   userId,
                           String   assetGUID) throws UnrecognizedAssetGUIDException,
                                                      InvalidParameterException,
@@ -70,35 +55,145 @@ public class ConnectedAsset extends AssetUniverse
     {
         super();
 
+        this.serverName = serverName;
         this.omasServerURL = omasServerURL;
 
-        AssetResponse assetResponse = this.getAssetSummary(userId, assetGUID);
+        AssetResponse assetResponse = this.getAssetSummary(serverName, userId, assetGUID);
 
         super.assetBean = assetResponse.getAsset();
 
         if (assetResponse.getExternalIdentifierCount() > 0)
         {
-            super.externalIdentifiers = new ConnectedAssetExternalIdentifiers(userId,
+            super.externalIdentifiers = new ConnectedAssetExternalIdentifiers(serverName,
+                                                                              userId,
                                                                               omasServerURL,
                                                                               assetGUID,
                                                                               this,
                                                                               assetResponse.getExternalIdentifierCount(),
-                                                                              100);
+                                                                              maxCacheSize);
         }
-        super.relatedMediaReferences = this.getNewRelatedMediaReferences(userId, assetGUID);
-        super.noteLogs = this.getNewNoteLogs(userId, assetGUID);
-        super.externalIdentifiers = this.getNewExternalIdentifiers(userId, assetGUID);
-        super.externalReferences = this.getNewExternalReferences(userId, assetGUID);
-        super.connections = this.getNewConnections(userId, assetGUID);
-        super.licenses = this.getNewLicenses(userId, assetGUID);
-        super.certifications = this.getNewCertifications(userId, assetGUID);
-        super.meanings = this.getNewMeanings(userId, assetGUID);
-        super.schema = this.getNewSchema(userId, assetGUID);
-        super.analysis = this.getNewAnalysis(userId, assetGUID);
-        super.feedback = this.getNewFeedback(userId, assetGUID);
-        super.knownLocations = this.getNewKnownLocations(userId, assetGUID);
-        super.lineage = this.getNewLineage(userId, assetGUID);
-        super.relatedAssets = this.getNewRelatedAssets(userId, assetGUID);
+
+        if (assetResponse.getRelatedMediaReferenceCount() > 0)
+        {
+            super.relatedMediaReferences = new ConnectedAssetRelatedMediaReferences(serverName,
+                                                                                    userId,
+                                                                                    omasServerURL,
+                                                                                    assetGUID,
+                                                                                    this,
+                                                                                    assetResponse.getRelatedMediaReferenceCount(),
+                                                                                    maxCacheSize);
+        }
+
+        if (assetResponse.getNoteLogsCount() > 0)
+        {
+            super.noteLogs = new ConnectedAssetNoteLogs(serverName,
+                                                        userId,
+                                                        omasServerURL,
+                                                        assetGUID,
+                                                        this,
+                                                        assetResponse.getNoteLogsCount(),
+                                                        maxCacheSize);
+        }
+
+        if (assetResponse.getExternalReferencesCount() > 0)
+        {
+            super.externalReferences = new ConnectedAssetExternalReferences(serverName,
+                                                                            userId,
+                                                                            omasServerURL,
+                                                                            assetGUID,
+                                                                            this,
+                                                                            assetResponse.getExternalReferencesCount(),
+                                                                            maxCacheSize);
+        }
+
+        if (assetResponse.getConnectionCount() > 0)
+        {
+            super.connections = new ConnectedAssetConnections(serverName,
+                                                              userId,
+                                                              omasServerURL,
+                                                              assetGUID,
+                                                              this,
+                                                              assetResponse.getConnectionCount(),
+                                                              maxCacheSize);
+        }
+
+        if (assetResponse.getLicenseCount() > 0)
+        {
+            super.licenses = new ConnectedAssetLicenses(serverName,
+                                                        userId,
+                                                        omasServerURL,
+                                                        assetGUID,
+                                                        this,
+                                                        assetResponse.getLicenseCount(),
+                                                        maxCacheSize);
+        }
+
+        if (assetResponse.getCertificationCount() > 0)
+        {
+            super.certifications = new ConnectedAssetCertifications(serverName,
+                                                                    userId,
+                                                                    omasServerURL,
+                                                                    assetGUID,
+                                                                    this,
+                                                                    assetResponse.getCertificationCount(),
+                                                                    maxCacheSize);
+        }
+
+        if (assetResponse.getAnnotationCount() > 0)
+        {
+            super.analysis = new ConnectedAssetAnnotations(serverName,
+                                                           userId,
+                                                           omasServerURL,
+                                                           assetGUID,
+                                                           this,
+                                                           assetResponse.getAnnotationCount(),
+                                                           maxCacheSize);
+        }
+
+        super.feedback = new ConnectedAssetFeedback(serverName,
+                                                    userId,
+                                                    omasServerURL,
+                                                    assetGUID,
+                                                    this,
+                                                    assetResponse.getCommentCount(),
+                                                    assetResponse.getLikeCount(),
+                                                    assetResponse.getRatingsCount(),
+                                                    assetResponse.getInformalTagCount(),
+                                                    maxCacheSize);
+
+        if (assetResponse.getKnownLocationsCount() > 0)
+        {
+            super.knownLocations = new ConnectedAssetLocations(serverName,
+                                                               userId,
+                                                               omasServerURL,
+                                                               assetGUID,
+                                                               this,
+                                                               assetResponse.getKnownLocationsCount(),
+                                                               maxCacheSize);
+        }
+
+        super.lineage = new ConnectedAssetLineage(serverName,
+                                                  userId,
+                                                  omasServerURL,
+                                                  assetGUID,
+                                                  this,
+                                                  maxCacheSize);
+
+        if (assetResponse.getRelatedAssetCount() > 0)
+        {
+            super.relatedAssets = new ConnectedAssetRelatedAssets(serverName,
+                                                                  userId,
+                                                                  omasServerURL,
+                                                                  assetGUID,
+                                                                  this,
+                                                                  assetResponse.getRelatedAssetCount(),
+                                                                  maxCacheSize);
+        }
+
+        if (assetResponse.getSchemaType() != null)
+        {
+            super.schema = this.getAssetSchemaType(serverName, userId, assetResponse.getSchemaType());
+        }
     }
 
 
@@ -106,6 +201,7 @@ public class ConnectedAsset extends AssetUniverse
     /**
      * Returns the basic information about the asset.
      *
+     * @param serverName  name of the server.
      * @param userId     String   userId of user making request.
      * @param assetGUID  String   unique id for asset.
      *
@@ -115,24 +211,25 @@ public class ConnectedAsset extends AssetUniverse
      * @throws PropertyServerException there is a problem retrieving the asset properties from the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    private AssetResponse getAssetSummary(String   userId,
+    private AssetResponse getAssetSummary(String   serverName,
+                                          String   userId,
                                           String   assetGUID) throws InvalidParameterException,
                                                                      UnrecognizedAssetGUIDException,
                                                                      PropertyServerException,
                                                                      UserNotAuthorizedException
     {
         final String   methodName = "getAssetSummary";
-        final String   urlTemplate = "/open-metadata/access-services/connected-asset/users/{0}/assets/by-connection/{1}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/connected-asset/users/{1}/assets/{2}";
 
         validateOMASServerURL(methodName);
 
-        AssetResponse  restResult = null;
+        AssetResponse  restResult;
 
         try
         {
             RestTemplate restTemplate = new RestTemplate();
 
-            restResult = restTemplate.getForObject(urlTemplate, AssetResponse.class, userId, assetGUID);
+            restResult = restTemplate.getForObject(urlTemplate, AssetResponse.class, serverName, userId, assetGUID);
         }
         catch (Throwable error)
         {
@@ -159,87 +256,16 @@ public class ConnectedAsset extends AssetUniverse
     }
 
 
-    private AssetExternalIdentifiers  getNewExternalIdentifiers(String   userId,
-                                                                String   assetGUID)
-    {
-        return null;
-    }
-
-
-    private AssetRelatedMediaReferences  getNewRelatedMediaReferences(String   userId,
-                                                                      String   assetGUID)
-    {
-        return null;
-    }
-
-    private AssetNoteLogs  getNewNoteLogs(String   userId,
-                                          String   assetGUID)
-    {
-        return null;
-    }
-
-    private AssetExternalReferences  getNewExternalReferences(String   userId,
-                                                              String   assetGUID)
-    {
-        return null;
-    }
-
-    private AssetConnections  getNewConnections(String   userId,
-                                                String   assetGUID)
-    {
-        return null;
-    }
-
-    private AssetLicenses  getNewLicenses(String   userId,
-                                          String   assetGUID)
-    {
-        return null;
-    }
-
-    private AssetCertifications  getNewCertifications(String   userId,
-                                                      String   assetGUID)
-    {
-        return null;
-    }
-
-    private AssetMeanings  getNewMeanings(String   userId,
-                                          String   assetGUID)
-    {
-        return null;
-    }
-
-    private AssetSchemaType getNewSchema(String   userId,
-                                         String   assetGUID)
-    {
-        return null;
-    }
-
-    private AssetAnnotations  getNewAnalysis(String   userId,
-                                             String   assetGUID)
-    {
-        return null;
-    }
-
-    private AssetFeedback  getNewFeedback(String   userId,
-                                          String   assetGUID)
-    {
-        return null;
-    }
-
-    private AssetLocations  getNewKnownLocations(String   userId,
-                                                 String   assetGUID)
-    {
-        return null;
-    }
-
-    private AssetLineage  getNewLineage(String   userId,
-                                        String   assetGUID)
-    {
-        return null;
-    }
-
-    private RelatedAssets  getNewRelatedAssets(String   userId,
-                                               String   assetGUID)
+    /**
+     * Based on the type of bean passed, return the appropriate type of AssetSchemaType.
+     *
+     * @param serverName  name of the server.
+     * @param bean schema type bean that has the properties for the schema type.
+     * @return subtype of AssetSchemaType
+     */
+    AssetSchemaType    getAssetSchemaType(String     serverName,
+                                          String     userId,
+                                          SchemaType bean)
     {
         return null;
     }

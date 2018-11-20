@@ -41,7 +41,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = RatingsResponse.class, name = "RatingsResponse"),
                 @JsonSubTypes.Type(value = RelatedAssetsResponse.class, name = "RelatedAssetsResponse"),
                 @JsonSubTypes.Type(value = RelatedMediaReferencesResponse.class, name = "RelatedMediaReferencesResponse"),
-                @JsonSubTypes.Type(value = SchemaResponse.class, name = "SchemaResponse"),
+                @JsonSubTypes.Type(value = SchemaTypeResponse.class, name = "SchemaTypeResponse"),
+                @JsonSubTypes.Type(value = SchemaAttributesResponse.class, name = "SchemaAttributesResponse"),
                 @JsonSubTypes.Type(value = VoidResponse.class, name = "VoidResponse"),
                 @JsonSubTypes.Type(value = CountResponse.class, name = "CountResponse")
         })
@@ -70,7 +71,7 @@ public abstract class ConnectedAssetOMASAPIResponse implements java.io.Serializa
      *
      * @param template object to copy
      */
-    public ConnectedAssetOMASAPIResponse(ConnectedAssetOMASAPIResponse  template)
+    public ConnectedAssetOMASAPIResponse(ConnectedAssetOMASAPIResponse template)
     {
         if (template !=null)
         {
