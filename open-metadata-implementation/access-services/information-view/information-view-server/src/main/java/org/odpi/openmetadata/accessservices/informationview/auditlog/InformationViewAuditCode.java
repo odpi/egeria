@@ -15,44 +15,44 @@ public enum InformationViewAuditCode {
 
     SERVICE_INITIALIZING("OMAS-INFORMATION_VIEW-0001",
             OMRSAuditLogRecordSeverity.INFO,
-            "The Information View Open Metadata Access Service (OMAS) is initializing",
-            "The local server has started up the Information View OMAS.",
+            "The Information View Open Metadata Access Service (OMAS) is initializing a new server instance",
+            "The local server has started up a new instance of the Information View OMAS.",
             "No action is required.  This is part of the normal operation of the server."),
 
     SERVICE_REGISTERED_WITH_ENTERPRISE_TOPIC("OMAS-INFORMATION_VIEW-0002",
             OMRSAuditLogRecordSeverity.INFO,
-            "The Information View Open Metadata Access Service (OMAS) is registering a listener with the OMRS Topic",
+            "The Information View Open Metadata Access Service (OMAS) is registering a listener with the OMRS Topic for server {0}",
             "The Information View OMAS is registering to receive events from the connected open metadata repositories.",
             "No action is required.  This is part of the normal operation of the server."),
 
     SERVICE_REGISTERED_WITH_IV_IN_TOPIC("OMAS-INFORMATION_VIEW-0003",
             OMRSAuditLogRecordSeverity.INFO,
-            "The Information View Open Metadata Access Service (OMAS) is registering a listener with the Information View Topic In topic",
-            "The Information View OMAS is registering to receive events from Information View OMAS IN topic.",
+            "The Information View Open Metadata Access Service (OMAS) is registering a listener with the Information View In topic {0}",
+            "The Information View OMAS is registering to receive incoming events from external tools and applications.",
             "No action is required.  This is part of the normal operation of the server."),
 
     SERVICE_INITIALIZED("OMAS-INFORMATION_VIEW-0004",
             OMRSAuditLogRecordSeverity.INFO,
-            "The Information View Open Metadata Access Service (OMAS) is initialized",
+            "The Information View Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
             "The Information View OMAS has completed initialization.",
             "No action is required.  This is part of the normal operation of the server."),
 
     SERVICE_SHUTDOWN("OMAS-INFORMATION_VIEW-0005",
             OMRSAuditLogRecordSeverity.INFO,
-            "The Information View Open Metadata Access Service (OMAS) is shutting down",
-            "The local server has requested shut down of the Information View OMAS.",
+            "The Information View Open Metadata Access Service (OMAS) is shutting down server instance {0}",
+            "The local server has requested shut down of an Information View OMAS server instance.",
             "No action is required.  This is part of the normal operation of the server."),
 
     ERROR_INITIALIZING_CONNECTION("OMAS-INFORMATION_VIEW-0006",
             OMRSAuditLogRecordSeverity.EXCEPTION,
-            "Unable to initialize the  Information View Open Metadata Access Service (OMAS) ",
-            "The connection {0} could not be initialized.",
+            "Unable to initialize the Information View Open Metadata Access Service (OMAS) topic connection {0} for server instance {1}; error message was: {2}",
+            "The connection could not be initialized.",
             "Review the exception and resolve the configuration. "),
 
     ERROR_INITIALIZING_INFORMATION_VIEW_TOPIC_CONNECTION("OMAS-INFORMATION_VIEW-0007",
             OMRSAuditLogRecordSeverity.EXCEPTION,
-            "Unable to initialize the  Information View Open Metadata Access Service (OMAS) ",
-            "The connection to information view topic {0} could not be initialized.",
+            "Unable to initialize the connection to topic {0} in the Information View Open Metadata Access Service (OMAS) instance for server {1} ",
+            "The connection to information view topic could not be initialized.",
             "Review the exception and resolve the configuration. ")
     ;
 
