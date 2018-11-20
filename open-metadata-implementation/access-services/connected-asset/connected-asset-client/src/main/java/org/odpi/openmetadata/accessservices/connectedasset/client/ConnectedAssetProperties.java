@@ -33,6 +33,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperti
  */
 public class ConnectedAssetProperties extends org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProperties
 {
+    private String               serverName;
     private String               userId = null;
     private String               omasServerURL = null;
     private String               connectorInstanceId = null;
@@ -45,13 +46,15 @@ public class ConnectedAssetProperties extends org.odpi.openmetadata.frameworks.c
     /**
      * Typical constructor.
      *
+     * @param serverName  name of the server.
      * @param userId  identifier of calling user
      * @param omasServerURL  url of server
      * @param connectorInstanceId  unique identifier of connector.
      * @param connection  connection information for connector.
      * @param assetGUID  String   unique id for connected asset.
      */
-    public ConnectedAssetProperties(String               userId,
+    public ConnectedAssetProperties(String               serverName,
+                                    String               userId,
                                     String               omasServerURL,
                                     String               connectorInstanceId,
                                     ConnectionProperties connection,
@@ -59,6 +62,7 @@ public class ConnectedAssetProperties extends org.odpi.openmetadata.frameworks.c
     {
         super();
 
+        this.serverName = serverName;
         this.userId = userId;
         this.omasServerURL = omasServerURL;
         this.connectorInstanceId = connectorInstanceId;
@@ -70,19 +74,20 @@ public class ConnectedAssetProperties extends org.odpi.openmetadata.frameworks.c
     /**
      * Copy/clone constructor.
      *
-     * @param templateProperties  template to copy.
+     * @param template  template to copy.
      */
-    public ConnectedAssetProperties(ConnectedAssetProperties   templateProperties)
+    public ConnectedAssetProperties(ConnectedAssetProperties   template)
     {
-        super(templateProperties);
+        super(template);
 
-        if (templateProperties != null)
+        if (template != null)
         {
-            this.userId = templateProperties.userId;
-            this.connection = templateProperties.connection;
-            this.connectorInstanceId = templateProperties.connectorInstanceId;
-            this.omasServerURL = templateProperties.omasServerURL;
-            this.assetGUID = templateProperties.assetGUID;
+            this.serverName = template.serverName;
+            this.userId = template.userId;
+            this.connection = template.connection;
+            this.connectorInstanceId = template.connectorInstanceId;
+            this.omasServerURL = template.omasServerURL;
+            this.assetGUID = template.assetGUID;
         }
     }
 
@@ -104,7 +109,7 @@ public class ConnectedAssetProperties extends org.odpi.openmetadata.frameworks.c
 
         try
         {
-            assetProperties = new ConnectedAsset(omasServerURL, userId, assetGUID);
+            assetProperties = new ConnectedAsset(serverName, omasServerURL, userId, assetGUID);
         }
         catch (UserNotAuthorizedException  error)
         {

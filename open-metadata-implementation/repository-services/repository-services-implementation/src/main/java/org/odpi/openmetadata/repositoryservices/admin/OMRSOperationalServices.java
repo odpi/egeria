@@ -65,8 +65,8 @@ public class OMRSOperationalServices
      * metadata exchange activity they are involved in.  The Logger is for standard debug.
      */
     private static final Logger       log      = LoggerFactory.getLogger(OMRSOperationalServices.class);
-    private static final OMRSAuditLog auditLog = new OMRSAuditLog(OMRSAuditingComponent.OPERATIONAL_SERVICES);
 
+    private final OMRSAuditLog auditLog = new OMRSAuditLog(OMRSAuditingComponent.OPERATIONAL_SERVICES);
 
     private String                         localServerName;         /* Initialized in constructor */
     private String                         localServerType;         /* Initialized in constructor */
@@ -281,15 +281,6 @@ public class OMRSOperationalServices
          * The archive manager loads pre-defined types and instances that are stored in open metadata archives.
          */
         archiveManager = initializeOpenMetadataArchives(repositoryServicesConfig.getOpenMetadataArchiveConnections());
-
-        /*
-         * The repository validator and helper are used by repository connectors to verify the types and instances
-         * they receive from external parties and to build new types and instances.  Instances of these
-         * classes are created in each of the repository connectors (and possibly the event mappers as well).
-         * They are given a link to the repository content manager since it has the cache of TypeDefs.
-         */
-        OMRSRepositoryContentValidator.setRepositoryContentManager(localRepositoryContentManager);
-        OMRSRepositoryContentHelper.setRepositoryContentManager(localRepositoryContentManager);
 
         /*
          * Start up the local repository if one is configured.
