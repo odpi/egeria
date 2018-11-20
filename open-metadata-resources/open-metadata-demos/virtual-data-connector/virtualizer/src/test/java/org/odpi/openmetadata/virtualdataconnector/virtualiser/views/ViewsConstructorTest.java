@@ -3,11 +3,10 @@
 package org.odpi.openmetadata.virtualdataconnector.virtualiser.views;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.json.JSONObject;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.odpi.openmetadata.accessservices.informationview.events.ColumnContextEvent;
+import org.odpi.openmetadata.accessservices.informationview.events.TableContextEvent;
 import org.odpi.openmetadata.accessservices.informationview.events.InformationViewEvent;
 import org.odpi.openmetadata.virtualdataconnector.virtualiser.JsonReadHelper;
 import org.odpi.openmetadata.virtualdataconnector.virtualiser.gaian.GaianQueryConstructor;
@@ -39,7 +38,7 @@ public class ViewsConstructorTest extends AbstractTestNGSpringContextTests {
     //json file received from Information View OMAS
     private String ivJson = null;
     //object matched with json file
-    private ColumnContextEvent columnContextEvent = null;
+    private TableContextEvent tableContextEvent = null;
     @Mock
     private KafkaVirtualiserProducer kafkaVirtualiserProducer;
     @Autowired
@@ -55,7 +54,7 @@ public class ViewsConstructorTest extends AbstractTestNGSpringContextTests {
         ivJson = JsonReadHelper.readFile(new File(classLoader.getResource(TESTIN).getFile()));
         // try to delete the views
         //ivJson= JsonReadHelper.readFile(new File(classLoader.getResource(DELETE).getFile()));
-        columnContextEvent = mapper.readValue(ivJson, ColumnContextEvent.class);
+        tableContextEvent = mapper.readValue(ivJson, TableContextEvent.class);
 
     }
 
@@ -69,7 +68,7 @@ public class ViewsConstructorTest extends AbstractTestNGSpringContextTests {
         HashMap<String, String> createdViews = new HashMap<>();
         createdViews.put(GaianQueryConstructor.BUSINESS_PREFIX, "LTB_EMPSALARYANALYSIS");
         createdViews.put(GaianQueryConstructor.TECHNICAL_PREFIX, "LTT_EMPSALARYANALYSIS");
-        List<InformationViewEvent> views = viewsConstructor.notifyIVOMAS(columnContextEvent, createdViews);
+        List<InformationViewEvent> views = viewsConstructor.notifyIVOMAS(tableContextEvent, createdViews);
         assertNotNull(views);
         String business = JsonReadHelper.readFile(new File(classLoader.getResource(BUSINESS).getFile()));
         String technical = JsonReadHelper.readFile(new File(classLoader.getResource(TECHNICAL).getFile()));

@@ -14,31 +14,31 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class DerivedColumnDetail {
+public class DerivedColumn {
 
-    private String attributeName;
+    private String columnName;
     private Integer position;
     private String cardinality;
     private String defaultValueOverride;
     private String type;
-    private ColumnDetails realColumn;
+    private DatabaseColumn sourceColumn;
 
     /**
      * Return the name of the derived column
      *
      * @return name of the derived column
      */
-    public String getAttributeName() {
-        return attributeName;
+    public String getColumnName() {
+        return columnName;
     }
 
     /**
      * set up the name of the derived column
      *
-     * @param attributeName - name of the derived column
+     * @param columnName - name of the derived column
      */
-    public void setAttributeName(String attributeName) {
-        this.attributeName = attributeName;
+    public void setColumnName(String columnName) {
+        this.columnName = columnName;
     }
 
     /**
@@ -100,17 +100,17 @@ public class DerivedColumnDetail {
      *
      * @return real column linked to the derived column
      */
-    public ColumnDetails getRealColumn() {
-        return realColumn;
+    public DatabaseColumn getSourceColumn() {
+        return sourceColumn;
     }
 
     /**
      * set up the real column linked to the derived column
      *
-     * @param realColumn - real column associated to the derived column
+     * @param sourceColumn - real column associated to the derived column
      */
-    public void setRealColumn(ColumnDetails realColumn) {
-        this.realColumn = realColumn;
+    public void setSourceColumn(DatabaseColumn sourceColumn) {
+        this.sourceColumn = sourceColumn;
     }
 
     /**
@@ -133,13 +133,13 @@ public class DerivedColumnDetail {
 
     @Override
     public String toString() {
-        return "DerivedColumnDetail{" +
-                "attributeName='" + attributeName + '\'' +
+        return "DerivedColumn{" +
+                "columnName='" + columnName + '\'' +
                 ", position=" + position +
                 ", cardinality='" + cardinality + '\'' +
                 ", defaultValueOverride='" + defaultValueOverride + '\'' +
                 ", type='" + type + '\'' +
-                ", realColumn=" + realColumn +
+                ", sourceColumn=" + sourceColumn +
                 '}';
     }
 }

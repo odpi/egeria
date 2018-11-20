@@ -13,42 +13,43 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ConnectionProperties {
+public class TableSource extends Source {
 
-    private String model;
-    private String query;
-    private String networkAddress;
+    private String tableName;
+    private String schemaName;
+    private String databaseName;
 
-    public String getModel() {
-        return model;
+
+    public String getTableName() {
+        return tableName;
     }
 
-    public void setModel(String model) {
-        this.model = model;
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
     }
 
-    public String getQuery() {
-        return query;
+    public String getSchemaName() {
+        return schemaName;
     }
 
-    public void setQuery(String query) {
-        this.query = query;
+    public void setSchemaName(String schemaName) {
+        this.schemaName = schemaName;
     }
 
-    public String getNetworkAddress() {
-        return networkAddress;
+    public String getDatabaseName() {
+        return databaseName;
     }
 
-    public void setNetworkAddress(String networkAddress) {
-        this.networkAddress = networkAddress;
+    public void setDatabaseName(String databaseName) {
+        this.databaseName = databaseName;
     }
 
     @Override
     public String toString() {
-        return "ConnectionProperties{" +
-                "model='" + model + '\'' +
-                ", query='" + query + '\'' +
-                ", networkAddress='" + networkAddress + '\'' +
+        return "TableSource{" +
+                "tableName='" + tableName + '\'' +
+                ", schemaName='" + schemaName + '\'' +
+                ", databaseName='" + databaseName + '\'' +
                 '}';
     }
 }

@@ -14,21 +14,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ReportColumn {
+public class ReportColumn extends ReportElement {
 
-    private String attributeName;
     private String aggregation;
-    private String sectionName;
     private String formula;
-    private List<SourceReference> sourceReference;
-
-    public String getAttributeName() {
-        return attributeName;
-    }
-
-    public void setAttributeName(String attributeName) {
-        this.attributeName = attributeName;
-    }
+    private List<Source> sources;
+    private BusinessTerm businessTerm;
 
     public String getAggregation() {
         return aggregation;
@@ -36,14 +27,6 @@ public class ReportColumn {
 
     public void setAggregation(String aggregation) {
         this.aggregation = aggregation;
-    }
-
-    public String getSectionName() {
-        return sectionName;
-    }
-
-    public void setSectionName(String sectionName) {
-        this.sectionName = sectionName;
     }
 
     public String getFormula() {
@@ -54,22 +37,29 @@ public class ReportColumn {
         this.formula = formula;
     }
 
-    public List<SourceReference> getSourceReference() {
-        return sourceReference;
+    public List<Source> getSources() {
+        return sources;
     }
 
-    public void setSourceReference(List<SourceReference> sourceReference) {
-        this.sourceReference = sourceReference;
+    public void setSources(List<Source> sources) {
+        this.sources = sources;
+    }
+
+    public BusinessTerm getBusinessTerm() {
+        return businessTerm;
+    }
+
+    public void setBusinessTerm(BusinessTerm businessTerm) {
+        this.businessTerm = businessTerm;
     }
 
     @Override
     public String toString() {
         return "ReportColumn{" +
-                "attributeName='" + attributeName + '\'' +
+                "name='" + name + '\'' +
                 ", aggregation='" + aggregation + '\'' +
-                ", sectionName='" + sectionName + '\'' +
                 ", formula='" + formula + '\'' +
-                ", sourceReference=" + sourceReference +
+                ", sources=" + sources +
                 '}';
     }
 }
