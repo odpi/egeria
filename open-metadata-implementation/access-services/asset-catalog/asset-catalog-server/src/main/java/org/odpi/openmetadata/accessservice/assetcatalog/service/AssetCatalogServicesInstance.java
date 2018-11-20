@@ -92,7 +92,7 @@ public class AssetCatalogServicesInstance
      * Return the local metadata collection for this server.
      *
      * @return OMRSMetadataCollection object
-     * @throws PropertyServerException the instance has not bee initialized successfully
+     * @throws PropertyServerException the instance has not been initialized successfully
      */
     public OMRSMetadataCollection getMetadataCollection() throws PropertyServerException {
         final String methodName = "getMetadataCollection";
