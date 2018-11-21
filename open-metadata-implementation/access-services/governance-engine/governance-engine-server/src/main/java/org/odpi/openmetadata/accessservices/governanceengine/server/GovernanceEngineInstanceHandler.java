@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.governanceengine.server;
 
 import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.errorcode.GovernanceEngineErrorCode;
 import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.PropertyServerException;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
@@ -14,7 +15,9 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 class GovernanceEngineInstanceHandler
 {
-    private static GovernanceEngineServicesInstanceMap   instanceMap = new GovernanceEngineServicesInstanceMap();
+    private static GovernanceEngineServicesInstanceMap instanceMap   = new GovernanceEngineServicesInstanceMap();
+    private static AccessServiceDescription            myDescription = AccessServiceDescription.GOVERNANCE_ENGINE_OMAS;
+
 
     /**
      * Default constructor registers the access service
@@ -40,7 +43,7 @@ class GovernanceEngineInstanceHandler
             final String methodName = "getAccessServiceName";
 
             GovernanceEngineErrorCode errorCode    = GovernanceEngineErrorCode.SERVICE_NOT_INITIALIZED;
-            String                    errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
+            String                    errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, methodName);
 
             throw new PropertyServerException(errorCode.getHTTPErrorCode(),
                                               this.getClass().getName(),
@@ -68,7 +71,7 @@ class GovernanceEngineInstanceHandler
             final String methodName = "getMetadataCollection";
 
             GovernanceEngineErrorCode errorCode    = GovernanceEngineErrorCode.SERVICE_NOT_INITIALIZED;
-            String                    errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
+            String                    errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, methodName);
 
             throw new PropertyServerException(errorCode.getHTTPErrorCode(),
                                               this.getClass().getName(),
@@ -96,7 +99,7 @@ class GovernanceEngineInstanceHandler
             final String methodName = "getRepositoryConnector";
 
             GovernanceEngineErrorCode errorCode    = GovernanceEngineErrorCode.SERVICE_NOT_INITIALIZED;
-            String                    errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
+            String                    errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, methodName);
 
             throw new PropertyServerException(errorCode.getHTTPErrorCode(),
                                               this.getClass().getName(),
