@@ -77,15 +77,19 @@ public class OMRSCohortRegistry implements OMRSRegistryEventProcessor
      * The audit log provides a verifiable record of the membership of the open metadata repository cohort and the
      * metadata exchange activity they are involved in.  The Logger is for standard debug.
      */
-    private static final OMRSAuditLog auditLog = new OMRSAuditLog(OMRSAuditingComponent.COHORT_REGISTRY);
+    private OMRSAuditLog auditLog;
+
     private static final Logger       log      = LoggerFactory.getLogger(OMRSCohortRegistry.class);
 
 
     /**
      * Default constructor that relies on the initialization of variables in the declaration.
+     *
+     * @param auditLog audit log for this component.
      */
-    public OMRSCohortRegistry()
+    public OMRSCohortRegistry(OMRSAuditLog auditLog)
     {
+        this.auditLog = auditLog;
     }
 
 

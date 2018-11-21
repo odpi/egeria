@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager;
 
 import org.odpi.openmetadata.repositoryservices.events.*;
@@ -64,17 +65,20 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
      * The audit log provides a verifiable record of the open metadata archives that have been loaded into
      * the open metadata repository.  The Logger is for standard debug.
      */
-    private static final OMRSAuditLog auditLog = new OMRSAuditLog(OMRSAuditingComponent.TYPEDEF_MANAGER);
+    private              OMRSAuditLog auditLog;
+
     private static final Logger       log      = LoggerFactory.getLogger(OMRSRepositoryContentManager.class);
 
 
 
     /**
      * Default constructor
+     *
+     * @param auditLog                  audit log for this component.
      */
-    public OMRSRepositoryContentManager()
+    public OMRSRepositoryContentManager(OMRSAuditLog   auditLog)
     {
-
+        this.auditLog = auditLog;
     }
 
 
@@ -228,10 +232,7 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
                 activeTypeDefGUIDs.put(typeDef.getGUID(), typeDef);
                 activeTypeDefNames.put(typeDef.getName(), typeDef);
 
-                if (log.isDebugEnabled())
-                {
-                    log.debug("Updated Active Type " + typeDef.getName() + " from " + sourceName + ". Full TypeDef: " + typeDef);
-                }
+                log.debug("Updated Active Type " + typeDef.getName() + " from " + sourceName + ". Full TypeDef: " + typeDef);
             }
         }
     }
@@ -258,10 +259,7 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
                 activeTypeDefGUIDs.remove(obsoleteTypeDefGUID);
                 activeTypeDefNames.remove(obsoleteTypeDefName);
 
-                if (log.isDebugEnabled())
-                {
-                    log.debug("Deleted Active TypeDef " + obsoleteTypeDefName + " from " + sourceName);
-                }
+                log.debug("Deleted Active TypeDef " + obsoleteTypeDefName + " from " + sourceName);
             }
         }
     }
@@ -362,10 +360,8 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
 
                         if (propertyName != null)
                         {
-                            if (log.isDebugEnabled())
-                            {
-                                log.debug(typeDef.getName()  + " from " + sourceName + " has property " + propertyName);
-                            }
+                            log.debug(typeDef.getName()  + " from " + sourceName + " has property " + propertyName);
+
                             propertyNames.add(propertyName);
                         }
                         else

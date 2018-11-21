@@ -28,8 +28,6 @@ import java.util.concurrent.ExecutionException;
 public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
 {
     private static final Logger       log      = LoggerFactory.getLogger(KafkaOpenMetadataTopicConnector.class);
-    private static final OMRSAuditLog auditLog = new OMRSAuditLog(OMRSAuditingComponent.OPEN_METADATA_TOPIC_CONNECTOR);
-
 
     private Properties producerProperties = new Properties();
     private Properties consumerProperties = new Properties();
@@ -107,54 +105,63 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
                 serverId = (String) additionalProperties.getProperty(KafkaOpenMetadataTopicProvider.serverIdPropertyName);
                 consumerProperties.put("group.id", serverId);
 
-                auditCode = KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_INITIALIZING;
-                auditLog.logRecord(actionDescription,
-                                   auditCode.getLogMessageId(),
-                                   auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(outTopic, serverId),
-                                   null,
-                                   auditCode.getSystemAction(),
-                                   auditCode.getUserAction());
+                if (auditLog != null)
+                {
+                    auditCode = KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_INITIALIZING;
+                    auditLog.logRecord(actionDescription,
+                                       auditCode.getLogMessageId(),
+                                       auditCode.getSeverity(),
+                                       auditCode.getFormattedLogMessage(outTopic, serverId),
+                                       null,
+                                       auditCode.getSystemAction(),
+                                       auditCode.getUserAction());
 
-                auditCode = KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_PRODUCER_PROPERTIES;
-                auditLog.logRecord(actionDescription,
-                                   auditCode.getLogMessageId(),
-                                   auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(producerProperties.toString()),
-                                   null,
-                                   auditCode.getSystemAction(),
-                                   auditCode.getUserAction());
+                    auditCode = KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_PRODUCER_PROPERTIES;
+                    auditLog.logRecord(actionDescription,
+                                       auditCode.getLogMessageId(),
+                                       auditCode.getSeverity(),
+                                       auditCode.getFormattedLogMessage(producerProperties.toString()),
+                                       null,
+                                       auditCode.getSystemAction(),
+                                       auditCode.getUserAction());
+                }
 
                 /*
                  * Inbound events are received in a different thread so that we can still send events on this thread
                  * even if the Kafka consumer is blocked waiting for the next incoming event.
                  */
-                consumer = new KafkaOpenMetadataEventConsumer(outTopic,serverId, consumerProperties, this);
+                consumer = new KafkaOpenMetadataEventConsumer(outTopic,serverId, consumerProperties, this, auditLog);
                 consumerThread = new Thread(consumer);
                 consumerThread.start();
             }
             else
             {
-                auditCode = KafkaOpenMetadataTopicConnectorAuditCode.NULL_ADDITIONAL_PROPERTIES;
-                auditLog.logRecord(actionDescription,
-                                   auditCode.getLogMessageId(),
-                                   auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(outTopic),
-                                   null,
-                                   auditCode.getSystemAction(),
-                                   auditCode.getUserAction());
+                if (auditLog != null)
+                {
+                    auditCode = KafkaOpenMetadataTopicConnectorAuditCode.NULL_ADDITIONAL_PROPERTIES;
+                    auditLog.logRecord(actionDescription,
+                                       auditCode.getLogMessageId(),
+                                       auditCode.getSeverity(),
+                                       auditCode.getFormattedLogMessage(outTopic),
+                                       null,
+                                       auditCode.getSystemAction(),
+                                       auditCode.getUserAction());
+                }
             }
         }
         else
         {
-            auditCode = KafkaOpenMetadataTopicConnectorAuditCode.NO_TOPIC_NAME;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            if (auditLog != null)
+            {
+                auditCode = KafkaOpenMetadataTopicConnectorAuditCode.NO_TOPIC_NAME;
+                auditLog.logRecord(actionDescription,
+                                   auditCode.getLogMessageId(),
+                                   auditCode.getSeverity(),
+                                   auditCode.getFormattedLogMessage(),
+                                   null,
+                                   auditCode.getSystemAction(),
+                                   auditCode.getUserAction());
+            }
         }
     }
 

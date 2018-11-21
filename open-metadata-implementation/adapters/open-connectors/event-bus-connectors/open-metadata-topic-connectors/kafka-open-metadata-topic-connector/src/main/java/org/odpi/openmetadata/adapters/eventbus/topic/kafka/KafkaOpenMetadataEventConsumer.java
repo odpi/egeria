@@ -25,7 +25,8 @@ import org.slf4j.LoggerFactory;
 public class KafkaOpenMetadataEventConsumer implements Runnable
 {
     private static final Logger       log      = LoggerFactory.getLogger(KafkaOpenMetadataEventConsumer.class);
-    private static final OMRSAuditLog auditLog = new OMRSAuditLog(OMRSAuditingComponent.OPEN_METADATA_TOPIC_CONNECTOR);
+
+    private OMRSAuditLog auditLog;
 
     private static final long recoverySleepTimeSec = 10L;
     private static final long defaultPollTimeout   = 1000;
@@ -46,12 +47,15 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
      * @param topicName name of the topic to listen on.
      * @param consumerProperties properties for the consumer.
      * @param connector connector holding the inbound listeners.
+     * @param auditLog  audit log for this component.
      */
     public KafkaOpenMetadataEventConsumer(String                          topicName,
                                           String                          localServerId,
                                           Properties                      consumerProperties,
-                                          KafkaOpenMetadataTopicConnector connector)
+                                          KafkaOpenMetadataTopicConnector connector,
+                                          OMRSAuditLog                    auditLog)
     {
+        this.auditLog = auditLog;
         this.consumer = new KafkaConsumer<>(consumerProperties);
         this.topicToSubscribe = topicName;
         this.consumer.subscribe(Collections.singletonList(topicToSubscribe), new HandleRebalance());
@@ -114,14 +118,20 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
                         catch (Exception error)
                         {
                             log.error(String.format("Error distributing inbound event: %s", error.getMessage()), error);
-                            auditCode = KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_DISTRIBUTING_EVENT;
-                            auditLog.logRecord(actionDescription,
-                                               auditCode.getLogMessageId(),
-                                               auditCode.getSeverity(),
-                                               auditCode.getFormattedLogMessage(topicToSubscribe, error.getClass().getName(), json, error.getMessage()),
-                                               null,
-                                               auditCode.getSystemAction(),
-                                               auditCode.getUserAction());
+
+                            if (auditLog != null)
+                            {
+                                auditCode = KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_DISTRIBUTING_EVENT;
+                                auditLog.logRecord(actionDescription,
+                                                   auditCode.getLogMessageId(),
+                                                   auditCode.getSeverity(),
+                                                   auditCode.getFormattedLogMessage(topicToSubscribe,
+                                                                                    error.getClass().getName(), json,
+                                                                                    error.getMessage()),
+                                                   null,
+                                                   auditCode.getSystemAction(),
+                                                   auditCode.getUserAction());
+                            }
                         }
                     }
                     else
@@ -143,14 +153,19 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
             catch (Exception error)
             {
                 log.error(String.format("Unexpected error: %s", error.getMessage()), error);
-                auditCode = KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_RECEIVING_EVENT;
-                auditLog.logRecord(actionDescription,
-                                   auditCode.getLogMessageId(),
-                                   auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(topicToSubscribe, error.getClass().getName(), error.getMessage()),
-                                   null,
-                                   auditCode.getSystemAction(),
-                                   auditCode.getUserAction());
+
+                if (auditLog != null)
+                {
+                    auditCode = KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_RECEIVING_EVENT;
+                    auditLog.logRecord(actionDescription,
+                                       auditCode.getLogMessageId(),
+                                       auditCode.getSeverity(),
+                                       auditCode.getFormattedLogMessage(topicToSubscribe, error.getClass().getName(),
+                                                                        error.getMessage()),
+                                       null,
+                                       auditCode.getSystemAction(),
+                                       auditCode.getUserAction());
+                }
                 recoverAfterError();
             }
             finally

@@ -23,7 +23,6 @@ import java.util.List;
 public abstract class OMRSRepositoryEventMapperConnector extends ConnectorBase implements OMRSRepositoryEventMapper
 {
     private static final Logger       log           = LoggerFactory.getLogger(OMRSRepositoryEventMapperConnector.class);
-    private static final OMRSAuditLog auditLog      = new OMRSAuditLog(OMRSAuditingComponent.LOCAL_REPOSITORY_EVENT_MAPPER);
 
     protected OMRSRepositoryEventProcessor repositoryEventProcessor  = null;
     protected String                       repositoryEventMapperName = null;
@@ -35,8 +34,7 @@ public abstract class OMRSRepositoryEventMapperConnector extends ConnectorBase i
     protected String                       localServerType           = null;
     protected String                       localOrganizationName     = null;
     protected String                       localServerUserId         = null;
-
-
+    protected OMRSAuditLog                 auditLog = null;
 
     private List<OpenMetadataTopicConnector> eventBusConnectors = new ArrayList<>();
 
@@ -47,6 +45,18 @@ public abstract class OMRSRepositoryEventMapperConnector extends ConnectorBase i
     public OMRSRepositoryEventMapperConnector()
     {
         super();
+    }
+
+
+    /**
+     * Receive an audit log object that can be used to record audit log messages.  The caller has initialized it
+     * with the correct component description and log destinations.
+     *
+     * @param auditLog audit log object
+     */
+    public void setAuditLog(OMRSAuditLog   auditLog)
+    {
+        this.auditLog = auditLog;
     }
 
 
@@ -179,14 +189,17 @@ public abstract class OMRSRepositoryEventMapperConnector extends ConnectorBase i
             eventBusConnector.start();
         }
 
-        OMRSAuditCode auditCode = OMRSAuditCode.EVENT_MAPPER_LISTENER_STARTED;
-        auditLog.logRecord(methodName,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(repositoryEventMapperName),
-                           this.getConnection().toString(),
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        if (auditLog != null)
+        {
+            OMRSAuditCode auditCode = OMRSAuditCode.EVENT_MAPPER_LISTENER_STARTED;
+            auditLog.logRecord(methodName,
+                               auditCode.getLogMessageId(),
+                               auditCode.getSeverity(),
+                               auditCode.getFormattedLogMessage(repositoryEventMapperName),
+                               this.getConnection().toString(),
+                               auditCode.getSystemAction(),
+                               auditCode.getUserAction());
+        }
     }
 
 
@@ -209,13 +222,16 @@ public abstract class OMRSRepositoryEventMapperConnector extends ConnectorBase i
             eventBusConnector.disconnect();
         }
 
-        OMRSAuditCode auditCode = OMRSAuditCode.EVENT_MAPPER_LISTENER_DISCONNECTED;
-        auditLog.logRecord(methodName,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(repositoryEventMapperName),
-                           this.getConnection().toString(),
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        if (auditLog != null)
+        {
+            OMRSAuditCode auditCode = OMRSAuditCode.EVENT_MAPPER_LISTENER_DISCONNECTED;
+            auditLog.logRecord(methodName,
+                               auditCode.getLogMessageId(),
+                               auditCode.getSeverity(),
+                               auditCode.getFormattedLogMessage(repositoryEventMapperName),
+                               this.getConnection().toString(),
+                               auditCode.getSystemAction(),
+                               auditCode.getUserAction());
+        }
     }
 }

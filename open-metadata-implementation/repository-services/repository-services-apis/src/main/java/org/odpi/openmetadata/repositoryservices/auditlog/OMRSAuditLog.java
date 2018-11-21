@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.auditlog;
 
 import org.slf4j.Logger;
@@ -23,64 +24,29 @@ import java.util.List;
  */
 public class OMRSAuditLog
 {
-    static private final OMRSAuditLogRecordOriginator originator     = new OMRSAuditLogRecordOriginator();
-    static private       List<OMRSAuditLogStore>      auditLogStores = null;
-
     private static final Logger log = LoggerFactory.getLogger(OMRSAuditLog.class);
 
+    private OMRSAuditLogDestination        destination;          /* Initialized in the constructor */
     private OMRSAuditLogReportingComponent reportingComponent;   /* Initialized in the constructor */
-
-
-    /**
-     * Initialize the static values used in all log records.  These values help to pin-point the source of messages
-     * when audit log records from many servers are consolidated into centralized operational tooling.
-     *
-     * @param localServerName name of the local server
-     * @param localServerType type of the local server
-     * @param localOrganizationName name of the organization that owns the local server
-     * @param auditLogStores list of destinations for the audit log records
-     */
-    public static void  initialize(String                  localServerName,
-                                   String                  localServerType,
-                                   String                  localOrganizationName,
-                                   List<OMRSAuditLogStore> auditLogStores)
-    {
-        OMRSAuditLog.originator.setServerName(localServerName);
-        OMRSAuditLog.originator.setServerType(localServerType);
-        OMRSAuditLog.originator.setOrganizationName(localOrganizationName);
-
-        if (auditLogStores != null)
-        {
-            OMRSAuditLog.auditLogStores = new ArrayList<>(auditLogStores);
-        }
-    }
-
-
-    /**
-     * Set up the local metadata collection Id.  This is null if there is no local repository.
-     *
-     * @param localMetadataCollectionId String unique identifier for the metadata collection
-     */
-    public static void setLocalMetadataCollectionId(String              localMetadataCollectionId)
-    {
-        OMRSAuditLog.originator.setMetadataCollectionId(localMetadataCollectionId);
-    }
 
 
     /**
      * Typical constructor: each component using the Audit log will create their own OMRSAuditLog instance and
      * will push log records to it.
      *
+     * @param destination destination for the log records
      * @param componentId numerical identifier for the component.
      * @param componentName display name for the component.
      * @param componentDescription description of the component.
      * @param componentWikiURL link to more information.
      */
-    public OMRSAuditLog(int    componentId,
-                        String componentName,
-                        String componentDescription,
-                        String componentWikiURL)
+    public OMRSAuditLog(OMRSAuditLogDestination destination,
+                        int                     componentId,
+                        String                  componentName,
+                        String                  componentDescription,
+                        String                  componentWikiURL)
     {
+        this.destination = destination;
         this.reportingComponent = new OMRSAuditLogReportingComponent(componentId,
                                                                      componentName,
                                                                      componentDescription,
@@ -89,16 +55,54 @@ public class OMRSAuditLog
 
 
     /**
-     * External constructor is used to create an audit log for a component outside of OMRS
+     * Constructor used to create the root audit log for OMRS
      *
      * @param reportingComponent information about the component that will use this instance of the audit log.
      */
-    public OMRSAuditLog(OMRSAuditingComponent reportingComponent)
+    public OMRSAuditLog(OMRSAuditLogDestination destination,
+                        OMRSAuditingComponent   reportingComponent)
     {
+        this.destination = destination;
         this.reportingComponent = new OMRSAuditLogReportingComponent(reportingComponent.getComponentId(),
                                                                      reportingComponent.getComponentName(),
                                                                      reportingComponent.getComponentDescription(),
                                                                      reportingComponent.getComponentWikiURL());
+    }
+
+
+    /**
+     * Clone request is used to create an audit log for a component outside of OMRS.
+     *
+     * @param componentId numerical identifier for the component.
+     * @param componentName display name for the component.
+     * @param componentDescription description of the component.
+     * @param componentWikiURL link to more information.
+     */
+    public OMRSAuditLog  createNewAuditLog(int                     componentId,
+                                           String                  componentName,
+                                           String                  componentDescription,
+                                           String                  componentWikiURL)
+    {
+        return new OMRSAuditLog(destination,
+                                componentId,
+                                componentName,
+                                componentDescription,
+                                componentWikiURL);
+    }
+
+
+    /**
+     * Constructor used to create the root audit log for OMRS
+     *
+     * @param reportingComponent information about the component that will use this instance of the audit log.
+     */
+    public OMRSAuditLog  createNewAuditLog(OMRSAuditingComponent reportingComponent)
+    {
+        return new OMRSAuditLog(destination,
+                                reportingComponent.getComponentId(),
+                                reportingComponent.getComponentName(),
+                                reportingComponent.getComponentDescription(),
+                                reportingComponent.getComponentWikiURL());
     }
 
 
@@ -121,55 +125,14 @@ public class OMRSAuditLog
                           String                      systemAction,
                           String                      userAction)
     {
-        if (severity != null)
-        {
-            if ((severity == OMRSAuditLogRecordSeverity.ERROR) || (severity == OMRSAuditLogRecordSeverity.EXCEPTION))
-            {
-                log.error(originator.getServerName() + " " + logMessageId + " " + logMessage);
-            }
-            else
-            {
-                log.info(originator.getServerName() + " " + logMessageId + " " + logMessage);
-            }
-        }
-        else
-        {
-            severity = OMRSAuditLogRecordSeverity.UNKNOWN;
-        }
-
-        if (auditLogStores != null)
-        {
-            for (OMRSAuditLogStore  auditLogStore : auditLogStores)
-            {
-                if (auditLogStore != null)
-                {
-                    List<String> additionalInformationArray = null;
-
-                    if (additionalInformation != null)
-                    {
-                        additionalInformationArray = new ArrayList<>();
-                        additionalInformationArray.add(additionalInformation);
-                    }
-
-                    OMRSAuditLogRecord logRecord = new OMRSAuditLogRecord(originator,
-                                                                          reportingComponent,
-                                                                          severity.getName(),
-                                                                          logMessageId,
-                                                                          logMessage,
-                                                                          additionalInformationArray,
-                                                                          systemAction,
-                                                                          userAction);
-                    try
-                    {
-                        auditLogStore.storeLogRecord(logRecord);
-                    }
-                    catch (Throwable error)
-                    {
-                        log.error("Error: " + error + " writing audit log: " + logRecord);
-                    }
-                }
-            }
-        }
+        destination.logRecord(reportingComponent,
+                              actionDescription,
+                              logMessageId,
+                              severity,
+                              logMessage,
+                              additionalInformation,
+                              systemAction,
+                              userAction);
     }
 
 
@@ -204,6 +167,16 @@ public class OMRSAuditLog
                            severity,
                            logMessage,
                            additionalInformation + caughtException.toString(),
+                           systemAction,
+                           userAction);
+        }
+        else
+        {
+            this.logRecord(actionDescription,
+                           logMessageId,
+                           severity,
+                           logMessage,
+                           additionalInformation,
                            systemAction,
                            userAction);
         }

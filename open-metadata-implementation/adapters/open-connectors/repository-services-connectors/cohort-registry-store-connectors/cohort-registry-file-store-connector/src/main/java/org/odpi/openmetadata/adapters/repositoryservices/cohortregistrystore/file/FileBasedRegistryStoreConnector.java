@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.cohortregistrystore.file;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -40,8 +41,6 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
     /*
      * Variables used for logging and debug.
      */
-    private static final OMRSAuditLog auditLog = new OMRSAuditLog(OMRSAuditingComponent.REGISTRY_STORE);
-
     private static final Logger log = LoggerFactory.getLogger(FileBasedRegistryStoreConnector.class);
 
     /**
@@ -116,17 +115,20 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
         }
         else
         {
-            String actionDescription = "Saving Local Registration to Registry Store";
+            if (auditLog != null)
+            {
+                String actionDescription = "Saving Local Registration to Registry Store";
 
-            OMRSAuditCode auditCode = OMRSAuditCode.NULL_MEMBER_REGISTRATION;
+                OMRSAuditCode auditCode = OMRSAuditCode.NULL_MEMBER_REGISTRATION;
 
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(registryStoreName),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+                auditLog.logRecord(actionDescription,
+                                   auditCode.getLogMessageId(),
+                                   auditCode.getSeverity(),
+                                   auditCode.getFormattedLogMessage(registryStoreName),
+                                   null,
+                                   auditCode.getSystemAction(),
+                                   auditCode.getUserAction());
+            }
 
             log.debug("Null local registration passed to saveLocalRegistration :(");
         }
@@ -231,17 +233,20 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
         }
         else
         {
-            String actionDescription = "Saving a Remote Registration to Cohort Registry Store";
+            if (auditLog != null)
+            {
+                String actionDescription = "Saving a Remote Registration to Cohort Registry Store";
 
-            OMRSAuditCode auditCode = OMRSAuditCode.NULL_MEMBER_REGISTRATION;
+                OMRSAuditCode auditCode = OMRSAuditCode.NULL_MEMBER_REGISTRATION;
 
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(registryStoreName),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+                auditLog.logRecord(actionDescription,
+                                   auditCode.getLogMessageId(),
+                                   auditCode.getSeverity(),
+                                   auditCode.getFormattedLogMessage(registryStoreName),
+                                   null,
+                                   auditCode.getSystemAction(),
+                                   auditCode.getUserAction());
+            }
 
             log.debug("Null remote registration passed to saveRemoteRegistration :(");
         }
@@ -332,17 +337,20 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
         }
         else
         {
-            String actionDescription = "Retrieving Remote Registration from Cohort Registry Store";
+            if (auditLog != null)
+            {
+                String actionDescription = "Retrieving Remote Registration from Cohort Registry Store";
 
-            OMRSAuditCode auditCode = OMRSAuditCode.NULL_MEMBER_REGISTRATION;
+                OMRSAuditCode auditCode = OMRSAuditCode.NULL_MEMBER_REGISTRATION;
 
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(registryStoreName),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+                auditLog.logRecord(actionDescription,
+                                   auditCode.getLogMessageId(),
+                                   auditCode.getSeverity(),
+                                   auditCode.getFormattedLogMessage(registryStoreName),
+                                   null,
+                                   auditCode.getSystemAction(),
+                                   auditCode.getUserAction());
+            }
 
             log.debug("Null metadataCollectionId passed to retrieveRemoteRegistration :(");
         }
@@ -388,17 +396,20 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
                 }
                 else
                 {
-                    String actionDescription = "Removing Remote Registration from Cohort Registry Store";
+                    if (auditLog != null)
+                    {
+                        String actionDescription = "Removing Remote Registration from Cohort Registry Store";
 
-                    OMRSAuditCode auditCode = OMRSAuditCode.MISSING_MEMBER_REGISTRATION;
+                        OMRSAuditCode auditCode = OMRSAuditCode.MISSING_MEMBER_REGISTRATION;
 
-                    auditLog.logRecord(actionDescription,
-                                       auditCode.getLogMessageId(),
-                                       auditCode.getSeverity(),
-                                       auditCode.getFormattedLogMessage(metadataCollectionId, registryStoreName),
-                                       null,
-                                       auditCode.getSystemAction(),
-                                       auditCode.getUserAction());
+                        auditLog.logRecord(actionDescription,
+                                           auditCode.getLogMessageId(),
+                                           auditCode.getSeverity(),
+                                           auditCode.getFormattedLogMessage(metadataCollectionId, registryStoreName),
+                                           null,
+                                           auditCode.getSystemAction(),
+                                           auditCode.getUserAction());
+                    }
 
                     log.debug("MetadataCollectionId : " + metadataCollectionId + " passed to removeRemoteRegistration not found :(");
                 }
@@ -410,17 +421,20 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
         }
         else
         {
-            String actionDescription = "Removing Remote Registration from Cohort Registry Store";
+            if (auditLog != null)
+            {
+                String actionDescription = "Removing Remote Registration from Cohort Registry Store";
 
-            OMRSAuditCode auditCode = OMRSAuditCode.NULL_MEMBER_REGISTRATION;
+                OMRSAuditCode auditCode = OMRSAuditCode.NULL_MEMBER_REGISTRATION;
 
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(registryStoreName),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+                auditLog.logRecord(actionDescription,
+                                   auditCode.getLogMessageId(),
+                                   auditCode.getSeverity(),
+                                   auditCode.getFormattedLogMessage(registryStoreName),
+                                   null,
+                                   auditCode.getSystemAction(),
+                                   auditCode.getUserAction());
+            }
 
             log.debug("Null metadataCollectionId passed to removeRemoteRegistration :(");
         }
@@ -480,17 +494,20 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
             /*
              * The registry file is not found, create a new one ...
              */
-            String actionDescription = "Retrieving Cohort Registry Store Properties";
+            if (auditLog != null)
+            {
+                String actionDescription = "Retrieving Cohort Registry Store Properties";
 
-            OMRSAuditCode auditCode = OMRSAuditCode.CREATE_REGISTRY_FILE;
+                OMRSAuditCode auditCode = OMRSAuditCode.CREATE_REGISTRY_FILE;
 
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(registryStoreName),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+                auditLog.logRecord(actionDescription,
+                                   auditCode.getLogMessageId(),
+                                   auditCode.getSeverity(),
+                                   auditCode.getFormattedLogMessage(registryStoreName),
+                                   null,
+                                   auditCode.getSystemAction(),
+                                   auditCode.getUserAction());
+            }
 
             log.debug("New Cohort Registry Store", ioException);
         }
@@ -532,18 +549,21 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
         }
         catch (IOException   ioException)
         {
-            String actionDescription = "Writing Cohort Registry Store Properties";
+            if (auditLog != null)
+            {
+                String actionDescription = "Writing Cohort Registry Store Properties";
 
-            OMRSAuditCode auditCode = OMRSAuditCode.UNUSABLE_REGISTRY_FILE;
+                OMRSAuditCode auditCode = OMRSAuditCode.UNUSABLE_REGISTRY_FILE;
 
-            auditLog.logException(actionDescription,
-                                  auditCode.getLogMessageId(),
-                                  auditCode.getSeverity(),
-                                  auditCode.getFormattedLogMessage(registryStoreName),
-                                  null,
-                                  auditCode.getSystemAction(),
-                                  auditCode.getUserAction(),
-                                  ioException);
+                auditLog.logException(actionDescription,
+                                      auditCode.getLogMessageId(),
+                                      auditCode.getSeverity(),
+                                      auditCode.getFormattedLogMessage(registryStoreName),
+                                      null,
+                                      auditCode.getSystemAction(),
+                                      auditCode.getUserAction(),
+                                      ioException);
+            }
 
             log.debug("Unusable Cohort Registry Store :(", ioException);
         }
