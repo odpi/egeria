@@ -122,13 +122,16 @@ public class AssetConsumerAdmin implements AccessServiceAdmin
         final String            actionDescription = "shutdown";
         AssetConsumerAuditCode  auditCode;
 
-        this.instance.shutdown();
+        if (instance != null)
+        {
+            this.instance.shutdown();
+        }
 
         auditCode = AssetConsumerAuditCode.SERVICE_SHUTDOWN;
         auditLog.logRecord(actionDescription,
                            auditCode.getLogMessageId(),
                            auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(),
+                           auditCode.getFormattedLogMessage(serverName),
                            null,
                            auditCode.getSystemAction(),
                            auditCode.getUserAction());

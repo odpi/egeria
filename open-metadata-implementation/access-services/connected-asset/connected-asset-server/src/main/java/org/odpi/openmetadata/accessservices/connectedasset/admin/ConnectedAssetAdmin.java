@@ -130,7 +130,10 @@ public class ConnectedAssetAdmin implements AccessServiceAdmin
         final String             actionDescription = "shutdown";
         ConnectedAssetAuditCode  auditCode;
 
-        this.instance.shutdown();
+        if (instance != null)
+        {
+            this.instance.shutdown();
+        }
 
         auditCode = ConnectedAssetAuditCode.SERVICE_SHUTDOWN;
         auditLog.logRecord(actionDescription,
