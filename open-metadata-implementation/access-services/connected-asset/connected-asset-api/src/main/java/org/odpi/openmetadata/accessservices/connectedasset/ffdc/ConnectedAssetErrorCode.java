@@ -146,7 +146,7 @@ public enum ConnectedAssetErrorCode
             "The server has issued a call to the open metadata access service REST API in a remote server and has received an exception from the local client libraries.",
             "Look for errors in the local server's console to understand and correct the source of the error."),
     SERVICE_NOT_INITIALIZED(503, "OMAS-CONNECTED-ASSET-503-003 ",
-            "The access service has not been initialized and can not support REST API call {0}",
+            "The access service has not been initialized for server {0} and can not support REST API call {1}",
             "The server has received a call to one of its open metadata access services but is unable to process it because the access service is not active.",
             "If the server is supposed to have this access service activated, correct the server configuration and restart the server."),
     EXCEPTION_RESPONSE_FROM_API(503, "OMAS-CONNECTED-ASSET-503-004 ",

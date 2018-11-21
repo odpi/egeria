@@ -46,7 +46,7 @@ class AssetConsumerInstanceHandler
             final String methodName = "getMetadataCollection";
 
             AssetConsumerErrorCode errorCode    = AssetConsumerErrorCode.SERVICE_NOT_INITIALIZED;
-            String                 errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
+            String                 errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, methodName);
 
             throw new PropertyServerException(errorCode.getHTTPErrorCode(),
                                               this.getClass().getName(),
