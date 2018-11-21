@@ -44,7 +44,7 @@ class ConnectedAssetInstanceHandler
             final String methodName = "getMetadataCollection";
 
             ConnectedAssetErrorCode errorCode    = ConnectedAssetErrorCode.SERVICE_NOT_INITIALIZED;
-            String                  errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
+            String                  errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, methodName);
 
             throw new PropertyServerException(errorCode.getHTTPErrorCode(),
                                               this.getClass().getName(),
@@ -76,7 +76,7 @@ class ConnectedAssetInstanceHandler
             final String methodName = "getRepositoryConnector";
 
             ConnectedAssetErrorCode errorCode    = ConnectedAssetErrorCode.SERVICE_NOT_INITIALIZED;
-            String                 errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
+            String                 errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, methodName);
 
             throw new PropertyServerException(errorCode.getHTTPErrorCode(),
                                               this.getClass().getName(),
