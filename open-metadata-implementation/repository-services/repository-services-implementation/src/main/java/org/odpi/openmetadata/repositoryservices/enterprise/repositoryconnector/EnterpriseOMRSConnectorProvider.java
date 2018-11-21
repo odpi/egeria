@@ -1,6 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector;
 
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogReportingComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
@@ -32,17 +36,18 @@ public class EnterpriseOMRSConnectorProvider extends OMRSRepositoryConnectorProv
 
     private static final Logger log = LoggerFactory.getLogger(EnterpriseOMRSConnectorProvider.class);
 
-    private static OMRSConnectorManager         connectorManager                 = null;
-    private static OMRSRepositoryContentManager repositoryContentManager         = null;
-    private static String                       localServerName                  = null;
-    private static String                       localServerType                  = null;
-    private static String                       owningOrganizationName           = null;
-    private static String                       enterpriseMetadataCollectionId   = null;
-    private static String                       enterpriseMetadataCollectionName = null;
+    private  OMRSConnectorManager         connectorManager;
+    private  OMRSRepositoryContentManager repositoryContentManager;
+    private  String                       localServerName;
+    private  String                       localServerType;
+    private  OMRSAuditLog                 auditLog;
+    private  String                       owningOrganizationName;
+    private  String                       enterpriseMetadataCollectionId;
+    private  String                       enterpriseMetadataCollectionName;
 
 
     /**
-     * Set up the connector manager.  This call is used to control whether the EnterpriseOMRSConnectorProvider
+     * Set up the connector provider.  This call is used to control whether the EnterpriseOMRSConnectorProvider
      * produces connectors or not.  An EnterpriseOMRSRepositoryConnector needs the connector manager to maintain the
      * list of connectors to the repositories in the cohort.
      *
@@ -51,40 +56,35 @@ public class EnterpriseOMRSConnectorProvider extends OMRSRepositoryConnectorProv
      * @param localServerName name of the local server for this connection.
      * @param localServerType type of the local server.
      * @param owningOrganizationName name of the organization the owns the remote server.
+     * @param auditLog audit log for connectors.
      * @param enterpriseMetadataCollectionId unique identifier for the combined metadata collection covered by the
      *                                      connected open metadata repositories.
      * @param enterpriseMetadataCollectionName name of the combined metadata collection covered by the connected open
      *                                        metadata repositories.  Used for messages.
      */
-    public synchronized static void initialize(OMRSConnectorManager         connectorManager,
-                                               OMRSRepositoryContentManager repositoryContentManager,
-                                               String                       localServerName,
-                                               String                       localServerType,
-                                               String                       owningOrganizationName,
-                                               String                       enterpriseMetadataCollectionId,
-                                               String                       enterpriseMetadataCollectionName)
-    {
-        EnterpriseOMRSConnectorProvider.connectorManager = connectorManager;
-        EnterpriseOMRSConnectorProvider.repositoryContentManager = repositoryContentManager;
-        EnterpriseOMRSConnectorProvider.localServerName = localServerName;
-        EnterpriseOMRSConnectorProvider.localServerType = localServerType;
-        EnterpriseOMRSConnectorProvider.owningOrganizationName = owningOrganizationName;
-        EnterpriseOMRSConnectorProvider.enterpriseMetadataCollectionId = enterpriseMetadataCollectionId;
-        EnterpriseOMRSConnectorProvider.enterpriseMetadataCollectionName = enterpriseMetadataCollectionName;
-    }
-
-
-    /**
-     * Typical constructor used with the connector broker.  It sets up the class to use for the repository connector
-     * instance.
-     */
-    public EnterpriseOMRSConnectorProvider()
+    public EnterpriseOMRSConnectorProvider(OMRSConnectorManager         connectorManager,
+                                           OMRSRepositoryContentManager repositoryContentManager,
+                                           String                       localServerName,
+                                           String                       localServerType,
+                                           String                       owningOrganizationName,
+                                           OMRSAuditLog                 auditLog,
+                                           String                       enterpriseMetadataCollectionId,
+                                           String                       enterpriseMetadataCollectionName)
     {
         super();
 
         Class    connectorClass = EnterpriseOMRSRepositoryConnector.class;
 
         super.setConnectorClassName(connectorClass.getName());
+
+        this.connectorManager = connectorManager;
+        this.repositoryContentManager = repositoryContentManager;
+        this.localServerName = localServerName;
+        this.localServerType = localServerType;
+        this.auditLog = auditLog;
+        this.owningOrganizationName = owningOrganizationName;
+        this.enterpriseMetadataCollectionId = enterpriseMetadataCollectionId;
+        this.enterpriseMetadataCollectionName = enterpriseMetadataCollectionName;
     }
 
 
@@ -99,14 +99,11 @@ public class EnterpriseOMRSConnectorProvider extends OMRSRepositoryConnectorProv
      */
     public Connector getConnector(ConnectionProperties connection) throws ConnectionCheckedException, ConnectorCheckedException
     {
-        String   methodName = "getConnector()";
+        String   methodName = "getConnector";
 
-        if (log.isDebugEnabled())
-        {
-            log.debug(methodName + " called");
-        }
+        log.debug(methodName + " called");
 
-        if (EnterpriseOMRSConnectorProvider.connectorManager == null)
+        if (this.connectorManager == null)
         {
             /*
              * If the cohort is not connected then throw an exception to indicate that the repositories are offline.
@@ -125,8 +122,9 @@ public class EnterpriseOMRSConnectorProvider extends OMRSRepositoryConnectorProv
         /*
          * Create and initialize a new connector.
          */
-        EnterpriseOMRSRepositoryConnector connector = new EnterpriseOMRSRepositoryConnector(EnterpriseOMRSConnectorProvider.connectorManager);
+        EnterpriseOMRSRepositoryConnector connector = new EnterpriseOMRSRepositoryConnector(this.connectorManager);
 
+        connector.setAuditLog(auditLog.createNewAuditLog(OMRSAuditingComponent.ENTERPRISE_REPOSITORY_CONNECTOR));
         connector.initialize(this.getNewConnectorGUID(), connection);
         connector.setServerName(localServerName);
         connector.setServerType(localServerType);
@@ -136,14 +134,11 @@ public class EnterpriseOMRSConnectorProvider extends OMRSRepositoryConnectorProv
         connector.setRepositoryValidator(new OMRSRepositoryContentValidator(repositoryContentManager));
         connector.setMetadataCollectionId(enterpriseMetadataCollectionId);
         connector.initializeConnectedAssetProperties(new EnterpriseOMRSConnectorProperties(connector,
-                                                                                           EnterpriseOMRSConnectorProvider.connectorManager,
+                                                                                           this.connectorManager,
                                                                                            enterpriseMetadataCollectionId,
                                                                                            enterpriseMetadataCollectionName));
 
-        if (log.isDebugEnabled())
-        {
-            log.debug(methodName + " returns: " + connector.getConnectorInstanceId() + ", " + connection.getConnectionName());
-        }
+        log.debug(methodName + " returns: " + connector.getConnectorInstanceId() + ", " + connection.getConnectionName());
 
         return connector;
     }
