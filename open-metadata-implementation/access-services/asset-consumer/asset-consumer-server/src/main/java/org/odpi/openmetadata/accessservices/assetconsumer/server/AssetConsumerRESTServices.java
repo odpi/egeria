@@ -21,7 +21,6 @@ import java.util.Map;
  */
 public class AssetConsumerRESTServices
 {
-    static private String                         accessServiceName   = null;
     private static AssetConsumerInstanceHandler   instanceHandler     = new AssetConsumerInstanceHandler();
 
     private static final Logger log = LoggerFactory.getLogger(AssetConsumerRESTServices.class);
@@ -61,7 +60,7 @@ public class AssetConsumerRESTServices
 
         try
         {
-            ConnectionHandler   connectionHandler = new ConnectionHandler(accessServiceName,
+            ConnectionHandler   connectionHandler = new ConnectionHandler(instanceHandler.getAccessServiceName(),
                                                                           instanceHandler.getRepositoryConnector(serverName));
 
             response.setConnection(connectionHandler.getConnectionByName(userId, name));
@@ -118,7 +117,7 @@ public class AssetConsumerRESTServices
 
         try
         {
-            ConnectionHandler   connectionHandler = new ConnectionHandler(accessServiceName,
+            ConnectionHandler   connectionHandler = new ConnectionHandler(instanceHandler.getAccessServiceName(),
                                                                           instanceHandler.getRepositoryConnector(serverName));
 
             response.setConnection(connectionHandler.getConnectionByGUID(userId, guid));
@@ -169,7 +168,8 @@ public class AssetConsumerRESTServices
 
         try
         {
-            MyProfileHandler   handler = new MyProfileHandler(accessServiceName, instanceHandler.getRepositoryConnector(serverName));
+            MyProfileHandler   handler = new MyProfileHandler(instanceHandler.getAccessServiceName(),
+                                                              instanceHandler.getRepositoryConnector(serverName));
 
             response.setPersonalProfile(handler.getMyProfile(userId));
         }
@@ -236,7 +236,8 @@ public class AssetConsumerRESTServices
                 additionalProperties = requestBody.getAdditionalProperties();
             }
 
-            MyProfileHandler   handler = new MyProfileHandler(accessServiceName, instanceHandler.getRepositoryConnector(serverName));
+            MyProfileHandler   handler = new MyProfileHandler(instanceHandler.getAccessServiceName(),
+                                                              instanceHandler.getRepositoryConnector(serverName));
 
             handler.updateMyProfile(userId, employeeNumber, fullName, knownName, jobTitle, jobRoleDescription, additionalProperties);
         }
@@ -355,7 +356,7 @@ public class AssetConsumerRESTServices
 
         try
         {
-            ConnectionHandler   connectionHandler = new ConnectionHandler(accessServiceName,
+            ConnectionHandler   connectionHandler = new ConnectionHandler(instanceHandler.getAccessServiceName(),
                                                                           instanceHandler.getRepositoryConnector(serverName));
 
             response.setGUID(connectionHandler.getAssetForConnection(userId, connectionGUID));
@@ -434,7 +435,7 @@ public class AssetConsumerRESTServices
                 message = requestBody.getMessage();
             }
 
-            AuditLogHandler   auditLogHandler = new AuditLogHandler(accessServiceName,
+            AuditLogHandler   auditLogHandler = new AuditLogHandler(instanceHandler.getAccessServiceName(),
                                                                     instanceHandler.getRepositoryConnector(serverName));
 
             auditLogHandler.addLogMessageToAsset(userId,
@@ -500,7 +501,7 @@ public class AssetConsumerRESTServices
                 tagDescription = requestBody.getTagDescription();
             }
 
-            FeedbackHandler   feedbackHandler = new FeedbackHandler(accessServiceName,
+            FeedbackHandler   feedbackHandler = new FeedbackHandler(instanceHandler.getAccessServiceName(),
                                                                     instanceHandler.getRepositoryConnector(serverName));
 
             response.setGUID(feedbackHandler.addTagToAsset(userId, guid, tagName, tagDescription));
@@ -560,7 +561,7 @@ public class AssetConsumerRESTServices
                 tagDescription = requestBody.getTagDescription();
             }
 
-            FeedbackHandler   feedbackHandler = new FeedbackHandler(accessServiceName,
+            FeedbackHandler   feedbackHandler = new FeedbackHandler(instanceHandler.getAccessServiceName(),
                                                                     instanceHandler.getRepositoryConnector(serverName));
 
             response.setGUID(feedbackHandler.addPrivateTagToAsset(userId, guid, tagName, tagDescription));
@@ -620,7 +621,7 @@ public class AssetConsumerRESTServices
                 review = requestBody.getReview();
             }
 
-            FeedbackHandler   feedbackHandler = new FeedbackHandler(accessServiceName,
+            FeedbackHandler   feedbackHandler = new FeedbackHandler(instanceHandler.getAccessServiceName(),
                                                                     instanceHandler.getRepositoryConnector(serverName));
 
             response.setGUID(feedbackHandler.addRatingToAsset(userId, guid, starRating, review));
@@ -671,7 +672,7 @@ public class AssetConsumerRESTServices
 
         try
         {
-            FeedbackHandler   feedbackHandler = new FeedbackHandler(accessServiceName,
+            FeedbackHandler   feedbackHandler = new FeedbackHandler(instanceHandler.getAccessServiceName(),
                                                                     instanceHandler.getRepositoryConnector(serverName));
 
             response.setGUID(feedbackHandler.addLikeToAsset(userId, guid));
@@ -731,7 +732,7 @@ public class AssetConsumerRESTServices
                 commentText = requestBody.getCommentText();
             }
 
-            FeedbackHandler   feedbackHandler = new FeedbackHandler(accessServiceName,
+            FeedbackHandler   feedbackHandler = new FeedbackHandler(instanceHandler.getAccessServiceName(),
                                                                     instanceHandler.getRepositoryConnector(serverName));
 
             response.setGUID(feedbackHandler.addCommentToAsset(userId, guid, commentType, commentText));
@@ -791,7 +792,7 @@ public class AssetConsumerRESTServices
                 commentText = requestBody.getCommentText();
             }
 
-            FeedbackHandler   feedbackHandler = new FeedbackHandler(accessServiceName,
+            FeedbackHandler   feedbackHandler = new FeedbackHandler(instanceHandler.getAccessServiceName(),
                                                                     instanceHandler.getRepositoryConnector(serverName));
 
             response.setGUID(feedbackHandler.addCommentReply(userId, commentGUID, commentType, commentText));
@@ -842,7 +843,7 @@ public class AssetConsumerRESTServices
 
         try
         {
-            FeedbackHandler feedbackHandler = new FeedbackHandler(accessServiceName,
+            FeedbackHandler feedbackHandler = new FeedbackHandler(instanceHandler.getAccessServiceName(),
                                                                   instanceHandler.getRepositoryConnector(serverName));
 
             feedbackHandler.removeTagFromAsset(userId, guid);
@@ -893,7 +894,7 @@ public class AssetConsumerRESTServices
 
         try
         {
-            FeedbackHandler feedbackHandler = new FeedbackHandler(accessServiceName,
+            FeedbackHandler feedbackHandler = new FeedbackHandler(instanceHandler.getAccessServiceName(),
                                                                   instanceHandler.getRepositoryConnector(serverName));
 
             feedbackHandler.removePrivateTagFromAsset(userId, guid);
@@ -944,7 +945,7 @@ public class AssetConsumerRESTServices
 
         try
         {
-            FeedbackHandler feedbackHandler = new FeedbackHandler(accessServiceName,
+            FeedbackHandler feedbackHandler = new FeedbackHandler(instanceHandler.getAccessServiceName(),
                                                                   instanceHandler.getRepositoryConnector(serverName));
 
             feedbackHandler.removeRatingFromAsset(userId, guid);
@@ -995,7 +996,7 @@ public class AssetConsumerRESTServices
 
         try
         {
-            FeedbackHandler feedbackHandler = new FeedbackHandler(accessServiceName,
+            FeedbackHandler feedbackHandler = new FeedbackHandler(instanceHandler.getAccessServiceName(),
                                                                   instanceHandler.getRepositoryConnector(serverName));
 
             feedbackHandler.removeLikeFromAsset(userId, guid);
@@ -1046,7 +1047,7 @@ public class AssetConsumerRESTServices
 
         try
         {
-            FeedbackHandler feedbackHandler = new FeedbackHandler(accessServiceName,
+            FeedbackHandler feedbackHandler = new FeedbackHandler(instanceHandler.getAccessServiceName(),
                                                                   instanceHandler.getRepositoryConnector(serverName));
 
             feedbackHandler.removeCommentFromAsset(userId, guid);

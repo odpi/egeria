@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.assetconsumer.server;
 
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.AssetConsumerErrorCode;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions.PropertyServerException;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
@@ -14,7 +15,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 class AssetConsumerInstanceHandler
 {
-    private static AssetConsumerServicesInstanceMap   instanceMap = new AssetConsumerServicesInstanceMap();
+    private static AssetConsumerServicesInstanceMap instanceMap   = new AssetConsumerServicesInstanceMap();
+    private static AccessServiceDescription         myDescription = AccessServiceDescription.ASSET_CONSUMER_OMAS;
 
     /**
      * Default constructor registers the access service
@@ -57,6 +59,17 @@ class AssetConsumerInstanceHandler
 
 
     /**
+     * Return the Governance Engine's official Access Service Name
+     *
+     * @return String name
+     */
+    public String  getAccessServiceName()
+    {
+        return myDescription.getAccessServiceName();
+    }
+
+
+    /**
      * Retrieve the metadata collection for the access service.
      *
      * @param serverName name of the server tied to the request
@@ -76,7 +89,7 @@ class AssetConsumerInstanceHandler
             final String methodName = "getRepositoryConnector";
 
             AssetConsumerErrorCode errorCode    = AssetConsumerErrorCode.SERVICE_NOT_INITIALIZED;
-            String                 errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
+            String                 errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, methodName);
 
             throw new PropertyServerException(errorCode.getHTTPErrorCode(),
                                               this.getClass().getName(),
