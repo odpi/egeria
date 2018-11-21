@@ -31,11 +31,13 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
     //TODO Implement
 
     /**
-     * Default constructor.
-     *
-     * @param parentConnector      - connector that this metadata collection supports.  The connector has the information
-     *                             to call the metadata repository.
-     * @param metadataCollectionId - unique identifier for the repository.
+     * @param parentConnector      connector that this metadata collection supports.
+     *                             The connector has the information to call the metadata repository.
+     * @param repositoryName       name of this repository.
+     * @param repositoryHelper     helper that provides methods to repository connectors and repository event mappers
+     *                             to build valid type definitions (TypeDefs), entities and relationships.
+     * @param repositoryValidator  validator class for checking open metadata repository objects and parameters
+     * @param metadataCollectionId unique identifier for the repository
      */
     public IGCOMRSMetadataCollection(IGCOMRSRepositoryConnector parentConnector,
                                      String repositoryName,
