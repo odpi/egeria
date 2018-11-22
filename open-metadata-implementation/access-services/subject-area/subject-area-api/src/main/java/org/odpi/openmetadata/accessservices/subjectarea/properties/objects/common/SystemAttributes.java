@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -109,4 +110,18 @@ public class SystemAttributes implements Serializable {
         this.version = version;
     }
 
+    public StringBuilder toString(StringBuilder sb)
+    {
+        if (sb == null) {
+            sb = new StringBuilder();
+        }
+        sb.append("GUID="+GUID+",");
+        sb.append("status="+this.status+",");
+        sb.append("createdBy="+createdBy+",");
+        sb.append("updatedBy ="+updatedBy+",");
+        sb.append("createTime="+createTime+",");
+        sb.append("updateTime="+ updateTime  +",");
+        sb.append("version="+version   +",");
+        return sb;
+    }
 }

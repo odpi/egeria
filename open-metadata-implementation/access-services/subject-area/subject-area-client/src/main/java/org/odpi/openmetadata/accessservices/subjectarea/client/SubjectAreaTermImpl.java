@@ -1,11 +1,14 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.InvalidParameterExceptionResponse;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.Antonym;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.RelatedTermRelationship;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.Synonym;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.TermHASARelationship;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.utils.DetectUtils;
 import org.odpi.openmetadata.accessservices.subjectarea.utils.RestCaller;
@@ -25,6 +28,15 @@ public class SubjectAreaTermImpl implements org.odpi.openmetadata.accessservices
 
     private static final String className = SubjectAreaTermImpl.class.getName();
     private static final String BASE_URL = "/users/%s/terms";
+    private static final String BASE_RELATIONSHIPS_URL = "/users/%s/relationships";
+    private static final String HASA = "/hasa";
+    private static final String RELATED_TERM = "/relatedterm";
+    private static final String SYNONYM = "/synonym";
+    private static final String ANTONYM = "/antonym";
+    private static final String BASE_RELATIONSHIPS_HASA_URL = BASE_RELATIONSHIPS_URL + HASA;
+    private static final String BASE_RELATIONSHIPS_RELATEDTERM_URL = BASE_RELATIONSHIPS_URL + RELATED_TERM;
+    private static final String BASE_RELATIONSHIPS_SYNONYM_URL = BASE_RELATIONSHIPS_URL + SYNONYM;
+    private static final String BASE_RELATIONSHIPS_ANTONYM_URL = BASE_RELATIONSHIPS_URL + ANTONYM;
 
     /*
      * The URL of the server where OMAS is active
@@ -158,7 +170,6 @@ public class SubjectAreaTermImpl implements org.odpi.openmetadata.accessservices
     public Term replaceTerm(String userId, String guid, Term suppliedTerm) throws
             UnexpectedResponseException,
             UserNotAuthorizedException,
-            UnrecognizedNameException,
             FunctionNotSupportedException,
             InvalidParameterException,
             MetadataServerUncontactableException {
@@ -197,7 +208,6 @@ public class SubjectAreaTermImpl implements org.odpi.openmetadata.accessservices
      */
     public Term updateTerm(String userId, String guid, Term suppliedTerm) throws UnexpectedResponseException,
             UserNotAuthorizedException,
-            UnrecognizedNameException,
             FunctionNotSupportedException,
             InvalidParameterException,
             MetadataServerUncontactableException {
@@ -233,8 +243,8 @@ public class SubjectAreaTermImpl implements org.odpi.openmetadata.accessservices
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
     private Term updateTerm(String userId,String guid,Term suppliedTerm,boolean isReplace) throws
-            UserNotAuthorizedException, InvalidParameterException,
-            UnrecognizedNameException,
+            UserNotAuthorizedException,
+            InvalidParameterException,
             FunctionNotSupportedException,
             MetadataServerUncontactableException,
             UnexpectedResponseException {
@@ -257,7 +267,6 @@ public class SubjectAreaTermImpl implements org.odpi.openmetadata.accessservices
         SubjectAreaOMASAPIResponse restResponse = RestCaller.issuePut(className,methodName,requestBody,url);
         DetectUtils.detectAndThrowUserNotAuthorizedException(methodName,restResponse);
         DetectUtils.detectAndThrowInvalidParameterException(methodName,restResponse);
-        DetectUtils.detectAndThrowUnrecognizedNameException(methodName,restResponse);
         DetectUtils.detectAndThrowFunctionNotSupportedException(methodName,restResponse);
 
         Term term = DetectUtils.detectAndReturnTerm(methodName,restResponse);
@@ -277,17 +286,23 @@ public class SubjectAreaTermImpl implements org.odpi.openmetadata.accessservices
      * @param userId userId under which the request is performed
      * @param guid guid of the term to be deleted.
      * @return the deleted term
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws FunctionNotSupportedException   Function not supported this indicates that a soft delete was issued but the repository does not support it.
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws EntityNotDeletedException a delete was issued but the term was not deleted.
-     * @throws MetadataServerUncontactableException unable to contact server
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
+     * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
+     * @throws InvalidParameterException            one of the parameters is null or invalid.
+     * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
+     * @throws EntityNotDeletedException      a soft delete was issued but the relationship was not deleted.
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
     public Term deleteTerm(String userId,String guid) throws InvalidParameterException,
             MetadataServerUncontactableException,
             UserNotAuthorizedException,
             FunctionNotSupportedException,
+            UnrecognizedGUIDException,
             UnexpectedResponseException,
             EntityNotDeletedException {
         final String methodName = "deleteTerm";
@@ -323,6 +338,7 @@ public class SubjectAreaTermImpl implements org.odpi.openmetadata.accessservices
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws GUIDNotPurgedException a hard delete was issued but the term was not purged
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws MetadataServerUncontactableException unable to contact server
      */
 
@@ -330,6 +346,7 @@ public class SubjectAreaTermImpl implements org.odpi.openmetadata.accessservices
             UserNotAuthorizedException,
             MetadataServerUncontactableException,
             GUIDNotPurgedException,
+            UnrecognizedGUIDException,
             UnexpectedResponseException {
         final String methodName = "purgeTerm";
         if (log.isDebugEnabled()) {
@@ -345,8 +362,6 @@ public class SubjectAreaTermImpl implements org.odpi.openmetadata.accessservices
         DetectUtils.detectAndThrowUserNotAuthorizedException(methodName,restResponse);
         DetectUtils.detectAndThrowInvalidParameterException(methodName,restResponse);
         DetectUtils.detectAndThrowGUIDNotPurgedException(methodName,restResponse);
-
-        Term term = DetectUtils.detectAndReturnTerm(methodName,restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }

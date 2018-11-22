@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
@@ -12,7 +13,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.node.NodeType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.IconSummary;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
-import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.GlossaryMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.GlossaryMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
@@ -28,7 +29,7 @@ import java.util.Set;
 
 
 /**
- * The SubjectAreaRESTServices provides the org.odpi.openmetadata.accessservices.subjectarea.server-side implementation of the SubjectArea Open Metadata
+ * The SubjectAreaRESTServices provides the org.odpi.openmetadata.accessservices.subjectarea.server-side implementation of the SubjectAreaDefinition Open Metadata
  * Assess Service (OMAS).  This interface provides glossary authoring interfaces for subject area experts.
  */
 
@@ -102,7 +103,7 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServices {
         final String suppliedGlossaryName = suppliedGlossary.getName();
         if (response == null) {
             try {
-                generatedGlossary = GlossaryMapper.mapGlossaryToOMRSBean(suppliedGlossary, oMRSAPIHelper);
+                generatedGlossary = GlossaryMapper.mapGlossaryToOMRSBean(suppliedGlossary);
             } catch (InvalidParameterException e) {
                 response = OMASExceptionToResponse.convertInvalidParameterException(e);
             }
@@ -341,7 +342,7 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServices {
                 }
                 org.odpi.openmetadata.accessservices.subjectarea.generated.entities.Glossary.Glossary generatedGlossary = null;
                 try {
-                    generatedGlossary = GlossaryMapper.mapGlossaryToOMRSBean(updateGlossary, oMRSAPIHelper);
+                    generatedGlossary = GlossaryMapper.mapGlossaryToOMRSBean(updateGlossary);
                     org.odpi.openmetadata.accessservices.subjectarea.generated.entities.Glossary.Glossary updatedGeneratedGlossary = null;
                     try {
                         updatedGeneratedGlossary = service.updateGlossary(userid, generatedGlossary);

@@ -374,6 +374,72 @@ public class OMRSArchiveHelper
 
 
     /**
+     * Return an attribute with the supplied name and description that is of type long.  It is set up to be optional,
+     * indexable (useful for searches) but the value does not need to be unique.
+     * These are the typical values used for most open metadata attribute.
+     * They can be changed by the caller once the TypeDefAttribute is returned.
+     *
+     * @param attributeName name of the attribute
+     * @param attributeDescription short description for the attribute
+     * @param attributeDescriptionGUID guid of the glossary term that describes this attribute.
+     * @return  TypeDefAttribute of type string
+     */
+    public TypeDefAttribute  getLongTypeDefAttribute(String      attributeName,
+                                                     String      attributeDescription,
+                                                     String      attributeDescriptionGUID)
+    {
+        TypeDefAttribute     attribute = new TypeDefAttribute();
+
+        attribute.setAttributeName(attributeName);
+        attribute.setAttributeDescription(attributeDescription);
+        attribute.setAttributeDescriptionGUID(attributeDescriptionGUID);
+        attribute.setAttributeType(this.archiveBuilder.getPrimitiveDef(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG.getName()));
+        attribute.setAttributeCardinality(AttributeCardinality.AT_MOST_ONE);
+        attribute.setValuesMinCount(0);
+        attribute.setValuesMaxCount(1);
+        attribute.setIndexable(true);
+        attribute.setUnique(false);
+        attribute.setDefaultValue(null);
+        attribute.setExternalStandardMappings(null);
+
+        return attribute;
+    }
+
+
+    /**
+     * Return an attribute with the supplied name and description that is of type long.  It is set up to be optional,
+     * indexable (useful for searches) but the value does not need to be unique.
+     * These are the typical values used for most open metadata attribute.
+     * They can be changed by the caller once the TypeDefAttribute is returned.
+     *
+     * @param attributeName name of the attribute
+     * @param attributeDescription short description for the attribute
+     * @param attributeDescriptionGUID guid of the glossary term that describes this attribute.
+     * @return  TypeDefAttribute of type string
+     */
+    public TypeDefAttribute  getFloatTypeDefAttribute(String      attributeName,
+                                                      String      attributeDescription,
+                                                      String      attributeDescriptionGUID)
+    {
+        TypeDefAttribute     attribute = new TypeDefAttribute();
+
+        attribute.setAttributeName(attributeName);
+        attribute.setAttributeDescription(attributeDescription);
+        attribute.setAttributeDescriptionGUID(attributeDescriptionGUID);
+        attribute.setAttributeType(this.archiveBuilder.getPrimitiveDef(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_FLOAT.getName()));
+        attribute.setAttributeCardinality(AttributeCardinality.AT_MOST_ONE);
+        attribute.setValuesMinCount(0);
+        attribute.setValuesMaxCount(1);
+        attribute.setIndexable(true);
+        attribute.setUnique(false);
+        attribute.setDefaultValue(null);
+        attribute.setExternalStandardMappings(null);
+
+        return attribute;
+    }
+
+
+    /**
      * Return an attribute with the supplied name and description that is an array of strings.
      * It is set up to be optional,
      * indexable (useful for searches) but the value does not need to be unique.
@@ -463,6 +529,40 @@ public class OMRSArchiveHelper
         attribute.setAttributeDescription(attributeDescription);
         attribute.setAttributeDescriptionGUID(attributeDescriptionGUID);
         attribute.setAttributeType(this.archiveBuilder.getCollectionDef("map<string,string>"));
+        attribute.setAttributeCardinality(AttributeCardinality.AT_MOST_ONE);
+        attribute.setValuesMinCount(0);
+        attribute.setValuesMaxCount(1);
+        attribute.setIndexable(true);
+        attribute.setUnique(false);
+        attribute.setDefaultValue(null);
+        attribute.setExternalStandardMappings(null);
+
+        return attribute;
+    }
+
+
+    /**
+     * Return an attribute with the supplied name and description that is of a map from string to object.
+     * It is set up to be optional,
+     * indexable (useful for searches) but the value does not need to be unique.
+     * These are the typical values used for most open metadata attribute.
+     * They can be changed by the caller once the TypeDefAttribute is returned.
+     *
+     * @param attributeName name of the attribute
+     * @param attributeDescription short description for the attribute
+     * @param attributeDescriptionGUID guid of the glossary term that describes this attribute.
+     * @return  TypeDefAttribute of type string
+     */
+    public TypeDefAttribute  getMapStringObjectTypeDefAttribute(String      attributeName,
+                                                                String      attributeDescription,
+                                                                String      attributeDescriptionGUID)
+    {
+        TypeDefAttribute     attribute = new TypeDefAttribute();
+
+        attribute.setAttributeName(attributeName);
+        attribute.setAttributeDescription(attributeDescription);
+        attribute.setAttributeDescriptionGUID(attributeDescriptionGUID);
+        attribute.setAttributeType(this.archiveBuilder.getCollectionDef("map<string,object>"));
         attribute.setAttributeCardinality(AttributeCardinality.AT_MOST_ONE);
         attribute.setValuesMinCount(0);
         attribute.setValuesMaxCount(1);
