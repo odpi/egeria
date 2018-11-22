@@ -122,10 +122,10 @@ public class ColumnContextBuilderTest {
         assertEquals(events.size(), 1);
         TableContextEvent event = events.get(0);
 
-//        assertEquals(event.getTableContext().getTableName(), TABLE_NAME);
-//        assertEquals(event.getTableContext().getSchemaName(), RELATIONAL_DB_SCHEMA_NAME);
-//        assertEquals(event.getDatabaseConnection().getNetworkAddress(), HOSTNAME_VALUE + ":" + PORT_VALUE);
-//        assertEquals(event.getDatabaseConnection().getProtocol(), PROTOCOL_VALUE);
+        assertEquals(event.getTableSource().getTableName(), TABLE_NAME);
+        assertEquals(event.getTableSource().getSchemaName(), RELATIONAL_DB_SCHEMA_NAME);
+        assertEquals(event.getTableSource().getNetworkAddress(), HOSTNAME_VALUE + ":" + PORT_VALUE);
+        assertEquals(event.getTableSource().getProtocol(), PROTOCOL_VALUE);
         assertEquals(event.getTableColumns().get(0).getName(), COLUMN_NAME);
 
 

@@ -11,7 +11,10 @@ import org.odpi.openmetadata.accessservices.informationview.events.InformationVi
 import org.odpi.openmetadata.virtualdataconnector.virtualiser.JsonReadHelper;
 import org.odpi.openmetadata.virtualdataconnector.virtualiser.gaian.GaianQueryConstructor;
 import org.odpi.openmetadata.virtualdataconnector.virtualiser.kafka.KafkaVirtualiserProducer;
+import org.skyscreamer.jsonassert.Customization;
 import org.skyscreamer.jsonassert.JSONAssert;
+import org.skyscreamer.jsonassert.JSONCompareMode;
+import org.skyscreamer.jsonassert.comparator.CustomComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -23,7 +26,6 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 
-import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 
 
@@ -72,8 +74,10 @@ public class ViewsConstructorTest extends AbstractTestNGSpringContextTests {
         assertNotNull(views);
         String business = JsonReadHelper.readFile(new File(classLoader.getResource(BUSINESS).getFile()));
         String technical = JsonReadHelper.readFile(new File(classLoader.getResource(TECHNICAL).getFile()));
-        JSONAssert.assertEquals(business, mapper.writeValueAsString(views.get(0)), false);
-        JSONAssert.assertEquals(technical, mapper.writeValueAsString(views.get(1)), false);
+        JSONAssert.assertEquals(business, mapper.writeValueAsString(views.get(0)),
+                                new CustomComparator(JSONCompareMode.LENIENT, new Customization("tableSource.@id", (o1,o2) -> true)));
+        JSONAssert.assertEquals(technical, mapper.writeValueAsString(views.get(1)),
+                                new CustomComparator(JSONCompareMode.LENIENT, new Customization("tableSource.@id", (o1,o2) -> true)));
     }
 
 }

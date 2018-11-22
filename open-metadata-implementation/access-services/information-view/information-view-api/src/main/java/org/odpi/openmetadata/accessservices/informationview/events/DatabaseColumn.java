@@ -223,7 +223,12 @@ public class DatabaseColumn {
                 ", cardinality='" + cardinality + '\'' +
                 ", defaultValueOverride='" + defaultValueOverride + '\'' +
                 ", type='" + type + '\'' +
+                ", primaryKeyName='" + primaryKeyName + '\'' +
                 ", businessTerm=" + businessTerm +
+                ", foreignKey=" + foreignKey +
+                ", isUnique=" + isUnique +
+                ", isPrimaryKey=" + isPrimaryKey +
+                ", isNullable=" + isNullable +
                 '}';
     }
 }

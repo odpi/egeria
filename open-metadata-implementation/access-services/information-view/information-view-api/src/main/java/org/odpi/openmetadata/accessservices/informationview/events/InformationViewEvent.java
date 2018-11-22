@@ -22,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
-public class InformationViewEvent extends InformationViewBean {
+public class InformationViewEvent extends InformationViewHeader {
 
     private TableSource tableSource;
     private List<DerivedColumn> derivedColumns = new ArrayList<>();

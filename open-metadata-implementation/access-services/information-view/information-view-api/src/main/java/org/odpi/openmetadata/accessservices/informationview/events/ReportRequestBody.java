@@ -3,11 +3,8 @@
 package org.odpi.openmetadata.accessservices.informationview.events;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.util.List;
 import java.util.Map;
@@ -19,8 +16,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ReportRequestBody {
-    private List< Source> sources;
+public class ReportRequestBody extends InformationViewHeader {
+    private List<Source> sources;
     private String id;
     private Long createdTime;
     private String author;
@@ -31,28 +28,6 @@ public class ReportRequestBody {
     private Long lastModifiedTime;
     private List<ReportElement> reportElements;
     private Map<String, Object> additionalProperties;
-
-    /**
-     * JSON-style toString.
-     *
-     * @return list of properties and their values.
-     */
-    @Override
-    public String toString() {
-        return "ReportRequestBody{" +
-                ", sources=" + sources +
-                ", id='" + id + '\'' +
-                ", createdTime='" + createdTime + '\'' +
-                ", author='" + author + '\'' +
-                ", reportName='" + reportName + '\'' +
-                ", reportPath='" + reportPath + '\'' +
-                ", reportUrl='" + reportUrl + '\'' +
-                ", lastModifier='" + lastModifier + '\'' +
-                ", lastModifiedTime='" + lastModifiedTime + '\'' +
-                ", reportElements=" + reportElements +
-                ", additionalProperties=" + additionalProperties +
-                '}';
-    }
 
     /**
      * Default constructor
@@ -149,5 +124,25 @@ public class ReportRequestBody {
         this.reportElements = reportElements;
     }
 
-
+    /**
+     * JSON-style toString.
+     *
+     * @return list of properties and their values.
+     */
+    @Override
+    public String toString() {
+        return "ReportRequestBody{" +
+                "sources=" + sources +
+                ", id='" + id + '\'' +
+                ", createdTime=" + createdTime +
+                ", author='" + author + '\'' +
+                ", reportName='" + reportName + '\'' +
+                ", reportPath='" + reportPath + '\'' +
+                ", reportUrl='" + reportUrl + '\'' +
+                ", lastModifier='" + lastModifier + '\'' +
+                ", lastModifiedTime=" + lastModifiedTime +
+                ", reportElements=" + reportElements +
+                ", additionalProperties=" + additionalProperties +
+                '}';
+    }
 }

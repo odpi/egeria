@@ -32,7 +32,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 })
 @JsonIdentityInfo(generator = ObjectIdGenerators.StringIdGenerator.class, property = "@id")
-@JsonIdentityReference(alwaysAsId = true)
+@JsonIdentityReference
 public abstract class Source {
 
     private String networkAddress;

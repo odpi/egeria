@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.Map;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -36,9 +38,35 @@ public class ColumnSource extends Source {
     }
 
     @Override
+    public String getProtocol() {
+        return tableSource != null ? tableSource.getProtocol() : super.getProtocol();
+    }
+
+    @Override
+    public String getNetworkAddress() {
+        return tableSource != null ? tableSource.getNetworkAddress() : super.getNetworkAddress();
+    }
+
+    @Override
+    public String getConnectorProviderName() {
+        return tableSource != null ? tableSource.getConnectorProviderName() : super.getConnectorProviderName();
+    }
+
+    @Override
+    public Map<String, String> getAdditionalProperties() {
+        return tableSource != null ? tableSource.getAdditionalProperties() : super.getAdditionalProperties();
+    }
+
+    @Override
+    public String getUser() {
+        return tableSource != null ? tableSource.getUser() : super.getUser();
+    }
+
+    @Override
     public String toString() {
         return "ColumnSource{" +
                 "columnName='" + columnName + '\'' +
+                ", tableSource=" + tableSource +
                 '}';
     }
 }
