@@ -116,7 +116,7 @@ public class ReportCreator {
                 InstanceProperties typeProperties = new EntityPropertiesBuilder()
                         .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForType)
                         .build();
-                EntityDetail typeEntity = entitiesCreatorHelper.addEntity(Constants.COMPLEX_SCHEMA_TYPE,
+                EntityDetail typeEntity = entitiesCreatorHelper.addEntity(Constants.DOCUMENT_SCHEMA_TYPE,
                         qualifiedNameForType,
                         typeProperties);
 
@@ -125,7 +125,7 @@ public class ReportCreator {
                         .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForSection)
                         .withStringProperty(Constants.ATTRIBUTE_NAME, reportSection.getName())
                         .build();
-                EntityDetail sectionEntity = entitiesCreatorHelper.addEntity(Constants.SCHEMA_ATTRIBUTE,
+                EntityDetail sectionEntity = entitiesCreatorHelper.addEntity(Constants.DOCUMENT_SCHEMA_ATTRIBUTE,
                         qualifiedNameForSection,
                         sectionProperties);
 
