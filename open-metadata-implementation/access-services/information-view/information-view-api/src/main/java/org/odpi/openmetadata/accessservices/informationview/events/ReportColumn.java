@@ -56,10 +56,11 @@ public class ReportColumn extends ReportElement {
     @Override
     public String toString() {
         return "ReportColumn{" +
-                "name='" + name + '\'' +
-                ", aggregation='" + aggregation + '\'' +
+                "aggregation='" + aggregation + '\'' +
                 ", formula='" + formula + '\'' +
                 ", sources=" + sources +
+                ", businessTerm=" + businessTerm +
+                ", name='" + name + '\'' +
                 '}';
     }
 }

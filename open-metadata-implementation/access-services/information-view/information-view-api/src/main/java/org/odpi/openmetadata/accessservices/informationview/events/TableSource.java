@@ -19,7 +19,6 @@ public class TableSource extends Source {
     private String schemaName;
     private String databaseName;
 
-
     public String getTableName() {
         return tableName;
     }
