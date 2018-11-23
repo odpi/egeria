@@ -225,6 +225,19 @@ public class IGCRestClient_IT {
     }
 
     /**
+     * Retrieves an asset by RID, then retrieves its parent (container). Confirms the identity is the same when
+     * retrieving the parent (container) directly as well as when retrieving via getParentContext().
+     */
+    @Test
+    public void parentIdentityMatching() {
+        Term term = (Term)igcrest.getAssetById(bigTermRid);
+        System.out.println("Term's parent identity: " + term.getIdentity(igcrest).getParentIdentity());
+        Category category = (Category)term.getParentCategory();
+        System.out.println("Parent category's identity: " + category.getIdentity(igcrest));
+        assertTrue(term.getIdentity(igcrest).getParentIdentity().equals(category.getIdentity(igcrest)));
+    }
+
+    /**
      * Tests retrieving the value of a property by its name, rather than a direct member method of the class.
      */
     @Test
