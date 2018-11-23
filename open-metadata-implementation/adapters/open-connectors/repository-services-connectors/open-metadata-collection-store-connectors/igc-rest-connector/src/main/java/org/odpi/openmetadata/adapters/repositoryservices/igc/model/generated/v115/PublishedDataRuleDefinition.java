@@ -1,0 +1,120 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+package org.odpi.openmetadata.adapters.repositoryservices.igc.model.generated.v115;
+
+import org.odpi.openmetadata.adapters.repositoryservices.igc.model.common.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Date;
+import java.util.ArrayList;
+
+/**
+ * POJO for the 'published_data_rule_definition' asset type in IGC, displayed as 'Data Rule Definition' in the IGC UI.
+ * <br><br>
+ * (this code has been generated based on out-of-the-box IGC metadata types;
+ *  if modifications are needed, eg. to handle custom attributes,
+ *  extending from this class in your own custom class is the best approach.)
+ */
+@JsonIgnoreProperties(ignoreUnknown=true)
+public class PublishedDataRuleDefinition extends MainObject {
+
+    public static final String IGC_TYPE_ID = "published_data_rule_definition";
+
+    /**
+     * The 'copied_into_data_rule_stages' property, displayed as 'Copied Into Data Rule Stages' in the IGC UI.
+     * <br><br>
+     * Will be a {@link ReferenceList} of {@link Stage} objects.
+     */
+    protected ReferenceList copied_into_data_rule_stages;
+
+    /**
+     * The 'data_rule_set_definitions' property, displayed as 'Data Rule Set Definitions' in the IGC UI.
+     * <br><br>
+     * Will be a {@link ReferenceList} of {@link NonPublishedDataRuleSet} objects.
+     */
+    protected ReferenceList data_rule_set_definitions;
+
+    /**
+     * The 'status' property, displayed as 'Status' in the IGC UI.
+     * <br><br>
+     * Can be one of the following values:
+     * <ul>
+     *     <li>CANDIDATE (displayed in the UI as 'CANDIDATE')</li>
+     *     <li>ACCEPTED (displayed in the UI as 'ACCEPTED')</li>
+     *     <li>STANDARD (displayed in the UI as 'STANDARD')</li>
+     *     <li>DEPRECATED (displayed in the UI as 'DEPRECATED')</li>
+     *     <li>DRAFT (displayed in the UI as 'DRAFT')</li>
+     *     <li>IN_PROCESS (displayed in the UI as 'IN_PROCESS')</li>
+     *     <li>REJECTED (displayed in the UI as 'REJECTED')</li>
+     *     <li>ERROR (displayed in the UI as 'ERROR')</li>
+     * </ul>
+     */
+    protected String status;
+
+    /**
+     * The 'published' property, displayed as 'Published' in the IGC UI.
+     */
+    protected Boolean published;
+
+    /**
+     * The 'publication_date' property, displayed as 'Publication Date' in the IGC UI.
+     */
+    protected Date publication_date;
+
+    /**
+     * The 'rule_logic' property, displayed as 'Expression' in the IGC UI.
+     */
+    protected ArrayList<String> rule_logic;
+
+    /**
+     * The 'contact' property, displayed as 'Contacts' in the IGC UI.
+     * <br><br>
+     * Will be a {@link ReferenceList} of {@link Steward} objects.
+     */
+    protected ReferenceList contact;
+
+    /**
+     * The 'data_policies' property, displayed as 'Data Policies' in the IGC UI.
+     * <br><br>
+     * Will be a {@link ReferenceList} of {@link DataPolicy} objects.
+     */
+    protected ReferenceList data_policies;
+
+    /**
+     * The 'in_collections' property, displayed as 'In Collections' in the IGC UI.
+     * <br><br>
+     * Will be a {@link ReferenceList} of {@link Collection} objects.
+     */
+    protected ReferenceList in_collections;
+
+
+    /** @see #copied_into_data_rule_stages */ @JsonProperty("copied_into_data_rule_stages")  public ReferenceList getCopiedIntoDataRuleStages() { return this.copied_into_data_rule_stages; }
+    /** @see #copied_into_data_rule_stages */ @JsonProperty("copied_into_data_rule_stages")  public void setCopiedIntoDataRuleStages(ReferenceList copied_into_data_rule_stages) { this.copied_into_data_rule_stages = copied_into_data_rule_stages; }
+
+    /** @see #data_rule_set_definitions */ @JsonProperty("data_rule_set_definitions")  public ReferenceList getDataRuleSetDefinitions() { return this.data_rule_set_definitions; }
+    /** @see #data_rule_set_definitions */ @JsonProperty("data_rule_set_definitions")  public void setDataRuleSetDefinitions(ReferenceList data_rule_set_definitions) { this.data_rule_set_definitions = data_rule_set_definitions; }
+
+    /** @see #status */ @JsonProperty("status")  public String getStatus() { return this.status; }
+    /** @see #status */ @JsonProperty("status")  public void setStatus(String status) { this.status = status; }
+
+    /** @see #published */ @JsonProperty("published")  public Boolean getPublished() { return this.published; }
+    /** @see #published */ @JsonProperty("published")  public void setPublished(Boolean published) { this.published = published; }
+
+    /** @see #publication_date */ @JsonProperty("publication_date")  public Date getPublicationDate() { return this.publication_date; }
+    /** @see #publication_date */ @JsonProperty("publication_date")  public void setPublicationDate(Date publication_date) { this.publication_date = publication_date; }
+
+    /** @see #rule_logic */ @JsonProperty("rule_logic")  public ArrayList<String> getRuleLogic() { return this.rule_logic; }
+    /** @see #rule_logic */ @JsonProperty("rule_logic")  public void setRuleLogic(ArrayList<String> rule_logic) { this.rule_logic = rule_logic; }
+
+    /** @see #contact */ @JsonProperty("contact")  public ReferenceList getContact() { return this.contact; }
+    /** @see #contact */ @JsonProperty("contact")  public void setContact(ReferenceList contact) { this.contact = contact; }
+
+    /** @see #data_policies */ @JsonProperty("data_policies")  public ReferenceList getDataPolicies() { return this.data_policies; }
+    /** @see #data_policies */ @JsonProperty("data_policies")  public void setDataPolicies(ReferenceList data_policies) { this.data_policies = data_policies; }
+
+    /** @see #in_collections */ @JsonProperty("in_collections")  public ReferenceList getInCollections() { return this.in_collections; }
+    /** @see #in_collections */ @JsonProperty("in_collections")  public void setInCollections(ReferenceList in_collections) { this.in_collections = in_collections; }
+
+
+    public static final Boolean isPublishedDataRuleDefinition(Object obj) { return (obj.getClass() == PublishedDataRuleDefinition.class); }
+
+}
