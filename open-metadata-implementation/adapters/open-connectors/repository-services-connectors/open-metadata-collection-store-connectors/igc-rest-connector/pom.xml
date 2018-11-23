@@ -21,6 +21,12 @@
 
     <artifactId>igc-rest-connector</artifactId>
 
+    <properties>
+        <junit.platform.version>1.2.0</junit.platform.version>
+        <junit.surefire.version>1.2.0</junit.surefire.version>
+        <junit.version>4.12</junit.version>
+    </properties>
+
     <dependencies>
 
         <!-- Spring for calling REST APIs -->
@@ -48,6 +54,40 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-runner</artifactId>
+            <version>${junit.platform.version}</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
+
+    <profiles>
+        <profile>
+            <id>integration-tests</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <version>${surefire.plugin.version}</version>
+                        <configuration>
+                            <includes>
+                                <include>**/*_IT*</include>
+                            </includes>
+                        </configuration>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.junit.platform</groupId>
+                                <artifactId>junit-platform-surefire-provider</artifactId>
+                                <version>${junit.surefire.version}</version>
+                            </dependency>
+                        </dependencies>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
