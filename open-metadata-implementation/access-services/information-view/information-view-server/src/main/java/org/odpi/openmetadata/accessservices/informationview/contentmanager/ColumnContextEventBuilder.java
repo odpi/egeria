@@ -351,11 +351,11 @@ public class ColumnContextEventBuilder {
         String relationshipTypeGuid = enterpriseConnector.getMetadataCollection().getTypeDefByName(Constants.USER_ID, Constants.CONNECTION_TO_ASSET).getGUID();
         InstanceProperties databaseEntityProperties = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, databaseGuid).getProperties();
         List<Relationship> relationships = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.USER_ID, databaseGuid, relationshipTypeGuid, 0, null, null, null, null, 0);
-        for (Relationship relationship : relationships) {
-            TableContextEvent event = getConnectionDetails(databaseGuid, relationship);
-            event.getTableSource().setDatabaseName(EntityPropertiesUtils.getStringValueForProperty(databaseEntityProperties, Constants.NAME));
-            allEvents.add(event);
-        }
+        Relationship relationship = relationships.get(0);
+        TableContextEvent event = getConnectionDetails(databaseGuid, relationship);
+        event.getTableSource().setDatabaseName(EntityPropertiesUtils.getStringValueForProperty(databaseEntityProperties, Constants.NAME));
+        allEvents.add(event);
+
         return allEvents;
     }
 

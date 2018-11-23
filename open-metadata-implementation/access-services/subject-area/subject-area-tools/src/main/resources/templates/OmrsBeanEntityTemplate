@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 
 // This is a generated file - do not edit - changes should be made to the templates amd/or generator to generate this file with changes.
 
@@ -47,7 +48,7 @@ public class  <$$uname$$> implements Serializable {
 
     /**
      * Get the system attributes
-     * @return
+     * @return SystemAttributes if populated, null otherwise.
      */
     public SystemAttributes getSystemAttributes() {
         return systemAttributes;
@@ -151,7 +152,7 @@ public class  <$$uname$$> implements Serializable {
 
     /**
      * Get the extra attributes - ones that are in addition to the standard types.
-     * @return
+     * @return map of attributes, null if there are none
      */
     public Map<String, Object> getExtraAttributes() {
         return extraAttributes;
@@ -159,13 +160,14 @@ public class  <$$uname$$> implements Serializable {
 
      /**
      * Classifications
-     * @return
+     * @return List of Classifications, null if there are none
      */
     public List<Classification> getClassifications() {
         return classifications;
     }
     /**
       * Extra classifications are classifications that are not in the open metadata model - we include the OMRS Classifications.
+      * @return Map of classifications with the classification Name as the map key
       */
     public Map<String, org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification> getExtraClassifications() {
         return extraClassifications;

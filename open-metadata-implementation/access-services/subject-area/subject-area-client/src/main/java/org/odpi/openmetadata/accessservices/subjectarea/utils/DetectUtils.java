@@ -1,16 +1,18 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.utils;
 
-import org.odpi.openmetadata.accessservices.subjectarea.events.GlossaryArtifactsRelatedEntityType;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.SubjectAreaDefinition;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.Antonym;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.RelatedTermRelationship;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.Synonym;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.TermHASARelationship;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
-
-import java.rmi.UnexpectedException;
 
 /**
  * Created by david on 10/08/2018.
@@ -147,7 +149,7 @@ public class DetectUtils {
             );
         }
     }
-    
+
     /**
      * Throw an RelationshipNotDeletedException if it is encoded in the REST response.
      *
@@ -238,11 +240,38 @@ public class DetectUtils {
                     );
         }
     }
+    /**
+     * Detect Void return. If we do not find one then throw an Exception
+     * @param methodName - name of the method called
+     * @param restResponse - response from the rest call.  This generated in the remote handlers.
+     * @throws UnexpectedResponseException - if the response is not a glossary then throw this exception
+     */
+    public static void detectVoid(String methodName,
+                                                   SubjectAreaOMASAPIResponse restResponse) throws UnexpectedResponseException {
+        Glossary glossary = null;
+        if ((restResponse != null) && !(restResponse.getResponseCategory() == ResponseCategory.Void)) {
+            SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.CLIENT_RECEIVED_AN_UNEXPECTED_RESPONSE_ERROR;
+            String unexpectedResponseCategory = restResponse.getResponseCategory().name();
+            String errorMessage = errorCode.getErrorMessageId()
+                    + errorCode.getFormattedErrorMessage(
+                    unexpectedResponseCategory
+            );
+            throw new UnexpectedResponseException(errorCode.getHTTPErrorCode(),
+                    className,
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction(),
+                    unexpectedResponseCategory
+            );
+        }
+    }
 
     /**
      * Detect and return a Glossary object from the supplied response. If we do not find one then throw an Exception
      * @param methodName - name of the method called
      * @param restResponse - response from the rest call.  This generated in the remote handlers.
+     * @return Glossary if the supplied response is a glossary response
      * @throws UnexpectedResponseException - if the response is not a glossary then throw this exception
      */
     public static Glossary detectAndReturnGlossary(String methodName,
@@ -273,6 +302,7 @@ public class DetectUtils {
      * Detect and return a Term object from the supplied response. If we do not find one then throw an Exception
      * @param methodName - name of the method called
      * @param restResponse - response from the rest call.  This generated in the remote handlers.
+     * @return Term if the supplied response is a term response
      * @throws UnexpectedResponseException - if the response is not a Term then throw this exception
      */
     public static Term detectAndReturnTerm(String methodName,
@@ -303,6 +333,7 @@ public class DetectUtils {
      * Detect and return a Category object from the supplied response. If we do not find one then throw an Exception
      * @param methodName - name of the method called
      * @param restResponse - response from the rest call.  This generated in the remote handlers.
+     * @return Category if the supplied response is a category response
      * @throws UnexpectedResponseException - if the response is not a Category then throw this exception
      */
     public static Category detectAndReturnCategory(String methodName,
@@ -328,5 +359,129 @@ public class DetectUtils {
             );
         }
         return category;
+    }
+    public static SubjectAreaDefinition detectAndReturnSubjectAreaDefinition(String methodName, SubjectAreaOMASAPIResponse restResponse) throws UnexpectedResponseException
+    {
+        SubjectAreaDefinition subjectAreaDefinition = null;
+        if ((restResponse != null) && (restResponse.getResponseCategory() == ResponseCategory.SubjectAreaDefinition)) {
+            SubjectAreaDefinitionResponse subjectAreaDefinitionResponse = (SubjectAreaDefinitionResponse)restResponse;
+            subjectAreaDefinition = subjectAreaDefinitionResponse.getSubjectAreaDefinition();
+        } else {
+            SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.CLIENT_RECEIVED_AN_UNEXPECTED_RESPONSE_ERROR;
+            String unexpectedResponseCategory = restResponse.getResponseCategory().name();
+            String errorMessage = errorCode.getErrorMessageId()
+                    + errorCode.getFormattedErrorMessage(
+                    unexpectedResponseCategory
+            );
+            throw new UnexpectedResponseException(errorCode.getHTTPErrorCode(),
+                    className,
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction(),
+                    unexpectedResponseCategory
+            );
+        }
+        return subjectAreaDefinition;
+    }
+
+    public static TermHASARelationship detectAndReturnTermHASARelationship(String methodName, SubjectAreaOMASAPIResponse restResponse) throws UnexpectedResponseException
+    {
+        TermHASARelationship termHASARelationship = null;
+        if ((restResponse != null) && (restResponse.getResponseCategory() == ResponseCategory.TermHASARelationship)) {
+            TermHASARelationshipResponse termHASARelationshipResponse = (TermHASARelationshipResponse)restResponse;
+            termHASARelationship = termHASARelationshipResponse.getTermHASARelationship();
+        } else {
+            SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.CLIENT_RECEIVED_AN_UNEXPECTED_RESPONSE_ERROR;
+            String unexpectedResponseCategory = restResponse.getResponseCategory().name();
+            String errorMessage = errorCode.getErrorMessageId()
+                    + errorCode.getFormattedErrorMessage(
+                    unexpectedResponseCategory
+            );
+            throw new UnexpectedResponseException(errorCode.getHTTPErrorCode(),
+                    className,
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction(),
+                    unexpectedResponseCategory
+            );
+        }
+        return termHASARelationship;
+    }
+
+    public static RelatedTermRelationship detectAndReturnRelatedTerm(String methodName, SubjectAreaOMASAPIResponse restResponse) throws UnexpectedResponseException
+    {
+        RelatedTermRelationship relatedTermRelationship = null;
+        if ((restResponse != null) && (restResponse.getResponseCategory() == ResponseCategory.RelatedTerm)) {
+            RelatedTermRelationshipResponse relatedTermResponse = (RelatedTermRelationshipResponse)restResponse;
+            relatedTermRelationship = relatedTermResponse.getRelatedTermRelationship();
+        } else {
+            SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.CLIENT_RECEIVED_AN_UNEXPECTED_RESPONSE_ERROR;
+            String unexpectedResponseCategory = restResponse.getResponseCategory().name();
+            String errorMessage = errorCode.getErrorMessageId()
+                    + errorCode.getFormattedErrorMessage(
+                    unexpectedResponseCategory
+            );
+            throw new UnexpectedResponseException(errorCode.getHTTPErrorCode(),
+                    className,
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction(),
+                    unexpectedResponseCategory
+            );
+        }
+        return relatedTermRelationship;
+    }
+
+    public static Synonym detectAndReturnSynonym(String methodName, SubjectAreaOMASAPIResponse restResponse) throws UnexpectedResponseException
+    {
+        Synonym synonym = null;
+        if ((restResponse != null) && (restResponse.getResponseCategory() == ResponseCategory.SynonymRelationship)) {
+            SynonymRelationshipResponse synonymResponse = (SynonymRelationshipResponse)restResponse;
+            synonym = synonymResponse.getSynonym();
+        } else {
+            SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.CLIENT_RECEIVED_AN_UNEXPECTED_RESPONSE_ERROR;
+            String unexpectedResponseCategory = restResponse.getResponseCategory().name();
+            String errorMessage = errorCode.getErrorMessageId()
+                    + errorCode.getFormattedErrorMessage(
+                    unexpectedResponseCategory
+            );
+            throw new UnexpectedResponseException(errorCode.getHTTPErrorCode(),
+                    className,
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction(),
+                    unexpectedResponseCategory
+            );
+        }
+        return synonym;
+    }
+
+    public static Antonym detectAndReturnAntonym(String methodName, SubjectAreaOMASAPIResponse restResponse) throws UnexpectedResponseException
+    {
+        Antonym antonym = null;
+        if ((restResponse != null) && (restResponse.getResponseCategory() == ResponseCategory.AntonymRelationship)) {
+            AntonymRelationshipResponse antonymResponse = (AntonymRelationshipResponse)restResponse;
+            antonym = antonymResponse.getAntonym();
+        } else {
+            SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.CLIENT_RECEIVED_AN_UNEXPECTED_RESPONSE_ERROR;
+            String unexpectedResponseCategory = restResponse.getResponseCategory().name();
+            String errorMessage = errorCode.getErrorMessageId()
+                    + errorCode.getFormattedErrorMessage(
+                    unexpectedResponseCategory
+            );
+            throw new UnexpectedResponseException(errorCode.getHTTPErrorCode(),
+                    className,
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction(),
+                    unexpectedResponseCategory
+            );
+        }
+        return antonym;
     }
 }

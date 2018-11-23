@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.utils;
 
 import java.io.File;
@@ -101,6 +102,19 @@ public class GeneratorUtilities {
                 if (!file.getName().equals(excludeFile)) {
                     file.delete();
                 }
+            }
+        }
+    }
+    /**
+     * delete files in the folder
+     * @param folder- folder under which to delete files
+     */
+    public static void deleteFilesInFolder(String folder) {
+        System.err.println("folder="+folder);
+        File[] files = new File(folder).listFiles();
+        for (File file : files) {
+            if (file.isFile()) {
+                file.delete();
             }
         }
     }
