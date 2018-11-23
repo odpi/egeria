@@ -1,3 +1,5 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+
 # igc-rest-connector
 
 A Java client library for connecting to IBM Information Governance Catalog's (IGC's) REST API.
