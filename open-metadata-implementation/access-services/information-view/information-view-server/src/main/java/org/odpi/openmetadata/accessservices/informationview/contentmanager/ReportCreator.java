@@ -28,8 +28,8 @@ import java.util.List;
 public class ReportCreator {
 
     private static final Logger log = LoggerFactory.getLogger(ReportCreator.class);
-    private EntitiesCreatorHelper entitiesCreatorHelper;
-    private OMRSAuditLog auditLog;
+    private final EntitiesCreatorHelper entitiesCreatorHelper;
+    private final OMRSAuditLog auditLog;
 
 
     public ReportCreator(EntitiesCreatorHelper entitiesCreatorHelper, OMRSAuditLog auditLog) {
@@ -46,7 +46,6 @@ public class ReportCreator {
             if (url.getPort() > 0) {
                 networkAddress = networkAddress + ":" + url.getPort();
             }
-
 
             String qualifiedNameForReport = networkAddress + "." + payload.getId();
             InstanceProperties reportProperties = new EntityPropertiesBuilder()
@@ -103,55 +102,61 @@ public class ReportCreator {
 
     }
 
-    private void addElements(String qualifiedNameForParent, EntityDetail parentSchemaTypeEntity, List<ReportElement> allElements) throws Exception {
-
+    private void addElements(String qualifiedNameForParent, EntityDetail parentSchemaTypeEntity, List<ReportElement> allElements) {
         if (allElements == null || allElements.isEmpty())
-            return;//TODO refactor
+            return;
+        allElements.parallelStream().forEach(e -> addReportElement(qualifiedNameForParent, parentSchemaTypeEntity, e));
+    }
 
-        for (ReportElement element : allElements) {
-
+    private void addReportElement(String qualifiedNameForParent, EntityDetail parentSchemaTypeEntity, ReportElement element) {
+        try {
             if (element instanceof ReportSection) {
-                ReportSection reportSection = (ReportSection) element;
-                String qualifiedNameForType = qualifiedNameForParent + "." + reportSection.getName() + Constants.TYPE_SUFFIX;//TODO
-                InstanceProperties typeProperties = new EntityPropertiesBuilder()
-                        .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForType)
-                        .build();
-                EntityDetail typeEntity = entitiesCreatorHelper.addEntity(Constants.DOCUMENT_SCHEMA_TYPE,
-                        qualifiedNameForType,
-                        typeProperties);
-
-                String qualifiedNameForSection = qualifiedNameForParent + "." + reportSection.getName();
-                InstanceProperties sectionProperties = new EntityPropertiesBuilder()
-                        .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForSection)
-                        .withStringProperty(Constants.ATTRIBUTE_NAME, reportSection.getName())
-                        .build();
-                EntityDetail sectionEntity = entitiesCreatorHelper.addEntity(Constants.DOCUMENT_SCHEMA_ATTRIBUTE,
-                        qualifiedNameForSection,
-                        sectionProperties);
-
-                entitiesCreatorHelper.addRelationship(Constants.SCHEMA_ATTRIBUTE_TYPE,
-                        sectionEntity.getGUID(),
-                        typeEntity.getGUID(),
-                        Constants.INFORMATION_VIEW_OMAS_NAME,
-                        new InstanceProperties());
-                entitiesCreatorHelper.addRelationship(Constants.ATTRIBUTE_FOR_SCHEMA,
-                        parentSchemaTypeEntity.getGUID(),
-                        sectionEntity.getGUID(),
-                        Constants.INFORMATION_VIEW_OMAS_NAME,
-                        new InstanceProperties());
-
-                addElements(qualifiedNameForSection, typeEntity, reportSection.getElements());
-
+                addReportSection(qualifiedNameForParent, parentSchemaTypeEntity, (ReportSection) element);
             } else if (element instanceof ReportColumn) {
                 ReportColumn reportColumn = (ReportColumn) element;
-                createDerivedRelationalColumn(parentSchemaTypeEntity, qualifiedNameForParent, reportColumn);
+                addDerivedRelationalColumn(parentSchemaTypeEntity, qualifiedNameForParent, reportColumn);
             }//TODO refactor if else if
-
+        } catch (Exception e) {
+            log.error("Exception creating report element", e);
+            throw new RuntimeException(e);//TODO throw specific exception
         }
     }
 
+    private void addReportSection(String qualifiedNameForParent, EntityDetail parentSchemaTypeEntity, ReportSection element) throws Exception {
+        ReportSection reportSection = element;
+        String qualifiedNameForType = qualifiedNameForParent + "." + reportSection.getName() + Constants.TYPE_SUFFIX;
+        InstanceProperties typeProperties = new EntityPropertiesBuilder()
+                .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForType)
+                .build();
+        EntityDetail typeEntity = entitiesCreatorHelper.addEntity(Constants.DOCUMENT_SCHEMA_TYPE,
+                qualifiedNameForType,
+                typeProperties);
 
-    private void createDerivedRelationalColumn(EntityDetail parentEntity, String parentQualifiedName, ReportColumn reportColumn) throws Exception {
+        String qualifiedNameForSection = qualifiedNameForParent + "." + reportSection.getName();
+        InstanceProperties sectionProperties = new EntityPropertiesBuilder()
+                .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForSection)
+                .withStringProperty(Constants.ATTRIBUTE_NAME, reportSection.getName())
+                .build();
+        EntityDetail sectionEntity = entitiesCreatorHelper.addEntity(Constants.DOCUMENT_SCHEMA_ATTRIBUTE,
+                qualifiedNameForSection,
+                sectionProperties);
+
+        entitiesCreatorHelper.addRelationship(Constants.SCHEMA_ATTRIBUTE_TYPE,
+                sectionEntity.getGUID(),
+                typeEntity.getGUID(),
+                Constants.INFORMATION_VIEW_OMAS_NAME,
+                new InstanceProperties());
+        entitiesCreatorHelper.addRelationship(Constants.ATTRIBUTE_FOR_SCHEMA,
+                parentSchemaTypeEntity.getGUID(),
+                sectionEntity.getGUID(),
+                Constants.INFORMATION_VIEW_OMAS_NAME,
+                new InstanceProperties());
+
+        addElements(qualifiedNameForSection, typeEntity, reportSection.getElements());
+    }
+
+
+    private void addDerivedRelationalColumn(EntityDetail parentEntity, String parentQualifiedName, ReportColumn reportColumn) throws Exception {
 
         String qualifiedNameForColumn = parentQualifiedName + "." + reportColumn.getName();
 
@@ -192,7 +197,6 @@ public class ReportCreator {
             EntityDetail sourceColumn = entitiesCreatorHelper.getEntity(Constants.RELATIONAL_COLUMN, getQualifiedNameForSourceColumn(source));
             if (sourceColumn != null) {
                 log.info("source database column found.");
-
 
                 InstanceProperties schemaQueryImplProperties = new EntityPropertiesBuilder()
                         .withStringProperty(Constants.QUERY, "")
