@@ -68,11 +68,11 @@ public class KafkaVirtualiserConsumer implements Runnable {
     public List<TableContextEvent> receive(Consumer consumer, long timeoutMilliSeconds) {
 
         List<TableContextEvent> messages = new ArrayList<>();
-        ConsumerRecords<Long, String> records = consumer.poll(timeoutMilliSeconds);
+        ConsumerRecords<String, String> records = consumer.poll(timeoutMilliSeconds);
         TableContextEvent tableContextEvent;
 
         if (records != null) {
-            for (ConsumerRecord<Long, String> record : records) {
+            for (ConsumerRecord<String, String> record : records) {
 
                 log.debug("Received Message topic ={}, partition ={}, offset = {}, key = {}, value = {}",
                         record.topic(), record.partition(), record.offset(), record.key(), record.value());

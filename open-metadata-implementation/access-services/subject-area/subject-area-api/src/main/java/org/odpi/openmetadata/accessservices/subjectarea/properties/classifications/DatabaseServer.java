@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 
 package org.odpi.openmetadata.accessservices.subjectarea.properties.classifications;
 import org.slf4j.Logger;
@@ -108,7 +109,7 @@ public class DatabaseServer extends Classification {
        private String type;
        /**
         * {@literal Type of database server. }
-        * @return {@code String }
+        * @return {$$PropertyTypeJavadoc$$ }
         */
        public String getType() {
            return this.type;
@@ -121,7 +122,7 @@ public class DatabaseServer extends Classification {
        private String version;
        /**
         * {@literal Version of the database server software. }
-        * @return {@code String }
+        * @return {$$PropertyTypeJavadoc$$ }
         */
        public String getVersion() {
            return this.version;
@@ -134,7 +135,7 @@ public class DatabaseServer extends Classification {
        private String source;
        /**
         * {@literal Source of the database software. }
-        * @return {@code String }
+        * @return {$$PropertyTypeJavadoc$$ }
         */
        public String getSource() {
            return this.source;

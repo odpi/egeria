@@ -94,7 +94,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
      * @return kafka consumer object
      */
     private Consumer<Long, String> createConsumer() {
-        final Properties props = getProperties();
+        final Properties props = getKafkaProperties();
         final Consumer<Long, String> consumer = new KafkaConsumer<>(props);
 
         String topicName = this.connectionBean.getEndpoint().getAddress().split("/")[1];
@@ -102,7 +102,12 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         return consumer;
     }
 
-    private Properties getProperties() {
+    /**
+     * Get properties for the kafka consumer.
+     *
+     * @return kafka properties
+     */
+    private Properties getKafkaProperties() {
         final Properties props = new Properties();
 
         String address = this.connectionBean.getEndpoint().getAddress().split("/")[0];
@@ -117,7 +122,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
     private class ConsumerThread implements Runnable {
 
         /**
-         * Read the Kafka events originating from IGC.
+         * Read IGC Infosphere topic Kafka events.
          */
         @Override
         public void run() {
@@ -141,6 +146,15 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
 
     }
 
+
+    /**
+     * Read IGC Infosphere topic Kafka events.
+     *
+     * @param mapper Jackson mapper for reading JSON
+     * @param event  An IGC Infosphere Kafka event
+     * @return POJO containing all relevant variables of an IGC Infosphere topic event.
+     * @throws java.io.IOException
+     */
     private IGCKafkaEvent getIGCKafkaEvent(ObjectMapper mapper, ConsumerRecord<Long, String> event) throws java.io.IOException {
         final String eventContent = event.value();
         log.info("Consumer Record: {}", eventContent);
@@ -148,14 +162,19 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         return mapper.readValue(eventContent, IGCKafkaEvent.class);
     }
 
+
+    /**
+     * Distinguish IGC Infosphere topic events between IMAM imports and 'regular'  events.
+     *
+     * @param igcKafkaEvent IGC Infosphere topic event
+     */
     private void processEvent(IGCKafkaEvent igcKafkaEvent) {
 
         String eventType = igcKafkaEvent.getEventType();
 
         if (IMAM_SHARE_EVENT.equals(eventType)) {
             processIMAM(igcKafkaEvent);
-        }
-        else {
+        } else {
             process(igcKafkaEvent);
         }
     }
@@ -170,13 +189,21 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
 
         List<String> createdRIDs = igcKafkaEvent.getDatacollectionRID();
         for (String id : createdRIDs) {
-            createSchema(id);
+            createSchemaIMAM(id);
         }
 
         log.info("Process IMAM ended!");
     }
 
-    private void createSchema(String id) {
+    /**
+     * Propagate an IGC schema and all other IGC assets thats are relevant, such as the IGC endpoint, database, and any foreign keys.
+     * First, all assets are obtained using a chain of IGC Connector queries.
+     * Then the creation of these entities is propagated through OMRS.
+     * Finally the relationship between the entities is propagated.
+     *
+     * @param id The RID of the IGC Schema that is to be propagated.
+     */
+    private void createSchemaIMAM(String id) {
         IGCObject igcTable = igcomrsRepositoryConnector.genericIGCQuery(id);
         IGCObject igcEndpoint = igcomrsRepositoryConnector.genericIGCQuery(igcTable.getContext().get(0).getId());
         IGCObject igcDatabase = igcomrsRepositoryConnector.genericIGCQuery(igcTable.getContext().get(1).getId());
@@ -214,56 +241,78 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
 
         //Propagate Connection/Connection type creations and relationships
         for (Item connection : igcDatabase.getDataConnections().getItems()) {
-            IGCObject igcConnection = igcomrsRepositoryConnector.genericIGCQuery(connection.getId());
-            IGCObject igcConnectorType = igcomrsRepositoryConnector.genericIGCQuery(igcConnection.getDataConnectors().getId());
-
-            String connectionQualifiedName = getConnectionQualifiedName(igcConnection);
-            createEntity(igcConnection, false, CONNECTION, connectionQualifiedName);
-
-            String connectorTypeQualifiedName = getConnectorQualifiedName(igcConnectorType);
-            createEntity(igcConnectorType, false, CONNECTOR_TYPE, connectorTypeQualifiedName);
-
-            EntityProxy connectionProxy = newEntityProxy(CONNECTION, connectionQualifiedName, igcConnection.getId());
-            EntityProxy connectorTypeProxy = newEntityProxy(CONNECTOR_TYPE, connectorTypeQualifiedName, igcConnectorType.getId());
-            createRelationship(CONNECTION_CONNECTOR_TYPE, connectionProxy, connectorTypeProxy);
-
-            EntityProxy endpointProxy = newEntityProxy(ENDPOINT, endpointQualifiedName, igcEndpoint.getId());
-            createRelationship(CONNECTION_ENDPOINT, endpointProxy, connectionProxy);
+            propagateConnectionAssets(igcEndpoint, endpointQualifiedName, connection);
         }
 
         //Propagate RelationalColumns and relationships
         IGCObject databaseColumns = igcomrsRepositoryConnector.getDatabaseColumns(id, DEFAULT_PAGE_SIZE);
         for (Item column : databaseColumns.getDatabaseColumns().getItems()) {
-            IGCColumn igcColumn = igcomrsRepositoryConnector.getIGCColumn(column.getId());
+            propagateRelationalColumnAssets(relationalTableTypeProxy, column);
+        }
+    }
 
-            String columnQualifiedName = getQualifiedName(igcColumn.getContext(), igcColumn.getName());
-            createEntity(igcColumn, RELATIONAL_COLUMN, false, columnQualifiedName);
+    /**
+     * Propagate the creation of Connection/Connection entities.
+     *
+     * @param igcEndpoint           An IGC endpoint
+     * @param endpointQualifiedName The qualified name of the endpoint
+     * @param connection            AN IGC connection
+     */
+    private void propagateConnectionAssets(IGCObject igcEndpoint, String endpointQualifiedName, Item connection) {
+        IGCObject igcConnection = igcomrsRepositoryConnector.genericIGCQuery(connection.getId());
+        IGCObject igcConnectorType = igcomrsRepositoryConnector.genericIGCQuery(igcConnection.getDataConnectors().getId());
 
-            String columnTypeQualifiedName = getTypeQualifiedName(columnQualifiedName);
-            createEntity(igcColumn, RELATIONAL_COLUMN_TYPE, true, columnTypeQualifiedName);
-            String relationalColumnTypeID = RELATIONAL_COLUMN_TYPE + "." + igcColumn.getId();
+        String connectionQualifiedName = getConnectionQualifiedName(igcConnection);
+        createEntity(igcConnection, false, CONNECTION, connectionQualifiedName);
 
-            EntityProxy relationalColumnProxy = newEntityProxy(RELATIONAL_COLUMN, columnQualifiedName, igcColumn.getId());
-            EntityProxy relationalColumnTypeProxy = newEntityProxy(RELATIONAL_COLUMN_TYPE, columnTypeQualifiedName, relationalColumnTypeID);
-            createRelationship(SCHEMA_ATTRIBUTE_TYPE, relationalColumnProxy, relationalColumnTypeProxy);
-            createRelationship(ATTRIBUTE_FOR_SCHEMA, relationalTableTypeProxy, relationalColumnProxy);
+        String connectorTypeQualifiedName = getConnectorQualifiedName(igcConnectorType);
+        createEntity(igcConnectorType, false, CONNECTOR_TYPE, connectorTypeQualifiedName);
 
-            if (igcColumn.getDefinedForeignKey() != null &&
-                    igcColumn.getDefinedForeignKeyReferences() != null) {
-                for (Item foreignKey : igcColumn.getDefinedForeignKeyReferences().getItems()) {
-                    final String foreignKeyId = foreignKey.getId();
-                    IGCColumn foreignKeyRelationalColumn = igcomrsRepositoryConnector.getIGCColumn(foreignKeyId);
-                    String foreignKeyQualifiedName = getQualifiedName(foreignKeyRelationalColumn.getContext(), foreignKeyRelationalColumn.getName());
+        EntityProxy connectionProxy = newEntityProxy(CONNECTION, connectionQualifiedName, igcConnection.getId());
+        EntityProxy connectorTypeProxy = newEntityProxy(CONNECTOR_TYPE, connectorTypeQualifiedName, igcConnectorType.getId());
+        createRelationship(CONNECTION_CONNECTOR_TYPE, connectionProxy, connectorTypeProxy);
 
-                    EntityProxy foreignKeyProxy = newEntityProxy(RELATIONAL_COLUMN, foreignKeyQualifiedName, foreignKeyId);
-                    createRelationship(FOREIGN_KEY, relationalColumnProxy, foreignKeyProxy);
-                }
+        EntityProxy endpointProxy = newEntityProxy(ENDPOINT, endpointQualifiedName, igcEndpoint.getId());
+        createRelationship(CONNECTION_ENDPOINT, endpointProxy, connectionProxy);
+    }
+
+    /**
+     * Propagate the creation of RelationalColumn  entities.
+     *
+     * @param relationalTableTypeProxy EntityProxy summarizes an entity instance.  It is used to describe one of the
+     *                                 entities connected together by a relationship.
+     * @param column                   An IGC column
+     */
+    private void propagateRelationalColumnAssets(EntityProxy relationalTableTypeProxy, Item column) {
+        IGCColumn igcColumn = igcomrsRepositoryConnector.getIGCColumn(column.getId());
+
+        String columnQualifiedName = getQualifiedName(igcColumn.getContext(), igcColumn.getName());
+        createColumnEntity(igcColumn, false, RELATIONAL_COLUMN, columnQualifiedName);
+
+        String columnTypeQualifiedName = getTypeQualifiedName(columnQualifiedName);
+        createColumnEntity(igcColumn, true, RELATIONAL_COLUMN_TYPE, columnTypeQualifiedName);
+        String relationalColumnTypeID = RELATIONAL_COLUMN_TYPE + "." + igcColumn.getId();
+
+        EntityProxy relationalColumnProxy = newEntityProxy(RELATIONAL_COLUMN, columnQualifiedName, igcColumn.getId());
+        EntityProxy relationalColumnTypeProxy = newEntityProxy(RELATIONAL_COLUMN_TYPE, columnTypeQualifiedName, relationalColumnTypeID);
+        createRelationship(SCHEMA_ATTRIBUTE_TYPE, relationalColumnProxy, relationalColumnTypeProxy);
+        createRelationship(ATTRIBUTE_FOR_SCHEMA, relationalTableTypeProxy, relationalColumnProxy);
+
+        if (igcColumn.getDefinedForeignKey() != null &&
+                igcColumn.getDefinedForeignKeyReferences() != null) {
+            for (Item foreignKey : igcColumn.getDefinedForeignKeyReferences().getItems()) {
+                final String foreignKeyId = foreignKey.getId();
+                IGCColumn foreignKeyRelationalColumn = igcomrsRepositoryConnector.getIGCColumn(foreignKeyId);
+                String foreignKeyQualifiedName = getQualifiedName(foreignKeyRelationalColumn.getContext(), foreignKeyRelationalColumn.getName());
+
+                EntityProxy foreignKeyProxy = newEntityProxy(RELATIONAL_COLUMN, foreignKeyQualifiedName, foreignKeyId);
+                createRelationship(FOREIGN_KEY, relationalColumnProxy, foreignKeyProxy);
             }
         }
     }
 
     /**
-     * Process individual IGC Kafka events and publish them through OMRS.
+     * Process individual IGC Kafka events and publish them via OMRS.
      *
      * @param igcKafkaEvent a Kafka event originating from IGC.
      */
@@ -277,52 +326,141 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                     //Relationship between a technical term and a glossary term.
                     if (igcKafkaEvent.getAction().equals("ASSIGNED_RELATIONSHIP")
                             || igcKafkaEvent.getAction().equalsIgnoreCase(MODIFY) && igcObject.getAssignedToTerms() != null) {
-                        String glossaryTermID = igcObject.getAssignedToTerms().getItems().get(0).getId();
-                        IGCObject glossaryTerm = igcomrsRepositoryConnector.genericIGCQuery(glossaryTermID);
-
-                        String glossaryTermName = getGlossaryTermName(glossaryTerm);
-                        String columnQualifiedName = getQualifiedName(igcObject.getContext(), igcObject.getName());
-
-                        EntityProxy relationalColumnProxy = newEntityProxy(RELATIONAL_COLUMN, columnQualifiedName, igcObject.getId());
-                        EntityProxy glossaryTermProxy = newEntityProxy(GLOSSARY_TERM, glossaryTermName, glossaryTermID);
-                        createRelationship(SEMANTIC_ASSIGNMENT, relationalColumnProxy, glossaryTermProxy);
+                        processAssignedRelationship(igcObject);
                     }
                     break;
                 case TERM:
                     if (igcKafkaEvent.getAction().equals(CREATE)) {
-                        String glossaryCategoryName = getParentCategoryName(igcObject);
-                        String glossaryTermName = getGlossaryTermName(glossaryCategoryName, igcObject.getName());
-
-                        createEntity(igcObject, false, GLOSSARY_TERM, glossaryTermName);
-                        createEntity(igcObject, false, GLOSSARY_CATEGORY, glossaryCategoryName);
-
-                        EntityProxy glossaryCategoryProxy = newEntityProxy(GLOSSARY_CATEGORY, glossaryCategoryName, igcObject.getContext().get(0).getId());
-                        EntityProxy glossaryTermProxy = newEntityProxy(GLOSSARY_TERM, glossaryTermName, igcObject.getId());
-                        createRelationship(TERM_CATEGORIZATION, glossaryCategoryProxy, glossaryTermProxy);
+                        processTermCreation(igcObject);
                     } else if (igcKafkaEvent.getAction().equals(MODIFY)) {
-                        String glossaryCategoryName = getParentCategoryName(igcObject);
-                        String glossaryTermName = getGlossaryTermName(glossaryCategoryName, igcObject.getName());
-
-                        updateGlossaryTerm(igcObject, glossaryTermName);
+                        processTermModification(igcObject);
                     }
                     break;
                 case CATEGORY:
                     if (igcKafkaEvent.getAction().equals(CREATE)) {
-                        final String glossaryCategoryName = igcObject.getName();
-                        createEntity(igcObject, false, GLOSSARY_CATEGORY, glossaryCategoryName);
+                        processCategoryCreation(igcObject);
                     }
                     break;
                 default:
                     log.info("Unable to process the type: {}", igcKafkaEvent.getAction());
                     break;
             }
-        } catch (
-                Exception e) {
+        } catch (Exception e) {
             log.info("Unable to process Asset: {}", e.getMessage());
         }
 
     }
 
+    /**
+     * Propagate the creation of an IGC category.
+     *
+     * @param igcObject An IGC asset
+     */
+    private void processCategoryCreation(IGCObject igcObject) {
+        final String glossaryCategoryName = igcObject.getName();
+        createEntity(igcObject, false, GLOSSARY_CATEGORY, glossaryCategoryName);
+    }
+
+    /**
+     * Propagate the modification of an IGC term.
+     *
+     * @param igcObject An IGC asset
+     */
+    private void processTermModification(IGCObject igcObject) {
+        String glossaryCategoryName = getParentCategoryName(igcObject);
+        String glossaryTermName = getGlossaryTermName(glossaryCategoryName, igcObject.getName());
+        updateGlossaryTerm(igcObject, glossaryTermName);
+    }
+
+    /**
+     * Update a glossary term.
+     *
+     * @param igcObject     An IGC asset
+     * @param qualifiedName A mandatory property of OMRS entities
+     */
+    private void updateGlossaryTerm(IGCObject igcObject, String qualifiedName) {
+        final List<Classification> classifications = createClassifications(igcObject, CONFIDENTIALITY);
+        InstanceProperties instanceProperties = getEntityProperties(GLOSSARY_TERM, igcObject, qualifiedName);
+
+        EntityDetail entity = getEntityDetail(igcObject.getId(),
+                GLOSSARY_TERM,
+                false,
+                igcObject.getCreatedBy(),
+                instanceProperties,
+                classifications);
+
+        if (entity != null) {
+            sendUpdateEntityEvent(entity);
+        }
+    }
+
+    /**
+     * Publish a new version of an entity via OMRS.
+     *
+     * @param entity EntityDetail stores all of the type-specific properties for the entity.  These properties can be
+     *               requested in an InstanceProperties object on request.
+     */
+    private void sendUpdateEntityEvent(EntityDetail entity) {
+        repositoryEventProcessor.processUpdatedEntityEvent(
+                sourceName,
+                metadataCollectionId,
+                originatorServerName,
+                originatorServerType,
+                originatorOrganizationName,
+                null,
+                entity
+        );
+
+        log.info("[Entity] update the entity with type = {}; guid = {}", entity.getType().getTypeDefName(), entity.getGUID());
+    }
+
+    /**
+     * Propagate the creation of an IGC term.
+     *
+     * @param igcObject An IGC asset
+     */
+    private void processTermCreation(IGCObject igcObject) {
+        String glossaryCategoryName = getParentCategoryName(igcObject);
+        String glossaryTermName = getGlossaryTermName(glossaryCategoryName, igcObject.getName());
+
+        createEntity(igcObject, false, GLOSSARY_TERM, glossaryTermName);
+        createEntity(igcObject, false, GLOSSARY_CATEGORY, glossaryCategoryName);
+
+        EntityProxy glossaryCategoryProxy = newEntityProxy(GLOSSARY_CATEGORY, glossaryCategoryName, igcObject.getContext().get(0).getId());
+        EntityProxy glossaryTermProxy = newEntityProxy(GLOSSARY_TERM, glossaryTermName, igcObject.getId());
+        createRelationship(TERM_CATEGORIZATION, glossaryCategoryProxy, glossaryTermProxy);
+    }
+
+    /**
+     * Propagate the assignment between a business and a technical asset, or the modification of an existing assignment.
+     *
+     * @param igcObject An IGC asset
+     */
+    private void processAssignedRelationship(IGCObject igcObject) {
+        String glossaryTermID = igcObject.getAssignedToTerms().getItems().get(0).getId();
+        IGCObject glossaryTerm = igcomrsRepositoryConnector.genericIGCQuery(glossaryTermID);
+
+        String glossaryTermName = getGlossaryTermName(glossaryTerm);
+        String columnQualifiedName = getQualifiedName(igcObject.getContext(), igcObject.getName());
+
+        EntityProxy relationalColumnProxy = newEntityProxy(RELATIONAL_COLUMN, columnQualifiedName, igcObject.getId());
+        EntityProxy glossaryTermProxy = newEntityProxy(GLOSSARY_TERM, glossaryTermName, glossaryTermID);
+        createRelationship(SEMANTIC_ASSIGNMENT, relationalColumnProxy, glossaryTermProxy);
+    }
+
+    /**
+     * Create and propagate the relationship between two entity proxies. An entityProxy summarizes an entity instance.
+     * A proxy is used instead of the original entity to be prepared for a situation where a receiving repository has
+     * no knowledge of the original entity yet.
+     *
+     * @param relationshipType The pre-defined OMRS type of the relationship between the two proxy entities. Note that
+     *                         proxy one and proxy two are not interchangable! Refer to the the Egeria documentation for
+     *                         the correct order for each relationship type.
+     * @param entityProxyOne   EntityProxy summarizes an entity instance.  It is used to describe one of the entities
+     *                         connected together by a relationship.
+     * @param entityProxyTwo   EntityProxy summarizes an entity instance.  It is used to describe one of the entities
+     *                         connected together by a relationship.
+     */
     private void createRelationship(String relationshipType, EntityProxy entityProxyOne, EntityProxy entityProxyTwo) {
 
         Relationship relationship = getRelationship(relationshipType);
@@ -348,6 +486,18 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                 relationshipType, entityProxyOneType, entityProxyOneType, entityProxyTwoGUID, entityProxyTwoType);
     }
 
+    /**
+     * Add the entity proxies to the relationship object. A proxy is used instead of the original entity to be prepared
+     * for a situation where a receiving repository has no knowledge of the original entity yet.
+     *
+     * @param relationship   Relationship is a POJO that manages the properties of an open metadata relationship.
+     *                       This includes information
+     *                       about the relationship type, the two entities it connects and the properties it holds.
+     * @param entityProxyOne EntityProxy summarizes an entity instance.  It is used to describe one of the entities
+     *                       connected together by a relationship.
+     * @param entityProxyTwo EntityProxy summarizes an entity instance.  It is used to describe one of the entities
+     *                       connected together by a relationship.
+     */
     private void setEndsOfRelationship(Relationship relationship, EntityProxy entityProxyOne, EntityProxy entityProxyTwo) {
         if (entityProxyOne != null && entityProxyTwo != null) {
             relationship.setEntityOneProxy(entityProxyOne);
@@ -355,6 +505,13 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         }
     }
 
+    /**
+     * Publish a relationship via OMRS.
+     *
+     * @param relationship Relationship is a POJO that manages the properties of an open metadata relationship. This
+     *                     includes information about the relationship type, the two entities it connects and the
+     *                     properties it holds.
+     */
     private void sendNewRelationshipEvent(Relationship relationship) {
 
         this.repositoryEventProcessor.processNewRelationshipEvent(
@@ -365,43 +522,51 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
                 originatorOrganizationName,
                 relationship
         );
-
     }
 
-    private void updateGlossaryTerm(IGCObject igcObject, String qualifiedName) {
+    /**
+     * Create and publish a new entity based on an IGC asset.
+     *
+     * @param igcObject      An IGC asset
+     * @param avoidDuplicate Some concepts which are represented as a single asset in IGC, are divided into several
+     *                       entities in OMRS. Every OMRS entity needs a unique ID however. The avoidDuplicate switch
+     *                       allows a derived entity to obtain a unique id, even when multiple entities are
+     *                       derived from the same IGC asset.
+     * @param typeName       The pre-defined type of the Egeria entity
+     * @param qualifiedName  The qualified name of the entity
+     */
+    private void createEntity(IGCObject igcObject, boolean avoidDuplicate, String typeName, String qualifiedName) {
 
-        final List<Classification> classifications = createClassifications(igcObject, CONFIDENTIALITY);
-        InstanceProperties instanceProperties = getEntityProperties(GLOSSARY_TERM, igcObject, qualifiedName);
+        List<Classification> classifications = new ArrayList<>();
+        if (GLOSSARY_TERM.equals(typeName)) {
+            classifications = createClassifications(igcObject, CONFIDENTIALITY);
+        }
 
-        EntityDetail entity = getEntityDetail(igcObject.getId(),
-                GLOSSARY_TERM,
-                false,
+        InstanceProperties instanceProperties = getEntityProperties(typeName, igcObject, qualifiedName);
+
+        EntityDetail entityDetail = getEntityDetail(igcObject.getId(),
+                typeName,
+                avoidDuplicate,
                 igcObject.getCreatedBy(),
                 instanceProperties,
                 classifications);
 
-        if (entity != null) {
-            sendUpdateEntityEvent(entity);
-        }
-
+        sendNewEntityEvent(typeName, entityDetail);
     }
 
-    private void sendUpdateEntityEvent(EntityDetail entity) {
 
-        repositoryEventProcessor.processUpdatedEntityEvent(
-                sourceName,
-                metadataCollectionId,
-                originatorServerName,
-                originatorServerType,
-                originatorOrganizationName,
-                null,
-                entity
-        );
-
-        log.info("[Entity] update the entity with type = {}; guid = {}", entity.getType().getTypeDefName(), entity.getGUID());
-    }
-
-    private void createEntity(IGCColumn igcColumn, String typeName, boolean avoidDuplicate, String qualifiedName) {
+    /**
+     * Create and publish a new entity based on an IGC asset.
+     *
+     * @param igcColumn      An IGC column asset
+     * @param avoidDuplicate Some concepts which are represented as a single asset in IGC, are divided into several
+     *                       entities in OMRS. Every OMRS entity needs a unique ID however. The avoidDuplicate switch
+     *                       allows a derived entity to obtain a unique id, even when multiple entities are
+     *                       derived from the same IGC asset.
+     * @param typeName       The pre-defined type of the Egeria entity
+     * @param qualifiedName  A mandatory property of OMRS entities
+     */
+    private void createColumnEntity(IGCColumn igcColumn, boolean avoidDuplicate, String typeName, String qualifiedName) {
 
         InstanceProperties instanceProperties = getEntityProperties(
                 qualifiedName,
@@ -422,25 +587,13 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         sendNewEntityEvent(typeName, entityDetail);
     }
 
-    private void createEntity(IGCObject igcObject, boolean avoidDuplicate, String typeName, String qualifiedName) {
-
-        List<Classification> classifications = new ArrayList<>();
-        if (GLOSSARY_TERM.equals(typeName)) {
-            classifications = createClassifications(igcObject, CONFIDENTIALITY);
-        }
-
-        InstanceProperties instanceProperties = getEntityProperties(typeName, igcObject, qualifiedName);
-
-        EntityDetail entityDetail = getEntityDetail(igcObject.getId(),
-                typeName,
-                avoidDuplicate,
-                igcObject.getCreatedBy(),
-                instanceProperties,
-                classifications);
-
-        sendNewEntityEvent(typeName, entityDetail);
-    }
-
+    /**
+     * Publish a new entity via OMRS.
+     *
+     * @param typeName     The pre-defined type of the Egeria entity
+     * @param entityDetail EntityDetail stores all of the type-specific properties for the entity.  These
+     *                     properties can be requested in an InstanceProperties object on request.
+     */
     private void sendNewEntityEvent(String typeName, EntityDetail entityDetail) {
 
         if (entityDetail == null) {
@@ -462,6 +615,16 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
     }
 
 
+    /**
+     * Create a new Relationship object via the OMRS Helper.
+     *
+     * @param relationshipType The pre-defined OMRS type of the relationship between the two proxy entities. Note that
+     *                         proxy one and proxy two are not interchangable! Refer to the the Egeria documentation for
+     *                         the correct order for each relationship type.
+     * @return Relationship is a POJO that manages the properties of an open metadata relationship.
+     * This includes information  about the relationship type, the two entities it connects and
+     * the properties it holds.
+     */
     private Relationship getRelationship(String relationshipType) {
 
         try {
@@ -481,6 +644,16 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         return null;
     }
 
+    /**
+     * Create a new entity proxy. An EntityProxy summarizes an entity instance. It is used to describe one of the
+     * entities connected together by a relationship.  A proxy is used instead of the original entity to be prepared for
+     * situation where a receiving repository has no knowledge of the original entity yet.
+     *
+     * @param typeName      The pre-defined type of the Egeria entity
+     * @param qualifiedName A mandatory property of OMRS entities
+     * @param entityGuid    The unique id of an Egeria entity, roughly comparable to the IGC's RID
+     * @return An entity proxy object
+     */
     private EntityProxy newEntityProxy(String typeName, String qualifiedName, String entityGuid) {
 
         try {
@@ -504,7 +677,23 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         return null;
     }
 
-    private EntityDetail getEntityDetail(String id, String typeName, boolean avoidDuplicate, String username,
+    /**
+     * Create a new EntityDetail object via the OMRS Helper.
+     *
+     * @param entityGUID         The unique id of an Egeria entity, roughly comparable to the IGC's RID
+     * @param typeName           The pre-defined type of the Egeria entity
+     * @param avoidDuplicate     Some concepts which are represented as a single asset in IGC, are divided into
+     *                           several entities in OMRS. Every OMRS entity needs a unique ID however. The
+     *                           avoidDuplicate switch allows a derived entity to obtain a unique id, even when
+     *                           multiple entities are derived from the same IGC asset.
+     * @param username           The creator of the IGC asset
+     * @param instanceProperties Properties of the entity, e.g. qualified name
+     * @param classifications    The Classification class stores information about a classification assigned to an
+     *                           entity.  The Classification class stores a name, properties, and the owner of the
+     *                           classification.
+     * @return An entityDetail Object
+     */
+    private EntityDetail getEntityDetail(String entityGUID, String typeName, boolean avoidDuplicate, String username,
                                          InstanceProperties instanceProperties, List<Classification> classifications) {
 
         try {
@@ -519,9 +708,9 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
             entityDetail.setStatus(InstanceStatus.ACTIVE);
 
             if (avoidDuplicate) {
-                entityDetail.setGUID(typeName + "." + id);
+                entityDetail.setGUID(typeName + "." + entityGUID);
             } else {
-                entityDetail.setGUID(id);
+                entityDetail.setGUID(entityGUID);
             }
 
             return entityDetail;
@@ -531,6 +720,11 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         return null;
     }
 
+    /**
+     * Create a Primary Key Classification via the OMRS Helper.
+     *
+     * @return List<Classification> a list of primary key classifications
+     */
     private List<Classification> getPrimaryKeyClassification() {
 
         List<Classification> classificationList = new ArrayList<>(1);
@@ -553,6 +747,13 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         return classificationList;
     }
 
+    /**
+     * Create a collection of classifications based on Related Terms associated with the given asset
+     *
+     * @param igcObject              generic IGC object that contains the details about the asset
+     * @param classificationTypeName the name of the classification type
+     * @return List<Classification> a list of classifications based on IGC object and its related terms assigned
+     */
     private List<Classification> createClassifications(IGCObject igcObject, String classificationTypeName) {
 
         List<Classification> classifications = new ArrayList<>();
@@ -569,21 +770,27 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         return classifications;
     }
 
+    /**
+     * Create a new Classification object via the OMRS Helper
+     *
+     * @param classificationTypeName the name of the classification type
+     * @param name                   the name of the classification type
+     * @return Classification a new classification object
+     */
     private Classification getClassification(String classificationTypeName, String name) {
 
         try {
-            Classification classification = repositoryHelper.getNewClassification(
+            InstanceProperties classificationProperties = getClassificationProperties(name);
+
+            return repositoryHelper.getNewClassification(
                     sourceName,
                     null,
                     classificationTypeName,
                     GLOSSARY_TERM,
                     ClassificationOrigin.PROPAGATED,
                     null,
-                    null);
+                    classificationProperties);
 
-            InstanceProperties classificationProperties = getClassificationProperties(name);
-            classification.setProperties(classificationProperties);
-            return classification;
         } catch (TypeErrorException e) {
             log.info("Unable to create Classification [type = {}]: {}", classificationTypeName, e.getErrorMessage());
         }
@@ -591,7 +798,12 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         return null;
     }
 
-
+    /**
+     * Returns the mandatory properties for an entity
+     *
+     * @param qualifiedNameValue the value of the qualified name
+     * @return InstanceProperties an object provides the properties for an entity
+     */
     private InstanceProperties getMandatoryProperty(String qualifiedNameValue) {
         Map<String, InstancePropertyValue> properties = new HashMap<>();
         PrimitivePropertyValue qualifiedName = getStringPropertyValue(qualifiedNameValue);
@@ -602,6 +814,14 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         return instanceProperties;
     }
 
+    /**
+     * Map the string property names to a list of values for a glossary term entity
+     *
+     * @param typeName      the type of the entity
+     * @param igcObject     generic IGC object that contains the details about the asset
+     * @param qualifiedName the value of the qualified name (mandatory property)
+     * @return InstanceProperties  an object provides the properties for an entity
+     */
     private InstanceProperties getEntityProperties(String typeName, IGCObject igcObject, String qualifiedName) {
 
         InstanceProperties instanceProperties = getEntityProperties(
@@ -617,6 +837,11 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         return instanceProperties;
     }
 
+    /**
+     * @param newProperties      a new map of instance properties associated with the same asset
+     * @param instanceProperties existing properties
+     * @return InstanceProperties  an object provides all the properties for an asset
+     */
     private InstanceProperties combineInstanceProperties(
             Map<String, InstancePropertyValue> newProperties,
             InstanceProperties instanceProperties) {
@@ -627,6 +852,12 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         return instanceProperties;
     }
 
+    /**
+     * Map the string property names to a list of values for a glossary term entity
+     *
+     * @param igcObject generic IGC object that contains the details about the asset
+     * @return @return Map<String, InstancePropertyValue>   a map with properties associated to the glossary term
+     */
     private Map<String, InstancePropertyValue> getGlossaryTermInstanceProperties(IGCObject igcObject) {
         Map<String, InstancePropertyValue> properties = new HashMap<>();
 
@@ -641,6 +872,12 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         return properties;
     }
 
+    /**
+     * Map the string property names to a list of values for a relational column entity
+     *
+     * @param igcObject generic IGC object that contains the details about the asset
+     * @return Map<String                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               InstancePropertyValue>   a map with properties associated to the relational column
+     */
     private Map<String, InstancePropertyValue> getRelationalColumnInstanceProperties(IGCColumn igcObject) {
         Map<String, InstancePropertyValue> properties = new HashMap<>();
 
@@ -663,7 +900,15 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         return properties;
     }
 
-
+    /**
+     * Map the string property names to a list of values for an entity
+     *
+     * @param name             the qualified name of entity
+     * @param shortDescription the summary for the entity
+     * @param longDescription  the full description of the entity
+     * @param defaultName      the default name of entity (the same value that it is found in IGC)
+     * @return InstanceProperties  an object provides the properties for an entity
+     */
     private InstanceProperties getEntityProperties(String name, String shortDescription, String longDescription, String defaultName) {
         Map<String, InstancePropertyValue> properties = new HashMap<>();
 
@@ -684,6 +929,12 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         return instanceProperties;
     }
 
+    /**
+     * Map the string property names to a list of values
+     *
+     * @param name the name of the assigned classification from IGC
+     * @return InstanceProperties  an object provides support for properties for a classification
+     */
     private InstanceProperties getClassificationProperties(String name) {
         Map<String, InstancePropertyValue> properties = new HashMap<>();
 
@@ -702,6 +953,12 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         return instanceProperties;
     }
 
+    /**
+     * Set up a open metadata String primitive type
+     *
+     * @param value the primitive value
+     * @return PrimitivePropertyValue open metadata primitive String type
+     */
     private PrimitivePropertyValue getStringPropertyValue(String value) {
         PrimitivePropertyValue propertyValue = new PrimitivePropertyValue();
 
@@ -711,6 +968,12 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         return propertyValue;
     }
 
+    /**
+     * Set up a open metadata Boolean primitive type
+     *
+     * @param value the primitive value
+     * @return PrimitivePropertyValue open metadata primitive Boolean type
+     */
     private PrimitivePropertyValue getBooleanPropertyValue(Boolean value) {
         PrimitivePropertyValue propertyValue = new PrimitivePropertyValue();
 
@@ -720,6 +983,12 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         return propertyValue;
     }
 
+    /**
+     * Set up a enum property using symbolic name
+     *
+     * @param value the symbolic name for this enum value
+     * @return EnumPropertyValue
+     */
     private EnumPropertyValue getEnumPropertyValue(String value) {
         EnumPropertyValue propertyValue = new EnumPropertyValue();
         propertyValue.setSymbolicName(value);
@@ -727,20 +996,43 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         return propertyValue;
     }
 
+    /**
+     * Returns the parent glossary category name associated with the asset
+     *
+     * @param igcObject generic IGC object that contains the details about the asset
+     * @return String the parent glossary category name associated with the asset
+     */
     private String getParentCategoryName(IGCObject igcObject) {
         final Map<String, Object> additionalProperties = igcObject.getAdditionalProperties();
         final HashMap<String, String> parentCategory = (HashMap<String, String>) additionalProperties.get("parent_category");
         return parentCategory.get("_name");
     }
 
+    /**
+     * @param glossaryCategoryName the glossary category name associated with the glossary term
+     * @param name                 default name of the glossary term from IGC
+     * @return String              the qualified name of the glossary term
+     */
     private String getGlossaryTermName(String glossaryCategoryName, String name) {
         return glossaryCategoryName + "." + name;
     }
 
+    /**
+     * Returns the qualified name of the glossary term based on the parent's category and default name from IGC Repository
+     *
+     * @param igcObject generic IGC object that contains the details about the asset
+     * @return String the qualified name of the glossary term
+     */
     private String getGlossaryTermName(IGCObject igcObject) {
         return getParentCategoryName(igcObject) + "." + igcObject.getName();
     }
 
+    /**
+     * Returns the qualified name of the connection
+     *
+     * @param igcObject generic IGC object that contains the details about the asset
+     * @return String the qualified name of the connection
+     */
     private String getConnectionQualifiedName(IGCObject igcObject) {
         final Map<String, Object> additionalProperties = igcObject.getAdditionalProperties();
         final String property = (String) additionalProperties.get("connection_string");
@@ -748,10 +1040,23 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         return property + "." + CONNECTION;
     }
 
-    private String getConnectorQualifiedName(IGCObject igcConnectorType) {
-        return igcConnectorType.getName();
+    /**
+     * Returns the qualified name of the connector, by convention is the name from IGC repository
+     *
+     * @param igcObject generic IGC object that contains the details about the asset
+     * @return String the qualified name of the connector
+     */
+    private String getConnectorQualifiedName(IGCObject igcObject) {
+        return igcObject.getName();
     }
 
+    /**
+     * Returns the qualified name of a complex schema type based on its context
+     *
+     * @param contexts    the full context of the asset
+     * @param defaultName the name from IGC object
+     * @return the type qualified name of a complex schema type
+     */
     private String getQualifiedName(List<Context> contexts, String defaultName) {
 
         if (contexts == null || contexts.isEmpty()) {
@@ -760,16 +1065,22 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
 
         StringBuilder contextName = new StringBuilder();
         for (Context context : contexts) {
+            contextName.append(context.getName()).append(".");
             if (context.getType().equals("host")) {
-                contextName.append(context.getName() + "." + CONNECTION + ".");
-            } else {
-                contextName.append(context.getName() + ".");
+                contextName.append(CONNECTION).append(".");
             }
         }
 
         return contextName.toString() + defaultName;
     }
 
+    /**
+     * Returns the qualified name of a attribute for a complex schema type
+     * i.e based on relational column qualified name returns the qualified name of the relational column type
+     *
+     * @param typeName the qualified name of the complex schema type
+     * @return String   the type qualified name
+     */
     private String getTypeQualifiedName(String typeName) {
         return typeName + TYPE;
     }
