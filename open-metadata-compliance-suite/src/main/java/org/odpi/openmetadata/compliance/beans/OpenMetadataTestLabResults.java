@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.compliance.beans;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -21,6 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class OpenMetadataTestLabResults extends OpenMetadataTestResults
 {
     private Date   testRunDate   = new Date();
+    private String serverName    = null;
     private String serverRootURL = null;
 
     private List<OpenMetadataTestWorkbenchResults> testResultsFromWorkbenches = null;
@@ -170,6 +172,28 @@ public class OpenMetadataTestLabResults extends OpenMetadataTestResults
     public void setTestRunDate(Date testRunDate)
     {
         this.testRunDate = testRunDate;
+    }
+
+
+    /**
+     * Return the name of the server.
+     *
+     * @return string server name
+     */
+    public String getServerName()
+    {
+        return serverName;
+    }
+
+
+    /**
+     * Set up the name of the server.
+     *
+     * @param serverName string server name
+     */
+    public void setServerName(String serverName)
+    {
+        this.serverName = serverName;
     }
 
 

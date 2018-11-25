@@ -18,6 +18,7 @@ import java.util.List;
  */
 public class GovernanceEngineImpl implements GovernanceEngineClient {
 
+    private String serverName;  /* Initialized in constructor */
     private String omasServerURL;  /* Initialized in constructor */
     private RestTemplate restTemplate;
 
@@ -27,10 +28,13 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
     /**
      * Create a new GovernanceEngine client.
      *
-     * @param newServerURL - the network address of the handlers running the OMAS REST servers
+     * @param serverName - the network address of the process running the OMAS REST servers
+     * @param newServerURL - the network address of the process running the OMAS REST servers
      */
-    public GovernanceEngineImpl(String newServerURL) {
-        omasServerURL = newServerURL;
+    public GovernanceEngineImpl(String serverName,
+                                String newServerURL) {
+        this.serverName = serverName;
+        this.omasServerURL = newServerURL;
         restTemplate = new RestTemplate() ;
     }
 
@@ -51,17 +55,18 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
             TypeNotFoundException {
 
         final String methodName = "getGovernedAssetList";
-        final String urlTemplate = "/{0}/assets?classification={1}&type={2}";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/assets?classification={2}&type={3}";
 
         log.debug("Calling method: " + methodName);
 
 
         validateOMASServerURL(methodName);
         validateUserId(userId, methodName); // cannot be null
-        // No validation for other parms -- optional. Managed handlers-side
+        // No validation for other parms -- optional. Managed server-side
 
         GovernedAssetListAPIResponse restResult = callGovernedAssetListREST(methodName,
                 omasServerURL + urlTemplate,
+                serverName,
                 userId,
                 type,
                 classification);
@@ -86,7 +91,7 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
     public List<GovernanceClassificationDef> getGovernanceClassificationDefList(String userId, String classification) throws InvalidParameterException,
             UserNotAuthorizedException, MetadataServerException, ClassificationNotFoundException {
         final String methodName = "getGovernanceClassificationDefList";
-        final String urlTemplate = "/{0}/classificationdefs?classification={1}";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/classificationdefs?classification={2}";
 
         log.debug("Calling method: " + methodName);
 
@@ -96,6 +101,7 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
 
         GovernanceClassificationDefListAPIResponse restResult = callClassificationDefListREST(methodName,
                 omasServerURL + urlTemplate,
+                serverName,
                 userId,
                 classification);
 
@@ -118,7 +124,7 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
     public GovernedAsset getGovernedAsset(String userId, String assetGuid) throws InvalidParameterException,
             UserNotAuthorizedException, MetadataServerException, GuidNotFoundException {
         final String methodName = "getGovernedAssetList";
-        final String urlTemplate = "/{0}/assets/{1}";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/assets/{2}";
 
         log.debug("Calling method: " + methodName);
 
@@ -130,6 +136,7 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
 
         GovernedAssetAPIResponse restResult = callGovernedAssetREST(methodName,
                 omasServerURL + urlTemplate,
+                serverName,
                 userId,
                 assetGuid);
 
@@ -152,7 +159,7 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
     public GovernanceClassificationDef getGovernanceClassificationDef(String userId, String classificationGuid) throws InvalidParameterException,
             UserNotAuthorizedException, MetadataServerException, GuidNotFoundException {
         final String methodName = "getGovernanceClassificationDef";
-        final String urlTemplate = "/{0}/assets?classification={1}"; //TODO: Need to allow for root
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/assets?classification={2}"; //TODO: Need to allow for root
         // classification to be speced and do validation
 
         log.debug("Calling method: " + methodName);
@@ -165,6 +172,7 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
 
         GovernanceClassificationDefAPIResponse restResult = callClassificationDefREST(methodName,
                 omasServerURL + urlTemplate,
+                serverName,
                 userId,
                 classificationGuid);
 

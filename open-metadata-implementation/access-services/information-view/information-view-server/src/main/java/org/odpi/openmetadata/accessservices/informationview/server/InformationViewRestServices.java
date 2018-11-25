@@ -4,25 +4,28 @@ package org.odpi.openmetadata.accessservices.informationview.server;
 
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.ReportCreator;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportRequestBody;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.PropertyServerException;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.ReportCreationException;
 import org.odpi.openmetadata.accessservices.informationview.responses.VoidResponse;
 
 
 public class InformationViewRestServices {
 
-    private static ReportCreator reportCreator;
+    InformationViewInstanceHandler  instanceHandler = new InformationViewInstanceHandler();
 
-    public static void setReportCreator(ReportCreator reportCreator) {
-        InformationViewRestServices.reportCreator = reportCreator;
-    }
+    public VoidResponse submitReport(String serverName,
+                                     String userId,
+                                     ReportRequestBody requestBody) {
 
-    public VoidResponse submitReport(String userId,
-                             ReportRequestBody requestBody) {
         VoidResponse  response = new VoidResponse();
+
         try {
+
+            ReportCreator   reportCreator = instanceHandler.getReportCreator(serverName);
+
             reportCreator.createReportModel(requestBody);
         }
-        catch(ReportCreationException e){
+        catch (ReportCreationException | PropertyServerException e) {
             response.setExceptionClassName(e.getReportingClassName());
             response.setExceptionErrorMessage(e.getReportedErrorMessage());
             response.setRelatedHTTPCode(e.getReportedHTTPCode());

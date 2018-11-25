@@ -20,8 +20,6 @@ public class TestSchemaElement
     private ElementType          type                 = new ElementType();
     private List<Classification> classifications      = new ArrayList<>();
     private Map<String, Object>  additionalProperties = new HashMap<>();
-    private Map<String, Object>  schemaProperties     = new HashMap<>();
-
 
 
     /**
@@ -50,13 +48,6 @@ public class TestSchemaElement
         testObject.setQualifiedName("TestQualifiedName");
         testObject.setAdditionalProperties(additionalProperties);
 
-        testObject.setVersionNumber("TestVersionNumber");
-        testObject.setAuthor("TestAuthor");
-        testObject.setUsage("TestUsage");
-        testObject.setEncodingStandard("TestEncodingStandard");
-        testObject.setSchemaProperties(schemaProperties);
-
-
         return testObject;
     }
 
@@ -65,7 +56,7 @@ public class TestSchemaElement
      *
      * @param resultObject object returned by the test
      */
-    private void validateResultObject(SchemaElement  resultObject)
+    private void validateResultObject(SchemaElement resultObject)
     {
         assertTrue(resultObject.getType().equals(type));
         assertTrue(resultObject.getGUID().equals("TestGUID"));
@@ -74,12 +65,6 @@ public class TestSchemaElement
 
         assertTrue(resultObject.getQualifiedName().equals("TestQualifiedName"));
         assertTrue(resultObject.getAdditionalProperties() == null);
-
-        assertTrue(resultObject.getVersionNumber().equals("TestVersionNumber"));
-        assertTrue(resultObject.getAuthor().equals("TestAuthor"));
-        assertTrue(resultObject.getEncodingStandard().equals("TestEncodingStandard"));
-        assertTrue(resultObject.getUsage().equals("TestUsage"));
-        assertTrue(resultObject.getSchemaProperties() == null);
     }
 
 
@@ -88,7 +73,7 @@ public class TestSchemaElement
      */
     @Test public void testNullObject()
     {
-        SchemaElement    nullObject = new MockSchemaElement();
+        SchemaElement nullObject = new MockSchemaElement();
 
         assertTrue(nullObject.getType() == null);
         assertTrue(nullObject.getGUID() == null);
@@ -97,13 +82,6 @@ public class TestSchemaElement
 
         assertTrue(nullObject.getQualifiedName() == null);
         assertTrue(nullObject.getAdditionalProperties() == null);
-
-        assertTrue(nullObject.getVersionNumber() == null);
-        assertTrue(nullObject.getAuthor() == null);
-        assertTrue(nullObject.getUsage() == null);
-        assertTrue(nullObject.getEncodingStandard() == null);
-        assertTrue(nullObject.getSchemaProperties() == null);
-
 
         nullObject = new MockSchemaElement(null);
 
@@ -114,43 +92,36 @@ public class TestSchemaElement
 
         assertTrue(nullObject.getQualifiedName() == null);
         assertTrue(nullObject.getAdditionalProperties() == null);
-
-        assertTrue(nullObject.getVersionNumber() == null);
-        assertTrue(nullObject.getAuthor() == null);
-        assertTrue(nullObject.getUsage() == null);
-        assertTrue(nullObject.getEncodingStandard() == null);
-        assertTrue(nullObject.getSchemaProperties() == null);
-
     }
 
 
     /**
-     * Validate that schema properties are managed properly
+     * Validate that additional properties are managed properly
      */
-    @Test public void testSchemaProperties()
+    @Test public void testAdditionalProperties()
     {
-        Map<String, Object>   propertyMap;
-        SchemaElement         testObject = new MockSchemaElement();
+        Map<String, Object> propertyMap;
+        SchemaElement       testObject = new MockSchemaElement();
 
-        assertTrue(testObject.getSchemaProperties() == null);
+        assertTrue(testObject.getQualifiedName() == null);
 
         propertyMap = null;
         testObject = new MockSchemaElement();
-        testObject.setSchemaProperties(propertyMap);
+        testObject.setAdditionalProperties(propertyMap);
 
-        assertTrue(testObject.getSchemaProperties() == null);
+        assertTrue(testObject.getAdditionalProperties() == null);
 
         propertyMap = new HashMap<>();
         testObject = new MockSchemaElement();
-        testObject.setSchemaProperties(propertyMap);
+        testObject.setAdditionalProperties(propertyMap);
 
-        assertTrue(testObject.getSchemaProperties() == null);
+        assertTrue(testObject.getAdditionalProperties() == null);
 
         propertyMap.put("propertyName", "propertyValue");
         testObject = new MockSchemaElement();
-        testObject.setSchemaProperties(propertyMap);
+        testObject.setAdditionalProperties(propertyMap);
 
-        Map<String, Object>   retrievedPropertyMap = testObject.getSchemaProperties();
+        Map<String, Object>   retrievedPropertyMap = testObject.getAdditionalProperties();
 
         assertTrue(retrievedPropertyMap != null);
         assertFalse(retrievedPropertyMap.isEmpty());
@@ -168,10 +139,10 @@ public class TestSchemaElement
         assertFalse(getTestObject().equals("DummyString"));
         assertTrue(getTestObject().equals(getTestObject()));
 
-        SchemaElement  sameObject = getTestObject();
+        SchemaElement sameObject = getTestObject();
         assertTrue(sameObject.equals(sameObject));
 
-        SchemaElement  differentObject = getTestObject();
+        SchemaElement differentObject = getTestObject();
         differentObject.setGUID("Different");
         assertFalse(getTestObject().equals(differentObject));
     }

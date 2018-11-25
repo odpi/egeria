@@ -2,46 +2,60 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
-
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.MapSchemaElement;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaElement;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.MapSchemaType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType;
 
 import java.util.Objects;
 
 
 /**
- * MapSchemaElement describes a schema element of type map.  It stores the type of schema element for the domain
+ * AssetMapSchemaType describes a schema element of type map.  It stores the type of schema element for the domain
  * (eg property name) for the map and the schema element for the range (eg property value) for the map.
  */
 public class AssetMapSchemaType extends AssetSchemaType
 {
-    protected MapSchemaElement mapSchemaElementBean;
-    protected AssetSchemaType  mapFromElement;
-    protected AssetSchemaType  mapToElement;
+    protected MapSchemaType   mapSchemaTypeBean = null;
+    protected AssetSchemaType mapFromElement    = null;
+    protected AssetSchemaType mapToElement      = null;
+
+
+    /**
+     * Constructor used by the subclasses
+     *
+     * @param parentAsset descriptor of asset that this property relates to.
+     */
+    protected AssetMapSchemaType(AssetDescriptor parentAsset)
+    {
+        super(parentAsset);
+    }
+
+
+    /**
+     * Constructor used by the subclasses
+     *
+     * @param parentAsset descriptor of asset that this property relates to.
+     * @param schemaType bean containing the schema properties
+     */
+    public AssetMapSchemaType(AssetDescriptor parentAsset,
+                              MapSchemaType   schemaType)
+    {
+        super(parentAsset, schemaType);
+        mapSchemaTypeBean = schemaType;
+    }
+
 
     /**
      * Bean constructor
      *
-     * @param mapSchemaElementBean bean containing the schema properties
+     * @param schemaType bean containing the schema properties
      * @param mapFromElement schema element that represents the property name for the map.
      * @param mapToElement schema element that represents the property value for the map.
-     * @param assetMeanings iterator for the asset assetMeanings
      */
-    public AssetMapSchemaType(MapSchemaElement   mapSchemaElementBean,
+    public AssetMapSchemaType(MapSchemaType   schemaType,
                               AssetSchemaType mapFromElement,
-                              AssetSchemaType mapToElement,
-                              AssetMeanings      assetMeanings)
+                              AssetSchemaType mapToElement)
     {
-        super(mapSchemaElementBean, assetMeanings);
-
-        if (mapSchemaElementBean == null)
-        {
-            this.mapSchemaElementBean = new MapSchemaElement();
-        }
-        else
-        {
-            this.mapSchemaElementBean = mapSchemaElementBean;
-        }
+        super(schemaType);
 
         if (mapFromElement == null)
         {
@@ -49,7 +63,7 @@ public class AssetMapSchemaType extends AssetSchemaType
         }
         else
         {
-            this.mapFromElement = mapFromElement.cloneAssetSchemaElement(super.getParentAsset());
+            this.mapFromElement = mapFromElement.cloneAssetSchemaType(super.getParentAsset());
         }
 
         if (mapToElement == null)
@@ -58,7 +72,7 @@ public class AssetMapSchemaType extends AssetSchemaType
         }
         else
         {
-            this.mapToElement = mapToElement.cloneAssetSchemaElement(super.getParentAsset());
+            this.mapToElement = mapToElement.cloneAssetSchemaType(super.getParentAsset());
         }
     }
 
@@ -67,27 +81,16 @@ public class AssetMapSchemaType extends AssetSchemaType
      * Bean constructor with parent asset
      *
      * @param parentAsset descriptor for parent asset
-     * @param mapSchemaElementBean bean containing the schema properties
+     * @param schemaTypeBean bean containing the schema properties
      * @param mapFromElement schema element that represents the property name for the map.
      * @param mapToElement schema element that represents the property value for the map.
-     * @param assetMeanings iterator for the asset assetMeanings
      */
-    public AssetMapSchemaType(AssetDescriptor    parentAsset,
-                              MapSchemaElement   mapSchemaElementBean,
+    public AssetMapSchemaType(AssetDescriptor parentAsset,
+                              SchemaType schemaTypeBean,
                               AssetSchemaType mapFromElement,
-                              AssetSchemaType mapToElement,
-                              AssetMeanings      assetMeanings)
+                              AssetSchemaType mapToElement)
     {
-        super(parentAsset, mapSchemaElementBean, assetMeanings);
-
-        if (mapSchemaElementBean == null)
-        {
-            this.mapSchemaElementBean = new MapSchemaElement();
-        }
-        else
-        {
-            this.mapSchemaElementBean = mapSchemaElementBean;
-        }
+        super(parentAsset, schemaTypeBean);
 
         if (mapFromElement == null)
         {
@@ -95,7 +98,7 @@ public class AssetMapSchemaType extends AssetSchemaType
         }
         else
         {
-            this.mapFromElement = mapFromElement.cloneAssetSchemaElement(super.getParentAsset());
+            this.mapFromElement = mapFromElement.cloneAssetSchemaType(super.getParentAsset());
         }
 
         if (mapToElement == null)
@@ -104,7 +107,7 @@ public class AssetMapSchemaType extends AssetSchemaType
         }
         else
         {
-            this.mapToElement = mapToElement.cloneAssetSchemaElement(super.getParentAsset());
+            this.mapToElement = mapToElement.cloneAssetSchemaType(super.getParentAsset());
         }
     }
 
@@ -117,20 +120,17 @@ public class AssetMapSchemaType extends AssetSchemaType
      * @param parentAsset description of the asset that this map is attached to.
      * @param templateSchema template object to copy.
      */
-    public AssetMapSchemaType(AssetDescriptor  parentAsset, AssetMapSchemaType templateSchema)
+    public AssetMapSchemaType(AssetDescriptor parentAsset, AssetMapSchemaType templateSchema)
     {
         super(parentAsset, templateSchema);
 
         if (templateSchema == null)
         {
-            this.mapSchemaElementBean = new MapSchemaElement();
             this.mapFromElement = null;
             this.mapToElement = null;
         }
         else
         {
-            this.mapSchemaElementBean = templateSchema.getMapSchemaElementBean();
-
             AssetSchemaType templateMapFromElement = templateSchema.getMapFromElement();
             AssetSchemaType templateMapToElement   = templateSchema.getMapToElement();
 
@@ -140,7 +140,7 @@ public class AssetMapSchemaType extends AssetSchemaType
             }
             else
             {
-                this.mapFromElement = templateMapFromElement.cloneAssetSchemaElement(super.getParentAsset());
+                this.mapFromElement = templateMapFromElement.cloneAssetSchemaType(super.getParentAsset());
             }
 
             if (templateMapToElement == null)
@@ -149,21 +149,11 @@ public class AssetMapSchemaType extends AssetSchemaType
             }
             else
             {
-                this.mapToElement = templateMapToElement.cloneAssetSchemaElement(super.getParentAsset());
+                this.mapToElement = templateMapToElement.cloneAssetSchemaType(super.getParentAsset());
             }
         }
     }
 
-
-    /**
-     * Return the bean with all of the properties.
-     *
-     * @return map schema element bean
-     */
-    protected MapSchemaElement  getMapSchemaElementBean()
-    {
-        return mapSchemaElementBean;
-    }
 
 
     /**
@@ -180,8 +170,20 @@ public class AssetMapSchemaType extends AssetSchemaType
         }
         else
         {
-            return mapFromElement.cloneAssetSchemaElement(super.getParentAsset());
+            return mapFromElement.cloneAssetSchemaType(super.getParentAsset());
         }
+    }
+
+
+    /**
+     * Set up the bean that contains the properties of the schema.
+     *
+     * @param bean bean containing the schema properties
+     */
+    protected void  setBean(MapSchemaType bean)
+    {
+        super.setBean(bean);
+        mapSchemaTypeBean = bean;
     }
 
 
@@ -199,7 +201,7 @@ public class AssetMapSchemaType extends AssetSchemaType
         }
         else
         {
-            return mapToElement.cloneAssetSchemaElement(super.getParentAsset());
+            return mapToElement.cloneAssetSchemaType(super.getParentAsset());
         }
     }
 
@@ -212,22 +214,9 @@ public class AssetMapSchemaType extends AssetSchemaType
      * @return An instance of the this object's subclass
      */
     @Override
-    protected AssetSchemaType cloneAssetSchemaElement(AssetDescriptor  parentAsset)
+    protected AssetSchemaType cloneAssetSchemaType(AssetDescriptor parentAsset)
     {
         return new AssetMapSchemaType(parentAsset, this);
-    }
-
-
-    /**
-     * Return this schema element bean.  This method is needed because SchemaElement
-     * is abstract.
-     *
-     * @return An instance of the appropriate subclass of SchemaElement bean
-     */
-    @Override
-    protected SchemaElement getSchemaElementBean()
-    {
-        return mapSchemaElementBean;
     }
 
 
@@ -239,9 +228,22 @@ public class AssetMapSchemaType extends AssetSchemaType
     @Override
     public String toString()
     {
-        return mapSchemaElementBean.toString();
+        return "AssetMapSchemaType{" +
+                "mapFromElement=" + mapFromElement +
+                ", mapToElement=" + mapToElement +
+                ", versionNumber='" + getVersionNumber() + '\'' +
+                ", author='" + getAuthor() + '\'' +
+                ", usage='" + getUsage() + '\'' +
+                ", encodingStandard='" + getEncodingStandard() + '\'' +
+                ", schemaProperties=" + getSchemaProperties() +
+                ", qualifiedName='" + getQualifiedName() + '\'' +
+                ", additionalProperties=" + getAdditionalProperties() +
+                ", type=" + getType() +
+                ", GUID='" + getGUID() + '\'' +
+                ", URL='" + getURL() + '\'' +
+                ", assetClassifications=" + getAssetClassifications() +
+                '}';
     }
-
 
     /**
      * Compare the values of the supplied object with those stored in the current object.
@@ -265,15 +267,13 @@ public class AssetMapSchemaType extends AssetSchemaType
             return false;
         }
         AssetMapSchemaType that = (AssetMapSchemaType) objectToCompare;
-        return Objects.equals(getMapSchemaElementBean(), that.getMapSchemaElementBean()) &&
-                Objects.equals(getMapFromElement(), that.getMapFromElement()) &&
+        return  Objects.equals(getMapFromElement(), that.getMapFromElement()) &&
                 Objects.equals(getMapToElement(), that.getMapToElement());
     }
 
     @Override
     public int hashCode()
     {
-
-        return Objects.hash(super.hashCode(), getMapSchemaElementBean(), getMapFromElement(), getMapToElement());
+        return Objects.hash(super.hashCode(), getMapFromElement(), getMapToElement());
     }
 }

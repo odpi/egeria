@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector;
 
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
@@ -26,12 +27,26 @@ public abstract class OMRSRepositoryConnector extends ConnectorBase implements O
     protected String                  metadataCollectionId = null;
     protected OMRSMetadataCollection  metadataCollection   = null;
 
+    protected OMRSAuditLog            auditLog = null;
+
+
 
     /**
      * Default constructor nothing to do
      */
     public OMRSRepositoryConnector()
     {
+    }
+
+    /**
+     * Receive an audit log object that can be used to record audit log messages.  The caller has initialized it
+     * with the correct component description and log destinations.
+     *
+     * @param auditLog audit log object
+     */
+    public void setAuditLog(OMRSAuditLog   auditLog)
+    {
+        this.auditLog = auditLog;
     }
 
 

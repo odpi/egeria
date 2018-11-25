@@ -6,6 +6,7 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Classification;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.PrimitiveSchemaType;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public class TestAssetUniverse
     private AssetConnections            connections            = null;
     private AssetLicenses               licenses               = null;
     private AssetCertifications         certifications         = null;
-    private AssetMeanings               meanings               = null;
+    private List<AssetMeaning>          meanings               = null;
     private AssetSchemaType             schema                 = null;
     private AssetAnnotations            analysis               = null;
     private AssetFeedback               feedback               = null;
@@ -171,13 +172,13 @@ public class TestAssetUniverse
      */
     @Test public void testBeanConstructorWithNulls()
     {
-        AssetMeanings    meanings       = null;
-        AssetSchemaType  schema         = null;
-        AssetAnnotations analysis       = null;
-        AssetFeedback    feedback       = null;
-        AssetLocations   knownLocations = null;
-        AssetLineage     lineage        = null;
-        RelatedAssets    relatedAssets  = null;
+        List<AssetMeaning> meanings       = null;
+        AssetSchemaType    schema         = null;
+        AssetAnnotations   analysis       = null;
+        AssetFeedback      feedback       = null;
+        AssetLocations     knownLocations = null;
+        AssetLineage       lineage        = null;
+        RelatedAssets      relatedAssets  = null;
 
         AssetUniverse testObject = new AssetUniverse(new Asset(),
                                                      externalIdentifiers,
@@ -210,21 +211,21 @@ public class TestAssetUniverse
      */
     @Test public void testBeanConstructor()
     {
-        AssetInformalTags informalTags = new MockAssetInformalTags(null, 15, 50);
-        AssetLikes        likes        = new MockAssetLikes(null, 15, 50);
-        AssetRatings      ratings      = new MockAssetRatings(null, 15, 50);
-        AssetComments     comments     = new MockAssetComments(null, 15, 50);
-        AssetMeanings     meanings     = new MockAssetMeanings(null, 15, 50);
-        AssetSchemaType   schema       = new AssetPrimitiveSchemaType(null, meanings);
-        AssetAnnotations  analysis     = new MockAssetAnnotations(null, 15, 50);
-        AssetFeedback               feedback               = new AssetFeedback(null,
-                                                                               informalTags,
-                                                                               likes,
-                                                                               ratings,
-                                                                               comments);
-        AssetLocations              knownLocations         = new MockAssetLocations(null, 15, 50);
-        AssetLineage                lineage                = new AssetLineage();
-        RelatedAssets               relatedAssets          = new MockRelatedAssets(null, 15, 50);
+        AssetInformalTags  informalTags = new MockAssetInformalTags(null, 15, 50);
+        AssetLikes         likes        = new MockAssetLikes(null, 15, 50);
+        AssetRatings       ratings      = new MockAssetRatings(null, 15, 50);
+        AssetComments      comments     = new MockAssetComments(null, 15, 50);
+        List<AssetMeaning> meanings     = new ArrayList<>();
+        AssetSchemaType    schema       = new AssetPrimitiveSchemaType((PrimitiveSchemaType) null);
+        AssetAnnotations   analysis     = new MockAssetAnnotations(null, 15, 50);
+        AssetFeedback      feedback             = new AssetFeedback(null,
+                                                                 informalTags,
+                                                                 likes,
+                                                                 ratings,
+                                                                 comments);
+        AssetLocations knownLocations = new MockAssetLocations(null, 15, 50);
+        AssetLineage   lineage        = new AssetLineage();
+        RelatedAssets  relatedAssets  = new MockRelatedAssets(null, 15, 50);
 
         AssetUniverse testObject = new AssetUniverse(new Asset(),
                                                      externalIdentifiers,
@@ -242,7 +243,7 @@ public class TestAssetUniverse
                                                      lineage,
                                                      relatedAssets);
 
-        assertTrue(testObject.getMeanings() != null);
+        assertTrue(testObject.getMeanings() == null);
         assertTrue(testObject.getSchema() != null);
         assertTrue(testObject.getAnalysis() != null);
         assertTrue(testObject.getFeedback() != null);
@@ -253,42 +254,48 @@ public class TestAssetUniverse
 
 
     /**
+     * Validate the subclass constructor works all of the way up the inheritance hierarchy.
+     */
+    @Test public void testSubclassInitialization()
+    {
+        new AssetUniverse();
+    }
+
+
+
+    /**
      * Test that toString is overridden.
      */
     @Test
     public void testToString()
     {
-        AssetInformalTags informalTags = new MockAssetInformalTags(null, 15, 50);
-        AssetLikes        likes        = new MockAssetLikes(null, 15, 50);
-        AssetRatings      ratings      = new MockAssetRatings(null, 15, 50);
-        AssetComments     comments     = new MockAssetComments(null, 15, 50);
-        AssetMeanings     meanings     = new MockAssetMeanings(null, 15, 50);
-        AssetSchemaType   schema       = new AssetPrimitiveSchemaType(null, meanings);
-        AssetAnnotations  analysis     = new MockAssetAnnotations(null, 15, 50);
-        AssetFeedback               feedback               = new AssetFeedback(null,
-                                                                               informalTags,
-                                                                               likes,
-                                                                               ratings,
-                                                                               comments);
-        AssetLocations              knownLocations         = new MockAssetLocations(null, 15, 50);
-        AssetLineage                lineage                = new AssetLineage();
-        RelatedAssets               relatedAssets          = new MockRelatedAssets(null, 15, 50);
+        AssetInformalTags  informalTags = new MockAssetInformalTags(null, 15, 50);
+        AssetLikes         likes        = new MockAssetLikes(null, 15, 50);
+        AssetRatings       ratings      = new MockAssetRatings(null, 15, 50);
+        AssetComments      comments     = new MockAssetComments(null, 15, 50);
+        List<AssetMeaning> meanings     = new ArrayList<>();
+        AssetSchemaType    schema       = new AssetPrimitiveSchemaType((PrimitiveSchemaType) null);
+        AssetAnnotations   analysis     = new MockAssetAnnotations(null, 15, 50);
+        AssetFeedback      feedback       = new AssetFeedback(null, informalTags, likes, ratings, comments);
+        AssetLocations     knownLocations = new MockAssetLocations(null, 15, 50);
+        AssetLineage       lineage        = new AssetLineage();
+        RelatedAssets      relatedAssets  = new MockRelatedAssets(null, 15, 50);
 
         AssetUniverse testTemplate = new AssetUniverse(new Asset(),
-                                                     externalIdentifiers,
-                                                     relatedMediaReferences,
-                                                     noteLogs,
-                                                     externalReferences,
-                                                     connections,
-                                                     licenses,
-                                                     certifications,
-                                                     meanings,
-                                                     schema,
-                                                     analysis,
-                                                     feedback,
-                                                     knownLocations,
-                                                     lineage,
-                                                     relatedAssets);
+                                                       externalIdentifiers,
+                                                       relatedMediaReferences,
+                                                       noteLogs,
+                                                       externalReferences,
+                                                       connections,
+                                                       licenses,
+                                                       certifications,
+                                                       meanings,
+                                                       schema,
+                                                       analysis,
+                                                       feedback,
+                                                       knownLocations,
+                                                       lineage,
+                                                       relatedAssets);
 
 
         AssetUniverse testObject = new AssetUniverse(testTemplate);
@@ -307,7 +314,7 @@ public class TestAssetUniverse
         assertFalse(getTestObject().equals("DummyString"));
         assertTrue(getTestObject().equals(getTestObject()));
 
-        AssetUniverse  sameObject = getTestObject();
+        AssetUniverse sameObject = getTestObject();
         assertTrue(sameObject.equals(sameObject));
 
         assertFalse(getTestObject().equals(getDifferentObject()));

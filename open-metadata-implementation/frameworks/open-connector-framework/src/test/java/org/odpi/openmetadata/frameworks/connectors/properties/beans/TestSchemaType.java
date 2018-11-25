@@ -2,107 +2,207 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 /**
- * Verify the SchemaType enum contains unique ordinals, non-null names and descriptions and can be
- * serialized to JSON and back again.
+ * Validate that the SchemaType bean can be cloned, compared, serialized, deserialized and printed as a String.
  */
 public class TestSchemaType
 {
-    private List<Integer> existingOrdinals = null;
+    private ElementType          type                 = new ElementType();
+    private List<Classification> classifications      = new ArrayList<>();
+    private Map<String, Object>  additionalProperties = new HashMap<>();
+    private Map<String, Object>  schemaProperties     = new HashMap<>();
+
+
 
     /**
-     * Validate that a supplied ordinal is unique.
+     * Default constructor
+     */
+    public TestSchemaType()
+    {
+        classifications.add(new Classification());
+    }
+
+
+    /**
+     * Set up an example object to test.
      *
-     * @param ordinal value to test
-     * @return boolean result
+     * @return filled in object
      */
-    private boolean isUniqueOrdinal(int  ordinal)
+    private SchemaType getTestObject()
     {
-        Integer       newOrdinal = new Integer(ordinal);
+        SchemaType testObject = new SchemaType();
 
-        if (existingOrdinals.contains(newOrdinal))
-        {
-            return false;
-        }
-        else
-        {
-            existingOrdinals.add(newOrdinal);
-            return true;
-        }
+        testObject.setType(type);
+        testObject.setGUID("TestGUID");
+        testObject.setURL("TestURL");
+        testObject.setClassifications(classifications);
+
+        testObject.setQualifiedName("TestQualifiedName");
+        testObject.setAdditionalProperties(additionalProperties);
+
+        testObject.setDisplayName("TestDisplayName");
+        testObject.setVersionNumber("TestVersionNumber");
+        testObject.setAuthor("TestAuthor");
+        testObject.setUsage("TestUsage");
+        testObject.setEncodingStandard("TestEncodingStandard");
+        testObject.setSchemaProperties(schemaProperties);
+
+
+        return testObject;
+    }
+
+    /**
+     * Validate that the object that comes out of the test has the same content as the original test object.
+     *
+     * @param resultObject object returned by the test
+     */
+    private void validateResultObject(SchemaType resultObject)
+    {
+        assertTrue(resultObject.getType().equals(type));
+        assertTrue(resultObject.getGUID().equals("TestGUID"));
+        assertTrue(resultObject.getURL().equals("TestURL"));
+        assertTrue(resultObject.getClassifications().equals(classifications));
+
+        assertTrue(resultObject.getQualifiedName().equals("TestQualifiedName"));
+        assertTrue(resultObject.getAdditionalProperties() == null);
+
+        assertTrue(resultObject.getDisplayName().equals("TestDisplayName"));
+        assertTrue(resultObject.getVersionNumber().equals("TestVersionNumber"));
+        assertTrue(resultObject.getAuthor().equals("TestAuthor"));
+        assertTrue(resultObject.getEncodingStandard().equals("TestEncodingStandard"));
+        assertTrue(resultObject.getUsage().equals("TestUsage"));
+        assertTrue(resultObject.getSchemaProperties() == null);
     }
 
 
     /**
-     * Validated the values of the enum.
+     * Validate that the object is initialized properly
      */
-    @Test public void testSchemaTypeValues()
+    @Test public void testNullObject()
     {
-        existingOrdinals = new ArrayList<>();
+        SchemaType nullObject = new SchemaType();
 
-        SchemaType  testValue;
+        assertTrue(nullObject.getType() == null);
+        assertTrue(nullObject.getGUID() == null);
+        assertTrue(nullObject.getURL() == null);
+        assertTrue(nullObject.getClassifications() == null);
 
-        testValue = SchemaType.UNKNOWN;
+        assertTrue(nullObject.getQualifiedName() == null);
+        assertTrue(nullObject.getAdditionalProperties() == null);
 
-        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
-        assertTrue(testValue.getName() != null);
-        assertTrue(testValue.getDescription() != null);
+        assertTrue(nullObject.getVersionNumber() == null);
+        assertTrue(nullObject.getAuthor() == null);
+        assertTrue(nullObject.getUsage() == null);
+        assertTrue(nullObject.getEncodingStandard() == null);
+        assertTrue(nullObject.getSchemaProperties() == null);
 
-        testValue = SchemaType.STRUCT;
 
-        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
-        assertTrue(testValue.getName() != null);
-        assertTrue(testValue.getDescription() != null);
+        nullObject = new SchemaType(null);
 
-        testValue = SchemaType.ARRAY;
+        assertTrue(nullObject.getType() == null);
+        assertTrue(nullObject.getGUID() == null);
+        assertTrue(nullObject.getURL() == null);
+        assertTrue(nullObject.getClassifications() == null);
 
-        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
-        assertTrue(testValue.getName() != null);
-        assertTrue(testValue.getDescription() != null);
+        assertTrue(nullObject.getQualifiedName() == null);
+        assertTrue(nullObject.getAdditionalProperties() == null);
 
-        testValue = SchemaType.SET;
+        assertTrue(nullObject.getVersionNumber() == null);
+        assertTrue(nullObject.getAuthor() == null);
+        assertTrue(nullObject.getUsage() == null);
+        assertTrue(nullObject.getEncodingStandard() == null);
+        assertTrue(nullObject.getSchemaProperties() == null);
 
-        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
-        assertTrue(testValue.getName() != null);
-        assertTrue(testValue.getDescription() != null);
     }
 
 
+    /**
+     * Validate that schema properties are managed properly
+     */
+    @Test public void testSchemaProperties()
+    {
+        Map<String, Object> propertyMap;
+        SchemaType          testObject = new SchemaType();
+
+        assertTrue(testObject.getSchemaProperties() == null);
+
+        propertyMap = null;
+        testObject = new SchemaType();
+        testObject.setSchemaProperties(propertyMap);
+
+        assertTrue(testObject.getSchemaProperties() == null);
+
+        propertyMap = new HashMap<>();
+        testObject = new SchemaType();
+        testObject.setSchemaProperties(propertyMap);
+
+        assertTrue(testObject.getSchemaProperties() == null);
+
+        propertyMap.put("propertyName", "propertyValue");
+        testObject = new SchemaType();
+        testObject.setSchemaProperties(propertyMap);
+
+        Map<String, Object>   retrievedPropertyMap = testObject.getSchemaProperties();
+
+        assertTrue(retrievedPropertyMap != null);
+        assertFalse(retrievedPropertyMap.isEmpty());
+        assertTrue("propertyValue".equals(retrievedPropertyMap.get("propertyName")));
+    }
+
 
     /**
-     * Validate that an object generated from a JSON String has the same content as the object used to
-     * create the JSON String.
+     * Validate that 2 different objects with the same content are evaluated as equal.
+     * Also that different objects are considered not equal.
      */
-    @Test public void testJSON()
+    @Test public void testEquals()
     {
-        ObjectMapper objectMapper = new ObjectMapper();
-        String       jsonString   = null;
+        assertFalse(getTestObject().equals(null));
+        assertFalse(getTestObject().equals("DummyString"));
+        assertTrue(getTestObject().equals(getTestObject()));
 
-        try
-        {
-            jsonString = objectMapper.writeValueAsString(SchemaType.SET);
-        }
-        catch (Throwable  exc)
-        {
-            assertTrue(false, "Exception: " + exc.getMessage());
-        }
+        SchemaElement sameObject = getTestObject();
+        assertTrue(sameObject.equals(sameObject));
 
-        try
-        {
-            assertTrue(objectMapper.readValue(jsonString, SchemaType.class) == SchemaType.SET);
-        }
-        catch (Throwable  exc)
-        {
-            assertTrue(false, "Exception: " + exc.getMessage());
-        }
+        SchemaElement differentObject = getTestObject();
+        differentObject.setGUID("Different");
+        assertFalse(getTestObject().equals(differentObject));
+    }
+
+
+    /**
+     * Validate that cloneSchemaType works
+     */
+    @Test public void testCloneSchemaType()
+    {
+        validateResultObject(getTestObject().cloneSchemaType());
+    }
+
+
+    /**
+     * Validate that cloneSchemaElement works
+     */
+    @Test public void testCloneSchemaElement()
+    {
+        validateResultObject((SchemaType)getTestObject().cloneSchemaElement());
+    }
+
+
+    /**
+     *  Validate that 2 different objects with the same content have the same hash code.
+     */
+    @Test public void testHashCode()
+    {
+        assertTrue(getTestObject().hashCode() == getTestObject().hashCode());
     }
 
 
@@ -111,6 +211,6 @@ public class TestSchemaType
      */
     @Test public void testToString()
     {
-        assertTrue(SchemaType.ARRAY.toString().contains("SchemaType"));
+        assertTrue(getTestObject().toString().contains("SchemaType"));
     }
 }

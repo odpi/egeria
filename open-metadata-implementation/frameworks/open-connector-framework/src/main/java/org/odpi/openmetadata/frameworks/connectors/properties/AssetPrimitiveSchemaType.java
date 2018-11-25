@@ -2,38 +2,46 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.PrimitiveSchemaElement;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaElement;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.PrimitiveSchemaType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType;
 
 import java.util.Objects;
 
 /**
- * PrimitiveSchemaElement describes a schema element that has a primitive type.  This class stores which
+ * PrimitiveSchemaType describes a schema element that has a primitive type.  This class stores which
  * type of primitive type it is an a default value if supplied.
  */
 public class AssetPrimitiveSchemaType extends AssetSchemaType
 {
-    protected PrimitiveSchemaElement  primitiveSchemaElementBean;
+    protected PrimitiveSchemaType primitiveSchemaTypeBean;
+
+    /**
+     * Constructor used by the subclasses
+     *
+     * @param parentAsset descriptor of asset that this property relates to.
+     */
+    protected AssetPrimitiveSchemaType(AssetDescriptor parentAsset)
+    {
+        super(parentAsset);
+    }
 
 
     /**
      * Bean constructor
      *
-     * @param primitiveSchemaElementBean bean containing the schema element properties
-     * @param assetMeanings iterator for the asset assetMeanings
+     * @param primitiveSchemaTypeBean bean containing the schema element properties
      */
-    public AssetPrimitiveSchemaType(PrimitiveSchemaElement  primitiveSchemaElementBean,
-                                    AssetMeanings           assetMeanings)
+    public AssetPrimitiveSchemaType(PrimitiveSchemaType primitiveSchemaTypeBean)
     {
-        super(primitiveSchemaElementBean, assetMeanings);
+        super(primitiveSchemaTypeBean);
 
-        if (primitiveSchemaElementBean == null)
+        if (primitiveSchemaTypeBean == null)
         {
-            this.primitiveSchemaElementBean = new PrimitiveSchemaElement();
+            this.primitiveSchemaTypeBean = new PrimitiveSchemaType();
         }
         else
         {
-            this.primitiveSchemaElementBean = primitiveSchemaElementBean;
+            this.primitiveSchemaTypeBean = primitiveSchemaTypeBean;
         }
     }
 
@@ -42,22 +50,20 @@ public class AssetPrimitiveSchemaType extends AssetSchemaType
      * Bean constructor with parent asset
      *
      * @param parentAsset descriptor for parent asset
-     * @param primitiveSchemaElementBean bean containing the schema element properties
-     * @param assetMeanings iterator for the asset assetMeanings
+     * @param primitiveSchemaTypeBean bean containing the schema element properties
      */
-    public AssetPrimitiveSchemaType(AssetDescriptor         parentAsset,
-                                    PrimitiveSchemaElement  primitiveSchemaElementBean,
-                                    AssetMeanings           assetMeanings)
+    public AssetPrimitiveSchemaType(AssetDescriptor parentAsset,
+                                    PrimitiveSchemaType primitiveSchemaTypeBean)
     {
-        super(parentAsset, primitiveSchemaElementBean, assetMeanings);
+        super(parentAsset, primitiveSchemaTypeBean);
 
-        if (primitiveSchemaElementBean == null)
+        if (primitiveSchemaTypeBean == null)
         {
-            this.primitiveSchemaElementBean = new PrimitiveSchemaElement();
+            this.primitiveSchemaTypeBean = new PrimitiveSchemaType();
         }
         else
         {
-            this.primitiveSchemaElementBean = primitiveSchemaElementBean;
+            this.primitiveSchemaTypeBean = primitiveSchemaTypeBean;
         }
     }
 
@@ -70,18 +76,18 @@ public class AssetPrimitiveSchemaType extends AssetSchemaType
      * @param parentAsset description of the asset that this schema element is attached to.
      * @param templateSchemaElement template object to copy.
      */
-    public AssetPrimitiveSchemaType(AssetDescriptor             parentAsset,
+    public AssetPrimitiveSchemaType(AssetDescriptor parentAsset,
                                     AssetPrimitiveSchemaType templateSchemaElement)
     {
         super(parentAsset, templateSchemaElement);
 
         if (templateSchemaElement == null)
         {
-            this.primitiveSchemaElementBean = new PrimitiveSchemaElement();
+            this.primitiveSchemaTypeBean = new PrimitiveSchemaType();
         }
         else
         {
-            this.primitiveSchemaElementBean = templateSchemaElement.getPrimitiveSchemaElementBean();
+            this.primitiveSchemaTypeBean = templateSchemaElement.getPrimitiveSchemaTypeBean();
         }
     }
 
@@ -91,9 +97,9 @@ public class AssetPrimitiveSchemaType extends AssetSchemaType
      *
      * @return primitive element bean
      */
-    protected PrimitiveSchemaElement  getPrimitiveSchemaElementBean()
+    protected PrimitiveSchemaType getPrimitiveSchemaTypeBean()
     {
-        return primitiveSchemaElementBean;
+        return primitiveSchemaTypeBean;
     }
 
 
@@ -102,7 +108,7 @@ public class AssetPrimitiveSchemaType extends AssetSchemaType
      *
      * @return String DataType
      */
-    public String getDataType() { return primitiveSchemaElementBean.getDataType(); }
+    public String getDataType() { return primitiveSchemaTypeBean.getDataType(); }
 
 
     /**
@@ -110,7 +116,7 @@ public class AssetPrimitiveSchemaType extends AssetSchemaType
      *
      * @return String containing default value
      */
-    public String getDefaultValue() { return primitiveSchemaElementBean.getDefaultValue(); }
+    public String getDefaultValue() { return primitiveSchemaTypeBean.getDefaultValue(); }
 
 
     /**
@@ -121,7 +127,7 @@ public class AssetPrimitiveSchemaType extends AssetSchemaType
      * @return An instance of the this object's subclass
      */
     @Override
-    protected AssetSchemaType cloneAssetSchemaElement(AssetDescriptor  parentAsset)
+    protected AssetSchemaType cloneAssetSchemaType(AssetDescriptor parentAsset)
     {
         return new AssetPrimitiveSchemaType(parentAsset, this);
     }
@@ -134,9 +140,21 @@ public class AssetPrimitiveSchemaType extends AssetSchemaType
      * @return An instance of the appropriate subclass of SchemaElement bean
      */
     @Override
-    protected SchemaElement getSchemaElementBean()
+    protected SchemaType getSchemaTypeBean()
     {
-        return primitiveSchemaElementBean;
+        return primitiveSchemaTypeBean;
+    }
+
+
+    /**
+     * Set up the bean that contains the properties of the schema.
+     *
+     * @param bean bean containing the schema properties
+     */
+    protected void  setBean(PrimitiveSchemaType bean)
+    {
+        super.setBean(bean);
+        this.primitiveSchemaTypeBean = bean;
     }
 
 
@@ -148,7 +166,21 @@ public class AssetPrimitiveSchemaType extends AssetSchemaType
     @Override
     public String toString()
     {
-        return primitiveSchemaElementBean.toString();
+        return "AssetPrimitiveSchemaType{" +
+                "dataType='" + getDataType() + '\'' +
+                ", defaultValue='" + getDefaultValue() + '\'' +
+                ", displayName='" + getDisplayName() + '\'' +
+                ", versionNumber='" + getVersionNumber() + '\'' +
+                ", author='" + getAuthor() + '\'' +
+                ", usage='" + getUsage() + '\'' +
+                ", encodingStandard='" + getEncodingStandard() + '\'' +
+                ", schemaProperties=" + getSchemaProperties() +
+                ", qualifiedName='" + getQualifiedName() + '\'' +
+                ", additionalProperties=" + getAdditionalProperties() +
+                ", type=" + getType() +
+                ", GUID='" + getGUID() + '\'' +
+                ", URL='" + getURL() + '\'' +
+                '}';
     }
 
 
@@ -174,6 +206,6 @@ public class AssetPrimitiveSchemaType extends AssetSchemaType
             return false;
         }
         AssetPrimitiveSchemaType that = (AssetPrimitiveSchemaType) objectToCompare;
-        return Objects.equals(getPrimitiveSchemaElementBean(), that.getPrimitiveSchemaElementBean());
+        return Objects.equals(getPrimitiveSchemaTypeBean(), that.getPrimitiveSchemaTypeBean());
     }
 }

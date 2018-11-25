@@ -115,7 +115,7 @@ public class TestVirtualConnectionProperties
         testObject.setEndpoint(endpoint);
         testObject.setSecuredProperties(securedProperties);
 
-        testObject.setEmbeddedConnections(new ArrayList<EmbeddedConnection>());
+        testObject.setEmbeddedConnections(new ArrayList<>());
 
         return new VirtualConnectionProperties(testObject);
     }
@@ -126,7 +126,7 @@ public class TestVirtualConnectionProperties
      *
      * @param resultObject object returned by the test
      */
-    private void validateResultObject(VirtualConnectionProperties  resultObject)
+    private void validateResultObject(VirtualConnectionProperties resultObject)
     {
         assertTrue(resultObject.getType().getElementTypeBean().equals(type));
         assertTrue(resultObject.getGUID().equals("TestGUID"));
@@ -150,7 +150,7 @@ public class TestVirtualConnectionProperties
      *
      * @param nullObject object to test
      */
-    private void validateNullObject(VirtualConnectionProperties  nullObject)
+    private void validateNullObject(VirtualConnectionProperties nullObject)
     {
         assertTrue(nullObject.getType() == null);
         assertTrue(nullObject.getGUID() == null);
@@ -214,6 +214,97 @@ public class TestVirtualConnectionProperties
     }
 
 
+    /**
+     * Validate that secured properties are handled properly.
+     */
+    @Test public void testSecuredProperties()
+    {
+        Map<String, Object>  propertyMap = new HashMap<>();
+
+        propertyMap.put("property1", "TestString");
+        propertyMap.put("property2", new Integer(2));
+
+        VirtualConnection connectionBean = new VirtualConnection();
+        connectionBean.setSecuredProperties(propertyMap);
+
+        VirtualConnectionProperties testObject = new VirtualConnectionProperties(connectionBean);
+
+        AdditionalProperties securedProperties = testObject.getSecuredProperties();
+
+        assertTrue(securedProperties.getPropertyNames() != null);
+
+        Iterator<String> iterator = securedProperties.getPropertyNames();
+
+        String propertyName;
+
+        propertyName = iterator.next();
+        assertTrue(propertyName.equals("property2"));
+        assertTrue(securedProperties.getProperty(propertyName).equals(new Integer(2)));
+
+        propertyName = iterator.next();
+        assertTrue(propertyName.equals("property1"));
+        assertTrue(securedProperties.getProperty(propertyName).equals("TestString"));
+
+        try
+        {
+            iterator.next();
+            assertTrue(false);
+        }
+        catch (Throwable   exc)
+        {
+            assertTrue(true);
+        }
+
+        connectionBean = new VirtualConnection();
+        testObject = new VirtualConnectionProperties(connectionBean);
+
+        securedProperties = testObject.getSecuredProperties();
+
+        assertTrue(securedProperties == null);
+
+        propertyMap = new HashMap<>();
+        connectionBean = new VirtualConnection();
+        connectionBean.setSecuredProperties(propertyMap);
+        testObject = new VirtualConnectionProperties(connectionBean);
+
+        securedProperties = testObject.getSecuredProperties();
+
+        assertTrue(securedProperties == null);
+    }
+
+
+    @Test public void testConnectionName()
+    {
+        VirtualConnection connectionBean = new VirtualConnection();
+
+        VirtualConnectionProperties testObject = new VirtualConnectionProperties(connectionBean);
+
+        assertTrue(testObject.getConnectionName().equals("<Unknown>"));
+
+        connectionBean = new VirtualConnection();
+        connectionBean.setQualifiedName("TestQualifiedName");
+        testObject = new VirtualConnectionProperties(connectionBean);
+
+        assertTrue(testObject.getConnectionName().equals("TestQualifiedName"));
+
+
+        connectionBean = new VirtualConnection();
+        connectionBean.setDisplayName("TestDisplayName");
+        testObject = new VirtualConnectionProperties(connectionBean);
+
+        assertTrue(testObject.getConnectionName().equals("TestDisplayName"));
+
+
+        connectionBean = new VirtualConnection();
+        connectionBean.setQualifiedName("TestQualifiedName");
+        connectionBean.setDisplayName("TestDisplayName");
+
+        testObject = new VirtualConnectionProperties(connectionBean);
+
+        assertTrue(testObject.getConnectionName().equals("TestQualifiedName"));
+    }
+
+
 
     /**
      * Validate that 2 different objects with the same content are evaluated as equal.
@@ -225,7 +316,7 @@ public class TestVirtualConnectionProperties
         assertFalse(getTestObject().equals("DummyString"));
         assertTrue(getTestObject().equals(getTestObject()));
 
-        VirtualConnectionProperties  sameObject = getTestObject();
+        VirtualConnectionProperties sameObject = getTestObject();
         assertTrue(sameObject.equals(sameObject));
 
         assertFalse(getTestObject().equals(getDifferentObject()));
