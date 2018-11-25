@@ -18,11 +18,12 @@ import static org.testng.Assert.assertTrue;
  */
 public class TestAssetSchemaAttribute
 {
-    private ElementType            type                 = new ElementType();
-    private List<Classification>   classifications      = new ArrayList<>();
-    private Map<String, Object>    additionalProperties = new HashMap<>();
-    private PrimitiveSchemaElement schemaType           = new PrimitiveSchemaElement();
-    private AssetSchemaType        attributeSchemaType  = null;
+    private ElementType          type                 = new ElementType();
+    private List<Classification> classifications      = new ArrayList<>();
+    private Map<String, Object>  additionalProperties = new HashMap<>();
+    private PrimitiveSchemaType  schemaType           = new PrimitiveSchemaType();
+    private AssetSchemaType      attributeSchemaType  = new AssetPrimitiveSchemaType(schemaType);
+    private AssetSchemaLink      attributeSchemaLink  = null;
 
 
     /**
@@ -142,7 +143,7 @@ public class TestAssetSchemaAttribute
         testBean.setElementPosition(7);
         testBean.setAttributeType(schemaType);
 
-        return new AssetSchemaAttribute(testBean, new MockAssetSchemaType(null, new PrimitiveSchemaElement(), null));
+        return new AssetSchemaAttribute(testBean, new AssetSchemaType(null, new PrimitiveSchemaType()));
     }
 
 
@@ -151,7 +152,7 @@ public class TestAssetSchemaAttribute
      *
      * @param resultObject object returned by the test
      */
-    private void validateResultObject(AssetSchemaAttribute  resultObject)
+    private void validateResultObject(AssetSchemaAttribute resultObject)
     {
         assertTrue(resultObject.getType().getElementTypeBean().equals(type));
         assertTrue(resultObject.getGUID().equals("TestGUID"));
@@ -163,7 +164,7 @@ public class TestAssetSchemaAttribute
         assertTrue(resultObject.getDefaultValueOverride().equals("TestDefaultValueOverride"));
         assertTrue(resultObject.getElementPosition() == 7);
 
-        assertTrue(resultObject.getAttributeType() == null);
+        assertTrue(resultObject.getLocalSchemaType() != null);
     }
 
 
@@ -172,7 +173,7 @@ public class TestAssetSchemaAttribute
      *
      * @param nullObject object to test
      */
-    private void validateNullObject(AssetSchemaAttribute  nullObject)
+    private void validateNullObject(AssetSchemaAttribute nullObject)
     {
         assertTrue(nullObject.getType() == null);
         assertTrue(nullObject.getGUID() == null);
@@ -182,8 +183,10 @@ public class TestAssetSchemaAttribute
         assertTrue(nullObject.getElementPosition() == 0);
         assertTrue(nullObject.getDefaultValueOverride() == null);
         assertTrue(nullObject.getCardinality() == null);
-        assertTrue(nullObject.getAttributeType() == null);
         assertTrue(nullObject.getAttributeName() == null);
+
+        assertTrue(nullObject.getLocalSchemaType() == null);
+
     }
 
 
@@ -192,34 +195,35 @@ public class TestAssetSchemaAttribute
      */
     @Test public void testNullObject()
     {
-        SchemaAttribute            nullBean;
-        AssetSchemaAttribute       nullObject;
-        AssetSchemaAttribute       nullTemplate;
-        AssetDescriptor            parentAsset;
+        SchemaAttribute      nullBean;
+        AssetSchemaAttribute nullObject;
+        AssetSchemaType      nullAttributeSchemaType = null;
+        AssetSchemaAttribute nullTemplate;
+        AssetDescriptor      parentAsset;
 
         nullBean = null;
-        nullObject = new AssetSchemaAttribute(nullBean, null);
+        nullObject = new AssetSchemaAttribute(nullBean, nullAttributeSchemaType);
         validateNullObject(nullObject);
 
         nullBean = new SchemaAttribute();
-        nullObject = new AssetSchemaAttribute(nullBean, null);
+        nullObject = new AssetSchemaAttribute(nullBean, nullAttributeSchemaType);
         validateNullObject(nullObject);
 
         nullBean = new SchemaAttribute(null);
-        nullObject = new AssetSchemaAttribute(nullBean, null);
+        nullObject = new AssetSchemaAttribute(nullBean, nullAttributeSchemaType);
         validateNullObject(nullObject);
 
         parentAsset = null;
         nullBean = null;
-        nullObject = new AssetSchemaAttribute(parentAsset, nullBean, null);
+        nullObject = new AssetSchemaAttribute(parentAsset, nullBean, nullAttributeSchemaType);
         validateNullObject(nullObject);
 
         nullBean = new SchemaAttribute();
-        nullObject = new AssetSchemaAttribute(parentAsset, nullBean, null);
+        nullObject = new AssetSchemaAttribute(parentAsset, nullBean, nullAttributeSchemaType);
         validateNullObject(nullObject);
 
         nullBean = new SchemaAttribute(null);
-        nullObject = new AssetSchemaAttribute(parentAsset, nullBean, null);
+        nullObject = new AssetSchemaAttribute(parentAsset, nullBean, nullAttributeSchemaType);
         validateNullObject(nullObject);
 
         nullTemplate = null;
@@ -233,42 +237,42 @@ public class TestAssetSchemaAttribute
      */
     @Test public void  testSchemaType()
     {
-        AssetDescriptor         parentAsset         = new AssetSummary(new Asset());
+        AssetDescriptor parentAsset = new AssetSummary(new Asset());
 
-        AssetMeanings          meanings            = new MockAssetMeanings(null, 2, 7);
-        PrimitiveSchemaElement schemaType          = new PrimitiveSchemaElement();
-        AssetSchemaType        attributeSchemaType = new AssetPrimitiveSchemaType(schemaType, meanings);
+        PrimitiveSchemaType schemaType          = new PrimitiveSchemaType();
+        AssetSchemaType     attributeSchemaType = new AssetPrimitiveSchemaType(schemaType);
 
-        SchemaAttribute        testBean = new SchemaAttribute();
+        SchemaAttribute testBean = new SchemaAttribute();
         testBean.setAttributeType(schemaType);
 
-        AssetSchemaAttribute   testTemplate = new AssetSchemaAttribute((SchemaAttribute)null, null);
-        AssetSchemaAttribute   testObject;
+        AssetSchemaAttribute testTemplate = new AssetSchemaAttribute(null, this.attributeSchemaType);
+        AssetSchemaAttribute testObject;
 
-        assertTrue(testTemplate.getAttributeType() == null);
+        assertTrue(testTemplate.getLocalSchemaType() != null);
 
         testTemplate = new AssetSchemaAttribute(testBean, attributeSchemaType);
 
-        assertTrue(testTemplate.getAttributeType() != null);
+        assertTrue(testTemplate.getLocalSchemaType() != null);
 
         testTemplate = new AssetSchemaAttribute(parentAsset, testBean, attributeSchemaType);
 
-        assertTrue(testTemplate.getAttributeType() != null);
+        assertTrue(testTemplate.getLocalSchemaType() != null);
 
 
         testObject = new AssetSchemaAttribute(parentAsset, testTemplate);
 
-        assertTrue(testObject.getAttributeType() != null);
+        assertTrue(testObject.getLocalSchemaType() != null);
 
-        testObject = new AssetSchemaAttribute(parentAsset, null);
+        testObject = new AssetSchemaAttribute(parentAsset, null, attributeSchemaType);
 
-        assertTrue(testObject.getAttributeType() == null);
+        assertTrue(testObject.getLocalSchemaType() != null);
 
-        testTemplate = new AssetSchemaAttribute(parentAsset, testBean, null);
+        testTemplate = new AssetSchemaAttribute(parentAsset, testBean, attributeSchemaType);
         testObject = new AssetSchemaAttribute(parentAsset, testTemplate);
 
-        assertTrue(testObject.getAttributeType() == null);
+        assertTrue(testObject.getLocalSchemaType() != null);
     }
+
 
     /**
      * Validate that 2 different objects with the same content are evaluated as equal.
@@ -280,7 +284,7 @@ public class TestAssetSchemaAttribute
         assertFalse(getTestObject().equals("DummyString"));
         assertTrue(getTestObject().equals(getTestObject()));
 
-        AssetSchemaAttribute  sameObject = getTestObject();
+        AssetSchemaAttribute sameObject = getTestObject();
         assertTrue(sameObject.equals(sameObject));
 
         assertFalse(getTestObject().equals(getDifferentObject()));

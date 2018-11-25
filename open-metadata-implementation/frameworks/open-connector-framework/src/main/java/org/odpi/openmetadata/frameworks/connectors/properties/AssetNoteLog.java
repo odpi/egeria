@@ -12,7 +12,7 @@ import java.util.Objects;
 public class AssetNoteLog extends AssetReferenceable
 {
     protected NoteLog    noteLogBean;
-    protected AssetNotes notes       = null;
+    protected AssetNotes notes = null;
 
 
     /**
@@ -21,8 +21,8 @@ public class AssetNoteLog extends AssetReferenceable
      * @param noteLogBean bean describing the note log
      * @param notes iterator for the notes within the note log
      */
-    public AssetNoteLog(NoteLog     noteLogBean,
-                        AssetNotes  notes)
+    public AssetNoteLog(NoteLog noteLogBean,
+                        AssetNotes notes)
     {
         super(noteLogBean);
 
@@ -46,9 +46,9 @@ public class AssetNoteLog extends AssetReferenceable
      * @param noteLogBean bean describing the note log
      * @param notes iterator for the notes within the note log
      */
-    public AssetNoteLog(AssetDescriptor  parentAsset,
-                        NoteLog          noteLogBean,
-                        AssetNotes       notes)
+    public AssetNoteLog(AssetDescriptor parentAsset,
+                        NoteLog noteLogBean,
+                        AssetNotes notes)
     {
         super(parentAsset, noteLogBean);
 
@@ -99,7 +99,7 @@ public class AssetNoteLog extends AssetReferenceable
      *
      * @return note log bean
      */
-    protected  NoteLog   getNoteLogBean()
+    protected NoteLog getNoteLogBean()
     {
         return noteLogBean;
     }
@@ -132,7 +132,7 @@ public class AssetNoteLog extends AssetReferenceable
     {
         if (notes == null)
         {
-            return notes;
+            return null;
         }
         else
         {
