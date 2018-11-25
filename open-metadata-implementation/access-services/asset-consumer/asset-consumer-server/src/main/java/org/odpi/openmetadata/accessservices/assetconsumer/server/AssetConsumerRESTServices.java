@@ -6,16 +6,9 @@ package org.odpi.openmetadata.accessservices.assetconsumer.server;
 import org.odpi.openmetadata.accessservices.assetconsumer.rest.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.AssetConsumerErrorCode;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions.*;
-import org.odpi.openmetadata.adminservices.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.CommentType;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceOperationalStatus;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
-import org.odpi.openmetadata.accessservices.assetconsumer.admin.AssetConsumerAdmin;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.StarRating;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,23 +21,9 @@ import java.util.Map;
  */
 public class AssetConsumerRESTServices
 {
-    static private String                  accessServiceName   = null;
-    static private OMRSRepositoryConnector repositoryConnector = null;
+    private static AssetConsumerInstanceHandler   instanceHandler     = new AssetConsumerInstanceHandler();
 
     private static final Logger log = LoggerFactory.getLogger(AssetConsumerRESTServices.class);
-
-    /**
-     * Provide a connector to the REST Services.
-     *
-     * @param accessServiceName  name of this access service
-     * @param repositoryConnector  OMRS Repository Connector to the property server.
-     */
-    static public void setRepositoryConnector(String                   accessServiceName,
-                                              OMRSRepositoryConnector  repositoryConnector)
-    {
-        AssetConsumerRESTServices.accessServiceName = accessServiceName;
-        AssetConsumerRESTServices.repositoryConnector = repositoryConnector;
-    }
 
 
     /**
@@ -52,21 +31,13 @@ public class AssetConsumerRESTServices
      */
     public AssetConsumerRESTServices()
     {
-        AccessServiceDescription   myDescription = AccessServiceDescription.ASSET_CONSUMER_OMAS;
-        AccessServiceRegistration  myRegistration = new AccessServiceRegistration(myDescription.getAccessServiceCode(),
-                                                                                  myDescription.getAccessServiceName(),
-                                                                                  myDescription.getAccessServiceDescription(),
-                                                                                  myDescription.getAccessServiceWiki(),
-                                                                                  AccessServiceOperationalStatus.ENABLED,
-                                                                                  AssetConsumerAdmin.class.getName());
-        OMAGAccessServiceRegistration.registerAccessService(myRegistration);
     }
-
 
 
     /**
      * Returns the connection object corresponding to the supplied connection name.
      *
+     * @param serverName name of the server instances for this request
      * @param userId userId of user making request.
      * @param name   this may be the qualifiedName or displayName of the connection.
      *
@@ -77,7 +48,8 @@ public class AssetConsumerRESTServices
      * PropertyServerException - there is a problem retrieving information from the property (metadata) server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public ConnectionResponse getConnectionByName(String   userId,
+    public ConnectionResponse getConnectionByName(String   serverName,
+                                                  String   userId,
                                                   String   name)
     {
         final String        methodName = "getConnectionByName";
@@ -88,10 +60,8 @@ public class AssetConsumerRESTServices
 
         try
         {
-            this.validateInitialization(methodName);
-
-            ConnectionHandler   connectionHandler = new ConnectionHandler(accessServiceName,
-                                                                          repositoryConnector);
+            ConnectionHandler   connectionHandler = new ConnectionHandler(instanceHandler.getAccessServiceName(),
+                                                                          instanceHandler.getRepositoryConnector(serverName));
 
             response.setConnection(connectionHandler.getConnectionByName(userId, name));
         }
@@ -125,6 +95,7 @@ public class AssetConsumerRESTServices
     /**
      * Returns the connection object corresponding to the supplied connection GUID.
      *
+     * @param serverName name of the server instances for this request
      * @param userId userId of user making request.
      * @param guid  the unique id for the connection within the property server.
      *
@@ -134,7 +105,8 @@ public class AssetConsumerRESTServices
      * PropertyServerException - there is a problem retrieving information from the property (metadata) server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public ConnectionResponse getConnectionByGUID(String     userId,
+    public ConnectionResponse getConnectionByGUID(String     serverName,
+                                                  String     userId,
                                                   String     guid)
     {
         final String        methodName = "getConnectionByGUID";
@@ -145,10 +117,8 @@ public class AssetConsumerRESTServices
 
         try
         {
-            this.validateInitialization(methodName);
-
-            ConnectionHandler   connectionHandler = new ConnectionHandler(accessServiceName,
-                                                                          repositoryConnector);
+            ConnectionHandler   connectionHandler = new ConnectionHandler(instanceHandler.getAccessServiceName(),
+                                                                          instanceHandler.getRepositoryConnector(serverName));
 
             response.setConnection(connectionHandler.getConnectionByGUID(userId, guid));
         }
@@ -178,6 +148,7 @@ public class AssetConsumerRESTServices
     /**
      * Return the profile for this user.
      *
+     * @param serverName name of the server instances for this request
      * @param userId userId of the user making the request.
      *
      * @return profile response object or
@@ -186,7 +157,8 @@ public class AssetConsumerRESTServices
      * PropertyServerException there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public MyProfileResponse getMyProfile(String userId)
+    public MyProfileResponse getMyProfile(String serverName,
+                                          String userId)
     {
         final String   methodName = "getMyProfile";
 
@@ -196,9 +168,8 @@ public class AssetConsumerRESTServices
 
         try
         {
-            this.validateInitialization(methodName);
-
-            MyProfileHandler   handler = new MyProfileHandler(accessServiceName, repositoryConnector);
+            MyProfileHandler   handler = new MyProfileHandler(instanceHandler.getAccessServiceName(),
+                                                              instanceHandler.getRepositoryConnector(serverName));
 
             response.setPersonalProfile(handler.getMyProfile(userId));
         }
@@ -228,6 +199,7 @@ public class AssetConsumerRESTServices
     /**
      * Create or update the profile for the requesting user.
      *
+     * @param serverName name of the server instances for this request
      * @param userId the name of the calling user.
      * @param requestBody properties for the new profile.
      * @return void response or
@@ -235,7 +207,8 @@ public class AssetConsumerRESTServices
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public VoidResponse updateMyProfile(String               userId,
+    public VoidResponse updateMyProfile(String               serverName,
+                                        String               userId,
                                         MyProfileRequestBody requestBody)
     {
         final String   methodName = "updateMyProfile";
@@ -246,8 +219,6 @@ public class AssetConsumerRESTServices
 
         try
         {
-            this.validateInitialization(methodName);
-
             String              employeeNumber       = null;
             String              fullName             = null;
             String              knownName            = null;
@@ -265,7 +236,8 @@ public class AssetConsumerRESTServices
                 additionalProperties = requestBody.getAdditionalProperties();
             }
 
-            MyProfileHandler   handler = new MyProfileHandler(accessServiceName, repositoryConnector);
+            MyProfileHandler   handler = new MyProfileHandler(instanceHandler.getAccessServiceName(),
+                                                              instanceHandler.getRepositoryConnector(serverName));
 
             handler.updateMyProfile(userId, employeeNumber, fullName, knownName, jobTitle, jobRoleDescription, additionalProperties);
         }
@@ -291,6 +263,7 @@ public class AssetConsumerRESTServices
     /**
      * Return a list of assets that the specified user has added to their favorites list.
      *
+     * @param serverName name of the server instances for this request
      * @param userId     userId of user making request.
      * @param startFrom  index of the list ot start from (0 for start)
      * @param pageSize   maximum number of elements to return.
@@ -300,7 +273,8 @@ public class AssetConsumerRESTServices
      * PropertyServerException there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public AssetListResponse getMyAssets(String    userId,
+    public AssetListResponse getMyAssets(String    serverName,
+                                         String    userId,
                                          int       startFrom,
                                          int       pageSize)
     {
@@ -312,6 +286,7 @@ public class AssetConsumerRESTServices
     /**
      * Add an asset to the identified user's list of favorite assets.
      *
+     * @param serverName name of the server instances for this request
      * @param userId          userId of user making request.
      * @param assetGUID       unique identifier of the asset.
      * @param nullRequestBody null request body
@@ -321,7 +296,8 @@ public class AssetConsumerRESTServices
      * PropertyServerException there is a problem updating information in the property server(s) or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse  addToMyAssets(String           userId,
+    public VoidResponse  addToMyAssets(String           serverName,
+                                       String           userId,
                                        String           assetGUID,
                                        NullRequestBody  nullRequestBody)
     {
@@ -333,6 +309,7 @@ public class AssetConsumerRESTServices
     /**
      * Remove an asset from identified user's list of favorite assets.
      *
+     * @param serverName name of the server instances for this request
      * @param userId          userId of user making request.
      * @param assetGUID       unique identifier of the asset.
      * @param nullRequestBody null request body
@@ -342,7 +319,8 @@ public class AssetConsumerRESTServices
      * PropertyServerException there is a problem updating information in the property server(s) or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse  removeFromMyAssets(String           userId,
+    public VoidResponse  removeFromMyAssets(String           serverName,
+                                            String           userId,
                                             String           assetGUID,
                                             NullRequestBody  nullRequestBody)
     {
@@ -355,6 +333,7 @@ public class AssetConsumerRESTServices
     /**
      * Returns the unique identifier for the asset connected to the connection.
      *
+     * @param serverName name of the server instances for this request
      * @param userId the userId of the requesting user.
      * @param connectionGUID  uniqueId for the connection.
      *
@@ -365,7 +344,8 @@ public class AssetConsumerRESTServices
      * NoConnectedAssetException - there is no asset associated with this connection or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public GUIDResponse getAssetForConnection(String   userId,
+    public GUIDResponse getAssetForConnection(String   serverName,
+                                              String   userId,
                                               String   connectionGUID)
     {
         final String        methodName = "getAssetForConnection";
@@ -376,10 +356,8 @@ public class AssetConsumerRESTServices
 
         try
         {
-            this.validateInitialization(methodName);
-
-            ConnectionHandler   connectionHandler = new ConnectionHandler(accessServiceName,
-                                                                          repositoryConnector);
+            ConnectionHandler   connectionHandler = new ConnectionHandler(instanceHandler.getAccessServiceName(),
+                                                                          instanceHandler.getRepositoryConnector(serverName));
 
             response.setGUID(connectionHandler.getAssetForConnection(userId, connectionGUID));
         }
@@ -413,6 +391,7 @@ public class AssetConsumerRESTServices
     /**
      * Creates an Audit log record for the asset.  This log record is stored in the Asset's Audit Log.
      *
+     * @param serverName name of the server instances for this request
      * @param userId  String - userId of user making request.
      * @param guid  String - unique id for the asset.
      * @param requestBody containing:
@@ -427,7 +406,8 @@ public class AssetConsumerRESTServices
      * PropertyServerException - there is a problem adding the log message to the audit log for this asset or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public VoidResponse addLogMessageToAsset(String                userId,
+    public VoidResponse addLogMessageToAsset(String                serverName,
+                                             String                userId,
                                              String                guid,
                                              LogRecordRequestBody  requestBody)
     {
@@ -440,8 +420,6 @@ public class AssetConsumerRESTServices
 
         try
         {
-            this.validateInitialization(methodName);
-
             String      connectorInstanceId = null;
             String      connectionName = null;
             String      connectorType = null;
@@ -457,8 +435,8 @@ public class AssetConsumerRESTServices
                 message = requestBody.getMessage();
             }
 
-            AuditLogHandler   auditLogHandler = new AuditLogHandler(accessServiceName,
-                                                                    repositoryConnector);
+            AuditLogHandler   auditLogHandler = new AuditLogHandler(instanceHandler.getAccessServiceName(),
+                                                                    instanceHandler.getRepositoryConnector(serverName));
 
             auditLogHandler.addLogMessageToAsset(userId,
                                                  guid,
@@ -490,6 +468,7 @@ public class AssetConsumerRESTServices
     /**
      * Adds a new public tag to the asset's properties.
      *
+     * @param serverName name of the server instances for this request
      * @param userId  String - userId of user making request.
      * @param guid  String - unique id for the asset.
      * @param requestBody  contains the name of the tag and (optional) description of the tag.
@@ -500,7 +479,8 @@ public class AssetConsumerRESTServices
      *                                   the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public GUIDResponse addTagToAsset(String          userId,
+    public GUIDResponse addTagToAsset(String          serverName,
+                                      String          userId,
                                       String          guid,
                                       TagRequestBody  requestBody)
     {
@@ -512,8 +492,6 @@ public class AssetConsumerRESTServices
 
         try
         {
-            this.validateInitialization(methodName);
-
             String      tagName = null;
             String      tagDescription = null;
 
@@ -523,8 +501,8 @@ public class AssetConsumerRESTServices
                 tagDescription = requestBody.getTagDescription();
             }
 
-            FeedbackHandler   feedbackHandler = new FeedbackHandler(accessServiceName,
-                                                                    repositoryConnector);
+            FeedbackHandler   feedbackHandler = new FeedbackHandler(instanceHandler.getAccessServiceName(),
+                                                                    instanceHandler.getRepositoryConnector(serverName));
 
             response.setGUID(feedbackHandler.addTagToAsset(userId, guid, tagName, tagDescription));
         }
@@ -550,6 +528,7 @@ public class AssetConsumerRESTServices
     /**
      * Adds a new private tag to the asset's properties.
      *
+     * @param serverName name of the server instances for this request
      * @param userId       String - userId of user making request.
      * @param guid         String - unique id for the asset.
      * @param requestBody  contains the name of the tag and (optional) description of the tag.
@@ -560,7 +539,8 @@ public class AssetConsumerRESTServices
      *                                   the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public GUIDResponse addPrivateTagToAsset(String          userId,
+    public GUIDResponse addPrivateTagToAsset(String          serverName,
+                                             String          userId,
                                              String          guid,
                                              TagRequestBody  requestBody)
     {
@@ -572,8 +552,6 @@ public class AssetConsumerRESTServices
 
         try
         {
-            this.validateInitialization(methodName);
-
             String      tagName = null;
             String      tagDescription = null;
 
@@ -583,8 +561,8 @@ public class AssetConsumerRESTServices
                 tagDescription = requestBody.getTagDescription();
             }
 
-            FeedbackHandler   feedbackHandler = new FeedbackHandler(accessServiceName,
-                                                                    repositoryConnector);
+            FeedbackHandler   feedbackHandler = new FeedbackHandler(instanceHandler.getAccessServiceName(),
+                                                                    instanceHandler.getRepositoryConnector(serverName));
 
             response.setGUID(feedbackHandler.addPrivateTagToAsset(userId, guid, tagName, tagDescription));
         }
@@ -610,6 +588,7 @@ public class AssetConsumerRESTServices
     /**
      * Adds a rating to the asset.
      *
+     * @param serverName name of the server instances for this request
      * @param userId      String - userId of user making request.
      * @param guid        String - unique id for the asset.
      * @param requestBody containing the StarRating and user review of asset.
@@ -620,7 +599,8 @@ public class AssetConsumerRESTServices
      *                                   the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public GUIDResponse addRatingToAsset(String            userId,
+    public GUIDResponse addRatingToAsset(String            serverName,
+                                         String            userId,
                                          String            guid,
                                          RatingRequestBody requestBody)
     {
@@ -632,8 +612,6 @@ public class AssetConsumerRESTServices
 
         try
         {
-            this.validateInitialization(methodName);
-
             StarRating starRating = null;
             String     review = null;
 
@@ -643,8 +621,8 @@ public class AssetConsumerRESTServices
                 review = requestBody.getReview();
             }
 
-            FeedbackHandler   feedbackHandler = new FeedbackHandler(accessServiceName,
-                                                                    repositoryConnector);
+            FeedbackHandler   feedbackHandler = new FeedbackHandler(instanceHandler.getAccessServiceName(),
+                                                                    instanceHandler.getRepositoryConnector(serverName));
 
             response.setGUID(feedbackHandler.addRatingToAsset(userId, guid, starRating, review));
         }
@@ -670,6 +648,7 @@ public class AssetConsumerRESTServices
     /**
      * Adds a "Like" to the asset.
      *
+     * @param serverName name of the server instances for this request
      * @param userId      String - userId of user making request.
      * @param guid        String - unique id for the asset.
      * @param requestBody null request body to satisfy HTTP protocol.
@@ -680,7 +659,8 @@ public class AssetConsumerRESTServices
      *                                   the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public GUIDResponse addLikeToAsset(String          userId,
+    public GUIDResponse addLikeToAsset(String          serverName,
+                                       String          userId,
                                        String          guid,
                                        NullRequestBody requestBody)
     {
@@ -692,10 +672,8 @@ public class AssetConsumerRESTServices
 
         try
         {
-            this.validateInitialization(methodName);
-
-            FeedbackHandler   feedbackHandler = new FeedbackHandler(accessServiceName,
-                                                                    repositoryConnector);
+            FeedbackHandler   feedbackHandler = new FeedbackHandler(instanceHandler.getAccessServiceName(),
+                                                                    instanceHandler.getRepositoryConnector(serverName));
 
             response.setGUID(feedbackHandler.addLikeToAsset(userId, guid));
         }
@@ -721,6 +699,7 @@ public class AssetConsumerRESTServices
     /**
      * Adds a comment to the asset.
      *
+     * @param serverName name of the server instances for this request
      * @param userId  String - userId of user making request.
      * @param guid  String - unique id for the asset.
      * @param requestBody containing type of comment enum and the text of the comment.
@@ -731,7 +710,8 @@ public class AssetConsumerRESTServices
      *                                   the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public GUIDResponse addCommentToAsset(String             userId,
+    public GUIDResponse addCommentToAsset(String             serverName,
+                                          String             userId,
                                           String             guid,
                                           CommentRequestBody requestBody)
     {
@@ -743,8 +723,6 @@ public class AssetConsumerRESTServices
 
         try
         {
-            this.validateInitialization(methodName);
-
             CommentType commentType = null;
             String      commentText = null;
 
@@ -754,8 +732,8 @@ public class AssetConsumerRESTServices
                 commentText = requestBody.getCommentText();
             }
 
-            FeedbackHandler   feedbackHandler = new FeedbackHandler(accessServiceName,
-                                                                    repositoryConnector);
+            FeedbackHandler   feedbackHandler = new FeedbackHandler(instanceHandler.getAccessServiceName(),
+                                                                    instanceHandler.getRepositoryConnector(serverName));
 
             response.setGUID(feedbackHandler.addCommentToAsset(userId, guid, commentType, commentText));
         }
@@ -781,6 +759,7 @@ public class AssetConsumerRESTServices
     /**
      * Adds a reply to a comment.
      *
+     * @param serverName name of the server instances for this request
      * @param userId       String - userId of user making request.
      * @param commentGUID  String - unique id for an existing comment.  Used to add a reply to a comment.
      * @param requestBody  containing type of comment enum and the text of the comment.
@@ -791,7 +770,8 @@ public class AssetConsumerRESTServices
      *                                   the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public GUIDResponse addCommentReply(String             userId,
+    public GUIDResponse addCommentReply(String             serverName,
+                                        String             userId,
                                         String             commentGUID,
                                         CommentRequestBody requestBody)
     {
@@ -803,8 +783,6 @@ public class AssetConsumerRESTServices
 
         try
         {
-            this.validateInitialization(methodName);
-
             CommentType commentType = null;
             String      commentText = null;
 
@@ -814,8 +792,8 @@ public class AssetConsumerRESTServices
                 commentText = requestBody.getCommentText();
             }
 
-            FeedbackHandler   feedbackHandler = new FeedbackHandler(accessServiceName,
-                                                                    repositoryConnector);
+            FeedbackHandler   feedbackHandler = new FeedbackHandler(instanceHandler.getAccessServiceName(),
+                                                                    instanceHandler.getRepositoryConnector(serverName));
 
             response.setGUID(feedbackHandler.addCommentReply(userId, commentGUID, commentType, commentText));
         }
@@ -841,6 +819,7 @@ public class AssetConsumerRESTServices
     /**
      * Removes a tag from the asset that was added by this user.
      *
+     * @param serverName name of the server instances for this request
      * @param userId       String - userId of user making request.
      * @param guid         String - unique id for the tag.
      * @param requestBody  containing type of comment enum and the text of the comment.
@@ -851,7 +830,8 @@ public class AssetConsumerRESTServices
      *                                   the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public VoidResponse   removeTag(String          userId,
+    public VoidResponse   removeTag(String          serverName,
+                                    String          userId,
                                     String          guid,
                                     NullRequestBody requestBody)
     {
@@ -863,10 +843,8 @@ public class AssetConsumerRESTServices
 
         try
         {
-            this.validateInitialization(methodName);
-
-            FeedbackHandler feedbackHandler = new FeedbackHandler(accessServiceName,
-                                                                  repositoryConnector);
+            FeedbackHandler feedbackHandler = new FeedbackHandler(instanceHandler.getAccessServiceName(),
+                                                                  instanceHandler.getRepositoryConnector(serverName));
 
             feedbackHandler.removeTagFromAsset(userId, guid);
         }
@@ -892,6 +870,7 @@ public class AssetConsumerRESTServices
     /**
      * Removes a tag from the asset that was added by this user.
      *
+     * @param serverName name of the server instances for this request
      * @param userId      String - userId of user making request.
      * @param guid        String - unique id for the tag.
      * @param requestBody null request body needed to satisfy the HTTP Post request
@@ -902,7 +881,8 @@ public class AssetConsumerRESTServices
      *                                   the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public VoidResponse   removePrivateTag(String          userId,
+    public VoidResponse   removePrivateTag(String          serverName,
+                                           String          userId,
                                            String          guid,
                                            NullRequestBody requestBody)
     {
@@ -914,10 +894,8 @@ public class AssetConsumerRESTServices
 
         try
         {
-            this.validateInitialization(methodName);
-
-            FeedbackHandler feedbackHandler = new FeedbackHandler(accessServiceName,
-                                                                  repositoryConnector);
+            FeedbackHandler feedbackHandler = new FeedbackHandler(instanceHandler.getAccessServiceName(),
+                                                                  instanceHandler.getRepositoryConnector(serverName));
 
             feedbackHandler.removePrivateTagFromAsset(userId, guid);
         }
@@ -943,6 +921,7 @@ public class AssetConsumerRESTServices
     /**
      * Removes a star rating that was added to the asset by this user.
      *
+     * @param serverName name of the server instances for this request
      * @param userId      String - userId of user making request.
      * @param guid        String - unique id for the rating object
      * @param requestBody null request body needed to satisfy the HTTP Post request
@@ -953,7 +932,8 @@ public class AssetConsumerRESTServices
      *                                   the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public VoidResponse   removeRating(String          userId,
+    public VoidResponse   removeRating(String          serverName,
+                                       String          userId,
                                        String          guid,
                                        NullRequestBody requestBody)
     {
@@ -965,10 +945,8 @@ public class AssetConsumerRESTServices
 
         try
         {
-            this.validateInitialization(methodName);
-
-            FeedbackHandler feedbackHandler = new FeedbackHandler(accessServiceName,
-                                                                  repositoryConnector);
+            FeedbackHandler feedbackHandler = new FeedbackHandler(instanceHandler.getAccessServiceName(),
+                                                                  instanceHandler.getRepositoryConnector(serverName));
 
             feedbackHandler.removeRatingFromAsset(userId, guid);
         }
@@ -994,6 +972,7 @@ public class AssetConsumerRESTServices
     /**
      * Removes a "Like" added to the asset by this user.
      *
+     * @param serverName name of the server instances for this request
      * @param userId  String - userId of user making request.
      * @param guid  String - unique id for the like object
      * @param requestBody null request body needed to satisfy the HTTP Post request
@@ -1004,7 +983,8 @@ public class AssetConsumerRESTServices
      *                                   the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public VoidResponse   removeLike(String          userId,
+    public VoidResponse   removeLike(String          serverName,
+                                     String          userId,
                                      String          guid,
                                      NullRequestBody requestBody)
     {
@@ -1016,10 +996,8 @@ public class AssetConsumerRESTServices
 
         try
         {
-            this.validateInitialization(methodName);
-
-            FeedbackHandler feedbackHandler = new FeedbackHandler(accessServiceName,
-                                                                  repositoryConnector);
+            FeedbackHandler feedbackHandler = new FeedbackHandler(instanceHandler.getAccessServiceName(),
+                                                                  instanceHandler.getRepositoryConnector(serverName));
 
             feedbackHandler.removeLikeFromAsset(userId, guid);
         }
@@ -1045,6 +1023,7 @@ public class AssetConsumerRESTServices
     /**
      * Removes a comment added to the asset by this user.
      *
+     * @param serverName name of the server instances for this request
      * @param userId  String - userId of user making request.
      * @param guid  String - unique id for the comment object
      * @param requestBody null request body needed to satisfy the HTTP Post request
@@ -1055,7 +1034,8 @@ public class AssetConsumerRESTServices
      *                                   the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public VoidResponse   removeComment(String          userId,
+    public VoidResponse   removeComment(String          serverName,
+                                        String          userId,
                                         String          guid,
                                         NullRequestBody requestBody)
     {
@@ -1067,10 +1047,8 @@ public class AssetConsumerRESTServices
 
         try
         {
-            this.validateInitialization(methodName);
-
-            FeedbackHandler feedbackHandler = new FeedbackHandler(accessServiceName,
-                                                                  repositoryConnector);
+            FeedbackHandler feedbackHandler = new FeedbackHandler(instanceHandler.getAccessServiceName(),
+                                                                  instanceHandler.getRepositoryConnector(serverName));
 
             feedbackHandler.removeCommentFromAsset(userId, guid);
         }
@@ -1323,29 +1301,6 @@ public class AssetConsumerRESTServices
         else
         {
             captureCheckedException(response, error, error.getClass().getName());
-        }
-    }
-
-
-    /**
-     * Validate that this access service has been initialized before attempting to process a request.
-     *
-     * @param methodName  name of method called.
-     * @throws PropertyServerException not initialized
-     */
-    private void validateInitialization(String  methodName) throws PropertyServerException
-    {
-        if (repositoryConnector == null)
-        {
-            AssetConsumerErrorCode errorCode = AssetConsumerErrorCode.SERVICE_NOT_INITIALIZED;
-            String                 errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
-                                                          this.getClass().getName(),
-                                                          methodName,
-                                                          errorMessage,
-                                                          errorCode.getSystemAction(),
-                                                          errorCode.getUserAction());
         }
     }
 }

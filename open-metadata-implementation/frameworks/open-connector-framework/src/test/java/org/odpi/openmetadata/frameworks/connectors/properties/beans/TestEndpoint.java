@@ -18,9 +18,9 @@ import static org.testng.Assert.assertTrue;
  */
 public class TestEndpoint
 {
-    private ElementType          type                           = new ElementType();
-    private List<Classification> classifications                = new ArrayList<>();
-    private Map<String, Object>  additionalProperties           = new HashMap<>();
+    private ElementType          type                 = new ElementType();
+    private List<Classification> classifications      = new ArrayList<>();
+    private Map<String, Object>  additionalProperties = new HashMap<>();
 
 
     /**
@@ -64,7 +64,7 @@ public class TestEndpoint
      *
      * @param resultObject object returned by the test
      */
-    private void validateResultObject(Endpoint  resultObject)
+    private void validateResultObject(Endpoint resultObject)
     {
         assertTrue(resultObject.getType().equals(type));
         assertTrue(resultObject.getGUID().equals("TestGUID"));
@@ -83,11 +83,20 @@ public class TestEndpoint
 
 
     /**
+     * Validate that a endpoint type object is returned.
+     */
+    @Test public void  testEndpoint()
+    {
+        assertTrue(Endpoint.getEndpointType() != null);
+    }
+
+
+    /**
      * Validate that the object is initialized properly
      */
     @Test public void testNullObject()
     {
-        Endpoint    nullObject = new Endpoint();
+        Endpoint nullObject = new Endpoint();
 
         assertTrue(nullObject.getType() == null);
         assertTrue(nullObject.getGUID() == null);
@@ -131,10 +140,10 @@ public class TestEndpoint
         assertFalse(getTestObject().equals("DummyString"));
         assertTrue(getTestObject().equals(getTestObject()));
 
-        Endpoint  sameObject = getTestObject();
+        Endpoint sameObject = getTestObject();
         assertTrue(sameObject.equals(sameObject));
 
-        Endpoint  differentObject = getTestObject();
+        Endpoint differentObject = getTestObject();
         differentObject.setGUID("Different");
         assertFalse(getTestObject().equals(differentObject));
     }
@@ -191,7 +200,7 @@ public class TestEndpoint
         /*
          * Through superclass
          */
-        Referenceable  referenceable = getTestObject();
+        Referenceable referenceable = getTestObject();
 
         try
         {
@@ -214,7 +223,7 @@ public class TestEndpoint
         /*
          * Through superclass
          */
-        ElementHeader  elementHeader = getTestObject();
+        ElementHeader elementHeader = getTestObject();
 
         try
         {
@@ -237,7 +246,7 @@ public class TestEndpoint
         /*
          * Through superclass
          */
-        PropertyBase  propertyBase = getTestObject();
+        PropertyBase propertyBase = getTestObject();
 
         try
         {

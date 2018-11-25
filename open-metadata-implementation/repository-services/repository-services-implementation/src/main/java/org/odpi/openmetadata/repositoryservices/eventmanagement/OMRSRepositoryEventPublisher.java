@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.eventmanagement;
 
 import org.slf4j.Logger;
@@ -16,7 +17,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicCo
  */
 public class OMRSRepositoryEventPublisher extends OMRSRepositoryEventBuilder
 {
-    private static final OMRSAuditLog auditLog = new OMRSAuditLog(OMRSAuditingComponent.EVENT_PUBLISHER);
+    private OMRSAuditLog auditLog;
 
     private static final Logger log = LoggerFactory.getLogger(OMRSRepositoryEventPublisher.class);
 
@@ -29,13 +30,17 @@ public class OMRSRepositoryEventPublisher extends OMRSRepositoryEventBuilder
      * @param publisherName  name of the cohort (or enterprise virtual repository) that this event publisher
      *                       is sending events to.
      * @param topicConnector OMRS Topic to send requests on
+     * @param auditLog audit log for this component.
      */
-    public OMRSRepositoryEventPublisher(String publisherName,
-                                        OMRSTopicConnector topicConnector)
+    public OMRSRepositoryEventPublisher(String             publisherName,
+                                        OMRSTopicConnector topicConnector,
+                                        OMRSAuditLog       auditLog)
     {
         super();
 
         String actionDescription = "Initialize event publisher";
+
+        this.auditLog = auditLog;
 
         /*
          * The topic connector is needed to publish events.
