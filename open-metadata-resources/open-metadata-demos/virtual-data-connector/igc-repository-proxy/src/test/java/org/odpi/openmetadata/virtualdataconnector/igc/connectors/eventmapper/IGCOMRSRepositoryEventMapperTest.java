@@ -39,14 +39,14 @@ public class IGCOMRSRepositoryEventMapperTest {
     @BeforeTest
     public void loadDummyData() {
 
-       objectMapper = new ObjectMapper();
+        objectMapper = new ObjectMapper();
 
         try {
             dummyIGCKafkaEventCategory = objectMapper.readValue(readFile(new File(this.getClass().getClassLoader().getResource(KAFKA_CATEGORY).getFile())), IGCKafkaEvent.class);
             dummyIGCKafkaEventTerm = objectMapper.readValue(readFile(new File(this.getClass().getClassLoader().getResource(KAFKA_TERM).getFile())), IGCKafkaEvent.class);
             dummyIGCObjectCategory = objectMapper.readValue(readFile(new File(this.getClass().getClassLoader().getResource(IGC_OBJECT_CATEGORY).getFile())), IGCObject.class);
             dummyIGCObjectTerm = objectMapper.readValue(readFile(new File(this.getClass().getClassLoader().getResource(IGC_OBJECT_TERM).getFile())), IGCObject.class);
-        } catch (Exception e){
+        } catch (Exception e) {
             logger.error("Something went wrong while loading the JSON objects: " + e.getMessage());
         }
     }
@@ -56,9 +56,9 @@ public class IGCOMRSRepositoryEventMapperTest {
         // Reflection on the private method.
         Class<IGCOMRSRepositoryEventMapper> igcomrsRepositoryEventMapperClass = IGCOMRSRepositoryEventMapper.class;
 
-        try{
+        try {
             classInstance = igcomrsRepositoryEventMapperClass.newInstance();
-        } catch (Exception e){
+        } catch (Exception e) {
             logger.error("Something is wrong while doing reflection: " + e.getMessage());
         }
     }
@@ -164,7 +164,33 @@ public class IGCOMRSRepositoryEventMapperTest {
         }
     }
 
-    private static String readFile(File fileName){
+    @Test
+    public void testGetParentCategoryName() {
+        try {
+            Method method = classInstance.getClass().getDeclaredMethod("getParentCategoryName", IGCObject.class);
+            method.setAccessible(true);
+            Object result = method.invoke(classInstance, dummyIGCObjectCategory);
+            Assert.assertEquals("Test_Category_VDC", result.toString());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testGetParentCategoryId() {
+        try {
+            Method method = classInstance.getClass().getDeclaredMethod("getParentCategoryId", IGCObject.class);
+            method.setAccessible(true);
+            Object result = method.invoke(classInstance, dummyIGCObjectCategory);
+            Assert.assertEquals("6662c0f2.ee6a64fe.4lj6d1k85.617r2c1.51bajb.oihua4hdu9cnegcha0s6d", result.toString());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static String readFile(File fileName) {
         BufferedReader reader = null;
         StringBuilder stringBuilder = new StringBuilder();
         try {

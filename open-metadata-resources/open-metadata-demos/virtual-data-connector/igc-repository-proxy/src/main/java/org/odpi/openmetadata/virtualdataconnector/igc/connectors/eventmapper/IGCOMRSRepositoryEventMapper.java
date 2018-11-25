@@ -358,7 +358,17 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
      */
     private void processCategoryCreation(IGCObject igcObject) {
         final String glossaryCategoryName = igcObject.getName();
+        final String parentCategoryName = getParentCategoryName(igcObject);
         createEntity(igcObject, false, GLOSSARY_CATEGORY, glossaryCategoryName);
+
+        if (parentCategoryName != null){
+            createEntity(igcObject, false, GLOSSARY_CATEGORY, parentCategoryName);
+
+            EntityProxy glossaryParentCategoryProxy = newEntityProxy(GLOSSARY_CATEGORY, parentCategoryName, getParentCategoryId(igcObject));
+            EntityProxy glossarySubCategoryProxy = newEntityProxy(GLOSSARY_CATEGORY, glossaryCategoryName, igcObject.getId());
+
+            createRelationship(CATEGORY_HIERARCHY_LINK, glossaryParentCategoryProxy, glossarySubCategoryProxy);
+        }
     }
 
     /**
@@ -483,7 +493,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         sendNewRelationshipEvent(relationship);
 
         log.info("[New Relationship Event] Created {} between: {} [{}] and {} [{}].",
-                relationshipType, entityProxyOneType, entityProxyOneType, entityProxyTwoGUID, entityProxyTwoType);
+                relationshipType, entityProxyOneGUID, entityProxyOneType, entityProxyTwoGUID, entityProxyTwoType);
     }
 
     /**
@@ -974,7 +984,8 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
      * @param value the primitive value
      * @return PrimitivePropertyValue open metadata primitive Boolean type
      */
-    private PrimitivePropertyValue getBooleanPropertyValue(Boolean value) {
+    private PrimitivePropertyValue getBooleanPropertyValue
+    (Boolean value) {
         PrimitivePropertyValue propertyValue = new PrimitivePropertyValue();
 
         propertyValue.setPrimitiveValue(value);
@@ -1006,6 +1017,18 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase 
         final Map<String, Object> additionalProperties = igcObject.getAdditionalProperties();
         final HashMap<String, String> parentCategory = (HashMap<String, String>) additionalProperties.get("parent_category");
         return parentCategory.get("_name");
+    }
+
+    /**
+     * Returns the parent glossary category ID associated with the asset
+     *
+     * @param igcObject generic IGC object that contains the details about the asset
+     * @return String the parent glossary category ID associated with the asset
+     */
+    private String getParentCategoryId(IGCObject igcObject){
+        final Map<String, Object> additionalProperties = igcObject.getAdditionalProperties();
+        final HashMap<String, String> parentCategory = (HashMap<String, String>) additionalProperties.get("parent_category");
+        return parentCategory.get("_id");
     }
 
     /**
