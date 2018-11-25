@@ -1,6 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic;
 
+import org.odpi.openmetadata.repositoryservices.connectors.auditable.AuditableConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
@@ -33,10 +35,11 @@ import java.util.List;
  *     </li>
  * </ul>
  */
-public abstract class OpenMetadataTopicConnector extends ConnectorBase implements OpenMetadataTopic, Runnable
+public abstract class OpenMetadataTopicConnector extends ConnectorBase implements OpenMetadataTopic,
+                                                                                  Runnable,
+                                                                                  AuditableConnector
 {
     private static final Logger       log      = LoggerFactory.getLogger(OpenMetadataTopicConnector.class);
-    private static final OMRSAuditLog auditLog = new OMRSAuditLog(OMRSAuditingComponent.OPEN_METADATA_TOPIC_CONNECTOR);
 
     private static final String       defaultThreadName = "OpenMetadataTopicListener";
     private static final String       defaultTopicName  = "OpenMetadataTopic";
@@ -48,6 +51,7 @@ public abstract class OpenMetadataTopicConnector extends ConnectorBase implement
     private String                          topicName          = defaultTopicName;
     private int                             sleepTime          = 100;
 
+    protected OMRSAuditLog auditLog = null;
 
     /**
      * Simple constructor
@@ -57,6 +61,17 @@ public abstract class OpenMetadataTopicConnector extends ConnectorBase implement
         super();
     }
 
+
+    /**
+     * Receive an audit log object that can be used to record audit log messages.  The caller has initialized it
+     * with the correct component description and log destinations.
+     *
+     * @param auditLog audit log object
+     */
+    public void setAuditLog(OMRSAuditLog   auditLog)
+    {
+        this.auditLog = auditLog;
+    }
 
     /**
      * This is the method called by the listener thread when it starts.

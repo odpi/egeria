@@ -14,7 +14,7 @@ import java.util.Map;
 
 /**
  * OMAGServerAdminResource provides the spring annotations for the server-side
- * implementation of the administrative interface for
+ * implementation of the configuration interface for
  * an Open Metadata and Governance (OMAG) Server.  It provides all of the
  * configuration properties for the Open Metadata Access Services (OMASs) and delegates administration requests
  * to the Open Metadata Repository Services (OMRS).
@@ -30,14 +30,6 @@ import java.util.Map;
  * Advanced Configuration - provides access to all configuration properties to provide
  * fine-grained control of the server.
  * </li>
- * <li>
- * Initialization and shutdown - these methods control the initialization and shutdown of the
- * open metadata and governance service instance based on the supplied configuration.
- * </li>
- * <li>
- * Operational status and control - these methods query the status of the open metadata and governance
- * services as well as the audit log.
- * </li>
  * </ul>
  */
 @RestController
@@ -45,24 +37,6 @@ import java.util.Map;
 public class OMAGServerAdminResource
 {
     private OMAGServerAdminServices adminAPI = new OMAGServerAdminServices();
-
-
-    /*
-     * =============================================================
-     * Help the client discover the type of the server
-     */
-
-
-    /**
-     * Return the origin of this server implementation.
-     *
-     * @return OMAG Server Origin
-     */
-    @RequestMapping(method = RequestMethod.GET, path = "/server-origin")
-    public String getServerOrigin()
-    {
-        return "Egeria OMAG Server";
-    }
 
 
     /*
@@ -534,94 +508,7 @@ public class OMAGServerAdminResource
     public OMAGServerConfigResponse getCurrentConfiguration(@PathVariable String userId,
                                                             @PathVariable String serverName)
     {
-        return adminAPI.getCurrentConfiguration(userId, serverName);
+        return adminAPI.getStoredConfiguration(userId, serverName);
     }
-
-
-    /*
-     * ========================================================================================
-     * Activate and deactivate the open metadata and governance capabilities in the OMAG Server
-     */
-
-    /**
-     * Activate the open metadata and governance services using the stored configuration information.
-     *
-     * @param userId  user that is issuing the request
-     * @param serverName  local server name
-     * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException the server name is invalid or
-     * OMAGConfigurationErrorException there is a problem using the supplied configuration.
-     */
-    @RequestMapping(method = RequestMethod.POST, path = "/instance")
-    public VoidResponse activateWithStoredConfig(@PathVariable String userId,
-                                                 @PathVariable String serverName)
-    {
-        return adminAPI.activateWithStoredConfig(userId, serverName);
-    }
-
-
-    /**
-     * Activate the open metadata and governance services using the supplied configuration
-     * document.
-     *
-     * @param userId  user that is issuing the request
-     * @param configuration  properties used to initialize the services
-     * @param serverName  local server name
-     * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException the server name is invalid or
-     * OMAGConfigurationErrorException there is a problem using the supplied configuration.
-     */
-    @RequestMapping(method = RequestMethod.POST, path = "/instance/configuration")
-    public VoidResponse activateWithSuppliedConfig(@PathVariable String           userId,
-                                                   @PathVariable String           serverName,
-                                                   @RequestBody OMAGServerConfig configuration)
-    {
-        return adminAPI.activateWithSuppliedConfig(userId, serverName, configuration);
-    }
-
-
-    /**
-     * Temporarily deactivate any open metadata and governance services.
-     *
-     * @param userId  user that is issuing the request
-     * @param serverName  local server name
-     * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException the serverName is invalid.
-     */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/instance")
-    public VoidResponse deactivateTemporarily(@PathVariable String  userId,
-                                              @PathVariable String  serverName)
-    {
-        return adminAPI.deactivateTemporarily(userId, serverName);
-    }
-
-
-    /**
-     * Permanently deactivate any open metadata and governance services and unregister from
-     * any cohorts.
-     *
-     * @param userId  user that is issuing the request
-     * @param serverName  local server name
-     * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException the serverName is invalid.
-     */
-    @RequestMapping(method = RequestMethod.DELETE, path = "")
-    public VoidResponse deactivatePermanently(@PathVariable String  userId,
-                                              @PathVariable String  serverName)
-    {
-        return adminAPI.deactivatePermanently(userId, serverName);
-    }
-
-
-    /*
-     * =============================================================
-     * Operational status and control
-     */
-
-    /* placeholder */
 
 }

@@ -25,7 +25,8 @@ import org.slf4j.LoggerFactory;
 public class KafkaOpenMetadataEventConsumer implements Runnable
 {
     private static final Logger       log      = LoggerFactory.getLogger(KafkaOpenMetadataEventConsumer.class);
-    private static final OMRSAuditLog auditLog = new OMRSAuditLog(OMRSAuditingComponent.OPEN_METADATA_TOPIC_CONNECTOR);
+
+    private OMRSAuditLog auditLog;
 
     private static final long recoverySleepTimeSec = 10L;
     private static final long defaultPollTimeout   = 1000;
@@ -44,14 +45,18 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
      * Constructor for the event consumer.
      *
      * @param topicName name of the topic to listen on.
+     * @param localServerId identifier to enable receiver to identify that an event came from this server.
      * @param consumerProperties properties for the consumer.
      * @param connector connector holding the inbound listeners.
+     * @param auditLog  audit log for this component.
      */
     public KafkaOpenMetadataEventConsumer(String                          topicName,
                                           String                          localServerId,
                                           Properties                      consumerProperties,
-                                          KafkaOpenMetadataTopicConnector connector)
+                                          KafkaOpenMetadataTopicConnector connector,
+                                          OMRSAuditLog                    auditLog)
     {
+        this.auditLog = auditLog;
         this.consumer = new KafkaConsumer<>(consumerProperties);
         this.topicToSubscribe = topicName;
         this.consumer.subscribe(Collections.singletonList(topicToSubscribe), new HandleRebalance());
@@ -65,7 +70,7 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
         auditLog.logRecord(actionDescription,
                            auditCode.getLogMessageId(),
                            auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(consumerProperties.toString()),
+                           auditCode.getFormattedLogMessage(topicName, consumerProperties.toString()),
                            null,
                            auditCode.getSystemAction(),
                            auditCode.getUserAction());
@@ -94,11 +99,12 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
         final String           actionDescription = "run";
         KafkaOpenMetadataTopicConnectorAuditCode auditCode;
 
-        while (running)
+        while (isRunning())
         {
-            ConsumerRecords<String, String> records = consumer.poll(defaultPollTimeout);
             try
             {
+                ConsumerRecords<String, String> records = consumer.poll(defaultPollTimeout);
+
                 log.debug("Found records: " + records.count());
                 for (ConsumerRecord<String, String> record : records)
                 {
@@ -114,14 +120,20 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
                         catch (Exception error)
                         {
                             log.error(String.format("Error distributing inbound event: %s", error.getMessage()), error);
-                            auditCode = KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_DISTRIBUTING_EVENT;
-                            auditLog.logRecord(actionDescription,
-                                               auditCode.getLogMessageId(),
-                                               auditCode.getSeverity(),
-                                               auditCode.getFormattedLogMessage(topicToSubscribe, error.getClass().getName(), json, error.getMessage()),
-                                               null,
-                                               auditCode.getSystemAction(),
-                                               auditCode.getUserAction());
+
+                            if (auditLog != null)
+                            {
+                                auditCode = KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_DISTRIBUTING_EVENT;
+                                auditLog.logRecord(actionDescription,
+                                                   auditCode.getLogMessageId(),
+                                                   auditCode.getSeverity(),
+                                                   auditCode.getFormattedLogMessage(topicToSubscribe,
+                                                                                    error.getClass().getName(), json,
+                                                                                    error.getMessage()),
+                                                   null,
+                                                   auditCode.getSystemAction(),
+                                                   auditCode.getUserAction());
+                            }
                         }
                     }
                     else
@@ -143,14 +155,19 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
             catch (Exception error)
             {
                 log.error(String.format("Unexpected error: %s", error.getMessage()), error);
-                auditCode = KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_RECEIVING_EVENT;
-                auditLog.logRecord(actionDescription,
-                                   auditCode.getLogMessageId(),
-                                   auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(topicToSubscribe, error.getClass().getName(), error.getMessage()),
-                                   null,
-                                   auditCode.getSystemAction(),
-                                   auditCode.getUserAction());
+
+                if (auditLog != null)
+                {
+                    auditCode = KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_RECEIVING_EVENT;
+                    auditLog.logRecord(actionDescription,
+                                       auditCode.getLogMessageId(),
+                                       auditCode.getSeverity(),
+                                       auditCode.getFormattedLogMessage(topicToSubscribe, error.getClass().getName(),
+                                                                        error.getMessage()),
+                                       null,
+                                       auditCode.getSystemAction(),
+                                       auditCode.getUserAction());
+                }
                 recoverAfterError();
             }
             finally
@@ -164,6 +181,19 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
                     log.error(String.format("Interruption error: %s", e.getMessage()), e);
                 }
             }
+        }
+
+        if (consumer != null)
+        {
+            try
+            {
+                consumer.commitSync(currentOffsets);
+            }
+            finally
+            {
+                consumer.close();
+            }
+            consumer = null;
         }
     }
 
@@ -188,20 +218,37 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
      */
     public void safeCloseConsumer()
     {
+        stopRunning();
+
+        /*
+         * Wake the thread up so it shuts down quicker.
+         */
         if (consumer != null)
         {
-            try
-            {
-                this.stopConsumption();
-                consumer.commitSync(currentOffsets);
-            }
-            finally
-            {
-                consumer.close();
-            }
-            consumer = null;
+            consumer.wakeup();
         }
     }
+
+
+    /**
+     * Should the thread keep looping.
+     *
+     * @return boolean
+     */
+    private synchronized  boolean isRunning()
+    {
+        return running;
+    }
+
+
+    /**
+     * Flip the switch to stop the thread.
+     */
+    private synchronized void stopRunning()
+    {
+        running = false;
+    }
+
 
     private class HandleRebalance implements ConsumerRebalanceListener
     {
@@ -215,17 +262,4 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
             consumer.commitSync(currentOffsets);
         }
     }
-
-
-    /**
-     * Stop the thread.
-     */
-    public void stopConsumption()
-    {
-        synchronized (running)
-        {
-            running = false;
-        }
-    }
-
 }
