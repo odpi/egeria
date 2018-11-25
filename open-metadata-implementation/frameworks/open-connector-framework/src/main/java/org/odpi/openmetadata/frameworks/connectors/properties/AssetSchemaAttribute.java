@@ -3,33 +3,56 @@
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaAttribute;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaAttributeRelationship;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
  * <p>
  *     SchemaAttribute describes a single attribute within a schema.  The attribute has a name, order in the
  *     schema and cardinality.
- *     Its type is another SchemaElement (either Schema, MapSchemaElement or PrimitiveSchemaElement).
+ *     Its type is another SchemaElement (either StructSchemaType, MapSchemaType or PrimitiveSchemaType).
  * </p>
  * <p>
- *     If it is a PrimitiveSchemaElement it may have an override for the default value within.
+ *     If it is a PrimitiveSchemaType it may have an override for the default value within.
  * </p>
  */
 public class AssetSchemaAttribute extends AssetReferenceable
 {
     protected SchemaAttribute schemaAttributeBean;
-    protected AssetSchemaType assetSchemaType;
+    protected AssetSchemaType localSchemaType    = null;
+    protected AssetSchemaLink externalSchemaLink = null;
 
 
     /**
-     * Bean constructor
+     * Bean constructor used by subclasses
      *
      * @param schemaAttributeBean bean containing all of the properties
-     * @param assetSchemaType type for this schema attribute
      */
-    public AssetSchemaAttribute(SchemaAttribute     schemaAttributeBean,
-                                AssetSchemaType assetSchemaType)
+    protected AssetSchemaAttribute(SchemaAttribute schemaAttributeBean)
+    {
+        super(schemaAttributeBean);
+
+        if (schemaAttributeBean == null)
+        {
+            this.schemaAttributeBean = new SchemaAttribute();
+        }
+        else
+        {
+            this.schemaAttributeBean = schemaAttributeBean;
+        }
+    }
+
+
+    /**
+     * Bean constructor with fully constructed local schema type.
+     *
+     * @param schemaAttributeBean bean containing all of the properties
+     * @param localSchemaType type for this schema attribute
+     */
+    public AssetSchemaAttribute(SchemaAttribute schemaAttributeBean,
+                                AssetSchemaType localSchemaType)
     {
         super(schemaAttributeBean);
 
@@ -42,19 +65,31 @@ public class AssetSchemaAttribute extends AssetReferenceable
             this.schemaAttributeBean = schemaAttributeBean;
         }
 
-        if (assetSchemaType == null)
+        this.localSchemaType = localSchemaType;
+    }
+
+
+    /**
+     * Bean constructor with fully constructed link to external schema type.
+     *
+     * @param schemaAttributeBean bean containing all of the properties
+     * @param externalSchemaLink indirect link to the type for this schema attribute
+     */
+    public AssetSchemaAttribute(SchemaAttribute schemaAttributeBean,
+                                AssetSchemaLink externalSchemaLink)
+    {
+        super(schemaAttributeBean);
+
+        if (schemaAttributeBean == null)
         {
-            this.assetSchemaType = null;
+            this.schemaAttributeBean = new SchemaAttribute();
         }
         else
         {
-            /*
-             * SchemaElement is an abstract class with a placeholder method to clone an object
-             * of its sub-class.  When cloneSchemaElement() is called, the implementation in the
-             * sub-class is called.
-             */
-            this.assetSchemaType = assetSchemaType.cloneAssetSchemaElement(super.getParentAsset());
+            this.schemaAttributeBean = schemaAttributeBean;
         }
+
+        this.externalSchemaLink = externalSchemaLink;
     }
 
 
@@ -63,11 +98,33 @@ public class AssetSchemaAttribute extends AssetReferenceable
      *
      * @param parentAsset description of the asset that this schema attribute is attached to.
      * @param schemaAttributeBean bean containing all of the properties
-     * @param assetSchemaType type for this schema attribute
      */
-    public AssetSchemaAttribute(AssetDescriptor     parentAsset,
-                                SchemaAttribute     schemaAttributeBean,
-                                AssetSchemaType assetSchemaType)
+    protected AssetSchemaAttribute(AssetDescriptor parentAsset,
+                                   SchemaAttribute schemaAttributeBean)
+    {
+        super(parentAsset, schemaAttributeBean);
+
+        if (schemaAttributeBean == null)
+        {
+            this.schemaAttributeBean = new SchemaAttribute();
+        }
+        else
+        {
+            this.schemaAttributeBean = schemaAttributeBean;
+        }
+    }
+
+
+    /**
+     * Bean constructor with parent asset and fully constructed local schema type.
+     *
+     * @param parentAsset description of the asset that this schema attribute is attached to.
+     * @param schemaAttributeBean bean containing all of the properties
+     * @param localSchemaType type for this schema attribute
+     */
+    public AssetSchemaAttribute(AssetDescriptor parentAsset,
+                                SchemaAttribute schemaAttributeBean,
+                                AssetSchemaType localSchemaType)
     {
         super(parentAsset, schemaAttributeBean);
 
@@ -80,19 +137,33 @@ public class AssetSchemaAttribute extends AssetReferenceable
             this.schemaAttributeBean = schemaAttributeBean;
         }
 
-        if (assetSchemaType == null)
+        this.localSchemaType = localSchemaType;
+    }
+
+
+    /**
+     * Bean constructor with parent asset and fully constructed link to external schema type.
+     *
+     * @param parentAsset description of the asset that this schema attribute is attached to.
+     * @param schemaAttributeBean bean containing all of the properties
+     * @param externalSchemaLink indirect link to the type for this schema attribute
+     */
+    public AssetSchemaAttribute(AssetDescriptor parentAsset,
+                                SchemaAttribute schemaAttributeBean,
+                                AssetSchemaLink externalSchemaLink)
+    {
+        super(parentAsset, schemaAttributeBean);
+
+        if (schemaAttributeBean == null)
         {
-            this.assetSchemaType = null;
+            this.schemaAttributeBean = new SchemaAttribute();
         }
         else
         {
-            /*
-             * SchemaElement is an abstract class with a placeholder method to clone an object
-             * of its sub-class.  When cloneSchemaElement() is called, the implementation in the
-             * sub-class is called.
-             */
-            this.assetSchemaType = assetSchemaType.cloneAssetSchemaElement(super.getParentAsset());
+            this.schemaAttributeBean = schemaAttributeBean;
         }
+
+        this.externalSchemaLink = externalSchemaLink;
     }
 
 
@@ -102,34 +173,33 @@ public class AssetSchemaAttribute extends AssetReferenceable
      * @param parentAsset description of the asset that this schema attribute is attached to.
      * @param template template schema attribute to copy.
      */
-    public AssetSchemaAttribute(AssetDescriptor   parentAsset, AssetSchemaAttribute template)
+    public AssetSchemaAttribute(AssetDescriptor parentAsset, AssetSchemaAttribute template)
     {
         super(parentAsset, template);
 
         if (template == null)
         {
             this.schemaAttributeBean = new SchemaAttribute();
-            this.assetSchemaType = null;
         }
         else
         {
             this.schemaAttributeBean = template.getSchemaAttributeBean();
+            this.localSchemaType = template.getLocalSchemaType();
+            this.externalSchemaLink = template.getExternalSchemaLink();
 
-            AssetSchemaType assetSchemaType = template.getAttributeType();
-            if (assetSchemaType == null)
-            {
-                this.assetSchemaType = null;
-            }
-            else
-            {
-                /*
-                 * SchemaElement is an abstract class with a placeholder method to clone an object
-                 * of its sub-class.  When cloneSchemaElement() is called, the implementation in the
-                 * sub-class is called.
-                 */
-                this.assetSchemaType = assetSchemaType.cloneAssetSchemaElement(super.getParentAsset());
-            }
         }
+    }
+
+
+    /**
+     * Returns a clone of this object.
+     *
+     * @param parentAsset description of the asset that this schema element is attached to.
+     * @return clone of this object
+     */
+    public AssetSchemaAttribute cloneAssetSchemaAttribute(AssetDescriptor parentAsset)
+    {
+        return new AssetSchemaAttribute(parentAsset, this);
     }
 
 
@@ -138,7 +208,7 @@ public class AssetSchemaAttribute extends AssetReferenceable
      *
      * @return schema attribute bean
      */
-    protected SchemaAttribute  getSchemaAttributeBean()
+    protected SchemaAttribute getSchemaAttributeBean()
     {
         return schemaAttributeBean;
     }
@@ -178,20 +248,49 @@ public class AssetSchemaAttribute extends AssetReferenceable
 
 
     /**
-     * Return the SchemaElement that relates to the type of this attribute.
+     * Return the SchemaType that relates to the type of this attribute.
      *
      * @return SchemaElement
      */
-    public AssetSchemaType getAttributeType()
+    public AssetSchemaType getLocalSchemaType()
     {
-        if (assetSchemaType == null)
+        if (localSchemaType == null)
         {
             return null;
         }
         else
         {
-            return assetSchemaType.cloneAssetSchemaElement(super.getParentAsset());
+            return localSchemaType.cloneAssetSchemaType(super.getParentAsset());
         }
+    }
+
+
+    /**
+     * Return the SchemaType that relates to the type of this attribute.
+     *
+     * @return SchemaElement
+     */
+    public AssetSchemaLink getExternalSchemaLink()
+    {
+        if (externalSchemaLink == null)
+        {
+            return null;
+        }
+        else
+        {
+            return new AssetSchemaLink(super.getParentAsset(), externalSchemaLink);
+        }
+    }
+
+
+    /**
+     * Return any relationships to other schema attributes.
+     *
+     * @return list of attribute relationships
+     */
+    public List<SchemaAttributeRelationship> getAttributeRelationships()
+    {
+        return schemaAttributeBean.getAttributeRelationships();
     }
 
 
@@ -203,7 +302,23 @@ public class AssetSchemaAttribute extends AssetReferenceable
     @Override
     public String toString()
     {
-        return schemaAttributeBean.toString();
+        return "AssetSchemaAttribute{" +
+                "schemaAttributeBean=" + schemaAttributeBean +
+                ", localSchemaType=" + localSchemaType +
+                ", externalSchemaLink=" + externalSchemaLink +
+                ", parentAsset=" + parentAsset +
+                ", attributeName='" + getAttributeName() + '\'' +
+                ", elementPosition=" + getElementPosition() +
+                ", cardinality='" + getCardinality() + '\'' +
+                ", defaultValueOverride='" + getDefaultValueOverride() + '\'' +
+                ", attributeRelationships=" + getAttributeRelationships() +
+                ", qualifiedName='" + getQualifiedName() + '\'' +
+                ", additionalProperties=" + getAdditionalProperties() +
+                ", type=" + getType() +
+                ", GUID='" + getGUID() + '\'' +
+                ", URL='" + getURL() + '\'' +
+                ", assetClassifications=" + getAssetClassifications() +
+                '}';
     }
 
 
@@ -230,6 +345,6 @@ public class AssetSchemaAttribute extends AssetReferenceable
         }
         AssetSchemaAttribute that = (AssetSchemaAttribute) objectToCompare;
         return Objects.equals(getSchemaAttributeBean(), that.getSchemaAttributeBean()) &&
-                Objects.equals(assetSchemaType, that.assetSchemaType);
+                Objects.equals(localSchemaType, that.localSchemaType);
     }
 }

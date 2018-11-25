@@ -5,12 +5,9 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.EmbeddedConnection;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaLink;
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static org.testng.Assert.assertFalse;
@@ -59,8 +56,8 @@ public class TestEmbeddedConnectionProperties
      */
     private EmbeddedConnectionProperties getDifferentObject()
     {
-        AssetSummary  parentAsset = new AssetSummary(new Asset());
-        EmbeddedConnection testBean = new EmbeddedConnection();
+        AssetSummary       parentAsset = new AssetSummary(new Asset());
+        EmbeddedConnection testBean    = new EmbeddedConnection();
 
         testBean.setDisplayName("TestDisplayName");
         testBean.setEmbeddedConnection(connection);
@@ -92,7 +89,7 @@ public class TestEmbeddedConnectionProperties
      *
      * @param resultObject object returned by the test
      */
-    private void validateResultObject(EmbeddedConnectionProperties  resultObject)
+    private void validateResultObject(EmbeddedConnectionProperties resultObject)
     {
         assertTrue(resultObject.getDisplayName().equals("TestDisplayName"));
         assertTrue(resultObject.getConnectionProperties().equals(new ConnectionProperties(connection)));
@@ -105,7 +102,7 @@ public class TestEmbeddedConnectionProperties
      *
      * @param nullObject object to test
      */
-    private void validateNullObject(EmbeddedConnectionProperties  nullObject)
+    private void validateNullObject(EmbeddedConnectionProperties nullObject)
     {
         assertTrue(nullObject.getDisplayName() == null);
         assertTrue(nullObject.getArguments() == null);
@@ -155,40 +152,6 @@ public class TestEmbeddedConnectionProperties
 
 
     /**
-     * Validate that the link GUIDs and properties are properly managed
-     */
-    @Test public void testLinkObjects()
-    {
-        List<String>        linkGUIDs      = new ArrayList<>();
-        linkGUIDs.add("TestGUID1");
-        linkGUIDs.add("TestGUID2");
-
-        Map<String, Object> linkProperties = new HashMap<>();
-        linkProperties.put("PropertyName", "PropertyValue");
-
-        AssetSummary        parentAsset    = new AssetSummary(new Asset());
-        SchemaLink          testObject     = new SchemaLink();
-
-        testObject.setLinkGUID("TestLinkGUID");
-        testObject.setLinkName("TestLinkName");
-        testObject.setLinkType("TestLinkType");
-        testObject.setLinkedAttributeGUIDs(linkGUIDs);
-        testObject.setLinkProperties(linkProperties);
-
-        AssetSchemaLink assetSchemaLinkTemplate = new AssetSchemaLink(parentAsset, testObject);
-
-        assertTrue(assetSchemaLinkTemplate.getLinkedAttributeGUIDs() != null);
-        assertTrue(assetSchemaLinkTemplate.getLinkProperties() != null);
-
-        AssetSchemaLink assetSchemaLink = new AssetSchemaLink(parentAsset, assetSchemaLinkTemplate);
-
-        assertTrue(assetSchemaLink.getLinkedAttributeGUIDs() != null);
-        assertTrue(assetSchemaLink.getLinkProperties() != null);
-
-    }
-
-
-    /**
      * Validate that 2 different objects with the same content are evaluated as equal.
      * Also that different objects are considered not equal.
      */
@@ -198,7 +161,7 @@ public class TestEmbeddedConnectionProperties
         assertFalse(getTestObject().equals("DummyString"));
         assertTrue(getTestObject().equals(getTestObject()));
 
-        EmbeddedConnectionProperties  sameObject = getTestObject();
+        EmbeddedConnectionProperties sameObject = getTestObject();
         assertTrue(sameObject.equals(sameObject));
 
         assertFalse(getTestObject().equals(getDifferentObject()));

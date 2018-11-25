@@ -5,7 +5,6 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Classification;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Like;
 import org.testng.annotations.Test;
 
 import java.util.*;
@@ -20,6 +19,7 @@ public class TestAssetSummary
 {
     private ElementType          type            = new ElementType();
     private List<Classification> classifications = new ArrayList<>();
+    private List<String>         zoneMembership  = new ArrayList<>();
     private Map<String, Object>  assetProperties = new HashMap<>();
 
 
@@ -29,6 +29,14 @@ public class TestAssetSummary
     public TestAssetSummary()
     {
         type.setElementTypeName("TestType");
+
+        Classification classification = new Classification();
+
+        classification.setClassificationName("TestClassificationName");
+        classifications.add(classification);
+
+        zoneMembership.add("zone 1");
+        zoneMembership.add("zone 2");
     }
 
 
@@ -52,6 +60,7 @@ public class TestAssetSummary
         testObject.setShortDescription("TestShortDescription");
         testObject.setDescription("TestDescription");
         testObject.setAssetProperties(assetProperties);
+        testObject.setZoneMembership(zoneMembership);
 
         return new AssetSummary(testObject);
     }
@@ -112,18 +121,19 @@ public class TestAssetSummary
      *
      * @param resultObject object returned by the test
      */
-    private void validateResultObject(AssetSummary  resultObject)
+    private void validateResultObject(AssetSummary resultObject)
     {
         assertTrue(resultObject.getType().getElementTypeBean().equals(type));
         assertTrue(resultObject.getGUID().equals("TestGUID"));
         assertTrue(resultObject.getURL().equals("TestURL"));
-        assertTrue(resultObject.getAssetClassifications() == null);
+        assertTrue(resultObject.getAssetClassifications() != null);
 
         assertTrue(resultObject.getQualifiedName().equals("TestQualifiedName"));
         assertTrue(resultObject.getDisplayName().equals("TestDisplayName"));
         assertTrue(resultObject.getDescription().equals("TestDescription"));
         assertTrue(resultObject.getShortDescription().equals("TestShortDescription"));
         assertTrue(resultObject.getOwner().equals("TestOwner"));
+        assertTrue(resultObject.getZoneMembership() != null);
         assertTrue(resultObject.getAssetProperties() == null);
         assertTrue(resultObject.getAdditionalProperties() == null);
     }
@@ -134,7 +144,7 @@ public class TestAssetSummary
      *
      * @param nullObject object to test
      */
-    private void validateNullObject(AssetSummary  nullObject)
+    private void validateNullObject(AssetSummary nullObject)
     {
         assertTrue(nullObject.getType() == null);
         assertTrue(nullObject.getGUID() == null);
@@ -156,9 +166,9 @@ public class TestAssetSummary
      */
     @Test public void testNullObject()
     {
-        Asset           nullBean;
-        AssetSummary    nullObject;
-        AssetSummary    nullTemplate;
+        Asset        nullBean;
+        AssetSummary nullObject;
+        AssetSummary nullTemplate;
 
         nullBean = null;
         nullObject = new AssetSummary(nullBean);
@@ -301,8 +311,8 @@ public class TestAssetSummary
      */
     @Test public void testClassifications()
     {
-        List<Classification>   classificationList = new ArrayList<>();
-        Classification         classification = new Classification();
+        List<Classification> classificationList = new ArrayList<>();
+        Classification       classification     = new Classification();
 
         classification.setClassificationName("TestClassification");
         classificationList.add(classification);
@@ -310,11 +320,29 @@ public class TestAssetSummary
         Asset assetBean = new Asset();
         assetBean.setClassifications(classificationList);
 
-        AssetSummary  testObject = new AssetSummary(assetBean);
+        AssetSummary testObject = new AssetSummary(assetBean);
 
         List<AssetClassification> assetClassifications = testObject.getAssetClassifications();
 
         assertTrue(assetClassifications.get(0).getName().equals("TestClassification"));
+
+        classificationList = new ArrayList<>();
+
+        assetBean = new Asset();
+        assetBean.setClassifications(classificationList);
+        testObject = new AssetSummary(assetBean);
+        assetClassifications = testObject.getAssetClassifications();
+
+        assertTrue(assetClassifications == null);
+
+        classificationList.add(null);
+
+        assetBean = new Asset();
+        assetBean.setClassifications(classificationList);
+        testObject = new AssetSummary(assetBean);
+        assetClassifications = testObject.getAssetClassifications();
+
+        assertTrue(assetClassifications == null);
     }
 
 
@@ -328,7 +356,7 @@ public class TestAssetSummary
         assertFalse(getTestObject().equals("DummyString"));
         assertTrue(getTestObject().equals(getTestObject()));
 
-        AssetSummary  sameObject = getTestObject();
+        AssetSummary sameObject = getTestObject();
         assertTrue(sameObject.equals(sameObject));
 
         assertFalse(getTestObject().equals(getDifferentObject()));

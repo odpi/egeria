@@ -28,18 +28,22 @@ public class GovernanceProgramLeadership implements GovernanceLeadershipInterfac
     private static final String  governanceOfficerTypeName = "GovernanceOfficer";
 
 
+    private String                            serverName;       /* Initialized in constructor */
     private String                            omasServerURL;    /* Initialized in constructor */
     private GovernanceProgramExceptionHandler exceptionHandler; /* Initialized in constructor */
 
     /**
      * Create a new GovernanceProgramLeadership client.
      *
+     * @param serverName name of the server to contact
      * @param newServerURL - the network address of the server running the OMAS REST services
      */
-    public GovernanceProgramLeadership(String     newServerURL)
+    public GovernanceProgramLeadership(String     serverName,
+                                       String     newServerURL)
     {
-        omasServerURL = newServerURL;
-        exceptionHandler = new GovernanceProgramExceptionHandler(newServerURL);
+        this.serverName = serverName;
+        this.omasServerURL = newServerURL;
+        this.exceptionHandler = new GovernanceProgramExceptionHandler(newServerURL);
     }
 
 
@@ -72,7 +76,7 @@ public class GovernanceProgramLeadership implements GovernanceLeadershipInterfac
                                                                                          UserNotAuthorizedException
     {
         final String   methodName = "createPersonalProfile";
-        final String   urlTemplate = "/open-metadata/access-services/governance-program/users/{0}/leadership/personal-profiles";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/leadership/personal-profiles";
 
         final String   profileUserIdParameterName = "profileUserId";
         final String   employeeNumberParameterName = "employeeNumber";
@@ -97,6 +101,7 @@ public class GovernanceProgramLeadership implements GovernanceLeadershipInterfac
         GUIDResponse restResult = callGUIDPostRESTCall(methodName,
                                                        omasServerURL + urlTemplate,
                                                        requestBody,
+                                                       serverName,
                                                        userId);
 
         exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
@@ -136,7 +141,7 @@ public class GovernanceProgramLeadership implements GovernanceLeadershipInterfac
                                                                                          UserNotAuthorizedException
     {
         final String   methodName = "updatePersonalProfile";
-        final String   urlTemplate = "/open-metadata/access-services/governance-program/users/{0}/leadership/personal-profiles/{1}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/leadership/personal-profiles/{2}";
 
         final String   guidParameterName = "profileGUID";
         final String   employeeNumberParameterName = "employeeNumber";
@@ -161,6 +166,7 @@ public class GovernanceProgramLeadership implements GovernanceLeadershipInterfac
         VoidResponse restResult = callVoidPostRESTCall(methodName,
                                                        omasServerURL + urlTemplate,
                                                        requestBody,
+                                                       serverName,
                                                        userId,
                                                        profileGUID);
 
@@ -190,7 +196,7 @@ public class GovernanceProgramLeadership implements GovernanceLeadershipInterfac
                                                                                    UserNotAuthorizedException
     {
         final String   methodName = "deletePersonalProfile";
-        final String   urlTemplate = "/open-metadata/access-services/governance-program/users/{0}/leadership/personal-profiles/{1}/delete";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/leadership/personal-profiles/{2}/delete";
 
         final String   guidParameterName = "profileGUID";
         final String   employeeNumberParameterName = "employeeNumber";
@@ -206,6 +212,7 @@ public class GovernanceProgramLeadership implements GovernanceLeadershipInterfac
         VoidResponse restResult = callVoidPostRESTCall(methodName,
                                                        omasServerURL + urlTemplate,
                                                        requestBody,
+                                                       serverName,
                                                        userId,
                                                        profileGUID);
 
@@ -232,7 +239,7 @@ public class GovernanceProgramLeadership implements GovernanceLeadershipInterfac
                                                                                       UserNotAuthorizedException
     {
         final String   methodName = "getPersonalProfileByGUID";
-        final String   urlTemplate = "/open-metadata/access-services/governance-program/users/{0}/leadership/personal-profiles/{1}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/leadership/personal-profiles/{2}";
 
         final String   guidParameterName = "profileGUID";
 
@@ -242,6 +249,7 @@ public class GovernanceProgramLeadership implements GovernanceLeadershipInterfac
 
         PersonalProfileResponse restResult = callPersonalProfileGetRESTCall(methodName,
                                                                             omasServerURL + urlTemplate,
+                                                                            serverName,
                                                                             userId,
                                                                             profileGUID);
 
@@ -271,7 +279,7 @@ public class GovernanceProgramLeadership implements GovernanceLeadershipInterfac
                                                                                                     UserNotAuthorizedException
     {
         final String   methodName = "getPersonalProfileByEmployeeNumber";
-        final String   urlTemplate = "/open-metadata/access-services/governance-program/users/{0}/leadership/personal-profiles/by-employee-number/{1}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/leadership/personal-profiles/by-employee-number/{2}";
 
         final String   employeeNumberParameterName = "employeeNumber";
 
@@ -281,6 +289,7 @@ public class GovernanceProgramLeadership implements GovernanceLeadershipInterfac
 
         PersonalProfileResponse restResult = callPersonalProfileGetRESTCall(methodName,
                                                                             omasServerURL + urlTemplate,
+                                                                            serverName,
                                                                             userId,
                                                                             employeeNumber);
 
@@ -310,7 +319,7 @@ public class GovernanceProgramLeadership implements GovernanceLeadershipInterfac
                                                                                       UserNotAuthorizedException
     {
         final String   methodName = "getPersonalProfilesByName";
-        final String   urlTemplate = "/open-metadata/access-services/governance-program/users/{0}/leadership/personal-profiles/by-name/{1}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/leadership/personal-profiles/by-name/{2}";
 
         final String   nameParameterName = "name";
 
@@ -320,6 +329,7 @@ public class GovernanceProgramLeadership implements GovernanceLeadershipInterfac
 
         PersonalProfileListResponse restResult = callPersonalProfileListGetRESTCall(methodName,
                                                                                     omasServerURL + urlTemplate,
+                                                                                    serverName,
                                                                                     userId,
                                                                                     name);
 
@@ -359,7 +369,7 @@ public class GovernanceProgramLeadership implements GovernanceLeadershipInterfac
                                                                                                 UserNotAuthorizedException
     {
         final String   methodName = "createGovernanceOfficer";
-        final String   urlTemplate = "/open-metadata/access-services/governance-program/users/{0}/leadership/governance-officers";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/leadership/governance-officers";
 
         final String   appointmentIdParameterName = "appointmentId";
         final String   titleParameterName = "title";
@@ -382,6 +392,7 @@ public class GovernanceProgramLeadership implements GovernanceLeadershipInterfac
         GUIDResponse restResult = callGUIDPostRESTCall(methodName,
                                                        omasServerURL + urlTemplate,
                                                        requestBody,
+                                                       serverName,
                                                        userId);
 
         exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
@@ -424,7 +435,7 @@ public class GovernanceProgramLeadership implements GovernanceLeadershipInterfac
                                                                                                  UserNotAuthorizedException
     {
         final String   methodName = "updateGovernanceOfficer";
-        final String   urlTemplate = "/open-metadata/access-services/governance-program/users/{0}/leadership/governance-officers/{1}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/leadership/governance-officers/{2}";
 
         final String   guidParameterName = "governanceOfficerGUID";
         final String   appointmentIdParameterName = "appointmentId";
@@ -449,6 +460,7 @@ public class GovernanceProgramLeadership implements GovernanceLeadershipInterfac
         VoidResponse restResult = callVoidPostRESTCall(methodName,
                                                        omasServerURL + urlTemplate,
                                                        requestBody,
+                                                       serverName,
                                                        userId,
                                                        governanceOfficerGUID);
 
@@ -480,7 +492,7 @@ public class GovernanceProgramLeadership implements GovernanceLeadershipInterfac
                                                                                        UserNotAuthorizedException
     {
         final String   methodName = "deleteGovernanceOfficer";
-        final String   urlTemplate = "/open-metadata/access-services/governance-program/users/{0}/leadership/governance-officers/{1}/delete";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/leadership/governance-officers/{2}/delete";
 
         final String   guidParameterName = "governanceOfficerGUID";
         final String   appointmentIdParameterName = "appointmentId";
@@ -499,6 +511,7 @@ public class GovernanceProgramLeadership implements GovernanceLeadershipInterfac
         VoidResponse restResult = callVoidPostRESTCall(methodName,
                                                        omasServerURL + urlTemplate,
                                                        requestBody,
+                                                       serverName,
                                                        userId,
                                                        governanceOfficerGUID);
 
@@ -525,7 +538,7 @@ public class GovernanceProgramLeadership implements GovernanceLeadershipInterfac
                                                                                                  UserNotAuthorizedException
     {
         final String   methodName = "getGovernanceOfficerByGUID";
-        final String   urlTemplate = "/open-metadata/access-services/governance-program/users/{0}/leadership/governance-officers/{1}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/leadership/governance-officers/{2}";
 
         final String   guidParameterName = "governanceOfficerGUID";
 
@@ -535,6 +548,7 @@ public class GovernanceProgramLeadership implements GovernanceLeadershipInterfac
 
         GovernanceOfficerResponse restResult = callGovernanceOfficerGetRESTCall(methodName,
                                                                                 omasServerURL + urlTemplate,
+                                                                                serverName,
                                                                                 userId,
                                                                                 governanceOfficerGUID);
 
@@ -564,7 +578,7 @@ public class GovernanceProgramLeadership implements GovernanceLeadershipInterfac
                                                                                                          UserNotAuthorizedException
     {
         final String   methodName = "getGovernanceOfficerByAppointmentId";
-        final String   urlTemplate = "/open-metadata/access-services/governance-program/users/{0}/leadership/governance-officers/by-appointment-id/{1}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/leadership/governance-officers/by-appointment-id/{2}";
 
         final String   appointmentIdParameterName = "appointmentId";
 
@@ -574,6 +588,7 @@ public class GovernanceProgramLeadership implements GovernanceLeadershipInterfac
 
         GovernanceOfficerResponse restResult = callGovernanceOfficerGetRESTCall(methodName,
                                                                                 omasServerURL + urlTemplate,
+                                                                                serverName,
                                                                                 userId,
                                                                                 appointmentId);
 
@@ -598,13 +613,14 @@ public class GovernanceProgramLeadership implements GovernanceLeadershipInterfac
                                                                                     UserNotAuthorizedException
     {
         final String   methodName = "getGovernanceOfficers";
-        final String   urlTemplate = "/open-metadata/access-services/governance-program/users/{0}/leadership/governance-officers";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/leadership/governance-officers";
 
         exceptionHandler.validateOMASServerURL(methodName);
         exceptionHandler.validateUserId(userId, methodName);
 
         GovernanceOfficerListResponse restResult = callGovernanceOfficerListGetRESTCall(methodName,
                                                                                         omasServerURL + urlTemplate,
+                                                                                        serverName,
                                                                                         userId);
 
         exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
@@ -626,13 +642,14 @@ public class GovernanceProgramLeadership implements GovernanceLeadershipInterfac
                                                                                           UserNotAuthorizedException
     {
         final String   methodName = "getGovernanceOfficers";
-        final String   urlTemplate = "/open-metadata/access-services/governance-program/users/{0}/leadership/governance-officers/active";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/leadership/governance-officers/active";
 
         exceptionHandler.validateOMASServerURL(methodName);
         exceptionHandler.validateUserId(userId, methodName);
 
         GovernanceOfficerListResponse restResult = callGovernanceOfficerListGetRESTCall(methodName,
                                                                                         omasServerURL + urlTemplate,
+                                                                                        serverName,
                                                                                         userId);
 
         exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
@@ -660,7 +677,7 @@ public class GovernanceProgramLeadership implements GovernanceLeadershipInterfac
                                                                                                               UserNotAuthorizedException
     {
         final String   methodName = "getGovernanceOfficersByDomain";
-        final String   urlTemplate = "/open-metadata/access-services/governance-program/users/{0}/leadership/governance-officers/by-domain";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/leadership/governance-officers/by-domain";
 
         final String   governanceDomainParameterName = "governanceDomain";
 
@@ -674,6 +691,7 @@ public class GovernanceProgramLeadership implements GovernanceLeadershipInterfac
         GovernanceOfficerListResponse restResult = callGovernanceOfficerListPostRESTCall(methodName,
                                                                                         omasServerURL + urlTemplate,
                                                                                          requestBody,
+                                                                                         serverName,
                                                                                          userId);
 
         exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
@@ -703,7 +721,7 @@ public class GovernanceProgramLeadership implements GovernanceLeadershipInterfac
                                                                    UserNotAuthorizedException
     {
         final String   methodName = "appointGovernanceOfficer";
-        final String   urlTemplate = "/open-metadata/access-services/governance-program/users/{0}/leadership/governance-officers/{1}/appoint";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/leadership/governance-officers/{2}/appoint";
 
         final String   governanceOfficerGUIDParameterName = "governanceOfficerGUID";
         final String   profileGUIDParameterName = "profileGUID";
@@ -720,6 +738,7 @@ public class GovernanceProgramLeadership implements GovernanceLeadershipInterfac
         VoidResponse restResult = callVoidPostRESTCall(methodName,
                                                        omasServerURL + urlTemplate,
                                                        requestBody,
+                                                       serverName,
                                                        userId,
                                                        governanceOfficerGUID);
 
@@ -750,7 +769,7 @@ public class GovernanceProgramLeadership implements GovernanceLeadershipInterfac
                                                                  UserNotAuthorizedException
     {
         final String   methodName = "relieveGovernanceOfficer";
-        final String   urlTemplate = "/open-metadata/access-services/governance-program/users/{0}/leadership/governance-officers/{1}/relieve";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/leadership/governance-officers/{2}/relieve";
 
         final String   governanceOfficerGUIDParameterName = "governanceOfficerGUID";
         final String   profileGUIDParameterName = "profileGUID";
@@ -767,6 +786,7 @@ public class GovernanceProgramLeadership implements GovernanceLeadershipInterfac
         VoidResponse restResult = callVoidPostRESTCall(methodName,
                                                        omasServerURL + urlTemplate,
                                                        requestBody,
+                                                       serverName,
                                                        userId,
                                                        governanceOfficerGUID);
 

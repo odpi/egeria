@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.metadatahighway;
 
 import org.slf4j.Logger;
@@ -34,16 +35,19 @@ public class OMRSCohortManager
 
     private OMRSRepositoryEventManager localRepositoryEventManager  = null;
 
-    private static final OMRSAuditLog auditLog = new OMRSAuditLog(OMRSAuditingComponent.COHORT_MANAGER);
+    private OMRSAuditLog               auditLog;
 
     private static final Logger log = LoggerFactory.getLogger(OMRSCohortManager.class);
 
 
     /**
-     * Default Constructor that relies on the initialization of variables in their declaration.
+     * Main Constructor that relies on the initialization of variables in their declaration.
+     *
+     * @param auditLog audit log for this component.
      */
-    public OMRSCohortManager()
+    public OMRSCohortManager(OMRSAuditLog     auditLog)
     {
+        this.auditLog = auditLog;
     }
 
 
@@ -110,18 +114,20 @@ public class OMRSCohortManager
              */
             this.cohortRepositoryEventManager = new OMRSRepositoryEventManager(cohortName + " cohort inbound",
                                                                                inboundEventExchangeRule,
-                                                                               new OMRSRepositoryContentValidator(localRepositoryContentManager));
+                                                                               new OMRSRepositoryContentValidator(localRepositoryContentManager),
+                                                                               auditLog.createNewAuditLog(OMRSAuditingComponent.REPOSITORY_EVENT_MANAGER));
 
             /*
              * Create an event publisher for the cohort registry to use to send registration requests.
              */
             OMRSRegistryEventPublisher outboundRegistryEventProcessor = new OMRSRegistryEventPublisher(cohortName,
-                                                                                                       cohortTopicConnector);
+                                                                                                       cohortTopicConnector,
+                                                                                                       auditLog.createNewAuditLog(OMRSAuditingComponent.EVENT_PUBLISHER));
 
             /*
              * Create the cohort registry.
              */
-            this.cohortRegistry = new OMRSCohortRegistry();
+            this.cohortRegistry = new OMRSCohortRegistry(auditLog.createNewAuditLog(OMRSAuditingComponent.COHORT_REGISTRY));
 
             /*
              * The presence/absence of the local repository affects the behaviour of the cohort registry.
@@ -150,7 +156,8 @@ public class OMRSCohortManager
                      * other members of the cohort can receive events from the local server's repository.
                      */
                     OMRSRepositoryEventPublisher repositoryEventPublisher = new OMRSRepositoryEventPublisher(cohortName,
-                                                                                                             cohortTopicConnector);
+                                                                                                             cohortTopicConnector,
+                                                                                                             auditLog.createNewAuditLog(OMRSAuditingComponent.EVENT_PUBLISHER));
 
 
                     localRepositoryEventManager.registerTypeDefProcessor(repositoryEventPublisher);
@@ -194,7 +201,8 @@ public class OMRSCohortManager
             if (enterpriseTopicConnector != null)
             {
                 OMRSRepositoryEventPublisher enterpriseEventPublisher = new OMRSRepositoryEventPublisher("OMAS Enterprise Access",
-                                                                                                         enterpriseTopicConnector);
+                                                                                                         enterpriseTopicConnector,
+                                                                                                         auditLog.createNewAuditLog(OMRSAuditingComponent.EVENT_PUBLISHER));
 
                 this.cohortRepositoryEventManager.registerInstanceProcessor(enterpriseEventPublisher);
             }
@@ -223,7 +231,8 @@ public class OMRSCohortManager
                                                                               localMetadataCollectionId,
                                                                               this.cohortRegistry,
                                                                               this.cohortRepositoryEventManager,
-                                                                              this.cohortRepositoryEventManager);
+                                                                              this.cohortRepositoryEventManager,
+                                                                              auditLog.createNewAuditLog(OMRSAuditingComponent.EVENT_LISTENER));
                 cohortTopicConnector.registerListener(cohortEventListener);
                 cohortTopicConnector.start();
                 this.cohortTopicConnector = cohortTopicConnector;
