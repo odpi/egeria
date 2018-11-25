@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.enterprise.connectormanager;
 
 import org.odpi.openmetadata.frameworks.connectors.Connector;
@@ -6,6 +7,8 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSRuntimeException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
@@ -66,14 +69,15 @@ import java.util.UUID;
  */
 public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, OMRSConnectorManager
 {
-    private boolean                                enterpriseAccessEnabled;
-    private int                                    maxPageSize;
+    private boolean                           enterpriseAccessEnabled;
+    private int                               maxPageSize;
 
     private String                            localMetadataCollectionId    = null;
     private LocalOMRSRepositoryConnector      localRepositoryConnector     = null;
     private OMRSRepositoryContentManager      repositoryContentManager;
     private List<RegisteredConnector>         registeredRemoteConnectors   = new ArrayList<>();
     private List<RegisteredConnectorConsumer> registeredConnectorConsumers = new ArrayList<>();
+    private OMRSAuditLog                      auditLog;
 
 
     /**
@@ -85,14 +89,17 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
      *                                 they will not.
      * @param maxPageSize the maximum number of elements that can be requested on a page.
      * @param repositoryContentManager repository content manager used by the connectors.
+     * @param auditLog audit log to act as a factory for connector audit logs.
      */
     public OMRSEnterpriseConnectorManager(boolean                      enterpriseAccessEnabled,
                                           int                          maxPageSize,
-                                          OMRSRepositoryContentManager repositoryContentManager)
+                                          OMRSRepositoryContentManager repositoryContentManager,
+                                          OMRSAuditLog                 auditLog)
     {
         this.enterpriseAccessEnabled = enterpriseAccessEnabled;
         this.maxPageSize = maxPageSize;
         this.repositoryContentManager = repositoryContentManager;
+        this.auditLog = auditLog;
     }
 
 
@@ -197,7 +204,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
              */
             if (metadataCollection == null)
             {
-                final String   methodName = "addRemoteConnection()";
+                final String   methodName = "addRemoteConnection";
 
                 OMRSErrorCode errorCode = OMRSErrorCode.NULL_COHORT_METADATA_COLLECTION;
                 String errorMessage = errorCode.getErrorMessageId()
@@ -436,6 +443,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
 
             OMRSRepositoryConnector repositoryConnector = (OMRSRepositoryConnector) connector;
 
+            repositoryConnector.setAuditLog(auditLog.createNewAuditLog(OMRSAuditingComponent.REMOTE_REPOSITORY_CONNECTOR));
             repositoryConnector.setServerName(serverName);
             repositoryConnector.setServerType(serverType);
             repositoryConnector.setOrganizationName(owningOrganizationName);

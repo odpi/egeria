@@ -10,31 +10,51 @@ run from a client application called **OpenMetadataTestLab** that
 runs each test in turn.  It is invoked as follows:
 
 ```
-$ OpenMetadataTestLab <URL root of repository under test>
+$ OpenMetadataTestLab <serverName> <URL root of repository under test>
 
 ```
 and it prints a high level summary of the results to stdout.  Below is an
 example of a failing repository.
 
 ```
-$ OpenMetadataTestLab http://localhost:8080
+$ OpenMetadataTestLab cocoMDS1 http://localhost:8080
 ===============================
 Open Metadata Compliance Test  
 ===============================
-Compliance Report for server: http://localhost:8080
+Compliance Report for server: cocoMDS1 (http://localhost:8080)
 
 Number of tests: 671
 Number of tests passed: 357
 Number of tests failed: 254
 Number of tests skipped: 60
 
-Server at http://localhost:8080 is not yet an open metadata repository
+cocoMDS1 server at http://localhost:8080 is not yet an open metadata repository
 
 Process finished with exit code 1
 ```
 
+and a successful repository.
+
+```
+$ OpenMetadataTestLab cocoMDS1 http://localhost:8080
+===============================
+Open Metadata Compliance Test  
+===============================
+Compliance Report for server: cocoMDS1 (http://localhost:8080)
+
+Number of tests: 681
+Number of tests passed: 681
+Number of tests failed: 0
+Number of tests skipped: 0
+
+Congratulations, cocoMDS1 server at http://localhost:8080 is an open metadata repository
+
+Process finished with exit code 0
+
+```
+
 The detailed results of the tests are accumulated
-in a JSON file called `openmetadata.functional.testlab.results`.
+in a JSON file called *serverName*`.openmetadata.functional.testlab.results`.
 
 The tests are dynamically driven from different workbenches, each focused
 on a specific type of behavior.
@@ -67,6 +87,7 @@ The high level structure of the results JSON document is as follows:
 {
   "class" : "OpenMetadataTestLabResults",
   "testRunDate" : 1534243775373,
+  "serverName" : "cocoMDS1",
   "serverRootURL" : "http://localhost:8080",
   "testResultsFromWorkbenches" : [ {
     "class" : "OpenMetadataTestWorkbenchResults",

@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.eventmanagement;
 
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
@@ -43,7 +44,8 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
      * The audit log provides a verifiable record of the open metadata archives that have been loaded into
      * the open metadata repository.  The Logger is for standard debug.
      */
-    private static final OMRSAuditLog auditLog = new OMRSAuditLog(OMRSAuditingComponent.REPOSITORY_EVENT_MANAGER);
+    private OMRSAuditLog auditLog;
+
     private static final Logger       log      = LoggerFactory.getLogger(OMRSRepositoryEventManager.class);
 
 
@@ -53,12 +55,16 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
      * @param eventManagerName    this is the name of the event manager to use for logging.
      * @param exchangeRule        this is the rule that determines which events are processed.
      * @param repositoryValidator validator class for checking open metadata repository objects and parameters.
+     * @param auditLog audit log for this component.
      */
-    public OMRSRepositoryEventManager(String eventManagerName,
+    public OMRSRepositoryEventManager(String                          eventManagerName,
                                       OMRSRepositoryEventExchangeRule exchangeRule,
-                                      OMRSRepositoryContentValidator repositoryValidator)
+                                      OMRSRepositoryContentValidator  repositoryValidator,
+                                      OMRSAuditLog                    auditLog)
     {
         super();
+
+        this.auditLog = auditLog;
 
         final String actionDescription = "Initialize OMRS Event Manager";
         final String methodName        = "OMRSRepositoryEventManager";

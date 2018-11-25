@@ -30,7 +30,7 @@ public class AccessServiceRegistration implements Serializable
      * @param accessServiceDescription short description for this access service
      * @param accessServiceWiki wiki page for the access service for this access service
      * @param accessServiceOperationalStatus default initial operational status for the access service
-     * @param accessServiceAdminClassName class name of adminservices class
+     * @param accessServiceAdminClassName  name of AccessServiceAdmin implementation class for the access service
      */
     public AccessServiceRegistration(int                            accessServiceCode,
                                      String                         accessServiceName,

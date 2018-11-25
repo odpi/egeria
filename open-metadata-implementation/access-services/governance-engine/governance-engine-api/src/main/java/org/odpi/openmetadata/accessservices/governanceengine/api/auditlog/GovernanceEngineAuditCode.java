@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceengine.api.auditlog;
 
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
@@ -26,34 +26,38 @@ public enum GovernanceEngineAuditCode {
     SERVICE_INITIALIZING("OMAS-GOVERNANCE-ENGINE-0001",
             OMRSAuditLogRecordSeverity.INFO,
             "The Governance Engine Open Metadata Access Service (OMAS) is initializing",
-            "The local handlers has started up the Governance Engine OMAS.",
-            "No action is required.  This is part of the normal operation of the handlers."),
+            "The local server has started up a new instance of the Governance Engine OMAS.",
+            "No action is required.  This is part of the normal operation of the service."),
 
     SERVICE_REGISTERED_WITH_TOPIC("OMAS-GOVERNANCE-ENGINE-0002",
             OMRSAuditLogRecordSeverity.INFO,
-            "The Governance Engine Open Metadata Access Service (OMAS) is registering a listener with the OMRS Topic",
-            "The Governance Engine OMAS is registering to receive events from the connected open metadata repositories.",
-            "No action is required.  This is part of the normal operation of the handlers."),
+            "The Governance Engine Open Metadata Access Service (OMAS) is registering a listener with the OMRS Topic for server instance {0}",
+            "The Governance Engine OMAS is registering the server instance to receive events from the connected open metadata repositories.",
+            "No action is required.  This is part of the normal operation of the service."),
 
     SERVICE_INITIALIZED("OMAS-GOVERNANCE-ENGINE-0003",
             OMRSAuditLogRecordSeverity.INFO,
-            "The Governance Engine Open Metadata Access Service (OMAS) is initialized",
-            "The Governance Engine OMAS has completed initialization.",
-            "No action is required.  This is part of the normal operation of the handlers."),
-
-
+            "The Governance Engine Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
+            "The Governance Engine OMAS has completed initialization of a new instance.",
+            "No action is required.  This is part of the normal operation of the service."),
 
     SERVICE_TERMINATING("OMAS-GOVERNANCE-ENGINE-0004",
             OMRSAuditLogRecordSeverity.INFO,
-            "The Governance Engine Open Metadata Access Service (OMAS) is shutting down",
+            "The Governance Engine Open Metadata Access Service (OMAS) is shutting down server instance {0}",
             "The local handlers has requested shut down of the Governance Engine OMAS.",
-            "No action is required.  This is part of the normal operation of the handlers."),
+            "No action is required.  This is part of the normal operation of the service."),
+
     SERVICE_SHUTDOWN("OMAS-GOVERNANCE-ENGINE-0005",
             OMRSAuditLogRecordSeverity.INFO,
-            "The Governance Engine Open Metadata Access Service (OMAS) has completed shutdown",
+            "The Governance Engine Open Metadata Access Service (OMAS) has completed shutdown of server instance {0}",
             "The requested shutdown has now been processed",
-            "No action is required.  This is part of the normal operation of the handlers."),
+            "No action is required.  This is part of the normal operation of the service."),
 
+    SERVICE_INSTANCE_FAILURE("OMAS-GOVERNANCE-ENGINE-0006",
+            OMRSAuditLogRecordSeverity.ERROR,
+            "The Governance Engine Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}",
+            "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
+            "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server.")
     ;
 
     private String logMessageId;

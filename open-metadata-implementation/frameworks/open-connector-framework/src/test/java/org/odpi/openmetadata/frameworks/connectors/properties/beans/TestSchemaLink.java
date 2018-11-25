@@ -6,9 +6,7 @@ package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static org.testng.Assert.assertFalse;
@@ -20,7 +18,6 @@ import static org.testng.Assert.assertTrue;
 public class TestSchemaLink
 {
     private Map<String, Object> linkProperties       = new HashMap<>();
-    private List<String>        linkedAttributeGUIDs = new ArrayList<>();
 
 
     /**
@@ -28,7 +25,7 @@ public class TestSchemaLink
      */
     public TestSchemaLink()
     {
-
+        linkProperties.put("Key", "Value");
     }
 
 
@@ -44,7 +41,7 @@ public class TestSchemaLink
         testObject.setLinkGUID("TestLinkGUID");
         testObject.setLinkName("TestLinkName");
         testObject.setLinkType("TestLinkType");
-        testObject.setLinkedAttributeGUIDs(linkedAttributeGUIDs);
+        testObject.setLinkedSchemaTypeGUID("TestAttribute");
         testObject.setLinkProperties(linkProperties);
 
         return testObject;
@@ -56,12 +53,12 @@ public class TestSchemaLink
      *
      * @param resultObject object returned by the test
      */
-    private void validateResultObject(SchemaLink  resultObject)
+    private void validateResultObject(SchemaLink resultObject)
     {
         assertTrue(resultObject.getLinkGUID().equals("TestLinkGUID"));
         assertTrue(resultObject.getLinkName().equals("TestLinkName"));
         assertTrue(resultObject.getLinkType().equals("TestLinkType"));
-        assertTrue(resultObject.getLinkedAttributeGUIDs().equals(linkedAttributeGUIDs));
+        assertTrue(resultObject.getLinkedSchemaTypeGUID().equals("TestAttribute"));
         assertTrue(resultObject.getLinkProperties().equals(linkProperties));
     }
 
@@ -71,12 +68,12 @@ public class TestSchemaLink
      */
     @Test public void testNullObject()
     {
-        SchemaLink    nullObject = new SchemaLink();
+        SchemaLink nullObject = new SchemaLink();
 
         assertTrue(nullObject.getLinkGUID() == null);
         assertTrue(nullObject.getLinkName() == null);
         assertTrue(nullObject.getLinkType() == null);
-        assertTrue(nullObject.getLinkedAttributeGUIDs() == null);
+        assertTrue(nullObject.getLinkedSchemaTypeGUID() == null);
         assertTrue(nullObject.getLinkProperties() == null);
 
         nullObject = new SchemaLink(null);
@@ -84,7 +81,13 @@ public class TestSchemaLink
         assertTrue(nullObject.getLinkGUID() == null);
         assertTrue(nullObject.getLinkName() == null);
         assertTrue(nullObject.getLinkType() == null);
-        assertTrue(nullObject.getLinkedAttributeGUIDs() == null);
+        assertTrue(nullObject.getLinkedSchemaTypeGUID() == null);
+        assertTrue(nullObject.getLinkProperties() == null);
+
+        nullObject = new SchemaLink(null);
+
+        nullObject.setLinkProperties(new HashMap<>());
+
         assertTrue(nullObject.getLinkProperties() == null);
     }
 
@@ -99,7 +102,7 @@ public class TestSchemaLink
         assertFalse(getTestObject().equals("DummyString"));
         assertTrue(getTestObject().equals(getTestObject()));
 
-        SchemaLink  sameObject = getTestObject();
+        SchemaLink sameObject = getTestObject();
         assertTrue(sameObject.equals(sameObject));
     }
 
@@ -155,7 +158,7 @@ public class TestSchemaLink
         /*
          * Through superclass
          */
-        PropertyBase  propertyBase = getTestObject();
+        PropertyBase propertyBase = getTestObject();
 
         try
         {
