@@ -397,6 +397,8 @@ public class OMRSMetadataHighwayManager
 
             OMRSTopicConnector topicConnector  = (OMRSTopicConnector)connector;
 
+            topicConnector.setAuditLog(auditLog.createNewAuditLog(OMRSAuditingComponent.OMRS_TOPIC_CONNECTOR));
+
             if (protocolVersion == OpenMetadataEventProtocolVersion.V1)
             {
                 topicConnector.setEventProtocolLevel(OMRSEventProtocolVersion.V1);

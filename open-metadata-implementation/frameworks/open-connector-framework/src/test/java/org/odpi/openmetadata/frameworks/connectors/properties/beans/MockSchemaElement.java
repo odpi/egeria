@@ -33,7 +33,7 @@ public class MockSchemaElement extends SchemaElement
      * Return a clone of this schema element.  This method is needed because schema element
      * is abstract.
      *
-     * @return Either a Schema or a PrimitiveSchemaElement depending on the type of the template.
+     * @return Either a StructSchemaType or a PrimitiveSchemaType depending on the type of the template.
      */
     public MockSchemaElement cloneSchemaElement()
     {

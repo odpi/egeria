@@ -45,6 +45,7 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
      * Constructor for the event consumer.
      *
      * @param topicName name of the topic to listen on.
+     * @param localServerId identifier to enable receiver to identify that an event came from this server.
      * @param consumerProperties properties for the consumer.
      * @param connector connector holding the inbound listeners.
      * @param auditLog  audit log for this component.
@@ -69,7 +70,7 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
         auditLog.logRecord(actionDescription,
                            auditCode.getLogMessageId(),
                            auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(consumerProperties.toString()),
+                           auditCode.getFormattedLogMessage(topicName, consumerProperties.toString()),
                            null,
                            auditCode.getSystemAction(),
                            auditCode.getUserAction());
@@ -98,11 +99,12 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
         final String           actionDescription = "run";
         KafkaOpenMetadataTopicConnectorAuditCode auditCode;
 
-        while (running)
+        while (isRunning())
         {
-            ConsumerRecords<String, String> records = consumer.poll(defaultPollTimeout);
             try
             {
+                ConsumerRecords<String, String> records = consumer.poll(defaultPollTimeout);
+
                 log.debug("Found records: " + records.count());
                 for (ConsumerRecord<String, String> record : records)
                 {
@@ -180,6 +182,19 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
                 }
             }
         }
+
+        if (consumer != null)
+        {
+            try
+            {
+                consumer.commitSync(currentOffsets);
+            }
+            finally
+            {
+                consumer.close();
+            }
+            consumer = null;
+        }
     }
 
 
@@ -203,20 +218,37 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
      */
     public void safeCloseConsumer()
     {
+        stopRunning();
+
+        /*
+         * Wake the thread up so it shuts down quicker.
+         */
         if (consumer != null)
         {
-            try
-            {
-                this.stopConsumption();
-                consumer.commitSync(currentOffsets);
-            }
-            finally
-            {
-                consumer.close();
-            }
-            consumer = null;
+            consumer.wakeup();
         }
     }
+
+
+    /**
+     * Should the thread keep looping.
+     *
+     * @return boolean
+     */
+    private synchronized  boolean isRunning()
+    {
+        return running;
+    }
+
+
+    /**
+     * Flip the switch to stop the thread.
+     */
+    private synchronized void stopRunning()
+    {
+        running = false;
+    }
+
 
     private class HandleRebalance implements ConsumerRebalanceListener
     {
@@ -230,17 +262,4 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
             consumer.commitSync(currentOffsets);
         }
     }
-
-
-    /**
-     * Stop the thread.
-     */
-    public void stopConsumption()
-    {
-        synchronized (running)
-        {
-            running = false;
-        }
-    }
-
 }

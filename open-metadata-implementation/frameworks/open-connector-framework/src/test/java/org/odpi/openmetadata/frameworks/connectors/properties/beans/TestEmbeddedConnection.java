@@ -16,8 +16,8 @@ import static org.testng.Assert.assertTrue;
  */
 public class TestEmbeddedConnection
 {
-    private Connection           connection = new Connection();
-    private Map<String, Object>  arguments  = new HashMap<>();
+    private Connection          connection = new Connection();
+    private Map<String, Object> arguments  = new HashMap<>();
 
 
     /**
@@ -25,7 +25,7 @@ public class TestEmbeddedConnection
      */
     public TestEmbeddedConnection()
     {
-
+        arguments.put("Key", "Value");
     }
 
 
@@ -51,10 +51,10 @@ public class TestEmbeddedConnection
      *
      * @param resultObject object returned by the test
      */
-    private void validateResultObject(EmbeddedConnection  resultObject)
+    private void validateResultObject(EmbeddedConnection resultObject)
     {
         assertTrue(resultObject.getDisplayName().equals("TestDisplayName"));
-        assertTrue(resultObject.getArguments() == null);
+        assertTrue(resultObject.getArguments() != null);
         assertTrue(resultObject.getEmbeddedConnection().equals(connection));
     }
 
@@ -64,7 +64,7 @@ public class TestEmbeddedConnection
      */
     @Test public void testNullObject()
     {
-        EmbeddedConnection    nullObject = new EmbeddedConnection();
+        EmbeddedConnection nullObject = new EmbeddedConnection();
 
         assertTrue(nullObject.getDisplayName() == null);
         assertTrue(nullObject.getArguments() == null);
@@ -75,6 +75,12 @@ public class TestEmbeddedConnection
         assertTrue(nullObject.getDisplayName() == null);
         assertTrue(nullObject.getArguments() == null);
         assertTrue(nullObject.getEmbeddedConnection() == null);
+
+        nullObject = new EmbeddedConnection();
+
+        nullObject.setArguments(new HashMap<>());
+
+        assertTrue(nullObject.getArguments() == null);
     }
 
 
@@ -88,10 +94,10 @@ public class TestEmbeddedConnection
         assertFalse(getTestObject().equals("DummyString"));
         assertTrue(getTestObject().equals(getTestObject()));
 
-        EmbeddedConnection  sameObject = getTestObject();
+        EmbeddedConnection sameObject = getTestObject();
         assertTrue(sameObject.equals(sameObject));
 
-        EmbeddedConnection  differentObject = getTestObject();
+        EmbeddedConnection differentObject = getTestObject();
         differentObject.setDisplayName("Different");
         assertFalse(getTestObject().equals(differentObject));
     }
@@ -148,7 +154,7 @@ public class TestEmbeddedConnection
         /*
          * Through superclass
          */
-        PropertyBase  propertyBase = getTestObject();
+        PropertyBase propertyBase = getTestObject();
 
         try
         {

@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.connectedasset.client;
 
 import org.odpi.openmetadata.accessservices.connectedasset.ffdc.ConnectedAssetErrorCode;
@@ -8,7 +9,7 @@ import org.odpi.openmetadata.accessservices.connectedasset.rest.ConnectedAssetOM
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.*;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
@@ -192,7 +193,7 @@ public class ConnectedAsset extends AssetUniverse
 
         if (assetResponse.getSchemaType() != null)
         {
-            super.schema = this.getAssetSchemaType(serverName, userId, assetResponse.getSchemaType());
+            super.schema = this.getAssetSchemaType(userId, assetResponse.getSchemaType());
         }
     }
 
@@ -259,15 +260,41 @@ public class ConnectedAsset extends AssetUniverse
     /**
      * Based on the type of bean passed, return the appropriate type of AssetSchemaType.
      *
-     * @param serverName  name of the server.
      * @param bean schema type bean that has the properties for the schema type.
      * @return subtype of AssetSchemaType
      */
-    AssetSchemaType    getAssetSchemaType(String     serverName,
-                                          String     userId,
+    AssetSchemaType    getAssetSchemaType(String     userId,
                                           SchemaType bean)
     {
-        return null;
+        if (bean == null)
+        {
+            return null;
+        }
+        else if (bean instanceof ComplexSchemaType)
+        {
+            return new ConnectedAssetComplexSchemaType(serverName,
+                                                       userId,
+                                                       omasServerURL,
+                                                       this,
+                                                       maxCacheSize,
+                                                       (ComplexSchemaType)bean);
+        }
+        else if (bean instanceof MapSchemaType)
+        {
+            return new ConnectedAssetMapSchemaType(this, userId, (MapSchemaType)bean);
+        }
+        else if (bean instanceof PrimitiveSchemaType)
+        {
+            return new AssetPrimitiveSchemaType(this, (PrimitiveSchemaType) bean);
+        }
+        else if (bean instanceof BoundedSchemaType)
+        {
+            return new ConnectedAssetBoundedSchemaType(this, userId, (BoundedSchemaType)bean);
+        }
+        else
+        {
+            return new AssetSchemaType(this, bean);
+        }
     }
 
 
@@ -495,6 +522,54 @@ public class ConnectedAsset extends AssetUniverse
                                                      restResult.getExceptionSystemAction(),
                                                      restResult.getExceptionUserAction(),
                                                      assetGUID);
+        }
+    }
+
+
+
+    /**
+     * Throw an UnrecognizedGUIDException if it is encoded in the REST response.
+     *
+     * @param methodName  name of the method called
+     * @param restResult  response from the rest call.  This generated in the remote server.
+     *
+     * @throws UnrecognizedGUIDException encoded exception from the server
+     */
+    void detectAndThrowUnrecognizedGUIDException(String                        methodName,
+                                                 ConnectedAssetOMASAPIResponse restResult) throws UnrecognizedGUIDException
+    {
+        final String   exceptionClassName = UnrecognizedAssetGUIDException.class.getName();
+
+        if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
+        {
+            String guid = null;
+            String guidType = null;
+
+            Map<String, Object>   exceptionProperties = restResult.getExceptionProperties();
+
+            if (exceptionProperties != null)
+            {
+                Object  guidObject = exceptionProperties.get("guid");
+                Object  guidTypeObject = exceptionProperties.get("guidType");
+
+                if (guidObject != null)
+                {
+                    guid = (String)guidObject;
+                }
+
+                if (guidTypeObject != null)
+                {
+                    guidType = (String)guidTypeObject;
+                }
+            }
+            throw new UnrecognizedGUIDException(restResult.getRelatedHTTPCode(),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                restResult.getExceptionErrorMessage(),
+                                                restResult.getExceptionSystemAction(),
+                                                restResult.getExceptionUserAction(),
+                                                guid,
+                                                guidType);
         }
     }
 

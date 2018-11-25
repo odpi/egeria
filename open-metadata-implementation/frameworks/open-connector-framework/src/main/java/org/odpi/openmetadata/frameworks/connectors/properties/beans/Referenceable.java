@@ -4,9 +4,7 @@ package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -37,11 +35,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = Note.class, name = "Note"),
                 @JsonSubTypes.Type(value = NoteLog.class, name = "NoteLog"),
                 @JsonSubTypes.Type(value = RelatedMediaReference.class, name = "RelatedMediaReference"),
-                @JsonSubTypes.Type(value = SchemaAttribute.class, name = "SchemaAttribute"),
-                @JsonSubTypes.Type(value = Endpoint.class, name = "Endpoint"),
-                @JsonSubTypes.Type(value = Endpoint.class, name = "Endpoint"),
-                @JsonSubTypes.Type(value = Endpoint.class, name = "Endpoint"),
-                @JsonSubTypes.Type(value = Endpoint.class, name = "Endpoint"),
                 @JsonSubTypes.Type(value = SchemaElement.class, name = "SchemaElement")
         })
 public class Referenceable extends ElementHeader
@@ -51,6 +44,7 @@ public class Referenceable extends ElementHeader
      */
     protected String             qualifiedName        = null;
     protected Map<String,Object> additionalProperties = null;
+    protected List<Meaning>      meanings             = null;
 
     /**
      * Default constructor
@@ -64,16 +58,17 @@ public class Referenceable extends ElementHeader
     /**
      * Copy/clone constructor.  Retrieves values from the supplied template
      *
-     * @param templateReferenceable element to copy
+     * @param template element to copy
      */
-    public Referenceable(Referenceable templateReferenceable)
+    public Referenceable(Referenceable template)
     {
-        super(templateReferenceable);
+        super(template);
 
-        if (templateReferenceable != null)
+        if (template != null)
         {
-            qualifiedName = templateReferenceable.getQualifiedName();
-            additionalProperties = templateReferenceable.getAdditionalProperties();
+            qualifiedName = template.getQualifiedName();
+            additionalProperties = template.getAdditionalProperties();
+            meanings = template.getMeanings();
         }
     }
 
@@ -135,6 +130,39 @@ public class Referenceable extends ElementHeader
 
 
     /**
+     * Return the assigned meanings for this metadata entity.
+     *
+     * @return list of meanings
+     */
+    public List<Meaning> getMeanings()
+    {
+        if (meanings == null)
+        {
+            return null;
+        }
+        else if (meanings.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new ArrayList<>(meanings);
+        }
+    }
+
+
+    /**
+     * Set up the assigned meanings for this metadata entity.
+     *
+     * @param meanings list of meanings
+     */
+    public void setMeanings(List<Meaning> meanings)
+    {
+        this.meanings = meanings;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -145,6 +173,7 @@ public class Referenceable extends ElementHeader
         return "Referenceable{" +
                 "qualifiedName='" + qualifiedName + '\'' +
                 ", additionalProperties=" + additionalProperties +
+                ", meanings=" + meanings +
                 ", type=" + type +
                 ", guid='" + guid + '\'' +
                 ", url='" + url + '\'' +
