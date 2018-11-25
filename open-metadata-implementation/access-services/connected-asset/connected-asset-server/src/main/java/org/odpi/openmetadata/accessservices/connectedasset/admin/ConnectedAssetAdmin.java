@@ -1,9 +1,11 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.connectedasset.admin;
 
 import org.odpi.openmetadata.accessservices.connectedasset.auditlog.ConnectedAssetAuditCode;
 import org.odpi.openmetadata.accessservices.connectedasset.listener.ConnectedAssetOMRSTopicListener;
 import org.odpi.openmetadata.accessservices.connectedasset.server.ConnectedAssetRESTServices;
+import org.odpi.openmetadata.accessservices.connectedasset.server.ConnectedAssetServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
@@ -20,11 +22,13 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 public class ConnectedAssetAdmin implements AccessServiceAdmin
 {
-    private OMRSRepositoryConnector repositoryConnector = null;
-    private OMRSTopicConnector      omrsTopicConnector  = null;
-    private AccessServiceConfig     accessServiceConfig = null;
-    private OMRSAuditLog            auditLog            = null;
-    private String                  serverUserName      = null;
+    private OMRSRepositoryConnector        repositoryConnector = null;
+    private OMRSTopicConnector             omrsTopicConnector  = null;
+    private AccessServiceConfig            accessServiceConfig = null;
+    private OMRSAuditLog                   auditLog            = null;
+    private ConnectedAssetServicesInstance instance            = null;
+    private String                         serverName          = null;
+    private String                         serverUserName      = null;
 
     private ConnectedAssetOMRSTopicListener omrsTopicListener = null;
 
@@ -64,43 +68,57 @@ public class ConnectedAssetAdmin implements AccessServiceAdmin
                            auditCode.getSystemAction(),
                            auditCode.getUserAction());
 
-        this.repositoryConnector = enterpriseOMRSRepositoryConnector;
-        ConnectedAssetRESTServices.setRepositoryConnector(accessServiceConfigurationProperties.getAccessServiceName(),
-                                                          repositoryConnector);
-
-        this.accessServiceConfig = accessServiceConfigurationProperties;
-        this.omrsTopicConnector = enterpriseOMRSTopicConnector;
-
-        if (omrsTopicConnector != null)
+        try
         {
-            auditCode = ConnectedAssetAuditCode.SERVICE_REGISTERED_WITH_TOPIC;
+            this.repositoryConnector = enterpriseOMRSRepositoryConnector;
+            this.instance = new ConnectedAssetServicesInstance(enterpriseOMRSRepositoryConnector);
+            this.serverName = instance.getServerName();
+
+            this.accessServiceConfig = accessServiceConfigurationProperties;
+            this.omrsTopicConnector = enterpriseOMRSTopicConnector;
+
+            if (omrsTopicConnector != null)
+            {
+                auditCode = ConnectedAssetAuditCode.SERVICE_REGISTERED_WITH_ENTERPRISE_TOPIC;
+                auditLog.logRecord(actionDescription,
+                                   auditCode.getLogMessageId(),
+                                   auditCode.getSeverity(),
+                                   auditCode.getFormattedLogMessage(serverName),
+                                   null,
+                                   auditCode.getSystemAction(),
+                                   auditCode.getUserAction());
+
+                omrsTopicListener = new ConnectedAssetOMRSTopicListener(accessServiceConfig.getAccessServiceOutTopic(),
+                                                                        repositoryConnector.getRepositoryHelper(),
+                                                                        repositoryConnector.getRepositoryValidator(),
+                                                                        accessServiceConfig.getAccessServiceName());
+
+                omrsTopicConnector.registerListener(omrsTopicListener);
+            }
+
+            this.auditLog = auditLog;
+            this.serverUserName = serverUserName;
+
+            auditCode = ConnectedAssetAuditCode.SERVICE_INITIALIZED;
             auditLog.logRecord(actionDescription,
                                auditCode.getLogMessageId(),
                                auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(),
+                               auditCode.getFormattedLogMessage(serverName),
                                null,
                                auditCode.getSystemAction(),
                                auditCode.getUserAction());
-
-            omrsTopicListener = new ConnectedAssetOMRSTopicListener(accessServiceConfig.getAccessServiceOutTopic(),
-                                                                    repositoryConnector.getRepositoryHelper(),
-                                                                    repositoryConnector.getRepositoryValidator(),
-                                                                    accessServiceConfig.getAccessServiceName());
-
-            omrsTopicConnector.registerListener(omrsTopicListener);
         }
-
-        this.auditLog = auditLog;
-        this.serverUserName = serverUserName;
-
-        auditCode = ConnectedAssetAuditCode.SERVICE_INITIALIZED;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        catch (Throwable error)
+        {
+            auditCode = ConnectedAssetAuditCode.SERVICE_INSTANCE_FAILURE;
+            auditLog.logRecord(actionDescription,
+                               auditCode.getLogMessageId(),
+                               auditCode.getSeverity(),
+                               auditCode.getFormattedLogMessage(error.getMessage()),
+                               null,
+                               auditCode.getSystemAction(),
+                               auditCode.getUserAction());
+        }
     }
 
 
@@ -112,11 +130,16 @@ public class ConnectedAssetAdmin implements AccessServiceAdmin
         final String             actionDescription = "shutdown";
         ConnectedAssetAuditCode  auditCode;
 
+        if (instance != null)
+        {
+            this.instance.shutdown();
+        }
+
         auditCode = ConnectedAssetAuditCode.SERVICE_SHUTDOWN;
         auditLog.logRecord(actionDescription,
                            auditCode.getLogMessageId(),
                            auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(),
+                           auditCode.getFormattedLogMessage(serverName),
                            null,
                            auditCode.getSystemAction(),
                            auditCode.getUserAction());

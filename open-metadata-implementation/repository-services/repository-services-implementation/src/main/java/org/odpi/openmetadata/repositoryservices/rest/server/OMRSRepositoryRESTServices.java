@@ -1,6 +1,8 @@
-/* SPDX-License-Identifier: Apache-2.0 */
+/* SPDX-License-Identifier: Apache 2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.rest.server;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
@@ -10,6 +12,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector.LocalOMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.rest.properties.*;
+import org.odpi.openmetadata.repositoryservices.rest.services.OMRSRepositoryServicesInstance;
+import org.odpi.openmetadata.repositoryservices.rest.services.OMRSRepositoryServicesInstanceMap;
 
 
 import java.text.MessageFormat;
@@ -19,14 +23,16 @@ import java.util.List;
 /**
  * OMRSRepositoryRESTServices provides the server-side support for the OMRS Repository REST Services API.
  * It is a minimal wrapper around the OMRSRepositoryConnector for the local server's metadata collection.
- * If localRepositoryConnector is null when a REST call is received, the request is rejected.
+ * If localRepositoryConnector is null when a REST call is received, the request is rejected.  Otherwise
+ * it uses the supplied server name to locate the appropriate metadata collection for its local
+ * repository and pass it the requested call.
  *
- * It is itself wrapped by classes that provide REST annotations: OMRSRepositoryResource from the omag-server module
- * uses spring boot annotations; OMRepositoryServicesREST in the web-app module provides the Jersey/spring framework
- * annotations used in the Atlas server.
+ * OMRSRepositoryRESTServices is itself wrapped by classes that provide REST annotations.  In the Egeria code base
+ * OMRSRepositoryResource from the repository-services-spring module uses spring boot annotations.  Other servers
+ * may use a different type of REST annotations and so the spring wrapper may be disregarded and replaced.
  *
  * The REST services are based around the OMRSMetadataInstanceStore interface.
- * * <p>
+ * <p>
  *     OMRSMetadataInstanceStore is the common interface for working with the contents of a metadata repository.
  *     Within a metadata collection are the type definitions (TypeDefs) and metadata instances (Entities and
  *     Relationships).  OMRSMetadataCollectionBase provides empty implementation of the the abstract methods of
@@ -73,63 +79,85 @@ import java.util.List;
  */
 public class OMRSRepositoryRESTServices
 {
-    private static OMRSMetadataCollection       localMetadataCollection  = null;
-    private static String                       localServerURL           = null;
-
+    private   static  OMRSRepositoryServicesInstanceMap servicesInstanceMap = new OMRSRepositoryServicesInstanceMap();
 
     /**
      * Set up the local repository connector that will service the REST Calls.
      *
+     * @param localServerName name of this local server
      * @param localRepositoryConnector link to the local repository responsible for servicing the REST calls.
      *                                 If localRepositoryConnector is null when a REST calls is received, the request
      *                                 is rejected.
      * @param localServerURL URL of the local server
      */
-    public static void setLocalRepository(LocalOMRSRepositoryConnector    localRepositoryConnector,
+    public static void setLocalRepository(String                          localServerName,
+                                          LocalOMRSRepositoryConnector    localRepositoryConnector,
                                           String                          localServerURL)
     {
-        try
-        {
-            OMRSRepositoryRESTServices.localMetadataCollection = localRepositoryConnector.getMetadataCollection();
-        }
-        catch (Throwable error)
-        {
-            OMRSRepositoryRESTServices.localMetadataCollection = null;
-        }
+        OMRSRepositoryServicesInstance   instance = new OMRSRepositoryServicesInstance(localRepositoryConnector,
+                                                                                       localServerURL);
 
-        OMRSRepositoryRESTServices.localServerURL = localServerURL;
+        servicesInstanceMap.setNewInstance(localServerName, instance);
     }
 
 
     /**
      * Return the URL for the requested instance.
      *
+     * @param localServerName  name of the local server that the requesting OMRS instance belongs to
      * @param guid unique identifier of the instance
      * @return url
      */
-    public static String  getEntityURL(String...   guid)
+    public static String  getEntityURL(String      localServerName,
+                                       String...   guid)
     {
-        final String   urlTemplate = "/instances/entity/{0}";
+        if (localServerName != null)
+        {
+            OMRSRepositoryServicesInstance localServerInstance = servicesInstanceMap.getInstance(localServerName);
 
-        MessageFormat mf = new MessageFormat(urlTemplate);
+            if (localServerInstance != null)
+            {
+                String       localServerURL = localServerInstance.getLocalServerURL();
 
-        return localServerURL + mf.format(guid);
+                final String urlTemplate    = "/instances/entity/{0}";
+
+                MessageFormat mf = new MessageFormat(urlTemplate);
+
+                return localServerURL + mf.format(guid);
+            }
+        }
+
+        return null;
     }
 
 
     /**
      * Return the URL for the requested instance.
      *
+     * @param localServerName  name of the local server that the requesting OMRS instance belongs to
      * @param guid unique identifier of the instance
      * @return url
      */
-    public static String  getRelationshipURL(String...   guid)
+    public static String  getRelationshipURL(String      localServerName,
+                                             String...   guid)
     {
-        final String   urlTemplate = "/instances/relationship/{0}";
+        if (localServerName != null)
+        {
+            OMRSRepositoryServicesInstance localServerInstance = servicesInstanceMap.getInstance(localServerName);
 
-        MessageFormat mf = new MessageFormat(urlTemplate);
+            if (localServerInstance != null)
+            {
+                String localServerURL = localServerInstance.getLocalServerURL();
 
-        return localServerURL + mf.format(guid);
+                final String urlTemplate = "/instances/relationship/{0}";
+
+                MessageFormat mf = new MessageFormat(urlTemplate);
+
+                return localServerURL + mf.format(guid);
+            }
+        }
+
+        return null;
     }
 
 
@@ -150,10 +178,11 @@ public class OMRSRepositoryRESTServices
      * metadata repository with the metadata repository cohort.  It is also the identifier used to
      * identify the home repository of a metadata instance.
      *
+     * @param serverName unique identifier for requested server.
      * @return String metadata collection id.
      * or RepositoryErrorException there is a problem communicating with the metadata repository.
      */
-    public MetadataCollectionIdResponse getMetadataCollectionId()
+    public MetadataCollectionIdResponse getMetadataCollectionId(String     serverName)
     {
         final  String   methodName = "getMetadataCollectionId";
 
@@ -161,7 +190,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             response.setMetadataCollectionId(localMetadataCollection.getMetadataCollectionId());
         }
@@ -185,13 +214,15 @@ public class OMRSRepositoryRESTServices
      * type definitions.  Full type definitions (TypeDefs) describe types for entities, relationships
      * and classifications.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @return TypeDefGalleryResponse:
      * List of different categories of type definitions or
      * RepositoryErrorException there is a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public TypeDefGalleryResponse getAllTypes(String   userId)
+    public TypeDefGalleryResponse getAllTypes(String   serverName,
+                                              String   userId)
     {
         final  String   methodName = "getAllTypes";
 
@@ -199,7 +230,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             TypeDefGallery typeDefGallery = localMetadataCollection.getAllTypes(userId);
             if (typeDefGallery != null)
@@ -226,6 +257,7 @@ public class OMRSRepositoryRESTServices
      * method allows wildcard character to be included in the name.  These are * (asterisk) for an
      * arbitrary string of characters and ampersand for an arbitrary character.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param name name of the TypeDefs to return (including wildcard characters).
      * @return TypeDefGalleryResponse:
@@ -234,8 +266,9 @@ public class OMRSRepositoryRESTServices
      * UserNotAuthorizedException the userId is not permitted to perform this operation or
      * InvalidParameterException the name of the TypeDef is null.
      */
-    public TypeDefGalleryResponse findTypesByName(String userId,
-                                                  String name)
+    public TypeDefGalleryResponse findTypesByName(String   serverName,
+                                                  String   userId,
+                                                  String   name)
     {
         final  String   methodName = "findTypesByName";
 
@@ -243,7 +276,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             TypeDefGallery typeDefGallery = localMetadataCollection.findTypesByName(userId, name);
             if (typeDefGallery != null)
@@ -273,6 +306,7 @@ public class OMRSRepositoryRESTServices
     /**
      * Returns all of the TypeDefs for a specific category.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param category find parameters used to limit the returned results.
      * @return TypeDefListResponse:
@@ -281,8 +315,9 @@ public class OMRSRepositoryRESTServices
      * RepositoryErrorException there is a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public TypeDefListResponse findTypeDefsByCategory(String                     userId,
-                                                      TypeDefCategory            category)
+    public TypeDefListResponse findTypeDefsByCategory(String            serverName,
+                                                      String            userId,
+                                                      TypeDefCategory   category)
     {
         final  String   methodName = "findTypeDefsByCategory";
 
@@ -290,7 +325,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             response.setTypeDefs(localMetadataCollection.findTypeDefsByCategory(userId, category));
         }
@@ -314,6 +349,7 @@ public class OMRSRepositoryRESTServices
     /**
      * Returns all of the AttributeTypeDefs for a specific category.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param category find parameters used to limit the returned results.
      * @return AttributeTypeDefListResponse:
@@ -322,7 +358,8 @@ public class OMRSRepositoryRESTServices
      * RepositoryErrorException there is a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public AttributeTypeDefListResponse findAttributeTypeDefsByCategory(String                   userId,
+    public AttributeTypeDefListResponse findAttributeTypeDefsByCategory(String                   serverName,
+                                                                        String                   userId,
                                                                         AttributeTypeDefCategory category)
     {
         final  String   methodName = "findAttributeTypeDefsByCategory";
@@ -331,7 +368,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             response.setAttributeTypeDefs(localMetadataCollection.findAttributeTypeDefsByCategory(userId, category));
         }
@@ -355,6 +392,7 @@ public class OMRSRepositoryRESTServices
     /**
      * Return the TypeDefs that have the properties matching the supplied match criteria.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param matchCriteria TypeDefProperties a list of property names.
      * @return TypeDefListResponse:
@@ -363,7 +401,8 @@ public class OMRSRepositoryRESTServices
      * RepositoryErrorException there is a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public TypeDefListResponse findTypeDefsByProperty(String            userId,
+    public TypeDefListResponse findTypeDefsByProperty(String            serverName,
+                                                      String            userId,
                                                       TypeDefProperties matchCriteria)
     {
         final  String   methodName = "findTypeDefsByProperty";
@@ -372,7 +411,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             response.setTypeDefs(localMetadataCollection.findTypeDefsByProperty(userId, matchCriteria));
         }
@@ -396,6 +435,7 @@ public class OMRSRepositoryRESTServices
     /**
      * Return the types that are linked to the elements from the specified standard.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param standard name of the standard null means any.
      * @param organization name of the organization null means any.
@@ -406,7 +446,8 @@ public class OMRSRepositoryRESTServices
      * RepositoryErrorException there is a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public TypeDefListResponse findTypesByExternalID(String    userId,
+    public TypeDefListResponse findTypesByExternalID(String    serverName,
+                                                     String    userId,
                                                      String    standard,
                                                      String    organization,
                                                      String    identifier)
@@ -417,7 +458,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             List<TypeDef> typeDefs = localMetadataCollection.findTypesByExternalID(userId,
                                                                                    standard,
@@ -445,6 +486,7 @@ public class OMRSRepositoryRESTServices
     /**
      * Return the TypeDefs that match the search criteria.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param searchCriteria String search criteria.
      * @return TypeDefListResponse:
@@ -453,8 +495,9 @@ public class OMRSRepositoryRESTServices
      * RepositoryErrorException there is a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public TypeDefListResponse searchForTypeDefs(String userId,
-                                                 String searchCriteria)
+    public TypeDefListResponse searchForTypeDefs(String   serverName,
+                                                 String   userId,
+                                                 String   searchCriteria)
     {
         final  String   methodName = "searchForTypeDefs";
 
@@ -462,7 +505,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             response.setTypeDefs(localMetadataCollection.searchForTypeDefs(userId, searchCriteria));
         }
@@ -486,6 +529,7 @@ public class OMRSRepositoryRESTServices
     /**
      * Return the TypeDef identified by the GUID.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param guid String unique id of the TypeDef.
      * @return TypeDefResponse:
@@ -496,7 +540,8 @@ public class OMRSRepositoryRESTServices
      * TypeDefNotKnownException The requested TypeDef is not known in the metadata collection or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public TypeDefResponse getTypeDefByGUID(String    userId,
+    public TypeDefResponse getTypeDefByGUID(String    serverName,
+                                            String    userId,
                                             String    guid)
     {
         final  String   methodName = "getTypeDefByGUID";
@@ -505,7 +550,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             response.setTypeDef(localMetadataCollection.getTypeDefByGUID(userId, guid));
         }
@@ -533,6 +578,7 @@ public class OMRSRepositoryRESTServices
     /**
      * Return the AttributeTypeDef identified by the GUID.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param guid String unique id of the TypeDef
      * @return AttributeTypeDefResponse:
@@ -543,7 +589,8 @@ public class OMRSRepositoryRESTServices
      * TypeDefNotKnownException The requested TypeDef is not known in the metadata collection or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public AttributeTypeDefResponse getAttributeTypeDefByGUID(String    userId,
+    public AttributeTypeDefResponse getAttributeTypeDefByGUID(String    serverName,
+                                                              String    userId,
                                                               String    guid)
     {
         final  String   methodName = "getAttributeTypeDefByGUID";
@@ -552,7 +599,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             response.setAttributeTypeDef(localMetadataCollection.getAttributeTypeDefByGUID(userId, guid));
         }
@@ -581,6 +628,7 @@ public class OMRSRepositoryRESTServices
     /**
      * Return the TypeDef identified by the unique name.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param name String name of the TypeDef.
      * @return TypeDefResponse:
@@ -591,7 +639,8 @@ public class OMRSRepositoryRESTServices
      * TypeDefNotKnownException the requested TypeDef is not found in the metadata collection or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public TypeDefResponse getTypeDefByName(String    userId,
+    public TypeDefResponse getTypeDefByName(String    serverName,
+                                            String    userId,
                                             String    name)
     {
         final  String   methodName = "getTypeDefByName";
@@ -600,7 +649,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             response.setTypeDef(localMetadataCollection.getTypeDefByName(userId, name));
         }
@@ -628,6 +677,7 @@ public class OMRSRepositoryRESTServices
     /**
      * Return the AttributeTypeDef identified by the unique name.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param name String name of the TypeDef.
      * @return AttributeTypeDefResponse:
@@ -638,7 +688,8 @@ public class OMRSRepositoryRESTServices
      * TypeDefNotKnownException the requested TypeDef is not found in the metadata collection or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  AttributeTypeDefResponse getAttributeTypeDefByName(String    userId,
+    public  AttributeTypeDefResponse getAttributeTypeDefByName(String    serverName,
+                                                               String    userId,
                                                                String    name)
     {
         final  String   methodName = "getAttributeTypeDefByName";
@@ -647,7 +698,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             response.setAttributeTypeDef(localMetadataCollection.getAttributeTypeDefByName(userId, name));
         }
@@ -675,6 +726,7 @@ public class OMRSRepositoryRESTServices
     /**
      * Create a collection of related types.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param newTypes TypeDefGalleryResponse structure describing the new AttributeTypeDefs and TypeDefs.
      * @return VoidResponse:
@@ -689,7 +741,8 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support this call or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  VoidResponse addTypeDefGallery(String          userId,
+    public  VoidResponse addTypeDefGallery(String          serverName,
+                                           String          userId,
                                            TypeDefGallery  newTypes)
     {
         final  String   methodName = "addTypeDefGallery";
@@ -698,7 +751,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             localMetadataCollection.addTypeDefGallery(userId, newTypes);
         }
@@ -742,6 +795,7 @@ public class OMRSRepositoryRESTServices
     /**
      * Create a definition of a new TypeDef.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param newTypeDef TypeDef structure describing the new TypeDef.
      * @return VoidResponse:
@@ -756,8 +810,9 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support this call or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public VoidResponse addTypeDef(String       userId,
-                                   TypeDef      newTypeDef)
+    public VoidResponse addTypeDef(String    serverName,
+                                   String    userId,
+                                   TypeDef   newTypeDef)
     {
         final  String   methodName = "addTypeDef";
 
@@ -765,7 +820,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             localMetadataCollection.addTypeDef(userId, newTypeDef);
         }
@@ -809,6 +864,7 @@ public class OMRSRepositoryRESTServices
     /**
      * Create a definition of a new AttributeTypeDef.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param newAttributeTypeDef TypeDef structure describing the new TypeDef.
      * @return VoidResponse:
@@ -823,7 +879,8 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support this call or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  VoidResponse addAttributeTypeDef(String             userId,
+    public  VoidResponse addAttributeTypeDef(String             serverName,
+                                             String             userId,
                                              AttributeTypeDef   newAttributeTypeDef)
     {
         final  String   methodName = "addAttributeTypeDef";
@@ -832,7 +889,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             localMetadataCollection.addAttributeTypeDef(userId, newAttributeTypeDef);
         }
@@ -878,6 +935,7 @@ public class OMRSRepositoryRESTServices
     /**
      * Verify that a definition of a TypeDef is either new or matches the definition already stored.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param typeDef TypeDef structure describing the TypeDef to test.
      * @return BooleanResponse:
@@ -890,7 +948,8 @@ public class OMRSRepositoryRESTServices
      * InvalidTypeDefException the new TypeDef has invalid contents.
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public BooleanResponse verifyTypeDef(String       userId,
+    public BooleanResponse verifyTypeDef(String       serverName,
+                                         String       userId,
                                          TypeDef      typeDef)
     {
         final  String   methodName = "verifyTypeDef";
@@ -899,7 +958,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             response.setFlag(localMetadataCollection.verifyTypeDef(userId, typeDef));
         }
@@ -936,6 +995,7 @@ public class OMRSRepositoryRESTServices
     /**
      * Verify that a definition of an AttributeTypeDef is either new or matches the definition already stored.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param attributeTypeDef TypeDef structure describing the TypeDef to test.
      * @return BooleanResponse:
@@ -948,7 +1008,8 @@ public class OMRSRepositoryRESTServices
      * InvalidTypeDefException the new TypeDef has invalid contents or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  BooleanResponse verifyAttributeTypeDef(String            userId,
+    public  BooleanResponse verifyAttributeTypeDef(String            serverName,
+                                                   String            userId,
                                                    AttributeTypeDef  attributeTypeDef)
     {
         final  String   methodName = "verifyAttributeTypeDef";
@@ -957,7 +1018,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             response.setFlag(localMetadataCollection.verifyAttributeTypeDef(userId, attributeTypeDef));
         }
@@ -994,6 +1055,7 @@ public class OMRSRepositoryRESTServices
      * Update one or more properties of the TypeDef.  The TypeDefPatch controls what types of updates
      * are safe to make to the TypeDef.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param typeDefPatch TypeDef patch describing change to TypeDef.
      * @return TypeDefResponse:
@@ -1007,7 +1069,8 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support this call or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public TypeDefResponse updateTypeDef(String       userId,
+    public TypeDefResponse updateTypeDef(String       serverName,
+                                         String       userId,
                                          TypeDefPatch typeDefPatch)
     {
         final  String   methodName = "updateTypeDef";
@@ -1016,7 +1079,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             response.setTypeDef(localMetadataCollection.updateTypeDef(userId, typeDefPatch));
         }
@@ -1057,6 +1120,7 @@ public class OMRSRepositoryRESTServices
      * Delete the TypeDef.  This is only possible if the TypeDef has never been used to create instances or any
      * instances of this TypeDef have been purged from the metadata collection.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param obsoleteTypeDefGUID String unique identifier for the TypeDef.
      * @param obsoleteTypeDefName String unique name for the TypeDef.
@@ -1072,7 +1136,8 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support this call or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public VoidResponse deleteTypeDef(String    userId,
+    public VoidResponse deleteTypeDef(String    serverName,
+                                      String    userId,
                                       String    obsoleteTypeDefGUID,
                                       String    obsoleteTypeDefName)
     {
@@ -1082,7 +1147,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             localMetadataCollection.deleteTypeDef(userId, obsoleteTypeDefGUID, obsoleteTypeDefName);
         }
@@ -1119,6 +1184,7 @@ public class OMRSRepositoryRESTServices
      * Delete an AttributeTypeDef.  This is only possible if the AttributeTypeDef has never been used to create
      * instances or any instances of this AttributeTypeDef have been purged from the metadata collection.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param obsoleteTypeDefGUID String unique identifier for the AttributeTypeDef.
      * @param obsoleteTypeDefName String unique name for the AttributeTypeDef.
@@ -1134,7 +1200,8 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support this call or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public VoidResponse deleteAttributeTypeDef(String    userId,
+    public VoidResponse deleteAttributeTypeDef(String    serverName,
+                                               String    userId,
                                                String    obsoleteTypeDefGUID,
                                                String    obsoleteTypeDefName)
     {
@@ -1144,7 +1211,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             localMetadataCollection.deleteAttributeTypeDef(userId, obsoleteTypeDefGUID, obsoleteTypeDefName);
         }
@@ -1182,6 +1249,7 @@ public class OMRSRepositoryRESTServices
      * TypeDefs are discovered to have the same guid.  This is extremely unlikely but not impossible so
      * the open metadata protocol has provision for this.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param originalTypeDefGUID the original guid of the TypeDef.
      * @param requestParameters the original name of the TypeDef, the new identifier for the TypeDef and the
@@ -1196,7 +1264,8 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support this call or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  TypeDefResponse reIdentifyTypeDef(String                    userId,
+    public  TypeDefResponse reIdentifyTypeDef(String                    serverName,
+                                              String                    userId,
                                               String                    originalTypeDefGUID,
                                               TypeDefReIdentifyRequest  requestParameters)
     {
@@ -1217,7 +1286,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             response.setTypeDef(localMetadataCollection.reIdentifyTypeDef(userId,
                                                                           originalTypeDefGUID,
@@ -1255,6 +1324,7 @@ public class OMRSRepositoryRESTServices
      * TypeDefs are discovered to have the same guid.  This is extremely unlikely but not impossible so
      * the open metadata protocol has provision for this.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param originalAttributeTypeDefGUID the original guid of the AttributeTypeDef.
      * @param requestParameters the original name of the AttributeTypeDef and the new identifier for the AttributeTypeDef
@@ -1269,7 +1339,8 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support this call or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  AttributeTypeDefResponse reIdentifyAttributeTypeDef(String                   userId,
+    public  AttributeTypeDefResponse reIdentifyAttributeTypeDef(String                   serverName,
+                                                                String                   userId,
                                                                 String                   originalAttributeTypeDefGUID,
                                                                 TypeDefReIdentifyRequest requestParameters)
     {
@@ -1290,7 +1361,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             response.setAttributeTypeDef(localMetadataCollection.reIdentifyAttributeTypeDef(userId,
                                                                                             originalAttributeTypeDefGUID,
@@ -1332,6 +1403,7 @@ public class OMRSRepositoryRESTServices
      * Returns a boolean indicating if the entity is stored in the metadata collection.  This entity may be a full
      * entity object, or an entity proxy.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param guid String unique identifier for the entity
      * @return the entity details if the entity is found in the metadata collection; otherwise return null
@@ -1340,7 +1412,8 @@ public class OMRSRepositoryRESTServices
      *                                  the metadata collection is stored.
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetailResponse isEntityKnown(String     userId,
+    public EntityDetailResponse isEntityKnown(String     serverName,
+                                              String     userId,
                                               String     guid)
     {
         final  String   methodName = "isEntityKnown";
@@ -1349,7 +1422,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             response.setEntity(localMetadataCollection.isEntityKnown(userId, guid));
         }
@@ -1374,6 +1447,7 @@ public class OMRSRepositoryRESTServices
      * Return the header and classifications for a specific entity.  The returned entity summary may be from
      * a full entity object or an entity proxy.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param guid String unique identifier for the entity
      * @return EntitySummary structure or
@@ -1383,7 +1457,8 @@ public class OMRSRepositoryRESTServices
      * EntityNotKnownException the requested entity instance is not known in the metadata collection.
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntitySummaryResponse getEntitySummary(String     userId,
+    public EntitySummaryResponse getEntitySummary(String     serverName,
+                                                  String     userId,
                                                   String     guid)
     {
         final  String   methodName = "getEntitySummary";
@@ -1392,7 +1467,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             response.setEntity(localMetadataCollection.getEntitySummary(userId, guid));
         }
@@ -1421,6 +1496,7 @@ public class OMRSRepositoryRESTServices
      * Return the header, classifications and properties of a specific entity.  This method supports anonymous
      * access to an instance.  The call may fail if the metadata is secured.
      *
+     * @param serverName unique identifier for requested server.
      * @param guid String unique identifier for the entity.
      * @return EntityDetailResponse:
      * EntityDetail structure or
@@ -1431,15 +1507,17 @@ public class OMRSRepositoryRESTServices
      * EntityProxyOnlyException the requested entity instance is only a proxy in the metadata collection or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetailResponse getEntityDetail(String     guid)
+    public EntityDetailResponse getEntityDetail(String     serverName,
+                                                String     guid)
     {
-        return this.getEntityDetail(null, guid);
+        return this.getEntityDetail(serverName, null, guid);
     }
 
 
     /**
      * Return the header, classifications and properties of a specific entity.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param guid String unique identifier for the entity.
      * @return EntityDetailResponse:
@@ -1451,7 +1529,8 @@ public class OMRSRepositoryRESTServices
      * EntityProxyOnlyException the requested entity instance is only a proxy in the metadata collection or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetailResponse getEntityDetail(String     userId,
+    public EntityDetailResponse getEntityDetail(String     serverName,
+                                                String     userId,
                                                 String     guid)
     {
         final  String   methodName = "getEntityDetail";
@@ -1460,7 +1539,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             response.setEntity(localMetadataCollection.getEntityDetail(userId, guid));
         }
@@ -1492,6 +1571,7 @@ public class OMRSRepositoryRESTServices
     /**
      * Return a historical version of an entity.  This includes the header, classifications and properties of the entity.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param guid String unique identifier for the entity.
      * @param asOfTime the time used to determine which version of the entity that is desired.
@@ -1506,7 +1586,8 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  EntityDetailResponse getEntityDetail(String     userId,
+    public  EntityDetailResponse getEntityDetail(String     serverName,
+                                                 String     userId,
                                                  String     guid,
                                                  Date       asOfTime)
     {
@@ -1516,7 +1597,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             response.setEntity(localMetadataCollection.getEntityDetail(userId, guid, asOfTime));
         }
@@ -1549,10 +1630,10 @@ public class OMRSRepositoryRESTServices
     }
 
 
-
     /**
      * Return the relationships for a specific entity.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param entityGUID String unique identifier for the entity.
      * @param findRequestParameters find parameters used to limit the returned results.
@@ -1568,7 +1649,8 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public RelationshipListResponse getRelationshipsForEntity(String                     userId,
+    public RelationshipListResponse getRelationshipsForEntity(String                     serverName,
+                                                              String                     userId,
                                                               String                     entityGUID,
                                                               TypeLimitedFindRequest     findRequestParameters)
     {
@@ -1595,7 +1677,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             List<Relationship> relationships = localMetadataCollection.getRelationshipsForEntity(userId,
                                                                                                  entityGUID,
@@ -1618,7 +1700,8 @@ public class OMRSRepositoryRESTServices
                     TypeLimitedFindRequest nextFindRequestParameters = new TypeLimitedFindRequest(findRequestParameters);
                     nextFindRequestParameters.setOffset(fromRelationshipElement + pageSize);
 
-                    response.setNextPageURL(formatNextPageURL(localServerURL + urlTemplate,
+                    response.setNextPageURL(formatNextPageURL(serverName,
+                                                              urlTemplate,
                                                               nextFindRequestParameters,
                                                               userId,
                                                               entityGUID));
@@ -1666,6 +1749,7 @@ public class OMRSRepositoryRESTServices
     /**
      * Return the relationships for a specific entity.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param entityGUID String unique identifier for the entity.
      * @param findRequestParameters find parameters used to limit the returned results.
@@ -1681,7 +1765,8 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public RelationshipListResponse getRelationshipsForEntityHistory(String                               userId,
+    public RelationshipListResponse getRelationshipsForEntityHistory(String                               serverName,
+                                                                     String                               userId,
                                                                      String                               entityGUID,
                                                                      TypeLimitedHistoricalFindRequest     findRequestParameters)
     {
@@ -1710,7 +1795,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             List<Relationship> relationships = localMetadataCollection.getRelationshipsForEntity(userId,
                                                                                                  entityGUID,
@@ -1733,7 +1818,8 @@ public class OMRSRepositoryRESTServices
                     TypeLimitedHistoricalFindRequest nextFindRequestParameters = new TypeLimitedHistoricalFindRequest(findRequestParameters);
                     nextFindRequestParameters.setOffset(fromRelationshipElement + pageSize);
 
-                    response.setNextPageURL(formatNextPageURL(localServerURL + urlTemplate,
+                    response.setNextPageURL(formatNextPageURL(serverName,
+                                                              urlTemplate,
                                                               nextFindRequestParameters,
                                                               userId,
                                                               entityGUID));
@@ -1782,6 +1868,7 @@ public class OMRSRepositoryRESTServices
      * Return a list of entities that match the supplied properties according to the match criteria.  The results
      * can be returned over many pages.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param findRequestParameters find parameters used to limit the returned results.
      * @return EntityListResponse:
@@ -1797,7 +1884,8 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  EntityListResponse findEntitiesByProperty(String                    userId,
+    public  EntityListResponse findEntitiesByProperty(String                    serverName,
+                                                      String                    userId,
                                                       EntityPropertyFindRequest findRequestParameters)
     {
         final  String   methodName = "findEntitiesByProperty";
@@ -1829,7 +1917,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             List<EntityDetail>  entities = localMetadataCollection.findEntitiesByProperty(userId,
                                                                                           entityTypeGUID,
@@ -1854,7 +1942,8 @@ public class OMRSRepositoryRESTServices
                     EntityPropertyFindRequest nextFindRequestParameters = new EntityPropertyFindRequest(findRequestParameters);
                     nextFindRequestParameters.setOffset(fromEntityElement + pageSize);
 
-                    response.setNextPageURL(formatNextPageURL(localServerURL + urlTemplate,
+                    response.setNextPageURL(formatNextPageURL(serverName,
+                                                              urlTemplate,
                                                               nextFindRequestParameters,
                                                               userId));
                 }
@@ -1898,6 +1987,7 @@ public class OMRSRepositoryRESTServices
      * Return a list of entities that match the supplied properties according to the match criteria.  The results
      * can be returned over many pages.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param findRequestParameters find parameters used to limit the returned results.
      * @return EntityListResponse:
@@ -1913,7 +2003,8 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  EntityListResponse findEntitiesByPropertyHistory(String                              userId,
+    public  EntityListResponse findEntitiesByPropertyHistory(String                              serverName,
+                                                             String                              userId,
                                                              EntityPropertyHistoricalFindRequest findRequestParameters)
     {
         final  String   methodName = "findEntitiesByPropertyHistory";
@@ -1947,7 +2038,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             List<EntityDetail>  entities = localMetadataCollection.findEntitiesByProperty(userId,
                                                                                           entityTypeGUID,
@@ -1972,7 +2063,8 @@ public class OMRSRepositoryRESTServices
                     EntityPropertyFindRequest nextFindRequestParameters = new EntityPropertyFindRequest(findRequestParameters);
                     nextFindRequestParameters.setOffset(fromEntityElement + pageSize);
 
-                    response.setNextPageURL(formatNextPageURL(localServerURL + urlTemplate,
+                    response.setNextPageURL(formatNextPageURL(serverName,
+                                                              urlTemplate,
                                                               nextFindRequestParameters,
                                                               userId));
                 }
@@ -2015,6 +2107,7 @@ public class OMRSRepositoryRESTServices
     /**
      * Return a list of entities that have the requested type of classification attached.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param classificationName name of the classification a null is not valid.
      * @param findRequestParameters find parameters used to limit the returned results.
@@ -2032,7 +2125,8 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  EntityListResponse findEntitiesByClassification(String                    userId,
+    public  EntityListResponse findEntitiesByClassification(String                    serverName,
+                                                            String                    userId,
                                                             String                    classificationName,
                                                             PropertyMatchFindRequest  findRequestParameters)
     {
@@ -2063,7 +2157,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             List<EntityDetail>  entities = localMetadataCollection.findEntitiesByClassification(userId,
                                                                                                 entityTypeGUID,
@@ -2087,7 +2181,8 @@ public class OMRSRepositoryRESTServices
 
                     PropertyMatchFindRequest nextFindRequestParameters = new PropertyMatchFindRequest(findRequestParameters);
                     nextFindRequestParameters.setOffset(fromEntityElement + pageSize);
-                    response.setNextPageURL(formatNextPageURL(localServerURL + urlTemplate,
+                    response.setNextPageURL(formatNextPageURL(serverName,
+                                                              urlTemplate,
                                                               nextFindRequestParameters,
                                                               userId,
                                                               classificationName));
@@ -2134,6 +2229,7 @@ public class OMRSRepositoryRESTServices
     /**
      * Return a list of entities that have the requested type of classification attached.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param classificationName name of the classification a null is not valid.
      * @param findRequestParameters find parameters used to limit the returned results.
@@ -2151,7 +2247,8 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  EntityListResponse findEntitiesByClassificationHistory(String                              userId,
+    public  EntityListResponse findEntitiesByClassificationHistory(String                              serverName,
+                                                                   String                              userId,
                                                                    String                              classificationName,
                                                                    PropertyMatchHistoricalFindRequest  findRequestParameters)
     {
@@ -2184,7 +2281,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             List<EntityDetail>  entities = localMetadataCollection.findEntitiesByClassification(userId,
                                                                                                 entityTypeGUID,
@@ -2208,7 +2305,8 @@ public class OMRSRepositoryRESTServices
 
                     PropertyMatchHistoricalFindRequest nextFindRequestParameters = new PropertyMatchHistoricalFindRequest(findRequestParameters);
                     nextFindRequestParameters.setOffset(fromEntityElement + pageSize);
-                    response.setNextPageURL(formatNextPageURL(localServerURL + urlTemplate,
+                    response.setNextPageURL(formatNextPageURL(serverName,
+                                                              urlTemplate,
                                                               nextFindRequestParameters,
                                                               userId,
                                                               classificationName));
@@ -2255,6 +2353,7 @@ public class OMRSRepositoryRESTServices
      * Return a list of entities whose string based property values match the search criteria.  The
      * search criteria may include regex style wild cards.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param searchCriteria String expression of the characteristics of the required relationships.
      * @param findRequestParameters find parameters used to limit the returned results.
@@ -2271,7 +2370,8 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  EntityListResponse findEntitiesByPropertyValue(String                    userId,
+    public  EntityListResponse findEntitiesByPropertyValue(String                    serverName,
+                                                           String                    userId,
                                                            String                    searchCriteria,
                                                            EntityPropertyFindRequest findRequestParameters)
     {
@@ -2300,7 +2400,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             List<EntityDetail>  entities = localMetadataCollection.findEntitiesByPropertyValue(userId,
                                                                                                entityTypeGUID,
@@ -2323,7 +2423,8 @@ public class OMRSRepositoryRESTServices
                     EntityPropertyFindRequest nextFindRequestParameters = new EntityPropertyFindRequest(findRequestParameters);
                     nextFindRequestParameters.setOffset(fromEntityElement + pageSize);
 
-                    response.setNextPageURL(formatNextPageURL(localServerURL + urlTemplate,
+                    response.setNextPageURL(formatNextPageURL(serverName,
+                                                              urlTemplate,
                                                               nextFindRequestParameters,
                                                               userId,
                                                               searchCriteria));
@@ -2368,6 +2469,7 @@ public class OMRSRepositoryRESTServices
      * Return a list of entities whose string based property values match the search criteria.  The
      * search criteria may include regex style wild cards.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param searchCriteria String expression of the characteristics of the required relationships.
      * @param findRequestParameters find parameters used to limit the returned results.
@@ -2384,7 +2486,8 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  EntityListResponse findEntitiesByPropertyValueHistory(String                              userId,
+    public  EntityListResponse findEntitiesByPropertyValueHistory(String                              serverName,
+                                                                  String                              userId,
                                                                   String                              searchCriteria,
                                                                   EntityPropertyHistoricalFindRequest findRequestParameters)
     {
@@ -2415,7 +2518,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             List<EntityDetail>  entities = localMetadataCollection.findEntitiesByPropertyValue(userId,
                                                                                                entityTypeGUID,
@@ -2438,7 +2541,8 @@ public class OMRSRepositoryRESTServices
                     EntityPropertyHistoricalFindRequest nextFindRequestParameters = new EntityPropertyHistoricalFindRequest(findRequestParameters);
                     nextFindRequestParameters.setOffset(fromEntityElement + pageSize);
 
-                    response.setNextPageURL(formatNextPageURL(localServerURL + urlTemplate,
+                    response.setNextPageURL(formatNextPageURL(serverName,
+                                                              urlTemplate,
                                                               nextFindRequestParameters,
                                                               userId,
                                                               searchCriteria));
@@ -2481,6 +2585,7 @@ public class OMRSRepositoryRESTServices
     /**
      * Returns a boolean indicating if the relationship is stored in the metadata collection.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param guid String unique identifier for the relationship.
      * @return RelationshipResponse:
@@ -2490,7 +2595,8 @@ public class OMRSRepositoryRESTServices
      *                                  the metadata collection is stored or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public RelationshipResponse  isRelationshipKnown(String     userId,
+    public RelationshipResponse  isRelationshipKnown(String     serverName,
+                                                     String     userId,
                                                      String     guid)
     {
         final  String   methodName = "isRelationshipKnown";
@@ -2499,7 +2605,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             response.setRelationship(localMetadataCollection.isRelationshipKnown(userId, guid));
         }
@@ -2524,6 +2630,7 @@ public class OMRSRepositoryRESTServices
      * Return a requested relationship.  This is the anonymous form for repository.  The call may fail if security is
      * required.
      *
+     * @param serverName unique identifier for requested server.
      * @param guid String unique identifier for the relationship.
      * @return RelationshipResponse:
      * A relationship structure or
@@ -2534,9 +2641,10 @@ public class OMRSRepositoryRESTServices
      *                                         the requested GUID stored or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public RelationshipResponse getRelationship(String    guid)
+    public RelationshipResponse getRelationship(String     serverName,
+                                                String     guid)
     {
-        return this.getRelationship(null, guid);
+        return this.getRelationship(serverName, null, guid);
     }
 
 
@@ -2554,7 +2662,8 @@ public class OMRSRepositoryRESTServices
      *                                         the requested GUID stored or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public RelationshipResponse getRelationship(String    userId,
+    public RelationshipResponse getRelationship(String    serverName,
+                                                String    userId,
                                                 String    guid)
     {
         final  String   methodName = "getRelationship";
@@ -2563,7 +2672,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             response.setRelationship(localMetadataCollection.getRelationship(userId, guid));
         }
@@ -2591,6 +2700,7 @@ public class OMRSRepositoryRESTServices
     /**
      * Return a historical version of a relationship.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param guid String unique identifier for the relationship.
      * @param asOfTime the time used to determine which version of the entity that is desired.
@@ -2604,7 +2714,8 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  RelationshipResponse getRelationship(String    userId,
+    public  RelationshipResponse getRelationship(String    serverName,
+                                                 String    userId,
                                                  String    guid,
                                                  Date      asOfTime)
     {
@@ -2614,7 +2725,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             response.setRelationship(localMetadataCollection.getRelationship(userId, guid, asOfTime));
         }
@@ -2647,6 +2758,7 @@ public class OMRSRepositoryRESTServices
      * Return a list of relationships that match the requested properties by the matching criteria.   The results
      * can be broken into pages.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user
      * @param findRequestParameters find parameters used to limit the returned results.
      * @return RelationshipListResponse:
@@ -2661,7 +2773,8 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  RelationshipListResponse findRelationshipsByProperty(String                    userId,
+    public  RelationshipListResponse findRelationshipsByProperty(String                    serverName,
+                                                                 String                    userId,
                                                                  PropertyMatchFindRequest  findRequestParameters)
     {
         final  String   methodName = "findRelationshipsByProperty";
@@ -2691,7 +2804,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             List<Relationship>  relationships = localMetadataCollection.findRelationshipsByProperty(userId,
                                                                                                     relationshipTypeGUID,
@@ -2715,7 +2828,8 @@ public class OMRSRepositoryRESTServices
                     PropertyMatchFindRequest nextFindRequestParameters = new PropertyMatchFindRequest(findRequestParameters);
                     nextFindRequestParameters.setOffset(fromRelationshipElement + pageSize);
 
-                    response.setNextPageURL(formatNextPageURL(localServerURL + urlTemplate,
+                    response.setNextPageURL(formatNextPageURL(serverName,
+                                                              urlTemplate,
                                                               nextFindRequestParameters,
                                                               userId));
                 }
@@ -2759,6 +2873,7 @@ public class OMRSRepositoryRESTServices
      * Return a list of relationships that match the requested properties by the matching criteria.   The results
      * can be broken into pages.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user
      * @param findRequestParameters find parameters used to limit the returned results.
      * @return RelationshipListResponse:
@@ -2773,7 +2888,8 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  RelationshipListResponse findRelationshipsByPropertyHistory(String                              userId,
+    public  RelationshipListResponse findRelationshipsByPropertyHistory(String                              serverName,
+                                                                        String                              userId,
                                                                         PropertyMatchHistoricalFindRequest  findRequestParameters)
     {
         final  String   methodName = "findRelationshipsByPropertyHistory";
@@ -2805,7 +2921,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             List<Relationship>  relationships = localMetadataCollection.findRelationshipsByProperty(userId,
                                                                                                     relationshipTypeGUID,
@@ -2829,7 +2945,8 @@ public class OMRSRepositoryRESTServices
                     PropertyMatchHistoricalFindRequest nextFindRequestParameters = new PropertyMatchHistoricalFindRequest(findRequestParameters);
                     nextFindRequestParameters.setOffset(fromRelationshipElement + pageSize);
 
-                    response.setNextPageURL(formatNextPageURL(localServerURL + urlTemplate,
+                    response.setNextPageURL(formatNextPageURL(serverName,
+                                                              urlTemplate,
                                                               nextFindRequestParameters,
                                                               userId));
                 }
@@ -2872,6 +2989,7 @@ public class OMRSRepositoryRESTServices
     /**
      * Return a list of relationships that match the search criteria.  The results can be paged.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param searchCriteria String expression of the characteristics of the required relationships.
      * @param findRequestParameters find parameters used to limit the returned results.
@@ -2886,7 +3004,8 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  RelationshipListResponse findRelationshipsByPropertyValue(String                    userId,
+    public  RelationshipListResponse findRelationshipsByPropertyValue(String                    serverName,
+                                                                      String                    userId,
                                                                       String                    searchCriteria,
                                                                       TypeLimitedFindRequest    findRequestParameters)
     {
@@ -2913,7 +3032,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             List<Relationship>  relationships = localMetadataCollection.findRelationshipsByPropertyValue(userId,
                                                                                                          relationshipTypeGUID,
@@ -2936,7 +3055,8 @@ public class OMRSRepositoryRESTServices
                     TypeLimitedFindRequest nextFindRequestParameters = new TypeLimitedFindRequest(findRequestParameters);
                     nextFindRequestParameters.setOffset(fromRelationshipElement + pageSize);
 
-                    response.setNextPageURL(formatNextPageURL(localServerURL + urlTemplate,
+                    response.setNextPageURL(formatNextPageURL(serverName,
+                                                              urlTemplate,
                                                               nextFindRequestParameters,
                                                               userId,
                                                               searchCriteria));
@@ -2980,6 +3100,7 @@ public class OMRSRepositoryRESTServices
     /**
      * Return a list of relationships that match the search criteria.  The results can be paged.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param searchCriteria String expression of the characteristics of the required relationships.
      * @param findRequestParameters find parameters used to limit the returned results.
@@ -2994,7 +3115,8 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  RelationshipListResponse findRelationshipsByPropertyValueHistory(String                              userId,
+    public  RelationshipListResponse findRelationshipsByPropertyValueHistory(String                              serverName,
+                                                                             String                              userId,
                                                                              String                              searchCriteria,
                                                                              TypeLimitedHistoricalFindRequest    findRequestParameters)
     {
@@ -3023,7 +3145,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             List<Relationship>  relationships = localMetadataCollection.findRelationshipsByPropertyValue(userId,
                                                                                                          relationshipTypeGUID,
@@ -3046,7 +3168,8 @@ public class OMRSRepositoryRESTServices
                     TypeLimitedHistoricalFindRequest nextFindRequestParameters = new TypeLimitedHistoricalFindRequest(findRequestParameters);
                     nextFindRequestParameters.setOffset(fromRelationshipElement + pageSize);
 
-                    response.setNextPageURL(formatNextPageURL(localServerURL + urlTemplate,
+                    response.setNextPageURL(formatNextPageURL(serverName,
+                                                              urlTemplate,
                                                               nextFindRequestParameters,
                                                               userId,
                                                               searchCriteria));
@@ -3090,6 +3213,7 @@ public class OMRSRepositoryRESTServices
     /**
      * Return all of the relationships and intermediate entities that connect the startEntity with the endEntity.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param startEntityGUID The entity that is used to anchor the query.
      * @param endEntityGUID the other entity that defines the scope of the query.
@@ -3105,7 +3229,8 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  InstanceGraphResponse getLinkingEntities(String                    userId,
+    public  InstanceGraphResponse getLinkingEntities(String                    serverName,
+                                                     String                    userId,
                                                      String                    startEntityGUID,
                                                      String                    endEntityGUID,
                                                      OMRSAPIFindRequest        findRequestParameters)
@@ -3123,7 +3248,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             InstanceGraph instanceGraph = localMetadataCollection.getLinkingEntities(userId,
                                                                                      startEntityGUID,
@@ -3168,6 +3293,7 @@ public class OMRSRepositoryRESTServices
     /**
      * Return all of the relationships and intermediate entities that connect the startEntity with the endEntity.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param startEntityGUID The entity that is used to anchor the query.
      * @param endEntityGUID the other entity that defines the scope of the query.
@@ -3183,7 +3309,8 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  InstanceGraphResponse getLinkingEntitiesHistory(String                         userId,
+    public  InstanceGraphResponse getLinkingEntitiesHistory(String                         serverName,
+                                                            String                         userId,
                                                             String                         startEntityGUID,
                                                             String                         endEntityGUID,
                                                             OMRSAPIHistoricalFindRequest   findRequestParameters)
@@ -3203,7 +3330,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             InstanceGraph instanceGraph = localMetadataCollection.getLinkingEntities(userId,
                                                                                      startEntityGUID,
@@ -3249,6 +3376,7 @@ public class OMRSRepositoryRESTServices
      * Return the entities and relationships that radiate out from the supplied entity GUID.
      * The results are scoped both the instance type guids and the level.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param entityGUID the starting point of the query.
      * @param findRequestParameters find parameters used to limit the returned results.
@@ -3265,7 +3393,8 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  InstanceGraphResponse getEntityNeighborhood(String                         userId,
+    public  InstanceGraphResponse getEntityNeighborhood(String                         serverName,
+                                                        String                         userId,
                                                         String                         entityGUID,
                                                         int                            level,
                                                         EntityNeighborhoodFindRequest  findRequestParameters)
@@ -3289,7 +3418,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             InstanceGraph instanceGraph = localMetadataCollection.getEntityNeighborhood(userId,
                                                                                         entityGUID,
@@ -3342,6 +3471,7 @@ public class OMRSRepositoryRESTServices
      * Return the entities and relationships that radiate out from the supplied entity GUID.
      * The results are scoped both the instance type guids and the level.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param entityGUID the starting point of the query.
      * @param level the number of the relationships out from the starting entity that the query will traverse to
@@ -3358,7 +3488,8 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  InstanceGraphResponse getEntityNeighborhoodHistory(String                                   userId,
+    public  InstanceGraphResponse getEntityNeighborhoodHistory(String                                   serverName,
+                                                               String                                   userId,
                                                                String                                   entityGUID,
                                                                int                                      level,
                                                                EntityNeighborhoodHistoricalFindRequest  findRequestParameters)
@@ -3384,7 +3515,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             InstanceGraph instanceGraph = localMetadataCollection.getEntityNeighborhood(userId,
                                                                                         entityGUID,
@@ -3437,6 +3568,7 @@ public class OMRSRepositoryRESTServices
      * Return the list of entities that are of the types listed in instanceTypes and are connected, either directly or
      * indirectly to the entity identified by startEntityGUID.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param startEntityGUID unique identifier of the starting entity.
      * @param findRequestParameters find parameters used to limit the returned results.
@@ -3456,7 +3588,8 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  EntityListResponse getRelatedEntities(String                     userId,
+    public  EntityListResponse getRelatedEntities(String                     serverName,
+                                                  String                     userId,
                                                   String                     startEntityGUID,
                                                   RelatedEntitiesFindRequest findRequestParameters)
     {
@@ -3485,7 +3618,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             List<EntityDetail>  entities = localMetadataCollection.getRelatedEntities(userId,
                                                                                       startEntityGUID,
@@ -3510,7 +3643,8 @@ public class OMRSRepositoryRESTServices
 
                     nextFindRequestParameters.setOffset(fromEntityElement + pageSize);
 
-                    response.setNextPageURL(formatNextPageURL(localServerURL + urlTemplate,
+                    response.setNextPageURL(formatNextPageURL(serverName,
+                                                              urlTemplate,
                                                               nextFindRequestParameters,
                                                               userId,
                                                               startEntityGUID));
@@ -3558,6 +3692,7 @@ public class OMRSRepositoryRESTServices
      * Return the list of entities that are of the types listed in instanceTypes and are connected, either directly or
      * indirectly to the entity identified by startEntityGUID.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param startEntityGUID unique identifier of the starting entity.
      * @param findRequestParameters find parameters used to limit the returned results.
@@ -3577,7 +3712,8 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  EntityListResponse getRelatedEntitiesHistory(String                               userId,
+    public  EntityListResponse getRelatedEntitiesHistory(String                               serverName,
+                                                         String                               userId,
                                                          String                               startEntityGUID,
                                                          RelatedEntitiesHistoricalFindRequest findRequestParameters)
     {
@@ -3608,7 +3744,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             List<EntityDetail>  entities = localMetadataCollection.getRelatedEntities(userId,
                                                                                       startEntityGUID,
@@ -3633,7 +3769,8 @@ public class OMRSRepositoryRESTServices
 
                     nextFindRequestParameters.setOffset(fromEntityElement + pageSize);
 
-                    response.setNextPageURL(formatNextPageURL(localServerURL + urlTemplate,
+                    response.setNextPageURL(formatNextPageURL(serverName,
+                                                              urlTemplate,
                                                               nextFindRequestParameters,
                                                               userId,
                                                               startEntityGUID));
@@ -3684,6 +3821,7 @@ public class OMRSRepositoryRESTServices
     /**
      * Create a new entity and put it in the requested state.  The new entity is returned.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param requestBody parameters for the new entity
      * @return EntityDetailResponse:
@@ -3702,7 +3840,8 @@ public class OMRSRepositoryRESTServices
      *                                       the requested status or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetailResponse addEntity(String                userId,
+    public EntityDetailResponse addEntity(String                serverName,
+                                          String                userId,
                                           EntityCreateRequest   requestBody)
     {
         final  String   methodName = "addEntity";
@@ -3724,7 +3863,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             response.setEntity(localMetadataCollection.addEntity(userId,
                                                                  entityTypeGUID,
@@ -3770,6 +3909,7 @@ public class OMRSRepositoryRESTServices
      * Create an entity proxy in the metadata collection.  This is used to store relationships that span metadata
      * repositories.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param entityProxy details of entity to add.
      * @return VoidResponse:
@@ -3788,7 +3928,8 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support entity proxies as first class elements or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public VoidResponse addEntityProxy(String       userId,
+    public VoidResponse addEntityProxy(String       serverName,
+                                       String       userId,
                                        EntityProxy  entityProxy)
     {
         final  String   methodName = "addEntityProxy";
@@ -3797,7 +3938,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             localMetadataCollection.addEntityProxy(userId, entityProxy);
         }
@@ -3825,6 +3966,7 @@ public class OMRSRepositoryRESTServices
     /**
      * Update the status for a specific entity.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param entityGUID unique identifier (guid) for the requested entity.
      * @param newStatus new InstanceStatus for the entity.
@@ -3838,7 +3980,8 @@ public class OMRSRepositoryRESTServices
      *                                      the requested status or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetailResponse updateEntityStatus(String           userId,
+    public EntityDetailResponse updateEntityStatus(String           serverName,
+                                                   String           userId,
                                                    String           entityGUID,
                                                    InstanceStatus   newStatus)
     {
@@ -3848,7 +3991,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             response.setEntity(localMetadataCollection.updateEntityStatus(userId, entityGUID, newStatus));
         }
@@ -3880,6 +4023,7 @@ public class OMRSRepositoryRESTServices
     /**
      * Update selected properties in an entity.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param entityGUID String unique identifier (guid) for the entity.
      * @param propertiesRequestBody a list of properties to change.
@@ -3893,7 +4037,8 @@ public class OMRSRepositoryRESTServices
      *                                characteristics in the TypeDef for this entity's type or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetailResponse updateEntityProperties(String                      userId,
+    public EntityDetailResponse updateEntityProperties(String                      serverName,
+                                                       String                      userId,
                                                        String                      entityGUID,
                                                        InstancePropertiesRequest   propertiesRequestBody)
     {
@@ -3903,7 +4048,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             response.setEntity(localMetadataCollection.updateEntityProperties(userId, entityGUID, propertiesRequestBody.getInstanceProperties()));
         }
@@ -3935,6 +4080,7 @@ public class OMRSRepositoryRESTServices
     /**
      * Undo the last update to an entity and return the previous content.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param entityGUID String unique identifier (guid) for the entity.
      * @return EntityDetailResponse:
@@ -3946,8 +4092,9 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support undo or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetailResponse undoEntityUpdate(String  userId,
-                                                 String  entityGUID)
+    public EntityDetailResponse undoEntityUpdate(String    serverName,
+                                                 String    userId,
+                                                 String    entityGUID)
     {
         final  String   methodName = "undoEntityUpdate";
 
@@ -3955,7 +4102,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             response.setEntity(localMetadataCollection.undoEntityUpdate(userId, entityGUID));
         }
@@ -3990,6 +4137,7 @@ public class OMRSRepositoryRESTServices
      * To completely eliminate the entity from the graph requires a call to the purgeEntity() method after the delete call.
      * The restoreEntity() method will switch an entity back to Active status to restore the entity to normal use.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param obsoleteEntityGUID String unique identifier (guid) for the entity.
      * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
@@ -4003,7 +4151,8 @@ public class OMRSRepositoryRESTServices
      *                                       soft-deletes (use purgeEntity() to remove the entity permanently)
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetailResponse  deleteEntity(String                        userId,
+    public EntityDetailResponse  deleteEntity(String                        serverName,
+                                              String                        userId,
                                               String                        obsoleteEntityGUID,
                                               TypeDefValidationForRequest   typeDefValidationForRequest)
     {
@@ -4022,7 +4171,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             response.setEntity(localMetadataCollection.deleteEntity(userId, typeDefGUID, typeDefName, obsoleteEntityGUID));
         }
@@ -4054,6 +4203,7 @@ public class OMRSRepositoryRESTServices
     /**
      * Permanently removes a deleted entity from the metadata collection.  This request can not be undone.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param deletedEntityGUID String unique identifier (guid) for the entity.
      * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
@@ -4066,7 +4216,8 @@ public class OMRSRepositoryRESTServices
      * EntityNotDeletedException the entity is not in DELETED status and so can not be purged or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public VoidResponse purgeEntity(String                        userId,
+    public VoidResponse purgeEntity(String                        serverName,
+                                    String                        userId,
                                     String                        deletedEntityGUID,
                                     TypeDefValidationForRequest   typeDefValidationForRequest)
     {
@@ -4085,7 +4236,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             localMetadataCollection.purgeEntity(userId, typeDefGUID, typeDefName, deletedEntityGUID);
         }
@@ -4117,6 +4268,7 @@ public class OMRSRepositoryRESTServices
     /**
      * Restore the requested entity to the state it was before it was deleted.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param deletedEntityGUID String unique identifier (guid) for the entity.
      * @return EntityDetailResponse:
@@ -4129,7 +4281,8 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support soft-delete or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetailResponse restoreEntity(String    userId,
+    public EntityDetailResponse restoreEntity(String    serverName,
+                                              String    userId,
                                               String    deletedEntityGUID)
     {
         final  String   methodName = "restoreEntity";
@@ -4138,7 +4291,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             response.setEntity(localMetadataCollection.restoreEntity(userId, deletedEntityGUID));
         }
@@ -4174,6 +4327,7 @@ public class OMRSRepositoryRESTServices
     /**
      * Add the requested classification to a specific entity.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param entityGUID String unique identifier (guid) for the entity.
      * @param classificationName String name for the classification.
@@ -4190,7 +4344,8 @@ public class OMRSRepositoryRESTServices
      *                                characteristics in the TypeDef for this classification type or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetailResponse classifyEntity(String                      userId,
+    public EntityDetailResponse classifyEntity(String                      serverName,
+                                               String                      userId,
                                                String                      entityGUID,
                                                String                      classificationName,
                                                InstancePropertiesRequest   propertiesRequestBody)
@@ -4201,7 +4356,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             response.setEntity(localMetadataCollection.classifyEntity(userId,
                                                                       entityGUID,
@@ -4240,6 +4395,7 @@ public class OMRSRepositoryRESTServices
     /**
      * Remove a specific classification from an entity.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param entityGUID String unique identifier (guid) for the entity.
      * @param classificationName String name for the classification.
@@ -4252,9 +4408,10 @@ public class OMRSRepositoryRESTServices
      * ClassificationErrorException the requested classification is not set on the entity or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetailResponse declassifyEntity(String  userId,
-                                                 String  entityGUID,
-                                                 String  classificationName)
+    public EntityDetailResponse declassifyEntity(String    serverName,
+                                                 String    userId,
+                                                 String    entityGUID,
+                                                 String    classificationName)
     {
         final  String   methodName = "declassifyEntity";
 
@@ -4262,7 +4419,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             response.setEntity(localMetadataCollection.declassifyEntity(userId,
                                                                         entityGUID,
@@ -4296,6 +4453,7 @@ public class OMRSRepositoryRESTServices
     /**
      * Update one or more properties in one of an entity's classifications.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param entityGUID String unique identifier (guid) for the entity.
      * @param classificationName String name for the classification.
@@ -4311,7 +4469,8 @@ public class OMRSRepositoryRESTServices
      *                                characteristics in the TypeDef for this classification type or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetailResponse updateEntityClassification(String                      userId,
+    public EntityDetailResponse updateEntityClassification(String                      serverName,
+                                                           String                      userId,
                                                            String                      entityGUID,
                                                            String                      classificationName,
                                                            InstancePropertiesRequest   propertiesRequestBody)
@@ -4322,7 +4481,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             response.setEntity(localMetadataCollection.updateEntityClassification(userId,
                                                                                   entityGUID,
@@ -4361,6 +4520,7 @@ public class OMRSRepositoryRESTServices
     /**
      * Add a new relationship between two entities to the metadata collection.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param createRequestParameters parameters used to fill out the new relationship
      * @return RelationshipResponse:
@@ -4377,7 +4537,8 @@ public class OMRSRepositoryRESTServices
      *                                     the requested status or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public RelationshipResponse addRelationship(String                     userId,
+    public RelationshipResponse addRelationship(String                     serverName,
+                                                String                     userId,
                                                 RelationshipCreateRequest  createRequestParameters)
     {
         final  String   methodName = "addRelationship";
@@ -4401,7 +4562,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             response.setRelationship(localMetadataCollection.addRelationship(userId,
                     relationshipTypeGUID,
@@ -4446,6 +4607,7 @@ public class OMRSRepositoryRESTServices
     /**
      * Update the status of a specific relationship.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param relationshipGUID String unique identifier (guid) for the relationship.
      * @param newStatus new InstanceStatus for the relationship.
@@ -4459,7 +4621,8 @@ public class OMRSRepositoryRESTServices
      *                                     the requested status or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public RelationshipResponse updateRelationshipStatus(String           userId,
+    public RelationshipResponse updateRelationshipStatus(String           serverName,
+                                                         String           userId,
                                                          String           relationshipGUID,
                                                          InstanceStatus   newStatus)
     {
@@ -4469,7 +4632,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             response.setRelationship(localMetadataCollection.updateRelationshipStatus(userId,
                                                                                       relationshipGUID,
@@ -4503,6 +4666,7 @@ public class OMRSRepositoryRESTServices
     /**
      * Update the properties of a specific relationship.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param relationshipGUID String unique identifier (guid) for the relationship.
      * @param propertiesRequestBody list of the properties to update.
@@ -4516,7 +4680,8 @@ public class OMRSRepositoryRESTServices
      *                                characteristics in the TypeDef for this relationship's type or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public RelationshipResponse updateRelationshipProperties(String                      userId,
+    public RelationshipResponse updateRelationshipProperties(String                      serverName,
+                                                             String                      userId,
                                                              String                      relationshipGUID,
                                                              InstancePropertiesRequest   propertiesRequestBody)
     {
@@ -4526,7 +4691,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             response.setRelationship(localMetadataCollection.updateRelationshipProperties(userId,
                                                                                           relationshipGUID,
@@ -4560,6 +4725,7 @@ public class OMRSRepositoryRESTServices
     /**
      * Undo the latest change to a relationship (either a change of properties or status).
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param relationshipGUID String unique identifier (guid) for the relationship.
      * @return RelationshipResponse:
@@ -4571,8 +4737,9 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support undo or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public RelationshipResponse undoRelationshipUpdate(String  userId,
-                                                       String  relationshipGUID)
+    public RelationshipResponse undoRelationshipUpdate(String    serverName,
+                                                       String    userId,
+                                                       String    relationshipGUID)
     {
         final  String   methodName = "undoRelationshipUpdate";
 
@@ -4580,7 +4747,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             response.setRelationship(localMetadataCollection.undoRelationshipUpdate(userId, relationshipGUID));
         }
@@ -4614,6 +4781,7 @@ public class OMRSRepositoryRESTServices
      * DELETED and it is no longer available for queries.  To remove the relationship permanently from the
      * metadata collection, use purgeRelationship().
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param obsoleteRelationshipGUID String unique identifier (guid) for the relationship.
      * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
@@ -4627,7 +4795,8 @@ public class OMRSRepositoryRESTServices
      *                                     soft-deletes or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public RelationshipResponse deleteRelationship(String                        userId,
+    public RelationshipResponse deleteRelationship(String                        serverName,
+                                                   String                        userId,
                                                    String                        obsoleteRelationshipGUID,
                                                    TypeDefValidationForRequest   typeDefValidationForRequest)
     {
@@ -4646,7 +4815,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             response.setRelationship(localMetadataCollection.deleteRelationship(userId,
                                                                                 typeDefGUID,
@@ -4681,6 +4850,7 @@ public class OMRSRepositoryRESTServices
     /**
      * Permanently delete the relationship from the repository.  There is no means to undo this request.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param deletedRelationshipGUID String unique identifier (guid) for the relationship.
      * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
@@ -4693,7 +4863,8 @@ public class OMRSRepositoryRESTServices
      * RelationshipNotDeletedException the requested relationship is not in DELETED status or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public VoidResponse purgeRelationship(String                        userId,
+    public VoidResponse purgeRelationship(String                        serverName,
+                                          String                        userId,
                                           String                        deletedRelationshipGUID,
                                           TypeDefValidationForRequest   typeDefValidationForRequest)
     {
@@ -4712,7 +4883,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             localMetadataCollection.purgeRelationship(userId, typeDefGUID, typeDefName, deletedRelationshipGUID);
         }
@@ -4745,6 +4916,7 @@ public class OMRSRepositoryRESTServices
      * Restore a deleted relationship into the metadata collection.  The new status will be ACTIVE and the
      * restored details of the relationship are returned to the caller.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param deletedRelationshipGUID String unique identifier (guid) for the relationship.
      * @return RelationshipResponse:
@@ -4757,7 +4929,8 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support soft-deletes
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public RelationshipResponse restoreRelationship(String    userId,
+    public RelationshipResponse restoreRelationship(String    serverName,
+                                                    String    userId,
                                                     String    deletedRelationshipGUID)
     {
         final  String   methodName = "restoreRelationship";
@@ -4766,7 +4939,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             response.setRelationship(localMetadataCollection.restoreRelationship(userId, deletedRelationshipGUID));
         }
@@ -4809,6 +4982,7 @@ public class OMRSRepositoryRESTServices
      * entities are discovered to have the same guid.  This is extremely unlikely but not impossible so
      * the open metadata protocol has provision for this.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param entityGUID the existing identifier for the entity.
      * @param newEntityGUID new unique identifier for the entity.
@@ -4822,7 +4996,8 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support instance re-identification or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetailResponse reIdentifyEntity(String                        userId,
+    public EntityDetailResponse reIdentifyEntity(String                        serverName,
+                                                 String                        userId,
                                                  String                        entityGUID,
                                                  String                        newEntityGUID,
                                                  TypeDefValidationForRequest   typeDefValidationForRequest)
@@ -4842,7 +5017,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             response.setEntity(localMetadataCollection.reIdentifyEntity(userId,
                                                                         typeDefGUID,
@@ -4880,6 +5055,7 @@ public class OMRSRepositoryRESTServices
      * type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
      * added.)  However, the type can be changed to any compatible type and the properties adjusted.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param entityGUID the unique identifier for the entity to change.
      * @param typeDefChangeRequest the details of the current and new type.
@@ -4896,7 +5072,8 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support instance re-typing or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetailResponse reTypeEntity(String               userId,
+    public EntityDetailResponse reTypeEntity(String               serverName,
+                                             String               userId,
                                              String               entityGUID,
                                              TypeDefChangeRequest typeDefChangeRequest)
     {
@@ -4915,7 +5092,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             response.setEntity(localMetadataCollection.reTypeEntity(userId,
                                                                     entityGUID,
@@ -4964,6 +5141,7 @@ public class OMRSRepositoryRESTServices
      * becomes permanently unavailable, or if the user community updating this entity move to working
      * from a different repository in the open metadata repository cohort.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param entityGUID the unique identifier for the entity to change.
      * @param homeMetadataCollectionId the existing identifier for this entity's home.
@@ -4978,7 +5156,8 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support instance re-homing or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetailResponse reHomeEntity(String                        userId,
+    public EntityDetailResponse reHomeEntity(String                        serverName,
+                                             String                        userId,
                                              String                        entityGUID,
                                              String                        homeMetadataCollectionId,
                                              String                        newHomeMetadataCollectionId,
@@ -4999,7 +5178,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             response.setEntity(localMetadataCollection.reHomeEntity(userId,
                                                                     entityGUID,
@@ -5038,6 +5217,7 @@ public class OMRSRepositoryRESTServices
      * relationships are discovered to have the same guid.  This is extremely unlikely but not impossible so
      * the open metadata protocol has provision for this.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param relationshipGUID the existing identifier for the relationship.
      * @param newRelationshipGUID  the new unique identifier for the relationship.
@@ -5052,7 +5232,8 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support instance re-identification or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public RelationshipResponse reIdentifyRelationship(String                        userId,
+    public RelationshipResponse reIdentifyRelationship(String                        serverName,
+                                                       String                        userId,
                                                        String                        relationshipGUID,
                                                        String                        newRelationshipGUID,
                                                        TypeDefValidationForRequest   typeDefValidationForRequest)
@@ -5072,7 +5253,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             response.setRelationship(localMetadataCollection.reIdentifyRelationship(userId,
                                                                                     typeDefGUID,
@@ -5110,6 +5291,7 @@ public class OMRSRepositoryRESTServices
      * type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
      * added.)  However, the type can be changed to any compatible type.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param relationshipGUID the unique identifier for the relationship.
      * @param typeDefChangeRequest the details of the current and new type.
@@ -5126,7 +5308,8 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support instance re-typing or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public RelationshipResponse reTypeRelationship(String               userId,
+    public RelationshipResponse reTypeRelationship(String               serverName,
+                                                   String               userId,
                                                    String               relationshipGUID,
                                                    TypeDefChangeRequest typeDefChangeRequest)
     {
@@ -5145,7 +5328,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             response.setRelationship(localMetadataCollection.reTypeRelationship(userId,
                                                                                 relationshipGUID,
@@ -5190,6 +5373,7 @@ public class OMRSRepositoryRESTServices
      * becomes permanently unavailable, or if the user community updating this relationship move to working
      * from a different repository in the open metadata repository cohort.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param relationshipGUID the unique identifier for the relationship.
      * @param homeMetadataCollectionId the existing identifier for this relationship's home.
@@ -5205,7 +5389,8 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support instance re-homing or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public RelationshipResponse reHomeRelationship(String                        userId,
+    public RelationshipResponse reHomeRelationship(String                        serverName,
+                                                   String                        userId,
                                                    String                        relationshipGUID,
                                                    String                        homeMetadataCollectionId,
                                                    String                        newHomeMetadataCollectionId,
@@ -5226,7 +5411,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             response.setRelationship(localMetadataCollection.reHomeRelationship(userId,
                                                                                 relationshipGUID,
@@ -5271,6 +5456,7 @@ public class OMRSRepositoryRESTServices
      * Save the entity as a reference copy.  The id of the home metadata collection is already set up in the
      * entity.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param entity details of the entity to save.
      * @return VoidResponse:
@@ -5289,7 +5475,8 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support instance reference copies or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public VoidResponse saveEntityReferenceCopy(String         userId,
+    public VoidResponse saveEntityReferenceCopy(String         serverName,
+                                                String         userId,
                                                 EntityDetail   entity)
     {
         final  String   methodName = "saveEntityReferenceCopy";
@@ -5298,7 +5485,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             localMetadataCollection.saveEntityReferenceCopy(userId, entity);
         }
@@ -5348,6 +5535,7 @@ public class OMRSRepositoryRESTServices
      * remove reference copies from the local cohort, repositories that have left the cohort,
      * or entities that have come from open metadata archives.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting server.
      * @param entityGUID the unique identifier for the entity.
      * @param homeMetadataCollectionId identifier of the metadata collection that is the home to this entity.
@@ -5363,7 +5551,8 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support instance reference copies or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public VoidResponse purgeEntityReferenceCopy(String                        userId,
+    public VoidResponse purgeEntityReferenceCopy(String                        serverName,
+                                                 String                        userId,
                                                  String                        entityGUID,
                                                  String                        homeMetadataCollectionId,
                                                  TypeDefValidationForRequest   typeDefValidationForRequest)
@@ -5383,7 +5572,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             localMetadataCollection.purgeEntityReferenceCopy(userId,
                                                              entityGUID,
@@ -5424,6 +5613,7 @@ public class OMRSRepositoryRESTServices
      * The local repository has requested that the repository that hosts the home metadata collection for the
      * specified entity sends out the details of this entity so the local repository can create a reference copy.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting server.
      * @param entityGUID unique identifier of requested entity.
      * @param homeMetadataCollectionId identifier of the metadata collection that is the home to this entity.
@@ -5439,7 +5629,8 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support instance reference copies or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public VoidResponse refreshEntityReferenceCopy(String                        userId,
+    public VoidResponse refreshEntityReferenceCopy(String                        serverName,
+                                                   String                        userId,
                                                    String                        entityGUID,
                                                    String                        homeMetadataCollectionId,
                                                    TypeDefValidationForRequest   typeDefValidationForRequest)
@@ -5459,7 +5650,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             localMetadataCollection.refreshEntityReferenceCopy(userId,
                                                                entityGUID,
@@ -5500,6 +5691,7 @@ public class OMRSRepositoryRESTServices
      * Save the relationship as a reference copy.  The id of the home metadata collection is already set up in the
      * relationship.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting userId.
      * @param relationship relationship to save.
      * @return VoidResponse:
@@ -5520,7 +5712,8 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support instance reference copies or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public VoidResponse saveRelationshipReferenceCopy(String         userId,
+    public VoidResponse saveRelationshipReferenceCopy(String         serverName,
+                                                      String         userId,
                                                       Relationship   relationship)
     {
         final  String   methodName = "saveRelationshipReferenceCopy";
@@ -5529,7 +5722,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             localMetadataCollection.saveRelationshipReferenceCopy(userId, relationship);
         }
@@ -5585,6 +5778,7 @@ public class OMRSRepositoryRESTServices
      * remove reference copies from the local cohort, repositories that have left the cohort,
      * or relationships that have come from open metadata archives.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting server.
      * @param relationshipGUID the unique identifier for the relationship.
      * @param homeMetadataCollectionId unique identifier for the home repository for this relationship.
@@ -5600,7 +5794,8 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support instance reference copies or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public VoidResponse purgeRelationshipReferenceCopy(String                        userId,
+    public VoidResponse purgeRelationshipReferenceCopy(String                        serverName,
+                                                       String                        userId,
                                                        String                        relationshipGUID,
                                                        String                        homeMetadataCollectionId,
                                                        TypeDefValidationForRequest   typeDefValidationForRequest)
@@ -5620,7 +5815,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             localMetadataCollection.purgeRelationshipReferenceCopy(userId,
                                                                    relationshipGUID,
@@ -5662,6 +5857,7 @@ public class OMRSRepositoryRESTServices
      * specified relationship sends out the details of this relationship so the local repository can create a
      * reference copy.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting server.
      * @param relationshipGUID unique identifier of the relationship.
      * @param homeMetadataCollectionId unique identifier for the home repository for this relationship.
@@ -5677,7 +5873,8 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support instance reference copies or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public VoidResponse refreshRelationshipReferenceCopy(String                        userId,
+    public VoidResponse refreshRelationshipReferenceCopy(String                        serverName,
+                                                         String                        userId,
                                                          String                        relationshipGUID,
                                                          String                        homeMetadataCollectionId,
                                                          TypeDefValidationForRequest   typeDefValidationForRequest)
@@ -5697,7 +5894,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             localMetadataCollection.refreshRelationshipReferenceCopy(userId,
                                                                      relationshipGUID,
@@ -5739,6 +5936,7 @@ public class OMRSRepositoryRESTServices
      * The id of the home metadata collection is already set up in the instances.
      * Any instances from the home metadata collection are ignored.
      *
+     * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting server.
      * @param instances instances to save or
      * InvalidParameterException the relationship is null or
@@ -5757,7 +5955,8 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support reference copies of instances or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public VoidResponse  saveInstanceReferenceCopies(String                 userId,
+    public VoidResponse  saveInstanceReferenceCopies(String                 serverName,
+                                                     String                 userId,
                                                      InstanceGraphRequest   instances)
     {
         final  String   methodName = "saveInstanceReferenceCopies";
@@ -5774,7 +5973,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            validateLocalRepository(methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
 
             localMetadataCollection.saveInstanceReferenceCopies(userId, instanceGraph);
         }
@@ -5836,11 +6035,27 @@ public class OMRSRepositoryRESTServices
     /**
      * Validate that the local repository is available.
      *
+     * @param localServerName name of the server associated with the request.
      * @param methodName method being called
      * @throws RepositoryErrorException null local repository
+     * @return OMRSMetadataCollection object for the local repository
      */
-    private void validateLocalRepository(String methodName) throws RepositoryErrorException
+    private OMRSMetadataCollection validateLocalRepository(String localServerName,
+                                                           String methodName) throws RepositoryErrorException
     {
+        OMRSMetadataCollection   localMetadataCollection = null;
+
+        if (localServerName != null)
+        {
+            OMRSRepositoryServicesInstance instance = servicesInstanceMap.getInstance(localServerName);
+
+            if (instance != null)
+            {
+                localMetadataCollection = instance.getLocalMetadataCollection();
+            }
+        }
+
+
         /*
          * If the local repository is not set up then do not attempt to process the request.
          */
@@ -5857,6 +6072,8 @@ public class OMRSRepositoryRESTServices
                                                errorCode.getSystemAction(),
                                                errorCode.getUserAction());
         }
+
+        return localMetadataCollection;
     }
 
 
@@ -6217,7 +6434,7 @@ public class OMRSRepositoryRESTServices
      * @param error returned response.
      * @param exceptionClassName class name of the exception to recreate
      */
-    private void captureCheckedException(OMRSAPIResponse response,
+    private void captureCheckedException(OMRSAPIResponse          response,
                                          OMRSCheckedExceptionBase error,
                                          String                   exceptionClassName)
     {
@@ -6232,16 +6449,40 @@ public class OMRSRepositoryRESTServices
     /**
      * Format the url for the next page of a request that includes paging.
      *
-     * @param urlTemplate template of the request
+     * @param serverName name of the server
+     * @param requestURLTemplate template of the request URL
+     * @param requestBody requestBody to include
      * @param parameters parameters to include in the url
      * @return formatted string
      */
-    private String  formatNextPageURL(String    urlTemplate,
-                                      Object    request,
+    private String  formatNextPageURL(String    serverName,
+                                      String    requestURLTemplate,
+                                      Object    requestBody,
                                       Object... parameters)
     {
-        MessageFormat mf     = new MessageFormat(urlTemplate);
+        if (serverName != null)
+        {
+            OMRSRepositoryServicesInstance  instance = servicesInstanceMap.getInstance(serverName);
 
-        return mf.format(parameters) + "{" + request + "}";
+            if (instance != null)
+            {
+                try
+                {
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    String       jsonString = objectMapper.writeValueAsString(requestBody);
+
+                    String serverURLRoot = instance.getLocalServerURL();
+
+                    MessageFormat mf = new MessageFormat(serverURLRoot + requestURLTemplate);
+
+                    return mf.format(parameters) + "{" + jsonString + "}";
+                }
+                catch (Throwable  exc)
+                {
+                }
+            }
+        }
+
+        return null;
     }
 }
