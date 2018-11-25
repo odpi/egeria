@@ -167,7 +167,7 @@ public class TestOMRSAuditingComponent
         assertTrue(testValue.getComponentWikiURL() != null);
 
 
-        testValue = OMRSAuditingComponent.TYPEDEF_MANAGER;
+        testValue = OMRSAuditingComponent.REPOSITORY_CONTENT_MANAGER;
         assertTrue(isUniqueOrdinal(testValue.getComponentId()));
         assertTrue(testValue.getComponentName() != null);
         assertTrue(testValue.getComponentDescription() != null);
@@ -217,6 +217,6 @@ public class TestOMRSAuditingComponent
      */
     @Test public void testToString()
     {
-        assertTrue(OMRSAuditingComponent.TYPEDEF_MANAGER.toString().contains("OMRSAuditingComponent"));
+        assertTrue(OMRSAuditingComponent.REPOSITORY_CONTENT_MANAGER.toString().contains("OMRSAuditingComponent"));
     }
 }

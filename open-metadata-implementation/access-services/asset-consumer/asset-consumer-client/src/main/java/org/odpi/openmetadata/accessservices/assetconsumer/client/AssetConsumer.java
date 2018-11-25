@@ -52,6 +52,7 @@ import java.util.Map;
  */
 public class AssetConsumer implements AssetConsumerInterface
 {
+    private String           serverName;     /* Initialized in constructor */
     private String           omasServerURL;  /* Initialized in constructor */
     private NullRequestBody  nullRequestBody = new NullRequestBody();
 
@@ -59,11 +60,14 @@ public class AssetConsumer implements AssetConsumerInterface
     /**
      * Create a new AssetConsumer client.
      *
-     * @param newServerURL  the network address of the server running the OMAS REST services
+     * @param serverName name of the server to connect to
+     * @param newServerURL the network address of the server running the OMAS REST servers
      */
-    public AssetConsumer(String     newServerURL)
+    public AssetConsumer(String     serverName,
+                         String     newServerURL)
     {
-        omasServerURL = newServerURL;
+        this.serverName = serverName;
+        this.omasServerURL = newServerURL;
     }
 
 
@@ -122,7 +126,8 @@ public class AssetConsumer implements AssetConsumerInterface
              * of the ConnectedAssetProperties object.
              */
             ConnectedAssetProperties connectedAssetProperties
-                    = new org.odpi.openmetadata.accessservices.connectedasset.client.ConnectedAssetProperties(userId,
+                    = new org.odpi.openmetadata.accessservices.connectedasset.client.ConnectedAssetProperties(serverName,
+                                                                                                              userId,
                                                                                                               omasServerURL,
                                                                                                               newConnector.getConnectorInstanceId(),
                                                                                                               newConnector.getConnection(),
@@ -176,12 +181,13 @@ public class AssetConsumer implements AssetConsumerInterface
                                                                  UserNotAuthorizedException
     {
         final String   methodName = "getConnectionByName";
-        final String   urlTemplate = "/open-metadata/access-services/asset-consumer/users/{0}/connection/by-name/{1}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/connection/by-name/{2}";
 
         validateOMASServerURL(methodName);
 
         ConnectionResponse restResult = callConnectionGetRESTCall(methodName,
                                                                   omasServerURL + urlTemplate,
+                                                                  serverName,
                                                                   userId,
                                                                   name);
 
@@ -256,12 +262,13 @@ public class AssetConsumer implements AssetConsumerInterface
                                                                    UserNotAuthorizedException
     {
         final String   methodName  = "getConnectionByGUID";
-        final String   urlTemplate = "/open-metadata/access-services/asset-consumer/users/{0}/connection/{1}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/connection/{2}";
 
         validateOMASServerURL(methodName);
 
         ConnectionResponse   restResult = callConnectionGetRESTCall(methodName,
                                                                     omasServerURL + urlTemplate,
+                                                                    serverName,
                                                                     userId,
                                                                     guid);
 
@@ -359,7 +366,7 @@ public class AssetConsumer implements AssetConsumerInterface
                                                         UserNotAuthorizedException
     {
         final String   methodName = "getMyProfile";
-        final String   urlTemplate = "/open-metadata/access-services/asset-consumer/users/{0}/my-profile";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/my-profile";
 
 
         validateOMASServerURL(methodName);
@@ -404,7 +411,7 @@ public class AssetConsumer implements AssetConsumerInterface
                                                                                  UserNotAuthorizedException
     {
         final String   methodName = "updateMyProfile";
-        final String   urlTemplate = "/open-metadata/access-services/asset-consumer/users/{0}/my-profile";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/my-profile";
 
         final String   employeeNumberParameterName = "employeeNumber";
         final String   knownNameParameterName = "knownName";
@@ -426,6 +433,7 @@ public class AssetConsumer implements AssetConsumerInterface
         VoidResponse restResult = callVoidPostRESTCall(methodName,
                                                        omasServerURL + urlTemplate,
                                                        requestBody,
+                                                       serverName,
                                                        userId);
 
         detectAndThrowInvalidParameterException(methodName, restResult);
@@ -652,12 +660,13 @@ public class AssetConsumer implements AssetConsumerInterface
                                                                          UserNotAuthorizedException
     {
         final String   methodName = "getAssetForConnection";
-        final String   urlTemplate = "/open-metadata/access-services/asset-consumer/users/{0}/assets/by-connection/{1}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/by-connection/{2}";
 
         validateOMASServerURL(methodName);
 
         GUIDResponse restResult = callGUIDGetRESTCall(methodName,
                                                       omasServerURL + urlTemplate,
+                                                      serverName,
                                                       userId,
                                                       connectionGUID);
 
@@ -691,13 +700,14 @@ public class AssetConsumer implements AssetConsumerInterface
                                                               UserNotAuthorizedException
     {
         final String  methodName  = "getMyAssets";
-        final String  urlTemplate = "/open-metadata/access-services/asset-consumer/users/{0}/my-assets?startFrom{1}&pageSize={2}";
+        final String  urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/my-assets?startFrom{2}&pageSize={3}";
 
         validateOMASServerURL(methodName);
         validateUserId(userId, methodName);
 
         AssetListResponse   restResult = callAssetListGetRESTCall(methodName,
                                                                   omasServerURL + urlTemplate,
+                                                                  serverName,
                                                                   userId,
                                                                   startFrom,
                                                                   pageSize);
@@ -727,7 +737,7 @@ public class AssetConsumer implements AssetConsumerInterface
     {
         final String  methodName = "addToMyAssets";
         final String  guidParameter = "assetGUID";
-        final String  urlTemplate = "/open-metadata/access-services/asset-consumer/users/{0}/my-assets/{1}";
+        final String  urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/my-assets/{2}";
 
         validateOMASServerURL(methodName);
         validateUserId(userId, methodName);
@@ -736,6 +746,7 @@ public class AssetConsumer implements AssetConsumerInterface
         VoidResponse   restResult = callVoidPostRESTCall(methodName,
                                                          omasServerURL + urlTemplate,
                                                          nullRequestBody,
+                                                         serverName,
                                                          userId,
                                                          assetGUID);
 
@@ -762,7 +773,7 @@ public class AssetConsumer implements AssetConsumerInterface
     {
         final String  methodName = "removeFromMyAssets";
         final String  guidParameter = "assetGUID";
-        final String  urlTemplate = "/open-metadata/access-services/asset-consumer/users/{0}/my-assets/{1}/delete";
+        final String  urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/my-assets/{2}/delete";
 
         validateOMASServerURL(methodName);
         validateUserId(userId, methodName);
@@ -771,6 +782,7 @@ public class AssetConsumer implements AssetConsumerInterface
         VoidResponse   restResult = callVoidPostRESTCall(methodName,
                                                          omasServerURL + urlTemplate,
                                                          nullRequestBody,
+                                                         serverName,
                                                          userId,
                                                          assetGUID);
 
@@ -810,7 +822,7 @@ public class AssetConsumer implements AssetConsumerInterface
              * Make use of the ConnectedAsset OMAS Service which provides the metadata services for the
              * Open Connector Framework (OCF).
              */
-            return new ConnectedAsset(omasServerURL, userId, assetGUID);
+            return new ConnectedAsset(serverName, omasServerURL, userId, assetGUID);
         }
         catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
         {
@@ -866,7 +878,7 @@ public class AssetConsumer implements AssetConsumerInterface
         final String   methodName = "addLogMessageToAsset";
         final String   guidParameter = "assetGUID";
 
-        final String   urlTemplate = "/open-metadata/access-services/asset-consumer/users/{0}/assets/{1}/log-records";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/{2}/log-records";
 
         validateOMASServerURL(methodName);
         validateUserId(userId, methodName);
@@ -882,6 +894,7 @@ public class AssetConsumer implements AssetConsumerInterface
         VoidResponse restResult = callVoidPostRESTCall(methodName,
                                                        omasServerURL + urlTemplate,
                                                        requestBody,
+                                                       serverName,
                                                        userId,
                                                        assetGUID);
 
@@ -918,7 +931,7 @@ public class AssetConsumer implements AssetConsumerInterface
         final String   guidParameter = "assetGUID";
         final String   nameParameter = "tagName";
 
-        final String   urlTemplate = "/open-metadata/access-services/asset-consumer/users/{0}/assets/{1}/tags";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/{2}/tags";
 
         validateOMASServerURL(methodName);
         validateUserId(userId, methodName);
@@ -932,6 +945,7 @@ public class AssetConsumer implements AssetConsumerInterface
         GUIDResponse restResult = callGUIDPostRESTCall(methodName,
                                                        omasServerURL + urlTemplate,
                                                        requestBody,
+                                                       serverName,
                                                        userId,
                                                        assetGUID);
 
@@ -968,7 +982,7 @@ public class AssetConsumer implements AssetConsumerInterface
         final String   guidParameter = "assetGUID";
         final String   nameParameter = "tagName";
 
-        final String   urlTemplate = "/open-metadata/access-services/asset-consumer/users/{0}/assets/{1}/tags/private";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/{2}/tags/private";
 
         validateOMASServerURL(methodName);
         validateUserId(userId, methodName);
@@ -982,6 +996,7 @@ public class AssetConsumer implements AssetConsumerInterface
         GUIDResponse restResult = callGUIDPostRESTCall(methodName,
                                                        omasServerURL + urlTemplate,
                                                        requestBody,
+                                                       serverName,
                                                        userId,
                                                        assetGUID);
 
@@ -1017,7 +1032,7 @@ public class AssetConsumer implements AssetConsumerInterface
         final String   methodName  = "addRatingToAsset";
         final String   guidParameter = "assetGUID";
 
-        final String   urlTemplate = "/open-metadata/access-services/asset-consumer/users/{0}/assets/{1}/ratings";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/{2}/ratings";
 
         validateOMASServerURL(methodName);
         validateUserId(userId, methodName);
@@ -1030,6 +1045,7 @@ public class AssetConsumer implements AssetConsumerInterface
         GUIDResponse restResult = callGUIDPostRESTCall(methodName,
                                                        omasServerURL + urlTemplate,
                                                        requestBody,
+                                                       serverName,
                                                        userId,
                                                        assetGUID);
 
@@ -1061,7 +1077,7 @@ public class AssetConsumer implements AssetConsumerInterface
         final String   methodName  = "addRatingToAsset";
         final String   guidParameter = "assetGUID";
 
-        final String   urlTemplate = "/open-metadata/access-services/asset-consumer/users/{0}/assets/{1}/likes";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/{2}/likes";
 
         validateOMASServerURL(methodName);
         validateUserId(userId, methodName);
@@ -1070,6 +1086,7 @@ public class AssetConsumer implements AssetConsumerInterface
         GUIDResponse restResult = callGUIDPostRESTCall(methodName,
                                                        omasServerURL + urlTemplate,
                                                        nullRequestBody,
+                                                       serverName,
                                                        userId,
                                                        assetGUID);
 
@@ -1105,7 +1122,7 @@ public class AssetConsumer implements AssetConsumerInterface
         final String   methodName  = "addCommentToAsset";
         final String   guidParameter = "assetGUID";
 
-        final String   urlTemplate = "/open-metadata/access-services/asset-consumer/users/{0}/assets/{1}/comments";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/{2}/comments";
 
         validateOMASServerURL(methodName);
         validateUserId(userId, methodName);
@@ -1118,6 +1135,7 @@ public class AssetConsumer implements AssetConsumerInterface
         GUIDResponse restResult = callGUIDPostRESTCall(methodName,
                                                        omasServerURL + urlTemplate,
                                                        requestBody,
+                                                       serverName,
                                                        userId,
                                                        assetGUID);
 
@@ -1152,7 +1170,7 @@ public class AssetConsumer implements AssetConsumerInterface
     {
         final String   methodName  = "addCommentReply";
         final String   commentGUIDParameter = "commentGUID";
-        final String   urlTemplate = "/open-metadata/access-services/asset-consumer/users/{0}/comments/{1}/replies";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/comments/{2}/replies";
 
         validateOMASServerURL(methodName);
         validateUserId(userId, methodName);
@@ -1165,6 +1183,7 @@ public class AssetConsumer implements AssetConsumerInterface
         GUIDResponse restResult = callGUIDPostRESTCall(methodName,
                                                        omasServerURL + urlTemplate,
                                                        requestBody,
+                                                       serverName,
                                                        userId,
                                                        commentGUID);
 
@@ -1194,7 +1213,7 @@ public class AssetConsumer implements AssetConsumerInterface
         final String   methodName = "removeTag";
         final String   guidParameter = "tagGUID";
 
-        final String   urlTemplate = "/open-metadata/access-services/asset-consumer/users/{0}/tags/{guid}/delete";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/tags/{2}/delete";
 
         validateOMASServerURL(methodName);
         validateUserId(userId, methodName);
@@ -1203,6 +1222,7 @@ public class AssetConsumer implements AssetConsumerInterface
         VoidResponse restResult = callVoidPostRESTCall(methodName,
                                                        omasServerURL + urlTemplate,
                                                        nullRequestBody,
+                                                       serverName,
                                                        userId,
                                                        tagGUID);
 
@@ -1230,7 +1250,7 @@ public class AssetConsumer implements AssetConsumerInterface
         final String   methodName = "removePrivateTag";
         final String   guidParameter = "tagGUID";
 
-        final String   urlTemplate = "/open-metadata/access-services/asset-consumer/users/{0}/tags/private/{guid}/delete";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/tags/private/{2}/delete";
 
         validateOMASServerURL(methodName);
         validateUserId(userId, methodName);
@@ -1239,6 +1259,7 @@ public class AssetConsumer implements AssetConsumerInterface
         VoidResponse restResult = callVoidPostRESTCall(methodName,
                                                        omasServerURL + urlTemplate,
                                                        nullRequestBody,
+                                                       serverName,
                                                        userId,
                                                        tagGUID);
 
@@ -1266,7 +1287,7 @@ public class AssetConsumer implements AssetConsumerInterface
         final String   methodName = "removeRating";
         final String   guidParameter = "ratingGUID";
 
-        final String   urlTemplate = "/open-metadata/access-services/asset-consumer/users/{0}/ratings/{guid}/delete";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/ratings/{2}/delete";
 
         validateOMASServerURL(methodName);
         validateUserId(userId, methodName);
@@ -1275,6 +1296,7 @@ public class AssetConsumer implements AssetConsumerInterface
         VoidResponse restResult = callVoidPostRESTCall(methodName,
                                                        omasServerURL + urlTemplate,
                                                        nullRequestBody,
+                                                       serverName,
                                                        userId,
                                                        ratingGUID);
 
@@ -1302,7 +1324,7 @@ public class AssetConsumer implements AssetConsumerInterface
         final String   methodName = "removeLike";
         final String   guidParameter = "likeGUID";
 
-        final String   urlTemplate = "/open-metadata/access-services/asset-consumer/users/{0}/likes/{guid}/delete";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/likes/{2}/delete";
 
         validateOMASServerURL(methodName);
         validateUserId(userId, methodName);
@@ -1311,6 +1333,7 @@ public class AssetConsumer implements AssetConsumerInterface
         VoidResponse restResult = callVoidPostRESTCall(methodName,
                                                        omasServerURL + urlTemplate,
                                                        nullRequestBody,
+                                                       serverName,
                                                        userId,
                                                        likeGUID);
 
@@ -1338,7 +1361,7 @@ public class AssetConsumer implements AssetConsumerInterface
         final  String  methodName = "removeComment";
         final  String  guidParameter = "commentGUID";
 
-        final String   urlTemplate = "/open-metadata/access-services/asset-consumer/users/{0}/comments/{guid}/delete";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/comments/{2}/delete";
 
         validateOMASServerURL(methodName);
         validateUserId(userId, methodName);
@@ -1347,6 +1370,7 @@ public class AssetConsumer implements AssetConsumerInterface
         VoidResponse restResult = callVoidPostRESTCall(methodName,
                                                        omasServerURL + urlTemplate,
                                                        nullRequestBody,
+                                                       serverName,
                                                        userId,
                                                        commentGUID);
 

@@ -18,9 +18,6 @@ public class TestAssetSchemaElement
     private List<Classification> classifications      = new ArrayList<>();
     private Map<String, Object>  additionalProperties = new HashMap<>();
 
-    private AssetMeanings        assetMeanings        = new MockAssetMeanings(null,
-                                                                              23,
-                                                                              50);
 
     /**
      * Default constructor
@@ -38,7 +35,7 @@ public class TestAssetSchemaElement
      */
     private AssetSchemaElement getTestObject()
     {
-        SchemaElement testBean = new MockSchemaElement();
+        SchemaType  testBean = new SchemaType();
 
         testBean.setType(type);
         testBean.setGUID("TestGUID");
@@ -48,12 +45,7 @@ public class TestAssetSchemaElement
         testBean.setQualifiedName("TestQualifiedName");
         testBean.setAdditionalProperties(additionalProperties);
 
-        testBean.setAuthor("TestAuthor");
-        testBean.setEncodingStandard("TestEncodingStandard");
-        testBean.setUsage("TestUsage");
-        testBean.setVersionNumber("TestVersionNumber");
-
-        return new MockAssetSchemaElement(testBean, assetMeanings);
+        return new AssetComplexSchemaType(testBean, null);
     }
 
     /**
@@ -63,7 +55,7 @@ public class TestAssetSchemaElement
      */
     private AssetSchemaElement getDifferentObject()
     {
-        SchemaElement testBean = new MockSchemaElement();
+        SchemaType  testBean = new SchemaType();
 
         testBean.setType(type);
         testBean.setGUID("TestDifferentGUID");
@@ -73,12 +65,7 @@ public class TestAssetSchemaElement
         testBean.setQualifiedName("TestQualifiedName");
         testBean.setAdditionalProperties(additionalProperties);
 
-        testBean.setAuthor("TestAuthor");
-        testBean.setEncodingStandard("TestEncodingStandard");
-        testBean.setUsage("TestUsage");
-        testBean.setVersionNumber("TestVersionNumber");
-
-        return new MockAssetSchemaElement(testBean, assetMeanings);
+        return new AssetComplexSchemaType(testBean, null);
     }
 
 
@@ -89,22 +76,17 @@ public class TestAssetSchemaElement
      */
     private AssetSchemaElement getAnotherDifferentObject()
     {
-        SchemaElement testBean = new MockSchemaElement();
+        SchemaType  testBean = new SchemaType();
 
         testBean.setType(type);
         testBean.setGUID("TestGUID");
         testBean.setURL("TestURL");
         testBean.setClassifications(classifications);
 
-        testBean.setQualifiedName("TestQualifiedName");
+        testBean.setQualifiedName("TestDifferentName");
         testBean.setAdditionalProperties(additionalProperties);
 
-        testBean.setAuthor("TestDifferentAuthor");
-        testBean.setEncodingStandard("TestEncodingStandard");
-        testBean.setUsage("TestUsage");
-        testBean.setVersionNumber("TestVersionNumber");
-
-        return new MockAssetSchemaElement(testBean, assetMeanings);
+        return new AssetComplexSchemaType(testBean, null);
     }
 
 
@@ -115,7 +97,7 @@ public class TestAssetSchemaElement
      */
     private AssetSchemaElement getYetAnotherDifferentObject()
     {
-        SchemaElement testBean = new MockSchemaElement();
+        SchemaType  testBean = new SchemaType();
 
         testBean.setType(type);
         testBean.setGUID("TestGUID");
@@ -125,12 +107,7 @@ public class TestAssetSchemaElement
         testBean.setQualifiedName("TestQualifiedName");
         testBean.setAdditionalProperties(additionalProperties);
 
-        testBean.setAuthor("TestDifferentAuthor");
-        testBean.setEncodingStandard("TestEncodingStandard");
-        testBean.setUsage("TestUsage");
-        testBean.setVersionNumber("TestVersionNumber");
-
-        return new MockAssetSchemaElement(new AssetSummary(new Asset()), testBean, assetMeanings);
+        return new AssetComplexSchemaType(testBean, null);
     }
 
 
@@ -140,7 +117,7 @@ public class TestAssetSchemaElement
      *
      * @param resultObject object returned by the test
      */
-    private void validateResultObject(AssetSchemaElement  resultObject)
+    private void validateResultObject(AssetSchemaElement resultObject)
     {
         assertTrue(resultObject.getType().getElementTypeBean().equals(type));
         assertTrue(resultObject.getGUID().equals("TestGUID"));
@@ -149,12 +126,6 @@ public class TestAssetSchemaElement
 
         assertTrue(resultObject.getQualifiedName().equals("TestQualifiedName"));
         assertTrue(resultObject.getAdditionalProperties() == null);
-
-        assertTrue(resultObject.getVersionNumber().equals("TestVersionNumber"));
-        assertTrue(resultObject.getUsage().equals("TestUsage"));
-        assertTrue(resultObject.getEncodingStandard().equals("TestEncodingStandard"));
-        assertTrue(resultObject.getAuthor().equals("TestAuthor"));
-        assertTrue(resultObject.getAssetMeanings() != null);
     }
 
 
@@ -163,7 +134,7 @@ public class TestAssetSchemaElement
      *
      * @param nullObject object to test
      */
-    private void validateNullObject(AssetSchemaElement  nullObject)
+    private void validateNullObject(AssetSchemaElement nullObject)
     {
         assertTrue(nullObject.getType() == null);
         assertTrue(nullObject.getGUID() == null);
@@ -172,134 +143,8 @@ public class TestAssetSchemaElement
 
         assertTrue(nullObject.getQualifiedName() == null);
         assertTrue(nullObject.getAdditionalProperties() == null);
-
-        assertTrue(nullObject.getAssetMeanings() == null);
-        assertTrue(nullObject.getAuthor() == null);
-        assertTrue(nullObject.getEncodingStandard() == null);
-        assertTrue(nullObject.getUsage() == null);
-        assertTrue(nullObject.getVersionNumber() == null);
     }
 
-
-    /**
-     * Validate that the object is initialized properly
-     */
-    @Test public void testNullObject()
-    {
-        SchemaElement         nullBean;
-        AssetSchemaElement    nullObject;
-        AssetSchemaElement    nullTemplate;
-        AssetDescriptor       parentAsset;
-
-        nullBean = null;
-        nullObject = new MockAssetSchemaElement(nullBean, null);
-        validateNullObject(nullObject);
-
-        nullBean = new MockSchemaElement();
-        nullObject = new MockAssetSchemaElement(nullBean, null);
-        validateNullObject(nullObject);
-
-        nullBean = new MockSchemaElement(null);
-        nullObject = new MockAssetSchemaElement(nullBean, null);
-        validateNullObject(nullObject);
-
-        parentAsset = null;
-        nullBean = null;
-        nullObject = new MockAssetSchemaElement(parentAsset, nullBean, null);
-        validateNullObject(nullObject);
-
-        nullBean = new MockSchemaElement();
-        nullObject = new MockAssetSchemaElement(parentAsset, nullBean, null);
-        validateNullObject(nullObject);
-
-        nullBean = new MockSchemaElement(null);
-        nullObject = new MockAssetSchemaElement(parentAsset, nullBean, null);
-        validateNullObject(nullObject);
-
-        nullTemplate = null;
-        nullObject = new MockAssetSchemaElement(parentAsset, nullTemplate);
-        validateNullObject(nullObject);
-
-        nullTemplate = new MockAssetSchemaElement(parentAsset, nullBean, null);;
-        nullObject = new MockAssetSchemaElement(parentAsset, nullTemplate);
-        validateNullObject(nullObject);
-    }
-
-
-    /**
-     * Test that the meanings list is properly managed
-     */
-    @Test public void testMeanings()
-    {
-
-        AssetMeanings  meanings = new MockAssetMeanings(null, 23, 60);
-
-        AssetSchemaElement testObject = new MockAssetSchemaElement(null, (AssetMeanings)null);
-
-        assertTrue(testObject.getAssetMeanings() == null);
-
-        testObject = new MockAssetSchemaElement(null, meanings);
-
-        assertTrue(testObject.getAssetMeanings() != null);
-    }
-
-    /**
-     * Validate that schema properties are handled properly.
-     */
-    @Test public void testSchemaProperties()
-    {
-        Map<String, Object>  propertyMap = new HashMap<>();
-
-        propertyMap.put("property1", "TestString");
-        propertyMap.put("property2", new Integer(2));
-
-        SchemaElement testBean = new MockSchemaElement();
-        testBean.setSchemaProperties(propertyMap);
-
-        AssetSchemaElement testObject = new MockAssetSchemaElement(testBean, null);
-
-        AdditionalProperties schemaProperties = testObject.getSchemaProperties();
-
-        assertTrue(schemaProperties.getPropertyNames() != null);
-
-        Iterator<String> iterator = schemaProperties.getPropertyNames();
-
-        String propertyName;
-
-        propertyName = iterator.next();
-        assertTrue(propertyName.equals("property2"));
-        assertTrue(schemaProperties.getProperty(propertyName).equals(new Integer(2)));
-
-        propertyName = iterator.next();
-        assertTrue(propertyName.equals("property1"));
-        assertTrue(schemaProperties.getProperty(propertyName).equals("TestString"));
-
-        try
-        {
-            iterator.next();
-            assertTrue(false);
-        }
-        catch (Throwable   exc)
-        {
-            assertTrue(true);
-        }
-
-        testBean = new MockSchemaElement();
-        testObject = new MockAssetSchemaElement(testBean, null);
-
-        schemaProperties = testObject.getSchemaProperties();
-
-        assertTrue(schemaProperties == null);
-
-        propertyMap = new HashMap<>();
-        testBean = new MockSchemaElement();
-        testBean.setSchemaProperties(propertyMap);
-        testObject = new MockAssetSchemaElement(testBean, null);
-
-        schemaProperties = testObject.getSchemaProperties();
-
-        assertTrue(schemaProperties == null);
-    }
 
 
     /**
@@ -312,12 +157,11 @@ public class TestAssetSchemaElement
         assertFalse(getTestObject().equals("DummyString"));
         assertTrue(getTestObject().equals(getTestObject()));
 
-        AssetSchemaElement  sameObject = getTestObject();
+        AssetSchemaElement sameObject = getTestObject();
         assertTrue(sameObject.equals(sameObject));
 
         assertFalse(getTestObject().equals(getDifferentObject()));
         assertFalse(getTestObject().equals(getAnotherDifferentObject()));
-        assertFalse(getTestObject().equals(getYetAnotherDifferentObject()));
     }
 
 
@@ -330,20 +174,4 @@ public class TestAssetSchemaElement
     }
 
 
-    /**
-     *  Validate that an object cloned from another object has the same content as the original
-     */
-    @Test public void testClone()
-    {
-        validateResultObject(new MockAssetSchemaElement(null, getTestObject()));
-    }
-
-
-    /**
-     * Test that toString is overridden.
-     */
-    @Test public void testToString()
-    {
-        assertTrue(getTestObject().toString().contains("SchemaElement"));
-    }
 }
