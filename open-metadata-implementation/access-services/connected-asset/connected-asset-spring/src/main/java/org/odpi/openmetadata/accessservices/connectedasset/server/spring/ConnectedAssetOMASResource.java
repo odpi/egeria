@@ -31,6 +31,7 @@ public class ConnectedAssetOMASResource
      * @param assetGUID  String   unique id for asset.
      *
      * @return a bean with the basic properties about the asset or
+     * InvalidParameterException - the userId is null or invalid or
      * UnrecognizedAssetGUIDException - the GUID is null or invalid or
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
@@ -343,33 +344,6 @@ public class ConnectedAssetOMASResource
 
 
     /**
-     * Returns the list of meanings for the asset.
-     *
-     * @param serverName   String   name of server instance to call.
-     * @param userId       String   userId of user making request.
-     * @param assetGUID    String   unique id for asset.
-     * @param elementStart int      starting position for fist returned element.
-     * @param maxElements  int      maximum number of elements to return on the call.
-     *
-     * @return a list of meanings or
-     * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
-     * PropertyServerException - there is a problem retrieving the asset properties from the property server or
-     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/meanings")
-
-    public MeaningsResponse getMeanings(@PathVariable String  serverName,
-                                        @PathVariable String  userId,
-                                        @PathVariable String  assetGUID,
-                                        @RequestParam int     elementStart,
-                                        @RequestParam int     maxElements)
-    {
-        return restAPI.getMeanings(serverName, userId, assetGUID, elementStart, maxElements);
-    }
-
-
-    /**
      * Returns the list of note logs for the asset.
      *
      * @param serverName   String   name of server instance to call.
@@ -505,29 +479,29 @@ public class ConnectedAssetOMASResource
 
 
     /**
-     * Returns the schema for the asset.
+     * Returns a list of schema attributes for a schema type.
      *
-     * @param serverName   String   name of server instance to call.
-     * @param userId       String   userId of user making request.
-     * @param assetGUID    String   unique id for asset.
-     * @param elementStart int      starting position for fist returned element.
-     * @param maxElements  int      maximum number of elements to return on the call.
+     * @param serverName     String   name of server instance to call.
+     * @param userId         String   userId of user making request.
+     * @param schemaTypeGUID String   unique id for containing schema type.
+     * @param elementStart   int      starting position for fist returned element.
+     * @param maxElements    int      maximum number of elements to return on the call.
      *
-     * @return a schema or
+     * @return a schema attributes response or
      * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
+     * UnrecognizedGUIDException - the GUID is null or invalid or
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/schema")
+    @RequestMapping(method = RequestMethod.GET, path = "/assets/{schemaTypeGUID}/schema-attributes")
 
-    public SchemaResponse getSchema(@PathVariable String  serverName,
-                                    @PathVariable String  userId,
-                                    @PathVariable String  assetGUID,
-                                    @RequestParam int     elementStart,
-                                    @RequestParam int     maxElements)
+    public SchemaAttributesResponse getSchemaAttributes(@PathVariable String  serverName,
+                                                        @PathVariable String  userId,
+                                                        @PathVariable String  schemaTypeGUID,
+                                                        @RequestParam int     elementStart,
+                                                        @RequestParam int     maxElements)
     {
-        return restAPI.getSchema(serverName, userId, assetGUID, elementStart, maxElements);
+        return restAPI.getSchemaAttributes(serverName, userId, schemaTypeGUID, elementStart, maxElements);
     }
 
 }

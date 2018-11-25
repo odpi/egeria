@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.connectedasset.server;
 
 import org.odpi.openmetadata.accessservices.connectedasset.ffdc.ConnectedAssetErrorCode;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
@@ -15,12 +16,24 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 class ConnectedAssetInstanceHandler
 {
     private static ConnectedAssetServicesInstanceMap   instanceMap = new ConnectedAssetServicesInstanceMap();
+    private static AccessServiceDescription myDescription = AccessServiceDescription.CONNECTED_ASSET_OMAS;
 
     /**
      * Default constructor registers the access service
      */
     ConnectedAssetInstanceHandler() {
         ConnectedAssetRegistration.registerAccessService();
+    }
+
+
+    /**
+     * Return the Governance Program's official Access Service Name
+     *
+     * @return String name
+     */
+    public String  getAccessServiceName()
+    {
+        return myDescription.getAccessServiceName();
     }
 
 

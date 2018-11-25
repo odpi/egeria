@@ -2,7 +2,18 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.connectedasset.server;
 
+import org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions.ConnectedAssetCheckedExceptionBase;
+import org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions.InvalidParameterException;
+import org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions.UnrecognizedAssetGUIDException;
+import org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions.UnrecognizedGUIDException;
 import org.odpi.openmetadata.accessservices.connectedasset.rest.*;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -10,8 +21,9 @@ import org.odpi.openmetadata.accessservices.connectedasset.rest.*;
  */
 public class ConnectedAssetRESTServices
 {
-    static private String                          accessServiceName   = null;
     static private ConnectedAssetInstanceHandler   instanceHandler = new ConnectedAssetInstanceHandler();
+
+    private static final Logger log = LoggerFactory.getLogger(ConnectedAssetRESTServices.class);
 
     /**
      * Default constructor
@@ -24,11 +36,12 @@ public class ConnectedAssetRESTServices
     /**
      * Returns the basic information about the asset.
      *
-     * @param serverName   String   name of server instance to call.
+     * @param serverName String   name of server instance to call.
      * @param userId     String   userId of user making request.
      * @param assetGUID  String   unique id for asset.
      *
      * @return a bean with the basic properties about the asset or
+     * InvalidParameterException - the userId is null or invalid or
      * UnrecognizedAssetGUIDException - the GUID is null or invalid or
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
@@ -37,7 +50,57 @@ public class ConnectedAssetRESTServices
                                          String   userId,
                                          String   assetGUID)
     {
-        return null;
+        final String        methodName = "getAssetSummary";
+
+        log.debug("Calling method: " + methodName + " for server " + serverName);
+
+        AssetResponse  response = new AssetResponse();
+
+        try
+        {
+            AssetHandler   assetHandler = new AssetHandler(instanceHandler.getAccessServiceName(),
+                                                           serverName,
+                                                           instanceHandler.getRepositoryConnector(serverName),
+                                                           userId,
+                                                           assetGUID);
+
+            response.setAsset(assetHandler.getAsset());
+            response.setAnnotationCount(assetHandler.getAnnotationCount());
+            response.setCertificationCount(assetHandler.getCertificationCount());
+            response.setCommentCount(assetHandler.getCommentCount());
+            response.setConnectionCount(assetHandler.getConnectionCount());
+            response.setExternalIdentifierCount(assetHandler.getExternalIdentifierCount());
+            response.setExternalReferencesCount(assetHandler.getExternalReferencesCount());
+            response.setInformalTagCount(assetHandler.getInformalTagCount());
+            response.setLicenseCount(assetHandler.getLicenseCount());
+            response.setLikeCount(assetHandler.getLikeCount());
+            response.setKnownLocationsCount(assetHandler.getKnownLocationsCount());
+            response.setNoteLogsCount(assetHandler.getNoteLogsCount());
+            response.setRatingsCount(assetHandler.getRatingsCount());
+            response.setRelatedAssetCount(assetHandler.getRelatedAssetCount());
+            response.setRelatedMediaReferenceCount(assetHandler.getRelatedMediaReferenceCount());
+            response.setSchemaType(assetHandler.getSchemaType());
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (UnrecognizedAssetGUIDException error)
+        {
+            captureUnrecognizedAssetGUIDException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+
+        return response;
     }
 
 
@@ -337,31 +400,6 @@ public class ConnectedAssetRESTServices
 
 
     /**
-     * Returns the list of meanings for the asset.
-     *
-     * @param serverName   String   name of server instance to call.
-     * @param userId       String   userId of user making request.
-     * @param assetGUID    String   unique id for asset.
-     * @param elementStart int      starting position for fist returned element.
-     * @param maxElements  int      maximum number of elements to return on the call.
-     *
-     * @return a list of meanings or
-     * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
-     * PropertyServerException - there is a problem retrieving the asset properties from the property server or
-     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    public MeaningsResponse getMeanings(String  serverName,
-                                        String  userId,
-                                        String  assetGUID,
-                                        int     elementStart,
-                                        int     maxElements)
-    {
-        return null;
-    }
-
-
-    /**
      * Returns the list of note logs for the asset.
      *
      * @param serverName   String   name of server instance to call.
@@ -487,27 +525,196 @@ public class ConnectedAssetRESTServices
 
 
     /**
-     * Returns the schema for the asset.
+     * Returns a list of schema attributes for a schema type.
      *
-     * @param serverName   String   name of server instance to call.
-     * @param userId       String   userId of user making request.
-     * @param assetGUID    String   unique id for asset.
-     * @param elementStart int      starting position for fist returned element.
-     * @param maxElements  int      maximum number of elements to return on the call.
+     * @param serverName     String   name of server instance to call.
+     * @param userId         String   userId of user making request.
+     * @param schemaTypeGUID String   unique id for containing schema type.
+     * @param elementStart   int      starting position for fist returned element.
+     * @param maxElements    int      maximum number of elements to return on the call.
      *
-     * @return a list of assets or
+     * @return a schema attributes response or
      * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
+     * UnrecognizedGUIDException - the GUID is null or invalid or
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public SchemaResponse getSchema(String  serverName,
-                                    String  userId,
-                                    String  assetGUID,
-                                    int     elementStart,
-                                    int     maxElements)
+   public SchemaAttributesResponse getSchemaAttributes(String  serverName,
+                                                       String  userId,
+                                                       String  schemaTypeGUID,
+                                                       int     elementStart,
+                                                       int     maxElements)
     {
         return null;
     }
 
+
+    /**
+     * Set the exception information into the response.
+     *
+     * @param response  REST Response
+     * @param error returned response.
+     * @param exceptionClassName  class name of the exception to recreate
+     */
+    private void captureCheckedException(ConnectedAssetOMASAPIResponse      response,
+                                         ConnectedAssetCheckedExceptionBase error,
+                                         String                             exceptionClassName)
+    {
+        response.setRelatedHTTPCode(error.getReportedHTTPCode());
+        response.setExceptionClassName(exceptionClassName);
+        response.setExceptionErrorMessage(error.getErrorMessage());
+        response.setExceptionSystemAction(error.getReportedSystemAction());
+        response.setExceptionUserAction(error.getReportedUserAction());
+    }
+
+
+    /**
+     * Set the exception information into the response.
+     *
+     * @param response  REST Response
+     * @param error returned response.
+     * @param exceptionClassName  class name of the exception to recreate
+     * @param exceptionProperties map of properties stored in the exception to help with diagnostics
+     */
+    private void captureCheckedException(ConnectedAssetOMASAPIResponse      response,
+                                         ConnectedAssetCheckedExceptionBase error,
+                                         String                             exceptionClassName,
+                                         Map<String, Object>                exceptionProperties)
+    {
+        response.setRelatedHTTPCode(error.getReportedHTTPCode());
+        response.setExceptionClassName(exceptionClassName);
+        response.setExceptionErrorMessage(error.getErrorMessage());
+        response.setExceptionSystemAction(error.getReportedSystemAction());
+        response.setExceptionUserAction(error.getReportedUserAction());
+        response.setExceptionProperties(exceptionProperties);
+    }
+
+
+    /**
+     * Set the exception information into the response.
+     *
+     * @param response  REST Response
+     * @param error returned response.
+     */
+    private void captureInvalidParameterException(ConnectedAssetOMASAPIResponse response,
+                                                  InvalidParameterException error)
+    {
+        String  parameterName = error.getParameterName();
+
+        if (parameterName != null)
+        {
+            Map<String, Object>  exceptionProperties = new HashMap<>();
+
+            exceptionProperties.put("parameterName", parameterName);
+            captureCheckedException(response, error, error.getClass().getName(), exceptionProperties);
+        }
+        else
+        {
+            captureCheckedException(response, error, error.getClass().getName());
+        }
+    }
+
+
+    /**
+     * Set the exception information into the response.
+     *
+     * @param response  REST Response
+     * @param error returned response.
+     */
+    private void captureUnrecognizedAssetGUIDException(ConnectedAssetOMASAPIResponse response,
+                                                       UnrecognizedAssetGUIDException error)
+    {
+        String  assetGUID = error.getAssetGUID();
+
+        if (assetGUID != null)
+        {
+            Map<String, Object>  exceptionProperties = new HashMap<>();
+
+            exceptionProperties.put("assetGUID", assetGUID);
+            captureCheckedException(response, error, error.getClass().getName(), exceptionProperties);
+        }
+        else
+        {
+            captureCheckedException(response, error, error.getClass().getName());
+        }
+    }
+
+
+    /**
+     * Set the exception information into the response.
+     *
+     * @param response  REST Response
+     * @param error returned response.
+     */
+    private void captureUnrecognizedGUIDException(ConnectedAssetOMASAPIResponse response,
+                                                  UnrecognizedGUIDException error)
+    {
+        Map<String, Object>  exceptionProperties = new HashMap<>();
+
+        String  guid = error.getGUID();
+        String  guidType = error.getGUIDType();
+
+        if (guid != null)
+        {
+            exceptionProperties.put("guid", guid);
+        }
+
+        if (guidType != null)
+        {
+            exceptionProperties.put("guidType", guidType);
+        }
+
+        if (exceptionProperties.isEmpty())
+        {
+            captureCheckedException(response, error, error.getClass().getName());
+        }
+        else
+        {
+            captureCheckedException(response, error, error.getClass().getName(), exceptionProperties);
+        }
+    }
+
+
+    /**
+     * Set the exception information into the response.
+     *
+     * @param response  REST Response
+     * @param error returned response.
+     */
+    private void capturePropertyServerException(ConnectedAssetOMASAPIResponse     response,
+                                                PropertyServerException error)
+    {
+        response.setRelatedHTTPCode(error.getReportedHTTPCode());
+        response.setExceptionClassName(PropertyServerException.class.getName());
+        response.setExceptionErrorMessage(error.getErrorMessage());
+        response.setExceptionSystemAction(error.getReportedSystemAction());
+        response.setExceptionUserAction(error.getReportedUserAction());
+    }
+
+
+    /**
+     * Set the exception information into the response.
+     *
+     * @param response  REST Response
+     * @param error returned response.
+     */
+    private void captureUserNotAuthorizedException(ConnectedAssetOMASAPIResponse response,
+                                                   UserNotAuthorizedException error)
+    {
+        String  userId = error.getUserId();
+
+        if (userId != null)
+        {
+            Map<String, Object>  exceptionProperties = new HashMap<>();
+
+            exceptionProperties.put("userId", userId);
+            response.setExceptionProperties(exceptionProperties);
+        }
+
+        response.setRelatedHTTPCode(error.getReportedHTTPCode());
+        response.setExceptionClassName(UserNotAuthorizedException.class.getName());
+        response.setExceptionErrorMessage(error.getErrorMessage());
+        response.setExceptionSystemAction(error.getReportedSystemAction());
+        response.setExceptionUserAction(error.getReportedUserAction());
+    }
 }
