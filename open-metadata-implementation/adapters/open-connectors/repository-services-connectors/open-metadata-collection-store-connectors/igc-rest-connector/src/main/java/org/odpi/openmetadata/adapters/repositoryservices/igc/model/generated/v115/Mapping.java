@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.model.generated.v115;
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.model.common.*;
@@ -8,7 +9,7 @@ import java.util.Date;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'mappingRemoved' asset type in IGC, displayed as 'Mapping' in the IGC UI.
+ * POJO for the 'mapping' asset type in IGC, displayed as 'Mapping' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Mapping extends MainObject {
 
-    public static final String IGC_TYPE_ID = "mappingRemoved";
+    public static final String IGC_TYPE_ID = "mapping";
 
     /**
      * The 'description' property, displayed as 'Description' in the IGC UI.

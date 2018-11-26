@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.model.generated.v117;
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.model.common.*;
