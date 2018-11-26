@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.userinterface.accessservices.service;
 
 import org.junit.jupiter.api.DisplayName;
