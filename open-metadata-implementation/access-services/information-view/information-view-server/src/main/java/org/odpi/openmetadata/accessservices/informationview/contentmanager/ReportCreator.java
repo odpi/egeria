@@ -2,9 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.informationview.contentmanager;
 
-import org.odpi.openmetadata.accessservices.informationview.events.BusinessTerm;
-import org.odpi.openmetadata.accessservices.informationview.events.ColumnSource;
-import org.odpi.openmetadata.accessservices.informationview.events.GlossaryCategory;
+import org.odpi.openmetadata.accessservices.informationview.events.DatabaseColumnSource;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportColumn;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportElement;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportRequestBody;
@@ -179,7 +177,7 @@ public class ReportCreator {
 
 
         if (reportColumn.getBusinessTerm() != null) {
-            EntityDetail businessTerm = entitiesCreatorHelper.getEntity(Constants.BUSINESS_TERM, getQualifiedNameForBusinessTerm(reportColumn.getBusinessTerm()));
+            EntityDetail businessTerm = entitiesCreatorHelper.getEntity(Constants.BUSINESS_TERM, reportColumn.getBusinessTerm().getQualifiedName());
 
             if (businessTerm != null) {
                 entitiesCreatorHelper.addRelationship(Constants.SEMANTIC_ASSIGNMENT,
@@ -194,7 +192,7 @@ public class ReportCreator {
 
         for (Source source : reportColumn.getSources()) {
 
-            EntityDetail sourceColumn = entitiesCreatorHelper.getEntity(Constants.RELATIONAL_COLUMN, getQualifiedNameForSourceColumn(source));
+            EntityDetail sourceColumn = entitiesCreatorHelper.getEntity(Constants.SCHEMA_ATTRIBUTE, source.getQualifiedName());
             if (sourceColumn != null) {
                 log.info("source database column found.");
 
@@ -208,33 +206,9 @@ public class ReportCreator {
                         schemaQueryImplProperties);
 
             } else {
-                log.error("source database column not found, unable to add relationships for column " + ((ColumnSource) source).getColumnName());
+                log.error("source column not found, unable to add relationships for column " + source.toString());
             }
         }
     }
-
-    private String getQualifiedNameForBusinessTerm(BusinessTerm businessTerm) {
-        StringBuilder builder = new StringBuilder();
-        builder.append(businessTerm.getName());
-        GlossaryCategory parentCategory = businessTerm.getGlossaryCategory();
-        while (parentCategory != null) {
-            builder.insert(0, parentCategory.getName() + ".");
-            parentCategory = parentCategory.getParentCategory();
-        }
-
-        return builder.toString();
-    }
-
-    private String getQualifiedNameForSourceColumn(Source source) {
-        if (source instanceof ColumnSource) {
-            ColumnSource columnSource = (ColumnSource) source;
-            String qualifiedName = columnSource.getTableSource().getNetworkAddress() + "." + "Connection." + columnSource.getTableSource().getDatabaseName() + "." + columnSource.getTableSource().getSchemaName() + "." + columnSource.getTableSource().getTableName() + ".";
-            qualifiedName += columnSource.getColumnName();
-
-            return qualifiedName;
-        }
-        return "";//TODO
-    }
-
 
 }

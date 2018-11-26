@@ -267,7 +267,6 @@ public class ColumnContextEventBuilder {
             businessTerm.setDescription(EntityPropertiesUtils.getStringValueForProperty(btDetail.getProperties(), Constants.DESCRIPTION));
             businessTerm.setUsage(EntityPropertiesUtils.getStringValueForProperty(btDetail.getProperties(), Constants.USAGE));
             businessTerm.setSummary(EntityPropertiesUtils.getStringValueForProperty(btDetail.getProperties(), Constants.SUMMARY));
-            businessTerm.setQualifiedName(EntityPropertiesUtils.getStringValueForProperty(btDetail.getProperties(), Constants.QUALIFIED_NAME));
 
         }
         return businessTerm;

@@ -42,7 +42,7 @@ public enum InformationViewErrorCode {
             "The system is unable to process the request.",
             "Verify the topic event."),
     BUILD_COLUMN_CONTEXT_EXCEPTION("OMAS-INFORMATIONVIEW-008",
-            "Full context could not be built for column {0} because of {1}",
+            "Full context could not be built for column {} because of {}",
             "The system is unable to process the request.",
             "Verify the topic event."),
     PARSE_EVENT("OMAS-INFORMATIONVIEW-009",
@@ -50,11 +50,11 @@ public enum InformationViewErrorCode {
             "The system is unable to process the request.",
             "Verify the topic event."),
     ADD_CLASSIFICATION("OMAS-INFORMATIONVIEW-010",
-            "Unable to create classification {0} for entity of type {1}",
+            "Unable to create classification {0} for entity of type {}",
             "The system is unable to process the request.",
             "Verify the topic event."),
     REPORT_CREATION_EXCEPTION("OMAS-INFORMATIONVIEW-011",
-            "Unable to create report based on received json {0}",
+            "Unable to create report based on received json {}",
             "The system is unable to process the request.",
             "Verify the post request.");
     private static final Logger log = LoggerFactory.getLogger(InformationViewErrorCode.class);
