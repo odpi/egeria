@@ -37,6 +37,7 @@ import static org.testng.Assert.assertEquals;
 public class AssetCatalogClientTest {
 
     private static final String defaultOMASServerURL = "http://localhost:8081";
+    private static final String defaultServerName = "TestServer";
     private static final String defaultUserId = "zebra91";
     private static final String defaultAssetId = "66d7f872-19bd-439c-98ae-c3fe49d8f420";
     private static final String defaultRelationshipId = "c7184523-7ca5-4876-9210-fe1bb1b55cd7";
@@ -45,12 +46,12 @@ public class AssetCatalogClientTest {
     private RestTemplate restTemplate;
 
     @InjectMocks
-    private AssetCatalog assetCatalog = new AssetCatalog(defaultOMASServerURL);
+    private AssetCatalog assetCatalog = new AssetCatalog(defaultServerName, defaultOMASServerURL);
 
     @DisplayName("Asset Catalog - Test Invalid Server URL")
     @Test
     void assetCatalogInvalidServerURLTest() {
-        AssetCatalog assetCatalog = new AssetCatalog("");
+        AssetCatalog assetCatalog = new AssetCatalog(defaultServerName, "");
 
         Throwable thrown = assertThrows(PropertyServerException.class, () ->
                 assetCatalog.getAssetSummary(defaultUserId, defaultAssetId));

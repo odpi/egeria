@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector;
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -52,8 +53,6 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
     private String                              accessServiceName         = null;
 
     private static final Logger       log      = LoggerFactory.getLogger(EnterpriseOMRSRepositoryConnector.class);
-    private static final OMRSAuditLog auditLog = new OMRSAuditLog(OMRSAuditingComponent.ENTERPRISE_REPOSITORY_CONNECTOR);
-
 
     /**
      * Constructor used by the EnterpriseOMRSConnectorProvider.
@@ -140,16 +139,19 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
     {
         super.start();
 
-        final String actionDescription = "start";
+        if (auditLog != null)
+        {
+            final String actionDescription = "start";
 
-        OMRSAuditCode auditCode = OMRSAuditCode.STARTING_ENTERPRISE_CONNECTOR;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(accessServiceName),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+            OMRSAuditCode auditCode = OMRSAuditCode.STARTING_ENTERPRISE_CONNECTOR;
+            auditLog.logRecord(actionDescription,
+                               auditCode.getLogMessageId(),
+                               auditCode.getSeverity(),
+                               auditCode.getFormattedLogMessage(accessServiceName),
+                               null,
+                               auditCode.getSystemAction(),
+                               auditCode.getUserAction());
+        }
     }
 
 
@@ -162,16 +164,19 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
     {
         super.disconnect();
 
-        final String actionDescription = "disconnect";
+        if (auditLog != null)
+        {
+            final String actionDescription = "disconnect";
 
-        OMRSAuditCode auditCode = OMRSAuditCode.DISCONNECTING_ENTERPRISE_CONNECTOR;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(accessServiceName),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+            OMRSAuditCode auditCode = OMRSAuditCode.DISCONNECTING_ENTERPRISE_CONNECTOR;
+            auditLog.logRecord(actionDescription,
+                               auditCode.getLogMessageId(),
+                               auditCode.getSeverity(),
+                               auditCode.getFormattedLogMessage(accessServiceName),
+                               null,
+                               auditCode.getSystemAction(),
+                               auditCode.getUserAction());
+        }
 
         if ((connectorManager != null) && (connectorConsumerId != null))
         {

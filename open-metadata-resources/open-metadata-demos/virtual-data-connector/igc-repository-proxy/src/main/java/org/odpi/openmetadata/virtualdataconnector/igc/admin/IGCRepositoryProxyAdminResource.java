@@ -1,7 +1,9 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.virtualdataconnector.igc.admin;
 
 import org.odpi.openmetadata.adminservices.OMAGServerAdminServices;
+import org.odpi.openmetadata.adminservices.OMAGServerOperationalServices;
 import org.odpi.openmetadata.adminservices.configuration.properties.CohortConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.LocalRepositoryConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
@@ -25,7 +27,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}")
 public class IGCRepositoryProxyAdminResource {
-    private OMAGServerAdminServices adminAPI = new OMAGServerAdminServices();
+    private OMAGServerAdminServices       adminAPI            = new OMAGServerAdminServices();
+    private OMAGServerOperationalServices operationalServices = new OMAGServerOperationalServices();
 
 
     /*
@@ -362,7 +365,7 @@ public class IGCRepositoryProxyAdminResource {
     @RequestMapping(method = RequestMethod.GET, path = "/configuration")
     public OMAGServerConfigResponse getCurrentConfiguration(@PathVariable String userId,
                                                             @PathVariable String serverName) {
-        return adminAPI.getCurrentConfiguration(userId, serverName);
+        return adminAPI.getStoredConfiguration(userId, serverName);
     }
 
 
@@ -384,7 +387,7 @@ public class IGCRepositoryProxyAdminResource {
     @RequestMapping(method = RequestMethod.POST, path = "/instance")
     public VoidResponse activateWithStoredConfig(@PathVariable String userId,
                                                  @PathVariable String serverName) {
-        return adminAPI.activateWithStoredConfig(userId, serverName);
+        return operationalServices.activateWithStoredConfig(userId, serverName);
     }
 
 
@@ -404,7 +407,7 @@ public class IGCRepositoryProxyAdminResource {
     public VoidResponse activateWithSuppliedConfig(@PathVariable String userId,
                                                    @PathVariable String serverName,
                                                    @RequestParam OMAGServerConfig configuration) {
-        return adminAPI.activateWithSuppliedConfig(userId, serverName, configuration);
+        return operationalServices.activateWithSuppliedConfig(userId, serverName, configuration);
     }
 
 
@@ -420,7 +423,7 @@ public class IGCRepositoryProxyAdminResource {
     @RequestMapping(method = RequestMethod.DELETE, path = "/instance")
     public VoidResponse deactivateTemporarily(@PathVariable String userId,
                                               @PathVariable String serverName) {
-        return adminAPI.deactivateTemporarily(userId, serverName);
+        return operationalServices.deactivateTemporarily(userId, serverName);
     }
 
 
@@ -437,7 +440,26 @@ public class IGCRepositoryProxyAdminResource {
     @RequestMapping(method = RequestMethod.DELETE, path = "")
     public VoidResponse deactivatePermanently(@PathVariable String userId,
                                               @PathVariable String serverName) {
-        return adminAPI.deactivatePermanently(userId, serverName);
+        return operationalServices.deactivatePermanently(userId, serverName);
+    }
+
+
+    /**
+     * Return the configuration used for the current active instance of the server.  Null is returned if
+     * the server instance is not running.
+     *
+     * @param userId  user that is issuing the request
+     * @param serverName  local server name
+     * @return configuration properties used to initialize the server or null if not running or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException the server name is invalid or
+     * OMAGConfigurationErrorException there is a problem using the supplied configuration.
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/instance/configuration")
+    public OMAGServerConfigResponse getActiveConfiguration(@PathVariable String           userId,
+                                                           @PathVariable String           serverName)
+    {
+        return operationalServices.getActiveConfiguration(userId, serverName);
     }
 
 }

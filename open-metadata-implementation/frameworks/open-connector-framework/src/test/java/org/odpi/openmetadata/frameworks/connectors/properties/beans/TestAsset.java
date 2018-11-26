@@ -5,7 +5,10 @@ package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.testng.annotations.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
@@ -15,10 +18,11 @@ import static org.testng.Assert.assertTrue;
  */
 public class TestAsset
 {
-    private ElementType          type                           = new ElementType();
-    private List<Classification> classifications                = new ArrayList<>();
-    private Map<String, Object>  additionalProperties           = new HashMap<>();
-    private Map<String, Object>  assetProperties                = new HashMap<>();
+    private ElementType          type                 = new ElementType();
+    private List<Classification> classifications      = new ArrayList<>();
+    private List<String>         zoneMembership       = new ArrayList<>();
+    private Map<String, Object>  additionalProperties = new HashMap<>();
+    private Map<String, Object>  assetProperties      = new HashMap<>();
 
 
     /**
@@ -26,7 +30,7 @@ public class TestAsset
      */
     public TestAsset()
     {
-
+        zoneMembership.add("TestZone");
     }
 
 
@@ -51,6 +55,7 @@ public class TestAsset
         testObject.setDescription("TestDescription");
         testObject.setShortDescription("TestShortDescription");
         testObject.setOwner("TestOwner");
+        testObject.setZoneMembership(zoneMembership);
         testObject.setAssetProperties(assetProperties);
 
         return testObject;
@@ -62,7 +67,7 @@ public class TestAsset
      *
      * @param resultObject object returned by the test
      */
-    private void validateResultObject(Asset  resultObject)
+    private void validateResultObject(Asset resultObject)
     {
         assertTrue(resultObject.getType().equals(type));
         assertTrue(resultObject.getGUID().equals("TestGUID"));
@@ -76,6 +81,7 @@ public class TestAsset
         assertTrue(resultObject.getDescription().equals("TestDescription"));
         assertTrue(resultObject.getShortDescription().equals("TestShortDescription"));
         assertTrue(resultObject.getOwner().equals("TestOwner"));
+        assertTrue(resultObject.getZoneMembership() != null);
         assertTrue(resultObject.getAssetProperties() == null);
     }
 
@@ -85,7 +91,7 @@ public class TestAsset
      */
     @Test public void testNullObject()
     {
-        Asset    nullObject = new Asset();
+        Asset nullObject = new Asset();
 
         assertTrue(nullObject.getType() == null);
         assertTrue(nullObject.getGUID() == null);
@@ -99,6 +105,7 @@ public class TestAsset
         assertTrue(nullObject.getDescription() == null);
         assertTrue(nullObject.getShortDescription() == null);
         assertTrue(nullObject.getOwner() == null);
+        assertTrue(nullObject.getZoneMembership() == null);
         assertTrue(nullObject.getAssetProperties() == null);
 
         nullObject = new Asset(null);
@@ -115,7 +122,14 @@ public class TestAsset
         assertTrue(nullObject.getDescription() == null);
         assertTrue(nullObject.getShortDescription() == null);
         assertTrue(nullObject.getOwner() == null);
+        assertTrue(nullObject.getZoneMembership() == null);
         assertTrue(nullObject.getAssetProperties() == null);
+
+        nullObject = new Asset();
+
+        nullObject.setZoneMembership(new ArrayList<>());
+
+        assertTrue(nullObject.getZoneMembership() == null);
     }
 
 
@@ -124,8 +138,8 @@ public class TestAsset
      */
     @Test public void testAssetProperties()
     {
-        Map<String, Object>   propertyMap;
-        Asset                 testObject = new Asset();
+        Map<String, Object> propertyMap;
+        Asset               testObject = new Asset();
 
         assertTrue(testObject.getAssetProperties() == null);
 
@@ -154,6 +168,41 @@ public class TestAsset
 
 
     /**
+     * Validate that asset properties are managed properly
+     */
+    @Test public void testZoneMembership()
+    {
+        List<String> zoneList;
+        Asset        testObject = new Asset();
+
+        assertTrue(testObject.getZoneMembership() == null);
+
+        zoneList = null;
+        testObject = new Asset();
+        testObject.setZoneMembership(zoneList);
+
+        assertTrue(testObject.getZoneMembership() == null);
+
+        zoneList = new ArrayList<>();
+        testObject = new Asset();
+        testObject.setZoneMembership(zoneList);
+
+        assertTrue(testObject.getZoneMembership() == null);
+
+        zoneList.add("zone1");
+        zoneList.add("zone2");
+        testObject = new Asset();
+        testObject.setZoneMembership(zoneList);
+
+        List<String>   retrievedZoneList = testObject.getZoneMembership();
+
+        assertTrue(retrievedZoneList != null);
+        assertFalse(retrievedZoneList.isEmpty());
+        assertTrue(retrievedZoneList.size() == 2);
+    }
+
+
+    /**
      * Validate that 2 different objects with the same content are evaluated as equal.
      * Also that different objects are considered not equal.
      */
@@ -163,10 +212,10 @@ public class TestAsset
         assertFalse(getTestObject().equals("DummyString"));
         assertTrue(getTestObject().equals(getTestObject()));
 
-        Asset  sameObject = getTestObject();
+        Asset sameObject = getTestObject();
         assertTrue(sameObject.equals(sameObject));
 
-        Asset  differentObject = getTestObject();
+        Asset differentObject = getTestObject();
         differentObject.setGUID("Different");
         assertFalse(getTestObject().equals(differentObject));
     }
@@ -223,7 +272,7 @@ public class TestAsset
         /*
          * Through superclass
          */
-        Referenceable  referenceable = getTestObject();
+        Referenceable referenceable = getTestObject();
 
         try
         {
@@ -246,7 +295,7 @@ public class TestAsset
         /*
          * Through superclass
          */
-        ElementHeader  elementHeader = getTestObject();
+        ElementHeader elementHeader = getTestObject();
 
         try
         {
@@ -269,7 +318,7 @@ public class TestAsset
         /*
          * Through superclass
          */
-        PropertyBase  propertyBase = getTestObject();
+        PropertyBase propertyBase = getTestObject();
 
         try
         {
