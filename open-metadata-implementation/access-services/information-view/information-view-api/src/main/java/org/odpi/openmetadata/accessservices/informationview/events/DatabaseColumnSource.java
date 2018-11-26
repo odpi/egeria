@@ -15,11 +15,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ColumnSource extends Source {
+public class DatabaseColumnSource extends Source {
 
     private String columnName;
 
-    private TableSource tableSource;
+    private TableSource tableSource = new TableSource();
 
     public String getColumnName() {
         return columnName;
@@ -60,6 +60,12 @@ public class ColumnSource extends Source {
     @Override
     public String getUser() {
         return tableSource != null ? tableSource.getUser() : super.getUser();
+    }
+
+    @Override
+    public String getQualifiedName() {
+        String qualifiedName = getTableSource() != null ? this.getTableSource().getQualifiedName() + "." : "";
+        return qualifiedName + this.getColumnName();
     }
 
     @Override
