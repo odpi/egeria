@@ -194,7 +194,7 @@ public class ReportCreator {
 
             EntityDetail sourceColumn = entitiesCreatorHelper.getEntity(Constants.SCHEMA_ATTRIBUTE, source.getQualifiedName());
             if (sourceColumn != null) {
-                log.info("source database column found.");
+                log.info("source {} for report column {} found.", source, reportColumn.getName());
 
                 InstanceProperties schemaQueryImplProperties = new EntityPropertiesBuilder()
                         .withStringProperty(Constants.QUERY, "")
