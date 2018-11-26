@@ -24,6 +24,7 @@ import java.util.List;
  */
 public class ConnectedAssetCertifications extends AssetCertifications
 {
+    private String              serverName;
     private String              userId;
     private String              omasServerURL;
     private String              assetGUID;
@@ -33,6 +34,7 @@ public class ConnectedAssetCertifications extends AssetCertifications
     /**
      * Typical constructor creates an iterator with the supplied list of elements.
      *
+     * @param serverName  name of the server.
      * @param userId user id to use on server calls.
      * @param omasServerURL url root of the server to use.
      * @param assetGUID unique identifier of the asset.
@@ -41,7 +43,8 @@ public class ConnectedAssetCertifications extends AssetCertifications
      * @param maxCacheSize maximum number of elements that should be retrieved from the property server and
      *                     cached in the element list at any one time.  If a number less than one is supplied, 1 is used.
      */
-    ConnectedAssetCertifications(String              userId,
+    ConnectedAssetCertifications(String              serverName,
+                                 String              userId,
                                  String              omasServerURL,
                                  String              assetGUID,
                                  ConnectedAsset      parentAsset,
@@ -50,6 +53,7 @@ public class ConnectedAssetCertifications extends AssetCertifications
     {
         super(parentAsset, totalElementCount, maxCacheSize);
 
+        this.serverName      = serverName;
         this.userId          = userId;
         this.omasServerURL   = omasServerURL;
         this.assetGUID       = assetGUID;
@@ -69,6 +73,7 @@ public class ConnectedAssetCertifications extends AssetCertifications
 
         if (template != null)
         {
+            this.serverName = template.serverName;
             this.userId = template.userId;
             this.omasServerURL = template.omasServerURL;
             this.assetGUID = template.assetGUID;
@@ -115,7 +120,7 @@ public class ConnectedAssetCertifications extends AssetCertifications
                                                      int  maximumSize) throws PropertyServerException
     {
         final String   methodName = "AssetCertifications.getCachedList";
-        final String   urlTemplate = "/open-metadata/access-services/connected-asset/users/{0}/assets/{1}/certifications?elementStart={2}&maxElements={3}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/connected-asset/users/{1}/assets/{2}/certifications?elementStart={3}&maxElements={4}";
 
         connectedAsset.validateOMASServerURL(methodName);
 
@@ -124,6 +129,7 @@ public class ConnectedAssetCertifications extends AssetCertifications
             CertificationsResponse restResult = (CertificationsResponse)connectedAsset.callGetRESTCall(methodName,
                                                                                                        CertificationsResponse.class,
                                                                                                        omasServerURL + urlTemplate,
+                                                                                                       serverName,
                                                                                                        userId,
                                                                                                        assetGUID,
                                                                                                        cacheStartPointer,

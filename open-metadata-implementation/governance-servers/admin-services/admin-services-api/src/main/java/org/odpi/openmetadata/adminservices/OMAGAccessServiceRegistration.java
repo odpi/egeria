@@ -5,7 +5,9 @@ package org.odpi.openmetadata.adminservices;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -15,7 +17,11 @@ import java.util.List;
  */
 public class OMAGAccessServiceRegistration
 {
-    static private List<AccessServiceRegistration> accessServiceRegistrationList = new ArrayList<>();
+    /*
+     * A map is used so multiple registrations from the same access service are ignored.
+     * The last registration is used.
+     */
+    static private Map<String, AccessServiceRegistration> accessServiceRegistrationMap = new HashMap<>();
 
 
     /**
@@ -27,7 +33,12 @@ public class OMAGAccessServiceRegistration
     {
         if (registration != null)
         {
-            accessServiceRegistrationList.add(registration);
+            String  serviceName = registration.getAccessServiceName();
+
+            if (serviceName != null)
+            {
+                accessServiceRegistrationMap.put(serviceName, registration);
+            }
         }
     }
 
@@ -39,7 +50,17 @@ public class OMAGAccessServiceRegistration
      */
     public static synchronized  List<AccessServiceRegistration> getAccessServiceRegistrationList()
     {
-        return accessServiceRegistrationList;
+        List<AccessServiceRegistration>  registrationList = new ArrayList<>();
+
+        for (AccessServiceRegistration   accessServiceRegistration : accessServiceRegistrationMap.values())
+        {
+            if (accessServiceRegistration != null)
+            {
+                registrationList.add(accessServiceRegistration);
+            }
+        }
+
+        return registrationList;
     }
 
 }
