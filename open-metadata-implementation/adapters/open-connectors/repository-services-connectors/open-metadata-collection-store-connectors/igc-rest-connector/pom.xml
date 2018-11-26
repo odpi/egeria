@@ -24,7 +24,6 @@
     <properties>
         <junit.platform.version>1.2.0</junit.platform.version>
         <junit.surefire.version>1.2.0</junit.surefire.version>
-        <junit.version>4.12</junit.version>
     </properties>
 
     <dependencies>
@@ -35,30 +34,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
             <version>${spring-boot.version}</version>
-        </dependency>
-
-        <!-- Jackson for JSON object translation -->
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
-
-        <!-- TestNG for testing -->
-
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>${testng.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.junit.platform</groupId>
-            <artifactId>junit-platform-runner</artifactId>
-            <version>${junit.platform.version}</version>
-            <scope>test</scope>
         </dependency>
 
     </dependencies>
