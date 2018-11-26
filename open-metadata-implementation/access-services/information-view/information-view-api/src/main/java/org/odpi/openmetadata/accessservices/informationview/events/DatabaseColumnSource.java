@@ -17,16 +17,16 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DatabaseColumnSource extends Source {
 
-    private String columnName;
+    private String name;
 
     private TableSource tableSource = new TableSource();
 
-    public String getColumnName() {
-        return columnName;
+    public String getName() {
+        return name;
     }
 
-    public void setColumnName(String columnName) {
-        this.columnName = columnName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public TableSource getTableSource() {
@@ -65,13 +65,13 @@ public class DatabaseColumnSource extends Source {
     @Override
     public String getQualifiedName() {
         String qualifiedName = getTableSource() != null ? this.getTableSource().getQualifiedName() + "." : "";
-        return qualifiedName + this.getColumnName();
+        return qualifiedName + name;
     }
 
     @Override
     public String toString() {
-        return "ColumnSource{" +
-                "columnName='" + columnName + '\'' +
+        return "DatabaseColumnSource{" +
+                "name='" + name + '\'' +
                 ", tableSource=" + tableSource +
                 '}';
     }
