@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.eventbus.topic.kafka;
 
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
@@ -31,17 +32,17 @@ public enum KafkaOpenMetadataTopicConnectorAuditCode
 
     SERVICE_PRODUCER_PROPERTIES("OCF-KAFKA-TOPIC-CONNECTOR-0002",
               OMRSAuditLogRecordSeverity.INFO,
-              "The properties passed to the Apache Kafka Producer are: {0}",
+              "The properties passed to the Apache Kafka Producer for topic {0} are: {1}",
               "The server is registering to receive events from Apache Kafka using the properties shown.",
               "No action is required.  This is part of the normal operation of the server."),
 
     SERVICE_CONSUMER_PROPERTIES("OCF-KAFKA-TOPIC-CONNECTOR-0003",
               OMRSAuditLogRecordSeverity.INFO,
-              "The properties passed to the Apache Kafka Consumer are: {0}",
+              "The properties passed to the Apache Kafka Consumer for topic {0} are: {1}",
               "The server is registering to receive events from Apache Kafka using the properties shown.",
               "No action is required.  This is part of the normal operation of the server."),
 
-    SERVICE_SHUTDOWN("OCF-KAFKA-TOPIC-CONNECTOR-004",
+    SERVICE_SHUTDOWN("OCF-KAFKA-TOPIC-CONNECTOR-0004",
               OMRSAuditLogRecordSeverity.INFO,
               "The Apache Kafka connector for topic {0} is shutting down",
               "The local server has requested shut down of the Apache Kafka connector.",
@@ -76,6 +77,27 @@ public enum KafkaOpenMetadataTopicConnectorAuditCode
              "The Apache Kafka connector listening on topic {0} received an unexpected exception {1} distributing an event to components within the server.  The event was {2} and the message in the exception was {3}",
              "An incoming event could not be processed by one or more components in the server.",
              "Use the information in the event and the exception message, along with other messages to determine the source of the error."),
+
+    KAFKA_PRODUCER_START("OCF-KAFKA-TOPIC-CONNECTOR-0010",
+             OMRSAuditLogRecordSeverity.INFO,
+             "The Apache Kafka producer for topic {0} is starting up with {1} buffered messages",
+             "The local server has requested shut down of the Apache Kafka connector.",
+             "No action is required.  This is part of the normal operation of the server."),
+
+    KAFKA_PRODUCER_SHUTDOWN("OCF-KAFKA-TOPIC-CONNECTOR-0011",
+             OMRSAuditLogRecordSeverity.INFO,
+             "The Apache Kafka producer for topic {0} is shutting down after sending {2} messages and with {1} unsent messages",
+             "The local server has requested shut down of the Apache Kafka connector.",
+             "No action is required.  This is part of the normal operation of the server."),
+
+    EVENT_SEND_IN_ERROR_LOOP("OCF-KAFKA-TOPIC-CONNECTOR-0011",
+             OMRSAuditLogRecordSeverity.ERROR,
+             "Unable to send event on topic {0}.  {1} events successfully sent; {2} events buffered. Latest error message is {3}",
+             "There is a reoccurring error being returned by the Apache Kafka event bus.  Outbound events are being buffered.",
+             "Review the operational status of Apache Kafka to ensure it is running and the topic is defined.  " +
+                                     "If no events have been send, then it may be a configuration error, either in this " +
+                                     "server or in the event bus itself. Once the error is corrected, " +
+                                     "the server will send the buffered events.  "),
 
     ;
 

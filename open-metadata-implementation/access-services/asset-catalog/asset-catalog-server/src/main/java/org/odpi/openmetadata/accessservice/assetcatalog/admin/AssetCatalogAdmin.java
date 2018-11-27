@@ -1,9 +1,9 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservice.assetcatalog.admin;
 
 import org.odpi.openmetadata.accessservice.assetcatalog.auditlog.AssetCatalogAuditCode;
-import org.odpi.openmetadata.accessservice.assetcatalog.service.AssetCatalogRelationshipService;
-import org.odpi.openmetadata.accessservice.assetcatalog.service.AssetCatalogService;
+import org.odpi.openmetadata.accessservice.assetcatalog.service.AssetCatalogServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
@@ -17,16 +17,19 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 public class AssetCatalogAdmin implements AccessServiceAdmin {
 
-    private OMRSAuditLog auditLog;
+    private OMRSAuditLog                 auditLog = null;
+    private AssetCatalogServicesInstance instance = null;
+    private String                       serverName = null;
+
 
     /**
      * Initialize the access service.
      *
-     * @param accessServiceConfigurationProperties - specific configuration properties for this access service.
-     * @param enterpriseOMRSTopicConnector         - connector for receiving OMRS Events from the cohorts
-     * @param repositoryConnector                  - connector for querying the cohort repositories
-     * @param auditLog                             - audit log component for logging messages.
-     * @param serverUserName                       - user id to use on OMRS calls where there is no end user.
+     * @param accessServiceConfigurationProperties specific configuration properties for this access service.
+     * @param enterpriseOMRSTopicConnector         connector for receiving OMRS Events from the cohorts
+     * @param repositoryConnector                  connector for querying the cohort repositories
+     * @param auditLog                             audit log component for logging messages.
+     * @param serverUserName                       user id to use on OMRS calls where there is no end user.
      */
     public void initialize(AccessServiceConfig accessServiceConfigurationProperties,
                            OMRSTopicConnector enterpriseOMRSTopicConnector,
@@ -34,46 +37,66 @@ public class AssetCatalogAdmin implements AccessServiceAdmin {
                            OMRSAuditLog auditLog,
                            String serverUserName) {
 
-        final String actionDescription = "initialize";
-        AssetCatalogAuditCode auditCode = AssetCatalogAuditCode.SERVICE_INITIALIZING;
-        auditLog.logRecord(actionDescription,
-                auditCode.getLogMessageId(),
-                auditCode.getSeverity(),
-                auditCode.getFormattedLogMessage(),
-                null,
-                auditCode.getSystemAction(),
-                auditCode.getUserAction());
+        final String          actionDescription = "initialize";
 
-        String serverName = accessServiceConfigurationProperties.getAccessServiceName();
-        AssetCatalogService.setRepositoryConnector(repositoryConnector, serverName);
-        AssetCatalogRelationshipService.setRepositoryConnector(repositoryConnector, serverName);
+        AssetCatalogAuditCode auditCode;
 
-        this.auditLog = auditLog;
+        try {
+            auditCode = AssetCatalogAuditCode.SERVICE_INITIALIZING;
+            auditLog.logRecord(actionDescription,
+                               auditCode.getLogMessageId(),
+                               auditCode.getSeverity(),
+                               auditCode.getFormattedLogMessage(),
+                               null,
+                               auditCode.getSystemAction(),
+                               auditCode.getUserAction());
 
-        auditCode = AssetCatalogAuditCode.SERVICE_INITIALIZED;
-        auditLog.logRecord(actionDescription,
-                auditCode.getLogMessageId(),
-                auditCode.getSeverity(),
-                auditCode.getFormattedLogMessage(),
-                null,
-                auditCode.getSystemAction(),
-                auditCode.getUserAction());
+            this.auditLog = auditLog;
+            this.instance = new AssetCatalogServicesInstance(repositoryConnector);
+            this.serverName = instance.getServerName();
+
+            auditCode = AssetCatalogAuditCode.SERVICE_INITIALIZED;
+            auditLog.logRecord(actionDescription,
+                               auditCode.getLogMessageId(),
+                               auditCode.getSeverity(),
+                               auditCode.getFormattedLogMessage(serverName),
+                               null,
+                               auditCode.getSystemAction(),
+                               auditCode.getUserAction());
+        }
+        catch (Throwable  error) {
+            auditCode = AssetCatalogAuditCode.SERVICE_INSTANCE_FAILURE;
+            auditLog.logRecord(actionDescription,
+                               auditCode.getLogMessageId(),
+                               auditCode.getSeverity(),
+                               auditCode.getFormattedLogMessage(error.getMessage()),
+                               null,
+                               auditCode.getSystemAction(),
+                               auditCode.getUserAction());
+        }
     }
+
 
     /**
      * Shutdown the access service.
      */
     public void shutdown() {
-        final String actionDescription = "shutdown";
-        AssetCatalogAuditCode auditCode;
 
-        auditCode = AssetCatalogAuditCode.SERVICE_SHUTDOWN;
-        auditLog.logRecord(actionDescription,
-                auditCode.getLogMessageId(),
-                auditCode.getSeverity(),
-                auditCode.getFormattedLogMessage(),
-                null,
-                auditCode.getSystemAction(),
-                auditCode.getUserAction());
+        if (instance != null) {
+            instance.shutdown();
+        }
+
+        if (auditLog != null) {
+            final String actionDescription = "shutdown";
+
+            AssetCatalogAuditCode auditCode = AssetCatalogAuditCode.SERVICE_SHUTDOWN;
+            auditLog.logRecord(actionDescription,
+                               auditCode.getLogMessageId(),
+                               auditCode.getSeverity(),
+                               auditCode.getFormattedLogMessage(serverName),
+                               null,
+                               auditCode.getSystemAction(),
+                               auditCode.getUserAction());
+        }
     }
 }

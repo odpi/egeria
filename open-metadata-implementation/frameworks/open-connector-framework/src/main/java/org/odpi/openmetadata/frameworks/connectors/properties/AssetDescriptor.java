@@ -12,7 +12,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
  */
 public abstract class AssetDescriptor extends AssetPropertyElementBase
 {
-    protected   Asset     assetBean;
+    protected Asset assetBean;
 
     /*
      * Derived name and type for use by nested property object for messages/debug.  If these default values
@@ -28,6 +28,7 @@ public abstract class AssetDescriptor extends AssetPropertyElementBase
     protected AssetDescriptor()
     {
         super();
+        this.assetBean = new Asset();
     }
 
 
@@ -71,7 +72,7 @@ public abstract class AssetDescriptor extends AssetPropertyElementBase
                 assetName = qualifiedName;
             }
 
-            ElementType  elementType = assetBean.getType();
+            ElementType elementType = assetBean.getType();
 
             if (elementType != null)
             {
