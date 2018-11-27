@@ -57,10 +57,8 @@ public class OMAGServerAdminServices
     private static final String      defaultInTopicName = "InTopic";
     private static final String      defaultOutTopicName = "OutTopic";
 
-    private OMRSOperationalServices  operationalServices    = null;
-    private List<AccessServiceAdmin> accessServiceAdminList = new ArrayList<>();
-
     private OMAGServerAdminStoreServices   configStore = new OMAGServerAdminStoreServices();
+    private OMAGServerErrorHandler         errorHandler = new OMAGServerErrorHandler();
 
     /*
      * =============================================================
@@ -99,11 +97,11 @@ public class OMAGServerAdminServices
         }
         catch (OMAGInvalidParameterException  error)
         {
-            captureInvalidParameterException(response, error);
+            errorHandler.captureInvalidParameterException(response, error);
         }
         catch (OMAGNotAuthorizedException  error)
         {
-            captureNotAuthorizedException(response, error);
+            errorHandler.captureNotAuthorizedException(response, error);
         }
 
         return response;
@@ -142,11 +140,11 @@ public class OMAGServerAdminServices
         }
         catch (OMAGInvalidParameterException  error)
         {
-            captureInvalidParameterException(response, error);
+            errorHandler.captureInvalidParameterException(response, error);
         }
         catch (OMAGNotAuthorizedException  error)
         {
-            captureNotAuthorizedException(response, error);
+            errorHandler.captureNotAuthorizedException(response, error);
         }
 
         return response;
@@ -185,11 +183,11 @@ public class OMAGServerAdminServices
         }
         catch (OMAGInvalidParameterException  error)
         {
-            captureInvalidParameterException(response, error);
+            errorHandler.captureInvalidParameterException(response, error);
         }
         catch (OMAGNotAuthorizedException  error)
         {
-            captureNotAuthorizedException(response, error);
+            errorHandler.captureNotAuthorizedException(response, error);
         }
 
         return response;
@@ -228,11 +226,11 @@ public class OMAGServerAdminServices
         }
         catch (OMAGInvalidParameterException  error)
         {
-            captureInvalidParameterException(response, error);
+            errorHandler.captureInvalidParameterException(response, error);
         }
         catch (OMAGNotAuthorizedException  error)
         {
-            captureNotAuthorizedException(response, error);
+            errorHandler.captureNotAuthorizedException(response, error);
         }
 
         return response;
@@ -290,11 +288,11 @@ public class OMAGServerAdminServices
         }
         catch (OMAGInvalidParameterException  error)
         {
-            captureInvalidParameterException(response, error);
+            errorHandler.captureInvalidParameterException(response, error);
         }
         catch (OMAGNotAuthorizedException  error)
         {
-            captureNotAuthorizedException(response, error);
+            errorHandler.captureNotAuthorizedException(response, error);
         }
 
         return response;
@@ -356,15 +354,15 @@ public class OMAGServerAdminServices
         }
         catch (OMAGInvalidParameterException  error)
         {
-            captureInvalidParameterException(response, error);
+            errorHandler.captureInvalidParameterException(response, error);
         }
         catch (OMAGConfigurationErrorException  error)
         {
-            captureConfigurationErrorException(response, error);
+            errorHandler.captureConfigurationErrorException(response, error);
         }
         catch (OMAGNotAuthorizedException  error)
         {
-            captureNotAuthorizedException(response, error);
+            errorHandler.captureNotAuthorizedException(response, error);
         }
 
         return response;
@@ -406,6 +404,9 @@ public class OMAGServerAdminServices
             EnterpriseAccessConfig    enterpriseAccessConfig   = null;
 
 
+            /*
+             * Get the list of Access Services implemented in this server.
+             */
             List<AccessServiceRegistration> accessServiceRegistrationList = OMAGAccessServiceRegistration.getAccessServiceRegistrationList();
 
             /*
@@ -427,7 +428,7 @@ public class OMAGServerAdminServices
                             accessServiceConfig.setAccessServiceInTopic(
                                     connectorConfigurationFactory.getDefaultEventBusConnection(defaultInTopicName,
                                                                                                eventBusConfig.getConnectorProvider(),
-                                                                                               eventBusConfig.getTopicURLRoot(),
+                                                                                               eventBusConfig.getTopicURLRoot() + ".server." + serverName,
                                                                                                registration.getAccessServiceInTopic(),
                                                                                                serverConfig.getLocalServerId(),
                                                                                                eventBusConfig.getAdditionalProperties()));
@@ -462,15 +463,15 @@ public class OMAGServerAdminServices
         }
         catch (OMAGInvalidParameterException  error)
         {
-            captureInvalidParameterException(response, error);
+            errorHandler.captureInvalidParameterException(response, error);
         }
         catch (OMAGConfigurationErrorException  error)
         {
-            captureConfigurationErrorException(response, error);
+            errorHandler.captureConfigurationErrorException(response, error);
         }
         catch (OMAGNotAuthorizedException  error)
         {
-            captureNotAuthorizedException(response, error);
+            errorHandler.captureNotAuthorizedException(response, error);
         }
 
         return response;
@@ -507,11 +508,11 @@ public class OMAGServerAdminServices
         }
         catch (OMAGInvalidParameterException  error)
         {
-            captureInvalidParameterException(response, error);
+            errorHandler.captureInvalidParameterException(response, error);
         }
         catch (OMAGNotAuthorizedException  error)
         {
-            captureNotAuthorizedException(response, error);
+            errorHandler.captureNotAuthorizedException(response, error);
         }
 
         return response;
@@ -552,11 +553,11 @@ public class OMAGServerAdminServices
         }
         catch (OMAGInvalidParameterException  error)
         {
-            captureInvalidParameterException(response, error);
+            errorHandler.captureInvalidParameterException(response, error);
         }
         catch (OMAGNotAuthorizedException  error)
         {
-            captureNotAuthorizedException(response, error);
+            errorHandler.captureNotAuthorizedException(response, error);
         }
 
         return response;
@@ -605,15 +606,15 @@ public class OMAGServerAdminServices
         }
         catch (OMAGInvalidParameterException  error)
         {
-            captureInvalidParameterException(response, error);
+            errorHandler.captureInvalidParameterException(response, error);
         }
         catch (OMAGConfigurationErrorException  error)
         {
-            captureConfigurationErrorException(response, error);
+            errorHandler.captureConfigurationErrorException(response, error);
         }
         catch (OMAGNotAuthorizedException  error)
         {
-            captureNotAuthorizedException(response, error);
+            errorHandler.captureNotAuthorizedException(response, error);
         }
 
         return response;
@@ -646,11 +647,11 @@ public class OMAGServerAdminServices
         }
         catch (OMAGInvalidParameterException  error)
         {
-            captureInvalidParameterException(response, error);
+            errorHandler.captureInvalidParameterException(response, error);
         }
         catch (OMAGNotAuthorizedException  error)
         {
-            captureNotAuthorizedException(response, error);
+            errorHandler.captureNotAuthorizedException(response, error);
         }
 
         return response;
@@ -696,11 +697,11 @@ public class OMAGServerAdminServices
         }
         catch (OMAGInvalidParameterException  error)
         {
-            captureInvalidParameterException(response, error);
+            errorHandler.captureInvalidParameterException(response, error);
         }
         catch (OMAGNotAuthorizedException  error)
         {
-            captureNotAuthorizedException(response, error);
+            errorHandler.captureNotAuthorizedException(response, error);
         }
 
         return response;
@@ -747,11 +748,11 @@ public class OMAGServerAdminServices
         }
         catch (OMAGInvalidParameterException  error)
         {
-            captureInvalidParameterException(response, error);
+            errorHandler.captureInvalidParameterException(response, error);
         }
         catch (OMAGNotAuthorizedException  error)
         {
-            captureNotAuthorizedException(response, error);
+            errorHandler.captureNotAuthorizedException(response, error);
         }
 
         return response;
@@ -822,15 +823,15 @@ public class OMAGServerAdminServices
         }
         catch (OMAGInvalidParameterException  error)
         {
-            captureInvalidParameterException(response, error);
+            errorHandler.captureInvalidParameterException(response, error);
         }
         catch (OMAGConfigurationErrorException  error)
         {
-            captureConfigurationErrorException(response, error);
+            errorHandler.captureConfigurationErrorException(response, error);
         }
         catch (OMAGNotAuthorizedException  error)
         {
-            captureNotAuthorizedException(response, error);
+            errorHandler.captureNotAuthorizedException(response, error);
         }
 
         return response;
@@ -878,11 +879,11 @@ public class OMAGServerAdminServices
         }
         catch (OMAGInvalidParameterException  error)
         {
-            captureInvalidParameterException(response, error);
+            errorHandler.captureInvalidParameterException(response, error);
         }
         catch (OMAGNotAuthorizedException  error)
         {
-            captureNotAuthorizedException(response, error);
+            errorHandler.captureNotAuthorizedException(response, error);
         }
 
         return response;
@@ -941,15 +942,15 @@ public class OMAGServerAdminServices
         }
         catch (OMAGInvalidParameterException  error)
         {
-            captureInvalidParameterException(response, error);
+            errorHandler.captureInvalidParameterException(response, error);
         }
         catch (OMAGConfigurationErrorException  error)
         {
-            captureConfigurationErrorException(response, error);
+            errorHandler.captureConfigurationErrorException(response, error);
         }
         catch (OMAGNotAuthorizedException  error)
         {
-            captureNotAuthorizedException(response, error);
+            errorHandler.captureNotAuthorizedException(response, error);
         }
 
         return response;
@@ -988,11 +989,11 @@ public class OMAGServerAdminServices
         }
         catch (OMAGInvalidParameterException  error)
         {
-            captureInvalidParameterException(response, error);
+            errorHandler.captureInvalidParameterException(response, error);
         }
         catch (OMAGNotAuthorizedException  error)
         {
-            captureNotAuthorizedException(response, error);
+            errorHandler.captureNotAuthorizedException(response, error);
         }
 
         return response;
@@ -1037,11 +1038,11 @@ public class OMAGServerAdminServices
         }
         catch (OMAGInvalidParameterException  error)
         {
-            captureInvalidParameterException(response, error);
+            errorHandler.captureInvalidParameterException(response, error);
         }
         catch (OMAGNotAuthorizedException  error)
         {
-            captureNotAuthorizedException(response, error);
+            errorHandler.captureNotAuthorizedException(response, error);
         }
 
         return response;
@@ -1098,11 +1099,11 @@ public class OMAGServerAdminServices
         }
         catch (OMAGInvalidParameterException  error)
         {
-            captureInvalidParameterException(response, error);
+            errorHandler.captureInvalidParameterException(response, error);
         }
         catch (OMAGNotAuthorizedException  error)
         {
-            captureNotAuthorizedException(response, error);
+            errorHandler.captureNotAuthorizedException(response, error);
         }
 
         return response;
@@ -1157,11 +1158,11 @@ public class OMAGServerAdminServices
         }
         catch (OMAGInvalidParameterException  error)
         {
-            captureInvalidParameterException(response, error);
+            errorHandler.captureInvalidParameterException(response, error);
         }
         catch (OMAGNotAuthorizedException  error)
         {
-            captureNotAuthorizedException(response, error);
+            errorHandler.captureNotAuthorizedException(response, error);
         }
 
         return response;
@@ -1266,11 +1267,11 @@ public class OMAGServerAdminServices
         }
         catch (OMAGInvalidParameterException  error)
         {
-            captureInvalidParameterException(response, error);
+            errorHandler.captureInvalidParameterException(response, error);
         }
         catch (OMAGNotAuthorizedException  error)
         {
-            captureNotAuthorizedException(response, error);
+            errorHandler.captureNotAuthorizedException(response, error);
         }
 
         return response;
@@ -1292,10 +1293,10 @@ public class OMAGServerAdminServices
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName parameter.
      */
-    public OMAGServerConfigResponse getCurrentConfiguration(String userId,
-                                                            String serverName)
+    public OMAGServerConfigResponse getStoredConfiguration(String userId,
+                                                           String serverName)
     {
-        final String methodName = "getCurrentConfiguration";
+        final String methodName = "getStoredConfiguration";
 
         OMAGServerConfigResponse response = new OMAGServerConfigResponse();
 
@@ -1308,356 +1309,15 @@ public class OMAGServerAdminServices
         }
         catch (OMAGInvalidParameterException  error)
         {
-            captureInvalidParameterException(response, error);
+            errorHandler.captureInvalidParameterException(response, error);
         }
         catch (OMAGNotAuthorizedException  error)
         {
-            captureNotAuthorizedException(response, error);
+            errorHandler.captureNotAuthorizedException(response, error);
         }
 
         return response;
     }
-
-
-    /*
-     * =============================================================
-     * Initialization and shutdown
-     */
-
-    /**
-     * Activate the open metadata and governance services using the stored configuration information.
-     *
-     * @param userId  user that is issuing the request
-     * @param serverName  local server name
-     * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException the server name is invalid or
-     * OMAGConfigurationErrorException there is a problem using the supplied configuration.
-     */
-    public VoidResponse activateWithStoredConfig(String userId,
-                                                 String serverName)
-    {
-        final String methodName = "activateWithStoredConfig";
-
-        VoidResponse response = new VoidResponse();
-
-        try
-        {
-            validateServerName(serverName, methodName);
-            validateUserId(userId, serverName, methodName);
-
-            this.activateWithSuppliedConfig(userId, serverName, configStore.getServerConfig(serverName, methodName));
-        }
-        catch (OMAGInvalidParameterException  error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (OMAGNotAuthorizedException  error)
-        {
-            captureNotAuthorizedException(response, error);
-        }
-
-        return response;
-    }
-
-
-    /**
-     * Activate the open metadata and governance services using the supplied configuration
-     * document.
-     *
-     * @param userId  user that is issuing the request
-     * @param configuration  properties used to initialize the services
-     * @param serverName  local server name
-     * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException the server name is invalid or
-     * OMAGConfigurationErrorException there is a problem using the supplied configuration.
-     */
-    public VoidResponse activateWithSuppliedConfig(String           userId,
-                                                   String           serverName,
-                                                   OMAGServerConfig configuration)
-    {
-        final String methodName = "activateWithSuppliedConfig";
-
-        VoidResponse response = new VoidResponse();
-
-        try
-        {
-            validateServerName(serverName, methodName);
-            validateUserId(userId, serverName, methodName);
-
-            if (configuration == null)
-            {
-                OMAGErrorCode errorCode    = OMAGErrorCode.NULL_SERVER_CONFIG;
-                String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
-
-                throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
-                                                        this.getClass().getName(),
-                                                        methodName,
-                                                        errorMessage,
-                                                        errorCode.getSystemAction(),
-                                                        errorCode.getUserAction());
-            }
-            else
-            {
-                configStore.saveServerConfig(serverName, methodName, configuration);
-            }
-
-            /*
-             * Initialize the open metadata repository services first
-             */
-            RepositoryServicesConfig  repositoryServicesConfig = configuration.getRepositoryServicesConfig();
-
-            if (repositoryServicesConfig == null)
-            {
-                OMAGErrorCode errorCode    = OMAGErrorCode.NULL_REPOSITORY_CONFIG;
-                String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
-
-                throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
-                                                          this.getClass().getName(),
-                                                          methodName,
-                                                          errorMessage,
-                                                          errorCode.getSystemAction(),
-                                                          errorCode.getUserAction());
-            }
-            else if (operationalServices != null)
-            {
-                this.deactivateTemporarily(userId, serverName);
-            }
-
-            operationalServices = new OMRSOperationalServices(configuration.getLocalServerName(),
-                                                              configuration.getLocalServerType(),
-                                                              configuration.getOrganizationName(),
-                                                              configuration.getLocalServerUserId(),
-                                                              configuration.getLocalServerURL(),
-                                                              configuration.getMaxPageSize());
-
-            operationalServices.initialize(repositoryServicesConfig);
-
-            /*
-             * Now initialize the open metadata access services
-             */
-            List<AccessServiceConfig> accessServiceConfigList  = configuration.getAccessServicesConfig();
-            OMRSTopicConnector        enterpriseTopicConnector = operationalServices.getEnterpriseOMRSTopicConnector();
-
-            if (accessServiceConfigList != null)
-            {
-                for (AccessServiceConfig  accessServiceConfig : accessServiceConfigList)
-                {
-                    if (accessServiceConfig != null)
-                    {
-                        String    accessServiceAdminClassName = accessServiceConfig.getAccessServiceAdminClass();
-
-                        if (accessServiceAdminClassName != null)
-                        {
-                            try
-                            {
-                                AccessServiceAdmin   accessServiceAdmin = (AccessServiceAdmin)Class.forName(accessServiceAdminClassName).newInstance();
-
-                                accessServiceAdmin.initialize(accessServiceConfig,
-                                                              enterpriseTopicConnector,
-                                                              operationalServices.getEnterpriseOMRSRepositoryConnector(accessServiceConfig.getAccessServiceName()),
-                                                              operationalServices.getAuditLog(accessServiceConfig.getAccessServiceId(),
-                                                                                              accessServiceConfig.getAccessServiceName(),
-                                                                                              accessServiceConfig.getAccessServiceDescription(),
-                                                                                              accessServiceConfig.getAccessServiceWiki()),
-                                                              configuration.getLocalServerUserId());
-                                accessServiceAdminList.add(accessServiceAdmin);
-                            }
-                            catch (Throwable  error)
-                            {
-                                OMAGErrorCode errorCode    = OMAGErrorCode.BAD_ACCESS_SERVICE_ADMIN_CLASS;
-                                String        errorMessage = errorCode.getErrorMessageId()
-                                                           + errorCode.getFormattedErrorMessage(serverName,
-                                                                                                accessServiceAdminClassName,
-                                                                                                accessServiceConfig.getAccessServiceName());
-
-                                throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
-                                                                          this.getClass().getName(),
-                                                                          methodName,
-                                                                          errorMessage,
-                                                                          errorCode.getSystemAction(),
-                                                                          errorCode.getUserAction());
-                            }
-                        }
-                        else
-                        {
-                            OMAGErrorCode errorCode    = OMAGErrorCode.NULL_ACCESS_SERVICE_ADMIN_CLASS;
-                            String        errorMessage = errorCode.getErrorMessageId()
-                                                       + errorCode.getFormattedErrorMessage(serverName,
-                                                                                            accessServiceConfig.getAccessServiceName());
-
-                            throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
-                                                                      this.getClass().getName(),
-                                                                      methodName,
-                                                                      errorMessage,
-                                                                      errorCode.getSystemAction(),
-                                                                      errorCode.getUserAction());
-                        }
-                    }
-                }
-            }
-
-            if (enterpriseTopicConnector != null)
-            {
-                try
-                {
-                    enterpriseTopicConnector.start();
-                }
-                catch (Throwable  error)
-                {
-                    OMAGErrorCode errorCode    = OMAGErrorCode.ENTERPRISE_TOPIC_START_FAILED;
-                    String        errorMessage = errorCode.getErrorMessageId()
-                                               + errorCode.getFormattedErrorMessage(serverName, error.getMessage());
-
-                    throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
-                                                              this.getClass().getName(),
-                                                              methodName,
-                                                              errorMessage,
-                                                              errorCode.getSystemAction(),
-                                                              errorCode.getUserAction());
-                }
-            }
-        }
-        catch (OMAGInvalidParameterException  error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (OMAGConfigurationErrorException  error)
-        {
-            captureConfigurationErrorException(response, error);
-        }
-        catch (OMAGNotAuthorizedException  error)
-        {
-            captureNotAuthorizedException(response, error);
-        }
-
-        return response;
-    }
-
-
-    /**
-     * Temporarily deactivate any open metadata and governance services.
-     *
-     * @param userId  user that is issuing the request
-     * @param serverName  local server name
-     * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException the serverName is invalid.
-     */
-    public VoidResponse deactivateTemporarily(String  userId,
-                                              String  serverName)
-    {
-        final String methodName = "deactivateTemporarily";
-
-        VoidResponse response = new VoidResponse();
-
-        try
-        {
-            validateServerName(serverName, methodName);
-            validateUserId(userId, serverName, methodName);
-
-            /*
-             * Shutdown the access services
-             */
-            if (accessServiceAdminList != null)
-            {
-                for (AccessServiceAdmin  accessServiceAdmin : accessServiceAdminList)
-                {
-                    if (accessServiceAdmin != null)
-                    {
-                        accessServiceAdmin.shutdown();
-                    }
-                }
-            }
-
-            /*
-             * Terminate the OMRS
-             */
-            if (operationalServices != null)
-            {
-                operationalServices.disconnect(false);
-                operationalServices = null;
-            }
-        }
-        catch (OMAGInvalidParameterException  error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (OMAGNotAuthorizedException  error)
-        {
-            captureNotAuthorizedException(response, error);
-        }
-
-        return response;
-    }
-
-
-    /**
-     * Terminate any open metadata and governance services.
-     *
-     * @param userId  user that is issuing the request
-     * @param serverName  local server name
-     * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException the serverName is invalid.
-     */
-    public VoidResponse deactivatePermanently(String  userId,
-                                              String  serverName)
-    {
-        final String methodName = "deactivatePermanently";
-
-        VoidResponse response = new VoidResponse();
-
-        try
-        {
-            validateServerName(serverName, methodName);
-            validateUserId(userId, serverName, methodName);
-
-            /*
-             * Shutdown the access services
-             */
-            if (accessServiceAdminList != null)
-            {
-                for (AccessServiceAdmin  accessServiceAdmin : accessServiceAdminList)
-                {
-                    if (accessServiceAdmin != null)
-                    {
-                        accessServiceAdmin.shutdown();
-                    }
-                }
-            }
-
-            /*
-             * Terminate the OMRS
-             */
-            if (operationalServices != null)
-            {
-                operationalServices.disconnect(true);
-                operationalServices = null;
-            }
-
-            configStore.saveServerConfig(serverName, methodName, null);
-        }
-        catch (OMAGInvalidParameterException  error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (OMAGNotAuthorizedException  error)
-        {
-            captureNotAuthorizedException(response, error);
-        }
-
-        return response;
-    }
-
-
-    /*
-     * =============================================================
-     * Operational status and control
-     */
-
-    /* placeholder */
 
 
     /*
@@ -1837,63 +1497,5 @@ public class OMAGServerAdminServices
                                                     errorCode.getSystemAction(),
                                                     errorCode.getUserAction());
         }
-    }
-
-
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response  REST Response
-     * @param error returned response.
-     */
-    private void captureConfigurationErrorException(OMAGAPIResponse response, OMAGConfigurationErrorException error)
-    {
-        captureCheckedException(response, error, error.getClass().getName());
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response  REST Response
-     * @param error returned response.
-     */
-    private void captureInvalidParameterException(OMAGAPIResponse response, OMAGInvalidParameterException error)
-    {
-        captureCheckedException(response, error, error.getClass().getName());
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response  REST Response
-     * @param error returned response.
-     */
-    private void captureNotAuthorizedException(OMAGAPIResponse response, OMAGNotAuthorizedException error)
-    {
-        captureCheckedException(response, error, error.getClass().getName());
-    }
-
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response  REST Response
-     * @param error returned response.
-     * @param exceptionClassName - class name of the exception to recreate
-     */
-    private void captureCheckedException(OMAGAPIResponse          response,
-                                         OMAGCheckedExceptionBase error,
-                                         String                   exceptionClassName)
-    {
-        response.setRelatedHTTPCode(error.getReportedHTTPCode());
-        response.setExceptionClassName(exceptionClassName);
-        response.setExceptionErrorMessage(error.getErrorMessage());
-        response.setExceptionSystemAction(error.getReportedSystemAction());
-        response.setExceptionUserAction(error.getReportedUserAction());
     }
 }

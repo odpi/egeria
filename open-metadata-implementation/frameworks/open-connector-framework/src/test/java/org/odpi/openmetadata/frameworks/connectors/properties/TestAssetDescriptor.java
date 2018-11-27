@@ -23,10 +23,18 @@ public class TestAssetDescriptor
     {
     }
 
+    @Test public void testDefaultConstructor()
+    {
+        MockAsset mockAsset = new MockAsset();
+
+        assertFalse(mockAsset.getAssetBean() == null);
+        assertTrue(mockAsset.getAssetName().equals("<Unknown>"));
+        assertTrue(mockAsset.getAssetTypeName().equals("<Unknown>"));
+    }
 
     @Test public void testNullAssetBean()
     {
-        MockAsset  mockAsset = new MockAsset((Asset)null);
+        MockAsset mockAsset = new MockAsset((Asset)null);
 
         assertFalse(mockAsset.getAssetBean() == null);
         assertTrue(mockAsset.getAssetName().equals("<Unknown>"));
@@ -36,12 +44,12 @@ public class TestAssetDescriptor
 
     @Test public void testUnnamedAssetBean()
     {
-        ElementType     elementType = new ElementType();
-        Asset           assetBean   = new Asset();
+        ElementType elementType = new ElementType();
+        Asset       assetBean   = new Asset();
 
         assetBean.setType(elementType);
 
-        MockAsset  mockAsset = new MockAsset(assetBean);
+        MockAsset mockAsset = new MockAsset(assetBean);
 
         assertTrue(mockAsset.getAssetBean().equals(assetBean));
         assertTrue(mockAsset.getAssetName().equals("<Unknown>"));
@@ -61,15 +69,15 @@ public class TestAssetDescriptor
 
     @Test public void testQualifiedNameAssetBean()
     {
-        ElementType     elementType = new ElementType();
-        Asset           assetBean   = new Asset();
+        ElementType elementType = new ElementType();
+        Asset       assetBean   = new Asset();
 
         elementType.setElementTypeName("TestTypeName");
 
         assetBean.setQualifiedName("TestQualifiedName");
         assetBean.setType(elementType);
 
-        MockAsset  mockAsset = new MockAsset(assetBean);
+        MockAsset mockAsset = new MockAsset(assetBean);
 
         assertTrue(mockAsset.getAssetBean().equals(assetBean));
         assertTrue(mockAsset.getAssetName().equals("TestQualifiedName"));
@@ -79,15 +87,15 @@ public class TestAssetDescriptor
 
     @Test public void testDisplayNameAssetBean()
     {
-        ElementType     elementType = new ElementType();
-        Asset           assetBean   = new Asset();
+        ElementType elementType = new ElementType();
+        Asset       assetBean   = new Asset();
 
         elementType.setElementTypeName("TestTypeName");
 
         assetBean.setDisplayName("TestDisplayName");
         assetBean.setType(elementType);
 
-        MockAsset  mockAsset = new MockAsset(assetBean);
+        MockAsset mockAsset = new MockAsset(assetBean);
 
         assertTrue(mockAsset.getAssetBean().equals(assetBean));
         assertTrue(mockAsset.getAssetName().equals("TestDisplayName"));
@@ -97,8 +105,8 @@ public class TestAssetDescriptor
 
     @Test public void testAllNamedAssetBean()
     {
-        ElementType     elementType = new ElementType();
-        Asset           assetBean   = new Asset();
+        ElementType elementType = new ElementType();
+        Asset       assetBean   = new Asset();
 
         elementType.setElementTypeName("TestTypeName");
 
@@ -107,7 +115,7 @@ public class TestAssetDescriptor
 
         assetBean.setType(elementType);
 
-        MockAsset  mockAsset = new MockAsset(assetBean);
+        MockAsset mockAsset = new MockAsset(assetBean);
 
         assertTrue(mockAsset.getAssetBean().equals(assetBean));
         assertTrue(mockAsset.getAssetName().equals("TestQualifiedName"));
@@ -124,7 +132,7 @@ public class TestAssetDescriptor
 
     @Test public void testNullClone()
     {
-        MockAsset  mockAsset = new MockAsset((MockAsset)null);
+        MockAsset mockAsset = new MockAsset((MockAsset)null);
 
         assertFalse(mockAsset.getAssetBean() == null);
         assertTrue(mockAsset.getAssetName().equals("<Unknown>"));
@@ -134,16 +142,16 @@ public class TestAssetDescriptor
 
     @Test public void testPopulatedClone()
     {
-        ElementType     elementType = new ElementType();
-        Asset           assetBean   = new Asset();
+        ElementType elementType = new ElementType();
+        Asset       assetBean   = new Asset();
 
         elementType.setElementTypeName("TestTypeName");
 
         assetBean.setDisplayName("TestDisplayName");
         assetBean.setType(elementType);
 
-        MockAsset  mockAssetClone = new MockAsset(assetBean);
-        MockAsset  mockAsset = new MockAsset(mockAssetClone);
+        MockAsset mockAssetClone = new MockAsset(assetBean);
+        MockAsset mockAsset      = new MockAsset(mockAssetClone);
 
         assertTrue(mockAsset.getAssetBean().equals(assetBean));
         assertTrue(mockAsset.getAssetName().equals("TestDisplayName"));

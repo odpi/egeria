@@ -33,6 +33,7 @@ import org.slf4j.LoggerFactory;
  */
 public class ConnectedAssetRelatedAssetProperties extends org.odpi.openmetadata.frameworks.connectors.properties.RelatedAssetProperties
 {
+    private String               serverName;
     private String               userId = null;
     private String               omasServerURL = null;
     private String               assetGUID = null;
@@ -43,16 +44,19 @@ public class ConnectedAssetRelatedAssetProperties extends org.odpi.openmetadata.
     /**
      * Typical constructor.
      *
+     * @param serverName  name of the server.
      * @param userId  identifier of calling user
      * @param omasServerURL  url of server
      * @param assetGUID  String   unique id for connected asset.
      */
-    public ConnectedAssetRelatedAssetProperties(String               userId,
+    public ConnectedAssetRelatedAssetProperties(String               serverName,
+                                                String               userId,
                                                 String               omasServerURL,
                                                 String               assetGUID)
     {
         super();
 
+        this.serverName = serverName;
         this.userId = userId;
         this.omasServerURL = omasServerURL;
         this.assetGUID = assetGUID;
@@ -62,17 +66,18 @@ public class ConnectedAssetRelatedAssetProperties extends org.odpi.openmetadata.
     /**
      * Copy/clone constructor.
      *
-     * @param templateProperties  template to copy.
+     * @param template  template to copy.
      */
-    public ConnectedAssetRelatedAssetProperties(ConnectedAssetRelatedAssetProperties templateProperties)
+    public ConnectedAssetRelatedAssetProperties(ConnectedAssetRelatedAssetProperties template)
     {
-        super(templateProperties);
+        super(template);
 
-        if (templateProperties != null)
+        if (template != null)
         {
-            this.userId = templateProperties.userId;
-            this.omasServerURL = templateProperties.omasServerURL;
-            this.assetGUID = templateProperties.assetGUID;
+            this.serverName = template.serverName;
+            this.userId = template.userId;
+            this.omasServerURL = template.omasServerURL;
+            this.assetGUID = template.assetGUID;
         }
     }
 
@@ -94,7 +99,7 @@ public class ConnectedAssetRelatedAssetProperties extends org.odpi.openmetadata.
 
         try
         {
-            assetProperties = new ConnectedAsset(omasServerURL, userId, assetGUID);
+            assetProperties = new ConnectedAsset(serverName, omasServerURL, userId, assetGUID);
         }
         catch (UserNotAuthorizedException  error)
         {

@@ -82,7 +82,7 @@ public enum GovernanceEngineErrorCode {
             "The handlers has issued a call to the open metadata access service REST API in a remote handlers and has received an exception from the local client libraries.",
             "Look for errors in the local handlers's console to understand and correct the source of the error."),
     SERVICE_NOT_INITIALIZED(503, "OMAS-GOVERNANCEENGINE-503-003 ",
-            "The access service has not been initialized and can not support REST API call {0}",
+            "The access service has not been initialized for server {0} and can not support REST API call {1}",
             "The handlers has received a call to one of its Open Metadata Access Services but is unable to process it because the access service is not active.",
             "If the handlers is supposed to have this access service activated, correct the handlers configuration and restart the handlers."),
     METADATA_QUERY_ERROR(503, "OMAS-GOVERNANCEENGINE-503-004 ",

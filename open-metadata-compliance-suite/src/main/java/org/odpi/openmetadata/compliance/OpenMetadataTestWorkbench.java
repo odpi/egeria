@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.compliance;
 
 import org.odpi.openmetadata.compliance.beans.*;
@@ -12,6 +13,7 @@ public abstract class OpenMetadataTestWorkbench
     private   String                     workbenchName;             /* setup by the subclass */
     private   String                     versionNumber;             /* setup by the subclass */
     private   String                     workbenchDocumentationURL; /* setup by the subclass */
+    protected String                     serverName;                /* provided by caller */
     protected String                     serverURLRoot;             /* provided by caller */
 
 
@@ -21,16 +23,19 @@ public abstract class OpenMetadataTestWorkbench
      * @param workbenchName name of this workbench
      * @param versionNumber version umber of workbench
      * @param workbenchDocumentationURL url to the documentation for this workbench
+     * @param serverName string
      * @param serverURLRoot string
      */
     public OpenMetadataTestWorkbench(String                     workbenchName,
                                      String                     versionNumber,
                                      String                     workbenchDocumentationURL,
+                                     String                     serverName,
                                      String                     serverURLRoot)
     {
         this.workbenchName = workbenchName;
         this.versionNumber = versionNumber;
         this.workbenchDocumentationURL = workbenchDocumentationURL;
+        this.serverName = serverName;
         this.serverURLRoot = serverURLRoot;
     }
 

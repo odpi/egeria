@@ -8,15 +8,15 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
  */
 public abstract class AssetPropertyBase extends AssetPropertyElementBase
 {
-    protected AssetDescriptor     parentAsset;
+    protected AssetDescriptor parentAsset;
 
 
     /**
      * Typical constructor that sets the link to the connected asset to null
      *
-     * @param parentAsset descriptor of asset that his property relates to.
+     * @param parentAsset descriptor of asset that this property relates to.
      */
-    protected AssetPropertyBase(AssetDescriptor     parentAsset)
+    protected AssetPropertyBase(AssetDescriptor parentAsset)
     {
         /*
          * Initialize superclass and save the parent asset.
@@ -32,7 +32,7 @@ public abstract class AssetPropertyBase extends AssetPropertyElementBase
      * @param parentAsset descriptor of asset that his property relates to.
      * @param  template AssetPropertyBase to copy
      */
-    protected AssetPropertyBase(AssetDescriptor     parentAsset, AssetPropertyBase template)
+    protected AssetPropertyBase(AssetDescriptor parentAsset, AssetPropertyBase template)
     {
         /*
          * Initialize superclass and save the parentAsset
@@ -47,7 +47,7 @@ public abstract class AssetPropertyBase extends AssetPropertyElementBase
      *
      * @return AssetDescriptor
      */
-    protected  AssetDescriptor  getParentAsset() { return parentAsset; }
+    protected AssetDescriptor getParentAsset() { return parentAsset; }
 
 
     /**
