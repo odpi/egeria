@@ -10,6 +10,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -2909,11 +2910,17 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                     (entityOneTypeGUID != null)    && (entityOneTypeName != null)    &&
                     (entityTwoTypeGUID != null)    && (entityTwoTypeName != null))
                 {
-                    if ((entityOneTypeDefGUID.equals(entityOneTypeGUID)) &&
-                            (entityTwoTypeDefGUID.equals(entityTwoTypeGUID)) &&
-                            (entityOneTypeDefName.equals(entityOneTypeName)) &&
-                            (entityTwoTypeDefName.equals(entityTwoTypeName)))
-                    {
+                    List<TypeDefLink> entityOneAllTypes = Arrays.asList(new TypeDefLink(entityOneTypeGUID, entityOneTypeName));
+                    entityOneAllTypes.addAll(entityOneType.getTypeDefSuperTypes());
+                    List<TypeDefLink> entityTwoAllTypes = Arrays.asList(new TypeDefLink(entityTwoTypeGUID, entityTwoTypeName));
+                    entityTwoAllTypes.addAll(entityTwoType.getTypeDefSuperTypes());
+
+                    String finalEntityOneTypeDefGUID = entityOneTypeDefGUID;
+                    String finalEntityOneTypeDefName = entityOneTypeDefName;
+                    String finalEntityTwoTypeDefGUID = entityTwoTypeDefGUID;
+                    String finalEntityTwoTypeDefName = entityTwoTypeDefName;
+                    if (entityOneAllTypes.stream().anyMatch(e -> e.getGUID().equals(finalEntityOneTypeDefGUID) && e.getName().equals(finalEntityOneTypeDefName)) &&
+                            entityTwoAllTypes.stream().anyMatch(e -> e.getGUID().equals(finalEntityTwoTypeDefGUID) && e.getName().equals(finalEntityTwoTypeDefName))) {
                         return;
                     }
                 }
