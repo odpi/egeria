@@ -10,7 +10,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -2910,10 +2909,10 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                     (entityOneTypeGUID != null)    && (entityOneTypeName != null)    &&
                     (entityTwoTypeGUID != null)    && (entityTwoTypeName != null))
                 {
-                    List<TypeDefLink> entityOneAllTypes = Arrays.asList(new TypeDefLink(entityOneTypeGUID, entityOneTypeName));
-                    entityOneAllTypes.addAll(entityOneType.getTypeDefSuperTypes());
-                    List<TypeDefLink> entityTwoAllTypes = Arrays.asList(new TypeDefLink(entityTwoTypeGUID, entityTwoTypeName));
-                    entityTwoAllTypes.addAll(entityTwoType.getTypeDefSuperTypes());
+                    List<TypeDefLink> entityOneAllTypes = entityOneType.getTypeDefSuperTypes();
+                    entityOneAllTypes.add(new TypeDefLink(entityOneTypeGUID, entityOneTypeName));
+                    List<TypeDefLink> entityTwoAllTypes = entityTwoType.getTypeDefSuperTypes();
+                    entityTwoAllTypes.add(new TypeDefLink(entityTwoTypeGUID, entityTwoTypeName));
 
                     String finalEntityOneTypeDefGUID = entityOneTypeDefGUID;
                     String finalEntityOneTypeDefName = entityOneTypeDefName;
