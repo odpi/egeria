@@ -1,0 +1,209 @@
+
+{
+  "id":99,
+  "name": "gaian",
+  "implClass": "org.apache.ranger.services.gaian.RangerServiceGaian",
+  "label": "Gaian",
+  "description": "Gaian",
+  "options": {
+    "enableDenyAndExceptionsInPolicies": "true"
+  },
+    "guid": "86d10748-e4fc-442b-8991-f6a727054ece",
+
+  "resources": [
+    {
+      "itemId": 1,
+      "name": "schema",
+      "type": "string",
+      "level": 10,
+      "parent": "",
+      "mandatory": true,
+      "lookupSupported": true,
+      "recursiveSupported": false,
+      "excludesSupported": true,
+      "matcher": "org.apache.ranger.plugin.resourcematcher.RangerDefaultResourceMatcher",
+      "matcherOptions": { "wildCard":true, "ignoreCase":true },
+      "validationRegEx":"",
+      "validationMessage": "",
+      "uiHint":"",
+      "label": "Gaian Schema",
+      "description": "Gaian virtual Schema"
+    },
+    {
+      "itemId": 2,
+      "name": "table",
+      "type": "string",
+      "level": 20,
+      "parent": "schema",
+      "mandatory": true,
+      "lookupSupported": true,
+      "recursiveSupported": false,
+      "excludesSupported": true,
+      "matcher": "org.apache.ranger.plugin.resourcematcher.RangerDefaultResourceMatcher",
+      "matcherOptions": { "wildCard":true, "ignoreCase":true },
+      "validationRegEx":"",
+      "validationMessage": "",
+      "uiHint":"",
+      "label": "Gaian Table",
+      "description": "Gaian virtual Table"
+    },
+    {
+      "itemId": 3,
+      "name": "column",
+      "type": "string",
+      "level": 30,
+      "parent": "table",
+      "mandatory": true,
+      "lookupSupported": true,
+      "recursiveSupported": false,
+      "excludesSupported": true,
+      "matcher": "org.apache.ranger.plugin.resourcematcher.RangerDefaultResourceMatcher",
+      "matcherOptions": { "wildCard":true, "ignoreCase":true },
+      "validationRegEx":"",
+      "validationMessage": "",
+      "uiHint":"",
+      "label": "Gaian Column",
+      "description": "Gaian virtual Column"
+    }
+  ],
+
+  "accessTypes":
+  [
+    {
+      "itemId": 1,
+      "name": "select",
+      "label": "select"
+    }
+
+
+  ],
+
+  "configs":
+  [
+    {
+      "itemId": 1,
+      "name": "user",
+      "type": "string",
+      "mandatory": true,
+      "validationRegEx":"",
+      "validationMessage": "",
+      "uiHint":"",
+      "label": "Username"
+    },
+
+    {
+      "itemId": 2,
+      "name": "password",
+      "type": "password",
+      "mandatory": true,
+      "validationRegEx":"",
+      "validationMessage": "",
+      "uiHint":"",
+      "label": "Password"
+    },
+
+    {
+      "itemId": 3,
+      "name": "jdbc.url",
+      "type": "string",
+      "mandatory": true,
+      "defaultValue": "jdbc:derby://localhost:6414/gaiandb;create=false",
+      "validationRegEx":"",
+      "validationMessage": "",
+      "uiHint":""
+    }
+  ],
+
+  "enums":
+  [
+
+  ],
+
+  "contextEnrichers":
+  [
+  ],
+
+  "policyConditions":
+  [
+  ],
+  "dataMaskDef": {
+    "accessTypes": [
+      {
+        "name": "select"
+      }
+    ],
+    "resources": [
+      {
+        "itemId": 1,
+        "name": "schema",
+        "type": "string",
+        "level": 10,
+        "parent": "",
+        "mandatory": true,
+        "lookupSupported": true,
+        "recursiveSupported": false,
+        "excludesSupported": true,
+        "matcher": "org.apache.ranger.plugin.resourcematcher.RangerDefaultResourceMatcher",
+        "matcherOptions": { "wildCard":false, "ignoreCase":true },
+        "validationRegEx":"",
+        "validationMessage": "",
+        "uiHint":"{ \"singleValue\":true }",
+        "label": "Gaian Schema",
+        "description": "Gaian virtual Schema"
+      },
+      {
+        "itemId": 2,
+        "name": "table",
+        "type": "string",
+        "level": 20,
+        "parent": "schema",
+        "mandatory": true,
+        "lookupSupported": true,
+        "recursiveSupported": false,
+        "excludesSupported": true,
+        "matcher": "org.apache.ranger.plugin.resourcematcher.RangerDefaultResourceMatcher",
+        "matcherOptions": { "wildCard":true, "ignoreCase":true },
+        "validationRegEx":"",
+        "validationMessage": "",
+        "uiHint":"",
+        "label": "Gaian Table",
+        "description": "Gaian virtual Table"
+      },
+      {
+        "itemId": 3,
+        "name": "column",
+        "type": "string",
+        "level": 30,
+        "parent": "table",
+        "mandatory": true,
+        "lookupSupported": true,
+        "recursiveSupported": false,
+        "excludesSupported": true,
+        "matcher": "org.apache.ranger.plugin.resourcematcher.RangerDefaultResourceMatcher",
+        "matcherOptions": { "wildCard":true, "ignoreCase":true },
+        "validationRegEx":"",
+        "validationMessage": "",
+        "uiHint":"",
+        "label": "Gaian Column",
+        "description": "Gaian virtual Column"
+      }
+    ],
+    "maskTypes": [
+      {
+        "itemId": 1,
+        "name": "MASK",
+        "label": "Redact",
+        "description": "Replace lowercase with 'x', uppercase with 'X', digits with '0'",
+        "transformer": "mask({col})",
+        "dataMaskOptions": {
+        }
+      },
+      {
+        "itemId": 2,
+        "name": "MASK_NONE",
+        "label": "Unmasked (retain original value)",
+        "description": "No masking"
+      }
+    ]
+  }
+}
