@@ -1,60 +1,92 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-
-
 package org.odpi.openmetadata.adapters.authenticationplugins.gaianimpersonation;
 
 import com.ibm.gaiandb.GaianAuthenticator;
-import com.ibm.gaiandb.Logger;
 import org.apache.derby.authentication.UserAuthenticator;
 
 import java.sql.SQLException;
 import java.util.Properties;
 
-//TODO
+/**
+ * ProxyUserAuthenticator performs the user authentication for the user name using the proxy properties or the basic
+ * authentication if proxy properties or not set up.
+ */
 public class ProxyUserAuthenticator implements UserAuthenticator {
 
-    private static final Logger logger = new Logger("ProxyUserAuthenticator", 30);
+    private static final com.ibm.gaiandb.Logger logger = new com.ibm.gaiandb.Logger("ProxyUserAuthenticator", 30);
 
-
-    private static final String PROXYUID_KEY = "proxy-user";
-    private static final String PROXYPWD_KEY = "proxy-pwd";
-
+    private static final String PROXY_UID_KEY = "proxy-user";
+    private static final String PROXY_PWD_KEY = "proxy-pwd";
     private static final GaianAuthenticator basAuth = new GaianAuthenticator();
 
+    /**
+     * Authenticate the user using proxy properties for the default ones
+     *
+     * @param userName      the name of the user that should be authenticated
+     * @param passwordOrSid password to authenticate the user
+     * @param dbName        database name
+     * @param info          properties
+     * @return boolean if the authentication was successful or not
+     * @throws SQLException provides information on a database access error or other errors
+     */
     public boolean authenticateUser(String userName, String passwordOrSid, String dbName, Properties info) throws SQLException {
 
-        boolean res = false;
+        String proxyUID = info.getProperty(PROXY_UID_KEY);
+        String proxyPwd = info.getProperty(PROXY_PWD_KEY);
 
-        // see if we need to go with proxy auth
-        String proxyUID = info.getProperty(PROXYUID_KEY);
-        String proxyPwd = info.getProperty(PROXYPWD_KEY);
+        boolean isAuthenticated = performProxyAuthentication(userName, dbName, info, proxyUID, proxyPwd);
 
-        if (null != proxyUID && null != proxyPwd) {
-            // we authenticate based on this proxy user & can assert identity
-            // there are no additional checks to control if this user has privileges to perform escalation
-            logger.logInfo("Performing proxy authentication with user:" + proxyUID + " on behalf of:" + userName);
-
-            // force automatic creation of schema
-            info.setProperty("create", "true");
-
-            res = basAuth.authenticateUser(proxyUID, proxyPwd, dbName, info);
-
+        if (!isAuthenticated) {
+            isAuthenticated = performRegularAuthentication(userName, passwordOrSid, dbName, info);
         }
 
-
-        // If either that didn't work - or we are not using proxy then we'll auth normally
-        // straight pass through - no need to manipulate properties
-        if (!res) {
-            logger.logInfo("Performing regular authentication for user:" + userName);
-            res = basAuth.authenticateUser(userName, passwordOrSid, dbName, info);  // drop back to Basic if no asserted id
+        if (isAuthenticated) {
+            logger.logDetail("authentication was successful");
+        } else {
+            logger.logDetail("authentication failed");
         }
 
-        if (res)
-            logger.logInfo("authentication was successful");
-        else
-            logger.logInfo("authentication failed");
+        return isAuthenticated;
+    }
 
-        return res;
+    /**
+     * In case that the proxy authentication failed or the proxy user is not used,
+     * perform regular authentication for the user, no need to manipulate properties.
+     *
+     * @param userName      the name of the user that should be authenticated
+     * @param passwordOrSid password to authenticate the user
+     * @param dbName        database name
+     * @param info          properties
+     * @return boolean true if the authentication was successful
+     * @throws SQLException provides information on a database access error or other errors
+     */
+    private boolean performRegularAuthentication(String userName, String passwordOrSid, String dbName, Properties info) throws SQLException {
+        logger.logDetail("Performing regular authentication for user:" + userName);
+        return basAuth.authenticateUser(userName, passwordOrSid, dbName, info);
+    }
+
+    /**
+     * Authentication based on this proxy user & can assert identity amd force automatic creation of schema
+     * There are no additional checks to control if this user has privileges to perform escalation.
+     *
+     * @param userName the name of the user that should be authenticated
+     * @param dbName   database name
+     * @param info     properties
+     * @param proxyUID proxy unique identifier
+     * @param proxyPwd proxy password
+     * @return boolean true if the authentication was successful
+     * @throws SQLException provides information on a database access error or other errors
+     */
+    private boolean performProxyAuthentication(String userName, String dbName, Properties info, String proxyUID, String proxyPwd) throws SQLException {
+
+        if (proxyUID == null || proxyPwd == null) {
+            return false;
+        }
+
+        logger.logDetail("Performing proxy authentication with user:" + proxyUID + " on behalf of:" + userName);
+        info.setProperty("create", "true");
+
+        return basAuth.authenticateUser(proxyUID, proxyPwd, dbName, info);
     }
 }

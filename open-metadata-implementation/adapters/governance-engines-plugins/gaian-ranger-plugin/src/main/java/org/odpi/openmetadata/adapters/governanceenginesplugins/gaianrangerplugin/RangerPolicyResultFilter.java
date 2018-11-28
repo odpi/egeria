@@ -1,245 +1,107 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-
 package org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ibm.gaiandb.Logger;
 import com.ibm.gaiandb.Util;
 import com.ibm.gaiandb.policyframework.SQLResultFilterX;
 import org.apache.derby.iapi.types.DataValueDescriptor;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.*;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Properties;
+import java.util.Set;
 
-// call rangerGaianPlugin
-// passin all the params from user query
+import static org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin.Constants.COLUMN_RESOURCE;
+import static org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin.Constants.DEFAULT_GAIAN_DB_USER;
+import static org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin.Constants.DEFAULT_SCHEMA;
+import static org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin.Constants.SELECT_ACTION;
+import static org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin.Constants.UNKNOWN_USER;
 
 /**
- * Initial policy plugin for gaianDB, as part of the VirtualDataConnector project
- * <p>
- * Refer to the toplevel README.md in this project for further information on how to build, deploy & use
- *
- * @author jonesn@uk.ibm.com
+ * Initial policy plugin for GaianDB
+ * Refer to the top level README.md in this project for further information on how to build, deploy & use
  */
-
 public class RangerPolicyResultFilter extends SQLResultFilterX {
 
-
-    //	Use PROPRIETARY notice if class contains a main() method, otherwise use COPYRIGHT notice.
-    public static final String COPYRIGHT_NOTICE = "(c) Copyright IBM Corp. 2018";
-
-    // Initialize gaianDB logging
     private static final Logger logger = new Logger("RangerPolicyResultFilter", 25);
 
-    // Query context is used to build up the context of the query through a series of
-    // calls made to this class by Gaian, so that we can then pass to the ranger policy engine
     private QueryContext queryContext = new QueryContext();
-
     private GaianAuthorizer authorizer = new RangerGaianAuthorizer();
     private boolean authorizeResult = true;
 
     /**
      * Policy instantiation constructor - invoked for every new query.
-     * This instance will be re-used if the calling GaianTable results from a PreparedStatement which is re-executed by the calling application.
+     * This instance will be re-used if the calling GaianTable results from a PreparedStatement
+     * which is re-executed by the calling application.
      */
     public RangerPolicyResultFilter() {
         logger.logDetail("\nEntered RangerPolicyResultFilter() constructor");
     }
 
-    public boolean setLogicalTable(String logicalTableName, ResultSetMetaData logicalTableResultSetMetaData) {
-        logger.logDetail("Entered setLogicalTable(), logicalTable: " + logicalTableName + ", structure: " + logicalTableResultSetMetaData);
+    private static RangerUser getRangerUser(String url, String param) {
+        RestTemplate restTemplate = new RestTemplate();
+        HttpEntity<String> entity = new HttpEntity<>(getHttpHeaders());
 
+        String finalURL = MessageFormat.format(url, param);
+        logger.logDetail("getRangerUser " + finalURL);
+        ResponseEntity<String> result = restTemplate.exchange(finalURL, HttpMethod.GET, entity, String.class);
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         try {
-            queryContext.setTableName(logicalTableName);
-            queryContext.setActionType("SELECT");
-            queryContext.setSchema("Gaian"); // Hardcoded for now
-
-            // This gets overwritten in setQueriedColumns, which provides a more precise list
-            // accounting for what columns are used in select & predicate.
-            List<String> columns = new ArrayList<String>();
-            int count = logicalTableResultSetMetaData.getColumnCount();
-            for (int i = 1; i <= count; i++) {
-                String str = logicalTableResultSetMetaData.getColumnName(i);
-                columns.add(str);
-            }
-            queryContext.setColumns(columns);
-            queryContext.setResourceType("COLUMN");
-            queryContext.setColumnTransformers(new ArrayList<String>());
-
-            // User would have been set below (look for OP_ID_SET_AUTHENTICATED_DERBY_USER_RETURN_IS_QUERY_ALLOWED)
-            // For now we HARDCODE to group users - until LDAP integration done.
-            Set<String> users = new HashSet<String>();
-            users.add("users");
-            queryContext.setUserGroups(users);
-
-
-        } catch (SQLException e) {
+            return mapper.readValue(result.getBody(), RangerUser.class);
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        return authorizeResult; // allow query to continue (i.e. accept this logical table)
+        return null;
     }
 
+    private static HttpHeaders getHttpHeaders() {
+        HttpHeaders headers = new HttpHeaders();
+
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        List<MediaType> accept = new ArrayList<>(1);
+        accept.add(MediaType.APPLICATION_JSON);
+        headers.setAccept(accept);
+
+        String base64Credentials = getBase64CredsString();
+        headers.set("Authorization", "Basic " + base64Credentials);
+        return headers;
+    }
+
+    private static String getBase64CredsString() {
+        byte[] plainCredetialBytes = "admin:admin".getBytes();
+        byte[] base64CredsBytes = Base64.getEncoder().encode(plainCredetialBytes);
+        return new String(base64CredsBytes);
+    }
+
+    /**
+     * Set up the forwarding node name
+     *
+     * @param nodeName forwarding node name
+     * @return true allow query to continue
+     */
     public boolean setForwardingNode(String nodeName) {
         logger.logDetail("Entered setForwardingNode(), forwardingNode: " + nodeName);
-        return true; // allow query to continue (i.e. accept this forwardingNode)
+        return true;
     }
-
-    // Used to parse the GDB_CREDENTIALS string passed on every statement. Not used by the ranger plugin support
-    public boolean setUserCredentials(String credentialsStringBlock) {
-        logger.logDetail("Entered setUserCredentials(), credentialsStringBlock: " + credentialsStringBlock);
-        return true; // allow query to continue (i.e. accept this credentialsStringBlock)
-    }
-
-    public int nextQueriedDataSource(String dataSourceID, String dataSourceDescription, int[] columnMappings) {
-        logger.logDetail("Entered nextQueriedDataSource(), dataSourceID: " + dataSourceID
-                + ", dataSourceDescription: " + dataSourceDescription + ", columnMappings: " + Util.intArrayAsString(columnMappings));
-        return -1; // allow all records to be returned (i.e. don't impose a maximum number)
-    }
-
-    // This only works correctly when either using VTI or table function syntax
-    // VTI : select * from new com.ibm.db2j.GaianTable('EMPLOYEE') EMPLOYEE
-    // Table function: select * from TABLE(VEMPLOYEE('VEMPLOYEE')) VEMP
-    // If derby views are used the column list is ALL of those in the queried table, even ones unusued
-    // ie : select * from VEMPLOYEE
-    // typically leading to more strict checks - ie failing if any restricted column even exists in the table
-    public boolean setQueriedColumns(int[] queriedColumns) {
-        logger.logDetail("Entered setQueriedColumns(), queriedColumns: " + Util.intArrayAsString(queriedColumns));
-
-        try {
-            // update to the queried columns
-            List<String> columns = new ArrayList<String>();
-            for (int i = 0; i < queriedColumns.length; i++) {
-                columns.add(queryContext.getColumns().get(queriedColumns[i] - 1));
-            }
-            queryContext.setColumns(columns);
-            queryContext.setResourceType("COLUMN");
-            authorizer.init();
-            authorizeResult = authorizer.isAuthorized(queryContext);
-        } catch (GaianAuthorizationException e) {
-            e.printStackTrace();
-        }
-
-        // As of 9 Feb 2018 there is a bug in GaianTable that means this return is ignored.
-        // We therefore check this return when processing rows in result set
-        // Once fixed the return below will be respected and the backend query will be skipped to improve efficiency
-        return authorizeResult; // allow query to continue (i.e. accept that all these columns be queried)
-    }
-
-    /**
-     * Apply policy on a batch of rows..
-     * This is helpful if you need to send the rows to a 3rd party to evaluate policy - so you can minimize the number of round trips to it.
-     */
-    public DataValueDescriptor[][] filterRowsBatch(String dataSourceID, DataValueDescriptor[][] rows) {
-
-        logger.logDetail("Entered filterRowsBatch(), dataSourceID: " + dataSourceID + ", number of rows: " + rows.length);
-
-        if (!authorizeResult) {
-            logger.logDetail("filterRowsBatch: UnAuthorized query!");
-
-            //return new DataValueDescriptor[rows.length][rows[0].length];
-            return new DataValueDescriptor[0][0];
-        } else {
-
-            // When called using a select from a view, or a VTI, the rows array will only contain the columns we expect
-            // for example a select firstname,lastname from vemployee would only give us 2 columns in the rows array
-            // However when using table function we get ALL columns - and they are stripped upstream.
-            // ie NULL,NULL,Georgi,Facello,NULL,NULL ....
-            // Thus our index for overwriting a column value with it's transformation is wrong, leading to wrong
-            // results or exceptions.
-            // **HACK** for now, skip over columns with NULL data. PURELY for demo support pending a proper
-            // fix
-            authorizer.applyRowFilterAndColumnMasking(queryContext);
-
-            int resultSetColumnIndexOffset = 0;
-            int querySetColumnIndex = 0;
-            int firstValidRow = -1;
-
-            // If there's no rows, masking isn't needed
-            if (null != rows && rows.length > 0) {
-
-                for (int i = 0; i < rows.length; i++) {
-                    if (rows[i] != null) {
-                        firstValidRow = i;
-                        break;
-                    }
-                }
-
-                // if all the rows are null return directly
-                if (firstValidRow == -1) return rows;
-
-                while (querySetColumnIndex < queryContext.getColumns().size()
-                        && querySetColumnIndex + resultSetColumnIndexOffset < rows[firstValidRow].length) {
-                    // We ONLY look at the first row - this will fail if the data is null
-                    // instead should be consulting metadata (work needed to resolve)
-                    // BIG HACK warning....
-                    if (rows[firstValidRow][querySetColumnIndex + resultSetColumnIndexOffset].isNull()) {
-                        resultSetColumnIndexOffset++; // increment the fudge factor
-                        continue; // resume with the next expected column
-                    }
-
-                    if (queryContext.getColumnTransformers().get(querySetColumnIndex) != queryContext.getColumns().get(querySetColumnIndex)) {
-                        // Now do the transformation for each row
-                        for (int j = 0; j < rows.length; j++) {
-                            if (rows[j] == null) continue;
-                            ApplyMasking.redact(rows[j][querySetColumnIndex + resultSetColumnIndexOffset]);
-                        }
-
-                    }
-                    querySetColumnIndex++;
-
-                }
-
-            }
-                // END of hack. Original code follows:
-
-                //for (int i = 0; i < queryContext.getColumns().size(); i++) {
-                //	if (queryContext.getColumnTransformers().get(i) != queryContext.getColumns().get(i)) {
-                //		for (int j = 0; j < rows.length; j++) {
-                //			rows[j][i].setValue(queryContext.getColumnTransformers().get(i));
-                //		}
-                //	}
-
-        }
-        return rows; // allow query to continue (i.e. accept this logical table)
-    }
-
-
-    /**
-     * This method provides generic extensibility of the Policy framework.
-     * For any new operations required in future, a new operation ID (opID) will be assigned, for which
-     * a given set of arguments will be expected, we well as a given return object.
-     */
-    protected Object executeOperationImpl(String opID, Object... args) {
-        logger.logDetail("Entered executeOperation(), opID: " + opID + ", args: " + (null == args ? null : Arrays.asList(args)));
-
-        // If we get OP_ID_SET_AUTHENTICATED_DERBY_USER_RETURN_IS_QUERY_ALLOWED it's passing us the
-        // userId to be used for the security check, so save it in context
-        boolean haveUser = false;
-
-        if (null != opID && opID.equals(OP_ID_SET_AUTHENTICATED_DERBY_USER_RETURN_IS_QUERY_ALLOWED)) {
-            if (args.length >= 1) {
-                if (null != args[0]) { // shouldn't be >1 for this opcode...
-                    // Ranger appears to be case significant. Users normally lowercase but gaian forces to upper case....
-                    String gaianUser = args[0].toString().toLowerCase();
-                    queryContext.setUser(gaianUser);
-                    logger.logInfo("Found user for query :" + gaianUser);
-                    haveUser = true;
-                }
-            }
-
-            // This will happen if VTI syntax is used on the query, ie
-            // select firstname from new com.ibm.db2.db2j('VEMPLOYEE') VEMPLOYEE
-            // If this happens log, and make up a userId unlikely to be used, so hopefully will default to a safe
-            // option. In future may fail the query entirely
-            if (haveUser == false) {
-                queryContext.setUser("<UNKNOWN>");
-                logger.logImportant("Unable to retrieve user. Ensure Table functions configured and used in Query. Defaulting to setting user to <UNKNOWN>");
-            }
-        }
-        return null; // Generic return of 'null' just lets the query proceed. Otherwise, the returned object should depend on the opID.
-    }
-
 
     /**
      * Invoked when Derby closes the GaianTable or GaianQuery instance.
@@ -249,10 +111,6 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
         logger.logDetail("Entered close()");
     }
 
-
-    /****************************************************************************************************************************************************************
-     * 									DEPRECATED / UNUSED METHODS - REQUIRED ONLY FOR COMPATIBILITY WITH 'SQLResultFilter'
-     ****************************************************************************************************************************************************************/
 
     /**
      * This method is deprecated in favour of the same method below having 3 arguments - it is here for compatibility with SQLResultFilter
@@ -276,6 +134,290 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
     public boolean filterRow(DataValueDescriptor[] row) {
         logger.logDetail("Entered filterRow() (unexpectedly), row: " + Arrays.asList(row));
         return true; // allow this record to be returned
+    }
+
+    /**
+     * Used to parse the GDB_CREDENTIALS string passed on every statement. Not used by the ranger plugin support
+     *
+     * @param credentialsStringBlock credentials as string
+     * @return true allow query to continue (i.e. accept this credentialsStringBlock)
+     */
+    public boolean setUserCredentials(String credentialsStringBlock) {
+        logger.logDetail("Entered setUserCredentials(), credentialsStringBlock: " + credentialsStringBlock);
+        return true;
+    }
+
+    /**
+     * @param dataSourceID          data source identifier
+     * @param dataSourceDescription data source description
+     * @param columnMappings        columns for be mapped
+     * @return allow all records to be returned (i.e. don't impose a maximum number)
+     */
+    public int nextQueriedDataSource(String dataSourceID, String dataSourceDescription, int[] columnMappings) {
+        logger.logDetail("Entered nextQueriedDataSource(), dataSourceID: " + dataSourceID
+                + ", dataSourceDescription: " + dataSourceDescription + ", columnMappings: " + Util.intArrayAsString(columnMappings));
+        return -1;
+    }
+
+    /**
+     * Apply policy on a batch of rows..
+     * This is helpful if you need to send the rows to a 3rd party to evaluate policy - so you can minimize the number of round trips to it.
+     *
+     * @param dataSourceID data source identifier
+     * @param rows         rows that have to be evaluated
+     * @return result after the policies are applied
+     */
+    public DataValueDescriptor[][] filterRowsBatch(String dataSourceID, DataValueDescriptor[][] rows) {
+
+        logger.logDetail("Entered filterRowsBatch(), dataSourceID: " + dataSourceID + ", number of rows: " + rows.length);
+
+        if (!authorizeResult) {
+            logger.logDetail("filterRowsBatch: UnAuthorized query!");
+            return new DataValueDescriptor[0][0];
+        }
+
+        // When called using a select from a view, or a VTI, the rows array will only contain the columns we expect
+        // for example a select firstname,lastname from vemployee would only give us 2 columns in the rows array
+        // However when using table function we get ALL columns - and they are stripped upstream.
+        // ie NULL_MASK_TYPE,NULL_MASK_TYPE,Georgi,Facello,NULL_MASK_TYPE,NULL_MASK_TYPE ....
+        // Thus our index for overwriting a column value with it's transformation is wrong, leading to wrong
+        // results or exceptions.
+        // **HACK** for now, skip over columns with NULL_MASK_TYPE data. PURELY for demo support pending a proper
+        // fix
+        authorizer.applyRowFilterAndColumnMasking(queryContext);
+
+        if (rows.length == 0) {
+            return rows;
+        }
+
+        int firstValidRow = getFirstValidRow(rows);
+        if (firstValidRow == -1) {
+            return rows;
+        }
+
+        int resultSetColumnIndexOffset = 0;
+        int querySetColumnIndex = 0;
+        while (querySetColumnIndex < queryContext.getColumns().size()
+                && querySetColumnIndex + resultSetColumnIndexOffset < rows[firstValidRow].length) {
+            // We ONLY look at the first row - this will fail if the data is null
+            // instead should be consulting metadata (work needed to resolve)
+            // BIG HACK warning....
+            if (rows[firstValidRow][querySetColumnIndex + resultSetColumnIndexOffset].isNull()) {
+                resultSetColumnIndexOffset++; // increment the fudge factor
+                continue; // resume with the next expected column
+            }
+
+            if (!queryContext.getColumnTransformers().get(querySetColumnIndex).equals(queryContext.getColumns().get(querySetColumnIndex))) {
+                // Now do the transformation for each row
+                for (DataValueDescriptor[] row : rows) {
+                    if (row == null) {
+                        continue;
+                    }
+                    ApplyMasking.redact(row[querySetColumnIndex + resultSetColumnIndexOffset]);
+                }
+
+            }
+            querySetColumnIndex++;
+
+        }
+
+        // END of hack. Original code follows:
+        //for (int i = 0; i < queryContext.getColumns().size(); i++) {
+        //	if (queryContext.getColumnTransformers().get(i) != queryContext.getColumns().get(i)) {
+        //		for (int j = 0; j < rows.length; j++) {
+        //			rows[j][i].setValue(queryContext.getColumnTransformers().get(i));
+        //		}
+        //	}
+
+        return rows; // allow query to continue (i.e. accept this logical table)
+    }
+
+    // allow query to continue (i.e. accept this logical table)
+    public boolean setLogicalTable(String logicalTableName, ResultSetMetaData logicalTableResultSetMetaData) {
+        logger.logDetail("Entered setLogicalTable(), logicalTable: " + logicalTableName + ", structure: " + logicalTableResultSetMetaData);
+
+        try {
+            queryContext.setTableName(logicalTableName);
+            queryContext.setActionType(SELECT_ACTION);
+            queryContext.setSchema(DEFAULT_SCHEMA);
+
+            List<String> columns = getColumnNamesForLogicalTableResultSet(logicalTableResultSetMetaData);
+            queryContext.setColumns(columns);
+            queryContext.setResourceType(COLUMN_RESOURCE);
+            queryContext.setColumnTransformers(new ArrayList<>());
+
+            Set<String> users = getDefaultUserGroups();
+            queryContext.setUserGroups(users);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return authorizeResult;
+    }
+
+    // This only works correctly when either using VTI or table function syntax
+    // VTI : select * from new com.ibm.db2j.GaianTable('EMPLOYEE') EMPLOYEE
+    // Table function: select * from TABLE(VEMPLOYEE('VEMPLOYEE')) VEMP
+    // If derby views are used the column list is ALL of those in the queried table, even ones unusued
+    // ie : select * from VEMPLOYEE
+    // typically leading to more strict checks - ie failing if any restricted column even exists in the table
+    public boolean setQueriedColumns(int[] queriedColumns) {
+        logger.logDetail("Entered setQueriedColumns(), queriedColumns: " + Util.intArrayAsString(queriedColumns));
+
+        try {
+            List<String> columns = getQueryColumns(queriedColumns);
+            queryContext.setColumns(columns);
+            queryContext.setResourceType(COLUMN_RESOURCE);
+            logger.logDetail("This is the setQueriedColumns " + queryContext.toString());
+
+            authorizer.init();
+            authorizeResult = authorizer.isAuthorized(queryContext);
+        } catch (GaianAuthorizationException e) {
+            e.printStackTrace();
+        }
+
+        // As of 9 Feb 2018 there is a bug in GaianTable that means this return is ignored.
+        // We therefore check this return when processing rows in result set
+        // Once fixed the return below will be respected and the backend query will be skipped to improve efficiency
+        return authorizeResult; // allow query to continue (i.e. accept that all these columns be queried)
+    }
+
+    /**
+     * This method provides generic extensibility of the Policy framework.
+     * For any new operations required in future, a new operation ID (opID) will be assigned, for which
+     * a given set of arguments will be expected, we well as a given return object.
+     */
+    protected Object executeOperationImpl(String opID, Object... args) {
+        logger.logDetail("Entered executeOperation(), opID: " + opID + ", args: " + (null == args ? null : Arrays.asList(args)));
+        boolean haveUser = false;
+
+        if (null != opID && opID.equals(OP_ID_SET_AUTHENTICATED_DERBY_USER_RETURN_IS_QUERY_ALLOWED)) {
+
+            if (args != null && args.length >= 1 && null != args[0]) {
+                setUserDetailsForQueryContext(args[0]);
+                haveUser = true;
+
+            }
+
+            if (!haveUser) {
+                queryContext.setUser(UNKNOWN_USER);
+                logger.logImportant("Unable to retrieve user. Ensure Table functions configured and used in Query. Defaulting to setting user to <UNKNOWN>");
+            }
+        }
+        return null;
+    }
+
+    private void setUserDetailsForQueryContext(Object arg) {
+        String gaianUser = arg.toString().toLowerCase();
+        queryContext.setUser(gaianUser);
+        logger.logInfo("Found user for query :" + gaianUser);
+
+        if (!gaianUser.equals(DEFAULT_GAIAN_DB_USER)) {
+            Set<String> userGroups = getUserGroups(gaianUser);
+            if (userGroups != null) {
+                queryContext.setUserGroups(userGroups);
+            }
+        }
+
+    }
+
+    private List<String> getQueryColumns(int[] queriedColumns) {
+        List<String> columns = new ArrayList<>(queriedColumns.length);
+
+        for (int i = 0; i < queriedColumns.length; i++) {
+            columns.add(queryContext.getColumns().get(queriedColumns[i] - 1));
+        }
+
+        return columns;
+    }
+
+    /**
+     * Overwritten in setQueriedColumns, which provides a more precise list
+     * accounting for what columns are used in select & predicate.
+     *
+     * @param logicalTableResultSetMetaData logical table structure
+     * @return the list of the columns are used in select & predicate
+     * @throws SQLException provides information on a database access error or other errors
+     */
+    private List<String> getColumnNamesForLogicalTableResultSet(ResultSetMetaData logicalTableResultSetMetaData) throws SQLException {
+        int count = logicalTableResultSetMetaData.getColumnCount();
+        List<String> columns = new ArrayList<>(count);
+
+        for (int i = 1; i <= count; i++) {
+            String str = logicalTableResultSetMetaData.getColumnName(i);
+            columns.add(str);
+        }
+
+        return columns;
+    }
+
+    private int getFirstValidRow(DataValueDescriptor[][] rows) {
+
+        for (int i = 0; i < rows.length; i++) {
+            if (rows[i] != null) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    private Set<String> getDefaultUserGroups() {
+        Set<String> users = new HashSet<>(1);
+        users.add("users");
+        return users;
+    }
+
+    private Set<String> getUserGroups(String userName) {
+        logger.logDetail("getUserGroups for: " + userName);
+        final String rangerURL = getRangerURL();
+
+        String userDetailsUrl = getUserDetailsURL(rangerURL);
+        final RangerUser userDetails = getRangerUser(userDetailsUrl, userName);
+        if (userDetails != null) {
+            logger.logInfo(userDetails.toString());
+            return getUserGroupsByUserId(rangerURL, userDetails);
+        }
+
+        return null;
+    }
+
+    private Set<String> getUserGroupsByUserId(String rangerURL, RangerUser userDetails) {
+        String userGroupsUrl = getUserGroupURL(rangerURL);
+        final RangerUser userGroups = getRangerUser(userGroupsUrl, userDetails.getId());
+
+        if (userGroups != null) {
+            logger.logInfo(userGroups.toString());
+            return userGroups.getGroupNameList();
+        }
+
+        return null;
+    }
+
+    private String getUserGroupURL(String rangerURL) {
+        return rangerURL + "/service/xusers/secure/users/{0}";
+    }
+
+    private String getUserDetailsURL(String rangerURL) {
+        return rangerURL + "/service/xusers/users/userName/{0}";
+    }
+
+    private String getRangerURL() {
+        Properties properties = new Properties();
+
+        try {
+            InputStream resource = RangerPolicyResultFilter.class.getClassLoader().getResourceAsStream("application.properties");
+            if (resource != null) {
+                properties.load(resource);
+                logger.logDetail(properties.toString());
+                final String rangerURL = properties.getProperty("ranger.plugin.gaian.policy.rest.url");
+                logger.logDetail(rangerURL);
+                resource.close();
+                return rangerURL;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

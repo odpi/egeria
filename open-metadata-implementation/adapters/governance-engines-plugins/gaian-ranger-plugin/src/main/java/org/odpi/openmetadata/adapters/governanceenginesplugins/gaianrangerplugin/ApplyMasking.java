@@ -9,9 +9,6 @@ import org.apache.derby.iapi.types.TypeId;
 import java.sql.Date;
 import java.sql.Types;
 
-/**
- * Created by shiwang on 2/28/18.
- */
 public class ApplyMasking {
 
     public static void redact(DataValueDescriptor dataValueDescriptor) {
