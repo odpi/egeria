@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ibm.gaiandb.Logger;
 import com.ibm.gaiandb.Util;
 import com.ibm.gaiandb.policyframework.SQLResultFilterX;
+import org.apache.derby.iapi.error.StandardException;
 import org.apache.derby.iapi.types.DataValueDescriptor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -55,21 +56,31 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
         logger.logDetail("\nEntered RangerPolicyResultFilter() constructor");
     }
 
-    private static RangerUser getRangerUser(String url, String param) {
+    /**
+     * This method has no timeout and the REST call is synchronous.
+     *
+     * @param url the URL to Ranger Server
+     * @return information about the user
+     */
+    private static RangerUser getRangerUser(String url) {
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<String> entity = new HttpEntity<>(getHttpHeaders());
 
-        String finalURL = MessageFormat.format(url, param);
-        logger.logDetail("getRangerUser " + finalURL);
-        ResponseEntity<String> result = restTemplate.exchange(finalURL, HttpMethod.GET, entity, String.class);
+        ResponseEntity<String> result = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
 
+        return mapResultToRangerUser(result);
+    }
+
+    private static RangerUser mapResultToRangerUser(ResponseEntity<String> result) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
         try {
             return mapper.readValue(result.getBody(), RangerUser.class);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.logException("403", e.getMessage(), e);
         }
+
         return null;
     }
 
@@ -87,9 +98,9 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
     }
 
     private static String getBase64CredsString() {
-        byte[] plainCredetialBytes = "admin:admin".getBytes();
-        byte[] base64CredsBytes = Base64.getEncoder().encode(plainCredetialBytes);
-        return new String(base64CredsBytes);
+        byte[] plainCredentialBytes = "admin:admin".getBytes();
+        byte[] base64Credential = Base64.getEncoder().encode(plainCredentialBytes);
+        return new String(base64Credential);
     }
 
     /**
@@ -213,7 +224,11 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
                     if (row == null) {
                         continue;
                     }
-                    ApplyMasking.redact(row[querySetColumnIndex + resultSetColumnIndexOffset]);
+                    try {
+                        ApplyMasking.redact(row[querySetColumnIndex + resultSetColumnIndexOffset]);
+                    } catch (StandardException e) {
+                        logger.logException(String.valueOf(e.getErrorCode()), e.getMessage(), e);
+                    }
                 }
 
             }
@@ -249,7 +264,7 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
             Set<String> users = getDefaultUserGroups();
             queryContext.setUserGroups(users);
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.logException(String.valueOf(e.getErrorCode()), e.getMessage(), e);
         }
         return authorizeResult;
     }
@@ -272,7 +287,7 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
             authorizer.init();
             authorizeResult = authorizer.isAuthorized(queryContext);
         } catch (GaianAuthorizationException e) {
-            e.printStackTrace();
+            logger.logException(String.valueOf("1"), e.getMessage(), e);
         }
 
         // As of 9 Feb 2018 there is a bug in GaianTable that means this return is ignored.
@@ -367,12 +382,19 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
         return users;
     }
 
+    /**
+     * The list of the users is retrieved from Ranger Server in a synchronous way, without timeout.
+     * Take into consideration it may cause performance issues.
+     *
+     * @param userName
+     * @return
+     */
     private Set<String> getUserGroups(String userName) {
         logger.logDetail("getUserGroups for: " + userName);
         final String rangerURL = getRangerURL();
 
-        String userDetailsUrl = getUserDetailsURL(rangerURL);
-        final RangerUser userDetails = getRangerUser(userDetailsUrl, userName);
+        String userDetailsUrl = getUserDetailsURL(rangerURL, userName);
+        final RangerUser userDetails = getRangerUser(userDetailsUrl);
         if (userDetails != null) {
             logger.logInfo(userDetails.toString());
             return getUserGroupsByUserId(rangerURL, userDetails);
@@ -382,8 +404,8 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
     }
 
     private Set<String> getUserGroupsByUserId(String rangerURL, RangerUser userDetails) {
-        String userGroupsUrl = getUserGroupURL(rangerURL);
-        final RangerUser userGroups = getRangerUser(userGroupsUrl, userDetails.getId());
+        String userGroupsUrl = getUserGroupURL(rangerURL, userDetails.getId());
+        final RangerUser userGroups = getRangerUser(userGroupsUrl);
 
         if (userGroups != null) {
             logger.logInfo(userGroups.toString());
@@ -393,12 +415,14 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
         return null;
     }
 
-    private String getUserGroupURL(String rangerURL) {
-        return rangerURL + "/service/xusers/secure/users/{0}";
+    private String getUserGroupURL(String rangerURL, String userId) {
+        final String url = rangerURL + "/service/xusers/secure/users/{0}";
+        return MessageFormat.format(url, userId);
     }
 
-    private String getUserDetailsURL(String rangerURL) {
-        return rangerURL + "/service/xusers/users/userName/{0}";
+    private String getUserDetailsURL(String rangerURL, String param) {
+        final String url = rangerURL + "/service/xusers/users/userName/{0}";
+        return MessageFormat.format(url, param);
     }
 
     private String getRangerURL() {
@@ -415,7 +439,7 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
                 return rangerURL;
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.logException("403", e.getMessage(), e);
         }
         return null;
     }

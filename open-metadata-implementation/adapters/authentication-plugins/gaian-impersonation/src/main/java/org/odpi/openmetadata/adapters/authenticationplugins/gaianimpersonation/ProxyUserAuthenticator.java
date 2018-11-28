@@ -32,10 +32,10 @@ public class ProxyUserAuthenticator implements UserAuthenticator {
      */
     public boolean authenticateUser(String userName, String passwordOrSid, String dbName, Properties info) throws SQLException {
 
-        String proxyUID = info.getProperty(PROXY_UID_KEY);
-        String proxyPwd = info.getProperty(PROXY_PWD_KEY);
+        String userId = info.getProperty(PROXY_UID_KEY);
+        String password = info.getProperty(PROXY_PWD_KEY);
 
-        boolean isAuthenticated = performProxyAuthentication(userName, dbName, info, proxyUID, proxyPwd);
+        boolean isAuthenticated = performProxyAuthentication(userName, dbName, info, userId, password);
 
         if (!isAuthenticated) {
             isAuthenticated = performRegularAuthentication(userName, passwordOrSid, dbName, info);
@@ -73,20 +73,20 @@ public class ProxyUserAuthenticator implements UserAuthenticator {
      * @param userName the name of the user that should be authenticated
      * @param dbName   database name
      * @param info     properties
-     * @param proxyUID proxy unique identifier
-     * @param proxyPwd proxy password
+     * @param userId user identifier
+     * @param password user password
      * @return boolean true if the authentication was successful
      * @throws SQLException provides information on a database access error or other errors
      */
-    private boolean performProxyAuthentication(String userName, String dbName, Properties info, String proxyUID, String proxyPwd) throws SQLException {
+    private boolean performProxyAuthentication(String userName, String dbName, Properties info, String userId, String password) throws SQLException {
 
-        if (proxyUID == null || proxyPwd == null) {
+        if (userId == null || password == null) {
             return false;
         }
 
-        logger.logDetail("Performing proxy authentication with user:" + proxyUID + " on behalf of:" + userName);
+        logger.logDetail("Performing proxy authentication with user:" + userId + " on behalf of:" + userName);
         info.setProperty("create", "true");
 
-        return basAuth.authenticateUser(proxyUID, proxyPwd, dbName, info);
+        return basAuth.authenticateUser(userId, password, dbName, info);
     }
 }
