@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.compliance;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,22 +20,27 @@ import java.util.List;
  */
 public class OpenMetadataTestLab
 {
+    private static String  resultsFileNameLeaf = ".openmetadata.functional.testlab.results";
+
     private List<OpenMetadataTestWorkbench>  registeredWorkbenches;
+    private String                           serverName;
     private String                           serverURLRoot;
 
 
     /**
      * Return the list of registered workbenches.
      *
+     * @param serverName name of server to test.
      * @param serverURLRoot root url for the server being tested
      * @return list of workbenches.
      */
-    private List<OpenMetadataTestWorkbench>  getRegisteredWorkbenches(String    serverURLRoot)
+    private List<OpenMetadataTestWorkbench>  getRegisteredWorkbenches(String    serverName,
+                                                                      String    serverURLRoot)
     {
         List<OpenMetadataTestWorkbench>  registeredTestWorkbenches = new ArrayList<>();
 
-        registeredTestWorkbenches.add(new OpenMetadataOriginTestWorkbench(serverURLRoot));
-        registeredTestWorkbenches.add(new OpenMetadataRepositoryTestWorkbench(serverURLRoot));
+        registeredTestWorkbenches.add(new OpenMetadataOriginTestWorkbench(serverName, serverURLRoot));
+        registeredTestWorkbenches.add(new OpenMetadataRepositoryTestWorkbench(serverName, serverURLRoot));
 
         return registeredTestWorkbenches;
     }
@@ -43,11 +49,14 @@ public class OpenMetadataTestLab
     /**
      * Constructor to create a test lab object that is initialized with the server to test.
      *
-     * @param serverURLRoot server to test.
+     * @param serverName name of server to test.
+     * @param serverURLRoot location of server to test.
      */
-    private OpenMetadataTestLab(String    serverURLRoot)
+    private OpenMetadataTestLab(String    serverName,
+                                String    serverURLRoot)
     {
-        this.registeredWorkbenches = getRegisteredWorkbenches(serverURLRoot);
+        this.registeredWorkbenches = getRegisteredWorkbenches(serverName, serverURLRoot);
+        this.serverName = serverName;
         this.serverURLRoot = serverURLRoot;
     }
 
@@ -61,6 +70,7 @@ public class OpenMetadataTestLab
     {
         OpenMetadataTestLabResults  results = new OpenMetadataTestLabResults();
 
+        results.setServerName(this.serverName);
         results.setServerRootURL(this.serverURLRoot);
 
         if (this.registeredWorkbenches != null)
@@ -86,29 +96,34 @@ public class OpenMetadataTestLab
     /**
      * Main method handles the parameters passed and then calls the registered workbenches.
      *
-     * @param args - first parameter is the URL root of the server.
+     * @param args first parameter is the URL root of the server, second parameter is the
+     *             server name
      */
     public static void main(String[] args)
     {
+        String  serverName;
         String  serverURLRoot;
-        String  resultsFileName = "openmetadata.functional.testlab.results";
+        String  resultsFileName;
 
         org.apache.log4j.BasicConfigurator.configure(new NullAppender());
 
-        if ((args == null) || (args.length == 0))
+        if ((args == null) || (args.length < 2))
         {
-            System.out.println("Please specify the server's URL root in the first parameter");
+            System.out.println("Please specify the server's name in the first parameter and the server URL root  in the second");
             System.exit(-1);
         }
 
-        serverURLRoot = args[0];
+        serverName = args[0];
+        serverURLRoot = args[1];
+
+        resultsFileName = serverName + resultsFileNameLeaf;
 
         System.out.println("===============================");
         System.out.println("Open Metadata Compliance Test  ");
         System.out.println("===============================");
-        System.out.println("Compliance Report for server: " + serverURLRoot);
+        System.out.println("Compliance Report for server: " + serverName + " (" + serverURLRoot + ")");
 
-        OpenMetadataTestLab  testLab = new OpenMetadataTestLab(serverURLRoot);
+        OpenMetadataTestLab  testLab = new OpenMetadataTestLab(serverName, serverURLRoot);
 
         OpenMetadataTestLabResults testLabResults = testLab.runTests();
 
@@ -141,12 +156,12 @@ public class OpenMetadataTestLab
 
         if (testLabResults.getTestCaseCount() == testLabResults.getTestPassCount())
         {
-            System.out.println("Congratulations, server at " + serverURLRoot + " is an open metadata repository");
+            System.out.println("Congratulations, " + serverName + " server at " + serverURLRoot + " is an open metadata repository");
             System.exit(0);
         }
         else
         {
-            System.out.println("Server at " + serverURLRoot + " is not yet an open metadata repository");
+            System.out.println(serverName + " server at " + serverURLRoot + " is not yet an open metadata repository");
             System.exit(1);
         }
     }

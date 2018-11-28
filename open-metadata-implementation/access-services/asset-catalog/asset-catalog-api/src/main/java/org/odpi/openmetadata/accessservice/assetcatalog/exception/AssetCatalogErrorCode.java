@@ -34,7 +34,7 @@ public enum AssetCatalogErrorCode {
 
     SERVER_URL_NOT_SPECIFIED(400, "OMAS-ASSET-CATALOG-400-001 ",
             "The OMAS Server URL is null or empty",
-            "The system is unable to connect to the OMAS Server to populate the ConnectedAssetProperties object.",
+            "The system is unable to connect to the OMAS Server.",
             "Retry the request when the OMAS Service is available."),
 
     PARAMETER_NULL(400, "OMAS-ASSET-CATALOG-400-002 ",
@@ -48,15 +48,15 @@ public enum AssetCatalogErrorCode {
             "Correct the code in the caller to provide the user id."),
 
     OMRS_NOT_INITIALIZED(404, "OMAS-ASSET-CATALOG-404-001 ",
-            "The open metadata repository services are not initialized for the {0} operation",
+            "The open metadata repository services are not initialized for server {0}",
             "The system is unable to connect to the open metadata property server.",
-            "Check that the server where the Asset Consumer OMAS is running initialized correctly.  " +
+            "Check that the server initialized correctly.  " +
                     "Correct any errors discovered and retry the request when the open metadata services are available."),
 
-    OMRS_NOT_AVAILABLE(404, "OMAS-ASSET-CATALOG-002 ",
+    OMRS_NOT_AVAILABLE(404, "OMAS-ASSET-CATALOG-404-002 ",
             "The open metadata repository services are not available for the {0} operation",
             "The system is unable to connect to the open metadata property server.",
-            "Check that the server where the Asset Consumer OMAS is running initialized correctly.  " +
+            "Check that the server where the Asset Catalog OMAS is running initialized correctly and is not in the process of shutting down.  " +
                     "Correct any errors discovered and retry the request when the open metadata services are available."),
 
     NO_METADATA_COLLECTION(404, "OMAS-ASSET-CATALOG-404-003 ",
@@ -130,8 +130,8 @@ public enum AssetCatalogErrorCode {
             "Check that the unique identifier for the asset is correct."),
 
     SERVICE_NOT_INITIALIZED(503, "OMAS-ASSET-CATALOG-503-003 ",
-            "The access service has not been initialized and can not support REST API call {0}",
-            "The server has received a call to one of its open metadata access services but is unable to process it because the access service is not active.",
+            "The access service has not been initialized for server {0} and can not support REST API calls",
+            "The server has received a call to one of its open metadata access services but is unable to process it because the access service is not active for the requested server.",
             "If the server is supposed to have this access service activated, correct the server configuration and restart the server.");
 
     private int httpErrorCode;

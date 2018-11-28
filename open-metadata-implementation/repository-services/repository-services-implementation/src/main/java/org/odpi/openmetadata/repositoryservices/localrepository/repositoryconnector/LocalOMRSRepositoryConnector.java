@@ -1,8 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventProcessor;
 import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEventProcessor;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
@@ -323,19 +325,21 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
             realEventMapper.setMetadataCollectionId(metadataCollectionId);
         }
 
-        LocalOMRSInstanceEventProcessor  localOMRSInstanceEventProcessor
+        try
+        {
+            LocalOMRSInstanceEventProcessor  localOMRSInstanceEventProcessor
                                             = new LocalOMRSInstanceEventProcessor(metadataCollectionId,
                                                                                   super.serverName,
                                                                                   realLocalConnector,
                                                                                   super.repositoryHelper,
                                                                                   super.repositoryValidator,
                                                                                   saveExchangeRule,
-                                                                                  outboundRepositoryEventProcessor);
-        this.incomingInstanceEventProcessor = localOMRSInstanceEventProcessor;
-        this.instanceRetrievalEventProcessor = localOMRSInstanceEventProcessor;
+                                                                                  outboundRepositoryEventProcessor,
+                                                                                  auditLog.createNewAuditLog(OMRSAuditingComponent.INSTANCE_EVENT_PROCESSOR));
 
-        try
-        {
+            this.incomingInstanceEventProcessor = localOMRSInstanceEventProcessor;
+            this.instanceRetrievalEventProcessor = localOMRSInstanceEventProcessor;
+
             /*
              * Initialize the metadata collection only once the connector is properly set up.
              */

@@ -3,22 +3,14 @@
 package org.odpi.openmetadata.adapters.eventbus.topic.kafka;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.Producer;
-import org.apache.kafka.clients.producer.ProducerRecord;
-
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.AdditionalProperties;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 
 import java.util.*;
-import java.util.concurrent.ExecutionException;
 
 
 /**
@@ -28,17 +20,16 @@ import java.util.concurrent.ExecutionException;
 public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
 {
     private static final Logger       log      = LoggerFactory.getLogger(KafkaOpenMetadataTopicConnector.class);
-    private static final OMRSAuditLog auditLog = new OMRSAuditLog(OMRSAuditingComponent.OPEN_METADATA_TOPIC_CONNECTOR);
-
 
     private Properties producerProperties = new Properties();
     private Properties consumerProperties = new Properties();
 
-    private Thread                         consumerThread = null;
-    private String                         outTopic = null;
-    private String                         serverId = null;
     private KafkaOpenMetadataEventConsumer consumer = null;
-    private List<String>                   incomingEventsList = Collections.synchronizedList(new ArrayList<>());
+    private KafkaOpenMetadataEventProducer producer = null;
+
+    private String       topicName          = null;
+    private String       serverId           = null;
+    private List<String> incomingEventsList = Collections.synchronizedList(new ArrayList<>());
 
 
     /**
@@ -61,13 +52,9 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         producerProperties.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 
         consumerProperties.put("bootstrap.servers", "localhost:9092");
-        consumerProperties.put("group.id", "test");
         consumerProperties.put("enable.auto.commit", "true");
         consumerProperties.put("auto.commit.interval.ms", "1000");
         consumerProperties.put("session.timeout.ms", "30000");
-        consumerProperties.put("zookeeper.session.timeout.ms", 400);
-        consumerProperties.put("zookeeper.sync.time.ms", 200);
-        consumerProperties.put("fetch.message.max.bytes", 10485760);
         consumerProperties.put("max.partition.fetch.bytes",	10485760);
         consumerProperties.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         consumerProperties.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
@@ -75,14 +62,9 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
 
 
     /**
-     * Call made by the ConnectorProvider to initialize the Connector with the base services.
-     *
-     * @param connectorInstanceId   unique id for the connector instance   useful for messages etc
-     * @param connectionProperties   POJO for the configuration used to create the connector.
+     * Retrieve information about the topic
      */
-    @Override
-    public void initialize(String               connectorInstanceId,
-                           ConnectionProperties connectionProperties)
+    private void initializeTopic()
     {
         final String           actionDescription = "initialize";
         KafkaOpenMetadataTopicConnectorAuditCode auditCode;
@@ -92,7 +74,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         EndpointProperties endpoint = connectionProperties.getEndpoint();
         if (endpoint != null)
         {
-            outTopic = endpoint.getAddress();
+            topicName = endpoint.getAddress();
 
             AdditionalProperties additionalProperties = connectionProperties.getAdditionalProperties();
             if (additionalProperties != null)
@@ -107,54 +89,46 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
                 serverId = (String) additionalProperties.getProperty(KafkaOpenMetadataTopicProvider.serverIdPropertyName);
                 consumerProperties.put("group.id", serverId);
 
-                auditCode = KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_INITIALIZING;
-                auditLog.logRecord(actionDescription,
-                                   auditCode.getLogMessageId(),
-                                   auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(outTopic, serverId),
-                                   null,
-                                   auditCode.getSystemAction(),
-                                   auditCode.getUserAction());
-
-                auditCode = KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_PRODUCER_PROPERTIES;
-                auditLog.logRecord(actionDescription,
-                                   auditCode.getLogMessageId(),
-                                   auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(producerProperties.toString()),
-                                   null,
-                                   auditCode.getSystemAction(),
-                                   auditCode.getUserAction());
-
-                /*
-                 * Inbound events are received in a different thread so that we can still send events on this thread
-                 * even if the Kafka consumer is blocked waiting for the next incoming event.
-                 */
-                consumer = new KafkaOpenMetadataEventConsumer(outTopic,serverId, consumerProperties, this);
-                consumerThread = new Thread(consumer);
-                consumerThread.start();
+                if (auditLog != null)
+                {
+                    auditCode = KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_INITIALIZING;
+                    auditLog.logRecord(actionDescription,
+                                       auditCode.getLogMessageId(),
+                                       auditCode.getSeverity(),
+                                       auditCode.getFormattedLogMessage(topicName, serverId),
+                                       null,
+                                       auditCode.getSystemAction(),
+                                       auditCode.getUserAction());
+                }
             }
             else
             {
-                auditCode = KafkaOpenMetadataTopicConnectorAuditCode.NULL_ADDITIONAL_PROPERTIES;
-                auditLog.logRecord(actionDescription,
-                                   auditCode.getLogMessageId(),
-                                   auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(outTopic),
-                                   null,
-                                   auditCode.getSystemAction(),
-                                   auditCode.getUserAction());
+                if (auditLog != null)
+                {
+                    auditCode = KafkaOpenMetadataTopicConnectorAuditCode.NULL_ADDITIONAL_PROPERTIES;
+                    auditLog.logRecord(actionDescription,
+                                       auditCode.getLogMessageId(),
+                                       auditCode.getSeverity(),
+                                       auditCode.getFormattedLogMessage(topicName),
+                                       null,
+                                       auditCode.getSystemAction(),
+                                       auditCode.getUserAction());
+                }
             }
         }
         else
         {
-            auditCode = KafkaOpenMetadataTopicConnectorAuditCode.NO_TOPIC_NAME;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            if (auditLog != null)
+            {
+                auditCode = KafkaOpenMetadataTopicConnectorAuditCode.NO_TOPIC_NAME;
+                auditLog.logRecord(actionDescription,
+                                   auditCode.getLogMessageId(),
+                                   auditCode.getSeverity(),
+                                   auditCode.getFormattedLogMessage(),
+                                   null,
+                                   auditCode.getSystemAction(),
+                                   auditCode.getUserAction());
+            }
         }
     }
 
@@ -190,7 +164,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
             propertiesObject = additionalProperties.getProperty(KafkaOpenMetadataTopicProvider.consumerPropertyName);
             if (propertiesObject != null)
             {
-                propertiesMap = (Map<String, Object>) propertiesObject;
+                propertiesMap = (Map<String, Object>)propertiesObject;
                 for (Map.Entry<String, Object> entry : propertiesMap.entrySet())
                 {
                     consumerProperties.setProperty(entry.getKey(), (String) entry.getValue());
@@ -203,7 +177,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
             auditLog.logRecord(actionDescription,
                                auditCode.getLogMessageId(),
                                auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(outTopic, error.getClass().getName(), error.getMessage()),
+                               auditCode.getFormattedLogMessage(topicName, error.getClass().getName(), error.getMessage()),
                                null,
                                auditCode.getSystemAction(),
                                auditCode.getUserAction());
@@ -213,11 +187,27 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
 
     /**
      * Indicates that the connector is completely configured and can begin processing.
+     * It creates two threads, one for sending (producer) and the other for receiving
+     * events (consumer)
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
     public void start() throws ConnectorCheckedException
     {
+        final String                   threadHeader = "Kafka-";
+        Thread                         consumerThread;
+        Thread                         producerThread;
+
+        this.initializeTopic();
+
+        consumer = new KafkaOpenMetadataEventConsumer(topicName, serverId, consumerProperties, this, auditLog);
+        consumerThread = new Thread(consumer, threadHeader + "Consumer-" + topicName);
+        consumerThread.start();
+
+        producer = new KafkaOpenMetadataEventProducer(topicName, serverId, producerProperties, this, auditLog);
+        producerThread = new Thread(producer, threadHeader + "Producer-" + topicName);
+        producerThread.start();
+
         super.start();
     }
 
@@ -230,43 +220,13 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
      */
     public void sendEvent(String event) throws ConnectorCheckedException
     {
-        final String methodName = "sendEvent";
-
-        Producer<String, String> producer = new KafkaProducer<>(producerProperties);
-
-        try
+        if (producer != null)
         {
-            log.debug("Sending message {0}" + event);
-            ProducerRecord<String, String> record = new ProducerRecord<>(outTopic, serverId, event);
-            producer.send(record).get();
+            producer.sendEvent(event);
         }
-        catch (InterruptedException | ExecutionException error)
-        {
-            log.error("Exception in sendEvent ", error);
-            KafkaOpenMetadataTopicConnectorErrorCode errorCode = KafkaOpenMetadataTopicConnectorErrorCode.ERROR_SENDING_EVENT;
-            String                                   errorMessage = errorCode.getErrorMessageId() +
-                                                                    errorCode.getFormattedErrorMessage(error.getClass().getName(),
-                                                                                                       outTopic,
-                                                                                                       error.getMessage());
-
-            throw new ConnectorCheckedException(errorCode.getHTTPErrorCode(),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction(),
-                                                error);
-        }
-        finally
-        {
-            /*
-             * Producers have a thread and an in memory buffer
-             */
-            producer.flush();
-            producer.close();
-        }
-
     }
+
+
 
 
     /**
@@ -293,6 +253,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         return newEvents;
     }
 
+
     /**
      * Distribute events to other listeners.
      *
@@ -315,17 +276,18 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         final String           actionDescription = "disconnect";
         KafkaOpenMetadataTopicConnectorAuditCode auditCode;
 
+        consumer.safeCloseConsumer();
+        producer.safeCloseProducer();
+
         super.disconnect();
 
         auditCode = KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_SHUTDOWN;
         auditLog.logRecord(actionDescription,
                            auditCode.getLogMessageId(),
                            auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(outTopic),
+                           auditCode.getFormattedLogMessage(topicName),
                            null,
                            auditCode.getSystemAction(),
                            auditCode.getUserAction());
-
-        consumer.safeCloseConsumer();
     }
 }

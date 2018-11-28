@@ -2,53 +2,55 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaElement;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType;
 
 import java.util.Map;
 import java.util.Objects;
 
 /**
  * <p>
- *     The AssetSchemaType object provides a base class for the pieces that make up a schema for a data asset.
+ *     The AssetSchemaType object provides a base class for the pieces that make up a schema for an asset.
  *     A schema provides information about how the data is structured in the asset.  Schemas are typically
  *     described as nested structures of linked schema elements.  Schemas can also be reused in other schemas.
  * </p>
- *     SchemaElement is an abstract class - used to enable the most accurate and precise mapping of the
+ *     AssetSchemaType is an abstract class - its subclasses enable the most accurate and precise mapping of the
  *     elements in a schema to the asset.
  *     <ul>
  *         <li>AssetPrimitiveSchemaType is for a leaf element in a schema.</li>
- *         <li>AssetComplexSchemaType is a complex structure of nested schema elements.</li>
- *         <li>AssetMapSchemaElement is for an attribute of type Map</li>
- *         <li>DerivedSchemaElement is for an attribute that is derived from other schema attributes</li>
+ *         <li>AssetStructSchemaType is a complex structure of nested schema elements.</li>
+ *         <li>AssetMapSchemaType is for an attribute of type Map</li>
  *     </ul>
  *     Most assets will be linked to a AssetComplexSchemaType.
  * <p>
- *     Schema elements can be linked to one another using SchemaLink.
+ *     StructSchemaType elements can be linked to one another using SchemaLink.
  * </p>
  */
-public abstract class AssetSchemaType extends AssetReferenceable
+public class AssetSchemaType extends AssetSchemaElement
 {
-    protected AssetMeanings assetMeanings;
+    SchemaType schemaTypeBean = null;
+
+
+    /**
+     * Constructor used by the subclasses
+     *
+     * @param parentAsset descriptor of asset that this property relates to.
+     */
+    protected AssetSchemaType(AssetDescriptor parentAsset)
+    {
+        super(parentAsset);
+    }
+
 
     /**
      * Bean constructor
      *
-     * @param schemaElementBean bean containing the schema element properties
-     * @param assetMeanings iterator for the asset assetMeanings
+     * @param schemaTypeBean bean containing the schema element properties
      */
-    public AssetSchemaType(SchemaElement schemaElementBean,
-                           AssetMeanings assetMeanings)
+    public AssetSchemaType(SchemaType schemaTypeBean)
     {
-        super(schemaElementBean);
+        super(schemaTypeBean);
 
-        if (assetMeanings == null)
-        {
-            this.assetMeanings = null;
-        }
-        else
-        {
-            this.assetMeanings = assetMeanings.cloneIterator(super.getParentAsset());
-        }
+        this.schemaTypeBean = schemaTypeBean;
     }
 
 
@@ -56,23 +58,14 @@ public abstract class AssetSchemaType extends AssetReferenceable
      * Bean constructor with parent asset
      *
      * @param parentAsset descriptor for parent asset
-     * @param schemaElementBean bean containing the schema element properties
-     * @param assetMeanings iterator for the asset assetMeanings
+     * @param schemaTypeBean bean containing the schema element properties
      */
     public AssetSchemaType(AssetDescriptor parentAsset,
-                           SchemaElement   schemaElementBean,
-                           AssetMeanings   assetMeanings)
+                           SchemaType schemaTypeBean)
     {
-        super(parentAsset, schemaElementBean);
+        super(parentAsset, schemaTypeBean);
 
-        if (assetMeanings == null)
-        {
-            this.assetMeanings = null;
-        }
-        else
-        {
-            this.assetMeanings = assetMeanings.cloneIterator(super.getParentAsset());
-        }
+        this.schemaTypeBean = schemaTypeBean;
     }
 
 
@@ -84,64 +77,71 @@ public abstract class AssetSchemaType extends AssetReferenceable
      * @param parentAsset description of the asset that this schema element is attached to.
      * @param templateSchema template object to copy.
      */
-    public AssetSchemaType(AssetDescriptor  parentAsset, AssetSchemaType templateSchema)
+    public AssetSchemaType(AssetDescriptor parentAsset, AssetSchemaType templateSchema)
     {
         super(parentAsset, templateSchema);
 
         if (templateSchema == null)
         {
-            this.assetMeanings = null;
+            this.schemaTypeBean = null;
         }
         else
         {
-            AssetMeanings assetMeanings = templateSchema.getAssetMeanings();
-            if (assetMeanings == null)
-            {
-                this.assetMeanings = null;
-            }
-            else
-            {
-                this.assetMeanings = assetMeanings.cloneIterator(super.getParentAsset());
-            }
+            this.schemaTypeBean = templateSchema.getSchemaTypeBean();
         }
     }
 
 
     /**
-     * Return a list of the glossary terms attached to this referenceable object.  Null means no terms available.
-     *
-     * @return list of glossary terms (summary)
-     */
-    public AssetMeanings getAssetMeanings()
-    {
-        if (assetMeanings == null)
-        {
-            return null;
-        }
-        else
-        {
-            return assetMeanings.cloneIterator(super.getParentAsset());
-        }
-    }
-
-
-    /**
-     * Return a clone of this schema element.  This method is needed because AssetSchemaType
-     * is abstract.
+     * Return a clone of this schema element.  This method should be overridden by
+     * the subclasses.
      *
      * @param parentAsset description of the asset that this schema element is attached to.
      * @return An instance of the this object's subclass
      */
-    protected abstract AssetSchemaType cloneAssetSchemaElement(AssetDescriptor  parentAsset);
+    protected AssetSchemaType cloneAssetSchemaType(AssetDescriptor parentAsset)
+    {
+        return new AssetSchemaType(parentAsset, this);
+    }
 
 
     /**
-     * Return this schema element bean.  This method is needed because SchemaElement
-     * is abstract.
+     * Set up the bean that contains the properties of the schema.
+     *
+     * @param bean bean containing the schema properties
+     */
+    protected void  setBean(SchemaType bean)
+    {
+        super.setBean(bean);
+        this.schemaTypeBean = bean;
+    }
+
+
+    /**
+     * Return this schema type bean.
      *
      * @return An instance of the appropriate subclass of SchemaElement bean
      */
-    protected abstract SchemaElement getSchemaElementBean();
+    protected SchemaType getSchemaTypeBean()
+    {
+        return schemaTypeBean;
+    }
+
+
+    /**
+     * Return the simple name of the schema type.
+     *
+     * @return string name
+     */
+    public String  getDisplayName()
+    {
+        if (schemaTypeBean == null)
+        {
+            return null;
+        }
+
+        return this.getSchemaTypeBean().getDisplayName();
+    }
 
 
     /**
@@ -151,7 +151,11 @@ public abstract class AssetSchemaType extends AssetReferenceable
      */
     public String getVersionNumber()
     {
-        return this.getSchemaElementBean().getVersionNumber();
+        if (schemaTypeBean == null)
+        {
+            return null;
+        }
+        return this.getSchemaTypeBean().getVersionNumber();
     }
 
 
@@ -162,7 +166,12 @@ public abstract class AssetSchemaType extends AssetReferenceable
      */
     public String getAuthor()
     {
-        return this.getSchemaElementBean().getAuthor();
+        if (schemaTypeBean == null)
+        {
+            return null;
+        }
+
+        return this.getSchemaTypeBean().getAuthor();
     }
 
 
@@ -173,7 +182,12 @@ public abstract class AssetSchemaType extends AssetReferenceable
      */
     public String getUsage()
     {
-        return this.getSchemaElementBean().getUsage();
+        if (schemaTypeBean == null)
+        {
+            return null;
+        }
+
+        return this.getSchemaTypeBean().getUsage();
     }
 
 
@@ -185,7 +199,12 @@ public abstract class AssetSchemaType extends AssetReferenceable
      */
     public String getEncodingStandard()
     {
-        return this.getSchemaElementBean().getEncodingStandard();
+        if (schemaTypeBean == null)
+        {
+            return null;
+        }
+
+        return this.getSchemaTypeBean().getEncodingStandard();
     }
 
 
@@ -196,7 +215,12 @@ public abstract class AssetSchemaType extends AssetReferenceable
      */
     public AdditionalProperties getSchemaProperties()
     {
-        Map<String, Object> schemaProperties = this.getSchemaElementBean().getSchemaProperties();
+        if (schemaTypeBean == null)
+        {
+            return null;
+        }
+
+        Map<String, Object> schemaProperties = this.getSchemaTypeBean().getSchemaProperties();
 
         if (schemaProperties == null)
         {
@@ -218,9 +242,19 @@ public abstract class AssetSchemaType extends AssetReferenceable
     public String toString()
     {
         return "AssetSchemaType{" +
-                "assetMeanings=" + assetMeanings +
-                ", referenceableBean=" + referenceableBean +
-                ", parentAsset=" + parentAsset +
+                "parentAsset=" + parentAsset +
+                ", displayName='" + getDisplayName() + '\'' +
+                ", versionNumber='" + getVersionNumber() + '\'' +
+                ", author='" + getAuthor() + '\'' +
+                ", usage='" + getUsage() + '\'' +
+                ", encodingStandard='" + getEncodingStandard() + '\'' +
+                ", schemaProperties=" + getSchemaProperties() +
+                ", qualifiedName='" + getQualifiedName() + '\'' +
+                ", additionalProperties=" + getAdditionalProperties() +
+                ", type=" + getType() +
+                ", GUID='" + getGUID() + '\'' +
+                ", URL='" + getURL() + '\'' +
+                ", assetClassifications=" + getAssetClassifications() +
                 '}';
     }
 
@@ -238,7 +272,7 @@ public abstract class AssetSchemaType extends AssetReferenceable
         {
             return true;
         }
-        if (!(objectToCompare instanceof AssetSchemaType))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -247,6 +281,6 @@ public abstract class AssetSchemaType extends AssetReferenceable
             return false;
         }
         AssetSchemaType that = (AssetSchemaType) objectToCompare;
-        return Objects.equals(getAssetMeanings(), that.getAssetMeanings());
+        return Objects.equals(getSchemaTypeBean(), that.getSchemaTypeBean());
     }
 }

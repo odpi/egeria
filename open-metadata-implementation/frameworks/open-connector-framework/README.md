@@ -3,41 +3,85 @@
 # Open Connector Framework (OCF)
 
 The OCF, as the name suggests, is an open framework for supporting connectors.
-Connectors support access to remote assets such as data sets, APIs and software components.
+Connector provide client-side access to remote digital [Assets](../../../open-metadata-publication/website/assets/README.md)
+such as data sets, APIs and software components.
 OCF Connectors also provide access to metadata about the asset and they may call
 the [Governance Action Framework (GAF)](../governance-action-framework) to execute
 appropriate governance actions related to the use of these assets
 in real-time.
+
+## Benefits of the OCF
+
+Applications and tools benefit from using OCF connectors because:
+
+* Network and security parameters for accessing the data resources are managed in the metadata repository as part of a named connection.
+The application need only supply the identifier of the connection and provided they have the appropriate security credentials then a connector is returned to them for use. 
+ 
+  * There is no need to hard code user ids and passwords in the application code - nor manage keystores for this sensitive information since the metadata repository handles this.
+  * If the location of the data changes, then the named connection configuration is changed in the metadata repository and the application will be connected to the new location the next time they request a connector.
+
+* The OCF connector provides two sets of APIs.  The first set provides access to the Asset contents and the second set provides access to the properties of the asset stored in the open metadata repositories.
+This provides applications and tools with a simple mechanism to make use of metadata as they process about the Asset.
+It is particularly useful for data science tools where these properties can help guide the end user in the use of the Asset.
+
+* OCF connectors are not limited to representing Assets as they are physically implemented.
+An OCF connector can represent a simplified logical (virtual) data resource that is designed for the needs of a specific application or tool.
+This type of connector delegates the requests it receives to to one or more physical data resources.  
+
+Organizations benefit from advocating the use of OCF connectors for their systems because the OCF
+connectors provide a consistent approach to governance enforcement and audit logging.
+This is particularly important in data-rich environments where individuals are able to combine data
+from different Assets creating new potentially sensitive insight.
+The common approach to auditing, and the linkage between the data accessed and the metadata that describes its characteristics help to detect and prevent such actions
+
+## Design rationale
+
+The following factors influenced the design of the OCF.
+
+* There are many existing connectors and connector framework in the industry today.
+It is important that these existing connectors can be incorporated into the OCF.
+Thus the OCF includes placeholders for adapters to external connector providers and connectors.
+
+* Application developers will only adopt a connector framework if it is easy to use.
+Thus the connector interfaces allow for the use of native data APIs to minimize the effort an application developer
+has to take in order to use the OCF connectors.
+
+* Governance enforcement is a complex topic, typically managed externally to the application development team.
+As a result, a separate framework called the governance action framework (GAF) manages governance enforcement.
+The role of the OCF is to bridge from the Asset access requests to the GAF where necessary.
+
+* Access to the all properties known about an Asset should be available to the consumers of the Asset.
+Therefore the OCF provides a standard interface for accessing these properties.
+Different providers of these properties can plug into the OCF.
+Egeria provides an implementation of this interface to supply Asset properties stored in open metadata repositories
+in the [Connected Asset OMAS](../../access-services/connected-asset) service.
+
 
 ## Terminology
 
 There are a number of key components within the OCF:
 
 * **Connector** -  this is a Java object for accessing an asset and its
-related metadata and governance functions.
+related metadata and governance functions. See [docs](docs/connector.md) for more information.
 
 * **Connection** - this is a Java object containing the properties needed to
-create a connector instance.
-Connection properties are typically managed as metadata entities in the metadata
-repository but they can also be manually populated.
-Connections have 2 sub-objects:
-  * **ConnectorType** - this is a Java object that describes the type of
-  the connector, including the Java implementation class of its connector provider (see below).
-  * **Endpoint** - this is the Java object that describes the server endpoint where the asset is accessed from.
+create a connector instance. See [docs](docs/connection.md) for more information.
 
 * **Connector Broker** - this is a generic factory for all OCF connectors.
 See [docs](docs/connector-broker.md) for more information.
 
 * **Connector Provider** - this is a factory for a specific type of connector.
-It is used by the Connector Broker.
+It is used by the Connector Broker. See [docs](docs/connector-provider.md) for more information.
 
-* **Connected Asset** - this is the asset that the connector is accessing.  It is hosted on a server
-and the connector makes the remote calls necessary to retrieve, update, delete the asset itself.
-The connector also includes an API to retrieve the metadata properties about the connected asset.
+* **Connected Asset** - this is the properties of the Asset that the connector is accessing.
+It is hosted by a metadata server.  See the [Connected Asset OMAS](../../access-services/connected-asset) for more information.
 
-## Open Metadata Type Models
 
-* [Model 0040](../../../open-metadata-publication/website/open-metadata-types/0040-Servers.png) defines the structure of an Endpoint.
+## Open Metadata Types
+
+Open metadata repositories are able to store information needed to use OCF connectors.  Details of the types involved are as follows:
+
+* [Model 0040](../../../open-metadata-publication/website/open-metadata-types/0040-Software-Servers.png) defines the structure of an Endpoint.
 * [Model 0201](../../../open-metadata-publication/website/open-metadata-types/0201-Connectors-and-Connections.png) defines the structures for Connections and Connector Types.
 * [Model 0205](../../../open-metadata-publication/website/open-metadata-types/0205-Connection-Linkage.png) defines the linkage between the connection and the connected asset.
 
@@ -46,21 +90,24 @@ The connector also includes an API to retrieve the metadata properties about the
 The OCF provides the interface schema and base class implementation for these components.
 The Java implementation is located in packages `org.odpi.openmetadata.ocf.*`:
 
-* **org.odpi.openmetadata.ocf** - Java interface and base classes for Connector and Connector Provider
+* **org.odpi.openmetadata.frameworks.connectors** - Java interface and base classes for Connector and Connector Provider
 plus the implementation of the Connector Broker.
 
-* **org.odpi.openmetadata.ocf.ffdc** - Implementation of the OCF's error codes and exceptions.
+* **org.odpi.openmetadata.frameworks.connectors.ffdc** - Implementation of the OCF's error codes and exceptions.
 
-* **org.odpi.openmetadata.ocf.properties** - Implementation of the properties for connections and connected assets.
+* **org.odpi.openmetadata.frameworks.connectors.properties.beans** - Implementation of the properties for connections and connected assets.
 These are simple POJO objects.
+
+* **org.odpi.openmetadata.frameworks.connectors.properties** - Implementation of the properties for connections and connected assets.
+These are read only facades around the beans.
 
 ## Related Modules
 
-The [ConnectedAsset OMAS](../../access-services/connected-asset) supports the retrieval
+The [Connected Asset OMAS](../../access-services/connected-asset) supports the retrieval
 of connection and connected asset properties from the open metadata
 repository/repositories.
 
-The [AssetConsumer OMAS](../../access-services/asset-consumer) embeds the OCF to provide
+The [Asset Consumer OMAS](../../access-services/asset-consumer) embeds the OCF to provide
 client-side support for connectors.
 
 The [Open Metadata Repository Services (OMRS)](../../repository-services)

@@ -9,7 +9,6 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * AssetSummary holds asset properties that are used for displaying details of
@@ -50,7 +49,7 @@ public class AssetSummary extends AssetDescriptor
      *
      * @param assetBean asset properties bean
      */
-    public AssetSummary(Asset    assetBean)
+    public AssetSummary(Asset assetBean)
     {
         super(assetBean);
     }
@@ -195,7 +194,7 @@ public class AssetSummary extends AssetDescriptor
         }
         else
         {
-            List<AssetClassification>    assetClassifications = new ArrayList<>();
+            List<AssetClassification> assetClassifications = new ArrayList<>();
 
             for (Classification classification : classifications)
             {
@@ -248,10 +247,6 @@ public class AssetSummary extends AssetDescriptor
         Map<String, Object>   additionalProperties = assetBean.getAdditionalProperties();
 
         if (additionalProperties == null)
-        {
-            return null;
-        }
-        else if (additionalProperties.isEmpty())
         {
             return null;
         }

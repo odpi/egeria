@@ -12,15 +12,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 import java.io.IOException;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.X509Certificate;
 
 import static org.odpi.openmetadata.virtualdataconnector.igc.connectors.eventmapper.model.Constants.DEFAULT_PAGE_SIZE;
 
@@ -33,7 +25,8 @@ public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector {
     /**
      * Default constructor used by the OCF Connector Provider.
      */
-    public IGCOMRSRepositoryConnector() {}
+    public IGCOMRSRepositoryConnector() {
+    }
 
     /**
      * Set up the unique Id for this metadata collection.
@@ -84,7 +77,7 @@ public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector {
     /**
      * Query IGC for more information about an asset.
      *
-     * @param igcRID The techncial ID of the asset.
+     * @param igcRID The technical ID of the asset.
      * @return IGCObject
      */
     public IGCObject genericIGCQuery(String igcRID) {
@@ -94,6 +87,13 @@ public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector {
         return getIgcObject(url);
     }
 
+    /**
+     * Query the IGC for the columns of a specific database
+     *
+     * @param igcRID   the database technical ID from the IGC repository
+     * @param pageSize maximum number of elements to return
+     * @return IGCObject    generic IGC object that contains the details about the asset
+     */
     public IGCObject getDatabaseColumns(String igcRID, Integer pageSize) {
 
         if (pageSize == null) {
@@ -114,13 +114,24 @@ public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector {
         return igcObjectMapper;
     }
 
+    /**
+     * Issue a GET REST exchange call
+     *
+     * @param url the network address of the server running the IGC REST service
+     * @return IGCObject    generic IGC object that contains the details about the asset
+     */
     private IGCObject getIgcObject(String url) {
         HttpEntity<String> entity = new HttpEntity<>(getHttpHeaders());
         String resultBody = getHttpResult(url, entity);
         return (IGCObject) getIGCObjectMapper(resultBody, IGCObject.class);
     }
 
-
+    /**
+     * Query the IGC for a specific column identified by the given RID
+     *
+     * @param igcRID the column technical ID from the IGC repository
+     * @return IGCColumn generic IGC object that contains the details about the column
+     */
     public IGCColumn getIGCColumn(String igcRID) {
 
         String url = this.connectionBean.getAdditionalProperties().get("igcApiGet") + igcRID;
@@ -131,6 +142,11 @@ public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector {
         return (IGCColumn) getIGCObjectMapper(resultBody, IGCColumn.class);
     }
 
+    /**
+     * Mapping string header names to a list of string values.
+     *
+     * @return HttpHeaders
+     */
     private HttpHeaders getHttpHeaders() {
         HttpHeaders headers = new HttpHeaders();
 
@@ -142,7 +158,13 @@ public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector {
         return headers;
     }
 
-
+    /**
+     * Execute the request specified in the given RequestEntity and return the body's response
+     *
+     * @param url       the network address of the server running the IGC REST services
+     * @param entity    the HTTP request consisting of headers and body.
+     * @return String   the body of the responses
+     */
     private String getHttpResult(String url, HttpEntity<String> entity) {
         RestTemplate restTemplate = new RestTemplate();
 
@@ -151,6 +173,13 @@ public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector {
         return result.getBody();
     }
 
+    /**
+     * Map the String result into the specific Java Class using the ObjectMapper
+     *
+     * @param resultBody    the result body represented as a String
+     * @param objectClass   the name of the Java class
+     * @return Object       the mapped object
+     */
     private Object getIGCObjectMapper(String resultBody, Class objectClass) {
         try {
             ObjectMapper mapper = new ObjectMapper();

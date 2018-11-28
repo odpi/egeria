@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager;
 
 
@@ -23,36 +24,9 @@ import java.util.*;
  */
 public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 {
-    private static OMRSRepositoryContentManager defaultRepositoryContentManager = null;
-
     private static final Logger log = LoggerFactory.getLogger(OMRSRepositoryContentHelper.class);
 
-
     private OMRSRepositoryContentManager repositoryContentManager;
-
-
-    /**
-     * Set up the default local repository's content manager.  This maintains a cache of the local repository's type
-     * definitions and rules to provide helpers and validators for TypeDefs and instances that are
-     * exchanged amongst the open metadata repositories and open metadata access services (OMAS).
-     *
-     * @param repositoryContentManager link to repository content manager.
-     */
-    public static synchronized void setRepositoryContentManager(OMRSRepositoryContentManager repositoryContentManager)
-    {
-        OMRSRepositoryContentHelper.defaultRepositoryContentManager = repositoryContentManager;
-    }
-
-
-    /**
-     * Default constructor uses the default repository content manager.  Repository connectors should use the
-     * repository helper from their superclass.
-     */
-    @Deprecated
-    public OMRSRepositoryContentHelper()
-    {
-        this.repositoryContentManager = defaultRepositoryContentManager;
-    }
 
 
     /**
