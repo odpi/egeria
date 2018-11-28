@@ -11,34 +11,31 @@ import java.sql.Types;
 
 public class ApplyMasking {
 
-    public static void redact(DataValueDescriptor dataValueDescriptor) {
-        try {
+    public static void redact(DataValueDescriptor dataValueDescriptor) throws StandardException {
 
-            if (dataValueDescriptor == null) return;
-            int jdbcType = TypeId.getBuiltInTypeId(dataValueDescriptor.getTypeName()).getJDBCTypeId();
-            switch (jdbcType) {
-                case Types.CHAR:
-                case Types.VARCHAR:
-                case Types.LONGVARCHAR:
-                case Types.CLOB:
-                    dataValueDescriptor.setValue("####");
-                    break;
-                case Types.DATE:
-                case Types.TIME:
-                case Types.TIMESTAMP:
-                    dataValueDescriptor.setValue(new Date(0));
-                    break;
-                case Types.INTEGER:
-                case Types.DOUBLE:
-                case Types.DECIMAL:
-                case Types.FLOAT:
-                    dataValueDescriptor.setValue(1111);
-                    break;
-                default:
-                    dataValueDescriptor.setValue("Masked");
-            }
-        } catch (StandardException e) {
-            e.printStackTrace();
+
+        if (dataValueDescriptor == null) return;
+        int jdbcType = TypeId.getBuiltInTypeId(dataValueDescriptor.getTypeName()).getJDBCTypeId();
+        switch (jdbcType) {
+            case Types.CHAR:
+            case Types.VARCHAR:
+            case Types.LONGVARCHAR:
+            case Types.CLOB:
+                dataValueDescriptor.setValue("####");
+                break;
+            case Types.DATE:
+            case Types.TIME:
+            case Types.TIMESTAMP:
+                dataValueDescriptor.setValue(new Date(0));
+                break;
+            case Types.INTEGER:
+            case Types.DOUBLE:
+            case Types.DECIMAL:
+            case Types.FLOAT:
+                dataValueDescriptor.setValue(1111);
+                break;
+            default:
+                dataValueDescriptor.setValue("Masked");
         }
     }
 }
