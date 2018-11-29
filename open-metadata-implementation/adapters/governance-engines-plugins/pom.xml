@@ -13,6 +13,8 @@
 
     <modelVersion>4.0.0</modelVersion>
 
+    <packaging>pom</packaging>
+
     <name>Governance Engine Plugins</name>
     <description>
         Governance Engines Plugins support plugins to governance engines
@@ -21,6 +23,7 @@
     </description>
 
     <artifactId>governance-engines-plugins</artifactId>
-
-
-</project>
+    <modules>
+        <module>gaian-ranger-plugin</module>
+    </modules>
+ </project>
