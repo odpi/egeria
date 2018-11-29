@@ -17,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.text.MessageFormat;
@@ -26,7 +25,6 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Properties;
 import java.util.Set;
 
 import static org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin.Constants.COLUMN_RESOURCE;
@@ -308,6 +306,9 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
         if (null != opID && opID.equals(OP_ID_SET_AUTHENTICATED_DERBY_USER_RETURN_IS_QUERY_ALLOWED)) {
 
             if (args != null && args.length >= 1 && null != args[0]) {
+                /* Ranger Gaian Plugin must be initialized at this step because
+                properties should be loaded before fetching the user's groups */
+                authorizer.init();
                 setUserDetailsForQueryContext(args[0]);
                 haveUser = true;
 
@@ -386,12 +387,13 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
      * The list of the users is retrieved from Ranger Server in a synchronous way, without timeout.
      * Take into consideration it may cause performance issues.
      *
-     * @param userName
-     * @return
+     * @param userName name of the user
+     * @return a collection of user's groups
      */
     private Set<String> getUserGroups(String userName) {
         logger.logDetail("getUserGroups for: " + userName);
-        final String rangerURL = getRangerURL();
+        String rangerURL = ((RangerGaianAuthorizer) authorizer).getRangerURL();
+        logger.logDetail("RangerURL: " + rangerURL);
 
         String userDetailsUrl = getUserDetailsURL(rangerURL, userName);
         final RangerUser userDetails = getRangerUser(userDetailsUrl);
@@ -423,25 +425,6 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
     private String getUserDetailsURL(String rangerURL, String param) {
         final String url = rangerURL + "/service/xusers/users/userName/{0}";
         return MessageFormat.format(url, param);
-    }
-
-    private String getRangerURL() {
-        Properties properties = new Properties();
-
-        try {
-            InputStream resource = RangerPolicyResultFilter.class.getClassLoader().getResourceAsStream("application.properties");
-            if (resource != null) {
-                properties.load(resource);
-                logger.logDetail(properties.toString());
-                final String rangerURL = properties.getProperty("ranger.plugin.gaian.policy.rest.url");
-                logger.logDetail(rangerURL);
-                resource.close();
-                return rangerURL;
-            }
-        } catch (IOException e) {
-            logger.logException("403", e.getMessage(), e);
-        }
-        return null;
     }
 
 }

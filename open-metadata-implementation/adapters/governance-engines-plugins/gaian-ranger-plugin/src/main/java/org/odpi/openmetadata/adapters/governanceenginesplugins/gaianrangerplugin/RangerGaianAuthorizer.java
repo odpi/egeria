@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugi
 import com.ibm.gaiandb.Logger;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.ranger.authorization.hadoop.config.RangerConfiguration;
 import org.apache.ranger.plugin.audit.RangerDefaultAuditHandler;
 import org.apache.ranger.plugin.model.RangerPolicy;
 import org.apache.ranger.plugin.model.RangerServiceDef;
@@ -42,11 +43,17 @@ public class RangerGaianAuthorizer implements GaianAuthorizer {
                     plugin = new RangerGaianPlugin();
                     plugin.init();
                     plugin.setResultProcessor(new RangerDefaultAuditHandler());
+                    String rangerURL = RangerConfiguration.getInstance().get("ranger.plugin.gaian.policy.rest.url");
+                    ((RangerGaianPlugin) plugin).setRangerURL(rangerURL);
                     gaianPlugin = plugin;
                 }
             }
         }
         logger.logDetail("<== RangerGaianPlugin.init()");
+    }
+
+    public String getRangerURL() {
+        return ((RangerGaianPlugin) gaianPlugin).getRangerURL();
     }
 
     public boolean isAuthorized(QueryContext queryContext) throws GaianAuthorizationException {
@@ -196,8 +203,18 @@ public class RangerGaianAuthorizer implements GaianAuthorizer {
 
 class RangerGaianPlugin extends RangerBasePlugin {
 
+    private String rangerURL;
+
     RangerGaianPlugin() {
         super(DEFAULT_SERVICE_TYPE, DEFAULT_APP_ID);
+    }
+
+    public String getRangerURL() {
+        return rangerURL;
+    }
+
+    public void setRangerURL(String rangerURL) {
+        this.rangerURL = rangerURL;
     }
 }
 
