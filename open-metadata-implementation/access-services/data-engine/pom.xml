@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project.  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <artifactId>access-services</artifactId>
+        <groupId>org.odpi.egeria</groupId>
+        <version>0.3-SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <name>Data Engine OMAS</name>
+    <!-- TODO  provide actual description -->
+    <description>
+        The Data Engine Open Metadata Access Service (OMAS)
+        provides
+    </description>
+
+    <artifactId>data-engine</artifactId>
+
+    <!-- POM packaging means that this module has sub-modules -->
+    <packaging>pom</packaging>
+    <modules>
+        <module>data-engine-api</module>
+        <module>data-engine-client</module>
+        <module>data-engine-server</module>
+        <module>data-engine-spring</module>
+    </modules>
+
+</project>
