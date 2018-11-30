@@ -263,14 +263,61 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
      */
     private void distributeInstanceEvent(OMRSInstanceEvent event)
     {
-        if (exchangeRule.processInstanceEvent(event.getTypeDefGUID(),
-                                              event.getTypeDefName()))
+    	boolean validEvent = false;
+    	
+    	if (event.getInstanceEventType() == OMRSInstanceEventType.BATCH_INSTANCES_EVENT) 
+    	{
+    		// A batch instance event is valid and should be processed if all 
+    		// references and entities in the contained graph are valid to be processed
+    		InstanceGraph eventGraph = event.getInstanceBatch();
+    		List<EntityDetail> eventEntities = eventGraph.getEntities();
+    		List<Relationship> eventRelationships = eventGraph.getRelationships();
+    		
+    		List<EntityDetail> validEntities = new ArrayList<EntityDetail>();
+    		List<Relationship> validRelationships = new ArrayList<Relationship>();
+    		
+    		for(EntityDetail entity: eventEntities)
+    		{
+    			if(exchangeRule.processInstanceEvent(entity))
+    			{
+    				validEntities.add(entity);
+    			}
+    		}
+    		
+    		
+    		for(Relationship relationship: eventRelationships)
+    		{
+    			if(exchangeRule.processInstanceEvent(relationship))
+    			{
+    				validRelationships.add(relationship);
+    			}
+    		}
+    		
+    		if(validEntities.size() > 0 || validRelationships.size() > 0) {
+    			// Can't just update the instance graph on the event, so we'll
+    			// construct a new event with the updated instances and adjust...
+    			InstanceGraph validInstanceGraph = new InstanceGraph(validEntities, validRelationships);
+    	        OMRSInstanceEvent validInstanceEvent = new OMRSInstanceEvent(OMRSInstanceEventType.BATCH_INSTANCES_EVENT, validInstanceGraph);
+    	        validInstanceEvent.setEventOriginator(event.getEventOriginator());
+    	        event = validInstanceEvent;
+    	        validEvent = true;
+    		}
+    		
+    	}
+    	else
         {
+    		validEvent = exchangeRule.processInstanceEvent(event.getTypeDefGUID(),
+                                                           event.getTypeDefName());
+        }
+    	
+    	if(validEvent)
+    	{
             for (OMRSInstanceEventProcessor consumer : instanceEventConsumers)
             {
                 consumer.sendInstanceEvent(eventManagerName, event);
             }
-        }
+
+    	}
     }
 
 
