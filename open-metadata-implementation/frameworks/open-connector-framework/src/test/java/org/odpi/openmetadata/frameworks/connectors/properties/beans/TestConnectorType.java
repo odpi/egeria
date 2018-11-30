@@ -5,7 +5,10 @@ package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.testng.annotations.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
@@ -63,7 +66,7 @@ public class TestConnectorType
      *
      * @param resultObject object returned by the test
      */
-    private void validateResultObject(ConnectorType  resultObject)
+    private void validateResultObject(ConnectorType resultObject)
     {
         assertTrue(resultObject.getType().equals(type));
         assertTrue(resultObject.getGUID().equals("TestGUID"));
@@ -82,11 +85,20 @@ public class TestConnectorType
 
 
     /**
+     * Validate that a connectorType type object is returned.
+     */
+    @Test public void  testConnectorType()
+    {
+        assertTrue(ConnectorType.getConnectorTypeType() != null);
+    }
+
+
+    /**
      * Validate that the object is initialized properly
      */
     @Test public void testNullObject()
     {
-        ConnectorType    nullObject = new ConnectorType();
+        ConnectorType nullObject = new ConnectorType();
 
         assertTrue(nullObject.getType() == null);
         assertTrue(nullObject.getGUID() == null);
@@ -130,10 +142,10 @@ public class TestConnectorType
         assertFalse(getTestObject().equals("DummyString"));
         assertTrue(getTestObject().equals(getTestObject()));
 
-        ConnectorType  sameObject = getTestObject();
+        ConnectorType sameObject = getTestObject();
         assertTrue(sameObject.equals(sameObject));
 
-        ConnectorType  differentObject = getTestObject();
+        ConnectorType differentObject = getTestObject();
         differentObject.setGUID("Different");
         assertFalse(getTestObject().equals(differentObject));
     }
@@ -190,7 +202,7 @@ public class TestConnectorType
         /*
          * Through superclass
          */
-        Referenceable  referenceable = getTestObject();
+        Referenceable referenceable = getTestObject();
 
         try
         {
@@ -213,7 +225,7 @@ public class TestConnectorType
         /*
          * Through superclass
          */
-        ElementHeader  elementHeader = getTestObject();
+        ElementHeader elementHeader = getTestObject();
 
         try
         {
@@ -236,7 +248,7 @@ public class TestConnectorType
         /*
          * Through superclass
          */
-        PropertyBase  propertyBase = getTestObject();
+        PropertyBase propertyBase = getTestObject();
 
         try
         {

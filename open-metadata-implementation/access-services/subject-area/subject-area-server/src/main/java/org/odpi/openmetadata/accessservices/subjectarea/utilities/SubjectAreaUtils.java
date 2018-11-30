@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.utilities;
 
 
@@ -105,7 +106,7 @@ public class SubjectAreaUtils {
      * This method finds associated icons
      * @param userId userid under which the the operation is performed
      * @param relatedMediaReferenceSet related media references.
-     * @return
+     * @return Set with IconSummary objects.
      */
     public static Set<IconSummary> getIconSummaries(@PathVariable String userId, Set<RelatedMediaReference> relatedMediaReferenceSet) {
         Set<IconSummary> icons =new HashSet<>();

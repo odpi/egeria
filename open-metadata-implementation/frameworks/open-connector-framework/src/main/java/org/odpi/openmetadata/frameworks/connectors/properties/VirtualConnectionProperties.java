@@ -2,7 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.EmbeddedConnection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +22,7 @@ import java.util.Objects;
  */
 public class VirtualConnectionProperties extends ConnectionProperties
 {
-    protected VirtualConnection    connectionBean;
+    protected VirtualConnection connectionBean;
 
 
     /**
@@ -48,8 +51,8 @@ public class VirtualConnectionProperties extends ConnectionProperties
      * @param parentAsset description of the asset that this connection is attached to.
      * @param connectionBean bean containing the properties
      */
-    public VirtualConnectionProperties(AssetDescriptor    parentAsset,
-                                       VirtualConnection  connectionBean)
+    public VirtualConnectionProperties(AssetDescriptor parentAsset,
+                                       VirtualConnection connectionBean)
     {
         super(parentAsset, connectionBean);
 
@@ -81,7 +84,7 @@ public class VirtualConnectionProperties extends ConnectionProperties
      * @param parentAsset description of the asset that this connection is attached to.
      * @param templateConnection template object to copy.
      */
-    public VirtualConnectionProperties(AssetDescriptor  parentAsset, VirtualConnectionProperties templateConnection)
+    public VirtualConnectionProperties(AssetDescriptor parentAsset, VirtualConnectionProperties templateConnection)
     {
         super(parentAsset, templateConnection);
 
@@ -118,10 +121,6 @@ public class VirtualConnectionProperties extends ConnectionProperties
         List<EmbeddedConnection> embeddedConnectionBeans = connectionBean.getEmbeddedConnections();
 
         if (embeddedConnectionBeans == null)
-        {
-            return null;
-        }
-        else if (embeddedConnectionBeans.isEmpty())
         {
             return null;
         }
@@ -201,7 +200,7 @@ public class VirtualConnectionProperties extends ConnectionProperties
      */
     public ConnectorTypeProperties getConnectorType()
     {
-        ConnectorType  connectorType = connectionBean.getConnectorType();
+        ConnectorType connectorType = connectionBean.getConnectorType();
 
         if (connectorType == null)
         {
@@ -222,7 +221,7 @@ public class VirtualConnectionProperties extends ConnectionProperties
      */
     public EndpointProperties getEndpoint()
     {
-        Endpoint   endpoint = connectionBean.getEndpoint();
+        Endpoint endpoint = connectionBean.getEndpoint();
 
         if (endpoint == null)
         {

@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.fvt;
 
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaGlossary;
@@ -122,8 +123,8 @@ public class GlossaryFVT
     /**
      * Call this to initialise the glossary FVT
      *
-     * @param url
-     * @throws InvalidParameterException
+     * @param url supplied base url for the subject area OMAS
+     * @throws InvalidParameterException a parameter is null or an invalid value.
      */
     public static void initialiseGlossaryFVT(String url) throws InvalidParameterException
     {

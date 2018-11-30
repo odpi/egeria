@@ -41,21 +41,25 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum ElementOrigin implements Serializable
 {
-    LOCAL_COHORT(0, "Local to cohort",  "The element is being maintained within one of the local cohort members. " +
-            "The metadata collection id is for one of the repositories in the cohort. " +
-            "This metadata collection id identifies the home repository for this element. "),
-    EXPORT_ARCHIVE(1, "Export Archive", "The element was created from an export archive. " +
-            "The metadata collection id for the element is the metadata collection id of the originating server. " +
-            "If the originating server later joins the cohort with the same metadata collection Id " +
-            "then these elements will be refreshed from the originating server’s current repository."),
-    CONTENT_PACK(2, "Content Pack", "The element comes from an open metadata content pack. " +
-            "The metadata collection id of the elements is set to the GUID of the pack."),
-    DEREGISTERED_REPOSITORY(3, "Deregistered Repository", "The element comes from a metadata repository that " +
-            "used to be a member of the one of the local repository's cohorts but it has been deregistered. " +
-            "The metadata collection id remains the same. If the repository rejoins the cohort " +
-            "then these elements can be refreshed from the rejoining repository."),
-    CONFIGURATION(4, "Configuration",
-            "The element is part of a service's configuration.  The metadata collection id is null.");
+    UNKNOWN                 (0, "<Unknown>",               "Unknown provenance"),
+    LOCAL_COHORT            (1, "Local to cohort",         "The element is being maintained within one of the local cohort members. " +
+                                                                  "The metadata collection id is for one of the repositories in the cohort. " +
+                                                                  "This metadata collection id identifies the home repository for this element. "),
+    EXPORT_ARCHIVE          (2, "Export Archive",          "The element was created from an export archive. " +
+                                                                  "The metadata collection id for the element is the metadata collection id of the originating server. " +
+                                                                  "If the originating server later joins the cohort with the same metadata collection Id " +
+                                                                  "then these elements will be refreshed from the originating server’s current repository."),
+    CONTENT_PACK            (3, "Content Pack",            "The element comes from an open metadata content pack. " +
+                                                                  "The metadata collection id of the elements is set to the GUID of the pack."),
+    DEREGISTERED_REPOSITORY (4, "Deregistered Repository", "The element comes from a metadata repository that " +
+                                                                  "used to be a member of the one of the local repository's cohorts but it has been deregistered. " +
+                                                                  "The metadata collection id remains the same. If the repository rejoins the cohort " +
+                                                                  "then these elements can be refreshed from the rejoining repository."),
+    CONFIGURATION           (5, "Configuration",           "The element is part of a service's configuration.  The metadata collection id is null."),
+    DATA_PLATFORM           (6, "Data Platform",           "The element is maintained by an external data platform.  The metadata collection id is the guid of the data platform's entity."),
+    EXTERNAL_ENGINE         (7, "External Engine",         "The element is maintained by an external engine that is " +
+                                                                  "manipulating the data in real time.  The metadata collection id is the guid of the engine's entity."),
+    EXTERNAL_TOOL           (8, "External Tool",           "The element is maintained by an external tool.  The metadata collection id is the guid of the tool's entity.");
 
     private static final long     serialVersionUID = 1L;
 

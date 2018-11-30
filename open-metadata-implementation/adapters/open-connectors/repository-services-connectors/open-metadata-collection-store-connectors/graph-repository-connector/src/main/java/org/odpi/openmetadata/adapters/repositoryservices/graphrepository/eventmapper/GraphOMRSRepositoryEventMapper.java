@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.graphrepository.eventmapper;
 
 import org.odpi.openmetadata.frameworks.connectors.Connector;
@@ -22,8 +23,7 @@ import java.util.List;
 public class GraphOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase implements VirtualConnectorExtension,
                                                                                              OpenMetadataTopicListener
 {
-    private static final OMRSAuditLog auditLog = new OMRSAuditLog(OMRSAuditingComponent.LOCAL_REPOSITORY_EVENT_MAPPER);
-
+    private List<Connector>                  embeddedConnectors = null;
     private List<OpenMetadataTopicConnector> eventBusConnectors = new ArrayList<>();
 
     /**
@@ -43,17 +43,8 @@ public class GraphOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBas
     public void start() throws ConnectorCheckedException
     {
         super.start();
-    }
 
-    /**
-     * Registers itself as a listener of any OpenMetadataTopicConnectors that are passed as
-     * embedded connectors.
-     *
-     * @param embeddedConnectors  list of connectors
-     */
-    public void initializeEmbeddedConnectors(List<Connector> embeddedConnectors)
-    {
-        final String  methodName = "initializeEmbeddedConnectors";
+        final String  methodName = "start";
 
         /*
          * Step through the embedded connectors, selecting only the OpenMetadataTopicConnectors
@@ -73,14 +64,17 @@ public class GraphOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBas
                     String   topicName = realTopicConnector.registerListener(this);
                     this.eventBusConnectors.add(realTopicConnector);
 
-                    OMRSAuditCode auditCode = OMRSAuditCode.EVENT_MAPPER_LISTENER_REGISTERED;
-                    auditLog.logRecord(methodName,
-                                       auditCode.getLogMessageId(),
-                                       auditCode.getSeverity(),
-                                       auditCode.getFormattedLogMessage(repositoryEventMapperName, topicName),
-                                       this.getConnection().toString(),
-                                       auditCode.getSystemAction(),
-                                       auditCode.getUserAction());
+                    if (auditLog != null)
+                    {
+                        OMRSAuditCode auditCode = OMRSAuditCode.EVENT_MAPPER_LISTENER_REGISTERED;
+                        auditLog.logRecord(methodName,
+                                           auditCode.getLogMessageId(),
+                                           auditCode.getSeverity(),
+                                           auditCode.getFormattedLogMessage(repositoryEventMapperName, topicName),
+                                           this.getConnection().toString(),
+                                           auditCode.getSystemAction(),
+                                           auditCode.getUserAction());
+                    }
                 }
             }
         }
@@ -90,15 +84,29 @@ public class GraphOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBas
          */
         if (this.eventBusConnectors.isEmpty())
         {
-            OMRSAuditCode auditCode = OMRSAuditCode.EVENT_MAPPER_LISTENER_DEAF;
-            auditLog.logRecord(methodName,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(repositoryEventMapperName),
-                               this.getConnection().toString(),
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            if (auditLog != null)
+            {
+                OMRSAuditCode auditCode = OMRSAuditCode.EVENT_MAPPER_LISTENER_DEAF;
+                auditLog.logRecord(methodName,
+                                   auditCode.getLogMessageId(),
+                                   auditCode.getSeverity(),
+                                   auditCode.getFormattedLogMessage(repositoryEventMapperName),
+                                   this.getConnection().toString(),
+                                   auditCode.getSystemAction(),
+                                   auditCode.getUserAction());
+            }
         }
+    }
+
+    /**
+     * Registers itself as a listener of any OpenMetadataTopicConnectors that are passed as
+     * embedded connectors.
+     *
+     * @param embeddedConnectors  list of connectors
+     */
+    public void initializeEmbeddedConnectors(List<Connector> embeddedConnectors)
+    {
+        this.embeddedConnectors = embeddedConnectors;
     }
 
 
