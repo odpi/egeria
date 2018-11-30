@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- This module -->
+    <artifactId>gaian-impersonation</artifactId>
+    <name>Gaian Impersonation support</name>
+    <description>Apache Derby/Gaian authentication module to support user auth by proxy (impersonation)</description>
+    <packaging>jar</packaging>
+
+    <parent>
+        <artifactId>authentication-plugins</artifactId>
+        <groupId>org.odpi.egeria</groupId>
+        <version>0.3-SNAPSHOT</version>
+    </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.ibm.gaiandb</groupId>
+            <artifactId>gaian</artifactId>
+            <version>2.1.8</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.derby</groupId>
+            <artifactId>derby</artifactId>
+            <version>10.8.3.1</version>
+        </dependency>
+
+        <!-- Mandatory dependencies for using Spock testing framework-->
+        <dependency>
+
+            <groupId>org.spockframework</groupId>
+            <artifactId>spock-core</artifactId>
+            <version>1.2-groovy-2.5</version>
+        </dependency>
+        <!-- Optional dependencies for using Spock -->
+        <dependency> <!-- use a specific Groovy version rather than the one specified by spock-core -->
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>2.4.13</version>
+        </dependency>
+        <dependency> <!-- enables mocking of classes (in addition to interfaces). CGlib is an alternative -->
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy</artifactId>
+            <version>1.6.5</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency> <!-- enables mocking of classes without default constructor (requires bytebuddy or cglib) -->
+            <groupId>org.objenesis</groupId>
+            <artifactId>objenesis</artifactId>
+            <version>2.5.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency> <!-- only required if Hamcrest matchers are used -->
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-core</artifactId>
+            <version>1.3</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+        </plugins>
+    </build>
+
+</project>

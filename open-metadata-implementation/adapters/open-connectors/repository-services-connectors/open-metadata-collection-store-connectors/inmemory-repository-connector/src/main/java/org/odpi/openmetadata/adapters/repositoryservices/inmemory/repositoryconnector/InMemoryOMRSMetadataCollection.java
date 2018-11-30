@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositoryconnector;
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
@@ -3956,8 +3957,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
         updatedRelationship.setStatus(InstanceStatus.DELETED);
 
         updatedRelationship = repositoryHelper.incrementVersion(userId, relationship, updatedRelationship);
-
-        repositoryStore.removeRelationshipFromStore(updatedRelationship);
+        repositoryStore.updateRelationshipInStore(updatedRelationship);
 
         return updatedRelationship;
     }
@@ -4009,7 +4009,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
         /*
          * Locate relationship
          */
-        Relationship  relationship  = this.getRelationship(userId, deletedRelationshipGUID);
+        Relationship  relationship  = repositoryStore.getRelationship(deletedRelationshipGUID);
 
         repositoryValidator.validateTypeForInstanceDelete(repositoryName,
                                                           typeDefGUID,

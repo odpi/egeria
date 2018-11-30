@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 
 // This is a generated file - do not edit - changes should be made to the templates amd/or generator to generate this file with changes.
 
@@ -11,7 +12,10 @@ import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.repositoryservices.rest.properties.*;
 import org.odpi.openmetadata.repositoryservices.archivemanager.opentypes.OpenMetadataTypesArchive;
+import org.odpi.openmetadata.repositoryservices.archivemanager.OMRSArchiveAccessor;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -66,7 +70,7 @@ public class SubjectAreaBeansToAccessOMRS  {
      * The limit and offset paging parameters limit the number elements returned in each of the <$$lowerCasePluralEntityName$$> relationships.
      * @param userId user identity
      * @param entityGuid GUID for the entity
-     * @return <$$uEntityName$$>
+     * @return <$$uEntityName$$> the <$$uEntityName$$> entity with the requested GUID
      * @throws MetadataServerUncontactableException not able to communicate with the metadata server.
      * @throws UserNotAuthorizedException the userId passed on the request is not authorized to perform the requested action. 
      * @throws InvalidParameterException a parameter is null or an invalid value.
@@ -95,12 +99,12 @@ public class SubjectAreaBeansToAccessOMRS  {
     /**
      * Create new <$$EntityName$$>.
      * @param userId user identity
-     * @param <$$EntityName$$>
-     * @return <$$uEntityName$$>
+     * @param <$$EntityName$$> the input entity with values.
+     * @return <$$uEntityName$$> the created entity.
      * @throws MetadataServerUncontactableException not able to communicate with the metadata server.
      * @throws UserNotAuthorizedException the userId passed on the request is not authorized to perform the requested action. 
      * @throws InvalidParameterException a parameter is null or an invalid value.
-     * @throws ClassificationException
+     * @throws ClassificationException a classification does not match constraints.
      * @throws StatusNotSupportedException  status is not supported
      */
 
@@ -132,10 +136,11 @@ public class SubjectAreaBeansToAccessOMRS  {
      * Update <$$EntityName$$>
      * @param userId user identity
      * @param <$$EntityName$$>   <$$EntityName$$> to update
-     * @return <$$uEntityName$$>
+     * @return <$$uEntityName$$> the updated <$$EntityName$$> entity
      * @throws MetadataServerUncontactableException not able to communicate with the metadata server.
      * @throws UserNotAuthorizedException the userId passed on the request is not authorized to perform the requested action. 
      * @throws InvalidParameterException a parameter is null or an invalid value.
+     * @throws UnrecognizedGUIDException the unique identifier (guid) used to request an object is either unrecognized, or is the identifier for a different type of object.
      */
     public <$$uEntityName$$> update<$$uEntityName$$>(String userId, <$$uEntityName$$> <$$EntityName$$>)
          throws MetadataServerUncontactableException, UserNotAuthorizedException, InvalidParameterException,UnrecognizedGUIDException
@@ -148,9 +153,6 @@ public class SubjectAreaBeansToAccessOMRS  {
             InputValidator.validateUserIdNotNull(className,methodName,userId);
             EntityDetail entityDetail = <$$uEntityName$$>Mapper.map<$$uEntityName$$>ToOmrsEntityDetail(<$$EntityName$$>);
             InputValidator.validateGUIDNotNull(className,methodName,entityDetail.getGUID(),"guid");
-
-            // TODO the type guid needs to be set in the supplied entityDetail
-
             EntityDetail updatedOMRSEntityDetail = oMRSAPIHelper.callOMRSUpdateEntity(userId,entityDetail);
 
             <$$uEntityName$$> updated<$$uEntityName$$> =  <$$uEntityName$$>Mapper.mapOmrsEntityDetailTo<$$uEntityName$$>(updatedOMRSEntityDetail);
@@ -167,7 +169,7 @@ public class SubjectAreaBeansToAccessOMRS  {
      *
      * @param userId user identity
      * @param  entityGuid GUID for the <$$EntityName$$>
-     * @return <$$uEntityName$$>
+     * @return <$$uEntityName$$> the deleted <$$uEntityName$$> entity
      * @throws MetadataServerUncontactableException not able to communicate with the metadata server.
      * @throws UserNotAuthorizedException the userId passed on the request is not authorized to perform the requested action. 
      * @throws InvalidParameterException a parameter is null or an invalid value.
@@ -185,10 +187,10 @@ public class SubjectAreaBeansToAccessOMRS  {
          InputValidator.validateUserIdNotNull(className,methodName,userId);
          InputValidator.validateGUIDNotNull(className,methodName,entityGuid,"entityGuid");
 
-         EntityDetail omrsEntityDetail = oMRSAPIHelper.callOMRSGetEntityByGuid(userId,entityGuid);
-         String typeName = omrsEntityDetail.getType().getTypeDefName();
-         String typeGuid = omrsEntityDetail.getType().getTypeDefGUID();
-         EntityDetail deletedOmrsEntityDetail = oMRSAPIHelper.callOMRSDeleteEntity(userId,typeName,typeGuid,entityGuid);
+         // get the <$$uEntityName$$> type guid
+         OMRSArchiveAccessor archiveAccessor = OMRSArchiveAccessor.getInstance();
+         EntityDef entityDef = archiveAccessor.getEntityDefByName("<$$uEntityName$$>");
+         EntityDetail deletedOmrsEntityDetail = oMRSAPIHelper.callOMRSDeleteEntity(userId,"<$$uEntityName$$>",entityDef.getGUID(),entityGuid);
          if (log.isDebugEnabled()) {
              log.debug("<== successful Method: " + methodName + ",userId="+userId+",guid="+entityGuid);
          }
@@ -218,10 +220,10 @@ public class SubjectAreaBeansToAccessOMRS  {
          InputValidator.validateUserIdNotNull(className,methodName,userId);
          InputValidator.validateGUIDNotNull(className,methodName,entityGuid,"entityGuid");
 
-         EntityDetail omrsEntityDetail = oMRSAPIHelper.callOMRSGetEntityByGuid(userId,entityGuid);
-         String typeName = omrsEntityDetail.getType().getTypeDefName();
-         String typeGuid = omrsEntityDetail.getType().getTypeDefGUID();
-         oMRSAPIHelper.callOMRSPurgeEntity(userId,typeName,typeGuid,entityGuid);
+         // get the <$$uEntityName$$> type guid
+         OMRSArchiveAccessor archiveAccessor = OMRSArchiveAccessor.getInstance();
+         EntityDef entityDef = archiveAccessor.getEntityDefByName("<$$uEntityName$$>");
+         oMRSAPIHelper.callOMRSPurgeEntity(userId,"<$$uEntityName$$>",entityDef.getGUID(),entityGuid);
          if (log.isDebugEnabled()) {
              log.debug("<== successful Method: " + methodName + ",userId="+userId+",guid="+entityGuid);
          }
@@ -230,13 +232,14 @@ public class SubjectAreaBeansToAccessOMRS  {
     /**
      * Add classifications to the supplied <$$EntityName$$>
      * @param userId user identity
-     * @param entityGuid
-     * @param classifications
+     * @param entityGuid the GUID value for <$$EntityName$$>
+     * @param classifications the classifications to apply.
+     * @return the <$$EntityName$$> entity that has been classified
      * @throws MetadataServerUncontactableException not able to communicate with the metadata server.
      * @throws UserNotAuthorizedException the userId passed on the request is not authorized to perform the requested action. 
      * @throws InvalidParameterException a parameter is null or an invalid value.
      * @throws UnrecognizedGUIDException the unique identifier (guid) used to request an object is either unrecognized, or is the identifier for a different type of object.
-     * @throws ClassificationException
+     * @throws ClassificationException a classification does not match constraints.
      */
      public <$$uEntityName$$> add<$$uEntityName$$>Classifications(String userId,final String entityGuid, List<Classification> classifications)
            throws MetadataServerUncontactableException, UserNotAuthorizedException, InvalidParameterException, ClassificationException, UnrecognizedGUIDException {
@@ -271,12 +274,13 @@ public class SubjectAreaBeansToAccessOMRS  {
      * Updates classifications to an existing <$$EntityName$$> represented by a guid.
      * @param userId user identity
      * @param  entityGuid globally unique identifier for the <$$EntityName$$>
+     * @param classificationsToUpdate List of classifications to update entity with
      * @return classification for the given <$$EntityName$$> guid
      * @throws MetadataServerUncontactableException not able to communicate with the metadata server.
      * @throws UserNotAuthorizedException the userId passed on the request is not authorized to perform the requested action. 
      * @throws InvalidParameterException a parameter is null or an invalid value.
      * @throws UnrecognizedGUIDException the unique identifier (guid) used to request an object is either unrecognized, or is the identifier for a different type of object.
-     * @throws ClassificationException
+     * @throws ClassificationException a classification does not match constraints.
      */
     public <$$uEntityName$$> update<$$uEntityName$$>Classification(String userId, final String entityGuid, List<Classification> classificationsToUpdate)
         throws MetadataServerUncontactableException, UserNotAuthorizedException, InvalidParameterException, ClassificationException,  UnrecognizedGUIDException {
@@ -348,7 +352,7 @@ public class SubjectAreaBeansToAccessOMRS  {
      * @throws UserNotAuthorizedException the userId passed on the request is not authorized to perform the requested action. 
      * @throws InvalidParameterException a parameter is null or an invalid value.
      * @throws UnrecognizedGUIDException the unique identifier (guid) used to request an object is either unrecognized, or is the identifier for a different type of object.
-     * @throws ClassificationException
+     * @throws ClassificationException a classification does not match constraints.
      */
     public <$$uEntityName$$> delete<$$uEntityName$$>Classification(String userId,String entityGuid, final String name)
         throws MetadataServerUncontactableException, UserNotAuthorizedException, InvalidParameterException, ClassificationException,  UnrecognizedGUIDException {
@@ -490,70 +494,69 @@ public class SubjectAreaBeansToAccessOMRS  {
         }
         return updated<$$uRelationshipName$$>;
     }
+    $$RELATIONSHIP$>
+
     /**
-      * Delete <$$uRelationshipName$$> relationship
+      * Delete relationship. Any checking that the relationship is of a particular type should be done by the caller.
       * @param userId user identity
       * @param relationshipGuid relationshipGuid
+      * @param typeName name of the type. This needs match the type associated with the relationship identified with the supplied GUID
+      * @return deleted relationship
       * @throws MetadataServerUncontactableException not able to communicate with the metadata server.
-      * @throws UserNotAuthorizedException the userId passed on the request is not authorized to perform the requested action. 
+      * @throws UserNotAuthorizedException the userId passed on the request is not authorized to perform the requested action.
       * @throws InvalidParameterException a parameter is null or an invalid value.
       * @throws UnrecognizedGUIDException the unique identifier (guid) used to request an object is either unrecognized, or is the identifier for a different type of object.
       * @throws FunctionNotSupportedException a function is not supported.
       */
-     public void delete<$$uRelationshipName$$>RelationshipById(String userId,String relationshipGuid)
+     public Relationship deleteRelationshipById(String userId,String relationshipGuid, String typeName )
               throws MetadataServerUncontactableException, UserNotAuthorizedException, InvalidParameterException, FunctionNotSupportedException, UnrecognizedGUIDException {
-            final String methodName = "delete<$$uRelationshipName$$>RelationshipById";
+            final String methodName = "deleteRelationshipById";
             if (log.isDebugEnabled()) {
                 log.debug("==> Method: " + methodName + ",userId="+userId+",guid="+relationshipGuid);
             }
              InputValidator.validateUserIdNotNull(className,methodName,userId);
              InputValidator.validateGUIDNotNull(className,methodName,relationshipGuid,"relationshipGuid");
-
-             Relationship relationship =  oMRSAPIHelper.callOMRSGetRelationshipByGuid(userId,relationshipGuid);
-             String typeGuid = relationship.getType().getTypeDefGUID();
-             String typeName = relationship.getType().getTypeDefName();
-             if (typeName.equals("<$$uRelationshipName$$>")) {
-                oMRSAPIHelper.callOMRSDeleteRelationship(userId, typeGuid, typeName, relationshipGuid);
-                if (log.isDebugEnabled()) {
-                    log.debug("<== successful Method: " + methodName + ",userId="+userId+",guid="+relationshipGuid);
-                 }
-             } else {
-                 // error guid supplied is not for a relationship of type <$$RelationshipName$$>
+             // get the appropriate type name and guid
+             OMRSArchiveAccessor archiveAccessor = OMRSArchiveAccessor.getInstance();
+             RelationshipDef relationshipDef = archiveAccessor.getRelationshipDefByName(typeName);
+             String typeGuid = relationshipDef.getGUID();
+             Relationship  deletedRelationship =oMRSAPIHelper.callOMRSDeleteRelationship(userId, typeGuid, typeName, relationshipGuid);
+             if (log.isDebugEnabled()) {
+                 log.debug("<== successful Method: " + methodName + ",userId="+userId+",guid="+relationshipGuid);
              }
+
+             return deletedRelationship;
      }
     /**
-      * Purge <$$uRelationshipName$$> relationship
+      * Purge relationship
       * @param userId user identity
       * @param relationshipGuid relationshipGuid
+      * @param typeName name of the type. This needs match the type associated with the relationship identified with the supplied GUID
       * @throws MetadataServerUncontactableException not able to communicate with the metadata server.
-      * @throws UserNotAuthorizedException the userId passed on the request is not authorized to perform the requested action. 
+      * @throws UserNotAuthorizedException the userId passed on the request is not authorized to perform the requested action.
       * @throws InvalidParameterException a parameter is null or an invalid value.
       * @throws UnrecognizedGUIDException the unique identifier (guid) used to request an object is either unrecognized, or is the identifier for a different type of object.
-      * @throws RelationshipNotDeletedException
+      * @throws RelationshipNotDeletedException the relationship could not be deleted.
       * @throws GUIDNotPurgedException the unique identifier (guid) used to purge an object did not result in the object being purged.
-    
+
       */
-     public void purge<$$uRelationshipName$$>RelationshipById(String userId,String relationshipGuid)
+     public void purgeRelationshipById(String userId,String relationshipGuid,String typeName)
             throws MetadataServerUncontactableException, UserNotAuthorizedException, InvalidParameterException, UnrecognizedGUIDException, RelationshipNotDeletedException, GUIDNotPurgedException {
-            final String methodName = "purge<$$uRelationshipName$$>RelationshipById";
+            final String methodName = "purgeRelationshipById";
             if (log.isDebugEnabled()) {
                 log.debug("==> Method: " + methodName + ",userId="+userId+",guid="+relationshipGuid);
             }
             InputValidator.validateUserIdNotNull(className,methodName,userId);
             InputValidator.validateGUIDNotNull(className,methodName,relationshipGuid,"relationshipGuid");
 
-            Relationship relationship =  oMRSAPIHelper.callOMRSGetRelationshipByGuid(userId,relationshipGuid);
-            String typeGuid = relationship.getType().getTypeDefGUID();
-            String typeName = relationship.getType().getTypeDefName();
-            if (typeName.equals("<$$uRelationshipName$$>")) {
-                oMRSAPIHelper.callOMRSPurgeRelationship(userId, typeGuid, typeName, relationshipGuid);
-                if (log.isDebugEnabled()) {
-                    log.debug("<== successful Method: " + methodName + ",userId="+userId+",guid="+relationshipGuid);
-                 }
-             } else {
-                 // error guid supplied is not for a relationship of type <$$RelationshipName$$>
-             }
-     }
-    $$RELATIONSHIP$>
+            // get the appropriate type name and guid
+            OMRSArchiveAccessor archiveAccessor = OMRSArchiveAccessor.getInstance();
+            RelationshipDef relationshipDef = archiveAccessor.getRelationshipDefByName(typeName);
+            String typeGuid = relationshipDef.getGUID();
 
+            oMRSAPIHelper.callOMRSPurgeRelationship(userId, typeGuid, typeName, relationshipGuid);
+            if (log.isDebugEnabled()) {
+                 log.debug("<== successful Method: " + methodName + ",userId="+userId+",guid="+relationshipGuid);
+            }
+     }
 }

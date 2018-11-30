@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector;
 
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
@@ -5473,20 +5474,6 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
                                                typeDefGUID,
                                                typeDefName,
                                                methodName);
-
-        /*
-         * Locate relationship
-         */
-        Relationship  relationship  = this.getRelationship(userId, deletedRelationshipGUID);
-
-        repositoryValidator.validateTypeForInstanceDelete(repositoryName,
-                                                          typeDefGUID,
-                                                          typeDefName,
-                                                          relationship,
-                                                          methodName);
-
-        repositoryValidator.validateRelationshipIsDeleted(repositoryName, relationship, methodName);
-
 
         /*
          * Validation is complete.  It is ok to purge the relationship.

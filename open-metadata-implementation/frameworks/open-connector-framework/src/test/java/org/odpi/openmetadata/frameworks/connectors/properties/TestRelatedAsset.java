@@ -2,7 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Classification;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -22,8 +24,6 @@ public class TestRelatedAsset
     private List<Classification>   classifications        = new ArrayList<>();
     private Map<String, Object>    additionalProperties   = new HashMap<>();
     private Map<String, Object>    assetProperties        = new HashMap<>();
-    private PrimitiveSchemaElement schemaType             = new PrimitiveSchemaElement();
-    private AssetSchemaType        attributeSchemaType    = null;
     private RelatedAssetProperties relatedAssetProperties = null;
 
 
@@ -122,7 +122,7 @@ public class TestRelatedAsset
      *
      * @param resultObject object returned by the test
      */
-    private void validateResultObject(RelatedAsset  resultObject)
+    private void validateResultObject(RelatedAsset resultObject)
     {
         assertTrue(resultObject.getType().getElementTypeBean().equals(type));
         assertTrue(resultObject.getGUID().equals("TestGUID"));
@@ -151,7 +151,7 @@ public class TestRelatedAsset
      *
      * @param nullObject object to test
      */
-    private void validateNullObject(RelatedAsset  nullObject)
+    private void validateNullObject(RelatedAsset nullObject)
     {
         assertTrue(nullObject.getType() == null);
         assertTrue(nullObject.getGUID() == null);
@@ -221,14 +221,14 @@ public class TestRelatedAsset
      */
     @Test public void  testRelatedAssetProperties()
     {
-        AssetDescriptor        parentAsset         = new AssetSummary(new Asset());
+        AssetDescriptor parentAsset = new AssetSummary(new Asset());
 
-        RelatedAssetProperties          relatedAssetProperties     = new MockRelatedAssetProperties();
+        RelatedAssetProperties relatedAssetProperties = new MockRelatedAssetProperties();
 
-        Asset        testBean = new Asset();
+        Asset testBean = new Asset();
 
-        RelatedAsset   testTemplate = new RelatedAsset((Asset)null, null);
-        RelatedAsset   testObject;
+        RelatedAsset testTemplate = new RelatedAsset((Asset)null, null);
+        RelatedAsset testObject;
 
         try
         {
@@ -312,7 +312,7 @@ public class TestRelatedAsset
         assertFalse(getTestObject().equals("DummyString"));
         assertTrue(getTestObject().equals(getTestObject()));
 
-        RelatedAsset  sameObject = getTestObject();
+        RelatedAsset sameObject = getTestObject();
         assertTrue(sameObject.equals(sameObject));
 
         assertFalse(getTestObject().equals(getDifferentObject()));

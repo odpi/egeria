@@ -20,6 +20,7 @@ public class TestReferenceable
 {
     private ElementType          type            = new ElementType();
     private List<Classification> classifications = new ArrayList<>();
+    private List<Meaning>        meanings        = new ArrayList<>();
     private Map<String, Object>  additionalProperties = new HashMap<>();
 
 
@@ -28,7 +29,7 @@ public class TestReferenceable
      */
     public TestReferenceable()
     {
-
+        meanings.add(new Meaning());
     }
 
 
@@ -48,6 +49,7 @@ public class TestReferenceable
 
         testObject.setQualifiedName("TestQualifiedName");
         testObject.setAdditionalProperties(additionalProperties);
+        testObject.setMeanings(meanings);
 
         return testObject;
     }
@@ -67,6 +69,7 @@ public class TestReferenceable
 
         assertTrue(resultObject.getQualifiedName().equals("TestQualifiedName"));
         assertTrue(resultObject.getAdditionalProperties() == null);
+        assertTrue(resultObject.getMeanings() != null);
     }
 
 
@@ -84,6 +87,7 @@ public class TestReferenceable
 
         assertTrue(nullObject.getQualifiedName() == null);
         assertTrue(nullObject.getAdditionalProperties() == null);
+        assertTrue(nullObject.getMeanings() == null);
 
         nullObject = new Referenceable(null);
 
@@ -94,6 +98,11 @@ public class TestReferenceable
 
         assertTrue(nullObject.getQualifiedName() == null);
         assertTrue(nullObject.getAdditionalProperties() == null);
+        assertTrue(nullObject.getMeanings() == null);
+
+        nullObject.setMeanings(new ArrayList<>());
+
+        assertTrue(nullObject.getMeanings() == null);
     }
 
 

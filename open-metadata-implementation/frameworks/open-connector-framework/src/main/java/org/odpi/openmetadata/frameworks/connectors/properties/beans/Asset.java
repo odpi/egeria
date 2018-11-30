@@ -33,7 +33,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *     <li>zoneMembership - name of the person or organization that owns the asset.
  *     (Sourced from attribute zoneMembership within Asset - model 0010)</li>
  *     <li>classifications - list of classifications assigned to the asset</li>
- *     <li>assetProperties - list of properties assigned to the asset from the Asset subclasses</li>
+ *     <li>schemaProperties - list of properties assigned to the asset from the Asset subclasses</li>
  *     <li>additionalProperties - list of properties assigned to the asset as additional properties</li>
  * </ul>
  */
@@ -250,7 +250,7 @@ public class Asset extends Referenceable
                 ", owner='" + owner + '\'' +
                 ", classifications=" + classifications + '\'' +
                 ", zoneMembership=" + zoneMembership + '\'' +
-                ", assetProperties=" + assetProperties +
+                ", schemaProperties=" + assetProperties +
                 '}';
     }
 

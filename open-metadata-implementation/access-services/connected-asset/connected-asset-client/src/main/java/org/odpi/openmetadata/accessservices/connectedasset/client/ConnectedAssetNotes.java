@@ -21,6 +21,7 @@ import java.util.List;
  */
 public class ConnectedAssetNotes extends AssetNotes
 {
+    private String         serverName;
     private String         userId;
     private String         omasServerURL;
     private String         noteLogGUID;
@@ -30,6 +31,7 @@ public class ConnectedAssetNotes extends AssetNotes
     /**
      * Typical constructor creates an iterator with the supplied list of elements.
      *
+     * @param serverName  name of the server.
      * @param userId user id to use on server calls.
      * @param omasServerURL url root of the server to use.
      * @param noteLogGUID unique identifier of the asset.
@@ -38,7 +40,8 @@ public class ConnectedAssetNotes extends AssetNotes
      * @param maxCacheSize maximum number of elements that should be retrieved from the property server and
      *                     cached in the element list at any one time.  If a number less than one is supplied, 1 is used.
      */
-    ConnectedAssetNotes(String              userId,
+    ConnectedAssetNotes(String              serverName,
+                        String              userId,
                         String              omasServerURL,
                         String              noteLogGUID,
                         ConnectedAsset      parentAsset,
@@ -47,6 +50,7 @@ public class ConnectedAssetNotes extends AssetNotes
     {
         super(parentAsset, totalElementCount, maxCacheSize);
 
+        this.serverName      = serverName;
         this.userId          = userId;
         this.omasServerURL   = omasServerURL;
         this.noteLogGUID     = noteLogGUID;
@@ -66,6 +70,7 @@ public class ConnectedAssetNotes extends AssetNotes
 
         if (template != null)
         {
+            this.serverName     = template.serverName;
             this.userId         = template.userId;
             this.omasServerURL  = template.omasServerURL;
             this.noteLogGUID    = template.noteLogGUID;
@@ -112,7 +117,7 @@ public class ConnectedAssetNotes extends AssetNotes
                                                      int  maximumSize) throws PropertyServerException
     {
         final String   methodName = "AssetNotes.getCachedList";
-        final String   urlTemplate = "/open-metadata/access-services/connected-asset/users/{0}/note-logs/{1}/notes?elementStart={2}&maxElements={3}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/connected-asset/users/{1}/note-logs/{2}/notes?elementStart={3}&maxElements={4}";
 
         connectedAsset.validateOMASServerURL(methodName);
 
@@ -121,6 +126,7 @@ public class ConnectedAssetNotes extends AssetNotes
             NotesResponse restResult = (NotesResponse)connectedAsset.callGetRESTCall(methodName,
                                                                                      NotesResponse.class,
                                                                                      omasServerURL + urlTemplate,
+                                                                                     serverName,
                                                                                      userId,
                                                                                      noteLogGUID,
                                                                                      cacheStartPointer,

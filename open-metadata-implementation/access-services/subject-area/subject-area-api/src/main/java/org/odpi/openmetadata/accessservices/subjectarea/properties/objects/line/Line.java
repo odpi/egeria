@@ -4,8 +4,12 @@ package org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.annotation.*;
+
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SystemAttributes;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -17,10 +21,31 @@ import java.util.Map;
 /**
  * A relationship between 2 subject area OMAS entities. It is called types as it has named fields for the attributes and references.
  */
-@JsonAutoDetect(getterVisibility= JsonAutoDetect.Visibility.PUBLIC_ONLY, setterVisibility= JsonAutoDetect.Visibility.PUBLIC_ONLY, fieldVisibility= JsonAutoDetect.Visibility.NONE)
+@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "class")
+@JsonSubTypes(
+        {
 
+                // term to term relationship responses
+                @JsonSubTypes.Type(value = TermHASARelationship.class, name = "TermHASARelationship"),
+                @JsonSubTypes.Type(value = RelatedTermRelationship.class, name = "RelatedTermRelationship"),
+                @JsonSubTypes.Type(value = Synonym.class, name = "Synonym"),
+                @JsonSubTypes.Type(value = Antonym.class, name = "Antonym"),
+                @JsonSubTypes.Type(value = PreferredTerm.class, name = "PreferredTerm"),
+                @JsonSubTypes.Type(value = ReplacementTerm.class, name = "ReplacementTerm"),
+                @JsonSubTypes.Type(value = Translation.class, name = "Translation"),
+                @JsonSubTypes.Type(value = ISARelationship.class, name = "ISARelationship"),
+                @JsonSubTypes.Type(value = ValidValue.class, name = "ValidValue"),
+                @JsonSubTypes.Type(value = UsedInContext.class, name = "UsedInContext"),
+                @JsonSubTypes.Type(value = TermISATypeOFRelationship.class, name = "TermISATYPEOFRelationship"),
+                @JsonSubTypes.Type(value = TermTYPEDBYRelationship.class, name = "TermTYPEDBYRelationship"),
+
+        })
+            
 public class Line implements Serializable {
     protected static final long serialVersionUID = 1L;
     private SystemAttributes systemAttributes = null;
@@ -38,14 +63,27 @@ public class Line implements Serializable {
     protected String entity2Guid;
     protected String entity2PropertyName;
     protected String entity2Label;
-
-    protected String guid;
     protected String name;
 
     /**
      * Default constructor
      */
     public Line() {}
+    public Line(Line template) {
+            this.setEntity1Guid(template.getEntity1Guid());
+            this.setEntity1Label(template.getEntity1Label());
+            this.setEntity1Name(template.getEntity1Name());
+            this.setEntity1PropertyName(template.getEntity1PropertyName());
+            this.setEntity2Guid(template.getEntity2Guid());
+            this.setEntity2Label(template.getEntity2Label());
+            this.setEntity2Name(template.getEntity2Name());
+            this.setEntity2PropertyName(template.getEntity2PropertyName());
+            this.setExtraAttributes(template.getExtraAttributes());
+            this.setSystemAttributes(template.getSystemAttributes());
+            this.setGuid(template.getGuid());
+            this.setLineType(template.getLineType());
+            this.setExtraAttributes(template.getExtraAttributes());
+    }
     public Line(String name) {
         this.name=name;
         this.lineType=LineType.Other;
@@ -166,11 +204,18 @@ public class Line implements Serializable {
     }
 
     public String getGuid() {
-        return guid;
+        if (this.systemAttributes==null) {
+            return null;
+        } else {
+            return systemAttributes.getGUID();
+        }
     }
 
     public void setGuid(String guid) {
-        this.guid = guid;
+        if (this.systemAttributes==null) {
+            this.systemAttributes = new SystemAttributes();
+        }
+        this.systemAttributes.setGUID(guid);
     }
 
     public String getName() {
@@ -245,5 +290,35 @@ public class Line implements Serializable {
         omrsRelationship.setEntityOneProxy(entityOne);
         omrsRelationship.setEntityTwoProxy(entityTwo);
         return omrsRelationship;
+    }
+
+    public StringBuilder toString(StringBuilder sb) {
+        if (sb == null) {
+            sb = new StringBuilder();
+        }
+
+        sb.append("Line{");
+        sb.append("typeDefGuid="+typeDefGuid+",");
+        sb.append("lineType=" + lineType.name()+",");
+        sb.append("entity1Name="+entity1Name+",");
+        sb.append("entity1Type="+entity1Type+",");
+        sb.append("entity1Guid="+entity1Guid+",");
+        sb.append("entity1PropertyName="+ entity1PropertyName+",");
+        sb.append("entity1Label="+ entity1Label+",");
+
+        sb.append("entity2Name="+entity2Name+",");
+        sb.append("entity2Type="+entity2Type+",");
+        sb.append("entity2Guid="+entity2Guid+",");
+        sb.append("entity2PropertyName="+ entity2PropertyName+",");
+        sb.append("entity2Label="+ entity2Label+",");
+        sb.append("name=" + name);
+        if (this.systemAttributes!=null)
+        {
+            sb.append("systemAttributes { ");
+            sb = this.systemAttributes.toString(sb);
+            sb.append("}");
+        }
+        sb.append('}');
+        return sb;
     }
 }

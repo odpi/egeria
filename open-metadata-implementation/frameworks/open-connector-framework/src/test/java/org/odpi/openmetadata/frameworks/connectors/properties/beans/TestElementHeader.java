@@ -6,9 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
@@ -27,7 +25,7 @@ public class TestElementHeader
      */
     public TestElementHeader()
     {
-
+        classifications.add(new Classification());
     }
 
 
@@ -54,12 +52,12 @@ public class TestElementHeader
      *
      * @param resultObject object returned by the test
      */
-    private void validateResultObject(ElementHeader  resultObject)
+    private void validateResultObject(ElementHeader resultObject)
     {
         assertTrue(resultObject.getType().equals(type));
         assertTrue(resultObject.getGUID().equals("TestGUID"));
         assertTrue(resultObject.getURL().equals("TestURL"));
-        assertTrue(resultObject.getClassifications() == null);
+        assertTrue(resultObject.getClassifications() != null);
     }
 
 
@@ -68,7 +66,7 @@ public class TestElementHeader
      */
     @Test public void testNullObject()
     {
-        ElementHeader    nullObject = new ElementHeader();
+        ElementHeader nullObject = new ElementHeader();
 
         assertTrue(nullObject.getType() == null);
         assertTrue(nullObject.getGUID() == null);
@@ -80,6 +78,12 @@ public class TestElementHeader
         assertTrue(nullObject.getType() == null);
         assertTrue(nullObject.getGUID() == null);
         assertTrue(nullObject.getURL() == null);
+        assertTrue(nullObject.getClassifications() == null);
+
+        nullObject = new ElementHeader();
+
+        nullObject.setClassifications(new ArrayList<>());
+
         assertTrue(nullObject.getClassifications() == null);
     }
 
@@ -94,10 +98,10 @@ public class TestElementHeader
         assertFalse(getTestObject().equals("DummyString"));
         assertTrue(getTestObject().equals(getTestObject()));
 
-        ElementHeader  sameObject = getTestObject();
+        ElementHeader sameObject = getTestObject();
         assertTrue(sameObject.equals(sameObject));
 
-        ElementHeader  differentObject = getTestObject();
+        ElementHeader differentObject = getTestObject();
         differentObject.setGUID("Different");
         assertFalse(getTestObject().equals(differentObject));
     }
@@ -154,7 +158,7 @@ public class TestElementHeader
         /*
          * Through superclass
          */
-        PropertyBase  propertyBase = getTestObject();
+        PropertyBase propertyBase = getTestObject();
 
         try
         {

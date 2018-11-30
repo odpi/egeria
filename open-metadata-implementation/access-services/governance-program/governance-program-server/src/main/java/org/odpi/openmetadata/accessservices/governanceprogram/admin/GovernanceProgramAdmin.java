@@ -1,10 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceprogram.admin;
 
 
 import org.odpi.openmetadata.accessservices.governanceprogram.auditlog.GovernanceProgramAuditCode;
 import org.odpi.openmetadata.accessservices.governanceprogram.listener.GovernanceProgramOMRSTopicListener;
 import org.odpi.openmetadata.accessservices.governanceprogram.server.GovernanceProgramRESTServices;
+import org.odpi.openmetadata.accessservices.governanceprogram.server.GovernanceProgramServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
@@ -14,11 +16,13 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 public class GovernanceProgramAdmin implements AccessServiceAdmin
 {
-    private OMRSRepositoryConnector repositoryConnector = null;
-    private OMRSTopicConnector      omrsTopicConnector  = null;
-    private AccessServiceConfig     accessServiceConfig = null;
-    private OMRSAuditLog            auditLog            = null;
-    private String                  serverUserName      = null;
+    private OMRSRepositoryConnector           repositoryConnector = null;
+    private OMRSTopicConnector                omrsTopicConnector  = null;
+    private AccessServiceConfig               accessServiceConfig = null;
+    private OMRSAuditLog                      auditLog            = null;
+    private GovernanceProgramServicesInstance instance            = null;
+    private String                            serverName          = null;
+    private String                            serverUserName      = null;
 
     private GovernanceProgramOMRSTopicListener omrsTopicListener = null;
 
@@ -58,43 +62,57 @@ public class GovernanceProgramAdmin implements AccessServiceAdmin
                            auditCode.getSystemAction(),
                            auditCode.getUserAction());
 
-        this.repositoryConnector = enterpriseOMRSRepositoryConnector;
-        GovernanceProgramRESTServices.setRepositoryConnector(accessServiceConfigurationProperties.getAccessServiceName(),
-                                                             repositoryConnector);
-
-        this.accessServiceConfig = accessServiceConfigurationProperties;
-        this.omrsTopicConnector = enterpriseOMRSTopicConnector;
-
-        if (omrsTopicConnector != null)
+        try
         {
-            auditCode = GovernanceProgramAuditCode.SERVICE_REGISTERED_WITH_TOPIC;
+            this.repositoryConnector = enterpriseOMRSRepositoryConnector;
+            this.instance = new GovernanceProgramServicesInstance(repositoryConnector);
+            this.serverName = instance.getServerName();
+
+            this.accessServiceConfig = accessServiceConfigurationProperties;
+            this.omrsTopicConnector = enterpriseOMRSTopicConnector;
+            this.serverUserName = serverUserName;
+
+            if (omrsTopicConnector != null)
+            {
+                auditCode = GovernanceProgramAuditCode.SERVICE_REGISTERED_WITH_ENTERPRISE_TOPIC;
+                auditLog.logRecord(actionDescription,
+                                   auditCode.getLogMessageId(),
+                                   auditCode.getSeverity(),
+                                   auditCode.getFormattedLogMessage(serverName),
+                                   null,
+                                   auditCode.getSystemAction(),
+                                   auditCode.getUserAction());
+
+                omrsTopicListener = new GovernanceProgramOMRSTopicListener(accessServiceConfig.getAccessServiceOutTopic(),
+                                                                           repositoryConnector.getRepositoryHelper(),
+                                                                           repositoryConnector.getRepositoryValidator(),
+                                                                           accessServiceConfig.getAccessServiceName());
+
+                omrsTopicConnector.registerListener(omrsTopicListener);
+            }
+
+            this.auditLog = auditLog;
+
+            auditCode = GovernanceProgramAuditCode.SERVICE_INITIALIZED;
             auditLog.logRecord(actionDescription,
                                auditCode.getLogMessageId(),
                                auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(),
+                               auditCode.getFormattedLogMessage(serverName),
                                null,
                                auditCode.getSystemAction(),
                                auditCode.getUserAction());
-
-            omrsTopicListener = new GovernanceProgramOMRSTopicListener(accessServiceConfig.getAccessServiceOutTopic(),
-                                                                       repositoryConnector.getRepositoryHelper(),
-                                                                       repositoryConnector.getRepositoryValidator(),
-                                                                       accessServiceConfig.getAccessServiceName());
-
-            omrsTopicConnector.registerListener(omrsTopicListener);
         }
-
-        this.auditLog = auditLog;
-        this.serverUserName = serverUserName;
-
-        auditCode = GovernanceProgramAuditCode.SERVICE_INITIALIZED;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        catch (Throwable error)
+        {
+            auditCode = GovernanceProgramAuditCode.SERVICE_INSTANCE_FAILURE;
+            auditLog.logRecord(actionDescription,
+                               auditCode.getLogMessageId(),
+                               auditCode.getSeverity(),
+                               auditCode.getFormattedLogMessage(error.getMessage()),
+                               null,
+                               auditCode.getSystemAction(),
+                               auditCode.getUserAction());
+        }
     }
 
 
@@ -106,11 +124,16 @@ public class GovernanceProgramAdmin implements AccessServiceAdmin
         final String                actionDescription = "shutdown";
         GovernanceProgramAuditCode  auditCode;
 
+        if (this.instance != null)
+        {
+            this.instance.shutdown();
+        }
+
         auditCode = GovernanceProgramAuditCode.SERVICE_SHUTDOWN;
         auditLog.logRecord(actionDescription,
                            auditCode.getLogMessageId(),
                            auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(),
+                           auditCode.getFormattedLogMessage(serverName),
                            null,
                            auditCode.getSystemAction(),
                            auditCode.getUserAction());

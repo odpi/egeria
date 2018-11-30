@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservice.assetcatalog.server.spring;
 
 import org.odpi.openmetadata.accessservice.assetcatalog.model.SequenceOrderType;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
  * This interface facilitates the searching for asset's relationships, fetch the details about a specific relationship.
  */
 @RestController
-@RequestMapping("/open-metadata/access-services/asset-catalog/users/{userId}/relationships")
+@RequestMapping("/servers/{serverName}/open-metadata/access-services/asset-catalog/users/{userId}/relationships")
 public class AssetCatalogRelationshipResource {
 
     private AssetCatalogRelationshipService relationshipService = new AssetCatalogRelationshipService();
@@ -26,6 +27,7 @@ public class AssetCatalogRelationshipResource {
     /**
      * Fetch relationship details based on its unique identifier
      *
+     * @param serverName     unique identifier for requested server.
      * @param userId         String unique identifier for the user
      * @param relationshipId String unique identifier for the relationship
      * @return relationship details
@@ -33,14 +35,16 @@ public class AssetCatalogRelationshipResource {
     @RequestMapping(method = RequestMethod.GET,
             path = "/{relationshipId}",
             produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public RelationshipResponse getRelationship(@PathVariable("userId") String userId,
+    public RelationshipResponse getRelationship(@PathVariable("serverName") String serverName,
+                                                @PathVariable("userId") String userId,
                                                 @PathVariable("relationshipId") String relationshipId) {
-        return relationshipService.getRelationshipById(userId, relationshipId);
+        return relationshipService.getRelationshipById(serverName, userId, relationshipId);
     }
 
     /**
      * Fetch relationship details based on property name
      *
+     * @param serverName         unique identifier for requested server.
      * @param userId             String unique identifier for the user
      * @param propertyName       String that it is used to identify the relationship label
      * @param propertyValue      list of properties used to narrow the search.
@@ -57,6 +61,7 @@ public class AssetCatalogRelationshipResource {
             path = "/property-name/{propertyName}",
             produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public RelationshipsResponse getRelationshipByLabel(
+            @PathVariable("serverName") String serverName,
             @PathVariable("userId") String userId,
             @PathVariable("propertyName") String propertyName,
             @RequestParam(required = false, value = "propertyValue") String propertyValue,
@@ -66,13 +71,14 @@ public class AssetCatalogRelationshipResource {
             @RequestParam(required = false, value = "orderType") SequenceOrderType orderType,
             @RequestParam(required = false, value = "orderProperty") String orderProperty,
             @RequestParam(required = false, value = "status") Status status) {
-        return relationshipService.getRelationshipByProperty(userId, relationshipTypeId, propertyName,
+        return relationshipService.getRelationshipByProperty(serverName, userId, relationshipTypeId, propertyName,
                 propertyValue, limit, offset, orderType, orderProperty, status);
     }
 
     /**
      * Return a list of relationships that match the search criteria.
      *
+     * @param serverName         unique identifier for requested server.
      * @param userId             String unique identifier for the user
      * @param relationshipTypeId limit the result set to only include the specified types for relationships
      * @param criteria           String for searching the relationship
@@ -87,7 +93,8 @@ public class AssetCatalogRelationshipResource {
     @RequestMapping(method = RequestMethod.GET,
             path = "/type/{relationshipTypeId}/search/{criteria}",
             produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public RelationshipsResponse searchForRelationships(@PathVariable("userId") String userId,
+    public RelationshipsResponse searchForRelationships(@PathVariable("serverName") String serverName,
+                                                        @PathVariable("userId") String userId,
                                                         @PathVariable("relationshipTypeId") String relationshipTypeId,
                                                         @PathVariable("criteria") String criteria,
                                                         @RequestParam(required = false, value = "limit", defaultValue = "0") Integer limit,
@@ -95,6 +102,6 @@ public class AssetCatalogRelationshipResource {
                                                         @RequestParam(required = false, value = "orderType") SequenceOrderType orderType,
                                                         @RequestParam(required = false, value = "orderProperty") String orderProperty,
                                                         @RequestParam(required = false, value = "status") Status status) {
-        return relationshipService.searchForRelationships(userId, relationshipTypeId, criteria, limit, offset, orderProperty, orderType, status);
+        return relationshipService.searchForRelationships(serverName, userId, relationshipTypeId, criteria, limit, offset, orderProperty, orderType, status);
     }
 }

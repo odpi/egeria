@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 
 package org.odpi.openmetadata.accessservices.subjectarea.properties.classifications;
 import org.slf4j.Logger;
@@ -98,7 +99,7 @@ public class GovernanceMeasurementsResultsDataSet extends Classification {
        private String description;
        /**
         * {@literal Description of the use of the data set for governance metrics. }
-        * @return {@code String }
+        * @return {$$PropertyTypeJavadoc$$ }
         */
        public String getDescription() {
            return this.description;
