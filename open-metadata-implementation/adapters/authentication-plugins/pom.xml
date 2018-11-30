@@ -23,6 +23,7 @@
     </description>
     <modules>
         <module>http-helper</module>
+        <module>gaian-impersonation</module>
     </modules>
 
     <artifactId>authentication-plugins</artifactId>

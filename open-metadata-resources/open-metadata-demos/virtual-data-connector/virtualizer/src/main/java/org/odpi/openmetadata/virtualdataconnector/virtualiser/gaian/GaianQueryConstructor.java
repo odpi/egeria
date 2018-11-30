@@ -94,12 +94,12 @@ public class GaianQueryConstructor {
             createMirroringLogicalTable(logicalTableName, gaianNodeName);
             updateColumnDataType(mappedColumns, backendTable);
 
-            String updatedTable = createTableDefinition(businessTableName, (c -> c.getBusinessName()), mappedColumns, gaianNodeName);
+            String updatedTable = createTableDefinition(businessTableName, (c -> c.getBusinessName()), mappedColumns, gaianNodeName, logicalTableName);
             if (updatedTable != null) {
                 createdTables.put(BUSINESS_PREFIX, updatedTable);
             }
 
-            updatedTable = createTableDefinition(technicalTableName, (c -> c.getTechnicalName()), mappedColumns, gaianNodeName);
+            updatedTable = createTableDefinition(technicalTableName, (c -> c.getTechnicalName()), mappedColumns, gaianNodeName,logicalTableName );
             if (updatedTable != null) {
                 createdTables.put(TECHNICAL_PREFIX, updatedTable);
             }
@@ -125,9 +125,9 @@ public class GaianQueryConstructor {
         }
     }
 
-    private String createTableDefinition(String tableName, Function<MappedColumn, String> function, List<MappedColumn> mappedColumns, String gaianNodeName) {
+    private String createTableDefinition(String tableName, Function<MappedColumn, String> function, List<MappedColumn> mappedColumns, String gaianNodeName, String logicalTableName) {
         String businessTableCreateStatement = buildTableCreateStatement(tableName, mappedColumns, function);
-        String setBusinessTableDataSource = buildCreateTableDataSourceStatement(tableName, gaianNodeName, mappedColumns);
+        String setBusinessTableDataSource = buildCreateTableDataSourceStatement(tableName, gaianNodeName, mappedColumns, logicalTableName);
 
         if (updateGaian(businessTableCreateStatement, setBusinessTableDataSource)) {
             log.debug("Successfully created table {}", tableName);
@@ -149,7 +149,7 @@ public class GaianQueryConstructor {
             log.error("Exception: Not able to execute query in Gaian.", e);
         }
         if (logicTableList != null && !logicTableList.isEmpty()) {
-           return logicTableList.stream().filter(e -> (e.getGaianNode().equals(gaianNodeName) && tables.contains(e.getLogicalTableName()))).findFirst().orElse(null);
+            return logicTableList.stream().filter(e -> (e.getGaianNode().equals(gaianNodeName) && tables.contains(e.getLogicalTableName()))).findFirst().orElse(null);
         }
         return null;
     }
@@ -272,15 +272,16 @@ public class GaianQueryConstructor {
      * @param tableName     name of the Logical table
      * @param gaianNodeName
      * @param mappedColumns
+     * @param logicalTableName
      * @return the call to Gaian
      */
-    private String buildCreateTableDataSourceStatement(String tableName, String gaianNodeName, List<MappedColumn> mappedColumns) {
+    private String buildCreateTableDataSourceStatement(String tableName, String gaianNodeName, List<MappedColumn> mappedColumns, String logicalTableName) {
         String statementForCreatingDataSource = "call setdsrdbtable('" +
                 tableName +
                 "', '', '" +
                 gaianNodeName.toUpperCase() +
                 "', '" +
-                tableName +
+                logicalTableName +
                 "','', '";
 
         for (MappedColumn mappedColumn : mappedColumns) {

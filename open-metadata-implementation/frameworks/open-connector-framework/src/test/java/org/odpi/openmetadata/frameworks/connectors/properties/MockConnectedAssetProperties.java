@@ -4,6 +4,10 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.PrimitiveSchemaType;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Enables the testing of ConnectedAssetProperties
@@ -50,21 +54,21 @@ public class MockConnectedAssetProperties extends ConnectedAssetProperties
      */
     public void refresh() throws PropertyServerException
     {
-        AssetInformalTags informalTags = new MockAssetInformalTags(null, 15, 50);
-        AssetLikes        likes        = new MockAssetLikes(null, 15, 50);
-        AssetRatings      ratings      = new MockAssetRatings(null, 15, 50);
-        AssetComments     comments     = new MockAssetComments(null, 15, 50);
-        AssetMeanings     meanings     = new MockAssetMeanings(null, 15, 50);
-        AssetSchemaType   schema       = new AssetPrimitiveSchemaType(null, meanings);
-        AssetAnnotations  analysis     = new MockAssetAnnotations(null, 15, 50);
-        AssetFeedback               feedback               = new AssetFeedback(null,
-                                                                               informalTags,
-                                                                               likes,
-                                                                               ratings,
-                                                                               comments);
-        AssetLocations              knownLocations         = new MockAssetLocations(null, 15, 50);
-        AssetLineage                lineage                = new AssetLineage();
-        RelatedAssets               relatedAssets          = new MockRelatedAssets(null, 15, 50);
+        AssetInformalTags  informalTags = new MockAssetInformalTags(null, 15, 50);
+        AssetLikes         likes        = new MockAssetLikes(null, 15, 50);
+        AssetRatings       ratings      = new MockAssetRatings(null, 15, 50);
+        AssetComments      comments     = new MockAssetComments(null, 15, 50);
+        List<AssetMeaning> meanings     = new ArrayList<>();
+        AssetSchemaType    schema       = new AssetPrimitiveSchemaType((PrimitiveSchemaType)null);
+        AssetAnnotations   analysis     = new MockAssetAnnotations(null, 15, 50);
+        AssetFeedback feedback               = new AssetFeedback(null,
+                                                                 informalTags,
+                                                                 likes,
+                                                                 ratings,
+                                                                 comments);
+        AssetLocations knownLocations = new MockAssetLocations(null, 15, 50);
+        AssetLineage   lineage        = new AssetLineage();
+        RelatedAssets  relatedAssets  = new MockRelatedAssets(null, 15, 50);
 
         super.assetProperties    = new AssetUniverse(new Asset(),
                                                      externalIdentifiers,

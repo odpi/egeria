@@ -4,8 +4,6 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaLink;
 
-import java.util.List;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
 
@@ -15,7 +13,7 @@ import java.util.Objects;
  */
 public class AssetSchemaLink extends AssetPropertyBase
 {
-    protected SchemaLink   schemaLinkBean;
+    protected SchemaLink schemaLinkBean;
 
 
     /**
@@ -23,7 +21,7 @@ public class AssetSchemaLink extends AssetPropertyBase
      *
      * @param schemaLinkBean bean containing all of the properties
      */
-    public AssetSchemaLink(SchemaLink   schemaLinkBean)
+    public AssetSchemaLink(SchemaLink schemaLinkBean)
     {
         super(null);
 
@@ -45,7 +43,7 @@ public class AssetSchemaLink extends AssetPropertyBase
      * @param schemaLinkBean bean containing all of the properties
      */
     public AssetSchemaLink(AssetDescriptor parentAsset,
-                           SchemaLink      schemaLinkBean)
+                           SchemaLink schemaLinkBean)
     {
         super(parentAsset);
 
@@ -86,7 +84,7 @@ public class AssetSchemaLink extends AssetPropertyBase
      *
      * @return schema link bean
      */
-    protected SchemaLink   getSchemaLinkBean()
+    protected SchemaLink getSchemaLinkBean()
     {
         return schemaLinkBean;
     }
@@ -141,26 +139,24 @@ public class AssetSchemaLink extends AssetPropertyBase
 
 
     /**
-     * Return the GUIDs of the schema attributes that this link connects together.
+     * Return the GUID of the schema type that this link connects together.
      *
-     * @return SchemaAttributeGUIDs   GUIDs for either end of the link   return as a list.
+     * @return  unique identifier
      */
-    public List<String> getLinkedAttributeGUIDs()
+    public String getLinkedSchemaTypeGUID()
     {
-        List<String>   linkedAttributeGUIDs = schemaLinkBean.getLinkedAttributeGUIDs();
+        return schemaLinkBean.getLinkedSchemaTypeGUID();
+    }
 
-        if (linkedAttributeGUIDs == null)
-        {
-            return null;
-        }
-        else if (linkedAttributeGUIDs.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(linkedAttributeGUIDs);
-        }
+
+    /**
+     * Return the name of the schema type that this link connects together.
+     *
+     * @return  unique name
+     */
+    public String getLinkedSchemaTypeName()
+    {
+        return schemaLinkBean.getLinkedSchemaTypeName();
     }
 
 

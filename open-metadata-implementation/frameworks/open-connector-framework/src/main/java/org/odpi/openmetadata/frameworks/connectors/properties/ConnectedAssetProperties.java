@@ -2,10 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * ConnectedAssetProperties is associated with a Connector.  Connectors provide access to
@@ -36,7 +36,7 @@ public abstract class ConnectedAssetProperties extends AssetPropertyElementBase
      *
      * If null is returned, the connector is not linked to a metadata repository.
      */
-    protected  AssetUniverse     assetProperties = null;
+    protected AssetUniverse assetProperties = null;
 
     private static final Logger log = LoggerFactory.getLogger(ConnectedAssetProperties.class);
 
@@ -63,7 +63,7 @@ public abstract class ConnectedAssetProperties extends AssetPropertyElementBase
 
         if (templateProperties != null)
         {
-            AssetUniverse   templateAssetUniverse = templateProperties.getAssetUniverse();
+            AssetUniverse templateAssetUniverse = templateProperties.getAssetUniverse();
             if (templateAssetUniverse != null)
             {
                 assetProperties = new AssetUniverse(templateAssetUniverse);
@@ -118,7 +118,7 @@ public abstract class ConnectedAssetProperties extends AssetPropertyElementBase
     public String toString()
     {
         return "ConnectedAssetProperties{" +
-                "assetProperties=" + assetProperties +
+                "schemaProperties=" + assetProperties +
                 '}';
     }
 }

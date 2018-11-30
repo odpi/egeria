@@ -17,12 +17,20 @@
     <description>
         Samples showing how to call the Open Metadata Access Services (OMASs) clients.
     </description>
+    <dependencies>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>subject-area-client</artifactId>
+            <version>0.3-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 
     <artifactId>access-services-samples</artifactId>
 
     <packaging>pom</packaging>
     <modules>
         <module>governance-program-client-samples</module>
+        <module>subject-area-client-samples</module>
     </modules>
 
 </project>

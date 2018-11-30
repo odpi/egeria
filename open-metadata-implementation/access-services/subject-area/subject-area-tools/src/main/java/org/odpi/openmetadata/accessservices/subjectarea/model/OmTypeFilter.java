@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.model;
 
 
@@ -63,15 +64,15 @@ public class OmTypeFilter {
     public static final Set<String> RELATIONSHIP_TYPES_SET = new HashSet<>(Arrays.asList(RELATIONSHIP_TYPES));
     public static final Set<String> ENTITY_TYPES_SET = new HashSet<>(Arrays.asList(ENTITY_TYPES));
     /**
-     *
-     * spin through all the types and populate the types that are relaevant to this omas.
+     * Constructor
+     * spin through all the types and store the types that are relevant to this omas.
      * <p>
-     * The types relevant to this omas are define in the arrays above. I suspect the scope of this is
+     * The types relevant to this omas are define in the arrays above ENTITY_TYPES and RELATIONSHIP_TYPES. I suspect the scope of this is
      * too big - for example we have Host, because it has a relationship to Location and we have Location because we are generating an asset. In each of thee cases
      * we would not be able to generate the entity reference files if the types were not included in the generation
      *
-     * @param newTypeDefs
-     * @param attributeTypeDefs
+     * @param newTypeDefs all the Type defs
+     * @param attributeTypeDefs all the attribute defs
      */
     public OmTypeFilter(List<TypeDef> newTypeDefs, List<AttributeTypeDef> attributeTypeDefs) {
         allTypeDefs = newTypeDefs;
