@@ -368,7 +368,14 @@ public class LocalOMRSInstanceEventProcessor implements OMRSInstanceEventProcess
                                                          instanceEvent.getOriginalTypeDefSummary(),
                                                          instanceEvent.getRelationship());
                     break;
-
+                case BATCH_INSTANCES_EVENT:
+                	this.processInstanceBatchEvent(cohortName,
+                            instanceEventOriginator.getMetadataCollectionId(),
+                            instanceEventOriginator.getServerName(),
+                            instanceEventOriginator.getServerType(),
+                            instanceEventOriginator.getOrganizationName(),
+                            instanceEvent.getInstanceBatch());
+                	break;
                 case INSTANCE_ERROR_EVENT:
                     OMRSInstanceEventErrorCode errorCode = instanceEvent.getErrorCode();
 
