@@ -18,7 +18,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * TODO
+ * This is a Term that describes an activity
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -32,6 +32,10 @@ public class Activity extends Term implements Serializable {
         nodeType = NodeType.Activity;
     }
 
+    /**
+     * Different types of activities.
+     * @return <code>ActivityType</code>
+     */
     public ActivityType getActivityType() {
         return activityType;
     }

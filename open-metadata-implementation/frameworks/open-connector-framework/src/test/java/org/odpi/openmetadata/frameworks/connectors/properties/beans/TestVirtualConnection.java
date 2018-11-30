@@ -32,7 +32,7 @@ public class TestVirtualConnection
      */
     public TestVirtualConnection()
     {
-
+        embeddedConnections.add(new EmbeddedConnection());
     }
 
 
@@ -70,7 +70,7 @@ public class TestVirtualConnection
      *
      * @param resultObject object returned by the test
      */
-    private void validateResultObject(VirtualConnection  resultObject)
+    private void validateResultObject(VirtualConnection resultObject)
     {
         assertTrue(resultObject.getType().equals(type));
         assertTrue(resultObject.getGUID().equals("TestGUID"));
@@ -86,7 +86,16 @@ public class TestVirtualConnection
         assertTrue(resultObject.getEndpoint().equals(endpoint));
         assertTrue(resultObject.getSecuredProperties() == null);
 
-        assertTrue(resultObject.getEmbeddedConnections() == null);
+        assertTrue(resultObject.getEmbeddedConnections() != null);
+    }
+
+
+    /**
+     * Validate that a virtual connection type object is returned.
+     */
+    @Test public void  testVirtualConnectionType()
+    {
+        assertTrue(VirtualConnection.getVirtualConnectionType() != null);
     }
 
 
@@ -95,7 +104,7 @@ public class TestVirtualConnection
      */
     @Test public void testNullObject()
     {
-        VirtualConnection    nullObject = new VirtualConnection();
+        VirtualConnection nullObject = new VirtualConnection();
 
         assertTrue(nullObject.getType() == null);
         assertTrue(nullObject.getGUID() == null);
@@ -130,6 +139,12 @@ public class TestVirtualConnection
         assertTrue(nullObject.getSecuredProperties() == null);
 
         assertTrue(nullObject.getEmbeddedConnections() == null);
+
+        nullObject = new VirtualConnection();
+
+        nullObject.setEmbeddedConnections(new ArrayList<>());
+
+        assertTrue(nullObject.getEmbeddedConnections() == null);
     }
 
 
@@ -143,10 +158,10 @@ public class TestVirtualConnection
         assertFalse(getTestObject().equals("DummyString"));
         assertTrue(getTestObject().equals(getTestObject()));
 
-        VirtualConnection  sameObject = getTestObject();
+        VirtualConnection sameObject = getTestObject();
         assertTrue(sameObject.equals(sameObject));
 
-        VirtualConnection  differentObject = getTestObject();
+        VirtualConnection differentObject = getTestObject();
         differentObject.setGUID("Different");
         assertFalse(getTestObject().equals(differentObject));
     }
@@ -203,7 +218,7 @@ public class TestVirtualConnection
         /*
          * Through superclass
          */
-        Connection  connection = getTestObject();
+        Connection connection = getTestObject();
 
         try
         {
@@ -226,7 +241,7 @@ public class TestVirtualConnection
         /*
          * Through superclass
          */
-        Referenceable  referenceable = getTestObject();
+        Referenceable referenceable = getTestObject();
 
         try
         {
@@ -249,7 +264,7 @@ public class TestVirtualConnection
         /*
          * Through superclass
          */
-        ElementHeader  elementHeader = getTestObject();
+        ElementHeader elementHeader = getTestObject();
 
         try
         {
@@ -272,7 +287,7 @@ public class TestVirtualConnection
         /*
          * Through superclass
          */
-        PropertyBase  propertyBase = getTestObject();
+        PropertyBase propertyBase = getTestObject();
 
         try
         {

@@ -20,7 +20,7 @@ public class TestAssetSchemaImplementationQueries
      * @param maxCacheSize size of cache
      * @return property iterator
      */
-    private AssetSchemaImplementationQueries  getPropertyIterator(int    totalElementCount, int    maxCacheSize)
+    private AssetSchemaImplementationQueries getPropertyIterator(int    totalElementCount, int    maxCacheSize)
     {
         return new MockAssetSchemaImplementationQueries(null, totalElementCount, maxCacheSize);
     }
@@ -56,7 +56,8 @@ public class TestAssetSchemaImplementationQueries
 
         propertyIterator.next();
 
-        AssetSchemaImplementationQueries propertyIteratorClone = new MockAssetSchemaImplementationQueries(null, propertyIterator);
+        AssetSchemaImplementationQueries
+                propertyIteratorClone = new MockAssetSchemaImplementationQueries(null, propertyIterator);
 
         int elementCount = 0;
         while (propertyIteratorClone.hasNext())
@@ -123,11 +124,12 @@ public class TestAssetSchemaImplementationQueries
      */
     @Test public void testElementCount()
     {
-        AssetSchemaImplementationQueries  propertyIterator = getPropertyIterator(30, 10);
+        AssetSchemaImplementationQueries propertyIterator = getPropertyIterator(30, 10);
 
         assertTrue(propertyIterator.getElementCount() == 30);
 
-        AssetSchemaImplementationQueries  clonedPropertyIterator = new MockAssetSchemaImplementationQueries(null, propertyIterator);
+        AssetSchemaImplementationQueries
+                clonedPropertyIterator = new MockAssetSchemaImplementationQueries(null, propertyIterator);
 
         assertTrue(clonedPropertyIterator.getElementCount() == 30);
 

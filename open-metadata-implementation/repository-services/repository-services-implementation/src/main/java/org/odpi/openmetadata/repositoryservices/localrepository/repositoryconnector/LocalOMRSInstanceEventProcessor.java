@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector;
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -38,7 +39,7 @@ public class LocalOMRSInstanceEventProcessor implements OMRSInstanceEventProcess
     private OMRSRepositoryEventExchangeRule saveExchangeRule;
     private String                          realRepositoryName               = "Local Repository";
     private OMRSMetadataCollection          realMetadataCollection           = null;
-    private OMRSRepositoryEventProcessor    outboundRepositoryEventProcessor = null;
+    private OMRSRepositoryEventProcessor    outboundRepositoryEventProcessor ;
 
 
 
@@ -46,7 +47,8 @@ public class LocalOMRSInstanceEventProcessor implements OMRSInstanceEventProcess
      * The audit log provides a verifiable record of the open metadata archives that have been loaded into
      * the open metadata repository.  The Logger is for standard debug.
      */
-    private static final OMRSAuditLog auditLog = new OMRSAuditLog(OMRSAuditingComponent.INSTANCE_EVENT_PROCESSOR);
+    private OMRSAuditLog auditLog;
+
     private static final Logger       log      = LoggerFactory.getLogger(LocalOMRSInstanceEventProcessor.class);
 
 
@@ -60,6 +62,7 @@ public class LocalOMRSInstanceEventProcessor implements OMRSInstanceEventProcess
      * @param repositoryHelper          helper class for building instances
      * @param repositoryValidator       helper class for validating instances
      * @param saveExchangeRule          rule that determines which events to process.
+     * @param auditLog                  audit log for this component.
      */
     LocalOMRSInstanceEventProcessor(String                          localMetadataCollectionId,
                                     String                          localServerName,
@@ -67,7 +70,8 @@ public class LocalOMRSInstanceEventProcessor implements OMRSInstanceEventProcess
                                     OMRSRepositoryHelper            repositoryHelper,
                                     OMRSRepositoryValidator         repositoryValidator,
                                     OMRSRepositoryEventExchangeRule saveExchangeRule,
-                                    OMRSRepositoryEventProcessor    outboundRepositoryEventProcessor)
+                                    OMRSRepositoryEventProcessor    outboundRepositoryEventProcessor,
+                                    OMRSAuditLog                    auditLog)
     {
         final String methodName = "LocalOMRSInstanceEventProcessor constructor";
 
@@ -78,6 +82,7 @@ public class LocalOMRSInstanceEventProcessor implements OMRSInstanceEventProcess
         this.repositoryValidator = repositoryValidator;
         this.saveExchangeRule = saveExchangeRule;
         this.outboundRepositoryEventProcessor = outboundRepositoryEventProcessor;
+        this.auditLog = auditLog;
 
         if (realLocalConnector != null)
         {

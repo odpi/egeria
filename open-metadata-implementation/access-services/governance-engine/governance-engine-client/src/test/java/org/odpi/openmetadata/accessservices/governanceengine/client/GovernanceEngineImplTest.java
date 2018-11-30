@@ -49,6 +49,7 @@ public class GovernanceEngineImplTest {
     @Mock
     private Logger log;
     static final String defaultOMASServerURL = "http://localhost:12345";
+    static final String defaultServerName = "TestServer";
     static final String defaultUserId = "zebra91";
     static final String defaultClassificationType = "interestingClassificationType";
     static final String defaultRootType = "interestingType";
@@ -58,16 +59,16 @@ public class GovernanceEngineImplTest {
      * Class under test requiring mock injection - note - not used in tests of constructor
      */
     @InjectMocks
-    private GovernanceEngineImpl governanceEngineImpl = new GovernanceEngineImpl(defaultOMASServerURL);
+    private GovernanceEngineImpl governanceEngineImpl = new GovernanceEngineImpl(defaultServerName, defaultOMASServerURL);
 
     private Throwable thrown; // for testing exceptions
 
     @Test
     @DisplayName("GovernanceEngineImpl Constructor - Check empty handlers URL")
     void testGetGovernedAssetComponentListBadConstructorEmpty() {
-        GovernanceEngineImpl governanceEngineImplalt = new GovernanceEngineImpl(""); // local
+        GovernanceEngineImpl governanceEngineImplalt = new GovernanceEngineImpl(defaultServerName, ""); // local
 
-        // Mockito assertion for exception that would be thrown after using a poor constructor parameter - actual method is arbitary
+        // Mockito assertion for exception that would be thrown after using a poor constructor parameter - actual method is arbitrary
         thrown = assertThrows(InvalidParameterException.class, () ->
         {
             List<GovernedAsset> result = governanceEngineImplalt.getGovernedAssetList("", "rootClassificationType", "rootType");
@@ -83,7 +84,7 @@ public class GovernanceEngineImplTest {
     @DisplayName("GovernanceEngineImp Constructor - Check null handlers URL")
     void testGetGovernedAssetComponentListBadConstructorNull() {
 
-        GovernanceEngineImpl governanceEngineImplalt = new GovernanceEngineImpl(null);
+        GovernanceEngineImpl governanceEngineImplalt = new GovernanceEngineImpl(defaultServerName,null);
         thrown = assertThrows(InvalidParameterException.class, () ->
         {
             List<GovernedAsset> result = governanceEngineImplalt.getGovernedAssetList("", "rootClassificationType", "rootType");

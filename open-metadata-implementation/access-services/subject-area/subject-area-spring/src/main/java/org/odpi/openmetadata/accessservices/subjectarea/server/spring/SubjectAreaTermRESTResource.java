@@ -1,9 +1,13 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.server.spring;
 
 
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.Antonym;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.RelatedTermRelationship;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.Synonym;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.TermHASARelationship;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaRESTServices;
 import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaTermRESTServices;
@@ -11,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 /**
- * The SubjectAreaRESTServices provides the org.odpi.openmetadata.accessservices.subjectarea.server-side implementation of the SubjectArea Open Metadata
+ * The SubjectAreaRESTServices provides the org.odpi.openmetadata.accessservices.subjectarea.server-side implementation of the SubjectAreaDefinition Open Metadata
  * Assess Service (OMAS).  This interface provides term authoring interfaces for subject area experts.
  */
 @RestController
@@ -51,7 +55,6 @@ public class SubjectAreaTermRESTResource extends SubjectAreaRESTServices{
     public SubjectAreaOMASAPIResponse createTerm(@PathVariable String userId, @RequestBody Term suppliedTerm) {
         return restAPI.createTerm(userId,suppliedTerm);
     }
-
 
     /**
      * Get a Term

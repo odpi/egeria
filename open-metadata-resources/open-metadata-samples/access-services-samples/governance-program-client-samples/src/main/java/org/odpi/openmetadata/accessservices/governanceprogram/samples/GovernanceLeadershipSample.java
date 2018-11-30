@@ -53,6 +53,7 @@ public class GovernanceLeadershipSample
     private static final String   workLocationPropertyName = "WorkLocation";
     private static final String   contactTypePropertyName  = "ContactType";
 
+    private String serverName;
     private String serverURLRoot;
     private String clientUserId;
 
@@ -61,11 +62,13 @@ public class GovernanceLeadershipSample
     /**
      * Constructor
      *
-     * @param serverURLRoot server to connect to.
+     * @param serverName server to connect to.
+     * @param serverURLRoot server location to connect to.
      * @param clientUserId user id to use to access metadata.
      */
-    private GovernanceLeadershipSample(String serverURLRoot, String clientUserId)
+    private GovernanceLeadershipSample(String  serverName, String serverURLRoot, String clientUserId)
     {
+        this.serverName = serverName;
         this.serverURLRoot = serverURLRoot;
         this.clientUserId = clientUserId;
     }
@@ -187,7 +190,7 @@ public class GovernanceLeadershipSample
                               PropertyServerException,
                               UserNotAuthorizedException
     {
-        GovernanceProgramLeadership  client = new GovernanceProgramLeadership(serverURLRoot);
+        GovernanceProgramLeadership  client = new GovernanceProgramLeadership(serverName, serverURLRoot);
 
         System.out.println("Creating profiles for Jules and Ivor");
 
@@ -606,31 +609,34 @@ public class GovernanceLeadershipSample
      */
     public static void main(String[] args)
     {
+        String  serverName;
         String  serverURLRoot;
         String  clientUserId;
 
         org.apache.log4j.BasicConfigurator.configure(new NullAppender());
 
-        if ((args == null) || (args.length < 2))
+        if ((args == null) || (args.length < 3))
         {
-            System.out.println("Please specify the server's URL root in the first parameter" +
-                                       " and the caller's userId in the second parameter");
+            System.out.println("Please specify the server's name in the first parameter, " +
+                                       "the server's URL root in the second parameter " +
+                                       "and the caller's userId in the third parameter");
             System.exit(-1);
         }
 
-        serverURLRoot = args[0];
-        clientUserId = args[1];
+        serverName = args[0];
+        serverURLRoot = args[1];
+        clientUserId = args[2];
 
         System.out.println("===============================");
         System.out.println("Governance Leadership Sample   ");
         System.out.println("===============================");
-        System.out.println("Running against server: " + serverURLRoot);
+        System.out.println("Running against server: " + serverName + " at " + serverURLRoot);
         System.out.println("Using userId: " + clientUserId);
 
 
         try
         {
-            GovernanceLeadershipSample   sample = new GovernanceLeadershipSample(serverURLRoot, clientUserId);
+            GovernanceLeadershipSample   sample = new GovernanceLeadershipSample(serverName, serverURLRoot, clientUserId);
 
             sample.run();
         }

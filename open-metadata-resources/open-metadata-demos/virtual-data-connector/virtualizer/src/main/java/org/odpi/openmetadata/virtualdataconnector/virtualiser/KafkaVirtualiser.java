@@ -2,14 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.virtualdataconnector.virtualiser;
 
-import org.odpi.openmetadata.virtualdataconnector.virtualiser.ffdc.VirtualiserCheckedException;
 import org.odpi.openmetadata.virtualdataconnector.virtualiser.gaian.GaianQueryConstructor;
 import org.odpi.openmetadata.virtualdataconnector.virtualiser.kafka.KafkaVirtualiserConsumer;
 import org.odpi.openmetadata.virtualdataconnector.virtualiser.views.ViewsConstructor;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
-import org.apache.kafka.common.serialization.LongDeserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,7 +41,7 @@ public class KafkaVirtualiser{
 
     /**
      * use Kafka consumer to listen to Information View Out Topic
-     * @throws VirtualiserCheckedException when Jackson is not able to parse or map and interrupted I/O options
+     * NOTE: this may throw VirtualiserCheckedException when Jackson is not able to parse or map and interrupted I/O options
      */
     @PostConstruct
     public void listenToIVOMAS() {
@@ -52,7 +50,7 @@ public class KafkaVirtualiser{
         final Properties props = new Properties();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServer);
         props.put(ConsumerConfig.GROUP_ID_CONFIG, groupIdConfig);
-        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, LongDeserializer.class.getName());
+        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
 
         final Consumer<Long, String> consumer = new KafkaConsumer<>(props);

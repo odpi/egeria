@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.fvt;
 
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
@@ -133,8 +134,8 @@ public class TermFVT
     /**
      * Call this to initialise the term FVT
      *
-     * @param url
-     * @throws InvalidParameterException
+     * @param url supplied base url for the subject area OMAS
+     * @throws InvalidParameterException a parameter is null or an invalid value.
      */
     public static void initialiseTermFVT(String url) throws InvalidParameterException
     {

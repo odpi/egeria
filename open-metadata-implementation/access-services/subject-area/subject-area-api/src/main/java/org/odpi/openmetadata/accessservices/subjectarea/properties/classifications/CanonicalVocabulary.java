@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 
 package org.odpi.openmetadata.accessservices.subjectarea.properties.classifications;
 import org.slf4j.Logger;
@@ -98,7 +99,7 @@ public class CanonicalVocabulary extends Classification {
        private String scope;
        /**
         * {@literal Scope of influence for this canonical glossary. }
-        * @return {@code String }
+        * @return {$$PropertyTypeJavadoc$$ }
         */
        public String getScope() {
            return this.scope;
