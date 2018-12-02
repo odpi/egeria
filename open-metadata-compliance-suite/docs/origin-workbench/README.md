@@ -15,4 +15,10 @@ Typically this describes the vendor, product name and version of the server.
 * **[Repository Origin Test Case](repository-origin-test-case.md)**
 
 
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
+
+
   

@@ -33,4 +33,9 @@ test cases for the repository under test.
 * **[Repository Attribute TypeDef Test Case](repository-attribute-typedef-test-case.md)**
 
 
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
+
+
   

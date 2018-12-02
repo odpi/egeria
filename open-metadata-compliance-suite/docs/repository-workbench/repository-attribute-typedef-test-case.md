@@ -119,3 +119,8 @@ is valid and consistent with other calls.
         "GovernanceDomain version" : "1.0.1" }
 }
 ```
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

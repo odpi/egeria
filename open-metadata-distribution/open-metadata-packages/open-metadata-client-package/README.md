@@ -19,4 +19,10 @@ integrate with an independently deployed open metadata repository
 
 The server-side package that supports this client
 is **[open-metadata-caller-package](../open-metadata-caller-package/README.md)**.
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
  
