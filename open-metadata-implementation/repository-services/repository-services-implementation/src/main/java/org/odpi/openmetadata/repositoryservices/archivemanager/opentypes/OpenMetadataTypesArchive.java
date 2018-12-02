@@ -384,7 +384,9 @@ public class OpenMetadataTypesArchive
         final String attribute4Name            = "zoneMembership";
         final String attribute4Description     = "The list of zones that this asset belongs to.";
         final String attribute4DescriptionGUID = null;
-
+        final String attribute5Name            = "latestChange";
+        final String attribute5Description     = "Description of the last change to the asset's metadata.";
+        final String attribute5DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -401,6 +403,10 @@ public class OpenMetadataTypesArchive
         property = archiveHelper.getArrayStringTypeDefAttribute(attribute4Name,
                                                                 attribute4Description,
                                                                 attribute4DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute5Name,
+                                                           attribute5Description,
+                                                           attribute5DescriptionGUID);
         properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);
