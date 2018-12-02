@@ -1,4 +1,6 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
+
   
 # Open Metadata and Governance Frameworks
 
@@ -19,3 +21,8 @@ about the data that can be stored in an open metadata repository.
 * **[Governance Action Framework (GAF)](governance-action-framework)** provides the interfaces and base implementations for components
 (called governance actions) that take action to correct a situation that is harmful the data,
 or the organization in some way.
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

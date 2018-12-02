@@ -1,4 +1,5 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
   
 # Governance Action Framework (GAF)
   
@@ -12,10 +13,21 @@ and related assets.
 The GAF offers embeddable functions and APIs to simplify the implementation of
 the governance actions, whilst being resilient and performant.
 
-Governance actions themselves produce audit log records and exceptions.
-The Governance Action Framework supports the development of stewardship services 
+Governance actions themselves are open connectors
+(see [Open Connector Framework (OCF)](../open-connector-framework))
+that support the interfaces defined by the GAF.
+They may produce audit log records and exceptions
+and they may make changes to metadata through the open metadata access services.
+
+The GAF also supports the development of stewardship services 
 to analyze the audit log records and process the exceptions.
 
 These stewardship services are built using the Open Metadata and
 Governance Stewardship Toolkit and they run in the Open Metadata and
 Governance Stewardship Server.
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
+
