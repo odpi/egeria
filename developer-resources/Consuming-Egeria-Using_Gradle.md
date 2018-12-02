@@ -43,3 +43,9 @@ gradlew build --refresh-dependencies
 ```
 
 There should now be dependencies within your project for the Egeria artifacts you imported.
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

@@ -44,3 +44,9 @@ Each workbench and test has its own documentation page located
 in the [docs](docs/README.md) directory.  Links to the
 individual test's documentation is included in the test results document.
 
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
+

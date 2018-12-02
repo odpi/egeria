@@ -54,3 +54,8 @@ Spring Boot is used in the
 It searches for all of the REST API definitions and starts them in a server.
 
 For more information on Spring, see [https://spring.io/](https://spring.io/).
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
