@@ -34,6 +34,9 @@ public class AntonymMapper
         omrsRelationshipBean.setSource(antonym.getSource());
         omrsRelationshipBean.setSteward(antonym.getSteward());
         omrsRelationshipBean.setStatus(antonym.getStatus());
+        omrsRelationshipBean.setGuid(antonym.getGuid());
+        omrsRelationshipBean.setEntity1Guid(antonym.getAntonym1Guid());
+        omrsRelationshipBean.setEntity2Guid(antonym.getAntonym2Guid());
 
         Map<String, Object> extraAttributes = omrsRelationshipBean.getExtraAttributes();
         if (extraAttributes !=null)
@@ -68,6 +71,9 @@ public class AntonymMapper
         antonym.setSource(omrsRelationshipBean.getSource());
         antonym.setSteward(omrsRelationshipBean.getSteward());
         antonym.setStatus(omrsRelationshipBean.getStatus());
+        antonym.setGuid(omrsRelationshipBean.getGuid());
+        antonym.setAntonym1Guid((omrsRelationshipBean.getEntity1Guid()));
+        antonym.setAntonym2Guid((omrsRelationshipBean.getEntity2Guid()));
         String[] properties=org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.Antonym.Antonym.PROPERTY_NAMES_SET_VALUES;
         Map<String, Object> extraAttributes =antonym.getExtraAttributes();
         if (properties!=null && properties.length >0) {
