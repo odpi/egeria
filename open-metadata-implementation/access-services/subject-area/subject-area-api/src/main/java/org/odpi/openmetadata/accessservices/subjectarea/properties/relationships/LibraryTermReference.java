@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 // This is a generated file - do not edit - changes should be made to the templates amd/or generator to generate this file with changes.
 
 package org.odpi.openmetadata.accessservices.subjectarea.properties.relationships;
@@ -11,7 +12,6 @@ import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.*;
 
 //omrs
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -20,44 +20,42 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.LineType;
 
 /**
- * RelatedTermRelationship is a relationship between an entity of type GlossaryTerm and an entity of type GlossaryTerm.
+ * LibraryTermReference is a relationship between an entity of type GlossaryTerm and an entity of type ExternalGlossaryLink.
  * The ends of the relationship are stored as entity proxies, where there is a 'proxy' name by which the entity type is known.
- * The first entity proxy has seeAlso as the proxy name for entity type GlossaryTerm.
- * The second entity proxy has seeAlso as the proxy name for entity type GlossaryTerm.
+ * The first entity proxy has localTerms as the proxy name for entity type GlossaryTerm.
+ * The second entity proxy has externalGlossaryTerms as the proxy name for entity type ExternalGlossaryLink.
  *
  * Each entity proxy also stores the entities guid.
 
- Link between similar glossary terms.
+ Links a glossary term to a glossary term in an external glossary.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class RelatedTermRelationship extends Line {
-    private static final Logger log = LoggerFactory.getLogger(RelatedTermRelationship.class);
-    private static final String className = RelatedTermRelationship.class.getName();
+public class LibraryTermReference extends Line {
+    private static final Logger log = LoggerFactory.getLogger(LibraryTermReference.class);
+    private static final String className = LibraryTermReference.class.getName();
 
    //public java.util.Set<String> propertyNames = new HashSet<>();
       public static final String[] PROPERTY_NAMES_SET_VALUES = new String[] {
+          "identifier",
           "description",
-          "expression",
-          "status",
           "steward",
-          "source",
+          "lastVerified",
 
       // Terminate the list
           null
       };
       public static final String[] ATTRIBUTE_NAMES_SET_VALUES = new String[] {
+          "identifier",
           "description",
-          "expression",
           "steward",
-          "source",
+          "lastVerified",
 
        // Terminate the list
           null
       };
       public static final String[] ENUM_NAMES_SET_VALUES = new String[] {
-           "status",
 
            // Terminate the list
             null
@@ -71,15 +69,17 @@ public class RelatedTermRelationship extends Line {
       public static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES)));
       public static final java.util.Set<String> ENUM_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES)));
       public static final java.util.Set<String> MAP_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES)));
+    protected String entity1Guid;
+    protected String entity2Guid;
 
 
-    public RelatedTermRelationship() {
+    public LibraryTermReference() {
         initialise();
     }
 
     private void initialise()
     {
-       name = "RelatedTermRelationship";
+       name = "LibraryTermReference";
        // set the LineType if this is a LineType enum value.
        try {
            lineType = LineType.valueOf(name);
@@ -87,21 +87,21 @@ public class RelatedTermRelationship extends Line {
         catch (IllegalArgumentException e) {
            lineType = LineType.Other;
         }
-        entity1Name = "seeAlso";
+        entity1Name = "localTerms";
         entity1Type = "GlossaryTerm";
-        entity2Name = "seeAlso";
-        entity2Type = "GlossaryTerm";
-        typeDefGuid = "b1161696-e563-4cf9-9fd9-c0c76e47d063";
+        entity2Name = "externalGlossaryTerms";
+        entity2Type = "ExternalGlossaryLink";
+        typeDefGuid = "38c346e4-ddd2-42ef-b4aa-55d53c078d22";
     }
 
-    public RelatedTermRelationship(Line template) {
+    public LibraryTermReference(Line template) {
         super(template);
         initialise();
     }
 
-    public RelatedTermRelationship(Relationship omrsRelationship) {
+    public LibraryTermReference(Relationship omrsRelationship) {
         super(omrsRelationship);
-        name = "RelatedTermRelationship";
+        name = "LibraryTermReference";
        // set the LineType if this is a LineType enum value.
        try {
            lineType = LineType.valueOf(name);
@@ -118,13 +118,12 @@ public class RelatedTermRelationship extends Line {
           }
           InstanceProperties instanceProperties = new InstanceProperties();
           EnumPropertyValue enumPropertyValue=null;
-          enumPropertyValue = new EnumPropertyValue();
-          // the status of or confidence in the relationship.
-          enumPropertyValue.setOrdinal(status.ordinal());
-          enumPropertyValue.setSymbolicName(status.name());
-          instanceProperties.setProperty("status",enumPropertyValue);
           MapPropertyValue mapPropertyValue=null;
           PrimitivePropertyValue primitivePropertyValue=null;
+          primitivePropertyValue = new PrimitivePropertyValue();
+          // TODO  description + change null to value
+          primitivePropertyValue.setPrimitiveValue(null);
+          instanceProperties.setProperty("identifier",primitivePropertyValue);
           primitivePropertyValue = new PrimitivePropertyValue();
           // TODO  description + change null to value
           primitivePropertyValue.setPrimitiveValue(null);
@@ -132,28 +131,31 @@ public class RelatedTermRelationship extends Line {
           primitivePropertyValue = new PrimitivePropertyValue();
           // TODO  description + change null to value
           primitivePropertyValue.setPrimitiveValue(null);
-          instanceProperties.setProperty("expression",primitivePropertyValue);
-          primitivePropertyValue = new PrimitivePropertyValue();
-          // TODO  description + change null to value
-          primitivePropertyValue.setPrimitiveValue(null);
-          instanceProperties.setProperty("status",primitivePropertyValue);
-          primitivePropertyValue = new PrimitivePropertyValue();
-          // TODO  description + change null to value
-          primitivePropertyValue.setPrimitiveValue(null);
           instanceProperties.setProperty("steward",primitivePropertyValue);
           primitivePropertyValue = new PrimitivePropertyValue();
           // TODO  description + change null to value
           primitivePropertyValue.setPrimitiveValue(null);
-          instanceProperties.setProperty("source",primitivePropertyValue);
+          instanceProperties.setProperty("lastVerified",primitivePropertyValue);
           if (log.isDebugEnabled()) {
                  log.debug("<== Method: " + methodName);
           }
           return instanceProperties;
     }
 
+         private String identifier;
+        /**
+            * {@literal Identifier of the corresponding element from the external glossary. }
+            * @return {@code String }
+            */
+         public String getIdentifier() {
+             return this.identifier;
+         }
+         public void setIdentifier(String identifier)  {
+            this.identifier = identifier;
+        }
          private String description;
         /**
-            * {@literal Description of the relationship. }
+            * {@literal Description of the corresponding element from the external glossary. }
             * @return {@code String }
             */
          public String getDescription() {
@@ -162,31 +164,9 @@ public class RelatedTermRelationship extends Line {
          public void setDescription(String description)  {
             this.description = description;
         }
-         private String expression;
-        /**
-            * {@literal An expression that explains the relationship. }
-            * @return {@code String }
-            */
-         public String getExpression() {
-             return this.expression;
-         }
-         public void setExpression(String expression)  {
-            this.expression = expression;
-        }
-         private TermRelationshipStatus status;
-        /**
-            * {@literal The status of or confidence in the relationship. }
-            * @return {@code TermRelationshipStatus }
-            */
-         public TermRelationshipStatus getStatus() {
-             return this.status;
-         }
-         public void setStatus(TermRelationshipStatus status)  {
-            this.status = status;
-        }
          private String steward;
         /**
-            * {@literal Person responsible for the relationship. }
+            * {@literal Person who established the link to the external glossary. }
             * @return {@code String }
             */
          public String getSteward() {
@@ -195,16 +175,16 @@ public class RelatedTermRelationship extends Line {
          public void setSteward(String steward)  {
             this.steward = steward;
         }
-         private String source;
+         private Date lastVerified;
         /**
-            * {@literal Person, organization or automated process that created the relationship. }
-            * @return {@code String }
+            * {@literal Date when this reference was last checked. }
+            * @return {@code Date }
             */
-         public String getSource() {
-             return this.source;
+         public Date getLastVerified() {
+             return this.lastVerified;
          }
-         public void setSource(String source)  {
-            this.source = source;
+         public void setLastVerified(Date lastVerified)  {
+            this.lastVerified = lastVerified;
         }
 
       @Override
@@ -214,16 +194,13 @@ public class RelatedTermRelationship extends Line {
              {
                  sb = new StringBuilder();
              }
-             sb.append(" RelatedTermRelationship=");
+             sb.append(" LibraryTermReference=");
              sb.append(super.toString(sb));
-             sb.append(" RelatedTermRelationship Attributes{");
+             sb.append(" LibraryTermReference Attributes{");
+             sb.append("identifier=" + this.identifier +",");
              sb.append("description=" + this.description +",");
-             sb.append("expression=" + this.expression +",");
              sb.append("steward=" + this.steward +",");
-             sb.append("source=" + this.source +",");
-             if ( status!=null) {
-                 sb.append("status=" + status.name());
-             }
+             sb.append("lastVerified=" + this.lastVerified +",");
              sb.append("}");
              return sb;
          }

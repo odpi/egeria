@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships;
 
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.RelatedTermRelationship;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.RelatedTerm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,12 +20,12 @@ public class RelatedTermMapper
     private static final String className = RelatedTermMapper.class.getName();
 
     /**
-     * map RelatedTermRelationship to the omrs relationship bean equivalent
+     * map RelatedTerm to the omrs relationship bean equivalent
      * @param relatedterm supplied related term relationship
      * @return omrs relationship bean equivalent
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      */
-    static public org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.RelatedTerm.RelatedTerm mapRelatedTermToOMRSRelationshipBean(RelatedTermRelationship relatedterm) throws InvalidParameterException {
+    static public org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.RelatedTerm.RelatedTerm mapRelatedTermToOMRSRelationshipBean(RelatedTerm relatedterm) throws InvalidParameterException {
         // copy over the Line attributes
         org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.RelatedTerm.RelatedTerm omrsRelationshipBean = new  org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.RelatedTerm.RelatedTerm(relatedterm);
         //Set properties
@@ -34,6 +34,9 @@ public class RelatedTermMapper
         omrsRelationshipBean.setSource(relatedterm.getSource());
         omrsRelationshipBean.setSteward(relatedterm.getSteward());
         omrsRelationshipBean.setStatus(relatedterm.getStatus());
+        omrsRelationshipBean.setGuid(relatedterm.getGuid());
+        omrsRelationshipBean.setEntity1Guid(relatedterm.getRelatedTerm1Guid());
+        omrsRelationshipBean.setEntity2Guid(relatedterm.getRelatedTerm2Guid());
 
         Map<String, Object> extraAttributes = omrsRelationshipBean.getExtraAttributes();
         if (extraAttributes !=null)
@@ -56,18 +59,21 @@ public class RelatedTermMapper
     }
 
     /**
-     * Map omrs relationship bean equivalent to RelatedTermRelationship
+     * Map omrs relationship bean equivalent to RelatedTerm
      * @param omrsRelationshipBean omrs relationship bean equivalent
-     * @return RelatedTermRelationship related term relationship
+     * @return RelatedTerm related term relationship
      */
-    public static RelatedTermRelationship mapOMRSRelationshipBeanToRelatedTerm(org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.RelatedTerm.RelatedTerm omrsRelationshipBean) {
+    public static RelatedTerm mapOMRSRelationshipBeanToRelatedTerm(org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.RelatedTerm.RelatedTerm omrsRelationshipBean) {
         // copy over the Line attributes
-        RelatedTermRelationship relatedterm = new RelatedTermRelationship(omrsRelationshipBean);
+        RelatedTerm relatedterm = new RelatedTerm(omrsRelationshipBean);
         relatedterm.setDescription(omrsRelationshipBean.getDescription());
         relatedterm.setExpression(omrsRelationshipBean.getExpression());
         relatedterm.setSource(omrsRelationshipBean.getSource());
         relatedterm.setSteward(omrsRelationshipBean.getSteward());
         relatedterm.setStatus(omrsRelationshipBean.getStatus());
+        relatedterm.setGuid(omrsRelationshipBean.getGuid());
+        relatedterm.setRelatedTerm1Guid(omrsRelationshipBean.getEntity1Guid());
+        relatedterm.setRelatedTerm2Guid(omrsRelationshipBean.getEntity2Guid());
         String[] properties=org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.RelatedTerm.RelatedTerm.PROPERTY_NAMES_SET_VALUES;
         Map<String, Object> extraAttributes =relatedterm.getExtraAttributes();
         if (properties!=null && properties.length >0) {
