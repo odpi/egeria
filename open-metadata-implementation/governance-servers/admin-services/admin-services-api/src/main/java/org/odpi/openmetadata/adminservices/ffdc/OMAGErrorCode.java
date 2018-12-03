@@ -38,9 +38,9 @@ public enum OMAGErrorCode
             "The system is unable to configure the local server.",
             "The local server name is supplied by the caller to the OMAG server. This call needs to be corrected before the server can operate correctly."),
 
-    BAD_LOCAL_SERVER_NAME(400, "OMAG-ADMIN-400-002 ",
-            "OMAG server has been called with server name {0} and in previous calls, the server name was {1}",
-            "The system is unable to configure the local server.",
+    INCOMPATIBLE_SERVER_NAMES(400, "OMAG-ADMIN-400-002 ",
+            "OMAG server has been called with server name {0} and a configuration document where the server name is {1}",
+            "The system is unable to start the local server.",
             "The local server name is supplied by the caller to the OMAG server. This call needs to be corrected before the server can operate correctly."),
 
     NULL_USER_NAME(400, "OMAG-ADMIN-400-003 ",

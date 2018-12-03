@@ -18,9 +18,13 @@ import static org.testng.Assert.assertTrue;
  */
 public class TestSchemaAttribute
 {
-    private ElementType          type                 = new ElementType();
-    private List<Classification> classifications      = new ArrayList<>();
-    private Map<String, Object>  additionalProperties = new HashMap<>();private SchemaElement schemaElement = new PrimitiveSchemaElement();
+    private ElementType                       type                 = new ElementType();
+    private List<Classification>              classifications      = new ArrayList<>();
+    private Map<String, Object>               additionalProperties = new HashMap<>();
+    private SchemaType                        schemaElement        = new PrimitiveSchemaType();
+    private SchemaLink                        schemaLink           = new SchemaLink();
+    private List<SchemaAttributeRelationship> relationships        = new ArrayList<>();
+
 
 
     /**
@@ -28,7 +32,9 @@ public class TestSchemaAttribute
      */
     public TestSchemaAttribute()
     {
-
+        classifications.add(new Classification());
+        relationships.add(new SchemaAttributeRelationship());
+        additionalProperties.put("TestKey", "TestValue");
     }
 
 
@@ -48,11 +54,15 @@ public class TestSchemaAttribute
 
         testObject.setQualifiedName("TestQualifiedName");
         testObject.setAdditionalProperties(additionalProperties);
+
         testObject.setAttributeName("TestAttributeName");
         testObject.setElementPosition(23);
         testObject.setCardinality("TestCardinality");
         testObject.setDefaultValueOverride("TestDefault");
+
         testObject.setAttributeType(schemaElement);
+        testObject.setExternalAttributeType(schemaLink);
+        testObject.setAttributeRelationships(relationships);
 
         return testObject;
     }
@@ -63,21 +73,24 @@ public class TestSchemaAttribute
      *
      * @param resultObject object returned by the test
      */
-    private void validateResultObject(SchemaAttribute  resultObject)
+    private void validateResultObject(SchemaAttribute resultObject)
     {
         assertTrue(resultObject.getType().equals(type));
         assertTrue(resultObject.getGUID().equals("TestGUID"));
         assertTrue(resultObject.getURL().equals("TestURL"));
-        assertTrue(resultObject.getClassifications() == null);
+        assertTrue(resultObject.getClassifications().equals(classifications));
 
         assertTrue(resultObject.getQualifiedName().equals("TestQualifiedName"));
-        assertTrue(resultObject.getAdditionalProperties() == null);
+        assertTrue(resultObject.getAdditionalProperties().equals(additionalProperties));
 
         assertTrue(resultObject.getAttributeName().equals("TestAttributeName"));
         assertTrue(resultObject.getElementPosition() == 23);
         assertTrue(resultObject.getCardinality().equals("TestCardinality"));
         assertTrue(resultObject.getDefaultValueOverride().equals("TestDefault"));
+
         assertTrue(resultObject.getAttributeType().equals(schemaElement));
+        assertTrue(resultObject.getExternalAttributeType().equals(schemaLink));
+        assertTrue(resultObject.getAttributeRelationships().equals(relationships));
     }
 
 
@@ -86,7 +99,7 @@ public class TestSchemaAttribute
      */
     @Test public void testNullObject()
     {
-        SchemaAttribute    nullObject = new SchemaAttribute();
+        SchemaAttribute nullObject = new SchemaAttribute();
 
         assertTrue(nullObject.getType() == null);
         assertTrue(nullObject.getGUID() == null);
@@ -101,6 +114,8 @@ public class TestSchemaAttribute
         assertTrue(nullObject.getCardinality() == null);
         assertTrue(nullObject.getDefaultValueOverride() == null);
         assertTrue(nullObject.getAttributeType() == null);
+        assertTrue(nullObject.getExternalAttributeType() == null);
+        assertTrue(nullObject.getAttributeRelationships() == null);
 
         nullObject = new SchemaAttribute(null);
 
@@ -116,7 +131,19 @@ public class TestSchemaAttribute
         assertTrue(nullObject.getElementPosition() == 0);
         assertTrue(nullObject.getCardinality() == null);
         assertTrue(nullObject.getDefaultValueOverride() == null);
+
         assertTrue(nullObject.getAttributeType() == null);
+        assertTrue(nullObject.getExternalAttributeType() == null);
+        assertTrue(nullObject.getAttributeRelationships() == null);
+
+        nullObject.setClassifications(new ArrayList<>());
+        nullObject.setAdditionalProperties(new HashMap<>());
+        nullObject.setAttributeRelationships(new ArrayList<>());
+
+        assertTrue(nullObject.getClassifications() == null);
+        assertTrue(nullObject.getAdditionalProperties() == null);
+        assertTrue(nullObject.getAttributeRelationships() == null);
+
     }
 
 
@@ -130,10 +157,10 @@ public class TestSchemaAttribute
         assertFalse(getTestObject().equals("DummyString"));
         assertTrue(getTestObject().equals(getTestObject()));
 
-        SchemaAttribute  sameObject = getTestObject();
+        SchemaAttribute sameObject = getTestObject();
         assertTrue(sameObject.equals(sameObject));
 
-        SchemaAttribute  differentObject = getTestObject();
+        SchemaAttribute differentObject = getTestObject();
         differentObject.setGUID("Different");
         assertFalse(getTestObject().equals(differentObject));
 
@@ -149,6 +176,15 @@ public class TestSchemaAttribute
     @Test public void testClone()
     {
         validateResultObject(new SchemaAttribute(getTestObject()));
+    }
+
+
+    /**
+     * Validate that cloneSchemaElement works
+     */
+    @Test public void testCloneSchemaElement()
+    {
+        validateResultObject((SchemaAttribute) getTestObject().cloneSchemaElement());
     }
 
 
@@ -185,7 +221,7 @@ public class TestSchemaAttribute
         /*
          * Through superclass
          */
-        Referenceable  referenceable = getTestObject();
+        Referenceable referenceable = getTestObject();
 
         try
         {
@@ -208,7 +244,7 @@ public class TestSchemaAttribute
         /*
          * Through superclass
          */
-        ElementHeader  elementHeader = getTestObject();
+        ElementHeader elementHeader = getTestObject();
 
         try
         {
@@ -231,7 +267,7 @@ public class TestSchemaAttribute
         /*
          * Through superclass
          */
-        PropertyBase  propertyBase = getTestObject();
+        PropertyBase propertyBase = getTestObject();
 
         try
         {

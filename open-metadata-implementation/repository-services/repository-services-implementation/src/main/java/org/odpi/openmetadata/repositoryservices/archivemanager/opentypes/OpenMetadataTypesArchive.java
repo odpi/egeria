@@ -18090,9 +18090,9 @@ public class OpenMetadataTypesArchive
                                                            attribute6Description,
                                                            attribute6DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getMapStringObjectTypeDefAttribute(attribute7Name,
-                                                                    attribute7Description,
-                                                                    attribute7DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(attribute7Name,
+                                                           attribute7Description,
+                                                           attribute7DescriptionGUID);
         properties.add(property);
         property = archiveHelper.getStringTypeDefAttribute(attribute8Name,
                                                            attribute8Description,

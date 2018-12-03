@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.compliance.tests.origin;
 
 
@@ -26,11 +27,13 @@ public class OpenMetadataOriginTestWorkbench extends OpenMetadataTestWorkbench
     /**
      * Constructor received the URL root for the server being tested.
      *
+     * @param serverName name of server to test.
      * @param serverURLRoot string
      */
-    public OpenMetadataOriginTestWorkbench(String  serverURLRoot)
+    public OpenMetadataOriginTestWorkbench(String  serverName,
+                                           String  serverURLRoot)
     {
-        super(workbenchName, workbenchVersionNumber, workbenchDocURL, serverURLRoot);
+        super(workbenchName, workbenchVersionNumber, workbenchDocURL, serverName, serverURLRoot);
     }
 
 
@@ -57,12 +60,13 @@ public class OpenMetadataOriginTestWorkbench extends OpenMetadataTestWorkbench
     public OpenMetadataTestWorkbenchResults runTests()
     {
         List<OpenMetadataOriginTestCase>  testCases = this.getTestCases();
-        OpenMetadataTestWorkbenchResults      workbenchResults = new OpenMetadataTestWorkbenchResults(this);
+        OpenMetadataTestWorkbenchResults  workbenchResults = new OpenMetadataTestWorkbenchResults(this);
 
         if (testCases != null)
         {
             for (OpenMetadataOriginTestCase testCase : testCases)
             {
+                testCase.setServerName(serverName);
                 testCase.setServerURLRoot(serverURLRoot);
                 testCase.executeTest();
             }

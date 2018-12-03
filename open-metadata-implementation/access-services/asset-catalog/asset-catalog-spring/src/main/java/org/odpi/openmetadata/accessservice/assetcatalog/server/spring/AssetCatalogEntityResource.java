@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservice.assetcatalog.server.spring;
 
 import org.odpi.openmetadata.accessservice.assetcatalog.model.AssetDescription;
@@ -25,7 +26,7 @@ import java.util.List;
  * This interface facilitates the searching for assets, provides details about specific assets.
  */
 @RestController
-@RequestMapping("/open-metadata/access-services/asset-catalog/users/{userId}")
+@RequestMapping("/servers/{serverName}/open-metadata/access-services/asset-catalog/users/{userId}")
 public class AssetCatalogEntityResource {
 
     private AssetCatalogService assetService = new AssetCatalogService();
@@ -33,6 +34,7 @@ public class AssetCatalogEntityResource {
     /**
      * Fetch asset's header and classification
      *
+     * @param serverName unique identifier for requested server.
      * @param userId  the unique identifier for the user
      * @param assetId the unique identifier for the asset
      * @return the asset with its header and the list of associated classifications
@@ -40,14 +42,16 @@ public class AssetCatalogEntityResource {
     @RequestMapping(method = RequestMethod.GET,
             path = "/asset-summary/{assetId}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public AssetDescriptionResponse getAssetSummary(@PathVariable("userId") String userId,
+    public AssetDescriptionResponse getAssetSummary(@PathVariable("serverName") String serverName,
+                                                    @PathVariable("userId") String userId,
                                                     @PathVariable("assetId") String assetId) {
-        return assetService.getAssetSummaryById(userId, assetId);
+        return assetService.getAssetSummaryById(serverName, userId, assetId);
     }
 
     /**
      * Fetch asset's header, classification and properties
      *
+     * @param serverName unique identifier for requested server.
      * @param userId  the unique identifier for the user
      * @param assetId the unique identifier for the asset
      * @return the asset with its header and the list of associated classifications and specific properties
@@ -55,14 +59,16 @@ public class AssetCatalogEntityResource {
     @RequestMapping(method = RequestMethod.GET,
             path = "/asset-details/{assetId}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public AssetDescriptionResponse getAssetDetail(@PathVariable("userId") String userId,
+    public AssetDescriptionResponse getAssetDetail(@PathVariable("serverName") String serverName,
+                                                   @PathVariable("userId") String userId,
                                                    @PathVariable("assetId") String assetId) {
-        return assetService.getAssetDetailsById(userId, assetId);
+        return assetService.getAssetDetailsById(serverName, userId, assetId);
     }
 
     /**
      * Fetch asset's header, classification, properties and relationships
      *
+     * @param serverName unique identifier for requested server.
      * @param userId  the unique identifier for the user
      * @param assetId the unique identifier for the asset
      * @return the asset with its header and the list of associated classifications
@@ -70,14 +76,16 @@ public class AssetCatalogEntityResource {
     @RequestMapping(method = RequestMethod.GET,
             path = "/asset-universe/{assetId}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public AssetDescriptionResponse getAssetUniverse(@PathVariable("userId") String userId,
+    public AssetDescriptionResponse getAssetUniverse(@PathVariable("serverName") String serverName,
+                                                     @PathVariable("userId") String userId,
                                                      @PathVariable("assetId") String assetId) {
-        return assetService.getAssetUniverseByGUID(userId, assetId);
+        return assetService.getAssetUniverseByGUID(serverName, userId, assetId);
     }
 
     /**
      * Fetch the relationships for a specific asset
      *
+     * @param serverName       unique identifier for requested server.
      * @param userId           the unique identifier for the user
      * @param assetId          the unique identifier for the asset
      * @param relationshipType filter based on relationship type
@@ -92,7 +100,8 @@ public class AssetCatalogEntityResource {
     @RequestMapping(method = RequestMethod.GET,
             path = "/asset-relationships/{assetId}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public RelationshipsResponse getAssetRelationships(@PathVariable("userId") String userId,
+    public RelationshipsResponse getAssetRelationships(@PathVariable("serverName") String serverName,
+                                                       @PathVariable("userId") String userId,
                                                        @PathVariable("assetId") String assetId,
                                                        @RequestParam(required = false, value = "type") String relationshipType,
                                                        @RequestParam(required = false, value = "limit", defaultValue = "0") Integer limit,
@@ -100,12 +109,13 @@ public class AssetCatalogEntityResource {
                                                        @RequestParam(required = false, value = "order.Type") SequenceOrderType orderType,
                                                        @RequestParam(required = false, value = "order.Property") String orderProperty,
                                                        @RequestParam(required = false, value = "status") Status status) {
-        return assetService.getAssetRelationships(userId, assetId, relationshipType, status, offset, limit, orderProperty, orderType);
+        return assetService.getAssetRelationships(serverName, userId, assetId, relationshipType, status, offset, limit, orderProperty, orderType);
     }
 
     /**
      * Fetch the classification for a specific asset
      *
+     * @param serverName unique identifier for requested server.
      * @param userId  the unique identifier for the user
      * @param assetId the unique identifier for the asset
      * @param limit   limit the result set to only include the specified number of entries
@@ -115,16 +125,18 @@ public class AssetCatalogEntityResource {
     @RequestMapping(method = RequestMethod.GET,
             path = "/asset-classifications/{assetId}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ClassificationsResponse getAssetByClassification(@PathVariable("userId") String userId,
+    public ClassificationsResponse getAssetByClassification(@PathVariable("serverName") String serverName,
+                                                            @PathVariable("userId") String userId,
                                                             @PathVariable("assetId") String assetId,
                                                             @RequestParam(required = false, value = "limit", defaultValue = "0") Integer limit,
                                                             @RequestParam(required = false, value = "offset", defaultValue = "0") Integer offset) {
-        return assetService.getClassificationByAssetGUID(userId, assetId, limit, offset);
+        return assetService.getClassificationByAssetGUID(serverName, userId, assetId, limit, offset);
     }
 
     /**
      * Fetch the assets that match the properties
      *
+     * @param serverName    unique identifier for requested server.
      * @param userId        the unique identifier for the user
      * @param propertyValue the property value searched
      * @param assetTypeId   the unique identifier for the asset type of interest
@@ -140,7 +152,8 @@ public class AssetCatalogEntityResource {
     @RequestMapping(method = RequestMethod.GET,
             path = "/assets-by-property/{propertyValue}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public AssetDescriptionResponse getAssetsByProperty(@PathVariable("userId") String userId,
+    public AssetDescriptionResponse getAssetsByProperty(@PathVariable("serverName") String serverName,
+                                                        @PathVariable("userId") String userId,
                                                         @PathVariable("propertyValue") String propertyValue,
                                                         @RequestParam(required = false, value = "assetTypeId") String assetTypeId,
                                                         @RequestParam(required = false, value = "matchProperty") String matchProperty,
@@ -149,12 +162,13 @@ public class AssetCatalogEntityResource {
                                                         @RequestParam(required = false, value = "orderType") SequenceOrderType orderType,
                                                         @RequestParam(required = false, value = "orderProperty") String orderProperty,
                                                         @RequestParam(required = false, value = "status") Status status) {
-        return assetService.getAssetsByProperty(userId, assetTypeId, matchProperty, propertyValue, limit, offset, orderType, orderProperty, status);
+        return assetService.getAssetsByProperty(serverName, userId, assetTypeId, matchProperty, propertyValue, limit, offset, orderType, orderProperty, status);
     }
 
     /**
      * Fetch the assets that match the classification name
      *
+     * @param serverName         unique identifier for requested server.
      * @param userId             the unique identifier for the user
      * @param classificationName the name of the classification
      * @param assetTypeId        filter based on asset type
@@ -169,7 +183,8 @@ public class AssetCatalogEntityResource {
     @RequestMapping(method = RequestMethod.GET,
             path = "/assets-by-classification-name/{classificationName}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public AssetDescriptionResponse getAssetsByClassificationName(@PathVariable("userId") String userId,
+    public AssetDescriptionResponse getAssetsByClassificationName(@PathVariable("serverName") String serverName,
+                                                                  @PathVariable("userId") String userId,
                                                                   @PathVariable("classificationName") String classificationName,
                                                                   @RequestParam(required = false, value = "assetTypeId") String assetTypeId,
                                                                   @RequestParam(required = false, value = "limit", defaultValue = "0") Integer limit,
@@ -177,12 +192,13 @@ public class AssetCatalogEntityResource {
                                                                   @RequestParam(required = false, value = "orderType") SequenceOrderType orderType,
                                                                   @RequestParam(required = false, value = "orderProperty") String orderProperty,
                                                                   @RequestParam(required = false, value = "status") Status status) {
-        return assetService.getAssetsByClassificationName(userId, assetTypeId, classificationName, limit, offset, orderProperty, orderType, status);
+        return assetService.getAssetsByClassificationName(serverName, userId, assetTypeId, classificationName, limit, offset, orderProperty, orderType, status);
     }
 
     /**
      * Return a sub-graph of relationships that connect two assets
      *
+     * @param serverName   unique identifier for requested server.
      * @param userId       the unique identifier for the user
      * @param startAssetId the starting asset identifier of the query
      * @param endAssetId   the ending asset identifier of the query
@@ -191,15 +207,17 @@ public class AssetCatalogEntityResource {
     @RequestMapping(method = RequestMethod.GET,
             path = "/assets-linking-relationships/from/{assetId}/to/{endAssetId}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public RelationshipsResponse getLinkingRelationships(@PathVariable("userId") String userId,
+    public RelationshipsResponse getLinkingRelationships(@PathVariable("serverName") String serverName,
+                                                         @PathVariable("userId") String userId,
                                                          @PathVariable("assetId") String startAssetId,
                                                          @PathVariable("endAssetId") String endAssetId) {
-        return assetService.getLinkingRelationships(userId, startAssetId, endAssetId);
+        return assetService.getLinkingRelationships(serverName, userId, startAssetId, endAssetId);
     }
 
     /**
      * Returns a sub-graph of intermediate assets that connected two assets
      *
+     * @param serverName   unique identifier for requested server.
      * @param userId       the unique identifier for the user
      * @param startAssetId the starting asset identifier of the query
      * @param endAssetId   the ending asset identifier of the query
@@ -208,17 +226,19 @@ public class AssetCatalogEntityResource {
     @RequestMapping(method = RequestMethod.GET,
             path = "/linking-assets/from/{assetId}/to/{endAssetId}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public AssetDescriptionResponse getLinkingAssets(@PathVariable("userId") String userId,
+    public AssetDescriptionResponse getLinkingAssets(@PathVariable("serverName") String serverName,
+                                                     @PathVariable("userId") String userId,
                                                      @PathVariable("assetId") String startAssetId,
                                                      @PathVariable("endAssetId") String endAssetId) {
 
-        return assetService.getLinkingAssets(userId, startAssetId, endAssetId);
+        return assetService.getLinkingAssets(serverName, userId, startAssetId, endAssetId);
     }
 
     /**
      * Return the list of assets that are of the types listed in instanceTypes and are connected,
      * either directly or indirectly to the asset identified by assetId.
      *
+     * @param serverName    unique identifier for requested server.
      * @param userId        the unique identifier for the user
      * @param assetId       the starting asset identifier of the query
      * @param instanceTypes list of types to search for.  Null means an type
@@ -231,7 +251,8 @@ public class AssetCatalogEntityResource {
      */
 
     @RequestMapping(method = RequestMethod.GET, path = "/related-assets/{assetId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public AssetDescriptionResponse getRelatedAssets(@PathVariable("userId") String userId,
+    public AssetDescriptionResponse getRelatedAssets(@PathVariable("serverName") String serverName,
+                                                     @PathVariable("userId") String userId,
                                                      @PathVariable("assetId") String assetId,
                                                      @RequestParam(required = false, value = "instanceTypes") String instanceTypes,
                                                      @RequestParam(required = false, value = "limit", defaultValue = "0") Integer limit,
@@ -239,12 +260,13 @@ public class AssetCatalogEntityResource {
                                                      @RequestParam(required = false, value = "orderType") SequenceOrderType orderType,
                                                      @RequestParam(required = false, value = "orderProperty") String orderProperty,
                                                      @RequestParam(required = false, value = "status") Status status) {
-        return assetService.getRelatedAssets(userId, assetId, instanceTypes, limit, offset, orderType, orderProperty, status);
+        return assetService.getRelatedAssets(serverName, userId, assetId, instanceTypes, limit, offset, orderType, orderProperty, status);
     }
 
     /**
      * Returns the sub-graph that represents the returned linked relationships.
      *
+     * @param serverName         unique identifier for requested server.
      * @param userId             the unique identifier for the user
      * @param assetId            the starting asset identifier of the query
      * @param assetTypeIds       list of asset types to include in the query results
@@ -257,18 +279,20 @@ public class AssetCatalogEntityResource {
      */
     @RequestMapping(method = RequestMethod.GET, path = "/assets-from-neighborhood/{assetId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public AssetDescriptionResponse getAssetsFromNeighborhood(
+            @PathVariable("serverName") String serverName,
             @PathVariable("userId") String userId,
             @PathVariable("assetId") String assetId,
             @RequestParam(required = false, value = "assetTypeIds") List<String> assetTypeIds,
             @RequestParam(required = false, value = "relationshipTypes") List<String> relationshipTypes,
             @RequestParam(required = false, value = "status") Status relationshipStatus,
             @RequestParam(required = false, value = "level", defaultValue = "0") Integer level) {
-        return assetService.getAssetsFromNeighborhood(userId, assetId, assetTypeIds, relationshipTypes, relationshipStatus, level);
+        return assetService.getAssetsFromNeighborhood(serverName, userId, assetId, assetTypeIds, relationshipTypes, relationshipStatus, level);
     }
 
     /**
      * Returns the sub-graph that represents the returned linked assets
      *
+     * @param serverName         unique identifier for requested server.
      * @param userId             the unique identifier for the user
      * @param assetId            the starting asset identifier of the query
      * @param assetTypeIds       list of asset types to include in the query results
@@ -281,18 +305,20 @@ public class AssetCatalogEntityResource {
      */
     @RequestMapping(method = RequestMethod.GET, path = "/related-relationships/{assetId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public RelationshipsResponse getRelationshipsFromNeighborhood(
+            @PathVariable("serverName") String serverName,
             @PathVariable("userId") String userId,
             @PathVariable("assetId") String assetId,
             @RequestParam(required = false, value = "assetTypeIds") List<String> assetTypeIds,
             @RequestParam(required = false, value = "relationshipTypes") List<String> relationshipTypes,
             @RequestParam(required = false, value = "status") Status relationshipStatus,
             @RequestParam(required = false, value = "level", defaultValue = "0") Integer level) {
-        return assetService.getRelationshipsFromNeighborhood(userId, assetId, assetTypeIds, relationshipTypes, relationshipStatus, level);
+        return assetService.getRelationshipsFromNeighborhood(serverName, userId, assetId, assetTypeIds, relationshipTypes, relationshipStatus, level);
     }
 
     /**
      * Returns the last created assets
      *
+     * @param serverName    unique identifier for requested server.
      * @param userId        the unique identifier for the user
      * @param assetTypeId   the asset type global identifier
      * @param fromDate      the starting date for asset's creation
@@ -306,7 +332,8 @@ public class AssetCatalogEntityResource {
      * @return a list of the last created assets
      */
     @RequestMapping(method = RequestMethod.GET, path = "/last-created", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<AssetDescription> getLastCreatedAssets(@PathVariable("userId") String userId,
+    public List<AssetDescription> getLastCreatedAssets(@PathVariable("serverName") String serverName,
+                                                       @PathVariable("userId") String userId,
                                                        @RequestParam(required = false, value = "assetTypeId") String assetTypeId,
                                                        @RequestParam(required = false, value = "fromDate") Date fromDate,
                                                        @RequestParam(required = false, value = "toDate") Date toDate,
@@ -315,13 +342,14 @@ public class AssetCatalogEntityResource {
                                                        @RequestParam(required = false, value = "orderType") SequenceOrderType orderType,
                                                        @RequestParam(required = false, value = "orderProperty") String orderProperty,
                                                        @RequestParam(required = false, value = "status") Status status) {
-        return assetService.getLastCreatedAssets(userId, assetTypeId, fromDate, toDate, status, limit, offset, orderType, orderProperty, status);
+        return assetService.getLastCreatedAssets(serverName, userId, assetTypeId, fromDate, toDate, status, limit, offset, orderType, orderProperty, status);
     }
 
 
     /**
      * Returns  the last updated assets
      *
+     * @param serverName    unique identifier for requested server.
      * @param userId        the unique identifier for the user
      * @param assetTypeId   the asset type global identifier
      * @param fromDate      the starting date for asset's modification
@@ -335,7 +363,8 @@ public class AssetCatalogEntityResource {
      * @return a list of the last updated assets
      */
     @RequestMapping(method = RequestMethod.GET, path = "/last-updated", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<AssetDescription> getLastUpdatedAssets(@PathVariable("userId") String userId,
+    public List<AssetDescription> getLastUpdatedAssets(@PathVariable("serverName") String serverName,
+                                                       @PathVariable("userId") String userId,
                                                        @RequestParam(required = false, value = "assetTypeId") String assetTypeId,
                                                        @RequestParam(required = false, value = "fromDate") Date fromDate,
                                                        @RequestParam(required = false, value = "toDate") Date toDate,
@@ -344,12 +373,13 @@ public class AssetCatalogEntityResource {
                                                        @RequestParam(required = false, value = "orderType") SequenceOrderType orderType,
                                                        @RequestParam(required = false, value = "orderProperty") String orderProperty,
                                                        @RequestParam(required = false, value = "status") Status status) {
-        return assetService.getLastUpdatedAssets(userId, assetTypeId, fromDate, toDate, status, limit, offset, orderType, orderProperty, status);
+        return assetService.getLastUpdatedAssets(serverName, userId, assetTypeId, fromDate, toDate, status, limit, offset, orderType, orderProperty, status);
     }
 
     /**
      * Return a list of assets (details and connections) matching the search criteria
      *
+     * @param serverName     unique identifier for requested server.
      * @param userId         the unique identifier for the user
      * @param searchCriteria a string expression of the characteristics of the required assets
      * @param limit          limit the result set to only include the specified number of entries
@@ -362,7 +392,8 @@ public class AssetCatalogEntityResource {
      * @return list of properties used to narrow the search
      */
     @RequestMapping(method = RequestMethod.GET, path = "/search-asset/{searchCriteria}")
-    public AssetDescriptionResponse searchAssets(@PathVariable("userId") String userId,
+    public AssetDescriptionResponse searchAssets(@PathVariable("serverName") String serverName,
+                                                 @PathVariable("userId") String userId,
                                                  @PathVariable("searchCriteria") String searchCriteria,
                                                  @RequestParam(required = false, value = "limit", defaultValue = "0") Integer limit,
                                                  @RequestParam(required = false, value = "offset", defaultValue = "0") Integer offset,
@@ -370,6 +401,6 @@ public class AssetCatalogEntityResource {
                                                  @RequestParam(required = false, value = "orderProperty") String orderProperty,
                                                  @RequestParam(required = false, value = "status") Status status,
                                                  @RequestParam(required = false, value = "excludeDeleted") Boolean excludeDeleted) {
-        return assetService.searchAssets(userId, searchCriteria);
+        return assetService.searchAssets(serverName, userId, searchCriteria);
     }
 }

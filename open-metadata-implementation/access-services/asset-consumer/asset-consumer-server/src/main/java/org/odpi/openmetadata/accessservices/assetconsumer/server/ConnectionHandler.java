@@ -627,23 +627,31 @@ class ConnectionHandler
             switch (instance.getInstanceProvenanceType())
             {
                 case UNKNOWN:
-                    elementType.setElementOrigin(null);
+                    elementType.setElementOrigin(ElementOrigin.UNKNOWN);
                     break;
-
                 case CONTENT_PACK:
                     elementType.setElementOrigin(ElementOrigin.CONTENT_PACK);
                     break;
-
-                case LOCAL_COHORT:
-                    elementType.setElementOrigin(ElementOrigin.LOCAL_COHORT);
-                    break;
-
                 case EXPORT_ARCHIVE:
                     elementType.setElementOrigin(ElementOrigin.EXPORT_ARCHIVE);
                     break;
-
+                case LOCAL_COHORT:
+                    elementType.setElementOrigin(ElementOrigin.LOCAL_COHORT);
+                    break;
+                case EXTERNAL_TOOL:
+                    elementType.setElementOrigin(ElementOrigin.EXTERNAL_TOOL);
+                    break;
+                case DATA_PLATFORM:
+                    elementType.setElementOrigin(ElementOrigin.DATA_PLATFORM);
+                    break;
+                case EXTERNAL_ENGINE:
+                    elementType.setElementOrigin(ElementOrigin.EXTERNAL_ENGINE);
+                    break;
                 case DEREGISTERED_REPOSITORY:
                     elementType.setElementOrigin(ElementOrigin.DEREGISTERED_REPOSITORY);
+                    break;
+                case CONFIGURATION:
+                    elementType.setElementOrigin(ElementOrigin.CONFIGURATION);
                     break;
             }
         }

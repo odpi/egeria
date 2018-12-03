@@ -18,13 +18,13 @@ public class TestAssetFeedback
      */
     private AssetFeedback getTestObject()
     {
-        Asset   assetBean = new Asset();
+        Asset assetBean = new Asset();
         assetBean.setQualifiedName("TestName");
 
         AssetSummary parentAsset = new AssetSummary(assetBean);
 
         return new AssetFeedback(parentAsset,
-                                 new MockAssetInformalTags(parentAsset, 1,5),
+                                 new MockAssetInformalTags(parentAsset, 1, 5),
                                  null,
                                  null,
                                  null);
@@ -58,13 +58,13 @@ public class TestAssetFeedback
      */
     private AssetFeedback getAnotherDifferentObject()
     {
-        Asset   assetBean = new Asset();
+        Asset assetBean = new Asset();
         assetBean.setQualifiedName("TestName");
 
         AssetSummary parentAsset = new AssetSummary(assetBean);
 
         return new AssetFeedback(parentAsset,
-                                 new MockAssetInformalTags(parentAsset, 1,5),
+                                 new MockAssetInformalTags(parentAsset, 1, 5),
                                  new MockAssetLikes(parentAsset, 5 , 100),
                                  null,
                                  null);
@@ -75,11 +75,11 @@ public class TestAssetFeedback
    {
        AssetSummary parentAsset = new AssetSummary(new Asset());
 
-       AssetFeedback  assetFeedback = new AssetFeedback(parentAsset,
-                                                        null,
-                                                        null,
-                                                        null,
-                                                        null);
+       AssetFeedback assetFeedback = new AssetFeedback(parentAsset,
+                                                       null,
+                                                       null,
+                                                       null,
+                                                       null);
 
        assertTrue(assetFeedback.getInformalTags() == null);
        assertTrue(assetFeedback.getLikes() == null);
@@ -87,8 +87,8 @@ public class TestAssetFeedback
        assertTrue(assetFeedback.getComments() == null);
 
        assetFeedback = new AssetFeedback(parentAsset,
-                                         new MockAssetInformalTags(parentAsset,0,0),
-                                         new MockAssetLikes(parentAsset, 0,0),
+                                         new MockAssetInformalTags(parentAsset, 0, 0),
+                                         new MockAssetLikes(parentAsset, 0, 0),
                                          new MockAssetRatings(parentAsset, 0, 0),
                                          new MockAssetComments(parentAsset, 0, 0));
 
@@ -107,6 +107,15 @@ public class TestAssetFeedback
    }
 
     /**
+     * Validate the subclass constructor works all of the way up the inheritance hierarchy.
+     */
+    @Test public void testSubclassInitialization()
+    {
+        new AssetFeedback(null);
+    }
+
+
+    /**
      * Validate that 2 different objects with the same content are evaluated as equal.
      * Also that different objects are considered not equal.
      */
@@ -116,7 +125,7 @@ public class TestAssetFeedback
         assertFalse(getTestObject().equals("DummyString"));
         assertTrue(getTestObject().equals(getTestObject()));
 
-        AssetFeedback  sameObject = getTestObject();
+        AssetFeedback sameObject = getTestObject();
         assertTrue(sameObject.equals(sameObject));
 
         assertFalse(getTestObject().equals(getDifferentObject()));

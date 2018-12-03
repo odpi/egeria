@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.metadatahighway;
 
 import org.slf4j.Logger;
@@ -40,9 +41,7 @@ public class OMRSMetadataHighwayManager
     private OMRSRepositoryContentManager localRepositoryContentManager;      /* set in constructor */
     private OMRSConnectionConsumer       enterpriseAccessConnectionConsumer; /* set in constructor */
     private OMRSTopicConnector           enterpriseAccessTopicConnector;     /* set in constructor */
-
-
-    private static final OMRSAuditLog auditLog = new OMRSAuditLog(OMRSAuditingComponent.METADATA_HIGHWAY_MANAGER);
+    private OMRSAuditLog                 auditLog;
 
     private static final Logger log = LoggerFactory.getLogger(OMRSMetadataHighwayManager.class);
 
@@ -58,6 +57,7 @@ public class OMRSMetadataHighwayManager
      *                                        passed around the cohort.
      * @param enterpriseAccessConnectionConsumer connection consumer for managing the connections of enterprise access.
      * @param enterpriseAccessTopicConnector connector for the OMRS Topic for enterprise access.
+     * @param auditLog audit log for this component.
      */
     public OMRSMetadataHighwayManager(String                          localServerName,
                                       String                          localServerType,
@@ -65,7 +65,8 @@ public class OMRSMetadataHighwayManager
                                       OMRSLocalRepository             localRepository,
                                       OMRSRepositoryContentManager    localRepositoryContentManager,
                                       OMRSConnectionConsumer          enterpriseAccessConnectionConsumer,
-                                      OMRSTopicConnector              enterpriseAccessTopicConnector)
+                                      OMRSTopicConnector              enterpriseAccessTopicConnector,
+                                      OMRSAuditLog                    auditLog)
     {
         this.localServerName = localServerName;
         this.localServerType = localServerType;
@@ -74,6 +75,7 @@ public class OMRSMetadataHighwayManager
         this.localRepositoryContentManager = localRepositoryContentManager;
         this.enterpriseAccessConnectionConsumer = enterpriseAccessConnectionConsumer;
         this.enterpriseAccessTopicConnector = enterpriseAccessTopicConnector;
+        this.auditLog = auditLog;
     }
 
 
@@ -106,7 +108,7 @@ public class OMRSMetadataHighwayManager
      */
     public  CohortConnectionStatus connectToCohort(CohortConfig         cohortConfig)
     {
-        OMRSCohortManager cohortManager  = new OMRSCohortManager();
+        OMRSCohortManager cohortManager  = new OMRSCohortManager(auditLog.createNewAuditLog(OMRSAuditingComponent.COHORT_MANAGER));
         String            localMetadataCollectionId = null;
         String            actionDescription = "Connect to Cohort";
 
@@ -394,6 +396,8 @@ public class OMRSMetadataHighwayManager
             Connector          connector       = connectorBroker.getConnector(topicConnection);
 
             OMRSTopicConnector topicConnector  = (OMRSTopicConnector)connector;
+
+            topicConnector.setAuditLog(auditLog.createNewAuditLog(OMRSAuditingComponent.OMRS_TOPIC_CONNECTOR));
 
             if (protocolVersion == OpenMetadataEventProtocolVersion.V1)
             {

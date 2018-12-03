@@ -22,6 +22,7 @@ import java.util.List;
  */
 public class ConnectedAssetCommentReplies extends AssetCommentReplies
 {
+    private String         serverName;
     private String         userId;
     private String         omasServerURL;
     private String         rootCommentGUID;
@@ -32,6 +33,7 @@ public class ConnectedAssetCommentReplies extends AssetCommentReplies
     /**
      * Typical constructor creates an iterator with the supplied list of elements.
      *
+     * @param serverName  name of the server.
      * @param userId user id to use on server calls.
      * @param omasServerURL url root of the server to use.
      * @param rootCommentGUID unique identifier of the comment that the replies are attached to.
@@ -40,7 +42,8 @@ public class ConnectedAssetCommentReplies extends AssetCommentReplies
      * @param maxCacheSize maximum number of elements that should be retrieved from the property server and
      *                     cached in the element list at any one time.  If a number less than one is supplied, 1 is used.
      */
-    ConnectedAssetCommentReplies(String              userId,
+    ConnectedAssetCommentReplies(String              serverName,
+                                 String              userId,
                                  String              omasServerURL,
                                  String              rootCommentGUID,
                                  ConnectedAsset      parentAsset,
@@ -49,6 +52,7 @@ public class ConnectedAssetCommentReplies extends AssetCommentReplies
     {
         super(parentAsset, totalElementCount, maxCacheSize);
 
+        this.serverName      = serverName;
         this.userId          = userId;
         this.omasServerURL   = omasServerURL;
         this.rootCommentGUID = rootCommentGUID;
@@ -69,6 +73,7 @@ public class ConnectedAssetCommentReplies extends AssetCommentReplies
 
         if (template != null)
         {
+            this.serverName      = template.serverName;
             this.userId          = template.userId;
             this.omasServerURL   = template.omasServerURL;
             this.rootCommentGUID = template.rootCommentGUID;
@@ -116,7 +121,7 @@ public class ConnectedAssetCommentReplies extends AssetCommentReplies
                                                      int  maximumSize) throws PropertyServerException
     {
         final String   methodName = "AssetCommentReplies.getCachedList";
-        final String   urlTemplate = "/open-metadata/access-services/connected-asset/users/{0}/assets/{1}/comments?elementStart={2}&maxElements={3}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/connected-asset/users/{1}/assets/{2}/comments?elementStart={3}&maxElements={4}";
 
         connectedAsset.validateOMASServerURL(methodName);
 
@@ -125,6 +130,7 @@ public class ConnectedAssetCommentReplies extends AssetCommentReplies
             CommentsResponse restResult = (CommentsResponse)connectedAsset.callGetRESTCall(methodName,
                                                                                            CommentsResponse.class,
                                                                                            omasServerURL + urlTemplate,
+                                                                                           serverName,
                                                                                            userId,
                                                                                            rootCommentGUID,
                                                                                            cacheStartPointer,
@@ -153,7 +159,8 @@ public class ConnectedAssetCommentReplies extends AssetCommentReplies
 
                         if (commentResponse.getReplyCount() > 0)
                         {
-                            commentReplies = new ConnectedAssetCommentReplies(userId,
+                            commentReplies = new ConnectedAssetCommentReplies(serverName,
+                                                                              userId,
                                                                               omasServerURL,
                                                                               bean.getGUID(),
                                                                               connectedAsset,
