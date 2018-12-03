@@ -2,7 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Classification;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType;
 import org.testng.annotations.Test;
 
 import java.util.*;
@@ -19,9 +22,6 @@ public class TestAssetSchemaType
     private List<Classification> classifications      = new ArrayList<>();
     private Map<String, Object>  additionalProperties = new HashMap<>();
 
-    private AssetMeanings        assetMeanings        = new MockAssetMeanings(null,
-                                                                              23,
-                                                                              50);
 
     /**
      * Default constructor
@@ -39,7 +39,7 @@ public class TestAssetSchemaType
      */
     private AssetSchemaType getTestObject()
     {
-        SchemaElement testBean = new MockSchemaElement();
+        SchemaType testBean = new SchemaType();
 
         testBean.setType(type);
         testBean.setGUID("TestGUID");
@@ -54,7 +54,7 @@ public class TestAssetSchemaType
         testBean.setUsage("TestUsage");
         testBean.setVersionNumber("TestVersionNumber");
 
-        return new MockAssetSchemaType(testBean, assetMeanings);
+        return new AssetSchemaType(testBean);
     }
 
     /**
@@ -64,7 +64,7 @@ public class TestAssetSchemaType
      */
     private AssetSchemaType getDifferentObject()
     {
-        SchemaElement testBean = new MockSchemaElement();
+        SchemaType testBean = new SchemaType();
 
         testBean.setType(type);
         testBean.setGUID("TestDifferentGUID");
@@ -79,7 +79,7 @@ public class TestAssetSchemaType
         testBean.setUsage("TestUsage");
         testBean.setVersionNumber("TestVersionNumber");
 
-        return new MockAssetSchemaType(testBean, assetMeanings);
+        return new AssetSchemaType(testBean);
     }
 
 
@@ -90,7 +90,7 @@ public class TestAssetSchemaType
      */
     private AssetSchemaType getAnotherDifferentObject()
     {
-        SchemaElement testBean = new MockSchemaElement();
+        SchemaType testBean = new SchemaType();
 
         testBean.setType(type);
         testBean.setGUID("TestGUID");
@@ -105,7 +105,7 @@ public class TestAssetSchemaType
         testBean.setUsage("TestUsage");
         testBean.setVersionNumber("TestVersionNumber");
 
-        return new MockAssetSchemaType(testBean, assetMeanings);
+        return new AssetSchemaType(testBean);
     }
 
 
@@ -116,7 +116,7 @@ public class TestAssetSchemaType
      */
     private AssetSchemaType getYetAnotherDifferentObject()
     {
-        SchemaElement testBean = new MockSchemaElement();
+        SchemaType testBean = new SchemaType();
 
         testBean.setType(type);
         testBean.setGUID("TestGUID");
@@ -131,7 +131,7 @@ public class TestAssetSchemaType
         testBean.setUsage("TestUsage");
         testBean.setVersionNumber("TestVersionNumber");
 
-        return new MockAssetSchemaType(new AssetSummary(new Asset()), testBean, assetMeanings);
+        return new AssetSchemaType(new AssetSummary(new Asset()), testBean);
     }
 
 
@@ -155,7 +155,6 @@ public class TestAssetSchemaType
         assertTrue(resultObject.getUsage().equals("TestUsage"));
         assertTrue(resultObject.getEncodingStandard().equals("TestEncodingStandard"));
         assertTrue(resultObject.getAuthor().equals("TestAuthor"));
-        assertTrue(resultObject.getAssetMeanings() != null);
     }
 
 
@@ -174,7 +173,6 @@ public class TestAssetSchemaType
         assertTrue(nullObject.getQualifiedName() == null);
         assertTrue(nullObject.getAdditionalProperties() == null);
 
-        assertTrue(nullObject.getAssetMeanings() == null);
         assertTrue(nullObject.getAuthor() == null);
         assertTrue(nullObject.getEncodingStandard() == null);
         assertTrue(nullObject.getUsage() == null);
@@ -187,62 +185,45 @@ public class TestAssetSchemaType
      */
     @Test public void testNullObject()
     {
-        SchemaElement   nullBean;
+        SchemaType      nullBean;
         AssetSchemaType nullObject;
         AssetSchemaType nullTemplate;
         AssetDescriptor parentAsset;
 
         nullBean = null;
-        nullObject = new MockAssetSchemaType(nullBean, null);
+        nullObject = new AssetSchemaType(nullBean);
         validateNullObject(nullObject);
 
-        nullBean = new MockSchemaElement();
-        nullObject = new MockAssetSchemaType(nullBean, null);
+        nullBean = new SchemaType();
+        nullObject = new AssetSchemaType(nullBean);
         validateNullObject(nullObject);
 
-        nullBean = new MockSchemaElement(null);
-        nullObject = new MockAssetSchemaType(nullBean, null);
+        nullBean = new SchemaType(null);
+        nullObject = new AssetSchemaType(nullBean);
         validateNullObject(nullObject);
 
         parentAsset = null;
         nullBean = null;
-        nullObject = new MockAssetSchemaType(parentAsset, nullBean, null);
+        nullObject = new AssetSchemaType(parentAsset, nullBean);
         validateNullObject(nullObject);
 
-        nullBean = new MockSchemaElement();
-        nullObject = new MockAssetSchemaType(parentAsset, nullBean, null);
+        nullBean = new SchemaType();
+        nullObject = new AssetSchemaType(parentAsset, nullBean);
         validateNullObject(nullObject);
 
-        nullBean = new MockSchemaElement(null);
-        nullObject = new MockAssetSchemaType(parentAsset, nullBean, null);
+        nullBean = new SchemaType(null);
+        nullObject = new AssetSchemaType(parentAsset, nullBean);
         validateNullObject(nullObject);
 
         nullTemplate = null;
-        nullObject = new MockAssetSchemaType(parentAsset, nullTemplate);
+        nullObject = new AssetSchemaType(parentAsset, nullTemplate);
         validateNullObject(nullObject);
 
-        nullTemplate = new MockAssetSchemaType(parentAsset, nullBean, null);;
-        nullObject = new MockAssetSchemaType(parentAsset, nullTemplate);
+        nullTemplate = new AssetSchemaType(parentAsset, nullBean);;
+        nullObject = new AssetSchemaType(parentAsset, nullTemplate);
         validateNullObject(nullObject);
     }
 
-
-    /**
-     * Test that the meanings list is properly managed
-     */
-    @Test public void testMeanings()
-    {
-
-        AssetMeanings  meanings = new MockAssetMeanings(null, 23, 60);
-
-        AssetSchemaType testObject = new MockAssetSchemaType(null, (AssetMeanings)null);
-
-        assertTrue(testObject.getAssetMeanings() == null);
-
-        testObject = new MockAssetSchemaType(null, meanings);
-
-        assertTrue(testObject.getAssetMeanings() != null);
-    }
 
     /**
      * Validate that schema properties are handled properly.
@@ -254,10 +235,10 @@ public class TestAssetSchemaType
         propertyMap.put("property1", "TestString");
         propertyMap.put("property2", new Integer(2));
 
-        SchemaElement testBean = new MockSchemaElement();
+        SchemaType testBean = new SchemaType();
         testBean.setSchemaProperties(propertyMap);
 
-        AssetSchemaType testObject = new MockAssetSchemaType(testBean, null);
+        AssetSchemaType testObject = new AssetSchemaType(testBean);
 
         AdditionalProperties schemaProperties = testObject.getSchemaProperties();
 
@@ -285,17 +266,17 @@ public class TestAssetSchemaType
             assertTrue(true);
         }
 
-        testBean = new MockSchemaElement();
-        testObject = new MockAssetSchemaType(testBean, null);
+        testBean = new SchemaType();
+        testObject = new AssetSchemaType(testBean);
 
         schemaProperties = testObject.getSchemaProperties();
 
         assertTrue(schemaProperties == null);
 
         propertyMap = new HashMap<>();
-        testBean = new MockSchemaElement();
+        testBean = new SchemaType();
         testBean.setSchemaProperties(propertyMap);
-        testObject = new MockAssetSchemaType(testBean, null);
+        testObject = new AssetSchemaType(testBean);
 
         schemaProperties = testObject.getSchemaProperties();
 
@@ -336,7 +317,7 @@ public class TestAssetSchemaType
      */
     @Test public void testClone()
     {
-        validateResultObject(new MockAssetSchemaType(null, getTestObject()));
+        validateResultObject(new AssetSchemaType(null, getTestObject()));
     }
 
 
@@ -345,6 +326,6 @@ public class TestAssetSchemaType
      */
     @Test public void testToString()
     {
-        assertTrue(getTestObject().toString().contains("SchemaElement"));
+        assertTrue(getTestObject().toString().contains("SchemaType"));
     }
 }

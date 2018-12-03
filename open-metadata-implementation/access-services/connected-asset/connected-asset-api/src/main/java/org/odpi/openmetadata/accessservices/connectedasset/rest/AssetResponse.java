@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType;
 
 import java.util.Objects;
 
@@ -26,23 +27,22 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AssetResponse extends ConnectedAssetOMASAPIResponse
 {
-    private Asset asset                      = null;
-    private int   annotationCount            = 0;
-    private int   certificationCount         = 0;
-    private int   commentCount               = 0;
-    private int   connectionCount            = 0;
-    private int   externalIdentifierCount    = 0;
-    private int   externalReferencesCount    = 0;
-    private int   informalTagCount           = 0;
-    private int   licenseCount               = 0;
-    private int   likeCount                  = 0;
-    private int   knownLocationsCount        = 0;
-    private int   meaningsCount              = 0;
-    private int   noteLogsCount              = 0;
-    private int   ratingsCount               = 0;
-    private int   relatedAssetCount          = 0;
-    private int   relatedMediaReferenceCount = 0;
-    private int   schemaCount                = 0;
+    private Asset      asset                      = null;
+    private int        annotationCount            = 0;
+    private int        certificationCount         = 0;
+    private int        commentCount               = 0;
+    private int        connectionCount            = 0;
+    private int        externalIdentifierCount    = 0;
+    private int        externalReferencesCount    = 0;
+    private int        informalTagCount           = 0;
+    private int        licenseCount               = 0;
+    private int        likeCount                  = 0;
+    private int        knownLocationsCount        = 0;
+    private int        noteLogsCount              = 0;
+    private int        ratingsCount               = 0;
+    private int        relatedAssetCount          = 0;
+    private int        relatedMediaReferenceCount = 0;
+    private SchemaType schemaType                 = null;
 
 
     /**
@@ -76,12 +76,11 @@ public class AssetResponse extends ConnectedAssetOMASAPIResponse
             this.licenseCount               = template.getLicenseCount();
             this.likeCount                  = template.getLikeCount();
             this.knownLocationsCount        = template.getKnownLocationsCount();
-            this.meaningsCount              = template.getMeaningsCount();
             this.noteLogsCount              = template.getNoteLogsCount();
             this.ratingsCount               = template.getRatingsCount();
             this.relatedAssetCount          = template.getRelatedAssetCount();
             this.relatedMediaReferenceCount = template.getRelatedMediaReferenceCount();
-            this.schemaCount                = template.getSchemaCount();
+            this.schemaType                 = template.getSchemaType();
         }
     }
 
@@ -329,28 +328,6 @@ public class AssetResponse extends ConnectedAssetOMASAPIResponse
 
 
     /**
-     * Return the count of attached meanings.
-     *
-     * @return count
-     */
-    public int getMeaningsCount()
-    {
-        return meaningsCount;
-    }
-
-
-    /**
-     * Set up the count of attached meanings.
-     *
-     * @param meaningsCount count
-     */
-    public void setMeaningsCount(int meaningsCount)
-    {
-        this.meaningsCount = meaningsCount;
-    }
-
-
-    /**
      * Return the count of attached note logs.
      *
      * @return count
@@ -439,24 +416,24 @@ public class AssetResponse extends ConnectedAssetOMASAPIResponse
 
 
     /**
-     * Return the count of attached schema (expect 0 or 1).
+     * Is there an attached schema?
      *
-     * @return count
+     * @return schema type bean
      */
-    public int getSchemaCount()
+    public SchemaType getSchemaType()
     {
-        return schemaCount;
+        return schemaType;
     }
 
 
     /**
-     * Set up the count of attached schema (expect 0 or 1).
+     * Set up whether there is an attached schema.
      *
-     * @param schemaCount count
+     * @param schemaType schema type bean
      */
-    public void setSchemaCount(int schemaCount)
+    public void setSchemaType(SchemaType schemaType)
     {
-        this.schemaCount = schemaCount;
+        this.schemaType = schemaType;
     }
 
 
@@ -480,12 +457,11 @@ public class AssetResponse extends ConnectedAssetOMASAPIResponse
                 ", licenseCount=" + licenseCount +
                 ", likeCount=" + likeCount +
                 ", knownLocationsCount=" + knownLocationsCount +
-                ", meaningsCount=" + meaningsCount +
                 ", noteLogsCount=" + noteLogsCount +
                 ", ratingsCount=" + ratingsCount +
                 ", relatedAssetCount=" + relatedAssetCount +
                 ", relatedMediaReferenceCount=" + relatedMediaReferenceCount +
-                ", schemaCount=" + schemaCount +
+                ", schemaType=" + schemaType +
                 ", relatedHTTPCode=" + getRelatedHTTPCode() +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
@@ -528,12 +504,11 @@ public class AssetResponse extends ConnectedAssetOMASAPIResponse
                 getLicenseCount() == that.getLicenseCount() &&
                 getLikeCount() == that.getLikeCount() &&
                 getKnownLocationsCount() == that.getKnownLocationsCount() &&
-                getMeaningsCount() == that.getMeaningsCount() &&
                 getNoteLogsCount() == that.getNoteLogsCount() &&
                 getRatingsCount() == that.getRatingsCount() &&
                 getRelatedAssetCount() == that.getRelatedAssetCount() &&
                 getRelatedMediaReferenceCount() == that.getRelatedMediaReferenceCount() &&
-                getSchemaCount() == that.getSchemaCount() &&
+                getSchemaType() == that.getSchemaType() &&
                 Objects.equals(getAsset(), that.getAsset());
     }
 
@@ -550,7 +525,7 @@ public class AssetResponse extends ConnectedAssetOMASAPIResponse
                             getCommentCount(),
                             getConnectionCount(), getExternalIdentifierCount(), getExternalReferencesCount(),
                             getInformalTagCount(), getLicenseCount(), getLikeCount(), getKnownLocationsCount(),
-                            getMeaningsCount(), getNoteLogsCount(), getRatingsCount(), getRelatedAssetCount(),
-                            getRelatedMediaReferenceCount(), getSchemaCount());
+                            getNoteLogsCount(), getRatingsCount(), getRelatedAssetCount(),
+                            getRelatedMediaReferenceCount(), getSchemaType());
     }
 }
