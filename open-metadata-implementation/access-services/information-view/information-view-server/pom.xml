@@ -31,7 +31,7 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>information-view-api</artifactId>
-            <version>0.3-SNAPSHOT</version>
+            <version>${open-metadata.version}</version>
         </dependency>
 
         <dependency>
@@ -44,6 +44,21 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>inmemory-repository-connector</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>connector-configuration-factory</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>repository-services-implementation</artifactId>
+            <version>${open-metadata.version}</version>
         </dependency>
     </dependencies>
 

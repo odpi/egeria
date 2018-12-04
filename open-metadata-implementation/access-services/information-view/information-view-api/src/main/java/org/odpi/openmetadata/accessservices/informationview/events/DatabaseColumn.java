@@ -14,40 +14,39 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ColumnDetails {
+public class DatabaseColumn {
 
     private String guid;
     private String qualifiedName;
-    private String attributeName;
+    private String name;
     private Integer position;
     private String cardinality;
     private String defaultValueOverride;
     private String type;
-    private String qualifiedNameColumnType;
+    private String primaryKeyName;
     private BusinessTerm businessTerm;
     private ForeignKey foreignKey;
-    private String primaryKeyName;
     private boolean isUnique;
     private boolean isPrimaryKey;
     private boolean isNullable;
 
 
     /**
-     * Return the foreignKeyName of the column
+     * Return the name of the column
      *
-     * @return foreignKeyName of the column
+     * @return name of the column
      */
-    public String getAttributeName() {
-        return attributeName;
+    public String getName() {
+        return name;
     }
 
     /**
-     * set up the foreignKeyName of the column
+     * set up the name of the column
      *
-     * @param attributeName - foreignKeyName of the column
+     * @param name - name of the column
      */
-    public void setAttributeName(String attributeName) {
-        this.attributeName = attributeName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
@@ -154,41 +153,22 @@ public class ColumnDetails {
     }
 
     /**
-     * Return the qualified foreignKeyName of the column
+     * Return the qualified name of the column
      *
-     * @return qualified foreignKeyName of the column
+     * @return qualified name of the column
      */
     public String getQualifiedName() {
         return qualifiedName;
     }
 
     /**
-     * set up the qualified foreignKeyName of the column
+     * set up the qualified name of the column
      *
-     * @param qualifiedName - qualified foreignKeyName of the column
+     * @param qualifiedName - qualified name of the column
      */
     public void setQualifiedName(String qualifiedName) {
         this.qualifiedName = qualifiedName;
     }
-
-    /**
-     * Return the qualified foreignKeyName of the column type
-     *
-     * @return qualified foreignKeyName of the column type
-     */
-    public String getQualifiedNameColumnType() {
-        return qualifiedNameColumnType;
-    }
-
-    /**
-     * set up the qualified foreignKeyName of the column type
-     *
-     * @param qualifiedNameColumnType - qualified foreignKeyName of the column type
-     */
-    public void setQualifiedNameColumnType(String qualifiedNameColumnType) {
-        this.qualifiedNameColumnType = qualifiedNameColumnType;
-    }
-
 
     public String getPrimaryKeyName() {
         return primaryKeyName;
@@ -235,16 +215,20 @@ public class ColumnDetails {
 
     @Override
     public String toString() {
-        return "ColumnDetails{" +
+        return "DatabaseColumn{" +
                 "guid='" + guid + '\'' +
                 ", qualifiedName='" + qualifiedName + '\'' +
-                ", attributeName='" + attributeName + '\'' +
+                ", name='" + name + '\'' +
                 ", position=" + position +
                 ", cardinality='" + cardinality + '\'' +
                 ", defaultValueOverride='" + defaultValueOverride + '\'' +
                 ", type='" + type + '\'' +
-                ", qualifiedNameColumnType='" + qualifiedNameColumnType + '\'' +
+                ", primaryKeyName='" + primaryKeyName + '\'' +
                 ", businessTerm=" + businessTerm +
+                ", foreignKey=" + foreignKey +
+                ", isUnique=" + isUnique +
+                ", isPrimaryKey=" + isPrimaryKey +
+                ", isNullable=" + isNullable +
                 '}';
     }
 }

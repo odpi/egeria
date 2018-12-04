@@ -16,36 +16,18 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ColumnContextEvent {
+public class TableContextEvent extends InformationViewHeader {
 
-    private final TableContext tableContext = new TableContext();
-    private ConnectionDetails connectionDetails;
-    private List<ColumnDetails> tableColumns = new ArrayList<>();
+    private TableSource tableSource;
+    private List<DatabaseColumn> tableColumns = new ArrayList<>();
 
-     /**
-     * Return the connection details
-     *
-     * @return connection details
-     */
-    public ConnectionDetails getConnectionDetails() {
-        return connectionDetails;
-    }
 
-    /**
-     * set up the connection details
-     *
-     * @param connectionDetails - details of the connection
-     */
-    public void setConnectionDetails(ConnectionDetails connectionDetails) {
-        this.connectionDetails = connectionDetails;
-    }
-
-    /**
+       /**
      * Return the list of columns
      *
      * @return list of columns
      */
-    public List<ColumnDetails> getTableColumns() {
+    public List<DatabaseColumn> getTableColumns() {
         return tableColumns;
     }
 
@@ -54,19 +36,22 @@ public class ColumnContextEvent {
      *
      * @param tableColumns - columns of the table
      */
-    public void setTableColumns(List<ColumnDetails> tableColumns) {
+    public void setTableColumns(List<DatabaseColumn> tableColumns) {
         this.tableColumns = tableColumns;
     }
 
-    public TableContext getTableContext() {
-        return tableContext;
+    public TableSource getTableSource() {
+        return tableSource;
+    }
+
+    public void setTableSource(TableSource tableSource) {
+        this.tableSource = tableSource;
     }
 
     @Override
     public String toString() {
-        return "ColumnContextEvent{" +
-                "tableContext=" + tableContext +
-                ", connectionDetails=" + connectionDetails +
+        return "TableContextEvent{" +
+                "tableSource=" + tableSource +
                 ", tableColumns=" + tableColumns +
                 '}';
     }
