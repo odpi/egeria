@@ -14,6 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
@@ -28,7 +29,6 @@ import java.util.List;
 import java.util.Set;
 
 import static org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin.Constants.COLUMN_RESOURCE;
-import static org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin.Constants.DEFAULT_GAIAN_DB_USER;
 import static org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin.Constants.DEFAULT_SCHEMA;
 import static org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin.Constants.SELECT_ACTION;
 import static org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin.Constants.UNKNOWN_USER;
@@ -64,9 +64,12 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<String> entity = new HttpEntity<>(getHttpHeaders());
 
-        ResponseEntity<String> result = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
-
-        return mapResultToRangerUser(result);
+        try {
+            ResponseEntity<String> result = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+            return mapResultToRangerUser(result);
+        } catch (HttpStatusCodeException exception) {
+            return null;
+        }
     }
 
     private static RangerUser mapResultToRangerUser(ResponseEntity<String> result) {
@@ -327,13 +330,10 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
         queryContext.setUser(gaianUser);
         logger.logInfo("Found user for query :" + gaianUser);
 
-        if (!gaianUser.equals(DEFAULT_GAIAN_DB_USER)) {
-            Set<String> userGroups = getUserGroups(gaianUser);
-            if (userGroups != null) {
-                queryContext.setUserGroups(userGroups);
-            }
+        Set<String> userGroups = getUserGroups(gaianUser);
+        if (userGroups != null) {
+            queryContext.setUserGroups(userGroups);
         }
-
     }
 
     private List<String> getQueryColumns(int[] queriedColumns) {
