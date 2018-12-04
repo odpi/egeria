@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.auditlog;
 
 
@@ -185,6 +186,17 @@ public enum SubjectAreaAuditCode {
             "A Subject Area Open Metadata Access Service (OMAS) Glossary Category governance classification has been updated",
             "A Subject Area Open Metadata Access Service (OMAS) Glossary Category governance classification has been updated",
             "No action is required. This is part of the normal operation of the  Subject Area OMAS."),
+
+    SERVICE_INSTANCE_FAILURE("OMAS-SUBJECT-AREA-0032",
+            OMRSAuditLogRecordSeverity.ERROR,
+            "The Subject Area Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}",
+            "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
+            "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
+    SERVICE_TERMINATING("OMAS-SUBJECT-AREA-0033",
+            OMRSAuditLogRecordSeverity.INFO,
+            "The Subject Area Open Metadata Access Service (OMAS) is shutting down server instance {0}",
+            "The local handlers has requested shut down of the Governance Engine OMAS.",
+            "No action is required.  This is part of the normal operation of the service."),
 
     ;
 

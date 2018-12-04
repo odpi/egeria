@@ -3,7 +3,10 @@
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Meaning;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -12,7 +15,7 @@ import java.util.Objects;
  * common open metadata entities related to this asset.
  * <ul>
  *     <li>Meanings - glossary term(s) assigned to this asset.</li>
- *     <li>Schema - details of the schema associated with the asset.</li>
+ *     <li>SchemaType - details of the schema type associated with the asset.</li>
  *     <li>Analysis - details of the annotations added by the discovery services.</li>
  *     <li>Feedback - details of the people, products and feedback that are connected to the asset.</li>
  *     <li>Locations - details of the known locations of the asset.</li>
@@ -23,7 +26,7 @@ import java.util.Objects;
  */
 public class AssetUniverse extends AssetDetail
 {
-    protected AssetMeanings      meanings       = null;
+    protected List<AssetMeaning> meanings       = null;
     protected AssetSchemaType    schema         = null;
     protected AssetAnnotations   analysis       = null;
     protected AssetFeedback      feedback       = null;
@@ -53,7 +56,7 @@ public class AssetUniverse extends AssetDetail
      * @param licenses List of licenses
      * @param certifications Certifications list of certifications
      * @param meanings Meanings list of glossary definitions.
-     * @param schema Schema object to query schema and related glossary definitions.
+     * @param schema StructSchemaType object to query schema and related glossary definitions.
      * @param analysis Annotations from metadata discovery.
      * @param feedback Feedback object to query the feedback.
      * @param knownLocations Locations list
@@ -68,7 +71,7 @@ public class AssetUniverse extends AssetDetail
                          AssetConnections            connections,
                          AssetLicenses               licenses,
                          AssetCertifications         certifications,
-                         AssetMeanings               meanings,
+                         List<AssetMeaning>          meanings,
                          AssetSchemaType             schema,
                          AssetAnnotations            analysis,
                          AssetFeedback               feedback,
@@ -98,33 +101,29 @@ public class AssetUniverse extends AssetDetail
     /**
      * Copy/clone Constructor note this is a deep copy
      *
-     * @param templateAssetUniverse template to copy
+     * @param template template to copy
      */
-    public AssetUniverse(AssetUniverse templateAssetUniverse)
+    public AssetUniverse(AssetUniverse template)
     {
-        super(templateAssetUniverse);
+        super(template);
 
-        if (templateAssetUniverse != null)
+        if (template != null)
         {
+            meanings = template.getMeanings();
             /*
              * Create the top-level property objects for this new asset using the values from the template.
              * The get methods create clones of the returned objects so no need to duplicate objects here.
              */
-            AssetMeanings    templateMeanings      = templateAssetUniverse.getMeanings();
-            AssetSchemaType  templateSchema        = templateAssetUniverse.getSchema();
-            AssetAnnotations templateAnalysis      = templateAssetUniverse.getAnalysis();
-            AssetFeedback    templateFeedback      = templateAssetUniverse.getFeedback();
-            AssetLocations   templateLocations     = templateAssetUniverse.getKnownLocations();
-            AssetLineage     templateLineage       = templateAssetUniverse.getLineage();
-            RelatedAssets    templateRelatedAssets = templateAssetUniverse.getRelatedAssets();
+            AssetSchemaType  templateSchema        = template.getSchema();
+            AssetAnnotations templateAnalysis      = template.getAnalysis();
+            AssetFeedback    templateFeedback      = template.getFeedback();
+            AssetLocations   templateLocations     = template.getKnownLocations();
+            AssetLineage     templateLineage       = template.getLineage();
+            RelatedAssets    templateRelatedAssets = template.getRelatedAssets();
 
-            if (templateMeanings != null)
-            {
-                meanings = templateMeanings.cloneIterator(this);
-            }
             if (templateSchema != null)
             {
-                templateSchema.cloneAssetSchemaElement(this);
+                templateSchema.cloneAssetSchemaType(this);
             }
             if (templateAnalysis != null)
             {
@@ -155,16 +154,29 @@ public class AssetUniverse extends AssetDetail
      *
      * @return Meanings list of glossary definitions.
      */
-    public AssetMeanings getMeanings()
+    public List<AssetMeaning> getMeanings()
     {
-        if (meanings == null)
+        List<Meaning>       meanings = assetBean.getMeanings();
+
+        if (meanings != null)
         {
-            return null;
+            List<AssetMeaning> assetMeanings = new ArrayList<>();
+
+            for (Meaning  meaning : meanings)
+            {
+                if (meaning != null)
+                {
+                    assetMeanings.add(new AssetMeaning(this, meaning));
+                }
+            }
+
+            if (! assetMeanings.isEmpty())
+            {
+                return assetMeanings;
+            }
         }
-        else
-        {
-            return meanings.cloneIterator(this);
-        }
+
+        return null;
     }
 
 
@@ -181,7 +193,7 @@ public class AssetUniverse extends AssetDetail
         }
         else
         {
-            return schema.cloneAssetSchemaElement(this);
+            return schema.cloneAssetSchemaType(this);
         }
     }
 

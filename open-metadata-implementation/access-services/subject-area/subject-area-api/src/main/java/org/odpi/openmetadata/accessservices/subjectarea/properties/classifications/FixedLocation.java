@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 
 package org.odpi.openmetadata.accessservices.subjectarea.properties.classifications;
 import org.slf4j.Logger;
@@ -108,7 +109,7 @@ public class FixedLocation extends Classification {
        private String coordinates;
        /**
         * {@literal Geographical coordinates of this location. }
-        * @return {@code String }
+        * @return {$$PropertyTypeJavadoc$$ }
         */
        public String getCoordinates() {
            return this.coordinates;
@@ -121,7 +122,7 @@ public class FixedLocation extends Classification {
        private String address;
        /**
         * {@literal Postal address of this location. }
-        * @return {@code String }
+        * @return {$$PropertyTypeJavadoc$$ }
         */
        public String getAddress() {
            return this.address;
@@ -134,7 +135,7 @@ public class FixedLocation extends Classification {
        private String timezone;
        /**
         * {@literal Timezone for the location. }
-        * @return {@code String }
+        * @return {$$PropertyTypeJavadoc$$ }
         */
        public String getTimezone() {
            return this.timezone;

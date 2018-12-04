@@ -1,9 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions;
 
 
 /**
- * The ClassificationException is thrown by the SubjectArea OMAS when an error occurs during a classification
+ * The ClassificationException is thrown by the Subject Area OMAS when an error occurs during a classification
  * value.
  */
 public class ClassificationException extends SubjectAreaCheckedExceptionBase

@@ -1,10 +1,13 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 // This is a generated file - do not edit - changes should be made to the templates amd/or generator to generate this file with changes.
 
-package org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.<$$uname$$>;
+package <$$package$$>;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.*;
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -13,6 +16,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.*;
+import org.odpi.openmetadata.accessservices.subjectarea.server.HelperObjects.OMRSLine;
 
 //omrs
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -30,7 +34,10 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.
 
  <$$description$$>
  */
-public class <$$uname$$> extends Line {
+@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown=true)
+public class <$$uname$$> extends OMRSLine {
     private static final Logger log = LoggerFactory.getLogger(<$$uname$$>.class);
     private static final String className = <$$uname$$>.class.getName();
 
@@ -73,8 +80,12 @@ public class <$$uname$$> extends Line {
       public static final java.util.Set<String> MAP_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES)));
 
 
-    
     public <$$uname$$>() {
+        initialise();
+    }
+
+    private void initialise()
+    {
        name = "<$$uname$$>";
        // set the LineType if this is a LineType enum value.
        try {
@@ -88,6 +99,15 @@ public class <$$uname$$> extends Line {
         entity2Name = "<$$entityProxy2Name$$>";
         entity2Type = "<$$entityProxy2Type$$>";
         typeDefGuid = "<$$typeDefGuid$$>";
+    }
+
+    public <$$uname$$>(OMRSLine template) {
+        super(template);
+        initialise();
+    }
+    public <$$uname$$>(Line template) {
+        super(template);
+        initialise();
     }
 
     public <$$uname$$>(Relationship omrsRelationship) {
@@ -147,4 +167,32 @@ public class <$$uname$$> extends Line {
             this.<$$PropertyName$$> = <$$PropertyName$$>;
         }
      $$$>
+
+      @Override
+         public StringBuilder toString(StringBuilder sb)
+         {
+             if (sb == null)
+             {
+                 sb = new StringBuilder();
+             }
+             sb.append(" <$$uname$$>=");
+             sb.append(super.toString(sb));
+             sb.append(" <$$uname$$> Attributes{");
+             <$Attr$$
+             sb.append("<$$AttrName$$>=" + this.<$$AttrName$$> +",");
+             $Attr$$>
+             <$Enum$$
+             if ( <$$EnumName$$>!=null) {
+                 sb.append("<$$EnumName$$>=" + <$$EnumName$$>.name());
+             }
+             $Enum$$>
+             sb.append("}");
+             return sb;
+         }
+         @Override
+         public String toString() {
+             return toString(new StringBuilder()).toString();
+         }
+
+
 }

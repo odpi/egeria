@@ -3,83 +3,44 @@
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
 
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Schema;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaElement;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ComplexSchemaType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType;
 
 import java.util.Objects;
 
 /**
- * The Schema object provides information about how the asset structures the data it supports.  Schemas are typically
- * described as nested structures of linked schema elements.  Schemas can also be reused in other schemas.
- *
- * The schema object can be used to represent a Struct, Array, Set or Map.
- * <ul>
- *     <li>
- *         A Struct has an ordered list of attributes - the position of an attribute is set up as one of its properties.
- *     </li>
- *     <li>
- *         An Array has one schema attribute and a maximum size plus element count.
- *     </li>
- *     <li>
- *         A Set also has one schema attribute and a maximum size plus element count.
- *     </li>
- *     <li>
- *         A Map is a Set of MapSchemaElements
- *     </li>
- * </ul>
+ * An asset's schema provides information about how the asset structures the data it supports.
+ * The AssetComplexSchemaType object describes a nested structure of schema attributes and types.
  */
 public class AssetComplexSchemaType extends AssetSchemaType
 {
-    /*
-     * Properties specific to a Schema
+    protected AssetSchemaAttributes schemaAttributes      = null;
+
+
+    /**
+     * Constructor used by the subclasses
+     *
+     * @param parentAsset descriptor of asset that this property relates to.
      */
-    protected Schema                schemaBean;
-    protected AssetSchemaAttributes schemaAttributes;
-    protected AssetSchemaLinks      schemaLinks;
+    protected AssetComplexSchemaType(AssetDescriptor parentAsset)
+    {
+        super(parentAsset);
+    }
+
 
 
     /**
      * Bean constructor
      *
      * @param schemaBean bean containing the schema properties
-     * @param assetMeanings iterator for the asset assetMeanings
      * @param schemaAttributes the attributes that make up this schema
-     * @param schemaLinks the links to other schema
      */
-    public AssetComplexSchemaType(Schema                schemaBean,
-                                  AssetMeanings         assetMeanings,
-                                  AssetSchemaAttributes schemaAttributes,
-                                  AssetSchemaLinks      schemaLinks)
+    public AssetComplexSchemaType(SchemaType            schemaBean,
+                                  AssetSchemaAttributes schemaAttributes)
     {
-        super(schemaBean, assetMeanings);
+        super(schemaBean);
 
-        if (schemaBean == null)
-        {
-            this.schemaBean = new Schema();
-        }
-        else
-        {
-            this.schemaBean = schemaBean;
-        }
-
-        if (schemaAttributes == null)
-        {
-            this.schemaAttributes = null;
-        }
-        else
-        {
-            this.schemaAttributes = schemaAttributes.cloneIterator(super.getParentAsset());
-        }
-
-        if (schemaLinks == null)
-        {
-            this.schemaLinks = null;
-        }
-        else
-        {
-            this.schemaLinks = schemaLinks.cloneIterator(super.getParentAsset());
-        }
+        this.schemaAttributes = schemaAttributes;
     }
 
 
@@ -88,44 +49,15 @@ public class AssetComplexSchemaType extends AssetSchemaType
      *
      * @param parentAsset descriptor for parent asset
      * @param schemaBean bean containing the schema properties
-     * @param assetMeanings iterator for the asset assetMeanings
      * @param schemaAttributes the attributes that make up this schema
-     * @param schemaLinks the links to other schema
      */
     public AssetComplexSchemaType(AssetDescriptor       parentAsset,
-                                  Schema                schemaBean,
-                                  AssetMeanings         assetMeanings,
-                                  AssetSchemaAttributes schemaAttributes,
-                                  AssetSchemaLinks      schemaLinks)
+                                  ComplexSchemaType     schemaBean,
+                                  AssetSchemaAttributes schemaAttributes)
     {
-        super(parentAsset, schemaBean, assetMeanings);
+        super(parentAsset, schemaBean);
 
-        if (schemaBean == null)
-        {
-            this.schemaBean = new Schema();
-        }
-        else
-        {
-            this.schemaBean = schemaBean;
-        }
-
-        if (schemaAttributes == null)
-        {
-            this.schemaAttributes = null;
-        }
-        else
-        {
-            this.schemaAttributes = schemaAttributes.cloneIterator(super.getParentAsset());
-        }
-
-        if (schemaLinks == null)
-        {
-            this.schemaLinks = null;
-        }
-        else
-        {
-            this.schemaLinks = schemaLinks.cloneIterator(super.getParentAsset());
-        }
+        this.schemaAttributes = schemaAttributes;
     }
 
 
@@ -137,62 +69,26 @@ public class AssetComplexSchemaType extends AssetSchemaType
      * @param parentAsset description of the asset that this schema is attached to.
      * @param templateSchema template object to copy.
      */
-    public AssetComplexSchemaType(AssetDescriptor  parentAsset, AssetComplexSchemaType templateSchema)
+    public AssetComplexSchemaType(AssetDescriptor parentAsset, AssetComplexSchemaType templateSchema)
     {
         super(parentAsset, templateSchema);
 
-        if (templateSchema == null)
+        if (templateSchema != null)
         {
-            this.schemaBean = new Schema();
-            this.schemaAttributes = null;
-            this.schemaLinks = null;
-        }
-        else
-        {
-            this.schemaBean = templateSchema.getSchemaBean();
-
-            AssetSchemaAttributes schemaAttributes = templateSchema.getSchemaAttributes();
-
-            if (schemaAttributes == null)
-            {
-                this.schemaAttributes = null;
-            }
-            else
-            {
-                this.schemaAttributes = schemaAttributes.cloneIterator(super.getParentAsset());
-            }
-
-            AssetSchemaLinks schemaLinks = templateSchema.getSchemaLinks();
-
-            if (schemaLinks == null)
-            {
-                this.schemaLinks = null;
-            }
-            else
-            {
-                this.schemaLinks = schemaLinks.cloneIterator(super.getParentAsset());
-            }
+            this.schemaAttributes = templateSchema.getSchemaAttributes(super.getParentAsset());
         }
     }
 
 
     /**
-     * Return the bean that contains the properties of the schema.
+     * Set up the bean that contains the properties of the schema.
      *
-     * @return schema bean
+     * @param bean bean containing the schema properties
      */
-    protected Schema  getSchemaBean()
+    protected void  setBean(ComplexSchemaType bean)
     {
-        return  schemaBean;
+        super.setBean(bean);
     }
-
-
-    /**
-     * Return the type of the schema.
-     *
-     * @return SchemaType
-     */
-    public SchemaType getSchemaType() { return schemaBean.getSchemaType(); }
 
 
     /**
@@ -214,39 +110,20 @@ public class AssetComplexSchemaType extends AssetSchemaType
 
 
     /**
-     * Return the maximum elements that can be stored in this schema.  This is set up by the caller.
-     * Zero means not bounded.  For a STRUCT the max elements are the number of elements in
-     * the asset attributes and this method returns 0,
+     * Return the list of schema attributes in this schema.
      *
-     * @return int maximum number of elements allowed
+     * @param parentAsset description of the asset that this schema is attached to.
+     * @return SchemaAttributes
      */
-    public int getMaximumElements()
+    protected AssetSchemaAttributes getSchemaAttributes(AssetDescriptor parentAsset)
     {
-        if (schemaBean.getSchemaType() == SchemaType.STRUCT)
-        {
-            return 0;
-        }
-
-        return schemaBean.getMaximumElements();
-    }
-
-
-    /**
-     * Return a list of any links that exist between the schema attributes of this schema (or others).
-     * These links are typically used for network type schemas such as a grpah schema - or may be used to show
-     * linkage to an element in another schema.
-     *
-     * @return SchemaLinks list of linked schema attributes
-     */
-    public AssetSchemaLinks getSchemaLinks()
-    {
-        if (schemaLinks == null)
+        if (schemaAttributes == null)
         {
             return null;
         }
         else
         {
-            return schemaLinks.cloneIterator(super.getParentAsset());
+            return schemaAttributes.cloneIterator(parentAsset);
         }
     }
 
@@ -260,22 +137,9 @@ public class AssetComplexSchemaType extends AssetSchemaType
      */
     @Override
 
-    protected AssetSchemaType cloneAssetSchemaElement(AssetDescriptor  parentAsset)
+    protected AssetSchemaType cloneAssetSchemaType(AssetDescriptor parentAsset)
     {
         return new AssetComplexSchemaType(parentAsset, this);
-    }
-
-
-    /**
-     * Return this schema element bean.  This method is needed because SchemaElement
-     * is abstract.
-     *
-     * @return An instance of the appropriate subclass of SchemaElement bean
-     */
-    @Override
-    protected   SchemaElement getSchemaElementBean()
-    {
-        return schemaBean;
     }
 
 
@@ -287,7 +151,22 @@ public class AssetComplexSchemaType extends AssetSchemaType
     @Override
     public String toString()
     {
-        return schemaBean.toString();
+        return "AssetComplexSchemaType{" +
+                "schemaAttributes=" + schemaAttributes +
+                ", parentAsset=" + parentAsset +
+                ", displayName='" + getDisplayName() + '\'' +
+                ", versionNumber='" + getVersionNumber() + '\'' +
+                ", author='" + getAuthor() + '\'' +
+                ", usage='" + getUsage() + '\'' +
+                ", encodingStandard='" + getEncodingStandard() + '\'' +
+                ", schemaProperties=" + getSchemaProperties() +
+                ", qualifiedName='" + getQualifiedName() + '\'' +
+                ", additionalProperties=" + getAdditionalProperties() +
+                ", type=" + getType() +
+                ", GUID='" + getGUID() + '\'' +
+                ", URL='" + getURL() + '\'' +
+                ", assetClassifications=" + getAssetClassifications() +
+                '}';
     }
 
 
@@ -304,7 +183,7 @@ public class AssetComplexSchemaType extends AssetSchemaType
         {
             return true;
         }
-        if (!(objectToCompare instanceof AssetComplexSchemaType))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -313,8 +192,6 @@ public class AssetComplexSchemaType extends AssetSchemaType
             return false;
         }
         AssetComplexSchemaType that = (AssetComplexSchemaType) objectToCompare;
-        return Objects.equals(getSchemaBean(), that.getSchemaBean()) &&
-                Objects.equals(getSchemaAttributes(), that.getSchemaAttributes()) &&
-                Objects.equals(getSchemaLinks(), that.getSchemaLinks());
+        return Objects.equals(getSchemaAttributes(), that.getSchemaAttributes());
     }
 }

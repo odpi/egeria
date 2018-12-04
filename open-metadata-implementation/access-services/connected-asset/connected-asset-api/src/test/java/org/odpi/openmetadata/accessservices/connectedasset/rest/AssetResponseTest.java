@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.connectedasset.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;
@@ -58,12 +59,11 @@ public class AssetResponseTest
         testObject.setLicenseCount(5);
         testObject.setLikeCount(5);
         testObject.setKnownLocationsCount(5);
-        testObject.setMeaningsCount(5);
         testObject.setNoteLogsCount(5);
         testObject.setRatingsCount(5);
         testObject.setRelatedAssetCount(5);
         testObject.setRelatedMediaReferenceCount(5);
-        testObject.setSchemaCount(5);
+        testObject.setSchemaType(null);
 
         return testObject;
     }
@@ -74,7 +74,7 @@ public class AssetResponseTest
      *
      * @param resultObject object returned by the test
      */
-    private void validateResultObject(AssetResponse  resultObject)
+    private void validateResultObject(AssetResponse resultObject)
     {
         assertTrue(resultObject.getExceptionClassName().equals(NullPointerException.class.getName()));
         assertTrue(resultObject.getExceptionErrorMessage().equals("TestErrorMessage"));
@@ -95,12 +95,11 @@ public class AssetResponseTest
         assertTrue(resultObject.getLicenseCount() == 5);
         assertTrue(resultObject.getLikeCount() == 5);
         assertTrue(resultObject.getKnownLocationsCount() == 5);
-        assertTrue(resultObject.getMeaningsCount() == 5);
         assertTrue(resultObject.getNoteLogsCount() == 5);
         assertTrue(resultObject.getRatingsCount() == 5);
         assertTrue(resultObject.getRelatedAssetCount() == 5);
         assertTrue(resultObject.getRelatedMediaReferenceCount() == 5);
-        assertTrue(resultObject.getSchemaCount() == 5);
+        assertTrue(resultObject.getSchemaType() == null);
     }
 
 
@@ -109,7 +108,7 @@ public class AssetResponseTest
      */
     @Test public void testNullObject()
     {
-        AssetResponse    nullObject = new AssetResponse();
+        AssetResponse nullObject = new AssetResponse();
 
         assertTrue(nullObject.getRelatedHTTPCode() == 200);
         assertTrue(nullObject.getExceptionClassName() == null);
@@ -128,12 +127,11 @@ public class AssetResponseTest
         assertTrue(nullObject.getLicenseCount() == 0);
         assertTrue(nullObject.getLikeCount() == 0);
         assertTrue(nullObject.getKnownLocationsCount() == 0);
-        assertTrue(nullObject.getMeaningsCount() == 0);
         assertTrue(nullObject.getNoteLogsCount() == 0);
         assertTrue(nullObject.getRatingsCount() == 0);
         assertTrue(nullObject.getRelatedAssetCount() == 0);
         assertTrue(nullObject.getRelatedMediaReferenceCount() == 0);
-        assertTrue(nullObject.getSchemaCount() == 0);
+        assertTrue(nullObject.getSchemaType() == null);
 
         nullObject = new AssetResponse(null);
 
@@ -154,12 +152,11 @@ public class AssetResponseTest
         assertTrue(nullObject.getLicenseCount() == 0);
         assertTrue(nullObject.getLikeCount() == 0);
         assertTrue(nullObject.getKnownLocationsCount() == 0);
-        assertTrue(nullObject.getMeaningsCount() == 0);
         assertTrue(nullObject.getNoteLogsCount() == 0);
         assertTrue(nullObject.getRatingsCount() == 0);
         assertTrue(nullObject.getRelatedAssetCount() == 0);
         assertTrue(nullObject.getRelatedMediaReferenceCount() == 0);
-        assertTrue(nullObject.getSchemaCount() == 0);
+        assertTrue(nullObject.getSchemaType() == null);
 
     }
 
@@ -169,8 +166,8 @@ public class AssetResponseTest
      */
     @Test public void testExceptionProperties()
     {
-        Map<String, Object>   propertyMap;
-        AssetResponse          testObject = new AssetResponse();
+        Map<String, Object> propertyMap;
+        AssetResponse       testObject = new AssetResponse();
 
         assertTrue(testObject.getExceptionProperties() == null);
 
@@ -208,10 +205,10 @@ public class AssetResponseTest
         assertFalse(getTestObject().equals("DummyString"));
         assertTrue(getTestObject().equals(getTestObject()));
 
-        AssetResponse  sameObject = getTestObject();
+        AssetResponse sameObject = getTestObject();
         assertTrue(sameObject.equals(sameObject));
 
-        AssetResponse  differentObject = getTestObject();
+        AssetResponse differentObject = getTestObject();
         differentObject.setExceptionErrorMessage("Different");
         assertFalse(getTestObject().equals(differentObject));
     }

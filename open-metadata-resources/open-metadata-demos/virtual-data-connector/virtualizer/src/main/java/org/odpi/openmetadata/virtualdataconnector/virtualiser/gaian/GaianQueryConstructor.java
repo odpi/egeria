@@ -2,11 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.virtualdataconnector.virtualiser.gaian;
 
+import org.odpi.openmetadata.accessservices.informationview.events.DatabaseColumn;
+import org.odpi.openmetadata.accessservices.informationview.events.TableContextEvent;
 import org.odpi.openmetadata.virtualdataconnector.virtualiser.ffdc.VirtualiserCheckedException;
 import org.odpi.openmetadata.virtualdataconnector.virtualiser.ffdc.VirtualiserErrorCode;
 import org.odpi.openmetadata.virtualdataconnector.virtualiser.util.ExecuteQueryUtil;
-import org.odpi.openmetadata.accessservices.informationview.events.ColumnContextEvent;
-import org.odpi.openmetadata.accessservices.informationview.events.ColumnDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,24 +44,24 @@ public class GaianQueryConstructor {
     /**
      * based on the json file, create Logical Tables and update Gaian
      *
-     * @param columnContextEvent json file from Information View OMAS
+     * @param tableContextEvent json file from Information View OMAS
      * @return whether create or remove tables correctly
      * @throws VirtualiserCheckedException when there is no Logical Table created for the table in the Gaian node
      */
-    public Map<String, String> notifyGaian(ColumnContextEvent columnContextEvent) {
-        if (columnContextEvent == null) {
-            log.debug("Object ColumnContextEvent is null");
+    public Map<String, String> notifyGaian(TableContextEvent tableContextEvent) {
+        if (tableContextEvent == null) {
+            log.debug("Object TableContextEvent is null");
             return Collections.emptyMap();
         }
 
         try {
             executeQueryUtil.getConnection();
 
-            String gaianNodeName = columnContextEvent.getConnectionDetails().getNetworkAddress().replace(".", "").toLowerCase();
-            String technicalTableName = getLogicTableName(TECHNICAL_PREFIX, columnContextEvent, gaianNodeName);
-            String businessTableName = getLogicTableName(BUSINESS_PREFIX, columnContextEvent, gaianNodeName);
-            String logicalTableName = getLogicTableName(GENERAL, columnContextEvent, gaianNodeName);
-            List<MappedColumn> mappedColumns = getMappedColumns(columnContextEvent);
+            String gaianNodeName = tableContextEvent.getTableSource().getNetworkAddress().replace(".", "").toLowerCase();
+            String technicalTableName = getLogicTableName(TECHNICAL_PREFIX, tableContextEvent, gaianNodeName);
+            String businessTableName = getLogicTableName(BUSINESS_PREFIX, tableContextEvent, gaianNodeName);
+            String logicalTableName = getLogicTableName(GENERAL, tableContextEvent, gaianNodeName);
+            List<MappedColumn> mappedColumns = getMappedColumns(tableContextEvent);
 
             if (mappedColumns == null || mappedColumns.isEmpty()) {
                 log.info("There are no business term associations to columns in the received event, removing existing definitions");
@@ -69,7 +69,7 @@ public class GaianQueryConstructor {
                     removeTechnicalAndBussinessTable(businessTableName, technicalTableName);
                 }
             } else {
-                return createTableDefinitions(columnContextEvent, gaianNodeName, technicalTableName, businessTableName, logicalTableName, mappedColumns);
+                return createTableDefinitions(tableContextEvent, gaianNodeName, technicalTableName, businessTableName, logicalTableName, mappedColumns);
             }
 
         } catch (VirtualiserCheckedException e) {
@@ -86,7 +86,7 @@ public class GaianQueryConstructor {
         return Collections.emptyMap();
     }
 
-    private Map<String, String> createTableDefinitions(ColumnContextEvent columnContextEvent, String gaianNodeName, String technicalTableName, String businessTableName, String logicalTableName, List<MappedColumn> mappedColumns) throws VirtualiserCheckedException {
+    private Map<String, String> createTableDefinitions(TableContextEvent tableContextEvent, String gaianNodeName, String technicalTableName, String businessTableName, String logicalTableName, List<MappedColumn> mappedColumns) throws VirtualiserCheckedException {
         String methodName = "createTableDefinitions";
         Map<String, String> createdTables = new HashMap();
         LogicTable backendTable = getMatchingTableDefinition(gaianNodeName, Collections.singletonList(logicalTableName));
@@ -94,12 +94,12 @@ public class GaianQueryConstructor {
             createMirroringLogicalTable(logicalTableName, gaianNodeName);
             updateColumnDataType(mappedColumns, backendTable);
 
-            String updatedTable = createTableDefinition(businessTableName, (c -> c.getBusinessName()), mappedColumns, gaianNodeName);
+            String updatedTable = createTableDefinition(businessTableName, (c -> c.getBusinessName()), mappedColumns, gaianNodeName, logicalTableName);
             if (updatedTable != null) {
                 createdTables.put(BUSINESS_PREFIX, updatedTable);
             }
 
-            updatedTable = createTableDefinition(technicalTableName, (c -> c.getTechnicalName()), mappedColumns, gaianNodeName);
+            updatedTable = createTableDefinition(technicalTableName, (c -> c.getTechnicalName()), mappedColumns, gaianNodeName,logicalTableName );
             if (updatedTable != null) {
                 createdTables.put(TECHNICAL_PREFIX, updatedTable);
             }
@@ -112,7 +112,7 @@ public class GaianQueryConstructor {
             VirtualiserErrorCode errorCode = VirtualiserErrorCode.NO_lOGICTABLE;
 
             String errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage(columnContextEvent.getTableContext().getTableName(), gaianNodeName);
+                    + errorCode.getFormattedErrorMessage(tableContextEvent.getTableSource().getTableName(), gaianNodeName);
 
 
             throw new VirtualiserCheckedException(errorCode.getHTTPErrorCode(),
@@ -125,9 +125,9 @@ public class GaianQueryConstructor {
         }
     }
 
-    private String createTableDefinition(String tableName, Function<MappedColumn, String> function, List<MappedColumn> mappedColumns, String gaianNodeName) {
+    private String createTableDefinition(String tableName, Function<MappedColumn, String> function, List<MappedColumn> mappedColumns, String gaianNodeName, String logicalTableName) {
         String businessTableCreateStatement = buildTableCreateStatement(tableName, mappedColumns, function);
-        String setBusinessTableDataSource = buildCreateTableDataSourceStatement(tableName, gaianNodeName, mappedColumns);
+        String setBusinessTableDataSource = buildCreateTableDataSourceStatement(tableName, gaianNodeName, mappedColumns, logicalTableName);
 
         if (updateGaian(businessTableCreateStatement, setBusinessTableDataSource)) {
             log.debug("Successfully created table {}", tableName);
@@ -149,7 +149,7 @@ public class GaianQueryConstructor {
             log.error("Exception: Not able to execute query in Gaian.", e);
         }
         if (logicTableList != null && !logicTableList.isEmpty()) {
-           return logicTableList.stream().filter(e -> (e.getGaianNode().equals(gaianNodeName) && tables.contains(e.getLogicalTableName()))).findFirst().orElse(null);
+            return logicTableList.stream().filter(e -> (e.getGaianNode().equals(gaianNodeName) && tables.contains(e.getLogicalTableName()))).findFirst().orElse(null);
         }
         return null;
     }
@@ -157,19 +157,19 @@ public class GaianQueryConstructor {
 
     /**
      *
-     * @param columnContextEvent the event containing full context for a table
+     * @param tableContextEvent the event containing full context for a table
      * @return the list of columns with assigned business terms
      */
-    private List<MappedColumn> getMappedColumns(ColumnContextEvent columnContextEvent) {
+    private List<MappedColumn> getMappedColumns(TableContextEvent tableContextEvent) {
 
         List<MappedColumn> mappedColumns = new ArrayList<>();
-        List<ColumnDetails> columnDetailsList = columnContextEvent.getTableColumns();
-        for (ColumnDetails columnDetails : columnDetailsList) {
-            if (columnDetails.getBusinessTerm() != null) {
+        List<DatabaseColumn> databaseColumnList = tableContextEvent.getTableColumns();
+        for (DatabaseColumn databaseColumn : databaseColumnList) {
+            if (databaseColumn.getBusinessTerm() != null) {
                 MappedColumn mappedColumn = new MappedColumn();
-                mappedColumn.setBusinessName(columnDetails.getBusinessTerm().getName().replace(" ", "_"));
-                mappedColumn.setType(columnDetails.getType());
-                mappedColumn.setTechnicalName(columnDetails.getAttributeName());
+                mappedColumn.setBusinessName(databaseColumn.getBusinessTerm().getName().replace(" ", "_"));
+                mappedColumn.setType(databaseColumn.getType());
+                mappedColumn.setTechnicalName(databaseColumn.getName());
                 mappedColumns.add(mappedColumn);
             }
         }
@@ -183,18 +183,18 @@ public class GaianQueryConstructor {
      * @param gaianNodeName
      * @return Logical Table's name
      */
-    private String getLogicTableName(String type, ColumnContextEvent event, String gaianNodeName) {
+    private String getLogicTableName(String type, TableContextEvent event, String gaianNodeName) {
 
-        String connectorProviderType = event.getConnectionDetails().getConnectorProviderName().toLowerCase();
+        String connectorProviderType = event.getTableSource().getConnectorProviderName().toLowerCase();
 
 
         String name;
         if (type.equals(GENERAL)) {
             //form Logical Table's name for the back-end Gaian
-            name = connectorProviderType + "_" + event.getTableContext().getDatabaseName() + "_" + event.getTableContext().getSchemaName() + "_" + event.getTableContext().getTableName();
+            name = connectorProviderType + "_" + event.getTableSource().getDatabaseName() + "_" + event.getTableSource().getSchemaName() + "_" + event.getTableSource().getTableName();
         } else {
             //form Logical Table's name for the front-end Gaian
-            name = type + "_" + gaianNodeName + "_" + connectorProviderType + "_" + event.getTableContext().getDatabaseName() + "_" + event.getTableContext().getSchemaName() + "_" + event.getTableContext().getTableName();
+            name = type + "_" + gaianNodeName + "_" + connectorProviderType + "_" + event.getTableSource().getDatabaseName() + "_" + event.getTableSource().getSchemaName() + "_" + event.getTableSource().getTableName();
         }
         return name.toUpperCase();
     }
@@ -272,15 +272,16 @@ public class GaianQueryConstructor {
      * @param tableName     name of the Logical table
      * @param gaianNodeName
      * @param mappedColumns
+     * @param logicalTableName
      * @return the call to Gaian
      */
-    private String buildCreateTableDataSourceStatement(String tableName, String gaianNodeName, List<MappedColumn> mappedColumns) {
+    private String buildCreateTableDataSourceStatement(String tableName, String gaianNodeName, List<MappedColumn> mappedColumns, String logicalTableName) {
         String statementForCreatingDataSource = "call setdsrdbtable('" +
                 tableName +
                 "', '', '" +
                 gaianNodeName.toUpperCase() +
                 "', '" +
-                tableName +
+                logicalTableName +
                 "','', '";
 
         for (MappedColumn mappedColumn : mappedColumns) {

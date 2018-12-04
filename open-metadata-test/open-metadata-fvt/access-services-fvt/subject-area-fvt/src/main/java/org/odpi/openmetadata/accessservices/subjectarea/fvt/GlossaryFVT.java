@@ -1,6 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.fvt;
 
+import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaGlossary;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaImpl;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
@@ -14,27 +16,48 @@ import java.io.IOException;
  */
 public class GlossaryFVT
 {
-    private static final String USERID = " Fred";
-    private static final String DEFAULT_URL = "http://localhost:8080/open-metadata/access-services/subject-area";
     private static final String DEFAULT_TEST_GLOSSARY_NAME = "Testglossary1";
     private static final String DEFAULT_TEST_GLOSSARY_NAME2 = "Testglossary2";
     private static final String DEFAULT_TEST_GLOSSARY_NAME3 = "Testglossary3";
-    static SubjectAreaGlossary subjectAreaGlossary = null;
+    private SubjectAreaGlossary subjectAreaGlossary = null;
+    private String serverName = null;
 
-
+    public GlossaryFVT(String url,String serverName) throws InvalidParameterException
+    {
+        subjectAreaGlossary = new SubjectAreaImpl(serverName,url).getSubjectAreaGlossary();
+        this.serverName=serverName;
+    }
+    public static void runit(String url) throws SubjectAreaCheckedExceptionBase
+    {
+        GlossaryFVT fvt =new GlossaryFVT(url,FVTConstants.SERVER_NAME1);
+        fvt.run();
+        // check that a second server will work
+        GlossaryFVT fvt2 =new GlossaryFVT(url,FVTConstants.SERVER_NAME2);
+        fvt2.run();
+    }
     public static void main(String args[])
     {
         try
         {
+           String url = RunAllFVT.getUrl(args);
+           runit(url);
 
-            String url = RunAllFVT.getUrl(args);
-            System.out.print("Using url " + url);
-            initialiseGlossaryFVT(url);
+        } catch (IOException e1)
+        {
+            System.out.println("Error getting user input");
+        } catch (SubjectAreaCheckedExceptionBase e)
+        {
+            System.out.println("ERROR: " + e.getErrorMessage() + " Suggested action: " + e.getReportedUserAction());
+        }
+    }
+
+    public void run() throws SubjectAreaCheckedExceptionBase
+    {
             System.out.println("Create a glossary");
-            Glossary glossary = createGlossary(DEFAULT_TEST_GLOSSARY_NAME);
-            Glossary glossary2 = createGlossary(DEFAULT_TEST_GLOSSARY_NAME2);
+            Glossary glossary = createGlossary(serverName+" "+DEFAULT_TEST_GLOSSARY_NAME);
+            Glossary glossary2 = createGlossary(serverName+" "+DEFAULT_TEST_GLOSSARY_NAME2);
             Glossary glossaryForUpdate = new Glossary();
-            glossaryForUpdate.setName(DEFAULT_TEST_GLOSSARY_NAME3);
+            glossaryForUpdate.setName(serverName+" "+DEFAULT_TEST_GLOSSARY_NAME3);
 
             if (glossary != null)
             {
@@ -51,31 +74,23 @@ public class GlossaryFVT
                 String guid2 = glossary2.getSystemAttributes().getGUID();
                 purgeGlossary(guid2);
                 System.out.println("Create glossary with the same name as a deleted one");
-                glossary = createGlossary(DEFAULT_TEST_GLOSSARY_NAME);
+                glossary = createGlossary(serverName+" "+DEFAULT_TEST_GLOSSARY_NAME);
                 System.out.println("Create the glossary with same name as an active one and expect to fail");
                 try
                 {
-                    glossary = createGlossary(DEFAULT_TEST_GLOSSARY_NAME);
+                    glossary = createGlossary(serverName+" "+DEFAULT_TEST_GLOSSARY_NAME);
                 } catch (InvalidParameterException ipe)
                 {
                     System.out.println("Expected failure occurred.");
                 }
             }
-        } catch (SubjectAreaCheckedExceptionBase e)
-        {
-            System.out.println("ERROR: " + e.getErrorMessage() + " Suggested action: " + e.getReportedUserAction());
-        } catch (IOException e)
-        {
-            System.out.println("Error getting user input");
-        }
-    }
+           }
 
-    public static Glossary createGlossary(String name) throws SubjectAreaCheckedExceptionBase
+    public  Glossary createGlossary(String name) throws SubjectAreaCheckedExceptionBase
     {
         Glossary glossary = new Glossary();
         glossary.setName(name);
-        Glossary newGlossary = null;
-        newGlossary = subjectAreaGlossary.createGlossary(USERID, glossary);
+        Glossary newGlossary  = subjectAreaGlossary.createGlossary(serverName,FVTConstants.USERID, glossary);
         if (newGlossary != null)
         {
             System.out.println("Created Glossary " + newGlossary.getName() + " with guid " + newGlossary.getSystemAttributes().getGUID());
@@ -83,9 +98,9 @@ public class GlossaryFVT
         return newGlossary;
     }
 
-    public static Glossary getGlossaryByGUID(String guid) throws SubjectAreaCheckedExceptionBase
+    public  Glossary getGlossaryByGUID(String guid) throws SubjectAreaCheckedExceptionBase
     {
-        Glossary glossary = subjectAreaGlossary.getGlossaryByGuid(USERID, guid);
+        Glossary glossary = subjectAreaGlossary.getGlossaryByGuid(serverName,FVTConstants.USERID, guid);
         if (glossary != null)
         {
             System.out.println("Got Glossary " + glossary.getName() + " with guid " + glossary.getSystemAttributes().getGUID() + " and status " + glossary.getSystemAttributes().getStatus());
@@ -93,9 +108,9 @@ public class GlossaryFVT
         return glossary;
     }
 
-    public static Glossary updateGlossary(String guid, Glossary glossary) throws SubjectAreaCheckedExceptionBase
+    public  Glossary updateGlossary(String guid, Glossary glossary) throws SubjectAreaCheckedExceptionBase
     {
-        Glossary updatedGlossary = subjectAreaGlossary.updateGlossary(USERID, guid, glossary);
+        Glossary updatedGlossary = subjectAreaGlossary.updateGlossary(serverName,FVTConstants.USERID, guid, glossary);
         if (updatedGlossary != null)
         {
             System.out.println("Updated Glossary name to " + updatedGlossary.getName());
@@ -103,9 +118,9 @@ public class GlossaryFVT
         return updatedGlossary;
     }
 
-    public static Glossary deleteGlossary(String guid) throws SubjectAreaCheckedExceptionBase
+    public Glossary deleteGlossary(String guid) throws SubjectAreaCheckedExceptionBase
     {
-        Glossary deletedGlossary = subjectAreaGlossary.deleteGlossary(USERID, guid);
+        Glossary deletedGlossary = subjectAreaGlossary.deleteGlossary(serverName,FVTConstants.USERID, guid);
         if (deletedGlossary != null)
         {
             System.out.println("Deleted Glossary name is " + deletedGlossary.getName());
@@ -113,20 +128,9 @@ public class GlossaryFVT
         return deletedGlossary;
     }
 
-    public static void purgeGlossary(String guid) throws SubjectAreaCheckedExceptionBase
+    public  void purgeGlossary(String guid) throws SubjectAreaCheckedExceptionBase
     {
-        subjectAreaGlossary.purgeGlossary(USERID, guid);
+        subjectAreaGlossary.purgeGlossary(serverName,FVTConstants.USERID, guid);
         System.out.println("Purge succeeded");
-    }
-
-    /**
-     * Call this to initialise the glossary FVT
-     *
-     * @param url
-     * @throws InvalidParameterException
-     */
-    public static void initialiseGlossaryFVT(String url) throws InvalidParameterException
-    {
-        subjectAreaGlossary = new SubjectAreaImpl(url).getSubjectAreaGlossary();
     }
 }
