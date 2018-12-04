@@ -25,29 +25,33 @@ public enum ConnectedAssetAuditCode
 {
     SERVICE_INITIALIZING("OMAS-CONNECTED-ASSET-0001",
               OMRSAuditLogRecordSeverity.INFO,
-              "The Connected Asset Open Metadata Access Service (OMAS) is initializing",
+              "The Connected Asset Open Metadata Access Service (OMAS) is initializing a new server instance",
               "The local server has started up the Connected Asset OMAS.",
               "No action is required.  This is part of the normal operation of the server."),
 
-    SERVICE_REGISTERED_WITH_TOPIC("OMAS-CONNECTED-ASSET-0002",
+    SERVICE_REGISTERED_WITH_ENTERPRISE_TOPIC("OMAS-CONNECTED-ASSET-0002",
               OMRSAuditLogRecordSeverity.INFO,
-              "The Connected Asset Open Metadata Access Service (OMAS) is registering a listener with the OMRS Topic",
+              "The Connected Asset Open Metadata Access Service (OMAS) is registering a listener with the OMRS Topic for server {0}",
               "The Connected Asset OMAS is registering to receive events from the connected open metadata repositories.",
               "No action is required.  This is part of the normal operation of the server."),
 
     SERVICE_INITIALIZED("OMAS-CONNECTED-ASSET-0003",
               OMRSAuditLogRecordSeverity.INFO,
-              "The Connected Asset Open Metadata Access Service (OMAS) is initialized",
+              "The Connected Asset Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
               "The Connected Asset OMAS has completed initialization.",
               "No action is required.  This is part of the normal operation of the server."),
 
     SERVICE_SHUTDOWN("OMAS-CONNECTED-ASSET-0004",
               OMRSAuditLogRecordSeverity.INFO,
-              "The Connected Asset Open Metadata Access Service (OMAS) is shutting down",
-              "The local server has requested shut down of the Connected Asset OMAS.",
+              "The Connected Asset Open Metadata Access Service (OMAS) is shutting down its instance for server {0}",
+              "The local server has requested shut down of a Connected Asset OMAS instance.",
               "No action is required.  This is part of the normal operation of the server."),
 
-
+    SERVICE_INSTANCE_FAILURE("OMAS-ASSET-CONSUMER-0005",
+              OMRSAuditLogRecordSeverity.ERROR,
+              "The Asset Consumer Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}",
+              "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
+              "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server.")
     ;
 
     private String                     logMessageId;
