@@ -1,6 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-
 package org.odpi.openmetadata.accessservices.informationview.events;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -13,42 +12,32 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ConnectionProperties {
+public class GlossaryCategory {
 
-    private String model;
-    private String query;
-    private String networkAddress;
+    private String name;
+    private GlossaryCategory parentCategory;
 
-    public String getModel() {
-        return model;
+    public String getName() {
+        return name;
     }
 
-    public void setModel(String model) {
-        this.model = model;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getQuery() {
-        return query;
+    public GlossaryCategory getParentCategory() {
+        return parentCategory;
     }
 
-    public void setQuery(String query) {
-        this.query = query;
-    }
-
-    public String getNetworkAddress() {
-        return networkAddress;
-    }
-
-    public void setNetworkAddress(String networkAddress) {
-        this.networkAddress = networkAddress;
+    public void setParentCategory(GlossaryCategory parentCategory) {
+        this.parentCategory = parentCategory;
     }
 
     @Override
     public String toString() {
-        return "ConnectionProperties{" +
-                "model='" + model + '\'' +
-                ", query='" + query + '\'' +
-                ", networkAddress='" + networkAddress + '\'' +
+        return "GlossaryCategory{" +
+                "name='" + name + '\'' +
+                ", parentCategory=" + parentCategory +
                 '}';
     }
 }
