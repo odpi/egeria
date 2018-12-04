@@ -76,15 +76,14 @@ public class ReportCreationTest {
         OMRSRepositoryConnector repositoryConnector = (OMRSRepositoryConnector) connector;
 
 
-        localRepositoryContentManager = new OMRSRepositoryContentManager();
-        OMRSRepositoryContentValidator.setRepositoryContentManager(localRepositoryContentManager);
-        OMRSRepositoryContentHelper.setRepositoryContentManager(localRepositoryContentManager);
+        localRepositoryContentManager = new OMRSRepositoryContentManager(auditLog);
 
 
         OMRSRepositoryEventManager localRepositoryEventManager = new OMRSRepositoryEventManager("local repository outbound",
                 new OMRSRepositoryEventExchangeRule(OpenMetadataExchangeRule.ALL,
                         null),
-                new OMRSRepositoryContentValidator(localRepositoryContentManager));
+                new OMRSRepositoryContentValidator(localRepositoryContentManager),
+                auditLog);
 
         LocalOMRSRepositoryConnector localOMRSRepositoryConnector = (LocalOMRSRepositoryConnector) new LocalOMRSConnectorProvider("testLocalMetadataCollectionId",
                 connection,
@@ -98,6 +97,7 @@ public class ReportCreationTest {
 
         localOMRSRepositoryConnector.setRepositoryHelper(new OMRSRepositoryContentHelper(localRepositoryContentManager));
         localOMRSRepositoryConnector.setRepositoryValidator(new OMRSRepositoryContentValidator(localRepositoryContentManager));
+        localOMRSRepositoryConnector.setAuditLog(auditLog);
         localOMRSRepositoryConnector.setMetadataCollectionId("1234");
         localRepositoryContentManager.setupEventProcessor(localOMRSRepositoryConnector,
                 repositoryConnector,
@@ -112,7 +112,7 @@ public class ReportCreationTest {
         repositoryConnector.start();
         localRepositoryEventManager.start();
         localOMRSRepositoryConnector.start();
-        new OMRSArchiveManager(null).setLocalRepository(localRepositoryContentManager, localRepositoryEventManager);
+        new OMRSArchiveManager(null, auditLog).setLocalRepository(localRepositoryContentManager, localRepositoryEventManager);
 
         return localOMRSRepositoryConnector;
     }

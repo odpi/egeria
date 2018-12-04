@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.virtualdataconnector.virtualiser.views;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.io.FileUtils;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -53,7 +54,7 @@ public class ViewsConstructorTest extends AbstractTestNGSpringContextTests {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         classLoader = this.getClass().getClassLoader();
-        ivJson = JsonReadHelper.readFile(new File(classLoader.getResource(TESTIN).getFile()));
+        ivJson =  FileUtils.readFileToString(new File("./src/test/resources/" + TESTIN), "UTF-8");
         // try to delete the views
         //ivJson= JsonReadHelper.readFile(new File(classLoader.getResource(DELETE).getFile()));
         tableContextEvent = mapper.readValue(ivJson, TableContextEvent.class);
@@ -72,8 +73,8 @@ public class ViewsConstructorTest extends AbstractTestNGSpringContextTests {
         createdViews.put(GaianQueryConstructor.TECHNICAL_PREFIX, "LTT_EMPSALARYANALYSIS");
         List<InformationViewEvent> views = viewsConstructor.notifyIVOMAS(tableContextEvent, createdViews);
         assertNotNull(views);
-        String business = JsonReadHelper.readFile(new File(classLoader.getResource(BUSINESS).getFile()));
-        String technical = JsonReadHelper.readFile(new File(classLoader.getResource(TECHNICAL).getFile()));
+        String business = FileUtils.readFileToString(new File("./src/test/resources/" + BUSINESS), "UTF-8");
+        String technical = FileUtils.readFileToString(new File("./src/test/resources/" + TECHNICAL), "UTF-8");
         JSONAssert.assertEquals(business, mapper.writeValueAsString(views.get(0)),
                                 new CustomComparator(JSONCompareMode.LENIENT, new Customization("tableSource.@id", (o1,o2) -> true)));
         JSONAssert.assertEquals(technical, mapper.writeValueAsString(views.get(1)),
