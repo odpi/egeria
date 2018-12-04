@@ -21,7 +21,7 @@ import java.util.Objects;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.Reference;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.entities.<$$urelatedendtype$$>.<$$urelatedendtype$$>;
-
+import org.odpi.openmetadata.accessservices.subjectarea.server.HelperObjects.OMRSLine;
 <$Relationship$$
 import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.<$$uRelationshipName$$>.<$$uRelationshipName$$>;
 $Relationship$$>
@@ -125,9 +125,9 @@ $$$>
       /**
        * Populate the reference from a relationship
        * @param entityGuid String entity Guid
-       * @param line Line
+       * @param line OMRSLine
        */
-    public <$$uname$$>Reference(String entityGuid, Line line) {
+    public <$$uname$$>Reference(String entityGuid, OMRSLine line) {
         setRelationshipGuid(line.getGuid());
         if (entityGuid.equals(line.getEntity1Guid())) {
             setRelatedEndGuid(line.getEntity2Guid());
