@@ -41,6 +41,17 @@ public class EntityPropertiesBuilder {
         instanceProperties.setProperty(key, EntityPropertiesUtils.createPrimitiveIntPropertyValue(value));
         return this;
     }
+    /**
+     * Returns the same builder
+     *
+     * @param key - name of the property
+     * @param timestamp - timestamp to be formatted as date
+     * @return the builder to use to return
+     */
+    public EntityPropertiesBuilder withDateProperty(String key, Long timestamp) {
+        instanceProperties.setProperty(key, EntityPropertiesUtils.createPrimitiveDatePropertyValue(timestamp));
+        return this;
+    }
 
     /**
      * Returns the instance properties object
