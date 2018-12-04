@@ -67,6 +67,8 @@ public class Constants {
     public static final String FOREIGN_KEY = "ForeignKey";
     public static final String DEPLOYED_REPORT = "DeployedReport";
     public static final String ID = "id";
+    public static final String DOCUMENT_SCHEMA_TYPE = "DocumentSchemaType";
+    public static final String DOCUMENT_SCHEMA_ATTRIBUTE = "DocumentSchemaAttribute";
     public static final String COMPLEX_SCHEMA_TYPE = "ComplexSchemaType";
     public static final String LAST_MODIFIER = "lastModifier";
     public static final String LAST_MODIFIED_TIME = "lastModifiedTime";

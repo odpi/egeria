@@ -20,8 +20,8 @@ public class TestSynonym
         synonym.setExpression("Ex");
         synonym.setSource("source");
         synonym.setSteward("Stew");
-        synonym.setEntity1Guid("guid1");
-        synonym.setEntity2Guid("guid2");
+        synonym.setSynonym1Guid("guid1");
+        synonym.setSynonym2Guid("guid2");
        // synonym.setStatus(TermRelationshipStatus.Deprecated);
 
         ObjectMapper mapper = new ObjectMapper();
