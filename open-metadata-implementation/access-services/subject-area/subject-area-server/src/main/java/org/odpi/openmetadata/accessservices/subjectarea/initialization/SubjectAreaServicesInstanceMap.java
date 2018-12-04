@@ -1,7 +1,10 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.subjectarea.server.instances;
+package org.odpi.openmetadata.accessservices.subjectarea.initialization;
 
+
+import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaRESTServicesInstance;
+import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaServicesInstance;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,8 +26,8 @@ public class SubjectAreaServicesInstanceMap
      * @param serverName name of the server
      * @param instance instance object
      */
-    static synchronized void  setNewInstanceForJVM(String                         serverName,
-                                                   SubjectAreaServicesInstance   instance)
+    static public synchronized void  setNewInstanceForJVM(String                         serverName,
+                                                   SubjectAreaServicesInstance instance)
     {
         instanceMap.put(serverName, instance);
     }
@@ -38,7 +41,7 @@ public class SubjectAreaServicesInstanceMap
      */
     private static synchronized SubjectAreaServicesInstance getInstanceForJVM(String    serverName)
     {
-        SubjectAreaServicesInstance   instance = instanceMap.get(serverName);
+        SubjectAreaServicesInstance instance = instanceMap.get(serverName);
 
         return instance;
     }
@@ -49,7 +52,7 @@ public class SubjectAreaServicesInstanceMap
      *
      * @param serverName name of the server
      */
-    static synchronized void removeInstanceForJVM(String   serverName)
+    static public synchronized void removeInstanceForJVM(String   serverName)
     {
         instanceMap.remove(serverName);
     }
@@ -61,8 +64,6 @@ public class SubjectAreaServicesInstanceMap
     public SubjectAreaServicesInstanceMap()
     {
     }
-
-
     /**
      * Return the instance for this server.
      *
