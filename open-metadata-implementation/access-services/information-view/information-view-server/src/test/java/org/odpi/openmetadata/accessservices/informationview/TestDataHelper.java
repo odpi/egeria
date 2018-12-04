@@ -4,10 +4,10 @@ package org.odpi.openmetadata.accessservices.informationview;
 
 
 import org.odpi.openmetadata.accessservices.informationview.events.BusinessTerm;
-import org.odpi.openmetadata.accessservices.informationview.events.ColumnDetails;
-import org.odpi.openmetadata.accessservices.informationview.events.ConnectionDetails;
-import org.odpi.openmetadata.accessservices.informationview.events.DerivedColumnDetail;
+import org.odpi.openmetadata.accessservices.informationview.events.DatabaseColumn;
+import org.odpi.openmetadata.accessservices.informationview.events.DerivedColumn;
 import org.odpi.openmetadata.accessservices.informationview.events.InformationViewEvent;
+import org.odpi.openmetadata.accessservices.informationview.events.TableSource;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
@@ -378,37 +378,29 @@ public class TestDataHelper {
 
     public InformationViewEvent buildEvent() {
         InformationViewEvent event = new InformationViewEvent();
-        ConnectionDetails connectionDetails = new ConnectionDetails();
-        event.setConnectionDetails(connectionDetails);
-        connectionDetails.setNetworkAddress(HOSTNAME_VALUE + ":" + TestDataHelper.PORT_VALUE);
-        connectionDetails.setProtocol(PROTOCOL_VALUE);
-        connectionDetails.setConnectorProviderName(PROVIDER_CLASS_NAME);
-        connectionDetails.setEndpointQualifiedName("jdbc:derby:localhost:9393");
-        connectionDetails.setConnectionQualifiedName("jdbc:derby:localhost:9393.connection");
-        connectionDetails.setConnectorProviderQualifiedName("jdbc:derby:localhost:9393.connection.GaianConnectorProvider_type");
-        connectionDetails.setUser("Connection");
-        event.getTableContext().setSchemaName(SCHEMA_NAME);
-        event.getTableContext().setSchemaQualifiedName("jdbc:derby:localhost:9393.connection.databaseTest.schema");
-        event.getTableContext().setSchemaTypeQualifiedName("jdbc:derby:localhost:9393.connection.databaseTest.schema.schema_type");
-        event.getTableContext().setTableName(TABLE_NAME);
-        event.getTableContext().setTableQualifiedName("jdbc:derby:localhost:9393.connection.databaseTest.schema.schema_type.customer_table_type.customer_table");
-        event.getTableContext().setTableTypeQualifiedName("jdbc:derby:localhost:9393.connection.databaseTest.schema.schema_type.customer_table_type");
-        event.getTableContext().setDatabaseName(DATABASE_NAME);
-        event.getTableContext().setDatabaseQualifiedName("jdbc:derby:localhost:9393.connection.databaseTest");
+        TableSource databaseConnection = new TableSource();
+        event.setTableSource(databaseConnection);
+        databaseConnection.setNetworkAddress(HOSTNAME_VALUE + ":" + TestDataHelper.PORT_VALUE);
+        databaseConnection.setProtocol(PROTOCOL_VALUE);
+        databaseConnection.setConnectorProviderName(PROVIDER_CLASS_NAME);
+        databaseConnection.setConnectorProviderName("jdbc:derby:localhost:9393.connection.GaianConnectorProvider_type");
+        databaseConnection.setUser("Connection");
+        event.getTableSource().setSchemaName(SCHEMA_NAME);
+        event.getTableSource().setTableName(TABLE_NAME);
+        event.getTableSource().setDatabaseName(DATABASE_NAME);
 
         BusinessTerm businessTerm = new BusinessTerm();
-        ColumnDetails realColumn = new ColumnDetails();
-        realColumn.setAttributeName("cl_nm");
+        DatabaseColumn realColumn = new DatabaseColumn();
+        realColumn.setName("cl_nm");
         realColumn.setBusinessTerm(businessTerm);
         realColumn.setPosition(2);
         realColumn.setGuid(REAL_COLUMN_GUID);
         realColumn.setQualifiedName("jdbc:derby:localhost:9393.connection.databaseTest.schema.schema_type.customer_table_type.customer_table.client_name_type.client_name");
-        realColumn.setQualifiedNameColumnType("jdbc:derby:localhost:9393.connection.databaseTest.schema.schema_type.customer_table_type.customer_table.client_name_type");
 
-        DerivedColumnDetail columnClientName = new DerivedColumnDetail();
+        DerivedColumn columnClientName = new DerivedColumn();
         columnClientName.setPosition(1);
-        columnClientName.setAttributeName("client_name");
-        columnClientName.setRealColumn(realColumn);
+        columnClientName.setColumnName("client_name");
+        columnClientName.setSourceColumn(realColumn);
         businessTerm.setName("clientName");
         businessTerm.setQuery("query");
         businessTerm.setGuid(BUSINESS_TERM_GUID);

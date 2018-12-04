@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.informationview.events;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -12,9 +13,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class DatabaseColumnReference {
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "class")
+public class ReportColumnSource extends Source {
+
     private String name;
-    private String sourceId;
+    private ReportSectionSource parentReportSection;
 
     public String getName() {
         return name;
@@ -24,19 +30,24 @@ public class DatabaseColumnReference {
         this.name = name;
     }
 
-    public String getSourceId() {
-        return sourceId;
+    public ReportSectionSource getParentReportSection() {
+        return parentReportSection;
     }
 
-    public void setSourceId(String sourceId) {
-        this.sourceId = sourceId;
+    public void setParentReportSection(ReportSectionSource parentReportSection) {
+        this.parentReportSection = parentReportSection;
+    }
+
+    @Override
+    public String getQualifiedName() {
+        String qualifiedName = parentReportSection != null ? parentReportSection.getQualifiedName() + "." : "";
+        return qualifiedName + this.getName();
     }
 
     @Override
     public String toString() {
-        return "DatabaseColumnReference{" +
+        return "ReportColumnSource{" +
                 "name='" + name + '\'' +
-                ", sourceId='" + sourceId + '\'' +
                 '}';
     }
 }

@@ -2884,11 +2884,17 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                     (entityOneTypeGUID != null)    && (entityOneTypeName != null)    &&
                     (entityTwoTypeGUID != null)    && (entityTwoTypeName != null))
                 {
-                    if ((entityOneTypeDefGUID.equals(entityOneTypeGUID)) &&
-                            (entityTwoTypeDefGUID.equals(entityTwoTypeGUID)) &&
-                            (entityOneTypeDefName.equals(entityOneTypeName)) &&
-                            (entityTwoTypeDefName.equals(entityTwoTypeName)))
-                    {
+                    List<TypeDefLink> entityOneAllTypes = entityOneType.getTypeDefSuperTypes();
+                    entityOneAllTypes.add(new TypeDefLink(entityOneTypeGUID, entityOneTypeName));
+                    List<TypeDefLink> entityTwoAllTypes = entityTwoType.getTypeDefSuperTypes();
+                    entityTwoAllTypes.add(new TypeDefLink(entityTwoTypeGUID, entityTwoTypeName));
+
+                    String finalEntityOneTypeDefGUID = entityOneTypeDefGUID;
+                    String finalEntityOneTypeDefName = entityOneTypeDefName;
+                    String finalEntityTwoTypeDefGUID = entityTwoTypeDefGUID;
+                    String finalEntityTwoTypeDefName = entityTwoTypeDefName;
+                    if (entityOneAllTypes.stream().anyMatch(e -> e.getGUID().equals(finalEntityOneTypeDefGUID) && e.getName().equals(finalEntityOneTypeDefName)) &&
+                            entityTwoAllTypes.stream().anyMatch(e -> e.getGUID().equals(finalEntityTwoTypeDefGUID) && e.getName().equals(finalEntityTwoTypeDefName))) {
                         return;
                     }
                 }

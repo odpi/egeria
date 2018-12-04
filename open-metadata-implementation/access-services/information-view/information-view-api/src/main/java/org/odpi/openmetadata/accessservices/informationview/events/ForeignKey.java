@@ -14,6 +14,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ForeignKey {
+
     String columnGuid;
     String foreignKeyName;
     String columnName;
