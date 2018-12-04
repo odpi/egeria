@@ -79,6 +79,7 @@ public class OMRSInstanceEvent extends OMRSEvent
             this.originalHomeMetadataCollectionId = instanceSection.getOriginalHomeMetadataCollectionId();
             this.originalTypeDefSummary = instanceSection.getOriginalTypeDefSummary();
             this.originalInstanceGUID = instanceSection.getOriginalInstanceGUID();
+            this.instanceBatch = instanceSection.getInstanceBatch();
         }
 
         if (super.genericErrorCode != null)
