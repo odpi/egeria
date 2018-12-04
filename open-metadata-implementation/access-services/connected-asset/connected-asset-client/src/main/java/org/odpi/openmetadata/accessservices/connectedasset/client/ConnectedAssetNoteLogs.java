@@ -25,6 +25,7 @@ import java.util.List;
  */
 public class ConnectedAssetNoteLogs extends AssetNoteLogs
 {
+    private String              serverName;
     private String              userId;
     private String              omasServerURL;
     private String              assetGUID;
@@ -34,6 +35,7 @@ public class ConnectedAssetNoteLogs extends AssetNoteLogs
     /**
      * Typical constructor creates an iterator with the supplied list of elements.
      *
+     * @param serverName  name of the server.
      * @param userId user id to use on server calls.
      * @param omasServerURL url root of the server to use.
      * @param assetGUID unique identifier of the asset.
@@ -42,7 +44,8 @@ public class ConnectedAssetNoteLogs extends AssetNoteLogs
      * @param maxCacheSize maximum number of elements that should be retrieved from the property server and
      *                     cached in the element list at any one time.  If a number less than one is supplied, 1 is used.
      */
-    ConnectedAssetNoteLogs(String              userId,
+    ConnectedAssetNoteLogs(String              serverName,
+                           String              userId,
                            String              omasServerURL,
                            String              assetGUID,
                            ConnectedAsset      parentAsset,
@@ -51,6 +54,7 @@ public class ConnectedAssetNoteLogs extends AssetNoteLogs
     {
         super(parentAsset, totalElementCount, maxCacheSize);
 
+        this.serverName      = serverName;
         this.userId          = userId;
         this.omasServerURL   = omasServerURL;
         this.assetGUID       = assetGUID;
@@ -70,6 +74,7 @@ public class ConnectedAssetNoteLogs extends AssetNoteLogs
 
         if (template != null)
         {
+            this.serverName = template.serverName;
             this.userId = template.userId;
             this.omasServerURL = template.omasServerURL;
             this.assetGUID = template.assetGUID;
@@ -116,7 +121,7 @@ public class ConnectedAssetNoteLogs extends AssetNoteLogs
                                                      int  maximumSize) throws PropertyServerException
     {
         final String   methodName = "AssetNoteLogs.getCachedList";
-        final String   urlTemplate = "/open-metadata/access-services/connected-asset/users/{0}/assets/{1}/note-logs?elementStart={2}&maxElements={3}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/connected-asset/users/{1}/assets/{2}/note-logs?elementStart={3}&maxElements={4}";
 
         connectedAsset.validateOMASServerURL(methodName);
 
@@ -125,6 +130,7 @@ public class ConnectedAssetNoteLogs extends AssetNoteLogs
             NoteLogsResponse restResult = (NoteLogsResponse)connectedAsset.callGetRESTCall(methodName,
                                                                                            NoteLogsResponse.class,
                                                                                            omasServerURL + urlTemplate,
+                                                                                           serverName,
                                                                                            userId,
                                                                                            assetGUID,
                                                                                            cacheStartPointer,
@@ -152,7 +158,8 @@ public class ConnectedAssetNoteLogs extends AssetNoteLogs
                         {
                             resultList.add(new AssetNoteLog(connectedAsset,
                                                             noteLogResponse.getNoteLog(),
-                                                            new ConnectedAssetNotes(userId,
+                                                            new ConnectedAssetNotes(serverName,
+                                                                                    userId,
                                                                                     omasServerURL,
                                                                                     noteLogResponse.getNoteLog().getGUID(),
                                                                                     connectedAsset,

@@ -2,13 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaAttribute;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaImplementationQuery;
 import org.testng.annotations.Test;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
@@ -20,6 +17,7 @@ public class TestAssetSchemaImplementationQuery
 {
     private SchemaAttribute      schemaAttribute     = new SchemaAttribute();
     private AssetSchemaAttribute queryTargetElement  = null;
+    private AssetSchemaType      attributeSchemaType = null;
 
 
     /**
@@ -57,7 +55,7 @@ public class TestAssetSchemaImplementationQuery
     private AssetSchemaImplementationQuery getDifferentObject()
     {
         AssetSummary              parentAsset = new AssetSummary(new Asset());
-        SchemaImplementationQuery testBean = new SchemaImplementationQuery();
+        SchemaImplementationQuery testBean    = new SchemaImplementationQuery();
 
         testBean.setQueryId(5);
         testBean.setQueryType("TestQueryType");
@@ -93,8 +91,8 @@ public class TestAssetSchemaImplementationQuery
      */
     private AssetSchemaImplementationQuery getYetAnotherDifferentObject()
     {
-        SchemaImplementationQuery testBean = new SchemaImplementationQuery();
-        SchemaAttribute      queryTargetBean  = new SchemaAttribute();
+        SchemaImplementationQuery testBean        = new SchemaImplementationQuery();
+        SchemaAttribute           queryTargetBean = new SchemaAttribute();
         queryTargetBean.setAttributeName("TestAttributeName");
 
         testBean.setQueryId(5);
@@ -102,7 +100,7 @@ public class TestAssetSchemaImplementationQuery
         testBean.setQuery("TestQuery");
         testBean.setQueryTargetElement(schemaAttribute);
 
-        return new AssetSchemaImplementationQuery(testBean, new AssetSchemaAttribute(null, queryTargetBean, null));
+        return new AssetSchemaImplementationQuery(testBean, new AssetSchemaAttribute(null, queryTargetBean, attributeSchemaType));
     }
 
 
@@ -111,7 +109,7 @@ public class TestAssetSchemaImplementationQuery
      *
      * @param resultObject object returned by the test
      */
-    private void validateResultObject(AssetSchemaImplementationQuery  resultObject)
+    private void validateResultObject(AssetSchemaImplementationQuery resultObject)
     {
         assertTrue(resultObject.getQueryId() == 5);
         assertTrue(resultObject.getQueryType().equals("TestQueryType"));
@@ -125,7 +123,7 @@ public class TestAssetSchemaImplementationQuery
      *
      * @param nullObject object to test
      */
-    private void validateNullObject(AssetSchemaImplementationQuery  nullObject)
+    private void validateNullObject(AssetSchemaImplementationQuery nullObject)
     {
         assertTrue(nullObject.getQueryType() == null);
         assertTrue(nullObject.getQuery() == null);
@@ -139,10 +137,10 @@ public class TestAssetSchemaImplementationQuery
      */
     @Test public void testNullObject()
     {
-        SchemaImplementationQuery            nullBean;
-        AssetSchemaImplementationQuery       nullObject;
-        AssetSchemaImplementationQuery       nullTemplate;
-        AssetDescriptor                      parentAsset;
+        SchemaImplementationQuery      nullBean;
+        AssetSchemaImplementationQuery nullObject;
+        AssetSchemaImplementationQuery nullTemplate;
+        AssetDescriptor                parentAsset;
 
         nullBean = null;
         nullObject = new AssetSchemaImplementationQuery(nullBean, null);
@@ -180,17 +178,17 @@ public class TestAssetSchemaImplementationQuery
      */
     @Test public void  testSchemaType()
     {
-        AssetDescriptor         parentAsset         = new AssetSummary(new Asset());
+        AssetDescriptor parentAsset = new AssetSummary(new Asset());
 
-        AssetMeanings          meanings             = new MockAssetMeanings(null, 2, 7);
-        SchemaAttribute        schemaAttribute      = new SchemaAttribute();
-        AssetSchemaAttribute   queryTarget          = new AssetSchemaAttribute(schemaAttribute, null);
+        SchemaAttribute      schemaAttribute = new SchemaAttribute();
+        AssetSchemaAttribute queryTarget     = new AssetSchemaAttribute(schemaAttribute, attributeSchemaType);
 
-        SchemaImplementationQuery        testBean = new SchemaImplementationQuery();
+        SchemaImplementationQuery testBean = new SchemaImplementationQuery();
         testBean.setQueryTargetElement(schemaAttribute);
 
-        AssetSchemaImplementationQuery   testTemplate = new AssetSchemaImplementationQuery((SchemaImplementationQuery)null, null);
-        AssetSchemaImplementationQuery   testObject;
+        AssetSchemaImplementationQuery
+                                       testTemplate = new AssetSchemaImplementationQuery((SchemaImplementationQuery)null, null);
+        AssetSchemaImplementationQuery testObject;
 
         assertTrue(testTemplate.getQueryTargetElement() == null);
 
@@ -228,7 +226,7 @@ public class TestAssetSchemaImplementationQuery
         assertFalse(getTestObject().equals("DummyString"));
         assertTrue(getTestObject().equals(getTestObject()));
 
-        AssetSchemaImplementationQuery  sameObject = getTestObject();
+        AssetSchemaImplementationQuery sameObject = getTestObject();
         assertTrue(sameObject.equals(sameObject));
 
         assertFalse(getTestObject().equals(getDifferentObject()));

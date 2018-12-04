@@ -118,9 +118,16 @@
         <maven-enforcer-plugin.version>3.0.0-M1</maven-enforcer-plugin.version>
         <maven-javadoc-plugin.version>3.0.1</maven-javadoc-plugin.version>
         <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
-        <surefire.plugin.version>2.22.1</surefire.plugin.version>
+	<surefire.plugin.version>3.0.0-M1</surefire.plugin.version>
+	<maven-download.version>1.4.1</maven-download.version>
+	<maven-antrun.version>1.8</maven-antrun.version>
+        <maven-install.version>3.0.0-M1</maven-install.version>
+
+
 
     </properties>
+
+
 
     <dependencies>
 
@@ -184,6 +191,7 @@
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
+
 
     <build>
 
@@ -272,6 +280,9 @@
                         <exclude>**/*.lock</exclude>
                         <exclude>**/m2repo*/**</exclude>
                         <exclude>**/venv/**</exclude>
+                        <exclude>**/archives/patches/egeria.patch</exclude>
+                        <exclude>**/docs/**/*.xml</exclude>
+                        <exclude>**/website/**/*.xml</exclude>
                     </excludes>
                     <licenseFamilies>
                         <licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">

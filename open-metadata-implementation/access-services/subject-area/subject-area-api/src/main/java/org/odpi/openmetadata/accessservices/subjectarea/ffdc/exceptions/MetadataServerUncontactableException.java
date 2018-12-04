@@ -1,9 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 
 package org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions;
 
 /**
- * The MetadataServerUncontactableException is thrown by the SubjectArea OMAS when it is not able to communicate with the
+ * The MetadataServerUncontactableException is thrown by the Subject Area OMAS when it is not able to communicate with the
  * metadata server.
  */
 public class MetadataServerUncontactableException extends SubjectAreaCheckedExceptionBase {

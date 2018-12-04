@@ -13,7 +13,7 @@ import static org.testng.Assert.assertTrue;
  */
 public class TestSchemaImplementationQuery
 {
-    private SchemaAttribute                 schemaAttribute = new SchemaAttribute();
+    private SchemaAttribute schemaAttribute = new SchemaAttribute();
 
 
     /**
@@ -48,7 +48,7 @@ public class TestSchemaImplementationQuery
      *
      * @param resultObject object returned by the test
      */
-    private void validateResultObject(SchemaImplementationQuery  resultObject)
+    private void validateResultObject(SchemaImplementationQuery resultObject)
     {
         assertTrue(resultObject.getQueryId() == 23);
         assertTrue(resultObject.getQuery().equals("TestQuery"));
@@ -62,7 +62,7 @@ public class TestSchemaImplementationQuery
      */
     @Test public void testNullObject()
     {
-        SchemaImplementationQuery    nullObject = new SchemaImplementationQuery();
+        SchemaImplementationQuery nullObject = new SchemaImplementationQuery();
 
         assertTrue(nullObject.getQueryId() == 0);
         assertTrue(nullObject.getQuery() == null);
@@ -88,7 +88,7 @@ public class TestSchemaImplementationQuery
         assertFalse(getTestObject().equals("DummyString"));
         assertTrue(getTestObject().equals(getTestObject()));
 
-        SchemaImplementationQuery  sameObject = getTestObject();
+        SchemaImplementationQuery sameObject = getTestObject();
         assertTrue(sameObject.equals(sameObject));
     }
 
@@ -135,7 +135,7 @@ public class TestSchemaImplementationQuery
         /*
          * Through superclass
          */
-        PropertyBase  propertyBase = getTestObject();
+        PropertyBase propertyBase = getTestObject();
 
         try
         {
@@ -154,6 +154,15 @@ public class TestSchemaImplementationQuery
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
+    }
+
+
+    /**
+     *  Validate that 2 different objects with the same content have the same hash code.
+     */
+    @Test public void testHashCode()
+    {
+        assertTrue(getTestObject().hashCode() == getTestObject().hashCode());
     }
 
 

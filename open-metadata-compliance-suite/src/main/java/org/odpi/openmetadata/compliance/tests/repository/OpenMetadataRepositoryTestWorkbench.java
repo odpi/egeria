@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.compliance.tests.repository;
 
 import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationFactory;
@@ -41,11 +42,13 @@ public class OpenMetadataRepositoryTestWorkbench extends OpenMetadataTestWorkben
     /**
      * Constructor received the URL root for the server being tested.
      *
+     * @param serverName name of server to test.
      * @param serverURLRoot string
      */
-    public OpenMetadataRepositoryTestWorkbench(String  serverURLRoot)
+    public OpenMetadataRepositoryTestWorkbench(String  serverName,
+                                               String  serverURLRoot)
     {
-        super(workbenchName, workbenchVersionNumber, workbenchDocURL, serverURLRoot);
+        super(workbenchName, workbenchVersionNumber, workbenchDocURL, serverName, serverURLRoot);
     }
 
 
@@ -58,8 +61,6 @@ public class OpenMetadataRepositoryTestWorkbench extends OpenMetadataTestWorkben
      */
     private OMRSRepositoryConnector   getRepositoryConnector(String metadataCollectionId)
     {
-        final String serverName           = "TestServer";
-
         try
         {
             ConnectorConfigurationFactory factory = new ConnectorConfigurationFactory();

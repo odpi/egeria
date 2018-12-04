@@ -10,6 +10,15 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 public class MockAsset extends AssetDescriptor
 {
     /**
+     * Default constructor
+     */
+    public MockAsset()
+    {
+        super();
+    }
+
+
+    /**
      * Bean constructor
      *
      * @param assetBean - asset bean with all the properties

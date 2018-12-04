@@ -1,4 +1,5 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
 
 # Subject Area Open Metadata Access Service (OMAS)
 
@@ -22,70 +23,26 @@ The module structure for the Subject Area OMAS is as follows:
 * [subject-area-spring](subject-area-spring) supports the REST API using the [Spring](../../../developer-resources/Spring.md) libraries.
 * [subject-area-tools](subject-area-tools) supports code generation of POJO property objects from archive types.
 
-The implementation is not complete. 
-The following has been implemented : 
-
-* Java and REST API for create, get, update and delete for Glossary.
-* [GlossarySample](../../../open-metadata-resources/open-metadata-samples/open-metadata-subjectarea-client-samples/src/main/java/org/odpi/openmetadata/accessservices/subjectarea/samples/GlossarySample.java) is a sample that can be used to test the glossary java APIs. 
-
-## Example REST calls: 
-
-
 The implementation is not complete. The following has been implemented : 
 
-* REST API for create, get and update for Glossary.
+* Java and REST API for create, get and update for Glossary, Category, Term , SubjectAreaDefinition.
+* Java and REST API for the Term to Term relationships HASA, RelatedTerm, Synonym, Antonym, Translations, used in context,
+  preferred terms, valid values, replacement terms, typed by, is a, is a type of.
+
+## Example JAVA calls: 
+See the [Subject Area samples](../../../open-metadata-resources/open-metadata-samples/access-services-samples/subject-area-client-samples/README.md) and [Subject Area FVT](../../../open-metadata-test/open-metadata-fvt/access-services-fvt/README.md) projects for examples around how to use the Java API.    
 
 ## Example REST calls: 
-
 ### Create Glossary instance
 
-POST url: `localhost:8080/open-metadata/access-services/subject-area/users/{user}/glossaries`
+POST url: `localhost:8080/servers/{serverName}/open-metadata/access-services/subject-area/users/{user}/glossaries`
 
-
-JSON body 
-=======
-
-POST url: `localhost:8080/open-metadata/access-services/subject-area/users/{user}/glossaries`
-
-body:
+JSON body:
 ```JSON
 {
   "name": "Test glossary 1",
   "description": "This is a Glossary for testing.",
-  "usage": "for test",
-  "governanceActions": {
-    "confidentiality": {
-      "level": "Confidential",
-      "confidence": "10",
-      "steward": "Stuart",
-      "source": "source value",
-      "notes": "An interesting note",
-      "status": "Proposed"
-    },
-    "criticality": {
-      "level": "Important",
-      "confidence": "9",
-      "steward": "Stuart2",
-      "source": "source value2",
-      "notes": "An interesting note ish",
-      "status": "Imported"
-    },
-    "confidence": {
-      "level": "AdHoc",
-      "confidence": "9",
-      "steward": "Stuart2",
-      "source": "source value2",
-      "notes": "An interesting note ish",
-      "status": "Imported"
-    },
-    "retention":{
-      "confidence": 6,
-      "notes": "some notes",
-      "steward": "Fred",
-      "source": "a source",
-      "basis": "RegulatedLifetime"
-    }
-  }
+  "usage": "for test" 
 }
 ```
 
@@ -93,7 +50,7 @@ body:
  Get Glossary instance (where {user} is the guid in the Glossary create response and {user} is the userid )
 
 
-GET url: `localhost:8080/open-metadata/access-services/subject-area/users/{user}/glossaries/{guid}`
+GET url: `localhost:8080/servers/{serverName}/open-metadata/access-services/subject-area/users/{user}/glossaries/{guid}`
 
 (where `{guid}` is the GUID in the Glossary create response)
 
@@ -101,4 +58,3 @@ GET url: `localhost:8080/open-metadata/access-services/subject-area/users/{user}
 
 Delete Glossary instance (where {user} is the guid in the Glossary create response and {user} is the userid )
 DELETE url : localhost:8080/open-metadata/access-services/subject-area/users/{user}/glossaries/{guid}
-

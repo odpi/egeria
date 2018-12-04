@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 
 package org.odpi.openmetadata.accessservices.subjectarea.properties.classifications;
 import org.slf4j.Logger;
@@ -107,7 +108,7 @@ public class Folder extends Classification {
        private OrderBy orderBy;
        /**
         * {@literal Definition for how elements in the collection should be ordered. }
-        * @return {@code OrderBy }
+        * @return {$$PropertyTypeJavadoc$$ }
         */
        public OrderBy getOrderBy() {
            return this.orderBy;
@@ -120,7 +121,7 @@ public class Folder extends Classification {
        private String otherPropertyName;
        /**
         * {@literal Name of property to use for ordering. }
-        * @return {@code String }
+        * @return {$$PropertyTypeJavadoc$$ }
         */
        public String getOtherPropertyName() {
            return this.otherPropertyName;

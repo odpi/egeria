@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 
 import org.mockito.Mock;
@@ -16,27 +17,28 @@ import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.testng.Assert.*;
 
 public class TestSubjectAreaTermRESTServices {
+    final static String TEST_SERVER_NAME = "Test Server";
     @Mock
     private OMRSAPIHelper oMRSAPIHelper;
+    @Mock
+    private OMRSRepositoryConnector repositoryConnector;
 
     @BeforeMethod
     public void setup() throws UserNotAuthorizedException, EntityNotKnownException, ConnectorCheckedException, InvalidParameterException, RepositoryErrorException, ConnectionCheckedException {
@@ -44,6 +46,11 @@ public class TestSubjectAreaTermRESTServices {
     }
     @Test
     public void testCreateTermWithGlossaryName() throws Exception {
+        OMRSMetadataCollection  mockMetadataCollection = getMockOmrsMetadataCollection();
+        when(repositoryConnector.getMetadataCollection()).thenReturn(mockMetadataCollection);
+        when(repositoryConnector.getServerName()).thenReturn(TEST_SERVER_NAME);
+        // initialise the map
+        new SubjectAreaServicesInstance(repositoryConnector);
         String testuserid = "userid1";
         String testtermguid = "term-guid-1";
         String testglossaryguid = "glossary-guid-1";
@@ -98,7 +105,7 @@ public class TestSubjectAreaTermRESTServices {
         GlossarySummary glossary = new GlossarySummary();
         glossary.setName(testGlossaryName);
         requestedTerm.setGlossary(glossary);
-        SubjectAreaOMASAPIResponse response = subjectAreaTermOmasREST.createTerm(testuserid, requestedTerm);
+        SubjectAreaOMASAPIResponse response = subjectAreaTermOmasREST.createTerm(TEST_SERVER_NAME, testuserid, requestedTerm);
 
         assertNotNull(response);
         assertTrue(response.getResponseCategory().equals(ResponseCategory.Term));
@@ -113,6 +120,11 @@ public class TestSubjectAreaTermRESTServices {
     }
     @Test
     public void testCreateTermWithGlossaryGuid() throws Exception {
+        OMRSMetadataCollection  mockMetadataCollection = getMockOmrsMetadataCollection();
+        when(repositoryConnector.getMetadataCollection()).thenReturn(mockMetadataCollection);
+        when(repositoryConnector.getServerName()).thenReturn(TEST_SERVER_NAME);
+        // initialise the map
+        new SubjectAreaServicesInstance(repositoryConnector);
         String testuserid = "userid1";
         String testtermguid = "term-guid-1";
         String testglossaryguid = "glossary-guid-1";
@@ -169,7 +181,7 @@ public class TestSubjectAreaTermRESTServices {
         GlossarySummary glossary = new GlossarySummary();
         glossary.setGuid(testglossaryguid);
         requestedTerm.setGlossary(glossary);
-        SubjectAreaOMASAPIResponse response = subjectAreaTermOmasREST.createTerm(testuserid, requestedTerm);
+        SubjectAreaOMASAPIResponse response = subjectAreaTermOmasREST.createTerm(TEST_SERVER_NAME, testuserid, requestedTerm);
 
         assertNotNull(response);
         assertTrue(response.getResponseCategory().equals(ResponseCategory.Term));
@@ -185,12 +197,18 @@ public class TestSubjectAreaTermRESTServices {
 
     @Test
     public void testCreateTermNoGlossary() throws Exception {
+        OMRSMetadataCollection  mockMetadataCollection = getMockOmrsMetadataCollection();
+        when(repositoryConnector.getMetadataCollection()).thenReturn(mockMetadataCollection);
+        when(repositoryConnector.getServerName()).thenReturn(TEST_SERVER_NAME);
+        // initialise the map
+        new SubjectAreaServicesInstance(repositoryConnector);
         String testuserid = "userid1";
         String testtermguid = "term-guid-1";
         String testglossaryguid = "glossary-guid-1";
         final String testGlossaryName = "TestGlossary";
         SubjectAreaTermRESTServices subjectAreaTermOmasREST = new SubjectAreaTermRESTServices();
-
+        // set the mock omrs in to the rest file.
+        subjectAreaTermOmasREST.setOMRSAPIHelper(oMRSAPIHelper);
         String displayName = null;
         String summary = "string1";
         String description = "string2 fsdgsdg";
@@ -200,14 +218,14 @@ public class TestSubjectAreaTermRESTServices {
         requestedTerm.setSummary(summary);
         requestedTerm.setDescription(description);
 
-        SubjectAreaOMASAPIResponse response = subjectAreaTermOmasREST.createTerm(testuserid, requestedTerm);
+        SubjectAreaOMASAPIResponse response = subjectAreaTermOmasREST.createTerm(TEST_SERVER_NAME, testuserid, requestedTerm);
         assertTrue(response.getResponseCategory().equals(ResponseCategory.InvalidParameterException));
         InvalidParameterExceptionResponse invalidParameterExceptionResponse = (InvalidParameterExceptionResponse)response;
         assertTrue(invalidParameterExceptionResponse.getExceptionErrorMessage().contains("OMAS-SUBJECTAREA-400-016"));
 
         // check with an empty string
         requestedTerm.setName("");
-        response =  subjectAreaTermOmasREST.createTerm(testuserid, requestedTerm);
+        response =  subjectAreaTermOmasREST.createTerm(TEST_SERVER_NAME, testuserid, requestedTerm);
         assertNotNull(response);
         assertTrue(response.getResponseCategory().equals(ResponseCategory.InvalidParameterException));
         invalidParameterExceptionResponse = (InvalidParameterExceptionResponse)response;
@@ -216,11 +234,18 @@ public class TestSubjectAreaTermRESTServices {
 
     @Test
     public void testCreateTermWithEmptyGlossary() throws Exception {
+        OMRSMetadataCollection  mockMetadataCollection = getMockOmrsMetadataCollection();
+        when(repositoryConnector.getMetadataCollection()).thenReturn(mockMetadataCollection);
+        when(repositoryConnector.getServerName()).thenReturn(TEST_SERVER_NAME);
+        // initialise the map
+        new SubjectAreaServicesInstance(repositoryConnector);
         String testuserid = "userid1";
         String testtermguid = "term-guid-1";
         String testglossaryguid = "glossary-guid-1";
         final String testGlossaryName = "TestGlossary";
         SubjectAreaTermRESTServices subjectAreaTermOmasREST = new SubjectAreaTermRESTServices();
+        // set the mock omrs in to the rest file.
+        subjectAreaTermOmasREST.setOMRSAPIHelper(oMRSAPIHelper);
 
         String displayName = "test";
         String summary = "string1";
@@ -234,7 +259,7 @@ public class TestSubjectAreaTermRESTServices {
         // set empty glossary
         GlossarySummary glossary = new GlossarySummary();
         requestedTerm.setGlossary(glossary);
-        SubjectAreaOMASAPIResponse response = subjectAreaTermOmasREST.createTerm(testuserid, requestedTerm);
+        SubjectAreaOMASAPIResponse response = subjectAreaTermOmasREST.createTerm(TEST_SERVER_NAME, testuserid, requestedTerm);
 
         InvalidParameterExceptionResponse invalidParameterExceptionResponse = (InvalidParameterExceptionResponse)response;
         assertTrue(invalidParameterExceptionResponse.getExceptionErrorMessage().contains("OMAS-SUBJECTAREA-400-015"));
@@ -242,7 +267,7 @@ public class TestSubjectAreaTermRESTServices {
         assertTrue(response.getResponseCategory().equals(ResponseCategory.InvalidParameterException));
         // check with an empty glossary
         requestedTerm.setGlossary(glossary);
-        response =  subjectAreaTermOmasREST.createTerm(testuserid, requestedTerm);
+        response =  subjectAreaTermOmasREST.createTerm(TEST_SERVER_NAME, testuserid, requestedTerm);
         assertNotNull(response);
         assertTrue(response.getResponseCategory().equals(ResponseCategory.InvalidParameterException));
         invalidParameterExceptionResponse = (InvalidParameterExceptionResponse)response;
@@ -252,12 +277,18 @@ public class TestSubjectAreaTermRESTServices {
     }
     @Test
     public void testCreateTermNonExistantNamedGlossary() throws Exception {
+        OMRSMetadataCollection  mockMetadataCollection = getMockOmrsMetadataCollection();
+        when(repositoryConnector.getMetadataCollection()).thenReturn(mockMetadataCollection);
+        when(repositoryConnector.getServerName()).thenReturn(TEST_SERVER_NAME);
+        // initialise the map
+        new SubjectAreaServicesInstance(repositoryConnector);
         String testuserid = "userid1";
         String testtermguid = "term-guid-1";
         String testglossaryguid = "glossary-guid-1";
         final String testGlossaryName = "TestGlossary";
         SubjectAreaTermRESTServices subjectAreaTermOmasREST = new SubjectAreaTermRESTServices();
-
+        // set the mock omrs in to the rest file.
+        subjectAreaTermOmasREST.setOMRSAPIHelper(oMRSAPIHelper);
         String displayName = "string0";
         String summary = "string1";
         String description = "string2 fsdgsdg";
@@ -292,7 +323,7 @@ public class TestSubjectAreaTermRESTServices {
         GlossarySummary glossary = new GlossarySummary();
         glossary.setName(testGlossaryName);
         requestedTerm.setGlossary(glossary);
-        SubjectAreaOMASAPIResponse response = subjectAreaTermOmasREST.createTerm(testuserid, requestedTerm);
+        SubjectAreaOMASAPIResponse response = subjectAreaTermOmasREST.createTerm(TEST_SERVER_NAME, testuserid, requestedTerm);
         assertNotNull(response);
         assertTrue(response.getResponseCategory().equals(ResponseCategory.InvalidParameterException));
         InvalidParameterExceptionResponse invalidParameterExceptionResponse = (InvalidParameterExceptionResponse)response;
@@ -302,12 +333,18 @@ public class TestSubjectAreaTermRESTServices {
 
     @Test
     public void testCreateTermNonExistantIdedGlossary() throws Exception {
+        OMRSMetadataCollection  mockMetadataCollection = getMockOmrsMetadataCollection();
+        when(repositoryConnector.getMetadataCollection()).thenReturn(mockMetadataCollection);
+        when(repositoryConnector.getServerName()).thenReturn(TEST_SERVER_NAME);
+        // initialise the map
+        new SubjectAreaServicesInstance(repositoryConnector);
         String testuserid = "userid1";
         String testtermguid = "term-guid-1";
         String testglossaryguid = "glossary-guid-1";
         final String testGlossaryName = "TestGlossary";
         SubjectAreaTermRESTServices subjectAreaTermOmasREST = new SubjectAreaTermRESTServices();
-
+        // set the mock omrs in to the rest file.
+        subjectAreaTermOmasREST.setOMRSAPIHelper(oMRSAPIHelper);
         String displayName = "string0";
         String summary = "string1";
         String description = "string2 fsdgsdg";
@@ -348,7 +385,7 @@ public class TestSubjectAreaTermRESTServices {
         GlossarySummary glossary = new GlossarySummary();
         glossary.setGuid(testglossaryguid);
         requestedTerm.setGlossary(glossary);
-        SubjectAreaOMASAPIResponse response = subjectAreaTermOmasREST.createTerm(testuserid, requestedTerm);
+        SubjectAreaOMASAPIResponse response = subjectAreaTermOmasREST.createTerm(TEST_SERVER_NAME, testuserid, requestedTerm);
         assertNotNull(response);
         assertTrue(response.getResponseCategory().equals(ResponseCategory.InvalidParameterException));
         InvalidParameterExceptionResponse invalidParameterExceptionResponse = (InvalidParameterExceptionResponse)response;
@@ -379,7 +416,7 @@ public class TestSubjectAreaTermRESTServices {
 //        Set<String> categories = new HashSet<>();
 //        categories.add("cat1");
 //        requestedTerm.setCategories(categories);
-//        SubjectAreaOMASAPIResponse response = subjectAreaTermOmasREST.createTerm(testuserid, requestedTerm);
+//        SubjectAreaOMASAPIResponse response = subjectAreaTermOmasREST.createTerm(TEST_SERVER_NAME, testuserid, requestedTerm);
 //        assertNotNull(response);
 //        assertTrue(response.getResponseCategory().equals(ResponseCategory.InvalidParameterException));
 //        InvalidParameterExceptionResponse invalidParameterExceptionResponse = (InvalidParameterExceptionResponse)response;
@@ -390,7 +427,7 @@ public class TestSubjectAreaTermRESTServices {
 //        Set<String> projects = new HashSet<>();
 //        projects.add("projects");
 //        requestedTerm.setProjects(projects);
-//        response =  subjectAreaTermOmasREST.createTerm(testuserid, requestedTerm);
+//        response =  subjectAreaTermOmasREST.createTerm(TEST_SERVER_NAME, testuserid, requestedTerm);
 //        assertTrue(response.getResponseCategory().equals(ResponseCategory.InvalidParameterException));
 //        invalidParameterExceptionResponse = (InvalidParameterExceptionResponse)response;
 //        assertTrue(invalidParameterExceptionResponse.getExceptionErrorMessage().contains("OMAS-SUBJECTAREA-400-026"));
@@ -425,7 +462,7 @@ public class TestSubjectAreaTermRESTServices {
 //        subjectAreaTermOmasREST.setOMRSAPIHelper(oMRSAPIHelper);
 //
 //
-//        SubjectAreaOMASAPIResponse response =subjectAreaTermOmasREST.updateTermName(testuserid,testtermguid, newName);
+//        SubjectAreaOMASAPIResponse response =subjectAreaTermOmasREST.updateTermName(TEST_SERVER_NAME, testuserid,testtermguid, newName);
 //        assertNotNull(response);
 //        assertTrue(response.getResponseCategory().equals(ResponseCategory.Term));
 //        Term returnedTerm  = ((TermResponse)response).getTerm();
@@ -461,7 +498,7 @@ public class TestSubjectAreaTermRESTServices {
 //        // set the mock omrs in to the rest file.
 //        subjectAreaTermOmasREST.setOMRSAPIHelper(oMRSAPIHelper);
 //
-//        SubjectAreaOMASAPIResponse response =subjectAreaTermOmasREST.updateTermDescription(testuserid,testtermguid, newDescription);
+//        SubjectAreaOMASAPIResponse response =subjectAreaTermOmasREST.updateTermDescription(TEST_SERVER_NAME, testuserid,testtermguid, newDescription);
 //        assertNotNull(response);
 //        assertTrue(response.getResponseCategory().equals(ResponseCategory.Term));
 //        Term returnedTerm  = ((TermResponse)response).getTerm();
@@ -471,6 +508,11 @@ public class TestSubjectAreaTermRESTServices {
 
     @Test
     public void testDeleteTerm() throws Exception {
+        OMRSMetadataCollection  mockMetadataCollection = getMockOmrsMetadataCollection();
+        when(repositoryConnector.getMetadataCollection()).thenReturn(mockMetadataCollection);
+        when(repositoryConnector.getServerName()).thenReturn(TEST_SERVER_NAME);
+        // initialise the map
+        new SubjectAreaServicesInstance(repositoryConnector);
         String testuserid = "userid1";
         String testtermguid = "term-guid-1";
 
@@ -494,14 +536,20 @@ public class TestSubjectAreaTermRESTServices {
         )).thenReturn(mockEntityGet);
 
         SubjectAreaTermRESTServices subjectAreaTermOmasREST = new SubjectAreaTermRESTServices();
+        // set the mock omrs in to the rest file.
         subjectAreaTermOmasREST.setOMRSAPIHelper(oMRSAPIHelper);
-        SubjectAreaOMASAPIResponse response = subjectAreaTermOmasREST.deleteTerm(testuserid, testtermguid,false);
+        SubjectAreaOMASAPIResponse response = subjectAreaTermOmasREST.deleteTerm(TEST_SERVER_NAME, testuserid, testtermguid,false);
         assertNotNull(response);
         assertTrue(response.getResponseCategory().equals(ResponseCategory.Term));
     }
 
     @Test
     public void testGetTerm() throws Exception {
+        OMRSMetadataCollection  mockMetadataCollection = getMockOmrsMetadataCollection();
+        when(repositoryConnector.getMetadataCollection()).thenReturn(mockMetadataCollection);
+        when(repositoryConnector.getServerName()).thenReturn(TEST_SERVER_NAME);
+        // initialise the map
+        new SubjectAreaServicesInstance(repositoryConnector);
         String testuserid = "userid1";
         String testtermguid = "testcreateTerm";
         SubjectAreaTermRESTServices subjectAreaTermOmasREST = new SubjectAreaTermRESTServices();
@@ -518,7 +566,7 @@ public class TestSubjectAreaTermRESTServices {
         // set the mock omrs in to the rest file.
         subjectAreaTermOmasREST.setOMRSAPIHelper(oMRSAPIHelper);
 
-        SubjectAreaOMASAPIResponse response = subjectAreaTermOmasREST.getTermByGuid(testuserid, testtermguid);
+        SubjectAreaOMASAPIResponse response = subjectAreaTermOmasREST.getTermByGuid(TEST_SERVER_NAME, testuserid, testtermguid);
         assertNotNull(response);
         assertTrue(response.getResponseCategory().equals(ResponseCategory.Term));
         Term returnedTerm  = ((TermResponse)response).getTerm();
@@ -570,5 +618,412 @@ public class TestSubjectAreaTermRESTServices {
         mockEntity.setType(typeOfEntity);
 
         return mockEntity;
+    }
+    private OMRSMetadataCollection getMockOmrsMetadataCollection()
+    {
+        return new OMRSMetadataCollection(null,"111","222",null,null)
+        {
+            @Override
+            public TypeDefGallery getAllTypes(String userId) throws RepositoryErrorException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public TypeDefGallery findTypesByName(String userId, String name) throws InvalidParameterException, RepositoryErrorException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public List<TypeDef> findTypeDefsByCategory(String userId, TypeDefCategory category) throws InvalidParameterException, RepositoryErrorException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public List<AttributeTypeDef> findAttributeTypeDefsByCategory(String userId, AttributeTypeDefCategory category) throws InvalidParameterException, RepositoryErrorException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public List<TypeDef> findTypeDefsByProperty(String userId, TypeDefProperties matchCriteria) throws InvalidParameterException, RepositoryErrorException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public List<TypeDef> findTypesByExternalID(String userId, String standard, String organization, String identifier) throws InvalidParameterException, RepositoryErrorException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public List<TypeDef> searchForTypeDefs(String userId, String searchCriteria) throws InvalidParameterException, RepositoryErrorException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public TypeDef getTypeDefByGUID(String userId, String guid) throws InvalidParameterException, RepositoryErrorException, TypeDefNotKnownException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public AttributeTypeDef getAttributeTypeDefByGUID(String userId, String guid) throws InvalidParameterException, RepositoryErrorException, TypeDefNotKnownException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public TypeDef getTypeDefByName(String userId, String name) throws InvalidParameterException, RepositoryErrorException, TypeDefNotKnownException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public AttributeTypeDef getAttributeTypeDefByName(String userId, String name) throws InvalidParameterException, RepositoryErrorException, TypeDefNotKnownException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public void addTypeDefGallery(String userId, TypeDefGallery newTypes) throws InvalidParameterException, RepositoryErrorException, TypeDefNotSupportedException, TypeDefKnownException, TypeDefConflictException, InvalidTypeDefException, FunctionNotSupportedException, UserNotAuthorizedException
+            {
+
+            }
+
+            @Override
+            public void addTypeDef(String userId, TypeDef newTypeDef) throws InvalidParameterException, RepositoryErrorException, TypeDefNotSupportedException, TypeDefKnownException, TypeDefConflictException, InvalidTypeDefException, FunctionNotSupportedException, UserNotAuthorizedException
+            {
+
+            }
+
+            @Override
+            public void addAttributeTypeDef(String userId, AttributeTypeDef newAttributeTypeDef) throws InvalidParameterException, RepositoryErrorException, TypeDefNotSupportedException, TypeDefKnownException, TypeDefConflictException, InvalidTypeDefException, FunctionNotSupportedException, UserNotAuthorizedException
+            {
+
+            }
+
+            @Override
+            public boolean verifyTypeDef(String userId, TypeDef typeDef) throws InvalidParameterException, RepositoryErrorException, TypeDefNotSupportedException, TypeDefConflictException, InvalidTypeDefException, UserNotAuthorizedException
+            {
+                return false;
+            }
+
+            @Override
+            public boolean verifyAttributeTypeDef(String userId, AttributeTypeDef attributeTypeDef) throws InvalidParameterException, RepositoryErrorException, TypeDefNotSupportedException, TypeDefConflictException, InvalidTypeDefException, UserNotAuthorizedException
+            {
+                return false;
+            }
+
+            @Override
+            public TypeDef updateTypeDef(String userId, TypeDefPatch typeDefPatch) throws InvalidParameterException, RepositoryErrorException, TypeDefNotKnownException, PatchErrorException, FunctionNotSupportedException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public void deleteTypeDef(String userId, String obsoleteTypeDefGUID, String obsoleteTypeDefName) throws InvalidParameterException, RepositoryErrorException, TypeDefNotKnownException, TypeDefInUseException, FunctionNotSupportedException, UserNotAuthorizedException
+            {
+
+            }
+
+            @Override
+            public void deleteAttributeTypeDef(String userId, String obsoleteTypeDefGUID, String obsoleteTypeDefName) throws InvalidParameterException, RepositoryErrorException, TypeDefNotKnownException, TypeDefInUseException, FunctionNotSupportedException, UserNotAuthorizedException
+            {
+
+            }
+
+            @Override
+            public TypeDef reIdentifyTypeDef(String userId, String originalTypeDefGUID, String originalTypeDefName, String newTypeDefGUID, String newTypeDefName) throws InvalidParameterException, RepositoryErrorException, TypeDefNotKnownException, FunctionNotSupportedException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public AttributeTypeDef reIdentifyAttributeTypeDef(String userId, String originalAttributeTypeDefGUID, String originalAttributeTypeDefName, String newAttributeTypeDefGUID, String newAttributeTypeDefName) throws InvalidParameterException, RepositoryErrorException, TypeDefNotKnownException, FunctionNotSupportedException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public EntityDetail isEntityKnown(String userId, String guid) throws InvalidParameterException, RepositoryErrorException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public EntitySummary getEntitySummary(String userId, String guid) throws InvalidParameterException, RepositoryErrorException, EntityNotKnownException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public EntityDetail getEntityDetail(String userId, String guid) throws InvalidParameterException, RepositoryErrorException, EntityNotKnownException, EntityProxyOnlyException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public EntityDetail getEntityDetail(String userId, String guid, Date asOfTime) throws InvalidParameterException, RepositoryErrorException, EntityNotKnownException, EntityProxyOnlyException, FunctionNotSupportedException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public List<Relationship> getRelationshipsForEntity(String userId, String entityGUID, String relationshipTypeGUID, int fromRelationshipElement, List<InstanceStatus> limitResultsByStatus, Date asOfTime, String sequencingProperty, SequencingOrder sequencingOrder, int pageSize) throws InvalidParameterException, TypeErrorException, RepositoryErrorException, EntityNotKnownException, PropertyErrorException, PagingErrorException, FunctionNotSupportedException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public List<EntityDetail> findEntitiesByProperty(String userId, String entityTypeGUID, InstanceProperties matchProperties, MatchCriteria matchCriteria, int fromEntityElement, List<InstanceStatus> limitResultsByStatus, List<String> limitResultsByClassification, Date asOfTime, String sequencingProperty, SequencingOrder sequencingOrder, int pageSize) throws InvalidParameterException, RepositoryErrorException, TypeErrorException, PropertyErrorException, PagingErrorException, FunctionNotSupportedException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public List<EntityDetail> findEntitiesByClassification(String userId, String entityTypeGUID, String classificationName, InstanceProperties matchClassificationProperties, MatchCriteria matchCriteria, int fromEntityElement, List<InstanceStatus> limitResultsByStatus, Date asOfTime, String sequencingProperty, SequencingOrder sequencingOrder, int pageSize) throws InvalidParameterException, TypeErrorException, RepositoryErrorException, ClassificationErrorException, PropertyErrorException, PagingErrorException, FunctionNotSupportedException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public List<EntityDetail> findEntitiesByPropertyValue(String userId, String entityTypeGUID, String searchCriteria, int fromEntityElement, List<InstanceStatus> limitResultsByStatus, List<String> limitResultsByClassification, Date asOfTime, String sequencingProperty, SequencingOrder sequencingOrder, int pageSize) throws InvalidParameterException, TypeErrorException, RepositoryErrorException, PropertyErrorException, PagingErrorException, FunctionNotSupportedException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public Relationship isRelationshipKnown(String userId, String guid) throws InvalidParameterException, RepositoryErrorException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public Relationship getRelationship(String userId, String guid) throws InvalidParameterException, RepositoryErrorException, RelationshipNotKnownException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public Relationship getRelationship(String userId, String guid, Date asOfTime) throws InvalidParameterException, RepositoryErrorException, RelationshipNotKnownException, FunctionNotSupportedException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public List<Relationship> findRelationshipsByProperty(String userId, String relationshipTypeGUID, InstanceProperties matchProperties, MatchCriteria matchCriteria, int fromRelationshipElement, List<InstanceStatus> limitResultsByStatus, Date asOfTime, String sequencingProperty, SequencingOrder sequencingOrder, int pageSize) throws InvalidParameterException, TypeErrorException, RepositoryErrorException, PropertyErrorException, PagingErrorException, FunctionNotSupportedException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public List<Relationship> findRelationshipsByPropertyValue(String userId, String relationshipTypeGUID, String searchCriteria, int fromRelationshipElement, List<InstanceStatus> limitResultsByStatus, Date asOfTime, String sequencingProperty, SequencingOrder sequencingOrder, int pageSize) throws InvalidParameterException, TypeErrorException, RepositoryErrorException, PropertyErrorException, PagingErrorException, FunctionNotSupportedException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public InstanceGraph getLinkingEntities(String userId, String startEntityGUID, String endEntityGUID, List<InstanceStatus> limitResultsByStatus, Date asOfTime) throws InvalidParameterException, RepositoryErrorException, EntityNotKnownException, PropertyErrorException, FunctionNotSupportedException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public InstanceGraph getEntityNeighborhood(String userId, String entityGUID, List<String> entityTypeGUIDs, List<String> relationshipTypeGUIDs, List<InstanceStatus> limitResultsByStatus, List<String> limitResultsByClassification, Date asOfTime, int level) throws InvalidParameterException, TypeErrorException, RepositoryErrorException, EntityNotKnownException, PropertyErrorException, FunctionNotSupportedException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public List<EntityDetail> getRelatedEntities(String userId, String startEntityGUID, List<String> entityTypeGUIDs, int fromEntityElement, List<InstanceStatus> limitResultsByStatus, List<String> limitResultsByClassification, Date asOfTime, String sequencingProperty, SequencingOrder sequencingOrder, int pageSize) throws InvalidParameterException, TypeErrorException, RepositoryErrorException, EntityNotKnownException, PropertyErrorException, PagingErrorException, FunctionNotSupportedException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public EntityDetail addEntity(String userId, String entityTypeGUID, InstanceProperties initialProperties, List<Classification> initialClassifications, InstanceStatus initialStatus) throws InvalidParameterException, RepositoryErrorException, TypeErrorException, PropertyErrorException, ClassificationErrorException, StatusNotSupportedException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public void addEntityProxy(String userId, EntityProxy entityProxy) throws InvalidParameterException, RepositoryErrorException, FunctionNotSupportedException, UserNotAuthorizedException
+            {
+
+            }
+
+            @Override
+            public EntityDetail updateEntityStatus(String userId, String entityGUID, InstanceStatus newStatus) throws InvalidParameterException, RepositoryErrorException, EntityNotKnownException, StatusNotSupportedException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public EntityDetail updateEntityProperties(String userId, String entityGUID, InstanceProperties properties) throws InvalidParameterException, RepositoryErrorException, EntityNotKnownException, PropertyErrorException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public EntityDetail undoEntityUpdate(String userId, String entityGUID) throws InvalidParameterException, RepositoryErrorException, EntityNotKnownException, FunctionNotSupportedException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public EntityDetail deleteEntity(String userId, String typeDefGUID, String typeDefName, String obsoleteEntityGUID) throws InvalidParameterException, RepositoryErrorException, EntityNotKnownException, FunctionNotSupportedException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public void purgeEntity(String userId, String typeDefGUID, String typeDefName, String deletedEntityGUID) throws InvalidParameterException, RepositoryErrorException, EntityNotKnownException, EntityNotDeletedException, UserNotAuthorizedException
+            {
+
+            }
+
+            @Override
+            public EntityDetail restoreEntity(String userId, String deletedEntityGUID) throws InvalidParameterException, RepositoryErrorException, EntityNotKnownException, EntityNotDeletedException, FunctionNotSupportedException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public EntityDetail classifyEntity(String userId, String entityGUID, String classificationName, InstanceProperties classificationProperties) throws InvalidParameterException, RepositoryErrorException, EntityNotKnownException, ClassificationErrorException, PropertyErrorException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public EntityDetail declassifyEntity(String userId, String entityGUID, String classificationName) throws InvalidParameterException, RepositoryErrorException, EntityNotKnownException, ClassificationErrorException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public EntityDetail updateEntityClassification(String userId, String entityGUID, String classificationName, InstanceProperties properties) throws InvalidParameterException, RepositoryErrorException, EntityNotKnownException, ClassificationErrorException, PropertyErrorException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public Relationship addRelationship(String userId, String relationshipTypeGUID, InstanceProperties initialProperties, String entityOneGUID, String entityTwoGUID, InstanceStatus initialStatus) throws InvalidParameterException, RepositoryErrorException, TypeErrorException, PropertyErrorException, EntityNotKnownException, StatusNotSupportedException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public Relationship updateRelationshipStatus(String userId, String relationshipGUID, InstanceStatus newStatus) throws InvalidParameterException, RepositoryErrorException, RelationshipNotKnownException, StatusNotSupportedException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public Relationship updateRelationshipProperties(String userId, String relationshipGUID, InstanceProperties properties) throws InvalidParameterException, RepositoryErrorException, RelationshipNotKnownException, PropertyErrorException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public Relationship undoRelationshipUpdate(String userId, String relationshipGUID) throws InvalidParameterException, RepositoryErrorException, RelationshipNotKnownException, FunctionNotSupportedException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public Relationship deleteRelationship(String userId, String typeDefGUID, String typeDefName, String obsoleteRelationshipGUID) throws InvalidParameterException, RepositoryErrorException, RelationshipNotKnownException, FunctionNotSupportedException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public void purgeRelationship(String userId, String typeDefGUID, String typeDefName, String deletedRelationshipGUID) throws InvalidParameterException, RepositoryErrorException, RelationshipNotKnownException, RelationshipNotDeletedException, UserNotAuthorizedException
+            {
+
+            }
+
+            @Override
+            public Relationship restoreRelationship(String userId, String deletedRelationshipGUID) throws InvalidParameterException, RepositoryErrorException, RelationshipNotKnownException, RelationshipNotDeletedException, FunctionNotSupportedException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public EntityDetail reIdentifyEntity(String userId, String typeDefGUID, String typeDefName, String entityGUID, String newEntityGUID) throws InvalidParameterException, RepositoryErrorException, EntityNotKnownException, FunctionNotSupportedException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public EntityDetail reTypeEntity(String userId, String entityGUID, TypeDefSummary currentTypeDefSummary, TypeDefSummary newTypeDefSummary) throws InvalidParameterException, RepositoryErrorException, TypeErrorException, PropertyErrorException, ClassificationErrorException, EntityNotKnownException, FunctionNotSupportedException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public EntityDetail reHomeEntity(String userId, String entityGUID, String typeDefGUID, String typeDefName, String homeMetadataCollectionId, String newHomeMetadataCollectionId) throws InvalidParameterException, RepositoryErrorException, EntityNotKnownException, FunctionNotSupportedException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public Relationship reIdentifyRelationship(String userId, String typeDefGUID, String typeDefName, String relationshipGUID, String newRelationshipGUID) throws InvalidParameterException, RepositoryErrorException, RelationshipNotKnownException, FunctionNotSupportedException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public Relationship reTypeRelationship(String userId, String relationshipGUID, TypeDefSummary currentTypeDefSummary, TypeDefSummary newTypeDefSummary) throws InvalidParameterException, RepositoryErrorException, TypeErrorException, PropertyErrorException, RelationshipNotKnownException, FunctionNotSupportedException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public Relationship reHomeRelationship(String userId, String relationshipGUID, String typeDefGUID, String typeDefName, String homeMetadataCollectionId, String newHomeMetadataCollectionId) throws InvalidParameterException, RepositoryErrorException, RelationshipNotKnownException, FunctionNotSupportedException, UserNotAuthorizedException
+            {
+                return null;
+            }
+
+            @Override
+            public void saveEntityReferenceCopy(String userId, EntityDetail entity) throws InvalidParameterException, RepositoryErrorException, TypeErrorException, PropertyErrorException, HomeEntityException, EntityConflictException, InvalidEntityException, FunctionNotSupportedException, UserNotAuthorizedException
+            {
+
+            }
+
+            @Override
+            public void purgeEntityReferenceCopy(String userId, String entityGUID, String typeDefGUID, String typeDefName, String homeMetadataCollectionId) throws InvalidParameterException, RepositoryErrorException, EntityNotKnownException, HomeEntityException, FunctionNotSupportedException, UserNotAuthorizedException
+            {
+
+            }
+
+            @Override
+            public void refreshEntityReferenceCopy(String userId, String entityGUID, String typeDefGUID, String typeDefName, String homeMetadataCollectionId) throws InvalidParameterException, RepositoryErrorException, EntityNotKnownException, HomeEntityException, FunctionNotSupportedException, UserNotAuthorizedException
+            {
+
+            }
+
+            @Override
+            public void saveRelationshipReferenceCopy(String userId, Relationship relationship) throws InvalidParameterException, RepositoryErrorException, TypeErrorException, EntityNotKnownException, PropertyErrorException, HomeRelationshipException, RelationshipConflictException, InvalidRelationshipException, FunctionNotSupportedException, UserNotAuthorizedException
+            {
+
+            }
+
+            @Override
+            public void purgeRelationshipReferenceCopy(String userId, String relationshipGUID, String typeDefGUID, String typeDefName, String homeMetadataCollectionId) throws InvalidParameterException, RepositoryErrorException, RelationshipNotKnownException, HomeRelationshipException, FunctionNotSupportedException, UserNotAuthorizedException
+            {
+
+            }
+
+            @Override
+            public void refreshRelationshipReferenceCopy(String userId, String relationshipGUID, String typeDefGUID, String typeDefName, String homeMetadataCollectionId) throws InvalidParameterException, RepositoryErrorException, RelationshipNotKnownException, HomeRelationshipException, FunctionNotSupportedException, UserNotAuthorizedException
+            {
+
+            }
+        };
     }
 }

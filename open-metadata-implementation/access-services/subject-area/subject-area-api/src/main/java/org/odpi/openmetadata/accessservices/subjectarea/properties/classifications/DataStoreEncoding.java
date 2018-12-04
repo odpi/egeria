@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 
 package org.odpi.openmetadata.accessservices.subjectarea.properties.classifications;
 import org.slf4j.Logger;
@@ -123,7 +124,7 @@ public class DataStoreEncoding extends Classification {
        private String encoding;
        /**
         * {@literal Encoding type. }
-        * @return {@code String }
+        * @return {$$PropertyTypeJavadoc$$ }
         */
        public String getEncoding() {
            return this.encoding;
@@ -136,7 +137,7 @@ public class DataStoreEncoding extends Classification {
        private String language;
        /**
         * {@literal Language used in the encoding. }
-        * @return {@code String }
+        * @return {$$PropertyTypeJavadoc$$ }
         */
        public String getLanguage() {
            return this.language;
@@ -149,7 +150,7 @@ public class DataStoreEncoding extends Classification {
        private String description;
        /**
         * {@literal Description the encoding. }
-        * @return {@code String }
+        * @return {$$PropertyTypeJavadoc$$ }
         */
        public String getDescription() {
            return this.description;
@@ -162,7 +163,7 @@ public class DataStoreEncoding extends Classification {
        private String steward;
        /**
         * {@literal Person, organization or engine that defined the encoding. }
-        * @return {@code String }
+        * @return {$$PropertyTypeJavadoc$$ }
         */
        public String getSteward() {
            return this.steward;
@@ -175,7 +176,7 @@ public class DataStoreEncoding extends Classification {
        private String source;
        /**
         * {@literal Source of the encoding. }
-        * @return {@code String }
+        * @return {$$PropertyTypeJavadoc$$ }
         */
        public String getSource() {
            return this.source;
@@ -188,7 +189,7 @@ public class DataStoreEncoding extends Classification {
        private Map<String,String> properties;
        /**
         * {@literal Additional properties for the encoding. }
-        * @return {@code Map<String,String> }
+        * @return {$$PropertyTypeJavadoc$$ }
         */
        public Map<String,String> getProperties() {
            return this.properties;

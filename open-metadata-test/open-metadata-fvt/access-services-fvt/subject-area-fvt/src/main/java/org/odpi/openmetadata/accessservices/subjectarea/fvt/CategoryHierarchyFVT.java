@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.fvt;
 
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
@@ -21,8 +22,6 @@ import java.util.Set;
  */
 public class CategoryHierarchyFVT
 {
-    private static final String USERID = " Fred";
-    private static final String DEFAULT_URL = "http://localhost:8080/open-metadata/access-services/subject-area";
     private static final String DEFAULT_TEST_GLOSSARY_NAME = "Test Glossary for category hierarchy FVT";
     private static final String DEFAULT_TEST_CATEGORY_NAME_BASE = "Test hierarchy category ";
 
@@ -31,36 +30,57 @@ public class CategoryHierarchyFVT
     private static int depth_counter = 0;
 
     private static SubjectAreaCategory subjectAreaCategory = null;
+    private GlossaryFVT glossaryFVT =null;
+    private String url = null;
 
     public static void main(String args[])
     {
         SubjectArea subjectArea = null;
+        String url = null;
         try
         {
-            String url = RunAllFVT.getUrl(args);
-            initialiseCategoryFVT(url);
-            System.out.println("Create a glossary");
-            GlossaryFVT.initialiseGlossaryFVT(url);
-            Glossary glossary = GlossaryFVT.createGlossary(DEFAULT_TEST_GLOSSARY_NAME);
-            System.out.println("Create category hierarchy");
-            Set<Category> categories = createTopCategories();
-            while (depth_counter < DEPTH)
-            {
-                depth_counter++;
-                Set<Category> childrenCategories = new HashSet();
-                for (Category category : categories)
-                {
-                    childrenCategories = createChildrenCategories(category);
-                }
-                categories = childrenCategories;
-            }
-
+            url = RunAllFVT.getUrl(args);
+            CategoryHierarchyFVT categoryHierarchyFVT =new CategoryHierarchyFVT(url);
+            categoryHierarchyFVT.run();
+        } catch (IOException e1)
+        {
+            System.out.println("Error getting user input");
         } catch (SubjectAreaCheckedExceptionBase e)
         {
             System.out.println("ERROR: " + e.getErrorMessage() + " Suggested action: " + e.getReportedUserAction());
-        } catch (IOException e)
+        }
+
+    }
+    public static void runit(String url) throws SubjectAreaCheckedExceptionBase
+    {
+        CategoryHierarchyFVT fvt =new CategoryHierarchyFVT(url);
+        fvt.run();
+    }
+
+    public CategoryHierarchyFVT(String url) throws InvalidParameterException
+    {
+        subjectAreaCategory = new SubjectAreaImpl(FVTConstants.SERVER_NAME1,url).getSubjectAreaCategory();
+        glossaryFVT = new GlossaryFVT(url,FVTConstants.SERVER_NAME1);
+        this.url=url;
+    }
+
+    public void run() throws SubjectAreaCheckedExceptionBase
+    {
+        SubjectArea subjectArea = null;
+
+        System.out.println("Create a glossary");
+        Glossary glossary = glossaryFVT.createGlossary(DEFAULT_TEST_GLOSSARY_NAME);
+        System.out.println("Create category hierarchy");
+        Set<Category> categories = createTopCategories();
+        while (depth_counter < DEPTH)
         {
-            System.out.println("Error getting user input");
+            depth_counter++;
+            Set<Category> childrenCategories = new HashSet();
+            for (Category category : categories)
+            {
+                childrenCategories = createChildrenCategories(category);
+            }
+            categories = childrenCategories;
         }
     }
 
@@ -135,7 +155,7 @@ public class CategoryHierarchyFVT
         CategorySummary parentCategorysummary = new CategorySummary();
         parentCategorysummary.setGuid(parent.getSystemAttributes().getGUID());
         category.setParentCategory(parentCategorysummary);
-        Category newCategory = subjectAreaCategory.createCategory(USERID, category);
+        Category newCategory = subjectAreaCategory.createCategory(FVTConstants.SERVER_NAME1,FVTConstants.USERID, category);
         if (newCategory != null)
         {
             System.out.println("Created Category " + newCategory.getName() + " with guid " + newCategory.getSystemAttributes().getGUID());
@@ -149,7 +169,7 @@ public class CategoryHierarchyFVT
      * @param categoryName name of the category to create
      * @param glossaryGuid guid of the glossary to associate with this category
      * @return created category
-     * @throws SubjectAreaCheckedExceptionBase
+     * @throws SubjectAreaCheckedExceptionBase error
      */
     public static Category createCategoryWithGlossaryGuid(String categoryName, String glossaryGuid) throws SubjectAreaCheckedExceptionBase
     {
@@ -158,7 +178,7 @@ public class CategoryHierarchyFVT
         GlossarySummary glossarySummary = new GlossarySummary();
         glossarySummary.setGuid(glossaryGuid);
         category.setGlossary(glossarySummary);
-        Category newCategory = subjectAreaCategory.createCategory(USERID, category);
+        Category newCategory = subjectAreaCategory.createCategory(FVTConstants.SERVER_NAME1,FVTConstants.USERID, category);
         if (newCategory != null)
         {
             System.out.println("Created Category " + newCategory.getName() + " with guid " + newCategory.getSystemAttributes().getGUID());
@@ -173,7 +193,7 @@ public class CategoryHierarchyFVT
         GlossarySummary glossarySummary = new GlossarySummary();
         glossarySummary.setName(glossaryName);
         category.setGlossary(glossarySummary);
-        Category newCategory = subjectAreaCategory.createCategory(USERID, category);
+        Category newCategory = subjectAreaCategory.createCategory(FVTConstants.SERVER_NAME1,FVTConstants.USERID, category);
         if (newCategory != null)
         {
             System.out.println("Created Category " + newCategory.getName() + " with guid " + newCategory.getSystemAttributes().getGUID());
@@ -183,7 +203,7 @@ public class CategoryHierarchyFVT
 
     public static Category getCategoryByGUID(String guid) throws SubjectAreaCheckedExceptionBase
     {
-        Category category = subjectAreaCategory.getCategoryByGuid(USERID, guid);
+        Category category = subjectAreaCategory.getCategoryByGuid(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
         if (category != null)
         {
             System.out.println("Got Category " + category.getName() + " with guid " + category.getSystemAttributes().getGUID() + " and status " + category.getSystemAttributes().getStatus());
@@ -193,7 +213,7 @@ public class CategoryHierarchyFVT
 
     public static Category updateCategory(String guid, Category category) throws SubjectAreaCheckedExceptionBase
     {
-        Category updatedCategory = subjectAreaCategory.updateCategory(USERID, guid, category);
+        Category updatedCategory = subjectAreaCategory.updateCategory(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid, category);
         if (updatedCategory != null)
         {
             System.out.println("Updated Category name to " + updatedCategory.getName());
@@ -203,7 +223,7 @@ public class CategoryHierarchyFVT
 
     public static Category deleteCategory(String guid) throws SubjectAreaCheckedExceptionBase
     {
-        Category deletedCategory = subjectAreaCategory.deleteCategory(USERID, guid);
+        Category deletedCategory = subjectAreaCategory.deleteCategory(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
         if (deletedCategory != null)
         {
             System.out.println("Deleted Category name is " + deletedCategory.getName());
@@ -213,18 +233,18 @@ public class CategoryHierarchyFVT
 
     public static void purgeCategory(String guid) throws SubjectAreaCheckedExceptionBase
     {
-        subjectAreaCategory.purgeCategory(USERID, guid);
+        subjectAreaCategory.purgeCategory(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
         System.out.println("Purge succeeded");
     }
 
     /**
      * Call this to initialise the glossary FVT
      *
-     * @param url server url
-     * @throws InvalidParameterException
+     * @param url supplied base url for the subject area OMAS
+     * @throws InvalidParameterException a parameter is null or an invalid value.
      */
     public static void initialiseCategoryFVT(String url) throws InvalidParameterException
     {
-        subjectAreaCategory = new SubjectAreaImpl(url).getSubjectAreaCategory();
+        subjectAreaCategory = new SubjectAreaImpl(FVTConstants.SERVER_NAME1,url).getSubjectAreaCategory();
     }
 }

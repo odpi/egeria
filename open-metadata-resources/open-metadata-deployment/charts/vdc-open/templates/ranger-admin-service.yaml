@@ -27,6 +27,9 @@ spec:
   - name: "ranger-solr-ssl"
     port: 6183
     targetPort: 6183
+  - name: "mariadb"
+    port: 3306
+    targetPort: 3306
   selector:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}

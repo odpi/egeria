@@ -1,8 +1,9 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.responses;
 
 /**
- * Types of rest
+ * Types of response
  */
 public enum ResponseCategory {
     Unknown,
@@ -12,9 +13,32 @@ public enum ResponseCategory {
     PossibleRelationships,
     Term,
     Category,
+    SubjectAreaDefinition,
     Glossary,
     Project,
     Comment,
+
+    // term to term relationships
+    TermHASARelationship,
+    RelatedTerm,
+    SynonymRelationship,
+    AntonymRelationship,
+    TranslationRelationship,
+    TermISARelationship,
+    PreferredTermRelationship,
+    TermISATYPEOFRelationship,
+    TermReplacementRelationship,
+    TermTYPEDBYRelationship,
+    TermUsedInContextRelationship,
+    ValidValueRelationship,
+
+    // external glossary relationships
+    LibraryCategoryReferenceRelationshipRelationship,
+    LibraryTermReferenceRelationshipRelationship,
+    // term to asset
+    SemanticAssignmentRelationship,
+    // category to term
+    TermCategorizationRelationship,
 
     // errors
     ClassificationException,
@@ -28,5 +52,8 @@ public enum ResponseCategory {
     UnrecognizedGUIDException,
     UnrecognizedNameException,
     UserNotAuthorizedException,
-    MetadataServerUncontactableException,
+    MetadataServerUncontactableException
+
+
+
 }

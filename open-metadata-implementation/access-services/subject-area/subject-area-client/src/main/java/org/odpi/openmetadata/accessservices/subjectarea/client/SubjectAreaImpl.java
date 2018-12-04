@@ -1,10 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.client;
 
-import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
-import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaCategory;
-import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaGlossary;
-import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaTerm;
+import org.odpi.openmetadata.accessservices.subjectarea.*;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
 import org.slf4j.Logger;
@@ -20,65 +18,65 @@ public class SubjectAreaImpl implements SubjectArea
     private static final Logger log = LoggerFactory.getLogger(SubjectAreaImpl.class);
 
     private static final String className = SubjectAreaImpl.class.getName();
+    static final String SUBJECT_AREA_BASE_URL ="/servers/%s/open-metadata/access-services/subject-area/users/%s/";
 
     private final SubjectAreaTermImpl termAPI;
     private final SubjectAreaCategoryImpl categoryAPI;
     private final SubjectAreaGlossaryImpl glossaryAPI;
-    /*
-     * The URL of the server where OMAS is active
-     */
-    private String omasServerURL = null;
-
+    public final  SubjectAreaRelationshipImpl relationshipAPI;
 
     /**
      * Default Constructor used once a connector is created.
      *
+     * @param serverName    serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param omasServerURL - unique id for the connector instance
+     * @throws InvalidParameterException one of the parameters is null or invalid.
      */
-    public SubjectAreaImpl(String   omasServerURL) throws InvalidParameterException {
-       String methodName = "SubjectAreaImpl";
-        InputValidator.validateOMASServerURLNotNull(className,methodName,omasServerURL);
-        this.omasServerURL = omasServerURL;
-        this.glossaryAPI = new SubjectAreaGlossaryImpl(omasServerURL);
-        this.termAPI = new SubjectAreaTermImpl(omasServerURL);
-        this.categoryAPI = new SubjectAreaCategoryImpl(omasServerURL);
+    public SubjectAreaImpl(String serverName,String omasServerURL ) throws InvalidParameterException {
+        String methodName = "SubjectAreaImpl";
+        InputValidator.validateOMASServerURLNotNull(className, methodName, omasServerURL);
+        this.glossaryAPI = new SubjectAreaGlossaryImpl(omasServerURL, serverName);
+        this.termAPI = new SubjectAreaTermImpl(omasServerURL, serverName);
+        this.categoryAPI = new SubjectAreaCategoryImpl(omasServerURL, serverName);
+        this.relationshipAPI = new SubjectAreaRelationshipImpl(omasServerURL, serverName);
     }
 
     /**
      * Get the Category API. Use this API to author Glossary Categories.
      * @return SubjectAreaCategoryImpl
      */
-    public SubjectAreaCategory getCategoryAPI() {
+    @Override
+    public SubjectAreaCategory getSubjectAreaCategory() {
         return categoryAPI;
     }
     /**
      * Get the Glossary API. Use this API to author Glossaries
      * @return SubjectAreaGlossaryImpl
      */
-    public SubjectAreaGlossary getGlossaryAPI() {
+    @Override
+    public SubjectAreaGlossary getSubjectAreaGlossary() {
         return glossaryAPI;
     }
     /**
      * Get the Term API. Use this API to author Glossary Terms.
      * @return SubjectAreaTermImpl
      */
-    public SubjectAreaTerm getTermAPI() {
-        return termAPI;
-    }
 
-    @Override
-    public SubjectAreaGlossary getSubjectAreaGlossary() {
-        return this.glossaryAPI;
-    }
-
+    /**
+     * Get the Relationship API. Use this API to author Glossary Terms.
+     * @return SubjectAreaRelationshipImpl
+     */
     @Override
     public SubjectAreaTerm getSubjectAreaTerm() {
-
         return this.termAPI;
     }
-
+    /**
+     * Get the subject area relationship API class - use this class to issue relationship calls.
+     * @return subject area relationship API class
+     */
     @Override
-    public SubjectAreaCategory getSubjectAreaCategory() {
-        return categoryAPI;
+    public SubjectAreaRelationship getSubjectAreaRelationship() {
+        return this.relationshipAPI;
     }
+
 }

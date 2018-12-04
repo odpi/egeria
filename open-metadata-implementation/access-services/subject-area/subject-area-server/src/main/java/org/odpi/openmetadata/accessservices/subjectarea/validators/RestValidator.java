@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.validators;
 
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
@@ -30,6 +31,7 @@ public class RestValidator {
      * @param className - name of the class making the call.
      * @param methodName - name of the method making the call.
      * @param omasServerURL - omas server url.
+     * @throws MetadataServerUncontactableException not able to communicate with the metadata server.
      */
     static public void validateOMASServerURLNotNull( String className,String methodName, String omasServerURL) throws MetadataServerUncontactableException
     {
@@ -56,16 +58,20 @@ public class RestValidator {
     /**
      * This method validated for creation.
      * TODO need another method for update where we could use the relationship guid.
-     * @param methodName
-     * @param suppliedGlossary
-     * @param glossaryRESTServices
-     * @param userId
-     * @return
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId  userId under which the request is performed
+     * @param methodName method making the call
+     * @param suppliedGlossary glossary to validate against.
+     * @param glossaryRESTServices rest services for glossary.
+
+     * @return SubjectAreaOMASAPIResponse this response is of type ResponseCategory.Category.Glossary if successful, otherwise there is an error response.
      */
-    static public SubjectAreaOMASAPIResponse validateGlossarySummaryDuringCreation(String methodName,
+    static public SubjectAreaOMASAPIResponse validateGlossarySummaryDuringCreation(String serverName,
+                                                                                   String userId,
+                                                                                   String methodName,
                                                                                    GlossarySummary suppliedGlossary,
-                                                                                   SubjectAreaGlossaryRESTServices glossaryRESTServices,
-                                                                                   String userId
+                                                                                   SubjectAreaGlossaryRESTServices glossaryRESTServices
+
     ) {
         SubjectAreaOMASAPIResponse response = null;
         String guid =null;
@@ -132,7 +138,7 @@ public class RestValidator {
 
 
             if (response ==null && guid!=null ) {
-                SubjectAreaOMASAPIResponse glossaryResponse = glossaryRESTServices.getGlossaryByGuid(userId,guid);
+                SubjectAreaOMASAPIResponse glossaryResponse = glossaryRESTServices.getGlossaryByGuid(serverName,userId,guid);
                 if (glossaryResponse.getResponseCategory().equals(ResponseCategory.Category.Glossary)) {
                     return glossaryResponse;
                 } else {
@@ -153,7 +159,7 @@ public class RestValidator {
             }
             //  try finding by name.
             if (response ==null && guid==null && glossaryName!=null) {
-                SubjectAreaOMASAPIResponse glossaryResponse = glossaryRESTServices.getGlossaryByName(userId, glossaryName);
+                SubjectAreaOMASAPIResponse glossaryResponse = glossaryRESTServices.getGlossaryByName(serverName,userId, glossaryName);
                 if (glossaryResponse.getResponseCategory().equals(ResponseCategory.Category.Glossary)) {
                     response = glossaryResponse;
                 } else {
@@ -178,16 +184,18 @@ public class RestValidator {
     /**
      * This method validated for creation.
      * TODO need another method for update where we could use the relationship guid.
-     * @param methodName
-     * @param suppliedCategory
-     * @param categoryRESTServices
-     * @param userId
-     * @return
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId  userId under which the request is performed
+     * @param methodName - method making the call
+     * @param suppliedCategory - category to validate against.
+     * @param categoryRESTServices - rest services for glossary.
+
+     * @return SubjectAreaOMASAPIResponse this response is of type ResponseCategory.Category.Caregory if successful, otherwise there is an error response.
      */
-    static public SubjectAreaOMASAPIResponse validateCategorySummaryDuringCreation(String methodName,
+    static public SubjectAreaOMASAPIResponse validateCategorySummaryDuringCreation(String serverName, String userId,String methodName,
                                                                                    CategorySummary suppliedCategory,
-                                                                                   SubjectAreaCategoryRESTServices categoryRESTServices,
-                                                                                   String userId
+                                                                                   SubjectAreaCategoryRESTServices categoryRESTServices
+
     ) {
         SubjectAreaOMASAPIResponse response = null;
         String guid =null;
@@ -241,7 +249,7 @@ public class RestValidator {
             }
 
             if (response ==null && guid!=null ) {
-                SubjectAreaOMASAPIResponse glossaryResponse = categoryRESTServices.getCategory(userId,guid);
+                SubjectAreaOMASAPIResponse glossaryResponse = categoryRESTServices.getCategory(serverName, userId,guid);
                 if (glossaryResponse.getResponseCategory().equals(ResponseCategory.Category.Category)) {
                     GlossaryResponse typedGlossaryResponse = (GlossaryResponse)glossaryResponse;
                     guid = typedGlossaryResponse.getGlossary().getSystemAttributes().getGUID();

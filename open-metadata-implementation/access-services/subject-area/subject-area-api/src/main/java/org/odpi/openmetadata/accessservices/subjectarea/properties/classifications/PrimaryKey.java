@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 
 package org.odpi.openmetadata.accessservices.subjectarea.properties.classifications;
 import org.slf4j.Logger;
@@ -107,7 +108,7 @@ public class PrimaryKey extends Classification {
        private KeyPattern keyPattern;
        /**
         * {@literal Type of primary key. }
-        * @return {@code KeyPattern }
+        * @return {$$PropertyTypeJavadoc$$ }
         */
        public KeyPattern getKeyPattern() {
            return this.keyPattern;
@@ -120,7 +121,7 @@ public class PrimaryKey extends Classification {
        private String name;
        /**
         * {@literal Display name for the primary key. }
-        * @return {@code String }
+        * @return {$$PropertyTypeJavadoc$$ }
         */
        public String getName() {
            return this.name;

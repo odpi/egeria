@@ -1,25 +1,27 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.utilities;
 
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.StatusNotSupportedException;
 import org.odpi.openmetadata.accessservices.subjectarea.server.handlers.ErrorHandler;
-import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaRESTServices;
+import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaRESTServicesInstance;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefGallery;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -87,12 +89,11 @@ public class OMRSAPIHelper {
     /**
      * Validate that this access service has been initialized before attempting to process a request.
      *
-     * @ - not initialized
+     * @throws MetadataServerUncontactableException not initialized
      */
     private void validateInitialization() throws MetadataServerUncontactableException {
         String restAPIName= "";
         if (oMRSMetadataCollection == null) {
-            this.omrsConnector = SubjectAreaRESTServices.getRepositoryConnector();
             if (this.omrsConnector == null) {
                 SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.SERVICE_NOT_INITIALIZED;
                 String errorMessage = errorCode.getErrorMessageId()
@@ -710,8 +711,8 @@ public class OMRSAPIHelper {
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName );
         }
-        //TODO cascade
-        String restAPIName= "";
+        //TODO cascade from OMAS
+        String restAPIName= methodName;
         Relationship relationship =null;
         try {
             relationship = getOMRSMetadataCollection().getRelationship(userId,relationshipGUID);
@@ -752,8 +753,8 @@ public class OMRSAPIHelper {
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName);
         }
-        //TODO cascade
-        String restAPIName = "";
+        //TODO cascade from OMAS
+        String restAPIName = methodName;
         Relationship updatedRelationship = null;
         // update the relationship properties
         try {
@@ -787,10 +788,10 @@ public class OMRSAPIHelper {
                     serverName,
                     serviceName);
         }
-        // update the status if required.
-        if (!updatedRelationship.getStatus().equals(relationship.getStatus())) {
+        // update the status if we have one and it is different
+        if ( relationship.getStatus() !=null &&
+             !relationship.getStatus().equals(updatedRelationship.getStatus())) {
             try {
-
                 updatedRelationship = getOMRSMetadataCollection().updateRelationshipStatus(userId,
                         relationship.getGUID(),
                         relationship.getStatus());
@@ -805,7 +806,6 @@ public class OMRSAPIHelper {
                         serverName,
                         serviceName);
             } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
-
                 this.errorHandler.handleUnauthorizedUser(userId,
                         restAPIName,
                         serverName,
@@ -828,7 +828,7 @@ public class OMRSAPIHelper {
         return updatedRelationship;
 
     }
-    public void callOMRSDeleteRelationship(String userId, String typeGuid, String typeName,String guid)
+    public Relationship callOMRSDeleteRelationship(String userId, String typeGuid, String typeName,String guid)
             throws org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.UserNotAuthorizedException,
             org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException,
             org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.FunctionNotSupportedException,
@@ -839,11 +839,11 @@ public class OMRSAPIHelper {
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName);
         }
-        //TODO cascade
-        String restAPIName = "";
-        Relationship updatedRelationship = null;
+        //TODO cascade from omas
+        String restAPIName = methodName;
+        Relationship deletedRelationship = null;
         try {
-            getOMRSMetadataCollection().deleteRelationship(userId, typeGuid, typeName, guid);
+            deletedRelationship =getOMRSMetadataCollection().deleteRelationship(userId, typeGuid, typeName, guid);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException e) {
             this.errorHandler.handleInvalidParameterException(e,
                     restAPIName,
@@ -874,6 +874,7 @@ public class OMRSAPIHelper {
         if (log.isDebugEnabled()) {
             log.debug("<== Method: " + methodName );
         }
+        return deletedRelationship;
     }
     public void callOMRSPurgeRelationship(String userId, String typeGuid, String typeName,String guid)
             throws org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.UserNotAuthorizedException,
@@ -887,8 +888,8 @@ public class OMRSAPIHelper {
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName);
         }
-        //TODO cascade
-        String restAPIName = "";
+        //TODO cascade from OMAS
+        String restAPIName = methodName;
         Relationship updatedRelationship = null;
         try {
             getOMRSMetadataCollection().purgeRelationship(userId, typeGuid, typeName, guid);
@@ -936,7 +937,7 @@ public class OMRSAPIHelper {
             log.debug("==> Method: " + methodName);
         }
         //TODO cascade
-        String restAPIName = "";
+        String restAPIName = methodName;
         Relationship updatedRelationship = null;
         List<InstanceStatus> statusList = new ArrayList<>();
         statusList.add(InstanceStatus.ACTIVE);
@@ -1019,7 +1020,7 @@ public class OMRSAPIHelper {
             log.debug("==> Method: " + methodName);
         }
         //TODO cascade
-        String restAPIName = "";
+        String restAPIName = methodName;
         List<Relationship> relationships= null;
         try {
             relationships =  getOMRSMetadataCollection().getRelationshipsForEntity(userId,
@@ -1083,7 +1084,7 @@ public class OMRSAPIHelper {
             log.debug("==> Method: " + methodName);
         }
         //TODO cascade
-        String restAPIName = "";
+        String restAPIName = methodName;
         TypeDef typeDef = null;
         try {
             typeDef = getOMRSMetadataCollection().getTypeDefByName(userId, typeName);
@@ -1113,5 +1114,80 @@ public class OMRSAPIHelper {
             log.debug("<== Method: " + methodName);
         }
         return typeDef.getGUID().toString();
+    }
+    public InstanceGraph callGetEntityNeighbourhood(String userId, String entityGUID, List<String> entityTypeGUIDs,
+                                                    List<String> relationshipTypeGUIDs,
+                                                    List<InstanceStatus> limitResultsByStatus,
+                                                    List<String> limitResultsByClassification,
+                                                    Date asOfTime,
+                                                    int level) throws org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.UserNotAuthorizedException, MetadataServerUncontactableException, org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException, UnrecognizedGUIDException, org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.FunctionNotSupportedException
+    {
+        String methodName = "callgetEntityNeighborhood";
+        if (log.isDebugEnabled()) {
+            log.debug("==> Method: " + methodName);
+        }
+        //TODO cascade
+        String restAPIName = methodName;
+        InstanceGraph instanceGraph = null;
+        try {
+            instanceGraph  = getOMRSMetadataCollection().getEntityNeighborhood(userId,
+                    entityGUID,
+                    entityTypeGUIDs,
+                    relationshipTypeGUIDs,
+                    limitResultsByStatus,
+                    limitResultsByClassification,
+                    asOfTime,
+                    level) ;
+        } catch (UserNotAuthorizedException e)
+        {
+            this.errorHandler.handleUnauthorizedUser(userId,
+                    restAPIName,
+                    serverName,
+                    serviceName);
+        } catch (MetadataServerUncontactableException e)
+        {
+            this.errorHandler.handleMetadataServerUnContactable(e,
+                    restAPIName,
+                    serverName,
+                    serviceName);
+        } catch (RepositoryErrorException e)
+        {
+            // check to see if the method is not implemented. in this case do not error.
+            String method_not_implemented_msg_id = OMRSErrorCode.METHOD_NOT_IMPLEMENTED.getErrorMessageId();
+            if (!e.getErrorMessage().startsWith(method_not_implemented_msg_id)) {
+                this.errorHandler.handleRepositoryError(e, restAPIName, serverName, serviceName);
+            }
+        } catch (TypeErrorException e)
+        {
+            this.errorHandler.handleTypeErrorException(e,
+                    restAPIName,
+                    serverName,
+                    serviceName);
+        } catch (EntityNotKnownException e)
+        {
+            this.errorHandler.handleEntityNotKnownError(entityGUID,
+                    restAPIName,
+                    serverName,
+                    serviceName);
+        } catch (InvalidParameterException e)
+        {
+            this.errorHandler.handleInvalidParameterException(e,
+                    restAPIName,
+                    serverName,
+                    serviceName);
+        } catch (PropertyErrorException e)
+        {
+            this.errorHandler.handlePropertyErrorException(e,
+                    restAPIName,
+                    serverName,
+                    serviceName);
+        } catch (FunctionNotSupportedException e)
+        {
+            this.errorHandler.handleFunctionNotSupportedException(e,
+                    restAPIName,
+                    serverName,
+                    serviceName);
+        }
+        return instanceGraph;
     }
 }
