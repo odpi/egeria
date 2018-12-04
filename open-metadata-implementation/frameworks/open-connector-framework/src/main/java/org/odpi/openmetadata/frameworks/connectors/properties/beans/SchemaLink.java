@@ -6,32 +6,28 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * SchemaLink defines a relationship between 2 SchemaElements.  It is used in network type
- * schemas such as a graph.
+ * SchemaLink defines a relationship between a SchemaAttribute and a SchemaType defined in an external schema.
+ * It is used in schemas that include external (standard) schema types in their definition.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SchemaLink extends PropertyBase
 {
-    /*
-     * Attributes from the relationship
-     */
-    protected String linkGUID = null;
-    protected String linkType = null;
-
-    /*
-     * Attributes specific to SchemaLink
-     */
+    protected String              linkGUID             = null;
+    protected String              linkType             = null;
     protected String              linkName             = null;
     protected Map<String, Object> linkProperties       = null;
-    protected List<String>        linkedAttributeGUIDs = null;
+    protected String              linkedSchemaTypeGUID = null;
+    protected String              linkedSchemaTypeName = null;
 
 
     /**
@@ -58,7 +54,8 @@ public class SchemaLink extends PropertyBase
             linkName = template.getLinkName();
             linkType = template.getLinkType();
             linkProperties = template.getLinkProperties();
-            linkedAttributeGUIDs = template.getLinkedAttributeGUIDs();
+            linkedSchemaTypeGUID = template.getLinkedSchemaTypeGUID();
+            linkedSchemaTypeName = template.getLinkedSchemaTypeName();
         }
     }
 
@@ -138,7 +135,11 @@ public class SchemaLink extends PropertyBase
     {
         if (linkProperties == null)
         {
-            return linkProperties;
+            return null;
+        }
+        else if (linkProperties.isEmpty())
+        {
+            return null;
         }
         else
         {
@@ -159,33 +160,47 @@ public class SchemaLink extends PropertyBase
 
 
     /**
-     * Return the GUIDs of the schema attributes that this link connects together.
+     * Return the GUID of the schema type that this link connects together.
      *
-     * @return  GUIDs for either end of the link - returned as a list.
+     * @return  unique identifier
      */
-    public List<String> getLinkedAttributeGUIDs()
+    public String getLinkedSchemaTypeGUID()
     {
-        if (linkedAttributeGUIDs == null)
-        {
-            return linkedAttributeGUIDs;
-        }
-        else
-        {
-            return new ArrayList<>(linkedAttributeGUIDs);
-        }
+        return linkedSchemaTypeGUID;
     }
 
 
     /**
-     * Set up the GUIDs of the schema attributes that this link connects together.
+     * Set up the GUID of the schema type that this link connects together.
      *
-     * @param linkedAttributeGUIDs GUIDs for either end of the link - returned as a list.
+     * @param linkedSchemaTypeGUID unique identifier
      */
-    public void setLinkedAttributeGUIDs(List<String> linkedAttributeGUIDs)
+    public void setLinkedSchemaTypeGUID(String linkedSchemaTypeGUID)
     {
-        this.linkedAttributeGUIDs = linkedAttributeGUIDs;
+        this.linkedSchemaTypeGUID = linkedSchemaTypeGUID;
     }
 
+
+    /**
+     * Return the name of the schema type that this link connects together.
+     *
+     * @return  unique name
+     */
+    public String getLinkedSchemaTypeName()
+    {
+        return linkedSchemaTypeName;
+    }
+
+
+    /**
+     * Set up the name of the schema type that this link connects together.
+     *
+     * @param linkedSchemaTypeName unique name
+     */
+    public void setLinkedSchemaTypeName(String linkedSchemaTypeName)
+    {
+        this.linkedSchemaTypeName = linkedSchemaTypeName;
+    }
 
     /**
      * Standard toString method.
@@ -200,7 +215,8 @@ public class SchemaLink extends PropertyBase
                 ", linkType='" + linkType + '\'' +
                 ", linkName='" + linkName + '\'' +
                 ", linkProperties=" + linkProperties +
-                ", linkedAttributeGUIDs=" + linkedAttributeGUIDs +
+                ", linkedSchemaTypeGUID=" + linkedSchemaTypeGUID +
+                ", linkedSchemaTypeName=" + linkedSchemaTypeName +
                 '}';
     }
 
@@ -227,7 +243,8 @@ public class SchemaLink extends PropertyBase
                 Objects.equals(getLinkType(), that.getLinkType()) &&
                 Objects.equals(getLinkName(), that.getLinkName()) &&
                 Objects.equals(getLinkProperties(), that.getLinkProperties()) &&
-                Objects.equals(getLinkedAttributeGUIDs(), that.getLinkedAttributeGUIDs());
+                Objects.equals(getLinkedSchemaTypeGUID(), that.getLinkedSchemaTypeGUID()) &&
+                Objects.equals(getLinkedSchemaTypeName(), that.getLinkedSchemaTypeName());
     }
 
 
@@ -243,7 +260,7 @@ public class SchemaLink extends PropertyBase
                             getLinkType(),
                             getLinkName(),
                             getLinkProperties(),
-                            getLinkedAttributeGUIDs());
+                            getLinkedSchemaTypeGUID());
     }
 
 }

@@ -22,16 +22,10 @@ public class TestAssetComplexSchemaType
     private List<Classification> classifications      = new ArrayList<>();
     private Map<String, Object>  additionalProperties = new HashMap<>();
 
-    private AssetMeanings        assetMeanings        = new MockAssetMeanings(null,
-                                                                              23,
-                                                                              50);
+    private AssetSchemaAttributes schemaAttributes = new MockAssetSchemaAttributes(null,
+                                                                                   12,
+                                                                                   56);
 
-    private AssetSchemaAttributes schemaAttributes    = new MockAssetSchemaAttributes(null,
-                                                                                      12,
-                                                                                      56);
-    private AssetSchemaLinks      schemaLinks         = new MockAssetSchemaLinks(null,
-                                                                                 4,
-                                                                                 28);
 
 
     /**
@@ -50,7 +44,7 @@ public class TestAssetComplexSchemaType
      */
     private AssetComplexSchemaType getTestObject()
     {
-        Schema testBean = new Schema();
+        ComplexSchemaType testBean = new ComplexSchemaType();
 
         testBean.setType(type);
         testBean.setGUID("TestGUID");
@@ -65,10 +59,7 @@ public class TestAssetComplexSchemaType
         testBean.setUsage("TestUsage");
         testBean.setVersionNumber("TestVersionNumber");
 
-        testBean.setMaximumElements(9);
-        testBean.setSchemaType(SchemaType.SET);
-
-        return new AssetComplexSchemaType(testBean, assetMeanings, schemaAttributes, schemaLinks);
+        return new AssetComplexSchemaType(testBean, schemaAttributes);
     }
 
 
@@ -79,7 +70,7 @@ public class TestAssetComplexSchemaType
      */
     private AssetComplexSchemaType getDifferentObject()
     {
-        Schema testBean = new Schema();
+        ComplexSchemaType testBean = new ComplexSchemaType();
 
         testBean.setType(type);
         testBean.setGUID("TestDifferentGUID");
@@ -94,10 +85,7 @@ public class TestAssetComplexSchemaType
         testBean.setUsage("TestUsage");
         testBean.setVersionNumber("TestVersionNumber");
 
-        testBean.setMaximumElements(9);
-        testBean.setSchemaType(SchemaType.SET);
-
-        return new AssetComplexSchemaType(testBean, assetMeanings, schemaAttributes, schemaLinks);
+        return new AssetComplexSchemaType(testBean, schemaAttributes);
     }
 
 
@@ -109,14 +97,14 @@ public class TestAssetComplexSchemaType
      */
     private AssetComplexSchemaType getAnotherDifferentObject()
     {
-        Schema testBean = new Schema();
+        ComplexSchemaType testBean = new ComplexSchemaType();
 
         testBean.setType(type);
         testBean.setGUID("TestGUID");
         testBean.setURL("TestURL");
         testBean.setClassifications(classifications);
 
-        testBean.setQualifiedName("TestQualifiedName");
+        testBean.setQualifiedName("TestAnotherName");
         testBean.setAdditionalProperties(additionalProperties);
 
         testBean.setAuthor("TestAuthor");
@@ -124,10 +112,7 @@ public class TestAssetComplexSchemaType
         testBean.setUsage("TestUsage");
         testBean.setVersionNumber("TestVersionNumber");
 
-        testBean.setMaximumElements(10);
-        testBean.setSchemaType(SchemaType.SET);
-
-        return new AssetComplexSchemaType(testBean, assetMeanings, schemaAttributes, schemaLinks);
+        return new AssetComplexSchemaType(testBean, schemaAttributes);
     }
 
 
@@ -138,7 +123,7 @@ public class TestAssetComplexSchemaType
      */
     private AssetComplexSchemaType getYetAnotherDifferentObject()
     {
-        Schema testBean = new Schema();
+        ComplexSchemaType testBean = new ComplexSchemaType();
 
         testBean.setType(type);
         testBean.setGUID("TestGUID");
@@ -153,10 +138,7 @@ public class TestAssetComplexSchemaType
         testBean.setUsage("TestUsage");
         testBean.setVersionNumber("TestVersionNumber");
 
-        testBean.setMaximumElements(9);
-        testBean.setSchemaType(SchemaType.SET);
-
-        return new AssetComplexSchemaType(new AssetSummary(new Asset()), testBean, assetMeanings, schemaAttributes, schemaLinks);
+        return new AssetComplexSchemaType(new AssetSummary(new Asset()), testBean, schemaAttributes);
     }
 
 
@@ -167,7 +149,7 @@ public class TestAssetComplexSchemaType
      */
     private AssetComplexSchemaType getAndYetAnotherDifferentObject()
     {
-        Schema testBean = new Schema();
+        SchemaType testBean = new SchemaType();
 
         testBean.setType(type);
         testBean.setGUID("TestGUID");
@@ -182,10 +164,8 @@ public class TestAssetComplexSchemaType
         testBean.setUsage("TestUsage");
         testBean.setVersionNumber("TestVersionNumber");
 
-        testBean.setMaximumElements(9);
-        testBean.setSchemaType(SchemaType.SET);
 
-        return new AssetComplexSchemaType(testBean, assetMeanings, schemaAttributes, null);
+        return new AssetComplexSchemaType(testBean, schemaAttributes);
     }
 
 
@@ -208,13 +188,8 @@ public class TestAssetComplexSchemaType
         assertTrue(resultObject.getUsage().equals("TestUsage"));
         assertTrue(resultObject.getEncodingStandard().equals("TestEncodingStandard"));
         assertTrue(resultObject.getAuthor().equals("TestAuthor"));
-        assertTrue(resultObject.getAssetMeanings() != null);
 
         assertTrue(resultObject.getSchemaAttributes() != null);
-        assertTrue(resultObject.getSchemaLinks() != null);
-        assertTrue(resultObject.getMaximumElements() == 9);
-        assertTrue(resultObject.getSchemaType().equals(SchemaType.SET));
-
     }
 
 
@@ -233,16 +208,12 @@ public class TestAssetComplexSchemaType
         assertTrue(nullObject.getQualifiedName() == null);
         assertTrue(nullObject.getAdditionalProperties() == null);
 
-        assertTrue(nullObject.getAssetMeanings() == null);
         assertTrue(nullObject.getAuthor() == null);
         assertTrue(nullObject.getEncodingStandard() == null);
         assertTrue(nullObject.getUsage() == null);
         assertTrue(nullObject.getVersionNumber() == null);
 
-        assertTrue(nullObject.getSchemaLinks() == null);
         assertTrue(nullObject.getSchemaAttributes() == null);
-        assertTrue(nullObject.getMaximumElements() == 0);
-        assertTrue(nullObject.getSchemaType() == null);
 
     }
 
@@ -252,106 +223,55 @@ public class TestAssetComplexSchemaType
      */
     @Test public void testNullObject()
     {
-        Schema                 nullBean;
+        ComplexSchemaType      nullBean;
         AssetComplexSchemaType nullObject;
         AssetComplexSchemaType nullTemplate;
         AssetDescriptor        parentAsset;
 
         nullBean = null;
-        nullObject = new AssetComplexSchemaType(nullBean, null, null, null);
+        nullObject = new AssetComplexSchemaType(nullBean, null);
         validateNullObject(nullObject);
 
-        nullBean = new Schema();
-        nullObject = new AssetComplexSchemaType(nullBean, null, null, null);
+        nullBean = new ComplexSchemaType();
+        nullObject = new AssetComplexSchemaType(nullBean, null);
         validateNullObject(nullObject);
 
-        nullBean = new Schema(null);
-        nullObject = new AssetComplexSchemaType(nullBean, null, null, null);
+        nullBean = new ComplexSchemaType(null);
+        nullObject = new AssetComplexSchemaType(nullBean, null);
         validateNullObject(nullObject);
 
         parentAsset = null;
         nullBean = null;
-        nullObject = new AssetComplexSchemaType(parentAsset, nullBean, null, null, null);
+        nullObject = new AssetComplexSchemaType(parentAsset, nullBean, null);
         validateNullObject(nullObject);
 
-        nullBean = new Schema();
-        nullObject = new AssetComplexSchemaType(parentAsset, nullBean, null, null, null);
+        nullBean = new ComplexSchemaType();
+        nullObject = new AssetComplexSchemaType(parentAsset, nullBean, null);
         validateNullObject(nullObject);
 
-        nullBean = new Schema(null);
-        nullObject = new AssetComplexSchemaType(parentAsset, nullBean, null, null, null);
+        nullBean = new ComplexSchemaType(null);
+        nullObject = new AssetComplexSchemaType(parentAsset, nullBean, null);
         validateNullObject(nullObject);
 
         nullTemplate = null;
         nullObject = new AssetComplexSchemaType(parentAsset, nullTemplate);
         validateNullObject(nullObject);
 
-        nullTemplate = new AssetComplexSchemaType(parentAsset, nullBean, null, null, null);;
+        nullTemplate = new AssetComplexSchemaType(parentAsset, nullBean, null);;
         nullObject = new AssetComplexSchemaType(parentAsset, nullTemplate);
         validateNullObject(nullObject);
     }
 
 
     /**
-     * Test that the maximum elements are properly set depending on the type of schema.
+     * Validate the subclass initialization
      */
-    @Test public void testMaximumElements()
+    @Test public void testSubclassInitialization()
     {
-        Schema  arrayBean = new Schema();
-        arrayBean.setSchemaType(SchemaType.ARRAY);
-        arrayBean.setMaximumElements(25);
+        ComplexSchemaType      bean        = new ComplexSchemaType();
+        AssetComplexSchemaType object = new AssetComplexSchemaType(null);
 
-        AssetComplexSchemaType testObject = new AssetComplexSchemaType(arrayBean, null, null, null);
-
-        assertTrue(testObject.getMaximumElements() == 25);
-
-
-        Schema  setBean = new Schema();
-        setBean.setSchemaType(SchemaType.SET);
-        setBean.setMaximumElements(27);
-
-        testObject = new AssetComplexSchemaType(setBean, null, null, null);
-
-        assertTrue(testObject.getMaximumElements() == 27);
-
-
-        Schema  structBean = new Schema();
-        structBean.setSchemaType(SchemaType.STRUCT);
-        structBean.setMaximumElements(22);
-
-        testObject = new AssetComplexSchemaType(structBean, null, null, null);
-
-        assertTrue(testObject.getMaximumElements() == 0);
-
-        testObject = new AssetComplexSchemaType(structBean,
-                                                null,
-                                                new MockAssetSchemaAttributes(null,
-                                                                   25,
-                                                                   10),
-                                                null);
-
-        assertTrue(testObject.getMaximumElements() == 0);
-    }
-
-    /**
-     * Test that the link is properly managed
-     */
-    @Test public void testMeaningsAttributesLinks()
-    {
-        AssetMeanings          meanings         = new MockAssetMeanings(null, 23, 60);
-        AssetSchemaAttributes  schemaAttributes = new MockAssetSchemaAttributes(null, 12, 56);
-        AssetSchemaLinks       schemaLinks      = new MockAssetSchemaLinks(null, 4, 28);
-        AssetComplexSchemaType testObject       = new AssetComplexSchemaType(null, null, null, null);
-
-        assertTrue(testObject.getAssetMeanings() == null);
-        assertTrue(testObject.getSchemaAttributes() == null);
-        assertTrue(testObject.getSchemaLinks() == null);
-
-        testObject = new AssetComplexSchemaType(null, meanings, schemaAttributes, schemaLinks);
-
-        assertTrue(testObject.getAssetMeanings() != null);
-        assertTrue(testObject.getSchemaAttributes() != null);
-        assertTrue(testObject.getSchemaLinks() != null);
+        object.setBean(bean);
     }
 
 
@@ -391,16 +311,15 @@ public class TestAssetComplexSchemaType
     {
         validateResultObject(new AssetComplexSchemaType(null, getTestObject()));
 
-        validateResultObject((AssetComplexSchemaType)getTestObject().cloneAssetSchemaElement(null));
-
-
+        validateResultObject((AssetComplexSchemaType)getTestObject().cloneAssetSchemaType(null));
     }
+
 
     /**
      * Test that toString is overridden.
      */
     @Test public void testToString()
     {
-        assertTrue(getTestObject().toString().contains("Schema"));
+        assertTrue(getTestObject().toString().contains("ComplexSchemaType"));
     }
 }

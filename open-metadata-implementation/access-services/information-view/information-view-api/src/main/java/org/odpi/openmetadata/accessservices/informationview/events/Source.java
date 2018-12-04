@@ -1,55 +1,117 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-
 package org.odpi.openmetadata.accessservices.informationview.events;
 
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+import java.util.Map;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
+
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Source {
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "class")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = TableSource.class, name = "TableSource"),
+        @JsonSubTypes.Type(value = DatabaseColumnSource.class, name = "DatabaseColumnSource"),
+        @JsonSubTypes.Type(value = ReportColumnSource.class, name = "ReportColumnSource"),
+        @JsonSubTypes.Type(value = ReportSection.class, name = "ReportSection"),
+        @JsonSubTypes.Type(value = ReportSectionSource.class, name = "ReportSectionSource")})
+@JsonIdentityInfo(generator = ObjectIdGenerators.StringIdGenerator.class, property = "@id")
+@JsonIdentityReference
+public abstract class Source {
 
-    private String tableName;
-    private String schemaName;
-    private String databaseName;
+    private String networkAddress;
+    private String protocol;
+    private String connectorProviderName;
+    private String user;
+    private Map<String, String> additionalProperties;
 
-
-    public String getTableName() {
-        return tableName;
+    /**
+     * Return the protocol of the connection
+     *
+     * @return protocol of the connection
+     */
+    public String getProtocol() {
+        return protocol;
     }
 
-    public void setTableName(String tableName) {
-        this.tableName = tableName;
+    /**
+     * set up the protocol of the connection
+     *
+     * @param protocol - protocol of the connection
+     */
+    public void setProtocol(String protocol) {
+        this.protocol = protocol;
     }
 
-    public String getSchemaName() {
-        return schemaName;
+
+    /**
+     * Return the address of the connection
+     *
+     * @return address of the connection
+     */
+    public String getNetworkAddress() {
+        return networkAddress;
     }
 
-    public void setSchemaName(String schemaName) {
-        this.schemaName = schemaName;
+    /**
+     * set up the address of the connection
+     *
+     * @param networkAddress - address of the connection
+     */
+    public void setNetworkAddress(String networkAddress) {
+        this.networkAddress = networkAddress;
     }
 
-    public String getDatabaseName() {
-        return databaseName;
+    public String getConnectorProviderName() {
+        return connectorProviderName;
     }
 
-    public void setDatabaseName(String databaseName) {
-        this.databaseName = databaseName;
+    public void setConnectorProviderName(String connectorProviderName) {
+        this.connectorProviderName = connectorProviderName;
     }
+
+    public Map<String, String> getAdditionalProperties() {
+        return additionalProperties;
+    }
+
+    public void setAdditionalProperties(Map<String, String> additionalProperties) {
+        this.additionalProperties = additionalProperties;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public abstract String getQualifiedName();
 
     @Override
     public String toString() {
         return "Source{" +
-                "tableName='" + tableName + '\'' +
-                ", schemaName='" + schemaName + '\'' +
-                ", databaseName='" + databaseName + '\'' +
+                "networkAddress='" + networkAddress + '\'' +
+                ", protocol='" + protocol + '\'' +
+                ", connectorProviderName='" + connectorProviderName + '\'' +
+                ", user='" + user + '\'' +
+                ", additionalProperties=" + additionalProperties +
                 '}';
     }
 }

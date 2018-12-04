@@ -3,16 +3,19 @@
 package org.odpi.openmetadata.virtualdataconnector.virtualiser.views;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.json.JSONObject;
+import org.apache.commons.io.FileUtils;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.odpi.openmetadata.accessservices.informationview.events.ColumnContextEvent;
+import org.odpi.openmetadata.accessservices.informationview.events.TableContextEvent;
 import org.odpi.openmetadata.accessservices.informationview.events.InformationViewEvent;
 import org.odpi.openmetadata.virtualdataconnector.virtualiser.JsonReadHelper;
 import org.odpi.openmetadata.virtualdataconnector.virtualiser.gaian.GaianQueryConstructor;
 import org.odpi.openmetadata.virtualdataconnector.virtualiser.kafka.KafkaVirtualiserProducer;
+import org.skyscreamer.jsonassert.Customization;
 import org.skyscreamer.jsonassert.JSONAssert;
+import org.skyscreamer.jsonassert.JSONCompareMode;
+import org.skyscreamer.jsonassert.comparator.CustomComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -24,7 +27,6 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 
-import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 
 
@@ -39,7 +41,7 @@ public class ViewsConstructorTest extends AbstractTestNGSpringContextTests {
     //json file received from Information View OMAS
     private String ivJson = null;
     //object matched with json file
-    private ColumnContextEvent columnContextEvent = null;
+    private TableContextEvent tableContextEvent = null;
     @Mock
     private KafkaVirtualiserProducer kafkaVirtualiserProducer;
     @Autowired
@@ -52,10 +54,10 @@ public class ViewsConstructorTest extends AbstractTestNGSpringContextTests {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         classLoader = this.getClass().getClassLoader();
-        ivJson = JsonReadHelper.readFile(new File(classLoader.getResource(TESTIN).getFile()));
+        ivJson =  FileUtils.readFileToString(new File("./src/test/resources/" + TESTIN), "UTF-8");
         // try to delete the views
         //ivJson= JsonReadHelper.readFile(new File(classLoader.getResource(DELETE).getFile()));
-        columnContextEvent = mapper.readValue(ivJson, ColumnContextEvent.class);
+        tableContextEvent = mapper.readValue(ivJson, TableContextEvent.class);
 
     }
 
@@ -69,12 +71,14 @@ public class ViewsConstructorTest extends AbstractTestNGSpringContextTests {
         HashMap<String, String> createdViews = new HashMap<>();
         createdViews.put(GaianQueryConstructor.BUSINESS_PREFIX, "LTB_EMPSALARYANALYSIS");
         createdViews.put(GaianQueryConstructor.TECHNICAL_PREFIX, "LTT_EMPSALARYANALYSIS");
-        List<InformationViewEvent> views = viewsConstructor.notifyIVOMAS(columnContextEvent, createdViews);
+        List<InformationViewEvent> views = viewsConstructor.notifyIVOMAS(tableContextEvent, createdViews);
         assertNotNull(views);
-        String business = JsonReadHelper.readFile(new File(classLoader.getResource(BUSINESS).getFile()));
-        String technical = JsonReadHelper.readFile(new File(classLoader.getResource(TECHNICAL).getFile()));
-        JSONAssert.assertEquals(business, mapper.writeValueAsString(views.get(0)), false);
-        JSONAssert.assertEquals(technical, mapper.writeValueAsString(views.get(1)), false);
+        String business = FileUtils.readFileToString(new File("./src/test/resources/" + BUSINESS), "UTF-8");
+        String technical = FileUtils.readFileToString(new File("./src/test/resources/" + TECHNICAL), "UTF-8");
+        JSONAssert.assertEquals(business, mapper.writeValueAsString(views.get(0)),
+                                new CustomComparator(JSONCompareMode.LENIENT, new Customization("tableSource.@id", (o1,o2) -> true)));
+        JSONAssert.assertEquals(technical, mapper.writeValueAsString(views.get(1)),
+                                new CustomComparator(JSONCompareMode.LENIENT, new Customization("tableSource.@id", (o1,o2) -> true)));
     }
 
 }

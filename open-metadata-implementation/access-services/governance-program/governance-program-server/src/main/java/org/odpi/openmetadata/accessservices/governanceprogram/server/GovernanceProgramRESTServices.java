@@ -1,19 +1,13 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceprogram.server;
 
 
-import org.odpi.openmetadata.accessservices.governanceprogram.admin.GovernanceProgramAdmin;
-import org.odpi.openmetadata.accessservices.governanceprogram.ffdc.GovernanceProgramErrorCode;
 import org.odpi.openmetadata.accessservices.governanceprogram.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.ExternalReference;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDomain;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.*;
-import org.odpi.openmetadata.adminservices.OMAGAccessServiceRegistration;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceOperationalStatus;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,38 +24,15 @@ import java.util.Map;
  */
 public class GovernanceProgramRESTServices
 {
-    static private String                  accessServiceName   = null;
-    static private OMRSRepositoryConnector repositoryConnector = null;
+    static private GovernanceProgramInstanceHandler instanceHandler = new GovernanceProgramInstanceHandler();
 
     private static final Logger log = LoggerFactory.getLogger(GovernanceProgramRESTServices.class);
-
-    /**
-     * Provide a connector to the REST Services.
-     *
-     * @param accessServiceName  name of this access service
-     * @param repositoryConnector  OMRS Repository Connector to the property server.
-     */
-    static public void setRepositoryConnector(String                   accessServiceName,
-                                              OMRSRepositoryConnector  repositoryConnector)
-    {
-        GovernanceProgramRESTServices.accessServiceName = accessServiceName;
-        GovernanceProgramRESTServices.repositoryConnector = repositoryConnector;
-    }
-
 
     /**
      * Default constructor
      */
     public GovernanceProgramRESTServices()
     {
-        AccessServiceDescription   myDescription = AccessServiceDescription.GOVERNANCE_PROGRAM_OMAS;
-        AccessServiceRegistration  myRegistration = new AccessServiceRegistration(myDescription.getAccessServiceCode(),
-                                                                                  myDescription.getAccessServiceName(),
-                                                                                  myDescription.getAccessServiceDescription(),
-                                                                                  myDescription.getAccessServiceWiki(),
-                                                                                  AccessServiceOperationalStatus.ENABLED,
-                                                                                  GovernanceProgramAdmin.class.getName());
-        OMAGAccessServiceRegistration.registerAccessService(myRegistration);
     }
 
 
@@ -69,6 +40,7 @@ public class GovernanceProgramRESTServices
      * Create a personal profile for an individual who is to be appointed to a governance role but does not
      * have a profile in open metadata.
      *
+     * @param serverName name of server instance to call
      * @param userId the name of the calling user.
      * @param requestBody properties about the individual.
      * @return Unique identifier for the personal profile or
@@ -76,7 +48,8 @@ public class GovernanceProgramRESTServices
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public GUIDResponse createPersonalProfile(String                     userId,
+    public GUIDResponse createPersonalProfile(String                     serverName,
+                                              String                     userId,
                                               PersonalDetailsRequestBody requestBody)
     {
         final String        methodName = "createPersonalProfile";
@@ -87,8 +60,6 @@ public class GovernanceProgramRESTServices
 
         try
         {
-            this.validateInitialization(methodName);
-
             String              profileUserId = null;
             String              employeeNumber = null;
             String              fullName = null;
@@ -108,8 +79,8 @@ public class GovernanceProgramRESTServices
                 additionalProperties = requestBody.getAdditionalProperties();
             }
 
-            PersonalProfileHandler   handler = new PersonalProfileHandler(accessServiceName,
-                                                                          repositoryConnector);
+            PersonalProfileHandler   handler = new PersonalProfileHandler(instanceHandler.getAccessServiceName(),
+                                                                          instanceHandler.getRepositoryConnector(serverName));
 
             response.setGUID(handler.createPersonalProfile(userId,
                                                            profileUserId,
@@ -142,6 +113,7 @@ public class GovernanceProgramRESTServices
     /**
      * Update properties for the personal properties.  Null values result in empty fields in the profile.
      *
+     * @param serverName name of server instance to call
      * @param userId the name of the calling user.
      * @param profileGUID unique identifier for the profile.
      * @param requestBody properties about the individual.
@@ -151,7 +123,8 @@ public class GovernanceProgramRESTServices
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public VoidResponse   updatePersonalProfile(String                     userId,
+    public VoidResponse   updatePersonalProfile(String                     serverName,
+                                                String                     userId,
                                                 String                     profileGUID,
                                                 PersonalDetailsRequestBody requestBody)
     {
@@ -163,8 +136,6 @@ public class GovernanceProgramRESTServices
 
         try
         {
-            this.validateInitialization(methodName);
-
             String              employeeNumber = null;
             String              fullName = null;
             String              knownName = null;
@@ -182,8 +153,8 @@ public class GovernanceProgramRESTServices
                 additionalProperties = requestBody.getAdditionalProperties();
             }
 
-            PersonalProfileHandler   handler = new PersonalProfileHandler(accessServiceName,
-                                                                          repositoryConnector);
+            PersonalProfileHandler   handler = new PersonalProfileHandler(instanceHandler.getAccessServiceName(),
+                                                                          instanceHandler.getRepositoryConnector(serverName));
 
             handler.updatePersonalProfile(userId,
                                           profileGUID,
@@ -220,6 +191,7 @@ public class GovernanceProgramRESTServices
     /**
      * Delete the personal profile.
      *
+     * @param serverName name of server instance to call
      * @param userId the name of the calling user.
      * @param profileGUID unique identifier for the profile.
      * @param requestBody personnel/serial/unique employee number of the individual.
@@ -229,7 +201,8 @@ public class GovernanceProgramRESTServices
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public VoidResponse   deletePersonalProfile(String                              userId,
+    public VoidResponse   deletePersonalProfile(String                              serverName,
+                                                String                              userId,
                                                 String                              profileGUID,
                                                 PersonalProfileValidatorRequestBody requestBody)
     {
@@ -241,8 +214,6 @@ public class GovernanceProgramRESTServices
 
         try
         {
-            this.validateInitialization(methodName);
-
             String              employeeNumber = null;
 
             if (requestBody != null)
@@ -250,8 +221,8 @@ public class GovernanceProgramRESTServices
                 employeeNumber = requestBody.getEmployeeNumber();
             }
 
-            PersonalProfileHandler   handler = new PersonalProfileHandler(accessServiceName,
-                                                                          repositoryConnector);
+            PersonalProfileHandler   handler = new PersonalProfileHandler(instanceHandler.getAccessServiceName(),
+                                                                          instanceHandler.getRepositoryConnector(serverName));
 
             handler.deletePersonalProfile(userId,
                                           profileGUID,
@@ -284,6 +255,7 @@ public class GovernanceProgramRESTServices
     /**
      * Retrieve a personal profile by guid.
      *
+     * @param serverName name of server instance to call
      * @param userId the name of the calling user.
      * @param profileGUID unique identifier for the profile.
      * @return personal profile object or
@@ -291,7 +263,8 @@ public class GovernanceProgramRESTServices
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public PersonalProfileResponse getPersonalProfileByGUID(String        userId,
+    public PersonalProfileResponse getPersonalProfileByGUID(String        serverName,
+                                                            String        userId,
                                                             String        profileGUID)
     {
         final String        methodName = "getPersonalProfileByGUID";
@@ -302,10 +275,8 @@ public class GovernanceProgramRESTServices
 
         try
         {
-            this.validateInitialization(methodName);
-
-            PersonalProfileHandler   handler = new PersonalProfileHandler(accessServiceName,
-                                                                          repositoryConnector);
+            PersonalProfileHandler   handler = new PersonalProfileHandler(instanceHandler.getAccessServiceName(),
+                                                                          instanceHandler.getRepositoryConnector(serverName));
 
             response.setPersonalProfile(handler.getPersonalProfileByGUID(userId, profileGUID));
         }
@@ -331,6 +302,7 @@ public class GovernanceProgramRESTServices
     /**
      * Retrieve a personal profile by personnel/serial/unique employee number of the individual.
      *
+     * @param serverName name of server instance to call
      * @param userId the name of the calling user.
      * @param employeeNumber personnel/serial/unique employee number of the individual.
      * @return personal profile object or
@@ -339,7 +311,8 @@ public class GovernanceProgramRESTServices
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public PersonalProfileResponse getPersonalProfileByEmployeeNumber(String         userId,
+    public PersonalProfileResponse getPersonalProfileByEmployeeNumber(String         serverName,
+                                                                      String         userId,
                                                                       String         employeeNumber)
     {
         final String        methodName = "getPersonalProfileByEmployeeNumber";
@@ -350,10 +323,8 @@ public class GovernanceProgramRESTServices
 
         try
         {
-            this.validateInitialization(methodName);
-
-            PersonalProfileHandler   handler = new PersonalProfileHandler(accessServiceName,
-                                                                          repositoryConnector);
+            PersonalProfileHandler   handler = new PersonalProfileHandler(instanceHandler.getAccessServiceName(),
+                                                                          instanceHandler.getRepositoryConnector(serverName));
 
             response.setPersonalProfile(handler.getPersonalProfileByEmployeeNumber(userId, employeeNumber));
         }
@@ -384,6 +355,7 @@ public class GovernanceProgramRESTServices
      * Return a list of candidate personal profiles for an individual.  It matches on full name and known name.
      * The name may include wild card parameters.
      *
+     * @param serverName name of server instance to call
      * @param userId the name of the calling user.
      * @param name name of individual.
      * @return list of personal profile objects or
@@ -391,7 +363,8 @@ public class GovernanceProgramRESTServices
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public PersonalProfileListResponse getPersonalProfilesByName(String        userId,
+    public PersonalProfileListResponse getPersonalProfilesByName(String        serverName,
+                                                                 String        userId,
                                                                  String        name)
     {
         final String        methodName = "getPersonalProfilesByName";
@@ -402,10 +375,8 @@ public class GovernanceProgramRESTServices
 
         try
         {
-            this.validateInitialization(methodName);
-
-            PersonalProfileHandler   handler = new PersonalProfileHandler(accessServiceName,
-                                                                          repositoryConnector);
+            PersonalProfileHandler   handler = new PersonalProfileHandler(instanceHandler.getAccessServiceName(),
+                                                                          instanceHandler.getRepositoryConnector(serverName));
 
             response.setPersonalProfiles(handler.getPersonalProfilesByName(userId, name));
         }
@@ -431,6 +402,7 @@ public class GovernanceProgramRESTServices
     /**
      * Create the governance officer appointment.
      *
+     * @param serverName name of server instance to call
      * @param userId the name of the calling user.
      * @param requestBody  properties of the governance officer.
      * @return Unique identifier (guid) of the governance officer or
@@ -438,7 +410,8 @@ public class GovernanceProgramRESTServices
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public GUIDResponse createGovernanceOfficer(String                               userId,
+    public GUIDResponse createGovernanceOfficer(String                               serverName,
+                                                String                               userId,
                                                 GovernanceOfficerDetailsRequestBody  requestBody)
 
     {
@@ -467,10 +440,8 @@ public class GovernanceProgramRESTServices
 
         try
         {
-            this.validateInitialization(methodName);
-
-            GovernanceOfficerHandler   handler = new GovernanceOfficerHandler(accessServiceName,
-                                                                              repositoryConnector);
+            GovernanceOfficerHandler   handler = new GovernanceOfficerHandler(instanceHandler.getAccessServiceName(),
+                                                                              instanceHandler.getRepositoryConnector(serverName));
 
             response.setGUID(handler.createGovernanceOfficer(userId,
                                                              governanceDomain,
@@ -503,6 +474,7 @@ public class GovernanceProgramRESTServices
     /**
      * Update selected fields for the governance officer.
      *
+     * @param serverName name of server instance to call
      * @param userId the name of the calling user.
      * @param governanceOfficerGUID unique identifier (guid) of the governance officer.
      * @param requestBody  properties of the governance officer
@@ -513,7 +485,8 @@ public class GovernanceProgramRESTServices
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public VoidResponse   updateGovernanceOfficer(String                               userId,
+    public VoidResponse   updateGovernanceOfficer(String                               serverName,
+                                                  String                               userId,
                                                   String                               governanceOfficerGUID,
                                                   GovernanceOfficerDetailsRequestBody  requestBody)
     {
@@ -542,10 +515,8 @@ public class GovernanceProgramRESTServices
 
         try
         {
-            this.validateInitialization(methodName);
-
-            GovernanceOfficerHandler   handler = new GovernanceOfficerHandler(accessServiceName,
-                                                                              repositoryConnector);
+            GovernanceOfficerHandler   handler = new GovernanceOfficerHandler(instanceHandler.getAccessServiceName(),
+                                                                              instanceHandler.getRepositoryConnector(serverName));
 
             handler.updateGovernanceOfficer(userId,
                                             governanceOfficerGUID,
@@ -582,6 +553,7 @@ public class GovernanceProgramRESTServices
     /**
      * Remove the requested governance officer.
      *
+     * @param serverName name of server instance to call
      * @param userId the name of the calling user.
      * @param governanceOfficerGUID unique identifier (guid) of the governance officer.
      * @param requestBody  properties to verify this is the right governance officer
@@ -591,7 +563,8 @@ public class GovernanceProgramRESTServices
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public VoidResponse   deleteGovernanceOfficer(String                                 userId,
+    public VoidResponse   deleteGovernanceOfficer(String                                 serverName,
+                                                  String                                 userId,
                                                   String                                 governanceOfficerGUID,
                                                   GovernanceOfficerValidatorRequestBody  requestBody)
     {
@@ -603,8 +576,6 @@ public class GovernanceProgramRESTServices
 
         try
         {
-            this.validateInitialization(methodName);
-
             GovernanceDomain    governanceDomain = null;
             String              appointmentId = null;
 
@@ -614,8 +585,8 @@ public class GovernanceProgramRESTServices
                 appointmentId = requestBody.getAppointmentId();
             }
 
-            GovernanceOfficerHandler   handler = new GovernanceOfficerHandler(accessServiceName,
-                                                                              repositoryConnector);
+            GovernanceOfficerHandler   handler = new GovernanceOfficerHandler(instanceHandler.getAccessServiceName(),
+                                                                              instanceHandler.getRepositoryConnector(serverName));
 
             handler.deleteGovernanceOfficer(userId,
                                             governanceOfficerGUID,
@@ -648,6 +619,7 @@ public class GovernanceProgramRESTServices
     /**
      * Retrieve a governance officer description by unique guid.
      *
+     * @param serverName name of server instance to call
      * @param userId the name of the calling user.
      * @param governanceOfficerGUID unique identifier (guid) of the governance officer.
      * @return governance officer object or
@@ -655,7 +627,8 @@ public class GovernanceProgramRESTServices
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public GovernanceOfficerResponse getGovernanceOfficerByGUID(String     userId,
+    public GovernanceOfficerResponse getGovernanceOfficerByGUID(String     serverName,
+                                                                String     userId,
                                                                 String     governanceOfficerGUID)
     {
         final String        methodName = "getGovernanceOfficerByGUID";
@@ -666,10 +639,8 @@ public class GovernanceProgramRESTServices
 
         try
         {
-            this.validateInitialization(methodName);
-
-            GovernanceOfficerHandler   handler = new GovernanceOfficerHandler(accessServiceName,
-                                                                              repositoryConnector);
+            GovernanceOfficerHandler   handler = new GovernanceOfficerHandler(instanceHandler.getAccessServiceName(),
+                                                                              instanceHandler.getRepositoryConnector(serverName));
 
             response.setGovernanceOfficer(handler.getGovernanceOfficerByGUID(userId, governanceOfficerGUID));
         }
@@ -695,6 +666,7 @@ public class GovernanceProgramRESTServices
     /**
      * Retrieve a governance officer by unique appointment id.
      *
+     * @param serverName name of server instance to call
      * @param userId the name of the calling user.
      * @param appointmentId  the unique appointment identifier of the governance officer.
      * @return governance officer object or
@@ -703,7 +675,8 @@ public class GovernanceProgramRESTServices
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public GovernanceOfficerResponse   getGovernanceOfficerByAppointmentId(String     userId,
+    public GovernanceOfficerResponse   getGovernanceOfficerByAppointmentId(String     serverName,
+                                                                           String     userId,
                                                                            String     appointmentId)
     {
         final String        methodName = "getGovernanceOfficerByAppointmentId";
@@ -714,10 +687,8 @@ public class GovernanceProgramRESTServices
 
         try
         {
-            this.validateInitialization(methodName);
-
-            GovernanceOfficerHandler   handler = new GovernanceOfficerHandler(accessServiceName,
-                                                                              repositoryConnector);
+            GovernanceOfficerHandler   handler = new GovernanceOfficerHandler(instanceHandler.getAccessServiceName(),
+                                                                              instanceHandler.getRepositoryConnector(serverName));
 
             response.setGovernanceOfficer(handler.getGovernanceOfficerByAppointmentId(userId, appointmentId));
         }
@@ -747,12 +718,14 @@ public class GovernanceProgramRESTServices
     /**
      * Return all of the defined governance officers.
      *
+     * @param serverName name of server instance to call
      * @param userId the name of the calling user.
      * @return list of governance officer objects or
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public GovernanceOfficerListResponse  getGovernanceOfficers(String     userId)
+    public GovernanceOfficerListResponse  getGovernanceOfficers(String     serverName,
+                                                                String     userId)
     {
         final String        methodName = "getGovernanceOfficers";
 
@@ -762,10 +735,8 @@ public class GovernanceProgramRESTServices
 
         try
         {
-            this.validateInitialization(methodName);
-
-            GovernanceOfficerHandler   handler = new GovernanceOfficerHandler(accessServiceName,
-                                                                              repositoryConnector);
+            GovernanceOfficerHandler   handler = new GovernanceOfficerHandler(instanceHandler.getAccessServiceName(),
+                                                                              instanceHandler.getRepositoryConnector(serverName));
 
             response.setGovernanceOfficers(handler.getGovernanceOfficers(userId));
         }
@@ -787,12 +758,14 @@ public class GovernanceProgramRESTServices
     /**
      * Return all of the defined governance officers.
      *
+     * @param serverName name of server instance to call
      * @param userId the name of the calling user.
      * @return list of governance officer objects or
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public GovernanceOfficerListResponse  getActiveGovernanceOfficers(String     userId)
+    public GovernanceOfficerListResponse  getActiveGovernanceOfficers(String     serverName,
+                                                                      String     userId)
     {
         final String        methodName = "getActiveGovernanceOfficers";
 
@@ -802,10 +775,8 @@ public class GovernanceProgramRESTServices
 
         try
         {
-            this.validateInitialization(methodName);
-
-            GovernanceOfficerHandler   handler = new GovernanceOfficerHandler(accessServiceName,
-                                                                              repositoryConnector);
+            GovernanceOfficerHandler   handler = new GovernanceOfficerHandler(instanceHandler.getAccessServiceName(),
+                                                                              instanceHandler.getRepositoryConnector(serverName));
 
             response.setGovernanceOfficers(handler.getActiveGovernanceOfficers(userId));
         }
@@ -829,6 +800,7 @@ public class GovernanceProgramRESTServices
      * there is typically only one governance officer.   However a large organization may have multiple governance
      * officers, each with a different scope.  The governance officer with a null scope is the overall leader.
      *
+     * @param serverName name of server instance to call
      * @param userId the name of the calling user.
      * @param requestBody domain of interest.
      * @return list of governance officer objects or
@@ -836,7 +808,8 @@ public class GovernanceProgramRESTServices
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public GovernanceOfficerListResponse  getGovernanceOfficersByDomain(String                        userId,
+    public GovernanceOfficerListResponse  getGovernanceOfficersByDomain(String                        serverName,
+                                                                        String                        userId,
                                                                         GovernanceDomainRequestBody   requestBody)
     {
         final String        methodName = "getGovernanceOfficersByDomain";
@@ -848,8 +821,6 @@ public class GovernanceProgramRESTServices
 
         try
         {
-            this.validateInitialization(methodName);
-
             GovernanceDomain  governanceDomain = null;
 
             if (requestBody != null)
@@ -857,8 +828,8 @@ public class GovernanceProgramRESTServices
                 governanceDomain = requestBody.getGovernanceDomain();
             }
 
-            GovernanceOfficerHandler   handler = new GovernanceOfficerHandler(accessServiceName,
-                                                                              repositoryConnector);
+            GovernanceOfficerHandler   handler = new GovernanceOfficerHandler(instanceHandler.getAccessServiceName(),
+                                                                              instanceHandler.getRepositoryConnector(serverName));
 
             response.setGovernanceOfficers(handler.getGovernanceOfficersByDomain(userId, governanceDomain));
         }
@@ -884,6 +855,7 @@ public class GovernanceProgramRESTServices
     /**
      * Link a person to a governance officer.  Only one person may be appointed at any one time.
      *
+     * @param serverName name of server instance to call
      * @param userId the name of the calling user.
      * @param governanceOfficerGUID unique identifier (guid) of the governance officer.
      * @param requestBody unique identifier for the profile
@@ -892,7 +864,8 @@ public class GovernanceProgramRESTServices
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public VoidResponse appointGovernanceOfficer(String                  userId,
+    public VoidResponse appointGovernanceOfficer(String                  serverName,
+                                                 String                  userId,
                                                  String                  governanceOfficerGUID,
                                                  AppointmentRequestBody  requestBody)
     {
@@ -904,8 +877,6 @@ public class GovernanceProgramRESTServices
 
         try
         {
-            this.validateInitialization(methodName);
-
             String              profileGUID = null;
             Date                startDate   = null;
 
@@ -915,8 +886,8 @@ public class GovernanceProgramRESTServices
                 startDate   = requestBody.getEffectiveDate();
             }
 
-            GovernanceOfficerHandler   handler = new GovernanceOfficerHandler(accessServiceName,
-                                                                              repositoryConnector);
+            GovernanceOfficerHandler   handler = new GovernanceOfficerHandler(instanceHandler.getAccessServiceName(),
+                                                                              instanceHandler.getRepositoryConnector(serverName));
 
             handler.appointGovernanceOfficer(userId,
                                              governanceOfficerGUID,
@@ -945,6 +916,7 @@ public class GovernanceProgramRESTServices
     /**
      * Unlink a person from a governance officer appointment.
      *
+     * @param serverName name of server instance to call
      * @param userId the name of the calling user.
      * @param governanceOfficerGUID unique identifier (guid) of the governance officer.
      * @param requestBody unique identifier for the profile.
@@ -954,7 +926,8 @@ public class GovernanceProgramRESTServices
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public VoidResponse relieveGovernanceOfficer(String                  userId,
+    public VoidResponse relieveGovernanceOfficer(String                  serverName,
+                                                 String                  userId,
                                                  String                  governanceOfficerGUID,
                                                  AppointmentRequestBody  requestBody)
     {
@@ -966,8 +939,6 @@ public class GovernanceProgramRESTServices
 
         try
         {
-            this.validateInitialization(methodName);
-
             String              profileGUID = null;
             Date                endDate     = null;
 
@@ -977,8 +948,8 @@ public class GovernanceProgramRESTServices
                 endDate     = requestBody.getEffectiveDate();
             }
 
-            GovernanceOfficerHandler   handler = new GovernanceOfficerHandler(accessServiceName,
-                                                                              repositoryConnector);
+            GovernanceOfficerHandler   handler = new GovernanceOfficerHandler(instanceHandler.getAccessServiceName(),
+                                                                              instanceHandler.getRepositoryConnector(serverName));
 
             handler.relieveGovernanceOfficer(userId,
                                              governanceOfficerGUID,
@@ -1190,29 +1161,6 @@ public class GovernanceProgramRESTServices
         else
         {
             captureCheckedException(response, error, error.getClass().getName());
-        }
-    }
-
-
-    /**
-     * Validate that this access service has been initialized before attempting to process a request.
-     *
-     * @param methodName  name of method called.
-     * @throws PropertyServerException not initialized
-     */
-    private void validateInitialization(String  methodName) throws PropertyServerException
-    {
-        if (repositoryConnector == null)
-        {
-            GovernanceProgramErrorCode errorCode = GovernanceProgramErrorCode.SERVICE_NOT_INITIALIZED;
-            String                     errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
-                                                          this.getClass().getName(),
-                                                          methodName,
-                                                          errorMessage,
-                                                          errorCode.getSystemAction(),
-                                                          errorCode.getUserAction());
         }
     }
 }

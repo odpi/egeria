@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.eventmanagement;
 
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
@@ -43,7 +44,8 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
      * The audit log provides a verifiable record of the open metadata archives that have been loaded into
      * the open metadata repository.  The Logger is for standard debug.
      */
-    private static final OMRSAuditLog auditLog = new OMRSAuditLog(OMRSAuditingComponent.REPOSITORY_EVENT_MANAGER);
+    private OMRSAuditLog auditLog;
+
     private static final Logger       log      = LoggerFactory.getLogger(OMRSRepositoryEventManager.class);
 
 
@@ -53,12 +55,16 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
      * @param eventManagerName    this is the name of the event manager to use for logging.
      * @param exchangeRule        this is the rule that determines which events are processed.
      * @param repositoryValidator validator class for checking open metadata repository objects and parameters.
+     * @param auditLog audit log for this component.
      */
-    public OMRSRepositoryEventManager(String eventManagerName,
+    public OMRSRepositoryEventManager(String                          eventManagerName,
                                       OMRSRepositoryEventExchangeRule exchangeRule,
-                                      OMRSRepositoryContentValidator repositoryValidator)
+                                      OMRSRepositoryContentValidator  repositoryValidator,
+                                      OMRSAuditLog                    auditLog)
     {
         super();
+
+        this.auditLog = auditLog;
 
         final String actionDescription = "Initialize OMRS Event Manager";
         final String methodName        = "OMRSRepositoryEventManager";
@@ -263,14 +269,61 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
      */
     private void distributeInstanceEvent(OMRSInstanceEvent event)
     {
-        if (exchangeRule.processInstanceEvent(event.getTypeDefGUID(),
-                                              event.getTypeDefName()))
+    	boolean validEvent = false;
+    	
+    	if (event.getInstanceEventType() == OMRSInstanceEventType.BATCH_INSTANCES_EVENT) 
+    	{
+    		// A batch instance event is valid and should be processed if all 
+    		// references and entities in the contained graph are valid to be processed
+    		InstanceGraph eventGraph = event.getInstanceBatch();
+    		List<EntityDetail> eventEntities = eventGraph.getEntities();
+    		List<Relationship> eventRelationships = eventGraph.getRelationships();
+    		
+    		List<EntityDetail> validEntities = new ArrayList<EntityDetail>();
+    		List<Relationship> validRelationships = new ArrayList<Relationship>();
+    		
+    		for(EntityDetail entity: eventEntities)
+    		{
+    			if(exchangeRule.processInstanceEvent(entity))
+    			{
+    				validEntities.add(entity);
+    			}
+    		}
+    		
+    		
+    		for(Relationship relationship: eventRelationships)
+    		{
+    			if(exchangeRule.processInstanceEvent(relationship))
+    			{
+    				validRelationships.add(relationship);
+    			}
+    		}
+    		
+    		if(validEntities.size() > 0 || validRelationships.size() > 0) {
+    			// Can't just update the instance graph on the event, so we'll
+    			// construct a new event with the updated instances and adjust...
+    			InstanceGraph validInstanceGraph = new InstanceGraph(validEntities, validRelationships);
+    	        OMRSInstanceEvent validInstanceEvent = new OMRSInstanceEvent(OMRSInstanceEventType.BATCH_INSTANCES_EVENT, validInstanceGraph);
+    	        validInstanceEvent.setEventOriginator(event.getEventOriginator());
+    	        event = validInstanceEvent;
+    	        validEvent = true;
+    		}
+    		
+    	}
+    	else
         {
+    		validEvent = exchangeRule.processInstanceEvent(event.getTypeDefGUID(),
+                                                           event.getTypeDefName());
+        }
+    	
+    	if(validEvent)
+    	{
             for (OMRSInstanceEventProcessor consumer : instanceEventConsumers)
             {
                 consumer.sendInstanceEvent(eventManagerName, event);
             }
-        }
+
+    	}
     }
 
 

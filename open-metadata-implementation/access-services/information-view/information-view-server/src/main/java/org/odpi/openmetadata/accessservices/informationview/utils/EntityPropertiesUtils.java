@@ -50,4 +50,11 @@ public class EntityPropertiesUtils {
         propertyValue.setPrimitiveValue(value);
         return propertyValue;
     }
+
+    public static PrimitivePropertyValue createPrimitiveDatePropertyValue(Long timestamp) {
+        PrimitivePropertyValue propertyValue = new PrimitivePropertyValue();
+        propertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE);
+        propertyValue.setPrimitiveValue(timestamp);
+        return propertyValue;
+    }
 }

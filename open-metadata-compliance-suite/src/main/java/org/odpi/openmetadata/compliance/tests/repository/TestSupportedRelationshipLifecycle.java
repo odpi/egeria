@@ -8,6 +8,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -43,8 +45,16 @@ public class TestSupportedRelationshipLifecycle extends OpenMetadataRepositoryTe
     private static final String assertionMsg9  = " new relationship is known.";
     private static final String assertion10    = testCaseId + "-10";
     private static final String assertionMsg10 = " new relationship retrieved.";
+    private static final String assertion11    = testCaseId + "-11";
+    private static final String assertionMsg11 = " relationship deleted version number is ";
+    private static final String assertion12    = testCaseId + "-12";
+    private static final String assertionMsg12 = " relationship no longer retrievable after delete.";
+    private static final String assertion13    = testCaseId + "-13";
+    private static final String assertionMsg13 = " relationship restored version number is ";
+    private static final String assertion14    = testCaseId + "-14";
+    private static final String assertionMsg14 = " relationship purged.";
 
-
+    private static final String discoveredProperty_softDeleteSupport = " soft delete support";
 
     private String                 metadataCollectionId;
     private Map<String, EntityDef> entityDefs;
@@ -125,6 +135,63 @@ public class TestSupportedRelationshipLifecycle extends OpenMetadataRepositoryTe
         assertCondition((newRelationship.equals(metadataCollection.isRelationshipKnown(testUserId, newRelationship.getGUID()))), assertion9, testTypeName + assertionMsg9);
         assertCondition((newRelationship.equals(metadataCollection.getRelationship(testUserId, newRelationship.getGUID()))),
                         assertion10, testTypeName + assertionMsg10);
+
+
+        long  nextVersion = newRelationship.getVersion() + 1;
+        try
+        {
+            Relationship deletedRelationship = metadataCollection.deleteRelationship(testUserId,
+                    newRelationship.getType().getTypeDefGUID(),
+                    newRelationship.getType().getTypeDefName(),
+                    newRelationship.getGUID());
+            discoveredProperties.put(testTypeName + discoveredProperty_softDeleteSupport, "Enabled");
+            super.result.setDiscoveredProperties(discoveredProperties);
+
+            assertCondition(((deletedRelationship != null) && (deletedRelationship.getVersion() == nextVersion)), assertion11, testTypeName + assertionMsg11 + nextVersion);
+            nextVersion ++;
+
+            try
+            {
+                metadataCollection.getRelationship(testUserId, newRelationship.getGUID());
+
+                assertCondition((false), assertion12, testTypeName + assertionMsg12);
+            }
+            catch (RelationshipNotKnownException exception)
+            {
+                assertCondition((true), assertion12, testTypeName + assertionMsg12);
+            }
+
+            Relationship restoredRelationship = metadataCollection.restoreRelationship(testUserId, newRelationship.getGUID());
+
+            assertCondition(((restoredRelationship != null) && (restoredRelationship.getVersion() == nextVersion)), assertion13, testTypeName + assertionMsg13 + nextVersion);
+
+            metadataCollection.deleteRelationship(testUserId,
+                    newRelationship.getType().getTypeDefGUID(),
+                    newRelationship.getType().getTypeDefName(),
+                    newRelationship.getGUID());
+        }
+        catch (FunctionNotSupportedException exception)
+        {
+            discoveredProperties.put(testTypeName + discoveredProperty_softDeleteSupport, "Disabled");
+            super.result.setDiscoveredProperties(discoveredProperties);
+        }
+
+        metadataCollection.purgeRelationship(testUserId,
+                newRelationship.getType().getTypeDefGUID(),
+                newRelationship.getType().getTypeDefName(),
+                newRelationship.getGUID());
+
+        try
+        {
+            metadataCollection.getRelationship(testUserId, newRelationship.getGUID());
+
+            assertCondition((false), assertion14, testTypeName + assertionMsg14);
+        }
+        catch (RelationshipNotKnownException exception)
+        {
+            assertCondition((true), assertion14, testTypeName + assertionMsg14);
+        }
+        
 
         super.result.setSuccessMessage("Relationships can be managed through their lifecycle");
 

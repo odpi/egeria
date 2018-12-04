@@ -67,7 +67,7 @@ public class TestConnection
      *
      * @param resultObject object returned by the test
      */
-    private void validateResultObject(Connection  resultObject)
+    private void validateResultObject(Connection resultObject)
     {
         assertTrue(resultObject.getType().equals(type));
         assertTrue(resultObject.getGUID().equals("TestGUID"));
@@ -86,11 +86,20 @@ public class TestConnection
 
 
     /**
+     * Validate that a connection type object is returned.
+     */
+    @Test public void  testConnectionType()
+    {
+       assertTrue(Connection.getConnectionType() != null);
+    }
+
+
+    /**
      * Validate that the object is initialized properly
      */
     @Test public void testNullObject()
     {
-        Connection    nullObject = new Connection();
+        Connection nullObject = new Connection();
 
         assertTrue(nullObject.getType() == null);
         assertTrue(nullObject.getGUID() == null);
@@ -129,8 +138,8 @@ public class TestConnection
      */
     @Test public void testSecuredProperties()
     {
-        Map<String, Object>   propertyMap;
-        Connection            testObject = new Connection();
+        Map<String, Object> propertyMap;
+        Connection          testObject = new Connection();
 
         assertTrue(testObject.getSecuredProperties() == null);
 
@@ -168,10 +177,10 @@ public class TestConnection
         assertFalse(getTestObject().equals("DummyString"));
         assertTrue(getTestObject().equals(getTestObject()));
 
-        Connection  sameObject = getTestObject();
+        Connection sameObject = getTestObject();
         assertTrue(sameObject.equals(sameObject));
 
-        Connection  differentObject = getTestObject();
+        Connection differentObject = getTestObject();
         differentObject.setGUID("Different");
         assertFalse(getTestObject().equals(differentObject));
     }
@@ -228,7 +237,7 @@ public class TestConnection
         /*
          * Through superclass
          */
-        Referenceable  referenceable = getTestObject();
+        Referenceable referenceable = getTestObject();
 
         try
         {
@@ -251,7 +260,7 @@ public class TestConnection
         /*
          * Through superclass
          */
-        ElementHeader  elementHeader = getTestObject();
+        ElementHeader elementHeader = getTestObject();
 
         try
         {
@@ -274,7 +283,7 @@ public class TestConnection
         /*
          * Through superclass
          */
-        PropertyBase  propertyBase = getTestObject();
+        PropertyBase propertyBase = getTestObject();
 
         try
         {

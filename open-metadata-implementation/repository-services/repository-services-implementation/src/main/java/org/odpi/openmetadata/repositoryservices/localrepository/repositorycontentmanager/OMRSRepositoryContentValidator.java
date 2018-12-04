@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager;
 
 import org.slf4j.Logger;
@@ -22,23 +23,9 @@ import java.util.Map;
  */
 public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 {
-    private static OMRSRepositoryContentManager    defaultRepositoryContentManager = null;
-
-    private        OMRSRepositoryContentManager    repositoryContentManager;
-
     private static final Logger log = LoggerFactory.getLogger(OMRSRepositoryContentValidator.class);
 
-
-
-    /**
-     * Default constructor.  This is deprecated as a repository connector should get its repository validator
-     * from its superclass.
-     */
-    @Deprecated
-    public OMRSRepositoryContentValidator()
-    {
-        repositoryContentManager = defaultRepositoryContentManager;
-    }
+    private        OMRSRepositoryContentManager    repositoryContentManager;
 
 
     /**
@@ -54,18 +41,6 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
         this.repositoryContentManager = repositoryContentManager;
 
         validateRepositoryContentManager(methodName);
-    }
-
-    /**
-     * Set up the local repository's content manager.  This maintains a cache of the local repository's type
-     * definitions and rules to provide helpers and validators for TypeDefs and instances that are
-     * exchanged amongst the open metadata repositories and open metadata access services (OMAS).
-     *
-     * @param repositoryContentManager link to repository content manager.
-     */
-    public static synchronized void setRepositoryContentManager(OMRSRepositoryContentManager  repositoryContentManager)
-    {
-        OMRSRepositoryContentHelper.setRepositoryContentManager(repositoryContentManager);
     }
 
 
@@ -2909,11 +2884,17 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                     (entityOneTypeGUID != null)    && (entityOneTypeName != null)    &&
                     (entityTwoTypeGUID != null)    && (entityTwoTypeName != null))
                 {
-                    if ((entityOneTypeDefGUID.equals(entityOneTypeGUID)) &&
-                            (entityTwoTypeDefGUID.equals(entityTwoTypeGUID)) &&
-                            (entityOneTypeDefName.equals(entityOneTypeName)) &&
-                            (entityTwoTypeDefName.equals(entityTwoTypeName)))
-                    {
+                    List<TypeDefLink> entityOneAllTypes = entityOneType.getTypeDefSuperTypes();
+                    entityOneAllTypes.add(new TypeDefLink(entityOneTypeGUID, entityOneTypeName));
+                    List<TypeDefLink> entityTwoAllTypes = entityTwoType.getTypeDefSuperTypes();
+                    entityTwoAllTypes.add(new TypeDefLink(entityTwoTypeGUID, entityTwoTypeName));
+
+                    String finalEntityOneTypeDefGUID = entityOneTypeDefGUID;
+                    String finalEntityOneTypeDefName = entityOneTypeDefName;
+                    String finalEntityTwoTypeDefGUID = entityTwoTypeDefGUID;
+                    String finalEntityTwoTypeDefName = entityTwoTypeDefName;
+                    if (entityOneAllTypes.stream().anyMatch(e -> e.getGUID().equals(finalEntityOneTypeDefGUID) && e.getName().equals(finalEntityOneTypeDefName)) &&
+                            entityTwoAllTypes.stream().anyMatch(e -> e.getGUID().equals(finalEntityTwoTypeDefGUID) && e.getName().equals(finalEntityTwoTypeDefName))) {
                         return;
                     }
                 }
