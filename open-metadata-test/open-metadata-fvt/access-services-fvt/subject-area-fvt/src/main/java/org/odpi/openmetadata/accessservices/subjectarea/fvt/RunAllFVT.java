@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.subjectarea.fvt;
 
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedExceptionBase;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,28 +15,27 @@ import java.io.InputStreamReader;
 public class RunAllFVT
 {
 
-    public static final String DEFAULT_URL = "http://localhost:8080/open-metadata/access-services/subject-area";
-
     public static void main(String args[])
     {
         SubjectArea subjectArea = null;
         try
         {
             String url = RunAllFVT.getUrl(args);
-            String[] argsForSamples = new String[1];
-            argsForSamples[0] = url;
-            GlossaryFVT.main(argsForSamples);
-            TermFVT.main(argsForSamples);
-            CategoryFVT.main(argsForSamples);
-            CategoryHierarchyFVT.main(argsForSamples);
-            TermRelationshipsFVT.main(argsForSamples);
-            SubjectAreaDefinitionCategoryFVT.main(argsForSamples);
+
+            GlossaryFVT.runit(url);
+            TermFVT.runit(url);
+            CategoryFVT.runit(url);
+            CategoryHierarchyFVT.runit(url);
+            RelationshipsFVT.runit(url);
+            SubjectAreaDefinitionCategoryFVT.runit(url);
             System.out.println("Samples all run");
-        } catch (IOException e)
+        } catch (IOException e1)
         {
             System.out.println("Error getting user input");
+        } catch (SubjectAreaCheckedExceptionBase e)
+        {
+            System.out.println("ERROR: " + e.getErrorMessage() + " Suggested action: " + e.getReportedUserAction());
         }
-
     }
 
     /**
@@ -58,11 +58,11 @@ public class RunAllFVT
         } else
         {
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-            System.out.print("Enter a URL. Press enter to get the default (" + DEFAULT_URL + ".)):");
+            System.out.print("Enter a URL. Press enter to get the default (" + FVTConstants.DEFAULT_URL + ".)):");
             url = br.readLine();
             if (url.equals(""))
             {
-                url = DEFAULT_URL;
+                url = FVTConstants.DEFAULT_URL;
             }
         }
         return url;

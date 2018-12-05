@@ -1,7 +1,6 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.subjectarea.server.instances;
-
+package org.odpi.openmetadata.accessservices.subjectarea.initialization;
 
 import org.odpi.openmetadata.accessservices.subjectarea.admin.SubjectAreaAdmin;
 import org.odpi.openmetadata.adminservices.OMAGAccessServiceRegistration;
@@ -15,19 +14,20 @@ import org.odpi.openmetadata.adminservices.configuration.registration.AccessServ
  * then use this registration information as confirmation that there is an implementation of this
  * access service in the server and it can be configured and used.
  */
-class SubjectAreaRegistration {
+public class SubjectAreaRegistration
+{
     /**
      * Pass information about this access service to the OMAG Server administration services.
      */
-    public static void registerAccessService() {
+    public static void registerAccessService()
+    {
         AccessServiceDescription myDescription = AccessServiceDescription.SUBJECT_AREA_OMAS;
-
         AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription.getAccessServiceCode(),
-                                                                                 myDescription.getAccessServiceName(),
-                                                                                 myDescription.getAccessServiceDescription(),
-                                                                                 myDescription.getAccessServiceWiki(),
-                                                                                 AccessServiceOperationalStatus.ENABLED,
-                                                                                 SubjectAreaAdmin.class.getName());
+                myDescription.getAccessServiceName(),
+                myDescription.getAccessServiceDescription(),
+                myDescription.getAccessServiceWiki(),
+                AccessServiceOperationalStatus.ENABLED,
+                SubjectAreaAdmin.class.getName());
         OMAGAccessServiceRegistration.registerAccessService(myRegistration);
     }
 }

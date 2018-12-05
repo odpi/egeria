@@ -18,7 +18,7 @@ public enum ResponseCategory {
     Project,
     Comment,
 
-    // relationships
+    // term to term relationships
     TermHASARelationship,
     RelatedTerm,
     SynonymRelationship,
@@ -31,6 +31,14 @@ public enum ResponseCategory {
     TermTYPEDBYRelationship,
     TermUsedInContextRelationship,
     ValidValueRelationship,
+
+    // external glossary relationships
+    LibraryCategoryReferenceRelationshipRelationship,
+    LibraryTermReferenceRelationshipRelationship,
+    // term to asset
+    SemanticAssignmentRelationship,
+    // category to term
+    TermCategorizationRelationship,
 
     // errors
     ClassificationException,

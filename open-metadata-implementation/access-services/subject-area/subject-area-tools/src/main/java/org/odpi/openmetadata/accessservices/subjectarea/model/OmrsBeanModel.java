@@ -297,7 +297,7 @@ public class OmrsBeanModel {
                 entityOmrsBeanReferencesAsAttributes.add(omrsBeanAttribute);
                 omrsBeanReferencesAsAttributesByEntity.put(omrsBeanReference.myType, entityOmrsBeanReferencesAsAttributes);
             } else {
-                // generate 2 References
+                // generateClientSideRelationshipImpl 2 References
                 OmrsBeanReference omrsBeanReference1 = new OmrsBeanReference();
                 omrsBeanReference1.attrList = omrsBeanattributeList;
                 omrsBeanReference1.uReferenceName = GeneratorUtilities.uppercase1stLetter(end2Name);
