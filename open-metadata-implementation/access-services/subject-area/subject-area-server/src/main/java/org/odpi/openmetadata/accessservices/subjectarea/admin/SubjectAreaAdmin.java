@@ -7,7 +7,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.auditlog.SubjectAreaAudi
 
 
 import org.odpi.openmetadata.accessservices.subjectarea.listener.SubjectAreaOMRSTopicListener;
-import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaRESTServices;
+import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaRESTServicesInstance;
+import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
@@ -33,6 +34,8 @@ public class SubjectAreaAdmin implements AccessServiceAdmin
     private String                  serverUserName      = null;
 
     private SubjectAreaOMRSTopicListener omrsTopicListener = null;
+    private SubjectAreaServicesInstance instance =null;
+    private String serverName =null;
 
     /**
      * Default constructor
@@ -77,43 +80,57 @@ public class SubjectAreaAdmin implements AccessServiceAdmin
                 auditCode.getUserAction());
 
         this.repositoryConnector = enterpriseOMRSRepositoryConnector;
-        SubjectAreaRESTServices.setRepositoryConnector(accessServiceConfigurationProperties.getAccessServiceName(),
-                repositoryConnector);
 
-        this.accessServiceConfig = accessServiceConfigurationProperties;
-        this.omrsTopicConnector = enterpriseOMRSTopicConnector;
-
-        if (this.omrsTopicConnector != null)
+        try
         {
-            auditCode = SubjectAreaAuditCode.SERVICE_REGISTERED_WITH_TOPIC;
+            this.instance = new SubjectAreaServicesInstance(repositoryConnector);
+            this.serverName = instance.getServerName();
+            this.accessServiceConfig = accessServiceConfigurationProperties;
+            this.omrsTopicConnector = enterpriseOMRSTopicConnector;
+
+            if (this.omrsTopicConnector != null)
+            {
+                auditCode = SubjectAreaAuditCode.SERVICE_REGISTERED_WITH_TOPIC;
+                auditLog.logRecord(actionDescription,
+                        auditCode.getLogMessageId(),
+                        auditCode.getSeverity(),
+                        auditCode.getFormattedLogMessage(),
+                        null,
+                        auditCode.getSystemAction(),
+                        auditCode.getUserAction());
+
+                this.omrsTopicListener = new SubjectAreaOMRSTopicListener(this.accessServiceConfig.getAccessServiceOutTopic(),
+                        this.repositoryConnector.getRepositoryHelper(),
+                        this.repositoryConnector.getRepositoryValidator(),
+                        this.accessServiceConfig.getAccessServiceName());
+                this.omrsTopicConnector.registerListener(this.omrsTopicListener);
+            }
+
+            this.auditLog = auditLog;
+            this.serverUserName = serverUserName;
+
+            auditCode = SubjectAreaAuditCode.SERVICE_INITIALIZED;
             auditLog.logRecord(actionDescription,
                     auditCode.getLogMessageId(),
                     auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(),
+                    auditCode.getFormattedLogMessage(serverName),
                     null,
                     auditCode.getSystemAction(),
                     auditCode.getUserAction());
 
-            this.omrsTopicListener = new SubjectAreaOMRSTopicListener(this.accessServiceConfig.getAccessServiceOutTopic(),
-                    this.repositoryConnector.getRepositoryHelper(),
-                    this.repositoryConnector.getRepositoryValidator(),
-                    this.accessServiceConfig.getAccessServiceName());
-            this.omrsTopicConnector.registerListener(this.omrsTopicListener);
-        }
-
-        this.auditLog = auditLog;
-        this.serverUserName = serverUserName;
-
-        auditCode = SubjectAreaAuditCode.SERVICE_INITIALIZED;
-        auditLog.logRecord(actionDescription,
-                auditCode.getLogMessageId(),
-                auditCode.getSeverity(),
-                auditCode.getFormattedLogMessage(),
-                null,
-                auditCode.getSystemAction(),
-                auditCode.getUserAction());
-        if (log.isDebugEnabled()) {
-            log.debug("<== Method: " + methodName + ",userid="+ serverUserName);
+            if (log.isDebugEnabled()) {
+                log.debug("<== Method: " + methodName + ",userid="+ serverUserName);
+            }
+        } catch (Throwable error)
+        {
+            auditCode =SubjectAreaAuditCode.SERVICE_INSTANCE_FAILURE;
+            auditLog.logRecord(actionDescription,
+                    auditCode.getLogMessageId(),
+                    auditCode.getSeverity(),
+                    auditCode.getFormattedLogMessage(error.getMessage()),
+                    null,
+                    auditCode.getSystemAction(),
+                    auditCode.getUserAction());
         }
     }
 
@@ -122,17 +139,30 @@ public class SubjectAreaAdmin implements AccessServiceAdmin
      */
     public void shutdown()
     {
-        final String            actionDescription = "shutdown";
-        SubjectAreaAuditCode  auditCode;
+        final String actionDescription = "shutdown";
+
+        log.debug(">>" + actionDescription);
+
+        SubjectAreaAuditCode auditCode;
+
+        auditCode = SubjectAreaAuditCode.SERVICE_TERMINATING;
+        auditLog.logRecord(actionDescription, auditCode.getLogMessageId(), auditCode.getSeverity(), auditCode.getFormattedLogMessage(serverName), null, auditCode.getSystemAction(), auditCode.getUserAction());
+
+
+        // TODO Look into what we need to do for termination
+        this.repositoryConnector = null;
+        this.accessServiceConfig = null;
+        this.omrsTopicConnector = null;
+
+        if (instance != null)
+        {
+            this.instance.shutdown();
+        }
 
         auditCode = SubjectAreaAuditCode.SERVICE_SHUTDOWN;
-        auditLog.logRecord(actionDescription,
-                auditCode.getLogMessageId(),
-                auditCode.getSeverity(),
-                auditCode.getFormattedLogMessage(),
-                null,
-                auditCode.getSystemAction(),
-                auditCode.getUserAction());
+        auditLog.logRecord(actionDescription, auditCode.getLogMessageId(), auditCode.getSeverity(), auditCode.getFormattedLogMessage(serverName), null, auditCode.getSystemAction(), auditCode.getUserAction());
+
+        log.debug("<<" + actionDescription);
     }
 }
 
