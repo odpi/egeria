@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relation
 
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.Synonym;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,8 +35,10 @@ public class SynonymMapper
         omrsRelationshipBean.setSource(synonym.getSource());
         omrsRelationshipBean.setSteward(synonym.getSteward());
         omrsRelationshipBean.setStatus(synonym.getStatus());
-
-        Map<String, Object> extraAttributes = omrsRelationshipBean.getExtraAttributes();
+        omrsRelationshipBean.setGuid(synonym.getGuid());
+        omrsRelationshipBean.setEntity1Guid(synonym.getSynonym1Guid());
+        omrsRelationshipBean.setEntity2Guid(synonym.getSynonym2Guid());
+        Map<String, Object> extraAttributes = synonym.getExtraAttributes();
         if (extraAttributes !=null)
         {
             String[] properties = org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.Synonym.Synonym.PROPERTY_NAMES_SET_VALUES;
@@ -47,6 +50,9 @@ public class SynonymMapper
                 }
             }
             omrsRelationshipBean.setExtraAttributes(extraAttributes);
+        }
+        if (synonym.getSystemAttributes() !=null) {
+            omrsRelationshipBean.setSystemAttributes(synonym.getSystemAttributes());
         }
 
         return omrsRelationshipBean;
@@ -65,6 +71,9 @@ public class SynonymMapper
         synonym.setSource(omrsRelationshipBean.getSource());
         synonym.setSteward(omrsRelationshipBean.getSteward());
         synonym.setStatus(omrsRelationshipBean.getStatus());
+        synonym.setGuid(omrsRelationshipBean.getGuid());
+        synonym.setSynonym1Guid(omrsRelationshipBean.getEntity1Guid());
+        synonym.setSynonym2Guid(omrsRelationshipBean.getEntity2Guid());
         String[] properties=org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.Synonym.Synonym.PROPERTY_NAMES_SET_VALUES;
         Map<String, Object> extraAttributes =synonym.getExtraAttributes();
         if (properties!=null && properties.length >0) {

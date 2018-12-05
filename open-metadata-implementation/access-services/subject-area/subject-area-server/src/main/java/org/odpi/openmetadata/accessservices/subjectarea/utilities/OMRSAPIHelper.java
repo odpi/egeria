@@ -6,7 +6,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCod
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.StatusNotSupportedException;
 import org.odpi.openmetadata.accessservices.subjectarea.server.handlers.ErrorHandler;
-import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaRESTServices;
+import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaRESTServicesInstance;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
@@ -89,12 +89,11 @@ public class OMRSAPIHelper {
     /**
      * Validate that this access service has been initialized before attempting to process a request.
      *
-     * @ - not initialized
+     * @throws MetadataServerUncontactableException not initialized
      */
     private void validateInitialization() throws MetadataServerUncontactableException {
         String restAPIName= "";
         if (oMRSMetadataCollection == null) {
-            this.omrsConnector = SubjectAreaRESTServices.getRepositoryConnector();
             if (this.omrsConnector == null) {
                 SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.SERVICE_NOT_INITIALIZED;
                 String errorMessage = errorCode.getErrorMessageId()
@@ -789,10 +788,10 @@ public class OMRSAPIHelper {
                     serverName,
                     serviceName);
         }
-        // update the status if required.
-        if (!updatedRelationship.getStatus().equals(relationship.getStatus())) {
+        // update the status if we have one and it is different
+        if ( relationship.getStatus() !=null &&
+             !relationship.getStatus().equals(updatedRelationship.getStatus())) {
             try {
-
                 updatedRelationship = getOMRSMetadataCollection().updateRelationshipStatus(userId,
                         relationship.getGUID(),
                         relationship.getStatus());
@@ -807,7 +806,6 @@ public class OMRSAPIHelper {
                         serverName,
                         serviceName);
             } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
-
                 this.errorHandler.handleUnauthorizedUser(userId,
                         restAPIName,
                         serverName,

@@ -2,12 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions;
 
-
 /**
  * NewInstanceException is thrown if the access service is not able to register a new instance
  * of itself in its instance map.
  */
-public class NewInstanceException extends SubjectAreaCheckedExceptionBase {
+public class NewInstanceException extends SubjectAreaCheckedExceptionBase
+{
     /**
      * This is the typical constructor used for creating a NewInstanceException.
      *

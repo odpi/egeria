@@ -91,7 +91,7 @@ public class ReportCreator {
             throw new ReportCreationException(404,
                     "ReportCreator",
                     "createReport",
-                    "Unable to create report: " + e.getMessage(),
+                    "Unable to create report: " + e.getStackTrace(),
                     "The system is unable to process the request.",
                     "Correct the payload submitted to request.",
                     "");//TODO extract to code exception class
@@ -103,7 +103,7 @@ public class ReportCreator {
     private void addElements(String qualifiedNameForParent, EntityDetail parentSchemaTypeEntity, List<ReportElement> allElements) {
         if (allElements == null || allElements.isEmpty())
             return;
-        allElements.parallelStream().forEach(e -> addReportElement(qualifiedNameForParent, parentSchemaTypeEntity, e));
+        allElements.stream().forEach(e -> addReportElement(qualifiedNameForParent, parentSchemaTypeEntity, e));
     }
 
     private void addReportElement(String qualifiedNameForParent, EntityDetail parentSchemaTypeEntity, ReportElement element) {
