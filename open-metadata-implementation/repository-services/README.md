@@ -64,7 +64,7 @@ The read-only copies stored in other repositories are called reference copies.
 
 ## How is metadata represented?
 
-Egeria's **[type system](docs/metadata-type-system.md)** defines the 
+Egeria's **[meta-model](docs/metadata-meta-model.md)** defines the 
 standard way for metadata to be represented and communicated, fundamentally
 consisting of Entities, Classifications and Relationships.
 
