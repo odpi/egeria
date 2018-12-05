@@ -1,4 +1,4 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
 # igc-rest-client-library
@@ -127,3 +127,7 @@ The recommended way to do this is to create your own POJOs:
 - In either case, to ease reflection-based registration (if you decide to use such an approach), consider adding a `static final String IGC_TYPE_ID = ''` set to the precise type string that IGC uses to refer to assets of this type.
 
 Remember that you'll need to register your own POJO (see "Retrieving assets" above) before the client will make use of it!
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
