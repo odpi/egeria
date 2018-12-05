@@ -104,6 +104,74 @@ properties.add(property);
 entityDef.setPropertiesDefinition(properties);
 ```
 
+And this results in a JSON structure like the following:
+
+```json
+{
+  "class": "EntityDef",
+  "guid": "a32316b8-dc8c-48c5-b12b-71c1b2a080bf",
+  "name": "Referenceable",
+  "version": 1,
+  "versionName": "1.0",
+  "category": "ENTITY_DEF",
+  "description": "An open metadata entity that has a unique identifier.",
+  "origin": "bce3b0a0-662a-4f87-b8dc-844078a11a6e",
+  "createdBy": "ODPi Egeria (OMRS)",
+  "createTime": 1516313040008,
+  "validInstanceStatusList": [
+    "ACTIVE",
+    "DELETED"
+  ],
+  "initialStatus": "ACTIVE",
+  "propertiesDefinition": [
+    {
+      "attributeName": "qualifiedName",
+      "attributeType": {
+        "class": "PrimitiveDef",
+        "version": 1,
+        "versionName": "1.0",
+        "category": "PRIMITIVE",
+        "guid": "b34a64b9-554a-42b1-8f8a-7d5c2339f9c4",
+        "name": "string",
+        "primitiveDefCategory": "OM_PRIMITIVE_TYPE_STRING"
+      },
+      "attributeDescription": "Unique identifier for the entity.",
+      "valuesMinCount": 0,
+      "valuesMaxCount": 1,
+      "indexable": true,
+      "attributeCardinality": "AT_MOST_ONE",
+      "unique": true
+    },
+    {
+      "attributeName": "additionalProperties",
+      "attributeType": {
+        "class": "CollectionDef",
+        "version": 1,
+        "versionName": "1.0",
+        "category": "COLLECTION",
+        "guid": "005c7c14-ac84-4136-beed-959401b041f8",
+        "name": "map<string,string>",
+        "description": "A map from String to String.",
+        "collectionDefCategory": "OM_COLLECTION_MAP",
+        "argumentCount": 2,
+        "argumentTypes": [
+          "OM_PRIMITIVE_TYPE_STRING",
+          "OM_PRIMITIVE_TYPE_STRING"
+        ]
+      },
+      "attributeDescription": "Additional properties for the element.",
+      "valuesMinCount": 0,
+      "valuesMaxCount": 1,
+      "indexable": true,
+      "attributeCardinality": "AT_MOST_ONE",
+      "unique": false
+    }
+  ]
+}
+```
+
+> Figure 4: Example JSON structure for a type definition (Referenceable)
+
 ## Instances
 
 Instances define individual instantiations of the TypeDefs: for example,
@@ -129,8 +197,8 @@ used to describe the entity, classification or relationship.
 Instances as a concept are implemented as generic Java classes in Egeria 
 (those in *italics* are abstract).
 
-![Figure 4: Instances](metadata-meta-model-instances-detail.png)
-> Figure 4: Instances
+![Figure 5: Instances](metadata-meta-model-instances-detail.png)
+> Figure 5: Instances
 
 **Examples**
 
@@ -162,8 +230,8 @@ a `Relationship` representing the `TermCategorization` with one end
 pointing to an `EntityProxy` for "Address Line 1" and one end pointing 
 to an `EntityProxy` for "Coco Pharmaceuticals/Terms"
 
-![Figure 5: Example instances (using opentypes)](metadata-meta-model-instances-examples.png)
-> Figure 5: Example instances (using opentypes)
+![Figure 6: Example instances (using opentypes)](metadata-meta-model-instances-examples.png)
+> Figure 6: Example instances (using opentypes)
 
 As code, this example could be implemented using something like the following:
 
