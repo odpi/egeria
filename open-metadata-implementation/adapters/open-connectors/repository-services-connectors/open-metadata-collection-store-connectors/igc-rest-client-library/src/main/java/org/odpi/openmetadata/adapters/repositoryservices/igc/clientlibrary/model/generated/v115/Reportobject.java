@@ -2,10 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v115;
 
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.MainObject;
-import org.odpi.openmetadata.adapters.repositoryservices.igc.model.common.*;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Date;
+import java.util.ArrayList;
 
 /**
  * POJO for the 'reportobject' asset type in IGC, displayed as 'ReportObject' in the IGC UI.
