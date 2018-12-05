@@ -12,7 +12,7 @@ and can be broadly divided into the following two areas:
 - Type Definitions (TypeDefs and AttributeTypeDefs)
 - Instances
 
-## Type Definitions (TypeDefs)
+## Type Definitions (TypeDefs and AttributeTypeDefs)
 
 TypeDefs define the general characteristics that are used to describe any 
 general type -- whether native or not -- and typically fit into one of 
