@@ -73,8 +73,7 @@ public class TestSynonymMapper
     void testRoundTripWithsystemAttributes() throws InvalidParameterException
     {
         Synonym synonym = new Synonym();
-        org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.Synonym.Synonym omrsRelationshipBean =
-                SynonymMapper.mapSynonymToOMRSRelationshipBean(synonym);
+        org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.Synonym.Synonym omrsRelationshipBean = SynonymMapper.mapSynonymToOMRSRelationshipBean(synonym);
         synonym.setSteward("st");
         synonym.setSource("so");
         synonym.setExpression("Ex");
