@@ -52,12 +52,12 @@ public class SubjectAreaDefinitionSample
 
     private static final String GLOSSARY_NAME = "Coco Pharmaceuticals Subject Area Definitions";
     private static final String GLOSSARY_DESCRIPTION = "Coco Pharmaceuticals Core Subject Areas for Personalized Medicine.";
+    private static final String SERVER_NAME  = "CocoServer1";
     /*
      * Erin Overview userid
      */
     private static final String USERID = "Erin";
     public static final String DEFAULT_URL = "http://localhost:8080";
-    public static final String SUBJECT_AREA_URL_SUFFIX ="/open-metadata/access-services/subject-area";
     private String serverURLRoot;
     private String clientUserId;
     private SubjectArea subjectArea = null;
@@ -82,7 +82,7 @@ public class SubjectAreaDefinitionSample
      */
     private void run() throws SubjectAreaCheckedExceptionBase
     {
-        SubjectArea subjectArea = new SubjectAreaImpl(this.serverURLRoot);
+        SubjectArea subjectArea = new SubjectAreaImpl(SERVER_NAME,this.serverURLRoot);
         subjectAreaGlossary = subjectArea.getSubjectAreaGlossary();
         subjectAreaCategory = subjectArea.getSubjectAreaCategory();
 
@@ -145,7 +145,7 @@ public class SubjectAreaDefinitionSample
         GlossarySummary glossarySummary = new GlossarySummary();
         glossarySummary.setName(glossaryName);
         subjectAreaDefinition.setGlossary(glossarySummary);
-        return subjectAreaCategory.createSubjectAreaDefinition("Erin",subjectAreaDefinition);
+        return subjectAreaCategory.createSubjectAreaDefinition(SERVER_NAME,USERID,subjectAreaDefinition);
     }
 
     /**
@@ -166,7 +166,7 @@ public class SubjectAreaDefinitionSample
         CategorySummary parentCategorysummary = new CategorySummary();
         parentCategorysummary.setGuid(parent.getSystemAttributes().getGUID());
         subjectAreaDefinition.setParentCategory(parentCategorysummary);
-        SubjectAreaDefinition newSubjectAreaDefinition = subjectAreaCategory.createSubjectAreaDefinition(USERID, subjectAreaDefinition);
+        SubjectAreaDefinition newSubjectAreaDefinition = subjectAreaCategory.createSubjectAreaDefinition(SERVER_NAME,USERID, subjectAreaDefinition);
         if (newSubjectAreaDefinition != null)
         {
             System.out.println("Created Subject Area Definition " + newSubjectAreaDefinition.getName() + " with guid " + newSubjectAreaDefinition.getSystemAttributes().getGUID() + ", parent SubjectArea Definition is " + parent.getName());
@@ -187,7 +187,7 @@ public class SubjectAreaDefinitionSample
         Glossary glossary = new Glossary();
         glossary.setName(glossaryName);
         glossary.setDescription(glossaryDescription);
-        return subjectAreaGlossary.createGlossary("Erin",glossary);
+        return subjectAreaGlossary.createGlossary(SERVER_NAME,USERID,glossary);
     }
 
     /**
@@ -243,7 +243,7 @@ public class SubjectAreaDefinitionSample
             {
                 url = DEFAULT_URL;
             }
-            url = url + SUBJECT_AREA_URL_SUFFIX;
+
         }
         return url;
     }

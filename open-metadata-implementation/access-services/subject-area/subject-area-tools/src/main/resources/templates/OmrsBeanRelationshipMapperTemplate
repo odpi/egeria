@@ -56,6 +56,7 @@ public class <$$uRelationshipName$$>Mapper {
                systemAttributes.setUpdateTime(omrsRelationship.getUpdateTime());
                systemAttributes.setVersion(omrsRelationship.getVersion());
                systemAttributes.setGUID(omrsRelationship.getGUID());
+               <$$RelationshipName$$>.setGuid(omrsRelationship.getGUID());
                <$$RelationshipName$$>.setSystemAttributes(systemAttributes);
 
                InstanceProperties omrsRelationshipProperties = omrsRelationship.getProperties();
@@ -157,10 +158,37 @@ public class <$$uRelationshipName$$>Mapper {
                    omrsRelationship.setUpdateTime(systemAttributes.getUpdateTime());
                if (systemAttributes.getVersion()!=null)
                    omrsRelationship.setVersion(systemAttributes.getVersion());
+                if (systemAttributes.getGUID()!=null)
+                   omrsRelationship.setGUID(systemAttributes.getGUID());
                if (systemAttributes.getStatus()!=null) {
                    InstanceStatus instanceStatus = SubjectAreaUtils.convertStatusToStatusInstance(systemAttributes.getStatus());
                    omrsRelationship.setStatus(instanceStatus);
                }
+           }
+           //set proxy 1
+           EntityProxy entityOne = new EntityProxy();
+           entityOne.setGUID(<$$RelationshipName$$>.getEntity1Guid());
+           String type1 = <$$RelationshipName$$>.getEntity1Type();
+           InstanceType instancetype1 = new InstanceType();
+           instancetype1.setTypeDefName(type1);
+           entityOne.setType(instancetype1);
+           //set proxy 2
+           EntityProxy entityTwo = new EntityProxy();
+           entityTwo.setGUID(<$$RelationshipName$$>.getEntity2Guid());
+           String type2 = <$$RelationshipName$$>.getEntity2Type();
+           InstanceType instancetype2 = new InstanceType();
+           instancetype2.setTypeDefName(type2);
+           entityTwo.setType(instancetype2);
+           // set relationshipType
+           InstanceType relationshipType = new InstanceType();
+           relationshipType.setTypeDefGUID(<$$RelationshipName$$>.getTypeDefGuid());
+           relationshipType.setTypeDefName("<$$uRelationshipName$$>");
+           omrsRelationship.setType(relationshipType);           
+   
+           omrsRelationship.setEntityOneProxy(entityOne);
+           omrsRelationship.setEntityTwoProxy(entityTwo);           
+           if (omrsRelationship.getGUID() == null) {
+               omrsRelationship.setGUID(<$$RelationshipName$$>.getGuid());
            }
 
            InstanceProperties instanceProperties = new InstanceProperties();
