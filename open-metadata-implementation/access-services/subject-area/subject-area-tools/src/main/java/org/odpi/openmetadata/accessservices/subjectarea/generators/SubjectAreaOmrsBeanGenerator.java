@@ -20,7 +20,7 @@ public class SubjectAreaOmrsBeanGenerator {
     // This generator can be run in the top level Egeria folder - i.e. the folder you run git commands in. It is run automatically as part of the Maven build.
 
     // The API properties should not be generated as part of the normal build.
-    // Changes the API properties should be considered if the generate files change either due to the archive types changing or the generator or templates changing.
+    // Changes the API properties should be considered if the generateClientSideRelationshipImpl files change either due to the archive types changing or the generator or templates changing.
     // if the API classifications properties need to be changed in line with the generated files then set regenAPIFiles to true.
     private boolean regenAPIFiles = false;
     public static final String OPEN_METADATA_IMPLEMENTATION = "open-metadata-implementation";
@@ -57,8 +57,6 @@ public class SubjectAreaOmrsBeanGenerator {
 
     public static final String SUBJECTAREA_OMAS_API_CLASSIFICATION_FOLDER =  SUBJECTAREA_OMAS_API + SRC_SUBJECT_AREA + "properties/classifications";
     public static final String SUBJECTAREA_OMAS_API_ENUM_FOLDER =  SUBJECTAREA_OMAS_API + SRC_SUBJECT_AREA + "properties/enums";
-    public static final String SUBJECTAREA_OMAS_API_RELATIONSHIP_FOLDER =  SUBJECTAREA_OMAS_API + SRC_SUBJECT_AREA + "properties/relationships";
-
     public static final String SUBJECTAREA_OMAS_GEN_PKG_BASE = "org.odpi.openmetadata.accessservices.subjectarea.generated.";
     public static final String SUBJECTAREA_OMAS_API_PKG_BASE = "org.odpi.openmetadata.accessservices.subjectarea.properties.";
 
@@ -121,7 +119,7 @@ public class SubjectAreaOmrsBeanGenerator {
 
     /**
      * check that the current folder is as expected
-     * @return where we have a valid folder to be able to generate in
+     * @return where we have a valid folder to be able to generateClientSideRelationshipImpl in
      */
     private static boolean checkCurrentFolder() {
         // only run the generator if the current directory looks as expected.
@@ -187,23 +185,23 @@ public class SubjectAreaOmrsBeanGenerator {
 
         SubjectAreaOmrsBeanGenerator generator = new SubjectAreaOmrsBeanGenerator(omrsBeanModel);
 
-        // generate the enum files
+        // generateClientSideRelationshipImpl the enum files
         generator.generateEnumFiles();
-        // generate the classification files and their attributes
+        // generateClientSideRelationshipImpl the classification files and their attributes
         generator.generateClassificationFiles();
-        // generate the classification factory
+        // generateClientSideRelationshipImpl the classification factory
         generator.generateClassificationFactory();
-        // generate OMRSRelationshipToLines.
+        // generateClientSideRelationshipImpl OMRSRelationshipToLines.
         generator.generateOMRSRelationshipToLines();
-        // generate the entity and attribute files
+        // generateClientSideRelationshipImpl the entity and attribute files
         generator.generateEntityRelatedFiles(omrsBeanModel.getOmrsBeanEntityAttributeMap());
-        // generate relationships and their attributes
+        // generateClientSideRelationshipImpl relationships and their attributes
         generator.generateRelationshipFiles();
-        // generate the reference files
+        // generateClientSideRelationshipImpl the reference files
         generator.generateReferenceFiles();
-        // generate the omrs beans accessor file
+        // generateClientSideRelationshipImpl the omrs beans accessor file
         generator.generateOMRSBeansAccessorFile();
-        // generate the omrs beans test file
+        // generateClientSideRelationshipImpl the omrs beans test file
         generator.generateOMRSBeansAccessorTestFile();
     }
 
@@ -222,7 +220,7 @@ public class SubjectAreaOmrsBeanGenerator {
     private void repopulateAPIEnums(Set<String> enumNames) throws IOException {
         // delete all the files in the folder
         GeneratorUtilities.deleteFilesInFolder(SUBJECTAREA_OMAS_API_ENUM_FOLDER,"Status.java");
-        // generate the Classification files
+        // generateClientSideRelationshipImpl the Classification files
         Map<String, List<OmrsBeanEnumValue>> enumsMap = omrsBeanModel.getEnumsMap();
         for (String enumName : enumNames) {
             final String enumPropertyFileName = SUBJECTAREA_OMAS_API_ENUM_FOLDER + "/" + enumName + ".java";
@@ -243,7 +241,7 @@ public class SubjectAreaOmrsBeanGenerator {
             final String classificationFileName = outputFolder + "/" + classificationName + ".java";
             final String classificationMapperFileName = outputFolder + "/" + classificationName + "Mapper.java";
             generateClassificationFile(classificationName, classificationFileName,SUBJECTAREA_OMAS_GEN_PKG_CLASSIFICATIONS+"."+classificationName);
-            // generate the Classification files
+            // generateClientSideRelationshipImpl the Classification files
             if (this.regenAPIFiles) {
                 final String classificationPropertyFileName = SUBJECTAREA_OMAS_API_CLASSIFICATION_FOLDER + "/" + classificationName + ".java";
                 generateClassificationFile(classificationName, classificationPropertyFileName,SUBJECTAREA_OMAS_API_PKG_CLASSIFICATIONS);
@@ -351,13 +349,6 @@ public class SubjectAreaOmrsBeanGenerator {
             final String relationshipFileName = outputFolder + "/" + relationshipName + ".java";
             OmrsBeanRelationship omrsBeanRelationship = omrsBeanModel.getOmrsBeanRelationshipByName(relationshipName);
             generateRelationshipFile(omrsBeanRelationship, relationshipFileName,SUBJECTAREA_OMAS_GEN_PKG_RELATIONSHIPS +"."+relationshipName);
-            if (this.regenAPIFiles) {
-                //regenerate the API file if required.
-                final String relationshipPropertyFileName = SUBJECTAREA_OMAS_API_RELATIONSHIP_FOLDER + "/" + relationshipName + ".java";
-                generateRelationshipFile(omrsBeanRelationship,relationshipPropertyFileName,SUBJECTAREA_OMAS_API_PKG_RELATIONSHIPS);
-
-            }
-
             final String relationshipMapperFileName = outputFolder + "/" + relationshipName + "Mapper.java";
             generateRelationshipMapperFile(omrsBeanRelationship, relationshipMapperFileName);
         }
@@ -1005,7 +996,7 @@ public class SubjectAreaOmrsBeanGenerator {
             reader.close();
             outputFileWriter.close();
         }
-        //generate the top references file
+        //generateClientSideRelationshipImpl the top references file
         Map<String, List<OmrsBeanAttribute>> omrsBeanReferencesAsAttributesByEntity = omrsBeanModel.getOmrsBeanReferencesAsAttributesByEntity();
 
         final Set<String> entitiesWithRelationships = omrsBeanReferencesAsAttributesByEntity.keySet();

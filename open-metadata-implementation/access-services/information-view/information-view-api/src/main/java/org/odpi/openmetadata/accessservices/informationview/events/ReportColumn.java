@@ -6,28 +6,20 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.List;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ReportColumn {
+public class ReportColumn extends ReportElement {
 
-
-    private String attributeName;
     private String aggregation;
-    private String sectionName;
     private String formula;
-    private DatabaseColumnReference realColumn;
-
-    public String getAttributeName() {
-        return attributeName;
-    }
-
-    public void setAttributeName(String attributeName) {
-        this.attributeName = attributeName;
-    }
+    private List<Source> sources;
+    private BusinessTerm businessTerm;
 
     public String getAggregation() {
         return aggregation;
@@ -35,14 +27,6 @@ public class ReportColumn {
 
     public void setAggregation(String aggregation) {
         this.aggregation = aggregation;
-    }
-
-    public String getSectionName() {
-        return sectionName;
-    }
-
-    public void setSectionName(String sectionName) {
-        this.sectionName = sectionName;
     }
 
     public String getFormula() {
@@ -53,23 +37,30 @@ public class ReportColumn {
         this.formula = formula;
     }
 
-    public DatabaseColumnReference getRealColumn() {
-        return realColumn;
+    public List<Source> getSources() {
+        return sources;
     }
 
-    public void setRealColumn(DatabaseColumnReference realColumn) {
-        this.realColumn = realColumn;
+    public void setSources(List<Source> sources) {
+        this.sources = sources;
     }
 
+    public BusinessTerm getBusinessTerm() {
+        return businessTerm;
+    }
+
+    public void setBusinessTerm(BusinessTerm businessTerm) {
+        this.businessTerm = businessTerm;
+    }
 
     @Override
     public String toString() {
         return "ReportColumn{" +
-                "attributeName='" + attributeName + '\'' +
-                ", aggregation='" + aggregation + '\'' +
-                ", sectionName='" + sectionName + '\'' +
+                "aggregation='" + aggregation + '\'' +
                 ", formula='" + formula + '\'' +
-                ", realColumn=" + realColumn +
+                ", sources=" + sources +
+                ", businessTerm=" + businessTerm +
+                ", name='" + name + '\'' +
                 '}';
     }
 }
