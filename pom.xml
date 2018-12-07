@@ -282,6 +282,7 @@
                         <exclude>**/venv/**</exclude>
                         <exclude>**/archives/patches/egeria.patch</exclude>
                         <exclude>**/docs/**/*.xml</exclude>
+                        <exclude>**/docs/**/*.svg</exclude>
                         <exclude>**/website/**/*.xml</exclude>
                     </excludes>
                     <licenseFamilies>
