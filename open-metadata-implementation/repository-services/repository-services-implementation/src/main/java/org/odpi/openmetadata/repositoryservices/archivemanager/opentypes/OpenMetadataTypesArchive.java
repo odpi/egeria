@@ -3965,7 +3965,7 @@ public class OpenMetadataTypesArchive
         this.archiveBuilder.addEntityDef(getCollectionEntity());
 
         this.archiveBuilder.addRelationshipDef(getCollectionMembershipRelationship());
-        this.archiveBuilder.addRelationshipDef(getActorCollectionRelationship());
+        this.archiveBuilder.addRelationshipDef(getResourceListRelationship());
 
         this.archiveBuilder.addClassificationDef(getFolderClassification());
         this.archiveBuilder.addClassificationDef(getSetClassification());
@@ -4178,11 +4178,11 @@ public class OpenMetadataTypesArchive
     }
 
 
-    private RelationshipDef getActorCollectionRelationship()
+    private RelationshipDef getResourceListRelationship()
     {
         final String guid            = "73cf5658-6a73-4ebc-8f4d-44fdfac0b437";
-        final String name            = "ActorCollection";
-        final String description     = "Identifies that a collection belongs to an actor profile.";
+        final String name            = "ResourceList";
+        final String description     = "Links supporting resources to an anchor object (typically an Actor Profile, Project, Meeting or Community).";
         final String descriptionGUID = null;
 
         final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
@@ -4199,9 +4199,9 @@ public class OpenMetadataTypesArchive
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "ActorProfile";
-        final String                     end1AttributeName            = "consumingActors";
-        final String                     end1AttributeDescription     = "Profile owners that have linked to this collection.";
+        final String                     end1EntityType               = "Referenceable";
+        final String                     end1AttributeName            = "resourceListAnchors";
+        final String                     end1AttributeDescription     = "Referenceable objects that are using the linked to resource.";
         final String                     end1AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
@@ -4216,9 +4216,9 @@ public class OpenMetadataTypesArchive
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Collection";
-        final String                     end2AttributeName            = "actorCollections";
-        final String                     end2AttributeDescription     = "Collections identified as of interest to the profile owner.";
+        final String                     end2EntityType               = "Referenceable";
+        final String                     end2AttributeName            = "supportingResources";
+        final String                     end2AttributeDescription     = "Resources identified as of interest to the anchor.";
         final String                     end2AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
@@ -4235,18 +4235,18 @@ public class OpenMetadataTypesArchive
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "collectionUse";
-        final String attribute1Description     = "Description of how the collection is used, or why it is useful.";
+        final String attribute1Name            = "resourceUse";
+        final String attribute1Description     = "Description of how the resource is used, or why it is useful.";
         final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "watchMembership";
-        final String attribute2Description     = "Indicator whether the actor should receive notifications of changes within the membership.";
+        final String attribute2Name            = "watchResource";
+        final String attribute2Description     = "Indicator whether the anchor should receive notifications of changes to the resource.";
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
                                                            attribute1DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+        property = archiveHelper.getBooleanTypeDefAttribute(attribute2Name,
                                                             attribute2Description,
                                                             attribute2DescriptionGUID);
         properties.add(property);
@@ -4337,7 +4337,6 @@ public class OpenMetadataTypesArchive
         this.archiveBuilder.addRelationshipDef(getProjectHierarchyRelationship());
         this.archiveBuilder.addRelationshipDef(getProjectDependencyRelationship());
         this.archiveBuilder.addRelationshipDef(getProjectTeamRelationship());
-        this.archiveBuilder.addRelationshipDef(getProjectResourcesRelationship());
         this.archiveBuilder.addRelationshipDef(getProjectScopeRelationship());
 
         this.archiveBuilder.addClassificationDef(getTaskClassification());
@@ -4595,78 +4594,6 @@ public class OpenMetadataTypesArchive
 
         final String attribute1Name            = "teamRole";
         final String attribute1Description     = "Description of the role of the team in the project.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getDateTypeDefAttribute(attribute1Name,
-                                                         attribute1Description,
-                                                         attribute1DescriptionGUID);
-        properties.add(property);
-
-        relationshipDef.setPropertiesDefinition(properties);
-
-        return relationshipDef;
-    }
-
-
-    private RelationshipDef getProjectResourcesRelationship()
-    {
-        final String guid            = "03d25e7b-1c5b-4352-a472-33aa0ddcad4d";
-        final String name            = "ProjectResources";
-        final String description     = "A resource allocated for use in a project.";
-        final String descriptionGUID = null;
-
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
-                                                                                null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                classificationPropagationRule);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1EntityType               = "Project";
-        final String                     end1AttributeName            = "projectUse";
-        final String                     end1AttributeDescription     = "Projects that are in use by this project.";
-        final String                     end1AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 end1Cardinality);
-        relationshipDef.setEndDef1(relationshipEndDef);
-
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2EntityType               = "Referenceable";
-        final String                     end2AttributeName            = "supportingResources";
-        final String                     end2AttributeDescription     = "Resources supporting the project.";
-        final String                     end2AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 end2Cardinality);
-        relationshipDef.setEndDef2(relationshipEndDef);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "resourceUse";
-        final String attribute1Description     = "How the resources are being used by the project.";
         final String attribute1DescriptionGUID = null;
 
         property = archiveHelper.getDateTypeDefAttribute(attribute1Name,
@@ -5248,7 +5175,6 @@ public class OpenMetadataTypesArchive
         this.archiveBuilder.addEntityDef(getCommunityEntity());
 
         this.archiveBuilder.addRelationshipDef(getCommunityMembershipRelationship());
-        this.archiveBuilder.addRelationshipDef(getCommunityResourcesRelationship());
     }
 
 
@@ -5444,61 +5370,6 @@ public class OpenMetadataTypesArchive
         properties.add(property);
 
         relationshipDef.setPropertiesDefinition(properties);
-
-        return relationshipDef;
-    }
-
-
-    private RelationshipDef getCommunityResourcesRelationship()
-    {
-        final String guid            = "484d4fb9-4927-4926-8e6d-03e6c9885254";
-        final String name            = "CommunityResources";
-        final String description     = "Resources created or used by a community.";
-        final String descriptionGUID = null;
-
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
-                                                                                null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                classificationPropagationRule);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1EntityType               = "Community";
-        final String                     end1AttributeName            = "communityUses";
-        final String                     end1AttributeDescription     = "The communities that use this collection.";
-        final String                     end1AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 end1Cardinality);
-        relationshipDef.setEndDef1(relationshipEndDef);
-
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2EntityType               = "Referenceable";
-        final String                     end2AttributeName            = "supportingResources";
-        final String                     end2AttributeDescription     = "The collections of resources created or used by this community.";
-        final String                     end2AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 end2Cardinality);
-        relationshipDef.setEndDef2(relationshipEndDef);
 
         return relationshipDef;
     }

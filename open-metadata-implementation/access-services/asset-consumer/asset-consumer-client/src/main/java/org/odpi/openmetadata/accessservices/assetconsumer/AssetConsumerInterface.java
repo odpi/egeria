@@ -1,11 +1,9 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer;
 
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions.*;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.AssetCollection;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.AssetCollectionMember;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.AssetCollectionOrder;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.MyProfile;
+import org.odpi.openmetadata.accessservices.assetconsumer.properties.GlossaryTerm;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -15,7 +13,6 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.StarRating;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * The Asset Consumer Open Metadata Access Service (OMAS) is used by applications and tools as a factory for Open
@@ -25,14 +22,8 @@ import java.util.Map;
  * from the metadata repository and creates an appropriate connector as described the connection and
  * returns it to the caller.
  *
- * Each connection has a unique guid and a name.  An application can request a connector instance
- * from the OCF's Connector Broker using the guid, name or URL of a connection, or by passing a fully
- * populated connection object.  If the connection guid, name or URL is used, AssetConsumer OMAS
- * looks up the connection properties in the metadata repository before calling the OCF ConnectorBroker to create the
- * connector.
- *
  * The Asset Consumer OMAS supports access to the asset properties either through the connector, or by a direct
- * call to Asset Consumer API.  It also supports the management of Asset Collections.
+ * call to Asset Consumer API.
  *
  * In addition it is possible to maintain feedback for the asset through the Asset Consumer OMAS.
  * This is in terms of tags, star ratings, likes and comments. Finally, there is the ability to add audit log records
@@ -114,222 +105,6 @@ public interface AssetConsumerInterface
 
 
     /**
-     * Return the profile for this user.
-     *
-     * @param userId userId of the user making the request.
-     *
-     * @return profile object
-     *
-     * @throws InvalidParameterException the userId is null or invalid.
-     * @throws NoProfileForUserException the user does not have a profile.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    MyProfile   getMyProfile(String userId) throws InvalidParameterException,
-                                                   NoProfileForUserException,
-                                                   PropertyServerException,
-                                                   UserNotAuthorizedException;
-
-
-    /**
-     * Create or update the profile for the requesting user.
-     *
-     * @param userId the name of the calling user.
-     * @param employeeNumber personnel/serial/unique employee number of the individual.
-     * @param fullName full name of the person.
-     * @param knownName known name or nickname of the individual.
-     * @param jobTitle job title of the individual.
-     * @param jobRoleDescription job description of the individual.
-     * @param additionalProperties  additional properties about the individual.
-     *
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws PropertyServerException  there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    void      updateMyProfile(String              userId,
-                              String              employeeNumber,
-                              String              fullName,
-                              String              knownName,
-                              String              jobTitle,
-                              String              jobRoleDescription,
-                              Map<String, Object> additionalProperties) throws InvalidParameterException,
-                                                                               PropertyServerException,
-                                                                               UserNotAuthorizedException;
-
-
-    /**
-     * Returns the list of asset collections that this user has created or linked to their profile.
-     *
-     * @param userId     userId of user making request
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return
-     *
-     * @return a list of asset collections
-     *
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws NoProfileForUserException  the user does not have a profile so can not have any asset collections.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    List<AssetCollection>    getMyAssetCollections(String    userId,
-                                                   int       startFrom,
-                                                   int       pageSize) throws InvalidParameterException,
-                                                                              NoProfileForUserException,
-                                                                              PropertyServerException,
-                                                                              UserNotAuthorizedException;
-
-
-    /**
-     * Return the properties of a specific asset collection,
-     *
-     * @param userId              userId of user making request.
-     * @param assetCollectionGUID unique identifier of the required connection.
-     *
-     * @return asset collection properties
-     *
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws NoProfileForUserException  the user does not have a profile so can not have any asset collections.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    AssetCollection     getAssetCollection(String    userId,
-                                           String    assetCollectionGUID) throws InvalidParameterException,
-                                                                                 NoProfileForUserException,
-                                                                                 PropertyServerException,
-                                                                                 UserNotAuthorizedException;
-
-
-    /**
-     * Create a new asset collection.
-     *
-     * @param userId                 userId of user making request.
-     * @param qualifiedName          unique name of the asset collection.
-     * @param displayName            short displayable name for the asset collection.
-     * @param description            description of the asset collection.
-     * @param collectionUse          description of how the asset consumer intends to use the collection.
-     * @param assetCollectionOrder   description of how the assets in the collection should be organized (null for no organization).
-     * @param additionalProperties   additional arbitrary properties.
-     *
-     * @return the newly created AssetCollection
-     *
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws NoProfileForUserException  the user does not have a profile so can not have any asset collections.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    AssetCollection     createAssetCollection(String                 userId,
-                                              String                 qualifiedName,
-                                              String                 displayName,
-                                              String                 description,
-                                              String                 collectionUse,
-                                              AssetCollectionOrder   assetCollectionOrder,
-                                              Map<String, Object>    additionalProperties) throws InvalidParameterException,
-                                                                                                  NoProfileForUserException,
-                                                                                                  PropertyServerException,
-                                                                                                  UserNotAuthorizedException;
-
-
-    /**
-     * Connect an existing asset collection to this user's profile.
-     *
-     * @param userId               userId of user making request.
-     * @param assetCollectionGUID  unique identifier of the asset collection.
-     * @return details of the identified asset collection
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws NoProfileForUserException  the user does not have a profile so can not have any asset collections.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    AssetCollection     attachAssetCollection(String    userId,
-                                              String    assetCollectionGUID) throws InvalidParameterException,
-                                                                                    NoProfileForUserException,
-                                                                                    PropertyServerException,
-                                                                                    UserNotAuthorizedException;
-
-
-    /**
-     * Delete an asset collection (the assets are not affected).
-     *
-     * @param userId               userId of user making request.
-     * @param assetCollectionGUID  unique identifier of the asset collection.
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws NoProfileForUserException  the user does not have a profile so can not have any asset collections.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    void   removeAssetCollection(String    userId,
-                                 String    assetCollectionGUID) throws InvalidParameterException,
-                                                                       PropertyServerException,
-                                                                       NoProfileForUserException,
-                                                                       UserNotAuthorizedException;
-
-
-    /**
-     * Return a list of assets that the specified user has added to their favorites list.
-     *
-     * @param userId     userId of user making request.
-     * @param assetCollectionGUID  unique identifier of the asset collection to use.
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     *
-     * @return list of asset details
-     *
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws NoProfileForUserException  the user does not have a profile so can not have any asset collections.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    List<AssetCollectionMember> getMyAssets(String    userId,
-                                            String    assetCollectionGUID,
-                                            int       startFrom,
-                                            int       pageSize) throws InvalidParameterException,
-                                                                       NoProfileForUserException,
-                                                                       PropertyServerException,
-                                                                       UserNotAuthorizedException;
-
-    /**
-     * Add an asset to the identified user's list of favorite assets.
-     *
-     * @param userId     userId of user making request.
-     * @param assetCollectionGUID  unique identifier of the asset collection to use.
-     * @param assetGUID  unique identifier of the asset.
-     *
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws NoProfileForUserException  the user does not have a profile so can not have any asset collections.
-     * @throws NotAnAssetException the guid is not recognized as an identifier for an asset.
-     * @throws PropertyServerException there is a problem updating information in the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    void  addToMyAssets(String   userId,
-                        String   assetCollectionGUID,
-                        String   assetGUID) throws InvalidParameterException,
-                                                   NoProfileForUserException,
-                                                   NotAnAssetException,
-                                                   PropertyServerException,
-                                                   UserNotAuthorizedException;
-
-
-    /**
-     * Remove an asset from identified user's list of favorite assets.
-     *
-     * @param userId     userId of user making request.
-     * @param assetCollectionGUID  unique identifier of the asset collection to use.
-     * @param assetGUID  unique identifier of the asset.
-     *
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws NoProfileForUserException  the user does not have a profile so can not have any asset collections.
-     * @throws PropertyServerException there is a problem updating information in the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    void  removeFromMyAssets(String   userId,
-                             String   assetCollectionGUID,
-                             String   assetGUID) throws InvalidParameterException,
-                                                        NoProfileForUserException,
-                                                        PropertyServerException,
-                                                        UserNotAuthorizedException;
-
-
-    /**
      * Returns the unique identifier for the asset connected to the connection.
      *
      * @param userId the userId of the requesting user.
@@ -349,6 +124,7 @@ public interface AssetConsumerInterface
                                                                  NoConnectedAssetException,
                                                                  UserNotAuthorizedException;
 
+
     /**
      * Returns a comprehensive collection of properties about the requested asset.
      *
@@ -365,6 +141,48 @@ public interface AssetConsumerInterface
                                      String   assetGUID) throws InvalidParameterException,
                                                                 PropertyServerException,
                                                                 UserNotAuthorizedException;
+
+
+    /**
+     * Return the full definition (meaning) of a term using the unique identifier of the glossary term.
+     *
+     * @param serverName name of the server instances for this request
+     * @param userId userId of the user making the request.
+     * @param guid unique identifier of the meaning.
+     *
+     * @return meaning response object
+     * @throws InvalidParameterException the userId is null or invalid or
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s) or
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    GlossaryTerm getMeaning(String   serverName,
+                            String   userId,
+                            String   guid) throws InvalidParameterException,
+                                                  PropertyServerException,
+                                                  UserNotAuthorizedException;
+
+
+    /**
+     * Return the full definition (meaning) of the terms matching the supplied name.
+     *
+     * @param serverName name of the server instances for this request
+     * @param userId the name of the calling user.
+     * @param term name of term.  This may include wild card characters.
+     * @param startFrom  index of the list ot start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return meaning list response or
+     * @throws InvalidParameterException the userId is null or invalid or
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s) or
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    List<GlossaryTerm> getMeaningByName(String  serverName,
+                                        String  userId,
+                                        String  term,
+                                        int     startFrom,
+                                        int     pageSize) throws InvalidParameterException,
+                                                                 PropertyServerException,
+                                                                 UserNotAuthorizedException;
 
 
     /**

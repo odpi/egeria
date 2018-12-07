@@ -1595,7 +1595,7 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 
     /**
      * Return the requested property or null if property is not found.  If the property is not
-     * a string property then a logic exception is thrown
+     * a map property then a logic exception is thrown
      *
      * @param sourceName source of call
      * @param propertyName name of requested property
@@ -1640,21 +1640,20 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 
 
     /**
-     * Return the requested property or null if property is not found.  If the property is not
-     * a string property then a logic exception is thrown
+     * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
      *
      * @param sourceName source of call
-     * @param propertyName name of requested property
-     * @param properties properties from the instance.
+     * @param propertyName name of requested map property
+     * @param properties all of the properties of the instance
      * @param methodName method of caller
-     * @return string property value or null
+     * @return map property value or null
      */
     public Map<String, Object> getMapFromProperty(String             sourceName,
                                                   String             propertyName,
                                                   InstanceProperties properties,
                                                   String             methodName)
     {
-        final String  thisMethodName = "getMapProperty";
+        final String  thisMethodName = "getMapFromProperty";
 
         if (properties != null)
         {
@@ -1670,35 +1669,7 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 
                         log.debug("Retrieved map property " + propertyName);
 
-                        InstanceProperties wrappedMapValues = mapInstancePropertyValue.getMapValues();
-                        if (wrappedMapValues != null)
-                        {
-                            Map<String, InstancePropertyValue> instanceMapValues =
-                                    wrappedMapValues.getInstanceProperties();
-                            Map<String, Object>                resultingMap = new HashMap<>();
-
-                            for (String mapPropertyName : instanceMapValues.keySet())
-                            {
-                                InstancePropertyValue wrappedMapPropertyValue =
-                                        wrappedMapValues.getPropertyValue(mapPropertyName);
-
-                                if (wrappedMapPropertyValue != null)
-                                {
-                                    if (wrappedMapPropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.PRIMITIVE)
-                                    {
-                                        PrimitivePropertyValue primitivePropertyValue =
-                                                (PrimitivePropertyValue) wrappedMapPropertyValue;
-                                        resultingMap.put(mapPropertyName, primitivePropertyValue.getPrimitiveValue());
-                                    }
-                                    else
-                                    {
-                                        resultingMap.put(mapPropertyName, wrappedMapPropertyValue);
-                                    }
-                                }
-                            }
-
-                            return resultingMap;
-                        }
+                        return this.getInstancePropertiesAsMap(mapInstancePropertyValue.getMapValues());
                     }
                 }
                 catch (Throwable error)
@@ -1711,6 +1682,47 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
         log.debug("Map property " + propertyName + " not present");
         return null;
     }
+
+
+    /**
+     * Convert an instance properties object into a map.
+     *
+     * @param instanceProperties packed properties
+     * @return properties stored in Java map
+     */
+    public Map<String, Object> getInstancePropertiesAsMap(InstanceProperties    instanceProperties)
+    {
+        if (instanceProperties != null)
+        {
+            Map<String, InstancePropertyValue> instanceMapValues = instanceProperties.getInstanceProperties();
+            Map<String, Object>                resultingMap      = new HashMap<>();
+
+            for (String mapPropertyName : instanceMapValues.keySet())
+            {
+                InstancePropertyValue actualPropertyValue = instanceProperties.getPropertyValue(mapPropertyName);
+
+                if (actualPropertyValue != null)
+                {
+                    if (actualPropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.PRIMITIVE)
+                    {
+                        PrimitivePropertyValue primitivePropertyValue =
+                                (PrimitivePropertyValue) actualPropertyValue;
+                        resultingMap.put(mapPropertyName, primitivePropertyValue.getPrimitiveValue());
+                    }
+                    else
+                    {
+                        resultingMap.put(mapPropertyName, actualPropertyValue);
+                    }
+                }
+            }
+
+            return resultingMap;
+        }
+
+        log.debug("No Properties present");
+        return null;
+    }
+
 
 
     /**
