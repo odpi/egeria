@@ -19,6 +19,15 @@ public class AssetFeedback extends AssetPropertyBase
 
 
     /**
+     * Simple constructor only for subclasses
+     */
+    protected AssetFeedback(AssetDescriptor parentAsset)
+    {
+        super(parentAsset);
+    }
+
+
+    /**
      * Typical Constructor
      *
      * @param parentAsset description of the asset that this feedback is attached to.
@@ -27,11 +36,11 @@ public class AssetFeedback extends AssetPropertyBase
      * @param ratings list of ratings that people have given the asset one Rating object for each person's rating.
      * @param comments list of comments for the asset.
      */
-    public AssetFeedback(AssetDescriptor   parentAsset,
+    public AssetFeedback(AssetDescriptor parentAsset,
                          AssetInformalTags informalTags,
-                         AssetLikes        likes,
-                         AssetRatings      ratings,
-                         AssetComments     comments)
+                         AssetLikes likes,
+                         AssetRatings ratings,
+                         AssetComments comments)
     {
         super(parentAsset);
 

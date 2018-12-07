@@ -6,7 +6,6 @@ import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.common.serialization.LongSerializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.odpi.openmetadata.virtualdataconnector.virtualiser.ffdc.VirtualiserCheckedException;
 import org.odpi.openmetadata.virtualdataconnector.virtualiser.ffdc.VirtualiserErrorCode;
@@ -39,19 +38,19 @@ public class KafkaVirtualiserProducer {
     /**
      * producer used to send the message out
      */
-    private Producer<Long, String> producer = null;
+    private Producer<String, String> producer = null;
 
     /**
      * get a producer object to send the message
      *
      * @return a completed set up producer
      */
-    private Producer<Long, String> getProducer() {
+    private Producer<String, String> getProducer() {
         if (producer == null) {
             Properties props = new Properties();
             props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServer);
             props.put(ProducerConfig.CLIENT_ID_CONFIG, clientIdConfig);
-            props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, LongSerializer.class.getName());
+            props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
             props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
             producer = new KafkaProducer<>(props);
         }
@@ -66,11 +65,11 @@ public class KafkaVirtualiserProducer {
      */
     public void runProducer(String message) throws VirtualiserCheckedException {
         final String methodName = "runProducer";
-        final Producer<Long, String> producer = getProducer();
+        final Producer<String, String> producer = getProducer();
         try {
-            long index = System.currentTimeMillis();
-            final ProducerRecord<Long, String> record =
-                    new ProducerRecord<>(informationViewInTopic, index, message);
+            long index = System.currentTimeMillis() ;//TODO should use serverId as record key when virtualizer is refactored to start as an OMAG server
+            final ProducerRecord<String, String> record =
+                    new ProducerRecord(informationViewInTopic, message);
             producer.send(record);
         } catch (Exception e) {
             VirtualiserErrorCode errorCode = VirtualiserErrorCode.SEND_TOPIC_FAIL;

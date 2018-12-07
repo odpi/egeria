@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.eventmanagement;
 
 import org.slf4j.Logger;
@@ -38,8 +39,7 @@ public class OMRSEventListener implements OMRSTopicListener
     /*
      * The audit log is used for recording events, decisions, errors and exceptions
      */
-    private  OMRSAuditLog  auditLog = new OMRSAuditLog(OMRSAuditingComponent.EVENT_LISTENER);
-
+    private  OMRSAuditLog  auditLog;
 
     private static final Logger log = LoggerFactory.getLogger(OMRSEventListener.class);
 
@@ -52,18 +52,21 @@ public class OMRSEventListener implements OMRSTopicListener
      * @param registryEventProcessor processor for registry events
      * @param typeDefEventProcessor processor for TypeDef synchronization events
      * @param instanceEventProcessor processor for metadata instance replication
+     * @param auditLog audit log for this component.
      */
     public OMRSEventListener(String                                cohortName,
                              String                                localMetadataCollectionId,
                              OMRSRegistryEventProcessor            registryEventProcessor,
                              OMRSTypeDefEventProcessor             typeDefEventProcessor,
-                             OMRSInstanceEventProcessor            instanceEventProcessor)
+                             OMRSInstanceEventProcessor            instanceEventProcessor,
+                             OMRSAuditLog                          auditLog)
     {
         this.cohortName = cohortName;
         this.localMetadataCollectionId = localMetadataCollectionId;
         this.registryEventProcessor = registryEventProcessor;
         this.typeDefEventProcessor  = typeDefEventProcessor;
         this.instanceEventProcessor = instanceEventProcessor;
+        this.auditLog = auditLog;
 
         final String   actionDescription = "Initialize OMRS Event Listener";
 

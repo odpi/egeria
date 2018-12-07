@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
-import org.odpi.openmetadata.accessservices.informationview.events.ColumnContextEvent;
+import org.odpi.openmetadata.accessservices.informationview.events.TableContextEvent;
 import org.odpi.openmetadata.virtualdataconnector.virtualiser.gaian.GaianQueryConstructor;
 import org.odpi.openmetadata.virtualdataconnector.virtualiser.views.ViewsConstructor;
 import org.slf4j.Logger;
@@ -46,9 +46,9 @@ public class KafkaVirtualiserConsumer implements Runnable {
         try {
             while (shouldRun.get()) {
                 try {
-                    List<ColumnContextEvent> messages = receive(consumer, 2000);//TODO timeout should be configurable
+                    List<TableContextEvent> messages = receive(consumer, 2000);//TODO timeout should be configurable
 
-                    for (ColumnContextEvent event : messages) {
+                    for (TableContextEvent event : messages) {
                         Map<String, String> views = gaianQueryConstructor.notifyGaian(event);
                         viewsConstructor.notifyIVOMAS(event, views);
                     }
@@ -65,30 +65,30 @@ public class KafkaVirtualiserConsumer implements Runnable {
         }
     }
 
-    public List<ColumnContextEvent> receive(Consumer consumer, long timeoutMilliSeconds) {
+    public List<TableContextEvent> receive(Consumer consumer, long timeoutMilliSeconds) {
 
-        List<ColumnContextEvent> messages = new ArrayList<>();
-        ConsumerRecords<Long, String> records = consumer.poll(timeoutMilliSeconds);
-        ColumnContextEvent columnContextEvent;
+        List<TableContextEvent> messages = new ArrayList<>();
+        ConsumerRecords<String, String> records = consumer.poll(timeoutMilliSeconds);
+        TableContextEvent tableContextEvent;
 
         if (records != null) {
-            for (ConsumerRecord<Long, String> record : records) {
+            for (ConsumerRecord<String, String> record : records) {
 
                 log.debug("Received Message topic ={}, partition ={}, offset = {}, key = {}, value = {}",
                         record.topic(), record.partition(), record.offset(), record.key(), record.value());
 
                 try {
-                    columnContextEvent = MAPPER.readValue(record.value(), ColumnContextEvent.class);
+                    tableContextEvent = MAPPER.readValue(record.value(), TableContextEvent.class);
                 } catch (Exception e) {
-                    log.info("Virtualizer can only handle valid ColumnContextEvent, ignoring message from kafka");
-                    columnContextEvent = null;
+                    log.info("Virtualizer can only handle valid TableContextEvent, ignoring message from kafka");
+                    tableContextEvent = null;
                 }
 
-                if (isValid(columnContextEvent)) {
-                    log.info("Event to process {}", columnContextEvent);
-                    messages.add(columnContextEvent);
+                if (isValid(tableContextEvent)) {
+                    log.info("Event to process {}", tableContextEvent);
+                    messages.add(tableContextEvent);
                 }else{
-                    log.info("Virtualizer can only handle valid ColumnContextEvent, ignoring message from kafka");
+                    log.info("Virtualizer can only handle valid TableContextEvent, ignoring message from kafka");
                 }
             }
         }
@@ -97,9 +97,9 @@ public class KafkaVirtualiserConsumer implements Runnable {
 
     }
 
-    private boolean isValid(ColumnContextEvent columnContextEvent) {
+    private boolean isValid(TableContextEvent tableContextEvent) {
         //TODO once event beans are updated in IV OMAS, should use validation from bean definition instead of this method
-        return columnContextEvent != null && columnContextEvent.getConnectionDetails() != null && columnContextEvent.getTableContext() != null && columnContextEvent.getTableColumns() != null;
+        return tableContextEvent != null && tableContextEvent.getTableSource() != null && tableContextEvent.getTableColumns() != null;
     }
 
 

@@ -40,16 +40,20 @@ public class OMRSArchiveManager
      * The audit log provides a verifiable record of the open metadata archives that have been loaded into
      * the open metadata repository.  The Logger is for standard debug.
      */
-    private static final OMRSAuditLog auditLog = new OMRSAuditLog(OMRSAuditingComponent.ARCHIVE_MANAGER);
+    private OMRSAuditLog auditLog;
 
     /**
      * Constructor to save the initial list of open metadata archives from the server startup configuration.
      * These will be processed as soon as the event processors are supplied from the local repository.
      *
      * @param startUpOpenMetadataArchives  initial list of open metadata archives provided in startup configuration
+     * @param auditLog audit log for this component.
      */
-    public OMRSArchiveManager(List<OpenMetadataArchiveStoreConnector>    startUpOpenMetadataArchives)
+    public OMRSArchiveManager(List<OpenMetadataArchiveStoreConnector>    startUpOpenMetadataArchives,
+                              OMRSAuditLog                               auditLog)
     {
+        this.auditLog = auditLog;
+
         if (startUpOpenMetadataArchives != null)
         {
             this.openMetadataArchiveStores = new ArrayList<>(startUpOpenMetadataArchives);

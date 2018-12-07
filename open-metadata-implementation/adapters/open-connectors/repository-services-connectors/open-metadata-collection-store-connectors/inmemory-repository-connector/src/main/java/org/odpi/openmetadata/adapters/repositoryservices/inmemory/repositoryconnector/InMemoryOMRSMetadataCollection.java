@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositoryconnector;
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
@@ -2534,24 +2535,24 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
                                                                methodName);
             }
         }
-
         /*
-         * Perform operation
+         * timewarp the stores
          */
-        // todo
-        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+        Map<String, EntityDetail>   entityStore = repositoryStore.timeWarpEntityStore(asOfTime);
+        Map<String, Relationship>   relationshipStore = repositoryStore.timeWarpRelationshipStore(asOfTime);
 
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName, this.getClass().getName(), repositoryName);
-
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                                           this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+        InMemoryEntityNeighbourhood inMemoryEntityNeighbourhood = new InMemoryEntityNeighbourhood(
+                repositoryValidator,
+                entityStore,
+                relationshipStore,
+                entityGUID,
+                entityTypeGUIDs,
+                relationshipTypeGUIDs,
+                limitResultsByStatus,
+                limitResultsByClassification,
+                level);
+        return inMemoryEntityNeighbourhood.createInstanceGraph();
     }
-
-
     /**
      * Return the list of entities that are of the types listed in entityTypeGUIDs and are connected, either directly or
      * indirectly to the entity identified by startEntityGUID.

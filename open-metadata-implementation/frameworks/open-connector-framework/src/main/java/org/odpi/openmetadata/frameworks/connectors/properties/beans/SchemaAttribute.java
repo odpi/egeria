@@ -2,36 +2,38 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 
+import com.fasterxml.jackson.annotation.*;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * <p>
- *     SchemaAttribute describes a single attribute within a schema.  The attribute has a name, order in the
- *     schema and cardinality.
- *     Its type is another SchemaElement (either Schema or PrimitiveSchemaElement).
- * </p>
- * <p>
- *     If it is a PrimitiveSchemaElement it may have an override for the default value within.
- * </p>
+ *  SchemaAttribute describes a single attribute within a schema.  The attribute has a name, order in the
+ *  schema and cardinality.  Its type is a SchemaType (such as StructSchemaType or PrimitiveSchemaType) or a SchemaLink.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SchemaAttribute extends Referenceable
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "class")
+@JsonSubTypes(
+        {
+                @JsonSubTypes.Type(value = DerivedSchemaAttribute.class, name = "DerivedSchemaAttribute")
+        })
+public class SchemaAttribute extends SchemaElement
 {
-    protected String          attributeName = null;
-    protected int             elementPosition = 0;
-    protected String          cardinality = null;
-    protected String          defaultValueOverride = null;
-    protected SchemaElement   attributeType = null;
+    protected String                            attributeName          = null;
+    protected int                               elementPosition        = 0;
+    protected String                            cardinality            = null;
+    protected String                            defaultValueOverride   = null;
+    protected SchemaType                        attributeType          = null;
+    protected SchemaLink                        externalAttributeType  = null;
+    protected List<SchemaAttributeRelationship> attributeRelationships = null;
 
 
     /**
@@ -58,18 +60,22 @@ public class SchemaAttribute extends Referenceable
             elementPosition = template.getElementPosition();
             cardinality = template.getCardinality();
             defaultValueOverride = template.getDefaultValueOverride();
-
-            SchemaElement  templateAttributeType = template.getAttributeType();
-            if (templateAttributeType != null)
-            {
-                /*
-                 * SchemaElement is an abstract class with a placeholder method to clone an object
-                 * of its sub-class.  When cloneSchemaElement() is called, the implementation in the
-                 * sub-class is called.
-                 */
-                attributeType = templateAttributeType.cloneSchemaElement();
-            }
+            attributeType = template.getAttributeType();
+            externalAttributeType = template.getExternalAttributeType();
+            attributeRelationships = template.getAttributeRelationships();
         }
+    }
+
+
+    /**
+     * Return a clone of this schema element.  This method is needed because schema element
+     * is abstract.
+     *
+     * @return Clone of subclass.
+     */
+    public SchemaElement cloneSchemaElement()
+    {
+        return new SchemaAttribute(this);
     }
 
 
@@ -150,11 +156,11 @@ public class SchemaAttribute extends Referenceable
     }
 
     /**
-     * Return the SchemaElement that relates to the type of this attribute.
+     * Return the SchemaType that relates to the type of this attribute.
      *
-     * @return SchemaElement
+     * @return SchemaType
      */
-    public SchemaElement getAttributeType()
+    public SchemaType getAttributeType()
     {
         if (attributeType == null)
         {
@@ -162,7 +168,7 @@ public class SchemaAttribute extends Referenceable
         }
         else
         {
-            return attributeType.cloneSchemaElement();
+            return attributeType.cloneSchemaType();
         }
     }
 
@@ -172,9 +178,66 @@ public class SchemaAttribute extends Referenceable
      *
      * @param attributeType SchemaElement
      */
-    public void setAttributeType(SchemaElement attributeType)
+    public void setAttributeType(SchemaType attributeType)
     {
         this.attributeType = attributeType;
+    }
+
+
+    /**
+     * Set up optional link to another attribute.  For example, a foreign key relationship between relational
+     * columns.
+     *
+     * @return SchemaLink object
+     */
+    public SchemaLink getExternalAttributeType()
+    {
+        return externalAttributeType;
+    }
+
+
+    /**
+     * Set up optional links to another attribute.  For example, a foreign key relationship between relational
+     * columns.
+     *
+     * @param externalAttributeType SchemaLink object
+     */
+    public void setExternalAttributeType(SchemaLink externalAttributeType)
+    {
+        this.externalAttributeType = externalAttributeType;
+    }
+
+
+    /**
+     * Return any relationships to other schema attributes.
+     *
+     * @return list of attribute relationships
+     */
+    public List<SchemaAttributeRelationship> getAttributeRelationships()
+    {
+        if (attributeRelationships == null)
+        {
+            return null;
+        }
+        else if (attributeRelationships.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new ArrayList<>(attributeRelationships);
+        }
+    }
+
+
+    /**
+     * Set up any relationships to other schema attributes.
+     *
+     * @param attributeRelationships list of attribute relationships
+     */
+    public void setAttributeRelationships(List<SchemaAttributeRelationship> attributeRelationships)
+    {
+        this.attributeRelationships = attributeRelationships;
     }
 
 
@@ -192,12 +255,14 @@ public class SchemaAttribute extends Referenceable
                 ", cardinality='" + cardinality + '\'' +
                 ", defaultValueOverride='" + defaultValueOverride + '\'' +
                 ", attributeType=" + attributeType +
-                ", qualifiedName='" + qualifiedName + '\'' +
-                ", additionalProperties=" + additionalProperties +
-                ", type=" + type +
-                ", guid='" + guid + '\'' +
-                ", url='" + url + '\'' +
-                ", classifications=" + classifications +
+                ", externalAttributeType=" + externalAttributeType +
+                ", attributeRelationships=" + attributeRelationships +
+                ", qualifiedName='" + getQualifiedName() + '\'' +
+                ", additionalProperties=" + getAdditionalProperties() +
+                ", type=" + getType() +
+                ", GUID='" + getGUID() + '\'' +
+                ", URL='" + getURL() + '\'' +
+                ", classifications=" + getClassifications() +
                 '}';
     }
 
@@ -214,7 +279,7 @@ public class SchemaAttribute extends Referenceable
         {
             return true;
         }
-        if (!(objectToCompare instanceof SchemaAttribute))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -227,6 +292,8 @@ public class SchemaAttribute extends Referenceable
                 Objects.equals(getAttributeName(), that.getAttributeName()) &&
                 Objects.equals(getCardinality(), that.getCardinality()) &&
                 Objects.equals(getDefaultValueOverride(), that.getDefaultValueOverride()) &&
-                Objects.equals(getAttributeType(), that.getAttributeType());
+                Objects.equals(getAttributeRelationships(), that.getAttributeRelationships()) &&
+                Objects.equals(getAttributeType(), that.getAttributeType()) &&
+                Objects.equals(getExternalAttributeType(), that.getExternalAttributeType());
     }
 }

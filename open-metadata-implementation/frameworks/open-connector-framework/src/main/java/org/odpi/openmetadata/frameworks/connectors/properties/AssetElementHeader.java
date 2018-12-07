@@ -17,14 +17,26 @@ import java.util.Objects;
  */
 public abstract class AssetElementHeader extends AssetPropertyBase
 {
-    private ElementHeader   elementHeaderBean;
+    private ElementHeader elementHeaderBean = null;
+
+
+    /**
+     * Constructor used by the subclasses
+     *
+     * @param parentAsset descriptor of asset that this property relates to.
+     */
+    protected AssetElementHeader(AssetDescriptor parentAsset)
+    {
+        super(parentAsset);
+    }
+
 
     /**
      * Bean constructor
      *
      * @param elementHeaderBean bean containing all to the properties
      */
-    protected AssetElementHeader(ElementHeader   elementHeaderBean)
+    protected AssetElementHeader(ElementHeader elementHeaderBean)
     {
         super(null);
 
@@ -46,7 +58,7 @@ public abstract class AssetElementHeader extends AssetPropertyBase
      * @param elementHeaderBean bean containing properties
      */
     protected AssetElementHeader(AssetDescriptor parentAsset,
-                                 ElementHeader   elementHeaderBean)
+                                 ElementHeader elementHeaderBean)
     {
         super(parentAsset);
 
@@ -83,11 +95,22 @@ public abstract class AssetElementHeader extends AssetPropertyBase
 
 
     /**
+     * Set up the bean that contains the properties of the element header.
+     *
+     * @param elementHeaderBean bean containing all of the properties
+     */
+    protected void  setBean(ElementHeader elementHeaderBean)
+    {
+        this.elementHeaderBean = elementHeaderBean;
+    }
+
+
+    /**
      * Return the element header bean - used during cloning
      *
      * @return bean
      */
-    protected  ElementHeader getElementHeaderBean()
+    protected ElementHeader getElementHeaderBean()
     {
         return elementHeaderBean;
     }
@@ -101,7 +124,12 @@ public abstract class AssetElementHeader extends AssetPropertyBase
      */
     public AssetElementType getType()
     {
-        ElementType   elementTypeBean = elementHeaderBean.getType();
+        if (elementHeaderBean == null)
+        {
+            return null;
+        }
+
+        ElementType elementTypeBean = elementHeaderBean.getType();
 
         if (elementTypeBean == null)
         {
@@ -121,6 +149,11 @@ public abstract class AssetElementHeader extends AssetPropertyBase
      */
     public String getGUID()
     {
+        if (elementHeaderBean == null)
+        {
+            return null;
+        }
+
         return elementHeaderBean.getGUID();
     }
 
@@ -133,6 +166,11 @@ public abstract class AssetElementHeader extends AssetPropertyBase
      */
     public String getURL()
     {
+        if (elementHeaderBean == null)
+        {
+            return null;
+        }
+
         return elementHeaderBean.getURL();
     }
 
@@ -144,7 +182,12 @@ public abstract class AssetElementHeader extends AssetPropertyBase
      */
     public List<AssetClassification> getAssetClassifications()
     {
-        List<Classification>   classifications = elementHeaderBean.getClassifications();
+        if (elementHeaderBean == null)
+        {
+            return null;
+        }
+
+        List<Classification> classifications = elementHeaderBean.getClassifications();
 
         if (classifications == null)
         {
@@ -152,7 +195,7 @@ public abstract class AssetElementHeader extends AssetPropertyBase
         }
         else
         {
-            List<AssetClassification>    assetClassifications = new ArrayList<>();
+            List<AssetClassification> assetClassifications = new ArrayList<>();
 
             for (Classification classification : classifications)
             {
@@ -182,6 +225,11 @@ public abstract class AssetElementHeader extends AssetPropertyBase
     @Override
     public String toString()
     {
+        if (elementHeaderBean == null)
+        {
+            return new ElementHeader().toString();
+        }
+
         return elementHeaderBean.toString();
     }
 
@@ -219,6 +267,11 @@ public abstract class AssetElementHeader extends AssetPropertyBase
     @Override
     public int hashCode()
     {
+        if (elementHeaderBean == null)
+        {
+            return new ElementHeader().hashCode();
+        }
+
         return elementHeaderBean.hashCode();
     }
 }
