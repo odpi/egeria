@@ -1,3 +1,5 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
 # Tag Propagation 
 ## Introduction
 This document aims to explain how tag propagation will be handled within Governance Engine OMAS. 
