@@ -1,11 +1,11 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-
 package org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin;
 
+import com.ibm.gaiandb.Logger;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
+import org.apache.ranger.authorization.hadoop.config.RangerConfiguration;
 import org.apache.ranger.plugin.audit.RangerDefaultAuditHandler;
 import org.apache.ranger.plugin.model.RangerPolicy;
 import org.apache.ranger.plugin.model.RangerServiceDef;
@@ -14,25 +14,25 @@ import org.apache.ranger.plugin.policyengine.RangerAccessRequestImpl;
 import org.apache.ranger.plugin.policyengine.RangerAccessResult;
 import org.apache.ranger.plugin.policyengine.RangerDataMaskResult;
 import org.apache.ranger.plugin.service.RangerBasePlugin;
-import org.apache.ranger.plugin.util.RangerPerfTracer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Set;
 
+import static org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin.Constants.COLUMN_RESOURCE;
+import static org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin.Constants.DEFAULT_APP_ID;
+import static org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin.Constants.DEFAULT_SERVICE_TYPE;
+import static org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin.Constants.NULL_MASK_TYPE;
+import static org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin.Constants.SCHEMA_RESOURCE;
+import static org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin.Constants.SELECT_ACTION;
+import static org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin.Constants.TABLE_RESOURCE;
 
 public class RangerGaianAuthorizer implements GaianAuthorizer {
-    private static final Logger LOG = LoggerFactory.getLogger(RangerGaianAuthorizer.class);
-    private static final Log PERF_GAIANAUTH_REQUEST_LOG = RangerPerfTracer.getPerfLogger("gaianauth.request");
-    private static boolean isDebugEnabled = LOG.isDebugEnabled();
+
+    private static final Logger logger = new Logger("RangerGaianAuthorizer", 25);
     private static volatile RangerBasePlugin gaianPlugin = null;
 
     public void init() {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("==> RangerGaianPlugin.init()");
-        }
-
+        logger.logDetail("==> RangerGaianPlugin.init()");
         RangerBasePlugin plugin = gaianPlugin;
 
         if (plugin == null) {
@@ -43,213 +43,184 @@ public class RangerGaianAuthorizer implements GaianAuthorizer {
                     plugin = new RangerGaianPlugin();
                     plugin.init();
                     plugin.setResultProcessor(new RangerDefaultAuditHandler());
+                    String rangerURL = RangerConfiguration.getInstance().get("ranger.plugin.gaian.policy.rest.url");
+                    ((RangerGaianPlugin) plugin).setRangerURL(rangerURL);
                     gaianPlugin = plugin;
-
                 }
             }
         }
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("<== RangerGaianPlugin.init()");
-        }
+        logger.logDetail("<== RangerGaianPlugin.init()");
     }
 
-    public boolean isAuthorized(QueryContext queryContext) throws GaianAuthorizationException{
-        boolean isAuthorized = true;
+    public String getRangerURL() {
+        return ((RangerGaianPlugin) gaianPlugin).getRangerURL();
+    }
+
+    public boolean isAuthorized(QueryContext queryContext) throws GaianAuthorizationException {
         GaianResourceType resourceType = getGaianResourceType(queryContext.getResourceType());
         String accessType = queryContext.getActionType();
-        if (!accessType.equals("SELECT")) {
-            throw new GaianAuthorizationException("GaianAccessType is invalid!");
-        }
-        if (isDebugEnabled) {
-            LOG.debug("==> isAuthorized( " + queryContext + " )");
-        }
-        RangerPerfTracer perf = null;
+        logger.logDetail("Is Auth: access type is : " + accessType + " resource type is: " + resourceType + " [" + queryContext + "]");
 
-        if(RangerPerfTracer.isPerfTraceEnabled(PERF_GAIANAUTH_REQUEST_LOG)) {
-            perf = RangerPerfTracer.getPerfTracer(PERF_GAIANAUTH_REQUEST_LOG, "RangerGaianAuthorizer.isAuthorized(queryContext=" + queryContext + ")");
+        if (!accessType.equals(SELECT_ACTION)) {
+            throw new GaianAuthorizationException("GaianAccessType is invalid!");
         }
 
         if (resourceType == GaianResourceType.COLUMN) {
-
-            for (String col : queryContext.getColumns()) {
-                RangerGaianResource resource = new RangerGaianResource(resourceType, queryContext.getSchema(),
-                        queryContext.getTableName(), col);
-
-
-                RangerAccessRequest request = new RangerGaianAccessRequest(resource, accessType, queryContext.getUser(), queryContext.getUserGroups());
-
-                RangerAccessResult result = gaianPlugin.isAccessAllowed(request);
-
-                if (result == null || !result.getIsAllowed()) {
-                    isAuthorized = false;
-                    break;
-                }
-            }
+            return isColumnAccessAllowed(queryContext, resourceType, accessType);
         } else if (resourceType == GaianResourceType.TABLE) {
-            RangerGaianResource resource = new RangerGaianResource(resourceType, queryContext.getSchema(),
-                    queryContext.getTableName());
-
-
-            RangerAccessRequest request = new RangerGaianAccessRequest(resource, accessType, queryContext.getUser(), queryContext.getUserGroups());
-
-            RangerAccessResult result = gaianPlugin.isAccessAllowed(request);
-
-            if (result == null || !result.getIsAllowed()) {
-                isAuthorized = false;
-            }
+            return isTableAccessAllowed(queryContext, resourceType, accessType);
         } else if (resourceType == GaianResourceType.SCHEMA) {
-            RangerGaianResource resource = new RangerGaianResource(resourceType, queryContext.getSchema());
-
-
-            RangerAccessRequest request = new RangerGaianAccessRequest(resource, accessType, queryContext.getUser(), queryContext.getUserGroups());
-
-            RangerAccessResult result = gaianPlugin.isAccessAllowed(request);
-
-            if (result == null || !result.getIsAllowed()) {
-                isAuthorized = false;
-            }
+            return isSchemaAccessAllowed(queryContext, resourceType, accessType);
         } else {
             throw new GaianAuthorizationException("GaianResourceType is invalid!");
         }
-
-
-        RangerPerfTracer.log(perf);
-
-        if (isDebugEnabled) {
-            LOG.debug("<== isAuthorized Returning value :: " + isAuthorized);
-        }
-
-
-        return isAuthorized;
     }
 
-    public GaianResourceType getGaianResourceType(String resourceType) {
-        if (resourceType.equals("SCHEMA")) {
-            return GaianResourceType.SCHEMA;
-        } else if (resourceType.equals("TABLE")) {
-            return GaianResourceType.TABLE;
-        } else if (resourceType.equals("COLUMN")) {
-            return GaianResourceType.COLUMN;
-        } else {
-            return GaianResourceType.NONE;
-        }
-    }
 
     public void applyRowFilterAndColumnMasking(QueryContext queryContext) {
-        if(LOG.isDebugEnabled()) {
-            LOG.debug("==> applyRowFilterAndColumnMasking(" + queryContext + ")");
-        }
-
-        RangerPerfTracer perf = null;
-
-        if(RangerPerfTracer.isPerfTraceEnabled(PERF_GAIANAUTH_REQUEST_LOG)) {
-            perf = RangerPerfTracer.getPerfTracer(PERF_GAIANAUTH_REQUEST_LOG, "RangerGaianAuthorizer.applyRowFilterAndColumnMasking()");
-        }
+        logger.logDetail("==> applyRowFilterAndColumnMasking(" + queryContext + ")");
 
         boolean needToTransform = false;
         if (CollectionUtils.isNotEmpty(queryContext.getColumns())) {
-
             for (String column : queryContext.getColumns()) {
                 boolean isColumnTransformed = addCellValueTransformerAndCheckIfTransformed(queryContext, column);
-
-                if(LOG.isDebugEnabled()) {
-                    LOG.debug("addCellValueTransformerAndCheckIfTransformed(queryContext=" + queryContext + "): " + isColumnTransformed);
-                }
-
+                logger.logDetail("addCellValueTransformerAndCheckIfTransformed(queryContext=" + queryContext + "): " + isColumnTransformed);
                 needToTransform = needToTransform || isColumnTransformed;
             }
+        }
+    }
 
+    public void cleanUp() {
+        logger.logDetail("==> cleanUp ");
+    }
+
+    private GaianResourceType getGaianResourceType(String resourceType) {
+
+        switch (resourceType) {
+            case SCHEMA_RESOURCE:
+                return GaianResourceType.SCHEMA;
+            case TABLE_RESOURCE:
+                return GaianResourceType.TABLE;
+            case COLUMN_RESOURCE:
+                return GaianResourceType.COLUMN;
+            default:
+                return GaianResourceType.NONE;
+        }
+    }
+
+    private boolean isColumnAccessAllowed(QueryContext queryContext, GaianResourceType resourceType, String accessType) {
+        for (String col : queryContext.getColumns()) {
+            RangerGaianResource resource = new RangerGaianResource(resourceType, queryContext.getSchema(), queryContext.getTableName(), col);
+            boolean accessAllowed = isAccessAllowed(queryContext, accessType, resource);
+            if (!accessAllowed) {
+                return false;
+            }
         }
 
+        return true;
+    }
+
+    private boolean isTableAccessAllowed(QueryContext queryContext, GaianResourceType resourceType, String accessType) {
+        RangerGaianResource resource = new RangerGaianResource(resourceType, queryContext.getSchema(), queryContext.getTableName());
+        return isAccessAllowed(queryContext, accessType, resource);
+    }
+
+    private boolean isSchemaAccessAllowed(QueryContext queryContext, GaianResourceType resourceType, String accessType) {
+        RangerGaianResource resource = new RangerGaianResource(resourceType, queryContext.getSchema());
+        return isAccessAllowed(queryContext, accessType, resource);
+    }
+
+    private boolean isAccessAllowed(QueryContext queryContext, String accessType, RangerGaianResource resource) {
+        RangerAccessRequest request = new RangerGaianAccessRequest(resource, accessType, queryContext.getUser(), queryContext.getUserGroups());
+        RangerAccessResult result = gaianPlugin.isAccessAllowed(request);
+        logger.logDetail("RangerAccessResult result: " + result);
+
+        return result != null && result.getIsAllowed();
     }
 
     private boolean addCellValueTransformerAndCheckIfTransformed(QueryContext queryContext, String columnName) {
 
-        if(LOG.isDebugEnabled()) {
-            LOG.debug("==> addCellValueTransformerAndCheckIfTransformed(queryContext=" + queryContext + ", " + columnName + ")");
-        }
-
-        boolean ret = false;
+        logger.logDetail("==> addCellValueTransformerAndCheckIfTransformed(queryContext=" + queryContext + ", " + columnName + ")");
         String columnTransformer = columnName;
-
         List<String> columnTransformers = queryContext.getColumnTransformers();
+        RangerDataMaskResult result = getRangerDataMaskResult(queryContext, columnName);
+        boolean isDataMaskEnabled = isDataMaskEnabled(result);
 
-        String                  user           = queryContext.getUser();
-        Set<String>             groups         = queryContext.getUserGroups();
-        GaianResourceType          objectType     = GaianResourceType.COLUMN;
-        RangerGaianResource      resource       = new RangerGaianResource(objectType, queryContext.getSchema(), queryContext.getTableName(), columnName);
-        RangerGaianAccessRequest request        = new RangerGaianAccessRequest(resource, queryContext.getActionType(), user, groups);
-
-        RangerDataMaskResult result = gaianPlugin.evalDataMaskPolicies(request, new RangerDefaultAuditHandler());
-
-        ret = isDataMaskEnabled(result);
-
-        if(ret) {
+        if (isDataMaskEnabled) {
+            String transformer = getTransformer(result);
             String maskType = result.getMaskType();
-            RangerServiceDef.RangerDataMaskTypeDef maskTypeDef = result.getMaskTypeDef();
-            String transformer = null;
-            if (maskTypeDef != null) {
-                transformer = maskTypeDef.getTransformer();
-            }
 
             if (StringUtils.equalsIgnoreCase(maskType, RangerPolicy.MASK_TYPE_NULL)) {
-                columnTransformer = "NULL";
+                columnTransformer = NULL_MASK_TYPE;
             } else if (StringUtils.equalsIgnoreCase(maskType, RangerPolicy.MASK_TYPE_CUSTOM)) {
-                String maskedValue = result.getMaskedValue();
-
-                if (maskedValue == null) {
-                    columnTransformer = "NULL";
-                } else {
-                    columnTransformer = maskedValue.replace("{col}", columnName);
-                }
-
+                columnTransformer = getCustomMaskType(columnName, result);
             } else if (StringUtils.isNotEmpty(transformer)) {
                 columnTransformer = transformer.replace("{col}", columnName);
             }
-
-            /*
-            String maskCondition = result.getMaskCondition();
-
-            if(StringUtils.isNotEmpty(maskCondition)) {
-                ret = "if(" + maskCondition + ", " + ret + ", " + columnName + ")";
-            }
-            */
-
         }
 
         columnTransformers.add(columnTransformer);
+        logger.logDetail("<== addCellValueTransformerAndCheckIfTransformed(queryContext=" + queryContext + ", " + columnName + "): " + isDataMaskEnabled);
 
-        if(LOG.isDebugEnabled()) {
-            LOG.debug("<== addCellValueTransformerAndCheckIfTransformed(queryContext=" + queryContext + ", " + columnName + "): " + ret);
+        return isDataMaskEnabled;
+    }
+
+    private String getCustomMaskType(String columnName, RangerDataMaskResult result) {
+        String maskedValue = result.getMaskedValue();
+
+        if (maskedValue == null) {
+            return NULL_MASK_TYPE;
+        } else {
+            return maskedValue.replace("{col}", columnName);
+        }
+    }
+
+    private String getTransformer(RangerDataMaskResult result) {
+        RangerServiceDef.RangerDataMaskTypeDef maskTypeDef = result.getMaskTypeDef();
+
+        if (maskTypeDef != null) {
+            return maskTypeDef.getTransformer();
         }
 
-        return ret;
+        return null;
+    }
+
+    private RangerDataMaskResult getRangerDataMaskResult(QueryContext queryContext, String columnName) {
+        GaianResourceType objectType = GaianResourceType.COLUMN;
+        RangerGaianResource resource = new RangerGaianResource(objectType, queryContext.getSchema(), queryContext.getTableName(), columnName);
+        String user = queryContext.getUser();
+        Set<String> groups = queryContext.getUserGroups();
+        RangerGaianAccessRequest request = new RangerGaianAccessRequest(resource, queryContext.getActionType(), user, groups);
+
+        return gaianPlugin.evalDataMaskPolicies(request, new RangerDefaultAuditHandler());
     }
 
     private boolean isDataMaskEnabled(RangerDataMaskResult result) {
         return result != null && result.isMaskEnabled() && !StringUtils.equalsIgnoreCase(result.getMaskType(), RangerPolicy.MASK_TYPE_NONE);
     }
 
-    public void cleanUp() {
-        if (isDebugEnabled) {
-            LOG.debug("==> cleanUp ");
-        }
-    }
-
 }
 
-enum GaianResourceType { NONE, SCHEMA, TABLE, COLUMN };
-
 class RangerGaianPlugin extends RangerBasePlugin {
+
+    private String rangerURL;
+
     RangerGaianPlugin() {
-        super("gaian", "gaian");
+        super(DEFAULT_SERVICE_TYPE, DEFAULT_APP_ID);
+    }
+
+    public String getRangerURL() {
+        return rangerURL;
+    }
+
+    public void setRangerURL(String rangerURL) {
+        this.rangerURL = rangerURL;
     }
 }
 
 class RangerGaianAccessRequest extends RangerAccessRequestImpl {
 
-    public RangerGaianAccessRequest(RangerGaianResource resource, String accessType, String user,
-                                    Set<String> userGroups) {
+    RangerGaianAccessRequest(RangerGaianResource resource, String accessType, String user, Set<String> userGroups) {
         super(resource, accessType, user, userGroups);
     }
 
