@@ -23,6 +23,7 @@ capability around the data assets.
 * **[0534 Relational Schema](0534-Relational-Schemas.md)**
 * **[0535 Event Schema](0535-Event-Schemas.md)**
 * **[0536 API Schemas](0536-API-Schemas.md)**
+* **[0540 Data Classes](0540-Data-Classes.md)**
 * **[0565 Model Elements](0565-Model-Elements.md)**
 * **[0580 Solution Blueprints](0580-Solution-Blueprints.md)**
 * **[0581 Solution Ports and Wires](0581-Solution-Ports-and-Wires.md)**
