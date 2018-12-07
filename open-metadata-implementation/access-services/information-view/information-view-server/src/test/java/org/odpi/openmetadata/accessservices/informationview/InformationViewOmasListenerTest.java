@@ -309,47 +309,47 @@ public class InformationViewOmasListenerTest {
     private void buildInstanceTypes() throws Exception {
 
         TypeDef typeDef = testDataHelper.buildInstanceType(Constants.SOFTWARE_SERVER, SOFTWARE_SERVER_TYPE_GUID);
-        when(omrsMetadataCollection.getTypeDefByName(Constants.USER_ID, Constants.SOFTWARE_SERVER)).thenReturn(typeDef);
+        when(helper.getTypeDefByName(Constants.USER_ID, Constants.SOFTWARE_SERVER)).thenReturn(typeDef);
         when(helper.getTypeDefByName("", typeDef.getName())).thenReturn(typeDef);
 
         typeDef = testDataHelper.buildInstanceType(Constants.ENDPOINT, ENDPOINT_TYPE_GUID);
-        when(omrsMetadataCollection.getTypeDefByName(Constants.USER_ID, Constants.ENDPOINT)).thenReturn(typeDef);
+        when(helper.getTypeDefByName(Constants.USER_ID, Constants.ENDPOINT)).thenReturn(typeDef);
         when(helper.getTypeDefByName("", typeDef.getName())).thenReturn(typeDef);
 
         typeDef = testDataHelper.buildInstanceType(Constants.CONNECTION, CONNECTION_TYPE_GUID);
-        when(omrsMetadataCollection.getTypeDefByName(Constants.USER_ID, Constants.CONNECTION)).thenReturn(typeDef);
+        when(helper.getTypeDefByName(Constants.USER_ID, Constants.CONNECTION)).thenReturn(typeDef);
         when(helper.getTypeDefByName("", typeDef.getName())).thenReturn(typeDef);
 
         typeDef = testDataHelper.buildInstanceType(Constants.CONNECTOR_TYPE, CONNECTOR_TYPE_GUID);
-        when(omrsMetadataCollection.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
+        when(helper.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
         when(helper.getTypeDefByName("", typeDef.getName())).thenReturn(typeDef);
 
         typeDef = testDataHelper.buildInstanceType(Constants.DATA_STORE, DATABASE_TYPE_GUID);
-        when(omrsMetadataCollection.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
+        when(helper.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
         when(helper.getTypeDefByName("", typeDef.getName())).thenReturn(typeDef);
 
         typeDef = testDataHelper.buildInstanceType(Constants.INFORMATION_VIEW, INFORMATION_VIEW_TYPE_GUID);
-        when(omrsMetadataCollection.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
+        when(helper.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
         when(helper.getTypeDefByName("", typeDef.getName())).thenReturn(typeDef);
 
         typeDef = testDataHelper.buildInstanceType(Constants.RELATIONAL_DB_SCHEMA_TYPE, DB_SCHEMA_TYPE_GUID);
-        when(omrsMetadataCollection.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
+        when(helper.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
         when(helper.getTypeDefByName("", typeDef.getName())).thenReturn(typeDef);
 
         typeDef = testDataHelper.buildInstanceType(Constants.RELATIONAL_TABLE_TYPE, TABLETYPE_TYPE_GUID);
-        when(omrsMetadataCollection.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
+        when(helper.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
         when(helper.getTypeDefByName("", typeDef.getName())).thenReturn(typeDef);
 
         typeDef = testDataHelper.buildInstanceType(Constants.RELATIONAL_TABLE, TABLE_TYPE_GUID);
-        when(omrsMetadataCollection.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
+        when(helper.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
         when(helper.getTypeDefByName("", typeDef.getName())).thenReturn(typeDef);
 
         typeDef = testDataHelper.buildInstanceType(Constants.DERIVED_RELATIONAL_COLUMN, DERIVED_COLUMN_TYPE_GUID);
-        when(omrsMetadataCollection.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
+        when(helper.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
         when(helper.getTypeDefByName("", typeDef.getName())).thenReturn(typeDef);
 
         typeDef = testDataHelper.buildInstanceType(Constants.RELATIONAL_COLUMN_TYPE, COLUMNTYPE_TYPE_GUID);
-        when(omrsMetadataCollection.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
+        when(helper.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
         when(helper.getTypeDefByName("", typeDef.getName())).thenReturn(typeDef);
 
     }
@@ -357,25 +357,25 @@ public class InformationViewOmasListenerTest {
     private void buildRelationshipsTypes() throws Exception {
 
         TypeDef typeDef = testDataHelper.buildRelationshipType(Constants.SERVER_ENDPOINT, TestDataHelper.SERVER_ENDPOINT_REL_TYPE_GUID);
-        when(omrsMetadataCollection.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
+        when(helper.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
         typeDef = testDataHelper.buildRelationshipType(Constants.CONNECTION_TO_ENDPOINT, TestDataHelper.CONNECTION_ENDPOINT_REL_TYPE_GUID);
-        when(omrsMetadataCollection.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
+        when(helper.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
         typeDef = testDataHelper.buildRelationshipType(Constants.CONNECTION_CONNECTOR_TYPE, TestDataHelper.CONNECTION_CONNECTOR_REL_TYPE_GUID);
-        when(omrsMetadataCollection.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
+        when(helper.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
         typeDef = testDataHelper.buildRelationshipType(Constants.CONNECTION_TO_ASSET, TestDataHelper.CONNECTION_ASSET_REL_TYPE_GUID);
-        when(omrsMetadataCollection.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
+        when(helper.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
         typeDef = testDataHelper.buildRelationshipType(Constants.DATA_CONTENT_FOR_DATASET, TestDataHelper.DATA_CONTENT_DATASET_REL_TYPE_GUID);
-        when(omrsMetadataCollection.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
+        when(helper.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
         typeDef = testDataHelper.buildRelationshipType(Constants.ASSET_SCHEMA_TYPE, TestDataHelper.ASSET_SCHEMA_REL_TYPE_GUID);
-        when(omrsMetadataCollection.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
+        when(helper.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
         typeDef = testDataHelper.buildRelationshipType(Constants.SCHEMA_ATTRIBUTE_TYPE, TestDataHelper.SCHEMA_ATTRIBUTE_TYPE_REL_TYPE_GUID);
-        when(omrsMetadataCollection.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
+        when(helper.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
         typeDef = testDataHelper.buildRelationshipType(Constants.ATTRIBUTE_FOR_SCHEMA, TestDataHelper.ATTRIBUTE_FOR_SCHEMA_REL_TYPE_GUID);
-        when(omrsMetadataCollection.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
+        when(helper.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
         typeDef = testDataHelper.buildRelationshipType(Constants.SCHEMA_QUERY_IMPLEMENTATION, TestDataHelper.SCHEMA_QUERY_IMPLEMENTATION_REL_TYPE_GUID);
-        when(omrsMetadataCollection.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
+        when(helper.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
         typeDef = testDataHelper.buildRelationshipType(Constants.SEMANTIC_ASSIGNMENT, TestDataHelper.SEMANTIC_ASSIGNMENT_REL_TYPE_GUID);
-        when(omrsMetadataCollection.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
+        when(helper.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
     }
 
 

@@ -1,19 +1,16 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-
 package org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin;
-
 
 import org.apache.ranger.plugin.policyengine.RangerAccessResourceImpl;
 
-
+import static org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin.Constants.COLUMN_RESOURCE;
+import static org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin.Constants.SCHEMA_RESOURCE;
+import static org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin.Constants.TABLE_RESOURCE;
 
 public class RangerGaianResource extends RangerAccessResourceImpl {
-    public static final String KEY_SCHEMA = "schema";
-    public static final String KEY_TABLE    = "table";
-    public static final String KEY_COLUMN   = "column";
 
-    private GaianResourceType resourceType = null;
+    private GaianResourceType resourceType;
 
     public RangerGaianResource(GaianResourceType resourceType, String schema) {
         this(resourceType, schema, null, null);
@@ -26,23 +23,23 @@ public class RangerGaianResource extends RangerAccessResourceImpl {
     public RangerGaianResource(GaianResourceType resourceType, String schema, String table, String column) {
         this.resourceType = resourceType;
 
-        switch(resourceType) {
+        switch (resourceType) {
             case SCHEMA:
                 if (schema == null) {
                     schema = "*";
                 }
-                setValue(KEY_SCHEMA, schema);
+                setValue(SCHEMA_RESOURCE.toLowerCase(), schema);
                 break;
 
             case TABLE:
-                setValue(KEY_SCHEMA, schema);
-                setValue(KEY_TABLE, table);
+                setValue(SCHEMA_RESOURCE.toLowerCase(), schema);
+                setValue(TABLE_RESOURCE.toLowerCase(), table);
                 break;
 
             case COLUMN:
-                setValue(KEY_SCHEMA, schema);
-                setValue(KEY_TABLE, table);
-                setValue(KEY_COLUMN, column);
+                setValue(SCHEMA_RESOURCE.toLowerCase(), schema);
+                setValue(TABLE_RESOURCE.toLowerCase(), table);
+                setValue(COLUMN_RESOURCE.toLowerCase(), column);
                 break;
 
             default:
@@ -55,16 +52,15 @@ public class RangerGaianResource extends RangerAccessResourceImpl {
     }
 
     public String getSchema() {
-        return getValue(KEY_SCHEMA);
+        return getValue(SCHEMA_RESOURCE.toLowerCase());
     }
 
     public String getTable() {
-        return getValue(KEY_TABLE);
+        return getValue(TABLE_RESOURCE.toLowerCase());
     }
 
     public String getColumn() {
-        return getValue(KEY_COLUMN);
+        return getValue(COLUMN_RESOURCE.toLowerCase());
     }
 
 }
-
