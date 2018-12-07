@@ -7,6 +7,7 @@ package org.odpi.openmetadata.accessservices.informationview.events;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,29 +18,22 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class InformationViewEvent {
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "class")
+public class InformationViewEvent extends InformationViewHeader {
 
-    private TableContext tableContext = new TableContext();
-    private ConnectionDetails connectionDetails;
-    private List<DerivedColumnDetail> derivedColumns = new ArrayList<>();
+    private TableSource tableSource;
+    private List<DerivedColumn> derivedColumns = new ArrayList<>();
 
 
-    /**
-     * Return the connection details
-     *
-     * @return properties of the connection
-     */
-    public ConnectionDetails getConnectionDetails() {
-        return connectionDetails;
+    public TableSource getTableSource() {
+        return tableSource;
     }
 
-    /**
-     * Set up the connection details
-     *
-     * @param connectionDetails - properties of the connection
-     */
-    public void setConnectionDetails(ConnectionDetails connectionDetails) {
-        this.connectionDetails = connectionDetails;
+    public void setTableSource(TableSource tableSource) {
+        this.tableSource = tableSource;
     }
 
     /**
@@ -47,7 +41,7 @@ public class InformationViewEvent {
      *
      * @return the list of the properties for each derived column
      */
-    public List<DerivedColumnDetail> getDerivedColumns() {
+    public List<DerivedColumn> getDerivedColumns() {
         return derivedColumns;
     }
 
@@ -56,19 +50,14 @@ public class InformationViewEvent {
      *
      * @param derivedColumns - list of properties for each derived columns
      */
-    public void setDerivedColumns(List<DerivedColumnDetail> derivedColumns) {
+    public void setDerivedColumns(List<DerivedColumn> derivedColumns) {
         this.derivedColumns = derivedColumns;
-    }
-
-    public TableContext getTableContext() {
-        return tableContext;
     }
 
     @Override
     public String toString() {
         return "InformationViewEvent{" +
-                "tableContext=" + tableContext +
-                ", connectionDetails=" + connectionDetails +
+                "tableSource=" + tableSource +
                 ", derivedColumns=" + derivedColumns +
                 '}';
     }

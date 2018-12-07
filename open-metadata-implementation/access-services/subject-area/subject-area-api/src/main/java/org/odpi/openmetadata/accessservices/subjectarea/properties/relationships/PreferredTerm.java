@@ -9,10 +9,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.*;
-import java.io.Serializable;
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.*;
@@ -24,14 +21,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.LineType;
 
 /**
- * PreferredTerm is a relationship between an entity of type GlossaryTerm and an entity of type GlossaryTerm.
- * The ends of the relationship are stored as entity proxies, where there is a 'proxy' name by which the entity type is known.
- * The first entity proxy has alternateTerms as the proxy name for entity type GlossaryTerm.
- * The second entity proxy has preferredTerms as the proxy name for entity type GlossaryTerm.
- *
- * Each entity proxy also stores the entities guid.
-
- Link to an alternative term that the organization prefer is used.
+ * Link to an alternative term that the organization prefer is used.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -75,6 +65,8 @@ public class PreferredTerm extends Line {
       public static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES)));
       public static final java.util.Set<String> ENUM_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES)));
       public static final java.util.Set<String> MAP_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES)));
+      protected String alternateTermGuid;
+      protected String preferredTermGuid;
 
 
     public PreferredTerm() {
@@ -114,6 +106,32 @@ public class PreferredTerm extends Line {
            lineType = LineType.Other;
         }
     }
+    /**
+     * {@literal Get the guid of the alternate Term. }
+     * @return {@code String }
+     */
+    public String getAlternateTermGuid()
+    {
+        return alternateTermGuid;
+    }
+
+    public void setAlternateTermGuid(String alternateTermGuid)
+    {
+        this.alternateTermGuid = alternateTermGuid;
+    }
+    /**
+     * {@literal Get the guid of the preferred Term. }
+     * @return {@code String }
+     */
+    public String getPreferredTermGuid()
+    {
+        return preferredTermGuid;
+    }
+
+    public void setPreferredTermGuid(String preferredTermGuid)
+    {
+        this.preferredTermGuid = preferredTermGuid;
+    }
 
     InstanceProperties obtainInstanceProperties() {
           final String methodName = "obtainInstanceProperties";
@@ -130,23 +148,23 @@ public class PreferredTerm extends Line {
           MapPropertyValue mapPropertyValue=null;
           PrimitivePropertyValue primitivePropertyValue=null;
           primitivePropertyValue = new PrimitivePropertyValue();
-          // TODO  description + change null to value
+          
           primitivePropertyValue.setPrimitiveValue(null);
           instanceProperties.setProperty("description",primitivePropertyValue);
           primitivePropertyValue = new PrimitivePropertyValue();
-          // TODO  description + change null to value
+          
           primitivePropertyValue.setPrimitiveValue(null);
           instanceProperties.setProperty("expression",primitivePropertyValue);
           primitivePropertyValue = new PrimitivePropertyValue();
-          // TODO  description + change null to value
+          
           primitivePropertyValue.setPrimitiveValue(null);
           instanceProperties.setProperty("status",primitivePropertyValue);
           primitivePropertyValue = new PrimitivePropertyValue();
-          // TODO  description + change null to value
+          
           primitivePropertyValue.setPrimitiveValue(null);
           instanceProperties.setProperty("steward",primitivePropertyValue);
           primitivePropertyValue = new PrimitivePropertyValue();
-          // TODO  description + change null to value
+          
           primitivePropertyValue.setPrimitiveValue(null);
           instanceProperties.setProperty("source",primitivePropertyValue);
           if (log.isDebugEnabled()) {

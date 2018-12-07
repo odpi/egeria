@@ -4,14 +4,14 @@ package org.odpi.openmetadata.virtualdataconnector.virtualiser.views;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.odpi.openmetadata.accessservices.informationview.events.DerivedColumn;
+import org.odpi.openmetadata.accessservices.informationview.events.TableContextEvent;
+import org.odpi.openmetadata.accessservices.informationview.events.TableSource;
 import org.odpi.openmetadata.virtualdataconnector.virtualiser.ffdc.VirtualiserCheckedException;
 import org.odpi.openmetadata.virtualdataconnector.virtualiser.ffdc.VirtualiserErrorCode;
 import org.odpi.openmetadata.virtualdataconnector.virtualiser.gaian.GaianQueryConstructor;
 import org.odpi.openmetadata.virtualdataconnector.virtualiser.kafka.KafkaVirtualiserProducer;
-import org.odpi.openmetadata.accessservices.informationview.events.ColumnContextEvent;
-import org.odpi.openmetadata.accessservices.informationview.events.ColumnDetails;
-import org.odpi.openmetadata.accessservices.informationview.events.ConnectionDetails;
-import org.odpi.openmetadata.accessservices.informationview.events.DerivedColumnDetail;
+import org.odpi.openmetadata.accessservices.informationview.events.DatabaseColumn;
 import org.odpi.openmetadata.accessservices.informationview.events.InformationViewEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,12 +64,12 @@ public class ViewsConstructor {
     /**
      * notify Information View OMAS
      *
-     * @param columnContextEvent it contains the information from json which is sent from Information View
+     * @param tableContextEvent it contains the information from json which is sent from Information View
      * @param  createdViews the table definitions created in gaian
      *
      * @return list of events published to kafka topic
      */
-    public List<InformationViewEvent> notifyIVOMAS(ColumnContextEvent columnContextEvent, Map<String, String> createdViews) {
+    public List<InformationViewEvent> notifyIVOMAS(TableContextEvent tableContextEvent, Map<String, String> createdViews) {
         List<InformationViewEvent> events = new ArrayList<>();
         try {
             if (createdViews == null || createdViews.isEmpty()) {
@@ -79,7 +79,7 @@ public class ViewsConstructor {
                     if (entry.getValue() == null) {
                         log.info("No view was created for " + entry.getKey());
                     } else {
-                        events.add(createInformationViewEvent(entry.getKey(), entry.getValue(), columnContextEvent));
+                        events.add(createInformationViewEvent(entry.getKey(), entry.getValue(), tableContextEvent));
                     }
                 }
                 sendNotification(events);
@@ -95,27 +95,27 @@ public class ViewsConstructor {
     /**
      * create technical view and technical view
      *
-     * @param columnContextEvent it contains the information from json which is sent from Information View
+     * @param tableContextEvent it contains the information from json which is sent from Information View
      * @return two string which are jsons for technical view and business view
      */
 
 
-    private InformationViewEvent createInformationViewEvent(String viewType, String tableName, ColumnContextEvent columnContextEvent) {
+    private InformationViewEvent createInformationViewEvent(String viewType, String tableName, TableContextEvent tableContextEvent) {
 
         InformationViewEvent view = addConnectionDetailsAndTableContext(new InformationViewEvent(), tableName);
 
-        List<DerivedColumnDetail> derivedColumn = new ArrayList<>();
-        for (ColumnDetails columnDetails : columnContextEvent.getTableColumns()) {
-            if (columnDetails.getBusinessTerm() != null) {
-                DerivedColumnDetail column = new DerivedColumnDetail();
+        List<DerivedColumn> derivedColumn = new ArrayList<>();
+        for (DatabaseColumn databaseColumn : tableContextEvent.getTableColumns()) {
+            if (databaseColumn.getBusinessTerm() != null) {
+                DerivedColumn column = new DerivedColumn();
                 if (viewType.equals(GaianQueryConstructor.BUSINESS_PREFIX)) {
-                    column.setAttributeName(columnDetails.getBusinessTerm().getName());
+                    column.setColumnName(databaseColumn.getBusinessTerm().getName());
                 } else {
-                    column.setAttributeName(columnDetails.getAttributeName());
+                    column.setColumnName(databaseColumn.getName());
                 }
-                column.setPosition(columnDetails.getPosition());
-                column.setType(columnDetails.getType());
-                column.setRealColumn(columnDetails);
+                column.setPosition(databaseColumn.getPosition());
+                column.setType(databaseColumn.getType());
+                column.setSourceColumn(databaseColumn);
                 derivedColumn.add(column);
             }
         }
@@ -127,19 +127,16 @@ public class ViewsConstructor {
 
     private InformationViewEvent addConnectionDetailsAndTableContext(InformationViewEvent informationViewEvent, String tableName) {
 
-        ConnectionDetails connectionDetails = new ConnectionDetails();
-        connectionDetails.setConnectorProviderQualifiedName(connectorProviderName);
+        TableSource tableSource = new TableSource();
         int lastIndexOf = connectorProviderName.lastIndexOf(".");
-        connectionDetails.setConnectorProviderName(connectorProviderName.substring(lastIndexOf + 1, connectorProviderName.length()));
-        connectionDetails.setProtocol(gaianUrlPrefix);
-        connectionDetails.setNetworkAddress(gaianServer + ":" + gaianPort);
-        connectionDetails.setEndpointQualifiedName(connectionDetails.getNetworkAddress());
-        connectionDetails.setConnectionQualifiedName(connectionDetails.getEndpointQualifiedName() + ".Connection.");//TODO
-        connectionDetails.setUser(gaianProxyUsername);
-        informationViewEvent.setConnectionDetails(connectionDetails);
-        informationViewEvent.getTableContext().setTableName(tableName);
-        informationViewEvent.getTableContext().setDatabaseName(gaianDb);
-        informationViewEvent.getTableContext().setSchemaName(gaianSchema);
+        tableSource.setConnectorProviderName(connectorProviderName.substring(lastIndexOf + 1, connectorProviderName.length()));
+        tableSource.setProtocol(gaianUrlPrefix);
+        tableSource.setNetworkAddress(gaianServer + ":" + gaianPort);
+        tableSource.setUser(gaianProxyUsername);
+        tableSource.setTableName(tableName);
+        tableSource.setDatabaseName(gaianDb);
+        tableSource.setSchemaName(gaianSchema);
+        informationViewEvent.setTableSource(tableSource);
         return informationViewEvent;
     }
 
