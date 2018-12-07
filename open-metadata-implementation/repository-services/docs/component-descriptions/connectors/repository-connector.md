@@ -2,6 +2,8 @@
 
 # Repository Connector
 
+Repository Connectors make use of the Egeria [meta-model](../../metadata-meta-model.md) to represent and communicate metadata.
+
 The OMRS Repository Connector API defines a call
 interface to create, search, query, update and
 delete metadata stored in a metadata repository.

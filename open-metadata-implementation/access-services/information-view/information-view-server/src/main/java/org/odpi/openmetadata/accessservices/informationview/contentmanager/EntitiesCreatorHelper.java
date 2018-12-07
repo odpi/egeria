@@ -153,7 +153,7 @@ public class EntitiesCreatorHelper {
      */
     public EntityDetail getEntity(String typeName, String qualifiedName) throws Exception {
         InstanceProperties matchProperties = buildMatchingInstanceProperties(Constants.QUALIFIED_NAME, qualifiedName);
-        TypeDef typeDef = enterpriseConnector.getMetadataCollection().getTypeDefByName(Constants.USER_ID, typeName);
+        TypeDef typeDef = enterpriseConnector.getRepositoryHelper().getTypeDefByName(Constants.USER_ID, typeName);
         List<EntityDetail> existingEntities;
         try {
             existingEntities = enterpriseConnector.getMetadataCollection()
@@ -236,7 +236,7 @@ public class EntitiesCreatorHelper {
 
     public List<Relationship> getRelationships(String relationshipType, String guid2) throws InvalidParameterException, RepositoryErrorException, TypeDefNotKnownException, UserNotAuthorizedException, TypeErrorException, EntityNotKnownException, PropertyErrorException, PagingErrorException, FunctionNotSupportedException {
         List<Relationship> relationships;
-        String relationshipTypeGuid = enterpriseConnector.getMetadataCollection()
+        String relationshipTypeGuid = enterpriseConnector.getRepositoryHelper()
                 .getTypeDefByName(Constants.USER_ID, relationshipType)
                 .getGUID();
         relationships = enterpriseConnector.getMetadataCollection()
