@@ -32,7 +32,7 @@ public class AssetCatalog implements AssetCatalogInterface {
     /**
      * Create a new AssetConsumer client.
      *
-     * @param serverName name of the server to connect to
+     * @param serverName   name of the server to connect to
      * @param newServerURL the network address of the server running the OMAS REST servers
      */
     public AssetCatalog(String serverName,
@@ -118,7 +118,9 @@ public class AssetCatalog implements AssetCatalogInterface {
         validateParameter(methodName, assetId);
 
         String url = "/servers/{0}/open-metadata/access-services/asset-catalog/users/{1}/asset-relationships/{2}";
-        return callGetRelationshipsResponse(url, serverName, userId, assetId);
+        final SearchParameters requestBody = getSearchParameters();
+
+        return callPostRelationshipsResponse(url, requestBody, serverName, userId, assetId);
     }
 
     /**
@@ -137,7 +139,9 @@ public class AssetCatalog implements AssetCatalogInterface {
         validateParameter(methodName, assetId);
 
         String url = "/servers/{0}/open-metadata/access-services/asset-catalog/users/{1}/asset-classifications/{2}";
-        return callGetClassificationResponse(url, serverName, userId, assetId);
+        final SearchParameters requestBody = getSearchParameters();
+
+        return callPostClassificationResponse(url, requestBody, serverName, userId, assetId);
     }
 
     /**
@@ -156,7 +160,9 @@ public class AssetCatalog implements AssetCatalogInterface {
         validateParameter(methodName, propertyValue);
 
         String url = "/servers/{0}/open-metadata/access-services/asset-catalog/users/{1}/assets-by-property/{2}";
-        return callGetAssetDescriptionResponse(url, serverName, userId, propertyValue);
+        final SearchParameters requestBody = getSearchParameters();
+
+        return callPostAssetDescriptionResponse(url, requestBody, serverName, userId, propertyValue);
     }
 
     /**
@@ -175,7 +181,9 @@ public class AssetCatalog implements AssetCatalogInterface {
         validateParameter(methodName, classificationName);
 
         String url = "/servers/{0}/open-metadata/access-services/asset-catalog/users/{1}/assets-by-classification-name/{2}";
-        return callGetAssetDescriptionResponse(url, serverName, userId, classificationName);
+        final SearchParameters requestBody = getSearchParameters();
+
+        return callPostAssetDescriptionResponse(url, requestBody, serverName, userId, classificationName);
     }
 
     /**
@@ -196,7 +204,9 @@ public class AssetCatalog implements AssetCatalogInterface {
         validateParameter(methodName, endAssetId);
 
         String url = "/servers/{0}/open-metadata/access-services/asset-catalog/users/{1}/assets-linking-relationships/from/{2}/to/{3}";
-        return callGetRelationshipsResponse(url, serverName, userId, startAssetId, endAssetId);
+        final SearchParameters requestBody = getSearchParameters();
+
+        return callPostRelationshipsResponse(url, requestBody, serverName, userId, startAssetId, endAssetId);
     }
 
     /**
@@ -237,7 +247,9 @@ public class AssetCatalog implements AssetCatalogInterface {
         validateParameter(methodName, assetId);
 
         String url = "/servers/{0}/open-metadata/access-services/asset-catalog/users/{1}/related-assets/{2}";
-        return callGetAssetDescriptionResponse(url, serverName, userId, assetId);
+        final SearchParameters requestBody = getSearchParameters();
+
+        return callPostAssetDescriptionResponse(url, requestBody, serverName, userId, assetId);
     }
 
     /**
@@ -256,7 +268,9 @@ public class AssetCatalog implements AssetCatalogInterface {
         validateParameter(methodName, assetId);
 
         String url = "/servers/{0}/open-metadata/access-services/asset-catalog/users/{1}/assets-from-neighborhood/{2}";
-        return callGetAssetDescriptionResponse(url, serverName, userId, assetId);
+        final SearchParameters requestBody = getSearchParameters();
+
+        return callPostAssetDescriptionResponse(url, requestBody, serverName, userId, assetId);
     }
 
     /**
@@ -275,7 +289,9 @@ public class AssetCatalog implements AssetCatalogInterface {
         validateParameter(methodName, assetId);
 
         String url = "/servers/{0}/open-metadata/access-services/asset-catalog/users/{1}/related-relationships/{2}";
-        return callGetRelationshipsResponse(url, serverName, userId, assetId);
+        final SearchParameters requestBody = getSearchParameters();
+
+        return callPostRelationshipsResponse(url, requestBody, serverName, userId, assetId);
     }
 
     /**
@@ -292,7 +308,10 @@ public class AssetCatalog implements AssetCatalogInterface {
         doBasicChecks(methodName, userId);
 
         String url = "/servers/{0}/open-metadata/access-services/asset-catalog/users/{1}/last-created";
-        return callGetAssetDescriptionResponse(url, serverName, userId);
+        final SearchParameters requestBody = getSearchParameters();
+
+        return callPostAssetDescriptionResponse(url, requestBody, serverName, userId);
+
     }
 
 
@@ -310,7 +329,9 @@ public class AssetCatalog implements AssetCatalogInterface {
         doBasicChecks(methodName, userId);
 
         String url = "/servers/{0}/open-metadata/access-services/asset-catalog/users/{1}/last-updated";
-        return callGetAssetDescriptionResponse(url, serverName, userId);
+        final SearchParameters requestBody = getSearchParameters();
+
+        return callPostAssetDescriptionResponse(url, requestBody, serverName, userId);
     }
 
     /**
@@ -346,7 +367,9 @@ public class AssetCatalog implements AssetCatalogInterface {
         validateParameter(methodName, propertyName);
 
         String url = "/servers/{0}/open-metadata/access-services/asset-catalog/users/{1}/relationships/property-name/{2}";
-        return callGetRelationshipsResponse(url, serverName, userId, propertyName);
+        final SearchParameters requestBody = getSearchParameters();
+
+        return callPostRelationshipsResponse(url, requestBody, serverName, userId, propertyName);
     }
 
     /**
@@ -366,7 +389,9 @@ public class AssetCatalog implements AssetCatalogInterface {
         validateParameter(methodName, relationshipTypeId);
 
         String url = "/servers/{0}/open-metadata/access-services/asset-catalog/users/{1}/type/{2}/search/{3}";
-        return callGetRelationshipsResponse(url, serverName, userId, relationshipTypeId, criteria);
+        final SearchParameters requestBody = getSearchParameters();
+
+        return callPostRelationshipsResponse(url, requestBody, serverName, userId, relationshipTypeId, criteria);
     }
 
     /**
@@ -387,8 +412,7 @@ public class AssetCatalog implements AssetCatalogInterface {
         String url = "/servers/{0}/open-metadata/access-services/asset-catalog/users/{1}/search-asset/{2}";
         final SearchParameters requestBody = getSearchParameters();
 
-        return callGetAssetDescriptionResponse(url, serverName, userId, searchCriteria);
-        return callPostAssetDescriptionResponse(url, requestBody, userId, searchCriteria);
+        return callPostAssetDescriptionResponse(url, requestBody, serverName, userId, searchCriteria);
     }
 
     private void doBasicChecks(String methodName, String userId) throws PropertyServerException, InvalidParameterException {
@@ -396,8 +420,13 @@ public class AssetCatalog implements AssetCatalogInterface {
         validateUserId(methodName, userId);
     }
 
-    private AssetDescriptionResponse callGetAssetDescriptionResponse(String url, String serverName, String userId, String... params) {
-    private AssetDescriptionResponse callGetAssetDescriptionResponse(String url, Object... params) {
+    private ClassificationsResponse callPostClassificationResponse(String url, Object requestBody, Object... params) {
+        ClassificationsResponse restResult = new ClassificationsResponse();
+
+        return restTemplate.postForObject(omasServerURL + url, requestBody, restResult.getClass(), params);
+    }
+
+    private AssetDescriptionResponse callGetAssetDescriptionResponse(String url, String serverName, Object... params) {
         AssetDescriptionResponse restResult = new AssetDescriptionResponse();
 
         return restTemplate.getForObject(omasServerURL + url, restResult.getClass(), params);
@@ -406,37 +435,21 @@ public class AssetCatalog implements AssetCatalogInterface {
     private AssetDescriptionResponse callPostAssetDescriptionResponse(String url, Object requestBody, Object... params) {
         AssetDescriptionResponse restResult = new AssetDescriptionResponse();
 
-        return restTemplate.getForObject(omasServerURL + url,
-                restResult.getClass(),
-                serverName, userId, params);
         return restTemplate.postForObject(omasServerURL + url, requestBody, restResult.getClass(), params);
     }
 
-    private RelationshipsResponse callGetRelationshipsResponse(String url, String serverName, String userId, String... params) {
     private RelationshipsResponse callGetRelationshipsResponse(String url, Object... params) {
         RelationshipsResponse restResult = new RelationshipsResponse();
 
-        return restTemplate.getForObject(omasServerURL + url,
-                restResult.getClass(),
-                serverName, userId, params);
         return restTemplate.getForObject(omasServerURL + url, restResult.getClass(), params);
     }
 
-    private ClassificationsResponse callGetClassificationResponse(String url, String serverName, String userId, String assetId) {
     private RelationshipsResponse callPostRelationshipsResponse(String url, Object requestBody, Object... params) {
         RelationshipsResponse restResult = new RelationshipsResponse();
 
         return restTemplate.postForObject(omasServerURL + url, requestBody, restResult.getClass(), params);
     }
 
-    private ClassificationsResponse callPostClassificationResponse(String url, Object requestBody, Object... params) {
-        ClassificationsResponse restResult = new ClassificationsResponse();
-
-        return restTemplate.getForObject(omasServerURL + url,
-                restResult.getClass(),
-                serverName, userId, assetId);
-        return restTemplate.postForObject(omasServerURL + url, requestBody, restResult.getClass(), params);
-    }
 
     private void validateServerURL(String methodName) throws PropertyServerException {
         if (omasServerURL == null || omasServerURL.isEmpty()) {
