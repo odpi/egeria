@@ -37,6 +37,7 @@ public abstract class Source {
 
     private String networkAddress;
     private String protocol;
+    private String encryptionMethod;
     private String connectorProviderName;
     private String user;
     private Map<String, String> additionalProperties;
@@ -102,6 +103,14 @@ public abstract class Source {
         this.user = user;
     }
 
+    public String getEncryptionMethod() {
+        return encryptionMethod;
+    }
+
+    public void setEncryptionMethod(String encryptionMethod) {
+        this.encryptionMethod = encryptionMethod;
+    }
+
     public abstract String getQualifiedName();
 
     @Override
@@ -109,6 +118,7 @@ public abstract class Source {
         return "Source{" +
                 "networkAddress='" + networkAddress + '\'' +
                 ", protocol='" + protocol + '\'' +
+                ", encryptionMethod='" + encryptionMethod + '\'' +
                 ", connectorProviderName='" + connectorProviderName + '\'' +
                 ", user='" + user + '\'' +
                 ", additionalProperties=" + additionalProperties +

@@ -26,11 +26,13 @@ public class ReportCreator {
 
     private static final Logger log = LoggerFactory.getLogger(ReportCreator.class);
     private final EntitiesCreatorHelper entitiesCreatorHelper;
+    private final LookupHelper lookupHelper;
     private final OMRSAuditLog auditLog;
 
 
-    public ReportCreator(EntitiesCreatorHelper entitiesCreatorHelper, OMRSAuditLog auditLog) {
+    public ReportCreator(EntitiesCreatorHelper entitiesCreatorHelper, LookupHelper lookupHelper, OMRSAuditLog auditLog) {
         this.entitiesCreatorHelper = entitiesCreatorHelper;
+        this.lookupHelper = lookupHelper;
         this.auditLog = auditLog;
     }
 
