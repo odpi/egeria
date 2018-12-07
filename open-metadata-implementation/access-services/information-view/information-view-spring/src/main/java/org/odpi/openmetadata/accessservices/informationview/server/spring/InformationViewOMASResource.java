@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("/open-metadata/access-services/information-view/users/{userId}/")
+@RequestMapping("/servers/{serverName}/open-metadata/access-services/information-view/users/{userId}/")
 public class InformationViewOMASResource {
     private final InformationViewOMASRegistration registration;
 
@@ -27,9 +27,10 @@ public class InformationViewOMASResource {
 
 
     @RequestMapping(method = RequestMethod.POST, path = "/report")
-    public VoidResponse submitReport(@PathVariable("userId") String userId,
+    public VoidResponse submitReport(@PathVariable("serverName") String serverName,
+                                     @PathVariable("userId") String userId,
                                      @RequestBody ReportRequestBody requestBody) {
-        return restAPI.submitReport(userId, requestBody);
+        return restAPI.submitReport(serverName, userId, requestBody);
     }
 
 }

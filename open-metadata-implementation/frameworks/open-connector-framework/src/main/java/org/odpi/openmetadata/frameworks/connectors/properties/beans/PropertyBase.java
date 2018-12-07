@@ -5,7 +5,6 @@ package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 import com.fasterxml.jackson.annotation.*;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -25,6 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = ElementHeader.class, name = "ElementHeader"),
                 @JsonSubTypes.Type(value = ElementType.class, name = "ElementType"),
                 @JsonSubTypes.Type(value = SchemaLink.class, name = "SchemaLink"),
+                @JsonSubTypes.Type(value = SchemaAttributeRelationship.class, name = "SchemaAttributeRelationship"),
                 @JsonSubTypes.Type(value = SchemaImplementationQuery.class, name = "SchemaImplementationQuery"),
                 @JsonSubTypes.Type(value = EmbeddedConnection.class, name = "EmbeddedConnection")
         })

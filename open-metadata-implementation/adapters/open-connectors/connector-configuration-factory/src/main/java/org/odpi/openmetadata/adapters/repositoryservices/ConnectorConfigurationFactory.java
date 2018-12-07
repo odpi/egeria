@@ -64,12 +64,9 @@ public class ConnectorConfigurationFactory
         Endpoint   endpoint = new Endpoint();
         endpoint.setAddress("omag.server." + serverName + ".config");
 
-        ConnectorType  connectorType = new ConnectorType();
-        connectorType.setConnectorProviderClassName(FileBasedServerConfigStoreProvider.class.getName());
-
         Connection connection = new Connection();
         connection.setEndpoint(endpoint);
-        connection.setConnectorType(connectorType);
+        connection.setConnectorType(getConnectorType(FileBasedServerConfigStoreProvider.class.getName()));
         connection.setQualifiedName(endpoint.getAddress());
 
         return connection;
@@ -86,7 +83,6 @@ public class ConnectorConfigurationFactory
     public Connection getDefaultAuditLogConnection(String localServerName)
     {
         final String endpointGUID      = "836efeae-ab34-4425-89f0-6adf2faa1f2e";
-        final String connectorTypeGUID = "f8a24f09-9183-4d5c-8408-aa1c8852a7d6";
         final String connectionGUID    = "5390bf3e-6b38-4eda-b34a-de55ac4252a7";
 
         final String endpointDescription = "OMRS default audit log endpoint.";
@@ -103,20 +99,6 @@ public class ConnectorConfigurationFactory
         endpoint.setDescription(endpointDescription);
         endpoint.setAddress(endpointAddress);
 
-        final String connectorTypeDescription   = "OMRS default audit log connector type.";
-        final String connectorTypeJavaClassName = FileBasedAuditLogStoreProvider.class.getName();
-
-        String connectorTypeName = "DefaultAuditLog.ConnectorType." + localServerName;
-
-        ConnectorType connectorType = new ConnectorType();
-
-        connectorType.setType(this.getConnectorTypeType());
-        connectorType.setGUID(connectorTypeGUID);
-        connectorType.setQualifiedName(connectorTypeName);
-        connectorType.setDisplayName(connectorTypeName);
-        connectorType.setDescription(connectorTypeDescription);
-        connectorType.setConnectorProviderClassName(connectorTypeJavaClassName);
-
         final String connectionDescription = "OMRS default audit log connection.";
 
         String connectionName = "DefaultAuditLog.Connection." + localServerName;
@@ -129,22 +111,21 @@ public class ConnectorConfigurationFactory
         connection.setDisplayName(connectionName);
         connection.setDescription(connectionDescription);
         connection.setEndpoint(endpoint);
-        connection.setConnectorType(connectorType);
+        connection.setConnectorType(getConnectorType(FileBasedAuditLogStoreProvider.class.getName()));
 
         return connection;
     }
 
 
     /**
-     * Return the connection for the default audit log.
-     * By default, the open metadata is stored in a file called localServerName.auditlog.
+     * Return the connection for the default open metadata types archive file.
+     * By default, the open metadata is stored in a file called OpenMetadataTypes.json.
      *
      * @return OCF Connection used to create the file-based open metadata archive
      */
     public Connection getOpenMetadataTypesConnection()
     {
         final String endpointGUID      = "45877b9c-9192-44ba-a2b7-6817bc753969";
-        final String connectorTypeGUID = "86f52a17-5d3c-47fd-9cac-0b5a45d150a9";
         final String connectionGUID    = "447bbb33-84f9-4a56-a712-addeebdcd764";
 
         final String endpointDescription = "Open metadata types archive endpoint.";
@@ -161,20 +142,6 @@ public class ConnectorConfigurationFactory
         endpoint.setDescription(endpointDescription);
         endpoint.setAddress(endpointAddress);
 
-        final String connectorTypeDescription   = "Open metadata types archive connector type.";
-        final String connectorTypeJavaClassName = FileBasedOpenMetadataArchiveStoreProvider.class.getName();
-
-        String connectorTypeName = "OpenMetadataTypes.ConnectorType";
-
-        ConnectorType connectorType = new ConnectorType();
-
-        connectorType.setType(this.getConnectorTypeType());
-        connectorType.setGUID(connectorTypeGUID);
-        connectorType.setQualifiedName(connectorTypeName);
-        connectorType.setDisplayName(connectorTypeName);
-        connectorType.setDescription(connectorTypeDescription);
-        connectorType.setConnectorProviderClassName(connectorTypeJavaClassName);
-
         final String connectionDescription = "Open metadata types archive connection.";
 
         String connectionName = "OpenMetadataTypes.Connection";
@@ -186,8 +153,8 @@ public class ConnectorConfigurationFactory
         connection.setQualifiedName(connectionName);
         connection.setDisplayName(connectionName);
         connection.setDescription(connectionDescription);
+        connection.setConnectorType(getConnectorType(FileBasedOpenMetadataArchiveStoreProvider.class.getName()));
         connection.setEndpoint(endpoint);
-        connection.setConnectorType(connectorType);
 
         return connection;
     }
@@ -203,7 +170,6 @@ public class ConnectorConfigurationFactory
     public Connection getDefaultCohortRegistryConnection(String localServerName, String cohortName)
     {
         final String endpointGUID      = "8bf8f5fa-b5d8-40e1-a00e-e4a0c59fd6c0";
-        final String connectorTypeGUID = "2e1556a3-908f-4303-812d-d81b48b19bab";
         final String connectionGUID    = "b9af734f-f005-4085-9975-bf46c67a099a";
 
         final String endpointDescription = "OMRS default cohort registry endpoint.";
@@ -220,22 +186,6 @@ public class ConnectorConfigurationFactory
         endpoint.setDescription(endpointDescription);
         endpoint.setAddress(endpointAddress);
 
-
-        final String connectorTypeDescription   = "OMRS default cohort registry connector type.";
-        final String connectorTypeJavaClassName = FileBasedRegistryStoreProvider.class.getName();
-
-        String connectorTypeName = "DefaultCohortRegistry.ConnectorType." + localServerName + "." + cohortName;
-
-        ConnectorType connectorType = new ConnectorType();
-
-        connectorType.setType(this.getConnectorTypeType());
-        connectorType.setGUID(connectorTypeGUID);
-        connectorType.setQualifiedName(connectorTypeName);
-        connectorType.setDisplayName(connectorTypeName);
-        connectorType.setDescription(connectorTypeDescription);
-        connectorType.setConnectorProviderClassName(connectorTypeJavaClassName);
-
-
         final String connectionDescription = "OMRS default cohort registry connection.";
 
         String connectionName = "DefaultCohortRegistry.Connection." + localServerName + "." + cohortName;
@@ -248,7 +198,7 @@ public class ConnectorConfigurationFactory
         connection.setDisplayName(connectionName);
         connection.setDescription(connectionDescription);
         connection.setEndpoint(endpoint);
-        connection.setConnectorType(connectorType);
+        connection.setConnectorType(getConnectorType(FileBasedRegistryStoreProvider.class.getName()));
 
         return connection;
     }
@@ -279,7 +229,6 @@ public class ConnectorConfigurationFactory
                                                                  String localServerURL)
     {
         final String endpointGUID      = "cee85898-43aa-4af5-9bbd-2bed809d1acb";
-        final String connectorTypeGUID = "64e67923-8190-45ea-8f96-39320d638c02";
         final String connectionGUID    = "858be98b-49d2-4ccf-9b23-01085a5f473f";
 
         final String endpointDescription = "OMRS default repository REST API endpoint.";
@@ -293,22 +242,7 @@ public class ConnectorConfigurationFactory
         endpoint.setQualifiedName(endpointName);
         endpoint.setDisplayName(endpointName);
         endpoint.setDescription(endpointDescription);
-        endpoint.setAddress(localServerURL);
-
-        final String connectorTypeDescription   = "OMRS default repository REST API connector type.";
-        final String connectorTypeJavaClassName = OMRSRESTRepositoryConnectorProvider.class.getName();
-
-        String connectorTypeName = "DefaultRepositoryRESTAPI.ConnectorType." + localServerName;
-
-        ConnectorType connectorType = new ConnectorType();
-
-        connectorType.setType(this.getConnectorTypeType());
-        connectorType.setGUID(connectorTypeGUID);
-        connectorType.setQualifiedName(connectorTypeName);
-        connectorType.setDisplayName(connectorTypeName);
-        connectorType.setDescription(connectorTypeDescription);
-        connectorType.setConnectorProviderClassName(connectorTypeJavaClassName);
-
+        endpoint.setAddress(localServerURL + "/servers/" + localServerName);
 
         final String connectionDescription = "OMRS default repository REST API connection.";
 
@@ -322,7 +256,7 @@ public class ConnectorConfigurationFactory
         connection.setDisplayName(connectionName);
         connection.setDescription(connectionDescription);
         connection.setEndpoint(endpoint);
-        connection.setConnectorType(connectorType);
+        connection.setConnectorType(getConnectorType(OMRSRESTRepositoryConnectorProvider.class.getName()));
 
         return connection;
     }
@@ -330,29 +264,15 @@ public class ConnectorConfigurationFactory
 
     /**
      * Return the local graph repository's connection.  This is using the GraphOMRSRepositoryConnector.
+     * Note there is no endpoint defined.  This needs to be added when the graph repository connector
+     * is implemented.
      *
      * @param localServerName   name of the local server
      * @return Connection object
      */
     public Connection getLocalGraphRepositoryLocalConnection(String localServerName)
     {
-        final String connectorTypeGUID = "18530415-44a2-4bd0-95bb-8efd333e53fb";
         final String connectionGUID    = "3f1fd4fc-90f9-436a-8e2c-2120d590f5e4";
-
-        final String connectorTypeDescription   = "OMRS default graph local repository connector type.";
-        final String connectorTypeJavaClassName = GraphOMRSRepositoryConnectorProvider.class.getName();
-
-        String connectorTypeName = "DefaultLocalGraphRepository.ConnectorType." + localServerName;
-
-        ConnectorType connectorType = new ConnectorType();
-
-        connectorType.setType(this.getConnectorTypeType());
-        connectorType.setGUID(connectorTypeGUID);
-        connectorType.setQualifiedName(connectorTypeName);
-        connectorType.setDisplayName(connectorTypeName);
-        connectorType.setDescription(connectorTypeDescription);
-        connectorType.setConnectorProviderClassName(connectorTypeJavaClassName);
-
 
         final String connectionDescription = "OMRS default local graph repository connection.";
 
@@ -365,7 +285,7 @@ public class ConnectorConfigurationFactory
         connection.setQualifiedName(connectionName);
         connection.setDisplayName(connectionName);
         connection.setDescription(connectionDescription);
-        connection.setConnectorType(connectorType);
+        connection.setConnectorType(getConnectorType(GraphOMRSRepositoryConnectorProvider.class.getName()));
 
         return connection;
     }
@@ -379,23 +299,7 @@ public class ConnectorConfigurationFactory
      */
     public Connection getInMemoryLocalRepositoryLocalConnection(String localServerName)
     {
-        final String connectorTypeGUID = "21422eb9-c6c1-4071-b96b-0572c9680260";
         final String connectionGUID    = "6a3c07b0-0e04-42dc-bcc6-392609bf1d02";
-
-        final String connectorTypeDescription   = "OMRS default in memory local repository connector type.";
-        final String connectorTypeJavaClassName = InMemoryOMRSRepositoryConnectorProvider.class.getName();
-
-        String connectorTypeName = "DefaultInMemoryRepository.ConnectorType." + localServerName;
-
-        ConnectorType connectorType = new ConnectorType();
-
-        connectorType.setType(this.getConnectorTypeType());
-        connectorType.setGUID(connectorTypeGUID);
-        connectorType.setQualifiedName(connectorTypeName);
-        connectorType.setDisplayName(connectorTypeName);
-        connectorType.setDescription(connectorTypeDescription);
-        connectorType.setConnectorProviderClassName(connectorTypeJavaClassName);
-
 
         final String connectionDescription = "OMRS default in memory local repository connection.";
 
@@ -408,7 +312,7 @@ public class ConnectorConfigurationFactory
         connection.setQualifiedName(connectionName);
         connection.setDisplayName(connectionName);
         connection.setDescription(connectionDescription);
-        connection.setConnectorType(connectorType);
+        connection.setConnectorType(getConnectorType(InMemoryOMRSRepositoryConnectorProvider.class.getName()));
 
         return connection;
     }
@@ -418,21 +322,19 @@ public class ConnectorConfigurationFactory
      * Returns the connection for an arbitrary repository proxy.
      *
      * @param serverName  name of the real repository server
-     * @param connectorProvider  class name of the connector provider
+     * @param connectorProviderClassName  class name of the connector provider
      * @param url  location of the repository proxy
      * @param additionalProperties name value pairs for the connection
      * @return Connection object
      */
     public Connection  getRepositoryProxyConnection(String              serverName,
-                                                    String              connectorProvider,
+                                                    String              connectorProviderClassName,
                                                     String              url,
                                                     Map<String, Object> additionalProperties)
     {
         final String endpointGUID             = UUID.randomUUID().toString();
-        final String connectorTypeGUID        = UUID.randomUUID().toString();
         final String connectionGUID           = UUID.randomUUID().toString();
         final String endpointDescription      = "Metadata repository native endpoint.";
-        final String connectorTypeDescription = "Metadata repository native connector type.";
         final String connectionDescription    = "Metadata repository native connection.";
 
 
@@ -447,17 +349,6 @@ public class ConnectorConfigurationFactory
         endpoint.setDescription(endpointDescription);
         endpoint.setAddress(url);
 
-        String connectorTypeName = "MetadataRepositoryNative.ConnectorType." + serverName;
-
-        ConnectorType connectorType = new ConnectorType();
-
-        connectorType.setType(this.getConnectorTypeType());
-        connectorType.setGUID(connectorTypeGUID);
-        connectorType.setQualifiedName(connectorTypeName);
-        connectorType.setDisplayName(connectorTypeName);
-        connectorType.setDescription(connectorTypeDescription);
-        connectorType.setConnectorProviderClassName(connectorProvider);
-
         String connectionName = "MetadataRepositoryNative.Connection." + serverName;
 
         Connection connection = new Connection();
@@ -468,7 +359,7 @@ public class ConnectorConfigurationFactory
         connection.setDisplayName(connectionName);
         connection.setDescription(connectionDescription);
         connection.setEndpoint(endpoint);
-        connection.setConnectorType(connectorType);
+        connection.setConnectorType(getConnectorType(connectorProviderClassName));
         connection.setAdditionalProperties(additionalProperties);
 
         return connection;
@@ -614,24 +505,7 @@ public class ConnectorConfigurationFactory
                                                                    String              serverId,
                                                                    Map<String, Object> eventBusAdditionalProperties)
     {
-        final String connectorTypeGUID = "3653df37-23a5-4dd0-9fff-d1b906301007";
         final String connectionGUID    = "3cb6d03e-b4a7-4884-9fd9-277c77223236";
-
-        final String connectorTypeDescription   = "OMRS default local graph event mapper connector type.";
-        final String connectorTypeJavaClassName = GraphOMRSRepositoryEventMapperProvider.class.getName();
-
-        String connectorTypeName = "DefaultLocalGraphEventMapper.ConnectorType." + localServerName;
-
-        ConnectorType connectorType = new ConnectorType();
-
-        connectorType.setType(this.getConnectorTypeType());
-        connectorType.setGUID(connectorTypeGUID);
-        connectorType.setQualifiedName(connectorTypeName);
-        connectorType.setDisplayName(connectorTypeName);
-        connectorType.setDescription(connectorTypeDescription);
-        connectorType.setConnectorProviderClassName(connectorTypeJavaClassName);
-
-
         final String connectionDescription = "OMRS default local graph event mapper connection.";
 
         String connectionName = "DefaultLocalGraphRepository.Connection." + localServerName;
@@ -643,7 +517,7 @@ public class ConnectorConfigurationFactory
         connection.setQualifiedName(connectionName);
         connection.setDisplayName(connectionName);
         connection.setDescription(connectionDescription);
-        connection.setConnectorType(connectorType);
+        connection.setConnectorType(getConnectorType(GraphOMRSRepositoryEventMapperProvider.class.getName()));
         connection.setEmbeddedConnections(getEmbeddedEventBusConnection("Local Repository Events",
                                                                         additionalProperties,
                                                                         eventBusConnectorProvider,
@@ -666,28 +540,10 @@ public class ConnectorConfigurationFactory
     public Connection getDefaultEnterpriseOMRSTopicConnection(String              localServerName,
                                                               String              serverId)
     {
-        final String connectorTypeGUID = "6536cb46-61f0-4f2d-abb4-2dadede30520";
         final String connectionGUID    = "2084ee90-717b-49a1-938e-8f9d49567b8e";
-
-        String topicName = defaultEnterpriseTopicConnectorRootName + localServerName + defaultOMRSTopicLeafName;
-
-        final String connectorTypeDescription   = "OMRS default enterprise connector type.";
-        final String connectorTypeJavaClassName = OMRSTopicProvider.class.getName();
-
-        String connectorTypeName = "EnterpriseTopicConnectorType.Server." + localServerName;
-
-        ConnectorType connectorType = new ConnectorType();
-
-        connectorType.setType(this.getConnectorTypeType());
-        connectorType.setGUID(connectorTypeGUID);
-        connectorType.setQualifiedName(connectorTypeName);
-        connectorType.setDisplayName(connectorTypeName);
-        connectorType.setDescription(connectorTypeDescription);
-        connectorType.setConnectorProviderClassName(connectorTypeJavaClassName);
-
-
         final String connectionDescription = "OMRS default enterprise topic connection.";
 
+        String topicName = defaultEnterpriseTopicConnectorRootName + localServerName + defaultOMRSTopicLeafName;
         String connectionName = "EnterpriseTopicConnector.Server." + localServerName;
 
         VirtualConnection connection = new VirtualConnection();
@@ -697,11 +553,11 @@ public class ConnectorConfigurationFactory
         connection.setQualifiedName(connectionName);
         connection.setDisplayName(connectionName);
         connection.setDescription(connectionDescription);
-        connection.setConnectorType(connectorType);
+        connection.setConnectorType(getConnectorType(OMRSTopicProvider.class.getName()));
         connection.setEmbeddedConnections(getEmbeddedEventBusConnection("Enterprise OMRS Events",
                                                                         null,
                                                                         InMemoryOpenMetadataTopicProvider.class.getName(),
-                                                                        "",
+                                                                        localServerName,
                                                                         topicName,
                                                                         serverId,
                                                                         null));
@@ -728,26 +584,10 @@ public class ConnectorConfigurationFactory
                                                           String              serverId,
                                                           Map<String, Object> eventBusAdditionalProperties)
     {
-        final String connectorTypeGUID = "32843dd8-2597-4296-831c-674af0d8b837";
         final String connectionGUID    = "023bb1f3-03dd-47ae-b3bc-dce62e9c11cb";
-
-        final String connectorTypeDescription   = "OMRS default cohort topic connector type.";
-        final String connectorTypeJavaClassName = OMRSTopicProvider.class.getName();
-
-        String connectorTypeName = "DefaultCohortTopic.ConnectorType." + cohortName;
-
-        ConnectorType connectorType = new ConnectorType();
-
-        connectorType.setType(this.getConnectorTypeType());
-        connectorType.setGUID(connectorTypeGUID);
-        connectorType.setQualifiedName(connectorTypeName);
-        connectorType.setDisplayName(connectorTypeName);
-        connectorType.setDescription(connectorTypeDescription);
-        connectorType.setConnectorProviderClassName(connectorTypeJavaClassName);
-
-
         final String connectionDescription = "OMRS default cohort topic connection.";
 
+        String topicName = defaultCohortTopicConnectorRootName + cohortName + defaultOMRSTopicLeafName;
         String connectionName = "TopicConnector.Cohort." + cohortName;
 
         VirtualConnection connection = new VirtualConnection();
@@ -757,12 +597,12 @@ public class ConnectorConfigurationFactory
         connection.setQualifiedName(connectionName);
         connection.setDisplayName(connectionName);
         connection.setDescription(connectionDescription);
-        connection.setConnectorType(connectorType);
+        connection.setConnectorType(getConnectorType(OMRSTopicProvider.class.getName()));
         connection.setEmbeddedConnections(getEmbeddedEventBusConnection(cohortName + " OMRS Topic",
                                                                         additionalProperties,
                                                                         eventBusConnectorProvider,
                                                                         topicURLRoot,
-                                                                        defaultCohortTopicConnectorRootName + cohortName + defaultOMRSTopicLeafName,
+                                                                        topicName,
                                                                         serverId,
                                                                         eventBusAdditionalProperties));
 
@@ -775,20 +615,18 @@ public class ConnectorConfigurationFactory
      * open metadata virtual connector because this event mapper is interfacing with external technology.
      *
      * @param serverName name of the repository proxy server where the event mapper will run
-     * @param connectorProvider  java class name of the connector provider for the event mapper
+     * @param connectorProviderClassName  java class name of the connector provider for the event mapper
      * @param eventSource  name of the event source used by the event mapper
      * @return Connection object
      */
     public Connection getRepositoryEventMapperConnection(String              serverName,
-                                                         String              connectorProvider,
+                                                         String              connectorProviderClassName,
                                                          Map<String, Object> additionalProperties,
                                                          String              eventSource)
     {
         final String endpointGUID             = UUID.randomUUID().toString();
-        final String connectorTypeGUID        = UUID.randomUUID().toString();
         final String connectionGUID           = UUID.randomUUID().toString();
         final String endpointDescription      = "Repository event mapper endpoint.";
-        final String connectorTypeDescription = "Repository event mapper connector type.";
         final String connectionDescription    = "Repository event mapper connection.";
 
         String endpointName    = "EventMapper.Endpoint." + serverName;
@@ -802,17 +640,6 @@ public class ConnectorConfigurationFactory
         endpoint.setDescription(endpointDescription);
         endpoint.setAddress(eventSource);
 
-        String connectorTypeName = "EventMapper.ConnectorType." + serverName;
-
-        ConnectorType connectorType = new ConnectorType();
-
-        connectorType.setType(this.getConnectorTypeType());
-        connectorType.setGUID(connectorTypeGUID);
-        connectorType.setQualifiedName(connectorTypeName);
-        connectorType.setDisplayName(connectorTypeName);
-        connectorType.setDescription(connectorTypeDescription);
-        connectorType.setConnectorProviderClassName(connectorProvider);
-
         String connectionName = "EventMapper.Connection." + serverName;
 
         Connection connection = new Connection();
@@ -823,7 +650,7 @@ public class ConnectorConfigurationFactory
         connection.setDisplayName(connectionName);
         connection.setDescription(connectionDescription);
         connection.setEndpoint(endpoint);
-        connection.setConnectorType(connectorType);
+        connection.setConnectorType(getConnectorType(connectorProviderClassName));
         connection.setAdditionalProperties(additionalProperties);
 
         return connection;

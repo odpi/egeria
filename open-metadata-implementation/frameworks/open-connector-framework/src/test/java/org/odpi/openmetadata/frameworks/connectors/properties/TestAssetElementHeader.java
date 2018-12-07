@@ -31,6 +31,11 @@ public class TestAssetElementHeader
     public TestAssetElementHeader()
     {
         type.setElementTypeName("TestTypeName");
+
+        Classification classification = new Classification();
+
+        classification.setClassificationName("TestClassificationName");
+        classifications.add(classification);
     }
 
 
@@ -41,7 +46,7 @@ public class TestAssetElementHeader
      */
     private MockAssetElement getTestObject()
     {
-        ElementHeader    testObject = new ElementHeader();
+        ElementHeader testObject = new ElementHeader();
 
         testObject.setType(type);
         testObject.setGUID("TestGUID");
@@ -59,11 +64,11 @@ public class TestAssetElementHeader
      */
     private MockAssetElement getDifferentObject()
     {
-        ElementHeader    testObject = new ElementHeader();
+        ElementHeader testObject = new ElementHeader();
 
         testObject.setType(type);
         testObject.setGUID("TestGUID");
-        testObject.setURL("TestURL");
+        testObject.setURL("TestDifferentURL");
         testObject.setClassifications(classifications);
 
         return new MockAssetElement(parentAsset, testObject);
@@ -77,12 +82,16 @@ public class TestAssetElementHeader
      */
     private MockAssetElement getAnotherDifferentObject()
     {
-        ElementHeader    testObject = new ElementHeader();
+        ElementHeader testObject = new ElementHeader();
 
         testObject.setType(type);
         testObject.setGUID("TestDifferentGUID");
         testObject.setURL("TestURL");
-        testObject.setClassifications(classifications);
+
+        List<Classification> emptyClassifications = new ArrayList<>();
+        emptyClassifications.add(null);
+
+        testObject.setClassifications(emptyClassifications);
 
         return new MockAssetElement(testObject);
     }
@@ -93,13 +102,13 @@ public class TestAssetElementHeader
      *
      * @param resultObject object returned by the test
      */
-    private void validateResultObject(MockAssetElement  resultObject)
+    private void validateResultObject(MockAssetElement resultObject)
     {
         assertTrue(resultObject.getType().getElementTypeName().equals("TestTypeName"));
         assertTrue(resultObject.getGUID().equals("TestGUID"));
         assertTrue(resultObject.getURL().equals("TestURL"));
 
-        assertTrue(resultObject.getAssetClassifications() == null);
+        assertTrue(resultObject.getAssetClassifications() != null);
     }
 
 
@@ -108,8 +117,8 @@ public class TestAssetElementHeader
      */
     @Test public void testClassifications()
     {
-        List<Classification>   classificationList = new ArrayList<>();
-        Classification         classification = new Classification();
+        List<Classification> classificationList = new ArrayList<>();
+        Classification       classification     = new Classification();
 
         classification.setClassificationName("TestClassification");
         classificationList.add(classification);
@@ -117,21 +126,38 @@ public class TestAssetElementHeader
         ElementHeader elementHeaderBean = new ElementHeader();
         elementHeaderBean.setClassifications(classificationList);
 
-        MockAssetElement  testObject = new MockAssetElement(elementHeaderBean);
+        MockAssetElement testObject = new MockAssetElement(elementHeaderBean);
 
         List<AssetClassification> assetClassifications = testObject.getAssetClassifications();
-        AssetClassification assetClassification = assetClassifications.get(0);
-        String  classificationName = assetClassification.getName();
+        AssetClassification       assetClassification  = assetClassifications.get(0);
+        String                    classificationName   = assetClassification.getName();
 
         assertTrue(classificationName.equals("TestClassification"));
 
-        MockAssetElement  clonedObject = new MockAssetElement(parentAsset, testObject);
+        MockAssetElement clonedObject = new MockAssetElement(parentAsset, testObject);
 
         assetClassifications = clonedObject.getAssetClassifications();
 
         assertTrue(assetClassifications.get(0).getName().equals("TestClassification"));
-    }
 
+        classificationList = new ArrayList<>();
+
+        elementHeaderBean = new ElementHeader();
+        elementHeaderBean.setClassifications(classificationList);
+        testObject = new MockAssetElement(elementHeaderBean);
+        assetClassifications = testObject.getAssetClassifications();
+
+        assertTrue(assetClassifications == null);
+
+        classificationList.add(null);
+
+        elementHeaderBean = new ElementHeader();
+        elementHeaderBean.setClassifications(classificationList);
+        testObject = new MockAssetElement(elementHeaderBean);
+        assetClassifications = testObject.getAssetClassifications();
+
+        assertTrue(assetClassifications == null);
+    }
 
 
     /**
@@ -144,7 +170,7 @@ public class TestAssetElementHeader
         assertFalse(getTestObject().equals("DummyString"));
         assertTrue(getTestObject().equals(getTestObject()));
 
-        MockAssetElement  sameObject = getTestObject();
+        MockAssetElement sameObject = getTestObject();
         assertTrue(sameObject.equals(sameObject));
 
         assertFalse(getTestObject().equals(getDifferentObject()));
@@ -157,7 +183,10 @@ public class TestAssetElementHeader
      */
     @Test public void testToString()
     {
-        assertTrue(getTestObject().toString().contains("ElementHeader"));
+        AssetElementHeader testObject = getTestObject();
+        assertTrue(testObject.toString().contains("ElementHeader"));
+        testObject.setBean(null);
+        assertTrue(testObject.toString().contains("ElementHeader"));
     }
 
 
@@ -167,6 +196,11 @@ public class TestAssetElementHeader
     @Test public void testHashCode()
     {
         assertTrue(getTestObject().hashCode() == getTestObject().hashCode());
+
+        AssetElementHeader anotherObject = getTestObject();
+        anotherObject.setBean(null);
+
+        assertFalse(anotherObject.hashCode() == getTestObject().hashCode());
     }
 
 
@@ -181,7 +215,7 @@ public class TestAssetElementHeader
 
     @Test public void testNullBean()
     {
-        MockAssetElement  mockAssetElement = new MockAssetElement(null);
+        MockAssetElement mockAssetElement = new MockAssetElement(null);
 
         assertTrue(mockAssetElement.getElementHeaderBean() != null);
 
@@ -194,7 +228,7 @@ public class TestAssetElementHeader
      */
     @Test public void testFullBean()
     {
-        MockAssetElement  mockAssetElement = getTestObject();
+        MockAssetElement mockAssetElement = getTestObject();
 
         assertTrue(mockAssetElement.getElementHeaderBean() != null);
 

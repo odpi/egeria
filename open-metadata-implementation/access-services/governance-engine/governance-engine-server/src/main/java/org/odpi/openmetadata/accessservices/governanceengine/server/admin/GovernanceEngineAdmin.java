@@ -1,9 +1,9 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceengine.server.admin;
 
 import org.odpi.openmetadata.accessservices.governanceengine.api.auditlog.GovernanceEngineAuditCode;
-import org.odpi.openmetadata.accessservices.governanceengine.server.GovernanceEngineRESTServices;
+import org.odpi.openmetadata.accessservices.governanceengine.server.GovernanceEngineServicesInstance;
 import org.odpi.openmetadata.accessservices.governanceengine.server.listeners.GovernanceEngineOMRSTopicListener;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
@@ -27,8 +27,8 @@ public class GovernanceEngineAdmin implements AccessServiceAdmin {
     private OMRSTopicConnector omrsTopicConnector = null;
     private GovernanceEngineOMRSTopicListener omrsTopicListener = null;
 
-    //TODO Prevent multiple initialization/termination
-
+    private GovernanceEngineServicesInstance instance   = null;
+    private String                           serverName = null;
 
     /**
      * Default constructor
@@ -66,43 +66,58 @@ public class GovernanceEngineAdmin implements AccessServiceAdmin {
                 auditCode.getSystemAction(),
                 auditCode.getUserAction());
 
-        this.repositoryConnector = enterpriseOMRSRepositoryConnector;
-        GovernanceEngineRESTServices.setRepositoryConnector(accessServiceConfigurationProperties.getAccessServiceName(),
-                repositoryConnector);
+        try {
+            this.repositoryConnector = enterpriseOMRSRepositoryConnector;
+            this.instance = new GovernanceEngineServicesInstance(repositoryConnector);
+            this.serverName = instance.getServerName();
 
-        this.accessServiceConfig = accessServiceConfigurationProperties;
-        this.omrsTopicConnector = enterpriseOMRSTopicConnector;
+            this.accessServiceConfig = accessServiceConfigurationProperties;
+            this.omrsTopicConnector = enterpriseOMRSTopicConnector;
 
 
-        if (omrsTopicConnector != null) {
-            auditCode = GovernanceEngineAuditCode.SERVICE_REGISTERED_WITH_TOPIC;
+            if (omrsTopicConnector != null)
+            {
+                auditCode = GovernanceEngineAuditCode.SERVICE_REGISTERED_WITH_TOPIC;
+                auditLog.logRecord(actionDescription,
+                                   auditCode.getLogMessageId(),
+                                   auditCode.getSeverity(),
+                                   auditCode.getFormattedLogMessage(serverName),
+                                   null,
+                                   auditCode.getSystemAction(),
+                                   auditCode.getUserAction());
+
+                omrsTopicListener =
+                        new GovernanceEngineOMRSTopicListener(accessServiceConfig.getAccessServiceOutTopic(),
+                                                              repositoryConnector.getRepositoryHelper(),
+                                                              repositoryConnector.getRepositoryValidator(),
+                                                              accessServiceConfig.getAccessServiceName());
+                omrsTopicConnector.registerListener(omrsTopicListener);
+            }
+
+            this.auditLog = auditLog;
+            this.serverUserName = serverUserName;
+
+
+            auditCode = GovernanceEngineAuditCode.SERVICE_INITIALIZED;
             auditLog.logRecord(actionDescription,
-                    auditCode.getLogMessageId(),
-                    auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(),
-                    null,
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction());
-
-            omrsTopicListener = new GovernanceEngineOMRSTopicListener(accessServiceConfig.getAccessServiceOutTopic(),
-                    repositoryConnector.getRepositoryHelper(),
-                    repositoryConnector.getRepositoryValidator(),
-                    accessServiceConfig.getAccessServiceName());
-            omrsTopicConnector.registerListener(omrsTopicListener);
+                               auditCode.getLogMessageId(),
+                               auditCode.getSeverity(),
+                               auditCode.getFormattedLogMessage(serverName),
+                               null,
+                               auditCode.getSystemAction(),
+                               auditCode.getUserAction());
+        }
+        catch (Throwable  error) {
+            auditCode = GovernanceEngineAuditCode.SERVICE_INSTANCE_FAILURE;
+            auditLog.logRecord(actionDescription,
+                               auditCode.getLogMessageId(),
+                               auditCode.getSeverity(),
+                               auditCode.getFormattedLogMessage(error.getMessage()),
+                               null,
+                               auditCode.getSystemAction(),
+                               auditCode.getUserAction());
         }
 
-        this.auditLog = auditLog;
-        this.serverUserName = serverUserName;
-
-
-        auditCode = GovernanceEngineAuditCode.SERVICE_INITIALIZED;
-        auditLog.logRecord(actionDescription,
-                auditCode.getLogMessageId(),
-                auditCode.getSeverity(),
-                auditCode.getFormattedLogMessage(),
-                null,
-                auditCode.getSystemAction(),
-                auditCode.getUserAction());
 
         log.debug("<<" + actionDescription);
 
@@ -124,7 +139,7 @@ public class GovernanceEngineAdmin implements AccessServiceAdmin {
         auditLog.logRecord(actionDescription,
                 auditCode.getLogMessageId(),
                 auditCode.getSeverity(),
-                auditCode.getFormattedLogMessage(),
+                auditCode.getFormattedLogMessage(serverName),
                 null,
                 auditCode.getSystemAction(),
                 auditCode.getUserAction());
@@ -132,22 +147,18 @@ public class GovernanceEngineAdmin implements AccessServiceAdmin {
 
         // TODO Look into what we need to do for termination
         this.repositoryConnector = null;
-        //TODO Clear repository connector?
-        // GovernanceEngineRESTServices.setRepositoryConnector
-        // (accessServiceConfigurationProperties
-        // .getAccessServiceName(),
-        //        null);
-
         this.accessServiceConfig =null;
         this.omrsTopicConnector = null;
 
-
+        if (instance != null) {
+            this.instance.shutdown();
+        }
 
         auditCode = GovernanceEngineAuditCode.SERVICE_SHUTDOWN;
         auditLog.logRecord(actionDescription,
                 auditCode.getLogMessageId(),
                 auditCode.getSeverity(),
-                auditCode.getFormattedLogMessage(),
+                auditCode.getFormattedLogMessage(serverName),
                 null,
                 auditCode.getSystemAction(),
                 auditCode.getUserAction());

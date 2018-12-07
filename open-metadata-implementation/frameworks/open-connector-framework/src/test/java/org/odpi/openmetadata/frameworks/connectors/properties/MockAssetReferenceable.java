@@ -26,10 +26,14 @@ public class MockAssetReferenceable extends AssetReferenceable
      * @param parentAsset descriptor for parent asset
      * @param referenceableBean bean containing properties
      */
-    protected MockAssetReferenceable(AssetDescriptor      parentAsset,
-                                     Referenceable        referenceableBean)
+    protected MockAssetReferenceable(AssetDescriptor parentAsset,
+                                     Referenceable referenceableBean)
     {
-        super(parentAsset, referenceableBean);
+        super(parentAsset);
+        if (referenceableBean != null)
+        {
+            super.setBean(referenceableBean);
+        }
     }
 
 
@@ -39,7 +43,7 @@ public class MockAssetReferenceable extends AssetReferenceable
      * @param parentAsset descriptor for parent asset
      * @param template template to copy
      */
-    public MockAssetReferenceable(AssetDescriptor        parentAsset,
+    public MockAssetReferenceable(AssetDescriptor parentAsset,
                                   MockAssetReferenceable template)
     {
         super(parentAsset, template);

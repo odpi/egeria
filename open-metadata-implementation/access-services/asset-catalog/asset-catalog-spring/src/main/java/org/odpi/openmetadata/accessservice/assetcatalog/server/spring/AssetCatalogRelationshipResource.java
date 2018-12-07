@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservice.assetcatalog.server.spring;
 
 import org.odpi.openmetadata.accessservice.assetcatalog.model.rest.body.SearchParameters;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Assess Service (OMAS). This interface facilitates the searching for asset's relationships, fetch the details about a specific relationship.
  */
 @RestController
-@RequestMapping("/open-metadata/access-services/asset-catalog/users/{userId}/relationships")
+@RequestMapping("/servers/{serverName}/open-metadata/access-services/asset-catalog/users/{userId}/relationships")
 public class AssetCatalogRelationshipResource {
 
     private AssetCatalogRelationshipService relationshipService = new AssetCatalogRelationshipService();
@@ -24,6 +25,7 @@ public class AssetCatalogRelationshipResource {
     /**
      * Fetch relationship details based on its unique identifier
      *
+     * @param serverName     unique identifier for requested server.
      * @param userId         String unique identifier for the user
      * @param relationshipId String unique identifier for the relationship
      * @return relationship details
@@ -31,14 +33,16 @@ public class AssetCatalogRelationshipResource {
     @RequestMapping(method = RequestMethod.GET,
             path = "/{relationshipId}",
             produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public RelationshipResponse getRelationship(@PathVariable("userId") String userId,
+    public RelationshipResponse getRelationship(@PathVariable("serverName") String serverName,
+                                                @PathVariable("userId") String userId,
                                                 @PathVariable("relationshipId") String relationshipId) {
-        return relationshipService.getRelationshipById(userId, relationshipId);
+        return relationshipService.getRelationshipById(serverName, userId, relationshipId);
     }
 
     /**
      * Fetch relationship details based on property name
      *
+     * @param serverName         unique identifier for requested server.
      * @param userId           String unique identifier for the user
      * @param propertyName     String that it is used to identify the relationship label
      * @param searchParameters constrains to make the assets's search results more precise
@@ -48,16 +52,18 @@ public class AssetCatalogRelationshipResource {
             path = "/property-name/{propertyName}",
             produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public RelationshipsResponse getRelationshipByLabel(
+            @PathVariable("serverName") String serverName,
             @PathVariable("userId") String userId,
             @PathVariable("propertyName") String propertyName,
             @RequestBody SearchParameters searchParameters) {
-        return relationshipService.getRelationshipByProperty(userId, propertyName,
+        return relationshipService.getRelationshipByProperty(serverName, userId, propertyName,
                 searchParameters);
     }
 
     /**
      * Return a list of relationships that match the search criteria.
      *
+     * @param serverName         unique identifier for requested server.
      * @param userId             Unique identifier for the user
      * @param relationshipTypeId Limit the result set to only include the specified types for relationships
      * @param criteria           String for searching the relationship
@@ -67,10 +73,11 @@ public class AssetCatalogRelationshipResource {
     @RequestMapping(method = RequestMethod.POST,
             path = "/type/{relationshipTypeId}/search/{criteria}",
             produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public RelationshipsResponse searchForRelationships(@PathVariable("userId") String userId,
+    public RelationshipsResponse searchForRelationships(@PathVariable("serverName") String serverName,
+                                                        @PathVariable("userId") String userId,
                                                         @PathVariable("relationshipTypeId") String relationshipTypeId,
                                                         @PathVariable("criteria") String criteria,
                                                         @RequestBody SearchParameters searchParameters) {
-        return relationshipService.searchForRelationships(userId, relationshipTypeId, criteria, searchParameters);
+        return relationshipService.searchForRelationships(serverName, userId, relationshipTypeId, criteria, searchParameters);
     }
 }

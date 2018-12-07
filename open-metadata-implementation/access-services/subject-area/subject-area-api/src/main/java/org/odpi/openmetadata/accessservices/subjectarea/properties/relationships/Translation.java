@@ -9,10 +9,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.*;
-import java.io.Serializable;
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.*;
@@ -24,14 +21,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.LineType;
 
 /**
- * Translation is a relationship between an entity of type GlossaryTerm and an entity of type GlossaryTerm.
- * The ends of the relationship are stored as entity proxies, where there is a 'proxy' name by which the entity type is known.
- * The first entity proxy has translations as the proxy name for entity type GlossaryTerm.
- * The second entity proxy has translations as the proxy name for entity type GlossaryTerm.
- *
- * Each entity proxy also stores the entities guid.
-
- Link between glossary terms that provide different natural language translation of the same concept.
+ *  Link between glossary terms that provide different natural language translation of the same concept.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -75,6 +65,8 @@ public class Translation extends Line {
       public static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES)));
       public static final java.util.Set<String> ENUM_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES)));
       public static final java.util.Set<String> MAP_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES)));
+      protected String translation1Guid;
+      protected String translation2Guid;
 
 
     public Translation() {
@@ -115,6 +107,33 @@ public class Translation extends Line {
         }
     }
 
+    /**
+     * {@literal Get the guid of natural language translation at end 1. }
+     * @return {@code String }
+     */
+    public String getTranslation1Guid()
+    {
+        return translation1Guid;
+    }
+
+    public void setTranslation1Guid(String translation1Guid)
+    {
+        this.translation1Guid = translation1Guid;
+    }
+    /**
+     * {@literal Get the guid of natural language translation at end 2. }
+     * @return {@code String }
+     */
+    public String getTranslation2Guid()
+    {
+        return translation2Guid;
+    }
+
+    public void setTranslation2Guid(String translation2Guid)
+    {
+        this.translation2Guid = translation2Guid;
+    }
+
     InstanceProperties obtainInstanceProperties() {
           final String methodName = "obtainInstanceProperties";
           if (log.isDebugEnabled()) {
@@ -130,23 +149,23 @@ public class Translation extends Line {
           MapPropertyValue mapPropertyValue=null;
           PrimitivePropertyValue primitivePropertyValue=null;
           primitivePropertyValue = new PrimitivePropertyValue();
-          // TODO  description + change null to value
+          
           primitivePropertyValue.setPrimitiveValue(null);
           instanceProperties.setProperty("description",primitivePropertyValue);
           primitivePropertyValue = new PrimitivePropertyValue();
-          // TODO  description + change null to value
+          
           primitivePropertyValue.setPrimitiveValue(null);
           instanceProperties.setProperty("expression",primitivePropertyValue);
           primitivePropertyValue = new PrimitivePropertyValue();
-          // TODO  description + change null to value
+          
           primitivePropertyValue.setPrimitiveValue(null);
           instanceProperties.setProperty("status",primitivePropertyValue);
           primitivePropertyValue = new PrimitivePropertyValue();
-          // TODO  description + change null to value
+          
           primitivePropertyValue.setPrimitiveValue(null);
           instanceProperties.setProperty("steward",primitivePropertyValue);
           primitivePropertyValue = new PrimitivePropertyValue();
-          // TODO  description + change null to value
+          
           primitivePropertyValue.setPrimitiveValue(null);
           instanceProperties.setProperty("source",primitivePropertyValue);
           if (log.isDebugEnabled()) {
