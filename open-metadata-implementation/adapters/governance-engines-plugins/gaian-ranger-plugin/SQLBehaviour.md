@@ -131,4 +131,3 @@ the user cannot do anything that could act on masked data
 
 .. Good question! 
 Expected behaviour is an empty result set...
-

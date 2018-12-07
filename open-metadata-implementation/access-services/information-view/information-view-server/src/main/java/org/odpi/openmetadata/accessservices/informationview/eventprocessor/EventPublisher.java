@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.informationview.eventprocessor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.ColumnContextEventBuilder;
-import org.odpi.openmetadata.accessservices.informationview.events.ColumnContextEvent;
+import org.odpi.openmetadata.accessservices.informationview.events.TableContextEvent;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
@@ -211,7 +211,7 @@ public class EventPublisher implements OMRSInstanceEventProcessor {
 
         String guid = relationship.getEntityOneProxy().getGUID();
 
-        List<ColumnContextEvent> events = new ArrayList<>();
+        List<TableContextEvent> events = new ArrayList<>();
         try {
             events = columnContextEventBuilder.buildEvents(guid);
         } catch (Exception e) {
@@ -366,9 +366,9 @@ public class EventPublisher implements OMRSInstanceEventProcessor {
      * @param eventList - list of column context events
      * @return true if all events were published, false otherwise
      */
-    private boolean sendColumnContextEvents(List<ColumnContextEvent> eventList) {
+    private boolean sendColumnContextEvents(List<TableContextEvent> eventList) {
         boolean allSuccessful = true;
-        for (ColumnContextEvent event : eventList) {
+        for (TableContextEvent event : eventList) {
             if (!sendInstanceEvent(event)) allSuccessful = false;
         }
         return allSuccessful;
@@ -380,7 +380,7 @@ public class EventPublisher implements OMRSInstanceEventProcessor {
      * @param event to be published
      * @return true/false based on the success of the operation
      */
-    private boolean sendInstanceEvent(ColumnContextEvent event) {
+    private boolean sendInstanceEvent(TableContextEvent event) {
         String actionDescription = "Send New Event";
         boolean successFlag = false;
 

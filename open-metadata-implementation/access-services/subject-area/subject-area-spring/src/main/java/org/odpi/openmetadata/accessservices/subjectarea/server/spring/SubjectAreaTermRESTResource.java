@@ -4,75 +4,75 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.spring;
 
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.Antonym;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.RelatedTermRelationship;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.Synonym;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.TermHASARelationship;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaRESTServices;
+import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaRESTServicesInstance;
 import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaTermRESTServices;
 import org.springframework.web.bind.annotation.*;
 
 
 /**
- * The SubjectAreaRESTServices provides the org.odpi.openmetadata.accessservices.subjectarea.server-side implementation of the SubjectAreaDefinition Open Metadata
+ * The SubjectAreaRESTServicesInstance provides the org.odpi.openmetadata.accessservices.subjectarea.server-side implementation of the SubjectAreaDefinition Open Metadata
  * Assess Service (OMAS).  This interface provides term authoring interfaces for subject area experts.
  */
 @RestController
-@RequestMapping("/open-metadata/access-services/subject-area")
-public class SubjectAreaTermRESTResource extends SubjectAreaRESTServices{
+@RequestMapping("/servers/{serverName}/open-metadata/access-services/subject-area")
+public class SubjectAreaTermRESTResource extends SubjectAreaRESTServicesInstance
+{
     private SubjectAreaTermRESTServices restAPI = new SubjectAreaTermRESTServices();
     /**
      * Default constructor
      */
     public SubjectAreaTermRESTResource() {
-        //SubjectAreaRESTServices registers this omas.
+        //SubjectAreaRESTServicesInstance registers this omas.
     }
 
     /**
      * Create a Term
-     *
+     * <p>
+     * The name needs to be specified - as this is the main identifier for the term. The name should be unique for canonical glossaries. This API does not police the uniqueness in this case.
+     * <p>
      * The qualifiedName can be specified and will be honoured. If it is specified then the caller may wish to ensure that it is
-     * unique. If this qualifiedName is not specified then one will be generated as GlossaryTerm concatinated with the guid.
-     *
+     * unique. If this qualifiedName is not specified then one will be generated as GlossaryTerm concatinated with the the guid.
+     * <p>
      * Failure to create the Terms classifications, link to its glossary or its icon, results in the create failing and the term being deleted
      *
-     * @param userId userId
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId       userId
      * @param suppliedTerm term to create
      * @return response, when successful contains the created term.
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
-     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
-     * <li> ClassificationException              Error processing a classification</li>
-     * <li> FunctionNotSupportedException        Function not supported</li>
-     * <li> StatusNotSupportedException          A status value is not supported</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
+     * <li> InvalidParameterException            one of the parameters is null or invalid.
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
+     * <li> ClassificationException              Error processing a classification
+     * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/terms")
-    public SubjectAreaOMASAPIResponse createTerm(@PathVariable String userId, @RequestBody Term suppliedTerm) {
-        return restAPI.createTerm(userId,suppliedTerm);
+    public SubjectAreaOMASAPIResponse createTerm(@PathVariable String serverName, @PathVariable String userId, @RequestBody Term suppliedTerm) {
+        return restAPI.createTerm(serverName, userId,suppliedTerm);
     }
 
     /**
      * Get a Term
-     * @param userId userId under which the request is performed
+     *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the term to get
-     * @return a response which when successful contains the term
+     * @return response which when successful contains the term with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
-     * <li> FunctionNotSupportedException        Function not supported</li>
      * </ul>
      */
     @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/terms/{guid}")
-    public  SubjectAreaOMASAPIResponse getTermByGuid(@PathVariable String userId, @PathVariable String guid) {
-       return restAPI.getTermByGuid(userId,guid);
+    public  SubjectAreaOMASAPIResponse getTermByGuid(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid) {
+        return restAPI.getTermByGuid(serverName, userId,guid);
     }
 
     /**
@@ -80,23 +80,23 @@ public class SubjectAreaTermRESTResource extends SubjectAreaRESTServices{
      * <p>
      * Status is not updated using this call.
      *
-     * @param userId           userId under which the request is performed
-     * @param guid             guid of the term to update
-     * @param suppliedTerm     term to be updated
-     * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId       userId under which the request is performed
+     * @param guid         guid of the term to update
+     * @param suppliedTerm term to be updated
+     * @param isReplace    flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return a response which when successful contains the updated term
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
     @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/terms/{guid}")
-    public SubjectAreaOMASAPIResponse updateTerm(@PathVariable String userId,@PathVariable String guid, Term suppliedTerm, @RequestParam(value = "isReplace", required=false) Boolean isReplace) {
-        return restAPI.updateTerm(userId,guid,suppliedTerm,isReplace);
+    public SubjectAreaOMASAPIResponse updateTerm(@PathVariable String serverName, @PathVariable String userId,@PathVariable String guid, Term suppliedTerm, @RequestParam(value = "isReplace", required=false) Boolean isReplace) {
+        return restAPI.updateTerm(serverName, userId,guid,suppliedTerm,isReplace);
     }
     /**
      * Delete a Term instance
@@ -107,12 +107,13 @@ public class SubjectAreaTermRESTResource extends SubjectAreaRESTServices{
      * A soft delete means that the term instance will exist in a deleted state in the repository after the delete operation. This means
      * that it is possible to undo the delete.
      * A hard delete means that the term will not exist after the operation.
-     * when not successful the following Exceptions can occur
+     * when not successful the following Exception responses can occur
      *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId  userId under which the request is performed
      * @param guid    guid of the term to be deleted.
      * @param isPurge true indicates a hard delete, false is a soft delete.
-     * @return a response which when successful contains a void response
+     * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
@@ -125,11 +126,11 @@ public class SubjectAreaTermRESTResource extends SubjectAreaRESTServices{
      * </ul>
      */
     @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/terms/{guid}")
-    public  SubjectAreaOMASAPIResponse deleteTerm(@PathVariable String userId,@PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge)  {
+    public  SubjectAreaOMASAPIResponse deleteTerm(@PathVariable String serverName, @PathVariable String userId,@PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge)  {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
             isPurge = false;
         }
-        return restAPI.deleteTerm(userId,guid,isPurge);
+        return restAPI.deleteTerm(serverName, userId,guid,isPurge);
     }
 }

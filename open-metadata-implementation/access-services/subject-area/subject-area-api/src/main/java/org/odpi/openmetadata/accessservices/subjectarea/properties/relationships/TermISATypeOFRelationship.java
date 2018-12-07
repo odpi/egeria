@@ -9,10 +9,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.*;
-import java.io.Serializable;
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.*;
@@ -24,14 +21,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.LineType;
 
 /**
- * TermISATypeOFRelationship is a relationship between an entity of type GlossaryTerm and an entity of type GlossaryTerm.
- * The ends of the relationship are stored as entity proxies, where there is a 'proxy' name by which the entity type is known.
- * The first entity proxy has supertypes as the proxy name for entity type GlossaryTerm.
- * The second entity proxy has subtypes as the proxy name for entity type GlossaryTerm.
- *
- * Each entity proxy also stores the entities guid.
-
- Defines an inheritance relationship between two spine objects.
+ * Defines an inheritance relationship between two spine objects.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -73,6 +63,8 @@ public class TermISATypeOFRelationship extends Line {
       public static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES)));
       public static final java.util.Set<String> ENUM_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES)));
       public static final java.util.Set<String> MAP_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES)));
+      protected String superTypeGuid;
+      protected String subTypeGuid;
 
 
     public TermISATypeOFRelationship() {
@@ -112,6 +104,32 @@ public class TermISATypeOFRelationship extends Line {
            lineType = LineType.Other;
         }
     }
+    /**
+     * {@literal Get the guid of type associated with the super type spine object - this is the spine object that is inherited from. }
+     * @return {@code String }
+     */
+    public String getSuperTypeGuid()
+    {
+        return superTypeGuid;
+    }
+
+    public void setSuperTypeGuid(String superTypeGuid)
+    {
+        this.superTypeGuid = superTypeGuid;
+    }
+    /**
+     * {@literal Get the guid of type associated with the sub type spine object - this is the spine object that inherits (specialises). }
+     * @return {@code String }
+     */
+    public String getSubTypeGuid()
+    {
+        return subTypeGuid;
+    }
+
+    public void setSubTypeGuid(String subTypeGuid)
+    {
+        this.subTypeGuid = subTypeGuid;
+    }
 
     InstanceProperties obtainInstanceProperties() {
           final String methodName = "obtainInstanceProperties";
@@ -128,19 +146,19 @@ public class TermISATypeOFRelationship extends Line {
           MapPropertyValue mapPropertyValue=null;
           PrimitivePropertyValue primitivePropertyValue=null;
           primitivePropertyValue = new PrimitivePropertyValue();
-          // TODO  description + change null to value
+          
           primitivePropertyValue.setPrimitiveValue(null);
           instanceProperties.setProperty("description",primitivePropertyValue);
           primitivePropertyValue = new PrimitivePropertyValue();
-          // TODO  description + change null to value
+          
           primitivePropertyValue.setPrimitiveValue(null);
           instanceProperties.setProperty("status",primitivePropertyValue);
           primitivePropertyValue = new PrimitivePropertyValue();
-          // TODO  description + change null to value
+          
           primitivePropertyValue.setPrimitiveValue(null);
           instanceProperties.setProperty("steward",primitivePropertyValue);
           primitivePropertyValue = new PrimitivePropertyValue();
-          // TODO  description + change null to value
+          
           primitivePropertyValue.setPrimitiveValue(null);
           instanceProperties.setProperty("source",primitivePropertyValue);
           if (log.isDebugEnabled()) {
