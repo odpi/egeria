@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.informationview.contentmanager;
 
-import org.odpi.openmetadata.accessservices.informationview.events.DatabaseColumnSource;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportColumn;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportElement;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportRequestBody;
@@ -91,7 +90,7 @@ public class ReportCreator {
             throw new ReportCreationException(404,
                     "ReportCreator",
                     "createReport",
-                    "Unable to create report: " + e.getStackTrace(),
+                    "Unable to create report: " + e.getMessage(),
                     "The system is unable to process the request.",
                     "Correct the payload submitted to request.",
                     "");//TODO extract to code exception class
