@@ -32,8 +32,8 @@ public class AssetCatalogEntityResource {
      * Fetch asset's header and classification
      *
      * @param serverName unique identifier for requested server.
-     * @param userId  the unique identifier for the user
-     * @param assetId the unique identifier for the asset
+     * @param userId     the unique identifier for the user
+     * @param assetId    the unique identifier for the asset
      * @return the asset with its header and the list of associated classifications
      */
     @RequestMapping(method = RequestMethod.GET,
@@ -49,8 +49,8 @@ public class AssetCatalogEntityResource {
      * Fetch asset's header, classification and properties
      *
      * @param serverName unique identifier for requested server.
-     * @param userId  the unique identifier for the user
-     * @param assetId the unique identifier for the asset
+     * @param userId     the unique identifier for the user
+     * @param assetId    the unique identifier for the asset
      * @return the asset with its header and the list of associated classifications and specific properties
      */
     @RequestMapping(method = RequestMethod.GET,
@@ -66,8 +66,8 @@ public class AssetCatalogEntityResource {
      * Fetch asset's header, classification, properties and relationships
      *
      * @param serverName unique identifier for requested server.
-     * @param userId  the unique identifier for the user
-     * @param assetId the unique identifier for the asset
+     * @param userId     the unique identifier for the user
+     * @param assetId    the unique identifier for the asset
      * @return the asset with its header and the list of associated classifications
      */
     @RequestMapping(method = RequestMethod.GET,
@@ -94,21 +94,14 @@ public class AssetCatalogEntityResource {
     public RelationshipsResponse getAssetRelationships(@PathVariable("serverName") String serverName,
                                                        @PathVariable("userId") String userId,
                                                        @PathVariable("assetId") String assetId,
-                                                       @RequestParam(required = false, value = "type") String relationshipType,
-                                                       @RequestParam(required = false, value = "limit", defaultValue = "0") Integer limit,
-                                                       @RequestParam(required = false, value = "offset", defaultValue = "0") Integer offset,
-                                                       @RequestParam(required = false, value = "order.Type") SequenceOrderType orderType,
-                                                       @RequestParam(required = false, value = "order.Property") String orderProperty,
-                                                       @RequestParam(required = false, value = "status") Status status) {
-        return assetService.getAssetRelationships(serverName, userId, assetId, relationshipType, status, offset, limit, orderProperty, orderType);
                                                        @RequestBody SearchParameters searchParameters) {
-        return assetService.getAssetRelationships(userId, assetId, searchParameters);
+        return assetService.getAssetRelationships(serverName, userId, assetId, searchParameters);
     }
 
     /**
      * Fetch the classification for a specific asset
      *
-     * @param serverName unique identifier for requested server.
+     * @param serverName       unique identifier for requested server.
      * @param userId           the unique identifier for the user
      * @param assetId          the unique identifier for the asset
      * @param searchParameters constrains to make the assets's search results more precise
@@ -127,7 +120,7 @@ public class AssetCatalogEntityResource {
     /**
      * Fetch the assets that match the properties
      *
-     * @param serverName    unique identifier for requested server.
+     * @param serverName       unique identifier for requested server.
      * @param userId           the unique identifier for the user
      * @param propertyValue    the property value searched
      * @param searchParameters constrains to make the assets's search results more precise
@@ -149,7 +142,7 @@ public class AssetCatalogEntityResource {
      * @param serverName         unique identifier for requested server.
      * @param userId             the unique identifier for the user
      * @param classificationName the name of the classification
-     * @param searchParameters constrains to make the assets's search results more precise
+     * @param searchParameters   constrains to make the assets's search results more precise
      * @return a list of assets that match the classification name
      */
     @RequestMapping(method = RequestMethod.POST,
@@ -204,7 +197,7 @@ public class AssetCatalogEntityResource {
      * Return the list of assets that are of the types listed in instanceTypes and are connected,
      * either directly or indirectly to the asset identified by assetId.
      *
-     * @param serverName    unique identifier for requested server.
+     * @param serverName       unique identifier for requested server.
      * @param userId           the unique identifier for the user
      * @param assetId          the starting asset identifier of the query
      * @param searchParameters constrains to make the assets's search results more precise
@@ -224,7 +217,7 @@ public class AssetCatalogEntityResource {
     /**
      * Returns the sub-graph that represents the returned linked relationships.
      *
-     * @param serverName         unique identifier for requested server.
+     * @param serverName       unique identifier for requested server.
      * @param userId           the unique identifier for the user
      * @param assetId          the starting asset identifier of the query
      * @param searchParameters constrains to make the assets's search results more precise
@@ -244,7 +237,7 @@ public class AssetCatalogEntityResource {
     /**
      * Returns the sub-graph that represents the returned linked assets
      *
-     * @param serverName         unique identifier for requested server.
+     * @param serverName       unique identifier for requested server.
      * @param userId           the unique identifier for the user
      * @param assetId          the starting asset identifier of the query
      * @param searchParameters constrains to make the assets's search results more precise constrains to make the assets's search results more precise
@@ -264,7 +257,7 @@ public class AssetCatalogEntityResource {
     /**
      * Returns the last created assets
      *
-     * @param serverName    unique identifier for requested server.
+     * @param serverName       unique identifier for requested server.
      * @param userId           the unique identifier for the user
      * @param searchParameters constrains to make the assets's search results more precise constrains to make the assets's search results more precise
      * @return a list of the last created assets
@@ -281,7 +274,7 @@ public class AssetCatalogEntityResource {
     /**
      * Returns  the last updated assets
      *
-     * @param serverName    unique identifier for requested server.
+     * @param serverName       unique identifier for requested server.
      * @param userId           the unique identifier for the user
      * @param searchParameters constrains to make the assets's search results more precise
      * @return a list of the last updated assets
@@ -298,7 +291,7 @@ public class AssetCatalogEntityResource {
     /**
      * Return a list of assets (details and connections) matching the search criteria
      *
-     * @param serverName     unique identifier for requested server.
+     * @param serverName       unique identifier for requested server.
      * @param userId           the unique identifier for the user
      * @param searchCriteria   a string expression of the characteristics of the required assets
      * @param searchParameters constrains to make the assets's search results more precise

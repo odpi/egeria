@@ -35,6 +35,7 @@ import static org.testng.Assert.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.WARN)
+@Ignore
 public class AssetCatalogClientTest {
 
     private static final String defaultOMASServerURL = "http://localhost:8081";
