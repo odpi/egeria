@@ -3,10 +3,12 @@
 
 # 0503 Asset Schema
 
-Model 0503 shows the relationship between an access and a
-schema element.
+Model 0503 shows the relationship between an [Asset](0010-Base-Model.md)
+and a [Schema Element](0501-Schema-Elements.md).
+
 A physical data store may be made up of a hierarchy of Assets.
-Each of these Assets may point to the appropriate SchemaElements which are also typically organized in a hierarchy.
+Each of these Assets may point to the appropriate SchemaElements which
+are also typically organized in a hierarchy.
 Thus we can work with both assets and schema at different
 levels of granularity.
 
