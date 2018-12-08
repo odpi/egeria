@@ -222,10 +222,28 @@ or the server is shutdown.
 POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository/mode/in-memory-repository
 ```
 
+#### Enable the IBM Information Governance Catalog proxy
+
+The OMAG Server can act as a proxy to an IBM Information Governance Catalog ("IGC") environment.
+This is done by POSTing the IGC environment details:
+
+- `igcBaseURL` specifies the https host and port on which to access the IGC REST API
+- `igcAuthorization` provides a Basic-encoded username and password
+- `igcVersion` specifies the IBM Information Server version of the environment (`v115` or `v117`)
+
+```
+POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository/mode/ibm-igc/details
+{
+    "igcBaseURL": "https://infosvr.vagrant.ibm.com:9446",
+    "igcAuthorization": "aXNhZG1pbjppc2FkbWlu",
+    "igcVersion": "v117"
+}
+```
+
 #### Enable OMAG Server as a repository proxy
 
 The OMAG Server can act as a proxy to a vendor's repository.
-Ths is done by adding the connection
+This is done by adding the connection
 for the repository proxy as the local repository.
 
 ```

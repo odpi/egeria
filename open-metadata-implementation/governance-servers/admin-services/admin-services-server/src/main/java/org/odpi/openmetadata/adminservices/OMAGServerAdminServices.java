@@ -760,6 +760,105 @@ public class OMAGServerAdminServices
 
 
     /**
+     * Provide the connection to the local repository - used when the local repository mode is set to IBM IGC.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param connection  connection to the OMRS repository connector.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or repositoryProxyConnection parameter or
+     */
+    public VoidResponse setIBMIGCConnection(String     userId,
+                                            String     serverName,
+                                            Connection connection)
+    {
+        final String methodName = "setIBMIGCConnection";
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            validateServerName(serverName, methodName);
+            validateUserId(userId, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
+
+            OMRSConfigurationFactory configurationFactory     = new OMRSConfigurationFactory();
+            LocalRepositoryConfig localRepositoryConfig
+                    = configurationFactory.getRepositoryIBMIGCRepositoryConfig(serverConfig.getLocalServerName(),
+                    serverConfig.getLocalServerURL());
+
+            /*
+             * Set up the repository proxy connection in the local repository config
+             */
+            localRepositoryConfig.setLocalRepositoryLocalConnection(connection);
+
+            this.setLocalRepositoryConfig(userId, serverName, localRepositoryConfig);
+        }
+        catch (OMAGInvalidParameterException  error)
+        {
+            errorHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException  error)
+        {
+            errorHandler.captureNotAuthorizedException(response, error);
+        }
+
+        return response;
+    }
+
+
+    /**
+     * Provide the connection to the local repository.
+     * This is used when the local repository mode is set to IBM IGC.
+     *
+     * @param userId                    user that is issuing the request.
+     * @param serverName                local server name.
+     * @param additionalProperties      additional parameters to pass to the repository connector
+     * @return void response or
+     * OMAGNotAuthorizedException  the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or repositoryProxyConnection parameter or
+     * OMAGConfigurationErrorException the local repository mode has not been set.
+     */
+    public VoidResponse setIBMIGCConnection(String               userId,
+                                            String               serverName,
+                                            Map<String, Object>  additionalProperties)
+    {
+        final String methodName  = "setIBMIGCConnection";
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            validateServerName(serverName, methodName);
+            validateUserId(userId, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
+
+            ConnectorConfigurationFactory connectorConfigurationFactory = new ConnectorConfigurationFactory();
+
+            this.setIBMIGCConnection(userId,
+                    serverName,
+                    connectorConfigurationFactory.getIBMIGCRepositoryConnection(serverName,
+                            serverConfig.getLocalServerURL(),
+                            additionalProperties));
+
+        }
+        catch (OMAGInvalidParameterException  error)
+        {
+            errorHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException  error)
+        {
+            errorHandler.captureNotAuthorizedException(response, error);
+        }
+
+        return response;
+    }
+
+
+    /**
      * Provide the connection to the local repository's event mapper if needed.  The default value is null which
      * means no event mapper.  An event mapper is needed if the local repository has additional APIs that can change
      * the metadata in the repository without going through the open metadata and governance services.
