@@ -7,6 +7,9 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Manages the criteria to use for running a search against IGC.
  */
@@ -18,6 +21,7 @@ public class IGCSearch {
     private ArrayNode properties;
 
     private IGCSearchConditionSet conditions;
+    private List<IGCSearchSorting> sortings;
     private int pageSize = 100;
 
     private boolean devGlossary = false;
@@ -25,22 +29,21 @@ public class IGCSearch {
     public IGCSearch() {
         this.types = nf.arrayNode();
         this.properties = nf.arrayNode();
+        this.sortings = new ArrayList<>();
     }
 
     /**
-     * Creates a new search for all assets of the provided type, retrieving only their name.
+     * Creates a new search for all assets of the provided type.
      *
      * @param type the type of assets to retrieve
      */
     public IGCSearch(String type) {
         this();
         addType(type);
-        addProperty("name");
     }
 
     /**
-     * Creates a new search for assets of the provided type, based on the provided criteria, retrieving by default only
-     * their name.
+     * Creates a new search for assets of the provided type, based on the provided criteria.
      *
      * @param type the type of assets to retrieve
      * @param conditions the set of conditions to use as search criteria
@@ -95,6 +98,13 @@ public class IGCSearch {
     }
 
     /**
+     * Adds the provided sorting criteria to use for the search.
+     *
+     * @param sortings the criteria to use for sorting results
+     */
+    public void addSortingCriteria(IGCSearchSorting sortings) { this.sortings.add(sortings); }
+
+    /**
      * Set the number of results to include in each page.
      *
      * @param size the number of results to include in each page
@@ -120,10 +130,21 @@ public class IGCSearch {
     public JsonNode getQuery() {
         ObjectNode query = nf.objectNode();
         query.set("types", types);
-        query.set("properties", properties);
-        query.set("pageSize", nf.numberNode(pageSize));
+        if (properties != null && properties.size() > 0) {
+            query.set("properties", properties);
+        }
+        if (pageSize > 0) {
+            query.set("pageSize", nf.numberNode(pageSize));
+        }
         if (conditions != null && conditions.size() > 0) {
             query.set("where", conditions.getConditionSetObject());
+        }
+        if (sortings != null && sortings.size() > 0) {
+            ArrayNode anSorts = nf.arrayNode();
+            for (IGCSearchSorting sorting : sortings) {
+                anSorts.add(sorting.getSortObject());
+            }
+            query.set("sorts", anSorts);
         }
         if (devGlossary) {
             query.set("workflowMode", nf.textNode("draft"));
