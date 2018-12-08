@@ -159,16 +159,21 @@ public abstract class MainObject extends Reference {
         Boolean success = true;
         // Only bother retrieving the context if it isn't already present
         if (this.name == null && this._context.size() == 0) {
+            String[] properties = new String[]{ "created_on", "created_by", "modified_on", "modified_by" };
             IGCSearchCondition idOnly = new IGCSearchCondition("_id", "=", this.getId());
             IGCSearchConditionSet idOnlySet = new IGCSearchConditionSet(idOnly);
-            IGCSearch igcSearch = new IGCSearch(this.getType(), idOnlySet);
+            IGCSearch igcSearch = new IGCSearch(this.getType(), properties, idOnlySet);
             igcSearch.setPageSize(2);
             ReferenceList assetsWithCtx = igcrest.search(igcSearch);
             success = (assetsWithCtx.getItems().size() > 0);
             if (success) {
-                Reference assetWithCtx = assetsWithCtx.getItems().get(0);
+                MainObject assetWithCtx = (MainObject) assetsWithCtx.getItems().get(0);
                 this.name = assetWithCtx.getName();
-                this._context = ((MainObject)assetWithCtx)._context;
+                this.created_by = assetWithCtx.getCreatedBy();
+                this.created_on = assetWithCtx.getCreatedOn();
+                this.modified_by = assetWithCtx.getModifiedBy();
+                this.modified_on = assetWithCtx.getModifiedOn();
+                this._context = assetWithCtx._context;
             }
         }
         return success;

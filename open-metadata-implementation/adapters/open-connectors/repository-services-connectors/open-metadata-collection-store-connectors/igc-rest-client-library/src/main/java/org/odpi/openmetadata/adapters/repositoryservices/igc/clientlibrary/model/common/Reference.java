@@ -8,6 +8,7 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRe
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearch;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchCondition;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchConditionSet;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchSorting;
 
 import java.lang.reflect.Field;
 
@@ -41,7 +42,7 @@ public class Reference extends ObjectPrinter {
     /**
      * The '_type' property defines the type of asset this Reference represents. To allow a Reference to
      * be automatically translated into a Java object, you must first register the Java class that should
-     * interpret this data type using {@link IGCRestClient#registerPOJO(NamedType)}.
+     * interpret this data type using {@link IGCRestClient#registerPOJO(Class)}.
      */
     protected String _type;
 
@@ -75,19 +76,52 @@ public class Reference extends ObjectPrinter {
      *
      * @param igcrest the IGCRestClient connection to use to retrieve the details
      * @param properties a list of the properties to retrieve
+     * @param pageSize the maximum number of each of the asset's relationships to return on this request
+     * @param sorting the sorting criteria to use for the results
      * @return Reference - the object including only the subset of properties specified
      */
-    public Reference getAssetWithSubsetOfProperties(IGCRestClient igcrest, String[] properties) {
+    public Reference getAssetWithSubsetOfProperties(IGCRestClient igcrest,
+                                                    String[] properties,
+                                                    int pageSize,
+                                                    IGCSearchSorting sorting) {
         Reference assetWithProperties = null;
         IGCSearchCondition idOnly = new IGCSearchCondition("_id", "=", this._id);
         IGCSearchConditionSet idOnlySet = new IGCSearchConditionSet(idOnly);
         IGCSearch igcSearch = new IGCSearch(this._type, properties, idOnlySet);
-        igcSearch.setPageSize(2);
+        igcSearch.setPageSize(pageSize);
+        if (sorting != null) {
+            igcSearch.addSortingCriteria(sorting);
+        }
         ReferenceList assetsWithProperties = igcrest.search(igcSearch);
         if (assetsWithProperties.getItems().size() > 0) {
             assetWithProperties = assetsWithProperties.getItems().get(0);
         }
         return assetWithProperties;
+    }
+
+    /**
+     * This will generally be the most performant method by which to retrieve asset information, when only
+     * some subset of properties is required
+     *
+     * @param igcrest the IGCRestClient connection to use to retrieve the details
+     * @param properties a list of the properties to retrieve
+     * @param pageSize the maximum number of each of the asset's relationships to return on this request
+     * @return Reference - the object including only the subset of properties specified
+     */
+    public Reference getAssetWithSubsetOfProperties(IGCRestClient igcrest, String[] properties, int pageSize) {
+        return getAssetWithSubsetOfProperties(igcrest, properties, pageSize, null);
+    }
+
+    /**
+     * This will generally be the most performant method by which to retrieve asset information, when only
+     * some subset of properties is required
+     *
+     * @param igcrest the IGCRestClient connection to use to retrieve the details
+     * @param properties a list of the properties to retrieve
+     * @return Reference - the object including only the subset of properties specified
+     */
+    public Reference getAssetWithSubsetOfProperties(IGCRestClient igcrest, String[] properties) {
+        return getAssetWithSubsetOfProperties(igcrest, properties, igcrest.getDefaultPageSize());
     }
 
     /**
@@ -184,6 +218,7 @@ public class Reference extends ObjectPrinter {
         Field property = getFieldByName(name);
         if (property != null) {
             try {
+                property.setAccessible(true);
                 value = property.get(this);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();

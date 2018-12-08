@@ -21,6 +21,8 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.ReferenceList;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearch;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchCondition;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchConditionSet;
 import org.springframework.util.Base64Utils;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -55,6 +57,8 @@ public class IGCRestClient {
     private String baseURL;
     private Boolean workflowEnabled = false;
     private List<String> cookies = null;
+
+    private int defaultPageSize = 100;
 
     private ObjectMapper mapper;
 
@@ -154,6 +158,20 @@ public class IGCRestClient {
     public String getBaseURL() { return baseURL; }
 
     /**
+     * Retrieve the default page size for this IGC REST API connection.
+     *
+     * @return int
+     */
+    public int getDefaultPageSize() { return defaultPageSize; }
+
+    /**
+     * Set the default page size for this IGC REST API connection.
+     *
+     * @param pageSize the new default page size to use
+     */
+    public void setDefaultPageSize(int pageSize) { this.defaultPageSize = pageSize; }
+
+    /**
      * Utility function to easily encode a username and password to send through as authorization info.
      *
      * @param username username to encode
@@ -215,12 +233,43 @@ public class IGCRestClient {
 
     /**
      * Retrieve all information about an asset from IGC.
+     * This can be an expensive operation that may retrieve far more information than you actually need.
+     *
+     * @see #getAssetRefById(String)
      *
      * @param rid the Repository ID of the asset
      * @return Reference - the IGC object representing the asset
      */
     public Reference getAssetById(String rid) {
         return readJSONIntoPOJO(getJsonAssetById(rid));
+    }
+
+    /**
+     * Retrieve only the minimal unique properties of an asset from IGC.
+     * This will generally be the most performant way to see that an asset exists and get its identifying characteristics.
+     *
+     * @param rid the Repository ID of the asset
+     * @return Reference - the minimalistic IGC object representing the asset
+     */
+    public Reference getAssetRefById(String rid) {
+
+        // We can search for any object by ID by using "main_object" as the type
+        // (no properties needed)
+        IGCSearchCondition condition = new IGCSearchCondition(
+                "_id",
+                "=",
+                rid
+        );
+        IGCSearchConditionSet conditionSet = new IGCSearchConditionSet(condition);
+        IGCSearch igcSearch = new IGCSearch("main_object", conditionSet);
+        ReferenceList results = search(igcSearch);
+        Reference reference = null;
+        if (results.getPaging().getNumTotal() > 0) {
+            reference = results.getItems().get(0);
+        }
+
+        return reference;
+
     }
 
     /**
