@@ -30,11 +30,6 @@ public class ReportSource extends Source {
     }
 
     @Override
-    public String getQualifiedName() {
-        return this.getNetworkAddress() + "." + reportId;
-    }
-
-    @Override
     public String toString() {
         return "ReportSource{" +
                 "reportId='" + reportId + '\'' +

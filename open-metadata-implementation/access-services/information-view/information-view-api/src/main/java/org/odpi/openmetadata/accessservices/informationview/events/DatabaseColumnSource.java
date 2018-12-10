@@ -62,11 +62,6 @@ public class DatabaseColumnSource extends Source {
         return tableSource != null ? tableSource.getUser() : super.getUser();
     }
 
-    @Override
-    public String getQualifiedName() {
-        String qualifiedName = getTableSource() != null ? this.getTableSource().getQualifiedName() + "." : "";
-        return qualifiedName + name;
-    }
 
     @Override
     public String toString() {

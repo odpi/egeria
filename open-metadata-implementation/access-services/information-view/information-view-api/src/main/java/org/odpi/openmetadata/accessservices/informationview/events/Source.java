@@ -41,6 +41,8 @@ public abstract class Source {
     private String connectorProviderName;
     private String user;
     private Map<String, String> additionalProperties;
+    private String qualifiedName;
+    private String guid;
 
     /**
      * Return the protocol of the connection
@@ -111,7 +113,21 @@ public abstract class Source {
         this.encryptionMethod = encryptionMethod;
     }
 
-    public abstract String getQualifiedName();
+    public String getQualifiedName() {
+        return qualifiedName;
+    }
+
+    public void setQualifiedName(String qualifiedName) {
+        this.qualifiedName = qualifiedName;
+    }
+
+    public String getGuid() {
+        return guid;
+    }
+
+    public void setGuid(String guid) {
+        this.guid = guid;
+    }
 
     @Override
     public String toString() {
@@ -122,6 +138,7 @@ public abstract class Source {
                 ", connectorProviderName='" + connectorProviderName + '\'' +
                 ", user='" + user + '\'' +
                 ", additionalProperties=" + additionalProperties +
+                ", qualifiedName='" + qualifiedName + '\'' +
                 '}';
     }
 }

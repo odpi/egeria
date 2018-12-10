@@ -32,12 +32,4 @@ public class ReportSectionSource extends Source {
         this.name = name;
     }
 
-    @Override
-    public String getQualifiedName() {
-        if (parentReportSection != null) {
-            return parentReportSection.getQualifiedName() + "." + name;
-        } else {
-            return reportSource.getQualifiedName() + "." + name;
-        }
-    }
 }
