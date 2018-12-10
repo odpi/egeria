@@ -89,6 +89,17 @@ public class IGCSearch {
     }
 
     /**
+     * Add all properties provided by the array as ones to include in the search.
+     *
+     * @param properties the names of properties to include in the search
+     */
+    public void addProperties(String[] properties) {
+        for (String property : properties) {
+            this.properties.add(property);
+        }
+    }
+
+    /**
      * Adds a set of conditions to use for the search.
      *
      * @param conditions the set of conditions to add to the search criteria
