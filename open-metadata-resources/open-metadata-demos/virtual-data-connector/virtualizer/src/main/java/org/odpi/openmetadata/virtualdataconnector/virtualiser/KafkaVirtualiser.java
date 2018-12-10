@@ -2,13 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.virtualdataconnector.virtualiser;
 
-import org.odpi.openmetadata.virtualdataconnector.virtualiser.gaian.GaianQueryConstructor;
-import org.odpi.openmetadata.virtualdataconnector.virtualiser.kafka.KafkaVirtualiserConsumer;
-import org.odpi.openmetadata.virtualdataconnector.virtualiser.views.ViewsConstructor;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.odpi.openmetadata.virtualdataconnector.virtualiser.gaian.GaianQueryConstructor;
+import org.odpi.openmetadata.virtualdataconnector.virtualiser.kafka.KafkaVirtualiserConsumer;
+import org.odpi.openmetadata.virtualdataconnector.virtualiser.views.ViewsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
