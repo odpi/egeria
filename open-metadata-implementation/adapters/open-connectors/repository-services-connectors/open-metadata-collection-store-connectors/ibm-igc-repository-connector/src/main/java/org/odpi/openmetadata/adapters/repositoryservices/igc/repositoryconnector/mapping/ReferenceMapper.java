@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestClient;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.MainObject;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSMetadataCollection;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -14,6 +15,8 @@ import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -25,6 +28,7 @@ import java.util.List;
 public abstract class ReferenceMapper {
 
     public static final String SOURCE_NAME = "IGC";
+    public static final String IGC_REST_COMMON_MODEL_PKG = "org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common";
     public static final String IGC_REST_GENERATED_MODEL_PKG = "org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated";
 
     protected IGCOMRSRepositoryConnector igcomrsRepositoryConnector;
@@ -41,12 +45,29 @@ public abstract class ReferenceMapper {
     protected ArrayList<Classification> classifications;
     protected ArrayList<String> alreadyMappedProperties;
 
-    public ReferenceMapper(Reference me, IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {
+    public ReferenceMapper(Reference me,
+                           String igcAssetTypeName,
+                           String omrsEntityTypeName,
+                           IGCOMRSRepositoryConnector igcomrsRepositoryConnector,
+                           String userId) {
+
         this.me = me;
+        this.igcType = igcAssetTypeName;
+        this.omrsType = omrsEntityTypeName;
         this.igcomrsRepositoryConnector = igcomrsRepositoryConnector;
         this.userId = userId;
         this.relationships = new ArrayList<>();
         this.alreadyMappedProperties = new ArrayList<>();
+
+        // fully-qualified POJO class path
+        if (igcAssetTypeName.equals("main_object")) {
+            this.igcPOJO = IGC_REST_COMMON_MODEL_PKG + ".MainObject";
+        } else {
+            this.igcPOJO = IGC_REST_GENERATED_MODEL_PKG + "."
+                    + igcomrsRepositoryConnector.getIGCVersion() + "."
+                    + ReferenceMapper.getCamelCase(igcAssetTypeName);
+        }
+
     }
 
     protected EntitySummary getSummary() { return this.summary; }
@@ -98,6 +119,9 @@ public abstract class ReferenceMapper {
         }
     }
 
+    protected void complexPropertyMappings(InstanceProperties instanceProperties, Method getPropertyByName) { }
+    protected void complexRelationshipMappings() { }
+
     /**
      * Returns the OMRS PrimitivePropertyValue represented by the provided value.
      *
@@ -148,7 +172,16 @@ public abstract class ReferenceMapper {
         return result;
     }
 
-
+    /**
+     * Retrieves an EntityProxy object for the provided IGC object.
+     *
+     * @param igcomrsRepositoryConnector OMRS connector to the IBM IGC repository
+     * @param igcObj the IGC object for which to retrieve an EntityProxy
+     * @param omrsTypeName the OMRS entity type
+     * @param userId the user through which to retrieve the EntityProxy (unused)
+     * @return EntityProxy
+     * @throws RepositoryErrorException
+     */
     public static EntityProxy getEntityProxyForObject(IGCOMRSRepositoryConnector igcomrsRepositoryConnector,
                                                       Reference igcObj,
                                                       String omrsTypeName,
@@ -208,6 +241,9 @@ public abstract class ReferenceMapper {
                     entityProxy.setCreateTime(igcMObj.getCreatedOn());
                     entityProxy.setUpdatedBy(igcMObj.getModifiedBy());
                     entityProxy.setUpdateTime(igcMObj.getModifiedOn());
+                    if (entityProxy.getUpdateTime() != null) {
+                        entityProxy.setVersion(entityProxy.getUpdateTime().getTime());
+                    }
                 }
 
             } catch (TypeErrorException e) {
@@ -217,6 +253,57 @@ public abstract class ReferenceMapper {
 
         return entityProxy;
 
+    }
+
+    /**
+     * Converts an IGC type or property (something_like_this) into a camelcase class name (SomethingLikeThis).
+     *
+     * @param input
+     * @return String
+     */
+    public static final String getCamelCase(String input) {
+        StringBuilder sb = new StringBuilder(input.length());
+        for (String token : input.split("_")) {
+            sb.append(token.substring(0, 1).toUpperCase());
+            sb.append(token.substring(1).toLowerCase());
+        }
+        return sb.toString();
+    }
+
+    /**
+     * Recursively traverses the class hierarchy upwards to find the field.
+     *
+     * @param name the name of the field to find
+     * @param clazz the class in which to search (and recurse upwards on its class hierarchy)
+     * @return Field first found (lowest level of class hierarchy), or null if never found
+     */
+    public static Field recursePropertyByName(String name, Class clazz) {
+        Field f = null;
+        Class superClazz = clazz.getSuperclass();
+        if (superClazz != null) {
+            try {
+                f = superClazz.getDeclaredField(name);
+            } catch (NoSuchFieldException e) {
+                f = ReferenceMapper.recursePropertyByName(name, superClazz);
+            }
+        }
+        return f;
+    }
+
+    /**
+     * Retrieves the first Field, from anywhere within the class hierarchy (bottom-up), by its name.
+     *
+     * @param name the name of the field to retrieve
+     * @return Field
+     */
+    public Field getFieldByName(String name) {
+        Field field;
+        try {
+            field = this.getClass().getDeclaredField(name);
+        } catch (NoSuchFieldException e) {
+            field = ReferenceMapper.recursePropertyByName(name, this.getClass());
+        }
+        return field;
     }
 
 }

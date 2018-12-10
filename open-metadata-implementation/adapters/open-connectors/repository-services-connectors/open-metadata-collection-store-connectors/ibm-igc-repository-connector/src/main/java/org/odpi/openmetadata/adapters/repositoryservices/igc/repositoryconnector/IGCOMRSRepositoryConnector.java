@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestClient;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.ReferenceMapper;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
@@ -13,7 +15,7 @@ import org.slf4j.LoggerFactory;
 public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector {
 
     private IGCRestClient igcRestClient;
-    private String igcVersion;
+    private String igcVersion = "v115";     // default to v11.5; auto-detect v11.7 as part of initialization
 
     private static final Logger log = LoggerFactory.getLogger(IGCOMRSRepositoryConnector.class);
 
@@ -37,7 +39,6 @@ public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector {
         // Retrieve connection details
         String baseURL = (String) this.connectionBean.getAdditionalProperties().get("igcBaseURL");
         String auth = (String) this.connectionBean.getAdditionalProperties().get("igcAuthorization");
-        igcVersion = (String) this.connectionBean.getAdditionalProperties().get("igcVersion");
 
         // TODO: review how to make this determination dynamically (eg. from application.properties?)
         IGCRestClient.disableSslVerification();
@@ -48,16 +49,13 @@ public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector {
             this.igcRestClient.setDefaultPageSize(getMaxPageSize());
         }
 
-        // Register object translation for the objects we want to support (see IMPLEMENTED_OBJECTS constant)
-        try {
-            for (String clazzName : IGCOMRSMetadataCollection.IMPLEMENTED_OBJECTS) {
-                Class clazz = Class.forName(ReferenceMapper.IGC_REST_GENERATED_MODEL_PKG + "." + igcVersion + "." + clazzName);
-                // Every generated object should have a static final IGC_TYPE_ID giving its IGC asset type
-                this.igcRestClient.registerPOJO(clazz);
+        ArrayNode igcTypes = this.igcRestClient.getTypes();
+        for (JsonNode node : igcTypes) {
+            // Check for a type that does not exist in v11.5
+            if (node.path("_id").asText().equals("analytics_project")) {
+                this.igcVersion = "v117";
+                break;
             }
-        } catch (ClassNotFoundException e) {
-            log.error("Unable to find class to register!");
-            e.printStackTrace();
         }
 
     }

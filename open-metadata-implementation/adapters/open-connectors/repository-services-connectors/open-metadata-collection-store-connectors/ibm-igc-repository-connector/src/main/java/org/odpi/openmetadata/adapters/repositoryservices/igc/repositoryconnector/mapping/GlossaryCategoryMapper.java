@@ -5,29 +5,31 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.MainObject;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
 
-public class CategoryMapper extends MainObjectMapper {
+public class GlossaryCategoryMapper extends ReferenceableMapper {
 
     /**
-     * Sets the basic criteria to use for mapping between an IGC 'term' object and an OMRS 'GlossaryTerm' object.
+     * Sets the basic criteria to use for mapping between an IGC 'category' object and an OMRS 'GlossaryCategory' object.
      *
      * @param category the IGC 'category' object
      * @param igcomrsRepositoryConnector the IGC repository connector to use for retrieving any additional info required
      * @param userId the userId of the user doing any further detailed information retrievals (currently unused)
      */
-    public CategoryMapper(MainObject category, IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {
+    public GlossaryCategoryMapper(MainObject category, IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {
 
         // Start by calling the superclass's constructor to initialise the Mapper
-        super(category, igcomrsRepositoryConnector, userId, "Category");
+        super(
+                category,
+                "category",
+                "GlossaryCategory",
+                igcomrsRepositoryConnector,
+                userId
+        );
 
-        // Then define the types this Mapper handles
-        igcType = "category";               // the IGC type name
-        omrsType = "GlossaryCategory";      // the OMRS type name
-
-        // The list of properties that should be mapped (IGC property <-> OMRS property)
+        // The list of properties that should be mapped
         PROPERTIES.put("name", "displayName");
         PROPERTIES.put("short_description", "description");
 
-        // The list of relationships that should be mapped (IGC types <-> OMRS types; IGC property <-> OMRS Relationship)
+        // The list of relationships that should be mapped
         RELATIONSHIPS.put(
                 "parent_category",
                 "CategoryHierarchyLink",
