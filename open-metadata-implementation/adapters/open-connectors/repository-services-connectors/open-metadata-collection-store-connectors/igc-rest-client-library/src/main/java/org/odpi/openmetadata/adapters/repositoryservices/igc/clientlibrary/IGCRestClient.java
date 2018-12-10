@@ -215,10 +215,10 @@ public class IGCRestClient {
     /**
      * Retrieves the list of metadata types supported by IGC.
      *
-     * @return JsonNode the list of types supported by IGC, as a JSON structure
+     * @return ArrayNode the list of types supported by IGC, as a JSON structure
      */
-    public JsonNode getTypes() {
-        return makeRequest(baseURL + TYPES, HttpMethod.GET, null);
+    public ArrayNode getTypes() {
+        return (ArrayNode) makeRequest(baseURL + TYPES, HttpMethod.GET, null);
     }
 
     /**

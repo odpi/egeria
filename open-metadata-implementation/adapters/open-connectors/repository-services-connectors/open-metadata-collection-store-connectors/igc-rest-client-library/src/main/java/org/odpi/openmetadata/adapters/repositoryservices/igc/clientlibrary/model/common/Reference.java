@@ -24,13 +24,17 @@ import java.lang.reflect.Field;
  * </ul><br>
  *  Generally POJOs should not extend this class directly, but the MainObject class.
  */
-@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.PROPERTY, property="_type", visible=true, defaultImpl=Reference.class)
+@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.PROPERTY, property="_type", visible=true, defaultImpl=MainObject.class)
+@JsonSubTypes({
+    @JsonSubTypes.Type(value = MainObject.class, name = "main_object"),
+    @JsonSubTypes.Type(value = Label.class, name = "label")
+})
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Reference extends ObjectPrinter {
 
-    // TODO: v11.7.0.2+ have an option 'includeReferencePropertyContext=true' that can be passed when retrieving
-    // assets by ID -- which means '_context' is then also available on the references; could promote it from
-    // MainObject to hear to take advantage of the optimisation for versions that have this option available
+    // DONE: v11.7.0.2+ have an option 'includeReferencePropertyContext=true' that can be passed when retrieving
+    // assets by ID -- which means '_context' is then also available on the references; should now work since
+    // MainObject is set as the default implementation for Reference
 
     /**
      * The '_name' property of a Reference is equivalent to its 'name' property, but will always be
