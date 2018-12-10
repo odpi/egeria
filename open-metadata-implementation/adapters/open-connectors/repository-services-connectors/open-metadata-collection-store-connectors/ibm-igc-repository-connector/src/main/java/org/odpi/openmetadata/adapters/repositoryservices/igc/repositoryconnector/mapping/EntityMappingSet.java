@@ -12,9 +12,11 @@ import java.util.Map;
 public class EntityMappingSet {
 
     private Map<String, EntityMapping> mappingByIgcAssetType;
+    private Map<String, EntityMapping> mappingByTypeDefGUID;
 
     public EntityMappingSet() {
         mappingByIgcAssetType = new HashMap<>();
+        mappingByTypeDefGUID = new HashMap<>();
     }
 
     /**
@@ -87,7 +89,7 @@ public class EntityMappingSet {
     }
 
     /**
-     * Indicates whether the provided IGC asset type is mapped (true) or not (false)
+     * Indicates whether the provided IGC asset type is mapped (true) or not (false).
      *
      * @param assetType the IGC asset type for which to check for a mapping
      * @return boolean
@@ -95,6 +97,22 @@ public class EntityMappingSet {
     public boolean isIgcAssetTypeMapped(String assetType) {
         return mappingByIgcAssetType.containsKey(assetType);
     }
+
+    /**
+     * Retrieves the EntityMapping defined for the provided OMRS TypeDef.
+     *
+     * @param guid unique ID of the OMRS TypeDef
+     * @return EntityMapping
+     */
+    public EntityMapping getByTypeDefGUID(String guid) { return mappingByTypeDefGUID.get(guid); }
+
+    /**
+     * Indicates whether the provided OMRS TypeDef is mapped (true) or not (false).
+     *
+     * @param guid unique ID of the OMRS TypeDef
+     * @return boolean
+     */
+    public boolean isTypeDefMapped(String guid) { return mappingByTypeDefGUID.containsKey(guid); }
 
     /**
      * Adds a new mapping to the set of mappings.
@@ -108,12 +126,14 @@ public class EntityMappingSet {
                     TypeDef omrsTypeDef,
                     Class mappingClass,
                     Class igcPOJO) {
-        mappingByIgcAssetType.put(igcAssetTypeName, new EntityMapping(
+        EntityMapping em = new EntityMapping(
                 igcAssetTypeName,
                 omrsTypeDef,
                 mappingClass,
                 igcPOJO
-        ));
+        );
+        mappingByIgcAssetType.put(igcAssetTypeName, em);
+        mappingByTypeDefGUID.put(omrsTypeDef.getGUID(), em);
     }
 
     /**
@@ -134,6 +154,9 @@ public class EntityMappingSet {
         private TypeDef omrsTypeDef;
         private Class mappingClass;
         private Class igcPOJO;
+
+        private PropertyMappingSet properties;
+        private RelationshipMappingSet relationships;
 
         public EntityMapping(String igcAssetType,
                              TypeDef omrsTypeDef,

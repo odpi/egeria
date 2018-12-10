@@ -161,7 +161,7 @@ public class ReferenceableMapper extends ReferenceMapper {
         // Merge together all the properties we want to map
         String[] allProps = ReferenceMapper.concatAll(
                 classificationProperties.toArray(new String[0]),
-                PROPERTIES.getIgcPropertyNames()
+                PROPERTIES.getIgcPropertyNames().toArray(new String[0])
         );
 
         // Retrieve the full details we'll require for summary BEFORE handing off to superclass
@@ -186,7 +186,7 @@ public class ReferenceableMapper extends ReferenceMapper {
 
         // Merge the detailed properties together (MainObject and more specific POJO mappings that were passed in)
         String[] allProps = ReferenceMapper.concatAll(
-                propertyMap.getIgcPropertyNames(),
+                propertyMap.getIgcPropertyNames().toArray(new String[0]),
                 classificationProperties.toArray(new String[0])
         );
 
@@ -252,12 +252,12 @@ public class ReferenceableMapper extends ReferenceMapper {
             instanceProperties.setProperty("qualifiedName", getPrimitivePropertyValue(qualifiedName));
 
             // Then we'll iterate through the provided mappings to set an OMRS instance property for each one
-            for (int i = 0; i < mappings.size(); i++) {
-                String omrsAttribute = mappings.get(i).getOmrsEntityAttr();
+            for (String igcPropertyName : mappings.getIgcPropertyNames()) {
+                String omrsAttribute = mappings.getOmrsPropertyName(igcPropertyName);
                 if (omrsAttribute != null) {
                     instanceProperties.setProperty(
                             omrsAttribute,
-                            getPrimitivePropertyValue(getPropertyByName.invoke(me, mappings.get(i).getIgcPropertyName()))
+                            getPrimitivePropertyValue(getPropertyByName.invoke(me, igcPropertyName))
                     );
                 }
             }
