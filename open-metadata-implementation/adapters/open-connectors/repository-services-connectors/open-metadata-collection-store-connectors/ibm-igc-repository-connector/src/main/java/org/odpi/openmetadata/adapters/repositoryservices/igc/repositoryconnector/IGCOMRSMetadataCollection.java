@@ -5,7 +5,7 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestClient;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.MainObject;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
-import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.MainObjectMapper;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollectionBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
@@ -13,34 +13,32 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
 
+    private static final Logger log = LoggerFactory.getLogger(IGCOMRSMetadataCollection.class);
+
     private IGCRestClient igcRestClient;
     public static final String MAPPING_PKG = "org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.";
 
-    public static final String[] IMPLEMENTED_OBJECTS = {
-            "Category",
-            "Term"
-//            "InformationGovernancePolicy",
-//            "InformationGovernanceRule",
-//            "DatabaseTable",
-//            "DatabaseColumn",
-//            "DataFile",
-//            "DataFileRecord",
-//            "DataFileField",
-//            "DataClass"
-    };
+    private Class defaultMapper;
+    private EntityMappingSet implementedEntities = new EntityMappingSet();
+    private String igcVersion;
 
     /**
      * @param parentConnector      connector that this metadata collection supports.
@@ -58,6 +56,107 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                                      String metadataCollectionId) {
         super(parentConnector, repositoryName, repositoryHelper, repositoryValidator, metadataCollectionId);
         this.igcRestClient = parentConnector.getIGCRestClient();
+        this.igcVersion = parentConnector.getIGCVersion();
+        try {
+            this.defaultMapper = Class.forName(MAPPING_PKG + "ReferenceableMapper");
+        } catch (ClassNotFoundException e) {
+            log.error("Unable to find default ReferenceableMapper class: " + MAPPING_PKG + "ReferenceableMapper");
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Verify that a definition of a TypeDef is either new or matches the definition already stored.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param typeDef TypeDef structure describing the TypeDef to test.
+     * @return boolean true means the TypeDef matches the local definition; false means the TypeDef is not known.
+     * @throws InvalidParameterException the TypeDef is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws TypeDefNotSupportedException the repository is not able to support this TypeDef.
+     * @throws TypeDefConflictException the new TypeDef conflicts with an existing TypeDef.
+     * @throws InvalidTypeDefException the new TypeDef has invalid contents.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public boolean verifyTypeDef(String  userId,
+                                 TypeDef typeDef) throws InvalidParameterException,
+            RepositoryErrorException,
+            TypeDefNotSupportedException,
+            TypeDefConflictException,
+            InvalidTypeDefException,
+            UserNotAuthorizedException
+    {
+        final String  methodName           = "verifyTypeDef";
+        final String  typeDefParameterName = "typeDef";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateTypeDef(repositoryName, typeDefParameterName, typeDef, methodName);
+
+        // TODO: approach below will work for EntityDefs, but not for ClassificationDef or RelationshipDefs...
+        //  - maybe only possible to cover all via getAllTypes?
+
+        String omrsTypeDefName = typeDef.getName();
+
+        boolean bMapperExists = false;
+
+        // See if we have a Mapper defined for the class -- if so, it's implemented
+        try {
+
+            Class mappingClass = Class.forName(MAPPING_PKG + omrsTypeDefName + "Mapper");
+            bMapperExists = true;
+
+            // Assuming we have some mapping, get the name of the IGC object involved in the mapping and from that
+            // attempt to retrieve a POJO object to (de-)serialise that IGC asset type
+            Field igcType;
+            try {
+                igcType = mappingClass.getDeclaredField("igcType");
+            } catch (NoSuchFieldException e) {
+                igcType = ReferenceMapper.recursePropertyByName("igcType", mappingClass);
+            }
+            if (igcType != null) {
+
+                igcType.setAccessible(true);
+
+                Constructor constructor = mappingClass.getConstructor(MainObject.class, IGCOMRSRepositoryConnector.class, String.class);
+                ReferenceableMapper referenceMapper = (ReferenceableMapper) constructor.newInstance(
+                        null,
+                        ((IGCOMRSRepositoryConnector) parentConnector),
+                        userId
+                );
+
+                String igcAssetTypeName = (String) igcType.get(referenceMapper);
+                String pojoClassName = ReferenceMapper.getCamelCase(igcAssetTypeName);
+
+                try {
+                    Class pojoClass = Class.forName(ReferenceMapper.IGC_REST_GENERATED_MODEL_PKG + "." + igcVersion + "." + pojoClassName);
+                    implementedEntities.put(
+                            igcAssetTypeName,
+                            typeDef,
+                            mappingClass,
+                            pojoClass
+                    );
+                    this.igcRestClient.registerPOJO(pojoClass);
+
+                } catch (ClassNotFoundException e) {
+                    log.info("Unable to find POJO for: " + pojoClassName);
+                    e.printStackTrace();
+                }
+
+            }
+
+        } catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            log.info("Unable to find Mapper for: " + omrsTypeDefName);
+            e.printStackTrace();
+        }
+
+        return bMapperExists;
+
     }
 
     /**
@@ -166,27 +265,26 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                         errorCode.getUserAction());
             } else {
 
-                String mapperClassName = MAPPING_PKG + getCamelCase(asset.getType()) + "Mapper";
+                Class clazz = getMapperClass(asset.getType());
 
                 try {
 
-                    Class clazz = Class.forName(mapperClassName);
                     Constructor constructor = clazz.getConstructor(MainObject.class, IGCOMRSRepositoryConnector.class, String.class);
-                    MainObjectMapper referenceMapper = (MainObjectMapper) constructor.newInstance(
+                    ReferenceableMapper referenceMapper = (ReferenceableMapper) constructor.newInstance(
                             ((MainObject) asset),
                             ((IGCOMRSRepositoryConnector) parentConnector),
                             userId
                     );
 
-                    // 2. Apply the mapping to the object, and retrieve the resulting EntityDetail
+                    // 2. Apply the mapping to the object, and retrieve the resulting relationships
                     alRelationships = referenceMapper.getOMRSRelationships(
                             relationshipTypeGUID,
                             fromRelationshipElement,
                             sequencingOrder,
                             pageSize);
 
-                } catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-                    // If we cannot find the Mapper class, print a stack trace and raise error that it is not known
+                } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                    // If we cannot find what we expect in the Mapper class, print a stack trace and raise error that it is not known
                     e.printStackTrace();
                     OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_NOT_KNOWN;
                     String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
@@ -465,13 +563,12 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         } else {
 
             // Otherwise, retrieve the mapping dynamically based on the type of asset
-            String mapperClassName = MAPPING_PKG + getCamelCase(asset.getType()) + "Mapper";
+            Class clazz = getMapperClass(asset.getType());
 
             try {
 
-                Class clazz = Class.forName(mapperClassName);
                 Constructor constructor = clazz.getConstructor(MainObject.class, IGCOMRSRepositoryConnector.class, String.class);
-                MainObjectMapper referenceMapper = (MainObjectMapper) constructor.newInstance(
+                ReferenceableMapper referenceMapper = (ReferenceableMapper) constructor.newInstance(
                         ((MainObject) asset),
                         ((IGCOMRSRepositoryConnector) parentConnector),
                         userId
@@ -480,12 +577,14 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                 // 2. Apply the mapping to the object, and retrieve the resulting EntityDetail
                 detail = referenceMapper.getOMRSEntityDetail();
 
-            } catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-                // If we cannot find the Mapper class, print a stack trace and raise error that it is not known
+            } catch (ClassCastException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                // If we cannot find what we expect in the Mapper class, print a stack trace and raise error that it is not known
                 e.printStackTrace();
                 OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_NOT_KNOWN;
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                        this.getClass().getName(),
+                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(asset.getType(),
+                        null,
+                        guid,
+                        methodName,
                         repositoryName);
                 throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
                         this.getClass().getName(),
@@ -502,18 +601,17 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
     }
 
     /**
-     * Converts an IGC type or property (something_like_this) into a camelcase class name (SomethingLikeThis).
+     * Retrieves the class to use for mapping the provided IGC asset type to an OMRS entity.
      *
-     * @param input
-     * @return String
+     * @param igcAssetType the name of the IGC asset type
+     * @return Class
      */
-    public static final String getCamelCase(String input) {
-        StringBuilder sb = new StringBuilder(input.length());
-        for (String token : input.split("_")) {
-            sb.append(token.substring(0, 1).toUpperCase());
-            sb.append(token.substring(1).toLowerCase());
+    public Class getMapperClass(String igcAssetType) {
+        Class mapperClass = implementedEntities.getMappingClassForAssetType(igcAssetType);
+        if (mapperClass == null) {
+            mapperClass = this.defaultMapper;
         }
-        return sb.toString();
+        return mapperClass;
     }
 
 }

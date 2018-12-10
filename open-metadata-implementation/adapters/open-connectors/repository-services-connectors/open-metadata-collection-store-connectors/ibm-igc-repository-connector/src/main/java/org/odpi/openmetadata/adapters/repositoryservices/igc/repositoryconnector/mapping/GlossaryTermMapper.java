@@ -17,7 +17,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorExceptio
 /**
  * Handles mapping between an IGC 'term' object and an OMRS 'GlossaryTerm' object.
  */
-public class TermMapper extends MainObjectMapper {
+public class GlossaryTermMapper extends ReferenceableMapper {
 
     /**
      * Sets the basic criteria to use for mapping between an IGC 'term' object and an OMRS 'GlossaryTerm' object.
@@ -26,16 +26,18 @@ public class TermMapper extends MainObjectMapper {
      * @param igcomrsRepositoryConnector the IGC repository connector to use for retrieving any additional info required
      * @param userId the userId of the user doing any further detailed information retrievals (currently unused)
      */
-    public TermMapper(MainObject term, IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {
+    public GlossaryTermMapper(MainObject term, IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {
 
         // Start by calling the superclass's constructor to initialise the Mapper
-        super(term, igcomrsRepositoryConnector, userId, "Term");
+        super(
+                term,
+                "term",
+                "GlossaryTerm",
+                igcomrsRepositoryConnector,
+                userId
+        );
 
-        // Then define the types this Mapper handles
-        igcType = "term";               // the IGC type name
-        omrsType = "GlossaryTerm";      // the OMRS type name
-
-        // The list of properties that should be mapped (IGC property <-> OMRS property)
+        // The list of properties that should be mapped
         PROPERTIES.put("name", "displayName");
         PROPERTIES.put("short_description", "summary");
         PROPERTIES.put("long_description", "description");
@@ -43,7 +45,7 @@ public class TermMapper extends MainObjectMapper {
         PROPERTIES.put("abbreviation", "abbreviation");
         PROPERTIES.put("usage", "usage");
 
-        // The list of relationships that should be mapped (IGC types <-> OMRS types; IGC property <-> OMRS Relationship)
+        // The list of relationships that should be mapped
         RELATIONSHIPS.put(
                 "parent_category",
                 "TermCategorization",
