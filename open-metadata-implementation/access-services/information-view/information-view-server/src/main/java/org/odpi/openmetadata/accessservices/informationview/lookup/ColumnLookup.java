@@ -29,10 +29,10 @@ public class ColumnLookup extends EntityLookup<DatabaseColumnSource> {
     public EntityDetail lookupEntity(DatabaseColumnSource source) throws Exception {
         EntityDetail tableEntity = parentChain.lookupEntity(source.getTableSource());
 
-        List<Relationship> relationships = entitiesCreatorHelper.getRelationships(Constants.ASSET_SCHEMA_TYPE, tableEntity.getGUID());
-        List<String> allSchemaTypeGuids = relationships.stream().map(e -> e.getEntityTwoProxy().getGUID()).collect(Collectors.toList());
+        List<Relationship> relationships = entitiesCreatorHelper.getRelationships(Constants.SCHEMA_ATTRIBUTE_TYPE, tableEntity.getGUID());
+        List<String> allTableTypeGuids = relationships.stream().map(e -> e.getEntityTwoProxy().getGUID()).collect(Collectors.toList());
 
-        List<Relationship> allSchemaTypeToTableRelationships = allSchemaTypeGuids.stream().flatMap(e -> {
+        List<Relationship> allTableTypeToColumnRelationships = allTableTypeGuids.stream().flatMap(e -> {
             try {
                 return entitiesCreatorHelper.getRelationships(Constants.ATTRIBUTE_FOR_SCHEMA, e).stream();
             } catch (Exception exception) {
@@ -40,7 +40,7 @@ public class ColumnLookup extends EntityLookup<DatabaseColumnSource> {
             }
         }).collect(Collectors.toList());
 
-        Set<String> allLinkedColumnsGuids = allSchemaTypeToTableRelationships.stream().map(e -> e.getEntityTwoProxy().getGUID()).collect(Collectors.toSet());
+        Set<String> allLinkedColumnsGuids = allTableTypeToColumnRelationships.stream().map(e -> e.getEntityTwoProxy().getGUID()).collect(Collectors.toSet());
         List<EntityDetail> allLinkedColumnsList = allLinkedColumnsGuids.stream().map(guid -> {
             try {
                 return enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, guid);

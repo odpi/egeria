@@ -12,6 +12,7 @@ import org.odpi.openmetadata.accessservices.informationview.contentmanager.Repor
 import org.odpi.openmetadata.accessservices.informationview.events.ReportRequestBody;
 import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
+import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesBuilder;
 import org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositoryconnector.InMemoryOMRSRepositoryConnectorProvider;
 import org.odpi.openmetadata.adminservices.configuration.properties.OpenMetadataExchangeRule;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
@@ -23,6 +24,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorTyp
 import org.odpi.openmetadata.repositoryservices.archivemanager.OMRSArchiveManager;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
@@ -126,6 +128,7 @@ public class ReportCreationTest {
 
         String payload = FileUtils.readFileToString(new File("./src/test/resources/report1.json"), "UTF-8");
         ReportRequestBody request = OBJECT_MAPPER.readValue(payload, ReportRequestBody.class);
+        populateRepository();
         reportCreator.createReportModel(request);
         EntityDetail reportEntity = entitiesCreatorHelper.getEntity(Constants.DEPLOYED_REPORT, "powerbi-server.report_number_35");
         assertNotNull("Report was not created", reportEntity);
@@ -180,6 +183,171 @@ public class ReportCreationTest {
         assertEquals("Role of the employee", ((PrimitivePropertyValue) roleOfTheEmployee.getProperties().getPropertyValue(Constants.NAME)).getPrimitiveValue());
         assertEquals("upper", ((PrimitivePropertyValue) roleOfTheEmployee.getProperties().getPropertyValue(Constants.FORMULA)).getPrimitiveValue());
 
+    }
+
+    private void populateRepository() throws Exception {
+
+        String qualifiedNameForEndpoint = "***REMOVED***";
+        InstanceProperties endpointProperties = new EntityPropertiesBuilder()
+                .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForEndpoint)
+                .withStringProperty(Constants.NAME, qualifiedNameForEndpoint)
+                .withStringProperty(Constants.NETWORK_ADDRESS, "***REMOVED***")
+                .withStringProperty(Constants.PROTOCOL, "")
+                .build();
+        EntityDetail endpointEntity = entitiesCreatorHelper.addEntity(Constants.ENDPOINT,
+                qualifiedNameForEndpoint,
+                endpointProperties);
+
+        String qualifiedNameForConnection = qualifiedNameForEndpoint + "." + "";
+        InstanceProperties connectionProperties = new EntityPropertiesBuilder()
+                .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForConnection)
+                .withStringProperty(Constants.DESCRIPTION, "Connection to " + qualifiedNameForConnection)
+                .build();
+        EntityDetail connectionEntity = entitiesCreatorHelper.addEntity(Constants.CONNECTION,
+                qualifiedNameForConnection, connectionProperties);
+
+        entitiesCreatorHelper.addRelationship(Constants.CONNECTION_TO_ENDPOINT,
+                endpointEntity.getGUID(),
+                connectionEntity.getGUID(),
+                Constants.INFORMATION_VIEW_OMAS_NAME,
+                new InstanceProperties());
+
+
+        String qualifiedNameForDataStore = qualifiedNameForConnection + "." + "XE";
+        InstanceProperties dataStoreProperties = new EntityPropertiesBuilder()
+                .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForDataStore)
+                .withStringProperty(Constants.NAME, "XE")
+                .build();
+        EntityDetail dataStore = entitiesCreatorHelper.addEntity(Constants.DATA_STORE,
+                qualifiedNameForDataStore, dataStoreProperties);
+
+
+        entitiesCreatorHelper.addRelationship(Constants.CONNECTION_TO_ASSET,
+                connectionEntity.getGUID(),
+                dataStore.getGUID(),
+                Constants.INFORMATION_VIEW_OMAS_NAME,
+                new InstanceProperties());
+
+
+        String qualifiedNameForInformationView = qualifiedNameForDataStore + "." + "HR";
+        InstanceProperties ivProperties = new EntityPropertiesBuilder()
+                .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForInformationView)
+                .withStringProperty(Constants.NAME, "HR")
+                .withStringProperty(Constants.OWNER, "")
+                .withStringProperty(Constants.DESCRIPTION, "This asset is an " + "information " + "view")
+                .build();
+        EntityDetail informationViewEntity = entitiesCreatorHelper.addEntity(Constants.INFORMATION_VIEW,
+                qualifiedNameForInformationView, ivProperties);
+
+        entitiesCreatorHelper.addRelationship(Constants.DATA_CONTENT_FOR_DATASET,
+                dataStore.getGUID(),
+                informationViewEntity.getGUID(),
+                Constants.INFORMATION_VIEW_OMAS_NAME,
+                new InstanceProperties());
+
+
+        String qualifiedNameForDbSchemaType = qualifiedNameForInformationView + Constants.TYPE_SUFFIX;
+        InstanceProperties dbSchemaTypeProperties = new EntityPropertiesBuilder()
+                .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForDbSchemaType)
+                .withStringProperty(Constants.DISPLAY_NAME, "HR" + Constants.TYPE_SUFFIX)
+                .withStringProperty(Constants.AUTHOR, "")
+                .withStringProperty(Constants.USAGE, "")
+                .withStringProperty(Constants.ENCODING_STANDARD, "").build();
+        EntityDetail relationalDbSchemaType = entitiesCreatorHelper.addEntity(Constants.RELATIONAL_DB_SCHEMA_TYPE,
+                qualifiedNameForDbSchemaType,
+                dbSchemaTypeProperties);
+
+        entitiesCreatorHelper.addRelationship(Constants.ASSET_SCHEMA_TYPE,
+                informationViewEntity.getGUID(),
+                relationalDbSchemaType.getGUID(),
+                Constants.INFORMATION_VIEW_OMAS_NAME,
+                new InstanceProperties());
+
+
+        String qualifiedNameForTableType = qualifiedNameForInformationView + "." + "EMPLOYEE" + Constants.TYPE_SUFFIX;
+        InstanceProperties tableTypeProperties = new EntityPropertiesBuilder()
+                .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForTableType)
+                .withStringProperty(Constants.DISPLAY_NAME, "EMPLOYEE" + Constants.TYPE_SUFFIX)
+                .withStringProperty(Constants.AUTHOR, "")
+                .withStringProperty(Constants.USAGE, "")
+                .withStringProperty(Constants.ENCODING_STANDARD, "")
+                .build();
+        EntityDetail tableTypeEntity = entitiesCreatorHelper.addEntity(Constants.RELATIONAL_TABLE_TYPE,
+                qualifiedNameForTableType,
+                tableTypeProperties);
+
+        String qualifiedNameForTable = qualifiedNameForInformationView + "." + "EMPLOYEE";
+        InstanceProperties tableProperties = new EntityPropertiesBuilder()
+                .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForTable)
+                .withStringProperty(Constants.ATTRIBUTE_NAME, "EMPLOYEE")
+                .build();
+        EntityDetail tableEntity = entitiesCreatorHelper.addEntity(Constants.RELATIONAL_TABLE,
+                qualifiedNameForTable,
+                tableProperties);
+
+        entitiesCreatorHelper.addRelationship(Constants.SCHEMA_ATTRIBUTE_TYPE,
+                tableEntity.getGUID(),
+                tableTypeEntity.getGUID(),
+                Constants.INFORMATION_VIEW_OMAS_NAME,
+                new InstanceProperties());
+        entitiesCreatorHelper.addRelationship(Constants.ATTRIBUTE_FOR_SCHEMA,
+                relationalDbSchemaType.getGUID(),
+                tableEntity.getGUID(),
+                Constants.INFORMATION_VIEW_OMAS_NAME,
+                new InstanceProperties());
+
+
+        addColumn(tableTypeEntity, qualifiedNameForTable, "FNAME");
+        addColumn(tableTypeEntity, qualifiedNameForTable, "LNAME");
+        addColumn(tableTypeEntity, qualifiedNameForTable, "ROLE");
+
+
+    }
+
+    private void addColumn(EntityDetail tableTypeEntity, String qualifiedNameForTable, String columnName) throws Exception {
+        String qualifiedNameColumnType = qualifiedNameForTable + "." + columnName + Constants.TYPE_SUFFIX;
+        InstanceProperties columnTypeProperties = new EntityPropertiesBuilder()
+                .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameColumnType)
+                .withStringProperty(Constants.DISPLAY_NAME, columnName + Constants.TYPE_SUFFIX)
+                .withStringProperty(Constants.AUTHOR, "")
+                .withStringProperty(Constants.USAGE, "")
+                .withStringProperty(Constants.ENCODING_STANDARD, "")
+                .withStringProperty(Constants.DATA_TYPE, "VARCHAR2")
+                .build();
+        EntityDetail columnTypeEntity = entitiesCreatorHelper.addEntity(Constants.RELATIONAL_COLUMN_TYPE,
+                qualifiedNameColumnType,
+                columnTypeProperties);
+
+        String qualifiedNameForColumn = qualifiedNameForTable + "." + columnName;
+        InstanceProperties columnProperties = new EntityPropertiesBuilder()
+                .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForColumn)
+                .withStringProperty(Constants.ATTRIBUTE_NAME, columnName)
+                .withStringProperty(Constants.FORMULA, "")
+                .withIntegerProperty(Constants.ELEMENT_POSITION_NAME, 0)
+                .build();
+        EntityDetail derivedColumnEntity = entitiesCreatorHelper.addEntity(Constants.DERIVED_RELATIONAL_COLUMN,
+                qualifiedNameForColumn,
+                columnProperties);
+
+        InstanceProperties schemaQueryImplProperties = new EntityPropertiesBuilder()
+                .withStringProperty(Constants.QUERY, "")
+                .build();
+
+        entitiesCreatorHelper.addRelationship(Constants.SCHEMA_ATTRIBUTE_TYPE,
+                derivedColumnEntity.getGUID(),
+                columnTypeEntity.getGUID(),
+                Constants.INFORMATION_VIEW_OMAS_NAME,
+                new InstanceProperties());
+//        entitiesCreatorHelper.addRelationship(Constants.SEMANTIC_ASSIGNMENT,
+//                derivedColumnEntity.getGUID(),
+//                derivedColumn.getSourceColumn().getBusinessTerm().getGuid(),
+//                Constants.INFORMATION_VIEW_OMAS_NAME,
+//                new InstanceProperties());
+        entitiesCreatorHelper.addRelationship(Constants.ATTRIBUTE_FOR_SCHEMA,
+                tableTypeEntity.getGUID(),
+                derivedColumnEntity.getGUID(),
+                Constants.INFORMATION_VIEW_OMAS_NAME,
+                new InstanceProperties());
     }
 
 }

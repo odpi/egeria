@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 public class DatabaseLookup extends EntityLookup<TableSource> {
 
     private static final Logger log = LoggerFactory.getLogger(DatabaseLookup.class);
-    private EntityLookup parentChain;
 
     public DatabaseLookup(OMRSRepositoryConnector enterpriseConnector, EntitiesCreatorHelper entitiesCreatorHelper, EntityLookup parentChain, OMRSAuditLog auditLog) {
         super(enterpriseConnector, entitiesCreatorHelper, parentChain, auditLog);
