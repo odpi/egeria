@@ -44,16 +44,6 @@ components (to be aggregated later) and can be ignored.
 
 **Running Unit Tests**
 
-Unit tests are based on 'spock'.
-
-Due to a current bug in the pom tests do not run automatically from maven
-
-To run within IntelliJ right click on 
-plugin/src/test or impersonation/src/test and  open up the groovy/spock test file and run from there by clicking on the green triangles. Other
-modules will be coded in a similar way
-
-
-
 **Deploying the plugin to Gaian**
 
 First modify the 'launchGaianServer.sh' script provided by Gaian to add additional directories to the classpath, which is where
@@ -290,4 +280,4 @@ exists and is writeable
 _Cannot create gaian service on ranger server_
 
 If you get an error 'cannot find class XXX' copy the ranger gaian plugin to the ranger server as 
-documented above in the section on deploying the servicedef. 
+documented above in the section on deploying the servicedef.
