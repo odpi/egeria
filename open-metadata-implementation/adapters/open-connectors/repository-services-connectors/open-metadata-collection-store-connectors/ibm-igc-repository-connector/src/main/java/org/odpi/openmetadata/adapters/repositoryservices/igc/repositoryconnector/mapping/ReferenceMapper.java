@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping;
 
+import org.apache.commons.collections.map.ReferenceMap;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestClient;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.MainObject;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
@@ -15,7 +16,9 @@ import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,6 +42,8 @@ public abstract class ReferenceMapper {
     protected String omrsType;
     protected String userId;
 
+    protected ArrayList<String> otherPOJOs;
+
     protected EntitySummary summary;
     protected EntityDetail detail;
     protected ArrayList<Relationship> relationships;
@@ -59,6 +64,8 @@ public abstract class ReferenceMapper {
         this.relationships = new ArrayList<>();
         this.alreadyMappedProperties = new ArrayList<>();
 
+        this.otherPOJOs = new ArrayList<>();
+
         // fully-qualified POJO class path
         if (igcAssetTypeName.equals("main_object")) {
             this.igcPOJO = IGC_REST_COMMON_MODEL_PKG + ".MainObject";
@@ -77,6 +84,14 @@ public abstract class ReferenceMapper {
     protected List<String> getAlreadyMappedProperties() { return this.alreadyMappedProperties; }
     protected void addAlreadyMappedProperty(String propertyName) { this.alreadyMappedProperties.add(propertyName); }
     protected void addAlreadyMappedProperties(List<String> propertyNames) { this.alreadyMappedProperties.addAll(propertyNames); }
+
+    public void addOtherIGCAssetType(String igcAssetTypeName) {
+        this.otherPOJOs.add(IGC_REST_GENERATED_MODEL_PKG + "."
+                + igcomrsRepositoryConnector.getIGCVersion() + "."
+                + ReferenceMapper.getCamelCase(igcAssetTypeName));
+    }
+
+    public List<String> getOtherIGCAssetTypes() { return this.otherPOJOs; }
 
     public abstract EntitySummary getOMRSEntitySummary();
     public abstract EntityDetail getOMRSEntityDetail();
@@ -304,6 +319,125 @@ public abstract class ReferenceMapper {
             field = ReferenceMapper.recursePropertyByName(name, this.getClass());
         }
         return field;
+    }
+
+    /**
+     * Introspect a mapping class to retrieve a Mapper of that type.
+     *
+     * @param mappingClass the mapping class to retrieve an instance of
+     * @param igcomrsRepositoryConnector connectivity to an IGC environment via an OMRS connector
+     * @param userId the user through which to retrieve the mapping (currently unused)
+     * @return ReferenceableMapper
+     */
+    public static final ReferenceableMapper getMapper(Class mappingClass, IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {
+
+        ReferenceableMapper referenceableMapper = null;
+
+        try {
+            Constructor constructor = mappingClass.getConstructor(MainObject.class, IGCOMRSRepositoryConnector.class, String.class);
+            referenceableMapper = (ReferenceableMapper) constructor.newInstance(
+                    null,
+                    ((IGCOMRSRepositoryConnector) igcomrsRepositoryConnector),
+                    userId
+            );
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+
+        return referenceableMapper;
+
+    }
+
+    /**
+     * Retrieve the IGC asset type covered by the provided mapping.
+     *
+     * @param mappingClass the mapping class to retrieve the IGC asset type for
+     * @param igcomrsRepositoryConnector connectivity to an IGC environment via an OMRS connector
+     * @param userId the user through which to retrieve the mapping (currently unused)
+     * @return String
+     */
+    public static final String getIgcTypeFromMapping(Class mappingClass, IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {
+
+        String igcAssetTypeName = null;
+
+        Field igcType;
+        try {
+            igcType = mappingClass.getDeclaredField("igcType");
+        } catch (NoSuchFieldException e) {
+            igcType = ReferenceMapper.recursePropertyByName("igcType", mappingClass);
+        }
+        if (igcType != null) {
+
+            igcType.setAccessible(true);
+            ReferenceableMapper referenceableMapper = ReferenceMapper.getMapper(mappingClass, igcomrsRepositoryConnector, userId);
+            try {
+                igcAssetTypeName = (String) igcType.get(referenceableMapper);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        return igcAssetTypeName;
+
+    }
+
+    /**
+     * Retrieve any additional POJO objects that are required by the provided mapping.
+     *
+     * @param mappingClass the mapping class for which to retrieve any additional POJOs
+     * @param igcomrsRepositoryConnector connectivity to an IGC environment via an OMRS connector
+     * @param userId the user through which to retrieve the mapping (currently unused)
+     * @return
+     */
+    public static final List<String> getAdditionalIgcPOJOs(Class mappingClass, IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {
+
+        List<String> extraPOJOs = null;
+
+        try {
+            Method getOtherPOJOs = mappingClass.getMethod("getOtherIGCAssetTypes", null);
+            ReferenceableMapper referenceableMapper = ReferenceMapper.getMapper(mappingClass, igcomrsRepositoryConnector, userId);
+            extraPOJOs = (List<String>) getOtherPOJOs.invoke(referenceableMapper);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+
+        return extraPOJOs;
+
+    }
+
+    /**
+     * Retrieve the properties mapped by the provided class.
+     *
+     * @param mappingClass the mapping class that defines the mapped properties
+     * @param igcomrsRepositoryConnector connectivity to an IGC environment via an OMRS connector
+     * @param userId the user through which to retrieve the mapping (currently unused)
+     * @return PropertyMappingSet
+     */
+    public static final PropertyMappingSet getPropertiesFromMapping(Class mappingClass, IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {
+
+        PropertyMappingSet propertyMappingSet = null;
+
+        Field properties;
+        try {
+            properties = mappingClass.getDeclaredField("PROPERTIES");
+        } catch (NoSuchFieldException e) {
+            properties = ReferenceMapper.recursePropertyByName("PROPERTIES", mappingClass);
+        }
+        if (properties != null) {
+
+            properties.setAccessible(true);
+            ReferenceableMapper referenceableMapper = ReferenceMapper.getMapper(mappingClass, igcomrsRepositoryConnector, userId);
+            try {
+                propertyMappingSet = (PropertyMappingSet) properties.get(referenceableMapper);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        return propertyMappingSet;
+
     }
 
 }
