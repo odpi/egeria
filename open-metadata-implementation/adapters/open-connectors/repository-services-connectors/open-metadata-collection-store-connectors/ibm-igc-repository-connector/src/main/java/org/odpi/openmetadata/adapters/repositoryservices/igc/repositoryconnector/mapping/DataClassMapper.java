@@ -38,6 +38,10 @@ public class DataClassMapper extends ReferenceableMapper {
                 igcomrsRepositoryConnector, userId
         );
 
+        // IGC 'data_class' is one of the few objects with a relationship-specific asset type associated;
+        // so we need to ensure that is also added to the assets to be handled by this mapper
+        addOtherIGCAssetType("classification");
+
         // The list of properties that should be mapped
         PROPERTIES.put("name", "name");
         PROPERTIES.put("short_description", "description");
@@ -243,7 +247,7 @@ public class DataClassMapper extends ReferenceableMapper {
                 // Only proceed with the classified object if it is not a 'main_object' asset
                 // (in this scenario, 'main_object' represents ColumnAnalysisMaster objects that are not accessible
                 //  and will throw bad request (400) REST API errors)
-                if (!classifiedObj.getType().equals("main_object")) {
+                if (classifiedObj != null && !classifiedObj.getType().equals("main_object")) {
                     try {
 
                         Relationship omrsRelationship = getMappedRelationship(
@@ -310,7 +314,7 @@ public class DataClassMapper extends ReferenceableMapper {
         igcSearch.addType("data_file_field");
         igcSearch.addType("database_column");
         igcSearch.addProperty("selected_classification");
-        igcSearch.addProperties(MainObjectMapper.BASIC_PROPERTIES);
+        igcSearch.addProperties(ReferenceableMapper.BASIC_PROPERTIES);
         ReferenceList assetsWithSelected = igcomrsRepositoryConnector.getIGCRestClient().search(igcSearch);
 
         assetsWithSelected.getAllPages(igcomrsRepositoryConnector.getIGCRestClient());
