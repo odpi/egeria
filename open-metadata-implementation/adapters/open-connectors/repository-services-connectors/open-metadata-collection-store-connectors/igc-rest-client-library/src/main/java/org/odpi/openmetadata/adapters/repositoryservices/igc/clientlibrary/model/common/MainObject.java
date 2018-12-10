@@ -18,7 +18,7 @@ import java.util.Date;
  * Simply define a new POJO as extending this base class to inherit the attributes that are found
  * on virtually all IGC asset types.
  */
-public abstract class MainObject extends Reference {
+public class MainObject extends Reference {
 
     @JsonIgnore private Identity identity = null;
 
