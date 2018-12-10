@@ -23,6 +23,7 @@ public class IGCSearch {
     private IGCSearchConditionSet conditions;
     private List<IGCSearchSorting> sortings;
     private int pageSize = 100;
+    private int beginAt = 0;
 
     private boolean devGlossary = false;
 
@@ -125,6 +126,15 @@ public class IGCSearch {
     }
 
     /**
+     * Set the number of results to skip over before returning (ie. for paging)
+     *
+     * @param beginAt the number at which to start returning results
+     */
+    public void setBeginAt(int beginAt) {
+        this.beginAt = beginAt;
+    }
+
+    /**
      * Set whether to search the development glossary (true) or published glossary (false).
      *
      * @param on set to true to search the development glossary, or false (default) to search published
@@ -156,6 +166,9 @@ public class IGCSearch {
                 anSorts.add(sorting.getSortObject());
             }
             query.set("sorts", anSorts);
+        }
+        if (beginAt > 0) {
+            query.set("begin", nf.numberNode(beginAt));
         }
         if (devGlossary) {
             query.set("workflowMode", nf.textNode("draft"));
