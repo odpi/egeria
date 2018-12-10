@@ -148,6 +148,7 @@ public class InformationViewAdmin implements AccessServiceAdmin {
             }
         }
 
+        lookupHelper = new LookupHelper(enterpriseConnector, entitiesCreatorHelper, auditLog);
         instance = new InformationViewServicesInstance(new ReportCreator(entitiesCreatorHelper, lookupHelper, auditLog), serverName);
 
         auditCode = InformationViewAuditCode.SERVICE_INITIALIZED;
