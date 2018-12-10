@@ -7,7 +7,7 @@ package org.odpi.openmetadata.accessservices.informationview.admin;
 import org.odpi.openmetadata.accessservices.informationview.auditlog.InformationViewAuditCode;
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.ColumnContextEventBuilder;
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.EntitiesCreatorHelper;
-import org.odpi.openmetadata.accessservices.informationview.contentmanager.LookupHelper;
+import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.ReportCreator;
 import org.odpi.openmetadata.accessservices.informationview.eventprocessor.EventPublisher;
 import org.odpi.openmetadata.accessservices.informationview.listeners.InformationViewEnterpriseOmrsEventListener;

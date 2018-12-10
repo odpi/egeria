@@ -8,9 +8,9 @@ import org.apache.commons.io.FileUtils;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.EntitiesCreatorHelper;
-import org.odpi.openmetadata.accessservices.informationview.contentmanager.LookupHelper;
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.ReportCreator;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportRequestBody;
+import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositoryconnector.InMemoryOMRSRepositoryConnectorProvider;
 import org.odpi.openmetadata.adminservices.configuration.properties.OpenMetadataExchangeRule;
@@ -59,7 +59,7 @@ public class ReportCreationTest {
     public void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
         entitiesCreatorHelper = new EntitiesCreatorHelper(enterpriseConnector, auditLog);
-        lookupHelper = new LookupHelper(enterpriseConnector, auditLog);
+        lookupHelper = new LookupHelper(enterpriseConnector, entitiesCreatorHelper, auditLog);
         reportCreator = new ReportCreator(entitiesCreatorHelper, lookupHelper, auditLog);
         OMRSRepositoryConnector repositoryConnector = initializeInMemoryRepositoryConnector();
         when(enterpriseConnector.getMetadataCollection()).thenReturn(repositoryConnector.getMetadataCollection());
