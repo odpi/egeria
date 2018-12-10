@@ -2,17 +2,20 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector;
 
+import org.apache.commons.collections.map.ReferenceMap;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestClient;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.MainObject;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.ReferenceList;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearch;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchCondition;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchConditionSet;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchSorting;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollectionBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
@@ -24,10 +27,7 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
 
@@ -113,26 +113,13 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
 
             // Assuming we have some mapping, get the name of the IGC object involved in the mapping and from that
             // attempt to retrieve a POJO object to (de-)serialise that IGC asset type
-            Field igcType;
-            try {
-                igcType = mappingClass.getDeclaredField("igcType");
-            } catch (NoSuchFieldException e) {
-                igcType = ReferenceMapper.recursePropertyByName("igcType", mappingClass);
-            }
-            if (igcType != null) {
-
-                igcType.setAccessible(true);
-
-                Constructor constructor = mappingClass.getConstructor(MainObject.class, IGCOMRSRepositoryConnector.class, String.class);
-                ReferenceableMapper referenceMapper = (ReferenceableMapper) constructor.newInstance(
-                        null,
-                        ((IGCOMRSRepositoryConnector) parentConnector),
-                        userId
-                );
-
-                String igcAssetTypeName = (String) igcType.get(referenceMapper);
+            String igcAssetTypeName = ReferenceMapper.getIgcTypeFromMapping(
+                    mappingClass,
+                    (IGCOMRSRepositoryConnector)parentConnector,
+                    userId
+            );
+            if (igcAssetTypeName != null) {
                 String pojoClassName = ReferenceMapper.getCamelCase(igcAssetTypeName);
-
                 try {
                     Class pojoClass = Class.forName(ReferenceMapper.IGC_REST_GENERATED_MODEL_PKG + "." + igcVersion + "." + pojoClassName);
                     implementedEntities.put(
@@ -142,7 +129,15 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                             pojoClass
                     );
                     this.igcRestClient.registerPOJO(pojoClass);
-
+                    // Check if there are any additional POJOs needed by the mapper, and if so register those as well
+                    List<String> extraPOJOs = ReferenceMapper.getAdditionalIgcPOJOs(
+                            mappingClass,
+                            (IGCOMRSRepositoryConnector)parentConnector,
+                            userId
+                    );
+                    for (String pojoName : extraPOJOs) {
+                        this.igcRestClient.registerPOJO(Class.forName(pojoName));
+                    }
                 } catch (ClassNotFoundException e) {
                     log.info("Unable to find POJO for: " + pojoClassName);
                     e.printStackTrace();
@@ -150,7 +145,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
 
             }
 
-        } catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+        } catch (ClassNotFoundException e) {
             log.info("Unable to find Mapper for: " + omrsTypeDefName);
             e.printStackTrace();
         }
@@ -401,8 +396,88 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                     errorCode.getUserAction());
         } else {
 
-            // TODO: otherwise run a search to retrieve the matching entities
+            // Otherwise run a search across all object types (by default),
+            // or only the TypeDef provided
+            EntityMappingSet.EntityMapping mapping = null;
+            if (entityTypeGUID != null
+                    && !entityTypeGUID.equals("")
+                    && implementedEntities.isTypeDefMapped(entityTypeGUID)) {
+                mapping = implementedEntities.getByTypeDefGUID(entityTypeGUID);
+            }
+            String igcTypeToSearch = (mapping == null) ? "main_object" : mapping.getIgcAssetType();
 
+            // We need to first retrieve the mapping so we know how to translate
+            // the provided OMRS property names to IGC property names
+            PropertyMappingSet propertyMappingSet = null;
+            if (mapping != null) {
+                Class mappingClass = mapping.getMappingClass();
+                propertyMappingSet = ReferenceMapper.getPropertiesFromMapping(
+                        mappingClass,
+                        (IGCOMRSRepositoryConnector)parentConnector,
+                        userId
+                );
+            }
+
+            // Provided there is a mapping, build up a list of IGC-specific properties
+            // and search criteria, based on the values of the InstanceProperties provided
+            ArrayList<String> properties = new ArrayList<>();
+            IGCSearchConditionSet igcSearchConditionSet = new IGCSearchConditionSet();
+
+            Iterator iPropertyNames = matchProperties.getPropertyNames();
+            while (propertyMappingSet != null && iPropertyNames.hasNext()) {
+                String omrsPropertyName = (String) iPropertyNames.next();
+                String igcPropertyName = propertyMappingSet.getIgcPropertyName(omrsPropertyName);
+                if (igcPropertyName != null) {
+                    properties.add(igcPropertyName);
+                    // TODO: figure out what it is we're supposed to use as the search string / criteria...
+                    InstancePropertyValue value = matchProperties.getPropertyValue(omrsPropertyName);
+                    igcSearchConditionSet.addCondition(new IGCSearchCondition(
+                            igcPropertyName,
+                            "like %{0}%",
+                            "???"
+                    ));
+                }
+            }
+
+            IGCSearchSorting igcSearchSorting = null;
+            if (sequencingProperty == null && sequencingOrder != null) {
+                igcSearchSorting = IGCSearchSorting.sortFromNonPropertySequencingOrder(sequencingOrder);
+            }
+
+            if (matchCriteria != null) {
+                switch(matchCriteria) {
+                    case ALL:
+                        igcSearchConditionSet.setMatchAnyCondition(false);
+                        break;
+                    case ANY:
+                        igcSearchConditionSet.setMatchAnyCondition(true);
+                        break;
+                    case NONE:
+                        igcSearchConditionSet.setMatchAnyCondition(false);
+                        igcSearchConditionSet.setNegateAll(true);
+                        break;
+                }
+            }
+
+            IGCSearch igcSearch = new IGCSearch(igcTypeToSearch, properties.toArray(new String[0]), igcSearchConditionSet);
+            igcSearch.setPageSize(pageSize);
+            igcSearch.setBeginAt(fromEntityElement);
+            if (igcSearchSorting != null) {
+                igcSearch.addSortingCriteria(igcSearchSorting);
+            }
+            ReferenceList results = this.igcRestClient.search(igcSearch);
+
+            for (Reference reference : results.getItems()) {
+                EntityDetail ed = null;
+                try {
+                    ed = getEntityDetail(userId, reference.getId());
+                } catch (EntityNotKnownException | EntityProxyOnlyException e) {
+                    e.printStackTrace();
+                }
+                if (ed != null) {
+                    entityDetails.add(ed);
+                }
+            }
 
         }
 
@@ -422,11 +497,13 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
      * @param fromEntityElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
-     * @param limitResultsByStatus Must be null (relationship status is not implemented for IGC).
+     * @param limitResultsByStatus Must be null (status is not implemented for IGC).
      * @param limitResultsByClassification List of classifications that must be present on all returned entities.
+     *                                     (currently not implemented for IGC)
      * @param asOfTime Must be null (history not implemented for IGC).
      * @param sequencingProperty String name of the property that is to be used to sequence the results.
      *                           Null means do not sequence on a property name (see SequencingOrder).
+     *                           (currently not implemented for IGC)
      * @param sequencingOrder Enum defining how the results should be ordered.
      * @param pageSize the maximum number of result entities that can be returned on this request.  Zero means
      *                 unrestricted return results size.
@@ -498,8 +575,58 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                     errorCode.getUserAction());
         } else {
 
-            // TODO: otherwise run a search (OR-based, across all properties?)
+            // Otherwise run a search across all object types (by default),
+            // or only the TypeDef provided
+            EntityMappingSet.EntityMapping mapping = null;
+            if (entityTypeGUID != null
+                    && !entityTypeGUID.equals("")
+                    && implementedEntities.isTypeDefMapped(entityTypeGUID)) {
+                mapping = implementedEntities.getByTypeDefGUID(entityTypeGUID);
+            }
+            String igcTypeToSearch = (mapping == null) ? "main_object" : mapping.getIgcAssetType();
 
+            // IGC requires the set of properties against which to search; therefore
+            // we'll have to narrow down to only the common properties of all objects
+            // (so currently only the following)
+            String[] properties = new String[]{
+                    "name",
+                    "short_description",
+                    "long_description"
+            };
+
+            IGCSearchSorting igcSearchSorting = null;
+            if (sequencingProperty == null && sequencingOrder != null) {
+                igcSearchSorting = IGCSearchSorting.sortFromNonPropertySequencingOrder(sequencingOrder);
+            }
+
+            IGCSearchConditionSet igcSearchConditionSet = new IGCSearchConditionSet();
+            igcSearchConditionSet.setMatchAnyCondition(true);
+            for (String property : properties) {
+                igcSearchConditionSet.addCondition(new IGCSearchCondition(
+                        property,
+                        "like %{0}%",
+                        searchCriteria
+                ));
+            }
+            IGCSearch igcSearch = new IGCSearch(igcTypeToSearch, new String[]{"name"}, igcSearchConditionSet);
+            igcSearch.setPageSize(pageSize);
+            igcSearch.setBeginAt(fromEntityElement);
+            if (igcSearchSorting != null) {
+                igcSearch.addSortingCriteria(igcSearchSorting);
+            }
+            ReferenceList results = this.igcRestClient.search(igcSearch);
+
+            for (Reference reference : results.getItems()) {
+                EntityDetail ed = null;
+                try {
+                    ed = getEntityDetail(userId, reference.getId());
+                } catch (EntityNotKnownException | EntityProxyOnlyException e) {
+                    e.printStackTrace();
+                }
+                if (ed != null) {
+                    entityDetails.add(ed);
+                }
+            }
 
         }
 
