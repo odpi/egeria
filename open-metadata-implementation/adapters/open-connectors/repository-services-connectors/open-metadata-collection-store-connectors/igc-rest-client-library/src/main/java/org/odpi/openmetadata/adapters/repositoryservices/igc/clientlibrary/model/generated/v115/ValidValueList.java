@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v115;
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
@@ -16,9 +17,9 @@ import java.util.ArrayList;
  *  extending from this class in your own custom class is the best approach.)
  */
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ValidValueList extends MainObject {
+public class ValidValueList extends Reference {
 
-    public static final String IGC_TYPE_ID = "valid_value_list";
+    @JsonIgnore public static final String IGC_TYPE_ID = "valid_value_list";
 
     /**
      * The 'valid_values' property, displayed as 'Valid Values' in the IGC UI.
@@ -26,6 +27,16 @@ public class ValidValueList extends MainObject {
      * Will be a {@link ReferenceList} of {@link DataItemValue} objects.
      */
     protected ReferenceList valid_values;
+
+    /**
+     * The 'name' property, displayed as 'Name' in the IGC UI.
+     */
+    protected String name;
+
+    /**
+     * The 'short_description' property, displayed as 'Short Description' in the IGC UI.
+     */
+    protected String short_description;
 
     /**
      * The 'valid_value_list' property, displayed as 'Valid Value List' in the IGC UI.
@@ -44,6 +55,12 @@ public class ValidValueList extends MainObject {
 
     /** @see #valid_values */ @JsonProperty("valid_values")  public ReferenceList getValidValues() { return this.valid_values; }
     /** @see #valid_values */ @JsonProperty("valid_values")  public void setValidValues(ReferenceList valid_values) { this.valid_values = valid_values; }
+
+    /** @see #name */ @JsonProperty("name")  public String getTheName() { return this.name; }
+    /** @see #name */ @JsonProperty("name")  public void setTheName(String name) { this.name = name; }
+
+    /** @see #short_description */ @JsonProperty("short_description")  public String getShortDescription() { return this.short_description; }
+    /** @see #short_description */ @JsonProperty("short_description")  public void setShortDescription(String short_description) { this.short_description = short_description; }
 
     /** @see #valid_value_list */ @JsonProperty("valid_value_list")  public Reference getValidValueList() { return this.valid_value_list; }
     /** @see #valid_value_list */ @JsonProperty("valid_value_list")  public void setValidValueList(Reference valid_value_list) { this.valid_value_list = valid_value_list; }

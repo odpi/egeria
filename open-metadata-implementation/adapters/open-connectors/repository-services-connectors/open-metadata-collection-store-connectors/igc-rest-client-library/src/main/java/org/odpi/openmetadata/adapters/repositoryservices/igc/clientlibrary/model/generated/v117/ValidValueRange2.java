@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v117;
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
@@ -16,9 +17,9 @@ import java.util.ArrayList;
  *  extending from this class in your own custom class is the best approach.)
  */
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ValidValueRange2 extends MainObject {
+public class ValidValueRange2 extends Reference {
 
-    public static final String IGC_TYPE_ID = "validvaluerange";
+    @JsonIgnore public static final String IGC_TYPE_ID = "validvaluerange";
 
     /**
      * The 'is_max_inclusive' property, displayed as 'Is Max Inclusive' in the IGC UI.
@@ -69,6 +70,26 @@ public class ValidValueRange2 extends MainObject {
      */
     protected ReferenceList custom_attribute_def_of_has_valid_values_inverse;
 
+    /**
+     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     */
+    protected String created_by;
+
+    /**
+     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     */
+    protected Date created_on;
+
+    /**
+     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     */
+    protected String modified_by;
+
+    /**
+     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     */
+    protected Date modified_on;
+
 
     /** @see #is_max_inclusive */ @JsonProperty("is_max_inclusive")  public Boolean getIsMaxInclusive() { return this.is_max_inclusive; }
     /** @see #is_max_inclusive */ @JsonProperty("is_max_inclusive")  public void setIsMaxInclusive(Boolean is_max_inclusive) { this.is_max_inclusive = is_max_inclusive; }
@@ -96,6 +117,18 @@ public class ValidValueRange2 extends MainObject {
 
     /** @see #custom_attribute_def_of_has_valid_values_inverse */ @JsonProperty("custom_attribute_def_of_has_valid_values_inverse")  public ReferenceList getCustomAttributeDefOfHasValidValuesInverse() { return this.custom_attribute_def_of_has_valid_values_inverse; }
     /** @see #custom_attribute_def_of_has_valid_values_inverse */ @JsonProperty("custom_attribute_def_of_has_valid_values_inverse")  public void setCustomAttributeDefOfHasValidValuesInverse(ReferenceList custom_attribute_def_of_has_valid_values_inverse) { this.custom_attribute_def_of_has_valid_values_inverse = custom_attribute_def_of_has_valid_values_inverse; }
+
+    /** @see #created_by */ @JsonProperty("created_by")  public String getCreatedBy() { return this.created_by; }
+    /** @see #created_by */ @JsonProperty("created_by")  public void setCreatedBy(String created_by) { this.created_by = created_by; }
+
+    /** @see #created_on */ @JsonProperty("created_on")  public Date getCreatedOn() { return this.created_on; }
+    /** @see #created_on */ @JsonProperty("created_on")  public void setCreatedOn(Date created_on) { this.created_on = created_on; }
+
+    /** @see #modified_by */ @JsonProperty("modified_by")  public String getModifiedBy() { return this.modified_by; }
+    /** @see #modified_by */ @JsonProperty("modified_by")  public void setModifiedBy(String modified_by) { this.modified_by = modified_by; }
+
+    /** @see #modified_on */ @JsonProperty("modified_on")  public Date getModifiedOn() { return this.modified_on; }
+    /** @see #modified_on */ @JsonProperty("modified_on")  public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
 
     public static final Boolean isValidValueRange2(Object obj) { return (obj.getClass() == ValidValueRange2.class); }

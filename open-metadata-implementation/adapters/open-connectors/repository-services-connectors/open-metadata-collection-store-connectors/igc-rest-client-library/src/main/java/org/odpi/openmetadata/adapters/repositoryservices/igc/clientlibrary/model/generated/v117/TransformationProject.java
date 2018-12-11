@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v117;
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
@@ -16,9 +17,14 @@ import java.util.ArrayList;
  *  extending from this class in your own custom class is the best approach.)
  */
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class TransformationProject extends MainObject {
+public class TransformationProject extends Reference {
 
-    public static final String IGC_TYPE_ID = "transformation_project";
+    @JsonIgnore public static final String IGC_TYPE_ID = "transformation_project";
+
+    /**
+     * The 'name' property, displayed as 'Name' in the IGC UI.
+     */
+    protected String name;
 
     /**
      * The 'host_(engine)' property, displayed as 'Host (Engine)' in the IGC UI.
@@ -26,6 +32,20 @@ public class TransformationProject extends MainObject {
      * Will be a single {@link Reference} to a {@link HostEngine} object.
      */
     @JsonProperty("host_(engine)") protected Reference host__engine_;
+
+    /**
+     * The 'implements_rules' property, displayed as 'Implements Rules' in the IGC UI.
+     * <br><br>
+     * Will be a {@link ReferenceList} of {@link InformationGovernanceRule} objects.
+     */
+    protected ReferenceList implements_rules;
+
+    /**
+     * The 'governed_by_rules' property, displayed as 'Governed by Rules' in the IGC UI.
+     * <br><br>
+     * Will be a {@link ReferenceList} of {@link InformationGovernanceRule} objects.
+     */
+    protected ReferenceList governed_by_rules;
 
     /**
      * The 'include_for_lineage' property, displayed as 'Include for Lineage' in the IGC UI.
@@ -120,9 +140,38 @@ public class TransformationProject extends MainObject {
      */
     protected ReferenceList in_collections;
 
+    /**
+     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     */
+    protected String created_by;
+
+    /**
+     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     */
+    protected Date created_on;
+
+    /**
+     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     */
+    protected String modified_by;
+
+    /**
+     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     */
+    protected Date modified_on;
+
+
+    /** @see #name */ @JsonProperty("name")  public String getTheName() { return this.name; }
+    /** @see #name */ @JsonProperty("name")  public void setTheName(String name) { this.name = name; }
 
     /** @see #host__engine_ */ @JsonProperty("host_(engine)")  public Reference getHostEngine() { return this.host__engine_; }
     /** @see #host__engine_ */ @JsonProperty("host_(engine)")  public void setHostEngine(Reference host__engine_) { this.host__engine_ = host__engine_; }
+
+    /** @see #implements_rules */ @JsonProperty("implements_rules")  public ReferenceList getImplementsRules() { return this.implements_rules; }
+    /** @see #implements_rules */ @JsonProperty("implements_rules")  public void setImplementsRules(ReferenceList implements_rules) { this.implements_rules = implements_rules; }
+
+    /** @see #governed_by_rules */ @JsonProperty("governed_by_rules")  public ReferenceList getGovernedByRules() { return this.governed_by_rules; }
+    /** @see #governed_by_rules */ @JsonProperty("governed_by_rules")  public void setGovernedByRules(ReferenceList governed_by_rules) { this.governed_by_rules = governed_by_rules; }
 
     /** @see #include_for_lineage */ @JsonProperty("include_for_lineage")  public String getIncludeForLineage() { return this.include_for_lineage; }
     /** @see #include_for_lineage */ @JsonProperty("include_for_lineage")  public void setIncludeForLineage(String include_for_lineage) { this.include_for_lineage = include_for_lineage; }
@@ -162,6 +211,18 @@ public class TransformationProject extends MainObject {
 
     /** @see #in_collections */ @JsonProperty("in_collections")  public ReferenceList getInCollections() { return this.in_collections; }
     /** @see #in_collections */ @JsonProperty("in_collections")  public void setInCollections(ReferenceList in_collections) { this.in_collections = in_collections; }
+
+    /** @see #created_by */ @JsonProperty("created_by")  public String getCreatedBy() { return this.created_by; }
+    /** @see #created_by */ @JsonProperty("created_by")  public void setCreatedBy(String created_by) { this.created_by = created_by; }
+
+    /** @see #created_on */ @JsonProperty("created_on")  public Date getCreatedOn() { return this.created_on; }
+    /** @see #created_on */ @JsonProperty("created_on")  public void setCreatedOn(Date created_on) { this.created_on = created_on; }
+
+    /** @see #modified_by */ @JsonProperty("modified_by")  public String getModifiedBy() { return this.modified_by; }
+    /** @see #modified_by */ @JsonProperty("modified_by")  public void setModifiedBy(String modified_by) { this.modified_by = modified_by; }
+
+    /** @see #modified_on */ @JsonProperty("modified_on")  public Date getModifiedOn() { return this.modified_on; }
+    /** @see #modified_on */ @JsonProperty("modified_on")  public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
 
     public static final Boolean isTransformationProject(Object obj) { return (obj.getClass() == TransformationProject.class); }

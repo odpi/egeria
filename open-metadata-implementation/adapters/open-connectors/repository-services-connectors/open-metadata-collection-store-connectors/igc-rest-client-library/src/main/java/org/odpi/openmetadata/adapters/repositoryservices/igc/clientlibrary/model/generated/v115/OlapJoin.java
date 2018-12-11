@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v115;
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
@@ -16,14 +17,24 @@ import java.util.ArrayList;
  *  extending from this class in your own custom class is the best approach.)
  */
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OlapJoin extends MainObject {
+public class OlapJoin extends Reference {
 
-    public static final String IGC_TYPE_ID = "olap_join";
+    @JsonIgnore public static final String IGC_TYPE_ID = "olap_join";
+
+    /**
+     * The 'name' property, displayed as 'Join Name' in the IGC UI.
+     */
+    protected String name;
 
     /**
      * The 'business_name' property, displayed as 'Business Name' in the IGC UI.
      */
     protected String business_name;
+
+    /**
+     * The 'short_description' property, displayed as 'Short Description' in the IGC UI.
+     */
+    protected String short_description;
 
     /**
      * The 'type' property, displayed as 'Type' in the IGC UI.
@@ -65,8 +76,14 @@ public class OlapJoin extends MainObject {
     protected ReferenceList referenced_by_an_olap_cube;
 
 
+    /** @see #name */ @JsonProperty("name")  public String getTheName() { return this.name; }
+    /** @see #name */ @JsonProperty("name")  public void setTheName(String name) { this.name = name; }
+
     /** @see #business_name */ @JsonProperty("business_name")  public String getBusinessName() { return this.business_name; }
     /** @see #business_name */ @JsonProperty("business_name")  public void setBusinessName(String business_name) { this.business_name = business_name; }
+
+    /** @see #short_description */ @JsonProperty("short_description")  public String getShortDescription() { return this.short_description; }
+    /** @see #short_description */ @JsonProperty("short_description")  public void setShortDescription(String short_description) { this.short_description = short_description; }
 
     /** @see #type */ @JsonProperty("type")  public String getTheType() { return this.type; }
     /** @see #type */ @JsonProperty("type")  public void setTheType(String type) { this.type = type; }

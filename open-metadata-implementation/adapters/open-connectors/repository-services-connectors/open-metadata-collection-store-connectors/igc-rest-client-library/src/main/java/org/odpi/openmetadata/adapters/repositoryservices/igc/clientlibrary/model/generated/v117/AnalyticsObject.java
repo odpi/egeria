@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v117;
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
@@ -16,9 +17,9 @@ import java.util.ArrayList;
  *  extending from this class in your own custom class is the best approach.)
  */
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class AnalyticsObject extends MainObject {
+public class AnalyticsObject extends Reference {
 
-    public static final String IGC_TYPE_ID = "analytics_object";
+    @JsonIgnore public static final String IGC_TYPE_ID = "analytics_object";
 
 
     public static final Boolean isAnalyticsObject(Object obj) { return (obj.getClass() == AnalyticsObject.class); }
