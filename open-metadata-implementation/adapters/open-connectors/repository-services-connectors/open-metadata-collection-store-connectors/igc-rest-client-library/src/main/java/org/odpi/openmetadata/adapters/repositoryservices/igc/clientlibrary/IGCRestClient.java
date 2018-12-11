@@ -57,6 +57,8 @@ public class IGCRestClient {
     private Boolean workflowEnabled = false;
     private List<String> cookies = null;
 
+    private String igcVersion;
+
     private int defaultPageSize = 100;
 
     private ObjectMapper mapper;
@@ -101,6 +103,16 @@ public class IGCRestClient {
 
         // Register the non-generated types
         this.registerPOJO(Paging.class);
+
+        this.igcVersion = "v115";
+        ArrayNode igcTypes = getTypes();
+        for (JsonNode node : igcTypes) {
+            // Check for a type that does not exist in v11.5
+            if (node.path("_id").asText().equals("analytics_project")) {
+                this.igcVersion = "v117";
+                break;
+            }
+        }
 
     }
 
@@ -147,6 +159,13 @@ public class IGCRestClient {
         }
         return reference;
     }
+
+    /**
+     * Retrieve the version of the IGC environment ('v115' or 'v117').
+     *
+     * @return String
+     */
+    public String getIgcVersion() { return igcVersion; }
 
     /**
      * Retrieve the base URL of this IGC REST API connection.

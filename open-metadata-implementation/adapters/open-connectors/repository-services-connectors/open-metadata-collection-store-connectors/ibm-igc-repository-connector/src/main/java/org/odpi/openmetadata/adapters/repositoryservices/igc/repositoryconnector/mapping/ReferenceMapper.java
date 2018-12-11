@@ -34,6 +34,13 @@ public abstract class ReferenceMapper {
     public static final String IGC_REST_COMMON_MODEL_PKG = "org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common";
     public static final String IGC_REST_GENERATED_MODEL_PKG = "org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated";
 
+    public static final String[] MODIFICATION_DETAILS = new String[]{
+            "created_by",
+            "created_on",
+            "modified_by",
+            "modified_on"
+    };
+
     protected IGCOMRSRepositoryConnector igcomrsRepositoryConnector;
     protected Reference me;
 
@@ -50,6 +57,10 @@ public abstract class ReferenceMapper {
     protected ArrayList<Classification> classifications;
     protected ArrayList<String> alreadyMappedProperties;
 
+    protected PropertyMappingSet PROPERTIES;
+    protected RelationshipMappingSet RELATIONSHIPS;
+    protected ArrayList<String> CLASSIFICATION_PROPERTIES;
+
     public ReferenceMapper(Reference me,
                            String igcAssetTypeName,
                            String omrsEntityTypeName,
@@ -64,10 +75,15 @@ public abstract class ReferenceMapper {
         this.relationships = new ArrayList<>();
         this.alreadyMappedProperties = new ArrayList<>();
 
+        PROPERTIES = new PropertyMappingSet();
+        RELATIONSHIPS = new RelationshipMappingSet();
+        CLASSIFICATION_PROPERTIES = new ArrayList<>();
+
         this.otherPOJOs = new ArrayList<>();
 
         // fully-qualified POJO class path
         if (igcAssetTypeName.equals("main_object")) {
+            // TODO: confirm whether this is fine (only (de-)serialisation), or we need to swap to Reference class?
             this.igcPOJO = IGC_REST_COMMON_MODEL_PKG + ".MainObject";
         } else {
             this.igcPOJO = IGC_REST_GENERATED_MODEL_PKG + "."
@@ -92,6 +108,7 @@ public abstract class ReferenceMapper {
     }
 
     public List<String> getOtherIGCAssetTypes() { return this.otherPOJOs; }
+    public String getIgcAssetType() { return this.igcType; }
 
     public abstract EntitySummary getOMRSEntitySummary();
     public abstract EntityDetail getOMRSEntityDetail();
@@ -212,28 +229,8 @@ public abstract class ReferenceMapper {
         EntityProxy entityProxy = null;
 
         if (igcType != null) {
-            // Construct 'qualifiedName' from the Identity of the object (label is a special case as a non-MainObject)
-            MainObject igcMObj = null;
-            if (igcType.equals("label")) {
-                qualifiedName = ReferenceMapper.getPrimitivePropertyValue("(label)=" + igcObj.getName());
-            } else {
-                try {
-                    igcMObj = (MainObject) igcObj;
-                    qualifiedName = ReferenceMapper.getPrimitivePropertyValue(igcMObj.getIdentity(igcRestClient).toString());
-                } catch (ClassCastException e) {
-                    OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_NOT_KNOWN_FOR_INSTANCE;
-                    String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(igcType,
-                            null,
-                            methodName,
-                            igcomrsRepositoryConnector.getRepositoryName());
-                    throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                            className,
-                            methodName,
-                            errorMessage,
-                            errorCode.getSystemAction(),
-                            errorCode.getUserAction());
-                }
-            }
+            // Construct 'qualifiedName' from the Identity of the object
+            qualifiedName = ReferenceMapper.getPrimitivePropertyValue(igcObj.getIdentity(igcRestClient).toString());
 
             // 'qualifiedName' is the only unique InstanceProperty we need on an EntityProxy
             InstanceProperties uniqueProperties = new InstanceProperties();
@@ -251,11 +248,11 @@ public abstract class ReferenceMapper {
                 );
                 entityProxy.setGUID(igcObj.getId());
 
-                if (igcMObj != null) {
-                    entityProxy.setCreatedBy(igcMObj.getCreatedBy());
-                    entityProxy.setCreateTime(igcMObj.getCreatedOn());
-                    entityProxy.setUpdatedBy(igcMObj.getModifiedBy());
-                    entityProxy.setUpdateTime(igcMObj.getModifiedOn());
+                if (igcObj.hasModificationDetails()) {
+                    entityProxy.setCreatedBy((String)igcObj.getPropertyByName("created_by"));
+                    entityProxy.setCreateTime((Date)igcObj.getPropertyByName("created_on"));
+                    entityProxy.setUpdatedBy((String)igcObj.getPropertyByName("modified_by"));
+                    entityProxy.setUpdateTime((Date)igcObj.getPropertyByName("modified_on"));
                     if (entityProxy.getUpdateTime() != null) {
                         entityProxy.setVersion(entityProxy.getUpdateTime().getTime());
                     }
@@ -291,7 +288,6 @@ public abstract class ReferenceMapper {
      * @param name the name of the field to find
      * @param clazz the class in which to search (and recurse upwards on its class hierarchy)
      * @return Field first found (lowest level of class hierarchy), or null if never found
-     */
     public static Field recursePropertyByName(String name, Class clazz) {
         Field f = null;
         Class superClazz = clazz.getSuperclass();
@@ -304,13 +300,13 @@ public abstract class ReferenceMapper {
         }
         return f;
     }
+     */
 
     /**
      * Retrieves the first Field, from anywhere within the class hierarchy (bottom-up), by its name.
      *
      * @param name the name of the field to retrieve
      * @return Field
-     */
     public Field getFieldByName(String name) {
         Field field;
         try {
@@ -320,6 +316,7 @@ public abstract class ReferenceMapper {
         }
         return field;
     }
+     */
 
     /**
      * Introspect a mapping class to retrieve a Mapper of that type.
@@ -334,10 +331,10 @@ public abstract class ReferenceMapper {
         ReferenceableMapper referenceableMapper = null;
 
         try {
-            Constructor constructor = mappingClass.getConstructor(MainObject.class, IGCOMRSRepositoryConnector.class, String.class);
+            Constructor constructor = mappingClass.getConstructor(Reference.class, IGCOMRSRepositoryConnector.class, String.class);
             referenceableMapper = (ReferenceableMapper) constructor.newInstance(
                     null,
-                    ((IGCOMRSRepositoryConnector) igcomrsRepositoryConnector),
+                    igcomrsRepositoryConnector,
                     userId
             );
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
@@ -357,29 +354,8 @@ public abstract class ReferenceMapper {
      * @return String
      */
     public static final String getIgcTypeFromMapping(Class mappingClass, IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {
-
-        String igcAssetTypeName = null;
-
-        Field igcType;
-        try {
-            igcType = mappingClass.getDeclaredField("igcType");
-        } catch (NoSuchFieldException e) {
-            igcType = ReferenceMapper.recursePropertyByName("igcType", mappingClass);
-        }
-        if (igcType != null) {
-
-            igcType.setAccessible(true);
-            ReferenceableMapper referenceableMapper = ReferenceMapper.getMapper(mappingClass, igcomrsRepositoryConnector, userId);
-            try {
-                igcAssetTypeName = (String) igcType.get(referenceableMapper);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-
-        }
-
-        return igcAssetTypeName;
-
+        ReferenceableMapper referenceableMapper = ReferenceMapper.getMapper(mappingClass, igcomrsRepositoryConnector, userId);
+        return referenceableMapper.getIgcAssetType();
     }
 
     /**
@@ -391,19 +367,8 @@ public abstract class ReferenceMapper {
      * @return
      */
     public static final List<String> getAdditionalIgcPOJOs(Class mappingClass, IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {
-
-        List<String> extraPOJOs = null;
-
-        try {
-            Method getOtherPOJOs = mappingClass.getMethod("getOtherIGCAssetTypes", null);
-            ReferenceableMapper referenceableMapper = ReferenceMapper.getMapper(mappingClass, igcomrsRepositoryConnector, userId);
-            extraPOJOs = (List<String>) getOtherPOJOs.invoke(referenceableMapper);
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-        }
-
-        return extraPOJOs;
-
+        ReferenceableMapper referenceableMapper = ReferenceMapper.getMapper(mappingClass, igcomrsRepositoryConnector, userId);
+        return referenceableMapper.getOtherIGCAssetTypes();
     }
 
     /**
@@ -415,29 +380,8 @@ public abstract class ReferenceMapper {
      * @return PropertyMappingSet
      */
     public static final PropertyMappingSet getPropertiesFromMapping(Class mappingClass, IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {
-
-        PropertyMappingSet propertyMappingSet = null;
-
-        Field properties;
-        try {
-            properties = mappingClass.getDeclaredField("PROPERTIES");
-        } catch (NoSuchFieldException e) {
-            properties = ReferenceMapper.recursePropertyByName("PROPERTIES", mappingClass);
-        }
-        if (properties != null) {
-
-            properties.setAccessible(true);
-            ReferenceableMapper referenceableMapper = ReferenceMapper.getMapper(mappingClass, igcomrsRepositoryConnector, userId);
-            try {
-                propertyMappingSet = (PropertyMappingSet) properties.get(referenceableMapper);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-
-        }
-
-        return propertyMappingSet;
-
+        ReferenceableMapper referenceableMapper = ReferenceMapper.getMapper(mappingClass, igcomrsRepositoryConnector, userId);
+        return referenceableMapper.getPropertyMappings();
     }
 
 }

@@ -2,9 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector;
 
-import org.apache.commons.collections.map.ReferenceMap;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestClient;
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.MainObject;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.ReferenceList;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearch;
@@ -16,6 +14,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
@@ -25,7 +24,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
@@ -264,10 +262,10 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
 
                 try {
 
-                    Constructor constructor = clazz.getConstructor(MainObject.class, IGCOMRSRepositoryConnector.class, String.class);
+                    Constructor constructor = clazz.getConstructor(Reference.class, IGCOMRSRepositoryConnector.class, String.class);
                     ReferenceableMapper referenceMapper = (ReferenceableMapper) constructor.newInstance(
-                            ((MainObject) asset),
-                            ((IGCOMRSRepositoryConnector) parentConnector),
+                            asset,
+                            (IGCOMRSRepositoryConnector) parentConnector,
                             userId
                     );
 
@@ -426,17 +424,14 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             Iterator iPropertyNames = matchProperties.getPropertyNames();
             while (propertyMappingSet != null && iPropertyNames.hasNext()) {
                 String omrsPropertyName = (String) iPropertyNames.next();
-                String igcPropertyName = propertyMappingSet.getIgcPropertyName(omrsPropertyName);
-                if (igcPropertyName != null) {
-                    properties.add(igcPropertyName);
-                    // TODO: figure out what it is we're supposed to use as the search string / criteria...
-                    InstancePropertyValue value = matchProperties.getPropertyValue(omrsPropertyName);
-                    igcSearchConditionSet.addCondition(new IGCSearchCondition(
-                            igcPropertyName,
-                            "like %{0}%",
-                            "???"
-                    ));
-                }
+                InstancePropertyValue value = matchProperties.getPropertyValue(omrsPropertyName);
+                addSearchConditionFromValue(
+                        igcSearchConditionSet,
+                        omrsPropertyName,
+                        properties,
+                        propertyMappingSet,
+                        value
+                );
             }
 
             IGCSearchSorting igcSearchSorting = null;
@@ -460,22 +455,41 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             }
 
             IGCSearch igcSearch = new IGCSearch(igcTypeToSearch, properties.toArray(new String[0]), igcSearchConditionSet);
-            igcSearch.setPageSize(pageSize);
+            if (pageSize > 0) {
+                // Only set pageSize if it has been provided; otherwise we'll end up defaulting to IGC's
+                // minimal pageSize of 10 (so will need to make many calls to get all pages)
+                igcSearch.setPageSize(pageSize);
+            } else {
+                // So if none has been specified, we'll set a large pageSize to be able to more efficiently
+                // retrieve all pages of results
+                igcSearch.setPageSize(parentConnector.getMaxPageSize());
+            }
             igcSearch.setBeginAt(fromEntityElement);
             if (igcSearchSorting != null) {
                 igcSearch.addSortingCriteria(igcSearchSorting);
             }
             ReferenceList results = this.igcRestClient.search(igcSearch);
 
+            if (pageSize == 0) {
+                // If the provided pageSize was 0, we need to retrieve ALL pages of
+                // results...
+                results.getAllPages(this.igcRestClient);
+            }
+
             for (Reference reference : results.getItems()) {
-                EntityDetail ed = null;
-                try {
-                    ed = getEntityDetail(userId, reference.getId());
-                } catch (EntityNotKnownException | EntityProxyOnlyException e) {
-                    e.printStackTrace();
-                }
-                if (ed != null) {
-                    entityDetails.add(ed);
+                // Only proceed with retrieving the EntityDetail if the type from IGC is not explicitly
+                // a 'main_object' (as these are non-API-accessible asset types in IGC like column analysis master,
+                // etc and will simply result in 400-code Bad Request messages from the API)
+                if (!reference.getType().equals("main_object")) {
+                    EntityDetail ed = null;
+                    try {
+                        ed = getEntityDetail(userId, reference.getId());
+                    } catch (EntityNotKnownException | EntityProxyOnlyException e) {
+                        e.printStackTrace();
+                    }
+                    if (ed != null) {
+                        entityDetails.add(ed);
+                    }
                 }
             }
 
@@ -575,24 +589,33 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                     errorCode.getUserAction());
         } else {
 
-            // Otherwise run a search across all object types (by default),
-            // or only the TypeDef provided
+            // If possible (ie. provided), run the search only against only the single
+            // asset type; in which case, pull the properties to search from its mapping
             EntityMappingSet.EntityMapping mapping = null;
+            String[] properties = null;
             if (entityTypeGUID != null
                     && !entityTypeGUID.equals("")
                     && implementedEntities.isTypeDefMapped(entityTypeGUID)) {
                 mapping = implementedEntities.getByTypeDefGUID(entityTypeGUID);
+                Class mappingClass = mapping.getMappingClass();
+                ReferenceableMapper referenceableMapper = ReferenceMapper.getMapper(
+                        mappingClass,
+                        (IGCOMRSRepositoryConnector)parentConnector,
+                        userId
+                );
+                properties = referenceableMapper.getPropertyMappings().getIgcPropertyNames().toArray(new String[0]);
+            } else {
+                // Otherwise, since IGC requires the set of properties against which to search,
+                // if no type has been provided we'll use the generic set of the following
+                // properties for the search (common to all objects)
+                properties = new String[] {
+                        "name",
+                        "short_description",
+                        "long_description"
+                };
             }
-            String igcTypeToSearch = (mapping == null) ? "main_object" : mapping.getIgcAssetType();
 
-            // IGC requires the set of properties against which to search; therefore
-            // we'll have to narrow down to only the common properties of all objects
-            // (so currently only the following)
-            String[] properties = new String[]{
-                    "name",
-                    "short_description",
-                    "long_description"
-            };
+            String igcTypeToSearch = (mapping == null) ? "main_object" : mapping.getIgcAssetType();
 
             IGCSearchSorting igcSearchSorting = null;
             if (sequencingProperty == null && sequencingOrder != null) {
@@ -609,22 +632,43 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                 ));
             }
             IGCSearch igcSearch = new IGCSearch(igcTypeToSearch, new String[]{"name"}, igcSearchConditionSet);
-            igcSearch.setPageSize(pageSize);
+
+            if (pageSize > 0) {
+                // Only set pageSize if it has been provided; otherwise we'll end up defaulting to IGC's
+                // minimal pageSize of 10 (so will need to make many calls to get all pages)
+                igcSearch.setPageSize(pageSize);
+            } else {
+                // So if none has been specified, we'll set a large pageSize to be able to more efficiently
+                // retrieve all pages of results
+                igcSearch.setPageSize(parentConnector.getMaxPageSize());
+            }
+
             igcSearch.setBeginAt(fromEntityElement);
             if (igcSearchSorting != null) {
                 igcSearch.addSortingCriteria(igcSearchSorting);
             }
             ReferenceList results = this.igcRestClient.search(igcSearch);
 
+            if (pageSize == 0) {
+                // If the provided pageSize was 0, we need to retrieve ALL pages of
+                // results...
+                results.getAllPages(this.igcRestClient);
+            }
+
             for (Reference reference : results.getItems()) {
-                EntityDetail ed = null;
-                try {
-                    ed = getEntityDetail(userId, reference.getId());
-                } catch (EntityNotKnownException | EntityProxyOnlyException e) {
-                    e.printStackTrace();
-                }
-                if (ed != null) {
-                    entityDetails.add(ed);
+                // Only proceed with retrieving the EntityDetail if the type from IGC is not explicitly
+                // a 'main_object' (as these are non-API-accessible asset types in IGC like column analysis master,
+                // etc and will simply result in 400-code Bad Request messages from the API)
+                if (!reference.getType().equals("main_object")) {
+                    EntityDetail ed = null;
+                    try {
+                        ed = getEntityDetail(userId, reference.getId());
+                    } catch (EntityNotKnownException | EntityProxyOnlyException e) {
+                        e.printStackTrace();
+                    }
+                    if (ed != null) {
+                        entityDetails.add(ed);
+                    }
                 }
             }
 
@@ -678,9 +722,24 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         // If we could not find any asset by the provided guid, throw an ENTITY_NOT_KNOWN exception
         if (asset == null) {
             OMRSErrorCode errorCode = OMRSErrorCode.ENTITY_NOT_KNOWN;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    this.getClass().getName(),
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(guid,
+                    methodName,
                     repositoryName);
+            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        } else if (asset.getType().equals("main_object")) {
+            // If the asset type returned has an IGC-listed type of 'main_object', it isn't one that the REST API
+            // of IGC supports (eg. a data rule detail object, a column analysis master object, etc)...
+            // Trying to further process it will result in failed REST API requests; so we should skip these objects
+            OMRSErrorCode errorCode = OMRSErrorCode.INVALID_ENTITY_FROM_STORE;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(guid,
+                    repositoryName,
+                    methodName,
+                    asset.toString());
             throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
                     this.getClass().getName(),
                     methodName,
@@ -694,10 +753,10 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
 
             try {
 
-                Constructor constructor = clazz.getConstructor(MainObject.class, IGCOMRSRepositoryConnector.class, String.class);
+                Constructor constructor = clazz.getConstructor(Reference.class, IGCOMRSRepositoryConnector.class, String.class);
                 ReferenceableMapper referenceMapper = (ReferenceableMapper) constructor.newInstance(
-                        ((MainObject) asset),
-                        ((IGCOMRSRepositoryConnector) parentConnector),
+                        asset,
+                        (IGCOMRSRepositoryConnector) parentConnector,
                         userId
                 );
 
@@ -739,6 +798,121 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             mapperClass = this.defaultMapper;
         }
         return mapperClass;
+    }
+
+    /**
+     * Adds the provided value to the search criteria for IGC.
+     *
+     * @param igcSearchConditionSet
+     * @param omrsPropertyName
+     * @param igcProperties
+     * @param propertyMappingSet
+     * @param value
+     */
+    public void addSearchConditionFromValue(IGCSearchConditionSet igcSearchConditionSet,
+                                            String omrsPropertyName,
+                                            List<String> igcProperties,
+                                            PropertyMappingSet propertyMappingSet,
+                                            InstancePropertyValue value) {
+
+        String igcPropertyName = propertyMappingSet.getIgcPropertyName(omrsPropertyName);
+        if (igcPropertyName != null) {
+            igcProperties.add(igcPropertyName);
+            InstancePropertyCategory category = value.getInstancePropertyCategory();
+            switch (category) {
+                case PRIMITIVE:
+                    PrimitivePropertyValue actualValue = (PrimitivePropertyValue) value;
+                    PrimitiveDefCategory primitiveType = actualValue.getPrimitiveDefCategory();
+                    switch (primitiveType) {
+                        case OM_PRIMITIVE_TYPE_BOOLEAN:
+                        case OM_PRIMITIVE_TYPE_BYTE:
+                        case OM_PRIMITIVE_TYPE_CHAR:
+                            igcSearchConditionSet.addCondition(new IGCSearchCondition(
+                                    igcPropertyName,
+                                    "=",
+                                    actualValue.getPrimitiveValue().toString()
+                            ));
+                            break;
+                        case OM_PRIMITIVE_TYPE_SHORT:
+                        case OM_PRIMITIVE_TYPE_INT:
+                        case OM_PRIMITIVE_TYPE_LONG:
+                        case OM_PRIMITIVE_TYPE_FLOAT:
+                        case OM_PRIMITIVE_TYPE_DOUBLE:
+                        case OM_PRIMITIVE_TYPE_BIGINTEGER:
+                        case OM_PRIMITIVE_TYPE_BIGDECIMAL:
+                            igcSearchConditionSet.addCondition(new IGCSearchCondition(
+                                    igcPropertyName,
+                                    "=",
+                                    actualValue.getPrimitiveValue().toString()
+                            ));
+                            break;
+                        case OM_PRIMITIVE_TYPE_DATE:
+                            Date date = (Date) actualValue.getPrimitiveValue();
+                            igcSearchConditionSet.addCondition(new IGCSearchCondition(
+                                    igcPropertyName,
+                                    "=",
+                                    "" + date.getTime()
+                            ));
+                            break;
+                        case OM_PRIMITIVE_TYPE_STRING:
+                        default:
+                            igcSearchConditionSet.addCondition(new IGCSearchCondition(
+                                    igcPropertyName,
+                                    "like %{0}%",
+                                    actualValue.getPrimitiveValue().toString()
+                            ));
+                            break;
+                    }
+                    break;
+                case ENUM:
+                    igcSearchConditionSet.addCondition(new IGCSearchCondition(
+                            igcPropertyName,
+                            "=",
+                            ((EnumPropertyValue) value).getSymbolicName()
+                    ));
+                    break;
+                case STRUCT:
+                    Map<String, InstancePropertyValue> structValues = ((StructPropertyValue) value).getAttributes().getInstanceProperties();
+                    for (String propertyName : structValues.keySet()) {
+                        InstancePropertyValue nextValue = structValues.get(propertyName);
+                        addSearchConditionFromValue(
+                                igcSearchConditionSet,
+                                propertyName,
+                                igcProperties,
+                                propertyMappingSet,
+                                nextValue
+                        );
+                    }
+                    break;
+                case MAP:
+                    Map<String, InstancePropertyValue> mapValues = ((MapPropertyValue) value).getMapValues().getInstanceProperties();
+                    for (String propertyName : mapValues.keySet()) {
+                        InstancePropertyValue nextValue = mapValues.get(propertyName);
+                        addSearchConditionFromValue(
+                                igcSearchConditionSet,
+                                propertyName,
+                                igcProperties,
+                                propertyMappingSet,
+                                nextValue
+                        );
+                    }
+                    break;
+                case ARRAY:
+                    Map<String, InstancePropertyValue> arrayValues = ((ArrayPropertyValue) value).getArrayValues().getInstanceProperties();
+                    for (String index : arrayValues.keySet()) {
+                        InstancePropertyValue nextValue = arrayValues.get(index);
+                        addSearchConditionFromValue(
+                                igcSearchConditionSet,
+                                igcPropertyName,
+                                igcProperties,
+                                propertyMappingSet,
+                                nextValue
+                        );
+                    }
+                    break;
+            }
+        }
+
     }
 
 }

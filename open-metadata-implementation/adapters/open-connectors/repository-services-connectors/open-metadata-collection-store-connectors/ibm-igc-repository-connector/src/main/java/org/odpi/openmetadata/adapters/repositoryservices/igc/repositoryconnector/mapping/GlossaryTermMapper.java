@@ -4,7 +4,6 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestClient;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Identity;
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.MainObject;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.ReferenceList;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
@@ -26,7 +25,7 @@ public class GlossaryTermMapper extends ReferenceableMapper {
      * @param igcomrsRepositoryConnector the IGC repository connector to use for retrieving any additional info required
      * @param userId the userId of the user doing any further detailed information retrievals (currently unused)
      */
-    public GlossaryTermMapper(MainObject term, IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {
+    public GlossaryTermMapper(Reference term, IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {
 
         // Start by calling the superclass's constructor to initialise the Mapper
         super(
@@ -140,14 +139,13 @@ public class GlossaryTermMapper extends ReferenceableMapper {
         IGCRestClient igcRestClient = igcomrsRepositoryConnector.getIGCRestClient();
 
         // Retrieve all assigned_to_terms relationships from this IGC object
-        ReferenceList assignedToTerms = ((MainObject) me).getAssignedToTerms();
+        ReferenceList assignedToTerms = (ReferenceList) me.getPropertyByName("assigned_to_terms");
         assignedToTerms.getAllPages(igcRestClient);
 
         // For each such relationship:
-        for (Reference reference : assignedToTerms.getItems()) {
+        for (Reference assignedTerm : assignedToTerms.getItems()) {
 
             // Retrieve the identity characteristics (ie. the parent category) of the related term
-            MainObject assignedTerm = (MainObject) reference;
             Identity termIdentity = assignedTerm.getIdentity(igcRestClient);
             Identity catIdentity = termIdentity.getParentIdentity();
 

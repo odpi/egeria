@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping;
 
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.MainObject;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.ReferenceList;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearch;
@@ -28,7 +27,7 @@ public class DataClassMapper extends ReferenceableMapper {
      * @param igcomrsRepositoryConnector the IGC repository connector to use for retrieving any additional info required
      * @param userId the userId of the user doing any further detailed information retrievals (currently unused)
      */
-    public DataClassMapper(MainObject dataClass, IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {
+    public DataClassMapper(Reference dataClass, IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {
 
         // Start by calling the superclass's constructor to initialise the Mapper
         super(
@@ -314,7 +313,7 @@ public class DataClassMapper extends ReferenceableMapper {
         igcSearch.addType("data_file_field");
         igcSearch.addType("database_column");
         igcSearch.addProperty("selected_classification");
-        igcSearch.addProperties(ReferenceableMapper.BASIC_PROPERTIES);
+        igcSearch.addProperties(ReferenceableMapper.MODIFICATION_DETAILS);
         ReferenceList assetsWithSelected = igcomrsRepositoryConnector.getIGCRestClient().search(igcSearch);
 
         assetsWithSelected.getAllPages(igcomrsRepositoryConnector.getIGCRestClient());

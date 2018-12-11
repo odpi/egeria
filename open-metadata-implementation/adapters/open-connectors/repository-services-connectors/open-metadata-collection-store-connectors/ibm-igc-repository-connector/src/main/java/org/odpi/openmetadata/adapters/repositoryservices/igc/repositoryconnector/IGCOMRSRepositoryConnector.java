@@ -49,14 +49,8 @@ public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector {
             this.igcRestClient.setDefaultPageSize(getMaxPageSize());
         }
 
-        ArrayNode igcTypes = this.igcRestClient.getTypes();
-        for (JsonNode node : igcTypes) {
-            // Check for a type that does not exist in v11.5
-            if (node.path("_id").asText().equals("analytics_project")) {
-                this.igcVersion = "v117";
-                break;
-            }
-        }
+        // Set the version based on the IGC client's auto-determination of the IGC environment's version
+        this.igcVersion = this.igcRestClient.getIgcVersion();
 
     }
 

@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping;
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestClient;
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.MainObject;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.ReferenceList;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchSorting;
@@ -18,6 +17,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorExceptio
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,23 +27,12 @@ import java.util.List;
  */
 public class ReferenceableMapper extends ReferenceMapper {
 
-    public static final String[] BASIC_PROPERTIES = new String[]{
-            "created_by",
-            "created_on",
-            "modified_by",
-            "modified_on"
-    };
-
-    protected PropertyMappingSet PROPERTIES;
-    protected RelationshipMappingSet RELATIONSHIPS;
-    protected ArrayList<String> CLASSIFICATION_PROPERTIES;
-
     // By default (if no IGC type or OMRS type defined), map between 'main_object' (IGC) and Referenceable (OMRS)
-    public ReferenceableMapper(MainObject mainObject,
+    public ReferenceableMapper(Reference igcObject,
                                IGCOMRSRepositoryConnector igcomrsRepositoryConnector,
                                String userId) {
         this(
-                mainObject,
+                igcObject,
                 "main_object",
                 "Referenceable",
                 igcomrsRepositoryConnector,
@@ -51,14 +40,14 @@ public class ReferenceableMapper extends ReferenceMapper {
         );
     }
 
-    public ReferenceableMapper(MainObject mainObject,
+    public ReferenceableMapper(Reference igcObject,
                                String igcAssetTypeName,
                                String omrsEntityTypeName,
                                IGCOMRSRepositoryConnector igcomrsRepositoryConnector,
                                String userId) {
 
         super(
-                mainObject,
+                igcObject,
                 igcAssetTypeName,
                 omrsEntityTypeName,
                 igcomrsRepositoryConnector,
@@ -67,31 +56,34 @@ public class ReferenceableMapper extends ReferenceMapper {
 
         // common set of properties used by all IGC objects (and all OMRS Referenceables)
         // (all 'null' as we'll handle mapping directly in 'setupEntityObj')
-        PROPERTIES = new PropertyMappingSet();
-        for (String property : BASIC_PROPERTIES) {
-            PROPERTIES.put(property, null);
+        if (igcObject != null) {
+            if (igcObject.hasModificationDetails()) {
+                for (String property : ReferenceMapper.MODIFICATION_DETAILS) {
+                    PROPERTIES.put(property, null);
+                }
+            }
         }
 
         // common set of relationships that could apply to all IGC objects (and all OMRS Referenceables)
-        RELATIONSHIPS = new RelationshipMappingSet() {{
-            put(
-                    "assigned_to_terms",
-                    "SemanticAssignment",
-                    "assignedElements",
-                    "meaning"
-            );
-            put(
-                    "labels",
-                    "AttachedTag",
-                    "taggedElement",
-                    "tags"
-            );
-        }};
+        RELATIONSHIPS.put(
+                "assigned_to_terms",
+                "SemanticAssignment",
+                "assignedElements",
+                "meaning"
+        );
+        RELATIONSHIPS.put(
+                "labels",
+                "AttachedTag",
+                "taggedElement",
+                "tags"
+        );
 
         // common set of classifications that apply to all IGC objects (and all OMRS Referenceables) [none]
-        CLASSIFICATION_PROPERTIES = new ArrayList<>();
 
     }
+
+    public PropertyMappingSet getPropertyMappings() { return this.PROPERTIES; }
+    public RelationshipMappingSet getRelationshipMappings() { return this.RELATIONSHIPS; }
 
     protected void getMappedClassifications() { }
 
@@ -170,7 +162,7 @@ public class ReferenceableMapper extends ReferenceMapper {
         // Handle any super-generic mappings first
         super.mapIGCToOMRSEntitySummary(classificationProperties);
 
-        // Then handle MainObject-generic mappings and classifications
+        // Then handle generic mappings and classifications
         setupEntityObj(summary);
 
     }
@@ -184,7 +176,7 @@ public class ReferenceableMapper extends ReferenceMapper {
      */
     protected void mapIGCToOMRSEntityDetail(PropertyMappingSet propertyMap, List<String> classificationProperties) {
 
-        // Merge the detailed properties together (MainObject and more specific POJO mappings that were passed in)
+        // Merge the detailed properties together (generic and more specific POJO mappings that were passed in)
         String[] allProps = ReferenceMapper.concatAll(
                 propertyMap.getIgcPropertyNames().toArray(new String[0]),
                 classificationProperties.toArray(new String[0])
@@ -196,7 +188,7 @@ public class ReferenceableMapper extends ReferenceMapper {
         // Handle any super-generic mappings first
         super.mapIGCToOMRSEntityDetail(propertyMap, classificationProperties);
 
-        // Then handle any MainObject-generic mappings and classifications
+        // Then handle any generic mappings and classifications
         setupEntityObj(detail);
 
         // Use reflection to apply POJO-specific mappings
@@ -212,12 +204,12 @@ public class ReferenceableMapper extends ReferenceMapper {
      */
     private void setupEntityObj(EntitySummary omrsObj) {
 
-        MainObject myself = (MainObject) me;
-
-        omrsObj.setCreatedBy(myself.getCreatedBy());
-        omrsObj.setCreateTime(myself.getCreatedOn());
-        omrsObj.setUpdatedBy(myself.getModifiedBy());
-        omrsObj.setUpdateTime(myself.getModifiedOn());
+        if (me.hasModificationDetails()) {
+            omrsObj.setCreatedBy((String)me.getPropertyByName("created_by"));
+            omrsObj.setCreateTime((Date)me.getPropertyByName("created_on"));
+            omrsObj.setUpdatedBy((String)me.getPropertyByName("modified_by"));
+            omrsObj.setUpdateTime((Date)me.getPropertyByName("modified_on"));
+        }
 
         // Avoid doing this multiple times: if one has retrieved classifications it'll
         // be the same classifications for the other
@@ -301,7 +293,7 @@ public class ReferenceableMapper extends ReferenceMapper {
         // Merge together all the properties we want to map
         String[] allProps = ReferenceMapper.concatAll(
                 mappings.getIgcPropertyNames(),
-                BASIC_PROPERTIES
+                ReferenceMapper.MODIFICATION_DETAILS
         );
 
         // TODO: Filter down to only the relationship specified (ie. relationshipTypeGUID != null)
