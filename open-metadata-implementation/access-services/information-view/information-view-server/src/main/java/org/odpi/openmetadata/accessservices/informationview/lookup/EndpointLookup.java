@@ -11,6 +11,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 public class EndpointLookup extends EntityLookup<Source> {
 
@@ -31,7 +32,9 @@ public class EndpointLookup extends EntityLookup<Source> {
     protected InstanceProperties getMatchingProperties(Source source) {
         InstanceProperties matchProperties = new InstanceProperties();
         matchProperties = enterpriseConnector.getRepositoryHelper().addStringPropertyToInstance("", matchProperties, Constants.NETWORK_ADDRESS, source.getNetworkAddress(), "findEndpoint");
-        matchProperties = enterpriseConnector.getRepositoryHelper().addStringPropertyToInstance("", matchProperties, Constants.PROTOCOL, source.getProtocol(), "findEndpoint");
+        if(!StringUtils.isEmpty(source.getProtocol())){
+            matchProperties = enterpriseConnector.getRepositoryHelper().addStringPropertyToInstance("", matchProperties, Constants.PROTOCOL, source.getProtocol(), "findEndpoint");
+        }
         return matchProperties;
     }
 
