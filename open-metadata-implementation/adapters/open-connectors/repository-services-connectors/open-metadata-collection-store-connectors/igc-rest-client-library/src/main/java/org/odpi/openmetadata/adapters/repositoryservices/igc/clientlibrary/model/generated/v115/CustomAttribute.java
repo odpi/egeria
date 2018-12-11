@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v115;
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
@@ -16,9 +17,9 @@ import java.util.ArrayList;
  *  extending from this class in your own custom class is the best approach.)
  */
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class CustomAttribute extends MainObject {
+public class CustomAttribute extends Reference {
 
-    public static final String IGC_TYPE_ID = "custom_attribute";
+    @JsonIgnore public static final String IGC_TYPE_ID = "custom_attribute";
 
     /**
      * The 'custom_attribute_type' property, displayed as 'Custom Attribute Type' in the IGC UI.
@@ -42,6 +43,11 @@ public class CustomAttribute extends MainObject {
     protected String applies_to;
 
     /**
+     * The 'name' property, displayed as 'Name' in the IGC UI.
+     */
+    protected String name;
+
+    /**
      * The 'description' property, displayed as 'Description' in the IGC UI.
      */
     protected String description;
@@ -52,6 +58,9 @@ public class CustomAttribute extends MainObject {
 
     /** @see #applies_to */ @JsonProperty("applies_to")  public String getAppliesTo() { return this.applies_to; }
     /** @see #applies_to */ @JsonProperty("applies_to")  public void setAppliesTo(String applies_to) { this.applies_to = applies_to; }
+
+    /** @see #name */ @JsonProperty("name")  public String getTheName() { return this.name; }
+    /** @see #name */ @JsonProperty("name")  public void setTheName(String name) { this.name = name; }
 
     /** @see #description */ @JsonProperty("description")  public String getDescription() { return this.description; }
     /** @see #description */ @JsonProperty("description")  public void setDescription(String description) { this.description = description; }

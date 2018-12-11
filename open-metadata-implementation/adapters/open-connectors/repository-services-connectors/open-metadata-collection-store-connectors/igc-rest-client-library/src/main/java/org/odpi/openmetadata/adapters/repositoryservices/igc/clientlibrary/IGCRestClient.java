@@ -16,7 +16,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.NamedType;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Label;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Paging;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.ReferenceList;
@@ -102,7 +101,6 @@ public class IGCRestClient {
 
         // Register the non-generated types
         this.registerPOJO(Paging.class);
-        this.registerPOJO(Label.class);
 
     }
 

@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v115;
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
@@ -16,14 +17,24 @@ import java.util.ArrayList;
  *  extending from this class in your own custom class is the best approach.)
  */
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class BiReportQueryDetailFilter extends MainObject {
+public class BiReportQueryDetailFilter extends Reference {
 
-    public static final String IGC_TYPE_ID = "bi_report_query_detail_filter";
+    @JsonIgnore public static final String IGC_TYPE_ID = "bi_report_query_detail_filter";
 
     /**
      * The 'expression_in_title' property, displayed as 'Expression' in the IGC UI.
      */
     protected String expression_in_title;
+
+    /**
+     * The 'short_description' property, displayed as 'Short Description' in the IGC UI.
+     */
+    protected String short_description;
+
+    /**
+     * The 'long_description' property, displayed as 'Long Description' in the IGC UI.
+     */
+    protected String long_description;
 
     /**
      * The 'type' property, displayed as 'Type' in the IGC UI.
@@ -41,6 +52,20 @@ public class BiReportQueryDetailFilter extends MainObject {
      * Will be a single {@link Reference} to a {@link BiReportQuery} object.
      */
     protected Reference bi_report_query;
+
+    /**
+     * The 'implements_rules' property, displayed as 'Implements Rules' in the IGC UI.
+     * <br><br>
+     * Will be a {@link ReferenceList} of {@link InformationGovernanceRule} objects.
+     */
+    protected ReferenceList implements_rules;
+
+    /**
+     * The 'governed_by_rules' property, displayed as 'Governed by Rules' in the IGC UI.
+     * <br><br>
+     * Will be a {@link ReferenceList} of {@link InformationGovernanceRule} objects.
+     */
+    protected ReferenceList governed_by_rules;
 
     /**
      * The 'expression' property, displayed as 'Expression' in the IGC UI.
@@ -152,9 +177,35 @@ public class BiReportQueryDetailFilter extends MainObject {
      */
     protected ReferenceList in_collections;
 
+    /**
+     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     */
+    protected String created_by;
+
+    /**
+     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     */
+    protected Date created_on;
+
+    /**
+     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     */
+    protected String modified_by;
+
+    /**
+     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     */
+    protected Date modified_on;
+
 
     /** @see #expression_in_title */ @JsonProperty("expression_in_title")  public String getExpressionInTitle() { return this.expression_in_title; }
     /** @see #expression_in_title */ @JsonProperty("expression_in_title")  public void setExpressionInTitle(String expression_in_title) { this.expression_in_title = expression_in_title; }
+
+    /** @see #short_description */ @JsonProperty("short_description")  public String getShortDescription() { return this.short_description; }
+    /** @see #short_description */ @JsonProperty("short_description")  public void setShortDescription(String short_description) { this.short_description = short_description; }
+
+    /** @see #long_description */ @JsonProperty("long_description")  public String getLongDescription() { return this.long_description; }
+    /** @see #long_description */ @JsonProperty("long_description")  public void setLongDescription(String long_description) { this.long_description = long_description; }
 
     /** @see #type */ @JsonProperty("type")  public String getTheType() { return this.type; }
     /** @see #type */ @JsonProperty("type")  public void setTheType(String type) { this.type = type; }
@@ -164,6 +215,12 @@ public class BiReportQueryDetailFilter extends MainObject {
 
     /** @see #bi_report_query */ @JsonProperty("bi_report_query")  public Reference getBiReportQuery() { return this.bi_report_query; }
     /** @see #bi_report_query */ @JsonProperty("bi_report_query")  public void setBiReportQuery(Reference bi_report_query) { this.bi_report_query = bi_report_query; }
+
+    /** @see #implements_rules */ @JsonProperty("implements_rules")  public ReferenceList getImplementsRules() { return this.implements_rules; }
+    /** @see #implements_rules */ @JsonProperty("implements_rules")  public void setImplementsRules(ReferenceList implements_rules) { this.implements_rules = implements_rules; }
+
+    /** @see #governed_by_rules */ @JsonProperty("governed_by_rules")  public ReferenceList getGovernedByRules() { return this.governed_by_rules; }
+    /** @see #governed_by_rules */ @JsonProperty("governed_by_rules")  public void setGovernedByRules(ReferenceList governed_by_rules) { this.governed_by_rules = governed_by_rules; }
 
     /** @see #expression */ @JsonProperty("expression")  public String getExpression() { return this.expression; }
     /** @see #expression */ @JsonProperty("expression")  public void setExpression(String expression) { this.expression = expression; }
@@ -212,6 +269,18 @@ public class BiReportQueryDetailFilter extends MainObject {
 
     /** @see #in_collections */ @JsonProperty("in_collections")  public ReferenceList getInCollections() { return this.in_collections; }
     /** @see #in_collections */ @JsonProperty("in_collections")  public void setInCollections(ReferenceList in_collections) { this.in_collections = in_collections; }
+
+    /** @see #created_by */ @JsonProperty("created_by")  public String getCreatedBy() { return this.created_by; }
+    /** @see #created_by */ @JsonProperty("created_by")  public void setCreatedBy(String created_by) { this.created_by = created_by; }
+
+    /** @see #created_on */ @JsonProperty("created_on")  public Date getCreatedOn() { return this.created_on; }
+    /** @see #created_on */ @JsonProperty("created_on")  public void setCreatedOn(Date created_on) { this.created_on = created_on; }
+
+    /** @see #modified_by */ @JsonProperty("modified_by")  public String getModifiedBy() { return this.modified_by; }
+    /** @see #modified_by */ @JsonProperty("modified_by")  public void setModifiedBy(String modified_by) { this.modified_by = modified_by; }
+
+    /** @see #modified_on */ @JsonProperty("modified_on")  public Date getModifiedOn() { return this.modified_on; }
+    /** @see #modified_on */ @JsonProperty("modified_on")  public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
 
     public static final Boolean isBiReportQueryDetailFilter(Object obj) { return (obj.getClass() == BiReportQueryDetailFilter.class); }

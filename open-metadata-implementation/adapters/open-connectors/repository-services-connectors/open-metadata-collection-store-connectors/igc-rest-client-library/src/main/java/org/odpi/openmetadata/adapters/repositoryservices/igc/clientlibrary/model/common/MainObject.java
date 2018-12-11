@@ -4,28 +4,22 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestClient;
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearch;
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchCondition;
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchConditionSet;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * The supertype of the vast majority of IGC objects.
+ * The supertype of many IGC objects -- in particular, any OpenIGC objects.
  * <br><br>
  * Simply define a new POJO as extending this base class to inherit the attributes that are found
  * on virtually all IGC asset types.
  */
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = InformationAsset.class, name = "information_asset")
+})
 public class MainObject extends Reference {
 
-    @JsonIgnore private Identity identity = null;
-
-    /**
-     * Provides the context to the unique identity of this asset.
-     */
-    protected ArrayList<Reference> _context = new ArrayList<Reference>();
+    @JsonIgnore public static final String IGC_TYPE_ID = "main_object";
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -110,9 +104,6 @@ public class MainObject extends Reference {
 
     // TODO: add notes object reference
 
-    /** @see #_context */ @JsonProperty("_context") public ArrayList<Reference> getContext() { return this._context; }
-    /** @see #_context */ @JsonProperty("_context") public void setContext(ArrayList<Reference> _context) { this._context = _context; }
-
     /** @see #name */ @JsonProperty("name") public String getTheName() { return this.name; }
     /** @see #name */ @JsonProperty("name") public void setTheName(String name) { this.name = name; }
 
@@ -148,49 +139,5 @@ public class MainObject extends Reference {
 
     /** @see #modified_on */ @JsonProperty("modified_on") public Date getModifiedOn() { return this.modified_on; }
     /** @see #modified_on */ @JsonProperty("modified_on") public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
-
-    /**
-     * Ensures that the _context of the asset is populated (takes no action if already populated).
-     *
-     * @param igcrest a REST API connection to use in populating the context
-     * @return Boolean indicating whether _context was successfully / already populated (true) or not (false)
-     */
-    public Boolean populateContext(IGCRestClient igcrest) {
-        Boolean success = true;
-        // Only bother retrieving the context if it isn't already present
-        if (this.name == null && this._context.size() == 0) {
-            String[] properties = new String[]{ "created_on", "created_by", "modified_on", "modified_by" };
-            IGCSearchCondition idOnly = new IGCSearchCondition("_id", "=", this.getId());
-            IGCSearchConditionSet idOnlySet = new IGCSearchConditionSet(idOnly);
-            IGCSearch igcSearch = new IGCSearch(this.getType(), properties, idOnlySet);
-            igcSearch.setPageSize(2);
-            ReferenceList assetsWithCtx = igcrest.search(igcSearch);
-            success = (assetsWithCtx.getItems().size() > 0);
-            if (success) {
-                MainObject assetWithCtx = (MainObject) assetsWithCtx.getItems().get(0);
-                this.name = assetWithCtx.getName();
-                this.created_by = assetWithCtx.getCreatedBy();
-                this.created_on = assetWithCtx.getCreatedOn();
-                this.modified_by = assetWithCtx.getModifiedBy();
-                this.modified_on = assetWithCtx.getModifiedOn();
-                this._context = assetWithCtx._context;
-            }
-        }
-        return success;
-    }
-
-    /**
-     * Retrieves the semantic identity of the asset.
-     *
-     * @param igcrest a REST API connection to use in confirming the identity of the asset
-     * @return Identity
-     */
-    public Identity getIdentity(IGCRestClient igcrest) {
-        if (this.identity == null) {
-            this.populateContext(igcrest);
-            this.identity = new Identity(this._context, this.getType(), this.getName());
-        }
-        return this.identity;
-    }
 
 }

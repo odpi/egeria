@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v115;
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
@@ -16,9 +17,14 @@ import java.util.ArrayList;
  *  extending from this class in your own custom class is the best approach.)
  */
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DataConnectionMapping extends MainObject {
+public class DataConnectionMapping extends Reference {
 
-    public static final String IGC_TYPE_ID = "data_connection_mapping";
+    @JsonIgnore public static final String IGC_TYPE_ID = "data_connection_mapping";
+
+    /**
+     * The 'name' property, displayed as 'Name' in the IGC UI.
+     */
+    protected String name;
 
     /**
      * The 'host_(engine)_name' property, displayed as 'Host (Engine) Name' in the IGC UI.
@@ -58,6 +64,9 @@ public class DataConnectionMapping extends MainObject {
      */
     protected Reference bound_to_database;
 
+
+    /** @see #name */ @JsonProperty("name")  public String getTheName() { return this.name; }
+    /** @see #name */ @JsonProperty("name")  public void setTheName(String name) { this.name = name; }
 
     /** @see #host__engine__name */ @JsonProperty("host_(engine)_name")  public String getHostEngineName() { return this.host__engine__name; }
     /** @see #host__engine__name */ @JsonProperty("host_(engine)_name")  public void setHostEngineName(String host__engine__name) { this.host__engine__name = host__engine__name; }

@@ -11,9 +11,10 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.searc
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchSorting;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 
 /**
- * The ultimate parent object for IGC assets, it contains only the most basic information common to every single
+ * The ultimate parent object for all IGC assets, it contains only the most basic information common to every single
  * asset in IGC, and present in every single reference to an IGC asset (whether via relationship, search result,
  * etc):<br>
  * <ul>
@@ -21,20 +22,28 @@ import java.lang.reflect.Field;
  *     <li>_type</li>
  *     <li>_id</li>
  *     <li>_url</li>
+ *     <li><i>_context</i></li> -- present for <i>almost</i> all assets
  * </ul><br>
- *  Generally POJOs should not extend this class directly, but the MainObject class.
+ *  POJOs to represent user-defined objects (OpenIGC) should not extend this class directly, but the MainObject class.
  */
-@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.PROPERTY, property="_type", visible=true, defaultImpl=MainObject.class)
+@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.PROPERTY, property="_type", visible=true, defaultImpl=Reference.class)
 @JsonSubTypes({
-    @JsonSubTypes.Type(value = MainObject.class, name = "main_object"),
-    @JsonSubTypes.Type(value = Label.class, name = "label")
+    @JsonSubTypes.Type(value = MainObject.class, name = "main_object")
 })
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Reference extends ObjectPrinter {
 
-    // DONE: v11.7.0.2+ have an option 'includeReferencePropertyContext=true' that can be passed when retrieving
-    // assets by ID -- which means '_context' is then also available on the references; should now work since
-    // MainObject is set as the default implementation for Reference
+    /**
+     * Used to uniquely identify the object without relying on its ID (RID) remaining static.
+     */
+    @JsonIgnore private Identity identity = null;
+
+    /**
+     * Provides the context to the unique identity of this asset. Note that while this will exist on
+     * almost all IGC assets, it is not present on absolutely all of them -- also be aware that without
+     * v11.7.0.2+ and an optional parameter it uses, this will always be 'null' in a ReferenceList
+     */
+    protected ArrayList<Reference> _context = new ArrayList<Reference>();
 
     /**
      * The '_name' property of a Reference is equivalent to its 'name' property, but will always be
@@ -61,6 +70,9 @@ public class Reference extends ObjectPrinter {
      * within a given IGC environment.
      */
     protected String _url;
+
+    /** @see #_context */ @JsonProperty("_context") public ArrayList<Reference> getContext() { return this._context; }
+    /** @see #_context */ @JsonProperty("_context") public void setContext(ArrayList<Reference> _context) { this._context = _context; }
 
     /** @see #_name */ @JsonProperty("_name") public String getName() { return this._name; }
     /** @see #_name */ @JsonProperty("_name") public void setName(String _name) { this._name = _name; }
@@ -212,6 +224,17 @@ public class Reference extends ObjectPrinter {
     }
 
     /**
+     * Indicates whether this asset has a particular property (true) or not (false).
+     *
+     * @param name the name of the property to check
+     * @return boolean
+     */
+    public boolean hasProperty(String name) {
+        Field property = getFieldByName(name);
+        return (property != null);
+    }
+
+    /**
      * Retrieves the value of a property of this asset by the provided name (allows dynamic retrieval of properties).
      *
      * @param name the property name to retrieve
@@ -229,6 +252,24 @@ public class Reference extends ObjectPrinter {
             }
         }
         return value;
+    }
+
+    /**
+     * Sets the value of a property of this asset by the provided name and value (allows dynamic setting of properties).
+     *
+     * @param name the property name to set a new value against
+     * @param value the new value to use for the property
+     */
+    public void setPropertyByName(String name, Object value) {
+        Field property = getFieldByName(name);
+        if (property != null) {
+            try {
+                property.setAccessible(true);
+                property.set(this, value);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -296,6 +337,75 @@ public class Reference extends ObjectPrinter {
     public Boolean isSimpleType(String propertyName) {
         Field property = getFieldByName(propertyName);
         return (property.getType() != Reference.class && property.getType() != ReferenceList.class);
+    }
+
+    /**
+     * Ensures that the _context of the asset is populated (takes no action if already populated).
+     * In addition, if the asset type supports them, will also retrieve and set modification details.
+     *
+     * @param igcrest a REST API connection to use in populating the context
+     * @return boolean indicating whether _context was successfully / already populated (true) or not (false)
+     */
+    public boolean populateContext(IGCRestClient igcrest) {
+
+        boolean success = true;
+        // Only bother retrieving the context if it isn't already present
+
+        if (this._context.size() == 0) {
+
+            String[] properties = new String[]{ "name" };
+            boolean bHasModificationDetails = this.hasModificationDetails();
+            if (bHasModificationDetails) {
+                properties = new String[]{ "created_on", "created_by", "modified_on", "modified_by" };
+            }
+
+            IGCSearchCondition idOnly = new IGCSearchCondition("_id", "=", this.getId());
+            IGCSearchConditionSet idOnlySet = new IGCSearchConditionSet(idOnly);
+            IGCSearch igcSearch = new IGCSearch(this.getType(), properties, idOnlySet);
+            igcSearch.setPageSize(2);
+            ReferenceList assetsWithCtx = igcrest.search(igcSearch);
+            success = (assetsWithCtx.getItems().size() > 0);
+            if (success) {
+
+                Reference assetWithCtx = assetsWithCtx.getItems().get(0);
+                this._context = assetWithCtx.getContext();
+
+                if (bHasModificationDetails) {
+                    this.setPropertyByName("created_on", assetWithCtx.getPropertyByName("created_on"));
+                    this.setPropertyByName("created_by", assetWithCtx.getPropertyByName("created_by"));
+                    this.setPropertyByName("modified_on", assetWithCtx.getPropertyByName("modified_on"));
+                    this.setPropertyByName("modified_by", assetWithCtx.getPropertyByName("modified_by"));
+                }
+
+            }
+
+        }
+
+        return success;
+
+    }
+
+    /**
+     * Retrieves the semantic identity of the asset.
+     *
+     * @param igcrest a REST API connection to use in confirming the identity of the asset
+     * @return Identity
+     */
+    public Identity getIdentity(IGCRestClient igcrest) {
+        if (this.identity == null) {
+            this.populateContext(igcrest);
+            this.identity = new Identity(this._context, this.getType(), this.getName());
+        }
+        return this.identity;
+    }
+
+    /**
+     * Indicates whether this asset type tracks modification details (true) or not (false).
+     *
+     * @return boolean
+     */
+    public boolean hasModificationDetails() {
+        return this.hasProperty("modified_on");
     }
 
     // TODO: eventually handle the '_expand' that exists for data classifications, eg.:
