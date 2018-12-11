@@ -10,6 +10,7 @@ import org.odpi.openmetadata.accessservices.informationview.events.ReportColumnS
 import org.odpi.openmetadata.accessservices.informationview.events.ReportElement;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportRequestBody;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportSection;
+import org.odpi.openmetadata.accessservices.informationview.events.ReportSectionSource;
 import org.odpi.openmetadata.accessservices.informationview.events.Source;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.ReportCreationException;
@@ -232,9 +233,29 @@ public class ReportCreator {
             sourceColumn = lookupHelper.lookupDatabaseColumn((DatabaseColumnSource) source);
         }
         if (source instanceof ReportColumnSource) {
-            sourceColumn = entitiesCreatorHelper.getEntity(Constants.SCHEMA_ATTRIBUTE, source.getQualifiedName());
+            sourceColumn = entitiesCreatorHelper.getEntity(Constants.SCHEMA_ATTRIBUTE, getReportColumnQualifiedName((ReportColumnSource)source));
         }
         return sourceColumn;
+    }
+
+    private String getReportColumnQualifiedName(ReportColumnSource source) {
+        if (!StringUtils.isEmpty(source.getQualifiedName())) {
+            return source.getQualifiedName();
+        } else {
+            StringBuilder builder = new StringBuilder();
+            builder.append(source.getName());
+            ReportSectionSource parentSection = source.getParentReportSection();
+            while (parentSection != null) {
+                builder.insert(0, parentSection.getName() + ".");
+                if(parentSection.getParentReportSection() == null){
+                    builder.insert(0, parentSection.getReportSource().getReportId() + ".");
+                    builder.insert(0, parentSection.getReportSource().getNetworkAddress() + ".");
+                }
+                parentSection = parentSection.getParentReportSection();
+            }
+            return builder.toString();
+        }//TODO
+
     }
 
     private String getBusinessTermQualifiedName(BusinessTerm businessTerm) {
