@@ -12,7 +12,7 @@ import java.util.Map;
  * <p>
  * Instances of this class call the synchronized static methods to work with the map.
  */
-public class DataEngineServicesInstanceMap {
+class DataEngineServicesInstanceMap {
 
     private static Map<String, DataEngineServicesInstance> instanceMap = new HashMap<>();
 
@@ -36,9 +36,7 @@ public class DataEngineServicesInstanceMap {
      * @return OMRSRepositoryServicesInstance object
      */
     private static synchronized DataEngineServicesInstance getInstanceForJVM(String serverName) {
-        DataEngineServicesInstance instance = instanceMap.get(serverName);
-
-        return instance;
+        return instanceMap.get(serverName);
     }
 
 
@@ -55,7 +53,7 @@ public class DataEngineServicesInstanceMap {
     /**
      * Constructor
      */
-    public DataEngineServicesInstanceMap() {
+    DataEngineServicesInstanceMap() {
     }
 
 
@@ -65,7 +63,7 @@ public class DataEngineServicesInstanceMap {
      * @param serverName name of the server
      * @return OMRSRepositoryServicesInstance object
      */
-    public DataEngineServicesInstance getInstance(String serverName) {
+    DataEngineServicesInstance getInstance(String serverName) {
         return DataEngineServicesInstanceMap.getInstanceForJVM(serverName);
     }
 }
