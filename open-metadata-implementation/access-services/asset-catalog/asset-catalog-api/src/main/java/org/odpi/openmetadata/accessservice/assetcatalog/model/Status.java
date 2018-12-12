@@ -6,10 +6,33 @@ package org.odpi.openmetadata.accessservice.assetcatalog.model;
  * by the status when they are fetch from the from metadata collection.
  */
 public enum Status {
+    /**
+     * Unknown status of the asset
+     */
     UNKNOWN,
+
+    /**
+     * Assets with status in review
+     */
     PROPOSED,
+
+    /**
+     * Assets with incomplete details
+     */
     DRAFT,
+
+    /**
+     * Assets ready for review
+     */
     PREPARED,
+
+    /**
+     * Assets in active state
+     */
     ACTIVE,
+
+    /**
+     * Assets that have been deleted or are no longer available
+     */
     DELETED
 }

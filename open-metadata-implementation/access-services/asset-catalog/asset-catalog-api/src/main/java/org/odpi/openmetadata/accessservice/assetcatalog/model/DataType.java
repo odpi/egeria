@@ -1,14 +1,11 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservice.assetcatalog.model;
 
-import lombok.Getter;
-
 import java.io.Serializable;
 
 /**
  * The DataType enum facilitates the conversion between the properties type from a metadata collection to Java types.
  */
-@Getter
 public enum DataType implements Serializable {
     BOOLEAN(1, "boolean", "java.lang.Boolean"),
     BYTE(2, "byte", "java.lang.Byte"),
@@ -22,7 +19,6 @@ public enum DataType implements Serializable {
     BIG_DECIMAL(10, "bigdecimal", "java.math.BigDecimal"),
     STRING(11, "string", "java.lang.String"),
     DATE(12, "date", "java.util.Date");
-
 
     private static final long serialVersionUID = 1L;
 

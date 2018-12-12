@@ -12,6 +12,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
@@ -81,7 +82,10 @@ public class Converter {
         assetDescription.setUrl(entitySummary.getInstanceURL());
         assetDescription.setStatus(getStatus(entitySummary.getStatus().getName()));
 
-        assetDescription.setClassifications(toClassifications(entitySummary.getClassifications()));
+        if (entitySummary.getClassifications() != null && !entitySummary.getClassifications().isEmpty()) {
+            assetDescription.setClassifications(toClassifications(entitySummary.getClassifications()));
+        }
+
         return assetDescription;
     }
 
@@ -169,7 +173,12 @@ public class Converter {
             classification.setStatus(getStatus(classificationEntity.getStatus().getName()));
             classification.setTypeDefName(classificationEntity.getType().getTypeDefName());
             classification.setTypeDefDescription(classificationEntity.getType().getTypeDefDescription());
-            classification.setProperties(getProperties(classificationEntity.getProperties()));
+            if (classificationEntity.getProperties() != null) {
+                Map<String, Object> properties = getProperties(classificationEntity.getProperties());
+                if (properties != null && !properties.isEmpty()) {
+                    classification.setProperties(properties);
+                }
+            }
 
             classifications.add(classification);
         }
@@ -264,9 +273,17 @@ public class Converter {
 
     private Object getPropertyValue(InstanceProperties instanceProperties, String propertyName) {
 
-        PrimitivePropertyValue value = (PrimitivePropertyValue) instanceProperties.getPropertyValue(propertyName);
-        if (value != null) {
-            return value.getPrimitiveValue();
+        if (instanceProperties.getPropertyValue(propertyName) instanceof PrimitivePropertyValue) {
+            PrimitivePropertyValue value = (PrimitivePropertyValue) instanceProperties.getPropertyValue(propertyName);
+            if (value != null) {
+                return value.getPrimitiveValue();
+            }
+        } else if (instanceProperties.getPropertyValue(propertyName) instanceof EnumPropertyValue) {
+            EnumPropertyValue value = (EnumPropertyValue) instanceProperties.getPropertyValue(propertyName);
+            if (value != null) {
+                return value.getDescription();
+            }
+
         }
 
         return null;
