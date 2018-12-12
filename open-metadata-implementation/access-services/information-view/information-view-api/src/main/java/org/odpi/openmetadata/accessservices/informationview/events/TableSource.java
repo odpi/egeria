@@ -51,4 +51,9 @@ public class TableSource extends Source {
                 ", databaseName='" + databaseName + '\'' +
                 '}';
     }
+
+    @Override
+    public String buildQualifiedName() {
+        return this.getNetworkAddress() + "." + "Connection." + this.getDatabaseName() + "." + this.getSchemaName() + "." + this.getTableName();
+    }
 }

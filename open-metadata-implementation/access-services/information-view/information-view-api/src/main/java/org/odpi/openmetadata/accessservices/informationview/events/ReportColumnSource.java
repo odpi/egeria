@@ -44,4 +44,9 @@ public class ReportColumnSource extends Source {
                 "name='" + name + '\'' +
                 '}';
     }
+
+    @Override
+    public String buildQualifiedName() {
+        return parentReportSection != null ? parentReportSection.getQualifiedName() + "." + this.getName() : this.getName();
+    }
 }

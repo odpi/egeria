@@ -35,4 +35,9 @@ public class ReportSource extends Source {
                 "reportId='" + reportId + '\'' +
                 '}';
     }
+
+    @Override
+    public String buildQualifiedName() {
+        return this.getNetworkAddress() + "." + reportId;
+    }
 }

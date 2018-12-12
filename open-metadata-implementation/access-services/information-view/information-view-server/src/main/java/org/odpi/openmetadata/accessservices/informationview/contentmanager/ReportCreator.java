@@ -2,15 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.informationview.contentmanager;
 
-import org.odpi.openmetadata.accessservices.informationview.events.BusinessTerm;
 import org.odpi.openmetadata.accessservices.informationview.events.DatabaseColumnSource;
-import org.odpi.openmetadata.accessservices.informationview.events.GlossaryCategory;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportColumn;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportColumnSource;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportElement;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportRequestBody;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportSection;
-import org.odpi.openmetadata.accessservices.informationview.events.ReportSectionSource;
 import org.odpi.openmetadata.accessservices.informationview.events.Source;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.ReportCreationException;
@@ -187,8 +184,10 @@ public class ReportCreator {
         if (reportColumn.getBusinessTerm() != null) {
             String businessTermGuid = reportColumn.getBusinessTerm().getGuid();
             if (StringUtils.isEmpty(businessTermGuid)) {
-                EntityDetail businessTerm = entitiesCreatorHelper.getEntity(Constants.BUSINESS_TERM, getBusinessTermQualifiedName(reportColumn.getBusinessTerm()));
-                businessTermGuid = businessTerm != null ? businessTerm.getGUID() : null;
+                EntityDetail businessTerm = entitiesCreatorHelper.getEntity(Constants.BUSINESS_TERM, reportColumn.getBusinessTerm().buildQualifiedName());
+                if (businessTerm != null) {
+                    businessTermGuid = businessTerm.getGUID();
+                }
             }
 
             if (!StringUtils.isEmpty(businessTermGuid)) {
@@ -204,11 +203,7 @@ public class ReportCreator {
 
         for (Source source : reportColumn.getSources()) {
 
-            String sourceColumnGUID = source.getGuid();
-            if (StringUtils.isEmpty(sourceColumnGUID)) {
-                EntityDetail sourceColumn = getSource(source);
-                sourceColumnGUID = sourceColumn != null ? sourceColumn.getGUID() : null;
-            }
+            String sourceColumnGUID = getSourceGuid(source);
             if (!StringUtils.isEmpty(sourceColumnGUID)) {
                 log.info("source {} for report column {} found.", source, reportColumn.getName());
 
@@ -227,51 +222,21 @@ public class ReportCreator {
         }
     }
 
-    private EntityDetail getSource(Source source) throws Exception {
+    private String getSourceGuid(Source source) throws Exception {
+
+        if (!StringUtils.isEmpty(source.getGuid())) {
+            return source.getGuid();
+        }
         EntityDetail sourceColumn = null;
         if (source instanceof DatabaseColumnSource) {
             sourceColumn = lookupHelper.lookupDatabaseColumn((DatabaseColumnSource) source);
+        } else if (source instanceof ReportColumnSource) {
+            sourceColumn = entitiesCreatorHelper.getEntity(Constants.SCHEMA_ATTRIBUTE, source.buildQualifiedName());
         }
-        if (source instanceof ReportColumnSource) {
-            sourceColumn = entitiesCreatorHelper.getEntity(Constants.SCHEMA_ATTRIBUTE, getReportColumnQualifiedName((ReportColumnSource)source));
+        if (source != null) {
+            return sourceColumn.getGUID();
         }
-        return sourceColumn;
-    }
-
-    private String getReportColumnQualifiedName(ReportColumnSource source) {
-        if (!StringUtils.isEmpty(source.getQualifiedName())) {
-            return source.getQualifiedName();
-        } else {
-            StringBuilder builder = new StringBuilder();
-            builder.append(source.getName());
-            ReportSectionSource parentSection = source.getParentReportSection();
-            while (parentSection != null) {
-                builder.insert(0, parentSection.getName() + ".");
-                if(parentSection.getParentReportSection() == null){
-                    builder.insert(0, parentSection.getReportSource().getReportId() + ".");
-                    builder.insert(0, parentSection.getReportSource().getNetworkAddress() + ".");
-                }
-                parentSection = parentSection.getParentReportSection();
-            }
-            return builder.toString();
-        }//TODO
-
-    }
-
-    private String getBusinessTermQualifiedName(BusinessTerm businessTerm) {
-        if (!StringUtils.isEmpty(businessTerm.getQualifiedName())) {
-            return businessTerm.getQualifiedName();
-        } else {
-            StringBuilder builder = new StringBuilder();
-            builder.append(businessTerm.getName());
-            GlossaryCategory parentCategory = businessTerm.getGlossaryCategory();
-            while (parentCategory != null) {
-                builder.insert(0, parentCategory.getName() + ".");
-                parentCategory = parentCategory.getParentCategory();
-
-            }
-            return builder.toString();
-        }
+        return null;
     }
 
 }
