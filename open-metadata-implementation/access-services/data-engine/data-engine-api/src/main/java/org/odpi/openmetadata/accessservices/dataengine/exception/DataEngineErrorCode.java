@@ -38,10 +38,14 @@ public enum DataEngineErrorCode {
             "The system is unable to connect to the open metadata property server.",
             "Check that the server where the Asset Catalog OMAS is running initialized correctly and is not in the process of shutting down.  " +
                     "Correct any errors discovered and retry the request when the open metadata services are available."),
-    SERVICE_NOT_INITIALIZED(503, "OMAS-DATA-ENGINE-503-003 ",
+    SERVICE_NOT_INITIALIZED(503, "OMAS-DATA-ENGINE-503-001 ",
             "The access service has not been initialized for server {0} and can not support REST API calls",
             "The server has received a call to one of its open metadata access services but is unable to process it because the access service is not active for the requested server.",
-            "If the server is supposed to have this access service activated, correct the server configuration and restart the server.");
+            "If the server is supposed to have this access service activated, correct the server configuration and restart the server."),
+    NULL_USER_ID(400, "OMAS-DATA-ENGINE-400-001 ",
+                         "The user identifier (user id) passed on the {0} operation is null",
+                         "The system is unable to process the request without a user id.",
+                         "Correct the code in the caller to provide the user id.");
 
     private int httpErrorCode;
     private String errorMessageId;

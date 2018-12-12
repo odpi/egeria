@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.dataengine.server.service;
 import org.odpi.openmetadata.accessservices.dataengine.exception.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.exception.NewInstanceException;
 import org.odpi.openmetadata.accessservices.dataengine.exception.PropertyServerException;
+import org.odpi.openmetadata.accessservices.dataengine.server.util.DataEngineErrorHandler;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
@@ -13,6 +14,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  * It is also responsible for registering itself in the instance map.
  */
 public class DataEngineServicesInstance {
+    private final DataEngineErrorHandler dataEngineErrorHandler = new DataEngineErrorHandler();
 
     private OMRSRepositoryConnector repositoryConnector;
     private OMRSMetadataCollection metadataCollection;
@@ -36,27 +38,10 @@ public class DataEngineServicesInstance {
 
                 DataEngineServicesInstanceMap.setNewInstanceForJVM(serverName, this);
             } catch (Throwable error) {
-                DataEngineErrorCode errorCode = DataEngineErrorCode.OMRS_NOT_INITIALIZED;
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-                throw new NewInstanceException(errorCode.getHttpErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
-
+                dataEngineErrorHandler.handleNewInstanceException(DataEngineErrorCode.OMRS_NOT_INITIALIZED, methodName);
             }
         } else {
-            DataEngineErrorCode errorCode = DataEngineErrorCode.OMRS_NOT_INITIALIZED;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-            throw new NewInstanceException(errorCode.getHttpErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+            dataEngineErrorHandler.handleNewInstanceException(DataEngineErrorCode.OMRS_NOT_INITIALIZED, methodName);
 
         }
     }
@@ -73,15 +58,8 @@ public class DataEngineServicesInstance {
         if (serverName != null) {
             return serverName;
         } else {
-            DataEngineErrorCode errorCode = DataEngineErrorCode.OMRS_NOT_AVAILABLE;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-            throw new NewInstanceException(errorCode.getHttpErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+            dataEngineErrorHandler.handleNewInstanceException(DataEngineErrorCode.OMRS_NOT_AVAILABLE, methodName);
+            return null;
         }
     }
 
@@ -91,23 +69,34 @@ public class DataEngineServicesInstance {
      * @return OMRSMetadataCollection object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    public OMRSMetadataCollection getMetadataCollection() throws PropertyServerException {
+     OMRSMetadataCollection getMetadataCollection() throws PropertyServerException {
         final String methodName = "getMetadataCollection";
 
         if ((repositoryConnector != null) && (metadataCollection != null) && (repositoryConnector.isActive())) {
             return metadataCollection;
         } else {
-            DataEngineErrorCode errorCode = DataEngineErrorCode.OMRS_NOT_AVAILABLE;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-            throw new PropertyServerException(errorCode.getHttpErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+            dataEngineErrorHandler.handlePropertyServerException(DataEngineErrorCode.OMRS_NOT_AVAILABLE, methodName);
+            return null;
         }
     }
+
+    /**
+     * Return the repository connector for this server.
+     *
+     * @return OMRSRepositoryConnector object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+     OMRSRepositoryConnector getRepositoryConnector() throws PropertyServerException {
+        final String methodName = "getRepositoryConnector";
+
+        if ((repositoryConnector != null) && (metadataCollection != null) && (repositoryConnector.isActive())) {
+            return repositoryConnector;
+        } else {
+            dataEngineErrorHandler.handlePropertyServerException(DataEngineErrorCode.OMRS_NOT_AVAILABLE, methodName);
+            return null;
+        }
+    }
+
 
     /**
      * Unregister this instance from the instance map.
