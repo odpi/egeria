@@ -70,4 +70,9 @@ public class DatabaseColumnSource extends Source {
                 ", tableSource=" + tableSource +
                 '}';
     }
+
+    @Override
+    public String buildQualifiedName() {
+        return tableSource != null ? tableSource.getQualifiedName() + "." + name : name;
+    }
 }

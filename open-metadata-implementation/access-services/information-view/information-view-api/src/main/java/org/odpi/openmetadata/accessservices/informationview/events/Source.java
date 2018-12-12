@@ -141,4 +141,7 @@ public abstract class Source {
                 ", qualifiedName='" + qualifiedName + '\'' +
                 '}';
     }
+
+    public abstract String buildQualifiedName();
+
 }
