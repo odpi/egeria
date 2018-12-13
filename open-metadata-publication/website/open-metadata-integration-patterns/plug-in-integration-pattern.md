@@ -27,3 +27,9 @@ Figure 3 shows which frameworks are available in each server.
 
 ![Figure 3](plug-in-integration-pattern-servers.png)
 > Figure 3: The frameworks in the servers
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
