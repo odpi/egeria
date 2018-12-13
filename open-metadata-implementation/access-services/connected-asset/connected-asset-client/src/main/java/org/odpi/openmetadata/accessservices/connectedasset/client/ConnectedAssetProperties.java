@@ -109,7 +109,7 @@ public class ConnectedAssetProperties extends org.odpi.openmetadata.frameworks.c
 
         try
         {
-            assetProperties = new ConnectedAsset(serverName, omasServerURL, userId, assetGUID);
+            assetProperties = new ConnectedAsset(serverName, omasServerURL, userId, assetGUID, connection.getGUID());
         }
         catch (UserNotAuthorizedException  error)
         {

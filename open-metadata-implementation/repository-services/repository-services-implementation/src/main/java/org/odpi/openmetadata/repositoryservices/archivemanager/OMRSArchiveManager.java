@@ -140,6 +140,7 @@ public class OMRSArchiveManager
         processOpenMetadataArchive(openMetadataTypes, repositoryContentManager, localInstanceEventProcessor);
     }
 
+
     /**
      * Unpack and process the contents an open metadata archive , passing its contents to the local
      * repository (if it exists).

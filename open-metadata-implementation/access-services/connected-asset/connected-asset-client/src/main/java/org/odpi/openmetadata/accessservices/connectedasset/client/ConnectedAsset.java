@@ -33,7 +33,7 @@ public class ConnectedAsset extends AssetUniverse
 
 
     /**
-     * Constructor used by Asset Consumer OMAS and Connected AssetProperties.refresh().
+     * Constructor used by Asset Consumer OMAS for getAssetProperties().
      *
      * @param serverName  name of the server.
      * @param omasServerURL  url used to call the server.
@@ -42,24 +42,63 @@ public class ConnectedAsset extends AssetUniverse
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UnrecognizedAssetGUIDException the assetGUID is not recognized
-     * @throws PropertyServerException There is a problem retrieving the asset properties from
-     *                                   the property server.
+     * @throws UnrecognizedConnectionGUIDException the connectionGUID is not recognized
+     * @throws PropertyServerException There is a problem retrieving the asset properties from the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public ConnectedAsset(String   serverName,
                           String   omasServerURL,
                           String   userId,
                           String   assetGUID) throws UnrecognizedAssetGUIDException,
+                                                     UnrecognizedConnectionGUIDException,
                                                      InvalidParameterException,
                                                      PropertyServerException,
                                                      UserNotAuthorizedException
+    {
+        this(serverName, omasServerURL, userId, assetGUID, null);
+    }
+
+
+    /**
+     * Constructor used by ConnectedAssetProperties.refresh().
+     *
+     * @param serverName  name of the server.
+     * @param omasServerURL  url used to call the server.
+     * @param userId  userId of user making request.
+     * @param assetGUID  unique id for asset.
+     * @param connectionGUID  unique id for connection used to access asset.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UnrecognizedAssetGUIDException the assetGUID is not recognized
+     * @throws UnrecognizedConnectionGUIDException the connectionGUID is not recognized
+     * @throws PropertyServerException There is a problem retrieving the asset properties from the property server.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public ConnectedAsset(String   serverName,
+                          String   omasServerURL,
+                          String   userId,
+                          String   assetGUID,
+                          String   connectionGUID) throws UnrecognizedAssetGUIDException,
+                                                          UnrecognizedConnectionGUIDException,
+                                                          InvalidParameterException,
+                                                          PropertyServerException,
+                                                          UserNotAuthorizedException
     {
         super();
 
         this.serverName = serverName;
         this.omasServerURL = omasServerURL;
 
-        AssetResponse assetResponse = this.getAssetSummary(serverName, userId, assetGUID);
+        AssetResponse assetResponse;
+
+        if (connectionGUID != null)
+        {
+            assetResponse = this.getConnectedAssetSummary(serverName, userId, assetGUID, connectionGUID);
+        }
+        else
+        {
+            assetResponse = this.getAssetSummary(serverName, userId, assetGUID);
+        }
 
         super.assetBean = assetResponse.getAsset();
 
@@ -198,17 +237,81 @@ public class ConnectedAsset extends AssetUniverse
     }
 
 
+    /**
+     * Returns the basic information about the asset.  The connection guid allows the short description for the
+     * asset to be filled out.
+     *
+     * @param serverName  name of the server.
+     * @param userId     String   userId of user making request.
+     * @param assetGUID  String   unique id for asset.
+     * @param connectionGUID  unique id for connection used to access asset.
+     *
+     * @return a bean with the basic properties about the asset.
+     * @throws InvalidParameterException the asset GUID is null or invalid.
+     * @throws UnrecognizedAssetGUIDException the asset GUID is not recognized by the property server.
+     * @throws UnrecognizedConnectionGUIDException the connection GUID is not recognized by the property server.
+     * @throws PropertyServerException there is a problem retrieving the asset properties from the property server.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    private AssetResponse getConnectedAssetSummary(String   serverName,
+                                                   String   userId,
+                                                   String   assetGUID,
+                                                   String   connectionGUID) throws InvalidParameterException,
+                                                                                   UnrecognizedAssetGUIDException,
+                                                                                   UnrecognizedConnectionGUIDException,
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException
+    {
+        final String   methodName = "getConnectedAssetSummary";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/connected-asset/users/{1}/assets/{2}/via-connection/{3}";
+
+        validateOMASServerURL(methodName);
+
+        AssetResponse  restResult;
+
+        try
+        {
+            RestTemplate restTemplate = new RestTemplate();
+
+            restResult = restTemplate.getForObject(urlTemplate, AssetResponse.class, serverName, userId, assetGUID, connectionGUID);
+        }
+        catch (Throwable error)
+        {
+            ConnectedAssetErrorCode errorCode = ConnectedAssetErrorCode.CLIENT_SIDE_REST_API_ERROR;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                                                                                                     omasServerURL,
+                                                                                                     error.getMessage());
+
+            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+                                              this.getClass().getName(),
+                                              methodName,
+                                              errorMessage,
+                                              errorCode.getSystemAction(),
+                                              errorCode.getUserAction(),
+                                              error);
+        }
+
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowUnrecognizedAssetGUIDException(methodName, restResult);
+        this.detectAndThrowUnrecognizedConnectionGUIDException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+        this.detectAndThrowPropertyServerException(methodName, restResult);
+
+        return restResult;
+    }
+
 
     /**
-     * Returns the basic information about the asset.
+     * Returns the basic information about the asset.  Note shortDescription is null in the returned asset because
+     * there is no linked connection object.
      *
      * @param serverName  name of the server.
      * @param userId     String   userId of user making request.
      * @param assetGUID  String   unique id for asset.
      *
      * @return a bean with the basic properties about the asset.
-     * @throws InvalidParameterException the GUID is null or invalid.
-     * @throws UnrecognizedAssetGUIDException the GUID is not recognized by the property server.
+     * @throws InvalidParameterException the asset GUID is null or invalid.
+     * @throws UnrecognizedAssetGUIDException the asset GUID is not recognized by the property server.
      * @throws PropertyServerException there is a problem retrieving the asset properties from the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
@@ -522,6 +625,45 @@ public class ConnectedAsset extends AssetUniverse
                                                      restResult.getExceptionSystemAction(),
                                                      restResult.getExceptionUserAction(),
                                                      assetGUID);
+        }
+    }
+
+
+    /**
+     * Throw an UnrecognizedAssetGUIDException if it is encoded in the REST response.
+     *
+     * @param methodName  name of the method called
+     * @param restResult  response from the rest call.  This generated in the remote server.
+     *
+     * @throws UnrecognizedConnectionGUIDException encoded exception from the server
+     */
+    void detectAndThrowUnrecognizedConnectionGUIDException(String                        methodName,
+                                                           ConnectedAssetOMASAPIResponse restResult) throws UnrecognizedConnectionGUIDException
+    {
+        final String   exceptionClassName = UnrecognizedConnectionGUIDException.class.getName();
+
+        if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
+        {
+            String connectionGUID = null;
+
+            Map<String, Object>   exceptionProperties = restResult. getExceptionProperties();
+
+            if (exceptionProperties != null)
+            {
+                Object  guidObject = exceptionProperties.get("connectionGUID");
+
+                if (guidObject != null)
+                {
+                    connectionGUID = (String)guidObject;
+                }
+            }
+            throw new UnrecognizedConnectionGUIDException(restResult.getRelatedHTTPCode(),
+                                                          this.getClass().getName(),
+                                                          methodName,
+                                                          restResult.getExceptionErrorMessage(),
+                                                          restResult.getExceptionSystemAction(),
+                                                          restResult.getExceptionUserAction(),
+                                                          connectionGUID);
         }
     }
 

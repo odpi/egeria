@@ -1,4 +1,6 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
+
 
 # Open Connector Framework (OCF)
 
@@ -113,3 +115,9 @@ client-side support for connectors.
 The [Open Metadata Repository Services (OMRS)](../../repository-services)
 makes extensive use of OCF connectors for accessing open metadata repository servers and other resources.
 These connectors are collectively called the [OMRS Connectors](../../repository-services/docs/component-descriptions/connectors).
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

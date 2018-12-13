@@ -24,6 +24,7 @@ understand the data assets they are working with.
 
 * **[0310 Glossary](0310-Glossary-Model.md)**
 * **[0320 Category Hierarchy](0320-Category-Hierarchy.md)**
+* **[0330 Glossary Terms](0330-Terms.md)**
 * **[0340 Dictionary](0340-Dictionary.md)**
 * **[0350 Related Terms](0350-Related-Terms.md)**
 * **[0360 Contexts](0360-Contexts.md)**
@@ -31,3 +32,9 @@ understand the data assets they are working with.
 * **[0380 Spine Objects](0380-Spine-Objects.md)**
 * **[0385 Controlled Glossary Development](0385-Controlled-Glossary-Development.md)**
 * **[0390 Glossary Projects](0390-Glossary-Projects.md)**
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

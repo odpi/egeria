@@ -22,3 +22,9 @@ SecureLocation and CyberLocation help to clarify the nature of the location.
 * FixedLocation means that the location represents a physical place where, for example, Hosts (see 0030 below), servers (see 0040 below) and hence data may be located.  This could be an area of a data center, the building the data center is located in, or even the country where the server/data is located.
 * SecureLocation indicates that there is restricted access to the location.
 * CyberLocation means that the location describes something in cyber space.
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
