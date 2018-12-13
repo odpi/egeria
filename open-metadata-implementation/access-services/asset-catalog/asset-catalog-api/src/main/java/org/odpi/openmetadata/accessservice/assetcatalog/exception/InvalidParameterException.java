@@ -2,7 +2,7 @@
 package org.odpi.openmetadata.accessservice.assetcatalog.exception;
 
 /**
- * The InvalidParameterException is thrown by the Asset Catalog OMAS when a parameted passed on a request is
+ * The InvalidParameterException is thrown by the Asset Catalog OMAS when a parameter passed on a request is
  * invalid and the action can not be performed without it.
  */
 public class InvalidParameterException extends AssetCatalogException {
