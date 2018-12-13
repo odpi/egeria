@@ -14,3 +14,9 @@ repository to enable both use and management of the
 certification process.
 
 ![UML](0482-Certifications.png)
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

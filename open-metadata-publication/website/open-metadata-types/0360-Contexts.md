@@ -12,3 +12,9 @@ and a relationship called **UsedInContext** to link terms that are relevant in t
 The **ContextDefinition** classification indicates that the term describes a context.
     
 Glossary Terms that are relevant in that context are linked to the context definition term using the UsedInContext relationship.
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

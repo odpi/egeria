@@ -169,13 +169,10 @@ public class InstanceProperties extends InstanceElementHeader
         {
             return null;
         }
-        /*
-         * Commented out waiting for fix in SubjectAreaOMAS.
         else if (instanceProperties.isEmpty())
         {
             return null;
         }
-        */
         else
         {
             return new HashMap<>(instanceProperties);
