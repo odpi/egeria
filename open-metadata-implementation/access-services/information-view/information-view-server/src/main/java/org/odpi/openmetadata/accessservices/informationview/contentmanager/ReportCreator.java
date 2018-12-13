@@ -2,13 +2,16 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.informationview.contentmanager;
 
+import org.odpi.openmetadata.accessservices.informationview.events.DatabaseColumnSource;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportColumn;
+import org.odpi.openmetadata.accessservices.informationview.events.ReportColumnSource;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportElement;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportRequestBody;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportSection;
 import org.odpi.openmetadata.accessservices.informationview.events.Source;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.ReportCreationException;
+import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesBuilder;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
@@ -17,6 +20,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 import java.net.URL;
 import java.util.List;
@@ -26,11 +30,13 @@ public class ReportCreator {
 
     private static final Logger log = LoggerFactory.getLogger(ReportCreator.class);
     private final EntitiesCreatorHelper entitiesCreatorHelper;
+    private final LookupHelper lookupHelper;
     private final OMRSAuditLog auditLog;
 
 
-    public ReportCreator(EntitiesCreatorHelper entitiesCreatorHelper, OMRSAuditLog auditLog) {
+    public ReportCreator(EntitiesCreatorHelper entitiesCreatorHelper, LookupHelper lookupHelper, OMRSAuditLog auditLog) {
         this.entitiesCreatorHelper = entitiesCreatorHelper;
+        this.lookupHelper = lookupHelper;
         this.auditLog = auditLog;
     }
 
@@ -176,12 +182,18 @@ public class ReportCreator {
 
 
         if (reportColumn.getBusinessTerm() != null) {
-            EntityDetail businessTerm = entitiesCreatorHelper.getEntity(Constants.BUSINESS_TERM, reportColumn.getBusinessTerm().getQualifiedName());
+            String businessTermGuid = reportColumn.getBusinessTerm().getGuid();
+            if (StringUtils.isEmpty(businessTermGuid)) {
+                EntityDetail businessTerm = entitiesCreatorHelper.getEntity(Constants.BUSINESS_TERM, reportColumn.getBusinessTerm().buildQualifiedName());
+                if (businessTerm != null) {
+                    businessTermGuid = businessTerm.getGUID();
+                }
+            }
 
-            if (businessTerm != null) {
+            if (!StringUtils.isEmpty(businessTermGuid)) {
                 entitiesCreatorHelper.addRelationship(Constants.SEMANTIC_ASSIGNMENT,
                         derivedColumnEntity.getGUID(),
-                        businessTerm.getGUID(),
+                        businessTermGuid,
                         Constants.INFORMATION_VIEW_OMAS_NAME,
                         new InstanceProperties());
             } else {
@@ -191,8 +203,8 @@ public class ReportCreator {
 
         for (Source source : reportColumn.getSources()) {
 
-            EntityDetail sourceColumn = entitiesCreatorHelper.getEntity(Constants.SCHEMA_ATTRIBUTE, source.getQualifiedName());
-            if (sourceColumn != null) {
+            String sourceColumnGUID = getSourceGuid(source);
+            if (!StringUtils.isEmpty(sourceColumnGUID)) {
                 log.info("source {} for report column {} found.", source, reportColumn.getName());
 
                 InstanceProperties schemaQueryImplProperties = new EntityPropertiesBuilder()
@@ -200,7 +212,7 @@ public class ReportCreator {
                         .build();
                 entitiesCreatorHelper.addRelationship(Constants.SCHEMA_QUERY_IMPLEMENTATION,
                         derivedColumnEntity.getGUID(),
-                        sourceColumn.getGUID(),
+                        sourceColumnGUID,
                         Constants.INFORMATION_VIEW_OMAS_NAME,
                         schemaQueryImplProperties);
 
@@ -208,6 +220,23 @@ public class ReportCreator {
                 log.error("source column not found, unable to add relationships for column " + source.toString());
             }
         }
+    }
+
+    private String getSourceGuid(Source source) throws Exception {
+
+        if (!StringUtils.isEmpty(source.getGuid())) {
+            return source.getGuid();
+        }
+        EntityDetail sourceColumn = null;
+        if (source instanceof DatabaseColumnSource) {
+            sourceColumn = lookupHelper.lookupDatabaseColumn((DatabaseColumnSource) source);
+        } else if (source instanceof ReportColumnSource) {
+            sourceColumn = entitiesCreatorHelper.getEntity(Constants.SCHEMA_ATTRIBUTE, source.buildQualifiedName());
+        }
+        if (source != null) {
+            return sourceColumn.getGUID();
+        }
+        return null;
     }
 
 }
