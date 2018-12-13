@@ -6,3 +6,8 @@
 Naming standards provide means for classifying glossary terms to allow naming rules to use them.
 
 ![UML](0438-Naming-Standards.png)
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

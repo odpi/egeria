@@ -12,3 +12,9 @@ The top level schema for the API lists the operations.
 Under that, each operation defines its requests and responses.
 
 ![UML](0536-API-Schemas.png)
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

@@ -12,3 +12,9 @@ it can have a link to an external reference
 (say a physical schema implementation in a source code repository).
 
 ![UML](0504-Implementation-Snippets.png)
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

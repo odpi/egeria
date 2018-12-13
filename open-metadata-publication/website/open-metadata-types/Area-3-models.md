@@ -32,3 +32,9 @@ understand the data assets they are working with.
 * **[0380 Spine Objects](0380-Spine-Objects.md)**
 * **[0385 Controlled Glossary Development](0385-Controlled-Glossary-Development.md)**
 * **[0390 Glossary Projects](0390-Glossary-Projects.md)**
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

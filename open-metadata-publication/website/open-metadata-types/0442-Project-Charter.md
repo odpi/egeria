@@ -7,3 +7,8 @@ The project charter defines the mission and purpose of the project.   The access
 For example, the purposes, specifically are used in GDPR scenarios.
 
 ![UML](0442-Project-Charter.png)
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

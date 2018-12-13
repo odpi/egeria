@@ -529,6 +529,20 @@ public interface OMRSRepositoryHelper
     Map<String, Object> getInstancePropertiesAsMap(InstanceProperties    instanceProperties);
 
 
+    /**
+     * Locates and extracts a string array property and extracts its values.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested map property
+     * @param properties all of the properties of the instance
+     * @param methodName method of caller
+     * @return array property value or null
+     */
+    List<String> getStringArrayProperty(String             sourceName,
+                                        String             propertyName,
+                                        InstanceProperties properties,
+                                        String             methodName);
+
 
     /**
      * Return the requested property or 0 if property is not found.  If the property is not
