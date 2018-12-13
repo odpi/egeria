@@ -20,3 +20,9 @@ collections of resources that the project is using.
 Since it is a Referenceable, it can have links to external URLs,
 such as the project home page, project plan or APIs
 as well as images (see [0015 Linked Media Types](0015-Linked-Media-Types.md) in Area 0).
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

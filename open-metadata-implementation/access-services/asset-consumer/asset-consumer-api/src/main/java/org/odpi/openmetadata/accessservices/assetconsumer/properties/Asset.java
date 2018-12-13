@@ -27,18 +27,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes({
         @JsonSubTypes.Type(value = Asset.class, name = "AssetCollectionMember")
 })
-public class Asset extends AssetConsumerElementHeader
+public class Asset extends ReferenceableHeader
 {
-    private String               guid                 = null;
-    private String               typeName             = null;
-    private String               typeDescription      = null;
-    private String               qualifiedName        = null;
     private String               displayName          = null;
     private String               description          = null;
     private String               owner                = null;
     private List<String>         zoneMembership       = null;
-    private Map<String, Object>  additionalProperties = null;
-    private List<Classification> classifications      = null;
+    private String               lastChange           = null;
 
 
     /**
@@ -59,106 +54,14 @@ public class Asset extends AssetConsumerElementHeader
 
         if (template != null)
         {
-            this.guid = template.getGUID();
-            this.typeName = template.getTypeName();
-            this.typeDescription = template.getTypeDescription();
-            this.qualifiedName = template.getQualifiedName();
             this.displayName = template.getDisplayName();
             this.description = template.getDescription();
             this.owner = template.getOwner();
             this.zoneMembership = template.getZoneMembership();
-            this.additionalProperties = template.getAdditionalProperties();
-            this.classifications = template.getClassifications();
+            this.lastChange = template.getLastChange();
         }
     }
 
-
-    /**
-     * Return the unique identifier for this asset.
-     *
-     * @return string guid
-     */
-    public String getGUID()
-    {
-        return guid;
-    }
-
-
-    /**
-     * Set up the unique identifier for this asset.
-     *
-     * @param guid string guid for this asset
-     */
-    public void setGUID(String guid)
-    {
-        this.guid = guid;
-    }
-
-
-    /**
-     * Return the name for this Asset's type.
-     *
-     * @return string name
-     */
-    public String getTypeName()
-    {
-        return typeName;
-    }
-
-
-    /**
-     * Set up the name for this Asset's type.
-     *
-     * @param typeName string name
-     */
-    public void setTypeName(String typeName)
-    {
-        this.typeName = typeName;
-    }
-
-
-    /**
-     * Return the description for this Asset's type.
-     *
-     * @return string description
-     */
-    public String getTypeDescription()
-    {
-        return typeDescription;
-    }
-
-
-    /**
-     * Set up the description for this Asset's type.
-     *
-     * @param typeDescription string description
-     */
-    public void setTypeDescription(String typeDescription)
-    {
-        this.typeDescription = typeDescription;
-    }
-
-
-    /**
-     * Return the unique name for this asset.
-     *
-     * @return string name
-     */
-    public String getQualifiedName()
-    {
-        return qualifiedName;
-    }
-
-
-    /**
-     * Set up the unique name for this asset.
-     *
-     * @param qualifiedName string name
-     */
-    public void setQualifiedName(String qualifiedName)
-    {
-        this.qualifiedName = qualifiedName;
-    }
 
 
     /**
@@ -263,68 +166,24 @@ public class Asset extends AssetConsumerElementHeader
 
 
     /**
-     * Return any additional properties associated with the asset.
+     * Return the description of the last change to the asset.  This is free form text.
      *
-     * @return map of property names to property values
+     * @return string description
      */
-    public Map<String, Object> getAdditionalProperties()
+    public String getLastChange()
     {
-        if (additionalProperties == null)
-        {
-            return null;
-        }
-        else if (additionalProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(additionalProperties);
-        }
+        return lastChange;
     }
 
 
     /**
-     * Set up any additional properties associated with the asset.
+     * Set up the description of the last change to the asset.  This is free form text.
      *
-     * @param additionalProperties map of property names to property values
+     * @param lastChange string description
      */
-    public void setAdditionalProperties(Map<String, Object> additionalProperties)
+    public void setLastChange(String lastChange)
     {
-        this.additionalProperties = additionalProperties;
-    }
-
-
-    /**
-     * Return the list of active classifications for this asset.
-     *
-     * @return list of classification objects
-     */
-    public List<Classification> getClassifications()
-    {
-        if (classifications == null)
-        {
-            return null;
-        }
-        else if (classifications.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return classifications;
-        }
-    }
-
-
-    /**
-     * Set up the list of active classifications for this asset.
-     *
-     * @param classifications list of classification objects
-     */
-    public void setClassifications(List<Classification> classifications)
-    {
-        this.classifications = classifications;
+        this.lastChange = lastChange;
     }
 
 
@@ -337,16 +196,17 @@ public class Asset extends AssetConsumerElementHeader
     public String toString()
     {
         return "Asset{" +
-                "guid='" + guid + '\'' +
-                ", typeName='" + typeName + '\'' +
-                ", typeDescription='" + typeDescription + '\'' +
-                ", qualifiedName='" + qualifiedName + '\'' +
-                ", displayName='" + displayName + '\'' +
+                "displayName='" + displayName + '\'' +
                 ", description='" + description + '\'' +
                 ", owner='" + owner + '\'' +
-                ", zoneMembership='" + zoneMembership + '\'' +
-                ", additionalProperties='" + additionalProperties + '\'' +
-                ", classifications='" + classifications + '\'' +
+                ", zoneMembership=" + zoneMembership +
+                ", lastChange='" + lastChange + '\'' +
+                ", GUID='" + getGUID() + '\'' +
+                ", typeName='" + getTypeName() + '\'' +
+                ", typeDescription='" + getTypeDescription() + '\'' +
+                ", qualifiedName='" + getQualifiedName() + '\'' +
+                ", additionalProperties=" + getAdditionalProperties() +
+                ", classifications=" + getClassifications() +
                 '}';
     }
 
@@ -364,21 +224,20 @@ public class Asset extends AssetConsumerElementHeader
         {
             return true;
         }
-        if (!(objectToCompare instanceof Asset))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        {
+            return false;
+        }
+        if (!super.equals(objectToCompare))
         {
             return false;
         }
         Asset asset = (Asset) objectToCompare;
-        return  Objects.equals(getGUID(), asset.getGUID()) &&
-                Objects.equals(getTypeName(), asset.getTypeName()) &&
-                Objects.equals(getTypeDescription(), asset.getTypeDescription()) &&
-                Objects.equals(getQualifiedName(), asset.getQualifiedName()) &&
-                Objects.equals(getDisplayName(), asset.getDisplayName()) &&
+        return Objects.equals(getDisplayName(), asset.getDisplayName()) &&
                 Objects.equals(getDescription(), asset.getDescription()) &&
                 Objects.equals(getOwner(), asset.getOwner()) &&
-                Objects.equals(getAdditionalProperties(), asset.getAdditionalProperties()) &&
-                Objects.equals(getClassifications(), asset.getClassifications());
-
+                Objects.equals(getZoneMembership(), asset.getZoneMembership()) &&
+                Objects.equals(getLastChange(), asset.getLastChange());
     }
 
 
@@ -390,16 +249,7 @@ public class Asset extends AssetConsumerElementHeader
     @Override
     public int hashCode()
     {
-
-        return Objects.hash(getGUID(),
-                            getTypeName(),
-                            getTypeDescription(),
-                            getQualifiedName(),
-                            getDisplayName(),
-                            getDescription(),
-                            getOwner(),
-                            getZoneMembership(),
-                            getAdditionalProperties(),
-                            getClassifications());
+        return Objects.hash(super.hashCode(), getDisplayName(), getDescription(), getOwner(), getZoneMembership(),
+                            getLastChange());
     }
 }

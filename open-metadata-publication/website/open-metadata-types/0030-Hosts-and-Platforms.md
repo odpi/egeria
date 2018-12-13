@@ -16,3 +16,9 @@ The host can be linked to its location through the HostLocation relationship.
 The operating platform is an informational structure to describe the
 operating system of the host.
 Many hosts could have the same operating platform.
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

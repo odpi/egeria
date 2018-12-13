@@ -7,3 +7,8 @@ A **GovernanceZone** describes a collection of Assets that are used, or processe
 An Asset may belong to many Governance Zones.
 
 ![UML](0424-Governance-Zones.png)
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

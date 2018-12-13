@@ -1,4 +1,4 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
   
@@ -119,3 +119,9 @@ The high level structure of the results JSON document is as follows:
 More detail of the output from individual test cases that run
 (which have been removed for clarify from the JSON snippet
 above) are described for each workbench.
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

@@ -46,3 +46,8 @@ from an external source.
 It may be, for example an industry-specific glossary,
 or from a standards body, or from an open data site,
 or from a commercial organization.
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

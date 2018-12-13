@@ -9,3 +9,9 @@ Open Metadata Repository Services (OMRS).
 
 ![Figure 1](special-integration-pattern-level-1.png)
 > Figure 1: using the special integration pattern
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
