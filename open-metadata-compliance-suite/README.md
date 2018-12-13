@@ -1,4 +1,5 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
   
 # Open Metadata Compliance Suite
 
@@ -42,4 +43,10 @@ For example, the `functional` test results document is
 Each workbench and test has its own documentation page located
 in the [docs](docs/README.md) directory.  Links to the
 individual test's documentation is included in the test results document.
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
 
