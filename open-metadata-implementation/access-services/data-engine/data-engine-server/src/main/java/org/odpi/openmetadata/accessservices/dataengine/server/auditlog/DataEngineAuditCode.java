@@ -45,7 +45,7 @@ public enum DataEngineAuditCode {
             OMRSAuditLogRecordSeverity.ERROR,
             "The Data Engine Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}",
             "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
-            "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),;
+            "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server.");
 
     private String logMessageId;
     private OMRSAuditLogRecordSeverity severity;
@@ -70,10 +70,7 @@ public enum DataEngineAuditCode {
      * @param systemAction - description of the action taken by the system when the condition happened
      * @param userAction   - instructions for resolving the situation, if any
      */
-    DataEngineAuditCode(String messageId,
-                        OMRSAuditLogRecordSeverity severity,
-                        String message,
-                        String systemAction,
+    DataEngineAuditCode(String messageId, OMRSAuditLogRecordSeverity severity, String message, String systemAction,
                         String userAction) {
         this.logMessageId = messageId;
         this.severity = severity;

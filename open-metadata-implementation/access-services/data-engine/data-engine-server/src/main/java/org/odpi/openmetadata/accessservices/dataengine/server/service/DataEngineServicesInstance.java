@@ -69,7 +69,7 @@ public class DataEngineServicesInstance {
      * @return OMRSMetadataCollection object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-     OMRSMetadataCollection getMetadataCollection() throws PropertyServerException {
+    OMRSMetadataCollection getMetadataCollection() throws PropertyServerException {
         final String methodName = "getMetadataCollection";
 
         if ((repositoryConnector != null) && (metadataCollection != null) && (repositoryConnector.isActive())) {
@@ -86,7 +86,7 @@ public class DataEngineServicesInstance {
      * @return OMRSRepositoryConnector object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-     OMRSRepositoryConnector getRepositoryConnector() throws PropertyServerException {
+    OMRSRepositoryConnector getRepositoryConnector() throws PropertyServerException {
         final String methodName = "getRepositoryConnector";
 
         if ((repositoryConnector != null) && (metadataCollection != null) && (repositoryConnector.isActive())) {

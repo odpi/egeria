@@ -38,13 +38,11 @@ abstract class DataEngineOMASAPIResponse implements java.io.Serializable {
     private String exceptionUserAction = null;
     private Map<String, Object> exceptionProperties = null;
 
-
     /**
      * Default constructor
      */
     DataEngineOMASAPIResponse() {
     }
-
 
     /**
      * Copy/clone constructor
@@ -61,5 +59,4 @@ abstract class DataEngineOMASAPIResponse implements java.io.Serializable {
             this.exceptionProperties = template.getExceptionProperties();
         }
     }
-
 }

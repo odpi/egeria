@@ -1,10 +1,11 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.rest;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -29,7 +30,6 @@ public abstract class DataEngineOMASAPIRequestBody implements java.io.Serializab
     DataEngineOMASAPIRequestBody() {
     }
 
-
     /**
      * Copy/clone constructor
      *
@@ -37,7 +37,6 @@ public abstract class DataEngineOMASAPIRequestBody implements java.io.Serializab
      */
     public DataEngineOMASAPIRequestBody(DataEngineOMASAPIRequestBody template) {
     }
-
 
     /**
      * JSON-like toString

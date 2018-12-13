@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.rest;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -14,20 +16,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * unique identifier (guid) object as a response.
  */
 @EqualsAndHashCode(callSuper = true)
-@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown=true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Data
-public class GUIDResponse extends DataEngineOMASAPIResponse
-{
-    private String   guid = null;
-
+public class GUIDResponse extends DataEngineOMASAPIResponse {
+    private String guid = null;
 
     /**
      * Default constructor
      */
-    public GUIDResponse()
-    {
+    public GUIDResponse() {
         super();
     }
 
@@ -37,12 +36,10 @@ public class GUIDResponse extends DataEngineOMASAPIResponse
      *
      * @param template object to copy
      */
-    public GUIDResponse(GUIDResponse  template)
-    {
+    public GUIDResponse(GUIDResponse template) {
         super(template);
 
-        if (template != null)
-        {
+        if (template != null) {
             this.guid = template.getGuid();
         }
     }

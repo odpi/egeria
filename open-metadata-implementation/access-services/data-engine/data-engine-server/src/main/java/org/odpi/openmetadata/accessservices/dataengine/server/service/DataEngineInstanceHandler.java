@@ -20,6 +20,7 @@ class DataEngineInstanceHandler {
 
     private static DataEngineServicesInstanceMap instanceMap = new DataEngineServicesInstanceMap();
     private static AccessServiceDescription myDescription = AccessServiceDescription.DATA_ENGINE_OMAS;
+
     /**
      * Default constructor registers the access service
      */
@@ -40,7 +41,8 @@ class DataEngineInstanceHandler {
         if (instance != null) {
             return instance.getMetadataCollection();
         } else {
-            dataEngineErrorHandler.handlePropertyServerException(DataEngineErrorCode.SERVICE_NOT_INITIALIZED, "getMetadataCollection");
+            dataEngineErrorHandler.handlePropertyServerException(DataEngineErrorCode.SERVICE_NOT_INITIALIZED,
+                    "getMetadataCollection");
             return null;
         }
     }
@@ -58,7 +60,8 @@ class DataEngineInstanceHandler {
         if (instance != null) {
             return instance.getRepositoryConnector();
         } else {
-            dataEngineErrorHandler.handlePropertyServerException(DataEngineErrorCode.SERVICE_NOT_INITIALIZED, "getRepositoryConnector");
+            dataEngineErrorHandler.handlePropertyServerException(DataEngineErrorCode.SERVICE_NOT_INITIALIZED,
+                    "getRepositoryConnector");
             return null;
         }
     }
@@ -68,8 +71,7 @@ class DataEngineInstanceHandler {
      *
      * @return String name
      */
-    String  getAccessServiceName()
-    {
+    String getAccessServiceName() {
         return myDescription.getAccessServiceName();
     }
 }
