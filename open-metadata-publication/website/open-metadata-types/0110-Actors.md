@@ -48,3 +48,8 @@ This includes crowd-sourcing and project participation.
 Open metadata supports Karma Points.
 These are awarded for participation in the collaboration
 around open metadata.
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

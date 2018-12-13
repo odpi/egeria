@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.server;
 
-
 import org.odpi.openmetadata.accessservices.assetconsumer.rest.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -145,189 +144,7 @@ public class AssetConsumerRESTServices
     }
 
 
-    /**
-     * Return the profile for this user.
-     *
-     * @param serverName name of the server instances for this request
-     * @param userId userId of the user making the request.
-     *
-     * @return profile response object or
-     * InvalidParameterException the userId is null or invalid or
-     * NoProfileForUserException the user does not have a profile or
-     * PropertyServerException there is a problem retrieving information from the property server(s) or
-     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public MyProfileResponse getMyProfile(String serverName,
-                                          String userId)
-    {
-        final String   methodName = "getMyProfile";
 
-        log.debug("Calling method: " + methodName);
-
-        MyProfileResponse  response = new MyProfileResponse();
-
-        try
-        {
-            MyProfileHandler   handler = new MyProfileHandler(instanceHandler.getAccessServiceName(),
-                                                              instanceHandler.getRepositoryConnector(serverName));
-
-            response.setPersonalProfile(handler.getMyProfile(userId));
-        }
-        catch (InvalidParameterException  error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (NoProfileForUserException  error)
-        {
-            captureNoProfileForUserException(response, error);
-        }
-        catch (PropertyServerException  error)
-        {
-            capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
-        return response;
-    }
-
-
-    /**
-     * Create or update the profile for the requesting user.
-     *
-     * @param serverName name of the server instances for this request
-     * @param userId the name of the calling user.
-     * @param requestBody properties for the new profile.
-     * @return void response or
-     * InvalidParameterException - one of the parameters is invalid or
-     * PropertyServerException - there is a problem retrieving information from the property server(s) or
-     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    public VoidResponse updateMyProfile(String               serverName,
-                                        String               userId,
-                                        MyProfileRequestBody requestBody)
-    {
-        final String   methodName = "updateMyProfile";
-
-        log.debug("Calling method: " + methodName);
-
-        VoidResponse  response = new VoidResponse();
-
-        try
-        {
-            String              employeeNumber       = null;
-            String              fullName             = null;
-            String              knownName            = null;
-            String              jobTitle             = null;
-            String              jobRoleDescription   = null;
-            Map<String, Object> additionalProperties = null;
-
-            if (requestBody != null)
-            {
-                employeeNumber = requestBody.getEmployeeNumber();
-                fullName = requestBody.getFullName();
-                knownName = requestBody.getKnownName();
-                jobTitle = requestBody.getJobTitle();
-                jobRoleDescription = requestBody.getJobRoleDescription();
-                additionalProperties = requestBody.getAdditionalProperties();
-            }
-
-            MyProfileHandler   handler = new MyProfileHandler(instanceHandler.getAccessServiceName(),
-                                                              instanceHandler.getRepositoryConnector(serverName));
-
-            handler.updateMyProfile(userId, employeeNumber, fullName, knownName, jobTitle, jobRoleDescription, additionalProperties);
-        }
-        catch (InvalidParameterException  error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException  error)
-        {
-            capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
-        return response;
-    }
-
-
-    /**
-     * Return a list of assets that the specified user has added to their favorites list.
-     *
-     * @param serverName name of the server instances for this request
-     * @param userId     userId of user making request.
-     * @param startFrom  index of the list ot start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     *
-     * @return list of asset details or
-     * InvalidParameterException one of the parameters is invalid or
-     * PropertyServerException there is a problem retrieving information from the property server(s) or
-     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public AssetListResponse getMyAssets(String    serverName,
-                                         String    userId,
-                                         int       startFrom,
-                                         int       pageSize)
-    {
-        // todo
-        return null;
-    }
-
-
-    /**
-     * Add an asset to the identified user's list of favorite assets.
-     *
-     * @param serverName name of the server instances for this request
-     * @param userId          userId of user making request.
-     * @param assetGUID       unique identifier of the asset.
-     * @param nullRequestBody null request body
-     *
-     * @return void response or
-     * InvalidParameterException one of the parameters is invalid or
-     * PropertyServerException there is a problem updating information in the property server(s) or
-     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public VoidResponse  addToMyAssets(String           serverName,
-                                       String           userId,
-                                       String           assetGUID,
-                                       NullRequestBody  nullRequestBody)
-    {
-        // todo
-        return null;
-    }
-
-
-    /**
-     * Remove an asset from identified user's list of favorite assets.
-     *
-     * @param serverName name of the server instances for this request
-     * @param userId          userId of user making request.
-     * @param assetGUID       unique identifier of the asset.
-     * @param nullRequestBody null request body
-     *
-     * @return void response or
-     * InvalidParameterException one of the parameters is invalid or
-     * PropertyServerException there is a problem updating information in the property server(s) or
-     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public VoidResponse  removeFromMyAssets(String           serverName,
-                                            String           userId,
-                                            String           assetGUID,
-                                            NullRequestBody  nullRequestBody)
-    {
-        // todo
-        return null;
-
-    }
 
 
     /**
@@ -385,6 +202,50 @@ public class AssetConsumerRESTServices
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
         return response;
+    }
+
+
+    /**
+     * Return the full definition (meaning) of a term using the unique identifier of the glossary term.
+     *
+     * @param serverName name of the server instances for this request
+     * @param userId userId of the user making the request.
+     * @param guid unique identifier of the meaning.
+     *
+     * @return profile response object or
+     * InvalidParameterException the userId is null or invalid or
+     * NoProfileForUserException the user does not have a profile or
+     * PropertyServerException there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public MeaningResponse getMeaning(String   serverName,
+                                      String   userId,
+                                      String   guid)
+    {
+        return null;
+    }
+
+
+    /**
+     * Return the full definition (meaning) of the terms matching the supplied name.
+     *
+     * @param serverName name of the server instances for this request
+     * @param userId the name of the calling user.
+     * @param term name of term.  This may include wild card characters.
+     * @param startFrom  index of the list ot start from (0 for start)
+     * @param pageSize   maximum number of elements to return.* @return meaning response or
+     * @return meaning list response or
+     * InvalidParameterException - one of the parameters is invalid or
+     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public MeaningListResponse getMeaningByName(String  serverName,
+                                                String  userId,
+                                                String  term,
+                                                int     startFrom,
+                                                int     pageSize)
+    {
+        return null;
     }
 
 

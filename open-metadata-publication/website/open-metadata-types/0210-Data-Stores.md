@@ -7,3 +7,9 @@ The [base model](0010-Base-Model.md) introduced the concept of a data set (**Dat
 The data store definition shows how the data set relates to the server that it is hosted on.
 
 ![UML](0210-Data-Stores.png)
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

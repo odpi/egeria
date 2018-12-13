@@ -25,3 +25,9 @@ of the actual host it is deployed on.
 VirtualContainers can be hosted on other VirtualContainers,
 but to actually run they need to ultimately be deployed onto a
 real physical Host.
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
