@@ -5,35 +5,27 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * The Connection object contains the properties needed to access a specific data assets.
+ * The Connector object contains the properties needed to identify a connector object.
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Connection implements Serializable {
+public class Connector {
 
-    private static final long serialVersionUID = 1L;
-
-    private String displayName;
+    private String name;
     private String description;
-    private String guid;
+    private String provider;
 
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
+    public String getName() {
+        return name;
     }
 
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
@@ -44,11 +36,11 @@ public class Connection implements Serializable {
         this.description = description;
     }
 
-    public String getGuid() {
-        return guid;
+    public String getProvider() {
+        return provider;
     }
 
-    public void setGuid(String guid) {
-        this.guid = guid;
+    public void setProvider(String provider) {
+        this.provider = provider;
     }
 }
