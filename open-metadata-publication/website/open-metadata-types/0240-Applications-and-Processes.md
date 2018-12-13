@@ -10,3 +10,8 @@ Some applications are written to support specific processes.
 Model 0240 shows how applications relate to processes and the servers that host them.
 
 ![UML](0240-Applications-and-Processes.png)
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

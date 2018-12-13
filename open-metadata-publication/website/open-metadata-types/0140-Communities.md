@@ -9,3 +9,9 @@ they are are associated with projects just for the lifetime of
 the project and then they move on to another. 
 
 ![UML](0140-Communities.png)
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

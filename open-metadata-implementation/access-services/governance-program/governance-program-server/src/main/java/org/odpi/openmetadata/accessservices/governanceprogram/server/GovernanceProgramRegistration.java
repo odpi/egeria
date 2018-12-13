@@ -22,7 +22,7 @@ public class GovernanceProgramRegistration
      */
     public static void registerAccessService()
     {
-        AccessServiceDescription myDescription = AccessServiceDescription.ASSET_CONSUMER_OMAS;
+        AccessServiceDescription myDescription = AccessServiceDescription.GOVERNANCE_PROGRAM_OMAS;
 
         AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription.getAccessServiceCode(),
                                                                                  myDescription.getAccessServiceName(),
