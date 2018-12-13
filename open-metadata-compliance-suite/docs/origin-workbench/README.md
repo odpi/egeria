@@ -1,4 +1,4 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
   
@@ -13,6 +13,12 @@ Typically this describes the vendor, product name and version of the server.
 ## Test case detail
 
 * **[Repository Origin Test Case](repository-origin-test-case.md)**
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
 
 
   

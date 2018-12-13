@@ -19,3 +19,8 @@ If the Glossary object is deleted then so are all of the terms linked to it.
 A term may be linked with many categories and a category may have many terms linked to it.
 This relationship may connect terms and categories both in the same glossary and in different glossaries.
 * **LibraryTermReference** provides reference information for how this term corresponds to a term in an external glossary.
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
