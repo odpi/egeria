@@ -150,3 +150,9 @@ Documentation
         I'll take into the account the useful comments you made above - can you give me a day or so and then we continue on RB?
             Aug 16, 2017
             Delete comments
+            
+            
+ 
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

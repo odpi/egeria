@@ -465,13 +465,15 @@ class ConnectionHandler
         connection.setEndpoint(endpoint);
 
 
-        connection.setAdditionalProperties(this.getAdditionalPropertiesFromEntity(additionalPropertiesName,
-                                                                                  connectionEntity.getProperties(),
-                                                                                  methodName));
-
-        connection.setSecuredProperties(this.getAdditionalPropertiesFromEntity(securePropertiesName,
+        connection.setAdditionalProperties(repositoryHelper.getMapFromProperty(serviceName,
+                                                                               additionalPropertiesName,
                                                                                connectionEntity.getProperties(),
                                                                                methodName));
+
+        connection.setSecuredProperties(repositoryHelper.getMapFromProperty(serviceName,
+                                                                            securePropertiesName,
+                                                                            connectionEntity.getProperties(),
+                                                                            methodName));
 
         return connection;
     }

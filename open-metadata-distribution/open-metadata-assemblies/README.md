@@ -1,4 +1,5 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
 
 # Open Metadata Assemblies
 
@@ -36,6 +37,12 @@ workflows associated with governance.
 * **[Open Stewardship Toolkit](https://jira.odpi.org/browse/EGERIA-32)** provides the interfaces for building
 Governance Action Framework (GAF) compliant stewardship services that run
 in the stewardship server.
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
 
 
 

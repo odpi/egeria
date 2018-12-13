@@ -1,5 +1,5 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
-<!-- Copyright Contributors to the ODPi Egeria project.  -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
 
 # Asset Consumer Open Metadata Access Service (OMAS) API
 
@@ -10,3 +10,7 @@ server and client.  This includes:
 * Exceptions and Error Codes
 * Property Beans for Assets and Asset Collections
 * Request Bodies and Responses for the REST API.
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
