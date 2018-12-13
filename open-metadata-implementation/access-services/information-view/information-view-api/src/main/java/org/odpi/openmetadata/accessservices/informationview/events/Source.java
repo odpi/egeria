@@ -37,9 +37,12 @@ public abstract class Source {
 
     private String networkAddress;
     private String protocol;
+    private String encryptionMethod;
     private String connectorProviderName;
     private String user;
     private Map<String, String> additionalProperties;
+    private String qualifiedName;
+    private String guid;
 
     /**
      * Return the protocol of the connection
@@ -102,16 +105,43 @@ public abstract class Source {
         this.user = user;
     }
 
-    public abstract String getQualifiedName();
+    public String getEncryptionMethod() {
+        return encryptionMethod;
+    }
+
+    public void setEncryptionMethod(String encryptionMethod) {
+        this.encryptionMethod = encryptionMethod;
+    }
+
+    public String getQualifiedName() {
+        return qualifiedName;
+    }
+
+    public void setQualifiedName(String qualifiedName) {
+        this.qualifiedName = qualifiedName;
+    }
+
+    public String getGuid() {
+        return guid;
+    }
+
+    public void setGuid(String guid) {
+        this.guid = guid;
+    }
 
     @Override
     public String toString() {
         return "Source{" +
                 "networkAddress='" + networkAddress + '\'' +
                 ", protocol='" + protocol + '\'' +
+                ", encryptionMethod='" + encryptionMethod + '\'' +
                 ", connectorProviderName='" + connectorProviderName + '\'' +
                 ", user='" + user + '\'' +
                 ", additionalProperties=" + additionalProperties +
+                ", qualifiedName='" + qualifiedName + '\'' +
                 '}';
     }
+
+    public abstract String buildQualifiedName();
+
 }
