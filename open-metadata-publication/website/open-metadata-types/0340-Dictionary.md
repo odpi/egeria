@@ -19,3 +19,9 @@ The ActivityDescription classification highlights when a term describes such an 
   * OTHER - describes some other type of activity
 * **AbstractConcept** means that the term describes an abstract concept.
 * **DataValue** means that the glossary term describes a valid value for a data item.
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

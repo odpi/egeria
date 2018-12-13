@@ -36,3 +36,9 @@ The numbering system relates to the area that the elements belong to.
 For example, area 1 has models 0100-0199, area 2 has models 0200-299, etc.
 Each area's sub-models are dispersed along its range, ensuring there is space to
 insert additional models in the future.
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

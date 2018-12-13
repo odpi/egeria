@@ -23,3 +23,9 @@ If they are missing then the security credentials of the current
 user are used with the connection.
 
 ![UML](0201-Connectors-and-Connections.png)
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

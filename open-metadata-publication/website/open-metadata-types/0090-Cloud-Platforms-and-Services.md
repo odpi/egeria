@@ -27,3 +27,8 @@ an application may deploy server capability onto the cloud platform.
 If the cloud provider is offering Software as a Service (SaaS) then
 it has provided APIs backed by pre-deployed server capability
 that an organization can call as a cloud service.
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

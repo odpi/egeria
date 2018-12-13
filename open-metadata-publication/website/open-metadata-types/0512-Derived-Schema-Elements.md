@@ -4,3 +4,8 @@
 # 0512 Derived Schema Elements
 
 ![UML](0512-Derived-Schema-Elements.png)
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

@@ -10,3 +10,9 @@ resources together.
 
 The classifications associated with Collection allows it
 to be specialized for particular uses.
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

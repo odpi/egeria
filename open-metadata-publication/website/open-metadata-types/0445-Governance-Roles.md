@@ -9,3 +9,8 @@ or engines that are responsible for particular aspects of the
 maintenance of a [Referenceable](0010-Base-Model.md) object.
 
 ![UML](0445-Governance-Roles.png)
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

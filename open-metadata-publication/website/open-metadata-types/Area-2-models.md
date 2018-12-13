@@ -37,3 +37,9 @@ get access to the data assets.
 * **[0238 Reports](0238-Reports.md)**
 * **[0240 Applications and Processes](0240-Applications-and-Processes.md)**
 * **[0250 Data Processing Engines](0250-Data-Processing-Engines.md)**
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
