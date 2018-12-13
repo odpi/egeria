@@ -22,3 +22,8 @@ of a particular type.
 schema in metadata.
 
 ![UML](0501-Schema-Elements.png)
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

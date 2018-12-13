@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Annotation Reviews
+# 0612 Annotation Reviews
 
 The annotations associated with an asset can be seen by
 people and tools querying the associated asset, servers or
@@ -11,8 +11,14 @@ only make recommendations based on the information within the asset.
 Where annotations refer to information that is used for governance,
 they need to be approved and converted into classifications,
 or related metadata.
-The Annotation review records how the discovered annotations
+The AnnotationReview entity records how the discovered annotations
 have been actioned in the metadata server and the steward that
 approved it.
 
-![UML](0611-Annotation-Reviews.png)
+![UML](0612-Annotation-Reviews.png)
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

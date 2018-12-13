@@ -1,15 +1,22 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# 0660 Request for Action
+# 0690 Request for Action
 
-A request for action (RfA) is used to trigger the
-[Governance Action Framework (GAF)](../../../open-metadata-implementation/frameworks/governance-action-framework/README.md).
+A RequestForAction entity (RfA) is used to trigger the
+[Stewardship Action OMAS](../../../open-metadata-implementation/access-services/stewardship-action).
+
 It is used when the discovery service performs a test on the
 data (such as a discovery rule) or has discovered an anomaly in
 the data landscape compared to its metadata that potentially needs
 a steward or a curator's action.
+
 The governance action framework is configured to
 respond to the requests for actions (RfAs).
 
-![UML](0660-Request-for-Action.png)
+![UML](0690-Request-for-Action.png)
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

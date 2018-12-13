@@ -27,3 +27,9 @@ capability around the data assets.
 * **[0565 Model Elements](0565-Model-Elements.md)**
 * **[0580 Solution Blueprints](0580-Solution-Blueprints.md)**
 * **[0581 Solution Ports and Wires](0581-Solution-Ports-and-Wires.md)**
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

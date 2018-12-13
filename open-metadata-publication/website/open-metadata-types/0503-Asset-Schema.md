@@ -13,3 +13,9 @@ Thus we can work with both assets and schema at different
 levels of granularity.
 
 ![UML](0503-Asset-Schema.png)
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

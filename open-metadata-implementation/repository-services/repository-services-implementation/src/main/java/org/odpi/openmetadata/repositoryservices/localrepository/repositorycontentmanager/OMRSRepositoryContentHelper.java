@@ -1640,6 +1640,122 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 
 
     /**
+     * Locates and extracts a string array property and extracts its values.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested map property
+     * @param properties all of the properties of the instance
+     * @param callingMethodName method of caller
+     * @return array property value or null
+     */
+    public List<String> getStringArrayProperty(String             sourceName,
+                                               String             propertyName,
+                                               InstanceProperties properties,
+                                               String             callingMethodName)
+    {
+        final String  thisMethodName = "getStringArrayProperty";
+
+        if (properties != null)
+        {
+            InstancePropertyValue instancePropertyValue = properties.getPropertyValue(propertyName);
+
+            if (instancePropertyValue != null)
+            {
+                /*
+                 * The property exists in the supplied properties.   It should be of category ARRAY.
+                 * If it is then it can be cast to an ArrayPropertyValue in order to extract the
+                 * array size and the values.
+                 */
+                log.debug(thisMethodName + "retrieved array property " + propertyName + " for " + callingMethodName);
+
+                try
+                {
+                    if (instancePropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.ARRAY)
+                    {
+                        ArrayPropertyValue arrayPropertyValue = (ArrayPropertyValue) instancePropertyValue;
+
+                        if ((arrayPropertyValue != null) && (arrayPropertyValue.getArrayCount() > 0))
+                        {
+                            /*
+                             * There are values to extract
+                             */
+                            log.debug(thisMethodName + " found that array property " + propertyName + " has " + arrayPropertyValue.getArrayCount() + " elements.");
+
+                            return getInstancePropertiesAsArray(arrayPropertyValue.getArrayValues(), callingMethodName);
+                        }
+                    }
+                }
+                catch (Throwable error)
+                {
+                    throwHelperLogicError(sourceName, callingMethodName, thisMethodName);
+                }
+            }
+        }
+
+        log.debug(propertyName + " not present in " + properties);
+        return null;
+    }
+
+
+    /**
+     * Convert the values in the instance properties into a String Array.  It assumes all of the elements are primitives.
+     *
+     * @param instanceProperties instance properties containing the values.  They should all be primitive Strings.
+     * @param callingMethodName method of caller
+     * @return list of strings
+     */
+    public List<String> getInstancePropertiesAsArray(InstanceProperties     instanceProperties,
+                                                     String                 callingMethodName)
+    {
+        final String  thisMethodName = "getInstancePropertiesAsArray";
+
+        if (instanceProperties != null)
+        {
+            Map<String, InstancePropertyValue> instancePropertyValues = instanceProperties.getInstanceProperties();
+            List<String>                       resultingArray = new ArrayList<>();
+
+            for (String arrayOrdinalName : instancePropertyValues.keySet())
+            {
+                if (arrayOrdinalName != null)
+                {
+                    log.debug(thisMethodName + " processing array element: " + arrayOrdinalName);
+
+                    int                   arrayOrdinalNumber  = Integer.decode(arrayOrdinalName);
+                    InstancePropertyValue actualPropertyValue = instanceProperties.getPropertyValue(arrayOrdinalName);
+
+                    if (actualPropertyValue != null)
+                    {
+                        if (actualPropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.PRIMITIVE)
+                        {
+                            PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) actualPropertyValue;
+                            resultingArray.add(arrayOrdinalNumber, primitivePropertyValue.getPrimitiveValue().toString());
+                        }
+                        else
+                        {
+                            log.error(thisMethodName + " skipping non primitive value: " + actualPropertyValue + " from method " + callingMethodName);
+                        }
+                    }
+                    else
+                    {
+                        log.error(thisMethodName + " skipping null value" + " from method " + callingMethodName);
+                    }
+                }
+                else
+                {
+                    log.error(thisMethodName + " skipping null ordinal" + " from method " + callingMethodName);
+                }
+            }
+
+            log.debug(thisMethodName + " returning array: " + resultingArray + " to method " + callingMethodName);
+            return resultingArray;
+        }
+
+        log.debug(thisMethodName + " has no property values to extract for method " + callingMethodName);
+        return null;
+    }
+
+
+    /**
      * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
      *
      * @param sourceName source of call
@@ -1684,6 +1800,7 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
     }
 
 
+
     /**
      * Convert an instance properties object into a map.
      *
@@ -1694,10 +1811,10 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
     {
         if (instanceProperties != null)
         {
-            Map<String, InstancePropertyValue> instanceMapValues = instanceProperties.getInstanceProperties();
+            Map<String, InstancePropertyValue> instancePropertyValues = instanceProperties.getInstanceProperties();
             Map<String, Object>                resultingMap      = new HashMap<>();
 
-            for (String mapPropertyName : instanceMapValues.keySet())
+            for (String mapPropertyName : instancePropertyValues.keySet())
             {
                 InstancePropertyValue actualPropertyValue = instanceProperties.getPropertyValue(mapPropertyName);
 
@@ -1705,8 +1822,7 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
                 {
                     if (actualPropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.PRIMITIVE)
                     {
-                        PrimitivePropertyValue primitivePropertyValue =
-                                (PrimitivePropertyValue) actualPropertyValue;
+                        PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) actualPropertyValue;
                         resultingMap.put(mapPropertyName, primitivePropertyValue.getPrimitiveValue());
                     }
                     else
@@ -1716,6 +1832,7 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
                 }
             }
 
+            log.debug("Returning map: " + resultingMap);
             return resultingMap;
         }
 
