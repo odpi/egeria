@@ -44,17 +44,16 @@ public class TableSource extends Source {
     }
 
     @Override
-    public String getQualifiedName() {
-        return this.getNetworkAddress() + "." + "Connection." + this.getDatabaseName() + "." + this.getSchemaName() + "." + this.getTableName();
-
-    }
-
-    @Override
     public String toString() {
         return "TableSource{" +
                 "tableName='" + tableName + '\'' +
                 ", schemaName='" + schemaName + '\'' +
                 ", databaseName='" + databaseName + '\'' +
                 '}';
+    }
+
+    @Override
+    public String buildQualifiedName() {
+        return this.getNetworkAddress() + "." + "Connection." + this.getDatabaseName() + "." + this.getSchemaName() + "." + this.getTableName();
     }
 }

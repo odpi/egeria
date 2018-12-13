@@ -48,6 +48,7 @@ public class Constants {
     public static final String URL = "url";
     public static final String EXAMPLES = "examples";
     public static final String PROTOCOL = "protocol";
+    public static final String ENCRYPTION_METHOD = "encryptionMethod";
     public static final String NETWORK_ADDRESS = "networkAddress";
     public static final String ADDITIONAL_PROPERTIES = "additionalProperties";
     public static final String CONNECTOR_PROVIDER_CLASSNAME = "connectorProviderClassName";

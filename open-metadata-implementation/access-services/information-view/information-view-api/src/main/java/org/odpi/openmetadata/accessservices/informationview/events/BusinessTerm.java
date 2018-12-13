@@ -24,6 +24,7 @@ public class BusinessTerm {
     private String summary;
     private String examples;
     private String displayName;
+    private String qualifiedName;
     private GlossaryCategory glossaryCategory;
 
 
@@ -138,8 +139,15 @@ public class BusinessTerm {
     }
 
     public String getQualifiedName() {
-        StringBuilder builder = new StringBuilder();
-        builder.append(this.getName());
+        return qualifiedName;
+    }
+
+    public void setQualifiedName(String qualifiedName) {
+        this.qualifiedName = qualifiedName;
+    }
+
+    public String buildQualifiedName() {
+        StringBuilder builder = new StringBuilder(this.getName());
         GlossaryCategory parentCategory = this.getGlossaryCategory();
         while (parentCategory != null) {
             builder.insert(0, parentCategory.getName() + ".");
