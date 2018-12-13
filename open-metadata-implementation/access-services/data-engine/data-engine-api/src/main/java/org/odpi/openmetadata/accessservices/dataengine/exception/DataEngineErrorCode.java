@@ -32,7 +32,6 @@ public enum DataEngineErrorCode {
             "The system is unable to connect to the open metadata property server.",
             "Check that the server initialized correctly.  " +
                     "Correct any errors discovered and retry the request when the open metadata services are available."),
-
     OMRS_NOT_AVAILABLE(404, "OMAS-DATA-ENGINE-404-002 ",
             "The open metadata repository services are not available for the {0} operation",
             "The system is unable to connect to the open metadata property server.",
@@ -43,9 +42,9 @@ public enum DataEngineErrorCode {
             "The server has received a call to one of its open metadata access services but is unable to process it because the access service is not active for the requested server.",
             "If the server is supposed to have this access service activated, correct the server configuration and restart the server."),
     NULL_USER_ID(400, "OMAS-DATA-ENGINE-400-001 ",
-                         "The user identifier (user id) passed on the {0} operation is null",
-                         "The system is unable to process the request without a user id.",
-                         "Correct the code in the caller to provide the user id.");
+            "The user identifier (user id) passed on the {0} operation is null",
+            "The system is unable to process the request without a user id.",
+            "Correct the code in the caller to provide the user id.");
 
     private int httpErrorCode;
     private String errorMessageId;
@@ -53,10 +52,7 @@ public enum DataEngineErrorCode {
     private String systemAction;
     private String userAction;
 
-    DataEngineErrorCode(int newHTTPErrorCode,
-                        String newErrorMessageId,
-                        String newErrorMessage,
-                        String newSystemAction,
+    DataEngineErrorCode(int newHTTPErrorCode, String newErrorMessageId, String newErrorMessage, String newSystemAction,
                         String newUserAction) {
         this.httpErrorCode = newHTTPErrorCode;
         this.errorMessageId = newErrorMessageId;

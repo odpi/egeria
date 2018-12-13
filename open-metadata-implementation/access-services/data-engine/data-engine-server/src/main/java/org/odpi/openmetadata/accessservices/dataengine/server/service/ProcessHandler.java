@@ -1,5 +1,6 @@
 package org.odpi.openmetadata.accessservices.dataengine.server.service;
 
+import org.odpi.openmetadata.accessservices.dataengine.exception.UserNotAuthorizedException;
 import org.odpi.openmetadata.accessservices.dataengine.server.util.DataEngineErrorHandler;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -13,7 +14,6 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorExce
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 
 import java.util.Date;
 
@@ -28,9 +28,9 @@ class ProcessHandler {
     private OMRSRepositoryHelper repositoryHelper;
     private String serviceName;
 
-     ProcessHandler(String serviceName,
-                          OMRSRepositoryConnector repositoryConnector,
-                          OMRSMetadataCollection metadataCollection) {
+    ProcessHandler(String serviceName,
+                   OMRSRepositoryConnector repositoryConnector,
+                   OMRSMetadataCollection metadataCollection) {
 
         this.serviceName = serviceName;
         if (repositoryConnector != null) {
@@ -41,14 +41,18 @@ class ProcessHandler {
         }
     }
 
-    String createProcess(String userId, String processName, String displayName) throws TypeErrorException, ClassificationErrorException, StatusNotSupportedException, UserNotAuthorizedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, org.odpi.openmetadata.accessservices.dataengine.exception.UserNotAuthorizedException {
+    String createProcess(String userId, String processName, String displayName)
+            throws UserNotAuthorizedException, TypeErrorException, ClassificationErrorException,
+            StatusNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
+            InvalidParameterException, RepositoryErrorException, PropertyErrorException {
         //TODO validate the other fields
         final String methodName = "createProcess";
 
         errorHandler.validateUserId(userId, methodName);
 
         EntityDetail entity;
-        entity = repositoryHelper.getSkeletonEntity(serviceName, "", InstanceProvenanceType.LOCAL_COHORT, userId, PROCESS_TYPE_NAME);
+        entity = repositoryHelper.getSkeletonEntity(serviceName, "", InstanceProvenanceType.LOCAL_COHORT, userId,
+                PROCESS_TYPE_NAME);
 
 
         InstanceProperties instanceProperties = createProcessProperties(methodName, processName, displayName);
@@ -62,18 +66,18 @@ class ProcessHandler {
         return createdEntity.getGUID();
     }
 
-    private InstanceProperties createProcessProperties(String methodName,
-                                                       String processName,
-                                                       String displayName) {
+    private InstanceProperties createProcessProperties(String methodName, String processName, String displayName) {
         //TODO validate the other fields
 
         InstanceProperties properties;
 
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName, null, PROCESS_PROPERTY_NAME, processName, methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, null, PROCESS_PROPERTY_NAME, processName,
+                methodName);
 
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, QUALIFIED_NAME_PROPERTY_NAME, processName + ":" + new Date().toString(), methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, QUALIFIED_NAME_PROPERTY_NAME,
+                processName + ":" + new Date().toString(), methodName);
 
-       // properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, DISPLAY_NAME_PROPERTY_NAME, displayName, methodName);
+        // properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, DISPLAY_NAME_PROPERTY_NAME, displayName, methodName);
 
         return properties;
     }

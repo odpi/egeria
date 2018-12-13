@@ -30,6 +30,8 @@ public class DataEngineResource {
     public GUIDResponse createProcess(@PathVariable("userId") String userId,
                                       @PathVariable("serverName") String serverName,
                                       @RequestBody ProcessRequestBody processRequestBody) {
-        return restAPI.createProcess(userId, serverName, processRequestBody.getName(), processRequestBody.getDisplayName());
+
+        return restAPI.createProcess(userId, serverName, processRequestBody.getName(),
+                processRequestBody.getDisplayName());
     }
 }

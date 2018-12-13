@@ -16,9 +16,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  * Open Metadata Repository Services.
  */
 public class DataEngineAdmin implements AccessServiceAdmin {
-    private OMRSAuditLog auditLog = null;
-    private DataEngineServicesInstance instance = null;
-    private String serverName = null;
+    private OMRSAuditLog auditLog;
 
     /**
      * Initialize the access service.
@@ -31,10 +29,8 @@ public class DataEngineAdmin implements AccessServiceAdmin {
      */
     @Override
     public void initialize(AccessServiceConfig accessServiceConfigurationProperties,
-                           OMRSTopicConnector enterpriseOMRSTopicConnector,
-                           OMRSRepositoryConnector repositoryConnector,
-                           OMRSAuditLog auditLog,
-                           String serverUserName) {
+                           OMRSTopicConnector enterpriseOMRSTopicConnector, OMRSRepositoryConnector repositoryConnector,
+                           OMRSAuditLog auditLog, String serverUserName) {
 
         final String actionDescription = "initialize";
 
@@ -50,8 +46,9 @@ public class DataEngineAdmin implements AccessServiceAdmin {
                     auditCode.getUserAction());
 
             this.auditLog = auditLog;
-            this.instance = new DataEngineServicesInstance(repositoryConnector);
-            this.serverName = instance.getServerName();
+
+            DataEngineServicesInstance instance = new DataEngineServicesInstance(repositoryConnector);
+            String serverName = instance.getServerName();
 
             auditCode = DataEngineAuditCode.SERVICE_INITIALIZED;
             auditLog.logRecord(actionDescription,
@@ -63,7 +60,7 @@ public class DataEngineAdmin implements AccessServiceAdmin {
                     auditCode.getUserAction());
 
         } catch (Throwable error) {
-            auditCode =DataEngineAuditCode.SERVICE_INSTANCE_FAILURE;
+            auditCode = DataEngineAuditCode.SERVICE_INSTANCE_FAILURE;
             auditLog.logRecord(actionDescription,
                     auditCode.getLogMessageId(),
                     auditCode.getSeverity(),

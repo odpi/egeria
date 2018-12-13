@@ -23,8 +23,7 @@ class DataEngineServicesInstanceMap {
      * @param serverName name of the server
      * @param instance   instance object
      */
-    static synchronized void setNewInstanceForJVM(String serverName, DataEngineServicesInstance instance)
-    {
+    static synchronized void setNewInstanceForJVM(String serverName, DataEngineServicesInstance instance) {
         instanceMap.put(serverName, instance);
     }
 

@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.exception;
 
-import lombok.Data;
 import lombok.Getter;
 
 /**
@@ -36,12 +35,8 @@ class DataEngineException extends Exception {
      * @param systemAction      - actions of the system as a result of the error
      * @param userAction        - instructions for correcting the error
      */
-    DataEngineException(int httpCode,
-                        String className,
-                        String actionDescription,
-                        String errorMessage,
-                        String systemAction,
-                        String userAction) {
+    DataEngineException(int httpCode, String className, String actionDescription, String errorMessage,
+                        String systemAction, String userAction) {
         super(errorMessage);
         this.reportedHTTPCode = httpCode;
         this.reportingClassName = className;

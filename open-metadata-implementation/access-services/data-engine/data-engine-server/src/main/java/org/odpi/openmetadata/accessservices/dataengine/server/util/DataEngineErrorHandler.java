@@ -23,7 +23,8 @@ public class DataEngineErrorHandler {
     }
 
 
-    public void handlePropertyServerException(DataEngineErrorCode errorCode, String methodName) throws PropertyServerException {
+    public void handlePropertyServerException(DataEngineErrorCode errorCode,
+                                              String methodName) throws PropertyServerException {
         String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
 
         throw new PropertyServerException(errorCode.getHttpErrorCode(),
@@ -34,7 +35,8 @@ public class DataEngineErrorHandler {
                 errorCode.getUserAction());
     }
 
-    public void captureOMRSCheckedExceptionBase(AssetCatalogOMASAPIResponse response, OMRSCheckedExceptionBase e) {
+    public void captureOMRSCheckedExceptionBase(AssetCatalogOMASAPIResponse response,
+                                                OMRSCheckedExceptionBase e) {
         captureException(response, e.getReportedHTTPCode(), e.getClass().getName(), e.getErrorMessage(),
                 e.getReportedSystemAction(), e.getReportedUserAction(), e);
     }
@@ -62,16 +64,15 @@ public class DataEngineErrorHandler {
     /**
      * Throw an exception if the supplied userId is null
      *
-     * @param userId  user name to validate
-     * @param methodName  name of the method making the call.
+     * @param userId     user name to validate
+     * @param methodName name of the method making the call.
      * @throws UserNotAuthorizedException the userId is null
      */
     public void validateUserId(String userId,
                                String methodName) throws UserNotAuthorizedException {
-        if (userId == null)
-        {
+        if (userId == null) {
             DataEngineErrorCode errorCode = DataEngineErrorCode.NULL_USER_ID;
-            String                     errorMessage = errorCode.getErrorMessageId()
+            String errorMessage = errorCode.getErrorMessageId()
                     + errorCode.getFormattedErrorMessage(methodName);
 
             throw new UserNotAuthorizedException(errorCode.getHttpErrorCode(),
