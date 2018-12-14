@@ -187,11 +187,11 @@ public class ReportCreationTest {
 
     private void populateRepository() throws Exception {
 
-        String qualifiedNameForEndpoint = "***REMOVED***";
+        String qualifiedNameForEndpoint = "host";
         InstanceProperties endpointProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForEndpoint)
                 .withStringProperty(Constants.NAME, qualifiedNameForEndpoint)
-                .withStringProperty(Constants.NETWORK_ADDRESS, "***REMOVED***")
+                .withStringProperty(Constants.NETWORK_ADDRESS, "host")
                 .withStringProperty(Constants.PROTOCOL, "")
                 .build();
         EntityDetail endpointEntity = entitiesCreatorHelper.addEntity(Constants.ENDPOINT,
