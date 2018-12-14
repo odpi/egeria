@@ -4,7 +4,6 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
 
 import org.apache.commons.collections.map.ReferenceMap;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestClient;
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.MainObject;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSMetadataCollection;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
@@ -12,44 +11,36 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
-import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Handles mapping the most basic of IGC objects' attributes to OMRS entity attributes.
  */
 public abstract class ReferenceMapper {
 
-    public static final String SOURCE_NAME = "IGC";
+    private static final Logger log = LoggerFactory.getLogger(ReferenceMapper.class);
+
+    public static final String SOURCE_NAME = "IBM InfoSphere Information Governance Catalog";
     public static final String IGC_REST_COMMON_MODEL_PKG = "org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common";
     public static final String IGC_REST_GENERATED_MODEL_PKG = "org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated";
-
-    public static final String[] MODIFICATION_DETAILS = new String[]{
-            "created_by",
-            "created_on",
-            "modified_by",
-            "modified_on"
-    };
 
     protected IGCOMRSRepositoryConnector igcomrsRepositoryConnector;
     protected Reference me;
 
-    protected String igcType;
+    private String igcType;
     protected String igcPOJO;
-    protected String omrsType;
+    private String omrsType;
     protected String userId;
+    private String igcRidPrefix;
 
-    protected ArrayList<String> otherPOJOs;
+    private ArrayList<String> otherPOJOs;
 
     protected EntitySummary summary;
     protected EntityDetail detail;
@@ -57,9 +48,10 @@ public abstract class ReferenceMapper {
     protected ArrayList<Classification> classifications;
     protected ArrayList<String> alreadyMappedProperties;
 
-    protected PropertyMappingSet PROPERTIES;
-    protected RelationshipMappingSet RELATIONSHIPS;
-    protected ArrayList<String> CLASSIFICATION_PROPERTIES;
+    private PropertyMappingSet propertyMappings;
+    private RelationshipMappingSet relationshipMappings;
+    private HashSet<String> classificationPropertiesIgc;
+    private HashSet<String> classificationTypesOmrs;
 
     public ReferenceMapper(Reference me,
                            String igcAssetTypeName,
@@ -75,14 +67,15 @@ public abstract class ReferenceMapper {
         this.relationships = new ArrayList<>();
         this.alreadyMappedProperties = new ArrayList<>();
 
-        PROPERTIES = new PropertyMappingSet();
-        RELATIONSHIPS = new RelationshipMappingSet();
-        CLASSIFICATION_PROPERTIES = new ArrayList<>();
+        propertyMappings = new PropertyMappingSet();
+        relationshipMappings = new RelationshipMappingSet();
+        classificationPropertiesIgc = new HashSet<>();
+        classificationTypesOmrs = new HashSet<>();
 
         this.otherPOJOs = new ArrayList<>();
 
         // fully-qualified POJO class path
-        if (igcAssetTypeName.equals("main_object")) {
+        if (igcAssetTypeName.equals(IGCOMRSMetadataCollection.DEFAULT_IGC_TYPE)) {
             // TODO: confirm whether this is fine (only (de-)serialisation), or we need to swap to Reference class?
             this.igcPOJO = IGC_REST_COMMON_MODEL_PKG + ".MainObject";
         } else {
@@ -93,22 +86,210 @@ public abstract class ReferenceMapper {
 
     }
 
+    /**
+     * Retrieve the set of property mappings that are defined by this Mapper.
+     *
+     * @return PropertyMappingSet
+     */
+    public PropertyMappingSet getPropertyMappings() { return this.propertyMappings; }
+
+    /**
+     * Retrieve the set of relationship mappings that are defined by this Mapper.
+     *
+     * @return RelationshipMappingSet
+     */
+    public RelationshipMappingSet getRelationshipMappings() { return this.relationshipMappings; }
+
+    /**
+     * Retrieve the set of IGC properties needed to determine classifications.
+     *
+     * @return Set<String>
+     */
+    public Set<String> getIgcClassificationProperties() { return this.classificationPropertiesIgc; }
+
+    /**
+     * Retrieve the set of OMRS classification types that are covered by the Mapper.
+     *
+     * @return Set<String>
+     */
+    public Set<String> getOmrsClassificationTypes() { return this.classificationTypesOmrs; }
+
+    /**
+     * Add a simple one-to-one property mapping between an IGC property and an OMRS property.
+     *
+     * @param igcPropertyName the IGC property name to be mapped
+     * @param omrsPropertyName the OMRS property name to be mapped
+     */
+    public final void addSimplePropertyMapping(String igcPropertyName, String omrsPropertyName) {
+        propertyMappings.addSimpleMapping(igcPropertyName, omrsPropertyName);
+    }
+
+    /**
+     * Note the provided IGC property name as requiring more than a simple one-to-one mapping to an OMRS property.
+     *
+     * @param igcPropertyName the IGC property name
+     */
+    public final void addComplexIgcProperty(String igcPropertyName) {
+        propertyMappings.addComplexIgc(igcPropertyName);
+    }
+
+    /**
+     * Note the provided OMRS property name as requiring more than a simple one-to-one mapping to an IGC property.
+     *
+     * @param omrsPropertyName the OMRS property name
+     */
+    public final void addComplexOmrsProperty(String omrsPropertyName) {
+        propertyMappings.addComplexOmrs(omrsPropertyName);
+    }
+
+    /**
+     * Adds a relationship mapping between OMRS assets based on the provided IGC property name (mapped to the side of
+     * the OMRS relationship represented by the target OMRS property) and the IGC asset used to initialise this Mapper
+     * class (mapped to the side of the OMRS relationship represented by the source OMRS property).
+     *
+     * @param igcRelationshipName the IGC property name for the relationship (in REST form)
+     * @param omrsRelationshipType the name of the OMRS relationship entity (RelationshipDef)
+     * @param omrsRelationshipSourceProperty the name of the OMRS relationship property that should be aligned to the
+     *                                       source of the relationship in IGC (ie. the IGC object this Mapper initialised
+     *                                       with)
+     * @param omrsRelationshipTargetProperty the name of the OMRS relationship property that should be aligned to the
+     *                                       target of the relationship in IGC (ie. the value(s) retrieved by accessing
+     *                                       the IGC relationship property)
+     */
+    public final void addSimpleRelationshipMapping(String igcRelationshipName,
+                                                   String omrsRelationshipType,
+                                                   String omrsRelationshipSourceProperty,
+                                                   String omrsRelationshipTargetProperty) {
+        addSimpleRelationshipMapping(
+                igcRelationshipName,
+                omrsRelationshipType,
+                omrsRelationshipSourceProperty,
+                omrsRelationshipTargetProperty,
+                null,
+                null
+        );
+    }
+
+    /**
+     * Adds a relationship mapping between OMRS assets based on the provided IGC property name (mapped to the side of
+     * the OMRS relationship represented by the target OMRS property) and the IGC asset used to initialise this Mapper
+     * class (mapped to the side of the OMRS relationship represented by the source OMRS property).
+     *
+     * @param igcRelationshipName the IGC property name for the relationship (in REST form)
+     * @param omrsRelationshipType the name of the OMRS relationship entity (RelationshipDef)
+     * @param omrsRelationshipSourceProperty the name of the OMRS relationship property that should be aligned to the
+     *                                       source of the relationship in IGC (ie. the IGC object this Mapper initialised
+     *                                       with)
+     * @param omrsRelationshipTargetProperty the name of the OMRS relationship property that should be aligned to the
+     *                                       target of the relationship in IGC (ie. the value(s) retrieved by accessing
+     *                                       the IGC relationship property)
+     * @param igcSourceRidPrefix the prefix that needs to be added to the IGC object this Mapper was initialised with
+     *                           to create a unique (non-real IGC) entity
+     * @param igcTargetRidPrefix the prefix that needs to be added to the IGC object(s) pointed to by the relationship
+     *                           property, to create a unique (non-real IGC) entity for each
+     */
+    public final void addSimpleRelationshipMapping(String igcRelationshipName,
+                                                   String omrsRelationshipType,
+                                                   String omrsRelationshipSourceProperty,
+                                                   String omrsRelationshipTargetProperty,
+                                                   String igcSourceRidPrefix,
+                                                   String igcTargetRidPrefix) {
+        relationshipMappings.addSimpleMapping(
+            igcRelationshipName,
+                omrsRelationshipType,
+                omrsRelationshipSourceProperty,
+                omrsRelationshipTargetProperty,
+                igcSourceRidPrefix,
+                igcTargetRidPrefix
+        );
+    }
+
+    /**
+     * Note the provided IGC relationship as requiring more than a simple one-to-one mapping to an OMRS relationship.
+     *
+     * @param igcRelationshipName the IGC relationship property name
+     */
+    public final void addComplexIgcRelationship(String igcRelationshipName) {
+        relationshipMappings.addComplexIgc(igcRelationshipName);
+    }
+
+    /**
+     * Note the provided OMRS relationship type as requiring more than a simple one-to-one mapping to an IGC relationship.
+     *
+     * @param omrsRelationshipType the OMRS relationship type
+     */
+    public final void addComplexOmrsRelationship(String omrsRelationshipType) {
+        relationshipMappings.addComplexOmrs(omrsRelationshipType);
+    }
+
+    /**
+     * Note the provided IGC property name as one to be used in setting up classifications for the OMRS entity.
+     *
+     * @param igcPropertyName the IGC property name
+     */
+    public final void addComplexIgcClassification(String igcPropertyName) {
+        classificationPropertiesIgc.add(igcPropertyName);
+    }
+
+    /**
+     * Note the provided OMRS classification type as one to be mapped by the Mapper.
+     *
+     * @param omrsClassificationType the OMRS classification type
+     */
+    public final void addComplexOmrsClassification(String omrsClassificationType) {
+        classificationTypesOmrs.add(omrsClassificationType);
+    }
+
     protected EntitySummary getSummary() { return this.summary; }
     protected EntityDetail getDetail() { return this.detail; }
     protected List<Relationship> getRelationships() { return this.relationships; }
     protected List<Classification> getClassifications() { return this.classifications; }
     protected List<String> getAlreadyMappedProperties() { return this.alreadyMappedProperties; }
     protected void addAlreadyMappedProperty(String propertyName) { this.alreadyMappedProperties.add(propertyName); }
-    protected void addAlreadyMappedProperties(List<String> propertyNames) { this.alreadyMappedProperties.addAll(propertyNames); }
+    protected void addAlreadyMappedProperties(Set<String> propertyNames) { this.alreadyMappedProperties.addAll(propertyNames); }
 
+    /**
+     * Add any other IGC asset type needed for this mapping.
+     *
+     * @param igcAssetTypeName name of additional IGC asset
+     */
     public void addOtherIGCAssetType(String igcAssetTypeName) {
         this.otherPOJOs.add(IGC_REST_GENERATED_MODEL_PKG + "."
                 + igcomrsRepositoryConnector.getIGCVersion() + "."
                 + ReferenceMapper.getCamelCase(igcAssetTypeName));
     }
 
+    /**
+     * Retrieve listing of any additional IGC asset types needed by ths mapping.
+     *
+     * @return List<String>
+     */
     public List<String> getOtherIGCAssetTypes() { return this.otherPOJOs; }
+
+    /**
+     * Retrieve the primary IGC asset for which this mapping works.
+     *
+     * @return String
+     */
     public String getIgcAssetType() { return this.igcType; }
+
+    /**
+     * Retrieve the prefix that should be appended to the IGC RID for this mapping.
+     * This is used to create unique GUIDs for entities that do not actually exist as distinct entities
+     * in IGC, but are distinct entities in OMRS.
+     *
+     * @return String
+     */
+    public String getIgcRidPrefix() { return this.igcRidPrefix; }
+
+    /**
+     * Set the prefix to use for the IGC RID to create a unique OMRS guid.
+     * This is used to create unique GUIDs for entities that do not actually exist as distinct entities
+     * in IGC, but are distinct entities in OMRS.
+     *
+     * @param prefix the prefix to use in front of the RID to construct a unique GUID
+     */
+    public void setIgcRidPrefix(String prefix) { this.igcRidPrefix = prefix; }
 
     public abstract EntitySummary getOMRSEntitySummary();
     public abstract EntityDetail getOMRSEntityDetail();
@@ -124,7 +305,9 @@ public abstract class ReferenceMapper {
      */
     protected abstract void getMappedClassifications();
 
-    protected void mapIGCToOMRSEntitySummary(List<String> classificationProperies) {
+    protected abstract void mapIGCToOMRSEntitySummary(Set<String> classificationProperties);
+
+    protected final void mapIGCToOMRSEntitySummary() {
         if (summary == null) {
             summary = new EntitySummary();
             summary.setGUID(me.getId());
@@ -132,7 +315,9 @@ public abstract class ReferenceMapper {
         }
     }
 
-    protected void mapIGCToOMRSEntityDetail(PropertyMappingSet mappings, List<String> classificationProperties) {
+    protected abstract void mapIGCToOMRSEntityDetail(PropertyMappingSet mappings, Set<String> classificationProperties);
+
+    protected final void mapIGCToOMRSEntityDetail() {
         if (detail == null) {
             try {
                 detail = igcomrsRepositoryConnector.getRepositoryHelper().getSkeletonEntity(
@@ -142,12 +327,12 @@ public abstract class ReferenceMapper {
                         userId,
                         omrsType
                 );
+                detail.setStatus(InstanceStatus.ACTIVE);
+                detail.setGUID(me.getId());
+                detail.setInstanceURL(me.getUrl());
             } catch (TypeErrorException e) {
-                e.printStackTrace();
+                log.error("Unable to get skeleton detail entity.", e);
             }
-            detail.setStatus(InstanceStatus.ACTIVE);
-            detail.setGUID(me.getId());
-            detail.setInstanceURL(me.getUrl());
         }
     }
 
@@ -211,16 +396,14 @@ public abstract class ReferenceMapper {
      * @param igcObj the IGC object for which to retrieve an EntityProxy
      * @param omrsTypeName the OMRS entity type
      * @param userId the user through which to retrieve the EntityProxy (unused)
+     * @param ridPrefix any prefix required on the object's ID to make it unique
      * @return EntityProxy
-     * @throws RepositoryErrorException
      */
     public static EntityProxy getEntityProxyForObject(IGCOMRSRepositoryConnector igcomrsRepositoryConnector,
                                                       Reference igcObj,
                                                       String omrsTypeName,
-                                                      String userId) throws RepositoryErrorException {
-
-        final String methodName = "getEntityProxyForObject";
-        final String className = "ReferenceMapper";
+                                                      String userId,
+                                                      String ridPrefix) {
 
         IGCRestClient igcRestClient = igcomrsRepositoryConnector.getIGCRestClient();
         String igcType = igcObj.getType();
@@ -230,7 +413,11 @@ public abstract class ReferenceMapper {
 
         if (igcType != null) {
             // Construct 'qualifiedName' from the Identity of the object
-            qualifiedName = ReferenceMapper.getPrimitivePropertyValue(igcObj.getIdentity(igcRestClient).toString());
+            String identity = igcObj.getIdentity(igcRestClient).toString();
+            if (ridPrefix != null) {
+                identity = ridPrefix + identity;
+            }
+            qualifiedName = ReferenceMapper.getPrimitivePropertyValue(identity);
 
             // 'qualifiedName' is the only unique InstanceProperty we need on an EntityProxy
             InstanceProperties uniqueProperties = new InstanceProperties();
@@ -246,24 +433,51 @@ public abstract class ReferenceMapper {
                         uniqueProperties,
                         null
                 );
-                entityProxy.setGUID(igcObj.getId());
+                if (ridPrefix != null) {
+                    entityProxy.setGUID(ridPrefix + igcObj.getId());
+                } else {
+                    entityProxy.setGUID(igcObj.getId());
+                }
 
                 if (igcObj.hasModificationDetails()) {
-                    entityProxy.setCreatedBy((String)igcObj.getPropertyByName("created_by"));
-                    entityProxy.setCreateTime((Date)igcObj.getPropertyByName("created_on"));
-                    entityProxy.setUpdatedBy((String)igcObj.getPropertyByName("modified_by"));
-                    entityProxy.setUpdateTime((Date)igcObj.getPropertyByName("modified_on"));
+                    entityProxy.setCreatedBy((String)igcObj.getPropertyByName(Reference.MOD_CREATED_BY));
+                    entityProxy.setCreateTime((Date)igcObj.getPropertyByName(Reference.MOD_CREATED_ON));
+                    entityProxy.setUpdatedBy((String)igcObj.getPropertyByName(Reference.MOD_MODIFIED_BY));
+                    entityProxy.setUpdateTime((Date)igcObj.getPropertyByName(Reference.MOD_MODIFIED_ON));
                     if (entityProxy.getUpdateTime() != null) {
                         entityProxy.setVersion(entityProxy.getUpdateTime().getTime());
                     }
                 }
 
             } catch (TypeErrorException e) {
-                e.printStackTrace();
+                log.error("Unable to create new EntityProxy.", e);
             }
         }
 
         return entityProxy;
+
+    }
+
+    /**
+     * Retrieves an EntityProxy object for the provided IGC object.
+     *
+     * @param igcomrsRepositoryConnector OMRS connector to the IBM IGC repository
+     * @param igcObj the IGC object for which to retrieve an EntityProxy
+     * @param omrsTypeName the OMRS entity type
+     * @param userId the user through which to retrieve the EntityProxy (unused)
+     * @return EntityProxy
+     */
+    public static EntityProxy getEntityProxyForObject(IGCOMRSRepositoryConnector igcomrsRepositoryConnector,
+                                                      Reference igcObj,
+                                                      String omrsTypeName,
+                                                      String userId) {
+
+        return getEntityProxyForObject(
+                igcomrsRepositoryConnector,
+                igcObj,
+                omrsTypeName,
+                userId,
+                null);
 
     }
 
@@ -283,66 +497,50 @@ public abstract class ReferenceMapper {
     }
 
     /**
-     * Recursively traverses the class hierarchy upwards to find the field.
-     *
-     * @param name the name of the field to find
-     * @param clazz the class in which to search (and recurse upwards on its class hierarchy)
-     * @return Field first found (lowest level of class hierarchy), or null if never found
-    public static Field recursePropertyByName(String name, Class clazz) {
-        Field f = null;
-        Class superClazz = clazz.getSuperclass();
-        if (superClazz != null) {
-            try {
-                f = superClazz.getDeclaredField(name);
-            } catch (NoSuchFieldException e) {
-                f = ReferenceMapper.recursePropertyByName(name, superClazz);
-            }
-        }
-        return f;
-    }
-     */
-
-    /**
-     * Retrieves the first Field, from anywhere within the class hierarchy (bottom-up), by its name.
-     *
-     * @param name the name of the field to retrieve
-     * @return Field
-    public Field getFieldByName(String name) {
-        Field field;
-        try {
-            field = this.getClass().getDeclaredField(name);
-        } catch (NoSuchFieldException e) {
-            field = ReferenceMapper.recursePropertyByName(name, this.getClass());
-        }
-        return field;
-    }
-     */
-
-    /**
      * Introspect a mapping class to retrieve a Mapper of that type.
+     * (This Mapper can be introspected for its mappings, but won't be functional as it won't have been
+     *  initialised with an IGC object.)
      *
      * @param mappingClass the mapping class to retrieve an instance of
      * @param igcomrsRepositoryConnector connectivity to an IGC environment via an OMRS connector
      * @param userId the user through which to retrieve the mapping (currently unused)
      * @return ReferenceableMapper
      */
-    public static final ReferenceableMapper getMapper(Class mappingClass, IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {
+    public static final ReferenceableMapper getMapper(Class mappingClass,
+                                                      IGCOMRSRepositoryConnector igcomrsRepositoryConnector,
+                                                      String userId) {
+        return ReferenceMapper.getMapper(
+                mappingClass,
+                igcomrsRepositoryConnector,
+                null,
+                userId);
+    }
 
+    /**
+     * Retrieve a mapping class based on the provided parameters.
+     *
+     * @param mappingClass the mapping class to retrieve an instance of
+     * @param igcomrsRepositoryConnector connectivity to an IGC environment via an OMRS connector
+     * @param igcObject the IGC asset to initialise the Mapper with
+     * @param userId the user through which to retrieve the mapping (currently unused)
+     * @return ReferenceableMapper
+     */
+    public static final ReferenceableMapper getMapper(Class mappingClass,
+                                                      IGCOMRSRepositoryConnector igcomrsRepositoryConnector,
+                                                      Reference igcObject,
+                                                      String userId) {
         ReferenceableMapper referenceableMapper = null;
-
         try {
             Constructor constructor = mappingClass.getConstructor(Reference.class, IGCOMRSRepositoryConnector.class, String.class);
             referenceableMapper = (ReferenceableMapper) constructor.newInstance(
-                    null,
+                    igcObject,
                     igcomrsRepositoryConnector,
                     userId
             );
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
+            log.error("Unable to find or instantiate Mapper class.", e);
         }
-
         return referenceableMapper;
-
     }
 
     /**
@@ -355,7 +553,20 @@ public abstract class ReferenceMapper {
      */
     public static final String getIgcTypeFromMapping(Class mappingClass, IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {
         ReferenceableMapper referenceableMapper = ReferenceMapper.getMapper(mappingClass, igcomrsRepositoryConnector, userId);
-        return referenceableMapper.getIgcAssetType();
+        return (referenceableMapper == null) ? null : referenceableMapper.getIgcAssetType();
+    }
+
+    /**
+     * Retrieve the IGC RID prefix (if any) needed by the provided mapping.
+     *
+     * @param mappingClass the mapping class for which to retrieve the IGC RID prefix
+     * @param igcomrsRepositoryConnector connectivity to an IGC environment via an OMRS connector
+     * @param userId the user through which to retrieve the mapping (currently unused)
+     * @return String
+     */
+    public static final String getIgcRidPrefixFromMapping(Class mappingClass, IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {
+        ReferenceableMapper referenceableMapper = ReferenceMapper.getMapper(mappingClass, igcomrsRepositoryConnector, userId);
+        return (referenceableMapper == null) ? null : referenceableMapper.getIgcRidPrefix();
     }
 
     /**
@@ -368,7 +579,7 @@ public abstract class ReferenceMapper {
      */
     public static final List<String> getAdditionalIgcPOJOs(Class mappingClass, IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {
         ReferenceableMapper referenceableMapper = ReferenceMapper.getMapper(mappingClass, igcomrsRepositoryConnector, userId);
-        return referenceableMapper.getOtherIGCAssetTypes();
+        return (referenceableMapper == null) ? null : referenceableMapper.getOtherIGCAssetTypes();
     }
 
     /**
@@ -381,7 +592,7 @@ public abstract class ReferenceMapper {
      */
     public static final PropertyMappingSet getPropertiesFromMapping(Class mappingClass, IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {
         ReferenceableMapper referenceableMapper = ReferenceMapper.getMapper(mappingClass, igcomrsRepositoryConnector, userId);
-        return referenceableMapper.getPropertyMappings();
+        return (referenceableMapper == null) ? null : referenceableMapper.getPropertyMappings();
     }
 
 }

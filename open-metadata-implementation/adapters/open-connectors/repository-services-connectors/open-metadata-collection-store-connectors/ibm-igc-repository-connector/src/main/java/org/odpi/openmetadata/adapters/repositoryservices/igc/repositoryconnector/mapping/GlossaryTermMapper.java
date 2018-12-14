@@ -8,15 +8,21 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.ReferenceList;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ClassificationOrigin;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Handles mapping between an IGC 'term' object and an OMRS 'GlossaryTerm' object.
  */
 public class GlossaryTermMapper extends ReferenceableMapper {
+
+    private static final Logger log = LoggerFactory.getLogger(GlossaryTermMapper.class);
+
+    private static final String P_SYNONYMS = "synonyms";
+    private static final String P_TRANSLATIONS = "translations";
 
     /**
      * Sets the basic criteria to use for mapping between an IGC 'term' object and an OMRS 'GlossaryTerm' object.
@@ -37,81 +43,81 @@ public class GlossaryTermMapper extends ReferenceableMapper {
         );
 
         // The list of properties that should be mapped
-        PROPERTIES.put("name", "displayName");
-        PROPERTIES.put("short_description", "summary");
-        PROPERTIES.put("long_description", "description");
-        PROPERTIES.put("example", "examples");
-        PROPERTIES.put("abbreviation", "abbreviation");
-        PROPERTIES.put("usage", "usage");
+        addSimplePropertyMapping("name", "displayName");
+        addSimplePropertyMapping("short_description", "summary");
+        addSimplePropertyMapping("long_description", "description");
+        addSimplePropertyMapping("example", "examples");
+        addSimplePropertyMapping("abbreviation", "abbreviation");
+        addSimplePropertyMapping("usage", "usage");
 
         // The list of relationships that should be mapped
-        RELATIONSHIPS.put(
+        addSimpleRelationshipMapping(
                 "parent_category",
                 "TermCategorization",
                 "terms",
                 "categories"
         );
-        RELATIONSHIPS.put(
+        addSimpleRelationshipMapping(
                 "referencing_categories",
                 "TermCategorization",
                 "terms",
                 "categories"
         );
-        RELATIONSHIPS.put(
-                "synonyms",
+        addSimpleRelationshipMapping(
+                P_SYNONYMS,
                 "Synonym",
-                "synonyms",
-                "synonyms"
+                P_SYNONYMS,
+                P_SYNONYMS
         );
-        RELATIONSHIPS.put(
+        addSimpleRelationshipMapping(
                 "related_terms",
                 "RelatedTerm",
                 "seeAlso",
                 "seeAlso"
         );
-        RELATIONSHIPS.put(
+        addSimpleRelationshipMapping(
                 "replaces",
                 "ReplacementTerm",
                 "replacementTerms",
                 "replacedTerms"
         );
-        RELATIONSHIPS.put(
+        addSimpleRelationshipMapping(
                 "replaced_by",
                 "ReplacementTerm",
                 "replacedTerms",
                 "replacementTerms"
         );
-        RELATIONSHIPS.put(
-                "translations",
+        addSimpleRelationshipMapping(
+                P_TRANSLATIONS,
                 "Translation",
-                "translations",
-                "translations"
+                P_TRANSLATIONS,
+                P_TRANSLATIONS
         );
-        RELATIONSHIPS.put(
+        addSimpleRelationshipMapping(
                 "assigned_assets",
                 "SemanticAssignment",
                 "meaning",
                 "assignedElements"
         );
-        RELATIONSHIPS.put(
+        addSimpleRelationshipMapping(
                 "has_a",
                 "TermHASARelationship",
                 "objects",
                 "attributes"
         );
-        RELATIONSHIPS.put(
+        addSimpleRelationshipMapping(
                 "is_of",
                 "TermHASARelationship",
                 "attributes",
                 "objects"
         );
-        RELATIONSHIPS.put(
+        addSimpleRelationshipMapping(
                 "is_a_type_of",
                 "TermISATypeOFRelationship",
                 "subtypes",
                 "supertypes"
         );
-        RELATIONSHIPS.put(
+        addSimpleRelationshipMapping(
                 "has_types",
                 "TermISATypeOFRelationship",
                 "supertypes",
@@ -120,7 +126,8 @@ public class GlossaryTermMapper extends ReferenceableMapper {
 
         // Finally list any properties that will be used to map Classifications
         // (to do the actual mapping, implement the 'getMappedClassifications' function -- example below)
-        CLASSIFICATION_PROPERTIES.add("assigned_to_terms");
+        addComplexIgcClassification("assigned_to_terms");
+        addComplexOmrsClassification("Confidentiality");
 
     }
 
@@ -134,6 +141,7 @@ public class GlossaryTermMapper extends ReferenceableMapper {
      * Therefore, any 'assigned_to_term' relationship on a term, where the assigned term is within a "Confidentiality"
      * parent category in IGC, will be mapped to a "Confidentiality" classification in OMRS.
      */
+    @Override
     protected void getMappedClassifications() {
 
         IGCRestClient igcRestClient = igcomrsRepositoryConnector.getIGCRestClient();
@@ -155,26 +163,41 @@ public class GlossaryTermMapper extends ReferenceableMapper {
 
                 InstanceProperties classificationProperties = new InstanceProperties();
 
-                // TODO: add ordinal (ie. and to sample data in IGC)
+                // TODO: setup dynamically from matching ordinal value in IGC?
                 EnumPropertyValue level = new EnumPropertyValue();
-                level.setSymbolicName(assignedTerm.getName());
+                String confidentialityName = assignedTerm.getName();
+                switch(confidentialityName) {
+                    case "Unclassified":
+                        level.setOrdinal(0);
+                        break;
+                    case "Internal":
+                        level.setOrdinal(1);
+                        break;
+                    case "Confidential":
+                        level.setOrdinal(2);
+                        break;
+                    case "Sensitive":
+                        level.setOrdinal(3);
+                        break;
+                    case "Restricted":
+                        level.setOrdinal(4);
+                        break;
+                    default:
+                        level.setOrdinal(99);
+                        break;
+                }
+                level.setSymbolicName(confidentialityName);
                 classificationProperties.setProperty("level", level);
 
                 try {
-                    // In such cases, create a new OMRS "Confidentiality" classification,
-                    // and add this to the list of classifications for this mapping
-                    Classification classification = igcomrsRepositoryConnector.getRepositoryHelper().getNewClassification(
-                            SOURCE_NAME,
-                            userId,
+                    Classification classification = getMappedClassification(
                             "Confidentiality",
                             "Referenceable",
-                            ClassificationOrigin.ASSIGNED,
-                            null,
                             classificationProperties
                     );
                     classifications.add(classification);
-                } catch (TypeErrorException e) {
-                    e.printStackTrace();
+                } catch (RepositoryErrorException e) {
+                    log.error("Unable to map classification.", e);
                 }
 
             }
