@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 /**
- * The AssetConsumerRESTServices provides the server-side implementation of the AssetConsumer Open Metadata
+ * The AssetConsumerOMASResource provides the server-side implementation of the Asset Consumer Open Metadata
  * Assess Service (OMAS).  This interface provides connections to assets and APIs for adding feedback
  * on the asset.
  */
@@ -53,7 +53,7 @@ public class AssetConsumerOMASResource
     /**
      * Returns the connection object corresponding to the supplied connection GUID.
      *
-     * @param serverName name of the server instances for this request
+     * @param serverName name of the server instances for this request.
      * @param userId userId of user making request.
      * @param guid  the unique id for the connection within the property server.
      *
@@ -76,7 +76,7 @@ public class AssetConsumerOMASResource
     /**
      * Returns the unique identifier for the asset connected to the connection.
      *
-     * @param serverName name of the server instances for this request
+     * @param serverName name of the server instances for this request.
      * @param userId the userId of the requesting user.
      * @param connectionGUID  uniqueId for the connection.
      *
@@ -98,123 +98,56 @@ public class AssetConsumerOMASResource
 
 
     /**
-     * Return the profile for this user.
+     * Return the full definition (meaning) of a term using the unique identifier of the glossary term.
      *
-     * @param serverName name of the server instances for this request
+     * @param serverName name of the server instances for this request.
      * @param userId userId of the user making the request.
+     * @param guid unique identifier of the meaning.
      *
-     * @return profile response object or
+     * @return meaning response object or
      * InvalidParameterException the userId is null or invalid or
-     * NoProfileForUserException the user does not have a profile or
      * PropertyServerException there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/my-profile")
+    @RequestMapping(method = RequestMethod.GET, path = "/meanings/{guid}")
 
-    public MyProfileResponse getMyProfile(@PathVariable String   serverName,
-                                          @PathVariable String userId)
+    public MeaningResponse getMeaning(@PathVariable String   serverName,
+                                      @PathVariable String   userId,
+                                      @PathVariable String   guid)
     {
-        return restAPI.getMyProfile(serverName, userId);
+        return restAPI.getMeaning(serverName, userId, guid);
     }
 
 
     /**
-     * Create or update the profile for the requesting user.
+     * Return the full definition (meaning) of the terms matching the supplied name.
      *
-     * @param serverName name of the server instances for this request
+     * @param serverName name of the server instances for this request.
      * @param userId the name of the calling user.
-     * @param requestBody properties for the new profile.
-     * @return void response or
+     * @param term name of term.  This may include wild card characters.
+     * @param startFrom  index of the list ot start from (0 for start).
+     * @param pageSize   maximum number of elements to return.
+     * @return meaning list response or
      * InvalidParameterException - one of the parameters is invalid or
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/my-profile")
+    @RequestMapping(method = RequestMethod.GET, path = "/meanings/by-name/{term}")
 
-    public VoidResponse updateMyProfile(@PathVariable String               serverName,
-                                        @PathVariable String               userId,
-                                        @RequestBody  MyProfileRequestBody requestBody)
+    public MeaningListResponse getMeaningByName(@PathVariable String  serverName,
+                                                @PathVariable String  userId,
+                                                @PathVariable String  term,
+                                                @RequestParam int     startFrom,
+                                                @RequestParam int     pageSize)
     {
-        return restAPI.updateMyProfile(serverName, userId, requestBody);
-    }
-
-
-    /**
-     * Return a list of assets that the specified user has added to their favorites list.
-     *
-     * @param serverName name of the server instances for this request
-     * @param userId     userId of user making request.
-     * @param startFrom  index of the list ot start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     *
-     * @return list of asset details or
-     * InvalidParameterException one of the parameters is invalid or
-     * PropertyServerException there is a problem retrieving information from the property server(s) or
-     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @RequestMapping(method = RequestMethod.GET, path = "/my-assets")
-
-    public AssetListResponse getMyAssets(@PathVariable String    serverName,
-                                         @PathVariable String    userId,
-                                         @RequestParam int       startFrom,
-                                         @RequestParam int       pageSize)
-    {
-        return restAPI.getMyAssets(serverName, userId, startFrom, pageSize);
-    }
-
-
-    /**
-     * Add an asset to the identified user's list of favorite assets.
-     *
-     * @param serverName name of the server instances for this request
-     * @param userId          userId of user making request.
-     * @param assetGUID       unique identifier of the asset.
-     * @param nullRequestBody null request body
-     *
-     * @return void response or
-     * InvalidParameterException one of the parameters is invalid or
-     * PropertyServerException there is a problem updating information in the property server(s) or
-     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @RequestMapping(method = RequestMethod.POST, path = "/my-assets/{assetGUID}")
-
-    public VoidResponse  addToMyAssets(@PathVariable String           serverName,
-                                       @PathVariable String           userId,
-                                       @PathVariable String           assetGUID,
-                                       @RequestBody  NullRequestBody  nullRequestBody)
-    {
-        return restAPI.addToMyAssets(serverName, userId, assetGUID, nullRequestBody);
-    }
-
-
-    /**
-     * Remove an asset from identified user's list of favorite assets.
-     *
-     * @param serverName name of the server instances for this request
-     * @param userId          userId of user making request.
-     * @param assetGUID       unique identifier of the asset.
-     * @param nullRequestBody null request body
-     *
-     * @return void response or
-     * InvalidParameterException one of the parameters is invalid or
-     * PropertyServerException there is a problem updating information in the property server(s) or
-     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @RequestMapping(method = RequestMethod.POST, path = "/my-assets/{assetGUID}/delete")
-
-    public VoidResponse  removeFromMyAssets(@PathVariable String           serverName,
-                                            @PathVariable String           userId,
-                                            @PathVariable String           assetGUID,
-                                            @RequestBody  NullRequestBody  nullRequestBody)
-    {
-        return restAPI.removeFromMyAssets(serverName, userId, assetGUID, nullRequestBody);
+        return restAPI.getMeaningByName(serverName, userId, term, startFrom, pageSize);
     }
 
 
     /**
      * Creates an Audit log record for the asset.  This log record is stored in the Asset's Audit Log.
      *
-     * @param serverName name of the server instances for this request
+     * @param serverName name of the server instances for this request.
      * @param userId  String - userId of user making request.
      * @param guid  String - unique id for the asset.
      * @param requestBody containing:
@@ -243,15 +176,14 @@ public class AssetConsumerOMASResource
     /**
      * Adds a new public tag to the asset's properties.
      *
-     * @param serverName name of the server instances for this request
+     * @param serverName   name of the server instances for this request.
      * @param userId       String - userId of user making request.
      * @param guid         String - unique id for the asset.
      * @param requestBody  contains the name of the tag and (optional) description of the tag.
      *
      * @return GUIDResponse or
      * InvalidParameterException one of the parameters is null or invalid or
-     * PropertyServerException There is a problem adding the asset properties to
-     *                                   the metadata repository or
+     * PropertyServerException There is a problem adding the asset properties to the metadata repository or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @RequestMapping(method = RequestMethod.POST, path = "/assets/{guid}/tags")
@@ -268,15 +200,14 @@ public class AssetConsumerOMASResource
     /**
      * Adds a new private tag to the asset's properties.
      *
-     * @param serverName name of the server instances for this request
+     * @param serverName   name of the server instances for this request.
      * @param userId       String - userId of user making request.
      * @param guid         String - unique id for the asset.
      * @param requestBody  contains the name of the tag and (optional) description of the tag.
      *
      * @return GUIDResponse or
      * InvalidParameterException one of the parameters is null or invalid or
-     * PropertyServerException There is a problem adding the asset properties to
-     *                                   the metadata repository or
+     * PropertyServerException There is a problem adding the asset properties to the metadata repository or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @RequestMapping(method = RequestMethod.POST, path = "/assets/{guid}/tags/private")
@@ -293,15 +224,14 @@ public class AssetConsumerOMASResource
     /**
      * Adds a rating to the asset.
      *
-     * @param serverName name of the server instances for this request
+     * @param serverName  name of the server instances for this request.
      * @param userId      String - userId of user making request.
      * @param guid        String - unique id for the asset.
      * @param requestBody containing the StarRating and user review of asset.
      *
      * @return GUIDResponse or
      * InvalidParameterException one of the parameters is null or invalid or
-     * PropertyServerException There is a problem adding the asset properties to
-     *                                   the metadata repository or
+     * PropertyServerException There is a problem adding the asset properties to the metadata repository or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @RequestMapping(method = RequestMethod.POST, path = "/assets/{guid}/ratings")
@@ -318,7 +248,7 @@ public class AssetConsumerOMASResource
     /**
      * Adds a "Like" to the asset.
      *
-     * @param serverName name of the server instances for this request
+     * @param serverName  name of the server instances for this request.
      * @param userId      String - userId of user making request.
      * @param guid        String - unique id for the asset.
      * @param requestBody null request body to satisfy HTTP protocol.
@@ -343,7 +273,7 @@ public class AssetConsumerOMASResource
     /**
      * Adds a comment to the asset.
      *
-     * @param serverName name of the server instances for this request
+     * @param serverName name of the server instances for this request.
      * @param userId      String - userId of user making request.
      * @param guid        String - unique id for the asset.
      * @param requestBody containing type of comment enum and the text of the comment.
@@ -368,10 +298,10 @@ public class AssetConsumerOMASResource
     /**
      * Adds a reply to a comment.
      *
-     * @param serverName name of the server instances for this request
+     * @param serverName    name of the server instances for this request.
      * @param userId        String - userId of user making request.
      * @param commentGUID   String - unique id for an existing comment.  Used to add a reply to a comment.
-     * @param requestBody containing type of comment enum and the text of the comment.
+     * @param requestBody   containing type of comment enum and the text of the comment.
      *
      * @return GUIDResponse or
      * InvalidParameterException one of the parameters is null or invalid or
@@ -393,7 +323,7 @@ public class AssetConsumerOMASResource
     /**
      * Removes a tag from the asset that was added by this user.
      *
-     * @param serverName name of the server instances for this request
+     * @param serverName   name of the server instances for this request
      * @param userId       String - userId of user making request.
      * @param guid         String - unique id for the tag.
      * @param requestBody  containing type of comment enum and the text of the comment.
@@ -417,7 +347,7 @@ public class AssetConsumerOMASResource
     /**
      * Removes a tag from the asset that was added by this user.
      *
-     * @param serverName name of the server instances for this request
+     * @param serverName   name of the server instances for this request.
      * @param userId       String - userId of user making request.
      * @param guid         String - unique id for the tag.
      * @param requestBody  containing type of comment enum and the text of the comment.
@@ -441,9 +371,9 @@ public class AssetConsumerOMASResource
     /**
      * Removes of a star rating that was added to the asset by this user.
      *
-     * @param serverName name of the server instances for this request
+     * @param serverName   name of the server instances for this request.
      * @param userId       String - userId of user making request.
-     * @param guid         String - unique id for the rating object
+     * @param guid         String - unique id for the rating object.
      * @param requestBody  containing type of comment enum and the text of the comment.
      *
      * @return VoidResponse or
@@ -465,9 +395,9 @@ public class AssetConsumerOMASResource
     /**
      * Removes a "Like" added to the asset by this user.
      *
-     * @param serverName name of the server instances for this request
+     * @param serverName   name of the server instances for this request.
      * @param userId       String - userId of user making request.
-     * @param guid         String - unique id for the like object
+     * @param guid         String - unique id for the like object.
      * @param requestBody  containing type of comment enum and the text of the comment.
      *
      * @return VoidResponse or

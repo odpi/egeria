@@ -11,27 +11,27 @@ public class EntityPropertiesUtils {
 
 
     public static Boolean getBooleanValueForProperty(InstanceProperties instanceProperties, String name) {
-        if (instanceProperties.getPropertyValue(name) instanceof PrimitivePropertyValue && ((PrimitivePropertyValue) instanceProperties.getPropertyValue(name)).getPrimitiveDefCategory() == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN) {
+        if (instanceProperties != null && instanceProperties.getPropertyValue(name) instanceof PrimitivePropertyValue && ((PrimitivePropertyValue) instanceProperties.getPropertyValue(name)).getPrimitiveDefCategory() == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN) {
             return (Boolean) ((PrimitivePropertyValue) instanceProperties.getPropertyValue(name)).getPrimitiveValue();
         }
         return false;
     }
     public static String getStringValueForProperty(InstanceProperties instanceProperties, String name) {
-        if (instanceProperties.getPropertyValue(name) instanceof PrimitivePropertyValue && ((PrimitivePropertyValue) instanceProperties.getPropertyValue(name)).getPrimitiveDefCategory() == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING) {
+        if (instanceProperties != null && instanceProperties.getPropertyValue(name) instanceof PrimitivePropertyValue && ((PrimitivePropertyValue) instanceProperties.getPropertyValue(name)).getPrimitiveDefCategory() == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING) {
             return (String) ((PrimitivePropertyValue) instanceProperties.getPropertyValue(name)).getPrimitiveValue();
         }
         return "";
     }
 
     public static Integer getIntegerValueForProperty(InstanceProperties properties, String name) {
-        if (properties.getPropertyValue(name) instanceof PrimitivePropertyValue && ((PrimitivePropertyValue) properties.getPropertyValue(name)).getPrimitiveDefCategory() == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT) {
+        if (properties != null && properties.getPropertyValue(name) instanceof PrimitivePropertyValue && ((PrimitivePropertyValue) properties.getPropertyValue(name)).getPrimitiveDefCategory() == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT) {
             return (Integer) ((PrimitivePropertyValue) properties.getPropertyValue(name)).getPrimitiveValue();
         }
         return 0;
     }
 
     public static MapPropertyValue getMapValueForProperty(InstanceProperties instanceProperties, String name) {
-        if (instanceProperties.getPropertyValue(name) instanceof MapPropertyValue) {
+        if (instanceProperties != null && instanceProperties.getPropertyValue(name) instanceof MapPropertyValue) {
             return (MapPropertyValue) instanceProperties.getPropertyValue(name);
         }
         return null;
@@ -48,6 +48,13 @@ public class EntityPropertiesUtils {
         PrimitivePropertyValue propertyValue = new PrimitivePropertyValue();
         propertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT);
         propertyValue.setPrimitiveValue(value);
+        return propertyValue;
+    }
+
+    public static PrimitivePropertyValue createPrimitiveDatePropertyValue(Long timestamp) {
+        PrimitivePropertyValue propertyValue = new PrimitivePropertyValue();
+        propertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE);
+        propertyValue.setPrimitiveValue(timestamp);
         return propertyValue;
     }
 }

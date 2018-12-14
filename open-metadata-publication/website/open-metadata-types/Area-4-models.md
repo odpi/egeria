@@ -30,3 +30,9 @@ that the governance program has a positive effect.
 * **[0481 Licenses](0481-Licenses.md)**
 * **[0482 Certifications](0482-Certifications.md)**
 
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
+

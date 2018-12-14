@@ -48,6 +48,7 @@ public class Constants {
     public static final String URL = "url";
     public static final String EXAMPLES = "examples";
     public static final String PROTOCOL = "protocol";
+    public static final String ENCRYPTION_METHOD = "encryptionMethod";
     public static final String NETWORK_ADDRESS = "networkAddress";
     public static final String ADDITIONAL_PROPERTIES = "additionalProperties";
     public static final String CONNECTOR_PROVIDER_CLASSNAME = "connectorProviderClassName";
@@ -67,6 +68,8 @@ public class Constants {
     public static final String FOREIGN_KEY = "ForeignKey";
     public static final String DEPLOYED_REPORT = "DeployedReport";
     public static final String ID = "id";
+    public static final String DOCUMENT_SCHEMA_TYPE = "DocumentSchemaType";
+    public static final String DOCUMENT_SCHEMA_ATTRIBUTE = "DocumentSchemaAttribute";
     public static final String COMPLEX_SCHEMA_TYPE = "ComplexSchemaType";
     public static final String LAST_MODIFIER = "lastModifier";
     public static final String LAST_MODIFIED_TIME = "lastModifiedTime";

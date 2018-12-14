@@ -1,4 +1,4 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
 # Egeria Maintainers
@@ -19,6 +19,11 @@ The current Egeria maintainers are:
 | Ferd Scheepers | ferd.scheepers@mamahuhu.nl |
 | Ruxandra Gabriela Rosu | ruxandra-gabriela.rosu@ing.com |
 | Daniela Valentina Otelea | daniela-valentina.otelea@ing.com |
-| Constantin Nastase | constantin.nastase@ing.com |
 | Wu Yue Feng | wyf1116@gmail.com |
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
 

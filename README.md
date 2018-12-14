@@ -1,6 +1,6 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
-  
+
 # Egeria - Open Metadata and Governance
   
 Egeria provides the Apache 2.0 licensed [open metadata and governance](open-metadata-publication/website/README.md)
@@ -95,3 +95,9 @@ bound to any corporate affiliation.
 Participants are bound the ODPi's [Code of Conduct](https://github.com/odpi/specs/wiki/ODPi-Code-of-Conduct).
 The governance of the project is described in more detail in the
 [Egeria Operations](./Egeria-Operations.md).
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
