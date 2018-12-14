@@ -120,7 +120,7 @@ The recommended way to do this is to create your own POJOs:
 
 - For OpenIGC assets, create a new class that extends from `MainObject` for each class in your OpenIGC bundle, and add each of your classes' properties as members to each of those POJOs. (See the generated POJOs for examples, just extend from `MainObject` instead of `Reference`.)
 - For native asset types against which you've defined custom attributes, simply create a new POJO that extends from the appropriate (generated) POJO. Then all you'll need to do is add the custom attribute properties to your new class (all of the native properties will be inherited by extending the generated POJO). For any custom attributes of IGC type `relationship` use a Java type of `ReferenceList`, for any multi-valued custom attributes use a Java type of `ArrayList<String>`, and for any singular values simply use the appropriate type (eg. `String`, `Number`, `Date`, or `Boolean`).
-- In either case, to ease reflection-based registration (if you decide to use such an approach), consider adding a `static final String IGC_TYPE_ID = ''` set to the precise type string that IGC uses to refer to assets of this type.
+- In either case, to ease reflection-based registration (if you decide to use such an approach), consider adding a `public static String getIgcTypeId() { return "<type_name>"; }` set to the precise type string that IGC uses to refer to assets of this type.
 
 Remember that you'll need to register your own POJO (see "Retrieving assets" above) before the client will make use of it!
 

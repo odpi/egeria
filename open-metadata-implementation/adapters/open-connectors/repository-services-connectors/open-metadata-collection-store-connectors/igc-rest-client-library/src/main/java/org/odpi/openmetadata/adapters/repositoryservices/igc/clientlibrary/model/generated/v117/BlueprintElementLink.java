@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v117;
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
@@ -19,7 +18,7 @@ import java.util.ArrayList;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class BlueprintElementLink extends Reference {
 
-    @JsonIgnore public static final String IGC_TYPE_ID = "blueprint_element_link";
+    public static String getIgcTypeId() { return "blueprint_element_link"; }
 
     /**
      * The 'element_name' property, displayed as 'Element Name' in the IGC UI.

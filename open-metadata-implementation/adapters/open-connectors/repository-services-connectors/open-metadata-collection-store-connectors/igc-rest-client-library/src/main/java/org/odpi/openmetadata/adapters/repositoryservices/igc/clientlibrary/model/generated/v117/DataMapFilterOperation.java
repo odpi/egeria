@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v117;
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
@@ -19,7 +18,7 @@ import java.util.ArrayList;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DataMapFilterOperation extends Reference {
 
-    @JsonIgnore public static final String IGC_TYPE_ID = "data_map_filter_operation";
+    public static String getIgcTypeId() { return "data_map_filter_operation"; }
 
     /**
      * The 'infoset' property, displayed as 'InfoSet' in the IGC UI.

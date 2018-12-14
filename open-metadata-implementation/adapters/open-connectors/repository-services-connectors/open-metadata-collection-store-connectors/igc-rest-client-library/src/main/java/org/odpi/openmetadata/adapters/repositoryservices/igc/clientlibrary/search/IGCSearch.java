@@ -160,7 +160,7 @@ public class IGCSearch {
         if (conditions != null && conditions.size() > 0) {
             query.set("where", conditions.getConditionSetObject());
         }
-        if (sortings != null && sortings.size() > 0) {
+        if (sortings != null && !sortings.isEmpty()) {
             ArrayNode anSorts = nf.arrayNode();
             for (IGCSearchSorting sorting : sortings) {
                 anSorts.add(sorting.getSortObject());

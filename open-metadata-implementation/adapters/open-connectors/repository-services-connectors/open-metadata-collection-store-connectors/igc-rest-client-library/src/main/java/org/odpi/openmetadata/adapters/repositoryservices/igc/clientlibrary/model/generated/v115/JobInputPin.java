@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v115;
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
@@ -19,7 +18,7 @@ import java.util.ArrayList;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class JobInputPin extends Reference {
 
-    @JsonIgnore public static final String IGC_TYPE_ID = "job_input_pin";
+    public static String getIgcTypeId() { return "job_input_pin"; }
 
     /**
      * The 'condition_not_met' property, displayed as 'Condition Not Met' in the IGC UI.

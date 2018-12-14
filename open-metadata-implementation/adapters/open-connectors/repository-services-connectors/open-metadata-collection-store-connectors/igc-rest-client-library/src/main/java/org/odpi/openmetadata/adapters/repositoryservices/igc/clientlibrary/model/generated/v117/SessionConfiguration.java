@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v117;
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
@@ -19,7 +18,7 @@ import java.util.ArrayList;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SessionConfiguration extends Reference {
 
-    @JsonIgnore public static final String IGC_TYPE_ID = "session_configuration";
+    public static String getIgcTypeId() { return "session_configuration"; }
 
     /**
      * The 'max_sessions' property, displayed as 'Max Sessions' in the IGC UI.

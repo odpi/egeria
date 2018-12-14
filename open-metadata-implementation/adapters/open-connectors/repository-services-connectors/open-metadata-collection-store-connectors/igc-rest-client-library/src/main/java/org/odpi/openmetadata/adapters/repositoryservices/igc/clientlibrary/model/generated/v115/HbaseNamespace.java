@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v117;
+package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v115;
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -9,16 +9,16 @@ import java.util.Date;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'endpoint' asset type in IGC, displayed as 'Endpoint' in the IGC UI.
+ * POJO for the 'hbase_namespace' asset type in IGC, displayed as 'HBase Namespace' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
  *  extending from this class in your own custom class is the best approach.)
  */
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class Endpoint extends Reference {
+public class HbaseNamespace extends Reference {
 
-    public static String getIgcTypeId() { return "endpoint"; }
+    public static String getIgcTypeId() { return "hbase_namespace"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -31,9 +31,16 @@ public class Endpoint extends Reference {
     protected String short_description;
 
     /**
-     * The 'long_description' property, displayed as 'Long Description' in the IGC UI.
+     * The 'help_text' property, displayed as 'Long Description' in the IGC UI.
      */
-    protected String long_description;
+    protected String help_text;
+
+    /**
+     * The 'database' property, displayed as 'Database' in the IGC UI.
+     * <br><br>
+     * Will be a single {@link Reference} to a {@link Database} object.
+     */
+    protected Reference database;
 
     /**
      * The 'labels' property, displayed as 'Labels' in the IGC UI.
@@ -71,19 +78,39 @@ public class Endpoint extends Reference {
     protected ReferenceList governed_by_rules;
 
     /**
-     * The 'namespace' property, displayed as 'Namespace' in the IGC UI.
+     * The 'database_tables' property, displayed as 'Database Tables' in the IGC UI.
+     * <br><br>
+     * Will be a {@link ReferenceList} of {@link DatabaseTable} objects.
      */
-    protected String namespace;
+    protected ReferenceList database_tables;
 
     /**
-     * The 'application' property, displayed as 'Application' in the IGC UI.
+     * The 'views' property, displayed as 'Views' in the IGC UI.
+     * <br><br>
+     * Will be a {@link ReferenceList} of {@link View} objects.
      */
-    protected String application;
+    protected ReferenceList views;
 
     /**
-     * The 'host' property, displayed as 'Host' in the IGC UI.
+     * The 'database_aliases' property, displayed as 'Database Aliases' in the IGC UI.
+     * <br><br>
+     * Will be a {@link ReferenceList} of {@link DatabaseAlias} objects.
      */
-    protected String host;
+    protected ReferenceList database_aliases;
+
+    /**
+     * The 'implements_logical_data_models' property, displayed as 'Implements Logical Data Models' in the IGC UI.
+     * <br><br>
+     * Will be a {@link ReferenceList} of {@link LogicalDataModel} objects.
+     */
+    protected ReferenceList implements_logical_data_models;
+
+    /**
+     * The 'implements_physical_data_models' property, displayed as 'Implements Physical Data Models' in the IGC UI.
+     * <br><br>
+     * Will be a {@link ReferenceList} of {@link PhysicalDataModel} objects.
+     */
+    protected ReferenceList implements_physical_data_models;
 
     /**
      * The 'alias_(business_name)' property, displayed as 'Alias (Business Name)' in the IGC UI.
@@ -91,21 +118,26 @@ public class Endpoint extends Reference {
     @JsonProperty("alias_(business_name)") protected String alias__business_name_;
 
     /**
-     * The 'port' property, displayed as 'Port' in the IGC UI.
+     * The 'owner' property, displayed as 'Owner' in the IGC UI.
      */
-    protected String port;
+    protected String owner;
 
     /**
-     * The 'direction' property, displayed as 'Direction' in the IGC UI.
-     * <br><br>
-     * Can be one of the following values:
-     * <ul>
-     *     <li>in (displayed in the UI as 'in')</li>
-     *     <li>out (displayed in the UI as 'out')</li>
-     *     <li>inout (displayed in the UI as 'inout')</li>
-     * </ul>
+     * The 'imported_from' property, displayed as 'Imported From' in the IGC UI.
      */
-    protected String direction;
+    protected String imported_from;
+
+    /**
+     * The 'native_id' property, displayed as 'Native ID' in the IGC UI.
+     */
+    protected String native_id;
+
+    /**
+     * The 'mapped_to_mdm_models' property, displayed as 'Mapped to MDM Models' in the IGC UI.
+     * <br><br>
+     * Will be a {@link ReferenceList} of {@link MdmModel} objects.
+     */
+    protected ReferenceList mapped_to_mdm_models;
 
     /**
      * The 'read_by_(static)' property, displayed as 'Read by (Static)' in the IGC UI.
@@ -178,6 +210,39 @@ public class Endpoint extends Reference {
     protected ReferenceList impacts_on;
 
     /**
+     * The 'same_as_data_sources' property, displayed as 'Same as Data Sources' in the IGC UI.
+     * <br><br>
+     * Will be a {@link ReferenceList} of {@link MainObject} objects.
+     */
+    protected ReferenceList same_as_data_sources;
+
+    /**
+     * The 'include_for_business_lineage' property, displayed as 'Include for Business Lineage' in the IGC UI.
+     */
+    protected Boolean include_for_business_lineage;
+
+    /**
+     * The 'suggested_term_assignments' property, displayed as 'Suggested Term Assignments' in the IGC UI.
+     * <br><br>
+     * Will be a {@link ReferenceList} of {@link TermAssignment} objects.
+     */
+    protected ReferenceList suggested_term_assignments;
+
+    /**
+     * The 'database_domains' property, displayed as 'Database Domains' in the IGC UI.
+     * <br><br>
+     * Will be a {@link ReferenceList} of {@link DataItemDefinition} objects.
+     */
+    protected ReferenceList database_domains;
+
+    /**
+     * The 'data_policies' property, displayed as 'Data Policies' in the IGC UI.
+     * <br><br>
+     * Will be a {@link ReferenceList} of {@link DataPolicy} objects.
+     */
+    protected ReferenceList data_policies;
+
+    /**
      * The 'in_collections' property, displayed as 'In Collections' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Collection} objects.
@@ -211,8 +276,11 @@ public class Endpoint extends Reference {
     /** @see #short_description */ @JsonProperty("short_description")  public String getShortDescription() { return this.short_description; }
     /** @see #short_description */ @JsonProperty("short_description")  public void setShortDescription(String short_description) { this.short_description = short_description; }
 
-    /** @see #long_description */ @JsonProperty("long_description")  public String getLongDescription() { return this.long_description; }
-    /** @see #long_description */ @JsonProperty("long_description")  public void setLongDescription(String long_description) { this.long_description = long_description; }
+    /** @see #help_text */ @JsonProperty("help_text")  public String getHelpText() { return this.help_text; }
+    /** @see #help_text */ @JsonProperty("help_text")  public void setHelpText(String help_text) { this.help_text = help_text; }
+
+    /** @see #database */ @JsonProperty("database")  public Reference getDatabase() { return this.database; }
+    /** @see #database */ @JsonProperty("database")  public void setDatabase(Reference database) { this.database = database; }
 
     /** @see #labels */ @JsonProperty("labels")  public ReferenceList getLabels() { return this.labels; }
     /** @see #labels */ @JsonProperty("labels")  public void setLabels(ReferenceList labels) { this.labels = labels; }
@@ -229,23 +297,35 @@ public class Endpoint extends Reference {
     /** @see #governed_by_rules */ @JsonProperty("governed_by_rules")  public ReferenceList getGovernedByRules() { return this.governed_by_rules; }
     /** @see #governed_by_rules */ @JsonProperty("governed_by_rules")  public void setGovernedByRules(ReferenceList governed_by_rules) { this.governed_by_rules = governed_by_rules; }
 
-    /** @see #namespace */ @JsonProperty("namespace")  public String getNamespace() { return this.namespace; }
-    /** @see #namespace */ @JsonProperty("namespace")  public void setNamespace(String namespace) { this.namespace = namespace; }
+    /** @see #database_tables */ @JsonProperty("database_tables")  public ReferenceList getDatabaseTables() { return this.database_tables; }
+    /** @see #database_tables */ @JsonProperty("database_tables")  public void setDatabaseTables(ReferenceList database_tables) { this.database_tables = database_tables; }
 
-    /** @see #application */ @JsonProperty("application")  public String getApplication() { return this.application; }
-    /** @see #application */ @JsonProperty("application")  public void setApplication(String application) { this.application = application; }
+    /** @see #views */ @JsonProperty("views")  public ReferenceList getViews() { return this.views; }
+    /** @see #views */ @JsonProperty("views")  public void setViews(ReferenceList views) { this.views = views; }
 
-    /** @see #host */ @JsonProperty("host")  public String getHost() { return this.host; }
-    /** @see #host */ @JsonProperty("host")  public void setHost(String host) { this.host = host; }
+    /** @see #database_aliases */ @JsonProperty("database_aliases")  public ReferenceList getDatabaseAliases() { return this.database_aliases; }
+    /** @see #database_aliases */ @JsonProperty("database_aliases")  public void setDatabaseAliases(ReferenceList database_aliases) { this.database_aliases = database_aliases; }
+
+    /** @see #implements_logical_data_models */ @JsonProperty("implements_logical_data_models")  public ReferenceList getImplementsLogicalDataModels() { return this.implements_logical_data_models; }
+    /** @see #implements_logical_data_models */ @JsonProperty("implements_logical_data_models")  public void setImplementsLogicalDataModels(ReferenceList implements_logical_data_models) { this.implements_logical_data_models = implements_logical_data_models; }
+
+    /** @see #implements_physical_data_models */ @JsonProperty("implements_physical_data_models")  public ReferenceList getImplementsPhysicalDataModels() { return this.implements_physical_data_models; }
+    /** @see #implements_physical_data_models */ @JsonProperty("implements_physical_data_models")  public void setImplementsPhysicalDataModels(ReferenceList implements_physical_data_models) { this.implements_physical_data_models = implements_physical_data_models; }
 
     /** @see #alias__business_name_ */ @JsonProperty("alias_(business_name)")  public String getAliasBusinessName() { return this.alias__business_name_; }
     /** @see #alias__business_name_ */ @JsonProperty("alias_(business_name)")  public void setAliasBusinessName(String alias__business_name_) { this.alias__business_name_ = alias__business_name_; }
 
-    /** @see #port */ @JsonProperty("port")  public String getPort() { return this.port; }
-    /** @see #port */ @JsonProperty("port")  public void setPort(String port) { this.port = port; }
+    /** @see #owner */ @JsonProperty("owner")  public String getOwner() { return this.owner; }
+    /** @see #owner */ @JsonProperty("owner")  public void setOwner(String owner) { this.owner = owner; }
 
-    /** @see #direction */ @JsonProperty("direction")  public String getDirection() { return this.direction; }
-    /** @see #direction */ @JsonProperty("direction")  public void setDirection(String direction) { this.direction = direction; }
+    /** @see #imported_from */ @JsonProperty("imported_from")  public String getImportedFrom() { return this.imported_from; }
+    /** @see #imported_from */ @JsonProperty("imported_from")  public void setImportedFrom(String imported_from) { this.imported_from = imported_from; }
+
+    /** @see #native_id */ @JsonProperty("native_id")  public String getNativeId() { return this.native_id; }
+    /** @see #native_id */ @JsonProperty("native_id")  public void setNativeId(String native_id) { this.native_id = native_id; }
+
+    /** @see #mapped_to_mdm_models */ @JsonProperty("mapped_to_mdm_models")  public ReferenceList getMappedToMdmModels() { return this.mapped_to_mdm_models; }
+    /** @see #mapped_to_mdm_models */ @JsonProperty("mapped_to_mdm_models")  public void setMappedToMdmModels(ReferenceList mapped_to_mdm_models) { this.mapped_to_mdm_models = mapped_to_mdm_models; }
 
     /** @see #read_by__static_ */ @JsonProperty("read_by_(static)")  public ReferenceList getReadByStatic() { return this.read_by__static_; }
     /** @see #read_by__static_ */ @JsonProperty("read_by_(static)")  public void setReadByStatic(ReferenceList read_by__static_) { this.read_by__static_ = read_by__static_; }
@@ -277,6 +357,21 @@ public class Endpoint extends Reference {
     /** @see #impacts_on */ @JsonProperty("impacts_on")  public ReferenceList getImpactsOn() { return this.impacts_on; }
     /** @see #impacts_on */ @JsonProperty("impacts_on")  public void setImpactsOn(ReferenceList impacts_on) { this.impacts_on = impacts_on; }
 
+    /** @see #same_as_data_sources */ @JsonProperty("same_as_data_sources")  public ReferenceList getSameAsDataSources() { return this.same_as_data_sources; }
+    /** @see #same_as_data_sources */ @JsonProperty("same_as_data_sources")  public void setSameAsDataSources(ReferenceList same_as_data_sources) { this.same_as_data_sources = same_as_data_sources; }
+
+    /** @see #include_for_business_lineage */ @JsonProperty("include_for_business_lineage")  public Boolean getIncludeForBusinessLineage() { return this.include_for_business_lineage; }
+    /** @see #include_for_business_lineage */ @JsonProperty("include_for_business_lineage")  public void setIncludeForBusinessLineage(Boolean include_for_business_lineage) { this.include_for_business_lineage = include_for_business_lineage; }
+
+    /** @see #suggested_term_assignments */ @JsonProperty("suggested_term_assignments")  public ReferenceList getSuggestedTermAssignments() { return this.suggested_term_assignments; }
+    /** @see #suggested_term_assignments */ @JsonProperty("suggested_term_assignments")  public void setSuggestedTermAssignments(ReferenceList suggested_term_assignments) { this.suggested_term_assignments = suggested_term_assignments; }
+
+    /** @see #database_domains */ @JsonProperty("database_domains")  public ReferenceList getDatabaseDomains() { return this.database_domains; }
+    /** @see #database_domains */ @JsonProperty("database_domains")  public void setDatabaseDomains(ReferenceList database_domains) { this.database_domains = database_domains; }
+
+    /** @see #data_policies */ @JsonProperty("data_policies")  public ReferenceList getDataPolicies() { return this.data_policies; }
+    /** @see #data_policies */ @JsonProperty("data_policies")  public void setDataPolicies(ReferenceList data_policies) { this.data_policies = data_policies; }
+
     /** @see #in_collections */ @JsonProperty("in_collections")  public ReferenceList getInCollections() { return this.in_collections; }
     /** @see #in_collections */ @JsonProperty("in_collections")  public void setInCollections(ReferenceList in_collections) { this.in_collections = in_collections; }
 
@@ -293,6 +388,6 @@ public class Endpoint extends Reference {
     /** @see #modified_on */ @JsonProperty("modified_on")  public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
 
-    public static final Boolean isEndpoint(Object obj) { return (obj.getClass() == Endpoint.class); }
+    public static final Boolean isHbaseNamespace(Object obj) { return (obj.getClass() == HbaseNamespace.class); }
 
 }

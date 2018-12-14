@@ -4,10 +4,11 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary;
 
 import javax.net.ssl.*;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
-import java.util.ArrayList;
 import java.util.List;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -22,6 +23,8 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearch;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchCondition;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchConditionSet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.Base64Utils;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -52,6 +55,11 @@ import org.springframework.web.client.RestTemplate;
  */
 public class IGCRestClient {
 
+    public static final String VERSION_115 = "v115";
+    public static final String VERSION_117 = "v117";
+
+    private static final Logger log = LoggerFactory.getLogger(IGCRestClient.class);
+
     private String authorization;
     private String baseURL;
     private Boolean workflowEnabled = false;
@@ -63,10 +71,10 @@ public class IGCRestClient {
 
     private ObjectMapper mapper;
 
-    public static final String TYPES = "/ibm/iis/igc-rest/v1/types";
-    public static final String ASSET = "/ibm/iis/igc-rest/v1/assets";
-    public static final String SEARCH = "/ibm/iis/igc-rest/v1/search";
-    public static final String LOGOUT  = "/ibm/iis/igc-rest/v1/logout";
+    public static final String EP_TYPES = "/ibm/iis/igc-rest/v1/types";
+    public static final String EP_ASSET = "/ibm/iis/igc-rest/v1/assets";
+    public static final String EP_SEARCH = "/ibm/iis/igc-rest/v1/search";
+    public static final String EP_LOGOUT  = "/ibm/iis/igc-rest/v1/logout";
 
     // TODO: pickup the URL and authorization information from a properties file, by default
     public IGCRestClient() {
@@ -104,12 +112,12 @@ public class IGCRestClient {
         // Register the non-generated types
         this.registerPOJO(Paging.class);
 
-        this.igcVersion = "v115";
+        this.igcVersion = VERSION_115;
         ArrayNode igcTypes = getTypes();
         for (JsonNode node : igcTypes) {
             // Check for a type that does not exist in v11.5
             if (node.path("_id").asText().equals("analytics_project")) {
-                this.igcVersion = "v117";
+                this.igcVersion = VERSION_117;
                 break;
             }
         }
@@ -155,13 +163,13 @@ public class IGCRestClient {
         try {
             reference = this.mapper.readValue(jsonNode.toString(), Reference.class);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Unable to translate JSON into POJO.", e);
         }
         return reference;
     }
 
     /**
-     * Retrieve the version of the IGC environment ('v115' or 'v117').
+     * Retrieve the version of the IGC environment (static member VERSION_115 or VERSION_117).
      *
      * @return String
      */
@@ -212,6 +220,8 @@ public class IGCRestClient {
         if (payload != null) {
             toSend = new HttpEntity<>(payload.toString(), getHttpHeaders());
         }
+        log.debug("Making request to endpoint: {0}", endpoint);
+        log.debug(" ... with: {0}", toSend);
         ResponseEntity<String> response = new RestTemplate().exchange(
                 endpoint,
                 method,
@@ -223,7 +233,7 @@ public class IGCRestClient {
             try {
                 jsonNode = mapper.readTree(response.getBody());
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error("Unable to read JSON response body.", e);
             }
         }
         return jsonNode;
@@ -235,7 +245,7 @@ public class IGCRestClient {
      * @return ArrayNode the list of types supported by IGC, as a JSON structure
      */
     public ArrayNode getTypes() {
-        return (ArrayNode) makeRequest(baseURL + TYPES, HttpMethod.GET, null);
+        return (ArrayNode) makeRequest(baseURL + EP_TYPES, HttpMethod.GET, null);
     }
 
     /**
@@ -245,7 +255,7 @@ public class IGCRestClient {
      * @return JsonNode - the JSON response of the retrieval
      */
     public JsonNode getJsonAssetById(String rid) {
-        return makeRequest(baseURL + ASSET + "/" + rid, HttpMethod.GET, null);
+        return makeRequest(baseURL + EP_ASSET + "/" + rid, HttpMethod.GET, null);
     }
 
     /**
@@ -296,7 +306,7 @@ public class IGCRestClient {
      * @return JsonNode - the first JSON page of results from the search
      */
     public JsonNode searchJson(JsonNode query) {
-        return makeRequest(baseURL + SEARCH, HttpMethod.POST, query);
+        return makeRequest(baseURL + EP_SEARCH, HttpMethod.POST, query);
     }
 
     /**
@@ -319,7 +329,7 @@ public class IGCRestClient {
         try {
             referenceList = this.mapper.readValue(results.toString(), ReferenceList.class);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Unable to translate JSON results.", e);
         }
         return referenceList;
     }
@@ -332,7 +342,7 @@ public class IGCRestClient {
      * @return JsonNode - the JSON structure indicating the updated asset's RID and updates made
      */
     public JsonNode updateJson(String rid, JsonNode value) {
-        return makeRequest(baseURL + ASSET, HttpMethod.PUT, value);
+        return makeRequest(baseURL + EP_ASSET, HttpMethod.PUT, value);
     }
 
     /**
@@ -356,15 +366,15 @@ public class IGCRestClient {
                     nextPage = makeRequest(sNextURL, HttpMethod.GET, null);
                     // If the page is part of an ASSET retrieval, we need to strip off the attribute
                     // name of the relationship for proper multi-page composition
-                    if (sNextURL.contains(ASSET)) {
-                        String remainder = sNextURL.substring((baseURL + ASSET).length() + 2);
-                        String attributeName = remainder.substring(remainder.indexOf("/") + 1, remainder.indexOf("?"));
+                    if (sNextURL.contains(EP_ASSET)) {
+                        String remainder = sNextURL.substring((baseURL + EP_ASSET).length() + 2);
+                        String attributeName = remainder.substring(remainder.indexOf('/') + 1, remainder.indexOf('?'));
                         nextPage = nextPage.path(attributeName);
                     }
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Unable to parse next page from JSON.", e);
         }
         return nextPage;
     }
@@ -400,7 +410,7 @@ public class IGCRestClient {
         try {
             rlNextPage = this.mapper.readValue(nextPage.toString(), ReferenceList.class);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Unable to parse next page from JSON.", e);
         }
         return rlNextPage;
     }
@@ -409,15 +419,15 @@ public class IGCRestClient {
      * Retrieve all pages of results from a set of Paging details and items<br>
      * ... or if there is no next page, return the items provided.
      *
-     * @param items the ArrayList of items for which to retrieve all pages
+     * @param items the List of items for which to retrieve all pages
      * @param paging the Paging object for which to retrieve all pages
-     * @return ArrayList - an ArrayList containing all items from all pages of results
+     * @return List - an List containing all items from all pages of results
      */
-    public ArrayList<Reference> getAllPages(ArrayList<Reference> items, Paging paging) {
-        ArrayList<Reference> allPages = items;
+    public List<Reference> getAllPages(List<Reference> items, Paging paging) {
+        List<Reference> allPages = items;
         ReferenceList results = getNextPage(paging);
-        ArrayList<Reference> resultsItems = results.getItems();
-        if (resultsItems.size() > 0) {
+        List<Reference> resultsItems = results.getItems();
+        if (!resultsItems.isEmpty()) {
             // NOTE: this ordering of addAll is important, to avoid side-effecting the original set of items
             resultsItems.addAll(allPages);
             allPages = getAllPages(resultsItems, results.getPaging());
@@ -429,7 +439,7 @@ public class IGCRestClient {
      * Disconnect from IGC REST API and invalidate the session.
      */
     public void disconnect() {
-        makeRequest(baseURL + LOGOUT, HttpMethod.GET, null);
+        makeRequest(baseURL + EP_LOGOUT, HttpMethod.GET, null);
     }
 
     /**
@@ -440,13 +450,17 @@ public class IGCRestClient {
             // Create a trust manager that does not validate certificate chains
             TrustManager[] trustAllCerts = new TrustManager[] {
                     new X509TrustManager() {
-                        public java.security.cert.X509Certificate[] getAcceptedIssuers() { return null; }
-                        public void checkClientTrusted(X509Certificate[] certs, String authType) {}
-                        public void checkServerTrusted(X509Certificate[] certs, String authType) {}
+                        public java.security.cert.X509Certificate[] getAcceptedIssuers() { return new java.security.cert.X509Certificate[]{}; }
+                        public void checkClientTrusted(X509Certificate[] certs, String authType) {
+                            // Do nothing
+                        }
+                        public void checkServerTrusted(X509Certificate[] certs, String authType) {
+                            // Do nothing
+                        }
                     }
             };
             // Install the all-trusting trust manager
-            SSLContext sc = SSLContext.getInstance("SSL");
+            SSLContext sc = SSLContext.getInstance("TLSv1.2");
             sc.init(null, trustAllCerts, new java.security.SecureRandom());
             HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
             // Create all-trusting host name verifier
@@ -454,7 +468,7 @@ public class IGCRestClient {
             // Install the all-trusting host verifier
             HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
         } catch (NoSuchAlgorithmException | KeyManagementException e) {
-            e.printStackTrace();
+            log.error("Unable to disable SSL verification.", e);
         }
     }
 
@@ -467,7 +481,7 @@ public class IGCRestClient {
      * or if you are adding custom attributes to one of the native asset types, consider
      * directly extending that asset from model.generated.*
      * <br><br>
-     * To allow this dynamic registration to work, also ensure you have a 'static final String IGC_TYPE_ID'
+     * To allow this dynamic registration to work, also ensure you have a 'public static String getIgcTypeId()'
      * in your class set to the type that the IGC REST API uses to refer to the asset (eg. for Term.class
      * it would be "term"). See the generated POJOs for examples.
      *
@@ -475,11 +489,14 @@ public class IGCRestClient {
      */
     public void registerPOJO(Class clazz) {
         try {
-            // Every POJO should have a static final IGC_TYPE_ID giving its IGC asset type
-            String typeId = (String) clazz.getDeclaredField("IGC_TYPE_ID").get(null);
+            // Every POJO should have a public static getIgcTypeId method giving its IGC asset type
+            Method getTypeId = clazz.getMethod("getIgcTypeId");
+            String typeId = (String) getTypeId.invoke(null);
             this.mapper.registerSubtypes(new NamedType(clazz, typeId));
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            log.error("Unable to find 'getIgcTypeId' method.", e);
+        } catch (InvocationTargetException | IllegalAccessException e) {
+            log.error("Unable to access or invoke 'getIgcTypeId' method.", e);
         }
     }
 

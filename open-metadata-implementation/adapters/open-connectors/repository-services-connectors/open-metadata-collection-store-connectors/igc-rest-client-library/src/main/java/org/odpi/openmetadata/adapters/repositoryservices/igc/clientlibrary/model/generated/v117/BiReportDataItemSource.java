@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v117;
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
@@ -19,7 +18,7 @@ import java.util.ArrayList;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class BiReportDataItemSource extends Reference {
 
-    @JsonIgnore public static final String IGC_TYPE_ID = "bi_report_data_item_source";
+    public static String getIgcTypeId() { return "bi_report_data_item_source"; }
 
     /**
      * The 'defined_of_report_field' property, displayed as 'Defined of Report Field' in the IGC UI.

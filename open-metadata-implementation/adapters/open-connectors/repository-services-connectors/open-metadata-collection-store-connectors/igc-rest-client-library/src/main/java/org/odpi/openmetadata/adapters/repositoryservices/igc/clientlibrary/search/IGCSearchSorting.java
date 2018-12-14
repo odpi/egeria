@@ -87,6 +87,9 @@ public class IGCSearchSorting {
                 case LAST_UPDATE_OLDEST:
                     sort = new IGCSearchSorting("modified_on", true);
                     break;
+                default:
+                    sort = null;
+                    break;
             }
         }
         return sort;

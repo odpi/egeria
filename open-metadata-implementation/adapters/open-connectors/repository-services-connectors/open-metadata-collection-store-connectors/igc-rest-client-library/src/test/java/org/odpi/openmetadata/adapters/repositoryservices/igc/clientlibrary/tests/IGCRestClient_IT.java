@@ -12,7 +12,7 @@ import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
@@ -48,6 +48,7 @@ public class IGCRestClient_IT {
         igcrest.registerPOJO(Category.class);
         igcrest.registerPOJO(DatabaseColumn.class);
         igcrest.registerPOJO(DataFileField.class);
+        igcrest.setDefaultPageSize(10);
     }
 
     /**
@@ -71,17 +72,27 @@ public class IGCRestClient_IT {
         System.out.println(term);
         assertTrue(term.getAssignedTerms().hasMorePages());
         // Retrieve all the pages via igcrest directly
-        ArrayList<Reference> r1 = igcrest.getAllPages(term.getAssignedTerms().getItems(), term.getAssignedTerms().getPaging());
+        List<Reference> r1 = igcrest.getAllPages(term.getAssignedTerms().getItems(), term.getAssignedTerms().getPaging());
         // Retrieve all the pages from the relationship property itself (which should mean it has no more pages)
         term.getAssignedTerms().getAllPages(igcrest);
         assertFalse(term.getAssignedTerms().hasMorePages());
-        ArrayList<Reference> r2 = term.getAssignedTerms().getItems();
+        List<Reference> r2 = term.getAssignedTerms().getItems();
         System.out.println("r1: " + r1.toString());
         System.out.println("r2: " + r2.toString());
         // The two should be identical (easiest to do a string comparison)
         assertTrue(r1.toString().equals(r2.toString()));
         assertTrue(r1.size() == r2.size());
         assertTrue(r1.size() == 14);
+    }
+
+    @Test
+    public void getNextPage() {
+        Term term = (Term)igcrest.getAssetById(multiPageRid);
+        System.out.println(term);
+        assertTrue(term.getAssignedTerms().getItems().size() == 10);
+        term.getAssignedTerms().getNextPage(igcrest);
+        System.out.println(term);
+        assertTrue(term.getAssignedTerms().getItems().size() == 4);
     }
 
     /**
@@ -221,9 +232,9 @@ public class IGCRestClient_IT {
             Reference directly = igcrest.getAssetById(detailed.getId());
             Identity identityOfAssetDirectly = directly.getIdentity(igcrest);
             System.out.println("Directly: " + identityOfAssetDirectly);
-            assertTrue(identityOfRelatedAsset.equals(identityOfAssetDirectly));
-            assertTrue(identityOfAssetDirectly.equals(identityOfRelatedAsset));
-            assertTrue(!identityOfAssetDirectly.equals(term));
+            assertTrue(identityOfRelatedAsset.sameas(identityOfAssetDirectly));
+            assertTrue(identityOfAssetDirectly.sameas(identityOfRelatedAsset));
+            assertTrue(!identityOfAssetDirectly.sameas(term.getIdentity(igcrest)));
         }
     }
 
@@ -237,7 +248,7 @@ public class IGCRestClient_IT {
         System.out.println("Term's parent identity: " + term.getIdentity(igcrest).getParentIdentity());
         Category category = (Category)term.getParentCategory();
         System.out.println("Parent category's identity: " + category.getIdentity(igcrest));
-        assertTrue(term.getIdentity(igcrest).getParentIdentity().equals(category.getIdentity(igcrest)));
+        assertTrue(term.getIdentity(igcrest).getParentIdentity().sameas(category.getIdentity(igcrest)));
     }
 
     /**
