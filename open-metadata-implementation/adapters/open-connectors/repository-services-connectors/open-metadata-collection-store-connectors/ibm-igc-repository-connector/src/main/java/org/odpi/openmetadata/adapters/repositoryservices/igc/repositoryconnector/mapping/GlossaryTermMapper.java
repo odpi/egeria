@@ -23,6 +23,7 @@ public class GlossaryTermMapper extends ReferenceableMapper {
 
     private static final String P_SYNONYMS = "synonyms";
     private static final String P_TRANSLATIONS = "translations";
+    private static final String C_CONFIDENTIALITY = "Confidentiality";
 
     /**
      * Sets the basic criteria to use for mapping between an IGC 'term' object and an OMRS 'GlossaryTerm' object.
@@ -127,7 +128,7 @@ public class GlossaryTermMapper extends ReferenceableMapper {
         // Finally list any properties that will be used to map Classifications
         // (to do the actual mapping, implement the 'getMappedClassifications' function -- example below)
         addComplexIgcClassification("assigned_to_terms");
-        addComplexOmrsClassification("Confidentiality");
+        addComplexOmrsClassification(C_CONFIDENTIALITY);
 
     }
 
@@ -159,7 +160,7 @@ public class GlossaryTermMapper extends ReferenceableMapper {
 
             // Only do something with the assigned term if its immediate parent category is named
             // "Confidentiality"
-            if (catIdentity.toString().endsWith("Confidentiality")) {
+            if (catIdentity.toString().endsWith(C_CONFIDENTIALITY)) {
 
                 InstanceProperties classificationProperties = new InstanceProperties();
 
@@ -191,7 +192,7 @@ public class GlossaryTermMapper extends ReferenceableMapper {
 
                 try {
                     Classification classification = getMappedClassification(
-                            "Confidentiality",
+                            C_CONFIDENTIALITY,
                             "Referenceable",
                             classificationProperties
                     );

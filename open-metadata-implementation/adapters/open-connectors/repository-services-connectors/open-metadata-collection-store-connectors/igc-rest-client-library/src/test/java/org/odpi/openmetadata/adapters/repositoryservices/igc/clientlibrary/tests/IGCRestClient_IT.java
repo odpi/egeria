@@ -12,6 +12,10 @@ import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
+import javax.net.ssl.*;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.X509Certificate;
 import java.util.List;
 
 import static org.testng.Assert.assertFalse;
@@ -38,7 +42,31 @@ public class IGCRestClient_IT {
      */
     @BeforeSuite
     public void setUp() {
-        IGCRestClient.disableSslVerification();
+
+        try {
+            // Create a trust manager that does not validate certificate chains
+            TrustManager[] trustAllCerts = new TrustManager[] {
+                    new X509TrustManager() {
+                        public java.security.cert.X509Certificate[] getAcceptedIssuers() { return new java.security.cert.X509Certificate[]{}; }
+                        public void checkClientTrusted(X509Certificate[] certs, String authType) {
+                            // Do nothing
+                        }
+                        public void checkServerTrusted(X509Certificate[] certs, String authType) {
+                            // Do nothing
+                        }
+                    }
+            };
+            // Install the all-trusting trust manager
+            SSLContext sc = SSLContext.getInstance("TLSv1.2");
+            sc.init(null, trustAllCerts, new java.security.SecureRandom());
+            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+            // Create all-trusting host name verifier
+            HostnameVerifier allHostsValid = (hostname, session) -> true;
+            // Install the all-trusting host verifier
+            HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
+        } catch (NoSuchAlgorithmException | KeyManagementException e) {
+            e.printStackTrace();
+        }
 
         igcrest = new IGCRestClient(
                 "https://infosvr.vagrant.ibm.com:9446",
@@ -49,6 +77,7 @@ public class IGCRestClient_IT {
         igcrest.registerPOJO(DatabaseColumn.class);
         igcrest.registerPOJO(DataFileField.class);
         igcrest.setDefaultPageSize(10);
+
     }
 
     /**

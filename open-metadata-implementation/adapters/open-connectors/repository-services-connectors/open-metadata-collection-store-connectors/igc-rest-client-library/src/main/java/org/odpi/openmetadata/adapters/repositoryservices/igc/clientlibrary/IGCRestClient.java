@@ -441,36 +441,6 @@ public class IGCRestClient {
     }
 
     /**
-     * Disables SSL verification, to allow self-signed certificates.
-     */
-    public static void disableSslVerification() {
-        try {
-            // Create a trust manager that does not validate certificate chains
-            TrustManager[] trustAllCerts = new TrustManager[] {
-                    new X509TrustManager() {
-                        public java.security.cert.X509Certificate[] getAcceptedIssuers() { return new java.security.cert.X509Certificate[]{}; }
-                        public void checkClientTrusted(X509Certificate[] certs, String authType) {
-                            // Do nothing
-                        }
-                        public void checkServerTrusted(X509Certificate[] certs, String authType) {
-                            // Do nothing
-                        }
-                    }
-            };
-            // Install the all-trusting trust manager
-            SSLContext sc = SSLContext.getInstance("TLSv1.2");
-            sc.init(null, trustAllCerts, new java.security.SecureRandom());
-            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-            // Create all-trusting host name verifier
-            HostnameVerifier allHostsValid = (hostname, session) -> true;
-            // Install the all-trusting host verifier
-            HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
-        } catch (NoSuchAlgorithmException | KeyManagementException e) {
-            log.error("Unable to disable SSL verification.", e);
-        }
-    }
-
-    /**
      * Register a POJO as an object to handle serde of JSON objects.<br>
      * Note that this MUST be done BEFORE any object mappingRemoved (translation) is done!
      * <br><br>

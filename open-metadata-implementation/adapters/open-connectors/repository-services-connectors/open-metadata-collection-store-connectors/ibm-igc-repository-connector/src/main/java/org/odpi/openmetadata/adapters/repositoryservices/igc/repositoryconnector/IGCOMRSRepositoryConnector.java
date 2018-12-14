@@ -2,27 +2,22 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestClient;
-import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.ReferenceMapper;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector {
 
     private IGCRestClient igcRestClient;
     private String igcVersion;
 
-    private static final Logger log = LoggerFactory.getLogger(IGCOMRSRepositoryConnector.class);
-
     /**
      * Default constructor used by the OCF Connector Provider.
      */
-    public IGCOMRSRepositoryConnector() { }
+    public IGCOMRSRepositoryConnector() {
+        // Nothing to do...
+    }
 
     /**
      * Call made by the ConnectorProvider to initialize the Connector with the base services.
@@ -39,9 +34,6 @@ public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector {
         // Retrieve connection details
         String baseURL = (String) this.connectionBean.getAdditionalProperties().get("igcBaseURL");
         String auth = (String) this.connectionBean.getAdditionalProperties().get("igcAuthorization");
-
-        // TODO: review how to make this determination dynamically (eg. from application.properties?)
-        IGCRestClient.disableSslVerification();
 
         // Create new REST API client (opens a new session)
         this.igcRestClient = new IGCRestClient(baseURL, auth);
@@ -68,6 +60,7 @@ public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector {
      *
      * @param metadataCollectionId - String unique Id
      */
+    @Override
     public void setMetadataCollectionId(String metadataCollectionId) {
         this.metadataCollectionId = metadataCollectionId;
 
@@ -104,6 +97,7 @@ public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector {
      *
      * @return OMRSMetadataCollection - metadata information retrieved from the metadata repository.
      */
+    @Override
     public OMRSMetadataCollection getMetadataCollection() {
 
         if (metadataCollection == null) {

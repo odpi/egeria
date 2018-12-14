@@ -54,6 +54,7 @@ public class GlossaryCategoryMapper extends ReferenceableMapper {
     /**
      * No classifications implemented for Categories.
      */
+    @Override
     protected void getMappedClassifications() {
         // Nothing to do...
     }

@@ -845,11 +845,10 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                     userId
             );
             String mapperPrefix = referenceMapper.getIgcRidPrefix();
-            if (prefix == null && referenceMapper.getIgcRidPrefix() == null) {
+            if ( (prefix == null && referenceMapper.getIgcRidPrefix() == null)
+                || (prefix != null && mapperPrefix != null && mapperPrefix.equals(prefix)) ) {
                 // If we didn't receive any prefix and this Mapper doesn't use a prefix, use it
-                break;
-            } else if (prefix != null && mapperPrefix != null && mapperPrefix.equals(prefix)) {
-                // If we did receive a prefix and it matches this Mapper's prefix, use it
+                // or if we did receive a prefix and it matches this Mapper's prefix, use it
                 break;
             }
             // Otherwise keep looping until we find one that meets above criteria (or we run out of options)
