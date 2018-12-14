@@ -31,3 +31,9 @@ Hence one is a translation of the other.  The language of each term is defined i
 * **IsA** is a relationship that defines that the "isA" term is a more generic term than the "isOf" term.
 For example, this relationship would be use to say that "Cat" ISA "Animal".
 * **ValidValue** is a relationship that shows the validValue term represents one of the valid values that could be assigned to a data item that has the meaning described in the **validValueFor** term.
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

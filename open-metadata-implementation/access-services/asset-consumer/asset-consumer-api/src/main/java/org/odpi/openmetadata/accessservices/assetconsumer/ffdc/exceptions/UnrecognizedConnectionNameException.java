@@ -64,6 +64,7 @@ public class UnrecognizedConnectionNameException extends AssetConsumerCheckedExc
         this.connectionName = connectionName;
     }
 
+
     /**
      * Return the connection name in error.
      *

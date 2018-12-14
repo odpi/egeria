@@ -25,8 +25,7 @@ public class BusinessTerm {
     private String examples;
     private String displayName;
     private String qualifiedName;
-
-
+    private GlossaryCategory glossaryCategory;
 
 
     /**
@@ -131,6 +130,14 @@ public class BusinessTerm {
         this.displayName = displayName;
     }
 
+    public GlossaryCategory getGlossaryCategory() {
+        return glossaryCategory;
+    }
+
+    public void setGlossaryCategory(GlossaryCategory glossaryCategory) {
+        this.glossaryCategory = glossaryCategory;
+    }
+
     public String getQualifiedName() {
         return qualifiedName;
     }
@@ -138,6 +145,18 @@ public class BusinessTerm {
     public void setQualifiedName(String qualifiedName) {
         this.qualifiedName = qualifiedName;
     }
+
+    public String buildQualifiedName() {
+        StringBuilder builder = new StringBuilder(this.getName());
+        GlossaryCategory parentCategory = this.getGlossaryCategory();
+        while (parentCategory != null) {
+            builder.insert(0, parentCategory.getName() + ".");
+            parentCategory = parentCategory.getParentCategory();
+        }
+
+        return builder.toString();
+    }
+
 
     @Override
     public String toString() {
@@ -151,7 +170,7 @@ public class BusinessTerm {
                 ", summary='" + summary + '\'' +
                 ", examples='" + examples + '\'' +
                 ", displayName='" + displayName + '\'' +
-                ", qualifiedName='" + qualifiedName + '\'' +
+                ", glossaryCategory=" + glossaryCategory +
                 '}';
     }
 }

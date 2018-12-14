@@ -25,3 +25,8 @@ They inherit from [Referenceable](0010-Base-Model.md),
 which means they have a unique identifier and link to external references for more information.
 
 ![UML](0401-Governance-Definitions.png)
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

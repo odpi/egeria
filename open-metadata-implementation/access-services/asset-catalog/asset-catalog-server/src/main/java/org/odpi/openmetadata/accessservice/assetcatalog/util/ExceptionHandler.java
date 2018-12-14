@@ -2,7 +2,7 @@
 package org.odpi.openmetadata.accessservice.assetcatalog.util;
 
 import org.odpi.openmetadata.accessservice.assetcatalog.exception.AssetCatalogException;
-import org.odpi.openmetadata.accessservice.assetcatalog.responses.AssetCatalogOMASAPIResponse;
+import org.odpi.openmetadata.accessservice.assetcatalog.model.rest.responses.AssetCatalogOMASAPIResponse;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSCheckedExceptionBase;
 
 public class ExceptionHandler {

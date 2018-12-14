@@ -18,3 +18,9 @@ proposed changes and other useful information.
 Notes are also used by engines that are working on the related
 assets to add an informal audit trail of activity around the
 object.
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
