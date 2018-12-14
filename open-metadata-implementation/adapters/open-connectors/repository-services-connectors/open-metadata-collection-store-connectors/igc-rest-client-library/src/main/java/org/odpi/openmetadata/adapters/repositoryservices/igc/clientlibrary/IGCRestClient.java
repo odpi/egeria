@@ -220,8 +220,6 @@ public class IGCRestClient {
         if (payload != null) {
             toSend = new HttpEntity<>(payload.toString(), getHttpHeaders());
         }
-        log.debug("Making request to endpoint: {0}", endpoint);
-        log.debug(" ... with: {0}", toSend);
         ResponseEntity<String> response = new RestTemplate().exchange(
                 endpoint,
                 method,
