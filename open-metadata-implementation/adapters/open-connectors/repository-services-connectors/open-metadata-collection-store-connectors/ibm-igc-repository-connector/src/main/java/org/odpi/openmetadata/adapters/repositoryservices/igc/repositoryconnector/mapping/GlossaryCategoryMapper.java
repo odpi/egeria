@@ -26,23 +26,23 @@ public class GlossaryCategoryMapper extends ReferenceableMapper {
         );
 
         // The list of properties that should be mapped
-        PROPERTIES.put("name", "displayName");
-        PROPERTIES.put("short_description", "description");
+        addSimplePropertyMapping("name", "displayName");
+        addSimplePropertyMapping("short_description", "description");
 
         // The list of relationships that should be mapped
-        RELATIONSHIPS.put(
+        addSimpleRelationshipMapping(
                 "parent_category",
                 "CategoryHierarchyLink",
                 "subcategories",
                 "superCategory"
         );
-        RELATIONSHIPS.put(
+        addSimpleRelationshipMapping(
                 "subcategories",
                 "CategoryHierarchyLink",
                 "superCategory",
                 "subcategories"
         );
-        RELATIONSHIPS.put(
+        addSimpleRelationshipMapping(
                 "terms",
                 "TermCategorization",
                 "categories",
@@ -54,6 +54,8 @@ public class GlossaryCategoryMapper extends ReferenceableMapper {
     /**
      * No classifications implemented for Categories.
      */
-    protected void getMappedClassifications() {}
+    protected void getMappedClassifications() {
+        // Nothing to do...
+    }
 
 }

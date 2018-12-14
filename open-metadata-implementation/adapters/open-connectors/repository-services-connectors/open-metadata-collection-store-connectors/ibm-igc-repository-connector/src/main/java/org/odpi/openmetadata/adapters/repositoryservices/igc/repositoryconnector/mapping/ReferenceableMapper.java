@@ -6,6 +6,7 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRe
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.ReferenceList;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchSorting;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSMetadataCollection;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -13,12 +14,15 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Handles mapping the majority of IGC objects' attributes to OMRS entity attributes.
@@ -27,13 +31,15 @@ import java.util.List;
  */
 public class ReferenceableMapper extends ReferenceMapper {
 
+    private static final Logger log = LoggerFactory.getLogger(ReferenceableMapper.class);
+
     // By default (if no IGC type or OMRS type defined), map between 'main_object' (IGC) and Referenceable (OMRS)
     public ReferenceableMapper(Reference igcObject,
                                IGCOMRSRepositoryConnector igcomrsRepositoryConnector,
                                String userId) {
         this(
                 igcObject,
-                "main_object",
+                IGCOMRSMetadataCollection.DEFAULT_IGC_TYPE,
                 "Referenceable",
                 igcomrsRepositoryConnector,
                 userId
@@ -55,23 +61,20 @@ public class ReferenceableMapper extends ReferenceMapper {
         );
 
         // common set of properties used by all IGC objects (and all OMRS Referenceables)
-        // (all 'null' as we'll handle mapping directly in 'setupEntityObj')
-        if (igcObject != null) {
-            if (igcObject.hasModificationDetails()) {
-                for (String property : ReferenceMapper.MODIFICATION_DETAILS) {
-                    PROPERTIES.put(property, null);
-                }
+        if (igcObject != null && igcObject.hasModificationDetails()) {
+            for (String property : Reference.MODIFICATION_DETAILS) {
+                addComplexIgcProperty(property);
             }
         }
 
         // common set of relationships that could apply to all IGC objects (and all OMRS Referenceables)
-        RELATIONSHIPS.put(
+        addSimpleRelationshipMapping(
                 "assigned_to_terms",
                 "SemanticAssignment",
                 "assignedElements",
                 "meaning"
         );
-        RELATIONSHIPS.put(
+        addSimpleRelationshipMapping(
                 "labels",
                 "AttachedTag",
                 "taggedElement",
@@ -82,10 +85,9 @@ public class ReferenceableMapper extends ReferenceMapper {
 
     }
 
-    public PropertyMappingSet getPropertyMappings() { return this.PROPERTIES; }
-    public RelationshipMappingSet getRelationshipMappings() { return this.RELATIONSHIPS; }
-
-    protected void getMappedClassifications() { }
+    protected void getMappedClassifications() {
+        // Nothing to do -- no generic classifications
+    }
 
     /**
      * Map the IGC entity to an OMRS EntitySummary object.
@@ -93,7 +95,7 @@ public class ReferenceableMapper extends ReferenceMapper {
      * @return EntitySummary
      */
     public EntitySummary getOMRSEntitySummary() {
-        mapIGCToOMRSEntitySummary(CLASSIFICATION_PROPERTIES);
+        mapIGCToOMRSEntitySummary(getIgcClassificationProperties());
         return getSummary();
     }
 
@@ -103,7 +105,7 @@ public class ReferenceableMapper extends ReferenceMapper {
      * @return EntityDetail
      */
     public EntityDetail getOMRSEntityDetail() {
-        mapIGCToOMRSEntityDetail(PROPERTIES, CLASSIFICATION_PROPERTIES);
+        mapIGCToOMRSEntityDetail(getPropertyMappings(), getIgcClassificationProperties());
         return getDetail();
     }
 
@@ -124,7 +126,7 @@ public class ReferenceableMapper extends ReferenceMapper {
                                                    SequencingOrder sequencingOrder,
                                                    int             pageSize) {
         getMappedRelationships(
-                RELATIONSHIPS,
+                getRelationshipMappings(),
                 relationshipTypeGUID,
                 fromRelationshipElement,
                 sequencingOrder,
@@ -148,19 +150,20 @@ public class ReferenceableMapper extends ReferenceMapper {
      * mappings.
      * @param classificationProperties any IGC properties needed to setup classifications in the OMRS EntityDetail object
      */
-    protected void mapIGCToOMRSEntitySummary(List<String> classificationProperties) {
+    @Override
+    protected void mapIGCToOMRSEntitySummary(Set<String> classificationProperties) {
 
         // Merge together all the properties we want to map
         String[] allProps = ReferenceMapper.concatAll(
                 classificationProperties.toArray(new String[0]),
-                PROPERTIES.getIgcPropertyNames().toArray(new String[0])
+                getPropertyMappings().getAllMappedIgcProperties().toArray(new String[0])
         );
 
         // Retrieve the full details we'll require for summary BEFORE handing off to superclass
         me = me.getAssetWithSubsetOfProperties(igcomrsRepositoryConnector.getIGCRestClient(), allProps);
 
         // Handle any super-generic mappings first
-        super.mapIGCToOMRSEntitySummary(classificationProperties);
+        mapIGCToOMRSEntitySummary();
 
         // Then handle generic mappings and classifications
         setupEntityObj(summary);
@@ -174,11 +177,12 @@ public class ReferenceableMapper extends ReferenceMapper {
      * @param propertyMap the property mappings to use in creating the OMRS EntityDetail object
      * @param classificationProperties any IGC properties needed to setup classifications in the OMRS EntityDetail object
      */
-    protected void mapIGCToOMRSEntityDetail(PropertyMappingSet propertyMap, List<String> classificationProperties) {
+    @Override
+    protected void mapIGCToOMRSEntityDetail(PropertyMappingSet propertyMap, Set<String> classificationProperties) {
 
         // Merge the detailed properties together (generic and more specific POJO mappings that were passed in)
         String[] allProps = ReferenceMapper.concatAll(
-                propertyMap.getIgcPropertyNames().toArray(new String[0]),
+                propertyMap.getAllMappedIgcProperties().toArray(new String[0]),
                 classificationProperties.toArray(new String[0])
         );
 
@@ -186,7 +190,7 @@ public class ReferenceableMapper extends ReferenceMapper {
         me = me.getAssetWithSubsetOfProperties(igcomrsRepositoryConnector.getIGCRestClient(), allProps);
 
         // Handle any super-generic mappings first
-        super.mapIGCToOMRSEntityDetail(propertyMap, classificationProperties);
+        mapIGCToOMRSEntityDetail();
 
         // Then handle any generic mappings and classifications
         setupEntityObj(detail);
@@ -205,10 +209,13 @@ public class ReferenceableMapper extends ReferenceMapper {
     private void setupEntityObj(EntitySummary omrsObj) {
 
         if (me.hasModificationDetails()) {
-            omrsObj.setCreatedBy((String)me.getPropertyByName("created_by"));
-            omrsObj.setCreateTime((Date)me.getPropertyByName("created_on"));
-            omrsObj.setUpdatedBy((String)me.getPropertyByName("modified_by"));
-            omrsObj.setUpdateTime((Date)me.getPropertyByName("modified_on"));
+            omrsObj.setCreatedBy((String)me.getPropertyByName(Reference.MOD_CREATED_BY));
+            omrsObj.setCreateTime((Date)me.getPropertyByName(Reference.MOD_CREATED_ON));
+            omrsObj.setUpdatedBy((String)me.getPropertyByName(Reference.MOD_MODIFIED_BY));
+            omrsObj.setUpdateTime((Date)me.getPropertyByName(Reference.MOD_MODIFIED_ON));
+            if (omrsObj.getUpdateTime() != null) {
+                omrsObj.setVersion(omrsObj.getUpdateTime().getTime());
+            }
         }
 
         // Avoid doing this multiple times: if one has retrieved classifications it'll
@@ -244,20 +251,18 @@ public class ReferenceableMapper extends ReferenceMapper {
             instanceProperties.setProperty("qualifiedName", getPrimitivePropertyValue(qualifiedName));
 
             // Then we'll iterate through the provided mappings to set an OMRS instance property for each one
-            for (String igcPropertyName : mappings.getIgcPropertyNames()) {
+            for (String igcPropertyName : mappings.getSimpleMappedIgcProperties()) {
                 String omrsAttribute = mappings.getOmrsPropertyName(igcPropertyName);
-                if (omrsAttribute != null) {
-                    instanceProperties.setProperty(
-                            omrsAttribute,
-                            getPrimitivePropertyValue(getPropertyByName.invoke(me, igcPropertyName))
-                    );
-                }
+                instanceProperties.setProperty(
+                        omrsAttribute,
+                        getPrimitivePropertyValue(getPropertyByName.invoke(me, igcPropertyName))
+                );
             }
 
             complexPropertyMappings(instanceProperties, getPropertyByName);
 
         } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
+            log.error("Unable to retrieve property by name via reflection.", e);
         }
 
         return instanceProperties;
@@ -288,12 +293,12 @@ public class ReferenceableMapper extends ReferenceMapper {
 
         // Start off by marking that any properties used for classifications should not be used again
         // for relationships
-        addAlreadyMappedProperties(CLASSIFICATION_PROPERTIES);
+        addAlreadyMappedProperties(getIgcClassificationProperties());
 
         // Merge together all the properties we want to map
         String[] allProps = ReferenceMapper.concatAll(
-                mappings.getIgcPropertyNames(),
-                ReferenceMapper.MODIFICATION_DETAILS
+                mappings.getAllMappedIgcRelationships().toArray(new String[0]),
+                Reference.MODIFICATION_DETAILS
         );
 
         // TODO: Filter down to only the relationship specified (ie. relationshipTypeGUID != null)
@@ -305,7 +310,7 @@ public class ReferenceableMapper extends ReferenceMapper {
         // Retrieve the full details we'll require for the relationships
         me = me.getAssetWithSubsetOfProperties(igcomrsRepositoryConnector.getIGCRestClient(), allProps, pageSize, sort);
 
-        _getMappedRelationships(mappings);
+        getMappedRelationships(mappings);
 
         complexRelationshipMappings();
 
@@ -316,7 +321,7 @@ public class ReferenceableMapper extends ReferenceMapper {
      *
      * @param mappings the mappings to use for retrieving the relationships
      */
-    private void _getMappedRelationships(RelationshipMappingSet mappings) {
+    private void getMappedRelationships(RelationshipMappingSet mappings) {
 
         ClassLoader classLoader = this.getClass().getClassLoader();
         IGCRestClient igcRestClient = igcomrsRepositoryConnector.getIGCRestClient();
@@ -328,67 +333,63 @@ public class ReferenceableMapper extends ReferenceMapper {
             Method getPropertyByName = clazz.getMethod("getPropertyByName", String.class);
 
             // Iterate through the provided mappings to create a number of OMRS relationships
-            for (int i = 0; i < mappings.size(); i++) {
+            for (int i = 0; i < mappings.numberOfSimpleMappings(); i++) {
 
-                String igcRelationshipName = mappings.get(i).getIgcRelationshipName();
+                RelationshipMappingSet.RelationshipMapping mapping = mappings.getSimpleMapping(i);
 
-                // Only continue if we haven't already handled that relationship
-                if (!alreadyUsedProperties.contains(igcRelationshipName)) {
+                String igcRelationshipName = mapping.getIgcRelationshipName();
 
-                    String omrsRelationshipName = mappings.get(i).getOmrsRelationshipType();
-                    String omrsSourceProperty = mappings.get(i).getOmrsRelationshipSourceProperty();
-                    String omrsTargetProperty = mappings.get(i).getOmrsRelationshipTargetProperty();
+                // If the relationship is self-referencing, then there won't be any related object to retrieve
+                if (igcRelationshipName.equals(RelationshipMappingSet.SELF_REFERENCE_SENTINEL)) {
+                    // (as it's self-referencing, send through itself as the relationship
+                    Relationship omrsRelationship = getMappedRelationship(
+                            mapping,
+                            igcRelationshipName,
+                            me
+                    );
+                    relationships.add(omrsRelationship);
+                } else if (!alreadyUsedProperties.contains(igcRelationshipName)) {
 
-                    // If the source or target property is 'null', it's a complex mapping (skip here)
-                    if (omrsSourceProperty != null && omrsTargetProperty != null) {
+                    // Otherwise, only continue if we haven't already handled that relationship
+                    Object igcRelationshipObj = getPropertyByName.invoke(me, igcRelationshipName);
 
-                        RelationshipDef relationshipDef = (RelationshipDef) igcomrsRepositoryConnector.getRepositoryHelper().getTypeDefByName(SOURCE_NAME, omrsRelationshipName);
+                    // Handle single instance relationship one way
+                    if (igcRelationshipObj != null && Reference.isReference(igcRelationshipObj)) {
 
-                        Object igcRelationshipObj = getPropertyByName.invoke(me, igcRelationshipName);
+                        Reference igcRelationship = (Reference) igcRelationshipObj;
+                        if (igcRelationship != null
+                                && igcRelationship.getType() != null
+                                && !igcRelationship.getType().equals("null")) {
+                            Relationship omrsRelationship = getMappedRelationship(
+                                    mapping,
+                                    igcRelationshipName,
+                                    igcRelationship
+                            );
+                            relationships.add(omrsRelationship);
+                        }
+                        addAlreadyMappedProperty(igcRelationshipName);
 
-                        // Handle single instance relationship one way
-                        if (igcRelationshipObj != null && Reference.isReference(igcRelationshipObj)) {
+                    } else if (igcRelationshipObj != null && Reference.isReferenceList(igcRelationshipObj)) { // and list of relationships another
 
-                            Reference igcRelationship = (Reference) igcRelationshipObj;
-                            if (igcRelationship != null
-                                    && igcRelationship.getType() != null
-                                    && !igcRelationship.getType().equals("null")) {
-                                Relationship omrsRelationship = getMappedRelationship(
-                                        igcRelationshipName,
-                                        relationshipDef,
-                                        omrsSourceProperty,
-                                        omrsTargetProperty,
-                                        igcRelationship
-                                );
-                                relationships.add(omrsRelationship);
-                            }
-                            addAlreadyMappedProperty(igcRelationshipName);
+                        ReferenceList igcRelationships = (ReferenceList) getPropertyByName.invoke(me, igcRelationshipName);
 
-                        } else if (igcRelationshipObj != null && Reference.isReferenceList(igcRelationshipObj)) { // and list of relationships another
+                        // TODO: paginate rather than always retrieving the full set
+                        igcRelationships.getAllPages(igcRestClient);
 
-                            ReferenceList igcRelationships = (ReferenceList) getPropertyByName.invoke(me, igcRelationshipName);
+                        // Iterate through all of the existing IGC relationships of that type to create an OMRS relationship
+                        // for each one
+                        for (Reference relation : igcRelationships.getItems()) {
 
-                            // TODO: paginate rather than always retrieving the full set
-                            igcRelationships.getAllPages(igcRestClient);
-
-                            // Iterate through all of the existing IGC relationships of that type to create an OMRS relationship
-                            // for each one
-                            for (Reference relation : igcRelationships.getItems()) {
-
-                                Relationship omrsRelationship = getMappedRelationship(
-                                        igcRelationshipName,
-                                        relationshipDef,
-                                        omrsSourceProperty,
-                                        omrsTargetProperty,
-                                        relation
-                                );
-                                relationships.add(omrsRelationship);
-
-                            }
-
-                            addAlreadyMappedProperty(igcRelationshipName);
+                            Relationship omrsRelationship = getMappedRelationship(
+                                    mapping,
+                                    igcRelationshipName,
+                                    relation
+                            );
+                            relationships.add(omrsRelationship);
 
                         }
+
+                        addAlreadyMappedProperty(igcRelationshipName);
 
                     }
 
@@ -397,19 +398,110 @@ public class ReferenceableMapper extends ReferenceMapper {
             }
 
         } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | RepositoryErrorException e) {
-            e.printStackTrace();
+            log.error("Unable to setup new relationship.", e);
         }
 
     }
 
+    /**
+     * Retrieve a Relationship instance based on the provided mapping information, automatically prefixing
+     * where needed.
+     *
+     * @param mapping the mapping details to use
+     * @param igcRelationshipName the name of the relationship property in IGC
+     * @param relation the related IGC object
+     * @return Relationship
+     * @throws RepositoryErrorException
+     */
+    protected Relationship getMappedRelationship(RelationshipMappingSet.RelationshipMapping mapping,
+                                                 String igcRelationshipName,
+                                                 Reference relation) throws RepositoryErrorException {
+
+        final String methodName = "getMappedRelationship";
+        final String repositoryName = igcomrsRepositoryConnector.getRepositoryName();
+
+        String omrsRelationshipName = mapping.getOmrsRelationshipType();
+        String omrsSourceProperty = mapping.getOmrsRelationshipSourceProperty();
+        String omrsTargetProperty = mapping.getOmrsRelationshipTargetProperty();
+
+        RelationshipDef omrsRelationshipDef = (RelationshipDef) igcomrsRepositoryConnector.getRepositoryHelper().getTypeDefByName(
+                SOURCE_NAME,
+                omrsRelationshipName
+        );
+
+        return getMappedRelationship(igcRelationshipName,
+                omrsRelationshipDef,
+                omrsSourceProperty,
+                omrsTargetProperty,
+                relation,
+                mapping.needsIgcSourceRidPrefix(),
+                mapping.needsIgcTargetRidPrefix(),
+                mapping.getIgcSourceRidPrefix(),
+                mapping.getIgcTargetRidPrefix());
+
+    }
+
+    /**
+     * Retrieve a Relationship instance based on the provided mapping information.
+     * (No prefixing will be done when using this method.)
+     *
+     * @param igcRelationshipName the name of the relationship property in IGC
+     * @param omrsRelationshipDef the OMRS relationship definition
+     * @param omrsSourceProperty the name of the property in OMRS that maps to the source object in IGC
+     * @param omrsTargetProperty the name of the property in OMRS that maps to the target object in IGC
+     * @param relation the related IGC object
+     * @return Relationship
+     * @throws RepositoryErrorException
+     */
     protected Relationship getMappedRelationship(String igcRelationshipName,
                                                  RelationshipDef omrsRelationshipDef,
                                                  String omrsSourceProperty,
                                                  String omrsTargetProperty,
                                                  Reference relation) throws RepositoryErrorException {
+        return getMappedRelationship(
+                igcRelationshipName,
+                omrsRelationshipDef,
+                omrsSourceProperty,
+                omrsTargetProperty,
+                relation,
+                false,
+                false,
+                null,
+                null);
+    }
+
+    /**
+     * Retrieve a Relationship instance based on the provided mapping information.
+     * (This method allows prefixing, where needed, to "split" an IGC entity into multiple entities.)
+     *
+     * @param igcRelationshipName the name of the relationship property in IGC
+     * @param omrsRelationshipDef the OMRS relationship definition
+     * @param omrsSourceProperty the name of the property in OMRS that maps to the source object in IGC
+     * @param omrsTargetProperty the name of the property in OMRS that maps to the target object in IGC
+     * @param relation the related IGC object
+     * @param needsSourceRidPrefix indicates whether the source side of the relationship needs to be prefixed to make
+     *                             it unique (true) or not (false)
+     * @param needsTargetRidPrefix indicates whether the target side of the relationship needs to be prefixed to make
+     *                             it unique (true) or not (false)
+     * @param sourceRidPrefix provides the prefix to use when needsSourceRidPrefix is true
+     * @param targetRidPrefix provides the prefix to use when needsTargetRidPrefix is true
+     * @return Relationship
+     * @throws RepositoryErrorException
+     */
+    protected Relationship getMappedRelationship(String igcRelationshipName,
+                                                 RelationshipDef omrsRelationshipDef,
+                                                 String omrsSourceProperty,
+                                                 String omrsTargetProperty,
+                                                 Reference relation,
+                                                 boolean needsSourceRidPrefix,
+                                                 boolean needsTargetRidPrefix,
+                                                 String sourceRidPrefix,
+                                                 String targetRidPrefix) throws RepositoryErrorException {
 
         final String methodName = "getMappedRelationship";
         final String repositoryName = igcomrsRepositoryConnector.getRepositoryName();
+
+        String omrsRelationshipName = omrsRelationshipDef.getName();
 
         Relationship omrsRelationship = new Relationship();
 
@@ -420,7 +512,104 @@ public class ReferenceableMapper extends ReferenceMapper {
             );
             omrsRelationship.setType(instanceType);
         } catch (TypeErrorException e) {
-            e.printStackTrace();
+            log.error("Unable to set instance type.", e);
+        }
+
+        if (igcRelationshipName.equals(RelationshipMappingSet.SELF_REFERENCE_SENTINEL)) {
+            if (needsSourceRidPrefix) {
+                // Set the GUID of the relationship to <prefix><source_entity_RID>_<reln_name>_<source_entity_RID>
+                omrsRelationship.setGUID(
+                        sourceRidPrefix + me.getId() + "_" + omrsRelationshipName + "_" + relation.getId()
+                );
+            } else if (needsTargetRidPrefix) {
+                // Set the GUID of the relationship to <source_entity_RID>_<reln_name>_<prefix><source_entity_RID>
+                omrsRelationship.setGUID(
+                         me.getId() + "_" + omrsRelationshipName + "_" + targetRidPrefix + relation.getId()
+                );
+            }
+        } else if (relation != me) {
+            // Set the GUID of the relationship to <source_entity_RID>_<property_name>_<target_entity_RID>
+            omrsRelationship.setGUID(me.getId() + "_" + igcRelationshipName + "_" + relation.getId());
+        } else {
+            log.error("Relation was same object, but not marked self-referencing: {}", igcRelationshipName);
+        }
+
+        omrsRelationship.setStatus(InstanceStatus.ACTIVE);
+
+        EntityProxy ep1 = null;
+        EntityProxy ep2 = null;
+        String omrsEndOneProperty = omrsRelationshipDef.getEndDef1().getAttributeName();
+
+        // If end one property matches the OMRS property linked to IGC source, use this object
+        if (omrsSourceProperty.equals(omrsEndOneProperty)) {
+            ep1 = ReferenceMapper.getEntityProxyForObject(
+                    igcomrsRepositoryConnector,
+                    me,
+                    omrsRelationshipDef.getEndDef1().getEntityType().getName(),
+                    userId,
+                    needsSourceRidPrefix ? sourceRidPrefix : null
+            );
+            ep2 = ReferenceMapper.getEntityProxyForObject(
+                    igcomrsRepositoryConnector,
+                    relation,
+                    omrsRelationshipDef.getEndDef2().getEntityType().getName(),
+                    userId,
+                    needsTargetRidPrefix ? targetRidPrefix : null
+            );
+            if (ep1 != null && ep1.getUpdateTime() != null) {
+                // ... and in this case, set the version to the epoch time of the ep1 (source) proxy
+                omrsRelationship.setVersion(ep1.getUpdateTime().getTime());
+            }
+        } else if (omrsTargetProperty.equals(omrsEndOneProperty)) {
+            // If end one property matches the OMRS property linked to IGC target, use the relation object
+            ep1 = ReferenceMapper.getEntityProxyForObject(
+                    igcomrsRepositoryConnector,
+                    relation,
+                    omrsRelationshipDef.getEndDef1().getEntityType().getName(),
+                    userId,
+                    needsTargetRidPrefix ? targetRidPrefix : null
+            );
+            ep2 = ReferenceMapper.getEntityProxyForObject(
+                    igcomrsRepositoryConnector,
+                    me,
+                    omrsRelationshipDef.getEndDef2().getEntityType().getName(),
+                    userId,
+                    needsSourceRidPrefix ? sourceRidPrefix : null
+            );
+            if (ep2 != null && ep2.getUpdateTime() != null) {
+                // ... and in this case, set the version to the epoch time of the ep2 (source) proxy
+                omrsRelationship.setVersion(ep2.getUpdateTime().getTime());
+            }
+        } else {
+            OMRSErrorCode errorCode = OMRSErrorCode.INVALID_RELATIONSHIP_ENDS;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                    this.getClass().getName(),
+                    repositoryName);
+            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+
+        if (ep1 != null && ep2 != null) {
+            omrsRelationship.setEntityOneProxy(ep1);
+            omrsRelationship.setEntityTwoProxy(ep2);
+        }
+
+        return omrsRelationship;
+
+/*        Relationship omrsRelationship = new Relationship();
+
+        try {
+            InstanceType instanceType = igcomrsRepositoryConnector.getRepositoryHelper().getNewInstanceType(
+                    SOURCE_NAME,
+                    omrsRelationshipDef
+            );
+            omrsRelationship.setType(instanceType);
+        } catch (TypeErrorException e) {
+            log.error("Unable to set instance type.", e);
         }
 
         // Set:
@@ -446,7 +635,7 @@ public class ReferenceableMapper extends ReferenceMapper {
                     omrsRelationshipDef.getEndDef2().getEntityType().getName(),
                     userId
             );
-            if (ep1 != null) {
+            if (ep1 != null && ep1.getUpdateTime() != null) {
                 // ... and in this case, set the version to the epoch time of the ep1 (source) proxy
                 omrsRelationship.setVersion(ep1.getUpdateTime().getTime());
             }
@@ -464,7 +653,7 @@ public class ReferenceableMapper extends ReferenceMapper {
                     omrsRelationshipDef.getEndDef2().getEntityType().getName(),
                     userId
             );
-            if (ep2 != null) {
+            if (ep2 != null && ep2.getUpdateTime() != null) {
                 // ... and in this case, set the version to the epoch time of the ep2 (source) proxy
                 omrsRelationship.setVersion(ep2.getUpdateTime().getTime());
             }
@@ -486,7 +675,61 @@ public class ReferenceableMapper extends ReferenceMapper {
             omrsRelationship.setEntityTwoProxy(ep2);
         }
 
-        return omrsRelationship;
+        return omrsRelationship; */
+
+    }
+
+    /**
+     * Retrieve a Classification instance based on the provided information.
+     *
+     * @param omrsClassificationType the type name of the OMRS classification
+     * @param omrsEntityType the OMRS type of entity the OMRS classification is being linked against
+     * @param classificationProperties the properties to setup on the classification
+     * @return Classification
+     * @throws RepositoryErrorException
+     */
+    protected Classification getMappedClassification(String omrsClassificationType,
+                                                     String omrsEntityType,
+                                                     InstanceProperties classificationProperties) throws RepositoryErrorException {
+
+        final String methodName = "getMappedClassification";
+
+        Classification classification = null;
+
+        try {
+            // In such cases, create a new OMRS "Confidentiality" classification,
+            // and add this to the list of classifications for this mapping
+            classification = igcomrsRepositoryConnector.getRepositoryHelper().getNewClassification(
+                    SOURCE_NAME,
+                    userId,
+                    omrsClassificationType,
+                    omrsEntityType,
+                    ClassificationOrigin.ASSIGNED,
+                    null,
+                    classificationProperties
+            );
+            if (me.hasModificationDetails()) {
+                classification.setUpdateTime((Date)me.getPropertyByName("modified_on"));
+                classification.setUpdatedBy((String)me.getPropertyByName("modified_by"));
+                if (classification.getUpdateTime() != null) {
+                    classification.setVersion(classification.getUpdateTime().getTime());
+                }
+            }
+        } catch (TypeErrorException e) {
+            log.error("Unable to create a new classification.", e);
+            OMRSErrorCode errorCode = OMRSErrorCode.INVALID_CLASSIFICATION_FOR_ENTITY;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                    omrsClassificationType,
+                    omrsEntityType);
+            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+
+        return classification;
 
     }
 

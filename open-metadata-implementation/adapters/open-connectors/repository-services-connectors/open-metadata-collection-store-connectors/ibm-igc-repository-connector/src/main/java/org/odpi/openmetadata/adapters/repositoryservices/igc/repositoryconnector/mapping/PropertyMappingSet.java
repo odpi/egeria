@@ -2,31 +2,73 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Defines a set of mappings between an IGC object's properties and an OMRS entity's properties.
  */
 public class PropertyMappingSet {
 
+    public static final String COMPLEX_MAPPING_SENTINEL = "__COMPLEX_PROPERTY__";
+
     private Map<String, PropertyMapping> mappingByIgcProperty;
     private Map<String, PropertyMapping> mappingByOmrsProperty;
+
+    private HashSet<String> complexIgcProperties;
+    private HashSet<String> complexOmrsProperties;
 
     public PropertyMappingSet() {
         mappingByIgcProperty = new HashMap<>();
         mappingByOmrsProperty = new HashMap<>();
+        complexIgcProperties = new HashSet<>();
+        complexOmrsProperties = new HashSet<>();
     }
 
     /**
-     * Returns the set of IGC property names that are mapped to OMRS properties.
+     * Returns only the subset of mapped IGC properties that are simple one-to-one mappings to OMRS properties.
      *
      * @return Set<String>
      */
-    public Set<String> getIgcPropertyNames() {
+    public Set<String> getSimpleMappedIgcProperties() {
         return mappingByIgcProperty.keySet();
+    }
+
+    /**
+     * Returns only the subset of mapped IGC properties that are complex mappings to OMRS properties.
+     *
+     * @return Set<String>
+     */
+    public Set<String> getComplexMappedIgcProperties() {
+        return complexIgcProperties;
+    }
+
+    /**
+     * Returns the set of all IGC properties that are mapped to OMRS properties.
+     *
+     * @return Set<String>
+     */
+    public Set<String> getAllMappedIgcProperties() {
+        HashSet<String> igcProperties = new HashSet<>(getSimpleMappedIgcProperties());
+        igcProperties.addAll(complexIgcProperties);
+        return igcProperties;
+    }
+
+    /**
+     * Returns only the subset of mapped OMRS properties that are simple one-to-one mappings to IGC properties.
+     *
+     * @return Set<String>
+     */
+    public Set<String> getSimpleMappedOmrsProperties() {
+        return mappingByOmrsProperty.keySet();
+    }
+
+    /**
+     * Returns only the subset of mapped OMRS properties that are complex mappings to IGC properties.
+     *
+     * @return Set<String>
+     */
+    public Set<String> getComplexMappedOmrsProperties() {
+        return complexOmrsProperties;
     }
 
     /**
@@ -34,8 +76,10 @@ public class PropertyMappingSet {
      *
      * @return Set<String>
      */
-    public Set<String> getOmrsPropertyNames() {
-        return mappingByOmrsProperty.keySet();
+    public Set<String> getAllMappedOmrsProperties() {
+        Set<String> omrsProperties = getSimpleMappedOmrsProperties();
+        omrsProperties.addAll(complexOmrsProperties);
+        return omrsProperties;
     }
 
     /**
@@ -44,10 +88,28 @@ public class PropertyMappingSet {
      * @param igcPropertyName the IGC property name (in REST form)
      * @param omrsPropertyName the name of the target attribute within the OMRS entity
      */
-    public void put(String igcPropertyName, String omrsPropertyName) {
+    public void addSimpleMapping(String igcPropertyName, String omrsPropertyName) {
         PropertyMapping pm = new PropertyMapping(igcPropertyName, omrsPropertyName);
         mappingByOmrsProperty.put(omrsPropertyName, pm);
         mappingByIgcProperty.put(igcPropertyName, pm);
+    }
+
+    /**
+     * Notes the provided IGC property name requires more than a simple one-to-one mapping.
+     *
+     * @param igcPropertyName the IGC property name (in REST form)
+     */
+    public void addComplexIgc(String igcPropertyName) {
+        complexIgcProperties.add(igcPropertyName);
+    }
+
+    /**
+     * Notes the provided OMRS property name requires more than a simple one-to-one mapping.
+     *
+     * @param omrsPropertyName the OMRS property name
+     */
+    public void addComplexOmrs(String omrsPropertyName) {
+        complexOmrsProperties.add(omrsPropertyName);
     }
 
     /**
@@ -57,7 +119,13 @@ public class PropertyMappingSet {
      * @return String
      */
     public String getIgcPropertyName(String omrsPropertyName) {
-        return isOmrsPropertyNameMapped(omrsPropertyName) ? mappingByOmrsProperty.get(omrsPropertyName).getIgcPropertyName() : null;
+        String igcPropertyName = null;
+        if (isOmrsPropertySimpleMapped(omrsPropertyName)) {
+            igcPropertyName = mappingByOmrsProperty.get(omrsPropertyName).getIgcPropertyName();
+        } else if (isOmrsPropertyComplexMapped(omrsPropertyName)) {
+            igcPropertyName = COMPLEX_MAPPING_SENTINEL;
+        }
+        return igcPropertyName;
     }
 
     /**
@@ -67,36 +135,53 @@ public class PropertyMappingSet {
      * @return String
      */
     public String getOmrsPropertyName(String igcPropertyName) {
-        return isIgcPropertyMapped(igcPropertyName) ? mappingByIgcProperty.get(igcPropertyName).getOmrsPropertyName() : null;
+        String omrsPropertyName = null;
+        if (isIgcPropertySimpleMapped(igcPropertyName)) {
+            omrsPropertyName = mappingByIgcProperty.get(igcPropertyName).getOmrsPropertyName();
+        } else if (isIgcPropertyComplexMapped(igcPropertyName)) {
+            omrsPropertyName = COMPLEX_MAPPING_SENTINEL;
+        }
+        return omrsPropertyName;
     }
 
     /**
-     * Determines whether the provided IGC property name is mapped (true) or not (false).
+     * Determines whether the provided IGC property name is simple (one-to-one) mapped (true) or not (false).
      *
-     * @param igcPropertyName the IGC property name to check for a mapping
+     * @param igcPropertyName the IGC property name to check for a simple mapping
      * @return boolean
      */
-    public boolean isIgcPropertyMapped(String igcPropertyName) {
+    public boolean isIgcPropertySimpleMapped(String igcPropertyName) {
         return mappingByIgcProperty.containsKey(igcPropertyName);
     }
 
     /**
-     * Determines whether the provided OMRS property name is mapped (true) or not (false).
+     * Determines whether the provided IGC property name is complex mapped (true) or not (false).
      *
-     * @param omrsPropertyName the OMRS property name to check for a mapping
+     * @param igcPropertyName the IGC property name to check for a complex mapping
      * @return boolean
      */
-    public boolean isOmrsPropertyNameMapped(String omrsPropertyName) {
+    public boolean isIgcPropertyComplexMapped(String igcPropertyName) {
+        return complexIgcProperties.contains(igcPropertyName);
+    }
+
+    /**
+     * Determines whether the provided OMRS property name is simple (one-to-one) mapped (true) or not (false).
+     *
+     * @param omrsPropertyName the OMRS property name to check for a simple mapping
+     * @return boolean
+     */
+    public boolean isOmrsPropertySimpleMapped(String omrsPropertyName) {
         return mappingByOmrsProperty.containsKey(omrsPropertyName);
     }
 
     /**
-     * Returns the total number of mappings contained in this set.
+     * Determines whether the provided OMRS property name is complex mapped (true) or not (false).
      *
-     * @return Integer
+     * @param omrsPropertyName the OMRS property name to check for a complex mapping
+     * @return boolean
      */
-    public Integer size() {
-        return mappingByOmrsProperty.size();
+    public boolean isOmrsPropertyComplexMapped(String omrsPropertyName) {
+        return complexOmrsProperties.contains(omrsPropertyName);
     }
 
     /**

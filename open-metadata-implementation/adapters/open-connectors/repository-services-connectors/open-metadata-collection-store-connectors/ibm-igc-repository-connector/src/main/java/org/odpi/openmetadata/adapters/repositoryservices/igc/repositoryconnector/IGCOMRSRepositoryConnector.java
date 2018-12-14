@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector {
 
     private IGCRestClient igcRestClient;
-    private String igcVersion = "v115";     // default to v11.5; auto-detect v11.7 as part of initialization
+    private String igcVersion;
 
     private static final Logger log = LoggerFactory.getLogger(IGCOMRSRepositoryConnector.class);
 
