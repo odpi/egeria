@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v115;
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
@@ -19,7 +18,7 @@ import java.util.ArrayList;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ColumnAnalysisSummary extends Reference {
 
-    @JsonIgnore public static final String IGC_TYPE_ID = "column_analysis_summary";
+    public static String getIgcTypeId() { return "column_analysis_summary"; }
 
     /**
      * The 'short_&amp;_long_description' property, displayed as 'Short &amp; Long Description' in the IGC UI.

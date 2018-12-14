@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v117;
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
@@ -19,7 +18,7 @@ import java.util.ArrayList;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RoleContext extends Reference {
 
-    @JsonIgnore public static final String IGC_TYPE_ID = "role_context";
+    public static String getIgcTypeId() { return "role_context"; }
 
     /**
      * The 'context_id' property, displayed as 'Context Id' in the IGC UI.

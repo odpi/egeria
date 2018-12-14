@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v117;
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
@@ -19,7 +18,7 @@ import java.util.ArrayList;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ModelLabel extends Reference {
 
-    @JsonIgnore public static final String IGC_TYPE_ID = "model_label";
+    public static String getIgcTypeId() { return "model_label"; }
 
     /**
      * The 'created_by' property, displayed as 'Created By' in the IGC UI.

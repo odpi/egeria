@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v115;
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
@@ -19,7 +18,7 @@ import java.util.ArrayList;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Classification extends Reference {
 
-    @JsonIgnore public static final String IGC_TYPE_ID = "classification";
+    public static String getIgcTypeId() { return "classification"; }
 
     /**
      * The 'data_class' property, displayed as 'Data Class' in the IGC UI.

@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v115;
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
@@ -19,7 +18,7 @@ import java.util.ArrayList;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DatabaseTable extends Reference {
 
-    @JsonIgnore public static final String IGC_TYPE_ID = "database_table";
+    public static String getIgcTypeId() { return "database_table"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -159,7 +158,7 @@ public class DatabaseTable extends Reference {
     /**
      * The 'defined_foreign_key' property, displayed as 'Defined Foreign Key' in the IGC UI.
      * <br><br>
-     * Will be a {@link ReferenceList} of {@link DatabaseColumn} objects.
+     * Will be a {@link ReferenceList} of {@link ForeignKey} objects.
      */
     protected ReferenceList defined_foreign_key;
 

@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v115;
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
@@ -19,7 +18,7 @@ import java.util.ArrayList;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Dsargumentmap extends Reference {
 
-    @JsonIgnore public static final String IGC_TYPE_ID = "dsargumentmap";
+    public static String getIgcTypeId() { return "dsargumentmap"; }
 
     /**
      * The 'a_xmeta_locking_root' property, displayed as 'A XMeta Locking Root' in the IGC UI.

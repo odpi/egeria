@@ -3,15 +3,17 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common;
 
 import com.fasterxml.jackson.annotation.*;
-import com.fasterxml.jackson.databind.jsontype.NamedType;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestClient;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearch;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchCondition;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchConditionSet;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchSorting;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The ultimate parent object for all IGC assets, it contains only the most basic information common to every single
@@ -33,6 +35,20 @@ import java.util.ArrayList;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Reference extends ObjectPrinter {
 
+    private static final Logger log = LoggerFactory.getLogger(Reference.class);
+
+    public static final String MOD_CREATED_BY = "created_by";
+    public static final String MOD_CREATED_ON = "created_on";
+    public static final String MOD_MODIFIED_BY = "modified_by";
+    public static final String MOD_MODIFIED_ON = "modified_on";
+
+    public static final String[] MODIFICATION_DETAILS = new String[] {
+            MOD_CREATED_BY,
+            MOD_CREATED_ON,
+            MOD_MODIFIED_BY,
+            MOD_MODIFIED_ON
+    };
+
     /**
      * Used to uniquely identify the object without relying on its ID (RID) remaining static.
      */
@@ -43,7 +59,7 @@ public class Reference extends ObjectPrinter {
      * almost all IGC assets, it is not present on absolutely all of them -- also be aware that without
      * v11.7.0.2+ and an optional parameter it uses, this will always be 'null' in a ReferenceList
      */
-    protected ArrayList<Reference> _context = new ArrayList<Reference>();
+    protected ArrayList<Reference> _context = new ArrayList<>();
 
     /**
      * The '_name' property of a Reference is equivalent to its 'name' property, but will always be
@@ -109,7 +125,7 @@ public class Reference extends ObjectPrinter {
             igcSearch.addSortingCriteria(sorting);
         }
         ReferenceList assetsWithProperties = igcrest.search(igcSearch);
-        if (assetsWithProperties.getItems().size() > 0) {
+        if (!assetsWithProperties.getItems().isEmpty()) {
             assetWithProperties = assetsWithProperties.getItems().get(0);
         }
         return assetWithProperties;
@@ -182,7 +198,7 @@ public class Reference extends ObjectPrinter {
                 }
             }
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            log.error("Unable to access field.", e);
         }
         return asset;
     }
@@ -194,14 +210,14 @@ public class Reference extends ObjectPrinter {
      * @param clazz the class in which to search (and recurse upwards on its class hierarchy)
      * @return Field first found (lowest level of class hierarchy), or null if never found
      */
-    private static Field _recursePropertyByName(String name, Class clazz) {
+    private static Field recursePropertyByName(String name, Class clazz) {
         Field f = null;
         Class superClazz = clazz.getSuperclass();
         if (superClazz != null) {
             try {
                 f = superClazz.getDeclaredField(name);
             } catch (NoSuchFieldException e) {
-                f = Reference._recursePropertyByName(name, superClazz);
+                f = Reference.recursePropertyByName(name, superClazz);
             }
         }
         return f;
@@ -218,7 +234,7 @@ public class Reference extends ObjectPrinter {
         try {
             field = this.getClass().getDeclaredField(name);
         } catch (NoSuchFieldException e) {
-            field = Reference._recursePropertyByName(name, this.getClass());
+            field = Reference.recursePropertyByName(name, this.getClass());
         }
         return field;
     }
@@ -248,7 +264,7 @@ public class Reference extends ObjectPrinter {
                 property.setAccessible(true);
                 value = property.get(this);
             } catch (IllegalAccessException e) {
-                e.printStackTrace();
+                log.error("Unable to access property '" + name + "'", e);
             }
         }
         return value;
@@ -267,7 +283,7 @@ public class Reference extends ObjectPrinter {
                 property.setAccessible(true);
                 property.set(this, value);
             } catch (IllegalAccessException e) {
-                e.printStackTrace();
+                log.error("Unable to access property '" + name + "'", e);
             }
         }
     }
@@ -351,12 +367,12 @@ public class Reference extends ObjectPrinter {
         boolean success = true;
         // Only bother retrieving the context if it isn't already present
 
-        if (this._context.size() == 0) {
+        if (this._context.isEmpty()) {
 
             String[] properties = new String[]{ "name" };
             boolean bHasModificationDetails = this.hasModificationDetails();
             if (bHasModificationDetails) {
-                properties = new String[]{ "created_on", "created_by", "modified_on", "modified_by" };
+                properties = Reference.MODIFICATION_DETAILS;
             }
 
             IGCSearchCondition idOnly = new IGCSearchCondition("_id", "=", this.getId());
@@ -364,17 +380,17 @@ public class Reference extends ObjectPrinter {
             IGCSearch igcSearch = new IGCSearch(this.getType(), properties, idOnlySet);
             igcSearch.setPageSize(2);
             ReferenceList assetsWithCtx = igcrest.search(igcSearch);
-            success = (assetsWithCtx.getItems().size() > 0);
+            success = (!assetsWithCtx.getItems().isEmpty());
             if (success) {
 
                 Reference assetWithCtx = assetsWithCtx.getItems().get(0);
-                this._context = assetWithCtx.getContext();
+                this._context = new ArrayList(assetWithCtx.getContext());
 
                 if (bHasModificationDetails) {
-                    this.setPropertyByName("created_on", assetWithCtx.getPropertyByName("created_on"));
-                    this.setPropertyByName("created_by", assetWithCtx.getPropertyByName("created_by"));
-                    this.setPropertyByName("modified_on", assetWithCtx.getPropertyByName("modified_on"));
-                    this.setPropertyByName("modified_by", assetWithCtx.getPropertyByName("modified_by"));
+                    this.setPropertyByName(MOD_CREATED_ON, assetWithCtx.getPropertyByName(MOD_CREATED_ON));
+                    this.setPropertyByName(MOD_CREATED_BY, assetWithCtx.getPropertyByName(MOD_CREATED_BY));
+                    this.setPropertyByName(MOD_MODIFIED_ON, assetWithCtx.getPropertyByName(MOD_MODIFIED_ON));
+                    this.setPropertyByName(MOD_MODIFIED_BY, assetWithCtx.getPropertyByName(MOD_MODIFIED_BY));
                 }
 
             }
@@ -408,24 +424,6 @@ public class Reference extends ObjectPrinter {
         return this.hasProperty("modified_on");
     }
 
-    // TODO: eventually handle the '_expand' that exists for data classifications, eg.:
-    /*
-        "_expand": {
-          "data_class": {
-            "_name": "NoClassDetected",
-            "_type": "data_class",
-            "_id": "f4951817.e469fa50.000mds3r3.50jf89j.ft6i2i.tj0uog4pijcjhn7orjq9c",
-            "_url": "https://infosvr.vagrant.ibm.com:9446/ibm/iis/igc-rest/v1/assets/f4951817.e469fa50.000mds3r3.50jf89j.ft6i2i.tj0uog4pijcjhn7orjq9c"
-          },
-          "confidencePercent": "12",
-          "_repr_obj": {
-            "_name": "SALARY",
-            "_type": "classification",
-            "_id": "f4951817.db110006.000mdsmfl.t03b2vr.da3ov9.555mlr126kisjn0coh9e5",
-            "_url": "https://infosvr.vagrant.ibm.com:9446/ibm/iis/igc-rest/v1/assets/f4951817.db110006.000mdsmfl.t03b2vr.da3ov9.555mlr126kisjn0coh9e5"
-          },
-          "detectedState": "63.16"
-        },
-     */
+    // TODO: eventually handle the '_expand' that exists for data classifications
 
 }

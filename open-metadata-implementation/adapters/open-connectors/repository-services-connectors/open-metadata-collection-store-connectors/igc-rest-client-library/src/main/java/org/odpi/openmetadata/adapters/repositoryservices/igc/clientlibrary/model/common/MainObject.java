@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 
@@ -19,7 +18,7 @@ import java.util.Date;
 })
 public class MainObject extends Reference {
 
-    @JsonIgnore public static final String IGC_TYPE_ID = "main_object";
+    public static String getIgcTypeId() { return "main_object"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.

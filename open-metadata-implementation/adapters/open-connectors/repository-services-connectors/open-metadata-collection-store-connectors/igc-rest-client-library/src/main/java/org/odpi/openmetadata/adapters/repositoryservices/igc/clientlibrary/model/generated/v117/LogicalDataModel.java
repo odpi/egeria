@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v117;
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
@@ -19,7 +18,7 @@ import java.util.ArrayList;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class LogicalDataModel extends Reference {
 
-    @JsonIgnore public static final String IGC_TYPE_ID = "logical_data_model";
+    public static String getIgcTypeId() { return "logical_data_model"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.

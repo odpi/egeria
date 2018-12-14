@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v117;
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
@@ -19,7 +18,7 @@ import java.util.ArrayList;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TableDefinitionProperties extends Reference {
 
-    @JsonIgnore public static final String IGC_TYPE_ID = "table_definition_properties";
+    public static String getIgcTypeId() { return "table_definition_properties"; }
 
     /**
      * The 'of_ds_table_definition' property, displayed as 'Of DS Table Definition' in the IGC UI.

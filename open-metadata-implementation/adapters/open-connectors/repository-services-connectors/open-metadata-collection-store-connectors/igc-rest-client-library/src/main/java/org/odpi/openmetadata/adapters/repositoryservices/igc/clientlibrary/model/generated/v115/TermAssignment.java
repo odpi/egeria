@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v115;
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
@@ -19,7 +18,7 @@ import java.util.ArrayList;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TermAssignment extends Reference {
 
-    @JsonIgnore public static final String IGC_TYPE_ID = "term_assignment";
+    public static String getIgcTypeId() { return "term_assignment"; }
 
     /**
      * The 'assign_to_term' property, displayed as 'Term' in the IGC UI.

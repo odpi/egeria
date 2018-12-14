@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestClient;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Provides a standard class for any relationship in IGC, by including 'paging' details and 'items' array.
@@ -30,7 +31,7 @@ public class ReferenceList extends ObjectPrinter {
      * <br><br>
      * Will be a ArrayList of {@link Reference} objects.
      */
-    protected ArrayList<Reference> items = new ArrayList<Reference>();
+    protected ArrayList<Reference> items = new ArrayList<>();
 
     /** @see #paging */ @JsonProperty("paging") public Paging getPaging() { return this.paging; }
     /** @see #paging */ @JsonProperty("paging") public void setPaging(Paging paging) { this.paging = paging; }
@@ -53,8 +54,19 @@ public class ReferenceList extends ObjectPrinter {
      * @param igcrest the IGCRestClient connection to use to retrieve the relationships
      */
     public void getAllPages(IGCRestClient igcrest) {
-        this.items = igcrest.getAllPages(this.items, this.paging);
+        this.items = new ArrayList(igcrest.getAllPages(this.items, this.paging));
         this.paging = new Paging(this.items.size());
+    }
+
+    /**
+     * Retrieve the next page of relationships that this object represents.
+     *
+     * @param igcrest the IGCRestClient connection to use to retrieve the relationships
+     */
+    public void getNextPage(IGCRestClient igcrest) {
+        ReferenceList nextPage = igcrest.getNextPage(this.paging);
+        this.items = new ArrayList(nextPage.getItems());
+        this.paging = nextPage.getPaging();
     }
 
 }

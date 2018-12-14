@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v115;
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
@@ -19,7 +18,7 @@ import java.util.ArrayList;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class InformationServerReportAnalysisProject extends Reference {
 
-    @JsonIgnore public static final String IGC_TYPE_ID = "information_server_report_(analysis_project)";
+    public static String getIgcTypeId() { return "information_server_report_(analysis_project)"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.

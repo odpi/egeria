@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v115;
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
@@ -19,7 +18,7 @@ import java.util.ArrayList;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CdcMappingDocument extends Reference {
 
-    @JsonIgnore public static final String IGC_TYPE_ID = "cdc_mapping_document";
+    public static String getIgcTypeId() { return "cdc_mapping_document"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.

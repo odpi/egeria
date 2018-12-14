@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v115;
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
@@ -19,7 +18,7 @@ import java.util.ArrayList;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class JobOutputPin extends Reference {
 
-    @JsonIgnore public static final String IGC_TYPE_ID = "job_output_pin";
+    public static String getIgcTypeId() { return "job_output_pin"; }
 
     /**
      * The 'left_text_pos' property, displayed as 'Left Text Pos' in the IGC UI.
