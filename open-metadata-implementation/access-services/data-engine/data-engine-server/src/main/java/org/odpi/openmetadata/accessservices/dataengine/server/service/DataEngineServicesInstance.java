@@ -72,7 +72,7 @@ public class DataEngineServicesInstance {
     OMRSMetadataCollection getMetadataCollection() throws PropertyServerException {
         final String methodName = "getMetadataCollection";
 
-        if ((repositoryConnector != null) && (metadataCollection != null) && (repositoryConnector.isActive())) {
+        if (repositoryConnector != null && metadataCollection != null && repositoryConnector.isActive()) {
             return metadataCollection;
         } else {
             dataEngineErrorHandler.handlePropertyServerException(DataEngineErrorCode.OMRS_NOT_AVAILABLE, methodName);
@@ -89,7 +89,7 @@ public class DataEngineServicesInstance {
     OMRSRepositoryConnector getRepositoryConnector() throws PropertyServerException {
         final String methodName = "getRepositoryConnector";
 
-        if ((repositoryConnector != null) && (metadataCollection != null) && (repositoryConnector.isActive())) {
+        if (repositoryConnector != null && metadataCollection != null && repositoryConnector.isActive()) {
             return repositoryConnector;
         } else {
             dataEngineErrorHandler.handlePropertyServerException(DataEngineErrorCode.OMRS_NOT_AVAILABLE, methodName);

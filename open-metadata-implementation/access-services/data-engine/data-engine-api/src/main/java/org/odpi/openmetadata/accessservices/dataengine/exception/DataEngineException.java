@@ -26,7 +26,7 @@ class DataEngineException extends Exception {
 
 
     /**
-     * This is the typical constructor used for creating a ConnectionCheckedException.
+     * This is the typical constructor used for creating a DataEngineException.
      *
      * @param httpCode          - http response code to use if this exception flows over a rest call
      * @param className         - name of class reporting error
@@ -48,7 +48,7 @@ class DataEngineException extends Exception {
 
 
     /**
-     * This is the  constructor used for creating a ConnectionCheckedException that resulted from a previous error.
+     * This is the  constructor used for creating a DataEngineException that resulted from a previous error.
      *
      * @param httpCode          - http response code to use if this exception flows over a rest call
      * @param className         - name of class reporting error
