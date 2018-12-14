@@ -19,10 +19,9 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorExce
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -37,8 +36,6 @@ class ProcessHandler {
     private static final String PROCESS_INPUT_RELATIONSHIP_TYPE_NAME = "ProcessInput";
     private static final String PROCESS_OUTPUT_RELATIONSHIP_TYPE_NAME = "ProcessOutput";
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProcessHandler.class);
-
     private OMRSMetadataCollection metadataCollection;
     private DataEngineErrorHandler errorHandler;
     private OMRSRepositoryHelper repositoryHelper;
@@ -51,7 +48,8 @@ class ProcessHandler {
      * @param serviceName         name of this service
      * @param repositoryConnector connector to the property server.
      */
-    ProcessHandler(String serviceName, OMRSRepositoryConnector repositoryConnector, OMRSMetadataCollection metadataCollection) {
+    ProcessHandler(String serviceName, OMRSRepositoryConnector repositoryConnector,
+                   OMRSMetadataCollection metadataCollection) {
 
         this.serviceName = serviceName;
         if (repositoryConnector != null) {
@@ -65,18 +63,19 @@ class ProcessHandler {
     /**
      * Create the process
      *
-     * @param userId the name of the calling user
+     * @param userId      the name of the calling user
      * @param processName the name of the process
      * @param displayName the display name of the process
      * @return the guid of the created process
-     * @throws UserNotAuthorizedException
-     * @throws TypeErrorException
-     * @throws ClassificationErrorException
-     * @throws StatusNotSupportedException
-     * @throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException
-     * @throws InvalidParameterException
-     * @throws RepositoryErrorException
-     * @throws PropertyErrorException
+     * @throws UserNotAuthorizedException                                                         the requesting user is not authorized to issue this request.
+     * @throws TypeErrorException                                                                 unknown or invalid type
+     * @throws ClassificationErrorException                                                       the requested classification is either not known or not valid for the entity.
+     * @throws StatusNotSupportedException                                                        status not supported
+     * @throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException the requesting user
+     *                                                                                            is not authorized to issue this request.
+     * @throws InvalidParameterException                                                          one of the parameters is null or invalid.
+     * @throws RepositoryErrorException                                                           no metadata collection
+     * @throws PropertyErrorException                                                             there is a problem with one of the other parameters.
      */
     String createProcess(String userId, String processName, String displayName)
             throws UserNotAuthorizedException, TypeErrorException, ClassificationErrorException,
@@ -92,7 +91,7 @@ class ProcessHandler {
                 PROCESS_TYPE_NAME);
 
 
-        InstanceProperties instanceProperties = createProcessProperties(methodName, processName, displayName);
+        InstanceProperties instanceProperties = createProcessProperties(processName, displayName);
 
         EntityDetail createdEntity = metadataCollection.addEntity(userId,
                 entity.getType().getTypeDefGUID(),
@@ -105,14 +104,14 @@ class ProcessHandler {
 
     /**
      * Create an instance properties object for a process asset
-     *k
-     * @param methodName
-     * @param processName
-     * @param displayName
-     * @return
+     *
+     * @param processName the name of the process
+     * @param displayName the display name of the process
+     * @return instance properties object
      */
-    private InstanceProperties createProcessProperties(String methodName, String processName, String displayName) {
+    private InstanceProperties createProcessProperties(String processName, String displayName) {
         //TODO validate the other fields
+        final String methodName = "createProcessProperties";
 
         InstanceProperties properties;
 
@@ -128,51 +127,64 @@ class ProcessHandler {
     }
 
     /**
-     * @param userId
-     * @param processGuid
-     * @param dataSetGuid
-     * @return
-     * @throws UserNotAuthorizedException
-     * @throws TypeErrorException
-     * @throws StatusNotSupportedException
-     * @throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException
-     * @throws EntityNotKnownException
-     * @throws InvalidParameterException
-     * @throws RepositoryErrorException
-     * @throws PropertyErrorException
+     * Create ProcessInput relationships between a Process asset and the corresponding input DataSets
+     *
+     * @param userId      the name of the calling user
+     * @param processGuid the unique identifier of the process
+     * @param inputs      list of unique identifiers for DataSets to be linked to the process
+     * @throws UserNotAuthorizedException                                                         the requesting user is not authorized to issue this request.
+     * @throws TypeErrorException                                                                 unknown or invalid type
+     * @throws StatusNotSupportedException                                                        status not supported
+     * @throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException the requesting user
+     *                                                                                            is not authorized to issue this request.
+     * @throws InvalidParameterException                                                          one of the parameters is null or invalid.
+     * @throws RepositoryErrorException                                                           no metadata collection
+     * @throws PropertyErrorException                                                             there is a problem with one of the other parameters.
+     * @throws EntityNotKnownException                                                            the entity instance is not known in the metadata collection.
      */
-    String addInputRelationship(String userId, String processGuid, String dataSetGuid)
+    void addInputRelationships(String userId, String processGuid, List<String> inputs)
             throws UserNotAuthorizedException, TypeErrorException, StatusNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, EntityNotKnownException, InvalidParameterException, RepositoryErrorException, PropertyErrorException {
         final String methodName = "addInputRelationship";
 
-        return addRelationship(userId, processGuid, dataSetGuid, PROCESS_INPUT_RELATIONSHIP_TYPE_NAME, methodName);
+        if (inputs == null) {
+            return;
+        }
+        for (String dataSetGuid : inputs) {
+            addRelationship(userId, processGuid, dataSetGuid, PROCESS_INPUT_RELATIONSHIP_TYPE_NAME, methodName);
+        }
     }
-
 
     /**
-     * @param userId
-     * @param processGuid
-     * @param dataSetGuid
-     * @return
-     * @throws UserNotAuthorizedException
-     * @throws TypeErrorException
-     * @throws StatusNotSupportedException
-     * @throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException
-     * @throws EntityNotKnownException
-     * @throws InvalidParameterException
-     * @throws RepositoryErrorException
-     * @throws PropertyErrorException
+     * Create ProcessOutput relationships between a Process asset and the corresponding output DataSets
+     *
+     * @param userId      the name of the calling user
+     * @param processGuid the unique identifier of the process
+     * @param outputs     list of unique identifiers for DataSets to be linked to the process
+     * @throws UserNotAuthorizedException                                                         the requesting user is not authorized to issue this request.
+     * @throws TypeErrorException                                                                 unknown or invalid type
+     * @throws StatusNotSupportedException                                                        status not supported
+     * @throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException the requesting user
+     *                                                                                            is not authorized to issue this request.
+     * @throws InvalidParameterException                                                          one of the parameters is null or invalid.
+     * @throws RepositoryErrorException                                                           no metadata collection
+     * @throws PropertyErrorException                                                             there is a problem with one of the other parameters.
+     * @throws EntityNotKnownException                                                            the entity instance is not known in the metadata collection.
      */
-    String addOutputRelationship(String userId, String processGuid, String dataSetGuid)
+    void addOutputRelationships(String userId, String processGuid, List<String> outputs)
             throws UserNotAuthorizedException, TypeErrorException, StatusNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, EntityNotKnownException, InvalidParameterException, RepositoryErrorException, PropertyErrorException {
         final String methodName = "addOutputRelationship";
+        if (outputs == null) {
+            return;
+        }
 
-        return addRelationship(userId, processGuid, dataSetGuid, PROCESS_OUTPUT_RELATIONSHIP_TYPE_NAME, methodName);
+        for (String dataSetGuid : outputs) {
+            addRelationship(userId, processGuid, dataSetGuid, PROCESS_OUTPUT_RELATIONSHIP_TYPE_NAME, methodName);
+        }
     }
 
 
-    private String addRelationship(String userId, String processGuid, String dataSetGuid, String relationshipType,
-                                   String methodName)
+    private void addRelationship(String userId, String processGuid, String dataSetGuid, String relationshipType,
+                                 String methodName)
             throws TypeErrorException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, EntityNotKnownException, StatusNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, UserNotAuthorizedException {
 
         errorHandler.validateUserId(userId, methodName);
@@ -188,12 +200,10 @@ class ProcessHandler {
                 processGuid,
                 dataSetGuid,
                 InstanceStatus.ACTIVE);
-
-        return createdRelationship.getGUID();
     }
 
     //TODO remove when igcReplicator can replicate DataSets
-    protected String createDataSet(String userId, String processName)
+    String createDataSet(String userId, String processName)
             throws UserNotAuthorizedException, TypeErrorException, ClassificationErrorException,
             StatusNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
             InvalidParameterException, RepositoryErrorException, PropertyErrorException {
@@ -223,5 +233,4 @@ class ProcessHandler {
 
         return createdEntity.getGUID();
     }
-
 }
