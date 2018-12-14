@@ -15,6 +15,12 @@ public class RelationalColumnMapper extends ReferenceableMapper {
 
     private static final Logger log = LoggerFactory.getLogger(RelationalColumnMapper.class);
 
+    private static final String T_RELATIONAL_COLUMN = "RelationalColumn";
+    private static final String C_PRIMARY_KEY = "PrimaryKey";
+    private static final String P_PRIMARY_KEY = "primaryKey";
+    private static final String R_FOREIGN_KEY = "ForeignKey";
+    private static final String P_FOREIGN_KEY = "foreignKey";
+
     /**
      * Sets the basic criteria to use for mapping between an IGC 'database_column' object and an OMRS 'RelationalColumn' object.
      *
@@ -28,7 +34,7 @@ public class RelationalColumnMapper extends ReferenceableMapper {
         super(
                 dbColumn,
                 "database_column",
-                "RelationalColumn",
+                T_RELATIONAL_COLUMN,
                 igcomrsRepositoryConnector,
                 userId
         );
@@ -61,34 +67,34 @@ public class RelationalColumnMapper extends ReferenceableMapper {
         );
         addSimpleRelationshipMapping(
                 "defined_foreign_key_references",
-                "ForeignKey",
-                "foreignKey",
-                "primaryKey"
+                R_FOREIGN_KEY,
+                P_FOREIGN_KEY,
+                P_PRIMARY_KEY
         );
         addSimpleRelationshipMapping(
                 "defined_foreign_key_referenced",
-                "ForeignKey",
-                "primaryKey",
-                "foreignKey"
+                R_FOREIGN_KEY,
+                P_PRIMARY_KEY,
+                P_FOREIGN_KEY
         );
         addSimpleRelationshipMapping(
                 "selected_foreign_key_references",
-                "ForeignKey",
-                "foreignKey",
-                "primaryKey"
+                R_FOREIGN_KEY,
+                P_FOREIGN_KEY,
+                P_PRIMARY_KEY
         );
         addSimpleRelationshipMapping(
                 "selected_foreign_key_referenced",
-                "ForeignKey",
-                "primaryKey",
-                "foreignKey"
+                R_FOREIGN_KEY,
+                P_PRIMARY_KEY,
+                P_FOREIGN_KEY
         );
 
         // Finally list any properties that will be used to map Classifications
         // (to do the actual mapping, implement the 'getMappedClassifications' function -- example below)
         addComplexIgcClassification("defined_primary_key");
         addComplexIgcClassification("selected_primary_key");
-        addComplexOmrsClassification("PrimaryKey");
+        addComplexOmrsClassification(C_PRIMARY_KEY);
 
     }
 
@@ -117,8 +123,8 @@ public class RelationalColumnMapper extends ReferenceableMapper {
                     InstanceProperties classificationProperties = new InstanceProperties();
                     classificationProperties.setProperty("name", ReferenceMapper.getPrimitivePropertyValue(me.getName()));
                     Classification classification = getMappedClassification(
-                            "PrimaryKey",
-                            "RelationalColumn",
+                            C_PRIMARY_KEY,
+                            T_RELATIONAL_COLUMN,
                             classificationProperties
                     );
                     classifications.add(classification);
@@ -136,8 +142,8 @@ public class RelationalColumnMapper extends ReferenceableMapper {
                     InstanceProperties classificationProperties = new InstanceProperties();
                     classificationProperties.setProperty("name", ReferenceMapper.getPrimitivePropertyValue(candidateKey.getName()));
                     Classification classification = getMappedClassification(
-                            "PrimaryKey",
-                            "RelationalColumn",
+                            C_PRIMARY_KEY,
+                            T_RELATIONAL_COLUMN,
                             classificationProperties
                     );
                     classifications.add(classification);

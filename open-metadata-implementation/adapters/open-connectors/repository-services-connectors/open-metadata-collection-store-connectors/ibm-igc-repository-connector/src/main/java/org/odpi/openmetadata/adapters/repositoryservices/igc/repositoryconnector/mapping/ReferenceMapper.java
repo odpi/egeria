@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping;
 
-import org.apache.commons.collections.map.ReferenceMap;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestClient;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSMetadataCollection;
@@ -30,6 +29,13 @@ public abstract class ReferenceMapper {
     public static final String SOURCE_NAME = "IBM InfoSphere Information Governance Catalog";
     public static final String IGC_REST_COMMON_MODEL_PKG = "org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common";
     public static final String IGC_REST_GENERATED_MODEL_PKG = "org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated";
+
+    protected static final String[] MODIFICATION_DETAILS = new String[] {
+            Reference.MOD_CREATED_BY,
+            Reference.MOD_CREATED_ON,
+            Reference.MOD_MODIFIED_BY,
+            Reference.MOD_MODIFIED_ON
+    };
 
     protected IGCOMRSRepositoryConnector igcomrsRepositoryConnector;
     protected Reference me;

@@ -62,7 +62,7 @@ public class ReferenceableMapper extends ReferenceMapper {
 
         // common set of properties used by all IGC objects (and all OMRS Referenceables)
         if (igcObject != null && igcObject.hasModificationDetails()) {
-            for (String property : Reference.MODIFICATION_DETAILS) {
+            for (String property : ReferenceMapper.MODIFICATION_DETAILS) {
                 addComplexIgcProperty(property);
             }
         }
@@ -298,7 +298,7 @@ public class ReferenceableMapper extends ReferenceMapper {
         // Merge together all the properties we want to map
         String[] allProps = ReferenceMapper.concatAll(
                 mappings.getAllMappedIgcRelationships().toArray(new String[0]),
-                Reference.MODIFICATION_DETAILS
+                ReferenceMapper.MODIFICATION_DETAILS
         );
 
         // TODO: Filter down to only the relationship specified (ie. relationshipTypeGUID != null)
@@ -416,9 +416,6 @@ public class ReferenceableMapper extends ReferenceMapper {
     protected Relationship getMappedRelationship(RelationshipMappingSet.RelationshipMapping mapping,
                                                  String igcRelationshipName,
                                                  Reference relation) throws RepositoryErrorException {
-
-        final String methodName = "getMappedRelationship";
-        final String repositoryName = igcomrsRepositoryConnector.getRepositoryName();
 
         String omrsRelationshipName = mapping.getOmrsRelationshipType();
         String omrsSourceProperty = mapping.getOmrsRelationshipSourceProperty();
@@ -599,83 +596,6 @@ public class ReferenceableMapper extends ReferenceMapper {
         }
 
         return omrsRelationship;
-
-/*        Relationship omrsRelationship = new Relationship();
-
-        try {
-            InstanceType instanceType = igcomrsRepositoryConnector.getRepositoryHelper().getNewInstanceType(
-                    SOURCE_NAME,
-                    omrsRelationshipDef
-            );
-            omrsRelationship.setType(instanceType);
-        } catch (TypeErrorException e) {
-            log.error("Unable to set instance type.", e);
-        }
-
-        // Set:
-        // - the GUID of the relationship to <source_entity_RID>_<property_name>_<target_entity_RID>
-        omrsRelationship.setGUID(me.getId() + "_" + igcRelationshipName + "_" + relation.getId());
-        omrsRelationship.setStatus(InstanceStatus.ACTIVE);
-
-        EntityProxy ep1 = null;
-        EntityProxy ep2 = null;
-        String omrsEndOneProperty = omrsRelationshipDef.getEndDef1().getAttributeName();
-
-        // If end one property matches the OMRS property linked to IGC source, use this object
-        if (omrsSourceProperty.equals(omrsEndOneProperty)) {
-            ep1 = ReferenceMapper.getEntityProxyForObject(
-                    igcomrsRepositoryConnector,
-                    me,
-                    omrsRelationshipDef.getEndDef1().getEntityType().getName(),
-                    userId
-            );
-            ep2 = ReferenceMapper.getEntityProxyForObject(
-                    igcomrsRepositoryConnector,
-                    relation,
-                    omrsRelationshipDef.getEndDef2().getEntityType().getName(),
-                    userId
-            );
-            if (ep1 != null && ep1.getUpdateTime() != null) {
-                // ... and in this case, set the version to the epoch time of the ep1 (source) proxy
-                omrsRelationship.setVersion(ep1.getUpdateTime().getTime());
-            }
-        } else if (omrsTargetProperty.equals(omrsEndOneProperty)) {
-            // If end one property matches the OMRS property linked to IGC target, use the relation object
-            ep1 = ReferenceMapper.getEntityProxyForObject(
-                    igcomrsRepositoryConnector,
-                    relation,
-                    omrsRelationshipDef.getEndDef1().getEntityType().getName(),
-                    userId
-            );
-            ep2 = ReferenceMapper.getEntityProxyForObject(
-                    igcomrsRepositoryConnector,
-                    me,
-                    omrsRelationshipDef.getEndDef2().getEntityType().getName(),
-                    userId
-            );
-            if (ep2 != null && ep2.getUpdateTime() != null) {
-                // ... and in this case, set the version to the epoch time of the ep2 (source) proxy
-                omrsRelationship.setVersion(ep2.getUpdateTime().getTime());
-            }
-        } else {
-            OMRSErrorCode errorCode = OMRSErrorCode.INVALID_RELATIONSHIP_ENDS;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    this.getClass().getName(),
-                    repositoryName);
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
-        }
-
-        if (ep1 != null && ep2 != null) {
-            omrsRelationship.setEntityOneProxy(ep1);
-            omrsRelationship.setEntityTwoProxy(ep2);
-        }
-
-        return omrsRelationship; */
 
     }
 

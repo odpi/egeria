@@ -10,8 +10,6 @@ import org.slf4j.LoggerFactory;
 
 public class RelationalColumnTypeMapper extends ReferenceableMapper {
 
-    private static final Logger log = LoggerFactory.getLogger(RelationalColumnTypeMapper.class);
-
     public static final String IGC_RID_PREFIX = IGCOMRSMetadataCollection.generateTypePrefix("RCT");
 
     /**

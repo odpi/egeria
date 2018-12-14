@@ -45,8 +45,8 @@ public class DataClassMapper extends ReferenceableMapper {
                 igcomrsRepositoryConnector, userId
         );
 
-        /* IGC 'data_class' is one of the few objects with a relationship-specific asset type associated;
-         * so we need to ensure that is also added to the assets to be handled by this mapper */
+        // IGC 'data_class' is one of the few objects with a relationship-specific asset type associated,
+        // so we need to ensure that is also added to the assets to be handled by this mapper
         addOtherIGCAssetType("classification");
 
         // The list of properties that should be mapped
@@ -312,7 +312,7 @@ public class DataClassMapper extends ReferenceableMapper {
 
     private void complexMapSelectedClassifications() {
 
-        // (Note that in IGC these can only be retrieved by looking up all assets for which this data_class is selected;
+        // (Note that in IGC these can only be retrieved by looking up all assets for which this data_class is selected,
         // they cannot be looked up as a relationship from the data_class object...  Therefore, start by searching
         // for any assets that list this data_class as their selected_classification
         IGCSearchCondition igcSearchCondition = new IGCSearchCondition("selected_classification", "=", me.getId());
@@ -321,7 +321,7 @@ public class DataClassMapper extends ReferenceableMapper {
         igcSearch.addType("data_file_field");
         igcSearch.addType("database_column");
         igcSearch.addProperty("selected_classification");
-        igcSearch.addProperties(Reference.MODIFICATION_DETAILS);
+        igcSearch.addProperties(ReferenceMapper.MODIFICATION_DETAILS);
         ReferenceList assetsWithSelected = igcomrsRepositoryConnector.getIGCRestClient().search(igcSearch);
 
         assetsWithSelected.getAllPages(igcomrsRepositoryConnector.getIGCRestClient());

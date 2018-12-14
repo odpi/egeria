@@ -42,7 +42,7 @@ public class Reference extends ObjectPrinter {
     public static final String MOD_MODIFIED_BY = "modified_by";
     public static final String MOD_MODIFIED_ON = "modified_on";
 
-    public static final String[] MODIFICATION_DETAILS = new String[] {
+    protected static final String[] MODIFICATION_DETAILS = new String[] {
             MOD_CREATED_BY,
             MOD_CREATED_ON,
             MOD_MODIFIED_BY,
