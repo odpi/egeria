@@ -6,6 +6,7 @@ import org.odpi.openmetadata.accessservices.dataengine.exception.DataEngineError
 import org.odpi.openmetadata.accessservices.dataengine.exception.NewInstanceException;
 import org.odpi.openmetadata.accessservices.dataengine.exception.PropertyServerException;
 import org.odpi.openmetadata.accessservices.dataengine.exception.UserNotAuthorizedException;
+import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineOMASAPIResponse;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSCheckedExceptionBase;
 
 public class DataEngineErrorHandler {
@@ -35,25 +36,18 @@ public class DataEngineErrorHandler {
                 errorCode.getUserAction());
     }
 
-    public void captureOMRSCheckedExceptionBase(AssetCatalogOMASAPIResponse response,
-                                                OMRSCheckedExceptionBase e) {
+    public void captureOMRSCheckedExceptionBase(DataEngineOMASAPIResponse response, OMRSCheckedExceptionBase e) {
         captureException(response, e.getReportedHTTPCode(), e.getClass().getName(), e.getErrorMessage(),
-                e.getReportedSystemAction(), e.getReportedUserAction(), e);
+                e.getReportedSystemAction(), e.getReportedUserAction());
     }
 
-    public void captureAssetCatalogExeption(AssetCatalogOMASAPIResponse response,
-                                            AssetCatalogException e) {
+    public void captureAssetCatalogExeption(DataEngineOMASAPIResponse response, AssetCatalogException e) {
         captureException(response, e.getReportedHTTPCode(), e.getClass().getName(), e.getErrorMessage(),
-                e.getReportedSystemAction(), e.getReportedUserAction(), e);
+                e.getReportedSystemAction(), e.getReportedUserAction());
     }
 
-    private void captureException(AssetCatalogOMASAPIResponse response,
-                                  int reportedHTTPCode,
-                                  String name,
-                                  String errorMessage,
-                                  String reportedSystemAction,
-                                  String reportedUserAction,
-                                  Exception e) {
+    private void captureException(DataEngineOMASAPIResponse response, int reportedHTTPCode, String name,
+                                  String errorMessage, String reportedSystemAction, String reportedUserAction) {
         response.setRelatedHTTPCode(reportedHTTPCode);
         response.setExceptionClassName(name);
         response.setExceptionErrorMessage(errorMessage);
@@ -68,12 +62,10 @@ public class DataEngineErrorHandler {
      * @param methodName name of the method making the call.
      * @throws UserNotAuthorizedException the userId is null
      */
-    public void validateUserId(String userId,
-                               String methodName) throws UserNotAuthorizedException {
+    public void validateUserId(String userId, String methodName) throws UserNotAuthorizedException {
         if (userId == null) {
             DataEngineErrorCode errorCode = DataEngineErrorCode.NULL_USER_ID;
-            String errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage(methodName);
+            String errorMessage = errorCode.getErrorMessageId()  + errorCode.getFormattedErrorMessage(methodName);
 
             throw new UserNotAuthorizedException(errorCode.getHttpErrorCode(),
                     this.getClass().getName(),

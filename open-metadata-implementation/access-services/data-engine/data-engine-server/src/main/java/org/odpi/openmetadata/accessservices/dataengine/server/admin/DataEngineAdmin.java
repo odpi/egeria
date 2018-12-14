@@ -17,6 +17,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 public class DataEngineAdmin implements AccessServiceAdmin {
     private OMRSAuditLog auditLog;
+    private DataEngineServicesInstance instance;
 
     /**
      * Initialize the access service.
@@ -47,7 +48,7 @@ public class DataEngineAdmin implements AccessServiceAdmin {
 
             this.auditLog = auditLog;
 
-            DataEngineServicesInstance instance = new DataEngineServicesInstance(repositoryConnector);
+            instance = new DataEngineServicesInstance(repositoryConnector);
             String serverName = instance.getServerName();
 
             auditCode = DataEngineAuditCode.SERVICE_INITIALIZED;
@@ -76,16 +77,23 @@ public class DataEngineAdmin implements AccessServiceAdmin {
      */
     @Override
     public void shutdown() {
-        final String actionDescription = "shutdown";
-        DataEngineAuditCode auditCode;
 
-        auditCode = DataEngineAuditCode.SERVICE_SHUTDOWN;
-        auditLog.logRecord(actionDescription,
-                auditCode.getLogMessageId(),
-                auditCode.getSeverity(),
-                auditCode.getFormattedLogMessage(),
-                null,
-                auditCode.getSystemAction(),
-                auditCode.getUserAction());
+        if (instance != null) {
+            instance.shutdown();
+        }
+
+        if (auditLog != null) {
+            final String actionDescription = "shutdown";
+            DataEngineAuditCode auditCode;
+
+            auditCode = DataEngineAuditCode.SERVICE_SHUTDOWN;
+            auditLog.logRecord(actionDescription,
+                    auditCode.getLogMessageId(),
+                    auditCode.getSeverity(),
+                    auditCode.getFormattedLogMessage(),
+                    null,
+                    auditCode.getSystemAction(),
+                    auditCode.getUserAction());
+        }
     }
 }

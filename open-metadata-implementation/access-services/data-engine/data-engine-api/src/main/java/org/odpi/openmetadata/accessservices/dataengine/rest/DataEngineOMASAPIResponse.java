@@ -28,7 +28,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = GUIDResponse.class, name = "GUIDResponse"),
         })
 @Data
-abstract class DataEngineOMASAPIResponse implements java.io.Serializable {
+public abstract class DataEngineOMASAPIResponse implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
 
     private int relatedHTTPCode = 200;

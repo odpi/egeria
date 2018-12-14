@@ -52,6 +52,20 @@ public enum DataEngineErrorCode {
     private String systemAction;
     private String userAction;
 
+    /**
+     * The constructor for DataEngineErrorCode expects to be passed one of the enumeration rows defined in
+     * DataEngineErrorCode above.   For example:
+     * <p>
+     * DataEngineErrorCode   errorCode = DataEngineErrorCode.NULL_USER_ID;
+     * <p>
+     * This will expand out to the 5 parameters shown below.
+     *
+     * @param newHTTPErrorCode  - error code to use over REST calls
+     * @param newErrorMessageId - unique Id for the message
+     * @param newErrorMessage   - text for the message
+     * @param newSystemAction   - description of the action taken by the system when the error condition happened
+     * @param newUserAction     - instructions for resolving the error
+     */
     DataEngineErrorCode(int newHTTPErrorCode, String newErrorMessageId, String newErrorMessage, String newSystemAction,
                         String newUserAction) {
         this.httpErrorCode = newHTTPErrorCode;
@@ -61,6 +75,12 @@ public enum DataEngineErrorCode {
         this.userAction = newUserAction;
     }
 
+    /**
+     * Returns the error message with the placeholders filled out with the supplied parameters.
+     *
+     * @param params - strings that plug into the placeholders in the errorMessage
+     * @return errorMessage (formatted with supplied parameters)
+     */
     public String getFormattedErrorMessage(String... params) {
         MessageFormat mf = new MessageFormat(errorMessage);
         return mf.format(params);

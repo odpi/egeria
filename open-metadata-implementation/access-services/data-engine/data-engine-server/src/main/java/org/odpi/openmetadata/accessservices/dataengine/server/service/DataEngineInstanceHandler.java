@@ -11,9 +11,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 
 /**
- * DataEngineInstanceHandler retrieves information from the instance map for the
- * access service instances.  The instance map is thread-safe.  Instances are added
- * and removed by the DataEngineAdmin class.
+ * DataEngineInstanceHandler retrieves information from the instance map for the access service instances.
+ * The instance map is thread-safe.  Instances are added and removed by the DataEngineAdmin class.
  */
 class DataEngineInstanceHandler {
     private final DataEngineErrorHandler dataEngineErrorHandler = new DataEngineErrorHandler();
