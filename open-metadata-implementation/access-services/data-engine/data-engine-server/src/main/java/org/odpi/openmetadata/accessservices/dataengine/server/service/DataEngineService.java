@@ -2,8 +2,18 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.service;
 
+import org.odpi.openmetadata.accessservices.dataengine.exception.PropertyServerException;
+import org.odpi.openmetadata.accessservices.dataengine.exception.UserNotAuthorizedException;
 import org.odpi.openmetadata.accessservices.dataengine.rest.GUIDResponse;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.server.util.DataEngineErrorHandler;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,6 +28,8 @@ public class DataEngineService {
     private static final DataEngineInstanceHandler instanceHandler = new DataEngineInstanceHandler();
     private static final Logger log = LoggerFactory.getLogger(DataEngineService.class);
 
+    private DataEngineErrorHandler exceptionUtil = new DataEngineErrorHandler();
+
     /**
      * Default constructor
      */
@@ -27,10 +39,10 @@ public class DataEngineService {
     /**
      * Create the process with input/output relationships
      *
-     * @param serverName name of server instance to call.
-     * @param userId the name of the calling user.
-     * @param processRequestBody  properties of the process
-     * @return Unique identifier (guid) of the created process
+     * @param serverName         name of server instance to call.
+     * @param userId             the name of the calling user.
+     * @param processRequestBody properties of the process
+     * @return the unique identifier (guid) of the created process
      */
     public GUIDResponse createProcess(String userId, String serverName, ProcessRequestBody processRequestBody) {
         final String methodName = "createProcess";
@@ -56,26 +68,36 @@ public class DataEngineService {
                 outputs = processRequestBody.getOutputs();
             }
 
-//            String dataSetGuid = processHandler.createDataSet(userId, "dataSet1");
-//            String dataSetGuid2 = processHandler.createDataSet(userId, "dataSet2");
-//            String dataSetGuid3 = processHandler.createDataSet(userId, "dataSet3");
-//            String dataSetGuid4 = processHandler.createDataSet(userId, "dataSet4");
+            //createTestDataSets(userId, processHandler);
 
             String processGuid = processHandler.createProcess(userId, processName, displayName);
 
-          //TODO add validation
-            for (String input : inputs) {
-                processHandler.addInputRelationship(userId, processGuid, input);
-            }
+            processHandler.addInputRelationships(userId, processGuid, inputs);
+            processHandler.addOutputRelationships(userId, processGuid, outputs);
 
-            for (String output : outputs) {
-                processHandler.addOutputRelationship(userId, processGuid, output);
-            }
-                response.setGuid(processGuid);
-        } catch (Exception e) {
-            //TODO exception handling
-            e.printStackTrace();
+            response.setGuid(processGuid);
+
+        } catch (TypeErrorException | EntityNotKnownException | StatusNotSupportedException | InvalidParameterException
+                | PropertyErrorException | ClassificationErrorException | RepositoryErrorException
+                | org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
+            exceptionUtil.captureOMRSCheckedExceptionBase(response, e);
+
+        } catch (UserNotAuthorizedException | PropertyServerException e) {
+            exceptionUtil.captureDataEngineExeption(response, e);
         }
+
         return response;
+    }
+
+    //TODO remove when igc replicator can replicate DataSets
+    private void createTestDataSets(String userId, ProcessHandler processHandler)
+            throws UserNotAuthorizedException, TypeErrorException, ClassificationErrorException,
+            StatusNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
+            InvalidParameterException, RepositoryErrorException, PropertyErrorException {
+
+        String dataSetGuid = processHandler.createDataSet(userId, "dataSet1");
+        String dataSetGuid2 = processHandler.createDataSet(userId, "dataSet2");
+        String dataSetGuid3 = processHandler.createDataSet(userId, "dataSet3");
+        String dataSetGuid4 = processHandler.createDataSet(userId, "dataSet4");
     }
 }

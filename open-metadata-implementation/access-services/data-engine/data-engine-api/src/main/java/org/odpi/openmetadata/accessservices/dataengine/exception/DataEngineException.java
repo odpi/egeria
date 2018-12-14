@@ -12,7 +12,7 @@ import lombok.Getter;
  * The aim is to be able to uniquely identify the cause and remedy for the error.
  */
 @Getter
-class DataEngineException extends Exception {
+public class DataEngineException extends Exception {
     /*
      * These default values are only seen if this exception is initialized using one of its superclass constructors.
      */
@@ -74,6 +74,4 @@ class DataEngineException extends Exception {
         this.reportedUserAction = userAction;
         this.reportedCaughtException = caughtError;
     }
-
-
 }

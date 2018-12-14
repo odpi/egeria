@@ -5,8 +5,6 @@ package org.odpi.openmetadata.accessservices.dataengine.server.spring;
 import org.odpi.openmetadata.accessservices.dataengine.rest.GUIDResponse;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.server.service.DataEngineService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,17 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class DataEngineResource {
     private DataEngineService restAPI = new DataEngineService();
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DataEngineResource.class);
-
     /**
      * Default Constructor
      */
     public DataEngineResource() {
-        final String methodName = "initialize";
-
-        LOGGER.debug(">>" + methodName);
-
-        LOGGER.debug("<<" + methodName);
     }
 
     /**
