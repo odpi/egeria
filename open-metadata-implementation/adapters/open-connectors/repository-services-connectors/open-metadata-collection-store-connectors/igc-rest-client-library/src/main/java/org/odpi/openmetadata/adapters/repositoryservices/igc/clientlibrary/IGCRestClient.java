@@ -124,14 +124,15 @@ public class IGCRestClient {
 
     }
 
-    private HttpHeaders getHttpHeaders() {
+    private HttpHeaders getHttpHeaders(boolean forceLogin) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CACHE_CONTROL, "no-cache");
         headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
 
-        // If we have cookies already, re-use these (to maintain the same session)
-        if (cookies != null) {
+        // If we have cookies already, and haven't been asked to force the login,
+        // re-use these (to maintain the same session)
+        if (cookies != null && !forceLogin) {
             headers.addAll(HttpHeaders.COOKIE, cookies);
         } else { // otherwise re-authenticate by Basic authentication
             String auth = "Basic " + this.authorization;
@@ -142,14 +143,31 @@ public class IGCRestClient {
 
     }
 
-    // TODO: would be good to find a way to identify when session times out and automatically re-authenticate
-    private void setCookiesFromResponse(ResponseEntity<String> response) {
+    private ResponseEntity<String> setCookiesFromResponse(ResponseEntity<String> response,
+                                                          String endpoint,
+                                                          HttpMethod method,
+                                                          String payload,
+                                                          boolean alreadyTriedNewSession) {
+
+        // If we had a successful response, setup the cookies
         if (response.getStatusCode() == HttpStatus.OK) {
             HttpHeaders headers = response.getHeaders();
             if (headers.get(HttpHeaders.SET_COOKIE) != null) {
                 this.cookies = headers.get(HttpHeaders.SET_COOKIE);
             }
+        } else if (response.getStatusCode() == HttpStatus.FORBIDDEN && !alreadyTriedNewSession) {
+            // If the response was forbidden, the session may have expired -- create a new one
+            // (after first deleting the existing cookies)
+            log.info("Session appears to have timed out -- starting a new session and re-trying the request.");
+            this.cookies = null;
+            response = makeRequest(endpoint, method, payload, true);
+        } else {
+            log.error("Unable to make request, even after attempting to open new session.");
         }
+
+        // Return the updated (or unchanged) response
+        return response;
+
     }
 
     /**
@@ -208,6 +226,28 @@ public class IGCRestClient {
     }
 
     /**
+     * Internal utility for making potentially repeat requests (if session expires and needs to be re-opened).
+     *
+     * @param endpoint the URL against which to make the request
+     * @param method HttpMethod (GET, POST, etc)
+     * @param payload if POSTing some content, the JSON structure providing what should be POSTed
+     * @param forceLogin a boolean indicating whether login should be forced (true) or session reused (false)
+     * @return ResponseEntity<String>
+     */
+    private ResponseEntity<String> makeRequest(String endpoint, HttpMethod method, String payload, boolean forceLogin) {
+        HttpEntity<String> toSend = new HttpEntity<>(getHttpHeaders(forceLogin));
+        if (payload != null) {
+            toSend = new HttpEntity<>(payload, getHttpHeaders(forceLogin));
+        }
+        ResponseEntity<String> response = new RestTemplate().exchange(
+                endpoint,
+                method,
+                toSend,
+                String.class);
+        return setCookiesFromResponse(response, endpoint, method, payload, forceLogin);
+    }
+
+    /**
      * General utility for making requests.
      *
      * @param endpoint the URL against which to make the request
@@ -216,16 +256,12 @@ public class IGCRestClient {
      * @return JsonNode - JSON structure of the response
      */
     public JsonNode makeRequest(String endpoint, HttpMethod method, JsonNode payload) {
-        HttpEntity<String> toSend = new HttpEntity<>(getHttpHeaders());
-        if (payload != null) {
-            toSend = new HttpEntity<>(payload.toString(), getHttpHeaders());
-        }
-        ResponseEntity<String> response = new RestTemplate().exchange(
+        ResponseEntity<String> response = makeRequest(
                 endpoint,
                 method,
-                toSend,
-                String.class);
-        setCookiesFromResponse(response);
+                payload != null ? payload.toString() : null,
+                false
+        );
         JsonNode jsonNode = null;
         if (response.hasBody()) {
             try {
