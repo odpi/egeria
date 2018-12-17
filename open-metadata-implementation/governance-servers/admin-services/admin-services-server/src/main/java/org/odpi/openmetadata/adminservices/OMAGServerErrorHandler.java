@@ -2,12 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices;
 
+import org.odpi.openmetadata.adminservices.configuration.properties.*;
 import org.odpi.openmetadata.adminservices.ffdc.OMAGErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGCheckedExceptionBase;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
-import org.odpi.openmetadata.adminservices.properties.OMAGAPIResponse;
+import org.odpi.openmetadata.adminservices.rest.AdminServicesAPIResponse;
 
 
 /**
@@ -15,6 +16,13 @@ import org.odpi.openmetadata.adminservices.properties.OMAGAPIResponse;
  */
 class OMAGServerErrorHandler
 {
+    /**
+     * Default constructor
+     */
+    public OMAGServerErrorHandler()
+    {
+    }
+
 
     /**
      * Validate that the user id is not null.
@@ -44,12 +52,105 @@ class OMAGServerErrorHandler
 
 
     /**
+     * Validate that the server name is not null and save it in the config.
+     *
+     * @param serverName  serverName passed on a request
+     * @param methodName  method being called
+     * @throws OMAGInvalidParameterException null server name
+     */
+    void validateServerName(String serverName,
+                            String methodName) throws OMAGInvalidParameterException
+    {
+        /*
+         * If the local server name is still null then save the server name in the configuration.
+         */
+        if (serverName == null)
+        {
+            OMAGErrorCode errorCode    = OMAGErrorCode.NULL_LOCAL_SERVER_NAME;
+            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
+
+            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    errorMessage,
+                                                    errorCode.getSystemAction(),
+                                                    errorCode.getUserAction());
+        }
+    }
+
+
+    /**
+     * Make sure the event bus properties are set before allowing configuration that is dependent on it to
+     * be set.
+     *
+     * @param serverName  name of the server
+     * @param serverConfig  existing configuration
+     * @param methodName  calling method
+     * @return the event bus config for this server
+     * @throws OMAGConfigurationErrorException there is no event bus information
+     */
+    EventBusConfig validateEventBusIsSet(String           serverName,
+                                         OMAGServerConfig serverConfig,
+                                         String           methodName) throws OMAGConfigurationErrorException
+    {
+        EventBusConfig   eventBusConfig = null;
+
+        if (serverConfig != null)
+        {
+            eventBusConfig = serverConfig.getEventBusConfig();
+        }
+
+        if (eventBusConfig == null)
+        {
+            OMAGErrorCode errorCode    = OMAGErrorCode.NO_EVENT_BUS_SET;
+            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
+
+            throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+                                                      this.getClass().getName(),
+                                                      methodName,
+                                                      errorMessage,
+                                                      errorCode.getSystemAction(),
+                                                      errorCode.getUserAction());
+        }
+
+        return eventBusConfig;
+    }
+
+
+    /**
+     * Validate that the cohort name is not null.
+     *
+     * @param cohortName  cohortName passed on the request
+     * @param serverName  server name for this server
+     * @param methodName  method called
+     * @throws OMAGInvalidParameterException the cohort name is null
+     */
+    void validateCohortName(String  cohortName,
+                            String  serverName,
+                            String  methodName) throws OMAGInvalidParameterException
+    {
+        if (cohortName == null)
+        {
+            OMAGErrorCode errorCode    = OMAGErrorCode.NULL_COHORT_NAME;
+            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
+
+            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    errorMessage,
+                                                    errorCode.getSystemAction(),
+                                                    errorCode.getUserAction());
+        }
+    }
+
+
+    /**
      * Set the exception information into the response.
      *
      * @param response  REST Response
      * @param error returned response.
      */
-    void captureConfigurationErrorException(OMAGAPIResponse response, OMAGConfigurationErrorException error)
+    void captureConfigurationErrorException(AdminServicesAPIResponse response, OMAGConfigurationErrorException error)
     {
         captureCheckedException(response, error, error.getClass().getName());
     }
@@ -61,7 +162,7 @@ class OMAGServerErrorHandler
      * @param response  REST Response
      * @param error returned response.
      */
-    void captureInvalidParameterException(OMAGAPIResponse response, OMAGInvalidParameterException error)
+    void captureInvalidParameterException(AdminServicesAPIResponse response, OMAGInvalidParameterException error)
     {
         captureCheckedException(response, error, error.getClass().getName());
     }
@@ -73,7 +174,7 @@ class OMAGServerErrorHandler
      * @param response  REST Response
      * @param error returned response.
      */
-    void captureNotAuthorizedException(OMAGAPIResponse response, OMAGNotAuthorizedException error)
+    void captureNotAuthorizedException(AdminServicesAPIResponse response, OMAGNotAuthorizedException error)
     {
         captureCheckedException(response, error, error.getClass().getName());
     }
@@ -86,7 +187,7 @@ class OMAGServerErrorHandler
      * @param error returned response.
      * @param exceptionClassName - class name of the exception to recreate
      */
-    private void captureCheckedException(OMAGAPIResponse          response,
+    private void captureCheckedException(AdminServicesAPIResponse          response,
                                          OMAGCheckedExceptionBase error,
                                          String                   exceptionClassName)
     {

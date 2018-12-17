@@ -1,9 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -16,17 +19,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *         ArchiveProperties: provides details of the source and contents of the archive.
  *     </li>
  *     <li>
- *         TypeStore: a list of new TypeDefs and patches to existing TypeDefs.
+ *         TypeStore: a list of new AttributeTypeDefs, new TypeDefs and patches to existing TypeDefs.
  *     </li>
  *     <li>
- *         InstanceStore: a list of new metadata instances (Entities and Relationships).
+ *         InstanceStore: a list of new metadata instances (Entities, Relationships and Classifications).
  *     </li>
  * </ul>
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OpenMetadataArchive
+public class OpenMetadataArchive extends OpenMetadataArchiveElementHeader
 {
     private OpenMetadataArchiveProperties    archiveProperties    = null;
     private OpenMetadataArchiveTypeStore     archiveTypeStore     = null;
@@ -38,6 +41,25 @@ public class OpenMetadataArchive
      */
     public OpenMetadataArchive()
     {
+        super();
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public OpenMetadataArchive(OpenMetadataArchive   template)
+    {
+        super(template);
+
+        if (template != null)
+        {
+            archiveProperties = template.getArchiveProperties();
+            archiveTypeStore = template.getArchiveTypeStore();
+            archiveInstanceStore = template.getArchiveInstanceStore();
+        }
     }
 
 
@@ -48,7 +70,14 @@ public class OpenMetadataArchive
      */
     public OpenMetadataArchiveProperties getArchiveProperties()
     {
-        return archiveProperties;
+        if (archiveProperties == null)
+        {
+            return null;
+        }
+        else
+        {
+            return archiveProperties;
+        }
     }
 
 
@@ -70,7 +99,14 @@ public class OpenMetadataArchive
      */
     public OpenMetadataArchiveTypeStore getArchiveTypeStore()
     {
-        return archiveTypeStore;
+        if (archiveTypeStore == null)
+        {
+            return null;
+        }
+        else
+        {
+            return new OpenMetadataArchiveTypeStore(archiveTypeStore);
+        }
     }
 
 
@@ -93,7 +129,14 @@ public class OpenMetadataArchive
      */
     public OpenMetadataArchiveInstanceStore getArchiveInstanceStore()
     {
-        return archiveInstanceStore;
+        if (archiveInstanceStore == null)
+        {
+            return null;
+        }
+        else
+        {
+            return new OpenMetadataArchiveInstanceStore(archiveInstanceStore);
+        }
     }
 
 
@@ -106,5 +149,58 @@ public class OpenMetadataArchive
     public void setArchiveInstanceStore(OpenMetadataArchiveInstanceStore archiveInstanceStore)
     {
         this.archiveInstanceStore = archiveInstanceStore;
+    }
+
+
+    /**
+     * Standard toString method.
+     *
+     * @return JSON style description of variables.
+     */
+    @Override
+    public String toString()
+    {
+        return "OpenMetadataArchive{" +
+                "archiveProperties=" + archiveProperties +
+                ", archiveTypeStore=" + archiveTypeStore +
+                ", archiveInstanceStore=" + archiveInstanceStore +
+                '}';
+    }
+
+
+
+    /**
+     * Validate that an object is equal depending on their stored values.
+     *
+     * @param objectToCompare object
+     * @return boolean result
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        {
+            return false;
+        }
+        OpenMetadataArchive that = (OpenMetadataArchive) objectToCompare;
+        return Objects.equals(getArchiveProperties(), that.getArchiveProperties()) &&
+                Objects.equals(getArchiveTypeStore(), that.getArchiveTypeStore()) &&
+                Objects.equals(getArchiveInstanceStore(), that.getArchiveInstanceStore());
+    }
+
+
+    /**
+     * Return a hash code based on the values of this object.
+     *
+     * @return in hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(getArchiveProperties(), getArchiveTypeStore(), getArchiveInstanceStore());
     }
 }

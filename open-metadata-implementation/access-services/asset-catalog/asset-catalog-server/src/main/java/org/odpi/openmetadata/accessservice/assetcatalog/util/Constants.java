@@ -51,6 +51,7 @@ public final class Constants {
     public static final String ENCRYPTION_METHOD = "encryptionMethod";
     public static final String CONNECTOR_PROVIDER_CLASS_NAME = "connectorProviderClassName";
     public static final String SECURED_PROPERTIES = "securedProperties";
+    public static final String ADDITIONAL_PROPERTIES = "additionalProperties";
     public static final String MODIFIED_TIME = "modifiedTime";
     public static final String TYPE = "dataType";
     public static final String CREATE_TIME = "createTime";

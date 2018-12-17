@@ -4,14 +4,14 @@ package org.odpi.openmetadata.adminservices.spring;
 
 
 import org.odpi.openmetadata.adminservices.OMAGServerAdminStoreServices;
-import org.odpi.openmetadata.adminservices.properties.VoidResponse;
 import org.odpi.openmetadata.adminservices.rest.ConnectionResponse;
+import org.odpi.openmetadata.adminservices.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.springframework.web.bind.annotation.*;
 
 /**
  * OMAGServerAdminStoreResource provides the API to configure the destination that should be used to manage
- * configuration.
+ * configuration.  The default is to use a file for each configured server.
  */
 @RestController
 @RequestMapping("/open-metadata/admin-services/users/{userId}/stores")

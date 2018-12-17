@@ -1,4 +1,5 @@
-/* SPDX-License-Identifier: Apache-2.0 */
+/* SPDX-License-Identifier: Apache 2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -101,11 +102,13 @@ public class EntityProxy extends EntitySummary
         return "EntityProxy{" +
                 "uniqueProperties=" + uniqueProperties +
                 ", classifications=" + getClassifications() +
+                ", instanceURL='" + getInstanceURL() + '\'' +
+                ", GUID='" + getGUID() + '\'' +
                 ", type=" + getType() +
                 ", instanceProvenanceType=" + getInstanceProvenanceType() +
                 ", metadataCollectionId='" + getMetadataCollectionId() + '\'' +
-                ", instanceURL='" + getInstanceURL() + '\'' +
-                ", GUID='" + getGUID() + '\'' +
+                ", metadataCollectionName='" + getMetadataCollectionName() + '\'' +
+                ", instanceLicense='" + getInstanceLicense() + '\'' +
                 ", status=" + getStatus() +
                 ", createdBy='" + getCreatedBy() + '\'' +
                 ", updatedBy='" + getUpdatedBy() + '\'' +
@@ -130,7 +133,7 @@ public class EntityProxy extends EntitySummary
         {
             return true;
         }
-        if (!(objectToCompare instanceof EntityProxy))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -151,7 +154,6 @@ public class EntityProxy extends EntitySummary
     @Override
     public int hashCode()
     {
-
         return Objects.hash(super.hashCode(), getUniqueProperties());
     }
 }
