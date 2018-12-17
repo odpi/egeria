@@ -43,7 +43,7 @@ public class AssetCatalogClientTest {
     private static final String defaultUserId = "zebra91";
     private static final String defaultAssetId = "66d7f872-19bd-439c-98ae-c3fe49d8f420";
     private static final String defaultRelationshipId = "c7184523-7ca5-4876-9210-fe1bb1b55cd7";
-
+    private static final String defaultRelationshipType = "SemanticAssignment";
     @Mock
     private RestTemplate restTemplate;
 
@@ -139,6 +139,21 @@ public class AssetCatalogClientTest {
         RelationshipsResponse response = new RelationshipsResponse();
         try {
             response = assetCatalog.getAssetRelationships(defaultUserId, defaultAssetId);
+        } catch (AssetCatalogException e) {
+            e.printStackTrace();
+        }
+
+        checkResponse(response);
+    }
+
+    @Test
+    @DisplayName("Asset Relationships for relationship type")
+    void getAssetRelationshipsForTypeTest() {
+        defaultRelationshipExpected();
+
+        RelationshipsResponse response = new RelationshipsResponse();
+        try {
+            response = assetCatalog.getAssetRelationshipsForType(defaultUserId, defaultAssetId, defaultRelationshipType);
         } catch (AssetCatalogException e) {
             e.printStackTrace();
         }
