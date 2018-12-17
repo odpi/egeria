@@ -9,3 +9,9 @@ This can show details such as where hosts are isolated in private networks,
 where the gateways onto the Internet. 
 
 ![UML](0070-Networks-and-Gateways.png)
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

@@ -1,8 +1,11 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservice.assetcatalog.exception;
 
-public class AssetNotFoundException extends AssetCatalogException
-{
+/**
+ * The AssetNotFoundException is thrown by the Asset Catalog OMAS when the asset passed on a request
+ * is not found in the repository
+ */
+public class AssetNotFoundException extends AssetCatalogException {
 
     /**
      * This is the typical constructor used for creating a AssetNotFoundException.
@@ -15,11 +18,11 @@ public class AssetNotFoundException extends AssetCatalogException
      * @param userAction        instructions for correcting the error
      */
     public AssetNotFoundException(int httpCode,
-                                         String className,
-                                         String actionDescription,
-                                         String errorMessage,
-                                         String systemAction,
-                                         String userAction) {
+                                  String className,
+                                  String actionDescription,
+                                  String errorMessage,
+                                  String systemAction,
+                                  String userAction) {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction);
     }
 

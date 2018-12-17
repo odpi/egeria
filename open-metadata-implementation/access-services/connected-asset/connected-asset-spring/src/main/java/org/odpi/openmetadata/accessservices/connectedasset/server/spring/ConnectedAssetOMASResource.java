@@ -24,12 +24,38 @@ public class ConnectedAssetOMASResource
 
 
     /**
+     * Returns the basic information about the asset.  The connection guid allows the short description for the
+     * asset to be filled out.
+     *
+     * @param serverName  name of the server.
+     * @param userId     String   userId of user making request.
+     * @param assetGUID  String   unique id for asset.
+     * @param connectionGUID  unique id for connection used to access asset.
+     *
+     * @return a bean with the basic properties about the asset or
+     * InvalidParameterException - the asset GUID is null or invalid or
+     * UnrecognizedAssetGUIDException - the asset GUID is not recognized by the property server or
+     * UnrecognizedConnectionGUIDException - the connection GUID is not recognized by the property server or
+     * PropertyServerException - there is a problem retrieving the asset properties from the property server or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/via-connection/{connectionGUID}")
+
+    private AssetResponse getConnectedAssetSummary(@PathVariable String   serverName,
+                                                   @PathVariable String   userId,
+                                                   @PathVariable String   assetGUID,
+                                                   @PathVariable String   connectionGUID)
+    {
+        return restAPI.getConnectedAssetSummary(serverName, userId, assetGUID, connectionGUID);
+    }
+
+
+    /**
      * Returns the basic information about the asset.
      *
      * @param serverName String   name of server instance to call.
      * @param userId     String   userId of user making request.
      * @param assetGUID  String   unique id for asset.
-     *
      * @return a bean with the basic properties about the asset or
      * InvalidParameterException - the userId is null or invalid or
      * UnrecognizedAssetGUIDException - the GUID is null or invalid or

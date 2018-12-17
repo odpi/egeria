@@ -2,10 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.connectedasset.server;
 
-import org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions.ConnectedAssetCheckedExceptionBase;
-import org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions.InvalidParameterException;
-import org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions.UnrecognizedAssetGUIDException;
-import org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions.UnrecognizedGUIDException;
+import org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.connectedasset.rest.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -30,6 +27,84 @@ public class ConnectedAssetRESTServices
      */
     public ConnectedAssetRESTServices()
     {
+    }
+
+
+    /**
+     * Returns the basic information about the asset.  The connection guid allows the short description for the
+     * asset to be filled out.
+     *
+     * @param serverName  name of the server.
+     * @param userId     String   userId of user making request.
+     * @param assetGUID  String   unique id for asset.
+     * @param connectionGUID  unique id for connection used to access asset.
+     *
+     * @return a bean with the basic properties about the asset or
+     * InvalidParameterException - the asset GUID is null or invalid or
+     * UnrecognizedAssetGUIDException - the asset GUID is not recognized by the property server or
+     * UnrecognizedConnectionGUIDException - the connection GUID is not recognized by the property server or
+     * PropertyServerException - there is a problem retrieving the asset properties from the property server or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public AssetResponse getConnectedAssetSummary(String   serverName,
+                                                  String   userId,
+                                                  String   assetGUID,
+                                                  String   connectionGUID)
+    {
+        final String methodName = "getConnectedAssetSummary";
+
+        AssetResponse  response = new AssetResponse();
+
+        try
+        {
+            AssetHandler   assetHandler = new AssetHandler(instanceHandler.getAccessServiceName(),
+                                                           serverName,
+                                                           instanceHandler.getRepositoryConnector(serverName),
+                                                           userId,
+                                                           assetGUID,
+                                                           connectionGUID);
+
+            response.setAsset(assetHandler.getAsset());
+            response.setAnnotationCount(assetHandler.getAnnotationCount());
+            response.setCertificationCount(assetHandler.getCertificationCount());
+            response.setCommentCount(assetHandler.getCommentCount());
+            response.setConnectionCount(assetHandler.getConnectionCount());
+            response.setExternalIdentifierCount(assetHandler.getExternalIdentifierCount());
+            response.setExternalReferencesCount(assetHandler.getExternalReferencesCount());
+            response.setInformalTagCount(assetHandler.getInformalTagCount());
+            response.setLicenseCount(assetHandler.getLicenseCount());
+            response.setLikeCount(assetHandler.getLikeCount());
+            response.setKnownLocationsCount(assetHandler.getKnownLocationsCount());
+            response.setNoteLogsCount(assetHandler.getNoteLogsCount());
+            response.setRatingsCount(assetHandler.getRatingsCount());
+            response.setRelatedAssetCount(assetHandler.getRelatedAssetCount());
+            response.setRelatedMediaReferenceCount(assetHandler.getRelatedMediaReferenceCount());
+            response.setSchemaType(assetHandler.getSchemaType());
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (UnrecognizedAssetGUIDException error)
+        {
+            captureUnrecognizedAssetGUIDException(response, error);
+        }
+        catch (UnrecognizedConnectionGUIDException error)
+        {
+            captureUnrecognizedConnectionGUIDException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+
+        return response;
     }
 
 
@@ -105,7 +180,7 @@ public class ConnectedAssetRESTServices
 
 
     /**
-     * Returns the basic information about the asset.
+     * Returns the identifier of the asset linked to a specific connection.
      *
      * @param serverName   String   name of server instance to call.
      * @param userId             userId of user making request.
@@ -631,6 +706,31 @@ public class ConnectedAssetRESTServices
             Map<String, Object>  exceptionProperties = new HashMap<>();
 
             exceptionProperties.put("assetGUID", assetGUID);
+            captureCheckedException(response, error, error.getClass().getName(), exceptionProperties);
+        }
+        else
+        {
+            captureCheckedException(response, error, error.getClass().getName());
+        }
+    }
+
+
+    /**
+     * Set the exception information into the response.
+     *
+     * @param response  REST Response
+     * @param error returned response.
+     */
+    private void captureUnrecognizedConnectionGUIDException(ConnectedAssetOMASAPIResponse       response,
+                                                            UnrecognizedConnectionGUIDException error)
+    {
+        String  connectionGUID = error.getConnectionGUID();
+
+        if (connectionGUID != null)
+        {
+            Map<String, Object>  exceptionProperties = new HashMap<>();
+
+            exceptionProperties.put("connectionGUID", connectionGUID);
             captureCheckedException(response, error, error.getClass().getName(), exceptionProperties);
         }
         else

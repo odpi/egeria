@@ -21,10 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = Asset.class, name = "Asset"),
-        @JsonSubTypes.Type(value = AssetCollection.class, name = "AssetCollection"),
-        @JsonSubTypes.Type(value = MyProfile.class, name = "MyProfile"),
-        @JsonSubTypes.Type(value = UserIdentity.class, name = "UserIdentity"),
+        @JsonSubTypes.Type(value = ReferenceableHeader.class, name = "ReferenceableHeader"),
         @JsonSubTypes.Type(value = Classification.class, name = "Classification")
 })
 public abstract class AssetConsumerElementHeader implements Serializable

@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservice.assetcatalog.model;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Data;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -15,15 +14,69 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@Data
 public class Table {
 
     private String name;
     private String guid;
     private String typeName;
     private String owner;
-
     private String typeVersion;
     private String typeEncodingStandard;
     private String typeUsage;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getGuid() {
+        return guid;
+    }
+
+    public void setGuid(String guid) {
+        this.guid = guid;
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
+    public String getTypeVersion() {
+        return typeVersion;
+    }
+
+    public void setTypeVersion(String typeVersion) {
+        this.typeVersion = typeVersion;
+    }
+
+    public String getTypeEncodingStandard() {
+        return typeEncodingStandard;
+    }
+
+    public void setTypeEncodingStandard(String typeEncodingStandard) {
+        this.typeEncodingStandard = typeEncodingStandard;
+    }
+
+    public String getTypeUsage() {
+        return typeUsage;
+    }
+
+    public void setTypeUsage(String typeUsage) {
+        this.typeUsage = typeUsage;
+    }
 }
