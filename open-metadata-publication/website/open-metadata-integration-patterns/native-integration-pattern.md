@@ -12,3 +12,9 @@ native open metadata and governance interfaces.
 
 ![Figure 1](native-integration-pattern-level-1.png)
 > Figure 1: using the native integration
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

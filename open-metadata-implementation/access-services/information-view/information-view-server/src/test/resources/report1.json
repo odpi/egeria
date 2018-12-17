@@ -3,7 +3,7 @@
   "sources": [{
     "@id": "0",
     "class": "TableSource",
-    "networkAddress": "clrv0000065114.ic.ing.net",
+    "networkAddress": "host",
     "protocol": "",
     "additionalProperties": {
       "type": "live/import"

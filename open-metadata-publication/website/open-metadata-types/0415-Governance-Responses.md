@@ -7,3 +7,9 @@ Regulations and the Data Strategy are broken down into three types of policies: 
 processing that must be accommodated; Approaches define how a process, or data asset should be implemented and managed.
 
 ![UML](0415-Governance-Responses.png)
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

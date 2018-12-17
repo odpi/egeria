@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservice.assetcatalog.model;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Data;
 
 import java.io.Serializable;
 
@@ -12,12 +11,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * The connection object contains the properties needed to access a specific data assets.
+ * The Connection object contains the properties needed to access a specific data assets.
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@Data
 public class Connection implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -26,14 +24,31 @@ public class Connection implements Serializable {
     private String description;
     private String guid;
 
-    private String connectorName;
-    private String connectorDescription;
-    private String connectorProvider;
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
 
-    private String dataSetName;
-    private Column column;
-    private Table table;
-    private Database database;
-    private Schema schema;
-    private Endpoint endpoint;
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getGuid() {
+        return guid;
+    }
+
+    public void setGuid(String guid) {
+        this.guid = guid;
+    }
 }

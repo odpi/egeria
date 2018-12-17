@@ -18,3 +18,8 @@ Infrastructure, Process, Referenceable, Server and Host.
 * **[0045 Servers and Assets](0045-Servers-and-Assets.md)**
 * **[0070 Networks and Gateways](0070-Networks-and-Gateways.md)**
 * **[0090 Cloud Platforms and Services](0090-Cloud-Platforms-and-Services.md)**
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

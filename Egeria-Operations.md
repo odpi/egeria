@@ -1,4 +1,4 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
 # Egeria Operations
@@ -162,4 +162,10 @@ In general, we prefer that technical issues and maintainer membership are amicab
 between the persons involved. If a dispute cannot be decided independently, the maintainers can be
 called in to decide an issue. If the maintainers themselves cannot decide an issue, the issue will
 be resolved by voting. The voting process is a simple majority in which each maintainer receives one vote.
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
 

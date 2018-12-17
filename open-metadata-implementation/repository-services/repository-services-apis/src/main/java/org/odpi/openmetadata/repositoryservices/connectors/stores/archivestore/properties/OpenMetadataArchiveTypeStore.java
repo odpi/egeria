@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -10,6 +11,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -23,7 +25,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OpenMetadataArchiveTypeStore
+public class OpenMetadataArchiveTypeStore extends OpenMetadataArchiveElementHeader
 {
     private List<AttributeTypeDef> attributeTypeDefs = null;
     private List<TypeDefPatch>     typeDefPatches    = null;
@@ -35,6 +37,25 @@ public class OpenMetadataArchiveTypeStore
      */
     public OpenMetadataArchiveTypeStore()
     {
+        super();
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public OpenMetadataArchiveTypeStore(OpenMetadataArchiveTypeStore   template)
+    {
+        super(template);
+
+        if (template != null)
+        {
+            attributeTypeDefs = template.getAttributeTypeDefs();
+            typeDefPatches = template.getTypeDefPatches();
+            newTypeDefs = template.getNewTypeDefs();
+        }
     }
 
 
@@ -49,9 +70,20 @@ public class OpenMetadataArchiveTypeStore
         {
             return null;
         }
+        else if (attributeTypeDefs.isEmpty())
+        {
+            return null;
+        }
         else
         {
-            return new ArrayList<>(attributeTypeDefs);
+            List<AttributeTypeDef>  clonedList = new ArrayList<>();
+
+            for (AttributeTypeDef  existingElement : attributeTypeDefs)
+            {
+                clonedList.add(existingElement.cloneFromSubclass());
+            }
+
+            return clonedList;
         }
     }
 
@@ -63,14 +95,7 @@ public class OpenMetadataArchiveTypeStore
      */
     public void setAttributeTypeDefs(List<AttributeTypeDef> attributeTypeDefs)
     {
-        if (attributeTypeDefs == null)
-        {
-            this.attributeTypeDefs = null;
-        }
-        else
-        {
-            this.attributeTypeDefs = new ArrayList<>(attributeTypeDefs);
-        }
+        this.attributeTypeDefs = attributeTypeDefs;
     }
 
 
@@ -85,9 +110,20 @@ public class OpenMetadataArchiveTypeStore
         {
             return null;
         }
+        else if (typeDefPatches.isEmpty())
+        {
+            return null;
+        }
         else
         {
-            return new ArrayList<>(typeDefPatches);
+            List<TypeDefPatch>  clonedList = new ArrayList<>();
+
+            for (TypeDefPatch  existingElement : typeDefPatches)
+            {
+                clonedList.add(new TypeDefPatch(existingElement));
+            }
+
+            return clonedList;
         }
     }
 
@@ -99,14 +135,7 @@ public class OpenMetadataArchiveTypeStore
      */
     public void setTypeDefPatches(List<TypeDefPatch> typeDefPatches)
     {
-        if (typeDefPatches == null)
-        {
-            this.typeDefPatches =  null;
-        }
-        else
-        {
-            this.typeDefPatches =  new ArrayList<>(typeDefPatches);
-        }
+        this.typeDefPatches = typeDefPatches;
     }
 
 
@@ -121,9 +150,20 @@ public class OpenMetadataArchiveTypeStore
         {
             return null;
         }
+        else if (newTypeDefs.isEmpty())
+        {
+            return null;
+        }
         else
         {
-            return new ArrayList<>(newTypeDefs);
+            List<TypeDef>  clonedList = new ArrayList<>();
+
+            for (TypeDef  existingElement : newTypeDefs)
+            {
+                clonedList.add(existingElement.cloneFromSubclass());
+            }
+
+            return clonedList;
         }
     }
 
@@ -135,13 +175,58 @@ public class OpenMetadataArchiveTypeStore
      */
     public void setNewTypeDefs(List<TypeDef> newTypeDefs)
     {
-        if (newTypeDefs == null)
+        this.newTypeDefs = newTypeDefs;
+    }
+
+
+    /**
+     * Standard toString method.
+     *
+     * @return JSON style description of variables.
+     */
+    @Override
+    public String toString()
+    {
+        return "OpenMetadataArchiveTypeStore{" +
+                "attributeTypeDefs=" + attributeTypeDefs +
+                ", typeDefPatches=" + typeDefPatches +
+                ", newTypeDefs=" + newTypeDefs +
+                '}';
+    }
+
+
+    /**
+     * Validate that an object is equal depending on their stored values.
+     *
+     * @param objectToCompare object
+     * @return boolean result
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
         {
-            this.newTypeDefs = null;
+            return true;
         }
-        else
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
-            this.newTypeDefs = new ArrayList<>(newTypeDefs);
+            return false;
         }
+        OpenMetadataArchiveTypeStore that = (OpenMetadataArchiveTypeStore) objectToCompare;
+        return Objects.equals(getAttributeTypeDefs(), that.getAttributeTypeDefs()) &&
+                Objects.equals(getTypeDefPatches(), that.getTypeDefPatches()) &&
+                Objects.equals(getNewTypeDefs(), that.getNewTypeDefs());
+    }
+
+
+    /**
+     * Return a hash code based on the values of this object.
+     *
+     * @return in hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(getAttributeTypeDefs(), getTypeDefPatches(), getNewTypeDefs());
     }
 }

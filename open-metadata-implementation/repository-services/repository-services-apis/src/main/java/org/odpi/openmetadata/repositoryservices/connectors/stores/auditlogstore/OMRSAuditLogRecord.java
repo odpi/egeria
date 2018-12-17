@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -7,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -292,75 +294,72 @@ public class OMRSAuditLogRecord
     }
 
 
+
+    /**
+     * Standard toString method.
+     *
+     * @return JSON style description of variables.
+     */
     @Override
     public String toString()
     {
-        String    originatorString = null;
-        if (this.originator != null)
-        {
-            originatorString = this.originator.toString();
-        }
-
-        String    reportingComponentString = null;
-        if (this.reportingComponent != null)
-        {
-            reportingComponentString = this.reportingComponent.toString();
-        }
-
-        String    additionalInformationString = null;
-        if (this.additionalInformation != null)
-        {
-            boolean    notFirst = false;
-
-            additionalInformationString = "[ ";
-
-            for (String nugget : additionalInformation)
-            {
-                if (notFirst)
-                {
-                    additionalInformationString = additionalInformationString + ", ";
-                    notFirst = true;
-                }
-
-                additionalInformationString = additionalInformationString + nugget;
-            }
-
-            additionalInformationString = additionalInformationString + " ]";
-        }
-
-        return  "AuditLogRecord { " +
-                    "timestamp : " + timeStamp.toString() + ", " +
-                    "guid : " + guid + ", " +
-                    "originator : " + originatorString + ", " +
-                    "severity : " + severity + ", " +
-                    "reportingComponent : " + reportingComponentString + ", " +
-                    "messageId : " + messageId + ", " +
-                    "messageText : " + messageText + ", " +
-                    "additionalInformation : " + additionalInformationString + ", " +
-                    "systemAction : " + systemAction + ", " +
-                    "userAction : " + userAction + " }";
+        return "OMRSAuditLogRecord{" +
+                "guid='" + guid + '\'' +
+                ", timeStamp=" + timeStamp +
+                ", originator=" + originator +
+                ", severity='" + severity + '\'' +
+                ", reportingComponent=" + reportingComponent +
+                ", messageId='" + messageId + '\'' +
+                ", messageText='" + messageText + '\'' +
+                ", additionalInformation=" + additionalInformation +
+                ", systemAction='" + systemAction + '\'' +
+                ", userAction='" + userAction + '\'' +
+                ", GUID='" + getGUID() + '\'' +
+                '}';
     }
 
-    @Override
-    public int hashCode()
-    {
-        return super.hashCode();
-    }
 
+    /**
+     * Validate that an object is equal depending on their stored values.
+     *
+     * @param objectToCompare object
+     * @return boolean result
+     */
     @Override
-    public boolean equals(Object object)
+    public boolean equals(Object objectToCompare)
     {
-        if (this == object)
+        if (this == objectToCompare)
         {
             return true;
         }
-        if (object == null || getClass() != object.getClass())
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
+        OMRSAuditLogRecord that = (OMRSAuditLogRecord) objectToCompare;
+        return Objects.equals(guid, that.guid) &&
+                Objects.equals(getTimeStamp(), that.getTimeStamp()) &&
+                Objects.equals(getOriginator(), that.getOriginator()) &&
+                Objects.equals(getSeverity(), that.getSeverity()) &&
+                Objects.equals(getReportingComponent(), that.getReportingComponent()) &&
+                Objects.equals(getMessageId(), that.getMessageId()) &&
+                Objects.equals(getMessageText(), that.getMessageText()) &&
+                Objects.equals(getAdditionalInformation(), that.getAdditionalInformation()) &&
+                Objects.equals(getSystemAction(), that.getSystemAction()) &&
+                Objects.equals(getUserAction(), that.getUserAction());
+    }
 
-        OMRSAuditLogRecord that = (OMRSAuditLogRecord) object;
 
-        return guid.equals(that.guid);
+    /**
+     * Return a hash code based on the values of this object.
+     *
+     * @return in hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(guid, getTimeStamp(), getOriginator(), getSeverity(), getReportingComponent(),
+                            getMessageId(),
+                            getMessageText(), getAdditionalInformation(), getSystemAction(), getUserAction());
     }
 }

@@ -1,4 +1,5 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
 
 # Developer Guidelines
 
@@ -130,3 +131,9 @@ incorporated in the build so that they run either at the **test** or **verify**
 stages of the build.
 
 Our preferred Java test frameworks are [TestNG](http://testng.org) and [Mockito](http://mockito.org).
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

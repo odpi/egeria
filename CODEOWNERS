@@ -1,0 +1,21 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the ODPi Egeria project.
+
+# Code ownership for Egeria - see https://help.github.com/articles/about-codeowners/
+# Note that the LAST matching pattern will be effective so please more generic paths towards the top
+
+# Top level
+
+# Implementation
+
+open-metadata-implementation/access-services/governance-engine @planetf1 
+open-metadata-implementation/adapters/governance-engines-plugins @planetf1 
+open-metadata-implementation/adapters/authentication-plugins/gaian-impersonation @planetf1 
+
+# Resources
+
+open-metadata-resources/open-metadata-deployment @planetf1 
+
+open-metadata-resources/open-metadata-samples/postman-rest-samples @planetf1
+
+

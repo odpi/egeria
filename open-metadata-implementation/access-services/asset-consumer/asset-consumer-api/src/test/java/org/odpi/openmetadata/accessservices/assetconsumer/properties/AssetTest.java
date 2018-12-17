@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.properties;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,20 +19,21 @@ import static org.testng.Assert.assertTrue;
  */
 public class AssetTest
 {
-    private String               url                      = "TestURL";
-    private String               guid                     = "TestGUID";
-    private String               typeId                   = "TestTypeId";
-    private String               typeName                 = "TestTypeName";
-    private long                 typeVersion              = 7;
-    private String               typeDescription          = "TestTypeDescription";
-    private String               qualifiedName            = "TestQualifiedName";
-    private String               displayName              = "TestDisplayName";
-    private String               description              = "TestDescription";
-    private String               owner                    = "TestOwner";
-    private Map<String, Object>  additionalProperties     = new HashMap<>();
-    private List<Classification> classifications          = new ArrayList<>();
-    private Classification       classification           = new Classification();
-    private Map<String, Object>  classificationProperties = new HashMap<>();
+    private String                            latestChange             = "TestReason";
+    private String                            guid                     = "TestGUID";
+    private String                            typeId                   = "TestTypeId";
+    private String                            typeName                 = "TestTypeName";
+    private long                              typeVersion              = 7;
+    private String                            typeDescription          = "TestTypeDescription";
+    private String                            qualifiedName            = "TestQualifiedName";
+    private String                            displayName              = "TestDisplayName";
+    private String                            description              = "TestDescription";
+    private String                            owner                    = "TestOwner";
+    private Map<String, Object>               additionalProperties     = new HashMap<>();
+    private List<ReferenceableClassification> classifications          = new ArrayList<>();
+    private ReferenceableClassification       classification           = new ReferenceableClassification();
+    private Map<String, Object>               classificationProperties = new HashMap<>();
+    private List<String>                      zoneMembership           = new ArrayList<>();
 
 
 
@@ -41,6 +43,8 @@ public class AssetTest
     public AssetTest()
     {
         additionalProperties.put("TestAdditionalPropertyName", "TestAdditionalPropertyValue");
+
+        zoneMembership.add("TestZone");
 
         classification.setClassificationName("TestClassificationName");
         classificationProperties.put("TestClassificationPropertyName", "TestClassificationPropertyValue");
@@ -65,6 +69,8 @@ public class AssetTest
         testObject.setDisplayName(displayName);
         testObject.setDescription(description);
         testObject.setOwner(owner);
+        testObject.setLastChange(latestChange);
+        testObject.setZoneMembership(zoneMembership);
         testObject.setAdditionalProperties(additionalProperties);
         testObject.setClassifications(classifications);
 
@@ -85,6 +91,8 @@ public class AssetTest
         assertTrue(resultObject.getQualifiedName().equals(qualifiedName));
         assertTrue(resultObject.getDisplayName().equals(displayName));
         assertTrue(resultObject.getDescription().equals(description));
+        assertTrue(resultObject.getLastChange().equals(latestChange));
+        assertTrue(resultObject.getZoneMembership().equals(zoneMembership));
         assertTrue(resultObject.getOwner().equals(owner));
         assertTrue(resultObject.getAdditionalProperties().equals(additionalProperties));
         assertTrue(resultObject.getClassifications().equals(classifications));
@@ -105,6 +113,8 @@ public class AssetTest
         assertTrue(nullObject.getDisplayName() == null);
         assertTrue(nullObject.getDescription() == null);
         assertTrue(nullObject.getOwner() == null);
+        assertTrue(nullObject.getLastChange() == null);
+        assertTrue(nullObject.getZoneMembership() == null);
         assertTrue(nullObject.getAdditionalProperties() == null);
         assertTrue(nullObject.getClassifications() == null);
 
@@ -117,9 +127,14 @@ public class AssetTest
         assertTrue(nullObject.getDisplayName() == null);
         assertTrue(nullObject.getDescription() == null);
         assertTrue(nullObject.getOwner() == null);
+        assertTrue(nullObject.getLastChange() == null);
+        assertTrue(nullObject.getZoneMembership() == null);
         assertTrue(nullObject.getAdditionalProperties() == null);
         assertTrue(nullObject.getClassifications() == null);
 
+        nullObject.setZoneMembership(new ArrayList<>());
+
+        assertTrue(nullObject.getZoneMembership() == null);
     }
 
 
@@ -171,7 +186,7 @@ public class AssetTest
 
         assertTrue(testObject.getClassifications() == null);
 
-        List<Classification>  emptyClassifications = new ArrayList<>();
+        List<ReferenceableClassification> emptyClassifications = new ArrayList<>();
         testObject = new Asset();
         testObject.setClassifications(emptyClassifications);
 
@@ -180,7 +195,7 @@ public class AssetTest
         testObject = new Asset();
         testObject.setClassifications(classifications);
 
-        List<Classification>   retrievedClassifications = testObject.getClassifications();
+        List<ReferenceableClassification> retrievedClassifications = testObject.getClassifications();
 
         assertTrue(retrievedClassifications != null);
         assertFalse(retrievedClassifications.isEmpty());

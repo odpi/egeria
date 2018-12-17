@@ -34,7 +34,7 @@ public enum InformationViewErrorCode {
             "The system is unable to process the request.",
             "Verify the topic event."),
     GET_ENTITY_EXCEPTION("OMAS-INFORMATION-VIEW-006 ",
-            "Entity {0} could not be fetched",
+            "Entity matching criteria [{0}] could not be fetched",
             "The system is unable to process the request.",
             "Verify the topic event."),
     GET_RELATIONSHIP_EXCEPTION("OMAS-INFORMATION-VIEW-007 ",

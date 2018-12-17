@@ -3,8 +3,9 @@
 
 # 0610 Annotations
 
-**Annotations** capture the discovered characteristics of an asset.
-They are created by the analysis steps in the discovery service.
+The **Annotation** entity captures the discovered characteristics of an asset.
+
+Annotations are created by the analysis steps in the discovery service.
 The attributes of the annotation capture the details of the discovery processing.
 The sub-classes of Annotation capture specific details of the discovered metadata.
 Each annotation is linked the the discovery analysis report it was generated from.
@@ -25,9 +26,18 @@ for discovery service developers and the tools that process them.
 The types that follow provide more specialized annotations.
 
 * **[0615 Schema Extraction](0615-Schema-Extraction.md)**
-* **[0620 Profiling Annotation](0620-Profiling-Annotation.md)**
-* **[0626 Semantic Discovery](0626-Semantic-Discovery.md)**
-* **[0630 Relationship Discovery](0630-Relationship-Discovery.md)**
+* **[0617 Data Field Analysis](0617-Data-Field-Analysis.md)**
+* **[0620 Data Profiling](0620-Data-Profiling.md)**
+* **[0625 Data Class Discovery](0625-Data-Class-Discovery.md)**
+* **[0630 Semantic Discovery](0630-Semantic-Discovery.md)**
 * **[0635 Classification Discovery](0635-Classification-Discovery.md)**
-* **[0650 Measurements](0650-Measurements.md)**
-* **[0660 Request for Action](0660-Request-for-Action.md)**
+* **[0640 Quality Scores](0640-Quality-Scores.md)**
+* **[0650 Relationship Discovery](0650-Relationship-Discovery.md)**
+* **[0660 Measurements](0660-Data-Source-Measurements.md)**
+* **[0690 Request for Action](0690-Request-for-Action.md)**
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
