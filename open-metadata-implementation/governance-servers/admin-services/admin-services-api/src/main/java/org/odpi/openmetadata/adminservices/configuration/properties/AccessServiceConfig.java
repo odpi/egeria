@@ -82,7 +82,7 @@ public class AccessServiceConfig implements Serializable
 
 
     /**
-     * Return the Java class name of the adminservices interface for this access service.
+     * Return the Java class name of the admin-services interface for this access service.
      *
      * @return String class name implementing the
      * org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin interface.
@@ -197,6 +197,7 @@ public class AccessServiceConfig implements Serializable
     /**
      * Return the OCF Connection for the topic used to pass requests to this access service.
      * The default values are constructed from the access service name.
+     * If this value is set to null then the access service ignores incoming events.
      *
      * @return Connection for InTopic
      */
@@ -208,6 +209,8 @@ public class AccessServiceConfig implements Serializable
 
     /**
      * Set up the OCF Connection for the topic used to pass requests to this access service.
+     * The default values are constructed from the access service name.
+     * If this value is set to null then the access service ignores incoming events.
      *
      * @param accessServiceInTopic Connection properties
      */
@@ -220,6 +223,7 @@ public class AccessServiceConfig implements Serializable
     /**
      * Return the OCF Connection for the topic used by this access service to publish events.
      * The default values are constructed from the access service name.
+     * If this value is set to null then events are not published by this OMAS.
      *
      * @return Connection for OutTopic
      */
@@ -231,6 +235,8 @@ public class AccessServiceConfig implements Serializable
 
     /**
      * Set up the OCF Connection of the topic used by this access service to publish events.
+     * The default values are constructed from the access service name.
+     * If this value is set to null then events are not published by this OMAS.
      *
      * @param accessServiceOutTopic Connection properties
      */

@@ -8,3 +8,9 @@ External Identifiers are identifiers for a Referenceable that are used in extern
 ![UML](0017-External-Identifiers.png)
 
 They are used to correlate information from these other systems with the open metadata.
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

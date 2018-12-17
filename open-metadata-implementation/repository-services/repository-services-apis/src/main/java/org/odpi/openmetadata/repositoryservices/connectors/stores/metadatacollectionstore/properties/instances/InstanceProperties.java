@@ -1,4 +1,5 @@
-/* SPDX-License-Identifier: Apache-2.0 */
+/* SPDX-License-Identifier: Apache 2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -169,13 +170,10 @@ public class InstanceProperties extends InstanceElementHeader
         {
             return null;
         }
-        /*
-         * Commented out waiting for fix in SubjectAreaOMAS.
         else if (instanceProperties.isEmpty())
         {
             return null;
         }
-        */
         else
         {
             return new HashMap<>(instanceProperties);

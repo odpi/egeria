@@ -1,4 +1,4 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
   
@@ -31,6 +31,11 @@ test cases for the repository under test.
 * **[Repository Get TypeDef Gallery Test Case](repository-get-typedef-gallery-test-case.md)**
 * **[Repository TypeDef Test Case](repository-typedef-test-case.md)**
 * **[Repository Attribute TypeDef Test Case](repository-attribute-typedef-test-case.md)**
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
 
 
   

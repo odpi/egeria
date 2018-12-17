@@ -24,7 +24,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes
         ({
-                @JsonSubTypes.Type(value = ConnectionResponse.class, name = "ConnectionResponse")
+                @JsonSubTypes.Type(value = ConnectionResponse.class, name = "ConnectionResponse"),
+                @JsonSubTypes.Type(value = OMAGServerConfigResponse.class, name = "OMAGServerConfigResponse"),
+                @JsonSubTypes.Type(value = VoidResponse.class, name = "VoidResponse")
         })
 public abstract class AdminServicesAPIResponse implements java.io.Serializable
 {

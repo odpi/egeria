@@ -1,4 +1,5 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
   
 # Open Metadata Access Services (OMAS)
 
@@ -187,3 +188,10 @@ be deployed independently
 options).   The implementation of the OMRS Connector handles the
 communication between the OMAS application and the metadata repositories,
 whether this is through local or remote calls.
+
+The [administration services](../governance-servers/admin-services/README.md) provide
+the ability to configure, start and stop the access services.
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

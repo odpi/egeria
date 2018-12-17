@@ -12,3 +12,9 @@ Reconciling the governance strategy with the regulations creates synergies
 in an organization's approach to governance.
 
 ![UML](0405-Governance-Drivers.png)
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
