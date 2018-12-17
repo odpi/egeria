@@ -858,7 +858,11 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             // Otherwise keep looping until we find one that meets above criteria (or we run out of options)
         }
 
-        log.debug("Found mapper class: {}", referenceMapper.getClass().getCanonicalName());
+        if (referenceMapper != null) {
+            log.debug("Found mapper class: {}", referenceMapper.getClass().getCanonicalName());
+        } else {
+            log.debug("No mapper class found!");
+        }
         return referenceMapper;
 
     }
