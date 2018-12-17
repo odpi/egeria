@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions;
 
-import org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions.UnrecognizedAssetGUIDException;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertFalse;
@@ -10,7 +9,7 @@ import static org.testng.Assert.assertTrue;
 
 
 /**
- * Validate that the unrecognized asset guid exception is properly populated and supports toString, hashCode and
+ * Validate that the no connected asset exception is properly populated and supports toString, hashCode and
  * equals.
  */
 public class NoConnectedAssetExceptionTest
@@ -21,7 +20,7 @@ public class NoConnectedAssetExceptionTest
     private String    reportedErrorMessage       = "TestErrorMessage";
     private String    reportedSystemAction       = "TestSystemAction";
     private String    reportedUserAction         = "TestUserAction";
-    private String    assetGUID                  = "TestAssetGUID";
+    private String    connectionGUID             = "TestConnectionGUID";
     private Throwable reportedCaughtException    = new Exception("TestReportedCaughtException");
 
     /**
@@ -38,7 +37,7 @@ public class NoConnectedAssetExceptionTest
     @Test
     public void testNewException()
     {
-        UnrecognizedAssetGUIDException exception = new UnrecognizedAssetGUIDException(reportedHTTPCode,
+        NoConnectedAssetException exception = new NoConnectedAssetException(reportedHTTPCode,
                                                                                       reportingClassName,
                                                                                       reportingActionDescription,
                                                                                       reportedErrorMessage,
@@ -53,7 +52,7 @@ public class NoConnectedAssetExceptionTest
         assertTrue(exception.getReportedSystemAction().equals(reportedSystemAction));
         assertTrue(exception.getReportedUserAction().equals(reportedUserAction));
         assertTrue(exception.getReportedCaughtException() == null);
-        assertTrue(exception.getAssetGUID() == null);
+        assertTrue(exception.getConnectionGUID() == null);
     }
 
 
@@ -63,14 +62,14 @@ public class NoConnectedAssetExceptionTest
     @Test
     public void testWrappingException()
     {
-        UnrecognizedAssetGUIDException exception = new UnrecognizedAssetGUIDException(reportedHTTPCode,
+        NoConnectedAssetException exception = new NoConnectedAssetException(reportedHTTPCode,
                                                                                                 reportingClassName,
                                                                                                 reportingActionDescription,
                                                                                                 reportedErrorMessage,
                                                                                                 reportedSystemAction,
                                                                                                 reportedUserAction,
                                                                                                 reportedCaughtException,
-                                                                                      assetGUID);
+                                                                            connectionGUID);
 
         assertTrue(exception.getReportedHTTPCode() == reportedHTTPCode);
         assertTrue(exception.getReportingClassName().equals(reportingClassName));
@@ -80,7 +79,7 @@ public class NoConnectedAssetExceptionTest
         assertTrue(exception.getReportedUserAction().equals(reportedUserAction));
         assertFalse(exception.getReportedCaughtException().equals(null));
         assertTrue(exception.getReportedCaughtException().getMessage().equals("TestReportedCaughtException"));
-        assertTrue(exception.getAssetGUID().equals(assetGUID));
+        assertTrue(exception.getConnectionGUID().equals(connectionGUID));
     }
 
 
@@ -90,31 +89,31 @@ public class NoConnectedAssetExceptionTest
     @Test
     public void testHashCode()
     {
-        UnrecognizedAssetGUIDException exception = new UnrecognizedAssetGUIDException(reportedHTTPCode,
-                                                                                                reportingClassName,
-                                                                                                reportingActionDescription,
-                                                                                                reportedErrorMessage,
-                                                                                                reportedSystemAction,
-                                                                                                reportedUserAction,
-                                                                                      assetGUID);
+        NoConnectedAssetException exception = new NoConnectedAssetException(reportedHTTPCode,
+                                                                            reportingClassName,
+                                                                            reportingActionDescription,
+                                                                            reportedErrorMessage,
+                                                                            reportedSystemAction,
+                                                                            reportedUserAction,
+                                                                            connectionGUID);
 
-        UnrecognizedAssetGUIDException exception2 = new UnrecognizedAssetGUIDException(reportedHTTPCode,
-                                                                                                 reportingClassName,
-                                                                                                 reportingActionDescription,
-                                                                                                 reportedErrorMessage,
-                                                                                                 reportedSystemAction,
-                                                                                                 reportedUserAction,
-                                                                                                 reportedCaughtException,
-                                                                                       assetGUID);
+        NoConnectedAssetException exception2 = new NoConnectedAssetException(reportedHTTPCode,
+                                                                             reportingClassName,
+                                                                             reportingActionDescription,
+                                                                             reportedErrorMessage,
+                                                                             reportedSystemAction,
+                                                                             reportedUserAction,
+                                                                             reportedCaughtException,
+                                                                             connectionGUID);
 
-        UnrecognizedAssetGUIDException exception3 = new UnrecognizedAssetGUIDException(reportedHTTPCode,
-                                                                                                 reportingClassName,
-                                                                                                 reportingActionDescription,
-                                                                                                 reportedErrorMessage,
-                                                                                                 reportedSystemAction,
-                                                                                                 reportedUserAction,
-                                                                                                 reportedCaughtException,
-                                                                                       assetGUID);
+        NoConnectedAssetException exception3 = new NoConnectedAssetException(reportedHTTPCode,
+                                                                             reportingClassName,
+                                                                             reportingActionDescription,
+                                                                             reportedErrorMessage,
+                                                                             reportedSystemAction,
+                                                                             reportedUserAction,
+                                                                             reportedCaughtException,
+                                                                             connectionGUID);
 
 
         assertTrue(exception.hashCode() == exception.hashCode());
@@ -125,12 +124,12 @@ public class NoConnectedAssetExceptionTest
         assertFalse(exception.equals(exception2));
         assertTrue(exception2.equals(exception3));
 
-        assertTrue(exception.toString().contains("UnrecognizedAssetGUIDException"));
+        assertTrue(exception.toString().contains("NoConnectedAssetException"));
 
         assertTrue(exception.toString().equals(exception.toString()));
         assertFalse(exception.toString().equals(exception2.toString()));
 
-        assertTrue(exception.getAssetGUID().equals(exception2.getAssetGUID()));
+        assertTrue(exception.getConnectionGUID().equals(exception2.getConnectionGUID()));
 
     }
 }

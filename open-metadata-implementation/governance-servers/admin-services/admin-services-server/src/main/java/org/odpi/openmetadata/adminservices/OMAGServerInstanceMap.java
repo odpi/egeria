@@ -21,6 +21,7 @@ public class OMAGServerInstanceMap
     private static Map<String, OMAGOperationalServicesInstance> instanceMap = new HashMap<>();
 
 
+
     /**
      * Add a new server instance to the server map.
      *

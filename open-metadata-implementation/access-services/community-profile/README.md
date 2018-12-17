@@ -11,7 +11,9 @@ the personal profiles, teams and communities for people collaborating around dat
 
 A personal profile provides a place for an individual to share information about themselves
 with the other people they are collaborating with.  It is associated with one or more
-of the person's userIds.
+of the person's userIds.  The individual can also maintain collections of their
+favourite Asset, Projects and Communities (see below) and control notifications
+about changes to the member of these lists.
 
 There are two sets of APIs related to profiles:
 
@@ -45,6 +47,25 @@ who are collaborating on a specific topic or skill.
 
 The communities interface support a both a REST API and event synchronization to
 add and retrieve information from the community.
+
+
+## Karma points
+
+Personal profiles include the ability to reward an individual for contributing
+to metadata.   These rewards are in the form of karma points.
+
+The Community Profile OMAS is responsible for maintaining the count of
+the karma points.  It does this by listening to the metadata changes
+occurring in the metadata repositories and updates the personal
+profile of each user making a contribution.
+
+The access service option property **"KarmaPointThreshold"** indicates
+the multiple of karma points for an individual that results in
+an external event being published - the default is 500.  This
+means that when an individual gets to 500 karma points, and event is sent,
+and other event is sent when they get to 1000 karma points and so on.
+These events can be used to trigger additional recognition activities for
+the individuals concerned.
 
 
 

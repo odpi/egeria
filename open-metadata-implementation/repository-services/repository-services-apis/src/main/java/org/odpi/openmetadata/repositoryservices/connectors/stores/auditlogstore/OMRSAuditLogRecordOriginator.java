@@ -1,9 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -122,52 +125,56 @@ public class OMRSAuditLogRecordOriginator
     }
 
 
+    /**
+     * Standard toString method.
+     *
+     * @return JSON style description of variables.
+     */
     @Override
     public String toString()
     {
-        return  "Originator { " +
-                "metadataCollectionId : " + this.metadataCollectionId + ", " +
-                "serverName : " + this.serverName + ", " +
-                "serverType : " + this.serverType + ", " +
-                "organizationName : " + this.organizationName + " }";
+        return "OMRSAuditLogRecordOriginator{" +
+                "metadataCollectionId='" + metadataCollectionId + '\'' +
+                ", serverName='" + serverName + '\'' +
+                ", serverType='" + serverType + '\'' +
+                ", organizationName='" + organizationName + '\'' +
+                '}';
     }
 
+
+    /**
+     * Validate that an object is equal depending on their stored values.
+     *
+     * @param objectToCompare object
+     * @return boolean result
+     */
     @Override
-    public boolean equals(Object o)
+    public boolean equals(Object objectToCompare)
     {
-        if (this == o)
+        if (this == objectToCompare)
         {
             return true;
         }
-        if (o == null || getClass() != o.getClass())
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
-
-        OMRSAuditLogRecordOriginator that = (OMRSAuditLogRecordOriginator) o;
-
-        if (metadataCollectionId != null ? !metadataCollectionId.equals(that.metadataCollectionId) : that.metadataCollectionId != null)
-        {
-            return false;
-        }
-        if (serverName != null ? !serverName.equals(that.serverName) : that.serverName != null)
-        {
-            return false;
-        }
-        if (serverType != null ? !serverType.equals(that.serverType) : that.serverType != null)
-        {
-            return false;
-        }
-        return organizationName != null ? organizationName.equals(that.organizationName) : that.organizationName == null;
+        OMRSAuditLogRecordOriginator that = (OMRSAuditLogRecordOriginator) objectToCompare;
+        return Objects.equals(getMetadataCollectionId(), that.getMetadataCollectionId()) &&
+                Objects.equals(getServerName(), that.getServerName()) &&
+                Objects.equals(getServerType(), that.getServerType()) &&
+                Objects.equals(getOrganizationName(), that.getOrganizationName());
     }
 
+
+    /**
+     * Return a hash code based on the values of this object.
+     *
+     * @return in hash code
+     */
     @Override
     public int hashCode()
     {
-        int result = metadataCollectionId != null ? metadataCollectionId.hashCode() : 0;
-        result = 31 * result + (serverName != null ? serverName.hashCode() : 0);
-        result = 31 * result + (serverType != null ? serverType.hashCode() : 0);
-        result = 31 * result + (organizationName != null ? organizationName.hashCode() : 0);
-        return result;
+        return Objects.hash(getMetadataCollectionId(), getServerName(), getServerType(), getOrganizationName());
     }
 }

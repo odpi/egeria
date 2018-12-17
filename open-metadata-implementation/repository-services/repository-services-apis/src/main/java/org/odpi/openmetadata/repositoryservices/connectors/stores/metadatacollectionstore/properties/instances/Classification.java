@@ -1,4 +1,5 @@
-/* SPDX-License-Identifier: Apache-2.0 */
+/* SPDX-License-Identifier: Apache 2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -90,22 +91,24 @@ public class Classification extends InstanceAuditHeader
      */
     public Classification()
     {
-
+        super();
     }
 
 
     /**
      * Copy/clone constructor sets up new classification using values from the template
      *
-     * @param templateClassification object to copy
+     * @param template object to copy
      */
-    public Classification(Classification templateClassification)
+    public Classification(Classification template)
     {
+        super(template);
+
         /*
          * An empty classification object is passed in the variable declaration so throw exception
          * because we need the classification name.
          */
-        if (templateClassification == null)
+        if (template == null)
         {
             /*
              * Build and throw exception.  This should not happen and this is likely to be a problem in the
@@ -127,10 +130,10 @@ public class Classification extends InstanceAuditHeader
             /*
              * Extract and save the values from the template.
              */
-            this.classificationName = validateName(templateClassification.getName());
-            this.classificationProperties = templateClassification.getProperties();
-            this.classificationOrigin = templateClassification.getClassificationOrigin();
-            this.classificationOriginGUID = templateClassification.getClassificationOriginGUID();
+            this.classificationName = validateName(template.getName());
+            this.classificationProperties = template.getProperties();
+            this.classificationOrigin = template.getClassificationOrigin();
+            this.classificationOriginGUID = template.getClassificationOriginGUID();
         }
     }
 
@@ -167,7 +170,7 @@ public class Classification extends InstanceAuditHeader
     {
         if (classificationProperties == null)
         {
-            return classificationProperties;
+            return null;
         }
         else
         {
@@ -244,6 +247,18 @@ public class Classification extends InstanceAuditHeader
                 ", classificationProperties=" + classificationProperties +
                 ", classificationOrigin=" + classificationOrigin +
                 ", classificationOriginGUID='" + classificationOriginGUID + '\'' +
+                ", type=" + getType() +
+                ", instanceProvenanceType=" + getInstanceProvenanceType() +
+                ", metadataCollectionId='" + getMetadataCollectionId() + '\'' +
+                ", metadataCollectionName='" + getMetadataCollectionName() + '\'' +
+                ", instanceLicense='" + getInstanceLicense() + '\'' +
+                ", status=" + getStatus() +
+                ", createdBy='" + getCreatedBy() + '\'' +
+                ", updatedBy='" + getUpdatedBy() + '\'' +
+                ", createTime=" + getCreateTime() +
+                ", updateTime=" + getUpdateTime() +
+                ", version=" + getVersion() +
+                ", statusOnDelete=" + getStatusOnDelete() +
                 '}';
     }
 
@@ -261,7 +276,7 @@ public class Classification extends InstanceAuditHeader
         {
             return true;
         }
-        if (!(objectToCompare instanceof Classification))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -277,6 +292,7 @@ public class Classification extends InstanceAuditHeader
     }
 
 
+
     /**
      * Return a hash code based on the values of this object.
      *
@@ -285,11 +301,7 @@ public class Classification extends InstanceAuditHeader
     @Override
     public int hashCode()
     {
-
-        return Objects.hash(super.hashCode(),
-                            classificationName,
-                            classificationProperties,
-                            getClassificationOrigin(),
+        return Objects.hash(super.hashCode(), classificationName, classificationProperties, getClassificationOrigin(),
                             getClassificationOriginGUID());
     }
 }

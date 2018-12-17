@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties;
 
 
@@ -9,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -18,32 +20,44 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * properties:
  * <ul>
  *     <li>
- *         Unique identifier (GUID) of the archive.
+ *         Unique identifier (GUID) of the archive.  This is used as the metadata collection id for the
+ *         elements in the archive.
  *     </li>
  *     <li>
- *         Archive name.
+ *         Archive name.  This is used as the name of the metadata collection for the elements in the archive.
  *     </li>
  *     <li>
- *         Archive description.
+ *         Archive description.  This helps people choose which archive they want.
  *     </li>
  *     <li>
- *         Archive Type (CONTENT_PACK or METADATA_EXPORT).
+ *         Archive Type (CONTENT_PACK or METADATA_EXPORT).  A content pack is a reusable collection of
+ *         metadata elements.  A metadata export is an extraction of metadata from a cohort for backup/restore
+ *         or to create metadata to send to a disconnected cohort.
  *     </li>
  *     <li>
- *         Originator name (organization or person).
+ *         Originator name.  This becomes the creation user id in the elements if it is not
+ *         already specified.
  *     </li>
  *     <li>
- *         Creation date
+ *         Originator organization.  Name of the organization that created the archive.
  *     </li>
  *     <li>
- *         GUIDs for archives that this archive depends on.
+ *         Originator license.  The license associated with the metadata content. Null means no restrictions.
+ *     </li>
+ *     <li>
+ *         Creation date is the date that the archive was created.  This will become the creationTime in the elements
+ *         if not already specified.
+ *     </li>
+ *     <li>
+ *         GUIDs for archives that this archive depends on.  This helps the open metadata repository services
+ *         load the archives in the right order.  Null here means no dependencies.
  *     </li>
  * </ul>
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OpenMetadataArchiveProperties
+public class OpenMetadataArchiveProperties extends OpenMetadataArchiveElementHeader
 {
     private String                  archiveGUID            = null;
     private String                  archiveName            = null;
@@ -51,6 +65,7 @@ public class OpenMetadataArchiveProperties
     private OpenMetadataArchiveType archiveType            = null;
     private String                  originatorName         = null;
     private String                  originatorOrganization = null;
+    private String                  originatorLicense      = null;
     private Date                    creationDate           = null;
     private List<String>            dependsOnArchives      = null;
 
@@ -60,6 +75,31 @@ public class OpenMetadataArchiveProperties
      */
     public OpenMetadataArchiveProperties()
     {
+        super();
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy.
+     */
+    public OpenMetadataArchiveProperties(OpenMetadataArchiveProperties  template)
+    {
+        super(template);
+
+        if (template != null)
+        {
+            archiveGUID = template.getArchiveGUID();
+            archiveName = template.getArchiveName();
+            archiveDescription = template.getArchiveDescription();
+            archiveType = template.getArchiveType();
+            originatorName = template.getOriginatorName();
+            originatorOrganization = template.getOriginatorOrganization();
+            originatorLicense = template.getOriginatorLicense();
+            creationDate = template.getCreationDate();
+            dependsOnArchives = template.getDependsOnArchives();
+        }
     }
 
 
@@ -197,6 +237,30 @@ public class OpenMetadataArchiveProperties
 
 
     /**
+     * Return the default license for all instance in this archive (this value can be overridden in
+     * individual instances in the archive).  A null value means no restrictions.
+     *
+     * @return license string
+     */
+    public String getOriginatorLicense()
+    {
+        return originatorLicense;
+    }
+
+
+    /**
+     * Set up the default license for all instances in this archive (this value can be overridden in
+     * individual instances in the archive).  A null value means no restrictions.
+     *
+     * @param originatorLicense license string
+     */
+    public void setOriginatorLicense(String originatorLicense)
+    {
+        this.originatorLicense = originatorLicense;
+    }
+
+
+    /**
      * Return the date that this open metadata archive was created.
      *
      * @return Date object
@@ -229,6 +293,10 @@ public class OpenMetadataArchiveProperties
         {
             return null;
         }
+        else if (dependsOnArchives.isEmpty())
+        {
+            return null;
+        }
         else
         {
             return new ArrayList<>(dependsOnArchives);
@@ -243,13 +311,72 @@ public class OpenMetadataArchiveProperties
      */
     public void setDependsOnArchives(List<String> dependsOnArchives)
     {
-        if (dependsOnArchives == null)
+        this.dependsOnArchives = dependsOnArchives;
+    }
+
+
+    /**
+     * Standard toString method.
+     *
+     * @return JSON style description of variables.
+     */
+    @Override
+    public String toString()
+    {
+        return "OpenMetadataArchiveProperties{" +
+                "archiveGUID='" + archiveGUID + '\'' +
+                ", archiveName='" + archiveName + '\'' +
+                ", archiveDescription='" + archiveDescription + '\'' +
+                ", archiveType=" + archiveType +
+                ", originatorName='" + originatorName + '\'' +
+                ", originatorOrganization='" + originatorOrganization + '\'' +
+                ", originatorLicense='" + originatorLicense + '\'' +
+                ", creationDate=" + creationDate +
+                ", dependsOnArchives=" + dependsOnArchives +
+                '}';
+    }
+
+
+    /**
+     * Validate that an object is equal depending on their stored values.
+     *
+     * @param objectToCompare object
+     * @return boolean result
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
         {
-            this.dependsOnArchives = null;
+            return true;
         }
-        else
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
-            this.dependsOnArchives = new ArrayList<>(dependsOnArchives);
+            return false;
         }
+        OpenMetadataArchiveProperties that = (OpenMetadataArchiveProperties) objectToCompare;
+        return Objects.equals(getArchiveGUID(), that.getArchiveGUID()) &&
+                Objects.equals(getArchiveName(), that.getArchiveName()) &&
+                Objects.equals(getArchiveDescription(), that.getArchiveDescription()) &&
+                getArchiveType() == that.getArchiveType() &&
+                Objects.equals(getOriginatorName(), that.getOriginatorName()) &&
+                Objects.equals(getOriginatorOrganization(), that.getOriginatorOrganization()) &&
+                Objects.equals(getOriginatorLicense(), that.getOriginatorLicense()) &&
+                Objects.equals(getCreationDate(), that.getCreationDate()) &&
+                Objects.equals(getDependsOnArchives(), that.getDependsOnArchives());
+    }
+
+
+    /**
+     * Return a hash code based on the values of this object.
+     *
+     * @return in hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(getArchiveGUID(), getArchiveName(), getArchiveDescription(), getArchiveType(),
+                            getOriginatorName(), getOriginatorOrganization(), getOriginatorLicense(), getCreationDate(),
+                            getDependsOnArchives());
     }
 }
