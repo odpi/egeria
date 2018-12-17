@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservice.assetcatalog.service;
 
-
 import org.odpi.openmetadata.accessservice.assetcatalog.admin.AssetCatalogAdmin;
 import org.odpi.openmetadata.adminservices.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
@@ -15,21 +14,19 @@ import org.odpi.openmetadata.adminservices.configuration.registration.AccessServ
  * then use this registration information as confirmation that there is an implementation of this
  * access service in the server and it can be configured and used.
  */
-public class AssetCatalogRegistration
-{
+public class AssetCatalogRegistration {
     /**
      * Pass information about this access service to the OMAG Server administration services.
      */
-    public static void registerAccessService()
-    {
+    public static void registerAccessService() {
         AccessServiceDescription myDescription = AccessServiceDescription.ASSET_CATALOG_OMAS;
 
         AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription.getAccessServiceCode(),
-                                                                                 myDescription.getAccessServiceName(),
-                                                                                 myDescription.getAccessServiceDescription(),
-                                                                                 myDescription.getAccessServiceWiki(),
-                                                                                 AccessServiceOperationalStatus.ENABLED,
-                                                                                 AssetCatalogAdmin.class.getName());
+                myDescription.getAccessServiceName(),
+                myDescription.getAccessServiceDescription(),
+                myDescription.getAccessServiceWiki(),
+                AccessServiceOperationalStatus.ENABLED,
+                AssetCatalogAdmin.class.getName());
         OMAGAccessServiceRegistration.registerAccessService(myRegistration);
     }
 }
