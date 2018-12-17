@@ -3,62 +3,66 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping;
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
-import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSMetadataCollection;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
 
-public class RelationalTableTypeMapper extends ReferenceableMapper {
+public class RelationalTableMapper extends ReferenceableMapper {
 
-    public static final String IGC_RID_PREFIX = IGCOMRSMetadataCollection.generateTypePrefix("RTT");
+    private static final String T_RELATIONAL_TABLE = "RelationalTable";
 
     /**
-     * Sets the basic criteria to use for mapping between an IGC 'database_table' object and an OMRS 'RelationalTableType' object.
+     * Sets the basic criteria to use for mapping between an IGC 'database_table' object and an OMRS 'RelationalTable' object.
      *
      * @param dbTable the IGC 'database_table' object
      * @param igcomrsRepositoryConnector the IGC repository connector to use for retrieving any additional info required
      * @param userId the userId of the user doing any further detailed information retrievals (currently unused)
      */
-    public RelationalTableTypeMapper(Reference dbTable, IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {
+    public RelationalTableMapper(Reference dbTable, IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {
 
         // Start by calling the superclass's constructor to initialise the Mapper
         super(
                 dbTable,
                 "database_table",
-                "RelationalTableType",
+                T_RELATIONAL_TABLE,
                 igcomrsRepositoryConnector,
                 userId
         );
 
-        setIgcRidPrefix(IGC_RID_PREFIX);
-
         // The list of properties that should be mapped
-        addSimplePropertyMapping("name", "displayName");
+        addSimplePropertyMapping("name", "name");
 
         // The list of relationships that should be mapped
+        addSimpleRelationshipMapping(
+                "database_schema",
+                "AttributeForSchema",
+                "attributes",
+                "parentSchemas",
+                null,
+                RelationalDBSchemaTypeMapper.IGC_RID_PREFIX
+        );
         addSimpleRelationshipMapping(
                 RelationshipMappingSet.SELF_REFERENCE_SENTINEL,
                 "SchemaAttributeType",
                 "usedInSchemas",
                 "type",
                 null,
-                IGC_RID_PREFIX
+                RelationalTableTypeMapper.IGC_RID_PREFIX
         );
-        addSimpleRelationshipMapping(
-                "database_columns",
-                "AttributeForSchema",
-                "parentSchemas",
-                "attributes",
-                IGC_RID_PREFIX,
-                null
-        );
+
+        // Finally list any properties that will be used to map Classifications
+        // (to do the actual mapping, implement the 'getMappedClassifications' function -- example below)
 
     }
 
     /**
-     * No classifications to map for RelationalTableType
+     * We implement this method to apply any classifications -- since IGC itself doesn't have a "Classification"
+     * asset type, we need to apply our own translation between how we're using other IGC asset types and the
+     * Classification(s) we want them to represent in OMRS.
+     * <br><br>
+     * Nothing to do for RelationalTable entities.
      */
     @Override
     protected void getMappedClassifications() {
-        // Nothing to do
+        // Nothing to do...
     }
 
 }

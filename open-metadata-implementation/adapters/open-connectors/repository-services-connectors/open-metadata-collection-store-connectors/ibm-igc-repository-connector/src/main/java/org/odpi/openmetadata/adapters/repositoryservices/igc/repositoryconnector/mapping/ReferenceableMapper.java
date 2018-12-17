@@ -578,10 +578,13 @@ public class ReferenceableMapper extends ReferenceMapper {
                 omrsRelationship.setVersion(ep2.getUpdateTime().getTime());
             }
         } else {
+            String omrsEndTwoProperty = omrsRelationshipDef.getEndDef2().getAttributeName();
             OMRSErrorCode errorCode = OMRSErrorCode.INVALID_RELATIONSHIP_ENDS;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    this.getClass().getName(),
-                    repositoryName);
+                    repositoryName,
+                    omrsRelationshipName,
+                    omrsEndOneProperty + ":" + omrsSourceProperty,
+                    omrsEndTwoProperty + ":" + omrsTargetProperty);
             throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
                     this.getClass().getName(),
                     methodName,
