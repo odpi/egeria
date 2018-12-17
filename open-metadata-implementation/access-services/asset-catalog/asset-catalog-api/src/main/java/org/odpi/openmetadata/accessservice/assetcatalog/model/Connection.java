@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
+import java.util.Map;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -23,10 +24,7 @@ public class Connection implements Serializable {
     private String displayName;
     private String description;
     private String guid;
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
+    protected Map<String, Object> securedProperties = null;
 
     public String getDisplayName() {
         return displayName;
@@ -50,5 +48,13 @@ public class Connection implements Serializable {
 
     public void setGuid(String guid) {
         this.guid = guid;
+    }
+
+    public Map<String, Object> getSecuredProperties() {
+        return securedProperties;
+    }
+
+    public void setSecuredProperties(Map<String, Object> securedProperties) {
+        this.securedProperties = securedProperties;
     }
 }
