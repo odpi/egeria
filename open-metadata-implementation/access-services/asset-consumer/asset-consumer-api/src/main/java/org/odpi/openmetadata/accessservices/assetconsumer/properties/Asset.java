@@ -4,10 +4,7 @@ package org.odpi.openmetadata.accessservices.assetconsumer.properties;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -149,7 +146,7 @@ public class Asset extends ReferenceableHeader
         }
         else
         {
-            return zoneMembership;
+            return new ArrayList<>(zoneMembership);
         }
     }
 

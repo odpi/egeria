@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetconsumer.server;
 
 import org.odpi.openmetadata.accessservices.assetconsumer.rest.*;
+import org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions.UnrecognizedAssetGUIDException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions.*;
@@ -222,7 +223,35 @@ public class AssetConsumerRESTServices
                                       String   userId,
                                       String   guid)
     {
-        return null;
+        final String        methodName = "getMeaning";
+
+        log.debug("Calling method: " + methodName);
+
+        MeaningResponse  response = new MeaningResponse();
+
+        try
+        {
+            MeaningHandler   meaningHandler = new MeaningHandler(instanceHandler.getAccessServiceName(),
+                                                                 instanceHandler.getRepositoryConnector(serverName));
+
+            response.setGlossaryTerm(meaningHandler.getMeaningByGUID(userId, guid));
+        }
+        catch (InvalidParameterException  error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException  error)
+        {
+            capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
     }
 
 
@@ -233,7 +262,8 @@ public class AssetConsumerRESTServices
      * @param userId the name of the calling user.
      * @param term name of term.  This may include wild card characters.
      * @param startFrom  index of the list ot start from (0 for start)
-     * @param pageSize   maximum number of elements to return.* @return meaning response or
+     * @param pageSize   maximum number of elements to return.
+     *
      * @return meaning list response or
      * InvalidParameterException - one of the parameters is invalid or
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
@@ -245,7 +275,35 @@ public class AssetConsumerRESTServices
                                                 int     startFrom,
                                                 int     pageSize)
     {
-        return null;
+        final String        methodName = "getMeaningByName";
+
+        log.debug("Calling method: " + methodName);
+
+        MeaningListResponse  response = new MeaningListResponse();
+
+        try
+        {
+            MeaningHandler   meaningHandler = new MeaningHandler(instanceHandler.getAccessServiceName(),
+                                                                 instanceHandler.getRepositoryConnector(serverName));
+
+            response.setMeanings(meaningHandler.getMeaningsByName(userId, term, startFrom, pageSize));
+        }
+        catch (InvalidParameterException  error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException  error)
+        {
+            capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
     }
 
 
@@ -297,7 +355,7 @@ public class AssetConsumerRESTServices
             }
 
             AuditLogHandler   auditLogHandler = new AuditLogHandler(instanceHandler.getAccessServiceName(),
-                                                                    instanceHandler.getRepositoryConnector(serverName));
+                                                                    instanceHandler.getAuditLog(serverName));
 
             auditLogHandler.addLogMessageToAsset(userId,
                                                  guid,
@@ -1124,31 +1182,6 @@ public class AssetConsumerRESTServices
      */
     private void captureUserNotAuthorizedException(AssetConsumerOMASAPIResponse response,
                                                    UserNotAuthorizedException   error)
-    {
-        String  userId = error.getUserId();
-
-        if (userId != null)
-        {
-            Map<String, Object>  exceptionProperties = new HashMap<>();
-
-            exceptionProperties.put("userId", userId);
-            captureCheckedException(response, error, error.getClass().getName(), exceptionProperties);
-        }
-        else
-        {
-            captureCheckedException(response, error, error.getClass().getName());
-        }
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response  REST Response
-     * @param error returned response.
-     */
-    private void captureNoProfileForUserException(AssetConsumerOMASAPIResponse response,
-                                                  NoProfileForUserException    error)
     {
         String  userId = error.getUserId();
 
