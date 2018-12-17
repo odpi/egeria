@@ -187,11 +187,11 @@ public class ReportCreationTest {
 
     private void populateRepository() throws Exception {
 
-        String qualifiedNameForEndpoint = "clrv0000065114.ic.ing.net";
+        String qualifiedNameForEndpoint = "host";
         InstanceProperties endpointProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForEndpoint)
                 .withStringProperty(Constants.NAME, qualifiedNameForEndpoint)
-                .withStringProperty(Constants.NETWORK_ADDRESS, "clrv0000065114.ic.ing.net")
+                .withStringProperty(Constants.NETWORK_ADDRESS, "host")
                 .withStringProperty(Constants.PROTOCOL, "")
                 .build();
         EntityDetail endpointEntity = entitiesCreatorHelper.addEntity(Constants.ENDPOINT,
