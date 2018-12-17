@@ -1012,8 +1012,7 @@ public class OMAGServerAdminServices
      * @param connectorProvider  connector provider for the virtualisation solution.
      * @param additionalProperties  property name/value pairs used to configure the connection to the the virtualisation solution
      * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGConfigurationErrorException it is too late to configure the connector or other configuration already exists
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command
      * OMAGInvalidParameterException invalid serverName parameter.
      */
     public VoidResponse setVirtualisation(String              userId,
@@ -1030,15 +1029,13 @@ public class OMAGServerAdminServices
             /*
              * Validate and set up the userName and server name.
              */
-            validateServerName(serverName, methodName);
-            validateUserId(userId, serverName, methodName);
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
 
             /*
              * Retrieve the existing configuration and validate it is ok to set up event bus.
              */
             OMAGServerConfig serverConfig   = configStore.getServerConfig(serverName, methodName);
-            validateNewEventBusAllowed(serverName, serverConfig, methodName);
-
             VirtualiserConfig virtualiserConfig = new VirtualiserConfig();
 
             virtualiserConfig.setConnectorProvider(connectorProvider);
@@ -1055,10 +1052,6 @@ public class OMAGServerAdminServices
         catch (OMAGInvalidParameterException  error)
         {
             errorHandler.captureInvalidParameterException(response, error);
-        }
-        catch (OMAGConfigurationErrorException  error)
-        {
-            errorHandler.captureConfigurationErrorException(response, error);
         }
         catch (OMAGNotAuthorizedException  error)
         {

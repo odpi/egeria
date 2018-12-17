@@ -4,7 +4,7 @@ package org.odpi.openmetadata.virtualdataconnector.virtualiser.admin;
 
 import org.odpi.openmetadata.adminservices.OMAGServerAdminServices;
 import org.odpi.openmetadata.adminservices.OMAGServerOperationalServices;
-import org.odpi.openmetadata.adminservices.properties.VoidResponse;
+import org.odpi.openmetadata.adminservices.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
