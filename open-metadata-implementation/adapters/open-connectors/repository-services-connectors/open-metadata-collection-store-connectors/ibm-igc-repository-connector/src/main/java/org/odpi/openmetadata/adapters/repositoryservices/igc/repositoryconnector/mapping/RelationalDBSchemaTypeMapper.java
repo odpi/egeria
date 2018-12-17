@@ -6,24 +6,24 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSMetadataCollection;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
 
-public class RelationalTableTypeMapper extends ReferenceableMapper {
+public class RelationalDBSchemaTypeMapper extends ReferenceableMapper {
 
-    public static final String IGC_RID_PREFIX = IGCOMRSMetadataCollection.generateTypePrefix("RTT");
+    public static final String IGC_RID_PREFIX = IGCOMRSMetadataCollection.generateTypePrefix("RDBST");
 
     /**
-     * Sets the basic criteria to use for mapping between an IGC 'database_table' object and an OMRS 'RelationalTableType' object.
+     * Sets the basic criteria to use for mapping between an IGC 'database_schema' object and an OMRS 'RelationalDBSchemaType' object.
      *
-     * @param dbTable the IGC 'database_table' object
+     * @param dbSchema the IGC 'database_schema' object
      * @param igcomrsRepositoryConnector the IGC repository connector to use for retrieving any additional info required
      * @param userId the userId of the user doing any further detailed information retrievals (currently unused)
      */
-    public RelationalTableTypeMapper(Reference dbTable, IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {
+    public RelationalDBSchemaTypeMapper(Reference dbSchema, IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {
 
         // Start by calling the superclass's constructor to initialise the Mapper
         super(
-                dbTable,
-                "database_table",
-                "RelationalTableType",
+                dbSchema,
+                "database_schema",
+                "RelationalDBSchemaType",
                 igcomrsRepositoryConnector,
                 userId
         );
@@ -36,14 +36,14 @@ public class RelationalTableTypeMapper extends ReferenceableMapper {
         // The list of relationships that should be mapped
         addSimpleRelationshipMapping(
                 RelationshipMappingSet.SELF_REFERENCE_SENTINEL,
-                "SchemaAttributeType",
-                "usedInSchemas",
-                "type",
-                null,
-                IGC_RID_PREFIX
+                "AssetSchemaType",
+                "schema",
+                "describesAssets",
+                IGC_RID_PREFIX,
+                null
         );
         addSimpleRelationshipMapping(
-                "database_columns",
+                "database_tables",
                 "AttributeForSchema",
                 "parentSchemas",
                 "attributes",

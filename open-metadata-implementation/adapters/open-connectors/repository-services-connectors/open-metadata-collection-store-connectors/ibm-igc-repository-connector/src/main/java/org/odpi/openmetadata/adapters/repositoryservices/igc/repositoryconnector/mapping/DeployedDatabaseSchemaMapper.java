@@ -3,52 +3,46 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping;
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
-import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSMetadataCollection;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
 
-public class RelationalTableTypeMapper extends ReferenceableMapper {
-
-    public static final String IGC_RID_PREFIX = IGCOMRSMetadataCollection.generateTypePrefix("RTT");
+public class DeployedDatabaseSchemaMapper extends ReferenceableMapper {
 
     /**
-     * Sets the basic criteria to use for mapping between an IGC 'database_table' object and an OMRS 'RelationalTableType' object.
+     * Sets the basic criteria to use for mapping between an IGC 'database_schema' object and an OMRS 'DeployedDatabaseSchema' object.
      *
-     * @param dbTable the IGC 'database_table' object
+     * @param dbSchema the IGC 'database_schema' object
      * @param igcomrsRepositoryConnector the IGC repository connector to use for retrieving any additional info required
      * @param userId the userId of the user doing any further detailed information retrievals (currently unused)
      */
-    public RelationalTableTypeMapper(Reference dbTable, IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {
+    public DeployedDatabaseSchemaMapper(Reference dbSchema, IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {
 
         // Start by calling the superclass's constructor to initialise the Mapper
         super(
-                dbTable,
-                "database_table",
-                "RelationalTableType",
+                dbSchema,
+                "database_schema",
+                "DeployedDatabaseSchema",
                 igcomrsRepositoryConnector,
                 userId
         );
 
-        setIgcRidPrefix(IGC_RID_PREFIX);
-
         // The list of properties that should be mapped
-        addSimplePropertyMapping("name", "displayName");
+        addSimplePropertyMapping("name", "name");
+        addSimplePropertyMapping("short_description", "description");
 
         // The list of relationships that should be mapped
         addSimpleRelationshipMapping(
                 RelationshipMappingSet.SELF_REFERENCE_SENTINEL,
-                "SchemaAttributeType",
-                "usedInSchemas",
-                "type",
+                "AssetSchemaType",
+                "describesAssets",
+                "schema",
                 null,
-                IGC_RID_PREFIX
+                RelationalDBSchemaTypeMapper.IGC_RID_PREFIX
         );
         addSimpleRelationshipMapping(
-                "database_columns",
-                "AttributeForSchema",
-                "parentSchemas",
-                "attributes",
-                IGC_RID_PREFIX,
-                null
+                "database",
+                "DataContentForDataSet",
+                "supportedDataSets",
+                "dataContent"
         );
 
     }

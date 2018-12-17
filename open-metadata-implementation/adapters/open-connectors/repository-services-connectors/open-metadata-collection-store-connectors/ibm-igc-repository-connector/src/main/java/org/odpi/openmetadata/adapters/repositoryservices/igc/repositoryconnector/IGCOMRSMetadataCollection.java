@@ -678,6 +678,8 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             //  - POST'd search to IGC doesn't work on latest v11.7.0.2+ using long_description; suggestion
             //    to instead use "searchText" (TBD; may need to drop 'long_description' from v11.7 search in
             //    meantime)
+            //  - using "searchText" requires using "searchProperties" (no "where" conditions) -- but does not
+            //    work with 'main_object', must be used with a specific asset type
 
             IGCSearch igcSearch = new IGCSearch();
 
@@ -834,6 +836,8 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
 
         String igcAssetType = igcObject.getType();
 
+        log.debug("Looking for mapper for type {} with prefix {}", igcAssetType, prefix);
+
         List<Class> mapperClasses = getMapperClasses(igcAssetType);
         ReferenceableMapper referenceMapper = null;
 
@@ -854,6 +858,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             // Otherwise keep looping until we find one that meets above criteria (or we run out of options)
         }
 
+        log.debug("Found mapper class: {}", referenceMapper.getClass().getCanonicalName());
         return referenceMapper;
 
     }
@@ -1012,7 +1017,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
     public static final String getPrefixFromGeneratedId(String guid) {
         if (isGeneratedGUID(guid)) {
             return guid
-                    .substring(0, guid.indexOf(GENERATED_TYPE_POSTFIX) + GENERATED_TYPE_POSTFIX.length() + 1);
+                    .substring(0, guid.indexOf(GENERATED_TYPE_POSTFIX) + GENERATED_TYPE_POSTFIX.length());
         } else {
             return null;
         }
