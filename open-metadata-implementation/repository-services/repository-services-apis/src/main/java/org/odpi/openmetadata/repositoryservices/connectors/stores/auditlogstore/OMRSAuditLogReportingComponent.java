@@ -1,9 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -88,52 +91,56 @@ public class OMRSAuditLogReportingComponent
     }
 
 
+    /**
+     * Standard toString method.
+     *
+     * @return JSON style description of variables.
+     */
     @Override
     public String toString()
     {
-        return  "ReportingComponent { " +
-                "id : " + this.componentId + ", " +
-                "name : " + this.componentName + ", " +
-                "description : " + this.componentDescription + ", " +
-                "url : " + this.componentWikiURL + " }";
+        return "OMRSAuditLogReportingComponent{" +
+                "componentId=" + componentId +
+                ", componentName='" + componentName + '\'' +
+                ", componentDescription='" + componentDescription + '\'' +
+                ", componentWikiURL='" + componentWikiURL + '\'' +
+                '}';
     }
 
+
+    /**
+     * Validate that an object is equal depending on their stored values.
+     *
+     * @param objectToCompare object
+     * @return boolean result
+     */
     @Override
-    public boolean equals(Object o)
+    public boolean equals(Object objectToCompare)
     {
-        if (this == o)
+        if (this == objectToCompare)
         {
             return true;
         }
-        if (o == null || getClass() != o.getClass())
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
-
-        OMRSAuditLogReportingComponent that = (OMRSAuditLogReportingComponent) o;
-
-        if (componentId != that.componentId)
-        {
-            return false;
-        }
-        if (componentName != null ? !componentName.equals(that.componentName) : that.componentName != null)
-        {
-            return false;
-        }
-        if (componentDescription != null ? !componentDescription.equals(that.componentDescription) : that.componentDescription != null)
-        {
-            return false;
-        }
-        return componentWikiURL != null ? componentWikiURL.equals(that.componentWikiURL) : that.componentWikiURL == null;
+        OMRSAuditLogReportingComponent that = (OMRSAuditLogReportingComponent) objectToCompare;
+        return getComponentId() == that.getComponentId() &&
+                Objects.equals(getComponentName(), that.getComponentName()) &&
+                Objects.equals(getComponentDescription(), that.getComponentDescription()) &&
+                Objects.equals(getComponentWikiURL(), that.getComponentWikiURL());
     }
 
+
+    /**
+     * Return a hash code based on the values of this object.
+     *
+     * @return in hash code
+     */
     @Override
     public int hashCode()
     {
-        int result = componentId;
-        result = 31 * result + (componentName != null ? componentName.hashCode() : 0);
-        result = 31 * result + (componentDescription != null ? componentDescription.hashCode() : 0);
-        result = 31 * result + (componentWikiURL != null ? componentWikiURL.hashCode() : 0);
-        return result;
+        return Objects.hash(getComponentId(), getComponentName(), getComponentDescription(), getComponentWikiURL());
     }
 }

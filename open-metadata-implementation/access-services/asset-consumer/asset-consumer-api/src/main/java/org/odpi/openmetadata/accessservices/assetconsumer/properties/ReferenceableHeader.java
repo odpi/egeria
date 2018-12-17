@@ -5,10 +5,7 @@ package org.odpi.openmetadata.accessservices.assetconsumer.properties;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -29,12 +26,16 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 })
 public abstract class ReferenceableHeader extends AssetConsumerElementHeader
 {
-    private String               guid                 = null;
-    private String               typeName             = null;
-    private String               typeDescription      = null;
-    private String               qualifiedName        = null;
-    private Map<String, Object>  additionalProperties = null;
-    private List<Classification> classifications      = null;
+    private String                            guid                 = null;
+    private String                            typeName             = null;
+    private String                            typeDescription      = null;
+    private String                            originId             = null;
+    private String                            originName           = null;
+    private String                            originType           = null;
+    private String                            originLicense        = null;
+    private String                            qualifiedName        = null;
+    private Map<String, Object>               additionalProperties = null;
+    private List<ReferenceableClassification> classifications      = null;
 
 
     /**
@@ -58,6 +59,10 @@ public abstract class ReferenceableHeader extends AssetConsumerElementHeader
             this.guid = template.getGUID();
             this.typeName = template.getTypeName();
             this.typeDescription = template.getTypeDescription();
+            this.originId = template.getOriginId();
+            this.originName = template.getOriginName();
+            this.originType = template.getOriginType();
+            this.originLicense = template.getOriginLicense();
             this.qualifiedName = template.getQualifiedName();
             this.additionalProperties = template.getAdditionalProperties();
             this.classifications = template.getClassifications();
@@ -117,6 +122,96 @@ public abstract class ReferenceableHeader extends AssetConsumerElementHeader
     public String getTypeDescription()
     {
         return typeDescription;
+    }
+
+
+    /**
+     * Return the unique identifier of this metadata element's origin (also known as the home metadata collection id).
+     *
+     * @return guid
+     */
+    public String getOriginId()
+    {
+        return originId;
+    }
+
+
+    /**
+     * Set up the unique identifier of this metadata element's origin (also known as the home metadata collection id).
+     *
+     * @param originId guid
+     */
+    public void setOriginId(String originId)
+    {
+        this.originId = originId;
+    }
+
+
+    /**
+     * Set up the name of the metadata element's origin.  This may be null.
+     *
+     * @return name
+     */
+    public String getOriginName()
+    {
+        return originName;
+    }
+
+
+    /**
+     * Return the name of the metadata element's origin.  This may be null.
+     *
+     * @param originName name
+     */
+    public void setOriginName(String originName)
+    {
+        this.originName = originName;
+    }
+
+
+    /**
+     * Return the type of the metadata element's origin.
+     *
+     * @return descriptive type name
+     */
+    public String getOriginType()
+    {
+        return originType;
+    }
+
+
+    /**
+     * Set up the type of the metadata element's origin.
+     *
+     * @param originType descriptive type name
+     */
+    public void setOriginType(String originType)
+    {
+        this.originType = originType;
+    }
+
+
+    /**
+     * Return the license for the metadata element set up by the origin.
+     * Null means unrestricted.
+     *
+     * @return license string
+     */
+    public String getOriginLicense()
+    {
+        return originLicense;
+    }
+
+
+    /**
+     * Set up the license for the metadata element set up by the origin.
+     * Null means unrestricted.
+     *
+     * @param originLicense
+     */
+    public void setOriginLicense(String originLicense)
+    {
+        this.originLicense = originLicense;
     }
 
 
@@ -191,7 +286,7 @@ public abstract class ReferenceableHeader extends AssetConsumerElementHeader
      *
      * @return list of classification objects
      */
-    public List<Classification> getClassifications()
+    public List<ReferenceableClassification> getClassifications()
     {
         if (classifications == null)
         {
@@ -203,7 +298,14 @@ public abstract class ReferenceableHeader extends AssetConsumerElementHeader
         }
         else
         {
-            return classifications;
+            List<ReferenceableClassification>  clonedList = new ArrayList<>();
+
+            for (ReferenceableClassification  existingElement : classifications)
+            {
+                clonedList.add(new ReferenceableClassification(existingElement));
+            }
+
+            return clonedList;
         }
     }
 
@@ -213,7 +315,7 @@ public abstract class ReferenceableHeader extends AssetConsumerElementHeader
      *
      * @param classifications list of classification objects
      */
-    public void setClassifications(List<Classification> classifications)
+    public void setClassifications(List<ReferenceableClassification> classifications)
     {
         this.classifications = classifications;
     }

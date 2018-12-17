@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs;
 
 import com.fasterxml.jackson.annotation.*;
@@ -128,7 +129,14 @@ public abstract class TypeDef extends TypeDefSummary
      */
     public TypeDefLink getSuperType()
     {
-        return superType;
+        if (superType == null)
+        {
+            return null;
+        }
+        else
+        {
+            return superType;
+        }
     }
 
 
@@ -303,7 +311,18 @@ public abstract class TypeDef extends TypeDefSummary
      */
     public Map<String, String> getOptions()
     {
-        return options;
+        if (options == null)
+        {
+            return null;
+        }
+        else if (options.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new HashMap<>(options);
+        }
     }
 
 
@@ -330,9 +349,20 @@ public abstract class TypeDef extends TypeDefSummary
         {
             return null;
         }
+        else if (externalStandardMappings.isEmpty())
+        {
+            return null;
+        }
         else
         {
-            return new ArrayList<>(externalStandardMappings);
+            List<ExternalStandardMapping>  clonedList = new ArrayList<>();
+
+            for (ExternalStandardMapping  existingElement : externalStandardMappings)
+            {
+                clonedList.add(new ExternalStandardMapping(existingElement));
+            }
+
+            return clonedList;
         }
     }
 
@@ -344,25 +374,22 @@ public abstract class TypeDef extends TypeDefSummary
      */
     public void setExternalStandardMappings(List<ExternalStandardMapping> externalStandardMappings)
     {
-        if (externalStandardMappings == null)
-        {
-            this.externalStandardMappings = null;
-        }
-        else
-        {
-            this.externalStandardMappings = new ArrayList<>(externalStandardMappings);
-        }
+        this.externalStandardMappings = externalStandardMappings;
     }
 
 
     /**
-     * Return the list of valid instance statuses supported by this TypeDef.
+     * Return the list of valid statuses for an instance of this TypeDef.
      *
-     * @return InstanceStatus array of supported status values.
+     * @return list of valid statuses
      */
     public List<InstanceStatus> getValidInstanceStatusList()
     {
         if (validInstanceStatusList == null)
+        {
+            return null;
+        }
+        else if (validInstanceStatusList.isEmpty())
         {
             return null;
         }
@@ -380,14 +407,7 @@ public abstract class TypeDef extends TypeDefSummary
      */
     public void setValidInstanceStatusList(List<InstanceStatus> validInstanceStatusList)
     {
-        if (validInstanceStatusList == null)
-        {
-            this.validInstanceStatusList = null;
-        }
-        else
-        {
-            this.validInstanceStatusList = new ArrayList<>(validInstanceStatusList);
-        }
+        this.validInstanceStatusList = validInstanceStatusList;
     }
 
 
@@ -414,9 +434,9 @@ public abstract class TypeDef extends TypeDefSummary
 
 
     /**
-     * Return the list of AttributeDefs that define the valid properties for this type of classification.
+     * Return the list of typeDefAttributes that are either new or changing.
      *
-     * @return AttributeDefs list
+     * @return list of TypeDefAttribute
      */
     public List<TypeDefAttribute> getPropertiesDefinition()
     {
@@ -424,9 +444,20 @@ public abstract class TypeDef extends TypeDefSummary
         {
             return null;
         }
+        else if (propertiesDefinition.isEmpty())
+        {
+            return null;
+        }
         else
         {
-            return new ArrayList<>(propertiesDefinition);
+            List<TypeDefAttribute>  clonedList = new ArrayList<>();
+
+            for (TypeDefAttribute  existingElement : propertiesDefinition)
+            {
+                clonedList.add(new TypeDefAttribute(existingElement));
+            }
+
+            return clonedList;
         }
     }
 
@@ -438,14 +469,7 @@ public abstract class TypeDef extends TypeDefSummary
      */
     public void setPropertiesDefinition(List<TypeDefAttribute> propertiesDefinition)
     {
-        if (propertiesDefinition == null)
-        {
-            this.propertiesDefinition = null;
-        }
-        else
-        {
-            this.propertiesDefinition = new ArrayList<>(propertiesDefinition);
-        }
+        this.propertiesDefinition = propertiesDefinition;
     }
 
 
