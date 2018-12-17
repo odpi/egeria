@@ -1278,6 +1278,72 @@ public class OMAGServerAdminServices
     }
 
 
+    /**
+     * Set up the connector to the virtualisation solution.
+     * The resulting connector will be used in Virualiser to connect to the virtualisation tool.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName local server name.
+     * @param connectorProvider  connector provider for the virtualisation solution.
+     * @param additionalProperties  property name/value pairs used to configure the connection to the the virtualisation solution
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException it is too late to configure the connector or other configuration already exists
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    public VoidResponse setVirtualisation(String              userId,
+                                          String              serverName,
+                                          String              connectorProvider,
+                                          Map<String, Object> additionalProperties)
+    {
+        final String methodName = "setVirtualisation";
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            /*
+             * Validate and set up the userName and server name.
+             */
+            validateServerName(serverName, methodName);
+            validateUserId(userId, serverName, methodName);
+
+            /*
+             * Retrieve the existing configuration and validate it is ok to set up event bus.
+             */
+            OMAGServerConfig serverConfig   = configStore.getServerConfig(serverName, methodName);
+            validateNewEventBusAllowed(serverName, serverConfig, methodName);
+
+            VirtualiserConfig virtualiserConfig = new VirtualiserConfig();
+
+            virtualiserConfig.setConnectorProvider(connectorProvider);
+            virtualiserConfig.setAdditionalProperties(additionalProperties);
+
+            serverConfig.setVirtualiserConfig(virtualiserConfig);
+
+            /*
+             * Save the config away
+             */
+            configStore.saveServerConfig(serverName, methodName, serverConfig);
+
+        }
+        catch (OMAGInvalidParameterException  error)
+        {
+            errorHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGConfigurationErrorException  error)
+        {
+            errorHandler.captureConfigurationErrorException(response, error);
+        }
+        catch (OMAGNotAuthorizedException  error)
+        {
+            errorHandler.captureNotAuthorizedException(response, error);
+        }
+
+        return response;
+    }
+
+
     /*
      * =============================================================
      * Query current configuration
