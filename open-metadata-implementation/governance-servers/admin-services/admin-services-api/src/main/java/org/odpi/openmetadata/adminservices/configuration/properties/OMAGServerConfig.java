@@ -82,6 +82,7 @@ public class OMAGServerConfig implements Serializable
     private EventBusConfig            eventBusConfig           = null;
     private List<AccessServiceConfig> accessServicesConfig     = null;
     private RepositoryServicesConfig  repositoryServicesConfig = null;
+    private VirtualiserConfig         virtualiserConfig        = null;
 
 
     /**
@@ -110,6 +111,7 @@ public class OMAGServerConfig implements Serializable
         eventBusConfig = template.getEventBusConfig();
         accessServicesConfig = template.getAccessServicesConfig();
         repositoryServicesConfig = template.getRepositoryServicesConfig();
+        virtualiserConfig = template.getVirtualiserConfig();
     }
 
 
@@ -331,5 +333,25 @@ public class OMAGServerConfig implements Serializable
     public void setRepositoryServicesConfig(RepositoryServicesConfig repositoryServicesConfig)
     {
         this.repositoryServicesConfig = repositoryServicesConfig;
+    }
+
+
+    /**
+     * Set up the virtualisation solution connector config
+     *
+     * @param virtualiserConfig configuration properties that set up the connector to virualisation solutions
+     */
+    public void setVirtualiserConfig(VirtualiserConfig virtualiserConfig) {
+        this.virtualiserConfig = virtualiserConfig;
+    }
+
+
+    /**
+     * Return the virtualisation solution connector config
+     *
+     * @return configuration properties that set up the connector to virualisation solutions
+     */
+    public VirtualiserConfig getVirtualiserConfig() {
+        return virtualiserConfig;
     }
 }
