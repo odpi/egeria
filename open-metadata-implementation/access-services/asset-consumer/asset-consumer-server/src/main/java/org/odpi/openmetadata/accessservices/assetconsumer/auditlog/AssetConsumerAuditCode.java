@@ -45,14 +45,37 @@ public enum AssetConsumerAuditCode
     SERVICE_SHUTDOWN("OMAS-ASSET-CONSUMER-0004",
              OMRSAuditLogRecordSeverity.INFO,
              "The Asset Consumer Open Metadata Access Service (OMAS) is shutting down its instance for server {0}",
-             "The local server has requested shut down of an Asset Consumer OMAS instance.",
+             "The local administrator has requested shut down of an Asset Consumer OMAS instance.",
              "No action is required.  This is part of the normal operation of the service."),
 
     SERVICE_INSTANCE_FAILURE("OMAS-ASSET-CONSUMER-0005",
              OMRSAuditLogRecordSeverity.ERROR,
              "The Asset Consumer Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}",
              "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
-                             "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server.")
+                             "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
+    ALL_ZONES("OMAS-ASSET-CONSUMER-0006",
+             OMRSAuditLogRecordSeverity.INFO,
+             "The Asset Consumer Open Metadata Access Service (OMAS) is supporting all governance zones",
+             "The access service has not been passed a list of governance zones in the SupportedZones property of the access services options.  " +
+                      "This means it is providing access to all Assets irrespective of the zone(s) they are located in.",
+             "No action is required.  This is part of the normal operation of the service."),
+    SUPPORTED_ZONES("OMAS-ASSET-CONSUMER-0007",
+              OMRSAuditLogRecordSeverity.INFO,
+             "The Asset Consumer Open Metadata Access Service (OMAS) is supporting the following governance zones {0}",
+             "The access service was passed a list of governance zones in the SupportedZones property of the access services options.  " +
+                      "This means it is only providing access to the Assets from these zone(s).",
+             "No action is required.  This is part of the normal operation of the service."),
+    BAD_CONFIG("OMAS-ASSET-CONSUMER-0008",
+             OMRSAuditLogRecordSeverity.ERROR,
+             "The Asset Consumer Open Metadata Access Service (OMAS) has been passed an invalid value of {0} in the {1} property",
+             "The access service has not been passed valid configuration.",
+             "Correct the configuration and restart the service."),
+    ASSET_AUDIT_LOG("OMAS-ASSET-CONSUMER-0008",
+               OMRSAuditLogRecordSeverity.INFO,
+               "Log message for asset {0}: {1}",
+               "An asset consumer has logged a message for an asset.",
+               "Review the message to ensure no action is required.")
+
     ;
 
     private String                     logMessageId;
