@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -16,9 +17,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Asset {
+public class Asset implements Serializable {
 
-    private String GUID;
+    private static final long serialVersionUID = 1L;
+    
+    private String guid;
     private String metadataCollectionId;
     private String name;
     private String createdBy;
@@ -35,17 +38,17 @@ public class Asset {
      *
      * @return String - unique identified of the asset
      */
-    public String getGUID() {
-        return GUID;
+    public String getGuid() {
+        return guid;
     }
 
     /**
      * Set up the unique identifier of the asset
      *
-     * @param GUID the asset's unique identifier
+     * @param guid the asset's unique identifier
      */
-    public void setGUID(String GUID) {
-        this.GUID = GUID;
+    public void setGuid(String guid) {
+        this.guid = guid;
     }
 
     /**

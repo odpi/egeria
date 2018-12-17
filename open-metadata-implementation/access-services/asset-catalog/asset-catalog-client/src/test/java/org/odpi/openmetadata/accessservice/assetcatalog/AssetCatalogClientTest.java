@@ -93,7 +93,7 @@ public class AssetCatalogClientTest {
 
         checkResponse(response);
         assertEquals(response.getAssetDescriptionList().size(), 1);
-        assertEquals(defaultAssetId, response.getAssetDescriptionList().get(0).getGUID());
+        assertEquals(defaultAssetId, response.getAssetDescriptionList().get(0).getGuid());
     }
 
     @Test
@@ -110,7 +110,7 @@ public class AssetCatalogClientTest {
 
         checkResponse(response);
         assertEquals(response.getAssetDescriptionList().size(), 1);
-        assertEquals(defaultAssetId, response.getAssetDescriptionList().get(0).getGUID());
+        assertEquals(defaultAssetId, response.getAssetDescriptionList().get(0).getGuid());
     }
 
     @Test
@@ -127,7 +127,7 @@ public class AssetCatalogClientTest {
 
         checkResponse(response);
         assertEquals(response.getAssetDescriptionList().size(), 1);
-        assertEquals(defaultAssetId, response.getAssetDescriptionList().get(0).getGUID());
+        assertEquals(defaultAssetId, response.getAssetDescriptionList().get(0).getGuid());
     }
 
     @Ignore
@@ -376,7 +376,7 @@ public class AssetCatalogClientTest {
         expectedResponse.setRelatedHTTPCode(200);
 
         AssetDescription assetDescription = new AssetDescription();
-        assetDescription.setGUID(defaultAssetId);
+        assetDescription.setGuid(defaultAssetId);
         List<AssetDescription> list = new ArrayList<>(1);
         list.add(assetDescription);
         expectedResponse.setAssetDescriptionList(list);
@@ -391,7 +391,7 @@ public class AssetCatalogClientTest {
 
         List<Relationship> relationships = new ArrayList<>();
         Relationship relationship = new Relationship();
-        relationship.setGUID(defaultRelationshipId);
+        relationship.setGuid(defaultRelationshipId);
         relationships.add(relationship);
         expectedResponse.setRelationships(relationships);
 
