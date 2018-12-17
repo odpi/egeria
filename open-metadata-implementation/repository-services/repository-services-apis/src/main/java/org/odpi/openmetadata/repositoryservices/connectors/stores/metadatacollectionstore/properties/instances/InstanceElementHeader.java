@@ -1,4 +1,5 @@
-/* SPDX-License-Identifier: Apache-2.0 */
+/* SPDX-License-Identifier: Apache 2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances;
 
 import com.fasterxml.jackson.annotation.*;
@@ -20,6 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 @JsonSubTypes({
+        @JsonSubTypes.Type(value = ClassificationEntityExtension.class, name = "ClassificationEntityExtension"),
         @JsonSubTypes.Type(value = InstanceAuditHeader.class, name = "InstanceAuditHeader"),
         @JsonSubTypes.Type(value = InstanceGraph.class, name = "InstanceGraph"),
         @JsonSubTypes.Type(value = InstanceType.class, name = "InstanceType"),

@@ -223,8 +223,6 @@ public class EntityProxyTest
         InstanceProperties instanceProperties = new InstanceProperties();
         testObject.setUniqueProperties(instanceProperties);
 
-        /*
-         * Commented out waiting for fix in Subject Area OMAS
         assertTrue(testObject.getUniqueProperties() == null);
 
 
@@ -232,7 +230,6 @@ public class EntityProxyTest
         testObject.setUniqueProperties(instanceProperties);
 
         assertTrue(testObject.getUniqueProperties() == null);
-        */
     }
 
 
