@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservice.assetcatalog.server.spring;
 
+import org.odpi.openmetadata.accessservice.assetcatalog.exception.NotImplementedException;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.AssetDescription;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.rest.body.SearchParameters;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.rest.responses.AssetDescriptionResponse;
@@ -267,7 +268,7 @@ public class AssetCatalogEntityResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public List<AssetDescription> getLastCreatedAssets(@PathVariable("serverName") String serverName,
                                                        @PathVariable("userId") String userId,
-                                                       @RequestBody SearchParameters searchParameters) {
+                                                       @RequestBody SearchParameters searchParameters) throws NotImplementedException {
         return assetService.getLastCreatedAssets(serverName, userId, searchParameters);
     }
 
@@ -284,7 +285,7 @@ public class AssetCatalogEntityResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public List<AssetDescription> getLastUpdatedAssets(@PathVariable("serverName") String serverName,
                                                        @PathVariable("userId") String userId,
-                                                       @RequestBody SearchParameters searchParameters) {
+                                                       @RequestBody SearchParameters searchParameters) throws NotImplementedException {
         return assetService.getLastUpdatedAssets(serverName, userId, searchParameters);
     }
 
