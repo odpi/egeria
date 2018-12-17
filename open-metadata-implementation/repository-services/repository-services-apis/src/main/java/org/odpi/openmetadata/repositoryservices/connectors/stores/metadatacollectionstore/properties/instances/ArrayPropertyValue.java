@@ -88,7 +88,7 @@ public class ArrayPropertyValue extends InstancePropertyValue
     {
         if (arrayValues == null)
         {
-            return arrayValues;
+            return null;
         }
         else
         {
@@ -111,7 +111,7 @@ public class ArrayPropertyValue extends InstancePropertyValue
             {
                 arrayValues = new InstanceProperties();
             }
-            arrayValues.setProperty(new Integer(elementNumber).toString(), propertyValue);
+            arrayValues.setProperty(Integer.toString(elementNumber), propertyValue);
         }
         else
         {
@@ -121,8 +121,8 @@ public class ArrayPropertyValue extends InstancePropertyValue
             OMRSErrorCode errorCode = OMRSErrorCode.ARRAY_OUT_OF_BOUNDS;
             String        errorMessage = errorCode.getErrorMessageId()
                                        + errorCode.getFormattedErrorMessage(this.getClass().getSimpleName(),
-                                                                            new Integer(elementNumber).toString(),
-                                                                            new Integer(arrayCount).toString());
+                                                                            Integer.toString(elementNumber),
+                                                                            Integer.toString(arrayCount));
 
             throw new OMRSRuntimeException(errorCode.getHTTPErrorCode(),
                                            this.getClass().getName(),

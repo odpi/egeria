@@ -1,6 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservice.assetcatalog.exception;
 
+/**
+ * The RelationshipNotFoundException is thrown by the Asset Catalog OMAS when the relationship passed on a request
+ * is not found in the repository
+ */
 public class RelationshipNotFoundException extends AssetCatalogException {
 
     /**

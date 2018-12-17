@@ -3,7 +3,7 @@
   "sources": [{
     "@id": "0",
     "class": "TableSource",
-    "networkAddress": "***REMOVED***",
+    "networkAddress": "host",
     "protocol": "",
     "additionalProperties": {
       "type": "live/import"

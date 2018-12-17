@@ -16,3 +16,9 @@ This is the base for many different types of models.
 Currently we only have [solution blueprints](0580-Solution-Blueprints.md) defined. 
 
 ![UML](0565-Model-Elements.png)
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

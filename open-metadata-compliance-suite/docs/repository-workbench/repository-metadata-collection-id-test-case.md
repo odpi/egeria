@@ -1,6 +1,5 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
-
 
 # Repository metadata collection id test case
 
@@ -41,3 +40,9 @@ for a second time.
       }
 }
 ```
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

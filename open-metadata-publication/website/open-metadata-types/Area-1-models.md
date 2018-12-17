@@ -16,3 +16,8 @@ into the governance program.
 * **[0140 Communities](0140-Communities.md)**
 * **[0150 Feedback](0150-Feedback.md)**
 * **[0160 Notes](0160-Notes.md)**
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
