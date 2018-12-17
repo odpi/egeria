@@ -640,28 +640,16 @@ public class AssetCatalogService {
 
         OMRSMetadataCollection metadataCollection = instanceHandler.getMetadataCollection(serverName);
 
-        if (relationshipType == null) {
-            AssetCatalogErrorCode errorCode = AssetCatalogErrorCode.PARAMETER_NULL;
-            String errorMessage = errorCode.getErrorMessageId() +
-                    errorCode.getFormattedErrorMessage("type", "getTypeID");
-
-            throw new AssetNotFoundException(errorCode.getHttpErrorCode(),
-                    this.getClass().getName(),
-                    "findEntitiesByClassifications",
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+        if (relationshipType != null) {
+            try {
+                return metadataCollection.getTypeDefByName(userId, relationshipType).getGUID();
+            } catch (InvalidParameterException
+                    | RepositoryErrorException
+                    | UserNotAuthorizedException
+                    | TypeDefNotKnownException e) {
+                e.printStackTrace();
+            }
         }
-
-        try {
-            return metadataCollection.getTypeDefByName(userId, relationshipType).getGUID();
-        } catch (InvalidParameterException
-                | RepositoryErrorException
-                | UserNotAuthorizedException
-                | TypeDefNotKnownException e) {
-            e.printStackTrace();
-        }
-
         return null;
     }
 
