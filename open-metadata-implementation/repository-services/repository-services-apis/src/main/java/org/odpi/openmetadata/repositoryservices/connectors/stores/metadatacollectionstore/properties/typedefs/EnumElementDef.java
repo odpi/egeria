@@ -132,8 +132,8 @@ public class EnumElementDef extends TypeDefElementHeader
     public String toString()
     {
         return "EnumElementDef{" +
-                "ordinal=" + ordinal +
-                ", value='" + value + '\'' +
+                "value='" + value + '\'' +
+                ", ordinal=" + ordinal +
                 ", description='" + description + '\'' +
                 ", descriptionGUID='" + descriptionGUID + '\'' +
                 '}';

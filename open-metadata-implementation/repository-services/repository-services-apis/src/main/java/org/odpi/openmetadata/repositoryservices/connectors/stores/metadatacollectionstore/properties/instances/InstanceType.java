@@ -336,9 +336,9 @@ public class InstanceType extends InstanceElementHeader
     public String toString()
     {
         return "InstanceType{" +
-                "typeDefCategory=" + typeDefCategory +
+                "typeDefName='" + typeDefName + '\'' +
+                ", typeDefCategory=" + typeDefCategory +
                 ", typeDefGUID='" + typeDefGUID + '\'' +
-                ", typeDefName='" + typeDefName + '\'' +
                 ", typeDefVersion=" + typeDefVersion +
                 ", typeDefDescription='" + typeDefDescription + '\'' +
                 ", typeDefDescriptionGUID='" + typeDefDescriptionGUID + '\'' +
