@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.communityprofile.listener;
 import org.odpi.openmetadata.accessservices.communityprofile.outtopic.CommunityProfilePublisher;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListener;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
 import org.odpi.openmetadata.repositoryservices.events.*;
@@ -29,11 +30,13 @@ public class CommunityProfileOMRSTopicListener implements OMRSTopicListener
      * @param componentName  name of component
      */
     public CommunityProfileOMRSTopicListener(Connection              assetConsumerOutTopic,
+                                             OMRSRepositoryConnector repositoryConnector,
                                              OMRSRepositoryHelper    repositoryHelper,
                                              OMRSRepositoryValidator repositoryValidator,
                                              String                  componentName)
     {
         publisher = new CommunityProfilePublisher(assetConsumerOutTopic,
+                                                  repositoryConnector,
                                                   repositoryHelper,
                                                   repositoryValidator,
                                                   componentName);
