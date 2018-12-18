@@ -17,8 +17,6 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorEx
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 public class DataClassMapper extends ReferenceableMapper {
@@ -109,96 +107,90 @@ public class DataClassMapper extends ReferenceableMapper {
      * Implement any complex property mappings that cannot be simply mapped one-to-one.
      */
     @Override
-    protected void complexPropertyMappings(InstanceProperties instanceProperties, Method getPropertyByName) {
+    protected void complexPropertyMappings(InstanceProperties instanceProperties) {
 
-        try {
+        /*
+         * setup the OMRS 'dataType' property
+         */
+        // There can be multiple data types defined on an IGC data class...
+        ArrayList<String> dataTypes = (ArrayList<String>) me.getPropertyByName("data_type_filter_elements_enum");
+        String dataType = null;
+        for (String type : dataTypes) {
+            // We'll take the first dataType we find to start with...
+            if (dataType == null) {
+                dataType = type;
+            } else if (type.equals("string") || !type.equals(dataType)) {
+                // But if we find any others, or we find string, we can safely set to "string"
+                // as a catch-all and then short-circuit
+                dataType = "string";
+                break;
+            }
+        }
+        instanceProperties.setProperty(
+                "dataType",
+                ReferenceMapper.getPrimitivePropertyValue(dataType)
+        );
 
-            /*
-             * setup the OMRS 'dataType' property
-             */
-            // There can be multiple data types defined on an IGC data class...
-            ArrayList<String> dataTypes = (ArrayList<String>) getPropertyByName.invoke(me, "data_type_filter_elements_enum");
-            String dataType = null;
-            for (String type : dataTypes) {
-                // We'll take the first dataType we find to start with...
-                if (dataType == null) {
-                    dataType = type;
-                } else if (type.equals("string") || !type.equals(dataType)) {
-                    // But if we find any others, or we find string, we can safely set to "string"
-                    // as a catch-all and then short-circuit
-                    dataType = "string";
-                    break;
+        /*
+         * setup the OMRS 'specificationDetails' property
+         */
+        String dataClassType = (String) me.getPropertyByName("data_class_type_single");
+        instanceProperties.setProperty(
+                "specificationDetails",
+                ReferenceMapper.getPrimitivePropertyValue(dataClassType)
+        );
+
+        /*
+         * setup the OMRS 'specification' property
+         */
+        // There are many different flavours of IGC data classes, so the expression used can vary widely...
+        String dataClassDetails = "";
+        switch(dataClassType) {
+            case "Regex":
+                dataClassDetails = (String) me.getPropertyByName("regular_expression_single");
+                break;
+            case "ValidValues":
+                dataClassDetails = (String) me.getPropertyByName("valid_value_strings");
+                if (dataClassDetails == null || dataClassDetails.equals("null") || dataClassDetails.equals("")) {
+                    dataClassDetails = (String) me.getPropertyByName("validValueReferenceFile");
                 }
-            }
-            instanceProperties.setProperty(
-                    "dataType",
-                    ReferenceMapper.getPrimitivePropertyValue(dataType)
-            );
-
-            /*
-             * setup the OMRS 'specificationDetails' property
-             */
-            String dataClassType = (String) getPropertyByName.invoke(me, "data_class_type_single");
-            instanceProperties.setProperty(
-                    "specificationDetails",
-                    ReferenceMapper.getPrimitivePropertyValue(dataClassType)
-            );
-
-            /*
-             * setup the OMRS 'specification' property
-             */
-            // There are many different flavours of IGC data classes, so the expression used can vary widely...
-            String dataClassDetails = "";
-            switch(dataClassType) {
-                case "Regex":
-                    dataClassDetails = (String) getPropertyByName.invoke(me, "regular_expression_single");
-                    break;
-                case "ValidValues":
-                    dataClassDetails = (String) getPropertyByName.invoke(me, "valid_value_strings");
-                    if (dataClassDetails == null || dataClassDetails.equals("null") || dataClassDetails.equals("")) {
-                        dataClassDetails = (String) getPropertyByName.invoke(me, "validValueReferenceFile");
+                break;
+            case "Script":
+                dataClassDetails = (String) me.getPropertyByName("script");
+                break;
+            case "ColumnSimilarity":
+                dataClassDetails = (String) me.getPropertyByName("expression");
+                break;
+            case "UnstructuredFilter":
+                ReferenceList filters = (ReferenceList) me.getPropertyByName("filters");
+                if (!filters.getItems().isEmpty()) {
+                    filters.getAllPages(igcomrsRepositoryConnector.getIGCRestClient());
+                    ArrayList<String> filterNames = new ArrayList<>();
+                    for (Reference filter : filters.getItems()) {
+                        filterNames.add(filter.getName());
                     }
-                    break;
-                case "Script":
-                    dataClassDetails = (String) getPropertyByName.invoke(me, "script");
-                    break;
-                case "ColumnSimilarity":
-                    dataClassDetails = (String) getPropertyByName.invoke(me, "expression");
-                    break;
-                case "UnstructuredFilter":
-                    ReferenceList filters = (ReferenceList) getPropertyByName.invoke(me, "filters");
-                    if (!filters.getItems().isEmpty()) {
-                        filters.getAllPages(igcomrsRepositoryConnector.getIGCRestClient());
-                        ArrayList<String> filterNames = new ArrayList<>();
-                        for (Reference filter : filters.getItems()) {
-                            filterNames.add(filter.getName());
-                        }
-                        dataClassDetails = String.join(", ", filterNames);
-                    }
-                    break;
-                default:
-                    dataClassDetails = (String) getPropertyByName.invoke(me, "java_class_name_single");
-                    break;
-            }
+                    dataClassDetails = String.join(", ", filterNames);
+                }
+                break;
+            default:
+                dataClassDetails = (String) me.getPropertyByName("java_class_name_single");
+                break;
+        }
+        instanceProperties.setProperty(
+                "specification",
+                ReferenceMapper.getPrimitivePropertyValue(dataClassDetails)
+        );
+
+        /*
+         * setup the OMRS 'userDefined' property
+         * Provider = 'IBM' is only present in v11.7+ to be able to make this determination
+         */
+        if (igcomrsRepositoryConnector.getIGCVersion().equals("v117")) {
+            String provider = (String) me.getPropertyByName("provider");
             instanceProperties.setProperty(
-                    "specification",
-                    ReferenceMapper.getPrimitivePropertyValue(dataClassDetails)
+                    "userDefined",
+                    ReferenceMapper.getPrimitivePropertyValue( (provider == null || !provider.equals("IBM")) )
             );
-
-            /*
-             * setup the OMRS 'userDefined' property
-             * Provider = 'IBM' is only present in v11.7+ to be able to make this determination
-             */
-            if (igcomrsRepositoryConnector.getIGCVersion().equals("v117")) {
-                String provider = (String) getPropertyByName.invoke(me, "provider");
-                instanceProperties.setProperty(
-                        "userDefined",
-                        ReferenceMapper.getPrimitivePropertyValue( (provider == null || !provider.equals("IBM")) )
-                );
-            }
-
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            log.error("Unable to map complex property.", e);
         }
 
     }
@@ -237,75 +229,63 @@ public class DataClassMapper extends ReferenceableMapper {
 
         detectedClassifications.getAllPages(igcomrsRepositoryConnector.getIGCRestClient());
 
-        String classificationClassName = ReferenceMapper.IGC_REST_GENERATED_MODEL_PKG + "." + igcomrsRepositoryConnector.getIGCVersion() + ".Classification";
-        ClassLoader classLoader = this.getClass().getClassLoader();
+        // For each of the detected classifications, create a new DataClassAssignment relationship
+        for (Reference detectedClassification : detectedClassifications.getItems()) {
 
-        try {
+            Reference classifiedObj = (Reference) detectedClassification.getPropertyByName("classifies_asset");
+            InstanceProperties relationshipProperties = new InstanceProperties();
 
-            Class classification = classLoader.loadClass(classificationClassName);
-            Method classificationGetPropertyByName = classification.getMethod("getPropertyByName", String.class);
+            /* Only proceed with the classified object if it is not a 'main_object' asset
+             * (in this scenario, 'main_object' represents ColumnAnalysisMaster objects that are not accessible
+             *  and will throw bad request (400) REST API errors) */
+            if (classifiedObj != null && !classifiedObj.getType().equals("main_object")) {
+                try {
 
-            // For each of the detected classifications, create a new DataClassAssignment relationship
-            for (Reference detectedClassification : detectedClassifications.getItems()) {
+                    Relationship omrsRelationship = getMappedRelationship(
+                            "classified_assets_detected",
+                            (RelationshipDef) igcomrsRepositoryConnector.getRepositoryHelper().getTypeDefByName(SOURCE_NAME,
+                                    R_DATA_CLASS_ASSIGNMENT),
+                            "dataClassesAssignedToElement",
+                            "elementsAssignedToDataClass",
+                            classifiedObj);
 
-                Reference classifiedObj = (Reference) classificationGetPropertyByName.invoke(detectedClassification, "classifies_asset");
-                InstanceProperties relationshipProperties = new InstanceProperties();
+                    Number confidence = (Number) detectedClassification.getPropertyByName("confidencePercent");
 
-                /* Only proceed with the classified object if it is not a 'main_object' asset
-                 * (in this scenario, 'main_object' represents ColumnAnalysisMaster objects that are not accessible
-                 *  and will throw bad request (400) REST API errors) */
-                if (classifiedObj != null && !classifiedObj.getType().equals("main_object")) {
-                    try {
-
-                        Relationship omrsRelationship = getMappedRelationship(
-                                "classified_assets_detected",
-                                (RelationshipDef) igcomrsRepositoryConnector.getRepositoryHelper().getTypeDefByName(SOURCE_NAME,
-                                        R_DATA_CLASS_ASSIGNMENT),
-                                "dataClassesAssignedToElement",
-                                "elementsAssignedToDataClass",
-                                classifiedObj);
-
-                        Number confidence = (Number) classificationGetPropertyByName.invoke(detectedClassification, "confidencePercent");
-
-                        /* Before adding to the overall set of relationships, setup the relationship properties
-                         * we have in IGC from the 'classification' object. */
+                    /* Before adding to the overall set of relationships, setup the relationship properties
+                     * we have in IGC from the 'classification' object. */
+                    relationshipProperties.setProperty(
+                            "confidence",
+                            ReferenceMapper.getPrimitivePropertyValue(confidence.intValue())
+                    );
+                    relationshipProperties.setProperty(
+                            P_THRESHOLD,
+                            ReferenceMapper.getPrimitivePropertyValue(detectedClassification.getPropertyByName(P_THRESHOLD))
+                    );
+                    relationshipProperties.setProperty(
+                            "partialMatch",
+                            ReferenceMapper.getPrimitivePropertyValue((confidence.intValue() < 100))
+                    );
+                    if (!igcomrsRepositoryConnector.getIGCVersion().equals("v115")) {
                         relationshipProperties.setProperty(
-                                "confidence",
-                                ReferenceMapper.getPrimitivePropertyValue(confidence.intValue())
+                                "valueFrequency",
+                                ReferenceMapper.getPrimitivePropertyValue(detectedClassification.getPropertyByName("value_frequency"))
                         );
-                        relationshipProperties.setProperty(
-                                P_THRESHOLD,
-                                ReferenceMapper.getPrimitivePropertyValue(classificationGetPropertyByName.invoke(detectedClassification, P_THRESHOLD))
-                        );
-                        relationshipProperties.setProperty(
-                                "partialMatch",
-                                ReferenceMapper.getPrimitivePropertyValue((confidence.intValue() < 100))
-                        );
-                        if (!igcomrsRepositoryConnector.getIGCVersion().equals("v115")) {
-                            relationshipProperties.setProperty(
-                                    "valueFrequency",
-                                    ReferenceMapper.getPrimitivePropertyValue(classificationGetPropertyByName.invoke(detectedClassification, "value_frequency"))
-                            );
-                        }
-                        EnumPropertyValue status = new EnumPropertyValue();
-                        status.setSymbolicName("Discovered");
-                        status.setOrdinal(0);
-                        relationshipProperties.setProperty(
-                                "status",
-                                status
-                        );
-
-                        omrsRelationship.setProperties(relationshipProperties);
-                        relationships.add(omrsRelationship);
-
-                    } catch (RepositoryErrorException e) {
-                        log.error("Unable to map relationship.", e);
                     }
+                    EnumPropertyValue status = new EnumPropertyValue();
+                    status.setSymbolicName("Discovered");
+                    status.setOrdinal(0);
+                    relationshipProperties.setProperty(
+                            "status",
+                            status
+                    );
+
+                    omrsRelationship.setProperties(relationshipProperties);
+                    relationships.add(omrsRelationship);
+
+                } catch (RepositoryErrorException e) {
+                    log.error("Unable to map relationship.", e);
                 }
             }
-
-        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            log.error("Unable to make use of IGC Classification class.", e);
         }
 
     }

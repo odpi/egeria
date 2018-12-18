@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -356,7 +355,7 @@ public abstract class ReferenceMapper {
         }
     }
 
-    protected void complexPropertyMappings(InstanceProperties instanceProperties, Method getPropertyByName) { }
+    protected void complexPropertyMappings(InstanceProperties instanceProperties) { }
     protected void complexRelationshipMappings() { }
 
     /**
