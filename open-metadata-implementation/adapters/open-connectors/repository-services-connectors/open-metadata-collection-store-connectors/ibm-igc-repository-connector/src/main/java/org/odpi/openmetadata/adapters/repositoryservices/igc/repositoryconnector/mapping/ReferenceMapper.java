@@ -18,6 +18,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Handles mapping the most basic of IGC objects' attributes to OMRS entity attributes.
@@ -25,6 +27,8 @@ import java.util.*;
 public abstract class ReferenceMapper {
 
     private static final Logger log = LoggerFactory.getLogger(ReferenceMapper.class);
+
+    private static final Pattern INVALID_NAMING_CHARS = Pattern.compile("[()/& ]");
 
     public static final String SOURCE_NAME = "IBM InfoSphere Information Governance Catalog";
     public static final String IGC_REST_COMMON_MODEL_PKG = "org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common";
@@ -46,6 +50,7 @@ public abstract class ReferenceMapper {
     protected String userId;
     private String igcRidPrefix;
 
+    private ArrayList<String> otherIgcTypes;
     private ArrayList<String> otherPOJOs;
 
     protected EntitySummary summary;
@@ -78,6 +83,7 @@ public abstract class ReferenceMapper {
         classificationPropertiesIgc = new HashSet<>();
         classificationTypesOmrs = new HashSet<>();
 
+        this.otherIgcTypes = new ArrayList<>();
         this.otherPOJOs = new ArrayList<>();
 
         // fully-qualified POJO class path
@@ -260,17 +266,25 @@ public abstract class ReferenceMapper {
      * @param igcAssetTypeName name of additional IGC asset
      */
     public void addOtherIGCAssetType(String igcAssetTypeName) {
+        this.otherIgcTypes.add(igcAssetTypeName);
         this.otherPOJOs.add(IGC_REST_GENERATED_MODEL_PKG + "."
                 + igcomrsRepositoryConnector.getIGCVersion() + "."
                 + ReferenceMapper.getCamelCase(igcAssetTypeName));
     }
 
     /**
-     * Retrieve listing of any additional IGC asset types needed by ths mapping.
+     * Retrieve listing of any additional IGC asset types needed by this mapping.
      *
      * @return List<String>
      */
-    public List<String> getOtherIGCAssetTypes() { return this.otherPOJOs; }
+    public List<String> getOtherIGCAssetTypes() { return this.otherIgcTypes; }
+
+    /**
+     * Retrieve listing of any additional IGC POJOs needed by this mapping.
+     *
+     * @return List<String>
+     */
+    public List<String> getOtherIGCPOJOs() { return this.otherPOJOs; }
 
     /**
      * Retrieve the primary IGC asset for which this mapping works.
@@ -494,11 +508,17 @@ public abstract class ReferenceMapper {
      * @return String
      */
     public static final String getCamelCase(String input) {
-        StringBuilder sb = new StringBuilder(input.length());
-        for (String token : input.split("_")) {
-            sb.append(token.substring(0, 1).toUpperCase());
-            sb.append(token.substring(1).toLowerCase());
+        log.debug("Attempting to camelCase from {}", input);
+        Matcher m = INVALID_NAMING_CHARS.matcher(input);
+        String invalidsRemoved = m.replaceAll("_");
+        StringBuilder sb = new StringBuilder(invalidsRemoved.length());
+        for (String token : invalidsRemoved.split("_")) {
+            if (token.length() > 0) {
+                sb.append(token.substring(0, 1).toUpperCase());
+                sb.append(token.substring(1).toLowerCase());
+            }
         }
+        log.debug(" ... succeeded to {}", sb.toString());
         return sb.toString();
     }
 
@@ -584,6 +604,19 @@ public abstract class ReferenceMapper {
      * @return
      */
     public static final List<String> getAdditionalIgcPOJOs(Class mappingClass, IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {
+        ReferenceableMapper referenceableMapper = ReferenceMapper.getMapper(mappingClass, igcomrsRepositoryConnector, userId);
+        return (referenceableMapper == null) ? null : referenceableMapper.getOtherIGCPOJOs();
+    }
+
+    /**
+     * Retrieve any additional IGC asset types that are handled by the provided mapping.
+     *
+     * @param mappingClass the mapping class for which to retrieve any additional IGC types
+     * @param igcomrsRepositoryConnector connectivity to an IGC environment via an OMRS connector
+     * @param userId the user through which to retrieve the mapping (currently unused)
+     * @return
+     */
+    public static final List<String> getAdditionalIgcTypes(Class mappingClass, IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {
         ReferenceableMapper referenceableMapper = ReferenceMapper.getMapper(mappingClass, igcomrsRepositoryConnector, userId);
         return (referenceableMapper == null) ? null : referenceableMapper.getOtherIGCAssetTypes();
     }
