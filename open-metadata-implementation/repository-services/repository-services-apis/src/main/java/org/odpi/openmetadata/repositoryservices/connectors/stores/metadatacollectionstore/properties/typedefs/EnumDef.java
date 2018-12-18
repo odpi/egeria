@@ -115,12 +115,12 @@ public class EnumDef extends AttributeTypeDef
     public String toString()
     {
         return "EnumDef{" +
-                "version=" + getVersion() +
+                "name='" + getName() + '\'' +
+                ", description='" + getDescription() + '\'' +
+                ", version=" + getVersion() +
                 ", versionName='" + getVersionName() + '\'' +
                 ", category=" + getCategory() +
                 ", GUID='" + getGUID() + '\'' +
-                ", name='" + getName() + '\'' +
-                ", description='" + getDescription() + '\'' +
                 ", descriptionGUID='" + getDescriptionGUID() + '\'' +
                 '}';
     }

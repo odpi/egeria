@@ -3957,6 +3957,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
         updatedRelationship.setStatus(InstanceStatus.DELETED);
 
         updatedRelationship = repositoryHelper.incrementVersion(userId, relationship, updatedRelationship);
+
         repositoryStore.updateRelationshipInStore(updatedRelationship);
 
         return updatedRelationship;
@@ -4063,8 +4064,9 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
         /*
          * Locate relationship
          */
-        Relationship  relationship  = this.getRelationship(userId, deletedRelationshipGUID);
+        Relationship  relationship  = repositoryStore.getRelationship(deletedRelationshipGUID);
 
+        repositoryValidator.validateRelationshipFromStore(repositoryName, deletedRelationshipGUID, relationship, methodName);
         repositoryValidator.validateRelationshipIsDeleted(repositoryName, relationship, methodName);
 
         /*

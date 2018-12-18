@@ -87,11 +87,11 @@ public class EntityDetail extends EntitySummary
     public String toString()
     {
         return "EntityDetail{" +
-                "entityProperties=" + entityProperties +
+                "type=" + getType() +
+                ", entityProperties=" + entityProperties +
                 ", classifications=" + getClassifications() +
                 ", instanceURL='" + getInstanceURL() + '\'' +
                 ", GUID='" + getGUID() + '\'' +
-                ", type=" + getType() +
                 ", instanceProvenanceType=" + getInstanceProvenanceType() +
                 ", metadataCollectionId='" + getMetadataCollectionId() + '\'' +
                 ", metadataCollectionName='" + getMetadataCollectionName() + '\'' +

@@ -39,7 +39,7 @@ public class AccessServiceEventTypeTest
         }
     }
 
-    private void testSingleErrorCodeValues(AssetConsumerEventType  testValue)
+    private void testSingleErrorCodeValues(CommunityProfileEventType  testValue)
     {
         String                  testInfo;
 
@@ -58,10 +58,10 @@ public class AccessServiceEventTypeTest
      */
     @Test public void testAllErrorCodeValues()
     {
-        testSingleErrorCodeValues(AssetConsumerEventType.UNKNOWN_ASSET_CONSUMER_EVENT);
-        testSingleErrorCodeValues(AssetConsumerEventType.NEW_ASSET_EVENT);
-        testSingleErrorCodeValues(AssetConsumerEventType.UPDATED_ASSET_EVENT);
-        testSingleErrorCodeValues(AssetConsumerEventType.DELETED_ASSET_EVENT);
+        testSingleErrorCodeValues(CommunityProfileEventType.UNKNOWN_ASSET_CONSUMER_EVENT);
+        testSingleErrorCodeValues(CommunityProfileEventType.NEW_ASSET_EVENT);
+        testSingleErrorCodeValues(CommunityProfileEventType.UPDATED_ASSET_EVENT);
+        testSingleErrorCodeValues(CommunityProfileEventType.DELETED_ASSET_EVENT);
     }
 
 
@@ -77,7 +77,7 @@ public class AccessServiceEventTypeTest
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(AssetConsumerEventType.NEW_ASSET_EVENT);
+            jsonString = objectMapper.writeValueAsString(CommunityProfileEventType.NEW_ASSET_EVENT);
         }
         catch (Throwable  exc)
         {
@@ -86,7 +86,7 @@ public class AccessServiceEventTypeTest
 
         try
         {
-            assertTrue(objectMapper.readValue(jsonString, AssetConsumerEventType.class) == AssetConsumerEventType.NEW_ASSET_EVENT);
+            assertTrue(objectMapper.readValue(jsonString, CommunityProfileEventType.class) == CommunityProfileEventType.NEW_ASSET_EVENT);
         }
         catch (Throwable  exc)
         {
@@ -100,7 +100,7 @@ public class AccessServiceEventTypeTest
      */
     @Test public void testToString()
     {
-        assertTrue(AssetConsumerEventType.DELETED_ASSET_EVENT.toString().contains("AssetConsumerEventType"));
+        assertTrue(CommunityProfileEventType.DELETED_ASSET_EVENT.toString().contains("AssetConsumerEventType"));
     }
 
 
@@ -109,8 +109,8 @@ public class AccessServiceEventTypeTest
      */
     @Test public void testEquals()
     {
-        assertTrue(AssetConsumerEventType.NEW_ASSET_EVENT.equals(AssetConsumerEventType.NEW_ASSET_EVENT));
-        assertFalse(AssetConsumerEventType.NEW_ASSET_EVENT.equals(AssetConsumerEventType.DELETED_ASSET_EVENT));
+        assertTrue(CommunityProfileEventType.NEW_ASSET_EVENT.equals(CommunityProfileEventType.NEW_ASSET_EVENT));
+        assertFalse(CommunityProfileEventType.NEW_ASSET_EVENT.equals(CommunityProfileEventType.DELETED_ASSET_EVENT));
     }
 
 
@@ -119,7 +119,7 @@ public class AccessServiceEventTypeTest
      */
     @Test public void testHashcode()
     {
-        assertTrue(AssetConsumerEventType.UPDATED_ASSET_EVENT.hashCode() == AssetConsumerEventType.UPDATED_ASSET_EVENT.hashCode());
-        assertFalse(AssetConsumerEventType.UPDATED_ASSET_EVENT.hashCode() == AssetConsumerEventType.UNKNOWN_ASSET_CONSUMER_EVENT.hashCode());
+        assertTrue(CommunityProfileEventType.UPDATED_ASSET_EVENT.hashCode() == CommunityProfileEventType.UPDATED_ASSET_EVENT.hashCode());
+        assertFalse(CommunityProfileEventType.UPDATED_ASSET_EVENT.hashCode() == CommunityProfileEventType.UNKNOWN_ASSET_CONSUMER_EVENT.hashCode());
     }
 }
