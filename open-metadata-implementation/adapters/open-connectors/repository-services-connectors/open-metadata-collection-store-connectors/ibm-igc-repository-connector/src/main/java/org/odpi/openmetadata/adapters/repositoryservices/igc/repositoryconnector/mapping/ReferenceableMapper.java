@@ -17,8 +17,6 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorExceptio
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -258,33 +256,21 @@ public class ReferenceableMapper extends ReferenceMapper {
     private InstanceProperties getMappedInstanceProperties(PropertyMappingSet mappings) {
 
         InstanceProperties instanceProperties = new InstanceProperties();
-        ClassLoader classLoader = this.getClass().getClassLoader();
 
-        try {
+        // We'll always start by using the Identity string as the qualified name
+        String qualifiedName = me.getIdentity(igcomrsRepositoryConnector.getIGCRestClient()).toString();
+        instanceProperties.setProperty("qualifiedName", getPrimitivePropertyValue(qualifiedName));
 
-            Class clazz = classLoader.loadClass(igcPOJO);
-            Method getPropertyByName = clazz.getMethod("getPropertyByName", String.class);
-
-            // We'll always start by using the Identity string as the qualified name
-            Method getIdentity = clazz.getMethod("getIdentity", IGCRestClient.class);
-            String qualifiedName = getIdentity.invoke(me, igcomrsRepositoryConnector.getIGCRestClient()).toString();
-            instanceProperties.setProperty("qualifiedName", getPrimitivePropertyValue(qualifiedName));
-
-            // Then we'll iterate through the provided mappings to set an OMRS instance property for each one
-            for (String igcPropertyName : mappings.getSimpleMappedIgcProperties()) {
-                String omrsAttribute = mappings.getOmrsPropertyName(igcPropertyName);
-                instanceProperties.setProperty(
-                        omrsAttribute,
-                        getPrimitivePropertyValue(getPropertyByName.invoke(me, igcPropertyName))
-                );
-            }
-
-            complexPropertyMappings(instanceProperties, getPropertyByName);
-
-        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            log.error("Unable to retrieve property by name via reflection.", e);
+        // Then we'll iterate through the provided mappings to set an OMRS instance property for each one
+        for (String igcPropertyName : mappings.getSimpleMappedIgcProperties()) {
+            String omrsAttribute = mappings.getOmrsPropertyName(igcPropertyName);
+            instanceProperties.setProperty(
+                    omrsAttribute,
+                    getPrimitivePropertyValue(me.getPropertyByName(igcPropertyName))
+            );
         }
 
+        complexPropertyMappings(instanceProperties);
         return instanceProperties;
 
     }
@@ -343,22 +329,18 @@ public class ReferenceableMapper extends ReferenceMapper {
      */
     private void getMappedRelationships(RelationshipMappingSet mappings) {
 
-        ClassLoader classLoader = this.getClass().getClassLoader();
         IGCRestClient igcRestClient = igcomrsRepositoryConnector.getIGCRestClient();
         List<String> alreadyUsedProperties = getAlreadyMappedProperties();
 
-        try {
+        // Iterate through the provided mappings to create a number of OMRS relationships
+        for (int i = 0; i < mappings.numberOfSimpleMappings(); i++) {
 
-            Class clazz = classLoader.loadClass(igcPOJO);
-            Method getPropertyByName = clazz.getMethod("getPropertyByName", String.class);
+            RelationshipMappingSet.RelationshipMapping mapping = mappings.getSimpleMapping(i);
 
-            // Iterate through the provided mappings to create a number of OMRS relationships
-            for (int i = 0; i < mappings.numberOfSimpleMappings(); i++) {
+            String igcRelationshipName = mapping.getIgcRelationshipName();
+            log.debug(" ... attempting to map relationship: {}", igcRelationshipName);
 
-                RelationshipMappingSet.RelationshipMapping mapping = mappings.getSimpleMapping(i);
-
-                String igcRelationshipName = mapping.getIgcRelationshipName();
-                log.debug(" ... attempting to map relationship: {}", igcRelationshipName);
+            try {
 
                 // If the relationship is self-referencing, then there won't be any related object to retrieve
                 if (igcRelationshipName.equals(RelationshipMappingSet.SELF_REFERENCE_SENTINEL)) {
@@ -373,7 +355,7 @@ public class ReferenceableMapper extends ReferenceMapper {
                 } else if (!alreadyUsedProperties.contains(igcRelationshipName)) {
 
                     // Otherwise, only continue if we haven't already handled that relationship
-                    Object igcRelationshipObj = getPropertyByName.invoke(me, igcRelationshipName);
+                    Object igcRelationshipObj = me.getPropertyByName(igcRelationshipName);
 
                     // Handle single instance relationship one way
                     if (igcRelationshipObj != null && Reference.isReference(igcRelationshipObj)) {
@@ -395,7 +377,7 @@ public class ReferenceableMapper extends ReferenceMapper {
                     } else if (igcRelationshipObj != null && Reference.isReferenceList(igcRelationshipObj)) { // and list of relationships another
 
                         log.debug(" ... list of references: {}", igcRelationshipName);
-                        ReferenceList igcRelationships = (ReferenceList) getPropertyByName.invoke(me, igcRelationshipName);
+                        ReferenceList igcRelationships = (ReferenceList) me.getPropertyByName(igcRelationshipName);
 
                         // TODO: paginate rather than always retrieving the full set
                         igcRelationships.getAllPages(igcRestClient);
@@ -423,10 +405,10 @@ public class ReferenceableMapper extends ReferenceMapper {
                     log.debug(" ... skipping relationship {}, already used.", igcRelationshipName);
                 }
 
+            } catch (RepositoryErrorException e) {
+                log.error("Unable to setup new relationship.", e);
             }
 
-        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | RepositoryErrorException e) {
-            log.error("Unable to setup new relationship.", e);
         }
 
     }

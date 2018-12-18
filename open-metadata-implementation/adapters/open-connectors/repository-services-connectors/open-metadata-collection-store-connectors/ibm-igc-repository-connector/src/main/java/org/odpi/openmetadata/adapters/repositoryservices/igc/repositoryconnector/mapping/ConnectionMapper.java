@@ -14,8 +14,6 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorEx
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 public class ConnectionMapper extends ReferenceableMapper {
@@ -95,46 +93,35 @@ public class ConnectionMapper extends ReferenceableMapper {
         ReferenceList dataConnectors = igcomrsRepositoryConnector.getIGCRestClient().search(igcSearch);
         dataConnectors.getAllPages(igcomrsRepositoryConnector.getIGCRestClient());
 
-        String connectorClassName = ReferenceMapper.IGC_REST_GENERATED_MODEL_PKG + "." + igcomrsRepositoryConnector.getIGCVersion() + ".Connector";
-        ClassLoader classLoader = this.getClass().getClassLoader();
+        for (Reference dataConnector : dataConnectors.getItems()) {
 
-        try {
+            /* Only proceed with the connector object if it is not a 'main_object' asset
+             * (in this scenario, 'main_object' represents ColumnAnalysisMaster objects that are not accessible
+             *  and will throw bad request (400) REST API errors) */
+            if (dataConnector != null && !dataConnector.getType().equals("main_object")) {
+                try {
 
-            Class connector = classLoader.loadClass(connectorClassName);
-            Method connectorGetPropertyByName = connector.getMethod("getPropertyByName", String.class);
+                    log.debug("Retrieved connector: {}", dataConnector);
 
-            for (Reference dataConnector : dataConnectors.getItems()) {
+                    //Reference host = (Reference) connectorGetPropertyByName.invoke(dataConnector, "host");
+                    Reference host = (Reference) dataConnector.getPropertyByName("host");
+                    log.debug("Retrieved host: {}", host);
 
-                /* Only proceed with the connector object if it is not a 'main_object' asset
-                 * (in this scenario, 'main_object' represents ColumnAnalysisMaster objects that are not accessible
-                 *  and will throw bad request (400) REST API errors) */
-                if (dataConnector != null && !dataConnector.getType().equals("main_object")) {
-                    try {
+                    Relationship omrsRelationship = getMappedRelationship(
+                            "data_connections",
+                            (RelationshipDef) igcomrsRepositoryConnector.getRepositoryHelper().getTypeDefByName(SOURCE_NAME,
+                                    R_CONNECTION_ENDPOINT),
+                            "connections",
+                            "connectionEndpoint",
+                            host);
 
-                        log.debug("Retrieved connector: {}", dataConnector);
+                    relationships.add(omrsRelationship);
 
-                        Reference host = (Reference) connectorGetPropertyByName.invoke(dataConnector, "host");
-                        log.debug("Retrieved host: {}", host);
-
-                        Relationship omrsRelationship = getMappedRelationship(
-                                "data_connections",
-                                (RelationshipDef) igcomrsRepositoryConnector.getRepositoryHelper().getTypeDefByName(SOURCE_NAME,
-                                        R_CONNECTION_ENDPOINT),
-                                "connections",
-                                "connectionEndpoint",
-                                host);
-
-                        relationships.add(omrsRelationship);
-
-                    } catch (RepositoryErrorException | IllegalAccessException | InvocationTargetException e) {
-                        log.error("Unable to map relationship.", e);
-                    }
+                } catch (RepositoryErrorException e) {
+                    log.error("Unable to map relationship.", e);
                 }
-
             }
 
-        } catch (ClassNotFoundException | NoSuchMethodException e) {
-            log.error("Unable to make use of IGC Connector class.", e);
         }
 
     }
