@@ -103,6 +103,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         //  - maybe only possible to cover all via getAllTypes?
 
         String omrsTypeDefName = typeDef.getName();
+        log.debug("Looking for mapping for {}", omrsTypeDefName);
 
         boolean bMapperExists = false;
 
@@ -110,7 +111,8 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         try {
 
             Class mappingClass = Class.forName(MAPPING_PKG + omrsTypeDefName + "Mapper");
-            bMapperExists = true;
+            bMapperExists = (mappingClass != null);
+            log.debug(" ... found mapping class: {}", mappingClass);
 
             // Assuming we have some mapping, get the name of the IGC object involved in the mapping and from that
             // attempt to retrieve a POJO object to (de-)serialise that IGC asset type
@@ -145,8 +147,10 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         if (igcAssetTypeName != null) {
 
             String pojoClassName = ReferenceMapper.getCamelCase(igcAssetTypeName);
+            String fqPojoClassName = ReferenceMapper.IGC_REST_GENERATED_MODEL_PKG + "." + igcVersion + "." + pojoClassName;
             try {
-                Class pojoClass = Class.forName(ReferenceMapper.IGC_REST_GENERATED_MODEL_PKG + "." + igcVersion + "." + pojoClassName);
+                log.debug("Marking IGC type as implemented: {}", igcAssetTypeName);
+                Class pojoClass = Class.forName(fqPojoClassName);
                 implementedEntities.add(
                         igcAssetTypeName,
                         typeDef,
@@ -154,6 +158,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                         pojoClass,
                         ridPrefix
                 );
+                log.debug("Registering base POJO: {}", pojoClass);
                 this.igcRestClient.registerPOJO(pojoClass);
                 // Check if there are any additional POJOs needed by the mapper, and if so register those as well
                 List<String> extraPOJOs = ReferenceMapper.getAdditionalIgcPOJOs(
@@ -161,11 +166,34 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                         (IGCOMRSRepositoryConnector)parentConnector,
                         userId
                 );
+                if (!extraPOJOs.isEmpty()) {
+                    log.debug("Found additional POJOs for {}", igcAssetTypeName);
+                }
                 for (String pojoName : extraPOJOs) {
+                    log.debug(" ... registering additional POJO: {}", pojoName);
                     this.igcRestClient.registerPOJO(Class.forName(pojoName));
                 }
+                // Same for any additional types
+                List<String> otherTypes = ReferenceMapper.getAdditionalIgcTypes(
+                        mappingClass,
+                        (IGCOMRSRepositoryConnector)parentConnector,
+                        userId
+                );
+                if (!otherTypes.isEmpty()) {
+                    log.debug("Found additional type for {}", igcAssetTypeName);
+                }
+                for (String otherType : otherTypes) {
+                    log.debug(" ... adding mapping: {}", otherType);
+                    implementedEntities.add(
+                            otherType,
+                            typeDef,
+                            mappingClass,
+                            pojoClass,
+                            ridPrefix
+                    );
+                }
             } catch (ClassNotFoundException e) {
-                log.info("Unable to find POJO for {}", pojoClassName);
+                log.info("Unable to find POJO for {}", fqPojoClassName);
             }
 
         }
