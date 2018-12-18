@@ -206,7 +206,81 @@ public abstract class ReferenceMapper {
                                                    String igcSourceRidPrefix,
                                                    String igcTargetRidPrefix) {
         relationshipMappings.addSimpleMapping(
-            igcRelationshipName,
+                igcRelationshipName,
+                omrsRelationshipType,
+                omrsRelationshipSourceProperty,
+                omrsRelationshipTargetProperty,
+                igcSourceRidPrefix,
+                igcTargetRidPrefix
+        );
+    }
+
+    /**
+     * Adds a relationship mapping between OMRS assets based on the provided IGC details. This method sets up the
+     * relationship by first searching for all assets of the igcSourceType that are related to the IGC asset used
+     * to initialise the mapping, through the igcSourceType's RelationshipPropertyName.
+     * <br><br>
+     * (In some cases this may be the only direction of the relationship retrievable from IGC, while in others
+     *  this approach may be a far more optimal way of retrieving the relationships.)
+     *
+     * @param igcSourceTypeName the IGC asset type to search for relationships
+     * @param igcSourceRelationshipPropertyName the name of the property on the asset type to look for the relationship
+     * @param omrsRelationshipType the name of the OMRS relationship entity (RelationshipDef)
+     * @param omrsRelationshipSourceProperty the name of the OMRS relationship property that should be aligned to the
+     *                                       source of the relationship in IGC (ie. the IGC objects found by the
+     *                                       search)
+     * @param omrsRelationshipTargetProperty the name of the OMRS relationship property that should be aligned to the
+     *                                       target of the relationship in IGC (ie. the IGC object this Mapper was
+     *                                       initialised with)
+     */
+    public final void addInvertedRelationshipMapping(String igcSourceTypeName,
+                                                     String igcSourceRelationshipPropertyName,
+                                                     String omrsRelationshipType,
+                                                     String omrsRelationshipSourceProperty,
+                                                     String omrsRelationshipTargetProperty) {
+        addInvertedRelationshipMapping(
+                igcSourceTypeName,
+                igcSourceRelationshipPropertyName,
+                omrsRelationshipType,
+                omrsRelationshipSourceProperty,
+                omrsRelationshipTargetProperty,
+                null,
+                null);
+    }
+
+    /**
+     * Adds a relationship mapping between OMRS assets based on the provided IGC details. This method sets up the
+     * relationship by first searching for all assets of the igcSourceType that are related to the IGC asset used
+     * to initialise the mapping, through the igcSourceType's RelationshipPropertyName.
+     * <br><br>
+     * (In some cases this may be the only direction of the relationship retrievable from IGC, while in others
+     *  this approach may be a far more optimal way of retrieving the relationships.)
+     *
+     * @param igcSourceTypeName the IGC asset type to search for relationships
+     * @param igcSourceRelationshipPropertyName the name of the property on the asset type to look for the relationship
+     * @param omrsRelationshipType the name of the OMRS relationship entity (RelationshipDef)
+     * @param omrsRelationshipSourceProperty the name of the OMRS relationship property that should be aligned to the
+     *                                       source of the relationship in IGC (ie. the IGC objects found by the
+     *                                       search)
+     * @param omrsRelationshipTargetProperty the name of the OMRS relationship property that should be aligned to the
+     *                                       target of the relationship in IGC (ie. the IGC object this Mapper was
+     *                                       initialised with)
+     * @param igcSourceRidPrefix the prefix that needs to be added to each IGC object found by the search that is
+     *                           related to the IGC object this Mapper was initialised with to create a unique
+     *                           (non-real IGC) entity
+     * @param igcTargetRidPrefix the prefix that needs to be added to the IGC object this Mapper was initialised with
+     *                           to create a unique (non-real IGC) entity
+     */
+    public final void addInvertedRelationshipMapping(String igcSourceTypeName,
+                                                     String igcSourceRelationshipPropertyName,
+                                                     String omrsRelationshipType,
+                                                     String omrsRelationshipSourceProperty,
+                                                     String omrsRelationshipTargetProperty,
+                                                     String igcSourceRidPrefix,
+                                                     String igcTargetRidPrefix) {
+        relationshipMappings.addInvertedMapping(
+                igcSourceTypeName,
+                igcSourceRelationshipPropertyName,
                 omrsRelationshipType,
                 omrsRelationshipSourceProperty,
                 omrsRelationshipTargetProperty,

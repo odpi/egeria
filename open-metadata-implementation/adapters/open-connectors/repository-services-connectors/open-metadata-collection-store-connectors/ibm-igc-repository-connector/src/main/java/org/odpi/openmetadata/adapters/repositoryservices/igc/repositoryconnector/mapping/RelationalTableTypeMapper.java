@@ -42,13 +42,17 @@ public class RelationalTableTypeMapper extends ReferenceableMapper {
                 null,
                 IGC_RID_PREFIX
         );
-        addSimpleRelationshipMapping(
-                "database_columns",
+
+        // Given a table may have many columns, this is likely to be more optimal way to retrieve
+        // these relationships
+        addInvertedRelationshipMapping(
+                "database_column",
+                "database_table_or_view",
                 "AttributeForSchema",
-                "parentSchemas",
                 "attributes",
-                IGC_RID_PREFIX,
-                null
+                "parentSchemas",
+                null,
+                IGC_RID_PREFIX
         );
 
     }

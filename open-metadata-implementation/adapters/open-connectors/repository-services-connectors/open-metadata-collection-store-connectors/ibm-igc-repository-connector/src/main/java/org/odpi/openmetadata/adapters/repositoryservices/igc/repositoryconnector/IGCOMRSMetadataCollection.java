@@ -911,6 +911,16 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
     }
 
     /**
+     * Retrieves the class to use for (de-)serialising the provided IGC asset type (or null if none has been registered).
+     *
+     * @param igcAssetType the name of the IGC asset type
+     * @return Class
+     */
+    public Class getPOJOForAssetType(String igcAssetType) {
+        return implementedEntities.getPOJOForIgcAssetType(igcAssetType);
+    }
+
+    /**
      * Adds the provided value to the search criteria for IGC.
      *
      * @param igcSearchConditionSet
