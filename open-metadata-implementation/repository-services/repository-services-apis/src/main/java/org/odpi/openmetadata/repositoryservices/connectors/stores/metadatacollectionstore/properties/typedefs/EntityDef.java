@@ -77,7 +77,8 @@ public class EntityDef extends TypeDef
     public String toString()
     {
         return "EntityDef{" +
-                "superType=" + getSuperType() +
+                "name='" + getName() + '\'' +
+                ", superType=" + getSuperType() +
                 ", description='" + getDescription() + '\'' +
                 ", descriptionGUID='" + getDescriptionGUID() + '\'' +
                 ", origin='" + getOrigin() + '\'' +
@@ -94,7 +95,6 @@ public class EntityDef extends TypeDef
                 ", version=" + getVersion() +
                 ", versionName='" + getVersionName() + '\'' +
                 ", GUID='" + getGUID() + '\'' +
-                ", name='" + getName() + '\'' +
                 '}';
     }
 }
