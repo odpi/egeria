@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v117;
 
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
 import java.util.ArrayList;
@@ -44,7 +44,6 @@ public class QualityProblemType extends Reference {
 
     /** @see #code */ @JsonProperty("code")  public String getCode() { return this.code; }
     /** @see #code */ @JsonProperty("code")  public void setCode(String code) { this.code = code; }
-
 
     public static final Boolean isQualityProblemType(Object obj) { return (obj.getClass() == QualityProblemType.class); }
 

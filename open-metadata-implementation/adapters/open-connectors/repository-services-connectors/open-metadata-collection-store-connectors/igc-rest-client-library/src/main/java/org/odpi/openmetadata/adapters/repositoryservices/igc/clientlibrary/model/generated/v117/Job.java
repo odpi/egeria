@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v117;
 
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
 import java.util.ArrayList;
@@ -122,7 +122,6 @@ public class Job extends Reference {
 
     /** @see #release_status */ @JsonProperty("release_status")  public String getReleaseStatus() { return this.release_status; }
     /** @see #release_status */ @JsonProperty("release_status")  public void setReleaseStatus(String release_status) { this.release_status = release_status; }
-
 
     public static final Boolean isJob(Object obj) { return (obj.getClass() == Job.class); }
 

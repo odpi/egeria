@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v117;
 
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
 import java.util.ArrayList;
@@ -330,7 +330,6 @@ public class DataItem extends Reference {
 
     /** @see #level */ @JsonProperty("level")  public Number getLevel() { return this.level; }
     /** @see #level */ @JsonProperty("level")  public void setLevel(Number level) { this.level = level; }
-
 
     public static final Boolean isDataItem(Object obj) { return (obj.getClass() == DataItem.class); }
 

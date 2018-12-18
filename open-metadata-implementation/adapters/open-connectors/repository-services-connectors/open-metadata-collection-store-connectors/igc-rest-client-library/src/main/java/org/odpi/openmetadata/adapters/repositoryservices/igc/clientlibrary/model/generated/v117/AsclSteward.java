@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v117;
 
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
 import java.util.ArrayList;
@@ -108,7 +108,6 @@ public class AsclSteward extends Reference {
 
     /** @see #steward_group */ @JsonProperty("steward_group")  public Reference getStewardGroup() { return this.steward_group; }
     /** @see #steward_group */ @JsonProperty("steward_group")  public void setStewardGroup(Reference steward_group) { this.steward_group = steward_group; }
-
 
     public static final Boolean isAsclSteward(Object obj) { return (obj.getClass() == AsclSteward.class); }
 

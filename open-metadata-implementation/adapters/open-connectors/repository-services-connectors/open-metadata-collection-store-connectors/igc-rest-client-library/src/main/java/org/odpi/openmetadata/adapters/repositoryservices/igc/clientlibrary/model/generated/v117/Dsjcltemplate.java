@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v117;
 
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
 import java.util.ArrayList;
@@ -134,7 +134,6 @@ public class Dsjcltemplate extends Reference {
 
     /** @see #code_template */ @JsonProperty("code_template")  public String getCodeTemplate() { return this.code_template; }
     /** @see #code_template */ @JsonProperty("code_template")  public void setCodeTemplate(String code_template) { this.code_template = code_template; }
-
 
     public static final Boolean isDsjcltemplate(Object obj) { return (obj.getClass() == Dsjcltemplate.class); }
 

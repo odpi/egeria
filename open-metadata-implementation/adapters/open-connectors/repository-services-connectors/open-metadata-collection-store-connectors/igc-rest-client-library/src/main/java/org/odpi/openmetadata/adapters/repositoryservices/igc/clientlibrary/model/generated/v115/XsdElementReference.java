@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v115;
 
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
 import java.util.ArrayList;
@@ -76,7 +76,6 @@ public class XsdElementReference extends Reference {
 
     /** @see #referenced_xsd_element */ @JsonProperty("referenced_xsd_element")  public Reference getReferencedXsdElement() { return this.referenced_xsd_element; }
     /** @see #referenced_xsd_element */ @JsonProperty("referenced_xsd_element")  public void setReferencedXsdElement(Reference referenced_xsd_element) { this.referenced_xsd_element = referenced_xsd_element; }
-
 
     public static final Boolean isXsdElementReference(Object obj) { return (obj.getClass() == XsdElementReference.class); }
 

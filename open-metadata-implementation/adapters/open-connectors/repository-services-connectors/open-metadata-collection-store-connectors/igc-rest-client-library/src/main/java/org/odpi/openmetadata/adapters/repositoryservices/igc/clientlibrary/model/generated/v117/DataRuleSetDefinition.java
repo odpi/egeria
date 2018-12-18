@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v117;
 
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
 import java.util.ArrayList;
@@ -220,7 +220,6 @@ public class DataRuleSetDefinition extends Reference {
 
     /** @see #published_data_rule_set_definitions */ @JsonProperty("published_data_rule_set_definitions")  public Reference getPublishedDataRuleSetDefinitions() { return this.published_data_rule_set_definitions; }
     /** @see #published_data_rule_set_definitions */ @JsonProperty("published_data_rule_set_definitions")  public void setPublishedDataRuleSetDefinitions(Reference published_data_rule_set_definitions) { this.published_data_rule_set_definitions = published_data_rule_set_definitions; }
-
 
     public static final Boolean isDataRuleSetDefinition(Object obj) { return (obj.getClass() == DataRuleSetDefinition.class); }
 

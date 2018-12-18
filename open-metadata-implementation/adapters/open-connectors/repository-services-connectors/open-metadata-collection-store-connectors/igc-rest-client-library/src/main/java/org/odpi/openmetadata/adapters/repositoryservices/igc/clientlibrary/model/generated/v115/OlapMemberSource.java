@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v115;
 
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
 import java.util.ArrayList;
@@ -40,7 +40,6 @@ public class OlapMemberSource extends Reference {
 
     /** @see #data_field */ @JsonProperty("data_field")  public Reference getDataField() { return this.data_field; }
     /** @see #data_field */ @JsonProperty("data_field")  public void setDataField(Reference data_field) { this.data_field = data_field; }
-
 
     public static final Boolean isOlapMemberSource(Object obj) { return (obj.getClass() == OlapMemberSource.class); }
 

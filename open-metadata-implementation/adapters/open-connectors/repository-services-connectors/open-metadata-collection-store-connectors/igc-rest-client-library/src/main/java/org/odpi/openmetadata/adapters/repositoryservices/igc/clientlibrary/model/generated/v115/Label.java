@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v115;
 
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
 import java.util.ArrayList;
@@ -46,7 +46,6 @@ public class Label extends Reference {
 
     /** @see #labeled_assets */ @JsonProperty("labeled_assets")  public ReferenceList getLabeledAssets() { return this.labeled_assets; }
     /** @see #labeled_assets */ @JsonProperty("labeled_assets")  public void setLabeledAssets(ReferenceList labeled_assets) { this.labeled_assets = labeled_assets; }
-
 
     public static final Boolean isLabel(Object obj) { return (obj.getClass() == Label.class); }
 

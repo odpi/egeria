@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v117;
 
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
 import java.util.ArrayList;
@@ -214,7 +214,6 @@ public class Function extends Reference {
 
     /** @see #author */ @JsonProperty("author")  public String getAuthor() { return this.author; }
     /** @see #author */ @JsonProperty("author")  public void setAuthor(String author) { this.author = author; }
-
 
     public static final Boolean isFunction(Object obj) { return (obj.getClass() == Function.class); }
 

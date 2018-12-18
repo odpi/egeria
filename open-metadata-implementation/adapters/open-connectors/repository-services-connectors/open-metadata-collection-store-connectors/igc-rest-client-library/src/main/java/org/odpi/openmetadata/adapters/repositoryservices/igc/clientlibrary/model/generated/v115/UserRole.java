@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v115;
 
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
 import java.util.ArrayList;
@@ -46,7 +46,6 @@ public class UserRole extends Reference {
 
     /** @see #users */ @JsonProperty("users")  public ReferenceList getUsers() { return this.users; }
     /** @see #users */ @JsonProperty("users")  public void setUsers(ReferenceList users) { this.users = users; }
-
 
     public static final Boolean isUserRole(Object obj) { return (obj.getClass() == UserRole.class); }
 
