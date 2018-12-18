@@ -127,8 +127,8 @@ public class TypeDefLink extends TypeDefElementHeader
     @Override
     public String toString()
     {
-        return "TypeDefSummary{" +
-                ", guid='" + guid + '\'' +
+        return "TypeDefLink{" +
+                "guid='" + guid + '\'' +
                 ", name='" + name + '\'' +
                 '}';
     }

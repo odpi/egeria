@@ -167,25 +167,25 @@ public class TypeDefSummary extends TypeDefLink
     /**
      * Verify that supplied object has the same properties.
      *
-     * @param o object to test
+     * @param objectToCompare object to test
      * @return result
      */
     @Override
-    public boolean equals(Object o)
+    public boolean equals(Object objectToCompare)
     {
-        if (this == o)
+        if (this == objectToCompare)
         {
             return true;
         }
-        if (!(o instanceof TypeDefSummary))
+        if (!(objectToCompare instanceof TypeDefSummary))
         {
             return false;
         }
-        if (!super.equals(o))
+        if (!super.equals(objectToCompare))
         {
             return false;
         }
-        TypeDefSummary that = (TypeDefSummary) o;
+        TypeDefSummary that = (TypeDefSummary) objectToCompare;
         return getVersion() == that.getVersion() &&
                 Objects.equals(getVersionName(), that.getVersionName()) &&
                 getCategory() == that.getCategory();
