@@ -42,13 +42,17 @@ public class RelationalDBSchemaTypeMapper extends ReferenceableMapper {
                 IGC_RID_PREFIX,
                 null
         );
-        addSimpleRelationshipMapping(
-                "database_tables",
+
+        // Given a schema may have many tables, this is likely to be more optimal way to retrieve these
+        // relationships
+        addInvertedRelationshipMapping(
+                "database_table",
+                "database_schema",
                 "AttributeForSchema",
-                "parentSchemas",
                 "attributes",
-                IGC_RID_PREFIX,
-                null
+                "parentSchemas",
+                null,
+                IGC_RID_PREFIX
         );
 
     }

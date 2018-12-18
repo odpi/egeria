@@ -42,11 +42,22 @@ public class GlossaryCategoryMapper extends ReferenceableMapper {
                 "superCategory",
                 "subcategories"
         );
-        addSimpleRelationshipMapping(
-                "terms",
+
+        // For the terms in the category, because there could be many, it will be more optimal
+        // to look them up in reverse: hence these inverted relationship mappings
+        addInvertedRelationshipMapping(
+                "term",
+                "parent_category",
                 "TermCategorization",
-                "categories",
-                "terms"
+                "terms",
+                "categories"
+        );
+        addInvertedRelationshipMapping(
+                "term",
+                "referencing_categories",
+                "TermCategorization",
+                "terms",
+                "categories"
         );
 
     }

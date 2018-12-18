@@ -86,6 +86,23 @@ public class EntityMappingSet {
     }
 
     /**
+     * Retrieves the POJO that (de-)serialises the provided IGC asset type.
+     *
+     * @param assetType the IGC asset type for which to retrieve the POJO
+     * @return Class
+     */
+    public Class getPOJOForIgcAssetType(String assetType) {
+        Class pojo = null;
+        if (isIgcAssetTypeMapped(assetType)) {
+            for (EntityMapping mapping : getByIgcAssetType(assetType)) {
+                pojo = mapping.getIgcPOJO();
+                break;
+            }
+        }
+        return pojo;
+    }
+
+    /**
      * Indicates whether the provided IGC asset type is mapped (true) or not (false).
      *
      * @param assetType the IGC asset type for which to check for a mapping

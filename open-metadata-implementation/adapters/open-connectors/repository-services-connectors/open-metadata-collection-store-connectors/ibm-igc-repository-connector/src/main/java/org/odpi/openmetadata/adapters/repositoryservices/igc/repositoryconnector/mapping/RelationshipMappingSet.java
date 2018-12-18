@@ -32,7 +32,9 @@ public class RelationshipMappingSet {
     public Set<String> getSimpleMappedIgcRelationships() {
         HashSet<String> igcRelationships = new HashSet<>();
         for (RelationshipMapping mapping : mappings) {
-            igcRelationships.add(mapping.getIgcRelationshipName());
+            if (!mapping.isInvertedMapping()) {
+                igcRelationships.add(mapping.getIgcRelationshipName());
+            }
         }
         igcRelationships.remove(SELF_REFERENCE_SENTINEL);
         return igcRelationships;
@@ -109,6 +111,63 @@ public class RelationshipMappingSet {
     }
 
     /**
+     * Adds a new inverted mapping to the set of mappings.
+     *
+     * @param igcSourceAssetType the type of IGC asset from which to draw the relationship
+     * @param igcRelationshipName the IGC property name for the relationship (in REST form)
+     * @param omrsRelationshipType the name of the OMRS relationship entity (RelationshipDef)
+     * @param omrsRelationshipSourceProperty the name of the OMRS relationship property that should be aligned to the
+     *                                       source of the relationship in IGC
+     * @param omrsRelationshipTargetProperty the name of the OMRS relationship property that should be aligned to the
+     *                                       target of the relationship in IGC
+     */
+    public void addInvertedMapping(String igcSourceAssetType,
+                                   String igcRelationshipName,
+                                   String omrsRelationshipType,
+                                   String omrsRelationshipSourceProperty,
+                                   String omrsRelationshipTargetProperty) {
+        addInvertedMapping(
+                igcSourceAssetType,
+                igcRelationshipName,
+                omrsRelationshipType,
+                omrsRelationshipSourceProperty,
+                omrsRelationshipTargetProperty,
+                null,
+                null);
+    }
+
+    /**
+     * Adds a new inverted mapping to the set of mappings.
+     *
+     * @param igcSourceAssetType the type of IGC asset from which to draw the relationship
+     * @param igcRelationshipName the IGC property name for the relationship (in REST form)
+     * @param omrsRelationshipType the name of the OMRS relationship entity (RelationshipDef)
+     * @param omrsRelationshipSourceProperty the name of the OMRS relationship property that should be aligned to the
+     *                                       source of the relationship in IGC
+     * @param omrsRelationshipTargetProperty the name of the OMRS relationship property that should be aligned to the
+     *                                       target of the relationship in IGC
+     * @param igcSourceRidPrefix the prefix that needs to be added to the source of the IGC relationship's RID
+     * @param igcTargetRidPrefix the prefix that needs to be added to the target of the IGC relationship's RID
+     */
+    public void addInvertedMapping(String igcSourceAssetType,
+                                   String igcRelationshipName,
+                                   String omrsRelationshipType,
+                                   String omrsRelationshipSourceProperty,
+                                   String omrsRelationshipTargetProperty,
+                                   String igcSourceRidPrefix,
+                                   String igcTargetRidPrefix) {
+        mappings.add(new RelationshipMapping(
+                igcSourceAssetType,
+                igcRelationshipName,
+                omrsRelationshipType,
+                omrsRelationshipSourceProperty,
+                omrsRelationshipTargetProperty,
+                igcSourceRidPrefix,
+                igcTargetRidPrefix
+        ));
+    }
+
+    /**
      * Notes the provided IGC relationship requires more than a simple one-to-one mapping.
      *
      * @param igcRelationshipName the IGC relationship property name (in REST form)
@@ -172,6 +231,7 @@ public class RelationshipMappingSet {
      */
     public class RelationshipMapping {
 
+        private String igcAssetType;
         private String igcRelationshipName;
         private String omrsRelationshipType;
         private String omrsRelationshipSourceProperty;
@@ -193,6 +253,24 @@ public class RelationshipMappingSet {
             this.igcTargetRidPrefix = igcTargetRidPrefix;
         }
 
+        public RelationshipMapping(String igcAssetType,
+                                   String igcRelationshipName,
+                                   String omrsRelationshipType,
+                                   String omrsRelationshipSourceProperty,
+                                   String omrsRelationshipTargetProperty,
+                                   String igcSourceRidPrefix,
+                                   String igcTargetRidPrefix) {
+            this.igcAssetType = igcAssetType;
+            this.igcRelationshipName = igcRelationshipName;
+            this.omrsRelationshipType = omrsRelationshipType;
+            this.omrsRelationshipSourceProperty = omrsRelationshipSourceProperty;
+            this.omrsRelationshipTargetProperty = omrsRelationshipTargetProperty;
+            this.igcSourceRidPrefix = igcSourceRidPrefix;
+            this.igcTargetRidPrefix = igcTargetRidPrefix;
+        }
+
+        public boolean isInvertedMapping() { return (this.igcAssetType != null); }
+        public String getIgcAssetType() { return this.igcAssetType; }
         public String getIgcRelationshipName() { return this.igcRelationshipName; }
         public String getOmrsRelationshipType() { return this.omrsRelationshipType; }
         public String getOmrsRelationshipSourceProperty() { return this.omrsRelationshipSourceProperty; }
