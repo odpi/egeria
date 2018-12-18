@@ -52,6 +52,24 @@ public class ReferenceableMapper extends ReferenceMapper {
                                IGCOMRSRepositoryConnector igcomrsRepositoryConnector,
                                String userId) {
 
+        this(
+                igcObject,
+                igcAssetTypeName,
+                omrsEntityTypeName,
+                igcomrsRepositoryConnector,
+                userId,
+                true
+        );
+
+    }
+
+    public ReferenceableMapper(Reference igcObject,
+                               String igcAssetTypeName,
+                               String omrsEntityTypeName,
+                               IGCOMRSRepositoryConnector igcomrsRepositoryConnector,
+                               String userId,
+                               boolean includeDefaultRelationships) {
+
         super(
                 igcObject,
                 igcAssetTypeName,
@@ -67,19 +85,21 @@ public class ReferenceableMapper extends ReferenceMapper {
             }
         }
 
-        // common set of relationships that could apply to all IGC objects (and all OMRS Referenceables)
-        addSimpleRelationshipMapping(
-                "assigned_to_terms",
-                "SemanticAssignment",
-                "assignedElements",
-                "meaning"
-        );
-        addSimpleRelationshipMapping(
-                "labels",
-                "AttachedTag",
-                "taggedElement",
-                "tags"
-        );
+        if (includeDefaultRelationships) {
+            // common set of relationships that could apply to all IGC objects (and all OMRS Referenceables)
+            addSimpleRelationshipMapping(
+                    "assigned_to_terms",
+                    "SemanticAssignment",
+                    "assignedElements",
+                    "meaning"
+            );
+            addSimpleRelationshipMapping(
+                    "labels",
+                    "AttachedTag",
+                    "taggedElement",
+                    "tags"
+            );
+        }
 
         // common set of classifications that apply to all IGC objects (and all OMRS Referenceables) [none]
 
@@ -338,9 +358,11 @@ public class ReferenceableMapper extends ReferenceMapper {
                 RelationshipMappingSet.RelationshipMapping mapping = mappings.getSimpleMapping(i);
 
                 String igcRelationshipName = mapping.getIgcRelationshipName();
+                log.debug(" ... attempting to map relationship: {}", igcRelationshipName);
 
                 // If the relationship is self-referencing, then there won't be any related object to retrieve
                 if (igcRelationshipName.equals(RelationshipMappingSet.SELF_REFERENCE_SENTINEL)) {
+                    log.debug(" ... self-referential: {}", igcRelationshipName);
                     // (as it's self-referencing, send through itself as the relationship
                     Relationship omrsRelationship = getMappedRelationship(
                             mapping,
@@ -356,6 +378,7 @@ public class ReferenceableMapper extends ReferenceMapper {
                     // Handle single instance relationship one way
                     if (igcRelationshipObj != null && Reference.isReference(igcRelationshipObj)) {
 
+                        log.debug(" ... single reference: {}", igcRelationshipName);
                         Reference igcRelationship = (Reference) igcRelationshipObj;
                         if (igcRelationship != null
                                 && igcRelationship.getType() != null
@@ -371,6 +394,7 @@ public class ReferenceableMapper extends ReferenceMapper {
 
                     } else if (igcRelationshipObj != null && Reference.isReferenceList(igcRelationshipObj)) { // and list of relationships another
 
+                        log.debug(" ... list of references: {}", igcRelationshipName);
                         ReferenceList igcRelationships = (ReferenceList) getPropertyByName.invoke(me, igcRelationshipName);
 
                         // TODO: paginate rather than always retrieving the full set
@@ -391,8 +415,12 @@ public class ReferenceableMapper extends ReferenceMapper {
 
                         addAlreadyMappedProperty(igcRelationshipName);
 
+                    } else {
+                        log.debug(" ... skipping relationship {}, either empty or neither reference or list {}", igcRelationshipName, igcRelationshipObj);
                     }
 
+                } else {
+                    log.debug(" ... skipping relationship {}, already used.", igcRelationshipName);
                 }
 
             }
