@@ -370,6 +370,9 @@ public class OpenMetadataTypesArchive
                                                            attribute1Description,
                                                            attribute1DescriptionGUID);
         property.setUnique(true);
+        property.setValuesMaxCount(1);
+        property.setValuesMinCount(1);
+        property.setAttributeCardinality(AttributeCardinality.ONE_ONLY);
         properties.add(property);
         property = archiveHelper.getMapStringStringTypeDefAttribute(attribute2Name,
                                                                     attribute2Description,

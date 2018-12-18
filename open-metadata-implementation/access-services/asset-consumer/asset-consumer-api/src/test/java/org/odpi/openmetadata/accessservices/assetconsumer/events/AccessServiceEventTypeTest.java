@@ -61,7 +61,6 @@ public class AccessServiceEventTypeTest
         testSingleErrorCodeValues(AssetConsumerEventType.UNKNOWN_ASSET_CONSUMER_EVENT);
         testSingleErrorCodeValues(AssetConsumerEventType.NEW_ASSET_EVENT);
         testSingleErrorCodeValues(AssetConsumerEventType.UPDATED_ASSET_EVENT);
-        testSingleErrorCodeValues(AssetConsumerEventType.DELETED_ASSET_EVENT);
     }
 
 
@@ -100,7 +99,7 @@ public class AccessServiceEventTypeTest
      */
     @Test public void testToString()
     {
-        assertTrue(AssetConsumerEventType.DELETED_ASSET_EVENT.toString().contains("AssetConsumerEventType"));
+        assertTrue(AssetConsumerEventType.UPDATED_ASSET_EVENT.toString().contains("AssetConsumerEventType"));
     }
 
 
@@ -110,7 +109,7 @@ public class AccessServiceEventTypeTest
     @Test public void testEquals()
     {
         assertTrue(AssetConsumerEventType.NEW_ASSET_EVENT.equals(AssetConsumerEventType.NEW_ASSET_EVENT));
-        assertFalse(AssetConsumerEventType.NEW_ASSET_EVENT.equals(AssetConsumerEventType.DELETED_ASSET_EVENT));
+        assertFalse(AssetConsumerEventType.NEW_ASSET_EVENT.equals(AssetConsumerEventType.UPDATED_ASSET_EVENT));
     }
 
 
