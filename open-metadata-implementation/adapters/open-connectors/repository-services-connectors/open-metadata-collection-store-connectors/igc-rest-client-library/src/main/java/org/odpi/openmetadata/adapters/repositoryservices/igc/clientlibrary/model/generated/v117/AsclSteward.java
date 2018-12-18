@@ -109,6 +109,7 @@ public class AsclSteward extends Reference {
     /** @see #steward_group */ @JsonProperty("steward_group")  public Reference getStewardGroup() { return this.steward_group; }
     /** @see #steward_group */ @JsonProperty("steward_group")  public void setStewardGroup(Reference steward_group) { this.steward_group = steward_group; }
 
+    public static final Boolean includesModificationDetails() { return true; }
     public static final Boolean isAsclSteward(Object obj) { return (obj.getClass() == AsclSteward.class); }
 
 }

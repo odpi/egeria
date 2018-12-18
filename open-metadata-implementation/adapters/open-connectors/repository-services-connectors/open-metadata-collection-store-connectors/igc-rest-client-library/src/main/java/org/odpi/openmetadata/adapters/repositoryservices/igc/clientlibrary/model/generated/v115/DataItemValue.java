@@ -57,6 +57,7 @@ public class DataItemValue extends Reference {
     /** @see #design_column */ @JsonProperty("design_column")  public ReferenceList getDesignColumn() { return this.design_column; }
     /** @see #design_column */ @JsonProperty("design_column")  public void setDesignColumn(ReferenceList design_column) { this.design_column = design_column; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isDataItemValue(Object obj) { return (obj.getClass() == DataItemValue.class); }
 
 }

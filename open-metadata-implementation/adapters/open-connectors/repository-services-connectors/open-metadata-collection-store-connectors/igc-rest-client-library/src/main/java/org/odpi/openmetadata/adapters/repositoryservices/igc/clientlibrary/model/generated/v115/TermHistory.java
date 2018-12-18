@@ -65,6 +65,7 @@ public class TermHistory extends Reference {
     /** @see #changed_properties */ @JsonProperty("changed_properties")  public ReferenceList getChangedProperties() { return this.changed_properties; }
     /** @see #changed_properties */ @JsonProperty("changed_properties")  public void setChangedProperties(ReferenceList changed_properties) { this.changed_properties = changed_properties; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isTermHistory(Object obj) { return (obj.getClass() == TermHistory.class); }
 
 }

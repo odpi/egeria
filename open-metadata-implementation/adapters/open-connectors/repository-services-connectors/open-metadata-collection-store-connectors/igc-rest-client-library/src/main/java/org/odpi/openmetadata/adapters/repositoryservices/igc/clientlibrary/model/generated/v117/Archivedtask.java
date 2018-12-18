@@ -61,6 +61,7 @@ public class Archivedtask extends Reference {
     /** @see #name */ @JsonProperty("name")  public String getTheName() { return this.name; }
     /** @see #name */ @JsonProperty("name")  public void setTheName(String name) { this.name = name; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isArchivedtask(Object obj) { return (obj.getClass() == Archivedtask.class); }
 
 }

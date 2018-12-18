@@ -135,6 +135,7 @@ public class Dsjcltemplate extends Reference {
     /** @see #code_template */ @JsonProperty("code_template")  public String getCodeTemplate() { return this.code_template; }
     /** @see #code_template */ @JsonProperty("code_template")  public void setCodeTemplate(String code_template) { this.code_template = code_template; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isDsjcltemplate(Object obj) { return (obj.getClass() == Dsjcltemplate.class); }
 
 }

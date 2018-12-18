@@ -105,6 +105,7 @@ public class Jobdef extends Reference {
     /** @see #alias */ @JsonProperty("alias")  public ReferenceList getAlias() { return this.alias; }
     /** @see #alias */ @JsonProperty("alias")  public void setAlias(ReferenceList alias) { this.alias = alias; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isJobdef(Object obj) { return (obj.getClass() == Jobdef.class); }
 
 }

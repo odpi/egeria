@@ -367,6 +367,7 @@ public class DataFile extends Reference {
     /** @see #amazon_s3_data_files */ @JsonProperty("amazon_s3_data_files")  public Reference getAmazonS3DataFiles() { return this.amazon_s3_data_files; }
     /** @see #amazon_s3_data_files */ @JsonProperty("amazon_s3_data_files")  public void setAmazonS3DataFiles(Reference amazon_s3_data_files) { this.amazon_s3_data_files = amazon_s3_data_files; }
 
+    public static final Boolean includesModificationDetails() { return true; }
     public static final Boolean isDataFile(Object obj) { return (obj.getClass() == DataFile.class); }
 
 }

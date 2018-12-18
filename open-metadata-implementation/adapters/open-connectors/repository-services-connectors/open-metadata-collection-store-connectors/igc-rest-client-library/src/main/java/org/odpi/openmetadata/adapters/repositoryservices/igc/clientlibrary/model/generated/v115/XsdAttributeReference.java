@@ -69,6 +69,7 @@ public class XsdAttributeReference extends Reference {
     /** @see #references_xsd_attribute */ @JsonProperty("references_xsd_attribute")  public Reference getReferencesXsdAttribute() { return this.references_xsd_attribute; }
     /** @see #references_xsd_attribute */ @JsonProperty("references_xsd_attribute")  public void setReferencesXsdAttribute(Reference references_xsd_attribute) { this.references_xsd_attribute = references_xsd_attribute; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isXsdAttributeReference(Object obj) { return (obj.getClass() == XsdAttributeReference.class); }
 
 }

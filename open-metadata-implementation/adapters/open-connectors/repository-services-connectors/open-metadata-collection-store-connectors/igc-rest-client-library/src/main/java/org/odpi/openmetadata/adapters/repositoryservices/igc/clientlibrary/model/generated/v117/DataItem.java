@@ -331,6 +331,7 @@ public class DataItem extends Reference {
     /** @see #level */ @JsonProperty("level")  public Number getLevel() { return this.level; }
     /** @see #level */ @JsonProperty("level")  public void setLevel(Number level) { this.level = level; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isDataItem(Object obj) { return (obj.getClass() == DataItem.class); }
 
 }

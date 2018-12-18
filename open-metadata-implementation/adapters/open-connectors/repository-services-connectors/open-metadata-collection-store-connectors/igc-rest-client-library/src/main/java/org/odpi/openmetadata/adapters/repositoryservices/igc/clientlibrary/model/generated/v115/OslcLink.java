@@ -67,6 +67,7 @@ public class OslcLink extends Reference {
     /** @see #of_provider_connection */ @JsonProperty("of_provider_connection")  public Reference getOfProviderConnection() { return this.of_provider_connection; }
     /** @see #of_provider_connection */ @JsonProperty("of_provider_connection")  public void setOfProviderConnection(Reference of_provider_connection) { this.of_provider_connection = of_provider_connection; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isOslcLink(Object obj) { return (obj.getClass() == OslcLink.class); }
 
 }

@@ -71,6 +71,7 @@ public class ClassificationContribution extends Reference {
     /** @see #match_type */ @JsonProperty("match_type")  public String getMatchType() { return this.match_type; }
     /** @see #match_type */ @JsonProperty("match_type")  public void setMatchType(String match_type) { this.match_type = match_type; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isClassificationContribution(Object obj) { return (obj.getClass() == ClassificationContribution.class); }
 
 }

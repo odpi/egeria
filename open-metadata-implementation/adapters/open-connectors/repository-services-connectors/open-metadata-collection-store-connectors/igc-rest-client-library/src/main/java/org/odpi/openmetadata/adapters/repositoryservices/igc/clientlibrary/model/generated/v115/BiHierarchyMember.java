@@ -64,6 +64,7 @@ public class BiHierarchyMember extends Reference {
     /** @see #sequence */ @JsonProperty("sequence")  public Number getSequence() { return this.sequence; }
     /** @see #sequence */ @JsonProperty("sequence")  public void setSequence(Number sequence) { this.sequence = sequence; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isBiHierarchyMember(Object obj) { return (obj.getClass() == BiHierarchyMember.class); }
 
 }

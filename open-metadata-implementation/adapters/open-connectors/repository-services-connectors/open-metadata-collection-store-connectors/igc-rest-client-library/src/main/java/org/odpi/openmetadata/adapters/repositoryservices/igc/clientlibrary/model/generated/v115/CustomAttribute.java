@@ -64,6 +64,7 @@ public class CustomAttribute extends Reference {
     /** @see #description */ @JsonProperty("description")  public String getDescription() { return this.description; }
     /** @see #description */ @JsonProperty("description")  public void setDescription(String description) { this.description = description; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isCustomAttribute(Object obj) { return (obj.getClass() == CustomAttribute.class); }
 
 }

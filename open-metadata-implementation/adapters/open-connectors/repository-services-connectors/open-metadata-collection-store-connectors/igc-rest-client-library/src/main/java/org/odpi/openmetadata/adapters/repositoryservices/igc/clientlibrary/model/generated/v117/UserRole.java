@@ -47,6 +47,7 @@ public class UserRole extends Reference {
     /** @see #users */ @JsonProperty("users")  public ReferenceList getUsers() { return this.users; }
     /** @see #users */ @JsonProperty("users")  public void setUsers(ReferenceList users) { this.users = users; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isUserRole(Object obj) { return (obj.getClass() == UserRole.class); }
 
 }

@@ -20,6 +20,7 @@ public class AnalyticsObject extends Reference {
 
     public static String getIgcTypeId() { return "analytics_object"; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isAnalyticsObject(Object obj) { return (obj.getClass() == AnalyticsObject.class); }
 
 }

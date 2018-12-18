@@ -20,6 +20,7 @@ public class StandardizationRule extends Reference {
 
     public static String getIgcTypeId() { return "standardization_rule"; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isStandardizationRule(Object obj) { return (obj.getClass() == StandardizationRule.class); }
 
 }

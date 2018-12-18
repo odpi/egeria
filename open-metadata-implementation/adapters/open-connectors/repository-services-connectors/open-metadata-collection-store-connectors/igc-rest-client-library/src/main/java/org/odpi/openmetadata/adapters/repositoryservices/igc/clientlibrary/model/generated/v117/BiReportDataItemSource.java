@@ -61,6 +61,7 @@ public class BiReportDataItemSource extends Reference {
     /** @see #defined_by_olap_member */ @JsonProperty("defined_by_olap_member")  public Reference getDefinedByOlapMember() { return this.defined_by_olap_member; }
     /** @see #defined_by_olap_member */ @JsonProperty("defined_by_olap_member")  public void setDefinedByOlapMember(Reference defined_by_olap_member) { this.defined_by_olap_member = defined_by_olap_member; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isBiReportDataItemSource(Object obj) { return (obj.getClass() == BiReportDataItemSource.class); }
 
 }

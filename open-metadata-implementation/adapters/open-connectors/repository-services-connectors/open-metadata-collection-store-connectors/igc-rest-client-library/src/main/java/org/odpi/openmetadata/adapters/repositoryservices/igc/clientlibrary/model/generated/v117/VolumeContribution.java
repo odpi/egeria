@@ -57,6 +57,7 @@ public class VolumeContribution extends Reference {
     /** @see #size */ @JsonProperty("size")  public Number getSize() { return this.size; }
     /** @see #size */ @JsonProperty("size")  public void setSize(Number size) { this.size = size; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isVolumeContribution(Object obj) { return (obj.getClass() == VolumeContribution.class); }
 
 }

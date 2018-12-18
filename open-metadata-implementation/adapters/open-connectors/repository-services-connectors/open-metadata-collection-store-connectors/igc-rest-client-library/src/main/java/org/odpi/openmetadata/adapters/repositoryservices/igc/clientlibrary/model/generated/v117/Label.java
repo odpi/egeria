@@ -47,6 +47,7 @@ public class Label extends Reference {
     /** @see #labeled_assets */ @JsonProperty("labeled_assets")  public ReferenceList getLabeledAssets() { return this.labeled_assets; }
     /** @see #labeled_assets */ @JsonProperty("labeled_assets")  public void setLabeledAssets(ReferenceList labeled_assets) { this.labeled_assets = labeled_assets; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isLabel(Object obj) { return (obj.getClass() == Label.class); }
 
 }

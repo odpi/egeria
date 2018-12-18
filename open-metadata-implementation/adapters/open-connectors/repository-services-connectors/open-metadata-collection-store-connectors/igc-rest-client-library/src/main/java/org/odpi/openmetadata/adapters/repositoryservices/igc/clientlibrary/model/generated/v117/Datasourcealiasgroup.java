@@ -51,6 +51,7 @@ public class Datasourcealiasgroup extends Reference {
     /** @see #bound_to_database */ @JsonProperty("bound_to_database")  public Reference getBoundToDatabase() { return this.bound_to_database; }
     /** @see #bound_to_database */ @JsonProperty("bound_to_database")  public void setBoundToDatabase(Reference bound_to_database) { this.bound_to_database = bound_to_database; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isDatasourcealiasgroup(Object obj) { return (obj.getClass() == Datasourcealiasgroup.class); }
 
 }

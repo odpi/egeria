@@ -103,6 +103,7 @@ public class Reportobject extends Reference {
     /** @see #alias__business_name_ */ @JsonProperty("alias_(business_name)")  public String getAliasBusinessName() { return this.alias__business_name_; }
     /** @see #alias__business_name_ */ @JsonProperty("alias_(business_name)")  public void setAliasBusinessName(String alias__business_name_) { this.alias__business_name_ = alias__business_name_; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isReportobject(Object obj) { return (obj.getClass() == Reportobject.class); }
 
 }

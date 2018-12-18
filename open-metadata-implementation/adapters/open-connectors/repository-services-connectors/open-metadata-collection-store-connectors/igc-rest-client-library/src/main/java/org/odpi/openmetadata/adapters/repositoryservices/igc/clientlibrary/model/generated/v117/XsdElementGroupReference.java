@@ -77,6 +77,7 @@ public class XsdElementGroupReference extends Reference {
     /** @see #references_xsd_element_group */ @JsonProperty("references_xsd_element_group")  public Reference getReferencesXsdElementGroup() { return this.references_xsd_element_group; }
     /** @see #references_xsd_element_group */ @JsonProperty("references_xsd_element_group")  public void setReferencesXsdElementGroup(Reference references_xsd_element_group) { this.references_xsd_element_group = references_xsd_element_group; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isXsdElementGroupReference(Object obj) { return (obj.getClass() == XsdElementGroupReference.class); }
 
 }
