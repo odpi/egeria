@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v115;
 
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
 import java.util.ArrayList;
@@ -16,9 +16,14 @@ import java.util.ArrayList;
  *  extending from this class in your own custom class is the best approach.)
  */
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class BiReportSection extends MainObject {
+public class BiReportSection extends Reference {
 
-    public static final String IGC_TYPE_ID = "bi_report_section";
+    public static String getIgcTypeId() { return "bi_report_section"; }
+
+    /**
+     * The 'name' property, displayed as 'Name' in the IGC UI.
+     */
+    protected String name;
 
     /**
      * The 'alias_(business_name)' property, displayed as 'Alias (Business Name)' in the IGC UI.
@@ -48,6 +53,11 @@ public class BiReportSection extends MainObject {
      * The 'label' property, displayed as 'Label' in the IGC UI.
      */
     protected String label;
+
+    /**
+     * The 'short_description' property, displayed as 'Short Description' in the IGC UI.
+     */
+    protected String short_description;
 
     /**
      * The 'sequence' property, displayed as 'Sequence' in the IGC UI.
@@ -83,6 +93,9 @@ public class BiReportSection extends MainObject {
     protected Reference contained_in_report_section;
 
 
+    /** @see #name */ @JsonProperty("name")  public String getTheName() { return this.name; }
+    /** @see #name */ @JsonProperty("name")  public void setTheName(String name) { this.name = name; }
+
     /** @see #alias__business_name_ */ @JsonProperty("alias_(business_name)")  public String getAliasBusinessName() { return this.alias__business_name_; }
     /** @see #alias__business_name_ */ @JsonProperty("alias_(business_name)")  public void setAliasBusinessName(String alias__business_name_) { this.alias__business_name_ = alias__business_name_; }
 
@@ -91,6 +104,9 @@ public class BiReportSection extends MainObject {
 
     /** @see #label */ @JsonProperty("label")  public String getLabel() { return this.label; }
     /** @see #label */ @JsonProperty("label")  public void setLabel(String label) { this.label = label; }
+
+    /** @see #short_description */ @JsonProperty("short_description")  public String getShortDescription() { return this.short_description; }
+    /** @see #short_description */ @JsonProperty("short_description")  public void setShortDescription(String short_description) { this.short_description = short_description; }
 
     /** @see #sequence */ @JsonProperty("sequence")  public Number getSequence() { return this.sequence; }
     /** @see #sequence */ @JsonProperty("sequence")  public void setSequence(Number sequence) { this.sequence = sequence; }
@@ -106,7 +122,6 @@ public class BiReportSection extends MainObject {
 
     /** @see #contained_in_report_section */ @JsonProperty("contained_in_report_section")  public Reference getContainedInReportSection() { return this.contained_in_report_section; }
     /** @see #contained_in_report_section */ @JsonProperty("contained_in_report_section")  public void setContainedInReportSection(Reference contained_in_report_section) { this.contained_in_report_section = contained_in_report_section; }
-
 
     public static final Boolean isBiReportSection(Object obj) { return (obj.getClass() == BiReportSection.class); }
 

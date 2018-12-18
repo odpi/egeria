@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v117;
 
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
 import java.util.ArrayList;
@@ -16,9 +16,9 @@ import java.util.ArrayList;
  *  extending from this class in your own custom class is the best approach.)
  */
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class XsdElementGroupReference extends MainObject {
+public class XsdElementGroupReference extends Reference {
 
-    public static final String IGC_TYPE_ID = "xsd_element_group_reference";
+    public static String getIgcTypeId() { return "xsd_element_group_reference"; }
 
     /**
      * The 'min_occurs' property, displayed as 'Minimum Occurrence' in the IGC UI.
@@ -76,7 +76,6 @@ public class XsdElementGroupReference extends MainObject {
 
     /** @see #references_xsd_element_group */ @JsonProperty("references_xsd_element_group")  public Reference getReferencesXsdElementGroup() { return this.references_xsd_element_group; }
     /** @see #references_xsd_element_group */ @JsonProperty("references_xsd_element_group")  public void setReferencesXsdElementGroup(Reference references_xsd_element_group) { this.references_xsd_element_group = references_xsd_element_group; }
-
 
     public static final Boolean isXsdElementGroupReference(Object obj) { return (obj.getClass() == XsdElementGroupReference.class); }
 
