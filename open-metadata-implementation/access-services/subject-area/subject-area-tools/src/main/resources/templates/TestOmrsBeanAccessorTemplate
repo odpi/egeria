@@ -393,8 +393,6 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfRelationship.setTypeDefName("<$$uRelationshipName$$>");
             mockRelationship.setType(typeOfRelationship);
 
-            mockRelationship.setEntityOnePropertyName("<$$uRelationshipEntity1$$>");
-            mockRelationship.setEntityTwoPropertyName("<$$uRelationshipEntity2$$>");
             EntityProxy entityProxy1 = new EntityProxy();
             EntityProxy entityProxy2 = new EntityProxy();
             InstanceType type1 = new InstanceType();
@@ -516,8 +514,6 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfRelationship.setTypeDefName("<$$uRelationshipName$$>");
             mockRelationship.setType(typeOfRelationship);
 
-            mockRelationship.setEntityOnePropertyName("<$$uRelationshipEntity1$$>");
-            mockRelationship.setEntityTwoPropertyName("<$$uRelationshipEntity2$$>");
             EntityProxy entityProxy1 = new EntityProxy();
             EntityProxy entityProxy2 = new EntityProxy();
             InstanceType type1 = new InstanceType();
@@ -635,8 +631,6 @@ public class TestSubjectAreaBeansToAccessOMRS {
             typeOfRelationship.setTypeDefName("<$$uRelationshipName$$>");
             mockRelationship.setType(typeOfRelationship);
 
-            mockRelationship.setEntityOnePropertyName("<$$uRelationshipEntity1$$>");
-            mockRelationship.setEntityTwoPropertyName("<$$uRelationshipEntity2$$>");
             EntityProxy entityProxy1 = new EntityProxy();
             EntityProxy entityProxy2 = new EntityProxy();
             InstanceType type1 = new InstanceType();

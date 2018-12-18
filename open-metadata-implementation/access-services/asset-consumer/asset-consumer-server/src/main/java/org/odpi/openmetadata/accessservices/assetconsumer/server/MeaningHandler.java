@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.accessservices.assetconsumer.server;
 
 
+import org.odpi.openmetadata.accessservices.assetconsumer.converters.GlossaryTermConverter;
+import org.odpi.openmetadata.accessservices.assetconsumer.converters.ReferenceableHeaderConverter;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.AssetConsumerErrorCode;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions.PropertyServerException;
@@ -18,20 +20,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * ConnectionHandler retrieves Connection objects from the property server.  It runs server-side in the AssetConsumer
- * OMAS and retrieves Connections through the OMRSRepositoryConnector.
+ * MeaningHandler retrieves Glossary Term objects from the property server.  It runs server-side in the AssetConsumer
+ * OMAS and retrieves Glossary Term entities through the OMRSRepositoryConnector.
  */
 class MeaningHandler
 {
     private static final String glossaryTermGUID          = "0db3e6ec-f5ef-4d75-ae38-b7ee6fd6ec0a";
-    private static final String qualifiedNamePropertyName = "qualifiedName";
-    private static final String additionalPropertiesName  = "additionalProperties";
-    private static final String displayNamePropertyName   = "displayName";
-    private static final String summaryPropertyName       = "summary";
-    private static final String descriptionPropertyName   = "description";
-    private static final String examplesPropertyName      = "usage";
-    private static final String abbreviationPropertyName  = "abbreviation";
-    private static final String usagePropertyName         = "usage";
+
 
     private String               serviceName;
     private OMRSRepositoryHelper repositoryHelper = null;
@@ -39,7 +34,7 @@ class MeaningHandler
     private ErrorHandler         errorHandler     = null;
 
     /**
-     * Construct the connection handler with a link to the property server's connector and this access service's
+     * Construct the glossary term handler with a link to the property server's connector and this access service's
      * official name.
      *
      * @param serviceName  name of this service
@@ -59,20 +54,24 @@ class MeaningHandler
 
 
     /**
-     * Returns the connection object corresponding to the supplied connection name.
+     * Returns the glossary term object corresponding to the supplied term name.
      *
      * @param userId  String - userId of user making request.
-     * @param name  this may be the qualifiedName or displayName of the connection.
+     * @param name  this may be the qualifiedName or displayName of the term.
+     * @param startFrom  index of the list ot start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
      *
      * @return List of glossary terms retrieved from property server
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem retrieving information from the property (metadata) server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    List<GlossaryTerm> getMeaningsByName(String   userId,
-                                         String   name) throws InvalidParameterException,
-                                                               PropertyServerException,
-                                                               UserNotAuthorizedException
+    List<GlossaryTerm> getMeaningsByName(String    userId,
+                                         String    name,
+                                         int       startFrom,
+                                         int       pageSize) throws InvalidParameterException,
+                                                                    PropertyServerException,
+                                                                    UserNotAuthorizedException
     {
         final  String   methodName = "getMeaningsByName";
         final  String   nameParameter = "name";
@@ -90,13 +89,13 @@ class MeaningHandler
 
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       null,
-                                                                      qualifiedNamePropertyName,
+                                                                      ReferenceableHeaderConverter.QUALIFIED_NAME_PROPERTY_NAME,
                                                                       name,
                                                                       methodName);
 
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
-                                                                      displayNamePropertyName,
+                                                                      GlossaryTermConverter.DISPLAY_NAME_PROPERTY_NAME,
                                                                       name,
                                                                       methodName);
 
@@ -104,13 +103,13 @@ class MeaningHandler
                                                                                                 glossaryTermGUID,
                                                                                                 properties,
                                                                                                 MatchCriteria.ANY,
-                                                                                                0,
+                                                                                                startFrom,
                                                                                                 null,
                                                                                                 null,
                                                                                                 null,
                                                                                                 null,
                                                                                                 null,
-                                                                                                2);
+                                                                                                pageSize);
 
             if (glossaryTermEntities == null)
             {
@@ -122,11 +121,12 @@ class MeaningHandler
             }
             else
             {
-                for (EntityDetail  glossaryTermEntity : glossaryTermEntities)
+                for (EntityDetail  termEntity : glossaryTermEntities)
                 {
-                    if (glossaryTermEntity != null)
+                    if (termEntity != null)
                     {
-                        results.add(this.getMeaningFromRepository(glossaryTermEntity));
+                        GlossaryTermConverter   converter = new GlossaryTermConverter(termEntity, repositoryHelper, serviceName);
+                        results.add(converter.getBean());
                     }
                 }
             }
@@ -151,7 +151,7 @@ class MeaningHandler
 
 
     /**
-     * Returns the connection object corresponding to the supplied connection GUID.
+     * Returns the glossary term object corresponding to the supplied glossary term GUID.
      *
      * @param userId  String - userId of user making request.
      * @param guid  the unique id for the glossary term within the property server.
@@ -220,71 +220,10 @@ class MeaningHandler
 
         if (termEntity != null)
         {
-            return this.getMeaningFromRepository(termEntity);
+            GlossaryTermConverter   converter = new GlossaryTermConverter(termEntity, repositoryHelper, serviceName);
+            return converter.getBean();
         }
 
         return null;
-    }
-
-
-    /**
-     * Return a Glossary Term bean filled with values retrieved from the property server.
-     *
-     * @param termEntity  root entity object
-     * @return GlossaryTerm bean
-     */
-    private GlossaryTerm  getMeaningFromRepository(EntityDetail            termEntity)
-    {
-        final  String   methodName = "getMeaningFromRepository";
-
-        GlossaryTerm  glossaryTerm    = new GlossaryTerm();
-
-        if (termEntity != null)
-        {
-            glossaryTerm.setGUID(termEntity.getGUID());
-
-            InstanceType instanceType = termEntity.getType();
-            if (instanceType != null)
-            {
-                glossaryTerm.setTypeName(termEntity.getInstanceURL());
-                glossaryTerm.setTypeDescription(termEntity.getInstanceURL());
-            }
-
-            List<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification> entityClassifications = termEntity.getClassifications();
-            if ((entityClassifications != null) && (! entityClassifications.isEmpty()))
-            {
-                List<org.odpi.openmetadata.accessservices.assetconsumer.properties.Classification> classifications = new ArrayList<>();
-
-                for (org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification  entityClassification : entityClassifications )
-                {
-                    if (entityClassification != null)
-                    {
-                        org.odpi.openmetadata.accessservices.assetconsumer.properties.Classification  classification = new org.odpi.openmetadata.accessservices.assetconsumer.properties.Classification();
-
-                        classification.setClassificationName(entityClassification.getName());
-
-                        InstanceProperties classificationProperties = entityClassification.getProperties();
-
-                        if (classificationProperties != null)
-                        {
-                            // TODO
-                        }
-                    }
-                }
-
-                glossaryTerm.setClassifications(classifications);
-            }
-
-            glossaryTerm.setQualifiedName(repositoryHelper.getStringProperty(serviceName, qualifiedNamePropertyName, termEntity.getProperties(), methodName));
-            glossaryTerm.setDisplayName(repositoryHelper.getStringProperty(serviceName, displayNamePropertyName, termEntity.getProperties(), methodName));
-            glossaryTerm.setSummary(repositoryHelper.getStringProperty(serviceName, summaryPropertyName, termEntity.getProperties(), methodName));
-            glossaryTerm.setDescription(repositoryHelper.getStringProperty(serviceName, descriptionPropertyName, termEntity.getProperties(), methodName));
-            glossaryTerm.setExamples(repositoryHelper.getStringProperty(serviceName, examplesPropertyName, termEntity.getProperties(), methodName));
-            glossaryTerm.setAbbreviation(repositoryHelper.getStringProperty(serviceName, abbreviationPropertyName, termEntity.getProperties(), methodName));
-            glossaryTerm.setUsage(repositoryHelper.getStringProperty(serviceName, usagePropertyName, termEntity.getProperties(), methodName));
-            glossaryTerm.setAdditionalProperties(repositoryHelper.getMapFromProperty(serviceName, additionalPropertiesName, termEntity.getProperties(), methodName));
-        }
-
-        return glossaryTerm;
     }
 }

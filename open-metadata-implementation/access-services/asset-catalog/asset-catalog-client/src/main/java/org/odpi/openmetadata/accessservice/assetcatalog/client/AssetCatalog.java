@@ -421,33 +421,23 @@ public class AssetCatalog implements AssetCatalogInterface {
     }
 
     private ClassificationsResponse callPostClassificationResponse(String url, Object requestBody, Object... params) {
-        ClassificationsResponse restResult = new ClassificationsResponse();
-
-        return restTemplate.postForObject(omasServerURL + url, requestBody, restResult.getClass(), params);
+        return restTemplate.postForObject(omasServerURL + url, requestBody, ClassificationsResponse.class, params);
     }
 
-    private AssetDescriptionResponse callGetAssetDescriptionResponse(String url, String serverName, Object... params) {
-        AssetDescriptionResponse restResult = new AssetDescriptionResponse();
-
-        return restTemplate.getForObject(omasServerURL + url, restResult.getClass(), params);
+    private AssetDescriptionResponse callGetAssetDescriptionResponse(String url, Object... params) {
+        return restTemplate.getForObject(omasServerURL + url, AssetDescriptionResponse.class, params);
     }
 
     private AssetDescriptionResponse callPostAssetDescriptionResponse(String url, Object requestBody, Object... params) {
-        AssetDescriptionResponse restResult = new AssetDescriptionResponse();
-
-        return restTemplate.postForObject(omasServerURL + url, requestBody, restResult.getClass(), params);
+        return restTemplate.postForObject(omasServerURL + url, requestBody, AssetDescriptionResponse.class, params);
     }
 
     private RelationshipsResponse callGetRelationshipsResponse(String url, Object... params) {
-        RelationshipsResponse restResult = new RelationshipsResponse();
-
-        return restTemplate.getForObject(omasServerURL + url, restResult.getClass(), params);
+        return restTemplate.getForObject(omasServerURL + url, RelationshipsResponse.class, params);
     }
 
     private RelationshipsResponse callPostRelationshipsResponse(String url, Object requestBody, Object... params) {
-        RelationshipsResponse restResult = new RelationshipsResponse();
-
-        return restTemplate.postForObject(omasServerURL + url, requestBody, restResult.getClass(), params);
+        return restTemplate.postForObject(omasServerURL + url, requestBody, RelationshipsResponse.class, params);
     }
 
 

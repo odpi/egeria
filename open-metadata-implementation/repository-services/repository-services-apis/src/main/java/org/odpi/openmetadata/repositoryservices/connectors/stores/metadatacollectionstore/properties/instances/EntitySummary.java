@@ -1,4 +1,5 @@
-/* SPDX-License-Identifier: Apache-2.0 */
+/* SPDX-License-Identifier: Apache 2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances;
 
 import com.fasterxml.jackson.annotation.*;
@@ -12,9 +13,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * EntitySummary is a POJO that provides the basic header attributes for an open metadata entity.
+ * EntitySummary provides the basic header attributes for an open metadata entity.
  * This includes a summary of its type, its unique
- * identifier (guid) last update data and a list of the classifications for the entity.
+ * identifier (guid) last update date and a list of the classifications for the entity.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -106,11 +107,13 @@ public class EntitySummary extends InstanceHeader
     {
         return "EntitySummary{" +
                 "classifications=" + classifications +
+                ", instanceURL='" + getInstanceURL() + '\'' +
+                ", GUID='" + getGUID() + '\'' +
                 ", type=" + getType() +
                 ", instanceProvenanceType=" + getInstanceProvenanceType() +
                 ", metadataCollectionId='" + getMetadataCollectionId() + '\'' +
-                ", instanceURL='" + getInstanceURL() + '\'' +
-                ", GUID='" + getGUID() + '\'' +
+                ", metadataCollectionName='" + getMetadataCollectionName() + '\'' +
+                ", instanceLicense='" + getInstanceLicense() + '\'' +
                 ", status=" + getStatus() +
                 ", createdBy='" + getCreatedBy() + '\'' +
                 ", updatedBy='" + getUpdatedBy() + '\'' +
@@ -135,7 +138,7 @@ public class EntitySummary extends InstanceHeader
         {
             return true;
         }
-        if (!(objectToCompare instanceof EntitySummary))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -148,6 +151,7 @@ public class EntitySummary extends InstanceHeader
     }
 
 
+
     /**
      * Return a hash code based on the values of this object.
      *
@@ -156,7 +160,6 @@ public class EntitySummary extends InstanceHeader
     @Override
     public int hashCode()
     {
-
         return Objects.hash(super.hashCode(), getClassifications());
     }
 }
