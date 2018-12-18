@@ -77,6 +77,7 @@ public class XsdElementReference extends Reference {
     /** @see #referenced_xsd_element */ @JsonProperty("referenced_xsd_element")  public Reference getReferencedXsdElement() { return this.referenced_xsd_element; }
     /** @see #referenced_xsd_element */ @JsonProperty("referenced_xsd_element")  public void setReferencedXsdElement(Reference referenced_xsd_element) { this.referenced_xsd_element = referenced_xsd_element; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isXsdElementReference(Object obj) { return (obj.getClass() == XsdElementReference.class); }
 
 }

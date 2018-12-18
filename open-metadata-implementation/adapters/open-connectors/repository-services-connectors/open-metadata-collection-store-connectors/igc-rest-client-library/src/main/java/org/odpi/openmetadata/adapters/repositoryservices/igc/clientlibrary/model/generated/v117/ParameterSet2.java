@@ -115,6 +115,7 @@ public class ParameterSet2 extends Reference {
     /** @see #used_as_parameter_def */ @JsonProperty("used_as_parameter_def")  public ReferenceList getUsedAsParameterDef() { return this.used_as_parameter_def; }
     /** @see #used_as_parameter_def */ @JsonProperty("used_as_parameter_def")  public void setUsedAsParameterDef(ReferenceList used_as_parameter_def) { this.used_as_parameter_def = used_as_parameter_def; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isParameterSet2(Object obj) { return (obj.getClass() == ParameterSet2.class); }
 
 }

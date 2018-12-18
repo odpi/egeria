@@ -113,6 +113,7 @@ public class Classification extends Reference {
     /** @see #column_analysis */ @JsonProperty("column_analysis")  public ReferenceList getColumnAnalysis() { return this.column_analysis; }
     /** @see #column_analysis */ @JsonProperty("column_analysis")  public void setColumnAnalysis(ReferenceList column_analysis) { this.column_analysis = column_analysis; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isClassification(Object obj) { return (obj.getClass() == Classification.class); }
 
 }

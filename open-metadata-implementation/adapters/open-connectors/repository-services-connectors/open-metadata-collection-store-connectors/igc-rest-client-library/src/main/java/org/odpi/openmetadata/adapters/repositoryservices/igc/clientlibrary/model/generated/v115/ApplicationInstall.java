@@ -181,6 +181,7 @@ public class ApplicationInstall extends Reference {
     /** @see #release_number */ @JsonProperty("release_number")  public String getReleaseNumber() { return this.release_number; }
     /** @see #release_number */ @JsonProperty("release_number")  public void setReleaseNumber(String release_number) { this.release_number = release_number; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isApplicationInstall(Object obj) { return (obj.getClass() == ApplicationInstall.class); }
 
 }

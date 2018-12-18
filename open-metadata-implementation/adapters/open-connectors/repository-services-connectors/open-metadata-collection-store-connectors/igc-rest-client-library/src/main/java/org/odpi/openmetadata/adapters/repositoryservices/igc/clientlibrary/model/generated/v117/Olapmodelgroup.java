@@ -113,6 +113,7 @@ public class Olapmodelgroup extends Reference {
     /** @see #business_name */ @JsonProperty("business_name")  public String getBusinessName() { return this.business_name; }
     /** @see #business_name */ @JsonProperty("business_name")  public void setBusinessName(String business_name) { this.business_name = business_name; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isOlapmodelgroup(Object obj) { return (obj.getClass() == Olapmodelgroup.class); }
 
 }

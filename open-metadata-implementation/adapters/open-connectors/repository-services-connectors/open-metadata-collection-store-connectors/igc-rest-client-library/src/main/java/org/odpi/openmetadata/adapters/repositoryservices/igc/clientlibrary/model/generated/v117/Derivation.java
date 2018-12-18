@@ -29,6 +29,7 @@ public class Derivation extends Reference {
     /** @see #expression */ @JsonProperty("expression")  public String getExpression() { return this.expression; }
     /** @see #expression */ @JsonProperty("expression")  public void setExpression(String expression) { this.expression = expression; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isDerivation(Object obj) { return (obj.getClass() == Derivation.class); }
 
 }

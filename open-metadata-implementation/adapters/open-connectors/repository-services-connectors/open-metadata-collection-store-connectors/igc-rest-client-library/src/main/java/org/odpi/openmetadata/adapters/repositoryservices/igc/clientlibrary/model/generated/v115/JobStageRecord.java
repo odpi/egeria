@@ -171,6 +171,7 @@ public class JobStageRecord extends Reference {
     /** @see #record_id_name_value_relation */ @JsonProperty("record_id_name_value_relation")  public String getRecordIdNameValueRelation() { return this.record_id_name_value_relation; }
     /** @see #record_id_name_value_relation */ @JsonProperty("record_id_name_value_relation")  public void setRecordIdNameValueRelation(String record_id_name_value_relation) { this.record_id_name_value_relation = record_id_name_value_relation; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isJobStageRecord(Object obj) { return (obj.getClass() == JobStageRecord.class); }
 
 }

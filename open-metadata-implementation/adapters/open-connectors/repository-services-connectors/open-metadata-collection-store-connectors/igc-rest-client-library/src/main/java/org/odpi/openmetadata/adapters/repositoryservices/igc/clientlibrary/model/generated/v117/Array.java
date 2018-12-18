@@ -149,6 +149,7 @@ public class Array extends Reference {
     /** @see #minimum_size */ @JsonProperty("minimum_size")  public Number getMinimumSize() { return this.minimum_size; }
     /** @see #minimum_size */ @JsonProperty("minimum_size")  public void setMinimumSize(Number minimum_size) { this.minimum_size = minimum_size; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isArray(Object obj) { return (obj.getClass() == Array.class); }
 
 }

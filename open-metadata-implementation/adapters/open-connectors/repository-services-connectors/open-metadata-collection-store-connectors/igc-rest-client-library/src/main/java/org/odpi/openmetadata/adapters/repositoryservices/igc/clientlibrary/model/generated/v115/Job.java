@@ -123,6 +123,7 @@ public class Job extends Reference {
     /** @see #release_status */ @JsonProperty("release_status")  public String getReleaseStatus() { return this.release_status; }
     /** @see #release_status */ @JsonProperty("release_status")  public void setReleaseStatus(String release_status) { this.release_status = release_status; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isJob(Object obj) { return (obj.getClass() == Job.class); }
 
 }

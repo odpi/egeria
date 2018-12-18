@@ -75,6 +75,7 @@ public class BiOlapLevelElement extends Reference {
     /** @see #defined_as_an_olap_member */ @JsonProperty("defined_as_an_olap_member")  public Reference getDefinedAsAnOlapMember() { return this.defined_as_an_olap_member; }
     /** @see #defined_as_an_olap_member */ @JsonProperty("defined_as_an_olap_member")  public void setDefinedAsAnOlapMember(Reference defined_as_an_olap_member) { this.defined_as_an_olap_member = defined_as_an_olap_member; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isBiOlapLevelElement(Object obj) { return (obj.getClass() == BiOlapLevelElement.class); }
 
 }

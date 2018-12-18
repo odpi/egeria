@@ -20,6 +20,7 @@ public class QualityProblemTypeDqr extends Reference {
 
     public static String getIgcTypeId() { return "quality_problem_type_DQR"; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isQualityProblemTypeDqr(Object obj) { return (obj.getClass() == QualityProblemTypeDqr.class); }
 
 }

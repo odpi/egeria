@@ -79,6 +79,7 @@ public class StageType extends Reference {
     /** @see #copyright */ @JsonProperty("copyright")  public String getCopyright() { return this.copyright; }
     /** @see #copyright */ @JsonProperty("copyright")  public void setCopyright(String copyright) { this.copyright = copyright; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isStageType(Object obj) { return (obj.getClass() == StageType.class); }
 
 }

@@ -169,6 +169,7 @@ public class SystemRole extends Reference {
     /** @see #defines_role_assignment */ @JsonProperty("defines_role_assignment")  public ReferenceList getDefinesRoleAssignment() { return this.defines_role_assignment; }
     /** @see #defines_role_assignment */ @JsonProperty("defines_role_assignment")  public void setDefinesRoleAssignment(ReferenceList defines_role_assignment) { this.defines_role_assignment = defines_role_assignment; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isSystemRole(Object obj) { return (obj.getClass() == SystemRole.class); }
 
 }

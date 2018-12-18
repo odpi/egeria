@@ -149,6 +149,7 @@ public class Filterconstraint extends Reference {
     /** @see #filter_expression */ @JsonProperty("filter_expression")  public String getFilterExpression() { return this.filter_expression; }
     /** @see #filter_expression */ @JsonProperty("filter_expression")  public void setFilterExpression(String filter_expression) { this.filter_expression = filter_expression; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isFilterconstraint(Object obj) { return (obj.getClass() == Filterconstraint.class); }
 
 }

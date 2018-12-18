@@ -239,6 +239,7 @@ public class DataRuleDefinition extends Reference {
     /** @see #published_data_rule_definitions */ @JsonProperty("published_data_rule_definitions")  public Reference getPublishedDataRuleDefinitions() { return this.published_data_rule_definitions; }
     /** @see #published_data_rule_definitions */ @JsonProperty("published_data_rule_definitions")  public void setPublishedDataRuleDefinitions(Reference published_data_rule_definitions) { this.published_data_rule_definitions = published_data_rule_definitions; }
 
+    public static final Boolean includesModificationDetails() { return true; }
     public static final Boolean isDataRuleDefinition(Object obj) { return (obj.getClass() == DataRuleDefinition.class); }
 
 }

@@ -121,6 +121,7 @@ public class LogicalValidationRule extends Reference {
     /** @see #modified_on */ @JsonProperty("modified_on")  public Date getModifiedOn() { return this.modified_on; }
     /** @see #modified_on */ @JsonProperty("modified_on")  public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
+    public static final Boolean includesModificationDetails() { return true; }
     public static final Boolean isLogicalValidationRule(Object obj) { return (obj.getClass() == LogicalValidationRule.class); }
 
 }

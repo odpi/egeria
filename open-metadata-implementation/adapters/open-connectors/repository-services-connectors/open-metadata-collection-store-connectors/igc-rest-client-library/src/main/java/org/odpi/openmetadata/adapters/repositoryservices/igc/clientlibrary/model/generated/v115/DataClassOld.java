@@ -151,6 +151,7 @@ public class DataClassOld extends Reference {
     /** @see #is_user_defined */ @JsonProperty("is_user_defined")  public Boolean getIsUserDefined() { return this.is_user_defined; }
     /** @see #is_user_defined */ @JsonProperty("is_user_defined")  public void setIsUserDefined(Boolean is_user_defined) { this.is_user_defined = is_user_defined; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isDataClassOld(Object obj) { return (obj.getClass() == DataClassOld.class); }
 
 }

@@ -75,6 +75,7 @@ public class Olapjoinref extends Reference {
     /** @see #sequence */ @JsonProperty("sequence")  public Number getSequence() { return this.sequence; }
     /** @see #sequence */ @JsonProperty("sequence")  public void setSequence(Number sequence) { this.sequence = sequence; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isOlapjoinref(Object obj) { return (obj.getClass() == Olapjoinref.class); }
 
 }

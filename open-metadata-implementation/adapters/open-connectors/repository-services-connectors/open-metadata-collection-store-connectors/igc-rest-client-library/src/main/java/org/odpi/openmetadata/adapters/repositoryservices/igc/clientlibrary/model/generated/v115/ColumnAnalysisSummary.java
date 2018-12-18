@@ -337,6 +337,7 @@ public class ColumnAnalysisSummary extends Reference {
     /** @see #inferred_precision */ @JsonProperty("inferred_precision")  public Number getInferredPrecision() { return this.inferred_precision; }
     /** @see #inferred_precision */ @JsonProperty("inferred_precision")  public void setInferredPrecision(Number inferred_precision) { this.inferred_precision = inferred_precision; }
 
+    public static final Boolean includesModificationDetails() { return true; }
     public static final Boolean isColumnAnalysisSummary(Object obj) { return (obj.getClass() == ColumnAnalysisSummary.class); }
 
 }

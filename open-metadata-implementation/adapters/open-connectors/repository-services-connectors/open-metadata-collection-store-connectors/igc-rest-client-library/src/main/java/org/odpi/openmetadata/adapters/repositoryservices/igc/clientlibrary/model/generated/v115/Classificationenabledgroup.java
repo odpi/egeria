@@ -20,6 +20,7 @@ public class Classificationenabledgroup extends Reference {
 
     public static String getIgcTypeId() { return "classificationenabledgroup"; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isClassificationenabledgroup(Object obj) { return (obj.getClass() == Classificationenabledgroup.class); }
 
 }

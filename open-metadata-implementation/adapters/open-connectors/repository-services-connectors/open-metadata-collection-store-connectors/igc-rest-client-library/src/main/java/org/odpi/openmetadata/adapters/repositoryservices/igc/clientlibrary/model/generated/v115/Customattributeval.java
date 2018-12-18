@@ -37,6 +37,7 @@ public class Customattributeval extends Reference {
     /** @see #value */ @JsonProperty("value")  public String getValue() { return this.value; }
     /** @see #value */ @JsonProperty("value")  public void setValue(String value) { this.value = value; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isCustomattributeval(Object obj) { return (obj.getClass() == Customattributeval.class); }
 
 }

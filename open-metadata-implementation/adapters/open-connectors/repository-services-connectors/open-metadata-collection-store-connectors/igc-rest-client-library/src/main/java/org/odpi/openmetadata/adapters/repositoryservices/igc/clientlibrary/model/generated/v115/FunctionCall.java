@@ -90,6 +90,7 @@ public class FunctionCall extends Reference {
     /** @see #used_in_filter_constraint */ @JsonProperty("used_in_filter_constraint")  public Reference getUsedInFilterConstraint() { return this.used_in_filter_constraint; }
     /** @see #used_in_filter_constraint */ @JsonProperty("used_in_filter_constraint")  public void setUsedInFilterConstraint(Reference used_in_filter_constraint) { this.used_in_filter_constraint = used_in_filter_constraint; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isFunctionCall(Object obj) { return (obj.getClass() == FunctionCall.class); }
 
 }

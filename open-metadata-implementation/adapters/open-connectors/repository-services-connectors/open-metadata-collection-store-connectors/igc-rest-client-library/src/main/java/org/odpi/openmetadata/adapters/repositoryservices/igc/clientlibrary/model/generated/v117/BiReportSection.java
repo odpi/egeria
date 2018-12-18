@@ -123,6 +123,7 @@ public class BiReportSection extends Reference {
     /** @see #contained_in_report_section */ @JsonProperty("contained_in_report_section")  public Reference getContainedInReportSection() { return this.contained_in_report_section; }
     /** @see #contained_in_report_section */ @JsonProperty("contained_in_report_section")  public void setContainedInReportSection(Reference contained_in_report_section) { this.contained_in_report_section = contained_in_report_section; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isBiReportSection(Object obj) { return (obj.getClass() == BiReportSection.class); }
 
 }

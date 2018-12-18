@@ -56,6 +56,7 @@ public class ForeignKey extends Reference {
     /** @see #sorting */ @JsonProperty("sorting")  public ArrayList<String> getSorting() { return this.sorting; }
     /** @see #sorting */ @JsonProperty("sorting")  public void setSorting(ArrayList<String> sorting) { this.sorting = sorting; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isForeignKey(Object obj) { return (obj.getClass() == ForeignKey.class); }
 
 }

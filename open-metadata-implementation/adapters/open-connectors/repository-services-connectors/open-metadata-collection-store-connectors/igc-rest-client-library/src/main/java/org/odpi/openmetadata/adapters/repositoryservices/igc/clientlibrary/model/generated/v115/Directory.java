@@ -115,6 +115,7 @@ public class Directory extends Reference {
     /** @see #has_principal */ @JsonProperty("has_principal")  public ReferenceList getHasPrincipal() { return this.has_principal; }
     /** @see #has_principal */ @JsonProperty("has_principal")  public void setHasPrincipal(ReferenceList has_principal) { this.has_principal = has_principal; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isDirectory(Object obj) { return (obj.getClass() == Directory.class); }
 
 }

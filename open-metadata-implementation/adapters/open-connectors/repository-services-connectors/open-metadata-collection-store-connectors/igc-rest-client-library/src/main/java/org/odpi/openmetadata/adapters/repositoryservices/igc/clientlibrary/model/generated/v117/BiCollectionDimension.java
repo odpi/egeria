@@ -141,6 +141,7 @@ public class BiCollectionDimension extends Reference {
     /** @see #sequence */ @JsonProperty("sequence")  public Number getSequence() { return this.sequence; }
     /** @see #sequence */ @JsonProperty("sequence")  public void setSequence(Number sequence) { this.sequence = sequence; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isBiCollectionDimension(Object obj) { return (obj.getClass() == BiCollectionDimension.class); }
 
 }

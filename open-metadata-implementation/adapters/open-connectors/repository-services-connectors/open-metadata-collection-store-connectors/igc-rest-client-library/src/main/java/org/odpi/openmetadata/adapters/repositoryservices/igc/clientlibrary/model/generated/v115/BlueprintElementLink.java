@@ -29,6 +29,7 @@ public class BlueprintElementLink extends Reference {
     /** @see #element_name */ @JsonProperty("element_name")  public String getElementName() { return this.element_name; }
     /** @see #element_name */ @JsonProperty("element_name")  public void setElementName(String element_name) { this.element_name = element_name; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isBlueprintElementLink(Object obj) { return (obj.getClass() == BlueprintElementLink.class); }
 
 }

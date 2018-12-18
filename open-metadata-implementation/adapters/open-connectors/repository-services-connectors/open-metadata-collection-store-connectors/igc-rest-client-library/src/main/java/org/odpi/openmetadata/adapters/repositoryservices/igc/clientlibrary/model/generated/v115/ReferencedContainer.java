@@ -131,6 +131,7 @@ public class ReferencedContainer extends Reference {
     /** @see #shared_containers */ @JsonProperty("shared_containers")  public Reference getSharedContainers() { return this.shared_containers; }
     /** @see #shared_containers */ @JsonProperty("shared_containers")  public void setSharedContainers(Reference shared_containers) { this.shared_containers = shared_containers; }
 
+    public static final Boolean includesModificationDetails() { return true; }
     public static final Boolean isReferencedContainer(Object obj) { return (obj.getClass() == ReferencedContainer.class); }
 
 }

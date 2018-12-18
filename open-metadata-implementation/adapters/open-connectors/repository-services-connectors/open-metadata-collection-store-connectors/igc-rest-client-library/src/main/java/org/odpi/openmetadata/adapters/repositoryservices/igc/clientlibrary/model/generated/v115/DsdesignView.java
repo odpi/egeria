@@ -243,6 +243,7 @@ public class DsdesignView extends Reference {
     /** @see #internal_id */ @JsonProperty("internal_id")  public String getInternalId() { return this.internal_id; }
     /** @see #internal_id */ @JsonProperty("internal_id")  public void setInternalId(String internal_id) { this.internal_id = internal_id; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isDsdesignView(Object obj) { return (obj.getClass() == DsdesignView.class); }
 
 }

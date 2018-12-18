@@ -105,6 +105,7 @@ public class TermHistory extends Reference {
     /** @see #workflow_new_state */ @JsonProperty("workflow_new_state")  public String getWorkflowNewState() { return this.workflow_new_state; }
     /** @see #workflow_new_state */ @JsonProperty("workflow_new_state")  public void setWorkflowNewState(String workflow_new_state) { this.workflow_new_state = workflow_new_state; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isTermHistory(Object obj) { return (obj.getClass() == TermHistory.class); }
 
 }

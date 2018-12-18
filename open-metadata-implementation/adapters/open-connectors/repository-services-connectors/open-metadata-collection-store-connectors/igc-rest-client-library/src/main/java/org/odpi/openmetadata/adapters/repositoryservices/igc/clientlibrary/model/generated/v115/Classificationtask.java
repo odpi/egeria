@@ -20,6 +20,7 @@ public class Classificationtask extends Reference {
 
     public static String getIgcTypeId() { return "classificationtask"; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isClassificationtask(Object obj) { return (obj.getClass() == Classificationtask.class); }
 
 }

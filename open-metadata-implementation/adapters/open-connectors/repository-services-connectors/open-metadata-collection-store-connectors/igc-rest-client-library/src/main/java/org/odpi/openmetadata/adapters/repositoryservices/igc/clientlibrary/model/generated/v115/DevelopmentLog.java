@@ -69,6 +69,7 @@ public class DevelopmentLog extends Reference {
     /** @see #comment */ @JsonProperty("comment")  public String getComment() { return this.comment; }
     /** @see #comment */ @JsonProperty("comment")  public void setComment(String comment) { this.comment = comment; }
 
+    public static final Boolean includesModificationDetails() { return false; }
     public static final Boolean isDevelopmentLog(Object obj) { return (obj.getClass() == DevelopmentLog.class); }
 
 }
