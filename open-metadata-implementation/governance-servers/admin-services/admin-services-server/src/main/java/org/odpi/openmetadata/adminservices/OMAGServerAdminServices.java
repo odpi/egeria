@@ -603,8 +603,8 @@ public class OMAGServerAdminServices
 
         try
         {
-            validateServerName(serverName, methodName);
-            validateUserId(userId, serverName, methodName);
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
 
@@ -655,8 +655,8 @@ public class OMAGServerAdminServices
 
         try
         {
-            validateServerName(serverName, methodName);
-            validateUserId(userId, serverName, methodName);
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
 
