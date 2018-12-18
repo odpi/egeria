@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v115;
 
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
 import java.util.ArrayList;
@@ -114,7 +114,6 @@ public class ParameterSet2 extends Reference {
 
     /** @see #used_as_parameter_def */ @JsonProperty("used_as_parameter_def")  public ReferenceList getUsedAsParameterDef() { return this.used_as_parameter_def; }
     /** @see #used_as_parameter_def */ @JsonProperty("used_as_parameter_def")  public void setUsedAsParameterDef(ReferenceList used_as_parameter_def) { this.used_as_parameter_def = used_as_parameter_def; }
-
 
     public static final Boolean isParameterSet2(Object obj) { return (obj.getClass() == ParameterSet2.class); }
 

@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v117;
 
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
 import java.util.ArrayList;
@@ -130,7 +130,6 @@ public class ReferencedContainer extends Reference {
 
     /** @see #shared_containers */ @JsonProperty("shared_containers")  public Reference getSharedContainers() { return this.shared_containers; }
     /** @see #shared_containers */ @JsonProperty("shared_containers")  public void setSharedContainers(Reference shared_containers) { this.shared_containers = shared_containers; }
-
 
     public static final Boolean isReferencedContainer(Object obj) { return (obj.getClass() == ReferencedContainer.class); }
 

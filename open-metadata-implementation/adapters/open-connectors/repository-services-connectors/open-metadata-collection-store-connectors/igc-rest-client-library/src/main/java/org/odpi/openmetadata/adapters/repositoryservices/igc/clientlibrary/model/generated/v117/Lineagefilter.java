@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v117;
 
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
 import java.util.ArrayList;
@@ -28,7 +28,6 @@ public class Lineagefilter extends Reference {
 
     /** @see #name */ @JsonProperty("name")  public String getTheName() { return this.name; }
     /** @see #name */ @JsonProperty("name")  public void setTheName(String name) { this.name = name; }
-
 
     public static final Boolean isLineagefilter(Object obj) { return (obj.getClass() == Lineagefilter.class); }
 

@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v117;
 
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
 import java.util.ArrayList;
@@ -356,7 +356,6 @@ public class DataFile extends Reference {
 
     /** @see #amazon_s3_data_files */ @JsonProperty("amazon_s3_data_files")  public Reference getAmazonS3DataFiles() { return this.amazon_s3_data_files; }
     /** @see #amazon_s3_data_files */ @JsonProperty("amazon_s3_data_files")  public void setAmazonS3DataFiles(Reference amazon_s3_data_files) { this.amazon_s3_data_files = amazon_s3_data_files; }
-
 
     public static final Boolean isDataFile(Object obj) { return (obj.getClass() == DataFile.class); }
 

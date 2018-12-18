@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v117;
 
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
 import java.util.ArrayList;
@@ -114,7 +114,6 @@ public class Directory extends Reference {
 
     /** @see #has_principal */ @JsonProperty("has_principal")  public ReferenceList getHasPrincipal() { return this.has_principal; }
     /** @see #has_principal */ @JsonProperty("has_principal")  public void setHasPrincipal(ReferenceList has_principal) { this.has_principal = has_principal; }
-
 
     public static final Boolean isDirectory(Object obj) { return (obj.getClass() == Directory.class); }
 
