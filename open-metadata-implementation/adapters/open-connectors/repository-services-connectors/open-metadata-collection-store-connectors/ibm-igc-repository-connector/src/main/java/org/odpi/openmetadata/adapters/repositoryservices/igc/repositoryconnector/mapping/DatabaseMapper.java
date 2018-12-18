@@ -42,6 +42,12 @@ public class DatabaseMapper extends ReferenceableMapper {
                 "dataContent",
                 "supportedDataSets"
         );
+        addSimpleRelationshipMapping(
+                "data_connections",
+                "ConnectionToAsset",
+                "asset",
+                "connections"
+        );
 
         // Finally list any properties that will be used to map Classifications
         // (to do the actual mapping, implement the 'getMappedClassifications' function -- example below)
