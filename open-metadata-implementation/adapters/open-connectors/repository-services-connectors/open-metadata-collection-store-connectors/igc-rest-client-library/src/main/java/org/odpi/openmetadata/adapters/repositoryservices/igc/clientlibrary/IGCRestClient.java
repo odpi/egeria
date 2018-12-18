@@ -31,6 +31,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -143,11 +144,22 @@ public class IGCRestClient {
 
     }
 
-    private ResponseEntity<String> setCookiesFromResponse(ResponseEntity<String> response,
-                                                          String endpoint,
-                                                          HttpMethod method,
-                                                          String payload,
-                                                          boolean alreadyTriedNewSession) {
+    private ResponseEntity<String> openNewSessionWithRequest(String endpoint,
+                                                             HttpMethod method,
+                                                             String payload,
+                                                             boolean alreadyTriedNewSession) {
+        if (alreadyTriedNewSession) {
+            log.error("Opening a new session already attempted without success -- giving up.");
+            return null;
+        } else {
+            log.info("Session appears to have timed out -- starting a new session and re-trying the request.");
+            // By removing cookies, we'll force a login
+            this.cookies = null;
+            return makeRequest(endpoint, method, payload, true);
+        }
+    }
+
+    private void setCookiesFromResponse(ResponseEntity<String> response) {
 
         // If we had a successful response, setup the cookies
         if (response.getStatusCode() == HttpStatus.OK) {
@@ -155,18 +167,9 @@ public class IGCRestClient {
             if (headers.get(HttpHeaders.SET_COOKIE) != null) {
                 this.cookies = headers.get(HttpHeaders.SET_COOKIE);
             }
-        } else if (response.getStatusCode() == HttpStatus.FORBIDDEN && !alreadyTriedNewSession) {
-            // If the response was forbidden, the session may have expired -- create a new one
-            // (after first deleting the existing cookies)
-            log.info("Session appears to have timed out -- starting a new session and re-trying the request.");
-            this.cookies = null;
-            response = makeRequest(endpoint, method, payload, true);
         } else {
-            log.error("Unable to make request, even after attempting to open new session.");
+            log.error("Unable to make request or unexpected status: {}", response.getStatusCode());
         }
-
-        // Return the updated (or unchanged) response
-        return response;
 
     }
 
@@ -239,12 +242,24 @@ public class IGCRestClient {
         if (payload != null) {
             toSend = new HttpEntity<>(payload, getHttpHeaders(forceLogin));
         }
-        ResponseEntity<String> response = new RestTemplate().exchange(
-                endpoint,
-                method,
-                toSend,
-                String.class);
-        return setCookiesFromResponse(response, endpoint, method, payload, forceLogin);
+        ResponseEntity<String> response;
+        try {
+            response = new RestTemplate().exchange(
+                    endpoint,
+                    method,
+                    toSend,
+                    String.class);
+            setCookiesFromResponse(response);
+        } catch (HttpClientErrorException e) {
+            // If the response was forbidden (fails with exception), the session may have expired -- create a new one
+            response = openNewSessionWithRequest(
+                    endpoint,
+                    method,
+                    payload,
+                    forceLogin
+            );
+        }
+        return response;
     }
 
     /**
