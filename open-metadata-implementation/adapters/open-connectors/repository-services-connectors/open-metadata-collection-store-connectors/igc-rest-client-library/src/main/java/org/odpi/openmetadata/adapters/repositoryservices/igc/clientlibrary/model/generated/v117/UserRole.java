@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v117;
 
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
 import java.util.ArrayList;
@@ -16,9 +16,14 @@ import java.util.ArrayList;
  *  extending from this class in your own custom class is the best approach.)
  */
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class UserRole extends MainObject {
+public class UserRole extends Reference {
 
-    public static final String IGC_TYPE_ID = "user_role";
+    public static String getIgcTypeId() { return "user_role"; }
+
+    /**
+     * The 'name' property, displayed as 'Role' in the IGC UI.
+     */
+    protected String name;
 
     /**
      * The 'system_role' property, displayed as 'System Role' in the IGC UI.
@@ -33,12 +38,14 @@ public class UserRole extends MainObject {
     protected ReferenceList users;
 
 
+    /** @see #name */ @JsonProperty("name")  public String getTheName() { return this.name; }
+    /** @see #name */ @JsonProperty("name")  public void setTheName(String name) { this.name = name; }
+
     /** @see #system_role */ @JsonProperty("system_role")  public Boolean getSystemRole() { return this.system_role; }
     /** @see #system_role */ @JsonProperty("system_role")  public void setSystemRole(Boolean system_role) { this.system_role = system_role; }
 
     /** @see #users */ @JsonProperty("users")  public ReferenceList getUsers() { return this.users; }
     /** @see #users */ @JsonProperty("users")  public void setUsers(ReferenceList users) { this.users = users; }
-
 
     public static final Boolean isUserRole(Object obj) { return (obj.getClass() == UserRole.class); }
 
