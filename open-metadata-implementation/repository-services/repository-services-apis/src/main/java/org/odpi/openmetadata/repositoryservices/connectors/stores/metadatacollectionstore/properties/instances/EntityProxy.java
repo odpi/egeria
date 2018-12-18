@@ -100,11 +100,11 @@ public class EntityProxy extends EntitySummary
     public String toString()
     {
         return "EntityProxy{" +
-                "uniqueProperties=" + uniqueProperties +
+                "type=" + getType() +
+                ", uniqueProperties=" + uniqueProperties +
                 ", classifications=" + getClassifications() +
                 ", instanceURL='" + getInstanceURL() + '\'' +
                 ", GUID='" + getGUID() + '\'' +
-                ", type=" + getType() +
                 ", instanceProvenanceType=" + getInstanceProvenanceType() +
                 ", metadataCollectionId='" + getMetadataCollectionId() + '\'' +
                 ", metadataCollectionName='" + getMetadataCollectionName() + '\'' +

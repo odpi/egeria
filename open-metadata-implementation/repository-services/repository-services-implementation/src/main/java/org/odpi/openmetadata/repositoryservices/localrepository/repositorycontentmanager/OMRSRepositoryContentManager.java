@@ -59,6 +59,8 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
     private Map<String, TypeDef>            activeTypeDefNames             = new HashMap<>();
     private Map<String, AttributeTypeDef>   activeAttributeTypeDefGUIDs    = new HashMap<>();
     private Map<String, AttributeTypeDef>   activeAttributeTypeDefNames    = new HashMap<>();
+    private Map<String, List<TypeDefLink>>  typeDefSuperTypes              = new HashMap<>();
+    private Map<String, InstanceType>       knownInstanceTypes             = new HashMap<>();
 
 
     /*
@@ -421,8 +423,154 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
 
 
     /**
-     * Return identifiers for the TypeDef that matches the supplied type name.  If the type name is not recognized,
-     * null is returned.
+     * Evaluate the superTypes for a type.  The results are cached in typeDefSuperTypes.
+     *
+     * @param sourceName source of the request (used for logging)
+     * @param typeName name of type to process
+     * @param methodName calling method
+     * @return list of supertype links or null if top level
+     */
+    private List<TypeDefLink>   getSuperTypes(String    sourceName,
+                                              String    typeName,
+                                              String    methodName)
+    {
+        final String  thisMethodName = "getSuperTypes";
+
+        List<TypeDefLink>   typeHierarchy = typeDefSuperTypes.get(typeName);
+
+        if (typeHierarchy == null)
+        {
+            /*
+             * The type hierarchy is not known at this time (it is evaluated lazily).
+             */
+            typeHierarchy = new ArrayList<>();
+
+            TypeDef typeDef = knownTypeDefNames.get(typeName);
+
+            if (typeDef != null)
+            {
+                TypeDefLink superTypeLink = typeDef.getSuperType();
+
+                while (superTypeLink != null)
+                {
+                    String superTypeName = superTypeLink.getName();
+
+                    if (superTypeName != null)
+                    {
+                        log.debug(typeName + " has super type " + superTypeName);
+
+                        typeHierarchy.add(superTypeLink);
+
+                        /*
+                         * Retrieve the TypeDef for this super type
+                         */
+                        TypeDef superTypeDef = knownTypeDefNames.get(superTypeName);
+
+                        if (superTypeDef != null)
+                        {
+                            /*
+                             * Retrieve the super type for this super typeDef.  It will be null if the type is top-level.
+                             */
+                            superTypeLink = superTypeDef.getSuperType();
+                        }
+                        else
+                        {
+                            log.error(superTypeName + " supertype is not known in TypeDef cache");
+                            throwContentManagerLogicError(sourceName, methodName, thisMethodName);
+                        }
+                    }
+                    else
+                    {
+                        log.error("Corrupted TypeDef cache, no name for " + superTypeLink.toString());
+                        throwContentManagerLogicError(sourceName, methodName, thisMethodName);
+                    }
+                }
+
+                /*
+                 * Cache the resulting superType list
+                 */
+                typeDefSuperTypes.put(typeName, typeHierarchy);
+            }
+            else
+            {
+                log.error(typeName + " type is not known in TypeDef cache");
+                throwContentManagerLogicError(sourceName, methodName, thisMethodName);
+            }
+        }
+
+        if (typeHierarchy.isEmpty())
+        {
+            /*
+             * The type hierarchy has been evaluated and this type has no supertypes.
+             */
+            return null;
+        }
+        else
+        {
+            /*
+             * The type hierarchy is known and can be returned directly.
+             */
+            return typeHierarchy;
+        }
+    }
+
+
+    /**
+     * Validate that the type of an entity is of the expected/desired type.  The actual entity may be a subtype
+     * of the expected type of course.
+     *
+     * @param sourceName source of the request (used for logging)
+     * @param actualTypeName name of the entity type
+     * @param expectedTypeName name of the expected type
+     * @return boolean if they match (a null in either results in false)
+     */
+    public boolean  isTypeOf(String   sourceName,
+                             String   actualTypeName,
+                             String   expectedTypeName)
+    {
+        final String methodName = "isTypeOf";
+
+        log.debug("IsTypeOf: sourceName = " + sourceName + "; actualTypeName = " + actualTypeName + "; expectedTypeName = " + expectedTypeName);
+        if ((expectedTypeName != null) && (actualTypeName != null))
+        {
+            /*
+             * Do the obvious first.
+             */
+            if (actualTypeName.equals(expectedTypeName))
+            {
+                log.debug("Simple match success");
+                return true;
+            }
+
+            /*
+             * Looking for a match in the superTypes.
+             */
+            List<TypeDefLink>   typeHierarchy = this.getSuperTypes(sourceName, actualTypeName, methodName);
+
+            if (typeHierarchy != null)
+            {
+                for (TypeDefLink superType : typeHierarchy)
+                {
+                    if (superType != null)
+                    {
+                        if (expectedTypeName.equals(superType.getName()))
+                        {
+                            log.debug("SuperType match success");
+                            return true;
+                        }
+                        log.debug("No match with " + superType.getName());
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Return the InstanceType that matches the supplied type name.  If the type name is not recognized,
+     * of the category is incorrect, a logic exception is thrown.
      *
      * @param sourceName source of the request (used for logging)
      * @param category category of the instance type required.
@@ -442,11 +590,21 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
 
         if (isValidTypeCategory(sourceName, category, typeName, methodName))
         {
+            InstanceType    instanceType = knownInstanceTypes.get(typeName);
+
+            if (instanceType != null)
+            {
+                return instanceType;
+            }
+
+            /*
+             * The instance type has not yet been created. (They are created lazily.)
+             */
             TypeDef typeDef = knownTypeDefNames.get(typeName);
 
             if (typeDef != null)
             {
-                InstanceType    instanceType = new InstanceType();
+                instanceType = new InstanceType();
 
                 instanceType.setTypeDefCategory(category);
                 instanceType.setTypeDefGUID(typeDef.getGUID());
@@ -454,6 +612,7 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
                 instanceType.setTypeDefVersion(typeDef.getVersion());
                 instanceType.setTypeDefDescription(typeDef.getDescription());
                 instanceType.setTypeDefDescriptionGUID(typeDef.getDescriptionGUID());
+                instanceType.setTypeDefSuperTypes(this.getSuperTypes(sourceName, typeName, methodName));
 
                 /*
                  * Extract the properties for this TypeDef.  These will be augmented with property names
@@ -462,7 +621,7 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
                 List<String>      propertyNames = this.getPropertyNames(sourceName, typeDef);
 
                 /*
-                 * If propertyNames is null, it means the TypeDef has no attributes.  However the superType
+                 * If propertyNames is null, it means this TypeDef has no attributes.  However the superType
                  * may have attributes and so we need an array to accumulate the attributes into.
                  */
                 if (propertyNames == null)
@@ -471,7 +630,7 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
                 }
 
                 /*
-                 * Work up the TypeDef hierarchy extracting the property names and super type names.
+                 * Work up the TypeDef hierarchy extracting the property names.
                  */
                 List<TypeDefLink> superTypes    = new ArrayList<>();
                 TypeDefLink       superTypeLink = typeDef.getSuperType();
@@ -528,24 +687,23 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
                 }
 
                 /*
-                 * Make sure empty lists are converted to nulls
+                 * Make sure an empty list is converted to null
                  */
-
-                if (superTypes.size() > 0)
-                {
-                    instanceType.setTypeDefSuperTypes(superTypes);
-                }
-
                 if (propertyNames.size() > 0)
                 {
                     instanceType.setValidInstanceProperties(propertyNames);
                 }
 
+                /*
+                 * Cache the instance type for next time
+                 */
+                knownInstanceTypes.put(typeName, instanceType);
+
                 return instanceType;
             }
             else
             {
-                log.error("TypeDef " + typeName + " already validated");
+                log.error("TypeDef " + typeName + " should already have been validated");
                 throwContentManagerLogicError(sourceName, methodName, thisMethodName);
             }
         }

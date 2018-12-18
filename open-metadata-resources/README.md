@@ -8,6 +8,9 @@ The open metadata resources contains the open metadata demos and samples.
 * **[open-metadata-demos](open-metadata-demos)** - provides the scripts and
 instructions to run a demo.
 
+* **[open-metadata-deployment](open-metadata-deployment)** - provides docker images and helm charts for standard
+deployment configurations of Egeria and other integrated technology.
+
 * **[open-metadata-samples](open-metadata-samples)** - provides samples of
 different types of plugin components.
 

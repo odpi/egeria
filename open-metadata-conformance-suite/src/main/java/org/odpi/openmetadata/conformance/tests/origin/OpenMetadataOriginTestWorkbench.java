@@ -1,0 +1,116 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+package org.odpi.openmetadata.conformance.tests.origin;
+
+
+import org.odpi.openmetadata.conformance.OpenMetadataTestCase;
+import org.odpi.openmetadata.conformance.OpenMetadataTestWorkbench;
+import org.odpi.openmetadata.conformance.beans.OpenMetadataTestCaseResult;
+import org.odpi.openmetadata.conformance.beans.OpenMetadataTestCaseSummary;
+import org.odpi.openmetadata.conformance.beans.OpenMetadataTestWorkbenchResults;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+/**
+ * OpenMetadataOriginTestWorkbench provides the workbench for testing the Origin API of an open metadata repository.
+ */
+public class OpenMetadataOriginTestWorkbench extends OpenMetadataTestWorkbench
+{
+    private static final String workbenchId            = "origin-workbench";
+    private static final String workbenchName          = "Open Metadata Origin Test Workbench";
+    private static final String workbenchVersionNumber = "V0.1 SNAPSHOT";
+    private static final String workbenchDocURL        = "https://odpi.github.io/egeria/open-metadata-conformance-suite/docs/" + workbenchId;
+
+
+    /**
+     * Constructor received the URL root for the server being tested.
+     *
+     * @param serverName name of server to test.
+     * @param serverURLRoot string
+     */
+    public OpenMetadataOriginTestWorkbench(String  serverName,
+                                           String  serverURLRoot)
+    {
+        super(workbenchName, workbenchVersionNumber, workbenchDocURL, serverName, serverURLRoot);
+    }
+
+
+    /**
+     * Initialize the list of repository test cases to run.
+     *
+     * @return list of test cases
+     */
+    private List<OpenMetadataOriginTestCase>  getTestCases()
+    {
+        List<OpenMetadataOriginTestCase>   testCases = new ArrayList<>();
+
+        testCases.add(new TestOpenMetadataOrigin(workbenchId));
+
+        return testCases;
+    }
+
+
+    /**
+     * Run the registered test cases and return the accumulated results.
+     *
+     * @return OpenMetadataWorkbenchResults bean
+     */
+    public OpenMetadataTestWorkbenchResults runTests()
+    {
+        List<OpenMetadataOriginTestCase>  testCases = this.getTestCases();
+        OpenMetadataTestWorkbenchResults  workbenchResults = new OpenMetadataTestWorkbenchResults(this);
+
+        if (testCases != null)
+        {
+            for (OpenMetadataOriginTestCase testCase : testCases)
+            {
+                testCase.setServerName(serverName);
+                testCase.setServerURLRoot(serverURLRoot);
+                testCase.executeTest();
+            }
+
+            List<OpenMetadataTestCaseResult>  passedTestCases  = new ArrayList<>();
+            List<OpenMetadataTestCaseResult>  failedTestCases  = new ArrayList<>();
+            List<OpenMetadataTestCaseSummary> skippedTestCases = new ArrayList<>();
+
+            /*
+             * Executing tests only if there is a repository connector
+             */
+            for (OpenMetadataTestCase testCase : testCases)
+            {
+                if (testCase.isTestRan())
+                {
+                    if (testCase.isTestPassed())
+                    {
+                        passedTestCases.add(testCase.getResult());
+                    }
+                    else
+                    {
+                        failedTestCases.add(testCase.getResult());
+                    }
+                }
+                else
+                {
+                    skippedTestCases.add(testCase.getSummary());
+                }
+            }
+
+            if (! passedTestCases.isEmpty())
+            {
+                workbenchResults.setPassedTestCases(passedTestCases);
+            }
+            if (! failedTestCases.isEmpty())
+            {
+                workbenchResults.setFailedTestCases(failedTestCases);
+            }
+            if (! skippedTestCases.isEmpty())
+            {
+                workbenchResults.setSkippedTestCases(skippedTestCases);
+            }
+        }
+
+        return workbenchResults;
+    }
+}

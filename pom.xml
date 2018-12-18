@@ -11,7 +11,7 @@
     <name>Egeria</name>
     <description>
         Top-level package providing the standards, frameworks, reference implementations and
-        compliance tests for open metadata and governance.
+        conformance tests for open metadata and governance.
     </description>
 
     <groupId>org.odpi.egeria</groupId>
@@ -81,7 +81,7 @@
 
         <module>developer-resources</module>
         <module>open-metadata-implementation</module>
-        <module>open-metadata-compliance-suite</module>
+        <module>open-metadata-conformance-suite</module>
         <module>open-metadata-distribution</module>
         <module>open-metadata-publication</module>
         <module>open-metadata-resources</module>
