@@ -180,8 +180,8 @@ public class RelationshipEndDef extends TypeDefElementHeader
     public String toString()
     {
         return "RelationshipEndDef{" +
-                "entityType='" + entityType + '\'' +
-                ", attributeName='" + attributeName + '\'' +
+                "attributeName='" + attributeName + '\'' +
+                ", entityType='" + getEntityType() + '\'' +
                 ", attributeDescription='" + attributeDescription + '\'' +
                 ", attributeCardinality=" + attributeCardinality +
                 '}';

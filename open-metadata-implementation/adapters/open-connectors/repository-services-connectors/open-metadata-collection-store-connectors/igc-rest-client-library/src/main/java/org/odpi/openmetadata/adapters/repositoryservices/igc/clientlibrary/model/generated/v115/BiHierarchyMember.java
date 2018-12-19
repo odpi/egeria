@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v115;
 
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
 import java.util.ArrayList;
@@ -16,9 +16,9 @@ import java.util.ArrayList;
  *  extending from this class in your own custom class is the best approach.)
  */
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class BiHierarchyMember extends MainObject {
+public class BiHierarchyMember extends Reference {
 
-    public static final String IGC_TYPE_ID = "bi_hierarchy_member";
+    public static String getIgcTypeId() { return "bi_hierarchy_member"; }
 
     /**
      * The 'bi_level' property, displayed as 'BI Level' in the IGC UI.
@@ -63,7 +63,6 @@ public class BiHierarchyMember extends MainObject {
 
     /** @see #sequence */ @JsonProperty("sequence")  public Number getSequence() { return this.sequence; }
     /** @see #sequence */ @JsonProperty("sequence")  public void setSequence(Number sequence) { this.sequence = sequence; }
-
 
     public static final Boolean isBiHierarchyMember(Object obj) { return (obj.getClass() == BiHierarchyMember.class); }
 
