@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v115;
 
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
 import java.util.ArrayList;
@@ -16,9 +16,9 @@ import java.util.ArrayList;
  *  extending from this class in your own custom class is the best approach.)
  */
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OlapMemberSource extends MainObject {
+public class OlapMemberSource extends Reference {
 
-    public static final String IGC_TYPE_ID = "olap_member_source";
+    public static String getIgcTypeId() { return "olap_member_source"; }
 
     /**
      * The 'olap_member' property, displayed as 'OLAP Member' in the IGC UI.
@@ -40,7 +40,6 @@ public class OlapMemberSource extends MainObject {
 
     /** @see #data_field */ @JsonProperty("data_field")  public Reference getDataField() { return this.data_field; }
     /** @see #data_field */ @JsonProperty("data_field")  public void setDataField(Reference data_field) { this.data_field = data_field; }
-
 
     public static final Boolean isOlapMemberSource(Object obj) { return (obj.getClass() == OlapMemberSource.class); }
 

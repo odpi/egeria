@@ -229,6 +229,24 @@ public class OMRSConfigurationFactory
 
 
     /**
+     * Return the local repository configuration for an IBM IGC instance.
+     *
+     * @param localServerName name of local server
+     * @param localServerURL url used to call local server
+     * @return LocalRepositoryConfig object
+     */
+    public LocalRepositoryConfig getRepositoryIBMIGCRepositoryConfig(String localServerName, String localServerURL)
+    {
+        LocalRepositoryConfig localRepositoryConfig = this.getDefaultLocalRepositoryConfig(localServerName,
+                localServerURL);
+
+        localRepositoryConfig.setLocalRepositoryLocalConnection(null);
+
+        return localRepositoryConfig;
+    }
+
+
+    /**
      * Return the default settings for the enterprise repository services' configuration.
      *
      * @param localServerName name of the local server
