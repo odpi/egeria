@@ -362,18 +362,13 @@ public class Converter {
         return dataTypes;
     }
 
-    public Map<String, Object> getAdditionalPropertiesFromEntity(String propertyName, InstanceProperties properties, OMRSRepositoryHelper helper) {
-        InstanceProperties mapProperty = helper.getMapProperty(AccessServiceDescription.ASSET_CATALOG_OMAS.getAccessServiceName(),
-                propertyName,
-                properties,
-                "get");
-
+    public Map<String, Object> getAdditionalPropertiesFromEntity(InstanceProperties properties, String propertyName, OMRSRepositoryHelper helper) {
+        InstanceProperties mapProperty = getMapInstanceProperties(propertyName, properties, helper);
         if (mapProperty == null) {
             return null;
         }
 
         Iterator<String> additionalPropertyNames = mapProperty.getPropertyNames();
-
         if (additionalPropertyNames == null) {
             return null;
         }
@@ -391,6 +386,13 @@ public class Converter {
         }
 
         return additionalPropertiesMap;
+    }
+
+    private InstanceProperties getMapInstanceProperties(String propertyName, InstanceProperties properties, OMRSRepositoryHelper helper) {
+        return helper.getMapProperty(AccessServiceDescription.ASSET_CATALOG_OMAS.getAccessServiceName(),
+                propertyName,
+                properties,
+                "getMapInstanceProperties");
     }
 
     private Object getPrimitivePropertyValue(InstancePropertyValue additionalPropertyValue) {

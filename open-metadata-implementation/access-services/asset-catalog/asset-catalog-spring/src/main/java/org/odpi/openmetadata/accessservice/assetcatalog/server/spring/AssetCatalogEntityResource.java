@@ -307,4 +307,24 @@ public class AssetCatalogEntityResource {
                                                  @RequestBody SearchParameters searchParameters) {
         return assetService.searchAssets(serverName, userId, searchCriteria, searchParameters);
     }
+
+    /**
+     * Return a list of assets matching the search criteria.
+     * Return the connection id
+     *
+     * @param serverName       unique identifier for requested server.
+     * @param userId           the unique identifier for the user
+     * @param searchCriteria   a string expression of the characteristics of the required assets
+     * @param searchParameters constrains to make the assets's search results more precise
+     * @return list of properties used to narrow the search
+     */
+    @RequestMapping(method = RequestMethod.POST,
+            path = "/search/asset-property/{searchCriteria}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public AssetDescriptionResponse searchAssetsByPropertyValue(@PathVariable("serverName") String serverName,
+                                                                @PathVariable("userId") String userId,
+                                                                @PathVariable("searchCriteria") String searchCriteria,
+                                                                @RequestBody SearchParameters searchParameters) {
+        return assetService.searchAssetsByPropertyValue(serverName, userId, searchCriteria, searchParameters);
+    }
 }
