@@ -83,3 +83,9 @@ event structures for the repository services.
 support for the peer-to-peer metadata exchange and federation.
 
 * **[repository-services-spring](repository-services-spring)** uses spring to create the OMRS REST services.
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
