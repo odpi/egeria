@@ -94,9 +94,9 @@ public class EntityMappingSet {
     public Class getPOJOForIgcAssetType(String assetType) {
         Class pojo = null;
         if (isIgcAssetTypeMapped(assetType)) {
-            for (EntityMapping mapping : getByIgcAssetType(assetType)) {
-                pojo = mapping.getIgcPOJO();
-                break;
+            List<EntityMapping> mappings = getByIgcAssetType(assetType);
+            if (mappings != null && !mappings.isEmpty()) {
+                pojo = mappings.get(0).getIgcPOJO();
             }
         }
         return pojo;
