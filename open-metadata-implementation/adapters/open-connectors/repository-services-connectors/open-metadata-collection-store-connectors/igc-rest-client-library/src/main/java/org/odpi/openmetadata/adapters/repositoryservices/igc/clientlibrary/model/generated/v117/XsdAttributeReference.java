@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v117;
 
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
 import java.util.ArrayList;
@@ -16,9 +16,9 @@ import java.util.ArrayList;
  *  extending from this class in your own custom class is the best approach.)
  */
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class XsdAttributeReference extends MainObject {
+public class XsdAttributeReference extends Reference {
 
-    public static final String IGC_TYPE_ID = "xsd_attribute_reference";
+    public static String getIgcTypeId() { return "xsd_attribute_reference"; }
 
     /**
      * The 'usage' property, displayed as 'Usage' in the IGC UI.
@@ -68,7 +68,6 @@ public class XsdAttributeReference extends MainObject {
 
     /** @see #references_xsd_attribute */ @JsonProperty("references_xsd_attribute")  public Reference getReferencesXsdAttribute() { return this.references_xsd_attribute; }
     /** @see #references_xsd_attribute */ @JsonProperty("references_xsd_attribute")  public void setReferencesXsdAttribute(Reference references_xsd_attribute) { this.references_xsd_attribute = references_xsd_attribute; }
-
 
     public static final Boolean isXsdAttributeReference(Object obj) { return (obj.getClass() == XsdAttributeReference.class); }
 

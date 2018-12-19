@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v115;
 
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
 import java.util.ArrayList;
@@ -16,9 +16,9 @@ import java.util.ArrayList;
  *  extending from this class in your own custom class is the best approach.)
  */
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class Olapjoinref extends MainObject {
+public class Olapjoinref extends Reference {
 
-    public static final String IGC_TYPE_ID = "olapjoinref";
+    public static String getIgcTypeId() { return "olapjoinref"; }
 
     /**
      * The 'joins_olap_collection' property, displayed as 'Joins OLAP Collection' in the IGC UI.
@@ -74,7 +74,6 @@ public class Olapjoinref extends MainObject {
 
     /** @see #sequence */ @JsonProperty("sequence")  public Number getSequence() { return this.sequence; }
     /** @see #sequence */ @JsonProperty("sequence")  public void setSequence(Number sequence) { this.sequence = sequence; }
-
 
     public static final Boolean isOlapjoinref(Object obj) { return (obj.getClass() == Olapjoinref.class); }
 

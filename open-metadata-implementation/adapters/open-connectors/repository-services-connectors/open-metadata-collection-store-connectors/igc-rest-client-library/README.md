@@ -109,12 +109,8 @@ The following POJOs define common characteristics across objects for ease of re-
 - `Reference` defines the most minimalistic representation of an IGC asset, and is used anywhere an asset is referenced (eg. for relationships). It is the superclass of all asset types.
 - `ReferenceList` encapsulates a set of relationships (`Reference` objects) and their paging characteristics (`Paging` object).
 - `Paging` encapsulates the details of a page of results (eg. the total number, the URL to the next page of results, etc).
-- `MainObject` provides an interim-level superclass for most asset types, including properties common to virtually all assets (eg. `short_description`, `long_description`, etc). While this class itself extends `Reference`, most POJOs (ie. all generated ones) extend this class rather than `Reference` directly.
+- `MainObject` provides an interim-level superclass for most asset types, including properties common to virtually all assets (eg. `short_description`, `long_description`, etc). While this class itself extends `Reference`, most POJOs (ie. all OpenIGC ones) should extend this class rather than `Reference` directly.
 - `Identity` provides a semantically-meaningful characteristic that can be used for comparison between assets for equality, without relying on ID-level (RID) equivalency.
-
-Finally, one non-generated asset type is defined (the only one that does not extend from `MainObject`):
-
-- `Label` defines the IGC `label` asset type
 
 ## Using your own asset types
 
@@ -122,9 +118,9 @@ If your environment includes new objects (ie. via OpenIGC) or adds custom attrib
 
 The recommended way to do this is to create your own POJOs:
 
-- For OpenIGC assets, create a new class that extends from `MainObject` for each class in your OpenIGC bundle, and add each of your classes' properties as members to each of those POJOs. (See the generated POJOs for examples.)
+- For OpenIGC assets, create a new class that extends from `MainObject` for each class in your OpenIGC bundle, and add each of your classes' properties as members to each of those POJOs. (See the generated POJOs for examples, just extend from `MainObject` instead of `Reference`.)
 - For native asset types against which you've defined custom attributes, simply create a new POJO that extends from the appropriate (generated) POJO. Then all you'll need to do is add the custom attribute properties to your new class (all of the native properties will be inherited by extending the generated POJO). For any custom attributes of IGC type `relationship` use a Java type of `ReferenceList`, for any multi-valued custom attributes use a Java type of `ArrayList<String>`, and for any singular values simply use the appropriate type (eg. `String`, `Number`, `Date`, or `Boolean`).
-- In either case, to ease reflection-based registration (if you decide to use such an approach), consider adding a `static final String IGC_TYPE_ID = ''` set to the precise type string that IGC uses to refer to assets of this type.
+- In either case, to ease reflection-based registration (if you decide to use such an approach), consider adding a `public static String getIgcTypeId() { return "<type_name>"; }` set to the precise type string that IGC uses to refer to assets of this type.
 
 Remember that you'll need to register your own POJO (see "Retrieving assets" above) before the client will make use of it!
 
