@@ -28,3 +28,8 @@ support different integration patterns.
 
 * **[user-interfaces](user-interfaces)** - basic user interfaces to demonstrate the power of the open
 metadata and governance capabilities.
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

@@ -1,5 +1,5 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
-<!-- Copyright Contributors to the ODPi Egeria project.  -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
 
 
 # Open metadata administration services user guide
@@ -987,3 +987,10 @@ If you want to delete the server's configuration document then issue:
 ```
 DELETE http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1
 ```
+
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
