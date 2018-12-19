@@ -144,6 +144,33 @@ public interface OMRSRepositoryHelper
 
 
     /**
+     * Validate that the type of an entity is of the expected/desired type.  The actual entity may be a subtype
+     * of the expected type of course.
+     *
+     * @param sourceName source of the request (used for logging)
+     * @param actualTypeName name of the entity type
+     * @param expectedTypeName name of the expected type
+     * @return boolean if they match (a null in either results in false)
+     */
+    boolean  isTypeOf(String   sourceName,
+                      String   actualTypeName,
+                      String   expectedTypeName);
+
+
+    /**
+     * Return the names of all of the properties in the supplied TypeDef and all of its super-types.
+     *
+     * @param sourceName name of caller.
+     * @param typeDef TypeDef to query.
+     * @param methodName calling method.
+     * @return list of property names.
+     */
+    List<TypeDefAttribute> getAllPropertiesForTypeDef(String  sourceName,
+                                                      TypeDef typeDef,
+                                                      String  methodName);
+
+
+    /**
      * Returns an updated TypeDef that has had the supplied patch applied.  It throws an exception if any part of
      * the patch is incompatible with the original TypeDef.  For example, if there is a mismatch between
      * the type or version that either represents.

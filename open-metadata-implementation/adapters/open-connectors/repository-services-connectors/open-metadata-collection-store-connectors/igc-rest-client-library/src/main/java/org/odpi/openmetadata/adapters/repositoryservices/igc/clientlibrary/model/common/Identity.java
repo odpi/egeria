@@ -44,9 +44,9 @@ public class Identity {
      * Returns true iff this identity is equivalent to the provided identity.
      *
      * @param identity the identity to compare against
-     * @return Boolean
+     * @return boolean
      */
-    public Boolean equals(Identity identity) {
+    public boolean sameas(Identity identity) {
         return this.toString().equals(identity.toString());
     }
 
@@ -60,7 +60,7 @@ public class Identity {
      */
     public Identity getParentIdentity() {
         Identity parent = null;
-        if (context.size() > 0) {
+        if (!context.isEmpty()) {
             Integer lastIndex = context.size() - 1;
             Reference endOfCtx = context.get(lastIndex);
             List<Reference> parentCtx = context.subList(0, lastIndex);

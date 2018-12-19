@@ -131,8 +131,8 @@ public class PrimitivePropertyValue extends InstancePropertyValue
     public String toString()
     {
         return "PrimitivePropertyValue{" +
-                "primitiveDefCategory=" + primitiveDefCategory +
-                ", primitiveValue=" + primitiveValue +
+                "primitiveValue=" + primitiveValue +
+                ", primitiveDefCategory=" + primitiveDefCategory +
                 ", instancePropertyCategory=" + getInstancePropertyCategory() +
                 ", typeGUID='" + getTypeGUID() + '\'' +
                 ", typeName='" + getTypeName() + '\'' +

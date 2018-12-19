@@ -1,12 +1,12 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Egeria Meta-Model
+# Open Metadata Repository Services (OMRS) Metadata Meta-Model
 
-![Figure 1: Overview of Egeria's metamodel](metadata-meta-model-overview.png)
-> Figure 1: Overview of Egeria's metamodel
+![Figure 1: Overview of OMRS's metamodel](metadata-meta-model-overview.png)
+> Figure 1: Overview of OMRS's metadata metamodel
 
-Egeria's meta-model defines the structures used to represent metadata,
+OMRS's metamodel defines the structures used to represent metadata,
 and can be broadly divided into the following two areas:
 
 - Type Definitions (TypeDefs and AttributeTypeDefs)
@@ -40,10 +40,10 @@ that Egeria defines include:
 
 Rather than being another set of classes that *inherit* from the general
 TypeDef classes (`EntityDef`, `RelationshipDef`, `ClassificationDef`),
-these implemented type definitions are *instantiated objects* of one of
+these open types are *instantiated objects* of one of
 those TypeDef classes (in the above examples, of the `EntityDef` class).
 
-A set of `TypeDefAttribute`s defines the list of additional 
+A set of `TypeDefAttribute`s within the TypeDef defines the list of additional 
 characteristics (properties) that each of these entity types can 
 possess -- things like names, descriptions, etc -- which may naturally
 vary from one entity type to another. (These property-level definitions
