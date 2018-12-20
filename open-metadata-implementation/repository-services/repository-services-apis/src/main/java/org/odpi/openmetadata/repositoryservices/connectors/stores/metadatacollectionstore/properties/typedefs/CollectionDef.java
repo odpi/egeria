@@ -182,12 +182,12 @@ public class CollectionDef extends AttributeTypeDef
     public String toString()
     {
         return "CollectionDef{" +
-                "collectionDefCategory=" + collectionDefCategory +
+                "name='" + name + '\'' +
+                ", collectionDefCategory=" + collectionDefCategory +
                 ", argumentCount=" + argumentCount +
                 ", argumentTypes=" + argumentTypes +
                 ", category=" + category +
                 ", guid='" + guid + '\'' +
-                ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", descriptionGUID='" + descriptionGUID + '\'' +
                 '}';
@@ -197,25 +197,25 @@ public class CollectionDef extends AttributeTypeDef
     /**
      * Verify that supplied object has the same properties.
      *
-     * @param o object to test
+     * @param objectToCompare object to test
      * @return result
      */
     @Override
-    public boolean equals(Object o)
+    public boolean equals(Object objectToCompare)
     {
-        if (this == o)
+        if (this == objectToCompare)
         {
             return true;
         }
-        if (!(o instanceof CollectionDef))
+        if (!(objectToCompare instanceof CollectionDef))
         {
             return false;
         }
-        if (!super.equals(o))
+        if (!super.equals(objectToCompare))
         {
             return false;
         }
-        CollectionDef that = (CollectionDef) o;
+        CollectionDef that = (CollectionDef) objectToCompare;
         return getArgumentCount() == that.getArgumentCount() &&
                 getCollectionDefCategory() == that.getCollectionDefCategory() &&
                 Objects.equals(getArgumentTypes(), that.getArgumentTypes());

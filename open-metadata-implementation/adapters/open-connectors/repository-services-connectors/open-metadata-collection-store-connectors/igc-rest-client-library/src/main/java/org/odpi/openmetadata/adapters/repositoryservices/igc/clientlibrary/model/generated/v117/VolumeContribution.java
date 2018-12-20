@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v117;
 
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
 import java.util.ArrayList;
@@ -16,9 +16,9 @@ import java.util.ArrayList;
  *  extending from this class in your own custom class is the best approach.)
  */
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class VolumeContribution extends MainObject {
+public class VolumeContribution extends Reference {
 
-    public static final String IGC_TYPE_ID = "volume_contribution";
+    public static String getIgcTypeId() { return "volume_contribution"; }
 
     /**
      * The 'infoset' property, displayed as 'Infoset' in the IGC UI.
@@ -56,7 +56,6 @@ public class VolumeContribution extends MainObject {
 
     /** @see #size */ @JsonProperty("size")  public Number getSize() { return this.size; }
     /** @see #size */ @JsonProperty("size")  public void setSize(Number size) { this.size = size; }
-
 
     public static final Boolean isVolumeContribution(Object obj) { return (obj.getClass() == VolumeContribution.class); }
 

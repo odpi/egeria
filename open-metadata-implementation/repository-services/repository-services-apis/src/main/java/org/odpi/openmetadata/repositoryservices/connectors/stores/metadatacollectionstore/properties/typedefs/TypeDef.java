@@ -135,7 +135,7 @@ public abstract class TypeDef extends TypeDefSummary
         }
         else
         {
-            return superType;
+            return new TypeDefLink(superType);
         }
     }
 
@@ -482,7 +482,8 @@ public abstract class TypeDef extends TypeDefSummary
     public String toString()
     {
         return "TypeDef{" +
-                "superType=" + superType +
+                "name='" + name + '\'' +
+                ", superType=" + superType +
                 ", description='" + description + '\'' +
                 ", descriptionGUID='" + descriptionGUID + '\'' +
                 ", origin='" + origin + '\'' +
@@ -499,7 +500,6 @@ public abstract class TypeDef extends TypeDefSummary
                 ", versionName='" + versionName + '\'' +
                 ", category=" + category +
                 ", guid='" + guid + '\'' +
-                ", name='" + name + '\'' +
                 '}';
     }
 
@@ -507,25 +507,25 @@ public abstract class TypeDef extends TypeDefSummary
     /**
      * Validated that the GUID, name and version number of a TypeDef are equal.
      *
-     * @param object to test
+     * @param objectToCompare to test
      * @return boolean flag to say object is the same TypeDefSummary
      */
     @Override
-    public boolean equals(Object object)
+    public boolean equals(Object objectToCompare)
     {
-        if (this == object)
+        if (this == objectToCompare)
         {
             return true;
         }
-        if (!(object instanceof TypeDef))
+        if (!(objectToCompare instanceof TypeDef))
         {
             return false;
         }
-        if (!super.equals(object))
+        if (!super.equals(objectToCompare))
         {
             return false;
         }
-        TypeDef typeDef = (TypeDef) object;
+        TypeDef typeDef = (TypeDef) objectToCompare;
         return Objects.equals(getSuperType(), typeDef.getSuperType()) &&
                 Objects.equals(getDescription(), typeDef.getDescription()) &&
                 Objects.equals(getDescriptionGUID(), typeDef.getDescriptionGUID()) &&

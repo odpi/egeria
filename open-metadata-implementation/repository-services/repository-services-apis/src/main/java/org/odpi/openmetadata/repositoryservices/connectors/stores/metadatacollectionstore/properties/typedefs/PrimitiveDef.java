@@ -99,10 +99,10 @@ public class PrimitiveDef extends AttributeTypeDef
     public String toString()
     {
         return "PrimitiveDef{" +
-                "primitiveDefCategory=" + primitiveDefCategory +
+                "name='" + name + '\'' +
+                ", primitiveDefCategory=" + primitiveDefCategory +
                 ", category=" + category +
                 ", guid='" + guid + '\'' +
-                ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", descriptionGUID='" + descriptionGUID + '\'' +
                 '}';

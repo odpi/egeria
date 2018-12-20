@@ -398,9 +398,9 @@ public class TypeDefPatch extends TypeDefElementHeader
     public String toString()
     {
         return "TypeDefPatch{" +
-                "action=" + action +
+                "typeName='" + typeName + '\'' +
+                ", action=" + action +
                 ", typeDefGUID='" + typeDefGUID + '\'' +
-                ", typeName='" + typeName + '\'' +
                 ", applyToVersion=" + applyToVersion +
                 ", updateToVersion=" + updateToVersion +
                 ", newVersionName='" + newVersionName + '\'' +

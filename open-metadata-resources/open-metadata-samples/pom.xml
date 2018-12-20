@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -16,7 +17,7 @@
 
     <name>Open Metadata Samples</name>
     <description>
-        The open metadata samples provides samples and associated tutorials.
+        The open metadata samples provides samples and associated descriptions on how to run them.
     </description>
 
     <artifactId>open-metadata-samples</artifactId>

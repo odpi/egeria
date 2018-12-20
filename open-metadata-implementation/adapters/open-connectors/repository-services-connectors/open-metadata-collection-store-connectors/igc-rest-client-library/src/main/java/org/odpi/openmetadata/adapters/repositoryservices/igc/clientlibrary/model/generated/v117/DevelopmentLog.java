@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v117;
 
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
 import java.util.ArrayList;
@@ -16,9 +16,9 @@ import java.util.ArrayList;
  *  extending from this class in your own custom class is the best approach.)
  */
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DevelopmentLog extends MainObject {
+public class DevelopmentLog extends Reference {
 
-    public static final String IGC_TYPE_ID = "development_log";
+    public static String getIgcTypeId() { return "development_log"; }
 
     /**
      * The 'date' property, displayed as 'Date' in the IGC UI.
@@ -116,7 +116,6 @@ public class DevelopmentLog extends MainObject {
 
     /** @see #workflow_new_state */ @JsonProperty("workflow_new_state")  public String getWorkflowNewState() { return this.workflow_new_state; }
     /** @see #workflow_new_state */ @JsonProperty("workflow_new_state")  public void setWorkflowNewState(String workflow_new_state) { this.workflow_new_state = workflow_new_state; }
-
 
     public static final Boolean isDevelopmentLog(Object obj) { return (obj.getClass() == DevelopmentLog.class); }
 
