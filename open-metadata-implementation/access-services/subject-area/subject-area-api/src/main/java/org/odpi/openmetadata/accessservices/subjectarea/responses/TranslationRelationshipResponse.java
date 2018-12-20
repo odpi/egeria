@@ -18,18 +18,18 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class TermTranslationRelationshipResponse extends SubjectAreaOMASAPIResponse
+public class TranslationRelationshipResponse extends SubjectAreaOMASAPIResponse
 {
     private Translation translation= null;
 
     /**
      * Default constructor
      */
-    public TermTranslationRelationshipResponse()
+    public TranslationRelationshipResponse()
     {
         this.setResponseCategory(ResponseCategory.TranslationRelationship);
     }
-    public TermTranslationRelationshipResponse(Translation translation)
+    public TranslationRelationshipResponse(Translation translation)
     {
         this.translation=translation;
         this.setResponseCategory(ResponseCategory.TranslationRelationship);

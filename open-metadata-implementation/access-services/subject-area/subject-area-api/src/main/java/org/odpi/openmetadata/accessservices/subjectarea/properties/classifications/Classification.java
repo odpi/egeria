@@ -12,6 +12,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
+import java.util.Date;
 
 
 /**
@@ -30,6 +31,8 @@ public class Classification implements Serializable {
     }
     //system attributes
     private SystemAttributes systemAttributes = null;
+    private Date effectiveFromTime = null;
+    private Date effectiveToTime = null;
 
     protected String classificationName = null;
     /**
@@ -42,6 +45,33 @@ public class Classification implements Serializable {
 
     public void setSystemAttributes(SystemAttributes systemAttributes) {
         this.systemAttributes = systemAttributes;
+    }
+    /**
+     * Return the date/time that this node should start to be used (null means it can be used from creationTime).
+     * @return Date the node becomes effective.
+     */
+    public Date getEffectiveFromTime()
+    {
+        return effectiveFromTime;
+    }
+
+    public void setEffectiveFromTime(Date effectiveFromTime)
+    {
+        this.effectiveFromTime = effectiveFromTime;
+    }
+    /**
+     * Return the date/time that this node should no longer be used.
+     *
+     * @return Date the node stops being effective.
+     */
+    public Date getEffectiveToTime()
+    {
+        return effectiveToTime;
+    }
+
+    public void setEffectiveToTime(Date effectiveToTime)
+    {
+        this.effectiveToTime = effectiveToTime;
     }
 
     public String getClassificationName() {

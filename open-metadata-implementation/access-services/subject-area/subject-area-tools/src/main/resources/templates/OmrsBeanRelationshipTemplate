@@ -16,7 +16,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.*;
-import org.odpi.openmetadata.accessservices.subjectarea.server.HelperObjects.OMRSLine;
+import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSLine;
 
 //omrs
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;

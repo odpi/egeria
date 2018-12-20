@@ -3,9 +3,7 @@
 package org.odpi.openmetadata.accessservices.subjectarea.responses;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.LibraryCategoryReference;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.LibraryTermReference;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.TermCategorization;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -37,10 +35,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = SynonymRelationshipResponse.class, name = "SynonymRelationshipResponse"),
                 @JsonSubTypes.Type(value = AntonymRelationshipResponse.class, name = "AntonymRelationshipResponse"),
                 @JsonSubTypes.Type(value = PreferredTermRelationshipResponse.class, name = "PreferredTermRelationshipResponse"),
-                @JsonSubTypes.Type(value = TermReplacementRelationshipResponse.class, name = "TermReplacementRelationshipResponse"),
-                @JsonSubTypes.Type(value = TermTranslationRelationshipResponse.class, name = "TermTranslationRelationshipResponse"),
-                @JsonSubTypes.Type(value = TermValidValueRelationshipResponse.class, name = "TermValidValueRelationshipResponse"),
-                @JsonSubTypes.Type(value = TermUsedInContextRelationshipResponse.class, name = "TermUsedInContextRelationshipResponse"),
+                @JsonSubTypes.Type(value = ReplacementRelationshipResponse.class, name = "ReplacementRelationshipResponse"),
+                @JsonSubTypes.Type(value = TranslationRelationshipResponse.class, name = "TranslationRelationshipResponse"),
+                @JsonSubTypes.Type(value = ValidValueRelationshipResponse.class, name = "ValidValueRelationshipResponse"),
+                @JsonSubTypes.Type(value = UsedInContextRelationshipResponse.class, name = "UsedInContextRelationshipResponse"),
                 @JsonSubTypes.Type(value = TermISATYPEOFRelationshipResponse.class, name = "TermISATYPEOFRelationshipResponse"),
                 @JsonSubTypes.Type(value = TermTYPEDBYRelationshipResponse.class, name = "TermTYPEDBYRelationshipResponse"),
                 @JsonSubTypes.Type(value = TermISARelationshipResponse.class,name = "TermISARelationshipResponse"),
