@@ -7,6 +7,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.Status;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.node.NodeType;
 
+import java.util.Date;
+
 /**
  * Methods used for rest API input validation
  */
@@ -64,6 +66,66 @@ public class InputValidator {
                     errorCode.getSystemAction(),
                     errorCode.getUserAction());
         }
+    }
+    /**
+     * Throw an exception if the supplied effective dates are not valid
+     * @param className name of the class
+     * @param methodName name of the method making the call.
+     * @param to effective to date
+     * @param from effective from date
+     * @throws InvalidParameterException the userId is null
+     */
+    static public void validateEffectiveDate(
+            String className,
+            String methodName,
+            Date to,
+            Date from ) throws InvalidParameterException
+    {
+       long now = new Date().getTime();
+        if ((to !=null) && (to.getTime()<now)) {
+            // to time is in the past
+
+            SubjectAreaErrorCode errorCode    = SubjectAreaErrorCode.PAST_EFFECTIVE_TO_DATE;
+            String                 errorMessage = errorCode.getErrorMessageId()
+                    + errorCode.getFormattedErrorMessage(methodName);
+
+            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                    className,
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+
+        }
+        if ((from !=null) && (from.getTime()<now)) {
+            // from time is in the past
+            SubjectAreaErrorCode errorCode    = SubjectAreaErrorCode.PAST_EFFECTIVE_FROM_DATE;
+            String                 errorMessage = errorCode.getErrorMessageId()
+                    + errorCode.getFormattedErrorMessage(methodName);
+
+            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                    className,
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+
+        }
+        if ((to !=null && from !=null) && to.getTime() <= from.getTime()) {
+            // the begin time needs to be before the end time.
+            // from time is in the past
+            SubjectAreaErrorCode errorCode    = SubjectAreaErrorCode.INCORRECT_EFFECTIVE_DATE_RANGE;
+            String                 errorMessage = errorCode.getErrorMessageId()
+                    + errorCode.getFormattedErrorMessage(methodName);
+
+            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                    className,
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+
     }
 
     /**

@@ -19,7 +19,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
-
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 //omrs bean
 import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
@@ -208,7 +208,6 @@ public class SubjectAreaBeansToAccessOMRS  {
      * @throws UnrecognizedGUIDException the unique identifier (guid) used to request an object is either unrecognized, or is the identifier for a different type of object.
      * @throws EntityNotDeletedException the entity was not deleted
      * @throws GUIDNotPurgedException the unique identifier (guid) used to purge an object did not result in the object being purged.
-     
      */
     public void purge<$$uEntityName$$>ByGuid(String userId,final String entityGuid)
            throws MetadataServerUncontactableException, UserNotAuthorizedException, InvalidParameterException, UnrecognizedGUIDException, EntityNotDeletedException, GUIDNotPurgedException {
@@ -228,6 +227,39 @@ public class SubjectAreaBeansToAccessOMRS  {
              log.debug("<== successful Method: " + methodName + ",userId="+userId+",guid="+entityGuid);
          }
     }
+    /**
+     * Restore an <$$uEntityName$$> identified by its GUID. Restore resurrects a soft deleted <$$uEntityName$$>. When a <$$uEntityName$$> was incorrectly deleted, the delete can be undone using the restore..
+     * @param userId user identity
+     * @param entityGuid GUID for the <$$uEntityName$$>
+     * @return  <$$uEntityName$$> the restored <$$uEntityName$$>
+     * @throws MetadataServerUncontactableException not able to communicate with the metadata server.
+     * @throws UserNotAuthorizedException the userId passed on the request is not authorized to perform the requested action.
+     * @throws InvalidParameterException a parameter is null or an invalid value.
+     * @throws UnrecognizedGUIDException the unique identifier (guid) used to request an object is either unrecognized, or is the identifier for a different type of object.
+     * @throws GUIDNotDeletedException the guid of the <$$uEntityName$$> is not deleted, so cannot be restored
+     * @throws FunctionNotSupportedException Function not supported
+     */
+    public <$$uEntityName$$> restore<$$uEntityName$$>(String userId,final String entityGuid) throws MetadataServerUncontactableException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          InvalidParameterException,
+                                                                                          UnrecognizedGUIDException,
+                                                                                          GUIDNotDeletedException,
+                                                                                          FunctionNotSupportedException
+    {
+
+        final String methodName = "restore<$$uEntityName$$>ByGuid";
+        if (log.isDebugEnabled()) {
+            log.debug("==> Method: " + methodName + ",userId="+userId+",guid="+entityGuid);
+        }
+        InputValidator.validateUserIdNotNull(className,methodName,userId);
+        InputValidator.validateGUIDNotNull(className,methodName,entityGuid,"entityGuid");
+        EntityDetail omrsEntity =  oMRSAPIHelper.callOMRSRestoreEntity(userId,entityGuid);
+        <$$uEntityName$$> restored<$$uEntityName$$> =  <$$uEntityName$$>Mapper.mapOmrsEntityDetailTo<$$uEntityName$$>(omrsEntity);
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful Method: " + methodName + ",userId="+userId+",guid="+entityGuid);
+        }
+        return restored<$$uEntityName$$>;
+    }    
 
     /**
      * Add classifications to the supplied <$$EntityName$$>
@@ -378,6 +410,16 @@ public class SubjectAreaBeansToAccessOMRS  {
       * Get the relationships associated with entity <$$EntityName$$> represented by a guid.
       * @param userId user identity
       * @param entityGuid  globally unique identifier for the <$$EntityName$$>
+      * @param relationshipTypeGuid the guid of the relationship type to restrict the relationships returned to this type. null means return all relationship types.
+      * @param fromRelationshipElement the starting element number of the relationships to return.
+      *                                This is used when retrieving elements
+      *                                beyond the first page of results. Zero means start from the first element.
+      * @param asOfTime Date return relationships as they were at some time in the past. null indicates to return relationships as they are now.
+      * @param sequencingProperty String name of the property that is to be used to sequence the results.
+      *                           Null means do not sequence on a property name (see SequencingOrder).
+      * @param sequencingOrder Enum defining how the results should be ordered.
+      * @param pageSize  the maximum number of result classifications that can be returned on this request.  Zero means
+      *                 unrestricted return results size.
       * @return {@code List<Line> }
       * @throws MetadataServerUncontactableException not able to communicate with the metadata server.
       * @throws UserNotAuthorizedException the userId passed on the request is not authorized to perform the requested action. 
@@ -385,7 +427,15 @@ public class SubjectAreaBeansToAccessOMRS  {
       * @throws UnrecognizedGUIDException the unique identifier (guid) used to request an object is either unrecognized, or is the identifier for a different type of object.
       * @throws FunctionNotSupportedException a function is not supported.
       */
-     public Set<Line> get<$$uEntityName$$>Relationships(String userId,String entityGuid)
+     public Set<Line> get<$$uEntityName$$>Relationships(
+                        String                     userId,
+                        String                     entityGuid,
+                        String                     relationshipTypeGuid,
+                        int                        fromRelationshipElement,
+                        Date                       asOfTime,
+                        String                     sequencingProperty,
+                        SequencingOrder            sequencingOrder,
+                        int                        pageSize)
          throws MetadataServerUncontactableException,
           UserNotAuthorizedException,
           InvalidParameterException,
@@ -393,14 +443,21 @@ public class SubjectAreaBeansToAccessOMRS  {
           UnrecognizedGUIDException {
         final String methodName = "get<$$uEntityName$$>Relationships";
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId="+userId+",guid="+entityGuid);
+            log.debug("==> Method: " + methodName + ",userId="+userId+",entity guid="+entityGuid + ",relationship Type Guid="+relationshipTypeGuid);
         }
         InputValidator.validateUserIdNotNull(className,methodName,userId);
         InputValidator.validateGUIDNotNull(className,methodName,entityGuid,"entityGuid");
 
         Set<Line> lines = null;
 
-        List<Relationship> omrsRelationships = oMRSAPIHelper.callGetRelationshipsForEntity( userId,entityGuid);
+        List<Relationship> omrsRelationships = oMRSAPIHelper.callGetRelationshipsForEntity( userId,
+                    entityGuid,
+                    relationshipTypeGuid,
+                    fromRelationshipElement,
+                    asOfTime,
+                    sequencingProperty,
+                    sequencingOrder,
+                    pageSize);
         if (omrsRelationships !=null) {
             lines =  OMRSRelationshipToLines.convert(omrsRelationships);
         }
@@ -538,7 +595,6 @@ public class SubjectAreaBeansToAccessOMRS  {
       * @throws UnrecognizedGUIDException the unique identifier (guid) used to request an object is either unrecognized, or is the identifier for a different type of object.
       * @throws RelationshipNotDeletedException the relationship could not be deleted.
       * @throws GUIDNotPurgedException the unique identifier (guid) used to purge an object did not result in the object being purged.
-
       */
      public void purgeRelationshipById(String userId,String relationshipGuid,String typeName)
             throws MetadataServerUncontactableException, UserNotAuthorizedException, InvalidParameterException, UnrecognizedGUIDException, RelationshipNotDeletedException, GUIDNotPurgedException {
@@ -559,4 +615,36 @@ public class SubjectAreaBeansToAccessOMRS  {
                  log.debug("<== successful Method: " + methodName + ",userId="+userId+",guid="+relationshipGuid);
             }
      }
+    /**
+     * Restore an relationship identified by its GUID. Restore resurrects a soft deleted relationship. When a relationship is incorrectly deleted, the delete can be undone by using this restore.
+     * @param userId user identity
+     * @param relationshipGuid GUID for the relationship
+     * @return Relationship the restored relationship
+     * @throws MetadataServerUncontactableException not able to communicate with the metadata server.
+     * @throws UserNotAuthorizedException the userId passed on the request is not authorized to perform the requested action.
+     * @throws InvalidParameterException a parameter is null or an invalid value.
+     * @throws UnrecognizedGUIDException the unique identifier (guid) used to request an object is either unrecognized, or is the identifier for a different type of object.
+     * @throws GUIDNotDeletedException the guid of the relationship is not deleted, so it cannot be restored
+     * @throws FunctionNotSupportedException Function not supported
+     */
+    public Relationship restoreRelationship(String userId,final String relationshipGuid) throws MetadataServerUncontactableException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          InvalidParameterException,
+                                                                                          UnrecognizedGUIDException,
+                                                                                          GUIDNotDeletedException,
+                                                                                          FunctionNotSupportedException
+    {
+        final String methodName = "restoreRelationship";
+        if (log.isDebugEnabled()) {
+            log.debug("==> Method: " + methodName + ",userId="+userId+",guid="+relationshipGuid);
+        }
+        InputValidator.validateUserIdNotNull(className,methodName,userId);
+        InputValidator.validateGUIDNotNull(className,methodName,relationshipGuid,"entityGuid");
+        Relationship restoredRelationship  =  oMRSAPIHelper.callOMRSRestoreRelationship(userId,relationshipGuid);
+
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful Method: " + methodName + ",userId="+userId+",guid="+relationshipGuid);
+        }
+        return restoredRelationship;
+    }
 }
