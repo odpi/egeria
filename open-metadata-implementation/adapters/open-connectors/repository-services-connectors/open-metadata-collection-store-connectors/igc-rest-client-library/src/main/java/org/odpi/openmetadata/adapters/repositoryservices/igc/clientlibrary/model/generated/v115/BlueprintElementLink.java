@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v115;
 
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
 import java.util.ArrayList;
@@ -16,9 +16,9 @@ import java.util.ArrayList;
  *  extending from this class in your own custom class is the best approach.)
  */
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class BlueprintElementLink extends MainObject {
+public class BlueprintElementLink extends Reference {
 
-    public static final String IGC_TYPE_ID = "blueprint_element_link";
+    public static String getIgcTypeId() { return "blueprint_element_link"; }
 
     /**
      * The 'element_name' property, displayed as 'Element Name' in the IGC UI.
@@ -28,7 +28,6 @@ public class BlueprintElementLink extends MainObject {
 
     /** @see #element_name */ @JsonProperty("element_name")  public String getElementName() { return this.element_name; }
     /** @see #element_name */ @JsonProperty("element_name")  public void setElementName(String element_name) { this.element_name = element_name; }
-
 
     public static final Boolean isBlueprintElementLink(Object obj) { return (obj.getClass() == BlueprintElementLink.class); }
 

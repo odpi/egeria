@@ -12,7 +12,11 @@ import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
+import javax.net.ssl.*;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.X509Certificate;
+import java.util.List;
 
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
@@ -38,15 +42,42 @@ public class IGCRestClient_IT {
      */
     @BeforeSuite
     public void setUp() {
-        IGCRestClient.disableSslVerification();
+
+        try {
+            // Create a trust manager that does not validate certificate chains
+            TrustManager[] trustAllCerts = new TrustManager[] {
+                    new X509TrustManager() {
+                        public java.security.cert.X509Certificate[] getAcceptedIssuers() { return new java.security.cert.X509Certificate[]{}; }
+                        public void checkClientTrusted(X509Certificate[] certs, String authType) {
+                            // Do nothing
+                        }
+                        public void checkServerTrusted(X509Certificate[] certs, String authType) {
+                            // Do nothing
+                        }
+                    }
+            };
+            // Install the all-trusting trust manager
+            SSLContext sc = SSLContext.getInstance("TLSv1.2");
+            sc.init(null, trustAllCerts, new java.security.SecureRandom());
+            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+            // Create all-trusting host name verifier
+            HostnameVerifier allHostsValid = (hostname, session) -> true;
+            // Install the all-trusting host verifier
+            HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
+        } catch (NoSuchAlgorithmException | KeyManagementException e) {
+            e.printStackTrace();
+        }
 
         igcrest = new IGCRestClient(
                 "https://infosvr.vagrant.ibm.com:9446",
                 IGCRestClient.encodeBasicAuth("isadmin", "isadmin"));
+        igcrest.registerPOJO(Label.class);
         igcrest.registerPOJO(Term.class);
         igcrest.registerPOJO(Category.class);
         igcrest.registerPOJO(DatabaseColumn.class);
         igcrest.registerPOJO(DataFileField.class);
+        igcrest.setDefaultPageSize(10);
+
     }
 
     /**
@@ -70,17 +101,27 @@ public class IGCRestClient_IT {
         System.out.println(term);
         assertTrue(term.getAssignedTerms().hasMorePages());
         // Retrieve all the pages via igcrest directly
-        ArrayList<Reference> r1 = igcrest.getAllPages(term.getAssignedTerms().getItems(), term.getAssignedTerms().getPaging());
+        List<Reference> r1 = igcrest.getAllPages(term.getAssignedTerms().getItems(), term.getAssignedTerms().getPaging());
         // Retrieve all the pages from the relationship property itself (which should mean it has no more pages)
         term.getAssignedTerms().getAllPages(igcrest);
         assertFalse(term.getAssignedTerms().hasMorePages());
-        ArrayList<Reference> r2 = term.getAssignedTerms().getItems();
+        List<Reference> r2 = term.getAssignedTerms().getItems();
         System.out.println("r1: " + r1.toString());
         System.out.println("r2: " + r2.toString());
         // The two should be identical (easiest to do a string comparison)
         assertTrue(r1.toString().equals(r2.toString()));
         assertTrue(r1.size() == r2.size());
         assertTrue(r1.size() == 14);
+    }
+
+    @Test
+    public void getNextPage() {
+        Term term = (Term)igcrest.getAssetById(multiPageRid);
+        System.out.println(term);
+        assertTrue(term.getAssignedTerms().getItems().size() == 10);
+        term.getAssignedTerms().getNextPage(igcrest);
+        System.out.println(term);
+        assertTrue(term.getAssignedTerms().getItems().size() == 4);
     }
 
     /**
@@ -126,13 +167,12 @@ public class IGCRestClient_IT {
         term.getAssignedAssets().getAllPages(igcrest);
         System.out.println(term.getAssignedAssets());
         assertTrue(term.getAssignedAssets().getItems().size() == 6);
-        for (Reference ref : term.getAssignedAssets().getItems()) {
-            MainObject detailed = (MainObject) ref;
+        for (Reference detailed : term.getAssignedAssets().getItems()) {
             System.out.println("Before: " + detailed);
-            assertTrue(detailed.getAssignedToTerms() == null);
-            detailed = (MainObject)ref.getAssetDetails(igcrest);
+            assertTrue(detailed.getPropertyByName("assigned_to_terms") == null);
+            detailed = detailed.getAssetDetails(igcrest);
             System.out.println("After: " + detailed);
-            Reference relation = detailed.getAssignedToTerms().getItems().get(0);
+            Reference relation = ((ReferenceList)detailed.getPropertyByName("assigned_to_terms")).getItems().get(0);
             assertTrue(relation.getClass() == Term.class);
         }
     }
@@ -146,10 +186,11 @@ public class IGCRestClient_IT {
         Term term = (Term)igcrest.getAssetById(bigTermRid);
         term.getFullAssetDetails(igcrest);
         for (Reference ref : term.getAssignedAssets().getItems()) {
-            MainObject detailed = (MainObject) ref.getAssetDetails(igcrest);
-            assertTrue(detailed.getAssignedToTerms().getItems() != null);
-            assertTrue(detailed.getAssignedToTerms().getItems().size() > 0);
-            Reference relation = detailed.getAssignedToTerms().getItems().get(0);
+            Reference detailed = ref.getAssetDetails(igcrest);
+            ReferenceList assignedTerms = (ReferenceList) detailed.getPropertyByName("assigned_to_terms");
+            assertTrue(assignedTerms.getItems() != null);
+            assertTrue(assignedTerms.getItems().size() > 0);
+            Reference relation = assignedTerms.getItems().get(0);
             assertTrue(relation.getClass() == Term.class);
         }
     }
@@ -164,8 +205,7 @@ public class IGCRestClient_IT {
         term.getAssignedAssets().getAllPages(igcrest);
         System.out.println(term.getAssignedAssets());
         assertTrue(term.getAssignedAssets().getItems().size() == 6);
-        for (Reference ref : term.getAssignedAssets().getItems()) {
-            MainObject detailed = (MainObject) ref;
+        for (Reference detailed : term.getAssignedAssets().getItems()) {
             System.out.println("Before: " + detailed);
             assertTrue(detailed.getContext().size() == 0);
             assertTrue(detailed.populateContext(igcrest));
@@ -185,13 +225,14 @@ public class IGCRestClient_IT {
         term.getAssignedAssets().getAllPages(igcrest);
         System.out.println(term.getAssignedAssets());
         assertTrue(term.getAssignedAssets().getItems().size() == 6);
-        for (Reference ref : term.getAssignedAssets().getItems()) {
-            MainObject detailed = (MainObject) ref;
+        for (Reference detailed : term.getAssignedAssets().getItems()) {
             System.out.println("Before: " + detailed);
-            assertTrue(detailed.getAssignedToTerms() == null);
-            detailed = (MainObject) detailed.getAssetWithSubsetOfProperties(igcrest, properties);
+            ReferenceList assignedTerms = (ReferenceList) detailed.getPropertyByName("assigned_to_terms");
+            assertTrue(assignedTerms == null);
+            detailed = detailed.getAssetWithSubsetOfProperties(igcrest, properties);
             System.out.println("After: " + detailed);
-            assertTrue(detailed.getAssignedToTerms().getItems().size() > 0);
+            assignedTerms = (ReferenceList) detailed.getPropertyByName("assigned_to_terms");
+            assertTrue(assignedTerms.getItems().size() > 0);
         }
     }
 
@@ -213,17 +254,16 @@ public class IGCRestClient_IT {
         term.getAssignedAssets().getAllPages(igcrest);
         System.out.println(term.getAssignedAssets());
         assertTrue(term.getAssignedAssets().getItems().size() == 6);
-        for (Reference ref : term.getAssignedAssets().getItems()) {
-            MainObject detailed = (MainObject) ref;
+        for (Reference detailed : term.getAssignedAssets().getItems()) {
             assertTrue(detailed.populateContext(igcrest));
             Identity identityOfRelatedAsset = detailed.getIdentity(igcrest);
             System.out.println("Related: " + identityOfRelatedAsset);
-            MainObject directly = (MainObject) igcrest.getAssetById(detailed.getId());
+            Reference directly = igcrest.getAssetById(detailed.getId());
             Identity identityOfAssetDirectly = directly.getIdentity(igcrest);
             System.out.println("Directly: " + identityOfAssetDirectly);
-            assertTrue(identityOfRelatedAsset.equals(identityOfAssetDirectly));
-            assertTrue(identityOfAssetDirectly.equals(identityOfRelatedAsset));
-            assertTrue(!identityOfAssetDirectly.equals(term));
+            assertTrue(identityOfRelatedAsset.sameas(identityOfAssetDirectly));
+            assertTrue(identityOfAssetDirectly.sameas(identityOfRelatedAsset));
+            assertTrue(!identityOfAssetDirectly.sameas(term.getIdentity(igcrest)));
         }
     }
 
@@ -237,7 +277,7 @@ public class IGCRestClient_IT {
         System.out.println("Term's parent identity: " + term.getIdentity(igcrest).getParentIdentity());
         Category category = (Category)term.getParentCategory();
         System.out.println("Parent category's identity: " + category.getIdentity(igcrest));
-        assertTrue(term.getIdentity(igcrest).getParentIdentity().equals(category.getIdentity(igcrest)));
+        assertTrue(term.getIdentity(igcrest).getParentIdentity().sameas(category.getIdentity(igcrest)));
     }
 
     /**
