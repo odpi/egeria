@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v117;
 
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
 import java.util.ArrayList;
@@ -16,9 +16,9 @@ import java.util.ArrayList;
  *  extending from this class in your own custom class is the best approach.)
  */
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class UserGroup extends MainObject {
+public class UserGroup extends Reference {
 
-    public static final String IGC_TYPE_ID = "user_group";
+    public static String getIgcTypeId() { return "user_group"; }
 
     /**
      * The 'group_name' property, displayed as 'Group Name' in the IGC UI.
@@ -55,6 +55,26 @@ public class UserGroup extends MainObject {
      */
     protected String principal_id;
 
+    /**
+     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     */
+    protected String created_by;
+
+    /**
+     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     */
+    protected Date created_on;
+
+    /**
+     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     */
+    protected String modified_by;
+
+    /**
+     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     */
+    protected Date modified_on;
+
 
     /** @see #group_name */ @JsonProperty("group_name")  public String getGroupName() { return this.group_name; }
     /** @see #group_name */ @JsonProperty("group_name")  public void setGroupName(String group_name) { this.group_name = group_name; }
@@ -77,6 +97,17 @@ public class UserGroup extends MainObject {
     /** @see #principal_id */ @JsonProperty("principal_id")  public String getPrincipalId() { return this.principal_id; }
     /** @see #principal_id */ @JsonProperty("principal_id")  public void setPrincipalId(String principal_id) { this.principal_id = principal_id; }
 
+    /** @see #created_by */ @JsonProperty("created_by")  public String getCreatedBy() { return this.created_by; }
+    /** @see #created_by */ @JsonProperty("created_by")  public void setCreatedBy(String created_by) { this.created_by = created_by; }
+
+    /** @see #created_on */ @JsonProperty("created_on")  public Date getCreatedOn() { return this.created_on; }
+    /** @see #created_on */ @JsonProperty("created_on")  public void setCreatedOn(Date created_on) { this.created_on = created_on; }
+
+    /** @see #modified_by */ @JsonProperty("modified_by")  public String getModifiedBy() { return this.modified_by; }
+    /** @see #modified_by */ @JsonProperty("modified_by")  public void setModifiedBy(String modified_by) { this.modified_by = modified_by; }
+
+    /** @see #modified_on */ @JsonProperty("modified_on")  public Date getModifiedOn() { return this.modified_on; }
+    /** @see #modified_on */ @JsonProperty("modified_on")  public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
     public static final Boolean isUserGroup(Object obj) { return (obj.getClass() == UserGroup.class); }
 

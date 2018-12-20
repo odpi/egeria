@@ -106,10 +106,10 @@ public class EntitySummary extends InstanceHeader
     public String toString()
     {
         return "EntitySummary{" +
-                "classifications=" + classifications +
+                "type=" + getType() +
+                ", classifications=" + classifications +
                 ", instanceURL='" + getInstanceURL() + '\'' +
                 ", GUID='" + getGUID() + '\'' +
-                ", type=" + getType() +
                 ", instanceProvenanceType=" + getInstanceProvenanceType() +
                 ", metadataCollectionId='" + getMetadataCollectionId() + '\'' +
                 ", metadataCollectionName='" + getMetadataCollectionName() + '\'' +

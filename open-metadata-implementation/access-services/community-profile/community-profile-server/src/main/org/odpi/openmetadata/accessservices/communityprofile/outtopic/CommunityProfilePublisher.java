@@ -35,16 +35,20 @@ public class CommunityProfilePublisher
      * along with classes for testing and manipulating instances.
      *
      * @param personalProfileConsumerOutTopic  connection to the out topic
-     * @param repositoryConnector  provides access to metadata instances
+     * @param repositoryConnector  provides methods for retrieving metadata instances
+     * @param repositoryHelper  provides methods for working with metadata instances
+     * @param repositoryValidator  provides validation of metadata instance
      * @param serviceName  name of this service.
      */
     public CommunityProfilePublisher(Connection              personalProfileConsumerOutTopic,
                                      OMRSRepositoryConnector repositoryConnector,
+                                     OMRSRepositoryHelper    repositoryHelper,
+                                     OMRSRepositoryValidator repositoryValidator,
                                      String                  serviceName)
     {
         this.personalProfileConsumerOutTopic = personalProfileConsumerOutTopic;
-        this.repositoryHelper = repositoryConnector.getRepositoryHelper();
-        this.repositoryValidator = repositoryConnector.getRepositoryValidator();
+        this.repositoryHelper = repositoryHelper;
+        this.repositoryValidator = repositoryValidator;
         this.profilesHandler = new PersonalProfilesHandler(serviceName, repositoryConnector);
         this.serviceName = serviceName;
     }

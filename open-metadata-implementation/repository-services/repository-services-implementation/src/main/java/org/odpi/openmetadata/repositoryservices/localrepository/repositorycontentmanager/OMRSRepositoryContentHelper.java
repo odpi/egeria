@@ -613,7 +613,28 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 
 
     /**
-     * March the supplied external standard identifiers against the active types for this repository.
+     * Validate that the type of an entity is of the expected/desired type.  The actual entity may be a subtype
+     * of the expected type of course.
+     *
+     * @param sourceName source of the request (used for logging)
+     * @param actualTypeName name of the entity type
+     * @param expectedTypeName name of the expected type
+     * @return boolean if they match (a null in either results in false)
+     */
+    public boolean  isTypeOf(String   sourceName,
+                             String   actualTypeName,
+                             String   expectedTypeName)
+    {
+        final String  methodName = "isTypeOf";
+
+        validateRepositoryContentManager(methodName);
+
+        return repositoryContentManager.isTypeOf(sourceName, actualTypeName, expectedTypeName);
+    }
+
+
+    /**
+     * Match the supplied external standard identifiers against the active types for this repository.
      *
      * @param sourceName source of the request (used for logging)
      * @param standard name of the standard, null means any.
@@ -1288,7 +1309,7 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
         updatedInstance.setUpdateTime(new Date());
 
         long currentVersion = originalInstance.getVersion();
-        updatedInstance.setVersion(currentVersion++);
+        updatedInstance.setVersion(currentVersion+1);
 
         return updatedInstance;
     }
@@ -1310,7 +1331,7 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
         updatedInstance.setUpdateTime(new Date());
 
         long currentVersion = originalInstance.getVersion();
-        updatedInstance.setVersion(currentVersion++);
+        updatedInstance.setVersion(currentVersion+1);
 
         return updatedInstance;
     }

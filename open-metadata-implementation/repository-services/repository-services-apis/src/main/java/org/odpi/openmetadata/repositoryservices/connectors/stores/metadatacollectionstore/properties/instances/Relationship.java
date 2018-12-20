@@ -218,12 +218,12 @@ public class Relationship extends InstanceHeader
     public String toString()
     {
         return "Relationship{" +
-                "relationshipProperties=" + relationshipProperties +
+                "type=" + getType() +
+                ", relationshipProperties=" + relationshipProperties +
                 ", entityOneProxy=" + entityOneProxy +
                 ", entityTwoProxy=" + entityTwoProxy +
                 ", instanceURL='" + getInstanceURL() + '\'' +
                 ", GUID='" + getGUID() + '\'' +
-                ", type=" + getType() +
                 ", instanceProvenanceType=" + getInstanceProvenanceType() +
                 ", metadataCollectionId='" + getMetadataCollectionId() + '\'' +
                 ", metadataCollectionName='" + getMetadataCollectionName() + '\'' +
