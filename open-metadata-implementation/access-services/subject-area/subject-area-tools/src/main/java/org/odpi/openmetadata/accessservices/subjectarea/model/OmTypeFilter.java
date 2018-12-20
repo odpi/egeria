@@ -121,7 +121,7 @@ public class OmTypeFilter {
     }
 
     // helper methods
-    private EntityDef getEntityDef(String typeName) {
+    public EntityDef getEntityDef(String typeName) {
         return this.allEntityTypedefs.get(typeName);
     }
     private ClassificationDef getClassificationDef(String typeName) {

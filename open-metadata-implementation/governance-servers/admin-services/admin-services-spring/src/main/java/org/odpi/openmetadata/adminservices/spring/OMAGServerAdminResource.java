@@ -270,6 +270,26 @@ public class OMAGServerAdminResource
 
 
     /**
+     * Provide the connection to an IBM IGC repository - used when the local repository mode is set to IBM IGC.
+     *
+     * @param userId   user that is issuing the request.
+     * @param serverName   IBM IGC server name.
+     * @param additionalProperties      additional parameters to pass to the repository connector
+     * @return void response or
+     * OMAGNotAuthorizedException     the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or repositoryProxyConnection parameter or
+     * OMAGConfigurationErrorException the local repository mode has not been set.
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/local-repository/mode/ibm-igc/details")
+    public VoidResponse setIBMIGCConnection(@PathVariable                  String               userId,
+                                            @PathVariable                  String               serverName,
+                                            @RequestBody(required = true)  Map<String, Object>  additionalProperties)
+    {
+        return adminAPI.setIBMIGCConnection(userId, serverName, additionalProperties);
+    }
+
+
+    /**
      * Provide the connection to the local repository's event mapper if needed.  The default value is null which
      * means no event mapper.  An event mapper is needed if the local repository has additional APIs that can change
      * the metadata in the repository without going through the open metadata and governance services.

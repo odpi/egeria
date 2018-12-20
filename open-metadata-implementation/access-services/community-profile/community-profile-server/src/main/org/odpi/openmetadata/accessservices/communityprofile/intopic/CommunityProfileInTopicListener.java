@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.communityprofile.intopic;
 import org.odpi.openmetadata.accessservices.communityprofile.outtopic.CommunityProfilePublisher;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListener;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
 import org.odpi.openmetadata.repositoryservices.events.*;
@@ -23,17 +24,20 @@ public class CommunityProfileInTopicListener implements OMRSTopicListener
      * The constructor is given the connection to the out topic for Community Profile OMAS
      * along with classes for testing and manipulating instances.
      *
-     * @param assetConsumerOutTopic - connection to the out topic
-     * @param repositoryHelper - provides methods for working with metadata instances
-     * @param repositoryValidator - provides validation of metadata instance
-     * @param componentName - name of component
+     * @param assetConsumerOutTopic  connection to the out topic
+     * @param repositoryConnector  provides methods for retrieving metadata instances
+     * @param repositoryHelper  provides methods for working with metadata instances
+     * @param repositoryValidator  provides validation of metadata instance
+     * @param componentName  name of component
      */
     public CommunityProfileInTopicListener(Connection              assetConsumerOutTopic,
+                                           OMRSRepositoryConnector repositoryConnector,
                                            OMRSRepositoryHelper    repositoryHelper,
                                            OMRSRepositoryValidator repositoryValidator,
                                            String                  componentName)
     {
         publisher = new CommunityProfilePublisher(assetConsumerOutTopic,
+                                                  repositoryConnector,
                                                   repositoryHelper,
                                                   repositoryValidator,
                                                   componentName);

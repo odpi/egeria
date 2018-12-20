@@ -281,9 +281,9 @@ public class InstanceProperties extends InstanceElementHeader
     public String toString()
     {
         return "InstanceProperties{" +
-                "instanceProperties=" + instanceProperties +
-                ", propertyNames=" + getPropertyNames() +
+                "propertyNames=" + getPropertyNames() +
                 ", propertyCount=" + getPropertyCount() +
+                ", instanceProperties=" + instanceProperties +
                 '}';
     }
 
