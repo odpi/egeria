@@ -22,12 +22,10 @@ public class Context implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Connection connection;
-    private Connector connector;
     private Column column;
     private Table table;
     private Database database;
     private Schema schema;
-    private Endpoint endpoint;
 
     public Connection getConnection() {
         return connection;
@@ -35,14 +33,6 @@ public class Context implements Serializable {
 
     public void setConnection(Connection connection) {
         this.connection = connection;
-    }
-
-    public Connector getConnector() {
-        return connector;
-    }
-
-    public void setConnector(Connector connector) {
-        this.connector = connector;
     }
 
     public Column getColumn() {
@@ -75,13 +65,5 @@ public class Context implements Serializable {
 
     public void setSchema(Schema schema) {
         this.schema = schema;
-    }
-
-    public Endpoint getEndpoint() {
-        return endpoint;
-    }
-
-    public void setEndpoint(Endpoint endpoint) {
-        this.endpoint = endpoint;
     }
 }
