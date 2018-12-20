@@ -12,24 +12,24 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * TermValidValueRelationshipResponse is the response structure used on the Subject Area OMAS REST API calls that returns a
+ * ValidValueRelationshipResponse is the response structure used on the Subject Area OMAS REST API calls that returns a
  * TermValidValueRelationship object as a response.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class TermValidValueRelationshipResponse extends SubjectAreaOMASAPIResponse
+public class ValidValueRelationshipResponse extends SubjectAreaOMASAPIResponse
 {
     private ValidValue termValidValueRelationship= null;
 
     /**
      * Default constructor
      */
-    public TermValidValueRelationshipResponse()
+    public ValidValueRelationshipResponse()
     {
         this.setResponseCategory(ResponseCategory.ValidValueRelationship);
     }
-    public TermValidValueRelationshipResponse(ValidValue termValidValueRelationship)
+    public ValidValueRelationshipResponse(ValidValue termValidValueRelationship)
     {
         this.termValidValueRelationship=termValidValueRelationship;
         this.setResponseCategory(ResponseCategory.ValidValueRelationship);
@@ -55,7 +55,7 @@ public class TermValidValueRelationshipResponse extends SubjectAreaOMASAPIRespon
     @Override
     public String toString()
     {
-        return "TermValidValueRelationshipResponse{" +
+        return "ValidValueRelationshipResponse{" +
                 "termValidValueRelationship=" + termValidValueRelationship +
                 ", relatedHTTPCode=" + relatedHTTPCode +
                 '}';

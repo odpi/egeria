@@ -25,6 +25,7 @@ public class IconSummary  {
     private String qualifiedName =null;
     private String guid = null;
     private String relationshipguid = null;
+    private String label = null;
 
     /**
      * The url of the icon
@@ -73,11 +74,24 @@ public class IconSummary  {
         this.relationshipguid = relationshipguid;
     }
 
+    /**
+     * Display name of the icon to be used as a label in user interfaces
+     * @return label
+     */
+    public String getLabel()
+    {
+        return label;
+    }
+
+    public void setLabel(String label)
+    {
+        this.label = label;
+    }
+
     public StringBuilder toString(StringBuilder sb) {
         if (sb == null) {
             sb = new StringBuilder();
         }
-
         sb.append("IconSummary{");
         if (url !=null) {
             sb.append("name='").append(url).append('\'');
@@ -88,9 +102,10 @@ public class IconSummary  {
         if (guid != null) {
             sb.append(", guid='").append(guid).append('\'');
         }
-
+        if (label != null) {
+            sb.append(", label='").append(label);
+        }
         sb.append('}');
-
         return sb;
     }
 
