@@ -1,6 +1,6 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
-<!-- Copyright Contributors to the ODPi Egeria project.  -->
-
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
+ 
 # Administration Services
 
 The administration services support the configuration of the open metadata server functions.
@@ -18,3 +18,9 @@ administration services.
 for the open metadata server.
 
 The operation of the administration services is described [here](Using-the-Admin-Services.md).
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

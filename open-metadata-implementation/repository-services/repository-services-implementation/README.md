@@ -36,3 +36,8 @@ that enable the server to exchange metadata with other servers.
 The implementation of the objects used on its APIs and in its Events are located
 in the [repository-services-apis](../repository-services-apis) module, and an implementation of the REST API calls
 using Spring annotations is located in the [repository-services-spring](../repository-services-spring) module.
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
