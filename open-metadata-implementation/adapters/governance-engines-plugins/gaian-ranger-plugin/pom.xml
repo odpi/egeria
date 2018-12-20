@@ -18,17 +18,17 @@
     </parent>
 
     <properties>
-        <spring.web.version>5.0.6.RELEASE</spring.web.version>
+        <spring.web.version>5.1.3.RELEASE</spring.web.version>
         <derby.version>10.8.3.1</derby.version>
-        <ranger-plugins.version>0.7.1</ranger-plugins.version>
-        <commons-configuration.version>1.10</commons-configuration.version>
+        <ranger-plugins.version>1.2.0</ranger-plugins.version>
+        <commons-configuration.version>2.4</commons-configuration.version>
         <gaian.version>2.1.8</gaian.version>
-        <commons-lang.version>2.6</commons-lang.version>
+        <commons-lang.version>3.8.1</commons-lang.version>
         <commons-logging.version>1.2</commons-logging.version>
         <jackson-mapper.version>1.9.13</jackson-mapper.version>
-        <hadoop.version>2.7.3</hadoop.version>
-        <jersey-bundle.version>1.17.1</jersey-bundle.version>
-        <log4j-v.version>1.2.17</log4j-v.version>
+        <hadoop.version>2.9.2</hadoop.version>
+        <jersey-bundle.version>1.19.4</jersey-bundle.version>
+        <log4j-v.version>2.11.1</log4j-v.version>
     </properties>
 
     <repositories>
@@ -63,20 +63,20 @@
             </dependency>
 
             <dependency>
-                <groupId>commons-lang</groupId>
-                <artifactId>commons-lang</artifactId>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
                 <version>${commons-lang.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>commons-configuration</groupId>
+                <groupId>org.apache.commons</groupId>
                 <artifactId>commons-configuration</artifactId>
                 <version>${commons-configuration.version}</version>
                 <scope>runtime</scope>
             </dependency>
 
             <dependency>
-                <groupId>commons-logging</groupId>
+                <groupId>org.apache.commons</groupId>
                 <artifactId>commons-logging</artifactId>
                 <version>${commons-logging.version}</version>
                 <scope>runtime</scope>
@@ -125,8 +125,8 @@
             </dependency>
 
             <dependency>
-                <groupId>log4j</groupId>
-                <artifactId>log4j</artifactId>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-core</artifactId>
                 <version>${log4j-v.version}</version>
                 <scope>runtime</scope>
             </dependency>
@@ -146,8 +146,8 @@
         </dependency>
 
         <dependency>
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
         </dependency>
 
         <dependency>
@@ -165,7 +165,12 @@
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-core</artifactId>
             <version>1.2.1</version>
-        </dependency>
+    </dependency>
+
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-core</artifactId>
+            </dependency>
     </dependencies>
 
     <build>
