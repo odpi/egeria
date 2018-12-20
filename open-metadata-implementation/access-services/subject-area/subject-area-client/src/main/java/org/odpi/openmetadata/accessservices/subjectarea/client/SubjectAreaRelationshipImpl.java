@@ -303,7 +303,40 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
         final String urlTemplate = this.omasServerURL +BASE_RELATIONSHIPS_HASA_URL;
         purgeRelationship(serverName, userId, guid, methodName,urlTemplate);
     }
+    /**
+     * Restore a has a relationship
+     *
+     * Restore allows the deleted has a relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the has a relationship to delete
+     * @return response which when successful contains the restored has a relationship
+     * when not successful the following Exception responses can occur
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
 
+    public TermHASARelationship restoreTermHASARelationship( String serverName,  String userId, String guid) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            MetadataServerUncontactableException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException
+    {
+        final String methodName = "restoreTermHASARelationship";
+        final String urlTemplate = this.omasServerURL +BASE_RELATIONSHIPS_HASA_URL;
+        SubjectAreaOMASAPIResponse restResponse = restoreRelationship(serverName, userId, guid, methodName,urlTemplate);
+        TermHASARelationship termHASARelationship = DetectUtils.detectAndReturnTermHASARelationship(methodName,restResponse);
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId="+userId );
+        }
+        return termHASARelationship;
+    }
 
     /**
      * Create a RelatedTerm. A Related Term is a link between two similar Terms.
@@ -419,14 +452,14 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
         return relatedTermRelationship;
     }
     /**
-     * Replace a RelatedTerm Relationship.
+     * Replace an ReplacementTerm relationship, which is link to a glossary term that is replacing an obsolete glossary term.
      * <p>
      *
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
-     * @param termRelatedTerm the RelatedTerm relationship
-     * @return the created term RelatedTerm relationship
-     * Exceptions returned by the server
+     * @param termRelatedTerm     the replacement related term relationship
+     * @return  ReplacementTerm replaced related Term relationship
+     *  Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -435,13 +468,9 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public RelatedTerm replaceRelatedTerm(String serverName, String userId, RelatedTerm termRelatedTerm) throws InvalidParameterException,
-                                                                                                                UserNotAuthorizedException,
-                                                                                                                MetadataServerUncontactableException,
-                                                                                                                UnexpectedResponseException,
-                                                                                                                UnrecognizedGUIDException
+    public RelatedTerm replaceRelatedTerm(String serverName, String userId, RelatedTerm termRelatedTerm) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException
     {
-        final String methodName = "updateTermRelatedRelationship";
+        final String methodName = "replaceRelatedTerm";
         String requestBody = null;
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -455,6 +484,40 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
         return relatedTermRelationship;
+    }
+    /**
+     * Restore a Related Term relationship
+     *
+     * Restore allows the deleted Synonym relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the related term relationship to restore
+     * @return response which when successful contains the restored related term relationship
+     * when not successful the following Exception responses can occur
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+
+    public RelatedTerm restoreRelatedTerm( String serverName,  String userId, String guid) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            MetadataServerUncontactableException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException
+    {
+        final String methodName = "restoreRelatedTerm";
+        String url = this.omasServerURL + BASE_RELATIONSHIPS_RELATEDTERM_URL;
+        SubjectAreaOMASAPIResponse restResponse = restoreRelationship(serverName, userId, guid, methodName,url);
+        RelatedTerm gotRelatedTerm = DetectUtils.detectAndReturnRelatedTerm(methodName,restResponse);
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId="+userId );
+        }
+        return gotRelatedTerm;
     }
     /**
      * Delete a RelatedTerm. A Related Term is a link between two similar Terms.
@@ -528,6 +591,40 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
+    }
+    /**
+     * Restore a related term relationship
+     *
+     * Restore allows the deleted related term relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the related term relationship to delete
+     * @return response which when successful contains the restored related term relationship
+     * when not successful the following Exception responses can occur
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+
+    public RelatedTerm restoreRelatedTermRelationship( String serverName,  String userId, String guid) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            MetadataServerUncontactableException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException
+    {
+        final String methodName = "restoreRelatedTerm";
+        final String url = this.omasServerURL +BASE_RELATIONSHIPS_RELATEDTERM_URL;
+        SubjectAreaOMASAPIResponse restResponse = restoreRelationship(serverName, userId, guid, methodName,url);
+        RelatedTerm gotRelatedTerm = DetectUtils.detectAndReturnRelatedTerm(methodName,restResponse);
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId="+userId );
+        }
+        return gotRelatedTerm;
     }
     /**
      *  Create a synonym relationship. A link between glossary terms that have the same meaning.
@@ -755,6 +852,41 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
         }
     }
     /**
+     * Restore a Synonym relationship
+     *
+     * Restore allows the deleted Synonym relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the Synonym relationship to restore
+     * @return response which when successful contains the restored Synonym relationship
+     * when not successful the following Exception responses can occur
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+
+    public Synonym restoreSynonymRelationship( String serverName,  String userId, String guid) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            MetadataServerUncontactableException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException
+    {
+        final String methodName = "restoreSynonymRelationship";
+        String url = this.omasServerURL + BASE_RELATIONSHIPS_SYNONYM_URL;
+        SubjectAreaOMASAPIResponse restResponse = restoreRelationship(serverName, userId, guid, methodName,url);
+        Synonym gotSynonym = DetectUtils.detectAndReturnSynonym(methodName,restResponse);
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId="+userId );
+        }
+        return gotSynonym;
+    }
+
+    /**
      *  Create a antonym relationship. A link between glossary terms that have the opposite meaning.
      *
      * <p>
@@ -980,6 +1112,40 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
     }
+    /**
+     * Restore a Antonym relationship
+     *
+     * Restore allows the deleted Antonym relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the Antonym relationship to delete
+     * @return response which when successful contains the restored Synonym relationship
+     * when not successful the following Exception responses can occur
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+
+    public Antonym restoreAntonymRelationship( String serverName,  String userId, String guid) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            MetadataServerUncontactableException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException
+    {
+        final String methodName = "restoreAntonymRelationship";
+        final String url = this.omasServerURL +BASE_RELATIONSHIPS_ANTONYM_URL;
+        SubjectAreaOMASAPIResponse restResponse = restoreRelationship(serverName, userId, guid, methodName,url);
+        Antonym gotAntonym = DetectUtils.detectAndReturnAntonym(methodName,restResponse);
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId="+userId );
+        }
+        return gotAntonym;
+    }
 
     /**
      *  Create a Translation relationship, which is link between glossary terms that provide different natural language translation of the same concept.
@@ -1179,7 +1345,6 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
         return gotTranslation;
     }
 
-
     /**
      *  Purge a translation relationship, which is link between glossary terms that provide different natural language translation of the same concept.
      * A purge means that the relationship will not exist after the operation.
@@ -1211,6 +1376,40 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
+    }
+    /**
+     * Restore a Translation relationship
+     *
+     * Restore allows the deleted Translation relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the Translation relationship to delete
+     * @return response which when successful contains the restored Translation relationship
+     * when not successful the following Exception responses can occur
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+
+    public Translation restoreTranslationRelationship( String serverName,  String userId, String guid) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            MetadataServerUncontactableException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException
+    {
+        final String methodName = "restoreTranslationRelationship";
+        final String url = this.omasServerURL +BASE_RELATIONSHIPS_TRANSLATION_URL;
+        SubjectAreaOMASAPIResponse restResponse = restoreRelationship(serverName, userId, guid, methodName,url);
+        Translation gotTranslation = DetectUtils.detectAndReturnTranslation(methodName,restResponse);
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId="+userId );
+        }
+        return gotTranslation;
     }
     /**
      *  Create a UsedInContext relationship, which is link between glossary terms where on describes the context where the other one is valid to use.
@@ -1444,6 +1643,40 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
         }
     }
     /**
+     * Restore a Used in context relationship
+     *
+     * Restore allows the deletedUsed in context relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the Used in context relationship to delete
+     * @return response which when successful contains the restored Used in context relationship
+     * when not successful the following Exception responses can occur
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+
+    public UsedInContext restoreUsedInContextRelationship( String serverName,  String userId, String guid) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            MetadataServerUncontactableException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException
+    {
+        final String methodName = "restoreUsedInContextRelationship";
+        final String url = this.omasServerURL +BASE_RELATIONSHIPS_USED_IN_CONTEXT_URL;
+        SubjectAreaOMASAPIResponse restResponse = restoreRelationship(serverName, userId, guid, methodName,url);
+        UsedInContext gotUsedInContext = DetectUtils.detectAndReturnUsedInContext(methodName,restResponse);
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId="+userId );
+        }
+        return gotUsedInContext;
+    }
+    /**
      *  Create a PreferredTerm relationship, which is link to an alternative term that the organization prefer is used.
      *
      * <p>
@@ -1633,7 +1866,6 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
         return gotPreferredTerm;
     }
 
-
     /**
      *  Purge a preferredTerm relationship, which is link to an alternative term that the organization prefer is used.
      * A purge means that the relationship will not exist after the operation.
@@ -1665,6 +1897,40 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
+    }
+    /**
+     * Restore a preferred term relationship
+     *
+     * Restore allows the deletedpreferred term relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the preferred term relationship to delete
+     * @return response which when successful contains the restored preferred term relationship
+     * when not successful the following Exception responses can occur
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+
+    public PreferredTerm restorePreferredTermRelationship( String serverName,  String userId, String guid) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            MetadataServerUncontactableException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException
+    {
+        final String methodName = "restorePreferredTermRelationship";
+        final String url = this.omasServerURL +BASE_RELATIONSHIPS_PREFERRED_TERM_URL;
+        SubjectAreaOMASAPIResponse restResponse = restoreRelationship(serverName, userId, guid, methodName,url);
+        PreferredTerm gotPreferredTerm = DetectUtils.detectAndReturnPreferredTerm(methodName,restResponse);
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId="+userId );
+        }
+        return gotPreferredTerm;
     }
     /**
      *  Create a ValidValue relationship, which is link between glossary terms where one defines one of the data values for the another.
@@ -1864,7 +2130,6 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
         return gotValidValue;
     }
 
-
     /**
      *  Purge a validValue relationship, which is link between glossary terms where one defines one of the data values for the another.
      * A purge means that the relationship will not exist after the operation.
@@ -1896,6 +2161,40 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
+    }
+    /**
+     * Restore a valid value relationship
+     *
+     * Restore allows the deletedvalid value relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the valid value relationship to delete
+     * @return response which when successful contains the restored valid value relationship
+     * when not successful the following Exception responses can occur
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+
+    public ValidValue restoreValidValueRelationship( String serverName,  String userId, String guid) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            MetadataServerUncontactableException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException
+    {
+        final String methodName = "restoreValidValueRelationship";
+        final String url = this.omasServerURL +BASE_RELATIONSHIPS_VALID_VALUE_URL;
+        SubjectAreaOMASAPIResponse restResponse = restoreRelationship(serverName, userId, guid, methodName,url);
+        ValidValue gotValidValue = DetectUtils.detectAndReturnValidValue(methodName,restResponse);
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId="+userId );
+        }
+        return gotValidValue;
     }
     /**
      *  Create a ReplacementTerm relationship, which is link to a glossary term that is replacing an obsolete glossary term.
@@ -2125,6 +2424,41 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
         }
     }
     /**
+     * Restore a replacement term relationship
+     *
+     * Restore allows the deleted replacement term relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the replacement term relationship to delete
+     * @return response which when successful contains the restored replacement term relationship
+     * when not successful the following Exception responses can occur
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+
+    public ReplacementTerm restoreReplacementTermRelationship( String serverName,  String userId, String guid) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            MetadataServerUncontactableException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException
+    {
+        final String methodName = "restoreReplacementTermRelationship";
+        final String url = this.omasServerURL +BASE_RELATIONSHIPS_REPLACEMENT_TERM_URL;
+        SubjectAreaOMASAPIResponse restResponse = restoreRelationship(serverName, userId, guid, methodName,url);
+        ReplacementTerm gotReplacementTerm = DetectUtils.detectAndReturnReplacementTerm(methodName,restResponse);
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId="+userId );
+        }
+        return gotReplacementTerm;
+    }
+
+    /**
      *  Create a TermTYPEDBYRelationship relationship, which is defines the relationship between a spine attribute and its type.
      *
      * <p>
@@ -2175,7 +2509,7 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
      *
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the RelatedTerm relationship to get
+     * @param guid   guid of the termTYPEDBY relationship to get
      * @return TermTYPEDBYRelationship
      * Exceptions returned by the server
      * @throws  UserNotAuthorizedException           the requesting user is not authorized to issue this request.
@@ -2318,7 +2652,6 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
         return gotTermTYPEDBYRelationship;
     }
 
-
     /**
      *  Purge a termTYPEDBYRelationship relationship, which is defines the relationship between a spine attribute and its type.
      * A purge means that the relationship will not exist after the operation.
@@ -2350,6 +2683,40 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
+    }
+    /**
+     * Restore a typed by relationship
+     *
+     * Restore allows the deleted typed by relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the typed by relationship to delete
+     * @return response which when successful contains the restored typed by relationship
+     * when not successful the following Exception responses can occur
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+
+    public TermTYPEDBYRelationship restoreTypedByRelationship( String serverName,  String userId, String guid) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            MetadataServerUncontactableException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException
+    {
+        final String methodName = "restoreeTermTYPEDBYRelationshipRelationship";
+        final String url = this.omasServerURL +BASE_RELATIONSHIPS_TYPED_BY_URL;
+        SubjectAreaOMASAPIResponse restResponse = restoreRelationship(serverName, userId, guid, methodName,url);
+        TermTYPEDBYRelationship gotTermTYPEDBYRelationship = DetectUtils.detectAndReturnTermTYPEDBYRelationship(methodName,restResponse);
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId="+userId );
+        }
+        return gotTermTYPEDBYRelationship;
     }
     /**
      *  Create a Isa relationship, which is link between a more general glossary term and a more specific definition.
@@ -2579,6 +2946,40 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
         }
     }
     /**
+     * Restore an is a relationship
+     *
+     * Restore allows the deleted is a relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the is a relationship to delete
+     * @return response which when successful contains the restored is a relationship
+     * when not successful the following Exception responses can occur
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+
+    public ISARelationship restoreIsaRelationship( String serverName,  String userId, String guid) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            MetadataServerUncontactableException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException
+    {
+        final String methodName = "restoreIsaRelationship";
+        final String url = this.omasServerURL +BASE_RELATIONSHIPS_IS_A_URL;
+        SubjectAreaOMASAPIResponse restResponse = restoreRelationship(serverName, userId, guid, methodName,url);
+        ISARelationship gotIsa = DetectUtils.detectAndReturnISARelationship(methodName,restResponse);
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId="+userId );
+        }
+        return gotIsa;
+    }
+    /**
      *  Create a TermISATypeOFRelationship relationship, which is defines an inheritance relationship between two spine objects.
      *
      * <p>
@@ -2767,8 +3168,6 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
         }
         return gotTermISATypeOFRelationship;
     }
-
-
     /**
      *  Purge a TermISATypeOFRelationship relationship, which is defines an inheritance relationship between two spine objects.
      * A purge means that the relationship will not exist after the operation.
@@ -2801,7 +3200,40 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
     }
+    /**
+     * Restore an is a type of relationship
+     *
+     * Restore allows the deleted is a type of relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the is a type of relationship to delete
+     * @return response which when successful contains the restored is a type of relationship
+     * when not successful the following Exception responses can occur
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
 
+    public TermISATypeOFRelationship restoreIsaTypeOfRelationship( String serverName,  String userId, String guid) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            MetadataServerUncontactableException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException
+    {
+        final String methodName = "restoreTermISATypeOFRelationshipRelationship";
+        final String url = this.omasServerURL +BASE_RELATIONSHIPS_IS_A_TYPE_OF_URL;
+        SubjectAreaOMASAPIResponse restResponse = restoreRelationship(serverName, userId, guid, methodName,url);
+        TermISATypeOFRelationship gotTermISATypeOFRelationship = DetectUtils.detectAndReturnTermISATypeOFRelationship(methodName,restResponse);
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId="+userId );
+        }
+        return gotTermISATypeOFRelationship;
+    }
 
     private SubjectAreaOMASAPIResponse getRelationship(String serverName, String userId, String guid, String methodName,String base_url ) throws InvalidParameterException, MetadataServerUncontactableException, UserNotAuthorizedException, UnrecognizedGUIDException
     {
@@ -2838,6 +3270,22 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
         DetectUtils.detectAndThrowRelationshipNotDeletedException(methodName,restResponse);
         return restResponse;
     }
+    private SubjectAreaOMASAPIResponse restoreRelationship(String serverName, String userId, String guid, String methodName, String base_url) throws InvalidParameterException, MetadataServerUncontactableException, UserNotAuthorizedException, UnrecognizedGUIDException
+    {
+        if (log.isDebugEnabled()) {
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
+        }
+        InputValidator.validateUserIdNotNull(className,methodName,userId);
+        InputValidator.validateGUIDNotNull(className,methodName,guid,"guid");
+
+        final String urlTemplate = base_url+"/%s";
+        String url = String.format(urlTemplate,serverName,userId,guid);
+        SubjectAreaOMASAPIResponse restResponse = RestCaller.issuePostNoBody(className,methodName,url);
+        DetectUtils.detectAndThrowUserNotAuthorizedException(methodName,restResponse);
+        DetectUtils.detectAndThrowUnrecognizedGUIDException(methodName,restResponse);
+        DetectUtils.detectAndThrowInvalidParameterException(methodName,restResponse); DetectUtils.detectAndThrowUnrecognizedGUIDException(methodName,restResponse);
+        return restResponse;
+    }
     private void purgeRelationship(String serverName, String userId, String guid, String methodName, String base_url) throws InvalidParameterException, MetadataServerUncontactableException, UserNotAuthorizedException, GUIDNotPurgedException, UnexpectedResponseException, UnrecognizedGUIDException
     {
         if (log.isDebugEnabled()) {
@@ -2859,6 +3307,37 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
+    }
+    /**
+     * Get a SemanticAssignment relationship,  Links a glossary term to another element such as an asset or schema element to define its meaning.
+     *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the SemanticAssignment relationship to get
+     * @return  the SemanticAssignment relationship with the requested guid
+     *  Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+    public SemanticAssignment getSemanticAssignmentRelationship(String serverName,String userId,String guid)  throws InvalidParameterException,
+            MetadataServerUncontactableException,
+            UserNotAuthorizedException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException
+    {
+        final String methodName = "getSemanticAssignmentRelationship";
+        final String url = this.omasServerURL +BASE_RELATIONSHIPS_SEMANTIC_ASSIGNMENT_URL;
+        SubjectAreaOMASAPIResponse restResponse = getRelationship(serverName, userId, guid, methodName,url);
+        SemanticAssignment gotSemanticAssignmentRelationship = DetectUtils.detectAndReturnSemanticAssignmentRelationship(methodName,restResponse);
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId="+userId );
+        }
+        return gotSemanticAssignmentRelationship;
     }
     /**
      *  Update Relationship.

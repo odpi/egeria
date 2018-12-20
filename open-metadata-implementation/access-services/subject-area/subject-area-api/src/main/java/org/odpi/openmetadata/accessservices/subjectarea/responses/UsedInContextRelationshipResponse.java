@@ -18,18 +18,18 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class TermUsedInContextRelationshipResponse extends SubjectAreaOMASAPIResponse
+public class UsedInContextRelationshipResponse extends SubjectAreaOMASAPIResponse
 {
     private UsedInContext usedInContext= null;
 
     /**
      * Default constructor
      */
-    public TermUsedInContextRelationshipResponse()
+    public UsedInContextRelationshipResponse()
     {
         this.setResponseCategory(ResponseCategory.TermUsedInContextRelationship);
     }
-    public TermUsedInContextRelationshipResponse(UsedInContext usedInContext)
+    public UsedInContextRelationshipResponse(UsedInContext usedInContext)
     {
         this.usedInContext=usedInContext;
         this.setResponseCategory(ResponseCategory.TermUsedInContextRelationship);
