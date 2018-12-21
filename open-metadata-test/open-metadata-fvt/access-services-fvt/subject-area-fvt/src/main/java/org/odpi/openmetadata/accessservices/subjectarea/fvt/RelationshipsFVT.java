@@ -40,11 +40,9 @@ public class RelationshipsFVT
 
     public static void main(String args[])
     {
-        SubjectArea subjectArea = null;
-        String url = null;
         try
         {
-            url = RunAllFVT.getUrl(args);
+            String url = RunAllFVT.getUrl(args);
             RelationshipsFVT fvt =new RelationshipsFVT(url);
             fvt.run();
         } catch (IOException e1)
@@ -150,6 +148,10 @@ public class RelationshipsFVT
             System.out.println("Replaced Synonym " + createdSynonym);
             subjectAreaRelationship.deleteSynonymRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
             System.out.println("Soft deleted Synonym with guid=" + guid);
+            subjectAreaRelationship.restoreSynonymRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
+            System.out.println("Restored Synonym with guid=" + guid);
+            subjectAreaRelationship.deleteSynonymRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
+            System.out.println("Soft deleted Synonym with guid=" + guid);
             subjectAreaRelationship.purgeSynonymRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
             System.out.println("Hard deleted Synonym with guid=" + guid);
         }
@@ -228,6 +230,10 @@ public class RelationshipsFVT
             System.out.println("Replaced Antonym " + createdAntonym);
 
 
+            subjectAreaRelationship.deleteAntonymRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
+            System.out.println("Soft deleted Antonym with guid=" + guid);
+            subjectAreaRelationship.restoreAntonymRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
+            System.out.println("Restored Antonym with guid=" + guid);
             subjectAreaRelationship.deleteAntonymRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
             System.out.println("Soft deleted Antonym with guid=" + guid);
             subjectAreaRelationship.purgeAntonymRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
@@ -309,6 +315,10 @@ public class RelationshipsFVT
 
             subjectAreaRelationship.deleteRelatedTerm(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
             System.out.println("Soft deleted RelatedTerm with guid=" + guid);
+            subjectAreaRelationship.restoreRelatedTermRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
+            System.out.println("Restored RelatedTerm with guid=" + guid);
+            subjectAreaRelationship.deleteRelatedTerm(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
+            System.out.println("Soft deleted RelatedTerm with guid=" + guid);
             subjectAreaRelationship.purgeRelatedTerm(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
             System.out.println("Hard deleted RelatedTerm with guid=" + guid);
         }
@@ -377,6 +387,10 @@ public class RelationshipsFVT
             }
             System.out.println("Replaced HASARelationship " + createdHASATerm);
 
+            subjectAreaRelationship.deleteTermHASARelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
+            System.out.println("Soft deleted TermHASARelationship with guid=" + guid);
+            subjectAreaRelationship.restoreTermHASARelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
+            System.out.println("Restored TermHASARelationship with guid=" + guid);
             subjectAreaRelationship.deleteTermHASARelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
             System.out.println("Soft deleted TermHASARelationship with guid=" + guid);
             subjectAreaRelationship.purgeTermHASARelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
@@ -458,6 +472,10 @@ public class RelationshipsFVT
             System.out.println("Replaced Translation " + createdTranslation);
             subjectAreaRelationship.deleteTranslationRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
             System.out.println("Soft deleted Translation with guid=" + guid);
+            subjectAreaRelationship.restoreTranslationRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
+            System.out.println("Restored Translation with guid=" + guid);
+            subjectAreaRelationship.deleteTranslationRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
+            System.out.println("Soft deleted Translation with guid=" + guid);
             subjectAreaRelationship.purgeTranslationRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
             System.out.println("Hard deleted Translation with guid=" + guid);
         }
@@ -535,6 +553,10 @@ public class RelationshipsFVT
                 throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: usedInContext replace end 2 not as expected", "", "");
             }
             System.out.println("Replaced UsedInContext " + createdUsedInContext);
+            subjectAreaRelationship.deleteUsedInContextRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
+            System.out.println("Soft deleted UsedInContext with guid=" + guid);
+            subjectAreaRelationship.restoreUsedInContextRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
+            System.out.println("Restored UsedInContext with guid=" + guid);
             subjectAreaRelationship.deleteUsedInContextRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
             System.out.println("Soft deleted UsedInContext with guid=" + guid);
             subjectAreaRelationship.purgeUsedInContextRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
@@ -616,6 +638,10 @@ public class RelationshipsFVT
             System.out.println("Replaced PreferredTerm " + createdPreferredTerm);
             subjectAreaRelationship.deletePreferredTermRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
             System.out.println("Soft deleted PreferredTerm with guid=" + guid);
+            subjectAreaRelationship.restorePreferredTermRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
+            System.out.println("restored PreferredTerm with guid=" + guid);
+            subjectAreaRelationship.deletePreferredTermRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
+            System.out.println("Soft deleted PreferredTerm with guid=" + guid);
             subjectAreaRelationship.purgePreferredTermRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
             System.out.println("Hard deleted PreferredTerm with guid=" + guid);
         }
@@ -693,6 +719,10 @@ public class RelationshipsFVT
                 throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: validValue replace end 2 not as expected", "", "");
             }
             System.out.println("Replaced ValidValue " + createdValidValue);
+            subjectAreaRelationship.deleteValidValueRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
+            System.out.println("Soft deleted ValidValue with guid=" + guid);
+            subjectAreaRelationship.restoreValidValueRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
+            System.out.println("Restored ValidValue with guid=" + guid);
             subjectAreaRelationship.deleteValidValueRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
             System.out.println("Soft deleted ValidValue with guid=" + guid);
             subjectAreaRelationship.purgeValidValueRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
@@ -774,6 +804,10 @@ public class RelationshipsFVT
             System.out.println("Replaced ReplacementTerm " + createdReplacementTerm);
             subjectAreaRelationship.deleteReplacementTermRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
             System.out.println("Soft deleted ReplacementTerm with guid=" + guid);
+            subjectAreaRelationship.restoreReplacementTermRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
+            System.out.println("Restored ReplacementTerm with guid=" + guid);
+            subjectAreaRelationship.deleteReplacementTermRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
+            System.out.println("Soft deleted ReplacementTerm with guid=" + guid);
             subjectAreaRelationship.purgeReplacementTermRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
             System.out.println("Hard deleted ReplacementTerm with guid=" + guid);
         }
@@ -842,6 +876,10 @@ public class RelationshipsFVT
                 throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: termTYPEDBYRelationship replace end 2 not as expected", "", "");
             }
             System.out.println("Replaced TermTYPEDBYRelationship " + createdTermTYPEDBYRelationship);
+            subjectAreaRelationship.deleteTermTYPEDBYRelationshipRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
+            System.out.println("Soft deleted TermTYPEDBYRelationship with guid=" + guid);
+            subjectAreaRelationship.restoreTypedByRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
+            System.out.println("Restored TermTYPEDBYRelationship with guid=" + guid);
             subjectAreaRelationship.deleteTermTYPEDBYRelationshipRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
             System.out.println("Soft deleted TermTYPEDBYRelationship with guid=" + guid);
             subjectAreaRelationship.purgeTermTYPEDBYRelationshipRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
@@ -923,6 +961,10 @@ public class RelationshipsFVT
             System.out.println("Replaced Isa " + createdIsa);
             subjectAreaRelationship.deleteIsaRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
             System.out.println("Soft deleted Isa with guid=" + guid);
+            subjectAreaRelationship.restoreIsaRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
+            System.out.println("Restored Isa with guid=" + guid);
+            subjectAreaRelationship.deleteIsaRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
+            System.out.println("Soft deleted Isa with guid=" + guid);
             subjectAreaRelationship.purgeIsaRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
             System.out.println("Hard deleted Isa with guid=" + guid);
         }
@@ -991,6 +1033,10 @@ public class RelationshipsFVT
                 throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: TermISATypeOFRelationship replace end 2 not as expected", "", "");
             }
             System.out.println("Replaced TermISATypeOFRelationship " + createdTermISATypeOFRelationship);
+            subjectAreaRelationship.deleteTermISATypeOFRelationshipRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
+            System.out.println("Soft deleted TermISATypeOFRelationship with guid=" + guid);
+            subjectAreaRelationship.restoreIsaTypeOfRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
+            System.out.println("Restored TermISATypeOFRelationship with guid=" + guid);
             subjectAreaRelationship.deleteTermISATypeOFRelationshipRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
             System.out.println("Soft deleted TermISATypeOFRelationship with guid=" + guid);
             subjectAreaRelationship.purgeTermISATypeOFRelationshipRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);

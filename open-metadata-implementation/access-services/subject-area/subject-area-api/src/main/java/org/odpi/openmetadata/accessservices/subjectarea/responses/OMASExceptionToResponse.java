@@ -45,6 +45,11 @@ public class OMASExceptionToResponse {
         GUIDNotPurgedExceptionResponse response = new GUIDNotPurgedExceptionResponse(e);
         return response;
     }
+    public static SubjectAreaOMASAPIResponse convertGUIDNotDeletedException(GUIDNotDeletedException e)
+    {
+        GUIDNotDeletedExceptionResponse response = new GUIDNotDeletedExceptionResponse(e);
+        return response;
+    }
 
     public static SubjectAreaOMASAPIResponse convertEntityNotDeletedException(EntityNotDeletedException e) {
         EntityNotDeletedExceptionResponse response = new EntityNotDeletedExceptionResponse(e);
@@ -61,4 +66,12 @@ public class OMASExceptionToResponse {
         RelationshipNotDeletedExceptionResponse response = new RelationshipNotDeletedExceptionResponse(e);
         return response;
     }
+
+    public static SubjectAreaOMASAPIResponse convertUnrecognizedNameException(UnrecognizedNameException e)
+    {
+        UnrecognizedNameExceptionResponse response = new UnrecognizedNameExceptionResponse(e);
+        return response;
+    }
+
+
 }
