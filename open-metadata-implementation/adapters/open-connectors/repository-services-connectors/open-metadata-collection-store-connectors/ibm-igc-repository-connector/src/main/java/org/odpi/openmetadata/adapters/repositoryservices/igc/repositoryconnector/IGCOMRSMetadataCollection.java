@@ -23,6 +23,8 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.*;
 
 public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
@@ -116,23 +118,12 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
 
             // Assuming we have some mapping, get the name of the IGC object involved in the mapping and from that
             // attempt to retrieve a POJO object to (de-)serialise that IGC asset type
-            String igcAssetTypeName = ReferenceMapper.getIgcTypeFromMapping(
+            ReferenceableMapper mapper = ReferenceMapper.getMapper(
                     mappingClass,
                     (IGCOMRSRepositoryConnector)parentConnector,
                     userId
             );
-            String igcRidPrefix = ReferenceMapper.getIgcRidPrefixFromMapping(
-                    mappingClass,
-                    (IGCOMRSRepositoryConnector)parentConnector,
-                    userId
-            );
-            addImplementedMapping(
-                    igcAssetTypeName,
-                    typeDef,
-                    mappingClass,
-                    userId,
-                    igcRidPrefix
-            );
+            addImplementedMapping(mappingClass, mapper, typeDef, userId);
 
         } catch (ClassNotFoundException e) {
             log.info("Unable to find Mapper for {}", omrsTypeDefName);
@@ -142,58 +133,54 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
 
     }
 
-    private void addImplementedMapping(String igcAssetTypeName, TypeDef typeDef, Class mappingClass, String userId, String ridPrefix) {
+    private void addImplementedMapping(Class mappingClass, ReferenceableMapper mapper, TypeDef typeDef, String userId) {
 
-        if (igcAssetTypeName != null) {
+        if (mapper != null) {
 
-            String pojoClassName = ReferenceMapper.getCamelCase(igcAssetTypeName);
-            String fqPojoClassName = ReferenceMapper.IGC_REST_GENERATED_MODEL_PKG + "." + igcVersion + "." + pojoClassName;
-            try {
-                log.debug("Marking IGC type as implemented: {}", igcAssetTypeName);
-                Class pojoClass = Class.forName(fqPojoClassName);
-                implementedEntities.add(
-                        igcAssetTypeName,
-                        typeDef,
-                        mappingClass,
-                        pojoClass,
-                        ridPrefix
-                );
-                log.debug("Registering base POJO: {}", pojoClass);
-                this.igcRestClient.registerPOJO(pojoClass);
-                // Check if there are any additional POJOs needed by the mapper, and if so register those as well
-                List<String> extraPOJOs = ReferenceMapper.getAdditionalIgcPOJOs(
-                        mappingClass,
-                        (IGCOMRSRepositoryConnector)parentConnector,
-                        userId
-                );
-                if (!extraPOJOs.isEmpty()) {
-                    log.debug("Found additional POJOs for {}", igcAssetTypeName);
-                }
-                for (String pojoName : extraPOJOs) {
-                    log.debug(" ... registering additional POJO: {}", pojoName);
-                    this.igcRestClient.registerPOJO(Class.forName(pojoName));
-                }
-                // Same for any additional types
-                List<String> otherTypes = ReferenceMapper.getAdditionalIgcTypes(
-                        mappingClass,
-                        (IGCOMRSRepositoryConnector)parentConnector,
-                        userId
-                );
-                if (!otherTypes.isEmpty()) {
-                    log.debug("Found additional type for {}", igcAssetTypeName);
-                }
-                for (String otherType : otherTypes) {
-                    log.debug(" ... adding mapping: {}", otherType);
+            String igcAssetTypeName = mapper.getIgcAssetType();
+            Class pojoClass = mapper.getIgcPOJO();
+
+            String igcAssetDisplayName = Reference.getDisplayNameFromPOJO(pojoClass);
+            String ridPrefix = mapper.getIgcRidPrefix();
+
+            log.debug("Marking IGC type as implemented: {}", igcAssetTypeName);
+            implementedEntities.add(
+                    igcAssetTypeName,
+                    igcAssetDisplayName,
+                    typeDef,
+                    mappingClass,
+                    pojoClass,
+                    ridPrefix
+            );
+            log.debug("Registering base POJO: {}", pojoClass);
+            this.igcRestClient.registerPOJO(pojoClass);
+            // Check if there are any additional POJOs needed by the mapper, and if so register those as well
+            List<String> extraPOJOs = ReferenceMapper.getAdditionalIgcPOJOs(
+                    mappingClass,
+                    (IGCOMRSRepositoryConnector)parentConnector,
+                    userId
+            );
+            if (!extraPOJOs.isEmpty()) {
+                log.debug("Found additional POJOs for {}", igcAssetTypeName);
+            }
+            for (String pojoName : extraPOJOs) {
+                log.debug(" ... registering additional POJO: {}", pojoName);
+                try {
+                    Class extraPojoClass = Class.forName(pojoName);
+                    String igcOtherAssetDisplayName = Reference.getDisplayNameFromPOJO(extraPojoClass);
+                    String otherType = Reference.getAssetTypeFromPOJO(extraPojoClass);
+                    this.igcRestClient.registerPOJO(extraPojoClass);
                     implementedEntities.add(
                             otherType,
+                            igcOtherAssetDisplayName,
                             typeDef,
                             mappingClass,
-                            pojoClass,
+                            extraPojoClass,
                             ridPrefix
                     );
+                } catch (ClassNotFoundException e) {
+                    log.error("Unable to find POJO: {}", pojoName, e);
                 }
-            } catch (ClassNotFoundException e) {
-                log.info("Unable to find POJO for {}", fqPojoClassName);
             }
 
         }
@@ -918,6 +905,29 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
      */
     public Class getPOJOForAssetType(String igcAssetType) {
         return implementedEntities.getPOJOForIgcAssetType(igcAssetType);
+    }
+
+    /**
+     * Retrieves the OMRS TypeDefs that are mapped to by the provided IGC asset display name.
+     *
+     * @param igcAssetName the display name of the IGC asset type
+     * @return List<TypeDef>
+     */
+    public List<TypeDef> getTypeDefsForAssetName(String igcAssetName) {
+        List<TypeDef> typeDefs = implementedEntities.getTypeDefsByIgcAssetName(igcAssetName);
+        if (typeDefs == null || typeDefs.isEmpty()) {
+            typeDefs = new ArrayList<>();
+            try {
+                typeDefs.add(getTypeDefByName(null, "Referenceable"));
+            } catch (InvalidParameterException | RepositoryErrorException e) {
+                log.error("Unable to retrieve Referenceable TypeDef.", e);
+            } catch (TypeDefNotKnownException e) {
+                log.error("Unable to find Referenceable TypeDef.", e);
+            } catch (UserNotAuthorizedException e) {
+                log.error("Unable to retrieve Referenceable by null user.", e);
+            }
+        }
+        return typeDefs;
     }
 
     /**

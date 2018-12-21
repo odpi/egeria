@@ -334,6 +334,21 @@ public abstract class ReferenceMapper {
     protected void addAlreadyMappedProperties(Set<String> propertyNames) { this.alreadyMappedProperties.addAll(propertyNames); }
 
     /**
+     * Retrieve the primary IGC POJO to be used by this mapping.
+     *
+     * @return Class
+     */
+    public Class getIgcPOJO() {
+        Class pojo = null;
+        try {
+            pojo = Class.forName(this.igcPOJO);
+        } catch (ClassNotFoundException e) {
+            log.error("Could not find POJO: {}", this.igcPOJO, e);
+        }
+        return pojo;
+    }
+
+    /**
      * Add any other IGC asset type needed for this mapping.
      *
      * @param igcAssetTypeName name of additional IGC asset
