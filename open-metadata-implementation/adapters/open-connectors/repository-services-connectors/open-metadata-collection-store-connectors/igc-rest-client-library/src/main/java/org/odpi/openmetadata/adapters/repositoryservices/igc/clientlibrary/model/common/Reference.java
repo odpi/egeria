@@ -12,7 +12,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The ultimate parent object for all IGC assets, it contains only the most basic information common to every single
@@ -419,8 +422,74 @@ public class Reference extends ObjectPrinter {
      *
      * @return boolean
      */
-    public boolean hasModificationDetails() {
-        return this.hasProperty("modified_on");
+    public boolean hasModificationDetails() { return this.hasProperty("modified_on"); }
+
+    /**
+     * Retrieves the IGC asset display name from the provided POJO.
+     *
+     * @param pojoClass the POJO for which to retrieve an asset's type display name
+     * @return String
+     */
+    public static String getDisplayNameFromPOJO(Class pojoClass) {
+        String igcAssetDisplayName = null;
+        try {
+            Method getIgcTypeDisplayName = pojoClass.getMethod("getIgcTypeDisplayName");
+            igcAssetDisplayName = (String) getIgcTypeDisplayName.invoke(null);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            log.error("Unable to retrieve display name from IGC POJO: {}", pojoClass, e);
+        }
+        return igcAssetDisplayName;
+    }
+
+    /**
+     * Retrieves the asset type from the provided POJO.
+     *
+     * @param pojoClass the POJO for which to retrieve an asset's (REST) type
+     * @return String
+     */
+    public static String getAssetTypeFromPOJO(Class pojoClass) {
+        String igcAssetType = null;
+        try {
+            Method getIgcType = pojoClass.getMethod("getIgcTypeId");
+            igcAssetType = (String) getIgcType.invoke(null);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            log.error("Unable to retrieve asset type from IGC POJO: {}", pojoClass, e);
+        }
+        return igcAssetType;
+    }
+
+    /**
+     * Indicates whether assets of this type can be created via IGC's API (true) or not (false).
+     *
+     * @param pojoClass the POJO for which to check create-ability
+     * @return boolean
+     */
+    public static boolean canAssetBeCreatedFromPOJO(Class pojoClass) {
+        Boolean canBe = false;
+        try {
+            Method canBeCreated = pojoClass.getMethod("canBeCreated");
+            canBe = (Boolean) canBeCreated.invoke(null);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            log.error("Unable to retrieve creation capability from IGC POJO: {}", pojoClass, e);
+        }
+        return canBe;
+    }
+
+    /**
+     * Retrieves the list of property names for the asset that are not relationships to other assets.
+     *
+     * @param pojoClass the POJO for which to retrieve non-relationship property names
+     * @return List<String>
+     */
+    public static List<String> getNonRelationshipPropertiesFromPOJO(Class pojoClass) {
+        List<String> list = null;
+        try {
+            Method getNonRelationshipProperties = pojoClass.getMethod("getNonRelationshipProperties");
+            list = (List<String>) getNonRelationshipProperties.invoke(null);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            log.error("Unable to retrieve non-relationship properties from IGC POJO: {}", pojoClass, e);
+        }
+        return list;
     }
 
     // TODO: eventually handle the '_expand' that exists for data classifications

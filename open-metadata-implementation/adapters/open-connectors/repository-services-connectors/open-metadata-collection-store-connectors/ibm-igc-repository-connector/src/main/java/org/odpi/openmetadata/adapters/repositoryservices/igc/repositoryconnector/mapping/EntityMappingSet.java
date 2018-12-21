@@ -10,9 +10,11 @@ public class EntityMappingSet {
 
     private Map<String, List<EntityMapping>> mappingByIgcAssetType;
     private Map<String, EntityMapping> mappingByTypeDefGUID;
+    private Map<String, List<EntityMapping>> mappingByIgcAssetName;
 
     public EntityMappingSet() {
         mappingByIgcAssetType = new HashMap<>();
+        mappingByIgcAssetName = new HashMap<>();
         mappingByTypeDefGUID = new HashMap<>();
     }
 
@@ -70,6 +72,30 @@ public class EntityMappingSet {
     }
 
     /**
+     * Retrieves the EntityMappings defined for the provided IGC asset name.
+     *
+     * @param assetName the IGC asset name for which to retrieve entity mappings
+     * @return List<EntityMapping>
+     */
+    public List<EntityMapping> getByIgcAssetName(String assetName) { return mappingByIgcAssetName.get(assetName); }
+
+    /**
+     * Retrieves the TypeDefs defined for the provided IGC asset name.
+     *
+     * @param assetName the IGC asset display name for which to retrieve the TypeDefs
+     * @return List<TypeDef>
+     */
+    public List<TypeDef> getTypeDefsByIgcAssetName(String assetName) {
+        ArrayList<TypeDef> typeDefs = new ArrayList<>();
+        if (isIgcAssetNameMapped(assetName)) {
+            for (EntityMapping mapping : getByIgcAssetName(assetName)) {
+                typeDefs.add(mapping.getOmrsTypeDef());
+            }
+        }
+        return typeDefs;
+    }
+
+    /**
      * Retrieves the Java classes that map between IGC and OMRS for the provided IGC asset type.
      *
      * @param assetType the IGC asset type for which to retrieve the mapping classes
@@ -113,6 +139,16 @@ public class EntityMappingSet {
     }
 
     /**
+     * Indicates whether the provided IGC asset name is mapped (true) or not (false).
+     *
+     * @param assetName the IGC asset display name for which to check for a mapping
+     * @return boolean
+     */
+    public boolean isIgcAssetNameMapped(String assetName) {
+        return mappingByIgcAssetName.containsKey(assetName);
+    }
+
+    /**
      * Retrieves the EntityMappings defined for the provided OMRS TypeDef.
      *
      * @param guid unique ID of the OMRS TypeDef
@@ -132,12 +168,14 @@ public class EntityMappingSet {
      * Adds a new mapping to the set of mappings.
      *
      * @param igcAssetTypeName the IGC asset type name (in REST form)
+     * @param igcAssetName the IGC asset type name (as a display name)
      * @param omrsTypeDef the TypeDef instance in OMRS that represents the same
      * @param mappingClass the class that defines how to map between the entities
      * @param igcPOJO the class that serialises / deserialises between JSON and Java for the IGC asset
      * @param ridPrefix the prefix to add to IGC RIDs to make a unique GUID (if any)
      */
     public void add(String igcAssetTypeName,
+                    String igcAssetName,
                     TypeDef omrsTypeDef,
                     Class mappingClass,
                     Class igcPOJO,
@@ -145,6 +183,7 @@ public class EntityMappingSet {
 
         EntityMapping em = new EntityMapping(
                 igcAssetTypeName,
+                igcAssetName,
                 omrsTypeDef,
                 mappingClass,
                 igcPOJO,
@@ -154,8 +193,11 @@ public class EntityMappingSet {
         if (!mappingByIgcAssetType.containsKey(igcAssetTypeName)) {
             mappingByIgcAssetType.put(igcAssetTypeName, new ArrayList<>());
         }
-        // TODO: confirm chained add below actually works (not failing due to abstract type?)
         getByIgcAssetType(igcAssetTypeName).add(em);
+        if (!mappingByIgcAssetName.containsKey(igcAssetName)) {
+            mappingByIgcAssetName.put(igcAssetName, new ArrayList<>());
+        }
+        getByIgcAssetName(igcAssetName).add(em);
 
         mappingByTypeDefGUID.put(omrsTypeDef.getGUID(), em);
 
@@ -166,18 +208,21 @@ public class EntityMappingSet {
      * (If there is none existing, will add the mapping.)
      *
      * @param igcAssetTypeName the IGC asset type name (in REST form)
+     * @param igcAssetName the IGC asset type name (as a display name)
      * @param omrsTypeDef the TypeDef instance in OMRS that represents the same
      * @param mappingClass the class that defines how to map between the entities
      * @param igcPOJO the class that (de-)serialises between JSON and Java for the IGC asset
      * @param ridPrefix the prefix to add to IGC RIDs to make a unique GUID (if any)
      */
     public void replace(String igcAssetTypeName,
+                        String igcAssetName,
                         TypeDef omrsTypeDef,
                         Class mappingClass,
                         Class igcPOJO,
                         String ridPrefix) {
         EntityMapping em = new EntityMapping(
                 igcAssetTypeName,
+                igcAssetName,
                 omrsTypeDef,
                 mappingClass,
                 igcPOJO,
@@ -195,16 +240,19 @@ public class EntityMappingSet {
     public class EntityMapping {
 
         private String igcAssetType;
+        private String igcAssetName;
         private TypeDef omrsTypeDef;
         private Class mappingClass;
         private Class igcPOJO;
         private String igcRidPrefix;
 
         public EntityMapping(String igcAssetType,
+                             String igcAssetName,
                              TypeDef omrsTypeDef,
                              Class mappingClass,
                              Class igcPOJO) {
             this(igcAssetType,
+                    igcAssetName,
                     omrsTypeDef,
                     mappingClass,
                     igcPOJO,
@@ -212,11 +260,13 @@ public class EntityMappingSet {
         }
 
         public EntityMapping(String igcAssetType,
+                             String igcAssetName,
                              TypeDef omrsTypeDef,
                              Class mappingClass,
                              Class igcPOJO,
                              String igcRidPrefix) {
             this.igcAssetType = igcAssetType;
+            this.igcAssetName = igcAssetName;
             this.omrsTypeDef = omrsTypeDef;
             this.mappingClass = mappingClass;
             this.igcPOJO = igcPOJO;
@@ -224,6 +274,7 @@ public class EntityMappingSet {
         }
 
         public String getIgcAssetType() { return this.igcAssetType; }
+        public String getIgcAssetName() { return this.igcAssetName; }
         public TypeDef getOmrsTypeDef() { return this.omrsTypeDef; }
         public Class getMappingClass() { return this.mappingClass; }
         public Class getIgcPOJO() { return this.igcPOJO; }

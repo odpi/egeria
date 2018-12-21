@@ -22,10 +22,7 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Handles mapping the majority of IGC objects' attributes to OMRS entity attributes.
@@ -203,10 +200,14 @@ public class ReferenceableMapper extends ReferenceMapper {
     @Override
     protected void mapIGCToOMRSEntityDetail(PropertyMappingSet propertyMap, Set<String> classificationProperties) {
 
+        // Retrieve the set of non-relationship properties for the asset
+        List<String> nonRelationshipProperties = Reference.getNonRelationshipPropertiesFromPOJO(me.getClass());
+
         // Merge the detailed properties together (generic and more specific POJO mappings that were passed in)
         String[] allProps = ReferenceMapper.concatAll(
                 propertyMap.getAllMappedIgcProperties().toArray(new String[0]),
-                classificationProperties.toArray(new String[0])
+                classificationProperties.toArray(new String[0]),
+                nonRelationshipProperties.toArray(new String[0])
         );
 
         // Retrieve only this set of properties for the object (no more, no less)
@@ -219,7 +220,7 @@ public class ReferenceableMapper extends ReferenceMapper {
         setupEntityObj(detail);
 
         // Use reflection to apply POJO-specific mappings
-        InstanceProperties instanceProperties = getMappedInstanceProperties(propertyMap);
+        InstanceProperties instanceProperties = getMappedInstanceProperties(propertyMap, nonRelationshipProperties);
         detail.setProperties(instanceProperties);
 
     }
@@ -256,9 +257,10 @@ public class ReferenceableMapper extends ReferenceMapper {
      * Retrieves the InstanceProperties based on the mappings defined in the provided PropertyMappingSet.
      *
      * @param mappings the mappings to use for retrieving a set of InstanceProperties
+     * @param nonRelationshipProperties the full list of properties for the asset that are not relationships
      * @return InstanceProperties
      */
-    private InstanceProperties getMappedInstanceProperties(PropertyMappingSet mappings) {
+    private InstanceProperties getMappedInstanceProperties(PropertyMappingSet mappings, List<String> nonRelationshipProperties) {
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
@@ -275,7 +277,52 @@ public class ReferenceableMapper extends ReferenceMapper {
             );
         }
 
+        // Then we'll apply any complex property mappings
         complexPropertyMappings(instanceProperties);
+
+        // Finally we'll map any simple (non-relationship) properties that remain
+        // to Referenceable's 'additionalProperties'
+        Set<String> alreadyMapped = mappings.getAllMappedIgcProperties();
+        if (nonRelationshipProperties != null) {
+
+            // Remove all of the already-mapped properties from our list of non-relationship properties
+            Set<String> nonRelationshipsSet = new HashSet<>(nonRelationshipProperties);
+            nonRelationshipsSet.removeAll(alreadyMapped);
+
+            // Iterate through the remaining property names, and add them to a map
+            MapPropertyValue mapValue = new MapPropertyValue();
+            for (String propertyName : nonRelationshipsSet) {
+                Object propertyValue = me.getPropertyByName(propertyName);
+                if (propertyValue instanceof ArrayList) {
+                    ArrayPropertyValue arrayValue = new ArrayPropertyValue();
+                    arrayValue.setArrayCount(((ArrayList<Object>) propertyValue).size());
+                    int count = 0;
+                    for (Object value : (ArrayList<Object>)propertyValue) {
+                        arrayValue.setArrayValue(
+                                count,
+                                getPrimitivePropertyValue(value)
+                        );
+                        count++;
+                    }
+                    mapValue.setMapValue(
+                            propertyName,
+                            arrayValue
+                    );
+                } else {
+                    mapValue.setMapValue(
+                            propertyName,
+                            getPrimitivePropertyValue(propertyValue));
+                }
+            }
+
+            // Then set that map as the "additionalProperties" of the OMRS entity
+            instanceProperties.setProperty(
+                    "additionalProperties",
+                    mapValue
+            );
+
+        }
+
         return instanceProperties;
 
     }
