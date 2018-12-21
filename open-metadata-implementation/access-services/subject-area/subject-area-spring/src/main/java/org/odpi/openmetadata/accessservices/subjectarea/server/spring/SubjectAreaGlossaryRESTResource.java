@@ -146,4 +146,26 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
         }
         return restAPI.deleteGlossary(serverName, userId,guid,isPurge);
     }
+    /**
+     * Restore a Glossary
+     *
+     * Restore allows the deleted Glossary to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the glossary to restore
+     * @return response which when successful contains the restored glossary
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * </ul>
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/glossaries/{guid}")
+    public SubjectAreaOMASAPIResponse restoreGlossary(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)
+    {
+        return restAPI.restoreGlossary(serverName, userId,guid);
+    }
 }

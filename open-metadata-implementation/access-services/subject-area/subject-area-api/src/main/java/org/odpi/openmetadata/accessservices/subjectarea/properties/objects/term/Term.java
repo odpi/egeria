@@ -49,8 +49,6 @@ public class Term extends GovernedNode implements Serializable {
     private String usage =null;
 
     private GlossarySummary glossary =null;
-    private Set<AssetSummary> assets =null;
-    private Set<CategorySummary> categories = null;
 
     private boolean isSpineObject =false;
     private boolean isSpineAttribute =false;
@@ -121,31 +119,6 @@ public class Term extends GovernedNode implements Serializable {
     }
 
     /**
-     * Assets assigned this semantic term.
-     * @return <code>AssetSummary</code>
-     */
-    public Set<AssetSummary> getAssets() {
-        return assets;
-    }
-
-    public void setAssets(Set<AssetSummary> assets) {
-        this.assets = assets;
-    }
-
-
-    /**
-     * Glossary categories that this term is linked to.
-     * @return <code>Set&lt;CategorySumamry&gt;</code>
-     */
-    public Set<CategorySummary> getCategories() {
-        return categories;
-    }
-
-    public void setCategories(Set<CategorySummary> categories) {
-        this.categories = categories;
-    }
-
-    /**
      * Identifies a glossary term that describes a type of spine object.
      * @return <code>true</code> if spine object, false otherwise.
      */
@@ -211,25 +184,6 @@ public class Term extends GovernedNode implements Serializable {
             sb.append(", glossary:" + glossary.toString());
 
         }
-
-        if (categories != null) {
-            sb.append(", categories=[");
-            for (CategorySummary category: categories) {
-                sb.append("category").append(":"+ category);
-                sb.append("name=" + category.getName() + ",guid=" + category.getGuid());
-            }
-            sb.append(categories.toString());
-            sb.append(" ]");
-        }
-
-        if (assets !=null) {
-            for (org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.AssetSummary asset: assets) {
-                sb.append(asset.getName()).append(":");
-                sb.append(asset.toString());
-            }
-            sb.append(", assets=[").append(assets.toString());
-            sb.append(" ],");
-        }
         sb.append('}');
         return sb;
     }
@@ -241,10 +195,8 @@ public class Term extends GovernedNode implements Serializable {
         Term term = (Term) o;
         Node node = (Node) o;
         if (!(node.equals((Node)o))) return false;
-        if (assets != null ? !assets.equals(term.assets) : term.assets != null) return false;
         if (glossary != null ? !glossary.equals(term.glossary) : term.glossary != null) return false;
         if (summary != null ? !summary.equals(term.summary) : term.summary != null) return false;
-        if (categories != null ? !categories.equals(term.categories) : term.categories != null) return false;
         return  true;
     }
 

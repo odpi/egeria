@@ -90,7 +90,7 @@ public class TestErrorHandler
         try
         {
             ErrorHandler.handleEntityNotDeletedException("1","2","3","4");
-        } catch (GUIDNotPurgedException e)
+        } catch (GUIDNotDeletedException e)
         {
             assertFalse(e.getErrorMessage().contains("{"));
             assertFalse(e.getErrorMessage().contains("}"));
@@ -134,7 +134,7 @@ public class TestErrorHandler
         try
         {
             ErrorHandler.handleEntityNotDeletedException("1","2","3","4");
-        } catch (GUIDNotPurgedException e)
+        } catch (GUIDNotDeletedException e)
         {
             assertFalse(e.getErrorMessage().contains("{"));
             assertFalse(e.getErrorMessage().contains("}"));
@@ -184,8 +184,8 @@ public class TestErrorHandler
         }
         try
         {
-            ErrorHandler.handleRelationshipNotDeletedException(new org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotDeletedException(1,"2","3","4","5","6"),"7","8","9","10");
-        } catch (GUIDNotPurgedException e)
+            ErrorHandler.handleRelationshipNotDeletedException("1","2","3","4");
+        } catch (GUIDNotDeletedException e)
         {
             assertFalse(e.getErrorMessage().contains("{"));
             assertFalse(e.getErrorMessage().contains("}"));

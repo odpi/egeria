@@ -3,6 +3,16 @@
 
 # Subject Area Open Metadata Access Service (OMAS) server-side implementation
 
-The Subject Area OMAS server-side support is organized as follows ...
+The Subject Area OMAS server-side support is organized in the following top level packages 
 
-_... add design info here ..._
+* admin -  The SubjectAreaAdmin controls this OMAS's lifecycle. It is initalised here receiving the access service configuration. It is shutdown here.
+* auditlog - this is a list of the autid log messages
+* constraints 
+* generated - generated code 
+* initialization
+* listener
+* outtopic 
+* publisher - messaginbg publishing
+* server - server services
+* utilities - utilities - including helper methods
+* validators - methods to do validation
