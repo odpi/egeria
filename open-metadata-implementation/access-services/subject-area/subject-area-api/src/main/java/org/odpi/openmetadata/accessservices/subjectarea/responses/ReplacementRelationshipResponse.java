@@ -12,24 +12,24 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * TermReplacementRelationshipResponse is the response structure used on the Subject Area OMAS REST API calls that returns a
+ * ReplacementRelationshipResponse is the response structure used on the Subject Area OMAS REST API calls that returns a
  * TermReplacementRelationship object as a response.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class TermReplacementRelationshipResponse extends SubjectAreaOMASAPIResponse
+public class ReplacementRelationshipResponse extends SubjectAreaOMASAPIResponse
 {
     private ReplacementTerm termReplacementRelationship= null;
 
     /**
      * Default constructor
      */
-    public TermReplacementRelationshipResponse()
+    public ReplacementRelationshipResponse()
     {
         this.setResponseCategory(ResponseCategory.TermReplacementRelationship);
     }
-    public TermReplacementRelationshipResponse(ReplacementTerm termReplacementRelationship)
+    public ReplacementRelationshipResponse(ReplacementTerm termReplacementRelationship)
     {
         this.termReplacementRelationship=termReplacementRelationship;
         this.setResponseCategory(ResponseCategory.TermReplacementRelationship);
@@ -55,7 +55,7 @@ public class TermReplacementRelationshipResponse extends SubjectAreaOMASAPIRespo
     @Override
     public String toString()
     {
-        return "TermReplacementRelationshipResponse{" +
+        return "ReplacementRelationshipResponse{" +
                 "termReplacementRelationship=" + termReplacementRelationship +
                 ", relatedHTTPCode=" + relatedHTTPCode +
                 '}';

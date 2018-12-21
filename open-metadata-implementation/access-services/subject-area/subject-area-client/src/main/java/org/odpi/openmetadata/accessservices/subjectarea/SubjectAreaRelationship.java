@@ -154,6 +154,31 @@ public interface SubjectAreaRelationship
                                                                                                UnexpectedResponseException
     ;
     /**
+     * Restore a has a relationship
+     *
+     * Restore allows the deleted has a relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the has a relationship to delete
+     * @return response which when successful contains the restored has a relationship
+     * when not successful the following Exception responses can occur
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+
+    public TermHASARelationship restoreTermHASARelationship( String serverName,  String userId, String guid) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            MetadataServerUncontactableException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException
+    ;
+    /**
      * Create a RelatedTerm. A Related Term is a link between two similar Terms.
      *
      * <p>
@@ -172,7 +197,11 @@ public interface SubjectAreaRelationship
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-    public RelatedTerm createRelatedTerm(String serverName, String userId, RelatedTerm relatedTermRelationship) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException
+    public RelatedTerm createRelatedTerm(String serverName, String userId, RelatedTerm relatedTermRelationship) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            MetadataServerUncontactableException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException
     ;
     /**
      * Get a RelatedTerm. A Related Term is a link between two similar Terms.
@@ -217,14 +246,14 @@ public interface SubjectAreaRelationship
     public RelatedTerm updateRelatedTerm(String serverName, String userId, RelatedTerm termRelatedTerm) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException
     ;
     /**
-     * Replace a RelatedTerm Relationship.
+     * Replace an ReplacementTerm relationship, which is link to a glossary term that is replacing an obsolete glossary term.
      * <p>
      *
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
-     * @param termRelatedTerm the RelatedTerm relationship
-     * @return the created term RelatedTerm relationship
-     * Exceptions returned by the server
+     * @param termRelatedTerm     the replacement related term relationship
+     * @return  ReplacementTerm replaced related Term relationship
+     *  Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
@@ -234,11 +263,36 @@ public interface SubjectAreaRelationship
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
     public RelatedTerm replaceRelatedTerm(String serverName, String userId, RelatedTerm termRelatedTerm) throws InvalidParameterException,
-                                                                                                                UserNotAuthorizedException,
-                                                                                                                MetadataServerUncontactableException,
-                                                                                                                UnexpectedResponseException,
-                                                                                                                UnrecognizedGUIDException
-    ;
+            UserNotAuthorizedException,
+            MetadataServerUncontactableException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException;
+
+    /**
+     * Restore a Related Term relationship
+     *
+     * Restore allows the deleted Synonym relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the related term relationship to restore
+     * @return response which when successful contains the restored related term relationship
+     * when not successful the following Exception responses can occur
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+
+    public RelatedTerm restoreRelatedTerm( String serverName,  String userId, String guid) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            MetadataServerUncontactableException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException
+        ;
     /**
      * Delete a RelatedTerm. A Related Term is a link between two similar Terms.
      * A delete (also known as a soft delete) means that the relationship instance will exist in a deleted state in the repository after the delete operation. This means
@@ -294,6 +348,33 @@ public interface SubjectAreaRelationship
                                                                                       MetadataServerUncontactableException,
                                                                                       UnexpectedResponseException
     ;
+    /**
+     * Restore a related term relationship
+     *
+     * Restore allows the deleted related term relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the related term relationship to delete
+     * @return response which when successful contains the restored related term relationship
+     * when not successful the following Exception responses can occur
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+
+    public RelatedTerm restoreRelatedTermRelationship( String serverName,  String userId, String guid) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            MetadataServerUncontactableException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException
+    ;
+
+
     /**
      *  Create a synonym relationship. A link between glossary terms that have the same meaning.
      * <p>
@@ -436,6 +517,31 @@ public interface SubjectAreaRelationship
                                                                                               UnexpectedResponseException
     ;
     /**
+     * Restore a Synonym relationship
+     *
+     * Restore allows the deleted Synonym relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the Synonym relationship to delete
+     * @return response which when successful contains the restored Synonym relationship
+     * when not successful the following Exception responses can occur
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+
+    public Synonym restoreSynonymRelationship( String serverName,  String userId, String guid) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            MetadataServerUncontactableException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException
+    ;
+    /**
      *  Create a antonym relationship. A link between glossary terms that have the opposite meaning.
      *
      * <p>
@@ -576,6 +682,31 @@ public interface SubjectAreaRelationship
                                                                                               UnrecognizedGUIDException,
                                                                                               MetadataServerUncontactableException,
                                                                                               UnexpectedResponseException
+    ;
+    /**
+     * Restore a Antonym relationship
+     *
+     * Restore allows the deleted Antonym relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the Antonym relationship to delete
+     * @return response which when successful contains the restored Antonym relationship
+     * when not successful the following Exception responses can occur
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+
+    public Antonym restoreAntonymRelationship( String serverName,  String userId, String guid) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            MetadataServerUncontactableException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException
     ;
     /**
      *  Create a Translation relationship, which is link between glossary terms that provide different natural language translation of the same concept.
@@ -725,6 +856,31 @@ public interface SubjectAreaRelationship
                                                                                                   UnexpectedResponseException
     ;
     /**
+     * Restore a Translation relationship
+     *
+     * Restore allows the deleted Translation relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the Translation relationship to delete
+     * @return response which when successful contains the restored Translation relationship
+     * when not successful the following Exception responses can occur
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+
+    public Translation restoreTranslationRelationship( String serverName,  String userId, String guid) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            MetadataServerUncontactableException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException
+    ;
+    /**
      *  Create a UsedInContext relationship, which is link between glossary terms where on describes the context where the other one is valid to use.
      *
      * <p>
@@ -872,6 +1028,31 @@ public interface SubjectAreaRelationship
                                                                                                     UnexpectedResponseException
     ;
     /**
+     * Restore a Used in context relationship
+     *
+     * Restore allows the deletedUsed in context relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the Used in context relationship to delete
+     * @return response which when successful contains the restored Used in context relationship
+     * when not successful the following Exception responses can occur
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+
+    public UsedInContext restoreUsedInContextRelationship( String serverName,  String userId, String guid) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            MetadataServerUncontactableException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException
+    ;
+    /**
      *  Create a PreferredTerm relationship, which is link to an alternative term that the organization prefer is used.
      *
      * <p>
@@ -1009,6 +1190,31 @@ public interface SubjectAreaRelationship
                                                                                                     UnrecognizedGUIDException,
                                                                                                     MetadataServerUncontactableException,
                                                                                                     UnexpectedResponseException
+    ;
+    /**
+     * Restore a preferred term relationship
+     *
+     * Restore allows the deletedpreferred term relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the preferred term relationship to delete
+     * @return response which when successful contains the restored preferred term relationship
+     * when not successful the following Exception responses can occur
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+
+    public PreferredTerm restorePreferredTermRelationship( String serverName,  String userId, String guid) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            MetadataServerUncontactableException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException
     ;
     /**
      *  Create a ValidValue relationship, which is link between glossary terms where one defines one of the data values for the another.
@@ -1158,6 +1364,31 @@ public interface SubjectAreaRelationship
                                                                                                  UnexpectedResponseException
     ;
     /**
+     * Restore a valid value relationship
+     *
+     * Restore allows the deletedvalid value relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the valid value relationship to delete
+     * @return response which when successful contains the restored valid value relationship
+     * when not successful the following Exception responses can occur
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+
+    public ValidValue restoreValidValueRelationship( String serverName,  String userId, String guid) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            MetadataServerUncontactableException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException
+    ;
+    /**
      *  Create a ReplacementTerm relationship, which is link to a glossary term that is replacing an obsolete glossary term.
      *
      * <p>
@@ -1299,6 +1530,31 @@ public interface SubjectAreaRelationship
                                                                                                       UnrecognizedGUIDException,
                                                                                                       MetadataServerUncontactableException,
                                                                                                       UnexpectedResponseException
+    ;
+    /**
+     * Restore a replacement term relationship
+     *
+     * Restore allows the deleted replacement term relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the replacement term relationship to delete
+     * @return response which when successful contains the restored replacement term relationship
+     * when not successful the following Exception responses can occur
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+
+    public ReplacementTerm restoreReplacementTermRelationship( String serverName,  String userId, String guid) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            MetadataServerUncontactableException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException
     ;
     /**
      *  Create a TermTYPEDBYRelationship relationship, which is defines the relationship between a spine attribute and its type.
@@ -1444,6 +1700,31 @@ public interface SubjectAreaRelationship
                                                                                                               UnexpectedResponseException
     ;
     /**
+     * Restore a typed by relationship
+     *
+     * Restore allows the deleted typed by relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the typed by relationship to delete
+     * @return response which when successful contains the restored typed by relationship
+     * when not successful the following Exception responses can occur
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+
+    public TermTYPEDBYRelationship restoreTypedByRelationship( String serverName,  String userId, String guid) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            MetadataServerUncontactableException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException
+    ;
+    /**
      *  Create a Isa relationship, which is link between a more general glossary term and a more specific definition.
      *
      * <p>
@@ -1587,6 +1868,31 @@ public interface SubjectAreaRelationship
                                                                                           UnexpectedResponseException
     ;
     /**
+     * Restore an is a relationship
+     *
+     * Restore allows the deleted is a relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the is a relationship to delete
+     * @return response which when successful contains the restored is a relationship
+     * when not successful the following Exception responses can occur
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+
+    public ISARelationship restoreIsaRelationship( String serverName,  String userId, String guid) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            MetadataServerUncontactableException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException
+    ;
+    /**
      *  Create a TermISATypeOFRelationship relationship, which is defines an inheritance relationship between two spine objects.
      *
      * <p>
@@ -1623,7 +1929,11 @@ public interface SubjectAreaRelationship
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      *
      */
-    public TermISATypeOFRelationship getTermISATypeOFRelationshipRelationship(String serverName, String userId,String guid) throws InvalidParameterException, MetadataServerUncontactableException, UserNotAuthorizedException, UnexpectedResponseException, UnrecognizedGUIDException
+    public TermISATypeOFRelationship getTermISATypeOFRelationshipRelationship(String serverName, String userId,String guid) throws InvalidParameterException,
+            MetadataServerUncontactableException,
+            UserNotAuthorizedException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException
     ;
     /**
      * Update a TermISATypeOFRelationship relationship, which is defines an inheritance relationship between two spine objects.
@@ -1641,7 +1951,6 @@ public interface SubjectAreaRelationship
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
-
      */
     public TermISATypeOFRelationship updateTermISATypeOFRelationshipRelationship(String serverName, String userId, TermISATypeOFRelationship TermISATypeOFRelationshipRelationship)  throws InvalidParameterException,
                                                                                                                                                                                             MetadataServerUncontactableException,
@@ -1724,5 +2033,52 @@ public interface SubjectAreaRelationship
                                                                                                                 UnrecognizedGUIDException,
                                                                                                                 MetadataServerUncontactableException,
                                                                                                                 UnexpectedResponseException
+    ;
+    /**
+     * Restore an is a type of relationship
+     *
+     * Restore allows the deleted is a type of relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the is a type of relationship to delete
+     * @return response which when successful contains the restored is a type of relationship
+     * when not successful the following Exception responses can occur
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+
+    public TermISATypeOFRelationship restoreIsaTypeOfRelationship( String serverName,  String userId, String guid) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            MetadataServerUncontactableException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException
+    ;
+    /**
+     * Get a SemanticAssignment relationship,  Links a glossary term to another element such as an asset or schema element to define its meaning.
+     *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the SemanticAssignment relationship to get
+     * @return  the SemanticAssignment relationship with the requested guid
+     *  Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+    public SemanticAssignment getSemanticAssignmentRelationship(String serverName,String userId,String guid)  throws InvalidParameterException,
+            MetadataServerUncontactableException,
+            UserNotAuthorizedException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException
     ;
 }

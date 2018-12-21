@@ -29,10 +29,8 @@ public class SubjectAreaDefinitionCategoryFVT
 
     public static void main(String args[])
     {
-        SubjectArea subjectArea = null;
-        String url = null;
         try {
-            url = RunAllFVT.getUrl(args);
+            String url = RunAllFVT.getUrl(args);
             SubjectAreaDefinitionCategoryFVT subjectAreaDefinitionCategoryFVT =new SubjectAreaDefinitionCategoryFVT(url);
             subjectAreaDefinitionCategoryFVT.run();
         } catch (IOException e1)
@@ -79,6 +77,10 @@ public class SubjectAreaDefinitionCategoryFVT
             SubjectAreaDefinition updatedSubjectAreaDefinition = updateSubjectAreaDefinition(guid, subjectAreaForUpdate);
             System.out.println("Get the subjectArea1  again");
             gotSubjectAreaDefinition = getSubjectAreaDefinitionByGUID(guid);
+            System.out.println("Delete the subjectArea1 ");
+            gotSubjectAreaDefinition = deleteSubjectAreaDefinition(guid);
+            System.out.println("restore the subjectArea1 ");
+            gotSubjectAreaDefinition = restoreSubjectAreaDefinition(guid);
             System.out.println("Delete the subjectArea1 ");
             gotSubjectAreaDefinition = deleteSubjectAreaDefinition(guid);
             System.out.println("Purge a subjectArea1 ");
@@ -183,5 +185,14 @@ public class SubjectAreaDefinitionCategoryFVT
     {
         subjectAreaCategory.purgeSubjectAreaDefinition(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
         System.out.println("Purge succeeded");
+    }
+    public SubjectAreaDefinition restoreSubjectAreaDefinition(String guid) throws SubjectAreaCheckedExceptionBase
+    {
+        SubjectAreaDefinition restoredSubjectAreaDefinition = subjectAreaCategory.restoreSubjectAreaDefinition(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
+        if (restoredSubjectAreaDefinition != null)
+        {
+            System.out.println("Deleted SubjectAreaDefinition name is " + restoredSubjectAreaDefinition.getName());
+        }
+        return restoredSubjectAreaDefinition;
     }
 }

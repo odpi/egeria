@@ -84,6 +84,10 @@ public class CategoryFVT
                 gotCategory = getCategoryByGUID(guid);
                 System.out.println("Delete the category1");
                 gotCategory = deleteCategory(guid);
+                System.out.println("Restore the category1");
+                gotCategory = restoreCategory(guid);
+                System.out.println("Delete the category1");
+                gotCategory = deleteCategory(guid);
                 System.out.println("Purge a category1");
 
                 // create category DEFAULT_TEST_CATEGORY_NAME3 with parent
@@ -177,6 +181,15 @@ public class CategoryFVT
             System.out.println("Deleted Category name is " + deletedCategory.getName());
         }
         return deletedCategory;
+    }
+    public Category restoreCategory(String guid) throws SubjectAreaCheckedExceptionBase
+    {
+        Category restoredCategory = subjectAreaCategory.restoreCategory(serverName,FVTConstants.USERID, guid);
+        if (restoredCategory != null)
+        {
+            System.out.println("Deleted Category name is " + restoredCategory.getName());
+        }
+        return restoredCategory;
     }
 
     public void purgeCategory(String guid) throws SubjectAreaCheckedExceptionBase
