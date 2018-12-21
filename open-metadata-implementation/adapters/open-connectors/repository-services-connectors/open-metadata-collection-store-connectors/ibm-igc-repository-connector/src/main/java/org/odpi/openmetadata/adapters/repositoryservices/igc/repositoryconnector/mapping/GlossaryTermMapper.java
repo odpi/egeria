@@ -21,9 +21,11 @@ public class GlossaryTermMapper extends ReferenceableMapper {
 
     private static final Logger log = LoggerFactory.getLogger(GlossaryTermMapper.class);
 
+    private static final String T_GLOSSARY_TERM = "GlossaryTerm";
     private static final String P_SYNONYMS = "synonyms";
     private static final String P_TRANSLATIONS = "translations";
     private static final String C_CONFIDENTIALITY = "Confidentiality";
+    private static final String C_SPINE_OBJECT = "SpineObject";
 
     /**
      * Sets the basic criteria to use for mapping between an IGC 'term' object and an OMRS 'GlossaryTerm' object.
@@ -38,7 +40,7 @@ public class GlossaryTermMapper extends ReferenceableMapper {
         super(
                 term,
                 "term",
-                "GlossaryTerm",
+                T_GLOSSARY_TERM,
                 igcomrsRepositoryConnector,
                 userId
         );
@@ -129,6 +131,7 @@ public class GlossaryTermMapper extends ReferenceableMapper {
         // (to do the actual mapping, implement the 'getMappedClassifications' function -- example below)
         addComplexIgcClassification("assigned_to_terms");
         addComplexOmrsClassification(C_CONFIDENTIALITY);
+        addComplexOmrsClassification(C_SPINE_OBJECT);
 
     }
 
@@ -141,11 +144,25 @@ public class GlossaryTermMapper extends ReferenceableMapper {
      * within a "Confidentiality" parent category to represent the "Confidentiality" classification in OMRS.
      * Therefore, any 'assigned_to_term' relationship on a term, where the assigned term is within a "Confidentiality"
      * parent category in IGC, will be mapped to a "Confidentiality" classification in OMRS.
+     * <br><br>
+     * Additionally, any term whose parent category is "Spine Objects" will be classified as an OMRS "SpineObject".
      */
     @Override
     protected void getMappedClassifications() {
 
         IGCRestClient igcRestClient = igcomrsRepositoryConnector.getIGCRestClient();
+
+        addConfidentialityClassification(igcRestClient);
+        addSpineObjectClassification(igcRestClient);
+
+    }
+
+    /**
+     * Implements the Confidentiality classification.
+     *
+     * @param igcRestClient REST connectivity to the IGC environment
+     */
+    private void addConfidentialityClassification(IGCRestClient igcRestClient) {
 
         // Retrieve all assigned_to_terms relationships from this IGC object
         ReferenceList assignedToTerms = (ReferenceList) me.getPropertyByName("assigned_to_terms");
@@ -198,9 +215,36 @@ public class GlossaryTermMapper extends ReferenceableMapper {
                     );
                     classifications.add(classification);
                 } catch (RepositoryErrorException e) {
-                    log.error("Unable to map classification.", e);
+                    log.error("Unable to map Confidentiality classification.", e);
                 }
 
+            }
+
+        }
+
+    }
+
+    /**
+     * Implements the SpineObject classification.
+     *
+     * @param igcRestClient REST connectivity to the IGC environment
+     */
+    private void addSpineObjectClassification(IGCRestClient igcRestClient) {
+
+        Identity termIdentity = me.getIdentity(igcRestClient);
+        Identity catIdentity = termIdentity.getParentIdentity();
+
+        if (catIdentity.toString().endsWith("Spine Objects")) {
+
+            try {
+                Classification classification = getMappedClassification(
+                        C_SPINE_OBJECT,
+                        T_GLOSSARY_TERM,
+                        null
+                );
+                classifications.add(classification);
+            } catch (RepositoryErrorException e) {
+                log.error("Unable to map SpineObject classification.", e);
             }
 
         }
