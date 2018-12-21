@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class BiReportDataItemSource extends Reference {
 
     public static String getIgcTypeId() { return "bi_report_data_item_source"; }
+    public static String getIgcTypeDisplayName() { return "BI Report Data Item Source"; }
 
     /**
      * The 'defined_of_report_field' property, displayed as 'Defined of Report Field' in the IGC UI.
@@ -61,7 +63,10 @@ public class BiReportDataItemSource extends Reference {
     /** @see #defined_by_olap_member */ @JsonProperty("defined_by_olap_member")  public Reference getDefinedByOlapMember() { return this.defined_by_olap_member; }
     /** @see #defined_by_olap_member */ @JsonProperty("defined_by_olap_member")  public void setDefinedByOlapMember(Reference defined_by_olap_member) { this.defined_by_olap_member = defined_by_olap_member; }
 
+    public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return false; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<>();
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isBiReportDataItemSource(Object obj) { return (obj.getClass() == BiReportDataItemSource.class); }
 
 }

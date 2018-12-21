@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class DataFile extends Reference {
 
     public static String getIgcTypeId() { return "data_file"; }
+    public static String getIgcTypeDisplayName() { return "Data File"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -357,7 +359,23 @@ public class DataFile extends Reference {
     /** @see #amazon_s3_data_files */ @JsonProperty("amazon_s3_data_files")  public Reference getAmazonS3DataFiles() { return this.amazon_s3_data_files; }
     /** @see #amazon_s3_data_files */ @JsonProperty("amazon_s3_data_files")  public void setAmazonS3DataFiles(Reference amazon_s3_data_files) { this.amazon_s3_data_files = amazon_s3_data_files; }
 
+    public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return true; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("alias_(business_name)");
+        add("path");
+        add("store_type");
+        add("imported_from");
+        add("include_for_business_lineage");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isDataFile(Object obj) { return (obj.getClass() == DataFile.class); }
 
 }

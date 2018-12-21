@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class ValidValueRange extends Reference {
 
     public static String getIgcTypeId() { return "valid_value_range"; }
+    public static String getIgcTypeDisplayName() { return "Valid Value Range"; }
 
     /**
      * The 'is_max_inclusive' property, displayed as 'Is Max Inclusive' in the IGC UI.
@@ -89,7 +91,17 @@ public class ValidValueRange extends Reference {
     /** @see #design_column */ @JsonProperty("design_column")  public ReferenceList getDesignColumn() { return this.design_column; }
     /** @see #design_column */ @JsonProperty("design_column")  public void setDesignColumn(ReferenceList design_column) { this.design_column = design_column; }
 
+    public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return false; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("is_max_inclusive");
+        add("minimum_value");
+        add("is_min_inclusive");
+        add("maximum_value");
+        add("name");
+        add("short_description");
+    }};
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isValidValueRange(Object obj) { return (obj.getClass() == ValidValueRange.class); }
 
 }

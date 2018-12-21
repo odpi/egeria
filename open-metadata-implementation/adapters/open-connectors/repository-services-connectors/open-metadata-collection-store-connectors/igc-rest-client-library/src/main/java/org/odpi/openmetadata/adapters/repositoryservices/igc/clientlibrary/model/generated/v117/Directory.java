@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class Directory extends Reference {
 
     public static String getIgcTypeId() { return "directory"; }
+    public static String getIgcTypeDisplayName() { return "Directory"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -115,7 +117,14 @@ public class Directory extends Reference {
     /** @see #has_principal */ @JsonProperty("has_principal")  public ReferenceList getHasPrincipal() { return this.has_principal; }
     /** @see #has_principal */ @JsonProperty("has_principal")  public void setHasPrincipal(ReferenceList has_principal) { this.has_principal = has_principal; }
 
+    public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return false; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_description");
+        add("long_description");
+    }};
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isDirectory(Object obj) { return (obj.getClass() == Directory.class); }
 
 }

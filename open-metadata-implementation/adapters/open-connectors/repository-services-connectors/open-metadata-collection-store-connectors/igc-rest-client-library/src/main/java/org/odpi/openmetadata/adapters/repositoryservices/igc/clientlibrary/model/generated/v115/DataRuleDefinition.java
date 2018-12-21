@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class DataRuleDefinition extends Reference {
 
     public static String getIgcTypeId() { return "data_rule_definition"; }
+    public static String getIgcTypeDisplayName() { return "Data Rule Definition"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -239,7 +241,23 @@ public class DataRuleDefinition extends Reference {
     /** @see #published_data_rule_definitions */ @JsonProperty("published_data_rule_definitions")  public Reference getPublishedDataRuleDefinitions() { return this.published_data_rule_definitions; }
     /** @see #published_data_rule_definitions */ @JsonProperty("published_data_rule_definitions")  public void setPublishedDataRuleDefinitions(Reference published_data_rule_definitions) { this.published_data_rule_definitions = published_data_rule_definitions; }
 
+    public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return true; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("project");
+        add("status");
+        add("published");
+        add("publication_date");
+        add("rule_logic");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isDataRuleDefinition(Object obj) { return (obj.getClass() == DataRuleDefinition.class); }
 
 }

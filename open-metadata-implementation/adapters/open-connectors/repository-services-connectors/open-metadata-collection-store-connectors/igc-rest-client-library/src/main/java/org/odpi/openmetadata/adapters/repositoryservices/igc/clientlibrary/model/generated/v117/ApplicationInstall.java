@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class ApplicationInstall extends Reference {
 
     public static String getIgcTypeId() { return "application_install"; }
+    public static String getIgcTypeDisplayName() { return "Application Install"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -181,7 +183,21 @@ public class ApplicationInstall extends Reference {
     /** @see #release_number */ @JsonProperty("release_number")  public String getReleaseNumber() { return this.release_number; }
     /** @see #release_number */ @JsonProperty("release_number")  public void setReleaseNumber(String release_number) { this.release_number = release_number; }
 
+    public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return false; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("vendor_name");
+        add("instance_name");
+        add("location_name");
+        add("installation_date");
+        add("platform_identifier");
+        add("installation_path");
+        add("release_number");
+    }};
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isApplicationInstall(Object obj) { return (obj.getClass() == ApplicationInstall.class); }
 
 }

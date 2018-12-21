@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class BiReportSection extends Reference {
 
     public static String getIgcTypeId() { return "bi_report_section"; }
+    public static String getIgcTypeDisplayName() { return "BI Report Section"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -123,7 +125,17 @@ public class BiReportSection extends Reference {
     /** @see #contained_in_report_section */ @JsonProperty("contained_in_report_section")  public Reference getContainedInReportSection() { return this.contained_in_report_section; }
     /** @see #contained_in_report_section */ @JsonProperty("contained_in_report_section")  public void setContainedInReportSection(Reference contained_in_report_section) { this.contained_in_report_section = contained_in_report_section; }
 
+    public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return false; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("alias_(business_name)");
+        add("type");
+        add("label");
+        add("short_description");
+        add("sequence");
+    }};
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isBiReportSection(Object obj) { return (obj.getClass() == BiReportSection.class); }
 
 }

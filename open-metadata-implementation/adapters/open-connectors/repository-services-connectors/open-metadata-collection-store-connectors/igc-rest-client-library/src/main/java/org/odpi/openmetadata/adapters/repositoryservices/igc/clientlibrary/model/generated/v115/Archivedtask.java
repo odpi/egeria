@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class Archivedtask extends Reference {
 
     public static String getIgcTypeId() { return "archivedtask"; }
+    public static String getIgcTypeDisplayName() { return "ArchivedTask"; }
 
     /**
      * The 'status' property, displayed as 'Status' in the IGC UI.
@@ -61,7 +63,16 @@ public class Archivedtask extends Reference {
     /** @see #name */ @JsonProperty("name")  public String getTheName() { return this.name; }
     /** @see #name */ @JsonProperty("name")  public void setTheName(String name) { this.name = name; }
 
+    public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return false; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("status");
+        add("message");
+        add("requested_on");
+        add("completion_date");
+        add("name");
+    }};
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isArchivedtask(Object obj) { return (obj.getClass() == Archivedtask.class); }
 
 }

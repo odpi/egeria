@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class ClassificationContribution extends Reference {
 
     public static String getIgcTypeId() { return "classification_contribution"; }
+    public static String getIgcTypeDisplayName() { return "Classification Contribution"; }
 
     /**
      * The 'infoset' property, displayed as 'Infoset' in the IGC UI.
@@ -71,7 +73,14 @@ public class ClassificationContribution extends Reference {
     /** @see #match_type */ @JsonProperty("match_type")  public String getMatchType() { return this.match_type; }
     /** @see #match_type */ @JsonProperty("match_type")  public void setMatchType(String match_type) { this.match_type = match_type; }
 
+    public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return false; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("object_count");
+        add("size");
+        add("match_type");
+    }};
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isClassificationContribution(Object obj) { return (obj.getClass() == ClassificationContribution.class); }
 
 }

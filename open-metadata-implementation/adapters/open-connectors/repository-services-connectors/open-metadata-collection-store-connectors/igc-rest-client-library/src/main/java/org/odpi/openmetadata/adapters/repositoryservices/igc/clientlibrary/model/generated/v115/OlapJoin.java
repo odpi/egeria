@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class OlapJoin extends Reference {
 
     public static String getIgcTypeId() { return "olap_join"; }
+    public static String getIgcTypeDisplayName() { return "OLAP Join"; }
 
     /**
      * The 'name' property, displayed as 'Join Name' in the IGC UI.
@@ -99,7 +101,16 @@ public class OlapJoin extends Reference {
     /** @see #referenced_by_an_olap_cube */ @JsonProperty("referenced_by_an_olap_cube")  public ReferenceList getReferencedByAnOlapCube() { return this.referenced_by_an_olap_cube; }
     /** @see #referenced_by_an_olap_cube */ @JsonProperty("referenced_by_an_olap_cube")  public void setReferencedByAnOlapCube(ReferenceList referenced_by_an_olap_cube) { this.referenced_by_an_olap_cube = referenced_by_an_olap_cube; }
 
+    public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return false; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("business_name");
+        add("short_description");
+        add("type");
+        add("condition");
+    }};
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isOlapJoin(Object obj) { return (obj.getClass() == OlapJoin.class); }
 
 }

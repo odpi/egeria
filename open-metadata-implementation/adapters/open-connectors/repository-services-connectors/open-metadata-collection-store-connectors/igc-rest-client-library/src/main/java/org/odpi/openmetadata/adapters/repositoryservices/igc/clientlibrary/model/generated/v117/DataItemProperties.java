@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class DataItemProperties extends Reference {
 
     public static String getIgcTypeId() { return "data_item_properties"; }
+    public static String getIgcTypeDisplayName() { return "Data Item Properties"; }
 
     /**
      * The 'belonging_to_parameter_definition' property, displayed as 'Belonging to Parameter Definition' in the IGC UI.
@@ -179,7 +181,27 @@ public class DataItemProperties extends Reference {
     /** @see #pad_char */ @JsonProperty("pad_char")  public String getPadChar() { return this.pad_char; }
     /** @see #pad_char */ @JsonProperty("pad_char")  public void setPadChar(String pad_char) { this.pad_char = pad_char; }
 
+    public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return false; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("filler_parents");
+        add("nls_map");
+        add("sync_indicator");
+        add("redefined_field");
+        add("association");
+        add("depend_field");
+        add("scd_purpose");
+        add("field_type");
+        add("date_mask");
+        add("apt_field_prop");
+        add("has_sign_indicator");
+        add("usage");
+        add("scale");
+        add("is_u_string");
+        add("sign_option");
+        add("pad_char");
+    }};
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isDataItemProperties(Object obj) { return (obj.getClass() == DataItemProperties.class); }
 
 }

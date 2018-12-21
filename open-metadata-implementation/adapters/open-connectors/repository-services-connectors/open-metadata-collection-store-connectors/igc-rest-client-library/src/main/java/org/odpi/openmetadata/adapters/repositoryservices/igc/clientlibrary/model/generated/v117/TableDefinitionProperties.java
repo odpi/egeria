@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class TableDefinitionProperties extends Reference {
 
     public static String getIgcTypeId() { return "table_definition_properties"; }
+    public static String getIgcTypeDisplayName() { return "Table Definition Properties"; }
 
     /**
      * The 'of_ds_table_definition' property, displayed as 'Of DS Table Definition' in the IGC UI.
@@ -223,7 +225,35 @@ public class TableDefinitionProperties extends Reference {
     /** @see #modified_on */ @JsonProperty("modified_on")  public Date getModifiedOn() { return this.modified_on; }
     /** @see #modified_on */ @JsonProperty("modified_on")  public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
+    public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return true; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("seq_col_space");
+        add("seq_fixed_width");
+        add("seq_delimiter");
+        add("seq_quote_char");
+        add("locator");
+        add("access_type");
+        add("apt_record_prop");
+        add("seq_col_headers");
+        add("import_location");
+        add("nls_map_name");
+        add("seq_omit_new_line");
+        add("platform_type");
+        add("version");
+        add("a_xmeta_locking_root");
+        add("registration_timestamp");
+        add("allow_column_mapping");
+        add("sp_error_codes");
+        add("seq_null_string");
+        add("multivalued");
+        add("pad_char");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isTableDefinitionProperties(Object obj) { return (obj.getClass() == TableDefinitionProperties.class); }
 
 }

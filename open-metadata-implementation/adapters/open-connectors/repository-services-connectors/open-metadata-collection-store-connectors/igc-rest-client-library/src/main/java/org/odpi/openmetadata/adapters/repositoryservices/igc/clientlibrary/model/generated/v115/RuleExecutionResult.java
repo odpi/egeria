@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class RuleExecutionResult extends Reference {
 
     public static String getIgcTypeId() { return "Rule_Execution_Result"; }
+    public static String getIgcTypeDisplayName() { return "Rule Execution Result"; }
 
     /**
      * The 'nbRecordsTested' property, displayed as 'Number of Records Tested' in the IGC UI.
@@ -85,7 +87,19 @@ public class RuleExecutionResult extends Reference {
     /** @see #modified_on */ @JsonProperty("modified_on")  public Date getModifiedOn() { return this.modified_on; }
     /** @see #modified_on */ @JsonProperty("modified_on")  public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
+    public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return true; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("nbRecordsTested");
+        add("nbPassed");
+        add("nbFailed");
+        add("benchmark");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isRuleExecutionResult(Object obj) { return (obj.getClass() == RuleExecutionResult.class); }
 
 }

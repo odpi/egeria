@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class Label extends Reference {
 
     public static String getIgcTypeId() { return "label"; }
+    public static String getIgcTypeDisplayName() { return "Label"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -47,7 +49,13 @@ public class Label extends Reference {
     /** @see #labeled_assets */ @JsonProperty("labeled_assets")  public ReferenceList getLabeledAssets() { return this.labeled_assets; }
     /** @see #labeled_assets */ @JsonProperty("labeled_assets")  public void setLabeledAssets(ReferenceList labeled_assets) { this.labeled_assets = labeled_assets; }
 
+    public static final Boolean canBeCreated() { return true; }
     public static final Boolean includesModificationDetails() { return false; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("description");
+    }};
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isLabel(Object obj) { return (obj.getClass() == Label.class); }
 
 }

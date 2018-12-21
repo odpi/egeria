@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class Classification extends Reference {
 
     public static String getIgcTypeId() { return "classification"; }
+    public static String getIgcTypeDisplayName() { return "Classification"; }
 
     /**
      * The 'data_class' property, displayed as 'Data Class' in the IGC UI.
@@ -105,7 +107,17 @@ public class Classification extends Reference {
     /** @see #column_analysis */ @JsonProperty("column_analysis")  public ReferenceList getColumnAnalysis() { return this.column_analysis; }
     /** @see #column_analysis */ @JsonProperty("column_analysis")  public void setColumnAnalysis(ReferenceList column_analysis) { this.column_analysis = column_analysis; }
 
+    public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return false; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("selected");
+        add("detected");
+        add("detectedState");
+        add("confidencePercent");
+        add("threshold");
+        add("date");
+    }};
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isClassification(Object obj) { return (obj.getClass() == Classification.class); }
 
 }

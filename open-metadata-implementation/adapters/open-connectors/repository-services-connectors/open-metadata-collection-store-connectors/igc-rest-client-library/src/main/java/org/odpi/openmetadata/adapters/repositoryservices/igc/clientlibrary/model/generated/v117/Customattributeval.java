@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class Customattributeval extends Reference {
 
     public static String getIgcTypeId() { return "customattributeval"; }
+    public static String getIgcTypeDisplayName() { return "CustomAttributeVal"; }
 
     /**
      * The 'x_custom_attribute_name' property, displayed as 'X Custom Attribute Name' in the IGC UI.
@@ -37,7 +39,13 @@ public class Customattributeval extends Reference {
     /** @see #value */ @JsonProperty("value")  public String getValue() { return this.value; }
     /** @see #value */ @JsonProperty("value")  public void setValue(String value) { this.value = value; }
 
+    public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return false; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("x_custom_attribute_name");
+        add("value");
+    }};
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isCustomattributeval(Object obj) { return (obj.getClass() == Customattributeval.class); }
 
 }

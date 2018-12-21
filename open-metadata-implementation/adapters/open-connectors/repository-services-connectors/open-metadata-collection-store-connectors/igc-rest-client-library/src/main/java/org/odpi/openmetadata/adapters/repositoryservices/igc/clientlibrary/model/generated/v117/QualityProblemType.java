@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class QualityProblemType extends Reference {
 
     public static String getIgcTypeId() { return "quality_Problem_Type"; }
+    public static String getIgcTypeDisplayName() { return "QualityProblemType"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -45,7 +47,14 @@ public class QualityProblemType extends Reference {
     /** @see #code */ @JsonProperty("code")  public String getCode() { return this.code; }
     /** @see #code */ @JsonProperty("code")  public void setCode(String code) { this.code = code; }
 
+    public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return false; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("description");
+        add("code");
+    }};
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isQualityProblemType(Object obj) { return (obj.getClass() == QualityProblemType.class); }
 
 }

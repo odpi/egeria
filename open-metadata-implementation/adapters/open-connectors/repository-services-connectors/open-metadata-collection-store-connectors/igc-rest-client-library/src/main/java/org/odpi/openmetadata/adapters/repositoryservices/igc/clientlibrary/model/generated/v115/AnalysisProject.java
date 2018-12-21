@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class AnalysisProject extends Reference {
 
     public static String getIgcTypeId() { return "analysis_project"; }
+    public static String getIgcTypeDisplayName() { return "Analysis Project"; }
 
     /**
      * The 'short_&amp;_long_description' property, displayed as 'Short &amp; Long Description' in the IGC UI.
@@ -87,7 +89,18 @@ public class AnalysisProject extends Reference {
     /** @see #modified_on */ @JsonProperty("modified_on")  public Date getModifiedOn() { return this.modified_on; }
     /** @see #modified_on */ @JsonProperty("modified_on")  public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
+    public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return true; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("short_&_long_description");
+        add("short_description");
+        add("long_description");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isAnalysisProject(Object obj) { return (obj.getClass() == AnalysisProject.class); }
 
 }

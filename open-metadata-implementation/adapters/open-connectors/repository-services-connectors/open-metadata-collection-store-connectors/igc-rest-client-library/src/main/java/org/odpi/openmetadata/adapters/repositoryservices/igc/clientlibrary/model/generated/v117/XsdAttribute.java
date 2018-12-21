@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class XsdAttribute extends Reference {
 
     public static String getIgcTypeId() { return "xsd_attribute"; }
+    public static String getIgcTypeDisplayName() { return "XSD Attribute"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -347,7 +349,38 @@ public class XsdAttribute extends Reference {
     /** @see #modified_on */ @JsonProperty("modified_on")  public Date getModifiedOn() { return this.modified_on; }
     /** @see #modified_on */ @JsonProperty("modified_on")  public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
+    public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return true; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("namespace");
+        add("data_type");
+        add("default_value");
+        add("usage");
+        add("inheritable");
+        add("fixed_value");
+        add("length");
+        add("max_length");
+        add("min_length");
+        add("fraction_digits");
+        add("total_digits");
+        add("white_space");
+        add("timezone");
+        add("name_form");
+        add("pattern_expression");
+        add("minimum_range");
+        add("is_minimum_range_inclusive");
+        add("maximum_range");
+        add("is_maximum_range_inclusive");
+        add("enumeration_value");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isXsdAttribute(Object obj) { return (obj.getClass() == XsdAttribute.class); }
 
 }

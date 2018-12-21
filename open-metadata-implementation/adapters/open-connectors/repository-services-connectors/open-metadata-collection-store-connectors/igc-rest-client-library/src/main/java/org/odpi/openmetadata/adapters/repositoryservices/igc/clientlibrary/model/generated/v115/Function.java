@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class Function extends Reference {
 
     public static String getIgcTypeId() { return "function"; }
+    public static String getIgcTypeDisplayName() { return "Function"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -215,7 +217,24 @@ public class Function extends Reference {
     /** @see #author */ @JsonProperty("author")  public String getAuthor() { return this.author; }
     /** @see #author */ @JsonProperty("author")  public void setAuthor(String author) { this.author = author; }
 
+    public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return false; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("module_name");
+        add("module_path");
+        add("is_inline");
+        add("source_code");
+        add("vendor");
+        add("platform_type");
+        add("external_name");
+        add("language");
+        add("version");
+        add("author");
+    }};
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isFunction(Object obj) { return (obj.getClass() == Function.class); }
 
 }

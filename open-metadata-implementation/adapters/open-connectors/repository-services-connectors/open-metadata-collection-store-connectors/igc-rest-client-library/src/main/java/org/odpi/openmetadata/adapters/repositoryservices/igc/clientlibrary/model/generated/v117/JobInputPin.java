@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class JobInputPin extends Reference {
 
     public static String getIgcTypeId() { return "job_input_pin"; }
+    public static String getIgcTypeDisplayName() { return "Job Input Pin"; }
 
     /**
      * The 'condition_not_met' property, displayed as 'Condition Not Met' in the IGC UI.
@@ -181,7 +183,26 @@ public class JobInputPin extends Reference {
     /** @see #modified_on */ @JsonProperty("modified_on")  public Date getModifiedOn() { return this.modified_on; }
     /** @see #modified_on */ @JsonProperty("modified_on")  public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
+    public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return true; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("condition_not_met");
+        add("partner");
+        add("a_xmeta_locking_root");
+        add("pin_type");
+        add("lookup_fail");
+        add("internal_id");
+        add("transaction_size");
+        add("link_type");
+        add("txn_behaviour");
+        add("enable_tx_group");
+        add("sequence");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isJobInputPin(Object obj) { return (obj.getClass() == JobInputPin.class); }
 
 }

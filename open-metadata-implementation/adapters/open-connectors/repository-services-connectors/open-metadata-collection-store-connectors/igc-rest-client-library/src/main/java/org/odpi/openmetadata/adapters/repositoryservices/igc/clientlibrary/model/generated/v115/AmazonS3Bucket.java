@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class AmazonS3Bucket extends Reference {
 
     public static String getIgcTypeId() { return "amazon_s3_bucket"; }
+    public static String getIgcTypeDisplayName() { return "Amazon S3 Bucket"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -229,7 +231,22 @@ public class AmazonS3Bucket extends Reference {
     /** @see #modified_on */ @JsonProperty("modified_on")  public Date getModifiedOn() { return this.modified_on; }
     /** @see #modified_on */ @JsonProperty("modified_on")  public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
+    public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return true; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("location");
+        add("source_creation_date");
+        add("source_modification_date");
+        add("include_for_business_lineage");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isAmazonS3Bucket(Object obj) { return (obj.getClass() == AmazonS3Bucket.class); }
 
 }

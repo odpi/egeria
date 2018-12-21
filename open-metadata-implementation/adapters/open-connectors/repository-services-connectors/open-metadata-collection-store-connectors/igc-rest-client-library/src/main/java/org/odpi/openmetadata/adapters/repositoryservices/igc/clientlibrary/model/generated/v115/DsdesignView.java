@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class DsdesignView extends Reference {
 
     public static String getIgcTypeId() { return "dsdesign_view"; }
+    public static String getIgcTypeDisplayName() { return "Design View"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -243,7 +245,30 @@ public class DsdesignView extends Reference {
     /** @see #internal_id */ @JsonProperty("internal_id")  public String getInternalId() { return this.internal_id; }
     /** @see #internal_id */ @JsonProperty("internal_id")  public void setInternalId(String internal_id) { this.internal_id = internal_id; }
 
+    public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return false; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("output_pins");
+        add("input_pins");
+        add("stage_types");
+        add("next_id");
+        add("next_stage_id");
+        add("is_top_level");
+        add("snap_to_grid");
+        add("stage_x_pos");
+        add("grid_lines");
+        add("zoom_value");
+        add("container_view_sizing");
+        add("stage_list");
+        add("stage_y_pos");
+        add("stage_y_size");
+        add("stage_x_size");
+        add("internal_id");
+    }};
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isDsdesignView(Object obj) { return (obj.getClass() == DsdesignView.class); }
 
 }

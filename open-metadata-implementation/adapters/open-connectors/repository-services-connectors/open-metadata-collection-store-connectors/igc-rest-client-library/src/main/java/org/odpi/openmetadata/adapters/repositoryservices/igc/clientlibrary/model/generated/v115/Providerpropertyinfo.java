@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class Providerpropertyinfo extends Reference {
 
     public static String getIgcTypeId() { return "providerpropertyinfo"; }
+    public static String getIgcTypeDisplayName() { return "ProviderPropertyInfo"; }
 
     /**
      * The 'property_data_type' property, displayed as 'Property Data Type' in the IGC UI.
@@ -153,7 +155,25 @@ public class Providerpropertyinfo extends Reference {
     /** @see #modified_on */ @JsonProperty("modified_on")  public Date getModifiedOn() { return this.modified_on; }
     /** @see #modified_on */ @JsonProperty("modified_on")  public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
+    public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return true; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("property_data_type");
+        add("is_searchable");
+        add("complex_attribute_source");
+        add("description");
+        add("is_complex_attribute");
+        add("name");
+        add("is_required");
+        add("display_name");
+        add("is_editable");
+        add("default_value");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isProviderpropertyinfo(Object obj) { return (obj.getClass() == Providerpropertyinfo.class); }
 
 }

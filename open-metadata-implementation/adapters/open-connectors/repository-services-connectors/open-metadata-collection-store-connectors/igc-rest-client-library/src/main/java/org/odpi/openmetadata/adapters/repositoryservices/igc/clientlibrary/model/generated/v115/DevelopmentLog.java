@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class DevelopmentLog extends Reference {
 
     public static String getIgcTypeId() { return "development_log"; }
+    public static String getIgcTypeDisplayName() { return "DevelopmentLog"; }
 
     /**
      * The 'date' property, displayed as 'Date' in the IGC UI.
@@ -69,7 +71,17 @@ public class DevelopmentLog extends Reference {
     /** @see #comment */ @JsonProperty("comment")  public String getComment() { return this.comment; }
     /** @see #comment */ @JsonProperty("comment")  public void setComment(String comment) { this.comment = comment; }
 
+    public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return false; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("date");
+        add("workflow_task");
+        add("activity");
+        add("new_state");
+        add("person");
+        add("comment");
+    }};
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isDevelopmentLog(Object obj) { return (obj.getClass() == DevelopmentLog.class); }
 
 }

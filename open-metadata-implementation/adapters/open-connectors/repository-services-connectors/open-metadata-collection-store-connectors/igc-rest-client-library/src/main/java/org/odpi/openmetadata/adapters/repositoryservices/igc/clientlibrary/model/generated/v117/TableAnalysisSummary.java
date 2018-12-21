@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class TableAnalysisSummary extends Reference {
 
     public static String getIgcTypeId() { return "table_analysis_summary"; }
+    public static String getIgcTypeDisplayName() { return "Table Analysis Summary"; }
 
     /**
      * The 'short_&amp;_long_description' property, displayed as 'Short &amp; Long Description' in the IGC UI.
@@ -191,7 +193,26 @@ public class TableAnalysisSummary extends Reference {
     /** @see #foreign_key_violations */ @JsonProperty("foreign_key_violations")  public Number getForeignKeyViolations() { return this.foreign_key_violations; }
     /** @see #foreign_key_violations */ @JsonProperty("foreign_key_violations")  public void setForeignKeyViolations(Number foreign_key_violations) { this.foreign_key_violations = foreign_key_violations; }
 
+    public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return true; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("short_&_long_description");
+        add("short_description");
+        add("long_description");
+        add("project_name");
+        add("review_date");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+        add("number_of_fields");
+        add("number_of_rows");
+        add("inferred_primary_keys");
+        add("primary_key_duplicates");
+        add("inferred_foreign_keys");
+        add("foreign_key_violations");
+    }};
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isTableAnalysisSummary(Object obj) { return (obj.getClass() == TableAnalysisSummary.class); }
 
 }

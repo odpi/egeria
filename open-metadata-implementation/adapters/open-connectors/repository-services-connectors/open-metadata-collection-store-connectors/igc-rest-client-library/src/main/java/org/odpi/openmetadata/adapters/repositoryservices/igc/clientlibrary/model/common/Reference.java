@@ -121,7 +121,7 @@ public class Reference extends ObjectPrinter {
         Reference assetWithProperties = null;
         IGCSearchCondition idOnly = new IGCSearchCondition("_id", "=", this._id);
         IGCSearchConditionSet idOnlySet = new IGCSearchConditionSet(idOnly);
-        IGCSearch igcSearch = new IGCSearch(this._type, properties, idOnlySet);
+        IGCSearch igcSearch = new IGCSearch(Reference.getAssetTypeForSearch(this), properties, idOnlySet);
         igcSearch.setPageSize(pageSize);
         if (sorting != null) {
             igcSearch.addSortingCriteria(sorting);
@@ -490,6 +490,28 @@ public class Reference extends ObjectPrinter {
             log.error("Unable to retrieve non-relationship properties from IGC POJO: {}", pojoClass, e);
         }
         return list;
+    }
+
+    /**
+     * Translates the type of asset into what should be used for searching.
+     * This is necessary for certain types that are actually pseudo-aliases for other types, to ensure all
+     * properties of that asset can be retrieved.
+     *
+     * @param asset the asset for which to retrieve the search type
+     * @return String
+     */
+    public static String getAssetTypeForSearch(Reference asset) {
+        String type = asset.getType();
+        String typeForSearch = null;
+        switch(type) {
+            case "host_(engine)":
+                typeForSearch = "host";
+                break;
+            default:
+                typeForSearch = type;
+                break;
+        }
+        return typeForSearch;
     }
 
     // TODO: eventually handle the '_expand' that exists for data classifications
