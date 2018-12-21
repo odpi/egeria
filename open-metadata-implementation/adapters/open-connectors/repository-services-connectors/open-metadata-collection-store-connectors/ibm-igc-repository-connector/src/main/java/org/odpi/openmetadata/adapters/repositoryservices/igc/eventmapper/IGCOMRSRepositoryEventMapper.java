@@ -6,6 +6,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.clients.consumer.*;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestClient;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Identity;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.InformationAsset;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.eventmapper.model.*;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSMetadataCollection;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
@@ -240,7 +243,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
      *
      * @param event inbound event
      */
-    public void processEventV115(String event) {
+    private void processEventV115(String event) {
 
         try {
             InfosphereEvents eventObj = this.mapper.readValue(event, InfosphereEvents.class);
@@ -284,46 +287,69 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
      *
      * @param event inbound event
      */
-    public void processIMAMShareEventV115(InfosphereEventsIMAMEvent event) {
-        // TODO: implement processIMAMShareEventV115
+    private void processIMAMShareEventV115(InfosphereEventsIMAMEvent event) {
+
+        List<String> createdRIDs = getRIDsFromEventString(event.getCreatedRIDs());
+        List<String> updatedRIDs = getRIDsFromEventString(event.getMergedRIDs());
+        List<String> deletedRIDs = getRIDsFromEventString(event.getDeletedRIDs());
+
+        IGCRestClient igcRestClient = igcomrsRepositoryConnector.getIGCRestClient();
+
+        // Start by creating any entities needed by the new RIDs
+        for (String rid : createdRIDs) {
+
+            // Start by retrieving the containment hierarchy (Identity) of this object
+            Reference igcObject = igcRestClient.getAssetRefById(rid);
+            Identity igcObjIdentity = igcObject.getIdentity(igcRestClient);
+
+            // Send out a new entity for every entry in the containment hierarchy,
+            // including this object itself
+            recursivelyProcessEntities(igcObjIdentity, igcObject.getId(), "NEW");
+
+            // TODO: Send out a new entity for all child objects of the object itself
+
+            // TODO: Send out new relationships between each level
+
+        }
+
+        // Then iterate through any updated entities
+        for (String rid : updatedRIDs) {
+
+            // Start by retrieving the containment hierarchy (Identity) of this object
+            Reference igcObject = igcRestClient.getAssetRefById(rid);
+            Identity igcObjIdentity = igcObject.getIdentity(igcRestClient);
+
+            // Send out an updated entity for every entry in the containment hierarchy,
+            // including this object itself
+            recursivelyProcessEntities(igcObjIdentity, igcObject.getId(), "UPDATE");
+
+            // TODO: Send out a new entity for all child objects of the object itself
+            //  - must be NEW and not UPDATE, as could be a new field / column (?)
+
+            // TODO: Send out new relationships between each level?
+
+        }
+
+        if (!deletedRIDs.isEmpty()) {
+            log.warn("Unable to propagate IMAM deleted RIDs, cannot determine type: {}", deletedRIDs);
+        }
+
     }
 
     /**
      * Processes Data Connection events from v11.5 of Information Server.
      * @param event
      */
-    public void processDataConnectionEventV115(InfosphereEventsDCEvent event) {
+    private void processDataConnectionEventV115(InfosphereEventsDCEvent event) {
 
         String action = event.getEventType();
-        EntityDetail detail;
 
         switch(action) {
             case InfosphereEventsDCEvent.ACTION_CREATE:
-                detail = getEntityDetailForRID(event.getCreatedRID());
-                if (detail != null) {
-                    repositoryEventProcessor.processNewEntityEvent(
-                            sourceName,
-                            metadataCollectionId,
-                            originatorServerName,
-                            originatorServerType,
-                            null,
-                            detail
-                    );
-                }
+                sendNewEntity(event.getCreatedRID());
                 break;
             case InfosphereEventsDCEvent.ACTION_MODIFY:
-                detail = getEntityDetailForRID(event.getMergedRID());
-                if (detail != null) {
-                    repositoryEventProcessor.processUpdatedEntityEvent(
-                            sourceName,
-                            metadataCollectionId,
-                            originatorServerName,
-                            originatorServerType,
-                            null,
-                            null,
-                            detail
-                    );
-                }
+                sendUpdatedEntity(event.getMergedRID());
                 break;
             default:
                 log.warn("Found unhandled action type for data connection: {}", action);
@@ -337,99 +363,46 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
      *
      * @param event inbound event
      */
-    public void processAssetEventV115(InfosphereEventsAssetEvent event) {
+    private void processAssetEventV115(InfosphereEventsAssetEvent event) {
 
         String assetRid = event.getAssetRid();
         String action = event.getAction();
 
-        if (action.equals(InfosphereEventsAssetEvent.ACTION_CREATE)
-                || action.equals(InfosphereEventsAssetEvent.ACTION_MODIFY)) {
+        // And propagate based on the action of the event
+        switch (action) {
+            case InfosphereEventsAssetEvent.ACTION_CREATE:
+                sendNewEntity(assetRid);
+                break;
+            case InfosphereEventsAssetEvent.ACTION_MODIFY:
+                sendUpdatedEntity(assetRid);
+                break;
+            case InfosphereEventsAssetEvent.ACTION_DELETE:
+                sendPurgedEntity(event.getAssetType(), assetRid);
+                break;
+            case InfosphereEventsAssetEvent.ACTION_ASSIGNED_RELATIONSHIP:
+                // TODO: how to determine which relationship events to send?
+                //  - there will be a CREATE or MODIFY on one asset, immediately followed by this ACTION_ASSIGNED_RELATIONSHIP
+                //    {"ASSET_TYPE":"Term","ASSET_RID":"6662c0f2.e1b1ec6c.000mfk201.tuflodt.0oooqu.878gi1lu8mo4r0rl1i8ao","eventType":"IGC_BUSINESSTERM_EVENT","ASSET_CONTEXT":"TestSubCategory","ACTION":"CREATE","ASSET_NAME":"TestTerm"}
+                //    {"ASSET_TYPE":"Category","ASSET_RID":"6662c0f2.ee6a64fe.000mfk1vs.5h84rl7.p4q6o9.g1709cvgh2g7vl79u104o","eventType":"IGC_BUSINESSCATEGORY_EVENT","ASSET_CONTEXT":"","ACTION":"ASSIGNED_RELATIONSHIP","ASSET_NAME":"TestSubCategory"}
+                //    or
+                //    {"ASSET_TYPE":"Category","ASSET_RID":"6662c0f2.ee6a64fe.000mfk1vs.5h84rl7.p4q6o9.g1709cvgh2g7vl79u104o","eventType":"IGC_BUSINESSCATEGORY_EVENT","ASSET_CONTEXT":"TestCategory","ACTION":"MODIFY","ASSET_NAME":"TestSubCategory"}
+                //    {"ASSET_TYPE":"Category","ASSET_RID":"6662c0f2.ee6a64fe.000mfk1vp.7uociko.d39iml.ogmt0b235vqka3m9mlkv8","eventType":"IGC_BUSINESSCATEGORY_EVENT","ASSET_CONTEXT":"","ACTION":"ASSIGNED_RELATIONSHIP","ASSET_NAME":"TestCategory"}
+                //  - the RIDs will not match (the first will be the changed object, the latter the target of the relationship)
+                //  - if a relationship is removed, there will only be a MODIFY on the one asset (no related asset event)
+                //    {"ASSET_TYPE":"Term","ASSET_RID":"6662c0f2.e1b1ec6c.000mfk201.tuflodt.0oooqu.878gi1lu8mo4r0rl1i8ao","eventType":"IGC_BUSINESSTERM_EVENT","ASSET_CONTEXT":"TestCategory","ACTION":"MODIFY","ASSET_NAME":"TestTerm"}
 
-            // Retrieve the detailed entity itself
-            EntityDetail detail = getEntityDetailForRID(assetRid);
-            log.debug("Retrieved EntityDetail: {}", detail);
-
-            // And propagate based on whether it is new or modified
-            switch (action) {
-                case InfosphereEventsAssetEvent.ACTION_CREATE:
-                    if (detail != null) {
-                        log.debug("... sending as new entity event");
-                        repositoryEventProcessor.processNewEntityEvent(
-                                sourceName,
-                                metadataCollectionId,
-                                originatorServerName,
-                                originatorServerType,
-                                null,
-                                detail
-                        );
-                    }
-                    break;
-                case InfosphereEventsAssetEvent.ACTION_MODIFY:
-                    if (detail != null) {
-                        log.debug("... sending as update entity event");
-                        repositoryEventProcessor.processUpdatedEntityEvent(
-                                sourceName,
-                                metadataCollectionId,
-                                originatorServerName,
-                                originatorServerType,
-                                null,
-                                null,
-                                detail
-                        );
-                    }
-                    break;
-            }
-
-        } else if (action.equals(InfosphereEventsAssetEvent.ACTION_DELETE)) {
-
-            // Note that IGC does not do soft deletes, so immediately send a purge
-            // (We cannot send a delete first as we cannot lookup the entity to include with a delete event)
-            String assetType = event.getAssetType();
-            List<TypeDef> typeDefs = igcomrsMetadataCollection.getTypeDefsForAssetName(assetType);
-
-            if (typeDefs == null || typeDefs.isEmpty()) {
-                log.error("Unable to find any mapped type definition for asset type: {}", assetType);
-            } else {
-                if (typeDefs.size() > 1) {
-                    log.warn("Found multiple type definitions mapped to asset type '{}' -- only purging first: {}", assetType, typeDefs);
-                }
-                TypeDef typeDef = typeDefs.get(0);
-                repositoryEventProcessor.processPurgedEntityEvent(
-                        sourceName,
-                        metadataCollectionId,
-                        originatorServerName,
-                        originatorServerType,
-                        null,
-                        typeDef.getGUID(),
-                        typeDef.getName(),
-                        assetRid
-                );
-            }
-
-        } else if (action.equals(InfosphereEventsAssetEvent.ACTION_ASSIGNED_RELATIONSHIP)) {
-
-            // TODO: how to determine which relationship events to send?
-            //  - there will be a CREATE or MODIFY on one asset, immediately followed by this ACTION_ASSIGNED_RELATIONSHIP
-            //    {"ASSET_TYPE":"Term","ASSET_RID":"6662c0f2.e1b1ec6c.000mfk201.tuflodt.0oooqu.878gi1lu8mo4r0rl1i8ao","eventType":"IGC_BUSINESSTERM_EVENT","ASSET_CONTEXT":"TestSubCategory","ACTION":"CREATE","ASSET_NAME":"TestTerm"}
-            //    {"ASSET_TYPE":"Category","ASSET_RID":"6662c0f2.ee6a64fe.000mfk1vs.5h84rl7.p4q6o9.g1709cvgh2g7vl79u104o","eventType":"IGC_BUSINESSCATEGORY_EVENT","ASSET_CONTEXT":"","ACTION":"ASSIGNED_RELATIONSHIP","ASSET_NAME":"TestSubCategory"}
-            //    or
-            //    {"ASSET_TYPE":"Category","ASSET_RID":"6662c0f2.ee6a64fe.000mfk1vs.5h84rl7.p4q6o9.g1709cvgh2g7vl79u104o","eventType":"IGC_BUSINESSCATEGORY_EVENT","ASSET_CONTEXT":"TestCategory","ACTION":"MODIFY","ASSET_NAME":"TestSubCategory"}
-            //    {"ASSET_TYPE":"Category","ASSET_RID":"6662c0f2.ee6a64fe.000mfk1vp.7uociko.d39iml.ogmt0b235vqka3m9mlkv8","eventType":"IGC_BUSINESSCATEGORY_EVENT","ASSET_CONTEXT":"","ACTION":"ASSIGNED_RELATIONSHIP","ASSET_NAME":"TestCategory"}
-            //  - the RIDs will not match (the first will be the changed object, the latter the target of the relationship)
-            //  - if a relationship is removed, there will only be a MODIFY on the one asset (no related asset event)
-            //    {"ASSET_TYPE":"Term","ASSET_RID":"6662c0f2.e1b1ec6c.000mfk201.tuflodt.0oooqu.878gi1lu8mo4r0rl1i8ao","eventType":"IGC_BUSINESSTERM_EVENT","ASSET_CONTEXT":"TestCategory","ACTION":"MODIFY","ASSET_NAME":"TestTerm"}
-
-/*            repositoryEventProcessor.processNewRelationshipEvent(
-                    sourceName,
-                    metadataCollectionId,
-                    originatorServerName,
-                    originatorServerType,
-                    null,
-                    relationship
-            ); */
-
-        } else {
-            log.warn("Action '{}' is not yet implemented: {}", action, assetRid);
+                /*            repositoryEventProcessor.processNewRelationshipEvent(
+                           sourceName,
+                           metadataCollectionId,
+                           originatorServerName,
+                           originatorServerType,
+                           null,
+                           relationship
+                       ); */
+                break;
+            default:
+                log.warn("Action '{}' is not yet implemented: {}", action, assetRid);
+                break;
         }
 
     }
@@ -439,7 +412,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
      *
      * @param event inbound event
      */
-    public void processIAEventV115(InfosphereEventsIAEvent event) {
+    private void processIAEventV115(InfosphereEventsIAEvent event) {
 
         String action = event.getEventType();
 
@@ -448,10 +421,13 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
         switch(action) {
 
             case InfosphereEventsIAEvent.COL_ANALYZED:
+                log.warn("Action is not yet implemented for IA: {}", action);
                 break;
             case InfosphereEventsIAEvent.COL_CLASSIFIED:
+                log.warn("Action is not yet implemented for IA: {}", action);
                 break;
             case InfosphereEventsIAEvent.TBL_PUBLISHED:
+                log.warn("Action is not yet implemented for IA: {}", action);
                 break;
             default:
                 log.warn("Action is not yet implemented for IA: {}", action);
@@ -467,7 +443,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
      * @param rid the IGC Repository ID (RID) for which to retrieve an EntityDetail object
      * @return EntityDetail
      */
-    public EntityDetail getEntityDetailForRID(String rid) {
+    private EntityDetail getEntityDetailForRID(String rid) {
 
         EntityDetail detail = null;
         try {
@@ -484,11 +460,142 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
     }
 
     /**
+     * Parses the RIDs out of the provided payload string.
+     *
+     * @param payload a string of RIDs from an IMAM share event
+     * @return List<String> of just the RIDs
+     */
+    private List<String> getRIDsFromEventString(String payload) {
+
+        ArrayList<String> rids = new ArrayList<>();
+
+        for (String token : payload.split(",")) {
+            token = token.trim();
+            String[] subTokens = token.split(":");
+            if (subTokens.length == 2) {
+                rids.add(subTokens[1]);
+            } else {
+                log.warn("Unexpected number of tokens from event payload: {}", token);
+            }
+        }
+
+        return rids;
+
+    }
+
+    /**
+     * Traverses up the containment hierarchy from the provided identity, and sends OMRS events from the top
+     * of the containment hierarchy downwards according to the provided action.
+     *
+     * @param identity the identity of the asset from which to start traversal
+     * @param rid the Repository ID (RID) of the asset from which to start traversal
+     * @param action the type of action take [ "NEW" | "UPDATE" ]
+     */
+    private void recursivelyProcessEntities(Identity identity, String rid, String action) {
+
+        // Recursively traverse up the containment hierarchy
+        Identity parent = identity.getParentIdentity();
+        if (parent != null) {
+            recursivelyProcessEntities(parent, parent.getRid(), action);
+            // ... and while unwinding from the top, output each sub-entity
+            if (action.equals("NEW")) {
+                sendNewEntity(rid);
+            } else if (action.equals("UPDATE")) {
+                sendUpdatedEntity(rid);
+            }
+        } else {
+            // Once at the top, output the top-level entity
+            if (action.equals("NEW")) {
+                sendNewEntity(rid);
+            } else if (action.equals("UPDATE")) {
+                sendUpdatedEntity(rid);
+            }
+        }
+
+    }
+
+    /**
+     * Send an event out on OMRS topic for a new entity.
+     *
+     * @param rid the IGC Repository ID (RID) of the asset
+     */
+    private void sendNewEntity(String rid) {
+        EntityDetail detail = getEntityDetailForRID(rid);
+        if (detail != null) {
+            repositoryEventProcessor.processNewEntityEvent(
+                    sourceName,
+                    metadataCollectionId,
+                    originatorServerName,
+                    originatorServerType,
+                    null,
+                    detail
+            );
+        } else {
+            log.error("EntityDetail could not be retrieved for RID: {}", rid);
+        }
+    }
+
+    /**
+     * Send an event out on OMRS topic for an updated entity.
+     *
+     * @param rid the IGC Repository ID (RID) of the asset
+     */
+    private void sendUpdatedEntity(String rid) {
+        EntityDetail detail = getEntityDetailForRID(rid);
+        if (detail != null) {
+            repositoryEventProcessor.processUpdatedEntityEvent(
+                    sourceName,
+                    metadataCollectionId,
+                    originatorServerName,
+                    originatorServerType,
+                    null,
+                    null,
+                    detail
+            );
+        } else {
+            log.error("EntityDetail could not be retrieved for RID: {}", rid);
+        }
+    }
+
+    /**
+     * Send an event out on OMRS topic for a purged entity.
+     *
+     * @param assetTypeName the IGC display name of the asset type (ie. ASSET_TYPE from the event)
+     * @param rid the IGC Repository ID (RID) of the asset
+     */
+    private void sendPurgedEntity(String assetTypeName, String rid) {
+
+        List<TypeDef> typeDefs = igcomrsMetadataCollection.getTypeDefsForAssetName(assetTypeName);
+
+        if (typeDefs == null || typeDefs.isEmpty()) {
+            log.error("Unable to find any mapped type definition for asset type: {}", assetTypeName);
+        } else {
+            if (typeDefs.size() > 1) {
+                log.warn("Found multiple type definitions mapped to asset type '{}' -- only purging first: {}",
+                        assetTypeName,
+                        typeDefs);
+            }
+            TypeDef typeDef = typeDefs.get(0);
+            repositoryEventProcessor.processPurgedEntityEvent(
+                    sourceName,
+                    metadataCollectionId,
+                    originatorServerName,
+                    originatorServerType,
+                    null,
+                    typeDef.getGUID(),
+                    typeDef.getName(),
+                    rid
+            );
+        }
+
+    }
+
+    /**
      * Method to process events from v11.7 of Information Server.
      *
      * @param event inbound event
      */
-    public void processEventV117(String event) {
+    private void processEventV117(String event) {
         // TODO: implement processEventV117
         log.info("Not yet implemented -- skipping event: {}", event);
     }
