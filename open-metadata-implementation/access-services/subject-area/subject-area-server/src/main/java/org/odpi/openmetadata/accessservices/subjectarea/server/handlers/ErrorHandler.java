@@ -544,10 +544,9 @@ public class ErrorHandler
                 errorCode.getUserAction(),
                 guid);
     }
-
     /**
      * Convert the supplied OMRS exception to a Subject Area relationship not known exception and throw it.
-     * @param guid supplied guid 
+     * @param guid supplied guid
      * @param methodName name of the method making the call.
      * @param serverName name of this server
      * @param serviceName name of this access service
@@ -568,20 +567,45 @@ public class ErrorHandler
     }
 
     /**
-     * Convert the supplied OMRS exception to a Subject Area relationship not deleted exception and throw it.
-     * @param e exception to handle
+     * Convert the supplied OMRS exception to a Subject Area Entity not known exception and throw it.
+     * @param guid supplied guid 
      * @param methodName name of the method making the call.
      * @param serverName name of this server
      * @param serviceName name of this access service
-     * @param guid supplied guid 
-     * @throws GUIDNotPurgedException Relationship not purged
+     * @throws UnrecognizedGUIDException GUID not recognized
      */
-    public static void handleRelationshipNotDeletedException(org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotDeletedException e, String methodName, String serverName, String serviceName,String guid) throws  GUIDNotPurgedException {
-        SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.GUID_NOT_PURGED_ERROR;
+    public static void handleEntityNotKnownException(String guid, String methodName, String serverName, String serviceName)  throws UnrecognizedGUIDException {
+        SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.GUID_DOES_NOT_EXIST;
+        String                 errorMessage = errorCode.getErrorMessageId()
+                + errorCode.getFormattedErrorMessage(guid,methodName);
+
+        UnrecognizedGUIDException uge =  new UnrecognizedGUIDException(errorCode.getHTTPErrorCode(),
+                className,
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction(),guid);
+        throw uge;
+    }
+
+    /**
+     * Convert the supplied OMRS exception to a Subject Area entity not deleted exception and throw it.
+     * @param guid supplied guid
+     * @param methodName name of the method making the call.
+     * @param serverName name of this server
+     * @param serviceName name of this access service
+     * @throws GUIDNotDeletedException Relationship not purged
+     */
+    public static void handleEntityNotDeletedException( String guid,
+                                                             String methodName,
+                                                             String serverName,
+                                                             String serviceName
+                                                            ) throws  GUIDNotDeletedException {
+        SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.GUID_NOT_DELETED_ERROR;
         String                 errorMessage = errorCode.getErrorMessageId()
                 + errorCode.getFormattedErrorMessage(methodName);
 
-        throw new GUIDNotPurgedException(errorCode.getHTTPErrorCode(),
+        throw new GUIDNotDeletedException(errorCode.getHTTPErrorCode(),
                 className,
                 methodName,
                 errorMessage,
@@ -591,27 +615,29 @@ public class ErrorHandler
     }
 
     /**
-     * Convert the supplied OMRS exception to a Subject Area entity not deleted exception and throw it.
-     * @param guid supplied guid 
+     * Convert the supplied OMRS exception to a Subject Area relationship not deleted exception and throw it.
+     * @param guid supplied guid
      * @param methodName name of the method making the call.
      * @param serverName name of this server
      * @param serviceName name of this access service
-     * @throws GUIDNotPurgedException the Entity was not purged
+     * @throws GUIDNotDeletedException Relationship not purged
      */
-
-    public static void handleEntityNotDeletedException(String guid, String methodName, String serverName, String serviceName) throws GUIDNotPurgedException {
-        SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.GUID_NOT_PURGED_ERROR;
+    public static void handleRelationshipNotDeletedException( String guid,
+                                                              String methodName,
+                                                              String serverName,
+                                                              String serviceName
+    ) throws  GUIDNotDeletedException {
+        SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.GUID_NOT_DELETED_ERROR;
         String                 errorMessage = errorCode.getErrorMessageId()
                 + errorCode.getFormattedErrorMessage(methodName);
 
-        throw new GUIDNotPurgedException(errorCode.getHTTPErrorCode(),
+        throw new GUIDNotDeletedException(errorCode.getHTTPErrorCode(),
                 className,
                 methodName,
                 errorMessage,
                 errorCode.getSystemAction(),
                 errorCode.getUserAction(),
                 guid);
-
     }
 
     /**
@@ -634,5 +660,35 @@ public class ErrorHandler
                 errorMessage,
                 errorCode.getSystemAction(),
                 errorCode.getUserAction());
+    }
+
+    public void handleEntityNotPurgedException(String obsoleteGuid, String restAPIName, String serverName, String serviceName) throws GUIDNotPurgedException
+    {
+        SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.GUID_NOT_PURGED_ERROR;
+        String                 errorMessage = errorCode.getErrorMessageId()
+                + errorCode.getFormattedErrorMessage(restAPIName);
+
+        throw new GUIDNotPurgedException(errorCode.getHTTPErrorCode(),
+                className,
+                restAPIName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction(),
+                obsoleteGuid);
+    }
+
+    public void handleRelationshipNotPurgedException(String  obsoleteGuid, String restAPIName, String serverName, String serviceName) throws GUIDNotPurgedException
+    {
+        SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.GUID_NOT_PURGED_ERROR;
+        String                 errorMessage = errorCode.getErrorMessageId()
+                + errorCode.getFormattedErrorMessage(restAPIName);
+
+        throw new GUIDNotPurgedException(errorCode.getHTTPErrorCode(),
+                className,
+                restAPIName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction(),
+                obsoleteGuid);
     }
 }

@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -29,7 +30,7 @@ public class NodeSummary implements Serializable {
     protected String relationshipType = null;
     private String name = null;
     private String qualifiedName = null;
-    private String icon = null;
+    private Set<IconSummary> icons = null;
     private String guid = null;
     private String relationshipguid = null;
 
@@ -82,15 +83,15 @@ public class NodeSummary implements Serializable {
     }
 
     /**
-     * icon url
-     * @return url of icon
+     * icons
+     * @return set of icon summaries
      */
-    public String getIcon() {
-        return icon;
+    public Set<IconSummary> getIcons() {
+        return icons;
     }
 
-    public void setIcon(String icon) {
-        this.icon = icon;
+    public void setIcons(Set<IconSummary> icons) {
+        this.icons = icons;
     }
 
     /**
@@ -129,9 +130,7 @@ public class NodeSummary implements Serializable {
         if (qualifiedName != null) {
             sb.append(", qualifiedName='").append(qualifiedName).append('\'');
         }
-        if (icon != null) {
-            sb.append(", icon='").append(icon).append('\'');
-        }
+//TODO Icons
         if (guid != null) {
             sb.append(", guid='").append(guid).append('\'');
         }
@@ -157,14 +156,16 @@ public class NodeSummary implements Serializable {
         if (name != null ? !name.equals(node.name) : node.name != null) return false;
         if (qualifiedName != null ? !qualifiedName.equals(node.qualifiedName) : node.qualifiedName != null)
             return false;
-        return (icon != null ? !icon.equals(node.icon) : node.icon != null) == false;
+        //TODO Icons
+        return true;
     }
 
     @Override
     public int hashCode() {
         int result = name != null ? name.hashCode() : 0;
         result = 31 * result + (qualifiedName != null ? qualifiedName.hashCode() : 0);
-        result = 31 * result + (icon != null ? icon.hashCode() : 0);
+//        result = 31 * result + (icon != null ? icon.hashCode() : 0);
+        //TODO Icons
         return result;
     }
 

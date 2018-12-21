@@ -3,11 +3,14 @@
 package org.odpi.openmetadata.accessservices.subjectarea.server.spring;
 
 
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaRESTServicesInstance;
 import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaTermRESTServices;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
 
 
 /**
@@ -74,6 +77,27 @@ public class SubjectAreaTermRESTResource extends SubjectAreaRESTServicesInstance
     public  SubjectAreaOMASAPIResponse getTermByGuid(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid) {
         return restAPI.getTermByGuid(serverName, userId,guid);
     }
+    /**
+     * Get Term relationships
+     *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the term to get
+     * @param asOfTime the relationships returned as they were at this time. null indicates at the current time.
+     * @param findRequestParameters find request
+     * @return response which when successful contains the relationships associated with the requested Term guid
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * </ul>
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/terms/{guid}/relationships")
+    public  SubjectAreaOMASAPIResponse getTermRelationships(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid, @PathVariable Date asOfTime, @RequestBody FindRequest findRequestParameters) {
+        return restAPI.getTermRelationships(serverName, userId,guid,findRequestParameters,asOfTime);
+    }
 
     /**
      * Update a Term
@@ -95,7 +119,7 @@ public class SubjectAreaTermRESTResource extends SubjectAreaRESTServicesInstance
      * </ul>
      */
     @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/terms/{guid}")
-    public SubjectAreaOMASAPIResponse updateTerm(@PathVariable String serverName, @PathVariable String userId,@PathVariable String guid, Term suppliedTerm, @RequestParam(value = "isReplace", required=false) Boolean isReplace) {
+    public SubjectAreaOMASAPIResponse updateTerm(@PathVariable String serverName, @PathVariable String userId,@PathVariable String guid,@RequestBody Term suppliedTerm, @RequestParam(value = "isReplace", required=false) Boolean isReplace) {
         return restAPI.updateTerm(serverName, userId,guid,suppliedTerm,isReplace);
     }
     /**
@@ -132,5 +156,27 @@ public class SubjectAreaTermRESTResource extends SubjectAreaRESTServicesInstance
             isPurge = false;
         }
         return restAPI.deleteTerm(serverName, userId,guid,isPurge);
+    }
+    /**
+     * Restore a Term
+     *
+     * Restore allows the deleted Term to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the term to delete
+     * @return response which when successful contains the restored term
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * </ul>
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/terms/{guid}")
+    public SubjectAreaOMASAPIResponse restoreTerm( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
+    {
+        return restAPI.restoreTerm(serverName,userId,guid);
     }
 }

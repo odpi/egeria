@@ -14,9 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Set;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -42,6 +40,8 @@ public class Node implements Serializable {
     private String name =null;
     private String qualifiedName =null;
     private SystemAttributes systemAttributes=null;
+    private Date effectiveFromTime = null;
+    private Date effectiveToTime = null;
     private Map<String,String> additionalProperties;
     private String description =null;
     protected List<Classification> classifications = null;
@@ -150,6 +150,34 @@ public class Node implements Serializable {
         this.additionalProperties = additionalProperties;
     }
 
+    /**
+     * Return the date/time that this node should start to be used (null means it can be used from creationTime).
+     * @return Date the node becomes effective.
+     */
+    public Date getEffectiveFromTime()
+    {
+        return effectiveFromTime;
+    }
+
+    public void setEffectiveFromTime(Date effectiveFromTime)
+    {
+        this.effectiveFromTime = effectiveFromTime;
+    }
+    /**
+     * Return the date/time that this node should no longer be used.
+     *
+     * @return Date the node stops being effective.
+     */
+    public Date getEffectiveToTime()
+    {
+        return effectiveToTime;
+    }
+
+    public void setEffectiveToTime(Date effectiveToTime)
+    {
+        this.effectiveToTime = effectiveToTime;
+    }
+
     public StringBuilder toString(StringBuilder sb) {
         if (sb == null) {
             sb = new StringBuilder();
@@ -169,6 +197,12 @@ public class Node implements Serializable {
 
         if (icons != null) {
             sb.append(", icon='").append(icons).append('\'');
+        }
+        if (effectiveFromTime!=null) {
+            sb.append(", effective from date='").append(effectiveFromTime).append('\'');
+        }
+        if (effectiveToTime!=null) {
+            sb.append(", effective to date='").append(effectiveToTime).append('\'');
         }
 
         sb.append('}');
@@ -194,6 +228,8 @@ public class Node implements Serializable {
         if (qualifiedName != null ? !qualifiedName.equals(node.qualifiedName) : node.qualifiedName != null)
             return false;
         if (description != null ? !description.equals(node.description) : node.description != null) return false;
+        if (effectiveFromTime != null ?!effectiveFromTime.equals(node.effectiveFromTime) : node.effectiveFromTime !=null) return false;
+        if (effectiveToTime != null ?!effectiveToTime.equals(node.effectiveToTime) : node.effectiveToTime !=null) return false;
         //TODO deal with icon set properly
         return  (icons != null ? !icons.equals(node.icons) : node.icons != null)== false;
 
@@ -204,6 +240,9 @@ public class Node implements Serializable {
         int result = name != null ? name.hashCode() : 0;
         result = 31 * result + (qualifiedName != null ? qualifiedName.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (effectiveFromTime !=null ? effectiveFromTime.hashCode() :0);
+        result = 31 * result + (effectiveToTime !=null ? effectiveToTime.hashCode() :0);
+
         //TODO deal with icon set properly
         result = 31 * result + (icons != null ? icons.hashCode() : 0);
         return result;
