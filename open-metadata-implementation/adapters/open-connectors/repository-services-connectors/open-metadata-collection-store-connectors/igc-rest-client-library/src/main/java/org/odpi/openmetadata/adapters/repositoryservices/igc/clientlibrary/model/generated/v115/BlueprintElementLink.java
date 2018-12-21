@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class BlueprintElementLink extends Reference {
 
     public static String getIgcTypeId() { return "blueprint_element_link"; }
+    public static String getIgcTypeDisplayName() { return "Blueprint Element Link"; }
 
     /**
      * The 'element_name' property, displayed as 'Element Name' in the IGC UI.
@@ -29,7 +31,12 @@ public class BlueprintElementLink extends Reference {
     /** @see #element_name */ @JsonProperty("element_name")  public String getElementName() { return this.element_name; }
     /** @see #element_name */ @JsonProperty("element_name")  public void setElementName(String element_name) { this.element_name = element_name; }
 
+    public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return false; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("element_name");
+    }};
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isBlueprintElementLink(Object obj) { return (obj.getClass() == BlueprintElementLink.class); }
 
 }

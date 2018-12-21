@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class Array extends Reference {
 
     public static String getIgcTypeId() { return "array"; }
+    public static String getIgcTypeDisplayName() { return "Array"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -149,7 +151,17 @@ public class Array extends Reference {
     /** @see #minimum_size */ @JsonProperty("minimum_size")  public Number getMinimumSize() { return this.minimum_size; }
     /** @see #minimum_size */ @JsonProperty("minimum_size")  public void setMinimumSize(Number minimum_size) { this.minimum_size = minimum_size; }
 
+    public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return false; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("lower_bound");
+        add("maximum_size");
+        add("minimum_size");
+    }};
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isArray(Object obj) { return (obj.getClass() == Array.class); }
 
 }

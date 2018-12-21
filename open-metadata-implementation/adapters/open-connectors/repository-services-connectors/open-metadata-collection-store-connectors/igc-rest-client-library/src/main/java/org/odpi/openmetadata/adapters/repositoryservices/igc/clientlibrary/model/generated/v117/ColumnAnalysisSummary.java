@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class ColumnAnalysisSummary extends Reference {
 
     public static String getIgcTypeId() { return "column_analysis_summary"; }
+    public static String getIgcTypeDisplayName() { return "Column Analysis Summary"; }
 
     /**
      * The 'short_&amp;_long_description' property, displayed as 'Short &amp; Long Description' in the IGC UI.
@@ -337,7 +339,41 @@ public class ColumnAnalysisSummary extends Reference {
     /** @see #inferred_precision */ @JsonProperty("inferred_precision")  public Number getInferredPrecision() { return this.inferred_precision; }
     /** @see #inferred_precision */ @JsonProperty("inferred_precision")  public void setInferredPrecision(Number inferred_precision) { this.inferred_precision = inferred_precision; }
 
+    public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return true; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("short_&_long_description");
+        add("short_description");
+        add("long_description");
+        add("project_name");
+        add("review_date");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+        add("allow_null_values");
+        add("require_unique_values");
+        add("number_values");
+        add("number_of_complete_values");
+        add("number_of_valid_values");
+        add("number_of_empty_values");
+        add("number_of_null_values");
+        add("number_of_distinct_values");
+        add("number_of_distinct_patterns");
+        add("number_of_distinct_formats");
+        add("inferred_data_type");
+        add("inferred_format");
+        add("mask");
+        add("constant");
+        add("domain_type");
+        add("average_length");
+        add("longest_length");
+        add("shortest_length");
+        add("inferred_length");
+        add("inferred_scale");
+        add("inferred_precision");
+    }};
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isColumnAnalysisSummary(Object obj) { return (obj.getClass() == ColumnAnalysisSummary.class); }
 
 }

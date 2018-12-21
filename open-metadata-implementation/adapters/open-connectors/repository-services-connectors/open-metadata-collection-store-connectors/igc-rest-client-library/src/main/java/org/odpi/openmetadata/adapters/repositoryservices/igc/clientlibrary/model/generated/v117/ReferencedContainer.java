@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class ReferencedContainer extends Reference {
 
     public static String getIgcTypeId() { return "referenced_container"; }
+    public static String getIgcTypeDisplayName() { return "Referenced Container"; }
 
     /**
      * The 'type' property, displayed as 'Type' in the IGC UI.
@@ -131,7 +133,20 @@ public class ReferencedContainer extends Reference {
     /** @see #shared_containers */ @JsonProperty("shared_containers")  public Reference getSharedContainers() { return this.shared_containers; }
     /** @see #shared_containers */ @JsonProperty("shared_containers")  public void setSharedContainers(Reference shared_containers) { this.shared_containers = shared_containers; }
 
+    public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return true; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("type");
+        add("version");
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isReferencedContainer(Object obj) { return (obj.getClass() == ReferencedContainer.class); }
 
 }

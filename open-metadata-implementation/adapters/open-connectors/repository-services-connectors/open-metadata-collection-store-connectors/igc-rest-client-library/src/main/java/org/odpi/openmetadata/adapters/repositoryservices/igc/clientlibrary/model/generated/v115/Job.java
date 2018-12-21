@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class Job extends Reference {
 
     public static String getIgcTypeId() { return "job"; }
+    public static String getIgcTypeDisplayName() { return "Job"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -123,7 +125,15 @@ public class Job extends Reference {
     /** @see #release_status */ @JsonProperty("release_status")  public String getReleaseStatus() { return this.release_status; }
     /** @see #release_status */ @JsonProperty("release_status")  public void setReleaseStatus(String release_status) { this.release_status = release_status; }
 
+    public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return false; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("release_status");
+    }};
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isJob(Object obj) { return (obj.getClass() == Job.class); }
 
 }

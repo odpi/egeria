@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class HostEngine extends Host {
 
     public static String getIgcTypeId() { return "host_(engine)"; }
+    public static String getIgcTypeDisplayName() { return "Host (Engine)"; }
 
     public static final Boolean isHostEngine(Object obj) { return (obj.getClass() == HostEngine.class); }
 

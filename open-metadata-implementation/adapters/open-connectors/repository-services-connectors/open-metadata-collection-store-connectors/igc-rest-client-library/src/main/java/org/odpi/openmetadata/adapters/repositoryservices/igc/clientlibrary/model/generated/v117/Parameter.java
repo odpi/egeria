@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class Parameter extends Reference {
 
     public static String getIgcTypeId() { return "parameter"; }
+    public static String getIgcTypeDisplayName() { return "Parameter"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -462,7 +464,36 @@ public class Parameter extends Reference {
     /** @see #level */ @JsonProperty("level")  public Number getLevel() { return this.level; }
     /** @see #level */ @JsonProperty("level")  public void setLevel(Number level) { this.level = level; }
 
+    public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return false; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("usage");
+        add("connection_property");
+        add("is_connection_property");
+        add("is_signed");
+        add("type");
+        add("is_computed");
+        add("allows_empty_value");
+        add("odbc_type");
+        add("based_on");
+        add("position");
+        add("allow_null_values");
+        add("fraction");
+        add("allows_null_values");
+        add("calendar");
+        add("display_size");
+        add("minimum_length");
+        add("item_kind");
+        add("unique");
+        add("length");
+        add("data_type");
+        add("default_value");
+        add("level");
+    }};
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isParameter(Object obj) { return (obj.getClass() == Parameter.class); }
 
 }

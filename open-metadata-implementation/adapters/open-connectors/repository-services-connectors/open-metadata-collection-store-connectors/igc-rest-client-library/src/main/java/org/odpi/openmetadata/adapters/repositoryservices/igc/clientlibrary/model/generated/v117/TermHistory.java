@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class TermHistory extends Reference {
 
     public static String getIgcTypeId() { return "term_history"; }
+    public static String getIgcTypeDisplayName() { return "Term History"; }
 
     /**
      * The 'term' property, displayed as 'Term' in the IGC UI.
@@ -105,7 +107,19 @@ public class TermHistory extends Reference {
     /** @see #workflow_new_state */ @JsonProperty("workflow_new_state")  public String getWorkflowNewState() { return this.workflow_new_state; }
     /** @see #workflow_new_state */ @JsonProperty("workflow_new_state")  public void setWorkflowNewState(String workflow_new_state) { this.workflow_new_state = workflow_new_state; }
 
+    public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return false; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("date");
+        add("comment");
+        add("edited_by");
+        add("user_task_name");
+        add("user_task_key");
+        add("workflow_instance_id");
+        add("workflow_event");
+        add("workflow_new_state");
+    }};
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isTermHistory(Object obj) { return (obj.getClass() == TermHistory.class); }
 
 }

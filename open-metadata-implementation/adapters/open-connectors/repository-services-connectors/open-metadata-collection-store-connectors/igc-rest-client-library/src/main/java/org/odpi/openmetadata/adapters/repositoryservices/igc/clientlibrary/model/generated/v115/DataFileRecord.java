@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class DataFileRecord extends Reference {
 
     public static String getIgcTypeId() { return "data_file_record"; }
+    public static String getIgcTypeDisplayName() { return "Data File Record"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -387,7 +389,28 @@ public class DataFileRecord extends Reference {
     /** @see #modified_on */ @JsonProperty("modified_on")  public Date getModifiedOn() { return this.modified_on; }
     /** @see #modified_on */ @JsonProperty("modified_on")  public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
+    public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return true; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("qualityScore");
+        add("alias_(business_name)");
+        add("include_for_business_lineage");
+        add("imported_from");
+        add("reviewDate");
+        add("fieldCount");
+        add("rowCount");
+        add("PKDuplicateCount");
+        add("FKViolationCount");
+        add("nbRecordTested");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isDataFileRecord(Object obj) { return (obj.getClass() == DataFileRecord.class); }
 
 }

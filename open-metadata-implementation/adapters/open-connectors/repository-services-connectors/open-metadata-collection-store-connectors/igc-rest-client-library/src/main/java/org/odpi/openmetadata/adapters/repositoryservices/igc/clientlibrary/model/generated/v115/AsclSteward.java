@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class AsclSteward extends Reference {
 
     public static String getIgcTypeId() { return "ascl_steward"; }
+    public static String getIgcTypeDisplayName() { return "Steward"; }
 
     /**
      * The 'email_address' property, displayed as 'Email Address' in the IGC UI.
@@ -109,7 +111,17 @@ public class AsclSteward extends Reference {
     /** @see #steward_group */ @JsonProperty("steward_group")  public Reference getStewardGroup() { return this.steward_group; }
     /** @see #steward_group */ @JsonProperty("steward_group")  public void setStewardGroup(Reference steward_group) { this.steward_group = steward_group; }
 
+    public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return true; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("email_address");
+        add("organization");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isAsclSteward(Object obj) { return (obj.getClass() == AsclSteward.class); }
 
 }

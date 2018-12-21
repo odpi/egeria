@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class Datasourcealiasgroup extends Reference {
 
     public static String getIgcTypeId() { return "datasourcealiasgroup"; }
+    public static String getIgcTypeDisplayName() { return "DataSourceAliasGroup"; }
 
     /**
      * The 'same_as_data_connections' property, displayed as 'Same as Data Connections' in the IGC UI.
@@ -51,7 +53,10 @@ public class Datasourcealiasgroup extends Reference {
     /** @see #bound_to_database */ @JsonProperty("bound_to_database")  public Reference getBoundToDatabase() { return this.bound_to_database; }
     /** @see #bound_to_database */ @JsonProperty("bound_to_database")  public void setBoundToDatabase(Reference bound_to_database) { this.bound_to_database = bound_to_database; }
 
+    public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return false; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<>();
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isDatasourcealiasgroup(Object obj) { return (obj.getClass() == Datasourcealiasgroup.class); }
 
 }

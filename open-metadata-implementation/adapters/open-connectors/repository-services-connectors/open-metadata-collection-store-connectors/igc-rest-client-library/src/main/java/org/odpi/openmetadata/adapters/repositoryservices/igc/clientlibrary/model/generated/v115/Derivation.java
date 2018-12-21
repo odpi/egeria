@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class Derivation extends Reference {
 
     public static String getIgcTypeId() { return "derivation"; }
+    public static String getIgcTypeDisplayName() { return "Derivation"; }
 
     /**
      * The 'expression' property, displayed as 'Expression' in the IGC UI.
@@ -29,7 +31,12 @@ public class Derivation extends Reference {
     /** @see #expression */ @JsonProperty("expression")  public String getExpression() { return this.expression; }
     /** @see #expression */ @JsonProperty("expression")  public void setExpression(String expression) { this.expression = expression; }
 
+    public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return false; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("expression");
+    }};
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isDerivation(Object obj) { return (obj.getClass() == Derivation.class); }
 
 }

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class Dsjcltemplate extends Reference {
 
     public static String getIgcTypeId() { return "dsjcltemplate"; }
+    public static String getIgcTypeDisplayName() { return "DSJCLTemplate"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -135,7 +137,19 @@ public class Dsjcltemplate extends Reference {
     /** @see #code_template */ @JsonProperty("code_template")  public String getCodeTemplate() { return this.code_template; }
     /** @see #code_template */ @JsonProperty("code_template")  public void setCodeTemplate(String code_template) { this.code_template = code_template; }
 
+    public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return false; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("template_type");
+        add("category");
+        add("ds_name_space");
+        add("platform_type");
+        add("code_template");
+    }};
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isDsjcltemplate(Object obj) { return (obj.getClass() == Dsjcltemplate.class); }
 
 }

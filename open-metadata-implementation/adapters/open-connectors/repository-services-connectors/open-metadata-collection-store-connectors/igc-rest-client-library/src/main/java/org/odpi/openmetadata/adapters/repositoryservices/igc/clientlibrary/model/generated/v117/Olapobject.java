@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class Olapobject extends Reference {
 
     public static String getIgcTypeId() { return "olapobject"; }
+    public static String getIgcTypeDisplayName() { return "OLAPObject"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -103,7 +105,15 @@ public class Olapobject extends Reference {
     /** @see #business_name */ @JsonProperty("business_name")  public String getBusinessName() { return this.business_name; }
     /** @see #business_name */ @JsonProperty("business_name")  public void setBusinessName(String business_name) { this.business_name = business_name; }
 
+    public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return false; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("business_name");
+    }};
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isOlapobject(Object obj) { return (obj.getClass() == Olapobject.class); }
 
 }

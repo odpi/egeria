@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class LineageReportTemplate extends Reference {
 
     public static String getIgcTypeId() { return "lineage_report_template"; }
+    public static String getIgcTypeDisplayName() { return "Lineage Report Template"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -57,7 +59,13 @@ public class LineageReportTemplate extends Reference {
     /** @see #asset_display_properties */ @JsonProperty("asset_display_properties")  public Reference getAssetDisplayProperties() { return this.asset_display_properties; }
     /** @see #asset_display_properties */ @JsonProperty("asset_display_properties")  public void setAssetDisplayProperties(Reference asset_display_properties) { this.asset_display_properties = asset_display_properties; }
 
+    public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return false; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("long_description");
+    }};
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isLineageReportTemplate(Object obj) { return (obj.getClass() == LineageReportTemplate.class); }
 
 }

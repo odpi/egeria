@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class XsdElementReference extends Reference {
 
     public static String getIgcTypeId() { return "xsd_element_reference"; }
+    public static String getIgcTypeDisplayName() { return "XSD Element Reference"; }
 
     /**
      * The 'min_occurs' property, displayed as 'Minimum Occurrence' in the IGC UI.
@@ -77,7 +79,13 @@ public class XsdElementReference extends Reference {
     /** @see #referenced_xsd_element */ @JsonProperty("referenced_xsd_element")  public Reference getReferencedXsdElement() { return this.referenced_xsd_element; }
     /** @see #referenced_xsd_element */ @JsonProperty("referenced_xsd_element")  public void setReferencedXsdElement(Reference referenced_xsd_element) { this.referenced_xsd_element = referenced_xsd_element; }
 
+    public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return false; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("min_occurs");
+        add("max_occurs");
+    }};
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isXsdElementReference(Object obj) { return (obj.getClass() == XsdElementReference.class); }
 
 }

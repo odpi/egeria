@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class OslcLink extends Reference {
 
     public static String getIgcTypeId() { return "oslc_link"; }
+    public static String getIgcTypeDisplayName() { return "Link"; }
 
     /**
      * The 'url' property, displayed as 'Url' in the IGC UI.
@@ -67,7 +69,13 @@ public class OslcLink extends Reference {
     /** @see #of_provider_connection */ @JsonProperty("of_provider_connection")  public Reference getOfProviderConnection() { return this.of_provider_connection; }
     /** @see #of_provider_connection */ @JsonProperty("of_provider_connection")  public void setOfProviderConnection(Reference of_provider_connection) { this.of_provider_connection = of_provider_connection; }
 
+    public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return false; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("url");
+        add("description");
+    }};
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isOslcLink(Object obj) { return (obj.getClass() == OslcLink.class); }
 
 }

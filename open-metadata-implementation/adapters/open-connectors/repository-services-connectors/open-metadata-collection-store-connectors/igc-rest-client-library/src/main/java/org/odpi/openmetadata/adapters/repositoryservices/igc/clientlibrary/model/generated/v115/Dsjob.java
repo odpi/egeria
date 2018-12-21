@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class Dsjob extends Reference {
 
     public static String getIgcTypeId() { return "dsjob"; }
+    public static String getIgcTypeDisplayName() { return "Job"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -472,7 +474,29 @@ public class Dsjob extends Reference {
     /** @see #modified_on */ @JsonProperty("modified_on")  public Date getModifiedOn() { return this.modified_on; }
     /** @see #modified_on */ @JsonProperty("modified_on")  public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
+    public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return true; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("type");
+        add("annotations");
+        add("runtime_column_propagation");
+        add("include_for_lineage");
+        add("include_for_lineage__edit");
+        add("include_for_lineage_description");
+        add("inherits_lineage_setting_from_transformation_project");
+        add("lineage_service_last_run_date");
+        add("lineage_service_status");
+        add("lineage_service_information");
+        add("web_service_enabled");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isDsjob(Object obj) { return (obj.getClass() == Dsjob.class); }
 
 }

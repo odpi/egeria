@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class UserRole extends Reference {
 
     public static String getIgcTypeId() { return "user_role"; }
+    public static String getIgcTypeDisplayName() { return "User Role"; }
 
     /**
      * The 'name' property, displayed as 'Role' in the IGC UI.
@@ -47,7 +49,13 @@ public class UserRole extends Reference {
     /** @see #users */ @JsonProperty("users")  public ReferenceList getUsers() { return this.users; }
     /** @see #users */ @JsonProperty("users")  public void setUsers(ReferenceList users) { this.users = users; }
 
+    public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return false; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("system_role");
+    }};
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isUserRole(Object obj) { return (obj.getClass() == UserRole.class); }
 
 }

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class DataConnectionMapping extends Reference {
 
     public static String getIgcTypeId() { return "data_connection_mapping"; }
+    public static String getIgcTypeDisplayName() { return "Data Connection Mapping"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -85,7 +87,14 @@ public class DataConnectionMapping extends Reference {
     /** @see #bound_to_database */ @JsonProperty("bound_to_database")  public Reference getBoundToDatabase() { return this.bound_to_database; }
     /** @see #bound_to_database */ @JsonProperty("bound_to_database")  public void setBoundToDatabase(Reference bound_to_database) { this.bound_to_database = bound_to_database; }
 
+    public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return false; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("host_(engine)_name");
+        add("type");
+    }};
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isDataConnectionMapping(Object obj) { return (obj.getClass() == DataConnectionMapping.class); }
 
 }

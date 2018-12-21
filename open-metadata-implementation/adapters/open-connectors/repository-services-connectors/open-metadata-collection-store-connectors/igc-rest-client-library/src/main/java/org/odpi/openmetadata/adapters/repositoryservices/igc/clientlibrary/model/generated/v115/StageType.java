@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class StageType extends Reference {
 
     public static String getIgcTypeId() { return "stage_type"; }
+    public static String getIgcTypeDisplayName() { return "Stage Type"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -79,7 +81,17 @@ public class StageType extends Reference {
     /** @see #copyright */ @JsonProperty("copyright")  public String getCopyright() { return this.copyright; }
     /** @see #copyright */ @JsonProperty("copyright")  public void setCopyright(String copyright) { this.copyright = copyright; }
 
+    public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return false; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("long_description");
+        add("vendor");
+        add("version");
+        add("author");
+        add("copyright");
+    }};
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isStageType(Object obj) { return (obj.getClass() == StageType.class); }
 
 }

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class JobStageRecord extends Reference {
 
     public static String getIgcTypeId() { return "job_stage_record"; }
+    public static String getIgcTypeDisplayName() { return "Job Stage Record"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -171,7 +173,21 @@ public class JobStageRecord extends Reference {
     /** @see #record_id_name_value_relation */ @JsonProperty("record_id_name_value_relation")  public String getRecordIdNameValueRelation() { return this.record_id_name_value_relation; }
     /** @see #record_id_name_value_relation */ @JsonProperty("record_id_name_value_relation")  public void setRecordIdNameValueRelation(String record_id_name_value_relation) { this.record_id_name_value_relation = record_id_name_value_relation; }
 
+    public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return false; }
+    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("record_id_name");
+        add("a_xmeta_locking_root");
+        add("other_records_initialization_flag");
+        add("record_id_value");
+        add("internal_id");
+        add("record_name");
+        add("record_id_name_value_relation");
+    }};
+    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isJobStageRecord(Object obj) { return (obj.getClass() == JobStageRecord.class); }
 
 }
