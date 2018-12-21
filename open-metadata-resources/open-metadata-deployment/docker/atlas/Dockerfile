@@ -30,17 +30,26 @@ WORKDIR /root
 RUN git clone http://git.apache.org/atlas.git -b master
 
 #Apply patch
-RUN wget https://jira.apache.org/jira/secure/attachment/12941989/ATLAS-1773-2018-10-01.patch
+RUN wget https://issues.apache.org/jira/secure/attachment/12952687/ATLAS-1773-2018-12-21.patch
+RUN wget https://issues.apache.org/jira/secure/attachment/12952688/ATLAS-2810-2018-12-21.patch
+RUN wget https://issues.apache.org/jira/secure/attachment/12952689/ATLAS-2939-2018-12-21.patch
+RUN wget https://issues.apache.org/jira/secure/attachment/12952690/ATLAS-2985-2018-12-21.patch
 WORKDIR atlas
+# Stick with mid dec build due to regression impacting fixes
+RUN git checkout beb34506a15379af4a306902da049f37b445a2f5
 RUN   git config --global user.email "you@example.com"
 RUN   git config --global user.name "Your Name"
-RUN git am < ../ATLAS-1773-2018-10-01.patch
+RUN git am < ../ATLAS-2810-2018-12-21.patch
+RUN git am < ../ATLAS-2939-2018-12-21.patch
+RUN git am < ../ATLAS-2985-2018-12-21.patch
+RUN git am < ../ATLAS-1773-2018-12-21.patch
 
-# Fix up to use released version
-RUN mv pom.xml pom.xml2
-RUN cat pom.xml2 | sed 's/0.1-SNAPSHOT/0.1/g' > pom.xml
-RUN rm pom.xml2
+# Add reference to odpi repository for snapshots
+COPY dist/settings.xml /root/.m2/settings.xml
 WORKDIR /root
+
+# need more java heap
+ENV JAVA_TOOL_OPTIONS="-Xmx1024m"
 
 # Remove -DskipTests if unit tests are to be included
 RUN mvn clean install -DskipTests -Pdist,embedded-hbase-solr -f ./atlas/pom.xml
