@@ -194,5 +194,26 @@ public interface SubjectAreaGlossary
                                                                                     UnrecognizedGUIDException,
                                                                                     GUIDNotPurgedException,
                                                                                     UnexpectedResponseException ;
-
+    /**
+     * Restore a Glossary
+     *
+     * Restore allows the deleted Glossary to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the glossary to restore
+     * @return the restored glossary
+     * @throws UnrecognizedGUIDException the supplied guid was not recognised
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws FunctionNotSupportedException   Function not supported this indicates that a soft delete was issued but the repository does not support it.
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+    public  Glossary restoreGlossary(String serverName, String userId,String guid) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            MetadataServerUncontactableException,
+            UnrecognizedGUIDException,
+            FunctionNotSupportedException,
+            UnexpectedResponseException;
 }

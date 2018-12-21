@@ -28,6 +28,7 @@ public class RunAllFVT
             CategoryHierarchyFVT.runit(url);
             RelationshipsFVT.runit(url);
             SubjectAreaDefinitionCategoryFVT.runit(url);
+            EffectiveDatesFVT.runit(url);
             System.out.println("Samples all run");
         } catch (IOException e1)
         {
