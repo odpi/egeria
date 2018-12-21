@@ -36,7 +36,6 @@ RUN wget https://issues.apache.org/jira/secure/attachment/12952689/ATLAS-2939-20
 RUN wget https://issues.apache.org/jira/secure/attachment/12952690/ATLAS-2985-2018-12-21.patch
 WORKDIR atlas
 # Stick with mid dec build due to regression impacting fixes
-RUN git checkout beb34506a15379af4a306902da049f37b445a2f5
 RUN   git config --global user.email "you@example.com"
 RUN   git config --global user.name "Your Name"
 RUN git am < ../ATLAS-2810-2018-12-21.patch
