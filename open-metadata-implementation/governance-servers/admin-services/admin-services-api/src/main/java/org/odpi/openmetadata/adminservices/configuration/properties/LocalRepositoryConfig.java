@@ -12,7 +12,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,10 +57,8 @@ import java.util.List;
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class LocalRepositoryConfig implements Serializable
+public class LocalRepositoryConfig extends AdminServicesConfigHeader
 {
-    private static final long serialVersionUID = 1L;
-
     private String                   metadataCollectionId            = null;
     private Connection               localRepositoryLocalConnection  = null;
     private Connection               localRepositoryRemoteConnection = null;
@@ -97,6 +94,8 @@ public class LocalRepositoryConfig implements Serializable
                                  List<TypeDefSummary>      selectedTypesToSend,
                                  Connection                eventMapperConnection)
     {
+        super();
+
         this.metadataCollectionId = metadataCollectionId;
         this.localRepositoryLocalConnection = localRepositoryLocalConnection;
         this.localRepositoryRemoteConnection = localRepositoryRemoteConnection;
@@ -114,6 +113,30 @@ public class LocalRepositoryConfig implements Serializable
      */
     public LocalRepositoryConfig()
     {
+        super();
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public LocalRepositoryConfig(LocalRepositoryConfig  template)
+    {
+        super(template);
+
+        if (template != null)
+        {
+            this.metadataCollectionId = template.getMetadataCollectionId();
+            this.localRepositoryLocalConnection = template.getLocalRepositoryLocalConnection();
+            this.localRepositoryRemoteConnection = template.getLocalRepositoryRemoteConnection();
+            this.eventsToSaveRule = template.getEventsToSaveRule();
+            this.setSelectedTypesToSave(selectedTypesToSave);
+            this.eventsToSendRule = eventsToSendRule;
+            this.setSelectedTypesToSend(selectedTypesToSend);
+            this.eventMapperConnection = eventMapperConnection;
+        }
     }
 
 
@@ -222,9 +245,23 @@ public class LocalRepositoryConfig implements Serializable
         {
             return null;
         }
+        else if (selectedTypesToSave.isEmpty())
+        {
+            return null;
+        }
         else
         {
-            return selectedTypesToSave;
+            List<TypeDefSummary> resultList = new ArrayList<>();
+
+            for (TypeDefSummary  typeDefSummary : selectedTypesToSave)
+            {
+                if (typeDefSummary != null)
+                {
+                    resultList.add(new TypeDefSummary(typeDefSummary));
+                }
+            }
+
+            return resultList;
         }
     }
 
@@ -236,14 +273,7 @@ public class LocalRepositoryConfig implements Serializable
      */
     public void setSelectedTypesToSave(List<TypeDefSummary> selectedTypesToSave)
     {
-        if (selectedTypesToSave == null)
-        {
-            this.selectedTypesToSave = null;
-        }
-        else
-        {
-            this.selectedTypesToSave = new ArrayList<>(selectedTypesToSave);
-        }
+        this.selectedTypesToSave = selectedTypesToSave;
     }
 
 
@@ -282,9 +312,23 @@ public class LocalRepositoryConfig implements Serializable
         {
             return null;
         }
+        else if (selectedTypesToSend.isEmpty())
+        {
+            return null;
+        }
         else
         {
-            return selectedTypesToSend;
+            List<TypeDefSummary> resultList = new ArrayList<>();
+
+            for (TypeDefSummary  typeDefSummary : selectedTypesToSend)
+            {
+                if (typeDefSummary != null)
+                {
+                    resultList.add(new TypeDefSummary(typeDefSummary));
+                }
+            }
+
+            return resultList;
         }
     }
 
@@ -296,14 +340,7 @@ public class LocalRepositoryConfig implements Serializable
      */
     public void setSelectedTypesToSend(List<TypeDefSummary> selectedTypesToSend)
     {
-        if (selectedTypesToSend == null)
-        {
-            this.selectedTypesToSend = null;
-        }
-        else
-        {
-            this.selectedTypesToSend = new ArrayList<>(selectedTypesToSend);
-        }
+        this.selectedTypesToSend = selectedTypesToSend;
     }
 
 
@@ -333,4 +370,29 @@ public class LocalRepositoryConfig implements Serializable
     {
         this.eventMapperConnection = eventMapperConnection;
     }
+
+
+    /**
+     * Standard toString method.
+     *
+     * @return JSON style description of variables.
+     */
+
+
+
+    /**
+     * Validate that an object is equal depending on their stored values.
+     *
+     * @param objectToCompare object
+     * @return boolean result
+     */
+
+
+
+
+    /**
+     * Return a hash code based on the values of this object.
+     *
+     * @return in hash code
+     */
 }

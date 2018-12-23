@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Discovery Engine
+# Discovery Engine Services
 
 A discovery engine is a server capability that runs
 [Open Discovery Services](../../frameworks/open-discovery-framework/docs/discovery-service.md) on request.

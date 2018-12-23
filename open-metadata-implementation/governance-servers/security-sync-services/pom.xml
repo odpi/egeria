@@ -1,36 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- SPDX-License-Identifier: Apache-2.0 -->
-<!-- Copyright Contributors to the ODPi Egeria project.  -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <artifactId>admin-services</artifactId>
+        <artifactId>governance-servers</artifactId>
         <groupId>org.odpi.egeria</groupId>
         <version>0.3-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
 
-
-    <name>Administration Services API</name>
+    <name>Security Synchronization Services</name>
     <description>
-        Provides the definitions that make up the APIs used by external components when communicating
-        with the open metadata administration services.
+        The security synchronization services support the configuration of a security enforcement engine.
     </description>
 
-    <artifactId>admin-services-api</artifactId>
+    <artifactId>security-sync-services</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>security-sync-services-api</module>
+        <module>security-sync-services-server</module>
+    </modules>
 
     <dependencies>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>repository-services-apis</artifactId>
+            <artifactId>open-connector-framework</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
 
     </dependencies>
+
 </project>
