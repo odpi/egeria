@@ -8,29 +8,34 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <artifactId>admin-services</artifactId>
+        <artifactId>stewardship-services</artifactId>
         <groupId>org.odpi.egeria</groupId>
         <version>0.3-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
 
-
-    <name>Administration Services API</name>
+    <name>Stewardship Services Server-side</name>
     <description>
-        Provides the definitions that make up the APIs used by external components when communicating
-        with the open metadata administration services.
+        Server side implementation of the stewardship services.
     </description>
 
-    <artifactId>admin-services-api</artifactId>
+    <artifactId>stewardship-services-server</artifactId>
 
     <dependencies>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>repository-services-apis</artifactId>
+            <artifactId>stewardship-services-api</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>connector-configuration-factory</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
 
     </dependencies>
+
 </project>

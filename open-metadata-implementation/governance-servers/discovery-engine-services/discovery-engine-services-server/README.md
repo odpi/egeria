@@ -1,12 +1,10 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Admin Services API
+# Discovery Engine Server
 
-The admin services API provides the property structures and
-REST structures used to configure the open metadata implementation services.
-
-
+The discovery engine server module contains the server-side
+implementation of the discovery engine.
 
 
 

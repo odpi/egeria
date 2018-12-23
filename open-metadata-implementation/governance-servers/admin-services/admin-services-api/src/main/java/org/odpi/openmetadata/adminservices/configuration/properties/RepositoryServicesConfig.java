@@ -47,10 +47,8 @@ import java.util.List;
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class RepositoryServicesConfig implements Serializable
+public class RepositoryServicesConfig extends AdminServicesConfigHeader
 {
-    private static final long serialVersionUID = 1L;
-
     private List<Connection>       auditLogConnections            = new ArrayList<>();
     private List<Connection>       openMetadataArchiveConnections = new ArrayList<>();
     private LocalRepositoryConfig  localRepositoryConfig          = null;
@@ -63,6 +61,27 @@ public class RepositoryServicesConfig implements Serializable
      */
     public RepositoryServicesConfig()
     {
+        super();
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public RepositoryServicesConfig(RepositoryServicesConfig  template)
+    {
+        super();
+
+        if (template != null)
+        {
+            this.auditLogConnections = template.getAuditLogConnections();
+            this.openMetadataArchiveConnections = template.getOpenMetadataArchiveConnections();
+            this.localRepositoryConfig = template.getLocalRepositoryConfig();
+            this.enterpriseAccessConfig = template.getEnterpriseAccessConfig();
+            this.cohortConfigList = template.getCohortConfigList();
+        }
     }
 
 
@@ -246,4 +265,29 @@ public class RepositoryServicesConfig implements Serializable
             this.cohortConfigList = new ArrayList<>(cohortConfigList);
         }
     }
+
+
+    /**
+     * Standard toString method.
+     *
+     * @return JSON style description of variables.
+     */
+
+
+
+    /**
+     * Validate that an object is equal depending on their stored values.
+     *
+     * @param objectToCompare object
+     * @return boolean result
+     */
+
+
+
+
+    /**
+     * Return a hash code based on the values of this object.
+     *
+     * @return in hash code
+     */
 }

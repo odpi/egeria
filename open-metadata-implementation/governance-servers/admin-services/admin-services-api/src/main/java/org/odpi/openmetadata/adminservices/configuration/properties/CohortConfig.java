@@ -12,6 +12,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -52,7 +53,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class CohortConfig
+public class CohortConfig extends AdminServicesConfigHeader
 {
     private String                           cohortName                     = null;
     private Connection                       cohortRegistryConnection       = null;
@@ -72,26 +73,23 @@ public class CohortConfig
 
 
     /**
-     * Constructor to populate all config values.
+     * Copy/clone constructor
      *
-     * @param cohortName name of the cohort
-     * @param cohortRegistryConnection connection to the cohort registry store
-     * @param cohortOMRSTopicConnection connection to the OMRS Topic
-     * @param eventsToProcessRule rule indicating whether metadata events should be sent to the federated OMRS Topic.
-     * @param selectedTypesToProcess if the rule says "SELECTED_TYPES" then this is the list of types otherwise
-     *                                it is set to null.
+     * @param template object to copy
      */
-    public CohortConfig(String                      cohortName,
-                        Connection                  cohortRegistryConnection,
-                        Connection                  cohortOMRSTopicConnection,
-                        OpenMetadataExchangeRule    eventsToProcessRule,
-                        List<TypeDefSummary>        selectedTypesToProcess)
+    public CohortConfig(CohortConfig  template)
     {
-        this.cohortName = cohortName;
-        this.cohortRegistryConnection = cohortRegistryConnection;
-        this.cohortOMRSTopicConnection = cohortOMRSTopicConnection;
-        this.eventsToProcessRule = eventsToProcessRule;
-        this.selectedTypesToProcess = selectedTypesToProcess;
+        super(template);
+
+        if (template != null)
+        {
+            cohortName = template.getCohortName();
+            cohortRegistryConnection = template.getCohortRegistryConnection();
+            cohortOMRSTopicConnection = template.getCohortOMRSTopicConnection();
+            cohortOMRSTopicProtocolVersion = template.getCohortOMRSTopicProtocolVersion();
+            eventsToProcessRule = template.getEventsToProcessRule();
+            selectedTypesToProcess = template.getSelectedTypesToProcess();
+        }
     }
 
 
@@ -124,7 +122,14 @@ public class CohortConfig
      */
     public Connection getCohortRegistryConnection()
     {
-        return cohortRegistryConnection;
+        if (cohortRegistryConnection == null)
+        {
+            return null;
+        }
+        else
+        {
+            return new Connection(cohortRegistryConnection);
+        }
     }
 
 
@@ -146,8 +151,16 @@ public class CohortConfig
      */
     public Connection getCohortOMRSTopicConnection()
     {
-        return cohortOMRSTopicConnection;
+        if (cohortOMRSTopicConnection == null)
+        {
+            return null;
+        }
+        else
+        {
+            return new Connection(cohortOMRSTopicConnection);
+        }
     }
+
 
     /**
      * Set up the connection to the cohort's OMRS Topic.
@@ -216,9 +229,23 @@ public class CohortConfig
         {
             return null;
         }
+        else if (selectedTypesToProcess.isEmpty())
+        {
+            return null;
+        }
         else
         {
-            return selectedTypesToProcess;
+            List<TypeDefSummary>  resultList = new ArrayList<>();
+
+            for (TypeDefSummary  typeDefSummary : selectedTypesToProcess)
+            {
+                if (typeDefSummary != null)
+                {
+                    resultList.add(new TypeDefSummary((typeDefSummary)));
+                }
+            }
+
+            return resultList;
         }
     }
 
@@ -231,13 +258,66 @@ public class CohortConfig
      */
     public void setSelectedTypesToProcess(List<TypeDefSummary> selectedTypesToProcess)
     {
-        if (selectedTypesToProcess == null)
+        this.selectedTypesToProcess = selectedTypesToProcess;
+    }
+
+
+    /**
+     * Standard toString method.
+     *
+     * @return JSON style description of variables.
+     */
+    @Override
+    public String toString()
+    {
+        return "CohortConfig{" +
+                "cohortName='" + cohortName + '\'' +
+                ", cohortRegistryConnection=" + cohortRegistryConnection +
+                ", cohortOMRSTopicConnection=" + cohortOMRSTopicConnection +
+                ", cohortOMRSTopicProtocolVersion=" + cohortOMRSTopicProtocolVersion +
+                ", eventsToProcessRule=" + eventsToProcessRule +
+                ", selectedTypesToProcess=" + selectedTypesToProcess +
+                '}';
+    }
+
+
+    /**
+     * Validate that an object is equal depending on their stored values.
+     *
+     * @param objectToCompare object
+     * @return boolean result
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
         {
-            this.selectedTypesToProcess = null;
+            return true;
         }
-        else
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
-            this.selectedTypesToProcess = new ArrayList<>(selectedTypesToProcess);
+            return false;
         }
+        CohortConfig that = (CohortConfig) objectToCompare;
+        return Objects.equals(getCohortName(), that.getCohortName()) &&
+                Objects.equals(getCohortRegistryConnection(), that.getCohortRegistryConnection()) &&
+                Objects.equals(getCohortOMRSTopicConnection(), that.getCohortOMRSTopicConnection()) &&
+                getCohortOMRSTopicProtocolVersion() == that.getCohortOMRSTopicProtocolVersion() &&
+                getEventsToProcessRule() == that.getEventsToProcessRule() &&
+                Objects.equals(getSelectedTypesToProcess(), that.getSelectedTypesToProcess());
+    }
+
+
+
+    /**
+     * Return a hash code based on the values of this object.
+     *
+     * @return in hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(getCohortName(), getCohortRegistryConnection(), getCohortOMRSTopicConnection(),
+                            getCohortOMRSTopicProtocolVersion(), getEventsToProcessRule(), getSelectedTypesToProcess());
     }
 }
