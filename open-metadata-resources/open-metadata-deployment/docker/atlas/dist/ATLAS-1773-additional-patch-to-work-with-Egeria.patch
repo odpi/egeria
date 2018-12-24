@@ -1,39 +1,18 @@
-From 8929490d0dd934a577bf77f2a32459b773f40b5a Mon Sep 17 00:00:00 2001
+From aa57e31c3c0e0fd7bc1f432354eba40119292318 Mon Sep 17 00:00:00 2001
 From: Nigel Jones <nigel.l.jones+git@gmail.com>
-Date: Mon, 24 Dec 2018 09:46:21 +0000
-Subject: [PATCH] ATLAS-1773 additional patch to work with Egeria's new spring
- libs
-
-Signed-off-by: Nigel Jones <nigel.l.jones+git@gmail.com>
-
-updated
-
-Signed-off-by: Nigel Jones <nigel.l.jones+git@gmail.com>
-
-updated
-
-Signed-off-by: Nigel Jones <nigel.l.jones+git@gmail.com>
-
-updated
-
-Signed-off-by: Nigel Jones <nigel.l.jones+git@gmail.com>
-
-updated
-
-Signed-off-by: Nigel Jones <nigel.l.jones+git@gmail.com>
-
-updated
+Date: Mon, 24 Dec 2018 14:48:46 +0000
+Subject: [PATCH] #492 additional patches for egeria newer spring fw
 
 Signed-off-by: Nigel Jones <nigel.l.jones+git@gmail.com>
 ---
- .../atlas/web/filters/NullServletContext.java | 26 +++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ .../atlas/web/filters/NullServletContext.java | 31 +++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
 diff --git a/webapp/src/main/java/org/apache/atlas/web/filters/NullServletContext.java b/webapp/src/main/java/org/apache/atlas/web/filters/NullServletContext.java
-index 25621c6bb..1e74d6b8d 100644
+index 25621c6bb..3c506465b 100644
 --- a/webapp/src/main/java/org/apache/atlas/web/filters/NullServletContext.java
 +++ b/webapp/src/main/java/org/apache/atlas/web/filters/NullServletContext.java
-@@ -297,5 +297,31 @@ public class NullServletContext implements ServletContext {
+@@ -297,5 +297,36 @@ public class NullServletContext implements ServletContext {
          return null;
      }
  
@@ -61,7 +40,12 @@ index 25621c6bb..1e74d6b8d 100644
 +
 +    public int getSessionTimeout()
 +    {
-+        return null;
++        return 0;
++    }
++
++    public javax.servlet.ServletRegistration.Dynamic addJspFile(String jspName, String jspFile)
++    {
++	return null;
 +    }
  
  }
