@@ -34,14 +34,25 @@ RUN wget https://issues.apache.org/jira/secure/attachment/12952687/ATLAS-1773-20
 RUN wget https://issues.apache.org/jira/secure/attachment/12952688/ATLAS-2810-2018-12-21.patch
 RUN wget https://issues.apache.org/jira/secure/attachment/12952689/ATLAS-2939-2018-12-21.patch
 RUN wget https://issues.apache.org/jira/secure/attachment/12952690/ATLAS-2985-2018-12-21.patch
+
+# additional patch for latest spring framework
+COPY dist/ATLAS-1773-additional-patch-to-work-with-Egeria.patch .
+
 WORKDIR atlas
-# Stick with mid dec build due to regression impacting fixes
+
 RUN   git config --global user.email "you@example.com"
 RUN   git config --global user.name "Your Name"
+
+# apply patches
 RUN git am < ../ATLAS-2810-2018-12-21.patch
 RUN git am < ../ATLAS-2939-2018-12-21.patch
 RUN git am < ../ATLAS-2985-2018-12-21.patch
 RUN git am < ../ATLAS-1773-2018-12-21.patch
+RUN git am < ../ATLAS-1773-additional-patch-to-work-with-Egeria.patch
+
+
+# additional patch for latest spring framework
+COPY dist/ATLAS-1773-additional-patch-to-work-with-Egeria.patch .
 
 # Add reference to odpi repository for snapshots
 COPY dist/settings.xml /root/.m2/settings.xml

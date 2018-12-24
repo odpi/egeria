@@ -1,24 +1,67 @@
-From ad023f492eee042855060a03b59dca41f3f23e38 Mon Sep 17 00:00:00 2001
+From 8929490d0dd934a577bf77f2a32459b773f40b5a Mon Sep 17 00:00:00 2001
 From: Nigel Jones <nigel.l.jones+git@gmail.com>
 Date: Mon, 24 Dec 2018 09:46:21 +0000
 Subject: [PATCH] ATLAS-1773 additional patch to work with Egeria's new spring
  libs
 
 Signed-off-by: Nigel Jones <nigel.l.jones+git@gmail.com>
+
+updated
+
+Signed-off-by: Nigel Jones <nigel.l.jones+git@gmail.com>
+
+updated
+
+Signed-off-by: Nigel Jones <nigel.l.jones+git@gmail.com>
+
+updated
+
+Signed-off-by: Nigel Jones <nigel.l.jones+git@gmail.com>
+
+updated
+
+Signed-off-by: Nigel Jones <nigel.l.jones+git@gmail.com>
+
+updated
+
+Signed-off-by: Nigel Jones <nigel.l.jones+git@gmail.com>
 ---
- .../java/org/apache/atlas/web/filters/NullServletContext.java  | 3 +++
- 1 file changed, 3 insertions(+)
+ .../atlas/web/filters/NullServletContext.java | 26 +++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
 diff --git a/webapp/src/main/java/org/apache/atlas/web/filters/NullServletContext.java b/webapp/src/main/java/org/apache/atlas/web/filters/NullServletContext.java
-index 25621c6bb..ca686284e 100644
+index 25621c6bb..1e74d6b8d 100644
 --- a/webapp/src/main/java/org/apache/atlas/web/filters/NullServletContext.java
 +++ b/webapp/src/main/java/org/apache/atlas/web/filters/NullServletContext.java
-@@ -297,5 +297,8 @@ public class NullServletContext implements ServletContext {
+@@ -297,5 +297,31 @@ public class NullServletContext implements ServletContext {
          return null;
      }
  
 +    public void setResponseCharacterEncoding(String encoding)
 +    {
++    }
++
++    public String getResponseCharacterEncoding()
++    {
++	return null;
++    }
++
++    public void setRequestCharacterEncoding(String encoding)
++    {
++    }
++
++    public String getRequestCharacterEncoding()
++    {
++	return null;
++    }
++
++    public void setSessionTimeout(int timout)
++    {
++    }
++
++    public int getSessionTimeout()
++    {
++        return null;
 +    }
  
  }
