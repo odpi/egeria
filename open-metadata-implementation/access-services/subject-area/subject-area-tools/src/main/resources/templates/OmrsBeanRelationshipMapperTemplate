@@ -60,88 +60,89 @@ public class <$$uRelationshipName$$>Mapper {
                <$$RelationshipName$$>.setSystemAttributes(systemAttributes);
 
                InstanceProperties omrsRelationshipProperties = omrsRelationship.getProperties();
-               if (omrsRelationshipProperties != null) {
-                   Iterator omrsPropertyIterator = omrsRelationshipProperties.getPropertyNames();
-                   while (omrsPropertyIterator.hasNext()) {
-                        String name = (String) omrsPropertyIterator.next();
-                        //TODO check if this is a property we expect or whether the type has been added to.
-                        // this is a property we expect
-                        InstancePropertyValue value = omrsRelationshipProperties.getPropertyValue(name);
-                        // supplied guid matches the expected type
-                        Object actualValue;
-                        switch (value.getInstancePropertyCategory()) {
-                                                   case PRIMITIVE:
-                                                       PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) value;
-                                                       actualValue = primitivePropertyValue.getPrimitiveValue();
-                                                       if (<$$uRelationshipName$$>.ATTRIBUTE_NAMES_SET.contains(name)) {
-                                                          <$$Attr$$
-                                                          if (name.equals("<$$AttrName$$>")) {
-                                                               <$$RelationshipName$$>.set<$$uAttrName$$>((<$$AttrType$$>)actualValue);
-                                                          }
-                                                          $$Attr$$>
-
-                                                       } else {
-                                                           // put out the omrs value object
-                                                           if (<$$RelationshipName$$>.getExtraAttributes() ==null) {
-                                                                Map<String, Object> extraAttributes = new HashMap();
-                                                                <$$RelationshipName$$>.setExtraAttributes(extraAttributes);
-                                                            }
-                                                          <$$RelationshipName$$>.getExtraAttributes().put(name, primitivePropertyValue);
-                                                       }
-                                                       break;
-                                                   case ENUM:
-                                                       EnumPropertyValue enumPropertyValue = (EnumPropertyValue) value;
-                                                       String symbolicName = enumPropertyValue.getSymbolicName();
-                                                       if (<$$uRelationshipName$$>.ENUM_NAMES_SET.contains(name)) {
-                                                           <$$Enum$$
-                                                            if (name.equals("<$$EnumName$$>")) {
-                                                                  org.odpi.openmetadata.accessservices.subjectarea.properties.enums.<$$uEnumType$$> <$$EnumName$$> = org.odpi.openmetadata.accessservices.subjectarea.properties.enums.<$$uEnumType$$>.valueOf(symbolicName);
-                                                                 <$$RelationshipName$$>.set<$$uEnumName$$>(<$$EnumName$$>);
-                                                            }
-                                                           $$Enum$$>
-
-                                                       } else {
-                                                           // put out the omrs value object
-                                                            if (<$$RelationshipName$$>.getExtraAttributes() ==null) {
-                                                                Map<String, Object> extraAttributes = new HashMap();
-                                                                <$$RelationshipName$$>.setExtraAttributes(extraAttributes);
-                                                            }
-
-                                                            <$$RelationshipName$$>.getExtraAttributes().put(name, enumPropertyValue);
+               if (omrsRelationshipProperties !=null) {
+                 omrsRelationshipProperties.setEffectiveFromTime(<$$RelationshipName$$>.getEffectiveFromTime());
+                 omrsRelationshipProperties.setEffectiveToTime(<$$RelationshipName$$>.getEffectiveToTime());
+                 Iterator omrsPropertyIterator = omrsRelationshipProperties.getPropertyNames();
+                 while (omrsPropertyIterator.hasNext()) {
+                    String name = (String) omrsPropertyIterator.next();
+                    //TODO check if this is a property we expect or whether the type has been added to.
+                    // this is a property we expect
+                    InstancePropertyValue value = omrsRelationshipProperties.getPropertyValue(name);
+                    // supplied guid matches the expected type
+                    Object actualValue;
+                    switch (value.getInstancePropertyCategory()) {
+                                               case PRIMITIVE:
+                                                   PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) value;
+                                                   actualValue = primitivePropertyValue.getPrimitiveValue();
+                                                   if (<$$uRelationshipName$$>.ATTRIBUTE_NAMES_SET.contains(name)) {
+                                                      <$$Attr$$
+                                                      if (name.equals("<$$AttrName$$>")) {
+                                                           <$$RelationshipName$$>.set<$$uAttrName$$>((<$$AttrType$$>)actualValue);
+                                                      }
+                                                      $$Attr$$>
+                       
+                                                   } else {
+                                                       // put out the omrs value object
+                                                       if (<$$RelationshipName$$>.getExtraAttributes() ==null) {
+                                                            Map<String, Object> extraAttributes = new HashMap();
+                                                            <$$RelationshipName$$>.setExtraAttributes(extraAttributes);
+                                                        }
+                                                      <$$RelationshipName$$>.getExtraAttributes().put(name, primitivePropertyValue);
+                                                   }
+                                                   break;
+                                               case ENUM:
+                                                   EnumPropertyValue enumPropertyValue = (EnumPropertyValue) value;
+                                                   String symbolicName = enumPropertyValue.getSymbolicName();
+                                                   if (<$$uRelationshipName$$>.ENUM_NAMES_SET.contains(name)) {
+                                                       <$$Enum$$
+                                                        if (name.equals("<$$EnumName$$>")) {
+                                                              org.odpi.openmetadata.accessservices.subjectarea.properties.enums.<$$uEnumType$$> <$$EnumName$$> = org.odpi.openmetadata.accessservices.subjectarea.properties.enums.<$$uEnumType$$>.valueOf(symbolicName);
+                                                             <$$RelationshipName$$>.set<$$uEnumName$$>(<$$EnumName$$>);
+                                                        }
+                                                       $$Enum$$>
+                       
+                                                   } else {
+                                                       // put out the omrs value object
+                                                        if (<$$RelationshipName$$>.getExtraAttributes() ==null) {
+                                                            Map<String, Object> extraAttributes = new HashMap();
+                                                            <$$RelationshipName$$>.setExtraAttributes(extraAttributes);
                                                         }
 
-                                                       break;
-                                                   case MAP:
-                                                        if (<$$RelationshipName$$>.MAP_NAMES_SET.contains(name)) {
-                                                            MapPropertyValue mapPropertyValue = (MapPropertyValue) value;
-                                                            InstanceProperties instancePropertyForMap = (InstanceProperties) mapPropertyValue.getMapValues();
+                                                        <$$RelationshipName$$>.getExtraAttributes().put(name, enumPropertyValue);
+                                                    }
+                       
+                                                   break;
+                                               case MAP:
+                                                    if (<$$RelationshipName$$>.MAP_NAMES_SET.contains(name)) {
+                                                        MapPropertyValue mapPropertyValue = (MapPropertyValue) value;
+                                                        InstanceProperties instancePropertyForMap = (InstanceProperties) mapPropertyValue.getMapValues();
 
-                                                            <$$Map$$
-                                                            if (name.equals("<$$MapName$$>")) {
+                                                        <$$Map$$
+                                                        if (name.equals("<$$MapName$$>")) {
 
-                                                                 // Only support Map<String,String> as that is what is in the archive types at this time.
-                                                                 Map<String, String> actualMap = new HashMap();
-                                                                 Iterator iter = instancePropertyForMap.getPropertyNames();
-                                                                 while (iter.hasNext()) {
-                                                                    String mapkey = (String) iter.next();
-                                                                    PrimitivePropertyValue primitivePropertyMapValue = (PrimitivePropertyValue) instancePropertyForMap.getPropertyValue(mapkey);
-                                                                    String mapvalue = (String) primitivePropertyMapValue.getPrimitiveValue();
-                                                                    actualMap.put(mapkey, mapvalue);
-                                                                 }
-                                                                 <$$RelationshipName$$>.set<$$uMapName$$>(actualMap);
+                                                             // Only support Map<String,String> as that is what is in the archive types at this time.
+                                                             Map<String, String> actualMap = new HashMap();
+                                                             Iterator iter = instancePropertyForMap.getPropertyNames();
+                                                             while (iter.hasNext()) {
+                                                                String mapkey = (String) iter.next();
+                                                                PrimitivePropertyValue primitivePropertyMapValue = (PrimitivePropertyValue) instancePropertyForMap.getPropertyValue(mapkey);
+                                                                String mapvalue = (String) primitivePropertyMapValue.getPrimitiveValue();
+                                                                actualMap.put(mapkey, mapvalue);
                                                              }
-                                                            $$Map$$>
+                                                             <$$RelationshipName$$>.set<$$uMapName$$>(actualMap);
+                                                         }
+                                                        $$Map$$>
 
-                                                        }
-                                                        break;
-                                                   case ARRAY:
-                                                   case STRUCT:
-                                                   case UNKNOWN:
-                                                       // error
-                                                       break;
-                        }
-
-                   }   // end while
+                                                    }
+                                                    break;
+                                               case ARRAY:
+                                               case STRUCT:
+                                               case UNKNOWN:
+                                                   // error
+                                                   break;
+                    }
+                 }   // end while
                }
                return <$$RelationshipName$$>;
        }
