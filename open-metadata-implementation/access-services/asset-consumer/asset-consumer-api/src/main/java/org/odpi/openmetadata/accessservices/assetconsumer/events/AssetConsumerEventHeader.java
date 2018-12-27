@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.accessservices.assetconsumer.events;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.Asset;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -23,14 +22,16 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = AssetConsumerEvent.class, name = "AssetConsumerEvent")
+        @JsonSubTypes.Type(value = AssetEvent.class, name = "AssetEvent")
 })
 public abstract class AssetConsumerEventHeader implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
 
-    private long eventVersionId = 1L;
+    private long                   eventVersionId = 1L;
+    private AssetConsumerEventType eventType      = null;
+
 
 
     /**
@@ -54,6 +55,7 @@ public abstract class AssetConsumerEventHeader implements Serializable
         if (template != null)
         {
             this.eventVersionId = template.getEventVersionId();
+            this.eventType = template.getEventType();
         }
     }
 
@@ -81,6 +83,29 @@ public abstract class AssetConsumerEventHeader implements Serializable
 
 
     /**
+     * Return the type of event.
+     *
+     * @return event type enum
+     */
+    public AssetConsumerEventType getEventType()
+    {
+        return eventType;
+    }
+
+
+    /**
+     * Set up the type of event.
+     *
+     * @param eventType - event type enum
+     */
+    public void setEventType(AssetConsumerEventType eventType)
+    {
+        this.eventType = eventType;
+    }
+
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -90,6 +115,7 @@ public abstract class AssetConsumerEventHeader implements Serializable
     {
         return "AssetConsumerEventHeader{" +
                 "eventVersionId=" + eventVersionId +
+                ", eventType=" + eventType +
                 '}';
     }
 
@@ -107,13 +133,15 @@ public abstract class AssetConsumerEventHeader implements Serializable
         {
             return true;
         }
-        if (!(objectToCompare instanceof AssetConsumerEventHeader))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
         AssetConsumerEventHeader that = (AssetConsumerEventHeader) objectToCompare;
-        return getEventVersionId() == that.getEventVersionId();
+        return getEventVersionId() == that.getEventVersionId() &&
+                getEventType() == that.getEventType();
     }
+
 
 
     /**
@@ -124,7 +152,6 @@ public abstract class AssetConsumerEventHeader implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(getEventVersionId());
+        return Objects.hash(getEventVersionId(), getEventType());
     }
-
 }

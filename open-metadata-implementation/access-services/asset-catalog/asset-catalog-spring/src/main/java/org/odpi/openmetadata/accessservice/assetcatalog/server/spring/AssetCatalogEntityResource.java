@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservice.assetcatalog.server.spring;
 
+import org.odpi.openmetadata.accessservice.assetcatalog.exception.NotImplementedException;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.AssetDescription;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.rest.body.SearchParameters;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.rest.responses.AssetDescriptionResponse;
@@ -267,7 +268,7 @@ public class AssetCatalogEntityResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public List<AssetDescription> getLastCreatedAssets(@PathVariable("serverName") String serverName,
                                                        @PathVariable("userId") String userId,
-                                                       @RequestBody SearchParameters searchParameters) {
+                                                       @RequestBody SearchParameters searchParameters) throws NotImplementedException {
         return assetService.getLastCreatedAssets(serverName, userId, searchParameters);
     }
 
@@ -284,7 +285,7 @@ public class AssetCatalogEntityResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public List<AssetDescription> getLastUpdatedAssets(@PathVariable("serverName") String serverName,
                                                        @PathVariable("userId") String userId,
-                                                       @RequestBody SearchParameters searchParameters) {
+                                                       @RequestBody SearchParameters searchParameters) throws NotImplementedException {
         return assetService.getLastUpdatedAssets(serverName, userId, searchParameters);
     }
 
@@ -305,5 +306,25 @@ public class AssetCatalogEntityResource {
                                                  @PathVariable("searchCriteria") String searchCriteria,
                                                  @RequestBody SearchParameters searchParameters) {
         return assetService.searchAssets(serverName, userId, searchCriteria, searchParameters);
+    }
+
+    /**
+     * Return a list of assets matching the search criteria.
+     * Return the connection id
+     *
+     * @param serverName       unique identifier for requested server.
+     * @param userId           the unique identifier for the user
+     * @param searchCriteria   a string expression of the characteristics of the required assets
+     * @param searchParameters constrains to make the assets's search results more precise
+     * @return list of properties used to narrow the search
+     */
+    @RequestMapping(method = RequestMethod.POST,
+            path = "/search/asset-property/{searchCriteria}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public AssetDescriptionResponse searchAssetsByPropertyValue(@PathVariable("serverName") String serverName,
+                                                                @PathVariable("userId") String userId,
+                                                                @PathVariable("searchCriteria") String searchCriteria,
+                                                                @RequestBody SearchParameters searchParameters) {
+        return assetService.searchAssetsByPropertyValue(serverName, userId, searchCriteria, searchParameters);
     }
 }

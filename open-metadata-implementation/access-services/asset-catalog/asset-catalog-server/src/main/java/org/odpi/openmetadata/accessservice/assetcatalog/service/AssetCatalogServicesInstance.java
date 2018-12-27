@@ -7,16 +7,16 @@ import org.odpi.openmetadata.accessservice.assetcatalog.exception.NewInstanceExc
 import org.odpi.openmetadata.accessservice.assetcatalog.exception.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 /**
  * AssetCatalogServicesInstance caches references to OMRS objects for a specific server.
  * It is also responsible for registering itself in the instance map.
  */
-public class AssetCatalogServicesInstance
-{
-    private OMRSRepositoryConnector repositoryConnector = null;
-    private OMRSMetadataCollection  metadataCollection = null;
-    private String                  serverName = null;
+public class AssetCatalogServicesInstance {
+    private OMRSRepositoryConnector repositoryConnector;
+    private OMRSMetadataCollection metadataCollection;
+    private String serverName;
 
 
     /**
@@ -29,35 +29,34 @@ public class AssetCatalogServicesInstance
         final String methodName = "new ServiceInstance";
 
         if (repositoryConnector != null) {
-            try
-            {
+            try {
                 this.repositoryConnector = repositoryConnector;
                 this.serverName = repositoryConnector.getServerName();
                 this.metadataCollection = repositoryConnector.getMetadataCollection();
 
                 AssetCatalogServicesInstanceMap.setNewInstanceForJVM(serverName, this);
-            } catch (Throwable error) {
-                AssetCatalogErrorCode errorCode    = AssetCatalogErrorCode.OMRS_NOT_INITIALIZED;
-                String                errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
+            } catch (Exception error) {
+                AssetCatalogErrorCode errorCode = AssetCatalogErrorCode.OMRS_NOT_INITIALIZED;
+                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
 
                 throw new NewInstanceException(errorCode.getHttpErrorCode(),
-                                               this.getClass().getName(),
-                                               methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction());
+                        this.getClass().getName(),
+                        methodName,
+                        errorMessage,
+                        errorCode.getSystemAction(),
+                        errorCode.getUserAction());
 
             }
         } else {
-            AssetCatalogErrorCode errorCode    = AssetCatalogErrorCode.OMRS_NOT_INITIALIZED;
-            String                errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
+            AssetCatalogErrorCode errorCode = AssetCatalogErrorCode.OMRS_NOT_INITIALIZED;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
 
             throw new NewInstanceException(errorCode.getHttpErrorCode(),
-                                           this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
 
         }
     }
@@ -75,15 +74,15 @@ public class AssetCatalogServicesInstance
         if (serverName != null) {
             return serverName;
         } else {
-            AssetCatalogErrorCode errorCode    = AssetCatalogErrorCode.OMRS_NOT_AVAILABLE;
-            String                errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
+            AssetCatalogErrorCode errorCode = AssetCatalogErrorCode.OMRS_NOT_AVAILABLE;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
 
             throw new NewInstanceException(errorCode.getHttpErrorCode(),
-                                           this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
         }
     }
 
@@ -100,16 +99,24 @@ public class AssetCatalogServicesInstance
         if ((repositoryConnector != null) && (metadataCollection != null) && (repositoryConnector.isActive())) {
             return metadataCollection;
         } else {
-            AssetCatalogErrorCode errorCode    = AssetCatalogErrorCode.OMRS_NOT_AVAILABLE;
-            String                errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
+            AssetCatalogErrorCode errorCode = AssetCatalogErrorCode.OMRS_NOT_AVAILABLE;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
 
             throw new PropertyServerException(errorCode.getHttpErrorCode(),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
         }
+    }
+
+    /**
+     *
+     * @return
+     */
+    public OMRSRepositoryHelper getRepositoryHelper() {
+        return repositoryConnector.getRepositoryHelper();
     }
 
 

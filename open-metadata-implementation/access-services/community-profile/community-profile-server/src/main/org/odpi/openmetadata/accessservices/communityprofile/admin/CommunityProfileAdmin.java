@@ -81,6 +81,7 @@ public class CommunityProfileAdmin implements AccessServiceAdmin
                                    auditCode.getUserAction());
 
                 omrsTopicListener = new CommunityProfileOMRSTopicListener(accessServiceConfig.getAccessServiceOutTopic(),
+                                                                          repositoryConnector,
                                                                           repositoryConnector.getRepositoryHelper(),
                                                                           repositoryConnector.getRepositoryValidator(),
                                                                           accessServiceConfig.getAccessServiceName());

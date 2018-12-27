@@ -485,7 +485,7 @@ public class DetectUtils {
     {
         Translation translation = null;
         if ((restResponse != null) && (restResponse.getResponseCategory() == ResponseCategory.TranslationRelationship)) {
-            TermTranslationRelationshipResponse translationResponse = (TermTranslationRelationshipResponse)restResponse;
+            TranslationRelationshipResponse translationResponse = (TranslationRelationshipResponse)restResponse;
             translation = translationResponse.getTranslation();
         } else {
             SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.CLIENT_RECEIVED_AN_UNEXPECTED_RESPONSE_ERROR;
@@ -509,7 +509,7 @@ public class DetectUtils {
     {
         UsedInContext usedInContext = null;
         if ((restResponse != null) && (restResponse.getResponseCategory() == ResponseCategory.TermUsedInContextRelationship)) {
-            TermUsedInContextRelationshipResponse usedInContextResponse = (TermUsedInContextRelationshipResponse)restResponse;
+            UsedInContextRelationshipResponse usedInContextResponse = (UsedInContextRelationshipResponse)restResponse;
             usedInContext = usedInContextResponse.getUsedInContext();
         } else {
             SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.CLIENT_RECEIVED_AN_UNEXPECTED_RESPONSE_ERROR;
@@ -557,7 +557,7 @@ public class DetectUtils {
     {
         ValidValue validValue = null;
         if ((restResponse != null) && (restResponse.getResponseCategory() == ResponseCategory.ValidValueRelationship)) {
-            TermValidValueRelationshipResponse validValueResponse = (TermValidValueRelationshipResponse)restResponse;
+            ValidValueRelationshipResponse validValueResponse = (ValidValueRelationshipResponse)restResponse;
             validValue = validValueResponse.getValidValue();
         } else {
             SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.CLIENT_RECEIVED_AN_UNEXPECTED_RESPONSE_ERROR;
@@ -581,7 +581,7 @@ public class DetectUtils {
     {
         ReplacementTerm replacementTerm = null;
         if ((restResponse != null) && (restResponse.getResponseCategory() == ResponseCategory.TermReplacementRelationship)) {
-            TermReplacementRelationshipResponse replacementTermResponse = (TermReplacementRelationshipResponse) restResponse;
+            ReplacementRelationshipResponse replacementTermResponse = (ReplacementRelationshipResponse) restResponse;
             replacementTerm = replacementTermResponse.getTermReplacementRelationship();
         } else {
             SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.CLIENT_RECEIVED_AN_UNEXPECTED_RESPONSE_ERROR;
@@ -651,10 +651,10 @@ public class DetectUtils {
     }
     public static TermISATypeOFRelationship detectAndReturnTermISATypeOFRelationship(String methodName, SubjectAreaOMASAPIResponse restResponse) throws UnexpectedResponseException
     {
-        TermISATypeOFRelationship TermISATypeOFRelationship = null;
+        TermISATypeOFRelationship termISATypeOFRelationship = null;
         if ((restResponse != null) && (restResponse.getResponseCategory() == ResponseCategory.TermISATYPEOFRelationship)) {
             TermISATYPEOFRelationshipResponse TermISATypeOFRelationshipResponse = (TermISATYPEOFRelationshipResponse)restResponse;
-            TermISATypeOFRelationship = TermISATypeOFRelationshipResponse.getTermISATYPEOFRelationship();
+            termISATypeOFRelationship = TermISATypeOFRelationshipResponse.getTermISATYPEOFRelationship();
         } else {
             SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.CLIENT_RECEIVED_AN_UNEXPECTED_RESPONSE_ERROR;
             String unexpectedResponseCategory = restResponse.getResponseCategory().name();
@@ -671,7 +671,30 @@ public class DetectUtils {
                     unexpectedResponseCategory
             );
         }
-        return TermISATypeOFRelationship;
+        return termISATypeOFRelationship;
     }
 
+    public static SemanticAssignment detectAndReturnSemanticAssignmentRelationship(String methodName, SubjectAreaOMASAPIResponse restResponse) throws UnexpectedResponseException {
+        SemanticAssignment semanticAssignment = null;
+        if ((restResponse != null) && (restResponse.getResponseCategory() == ResponseCategory.SemanticAssignmentRelationship)) {
+           SemanticAssignementRelationshipResponse relationshipResponse = ( SemanticAssignementRelationshipResponse)restResponse;
+           semanticAssignment= relationshipResponse.getSemanticAssignment();
+        } else {
+            SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.CLIENT_RECEIVED_AN_UNEXPECTED_RESPONSE_ERROR;
+            String unexpectedResponseCategory = restResponse.getResponseCategory().name();
+            String errorMessage = errorCode.getErrorMessageId()
+                    + errorCode.getFormattedErrorMessage(
+                    unexpectedResponseCategory
+            );
+            throw new UnexpectedResponseException(errorCode.getHTTPErrorCode(),
+                    className,
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction(),
+                    unexpectedResponseCategory
+            );
+        }
+        return semanticAssignment;
+    }
 }

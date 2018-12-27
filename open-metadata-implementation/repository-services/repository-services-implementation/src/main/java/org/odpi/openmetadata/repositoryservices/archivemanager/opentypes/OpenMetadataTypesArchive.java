@@ -370,6 +370,9 @@ public class OpenMetadataTypesArchive
                                                            attribute1Description,
                                                            attribute1DescriptionGUID);
         property.setUnique(true);
+        property.setValuesMaxCount(1);
+        property.setValuesMinCount(1);
+        property.setAttributeCardinality(AttributeCardinality.ONE_ONLY);
         properties.add(property);
         property = archiveHelper.getMapStringStringTypeDefAttribute(attribute2Name,
                                                                     attribute2Description,
@@ -4195,19 +4198,12 @@ public class OpenMetadataTypesArchive
         TypeDefAttribute       property;
 
         final String attribute1Name            = "membershipRationale";
-        final String attribute1Description     = "Description of how the asset is used, or why it is useful in this collection.";
+        final String attribute1Description     = "Description of how the member is used, or why it is useful in this collection.";
         final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "watchAsset";
-        final String attribute2Description     = "Indicator whether the actor should receive notifications of changes to the asset properties.";
-        final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
                                                            attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                            attribute2Description,
-                                                            attribute2DescriptionGUID);
         properties.add(property);
 
         relationshipDef.setPropertiesDefinition(properties);

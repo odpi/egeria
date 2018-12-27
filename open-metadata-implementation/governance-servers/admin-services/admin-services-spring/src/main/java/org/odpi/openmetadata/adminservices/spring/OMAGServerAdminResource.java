@@ -4,33 +4,18 @@ package org.odpi.openmetadata.adminservices.spring;
 
 import org.odpi.openmetadata.adminservices.OMAGServerAdminServices;
 import org.odpi.openmetadata.adminservices.configuration.properties.*;
-import org.odpi.openmetadata.adminservices.properties.OMAGServerConfigResponse;
-import org.odpi.openmetadata.adminservices.properties.VoidResponse;
+import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
+import org.odpi.openmetadata.adminservices.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 /**
- * OMAGServerAdminResource provides the spring annotations for the server-side
- * implementation of the configuration interface for
- * an Open Metadata and Governance (OMAG) Server.  It provides all of the
- * configuration properties for the Open Metadata Access Services (OMASs) and delegates administration requests
- * to the Open Metadata Repository Services (OMRS).
- * <p>
- * There are four types of operations defined by OMAGServerAdministration interface:
- * </p>
- * <ul>
- * <li>
- * Basic configuration - these methods use the minimum of configuration information to run the
- * server using default properties.
- * </li>
- * <li>
- * Advanced Configuration - provides access to all configuration properties to provide
- * fine-grained control of the server.
- * </li>
- * </ul>
+ * OMAGServerAdminServices provides part of the server-side implementation of the administrative interface for
+ * an Open Metadata and Governance (OMAG) Server.  In particular, this resource supports the configuration
+ * of the server name, server type and organization name.  It also supports the setting up of the
+ * Open Metadata Repository Services' local repository and cohort.
  */
 @RestController
 @RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}")
@@ -43,25 +28,6 @@ public class OMAGServerAdminResource
      * =============================================================
      * Configure server - basic options using defaults
      */
-
-    /**
-     * Set up the root URL for this server that is used to construct full URL paths to calls for
-     * this server's REST interfaces.  The default value is "localhost:8080".
-     *
-     * @param userId  user that is issuing the request.
-     * @param serverName  local server name.
-     * @param url  String url.
-     * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or serverURLRoot parameter.
-     */
-    @RequestMapping(method = RequestMethod.POST, path = "/server-url-root")
-    public VoidResponse setServerURLRoot(@PathVariable String userId,
-                                         @PathVariable String serverName,
-                                         @RequestParam String url)
-    {
-        return adminAPI.setServerURLRoot(userId, serverName, url);
-    }
 
 
     /**
@@ -149,6 +115,9 @@ public class OMAGServerAdminResource
      * be used in the OMRS Topic Connector for each cohort, the in and out topics for each Access Service and
      * the local repositories event mapper.
      *
+     * When the event bus is configured, it is used only on future configuration.  It does not effect
+     * existing configuration.
+     *
      * @param userId  user that is issuing the request.
      * @param serverName local server name.
      * @param connectorProvider  connector provider for the event bus (if it is null then Kafka is assumed).
@@ -170,42 +139,35 @@ public class OMAGServerAdminResource
     }
 
 
-    /**
-     * Enable all access services that are installed into this server.   The configuration properties
-     * for each access service can be changed from their default using setAccessServicesConfig operation.
-     *
-     * @param userId  user that is issuing the request.
-     * @param serverName  local server name.
-     * @param accessServiceOptions  property name/value pairs used to configure the access services
-     * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGConfigurationErrorException the event bus has not been configured or
-     * OMAGInvalidParameterException invalid serverName parameter.
+    /*
+     * =============================================================
+     * Configure local repository
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/access-services")
-    public VoidResponse enableAccessServices(@PathVariable                   String              userId,
-                                             @PathVariable                   String              serverName,
-                                             @RequestBody(required = false)  Map<String, Object> accessServiceOptions)
-    {
-        return adminAPI.enableAccessServices(userId, serverName, accessServiceOptions);
-    }
 
 
     /**
-     * Disable the access services.  This removes all configuration for the access services
-     * and disables the enterprise repository services.
+     Set up the root URL for this server that is used to construct full URL paths to calls for
+     * this server's REST interfaces that is used by other members of the cohorts that this server
+     * connects to.
+     *
+     * The default value is "localhost:8080".
+     *
+     * ServerURLRoot is used during the configuration of the local repository.  If called
+     * after the local repository is configured, it has no effect.
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
+     * @param url  String url.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName  parameter.
+     * OMAGInvalidParameterException invalid serverName or serverURLRoot parameter.
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/access-services")
-    public VoidResponse disableAccessServices(@PathVariable String          userId,
-                                              @PathVariable String          serverName)
+    @RequestMapping(method = RequestMethod.POST, path = "/server-url-root")
+    public VoidResponse setServerURLRoot(@PathVariable String userId,
+                                         @PathVariable String serverName,
+                                         @RequestParam String url)
     {
-        return adminAPI.disableAccessServices(userId, serverName);
+        return adminAPI.setServerURLRoot(userId, serverName, url);
     }
 
 
@@ -304,6 +266,26 @@ public class OMAGServerAdminResource
                                                      @RequestBody(required = false)  Map<String, Object>  additionalProperties)
     {
         return adminAPI.setRepositoryProxyConnection(userId, serverName, connectorProvider, additionalProperties);
+    }
+
+
+    /**
+     * Provide the connection to an IBM IGC repository - used when the local repository mode is set to IBM IGC.
+     *
+     * @param userId   user that is issuing the request.
+     * @param serverName   IBM IGC server name.
+     * @param additionalProperties      additional parameters to pass to the repository connector
+     * @return void response or
+     * OMAGNotAuthorizedException     the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or repositoryProxyConnection parameter or
+     * OMAGConfigurationErrorException the local repository mode has not been set.
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/local-repository/mode/ibm-igc/details")
+    public VoidResponse setIBMIGCConnection(@PathVariable                  String               userId,
+                                            @PathVariable                  String               serverName,
+                                            @RequestBody(required = true)  Map<String, Object>  additionalProperties)
+    {
+        return adminAPI.setIBMIGCConnection(userId, serverName, additionalProperties);
     }
 
 
@@ -407,26 +389,6 @@ public class OMAGServerAdminResource
 
 
     /**
-     * Set up the configuration for all of the open metadata access services (OMASs).  This overrides
-     * the current values.
-     *
-     * @param userId                user that is issuing the request.
-     * @param serverName            local server name.
-     * @param accessServicesConfig  list of configuration properties for each access service.
-     * @return void response or
-     * OMAGNotAuthorizedException     the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or accessServicesConfig parameter.
-     */
-    @RequestMapping(method = RequestMethod.POST, path = "/access-services/configuration")
-    public VoidResponse setAccessServicesConfig(@PathVariable String                    userId,
-                                                @PathVariable String                    serverName,
-                                                @RequestBody  List<AccessServiceConfig> accessServicesConfig)
-    {
-        return adminAPI.setAccessServicesConfig(userId, serverName, accessServicesConfig);
-    }
-
-
-    /**
      * Set up the configuration for the local repository.  This overrides the current values.
      *
      * @param userId  user that is issuing the request.
@@ -442,28 +404,6 @@ public class OMAGServerAdminResource
                                                  @RequestBody  LocalRepositoryConfig localRepositoryConfig)
     {
         return adminAPI.setLocalRepositoryConfig(userId, serverName, localRepositoryConfig);
-    }
-
-
-    /**
-     * Set up the configuration that controls the enterprise repository services.  These services are part
-     * of the Open Metadata Repository Services (OMRS).  They provide federated queries and federated event
-     * notifications that cover metadata from the local repository plus any repositories connected via
-     * open metadata repository cohorts.
-     *
-     * @param userId  user that is issuing the request
-     * @param serverName  local server name
-     * @param enterpriseAccessConfig  enterprise repository services configuration properties.
-     * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or enterpriseAccessConfig parameter.
-     */
-    @RequestMapping(method = RequestMethod.POST, path = "/enterprise-access/configuration")
-    public VoidResponse setEnterpriseAccessConfig(@PathVariable String                 userId,
-                                                  @PathVariable String                 serverName,
-                                                  @RequestBody  EnterpriseAccessConfig enterpriseAccessConfig)
-    {
-        return adminAPI.setEnterpriseAccessConfig(userId, serverName, enterpriseAccessConfig);
     }
 
 

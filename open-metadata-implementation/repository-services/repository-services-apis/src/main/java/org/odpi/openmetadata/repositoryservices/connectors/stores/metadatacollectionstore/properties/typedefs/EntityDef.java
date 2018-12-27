@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -76,7 +77,8 @@ public class EntityDef extends TypeDef
     public String toString()
     {
         return "EntityDef{" +
-                "superType=" + getSuperType() +
+                "name='" + getName() + '\'' +
+                ", superType=" + getSuperType() +
                 ", description='" + getDescription() + '\'' +
                 ", descriptionGUID='" + getDescriptionGUID() + '\'' +
                 ", origin='" + getOrigin() + '\'' +
@@ -93,7 +95,6 @@ public class EntityDef extends TypeDef
                 ", version=" + getVersion() +
                 ", versionName='" + getVersionName() + '\'' +
                 ", GUID='" + getGUID() + '\'' +
-                ", name='" + getName() + '\'' +
                 '}';
     }
 }

@@ -2,12 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.server;
 
+import org.odpi.openmetadata.accessservices.assetconsumer.auditlog.AssetConsumerAuditCode;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions.PropertyServerException;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions.UserNotAuthorizedException;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 /**
  * AuditLogHandler manages the logging of audit records for the asset.
@@ -16,8 +18,8 @@ public class AuditLogHandler
 {
     private static final Logger log = LoggerFactory.getLogger(AuditLogHandler.class);
 
-    private String                  serviceName;
-    private OMRSRepositoryConnector repositoryConnector;
+    private String       serviceName;
+    private OMRSAuditLog auditLog;
 
 
 
@@ -26,13 +28,13 @@ public class AuditLogHandler
      * official name.
      *
      * @param serviceName  name of this service
-     * @param repositoryConnector  connector to the property server.
+     * @param auditLog  connector to the property server.
      */
-    AuditLogHandler(String                  serviceName,
-                    OMRSRepositoryConnector repositoryConnector)
+    AuditLogHandler(String       serviceName,
+                    OMRSAuditLog auditLog)
     {
         this.serviceName = serviceName;
-        this.repositoryConnector = repositoryConnector;
+        this.auditLog = auditLog;
     }
 
 
@@ -64,7 +66,21 @@ public class AuditLogHandler
     {
         final String        methodName = "addLogMessageToAsset";
 
-        // TODO
-        log.warn(methodName + " not implemented");
+        String              additionalInformation = "User: " + userId +
+                                                    "ContextId: " + contextId +
+                                                    "Connector Instance Id: " + connectorInstanceId +
+                                                    "Connection Name: " + connectionName +
+                                                    "Connector Type: " + connectorType;
+
+        AssetConsumerAuditCode auditCode;
+
+        auditCode = AssetConsumerAuditCode.ASSET_AUDIT_LOG;
+        auditLog.logRecord(methodName,
+                           auditCode.getLogMessageId(),
+                           auditCode.getSeverity(),
+                           auditCode.getFormattedLogMessage(assetGUID, message),
+                           additionalInformation,
+                           auditCode.getSystemAction(),
+                           auditCode.getUserAction());
     }
 }

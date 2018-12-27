@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs;
 
 
@@ -131,8 +132,8 @@ public class EnumElementDef extends TypeDefElementHeader
     public String toString()
     {
         return "EnumElementDef{" +
-                "ordinal=" + ordinal +
-                ", value='" + value + '\'' +
+                "value='" + value + '\'' +
+                ", ordinal=" + ordinal +
                 ", description='" + description + '\'' +
                 ", descriptionGUID='" + descriptionGUID + '\'' +
                 '}';

@@ -201,3 +201,9 @@ Details of how to set up the configuration document, and activate/deactivate
 the open metadata services can be found in [admin-services](../../admin-services/README.md).
 
 Swagger API documentation is generated with the chassis and is documented in [SwaggerGeneration.md](./SwaggerGeneration.md).
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

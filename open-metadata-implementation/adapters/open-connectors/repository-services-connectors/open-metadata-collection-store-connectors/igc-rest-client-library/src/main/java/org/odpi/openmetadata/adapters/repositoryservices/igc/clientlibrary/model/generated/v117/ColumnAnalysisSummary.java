@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v117;
 
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
 import java.util.ArrayList;
@@ -16,14 +16,31 @@ import java.util.ArrayList;
  *  extending from this class in your own custom class is the best approach.)
  */
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ColumnAnalysisSummary extends MainObject {
+public class ColumnAnalysisSummary extends Reference {
 
-    public static final String IGC_TYPE_ID = "column_analysis_summary";
+    public static String getIgcTypeId() { return "column_analysis_summary"; }
 
     /**
      * The 'short_&amp;_long_description' property, displayed as 'Short &amp; Long Description' in the IGC UI.
      */
     @JsonProperty("short_&_long_description") protected String short___long_description;
+
+    /**
+     * The 'short_description' property, displayed as 'Short Description' in the IGC UI.
+     */
+    protected String short_description;
+
+    /**
+     * The 'long_description' property, displayed as 'Long Description' in the IGC UI.
+     */
+    protected String long_description;
+
+    /**
+     * The 'assigned_to_terms' property, displayed as 'Assigned to Terms' in the IGC UI.
+     * <br><br>
+     * Will be a {@link ReferenceList} of {@link Term} objects.
+     */
+    protected ReferenceList assigned_to_terms;
 
     /**
      * The 'steward' property, displayed as 'Steward' in the IGC UI.
@@ -62,6 +79,26 @@ public class ColumnAnalysisSummary extends MainObject {
      * Will be a single {@link Reference} to a {@link Steward} object.
      */
     protected Reference reviewed_by_principal;
+
+    /**
+     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     */
+    protected String created_by;
+
+    /**
+     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     */
+    protected Date created_on;
+
+    /**
+     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     */
+    protected String modified_by;
+
+    /**
+     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     */
+    protected Date modified_on;
 
     /**
      * The 'allow_null_values' property, displayed as 'Allow Null Values' in the IGC UI.
@@ -198,6 +235,15 @@ public class ColumnAnalysisSummary extends MainObject {
     /** @see #short___long_description */ @JsonProperty("short_&_long_description")  public String getShortLongDescription() { return this.short___long_description; }
     /** @see #short___long_description */ @JsonProperty("short_&_long_description")  public void setShortLongDescription(String short___long_description) { this.short___long_description = short___long_description; }
 
+    /** @see #short_description */ @JsonProperty("short_description")  public String getShortDescription() { return this.short_description; }
+    /** @see #short_description */ @JsonProperty("short_description")  public void setShortDescription(String short_description) { this.short_description = short_description; }
+
+    /** @see #long_description */ @JsonProperty("long_description")  public String getLongDescription() { return this.long_description; }
+    /** @see #long_description */ @JsonProperty("long_description")  public void setLongDescription(String long_description) { this.long_description = long_description; }
+
+    /** @see #assigned_to_terms */ @JsonProperty("assigned_to_terms")  public ReferenceList getAssignedToTerms() { return this.assigned_to_terms; }
+    /** @see #assigned_to_terms */ @JsonProperty("assigned_to_terms")  public void setAssignedToTerms(ReferenceList assigned_to_terms) { this.assigned_to_terms = assigned_to_terms; }
+
     /** @see #steward */ @JsonProperty("steward")  public ReferenceList getSteward() { return this.steward; }
     /** @see #steward */ @JsonProperty("steward")  public void setSteward(ReferenceList steward) { this.steward = steward; }
 
@@ -215,6 +261,18 @@ public class ColumnAnalysisSummary extends MainObject {
 
     /** @see #reviewed_by_principal */ @JsonProperty("reviewed_by_principal")  public Reference getReviewedByPrincipal() { return this.reviewed_by_principal; }
     /** @see #reviewed_by_principal */ @JsonProperty("reviewed_by_principal")  public void setReviewedByPrincipal(Reference reviewed_by_principal) { this.reviewed_by_principal = reviewed_by_principal; }
+
+    /** @see #created_by */ @JsonProperty("created_by")  public String getCreatedBy() { return this.created_by; }
+    /** @see #created_by */ @JsonProperty("created_by")  public void setCreatedBy(String created_by) { this.created_by = created_by; }
+
+    /** @see #created_on */ @JsonProperty("created_on")  public Date getCreatedOn() { return this.created_on; }
+    /** @see #created_on */ @JsonProperty("created_on")  public void setCreatedOn(Date created_on) { this.created_on = created_on; }
+
+    /** @see #modified_by */ @JsonProperty("modified_by")  public String getModifiedBy() { return this.modified_by; }
+    /** @see #modified_by */ @JsonProperty("modified_by")  public void setModifiedBy(String modified_by) { this.modified_by = modified_by; }
+
+    /** @see #modified_on */ @JsonProperty("modified_on")  public Date getModifiedOn() { return this.modified_on; }
+    /** @see #modified_on */ @JsonProperty("modified_on")  public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
     /** @see #allow_null_values */ @JsonProperty("allow_null_values")  public Boolean getAllowNullValues() { return this.allow_null_values; }
     /** @see #allow_null_values */ @JsonProperty("allow_null_values")  public void setAllowNullValues(Boolean allow_null_values) { this.allow_null_values = allow_null_values; }
@@ -278,7 +336,6 @@ public class ColumnAnalysisSummary extends MainObject {
 
     /** @see #inferred_precision */ @JsonProperty("inferred_precision")  public Number getInferredPrecision() { return this.inferred_precision; }
     /** @see #inferred_precision */ @JsonProperty("inferred_precision")  public void setInferredPrecision(Number inferred_precision) { this.inferred_precision = inferred_precision; }
-
 
     public static final Boolean isColumnAnalysisSummary(Object obj) { return (obj.getClass() == ColumnAnalysisSummary.class); }
 
