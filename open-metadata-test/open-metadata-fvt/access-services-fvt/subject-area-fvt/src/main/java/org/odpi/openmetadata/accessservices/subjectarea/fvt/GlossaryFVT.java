@@ -10,6 +10,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectA
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 
 import java.io.IOException;
+import java.util.Date;
 
 /**
  * FVT resource to call subject area glossary client API
@@ -70,6 +71,10 @@ public class GlossaryFVT
                 gotGlossary = getGlossaryByGUID(guid);
                 System.out.println("Delete the glossary");
                 gotGlossary = deleteGlossary(guid);
+                System.out.println("restore the glossary");
+                gotGlossary = restoreGlossary(guid);
+                System.out.println("Delete the glossary again");
+                gotGlossary = deleteGlossary(guid);
                 System.out.println("Purge a glossary");
                 String guid2 = glossary2.getSystemAttributes().getGUID();
                 purgeGlossary(guid2);
@@ -90,6 +95,55 @@ public class GlossaryFVT
     {
         Glossary glossary = new Glossary();
         glossary.setName(name);
+        Glossary newGlossary  = subjectAreaGlossary.createGlossary(serverName,FVTConstants.USERID, glossary);
+        if (newGlossary != null)
+        {
+            System.out.println("Created Glossary " + newGlossary.getName() + " with guid " + newGlossary.getSystemAttributes().getGUID());
+        }
+        return newGlossary;
+    }
+    public  Glossary createPastToGlossary(String name) throws SubjectAreaCheckedExceptionBase
+    {
+        Glossary glossary = new Glossary();
+        glossary.setName(name);
+        long now = new Date().getTime();
+        // expire the glossary 10 milliseconds ago
+        glossary.setEffectiveToTime(new Date(now-10));
+        Glossary newGlossary  = subjectAreaGlossary.createGlossary(serverName,FVTConstants.USERID, glossary);
+        if (newGlossary != null)
+        {
+            System.out.println("Created Glossary " + newGlossary.getName() + " with guid " + newGlossary.getSystemAttributes().getGUID());
+        }
+        return newGlossary;
+    }
+    public  Glossary createPastFromGlossary(String name) throws SubjectAreaCheckedExceptionBase
+    {
+        Glossary glossary = new Glossary();
+        glossary.setName(name);
+        long now = new Date().getTime();
+        // expire the glossary 10 milliseconds ago
+        glossary.setEffectiveFromTime(new Date(now-10));
+       return  subjectAreaGlossary.createGlossary(serverName,FVTConstants.USERID, glossary);
+    }
+    public  Glossary createInvalidEffectiveDateGlossary(String name) throws SubjectAreaCheckedExceptionBase
+    {
+        Glossary glossary = new Glossary();
+        glossary.setName(name);
+        long now = new Date().getTime();
+        // expire the glossary 10 milliseconds ago
+        glossary.setEffectiveFromTime(new Date(now - 10));
+        glossary.setEffectiveToTime(new Date(now - 11));
+        return  subjectAreaGlossary.createGlossary(serverName, FVTConstants.USERID, glossary);
+    }
+
+    public  Glossary createFutureGlossary(String name) throws SubjectAreaCheckedExceptionBase
+    {
+        Glossary glossary = new Glossary();
+        glossary.setName(name);
+        long now = new Date().getTime();
+        // make the glossary effective in a days time for day
+        glossary.setEffectiveFromTime(new Date(now+1000*60*60*24));
+        glossary.setEffectiveToTime(new Date(now+2000*60*60*24));
         Glossary newGlossary  = subjectAreaGlossary.createGlossary(serverName,FVTConstants.USERID, glossary);
         if (newGlossary != null)
         {
@@ -126,6 +180,15 @@ public class GlossaryFVT
             System.out.println("Deleted Glossary name is " + deletedGlossary.getName());
         }
         return deletedGlossary;
+    }
+    public Glossary restoreGlossary(String guid) throws SubjectAreaCheckedExceptionBase
+    {
+        Glossary restoredGlossary = subjectAreaGlossary.restoreGlossary(serverName,FVTConstants.USERID, guid);
+        if (restoredGlossary != null)
+        {
+            System.out.println("Restored Glossary name is " + restoredGlossary.getName());
+        }
+        return restoredGlossary;
     }
 
     public  void purgeGlossary(String guid) throws SubjectAreaCheckedExceptionBase

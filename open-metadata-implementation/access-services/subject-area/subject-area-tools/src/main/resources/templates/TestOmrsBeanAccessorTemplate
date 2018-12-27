@@ -392,7 +392,6 @@ public class TestSubjectAreaBeansToAccessOMRS {
             InstanceType typeOfRelationship = new InstanceType();
             typeOfRelationship.setTypeDefName("<$$uRelationshipName$$>");
             mockRelationship.setType(typeOfRelationship);
-
             EntityProxy entityProxy1 = new EntityProxy();
             EntityProxy entityProxy2 = new EntityProxy();
             InstanceType type1 = new InstanceType();
