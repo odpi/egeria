@@ -23,11 +23,10 @@ class DataEngineRegistration {
         AccessServiceDescription myDescription = AccessServiceDescription.DATA_ENGINE_OMAS;
 
         AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription.getAccessServiceCode(),
-                myDescription.getAccessServiceName(),
-                myDescription.getAccessServiceDescription(),
-                myDescription.getAccessServiceWiki(),
-                AccessServiceOperationalStatus.ENABLED,
+                myDescription.getAccessServiceName(), myDescription.getAccessServiceDescription(),
+                myDescription.getAccessServiceWiki(), AccessServiceOperationalStatus.ENABLED,
                 DataEngineAdmin.class.getName());
+
         OMAGAccessServiceRegistration.registerAccessService(myRegistration);
     }
 }

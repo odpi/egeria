@@ -5,8 +5,7 @@ package org.odpi.openmetadata.accessservices.dataengine.exception;
 import lombok.Getter;
 
 /**
- * DataEngineException provides a checked exception for reporting errors found when using
- * the Data Engine OMAS services.
+ * DataEngineException provides a checked exception for reporting errors found when using the Data Engine OMAS services.
  * Typically these errors are either configuration or operational errors that can be fixed by an administrator.
  * The DataEngineErrorCode can be used with this exception to populate it with standard messages.
  * The aim is to be able to uniquely identify the cause and remedy for the error.
@@ -58,13 +57,8 @@ public class DataEngineException extends Exception {
      * @param userAction        - instructions for correcting the error
      * @param caughtError       - the error that resulted in this exception.
      */
-    DataEngineException(int httpCode,
-                        String className,
-                        String actionDescription,
-                        String errorMessage,
-                        String systemAction,
-                        String userAction,
-                        Throwable caughtError) {
+    DataEngineException(int httpCode, String className, String actionDescription, String errorMessage,
+                        String systemAction, String userAction, Throwable caughtError) {
         super(errorMessage, caughtError);
         this.reportedHTTPCode = httpCode;
         this.reportingClassName = className;

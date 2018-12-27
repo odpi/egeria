@@ -31,10 +31,12 @@ import java.util.List;
 class ProcessHandler {
     private static final String PROCESS_PROPERTY_NAME = "name";
     private static final String QUALIFIED_NAME_PROPERTY_NAME = "qualifiedName";
-    private static final String DISPLAY_NAME_PROPERTY_NAME = "displayName";
     private static final String PROCESS_TYPE_NAME = "Process";
     private static final String PROCESS_INPUT_RELATIONSHIP_TYPE_NAME = "ProcessInput";
     private static final String PROCESS_OUTPUT_RELATIONSHIP_TYPE_NAME = "ProcessOutput";
+    private static final String OWNER_PROPERTY_NAME = "owner";
+    private static final String LATEST_CHANGE_PROPERTY_NAME = "latestChange";
+    private static final String DESCRIPTION_PROPERTY_NAME = "description";
 
     private OMRSMetadataCollection metadataCollection;
     private DataEngineErrorHandler errorHandler;
@@ -55,17 +57,21 @@ class ProcessHandler {
         if (repositoryConnector != null) {
             this.repositoryHelper = repositoryConnector.getRepositoryHelper();
             this.metadataCollection = metadataCollection;
-            errorHandler = new DataEngineErrorHandler();
-
         }
+        errorHandler = new DataEngineErrorHandler();
     }
+
 
     /**
      * Create the process
      *
-     * @param userId      the name of the calling user
-     * @param processName the name of the process
-     * @param displayName the display name of the process
+     * @param userId          the name of the calling user
+     * @param processName     the name of the process
+     * @param description     the description of the process
+     * @param latestChange    the description for the latest change done for the asset
+     * @param zoneMembership  the zone membership of the process
+     * @param displayName     the display name of the process
+     * @param parentProcessId the parent process Guid, null if no parent present
      * @return the guid of the created process
      * @throws UserNotAuthorizedException                                                         the requesting user is not authorized to issue this request.
      * @throws TypeErrorException                                                                 unknown or invalid type
@@ -77,27 +83,25 @@ class ProcessHandler {
      * @throws RepositoryErrorException                                                           no metadata collection
      * @throws PropertyErrorException                                                             there is a problem with one of the other parameters.
      */
-    String createProcess(String userId, String processName, String displayName)
+    String createProcess(String userId, String processName, String description, String latestChange,
+                         String zoneMembership, String displayName, String parentProcessId)
             throws UserNotAuthorizedException, TypeErrorException, ClassificationErrorException,
             StatusNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
             InvalidParameterException, RepositoryErrorException, PropertyErrorException {
-        //TODO validate the other fields
+
         final String methodName = "createProcess";
 
         errorHandler.validateUserId(userId, methodName);
 
-        EntityDetail entity;
-        entity = repositoryHelper.getSkeletonEntity(serviceName, "", InstanceProvenanceType.LOCAL_COHORT, userId,
-                PROCESS_TYPE_NAME);
+        EntityDetail entity = repositoryHelper.getSkeletonEntity(serviceName, "",
+                InstanceProvenanceType.LOCAL_COHORT, userId, PROCESS_TYPE_NAME);
 
 
-        InstanceProperties instanceProperties = createProcessProperties(processName, displayName);
+        InstanceProperties instanceProperties = createProcessProperties(userId, processName, description, latestChange,
+                zoneMembership, displayName, parentProcessId);
 
-        EntityDetail createdEntity = metadataCollection.addEntity(userId,
-                entity.getType().getTypeDefGUID(),
-                instanceProperties,
-                entity.getClassifications(),
-                entity.getStatus());
+        EntityDetail createdEntity = metadataCollection.addEntity(userId, entity.getType().getTypeDefGUID(),
+                instanceProperties, entity.getClassifications(), entity.getStatus());
 
         return createdEntity.getGUID();
     }
@@ -105,12 +109,18 @@ class ProcessHandler {
     /**
      * Create an instance properties object for a process asset
      *
-     * @param processName the name of the process
-     * @param displayName the display name of the process
+     * @param processName     the name of the process
+     * @param description     the description of the process
+     * @param latestChange    the description for the latest change done for the asset
+     * @param zoneMembership  the zone membership of the process
+     * @param displayName     the display name of the process
+     * @param parentProcessId the parent process Guid, null if no parent present
      * @return instance properties object
      */
-    private InstanceProperties createProcessProperties(String processName, String displayName) {
-        //TODO validate the other fields
+    private InstanceProperties createProcessProperties(String userId, String processName, String description,
+                                                       String latestChange, String zoneMembership, String displayName,
+                                                       String parentProcessId) {
+
         final String methodName = "createProcessProperties";
 
         InstanceProperties properties;
@@ -121,7 +131,14 @@ class ProcessHandler {
         properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, QUALIFIED_NAME_PROPERTY_NAME,
                 processName + ":" + new Date().toString(), methodName);
 
-        // properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, DISPLAY_NAME_PROPERTY_NAME, displayName, methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, DESCRIPTION_PROPERTY_NAME,
+                description, methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, LATEST_CHANGE_PROPERTY_NAME,
+                latestChange, methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OWNER_PROPERTY_NAME,
+                userId, methodName);
 
         return properties;
     }
@@ -143,7 +160,10 @@ class ProcessHandler {
      * @throws EntityNotKnownException                                                            the entity instance is not known in the metadata collection.
      */
     void addInputRelationships(String userId, String processGuid, List<String> inputs)
-            throws UserNotAuthorizedException, TypeErrorException, StatusNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, EntityNotKnownException, InvalidParameterException, RepositoryErrorException, PropertyErrorException {
+            throws UserNotAuthorizedException, TypeErrorException, StatusNotSupportedException,
+            org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, EntityNotKnownException,
+            InvalidParameterException, RepositoryErrorException, PropertyErrorException {
+
         final String methodName = "addInputRelationship";
 
         if (inputs == null) {
@@ -171,7 +191,10 @@ class ProcessHandler {
      * @throws EntityNotKnownException                                                            the entity instance is not known in the metadata collection.
      */
     void addOutputRelationships(String userId, String processGuid, List<String> outputs)
-            throws UserNotAuthorizedException, TypeErrorException, StatusNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, EntityNotKnownException, InvalidParameterException, RepositoryErrorException, PropertyErrorException {
+            throws UserNotAuthorizedException, TypeErrorException, StatusNotSupportedException,
+            org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, EntityNotKnownException,
+            InvalidParameterException, RepositoryErrorException, PropertyErrorException {
+
         final String methodName = "addOutputRelationship";
         if (outputs == null) {
             return;
@@ -182,24 +205,21 @@ class ProcessHandler {
         }
     }
 
-
     private void addRelationship(String userId, String processGuid, String dataSetGuid, String relationshipType,
                                  String methodName)
-            throws TypeErrorException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, EntityNotKnownException, StatusNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, UserNotAuthorizedException {
+            throws TypeErrorException, InvalidParameterException, RepositoryErrorException, PropertyErrorException,
+            EntityNotKnownException, StatusNotSupportedException,
+            org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, UserNotAuthorizedException {
 
         errorHandler.validateUserId(userId, methodName);
 
-        //TODO validate GUIDs
+        //TODO add validation for GUIDs
 
         Relationship relationship = repositoryHelper.getSkeletonRelationship(serviceName, "",
                 InstanceProvenanceType.LOCAL_COHORT, userId, relationshipType);
 
-        Relationship createdRelationship = metadataCollection.addRelationship(userId,
-                relationship.getType().getTypeDefGUID(),
-                null,
-                processGuid,
-                dataSetGuid,
-                InstanceStatus.ACTIVE);
+        metadataCollection.addRelationship(userId, relationship.getType().getTypeDefGUID(), null,
+                processGuid, dataSetGuid, InstanceStatus.ACTIVE);
     }
 
     //TODO remove when igcReplicator can replicate DataSets
@@ -212,24 +232,17 @@ class ProcessHandler {
 
         errorHandler.validateUserId(userId, methodName);
 
-        EntityDetail entity;
-        entity = repositoryHelper.getSkeletonEntity(serviceName, "", InstanceProvenanceType.LOCAL_COHORT, userId,
-                "DataSet");
-
+        EntityDetail entity = repositoryHelper.getSkeletonEntity(serviceName, "",
+                InstanceProvenanceType.LOCAL_COHORT, userId, "DataSet");
 
         InstanceProperties instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName, null,
-                PROCESS_PROPERTY_NAME,
-                processName, methodName);
+                PROCESS_PROPERTY_NAME, processName, methodName);
 
         instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName, instanceProperties,
-                QUALIFIED_NAME_PROPERTY_NAME,
-                processName + ":" + new Date().toString(), methodName);
+                QUALIFIED_NAME_PROPERTY_NAME, processName + ":" + new Date().toString(), methodName);
 
-        EntityDetail createdEntity = metadataCollection.addEntity(userId,
-                entity.getType().getTypeDefGUID(),
-                instanceProperties,
-                entity.getClassifications(),
-                entity.getStatus());
+        EntityDetail createdEntity = metadataCollection.addEntity(userId, entity.getType().getTypeDefGUID(),
+                instanceProperties, entity.getClassifications(), entity.getStatus());
 
         return createdEntity.getGUID();
     }

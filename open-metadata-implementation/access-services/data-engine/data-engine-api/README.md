@@ -3,8 +3,7 @@
 
 # Data Engine Open Metadata Access Service (OMAS) API
 
-    <!-- TODO  provide actual description -->
-The Data Engine OMAS supports a REST API for 
+    <!-- TODO  provide actual description --> 
 
 The Data Engine OMAS API provides the shared Java classes between the
 server and client.

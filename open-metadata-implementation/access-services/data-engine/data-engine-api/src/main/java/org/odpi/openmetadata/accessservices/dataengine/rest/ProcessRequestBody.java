@@ -12,9 +12,17 @@ import java.util.List;
 public class ProcessRequestBody extends DataEngineOMASAPIRequestBody {
     private String name;
 
-    private String displayName;
-
     private List<String> inputs;
 
     private List<String> outputs;
+
+    private String description;
+
+    private String latestChange;
+
+    private String zoneMembership;
+
+    private String displayName;
+
+    private String parentProcessId;
 }

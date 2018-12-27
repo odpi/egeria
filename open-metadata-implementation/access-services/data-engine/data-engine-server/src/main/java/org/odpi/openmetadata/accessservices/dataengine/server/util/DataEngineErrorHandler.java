@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: Apache 2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.util;
 
 import org.odpi.openmetadata.accessservices.dataengine.exception.DataEngineErrorCode;
@@ -88,7 +90,7 @@ public class DataEngineErrorHandler {
      * @param response REST Response
      * @param e        returned response
      */
-    public void captureDataEngineExeption(DataEngineOMASAPIResponse response, DataEngineException e) {
+    public void captureDataEngineException(DataEngineOMASAPIResponse response, DataEngineException e) {
         captureException(response, e.getReportedHTTPCode(), e.getClass().getName(), e.getReportedErrorMessage(),
                 e.getReportedSystemAction(), e.getReportedUserAction());
     }
