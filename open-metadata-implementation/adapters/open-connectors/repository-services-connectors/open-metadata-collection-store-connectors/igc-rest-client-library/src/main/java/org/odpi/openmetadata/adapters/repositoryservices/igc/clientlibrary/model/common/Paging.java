@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Paging extends ObjectPrinter {
 
-    public static final String IGC_TYPE_ID = "paging";
+    public static String getIgcTypeId() { return "paging"; }
 
     /**
      * Specifies the total number of items that exist across all pages.

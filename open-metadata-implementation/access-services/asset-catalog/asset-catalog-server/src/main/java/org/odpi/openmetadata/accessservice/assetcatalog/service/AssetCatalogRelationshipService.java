@@ -37,15 +37,10 @@ import java.util.List;
  */
 public class AssetCatalogRelationshipService {
 
-    static AssetCatalogInstanceHandler   assetCatalogInstanceHandler = new AssetCatalogInstanceHandler();
+    static AssetCatalogInstanceHandler assetCatalogInstanceHandler = new AssetCatalogInstanceHandler();
 
     private Converter converter = new Converter();
     private ExceptionHandler exceptionHandler = new ExceptionHandler();
-
-    public AssetCatalogRelationshipService() {
-    }
-
-
 
     public RelationshipResponse getRelationshipById(String serverName, String userId, String relationshipId) {
 

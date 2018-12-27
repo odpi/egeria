@@ -219,16 +219,12 @@ public class EntityDetailTest
         InstanceProperties instanceProperties = new InstanceProperties();
         testObject.setProperties(instanceProperties);
 
-        /*
-         * Commented out  waiting for fix in Subject Area
         assertTrue(testObject.getProperties() == null);
-
 
         instanceProperties.setInstanceProperties(new HashMap<>());
         testObject.setProperties(instanceProperties);
 
         assertTrue(testObject.getProperties() == null);
-        */
     }
 
 

@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v117;
 
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
 import java.util.ArrayList;
@@ -16,9 +16,9 @@ import java.util.ArrayList;
  *  extending from this class in your own custom class is the best approach.)
  */
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ForeignKey extends MainObject {
+public class ForeignKey extends Reference {
 
-    public static final String IGC_TYPE_ID = "foreign_key";
+    public static String getIgcTypeId() { return "foreign_key"; }
 
     /**
      * The 'included_database_columns' property, displayed as 'Included Database Columns' in the IGC UI.
@@ -55,7 +55,6 @@ public class ForeignKey extends MainObject {
 
     /** @see #sorting */ @JsonProperty("sorting")  public ArrayList<String> getSorting() { return this.sorting; }
     /** @see #sorting */ @JsonProperty("sorting")  public void setSorting(ArrayList<String> sorting) { this.sorting = sorting; }
-
 
     public static final Boolean isForeignKey(Object obj) { return (obj.getClass() == ForeignKey.class); }
 

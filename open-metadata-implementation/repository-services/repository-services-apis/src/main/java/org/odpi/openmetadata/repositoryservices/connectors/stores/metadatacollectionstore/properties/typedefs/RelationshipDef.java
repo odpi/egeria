@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs;
 
 
@@ -108,7 +109,14 @@ public class RelationshipDef extends TypeDef
      */
     public RelationshipEndDef getEndDef1()
     {
-        return endDef1;
+        if (endDef1 == null)
+        {
+            return null;
+        }
+        else
+        {
+            return new RelationshipEndDef(endDef1);
+        }
     }
 
 
@@ -127,7 +135,14 @@ public class RelationshipDef extends TypeDef
      */
     public RelationshipEndDef getEndDef2()
     {
-        return endDef2;
+        if (endDef2 == null)
+        {
+            return null;
+        }
+        else
+        {
+            return new RelationshipEndDef(endDef2);
+        }
     }
 
 
@@ -148,8 +163,11 @@ public class RelationshipDef extends TypeDef
     public String toString()
     {
         return "RelationshipDef{" +
-                "superType=" + getSuperType() +
+                "name='" + getName() + '\'' +
                 ", description='" + getDescription() + '\'' +
+                ", endDef1=" + endDef1 +
+                ", endDef2=" + endDef2 +
+                ", superType=" + getSuperType() +
                 ", descriptionGUID='" + getDescriptionGUID() + '\'' +
                 ", origin='" + getOrigin() + '\'' +
                 ", createdBy='" + getCreatedBy() + '\'' +
@@ -162,35 +180,36 @@ public class RelationshipDef extends TypeDef
                 ", initialStatus=" + getInitialStatus() +
                 ", propertiesDefinition=" + getPropertiesDefinition() +
                 ", category=" + getCategory() +
+                ", propagationRule=" + propagationRule +
                 ", version=" + getVersion() +
                 ", versionName='" + getVersionName() + '\'' +
                 ", GUID='" + getGUID() + '\'' +
-                ", name='" + getName() + '\'' +
                 '}';
     }
+
 
     /**
      * Verify that supplied object has the same properties.
      *
-     * @param o object to test
+     * @param objectToCompare object to test
      * @return result
      */
     @Override
-    public boolean equals(Object o)
+    public boolean equals(Object objectToCompare)
     {
-        if (this == o)
+        if (this == objectToCompare)
         {
             return true;
         }
-        if (!(o instanceof RelationshipDef))
+        if (!(objectToCompare instanceof RelationshipDef))
         {
             return false;
         }
-        if (!super.equals(o))
+        if (!super.equals(objectToCompare))
         {
             return false;
         }
-        RelationshipDef that = (RelationshipDef) o;
+        RelationshipDef that = (RelationshipDef) objectToCompare;
         return getPropagationRule() == that.getPropagationRule() &&
                 Objects.equals(getEndDef1(), that.getEndDef1()) &&
                 Objects.equals(getEndDef2(), that.getEndDef2());

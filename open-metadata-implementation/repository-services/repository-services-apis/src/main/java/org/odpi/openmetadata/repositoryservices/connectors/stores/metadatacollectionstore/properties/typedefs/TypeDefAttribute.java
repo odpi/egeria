@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs;
 
 
@@ -32,7 +33,7 @@ public class TypeDefAttribute extends TypeDefElementHeader
     protected boolean                            isIndexable              = true;
     protected boolean                            isUnique                 = false;
     protected String                             defaultValue             = null;
-    protected ArrayList<ExternalStandardMapping> externalStandardMappings = null;
+    protected List<ExternalStandardMapping>      externalStandardMappings = null;
 
 
     /**
@@ -265,6 +266,10 @@ public class TypeDefAttribute extends TypeDefElementHeader
         {
             return null;
         }
+        else if (externalStandardMappings.isEmpty())
+        {
+            return null;
+        }
         else
         {
             return new ArrayList<>(externalStandardMappings);
@@ -279,14 +284,7 @@ public class TypeDefAttribute extends TypeDefElementHeader
      */
     public void setExternalStandardMappings(List<ExternalStandardMapping> externalStandardMappings)
     {
-        if (externalStandardMappings == null)
-        {
-            this.externalStandardMappings = null;
-        }
-        else
-        {
-            this.externalStandardMappings = new ArrayList<>(externalStandardMappings);
-        }
+        this.externalStandardMappings = externalStandardMappings;
     }
 
 

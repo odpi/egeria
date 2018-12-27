@@ -8,8 +8,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidP
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.MetadataServerUncontactableException;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.UnrecognizedGUIDException;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.UserNotAuthorizedException;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.server.SubjectAreaBeansToAccessOMRS;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.OMASExceptionToResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.PossibleClassificationsResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.PossibleRelationshipsResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
@@ -21,6 +21,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -49,29 +50,62 @@ public class SubjectAreaRESTServicesInstance
     {
     }
 
+//    /**
+//     * Setup the OMRSAPIHelper with the right instance based on the serverName
+//     *
+//     * @param serverName serverName, used to identify a server in a multitenant environment.
+//     * @return SubjectAreaOMASAPIResponse null if successful
+//     */
+//    protected void initialiseOMRSAPIHelperForInstance(String serverName) throws MetadataServerUncontactableException
+//    {
+//        // this is set as a mock object for junits.
+//        if (oMRSAPIHelper ==null)
+//        {
+//            oMRSAPIHelper = new OMRSAPIHelper();
+//        }
+//
+//        OMRSRepositoryConnector omrsConnector = instanceHandler.getRepositoryConnector(serverName);
+//        oMRSAPIHelper.setOMRSRepositoryConnector(omrsConnector);
     /**
-     * Setup the OMRSAPIHelper with the right instance based on the serverName
-     *
-     * @param serverName serverName, used to identify a server in a multitenant environment.
-     * @return SubjectAreaOMASAPIResponse null if successful
+     * Each API call needs to run in the requested tenant - indicated by the serverName and validate the userid.
+     * @param serverName server name used to create the instance
+     * @param userId userid under which the request will be made
+     * @param methodName method name for logging
+     * @return the Subject Area OMAS bean to access OMRS
+     * @throws MetadataServerUncontactableException not able to communicate with the metadata server.
+     * @throws InvalidParameterException a parameter is null or an invalid value.
      */
-    protected SubjectAreaOMASAPIResponse initialiseOMRSAPIHelperForInstance(String serverName)
+    protected SubjectAreaBeansToAccessOMRS initializeAPI(String serverName, String userId, String methodName) throws MetadataServerUncontactableException,
+            InvalidParameterException
     {
-        SubjectAreaOMASAPIResponse response = null;
+        return initializeAPI(serverName,userId,null,null,methodName);
+    }
+    /**
+     * Each API call needs to run in the requested tenant - indicated by the serverName and validate the userid.
+     * @param serverName server name used to create the instance
+     * @param userId userid under which the request will be made
+     * @param from effective from date
+     * @param to effective to Date
+     * @param methodName method name for logging
+     * @return the Subject Area OMAS bean to access OMRS
+     * @throws MetadataServerUncontactableException not able to communicate with the metadata server.
+     * @throws InvalidParameterException a parameter is null or an invalid value.
+     */
+    protected SubjectAreaBeansToAccessOMRS initializeAPI(String serverName, String userId, Date from, Date to, String methodName) throws MetadataServerUncontactableException, InvalidParameterException
+    {
         // this is set as a mock object for junits.
         if (oMRSAPIHelper ==null)
         {
             oMRSAPIHelper = new OMRSAPIHelper();
         }
-        try
-        {
-            OMRSRepositoryConnector omrsConnector = instanceHandler.getRepositoryConnector(serverName);
-            oMRSAPIHelper.setOMRSRepositoryConnector(omrsConnector);
-        } catch (MetadataServerUncontactableException e)
-        {
-            response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
-        }
-        return response;
+        // initialise omrs API helper with the right instance based on the server name
+        OMRSRepositoryConnector omrsConnector = instanceHandler.getRepositoryConnector(serverName);
+        oMRSAPIHelper.setOMRSRepositoryConnector(omrsConnector);
+        SubjectAreaBeansToAccessOMRS subjectAreaOmasREST = new SubjectAreaBeansToAccessOMRS();
+        subjectAreaOmasREST.setOMRSAPIHelper(this.oMRSAPIHelper);
+        InputValidator.validateUserIdNotNull(className, methodName, userId);
+        InputValidator.validateEffectiveDate(className,methodName,to,from);
+        return subjectAreaOmasREST;
     }
 
 /*
@@ -236,12 +270,14 @@ public GovernanceClassificationDefListAPIResponse getGovernanceClassificationDef
             log.debug("==> Method: " + methodName + ",userId=" + userId + ", guid" + guid);
         }
         // initialise omrs API helper with the right instance based on the server name
-        SubjectAreaOMASAPIResponse response = initialiseOMRSAPIHelperForInstance(serverName);
+        SubjectAreaOMASAPIResponse response = null;
         EntityDetail entityDetail = null;
         if (response == null)
         {
             try
             {
+                // initialise omrs API helper with the right instance based on the server name
+                SubjectAreaBeansToAccessOMRS subjectAreaOmasREST = initializeAPI(serverName, userId, methodName);
                 entityDetail = oMRSAPIHelper.callOMRSGetEntityByGuid(userId, guid);
             } catch (MetadataServerUncontactableException e)
             {
@@ -275,28 +311,14 @@ public GovernanceClassificationDefListAPIResponse getGovernanceClassificationDef
         {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ", typeName" + typeName);
         }
-        // initialise omrs API helper with the right instance based on the server name
-        SubjectAreaOMASAPIResponse response = initialiseOMRSAPIHelperForInstance(serverName);
+        SubjectAreaOMASAPIResponse response = null;
         Set<String> relationships = new HashSet<>();
         TypeDef typeDef = null;
-        if (response == null)
+        try
         {
-            try
-            {
-                typeDef = oMRSAPIHelper.callGetTypeDefByName(userId, typeName);
-            } catch (MetadataServerUncontactableException e)
-            {
-                response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
-            } catch (UserNotAuthorizedException e)
-            {
-                response = OMASExceptionToResponse.convertUserNotAuthorizedException(e);
-            } catch (InvalidParameterException e)
-            {
-                response = OMASExceptionToResponse.convertInvalidParameterException(e);
-            }
-        }
-        if (response == null)
-        {
+            // initialise omrs API helper with the right instance based on the server name
+            SubjectAreaBeansToAccessOMRS subjectAreaOmasREST = initializeAPI(serverName, userId, methodName);
+            typeDef = oMRSAPIHelper.callGetTypeDefByName(userId, typeName);
             if (typeDef.getCategory().getName() == (TypeDefCategory.ENTITY_DEF.getName()))
             {
                 EntityDef entityDef = (EntityDef) typeDef;
@@ -336,6 +358,15 @@ public GovernanceClassificationDefListAPIResponse getGovernanceClassificationDef
                 InvalidParameterException invalidParameterException = new InvalidParameterException(errorCode.getHTTPErrorCode(), className, methodName, errorMessage, errorCode.getSystemAction(), errorCode.getUserAction());
                 response = OMASExceptionToResponse.convertInvalidParameterException(invalidParameterException);
             }
+        } catch (MetadataServerUncontactableException e)
+        {
+            response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
+        } catch (UserNotAuthorizedException e)
+        {
+            response = OMASExceptionToResponse.convertUserNotAuthorizedException(e);
+        } catch (InvalidParameterException e)
+        {
+            response = OMASExceptionToResponse.convertInvalidParameterException(e);
         }
         if (log.isDebugEnabled())
         {
@@ -348,5 +379,6 @@ public GovernanceClassificationDefListAPIResponse getGovernanceClassificationDef
     {
         this.oMRSAPIHelper = oMRSAPIHelper;
     }
+
     // TODO get graph
 }
