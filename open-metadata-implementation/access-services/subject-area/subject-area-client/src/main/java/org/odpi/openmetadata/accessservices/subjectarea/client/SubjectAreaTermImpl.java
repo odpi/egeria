@@ -82,7 +82,6 @@ public class SubjectAreaTermImpl implements org.odpi.openmetadata.accessservices
         }
         InputValidator.validateUserIdNotNull(className,methodName,userId);
         final String url = this.omasServerURL + String.format(BASE_URL,serverName,userId);
-        InputValidator.validateUserIdNotNull(className,methodName,userId);
         ObjectMapper mapper = new ObjectMapper();
         String requestBody = null;
         try {
@@ -311,6 +310,7 @@ public class SubjectAreaTermImpl implements org.odpi.openmetadata.accessservices
         DetectUtils.detectAndThrowUserNotAuthorizedException(methodName,restResponse);
         DetectUtils.detectAndThrowInvalidParameterException(methodName,restResponse);
         DetectUtils.detectAndThrowGUIDNotPurgedException(methodName,restResponse);
+        DetectUtils.detectAndThrowUnrecognizedGUIDException(methodName,restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
@@ -363,6 +363,49 @@ public class SubjectAreaTermImpl implements org.odpi.openmetadata.accessservices
         DetectUtils.detectAndThrowInvalidParameterException(methodName,restResponse);
         DetectUtils.detectAndThrowFunctionNotSupportedException(methodName,restResponse);
 
+        Term term = DetectUtils.detectAndReturnTerm(methodName,restResponse);
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId="+userId );
+        }
+        return term;
+    }
+    /**
+     * Restore a Term
+     *
+     * Restore allows the deleted Term to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the term to restore
+     * @return the restored term
+     * @throws UnrecognizedGUIDException the supplied guid was not recognised
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws FunctionNotSupportedException   Function not supported this indicates that a soft delete was issued but the repository does not support it.
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+    public  Term restoreTerm(String serverName, String userId,String guid) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            MetadataServerUncontactableException,
+            UnrecognizedGUIDException,
+            FunctionNotSupportedException,
+            UnexpectedResponseException {
+        final String methodName = "restoreTerm";
+        if (log.isDebugEnabled()) {
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
+        }
+        InputValidator.validateUserIdNotNull(className,methodName,userId);
+        InputValidator.validateGUIDNotNull(className,methodName,guid,"guid");
+
+        final String urlTemplate = this.omasServerURL +BASE_URL+"/%s";
+        String url = String.format(urlTemplate,serverName,userId,guid);
+
+        SubjectAreaOMASAPIResponse restResponse = RestCaller.issuePostNoBody(className,methodName,url);
+        DetectUtils.detectAndThrowUserNotAuthorizedException(methodName,restResponse);
+        DetectUtils.detectAndThrowInvalidParameterException(methodName,restResponse);
+        DetectUtils.detectAndThrowUnrecognizedGUIDException(methodName,restResponse);
+        DetectUtils.detectAndThrowFunctionNotSupportedException(methodName,restResponse);
         Term term = DetectUtils.detectAndReturnTerm(methodName,restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
