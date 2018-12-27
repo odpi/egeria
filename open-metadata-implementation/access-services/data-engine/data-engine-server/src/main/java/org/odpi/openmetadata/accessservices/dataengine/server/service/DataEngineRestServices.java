@@ -20,20 +20,22 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 /**
- * The DataEngineService provides the server-side implementation of the Data Engine Open Metadata Assess Service (OMAS).
+ * The DataEngineRestServices provides the server-side implementation of the Data Engine Open Metadata Assess Service (OMAS).
  * This service provide the functionality to create processes with input and output relationships.
  */
-public class DataEngineService {
+public class DataEngineRestServices {
 
-    private static final DataEngineInstanceHandler instanceHandler = new DataEngineInstanceHandler();
-    private static final Logger log = LoggerFactory.getLogger(DataEngineService.class);
+    private static final Logger log = LoggerFactory.getLogger(DataEngineRestServices.class);
 
-    private DataEngineErrorHandler exceptionUtil = new DataEngineErrorHandler();
+    private DataEngineErrorHandler exceptionUtil;
+    private DataEngineInstanceHandler instanceHandler;
 
     /**
      * Default constructor
      */
-    public DataEngineService() {
+    public DataEngineRestServices() {
+        exceptionUtil = new DataEngineErrorHandler();
+        instanceHandler = new DataEngineInstanceHandler();
     }
 
     /**
@@ -56,21 +58,23 @@ public class DataEngineService {
                     instanceHandler.getRepositoryConnector(serverName),
                     instanceHandler.getMetadataCollection(serverName));
 
-            String processName = null;
-            String displayName = null;
-            List<String> inputs = null;
-            List<String> outputs = null;
-
-            if (processRequestBody != null) {
-                processName = processRequestBody.getName();
-                displayName = processRequestBody.getDisplayName();
-                inputs = processRequestBody.getInputs();
-                outputs = processRequestBody.getOutputs();
+            if (processRequestBody == null) {
+                return null;
             }
+
+            String processName = processRequestBody.getName();
+            List<String> inputs = processRequestBody.getInputs();
+            List<String> outputs = processRequestBody.getOutputs();
+            String description = processRequestBody.getDescription();
+            String latestChange = processRequestBody.getLatestChange();
+            String zoneMembership = processRequestBody.getZoneMembership();
+            String parentProcessId = processRequestBody.getParentProcessId();
+            String displayName = processRequestBody.getDisplayName();
 
             //createTestDataSets(userId, processHandler);
 
-            String processGuid = processHandler.createProcess(userId, processName, displayName);
+            String processGuid = processHandler.createProcess(userId, processName, description, latestChange,
+                    zoneMembership, displayName, parentProcessId);
 
             processHandler.addInputRelationships(userId, processGuid, inputs);
             processHandler.addOutputRelationships(userId, processGuid, outputs);
@@ -79,11 +83,13 @@ public class DataEngineService {
 
         } catch (TypeErrorException | EntityNotKnownException | StatusNotSupportedException | InvalidParameterException
                 | PropertyErrorException | ClassificationErrorException | RepositoryErrorException
-                | org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
+                |
+                org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
             exceptionUtil.captureOMRSCheckedExceptionBase(response, e);
 
-        } catch (UserNotAuthorizedException | PropertyServerException e) {
-            exceptionUtil.captureDataEngineExeption(response, e);
+        } catch (UserNotAuthorizedException |
+                PropertyServerException e) {
+            exceptionUtil.captureDataEngineException(response, e);
         }
 
         return response;

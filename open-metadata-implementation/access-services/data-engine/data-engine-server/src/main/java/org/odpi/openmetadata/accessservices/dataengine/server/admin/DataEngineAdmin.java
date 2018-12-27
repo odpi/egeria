@@ -38,12 +38,8 @@ public class DataEngineAdmin implements AccessServiceAdmin {
         DataEngineAuditCode auditCode;
         try {
             auditCode = DataEngineAuditCode.SERVICE_INITIALIZING;
-            auditLog.logRecord(actionDescription,
-                    auditCode.getLogMessageId(),
-                    auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(),
-                    null,
-                    auditCode.getSystemAction(),
+            auditLog.logRecord(actionDescription, auditCode.getLogMessageId(), auditCode.getSeverity(),
+                    auditCode.getFormattedLogMessage(), null, auditCode.getSystemAction(),
                     auditCode.getUserAction());
 
             this.auditLog = auditLog;
@@ -52,23 +48,15 @@ public class DataEngineAdmin implements AccessServiceAdmin {
             String serverName = instance.getServerName();
 
             auditCode = DataEngineAuditCode.SERVICE_INITIALIZED;
-            auditLog.logRecord(actionDescription,
-                    auditCode.getLogMessageId(),
-                    auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(serverName),
-                    null,
-                    auditCode.getSystemAction(),
+            auditLog.logRecord(actionDescription, auditCode.getLogMessageId(), auditCode.getSeverity(),
+                    auditCode.getFormattedLogMessage(serverName), null, auditCode.getSystemAction(),
                     auditCode.getUserAction());
 
         } catch (Throwable error) {
             auditCode = DataEngineAuditCode.SERVICE_INSTANCE_FAILURE;
-            auditLog.logRecord(actionDescription,
-                    auditCode.getLogMessageId(),
-                    auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(error.getMessage()),
-                    null,
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction());
+            auditLog.logRecord(actionDescription, auditCode.getLogMessageId(), auditCode.getSeverity(),
+                    auditCode.getFormattedLogMessage(error.getMessage()), null,
+                    auditCode.getSystemAction(), auditCode.getUserAction());
         }
     }
 
@@ -87,12 +75,8 @@ public class DataEngineAdmin implements AccessServiceAdmin {
             DataEngineAuditCode auditCode;
 
             auditCode = DataEngineAuditCode.SERVICE_SHUTDOWN;
-            auditLog.logRecord(actionDescription,
-                    auditCode.getLogMessageId(),
-                    auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(),
-                    null,
-                    auditCode.getSystemAction(),
+            auditLog.logRecord(actionDescription, auditCode.getLogMessageId(), auditCode.getSeverity(),
+                    auditCode.getFormattedLogMessage(), null, auditCode.getSystemAction(),
                     auditCode.getUserAction());
         }
     }

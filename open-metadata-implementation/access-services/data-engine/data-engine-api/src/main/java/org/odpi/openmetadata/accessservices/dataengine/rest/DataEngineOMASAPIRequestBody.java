@@ -31,14 +31,6 @@ public abstract class DataEngineOMASAPIRequestBody implements java.io.Serializab
     }
 
     /**
-     * Copy/clone constructor
-     *
-     * @param template object to copy
-     */
-    public DataEngineOMASAPIRequestBody(DataEngineOMASAPIRequestBody template) {
-    }
-
-    /**
      * JSON-like toString
      *
      * @return string containing the class name
