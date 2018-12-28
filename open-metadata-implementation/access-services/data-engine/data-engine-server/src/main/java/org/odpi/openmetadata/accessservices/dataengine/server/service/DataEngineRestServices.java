@@ -68,13 +68,13 @@ public class DataEngineRestServices {
             String description = processRequestBody.getDescription();
             String latestChange = processRequestBody.getLatestChange();
             String zoneMembership = processRequestBody.getZoneMembership();
-            String parentProcessId = processRequestBody.getParentProcessId();
+            String parentProcessGuid = processRequestBody.getParentProcessGuid();
             String displayName = processRequestBody.getDisplayName();
 
-            //createTestDataSets(userId, processHandler);
+          //  createTestDataSets(userId, processHandler);
 
             String processGuid = processHandler.createProcess(userId, processName, description, latestChange,
-                    zoneMembership, displayName, parentProcessId);
+                    zoneMembership, displayName, parentProcessGuid);
 
             processHandler.addInputRelationships(userId, processGuid, inputs);
             processHandler.addOutputRelationships(userId, processGuid, outputs);

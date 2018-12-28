@@ -5,8 +5,8 @@ package org.odpi.openmetadata.accessservices.dataengine.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -15,12 +15,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * GUIDResponse is the response structure used on the OMAS REST API calls that return a
  * unique identifier (guid) object as a response.
  */
-@EqualsAndHashCode(callSuper = true)
+
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@Data
 public class GUIDResponse extends DataEngineOMASAPIResponse {
+
     private String guid = null;
 
     /**
@@ -42,5 +42,68 @@ public class GUIDResponse extends DataEngineOMASAPIResponse {
         if (template != null) {
             this.guid = template.getGuid();
         }
+    }
+
+    public String getGuid() {
+        return guid;
+    }
+    public void setGuid(String guid) {
+        this.guid = guid;
+    }
+
+    /**
+     * JSON-style toString
+     *
+     * @return return string containing the property names and values
+     */
+    @Override
+    public String toString()
+    {
+        return "GUIDResponse{" +
+                "GUID='" + getGuid() + '\'' +
+                ", relatedHTTPCode=" + getRelatedHTTPCode() +
+                ", exceptionClassName='" + getExceptionClassName() + '\'' +
+                ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
+                ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
+                ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
+                ", exceptionProperties=" + getExceptionProperties() +
+                '}';
+    }
+
+    /**
+     * Return comparison result based on the content of the properties.
+     *
+     * @param objectToCompare test object
+     * @return result of comparison
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (!(objectToCompare instanceof GUIDResponse))
+        {
+            return false;
+        }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        GUIDResponse that = (GUIDResponse) objectToCompare;
+        return Objects.equals(guid, that.guid);
+    }
+
+
+    /**
+     * Return hash code for this object
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(guid);
     }
 }
