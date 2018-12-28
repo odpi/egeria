@@ -209,7 +209,38 @@ public class InformationGovernanceRule extends Reference {
         add("modified_by");
         add("modified_on");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("referencing_policies");
+        add("labels");
+        add("stewards");
+        add("related_rules");
+        add("implemented_by_assets");
+        add("governs_assets");
+        add("in_collections");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("referencing_policies");
+        add("labels");
+        add("stewards");
+        add("language");
+        add("related_rules");
+        add("implemented_by_assets");
+        add("governs_assets");
+        add("in_collections");
+        add("workflow_current_state");
+        add("workflow_stored_state");
+        add("glossary_type");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isInformationGovernanceRule(Object obj) { return (obj.getClass() == InformationGovernanceRule.class); }
 
 }

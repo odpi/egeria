@@ -147,7 +147,28 @@ public class Actiondescriptor extends Reference {
         add("modified_by");
         add("modified_on");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("has_privilege_system_role");
+        add("has_privilege_contact_role");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("instance_constraint_expression");
+        add("parameters");
+        add("has_privilege_system_role");
+        add("has_privilege_contact_role");
+        add("of_class_descriptor");
+        add("description");
+        add("display_name");
+        add("name");
+        add("operation");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isActiondescriptor(Object obj) { return (obj.getClass() == Actiondescriptor.class); }
 
 }

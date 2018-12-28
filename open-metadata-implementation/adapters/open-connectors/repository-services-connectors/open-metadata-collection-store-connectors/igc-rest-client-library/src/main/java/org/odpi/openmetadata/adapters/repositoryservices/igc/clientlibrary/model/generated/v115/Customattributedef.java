@@ -130,7 +130,25 @@ public class Customattributedef extends Reference {
         add("modified_by");
         add("modified_on");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("has_custom_attribute_val");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("has_valid_values");
+        add("of_class_descriptor");
+        add("has_custom_attribute_val");
+        add("description");
+        add("data_type");
+        add("has_data_values");
+        add("name");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isCustomattributedef(Object obj) { return (obj.getClass() == Customattributedef.class); }
 
 }

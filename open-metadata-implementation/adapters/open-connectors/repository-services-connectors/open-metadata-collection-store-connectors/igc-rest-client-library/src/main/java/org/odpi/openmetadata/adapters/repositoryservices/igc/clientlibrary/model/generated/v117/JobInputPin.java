@@ -202,7 +202,33 @@ public class JobInputPin extends Reference {
         add("modified_by");
         add("modified_on");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("has_dsmf_column_info");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("condition_not_met");
+        add("partner");
+        add("a_xmeta_locking_root");
+        add("has_ds_meta_bag");
+        add("pin_type");
+        add("has_dsmf_column_info");
+        add("lookup_fail");
+        add("internal_id");
+        add("transaction_size");
+        add("link_type");
+        add("txn_behaviour");
+        add("enable_tx_group");
+        add("of_job_component");
+        add("is_target_of_link");
+        add("sequence");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isJobInputPin(Object obj) { return (obj.getClass() == JobInputPin.class); }
 
 }

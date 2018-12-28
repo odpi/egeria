@@ -126,7 +126,24 @@ public class Classification extends Reference {
         add("value_frequency");
         add("date");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("column_analysis");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("data_class");
+        add("classifies_asset");
+        add("selected");
+        add("detected");
+        add("detectedState");
+        add("confidencePercent");
+        add("threshold");
+        add("value_frequency");
+        add("date");
+        add("column_analysis");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isClassification(Object obj) { return (obj.getClass() == Classification.class); }
 
 }

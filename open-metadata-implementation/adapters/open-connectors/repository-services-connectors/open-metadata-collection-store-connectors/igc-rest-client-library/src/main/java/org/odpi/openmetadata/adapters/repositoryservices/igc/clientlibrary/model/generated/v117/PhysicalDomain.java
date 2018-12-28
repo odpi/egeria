@@ -209,7 +209,28 @@ public class PhysicalDomain extends Reference {
         add("modified_by");
         add("modified_on");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("used_by_data_items");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_&_long_description");
+        add("short_description");
+        add("long_description");
+        add("physical_data_model");
+        add("used_by_data_items");
+        add("data_type");
+        add("odbc_type");
+        add("length");
+        add("fraction");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isPhysicalDomain(Object obj) { return (obj.getClass() == PhysicalDomain.class); }
 
 }

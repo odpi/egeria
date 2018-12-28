@@ -167,7 +167,33 @@ public class Classdescriptor extends Reference {
         add("modified_by");
         add("modified_on");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("used_in_application_function");
+        add("has_navigation_descriptor");
+        add("has_prop_descriptor");
+        add("has_custom_attribute_def");
+        add("has_action_descriptor");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("identifier_attribute");
+        add("class_name");
+        add("used_in_application_function");
+        add("long_description_attribute");
+        add("has_navigation_descriptor");
+        add("has_prop_descriptor");
+        add("model_name");
+        add("has_custom_attribute_def");
+        add("model_uri");
+        add("short_description_attribute");
+        add("has_action_descriptor");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isClassdescriptor(Object obj) { return (obj.getClass() == Classdescriptor.class); }
 
 }

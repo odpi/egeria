@@ -544,7 +544,86 @@ public class XsdSequence extends Reference {
         add("modified_by");
         add("modified_on");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("context");
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("contains_elements");
+        add("contains_attributes");
+        add("references_xsd_elements");
+        add("references_xsd_attributes");
+        add("references_xsd_element_groups");
+        add("references_xsd_attribute_groups");
+        add("referenced_by_xsd_elements");
+        add("referenced_by_xsd_element_groups");
+        add("referenced_by_xsd_complex_types");
+        add("primary_keys");
+        add("unique_keys");
+        add("foreign_keys");
+        add("in_collections");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("context");
+        add("namespace");
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("contains_elements");
+        add("contains_attributes");
+        add("references_xsd_elements");
+        add("references_xsd_attributes");
+        add("references_xsd_element_groups");
+        add("references_xsd_attribute_groups");
+        add("referenced_by_xsd_elements");
+        add("referenced_by_xsd_element_groups");
+        add("referenced_by_xsd_complex_types");
+        add("xsd_complex_type_definition");
+        add("xsd_simple_type_definition");
+        add("data_type");
+        add("extends_xsd_complex_type");
+        add("restricts_xsd_complex_type");
+        add("restricts_xsd_simple_type");
+        add("is_abstract");
+        add("type");
+        add("default_value");
+        add("fixed_value");
+        add("length");
+        add("min_length");
+        add("max_length");
+        add("fraction_digits");
+        add("min_occurs");
+        add("max_occurs");
+        add("is_nullable");
+        add("total_digits");
+        add("white_space");
+        add("timezone");
+        add("name_form");
+        add("primary_keys");
+        add("unique_keys");
+        add("foreign_keys");
+        add("pattern_expression");
+        add("minimum_range");
+        add("is_minimum_range_inclusive");
+        add("maximum_range");
+        add("is_maximum_range_inclusive");
+        add("enumeration_value");
+        add("in_collections");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isXsdSequence(Object obj) { return (obj.getClass() == XsdSequence.class); }
 
 }

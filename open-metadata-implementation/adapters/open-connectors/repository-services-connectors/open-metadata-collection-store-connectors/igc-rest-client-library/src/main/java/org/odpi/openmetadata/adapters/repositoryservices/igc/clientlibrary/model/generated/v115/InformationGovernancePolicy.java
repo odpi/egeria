@@ -175,7 +175,33 @@ public class InformationGovernancePolicy extends Reference {
         add("modified_by");
         add("modified_on");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("labels");
+        add("stewards");
+        add("subpolicies");
+        add("information_governance_rules");
+        add("in_collections");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("parent_policy");
+        add("labels");
+        add("stewards");
+        add("language");
+        add("subpolicies");
+        add("information_governance_rules");
+        add("in_collections");
+        add("workflow_current_state");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isInformationGovernancePolicy(Object obj) { return (obj.getClass() == InformationGovernancePolicy.class); }
 
 }

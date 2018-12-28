@@ -182,7 +182,30 @@ public class LogicalVariable extends Reference {
         add("modified_by");
         add("modified_on");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("stewards");
+        add("assigned_to_terms");
+        add("binding");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_&_long_description");
+        add("short_description");
+        add("long_description");
+        add("status");
+        add("stewards");
+        add("assigned_to_terms");
+        add("binding");
+        add("data_type");
+        add("type");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isLogicalVariable(Object obj) { return (obj.getClass() == LogicalVariable.class); }
 
 }

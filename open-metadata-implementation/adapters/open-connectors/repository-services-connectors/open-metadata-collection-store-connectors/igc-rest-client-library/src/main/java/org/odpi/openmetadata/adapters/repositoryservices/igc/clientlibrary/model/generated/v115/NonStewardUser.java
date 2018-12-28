@@ -207,7 +207,32 @@ public class NonStewardUser extends Reference {
         add("modified_by");
         add("modified_on");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<>();
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("full_name");
+        add("job_title");
+        add("email_address");
+        add("office_phone_number");
+        add("mobile_phone_number");
+        add("principal_id");
+        add("given_name");
+        add("surname");
+        add("courtesy_title");
+        add("organization");
+        add("location");
+        add("business_address");
+        add("home_phone_number");
+        add("fax_number");
+        add("pager_number");
+        add("instant_message_id");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isNonStewardUser(Object obj) { return (obj.getClass() == NonStewardUser.class); }
 
 }

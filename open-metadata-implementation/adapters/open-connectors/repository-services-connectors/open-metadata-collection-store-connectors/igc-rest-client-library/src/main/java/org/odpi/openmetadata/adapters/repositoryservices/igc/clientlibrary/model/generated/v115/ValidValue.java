@@ -83,7 +83,20 @@ public class ValidValue extends Reference {
         add("name");
         add("short_description");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("design_column");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("rule_component");
+        add("rule_type");
+        add("name");
+        add("short_description");
+        add("valid_value_list");
+        add("design_column");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isValidValue(Object obj) { return (obj.getClass() == ValidValue.class); }
 
 }

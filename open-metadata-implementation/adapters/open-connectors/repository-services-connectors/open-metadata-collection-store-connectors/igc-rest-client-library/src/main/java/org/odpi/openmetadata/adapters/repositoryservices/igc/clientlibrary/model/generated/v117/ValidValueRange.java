@@ -101,7 +101,22 @@ public class ValidValueRange extends Reference {
         add("name");
         add("short_description");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("design_column");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("is_max_inclusive");
+        add("minimum_value");
+        add("is_min_inclusive");
+        add("maximum_value");
+        add("name");
+        add("short_description");
+        add("valid_value_list");
+        add("design_column");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isValidValueRange(Object obj) { return (obj.getClass() == ValidValueRange.class); }
 
 }

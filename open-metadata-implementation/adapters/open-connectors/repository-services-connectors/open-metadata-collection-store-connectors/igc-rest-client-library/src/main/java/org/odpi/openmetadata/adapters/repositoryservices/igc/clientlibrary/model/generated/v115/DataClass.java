@@ -342,7 +342,54 @@ public class DataClass extends Reference {
         add("modified_by");
         add("modified_on");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("contains_data_classes");
+        add("classifications_selected");
+        add("classified_assets_detected");
+        add("in_collections");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("parent_data_class");
+        add("data_class_type_single");
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("contains_data_classes");
+        add("classifications_selected");
+        add("classified_assets_detected");
+        add("data_type_filter_elements_enum");
+        add("default_threshold");
+        add("length_filter_min");
+        add("length_filter_max");
+        add("java_class_name_single");
+        add("regular_expression_single");
+        add("valid_value_strings");
+        add("valid_values_case_sensitive");
+        add("squeezeConsecutiveWhiteSpaces");
+        add("columnNameMatch");
+        add("example");
+        add("enabled");
+        add("class_code");
+        add("validValueReferenceFile");
+        add("in_collections");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isDataClass(Object obj) { return (obj.getClass() == DataClass.class); }
 
 }

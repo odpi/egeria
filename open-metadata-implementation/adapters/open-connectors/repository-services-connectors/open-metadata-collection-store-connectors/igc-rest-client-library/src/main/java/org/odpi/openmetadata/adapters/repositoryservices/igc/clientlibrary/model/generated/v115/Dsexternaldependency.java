@@ -150,7 +150,24 @@ public class Dsexternaldependency extends Reference {
         add("modified_by");
         add("modified_on");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<>();
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("of_ds_job_def");
+        add("of_ds_routine");
+        add("a_xmeta_locking_root");
+        add("calls_ds_routine");
+        add("type");
+        add("location");
+        add("name");
+        add("runs_ds_job");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isDsexternaldependency(Object obj) { return (obj.getClass() == Dsexternaldependency.class); }
 
 }

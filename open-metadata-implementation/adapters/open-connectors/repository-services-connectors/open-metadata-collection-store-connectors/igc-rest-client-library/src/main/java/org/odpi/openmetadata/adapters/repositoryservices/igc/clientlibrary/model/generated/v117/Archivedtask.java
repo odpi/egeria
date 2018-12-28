@@ -72,7 +72,17 @@ public class Archivedtask extends Reference {
         add("completion_date");
         add("name");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<>();
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("status");
+        add("message");
+        add("requested_on");
+        add("completion_date");
+        add("name");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isArchivedtask(Object obj) { return (obj.getClass() == Archivedtask.class); }
 
 }

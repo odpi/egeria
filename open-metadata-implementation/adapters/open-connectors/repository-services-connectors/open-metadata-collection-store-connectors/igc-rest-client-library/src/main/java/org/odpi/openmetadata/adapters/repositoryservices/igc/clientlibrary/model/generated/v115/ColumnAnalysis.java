@@ -401,7 +401,55 @@ public class ColumnAnalysis extends Reference {
         add("modified_by");
         add("modified_on");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("classification");
+        add("selected_foreign_key_references");
+        add("selected_foreign_key_referenced");
+        add("quality_score_problems");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("table_analysis");
+        add("project");
+        add("database_column");
+        add("require_unique_values");
+        add("include_null_values");
+        add("include_constant_values");
+        add("domain");
+        add("number_of_complete_values");
+        add("number_of_valid_values");
+        add("number_of_empty_values");
+        add("number_of_null_values");
+        add("number_of_distinct_values");
+        add("number_of_distinct_formats");
+        add("number_of_zero_values");
+        add("inferred_data_type");
+        add("inferred_length");
+        add("inferred_format");
+        add("inferred_scale");
+        add("inferred_precision");
+        add("average_value");
+        add("inferred_foreign_key");
+        add("inferred_primary_key");
+        add("classification");
+        add("selected_primary_key");
+        add("selected_natural_key");
+        add("selected_foreign_key");
+        add("selected_foreign_key_references");
+        add("selected_foreign_key_referenced");
+        add("validation_type");
+        add("validation_properties");
+        add("quality_score_percent");
+        add("nb_records_tested");
+        add("quality_score_problems");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isColumnAnalysis(Object obj) { return (obj.getClass() == ColumnAnalysis.class); }
 
 }

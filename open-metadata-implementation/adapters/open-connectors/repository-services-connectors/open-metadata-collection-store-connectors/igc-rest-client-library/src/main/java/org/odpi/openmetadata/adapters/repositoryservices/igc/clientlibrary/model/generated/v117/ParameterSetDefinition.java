@@ -159,7 +159,28 @@ public class ParameterSetDefinition extends Reference {
         add("modified_by");
         add("modified_on");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("referenced_by_jobs");
+        add("parameters");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("context");
+        add("referenced_by_jobs");
+        add("parameters");
+        add("type");
+        add("display_caption");
+        add("default_value");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isParameterSetDefinition(Object obj) { return (obj.getClass() == ParameterSetDefinition.class); }
 
 }

@@ -200,7 +200,27 @@ public class DataItemDefinition extends Reference {
         add("modified_by");
         add("modified_on");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("contains_data_fields");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("database_schema");
+        add("short_description");
+        add("long_description");
+        add("contains_data_fields");
+        add("data_type");
+        add("odbc_type");
+        add("length");
+        add("fraction");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isDataItemDefinition(Object obj) { return (obj.getClass() == DataItemDefinition.class); }
 
 }

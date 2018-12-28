@@ -162,7 +162,35 @@ public class DataClassOld extends Reference {
         add("class_code");
         add("is_user_defined");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("classifies_data_field");
+        add("has_sub_data_class");
+        add("inferred_by_df_analysis_summary");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("is_sub_of_data_class");
+        add("classifies_data_field");
+        add("has_sub_data_class");
+        add("class_code");
+        add("inferred_by_df_analysis_summary");
+        add("is_user_defined");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isDataClassOld(Object obj) { return (obj.getClass() == DataClassOld.class); }
 
 }

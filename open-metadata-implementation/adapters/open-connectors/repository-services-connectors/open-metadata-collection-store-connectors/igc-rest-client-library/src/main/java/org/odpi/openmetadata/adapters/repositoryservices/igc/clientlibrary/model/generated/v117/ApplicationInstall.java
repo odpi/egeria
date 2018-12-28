@@ -197,7 +197,37 @@ public class ApplicationInstall extends Reference {
         add("installation_path");
         add("release_number");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("has_credential");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("vendor_name");
+        add("instance_name");
+        add("default_credential");
+        add("location_name");
+        add("installation_date");
+        add("platform_identifier");
+        add("has_credential");
+        add("installed_on_host");
+        add("installation_path");
+        add("release_number");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isApplicationInstall(Object obj) { return (obj.getClass() == ApplicationInstall.class); }
 
 }

@@ -85,7 +85,22 @@ public class XsdElementGroupReference extends Reference {
         add("min_occurs");
         add("max_occurs");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("xsd_element");
+        add("xsd_complex_type");
+        add("xsd_element_group");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("min_occurs");
+        add("max_occurs");
+        add("xsd_element");
+        add("xsd_complex_type");
+        add("xsd_element_group");
+        add("references_xsd_element_group");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isXsdElementGroupReference(Object obj) { return (obj.getClass() == XsdElementGroupReference.class); }
 
 }

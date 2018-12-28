@@ -383,7 +383,57 @@ public class DesignColumn extends Reference {
         add("modified_by");
         add("modified_on");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("implements_entity_attributes");
+        add("implemented_by_data_fields");
+        add("implemented_by_database_columns");
+        add("included_in_design_key");
+        add("parent_design_foreignKey");
+        add("included_in_design_foreign_key");
+        add("in_collections");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("design_table_or_view");
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("implements_entity_attributes");
+        add("implemented_by_data_fields");
+        add("implemented_by_database_columns");
+        add("primary_key");
+        add("included_in_design_key");
+        add("parent_design_foreignKey");
+        add("included_in_design_foreign_key");
+        add("type");
+        add("data_type");
+        add("odbc_type");
+        add("physical_domains");
+        add("length");
+        add("minimum_length");
+        add("fraction");
+        add("position");
+        add("level");
+        add("allows_null_values");
+        add("unique");
+        add("in_collections");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isDesignColumn(Object obj) { return (obj.getClass() == DesignColumn.class); }
 
 }

@@ -65,7 +65,16 @@ public class VolumeContribution extends Reference {
         add("object_count");
         add("size");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<>();
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("infoset");
+        add("volume");
+        add("object_count");
+        add("size");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isVolumeContribution(Object obj) { return (obj.getClass() == VolumeContribution.class); }
 
 }

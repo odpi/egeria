@@ -91,7 +91,21 @@ public class StageType extends Reference {
         add("author");
         add("copyright");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("steward");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("long_description");
+        add("steward");
+        add("vendor");
+        add("version");
+        add("author");
+        add("copyright");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isStageType(Object obj) { return (obj.getClass() == StageType.class); }
 
 }

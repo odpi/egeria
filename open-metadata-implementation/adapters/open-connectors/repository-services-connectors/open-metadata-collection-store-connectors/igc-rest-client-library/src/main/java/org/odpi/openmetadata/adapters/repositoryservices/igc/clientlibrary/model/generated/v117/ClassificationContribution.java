@@ -80,7 +80,17 @@ public class ClassificationContribution extends Reference {
         add("size");
         add("match_type");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<>();
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("infoset");
+        add("data_class");
+        add("object_count");
+        add("size");
+        add("match_type");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isClassificationContribution(Object obj) { return (obj.getClass() == ClassificationContribution.class); }
 
 }

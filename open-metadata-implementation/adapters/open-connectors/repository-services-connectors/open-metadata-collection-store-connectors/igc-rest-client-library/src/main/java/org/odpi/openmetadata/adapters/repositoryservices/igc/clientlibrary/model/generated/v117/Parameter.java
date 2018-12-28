@@ -493,7 +493,63 @@ public class Parameter extends Reference {
         add("default_value");
         add("level");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("defines_parameter_val");
+        add("validated_by_data_values");
+        add("has_dimension");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("is_return_of_function");
+        add("of_container_def");
+        add("of_parameter_set");
+        add("is_parameter_set");
+        add("defines_parameter_val");
+        add("of_stage_type");
+        add("of_job_def");
+        add("of_stored_procedure");
+        add("usage");
+        add("connection_property");
+        add("is_connection_property");
+        add("of_function");
+        add("data_item_definition");
+        add("is_signed");
+        add("validated_by_data_values");
+        add("type");
+        add("is_computed");
+        add("allows_empty_value");
+        add("odbc_type");
+        add("based_on");
+        add("position");
+        add("allow_null_values");
+        add("fraction");
+        add("allows_null_values");
+        add("calendar");
+        add("display_size");
+        add("minimum_length");
+        add("item_kind");
+        add("has_dimension");
+        add("unique");
+        add("length");
+        add("data_type");
+        add("default_value");
+        add("level");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isParameter(Object obj) { return (obj.getClass() == Parameter.class); }
 
 }

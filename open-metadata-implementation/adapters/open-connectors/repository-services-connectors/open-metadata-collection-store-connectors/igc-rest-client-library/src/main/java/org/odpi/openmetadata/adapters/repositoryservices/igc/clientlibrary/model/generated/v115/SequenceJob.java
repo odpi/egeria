@@ -292,7 +292,53 @@ public class SequenceJob extends Reference {
         add("modified_by");
         add("modified_on");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("stages");
+        add("references_local_or_shared_containers");
+        add("sequences_jobs");
+        add("design_parameters");
+        add("parameter_sets");
+        add("job_runs");
+        add("blueprint_elements");
+        add("in_collections");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("transformation_project");
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("stages");
+        add("references_local_or_shared_containers");
+        add("sequences_jobs");
+        add("folder");
+        add("design_parameters");
+        add("parameter_sets");
+        add("annotations");
+        add("job_runs");
+        add("include_for_lineage");
+        add("include_for_lineage_description");
+        add("include_for_lineage__edit");
+        add("inherits_lineage_setting_from_transformation_project");
+        add("blueprint_elements");
+        add("in_collections");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isSequenceJob(Object obj) { return (obj.getClass() == SequenceJob.class); }
 
 }

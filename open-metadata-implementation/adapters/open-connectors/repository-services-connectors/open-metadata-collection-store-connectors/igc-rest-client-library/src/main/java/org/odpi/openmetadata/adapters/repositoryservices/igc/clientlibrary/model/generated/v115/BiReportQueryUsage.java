@@ -396,7 +396,75 @@ public class BiReportQueryUsage extends Reference {
         add("modified_by");
         add("modified_on");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("context");
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("bi_report_query_items");
+        add("bi_report_query_detail_filters");
+        add("bi_report_query_summary_filters");
+        add("contains_bi_queries");
+        add("contained_by_bi_report_queries");
+        add("uses_bi_collections");
+        add("uses_database_tables_or_views");
+        add("read_by_(static)");
+        add("written_by_(static)");
+        add("read_by_(design)");
+        add("written_by_(design)");
+        add("read_by_(operational)");
+        add("written_by_(operational)");
+        add("read_by_(user_defined)");
+        add("written_by_(user_defined)");
+        add("impacted_by");
+        add("impacts_on");
+        add("in_collections");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("context");
+        add("type");
+        add("namespace");
+        add("bi_report");
+        add("bi_model");
+        add("bi_collection");
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("bi_report_query_items");
+        add("bi_report_query_detail_filters");
+        add("bi_report_query_summary_filters");
+        add("imported_from");
+        add("condition");
+        add("contains_bi_queries");
+        add("contained_by_bi_report_queries");
+        add("uses_bi_collections");
+        add("uses_database_tables_or_views");
+        add("read_by_(static)");
+        add("written_by_(static)");
+        add("read_by_(design)");
+        add("written_by_(design)");
+        add("read_by_(operational)");
+        add("written_by_(operational)");
+        add("read_by_(user_defined)");
+        add("written_by_(user_defined)");
+        add("impacted_by");
+        add("impacts_on");
+        add("in_collections");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isBiReportQueryUsage(Object obj) { return (obj.getClass() == BiReportQueryUsage.class); }
 
 }

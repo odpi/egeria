@@ -312,7 +312,54 @@ public class EntityAttribute extends Reference {
         add("modified_by");
         add("modified_on");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("implemented_by_design_columns");
+        add("implemented_by_database_columns");
+        add("logical_keys");
+        add("parent_logical_foreignKey");
+        add("child_logical_foreign_keys");
+        add("in_collections");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("logical_entity");
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("implemented_by_design_columns");
+        add("implemented_by_database_columns");
+        add("primary_key");
+        add("logical_keys");
+        add("parent_logical_foreignKey");
+        add("child_logical_foreign_keys");
+        add("validation_rule");
+        add("validation_range");
+        add("validation_list");
+        add("physical_name");
+        add("native_type");
+        add("data_type");
+        add("length");
+        add("scale");
+        add("required");
+        add("sequence");
+        add("in_collections");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isEntityAttribute(Object obj) { return (obj.getClass() == EntityAttribute.class); }
 
 }

@@ -63,7 +63,18 @@ public class ForeignKey extends Reference {
     public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
         add("sorting");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("included_database_columns");
+        add("database_table");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("included_database_columns");
+        add("database_table");
+        add("sorting");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isForeignKey(Object obj) { return (obj.getClass() == ForeignKey.class); }
 
 }

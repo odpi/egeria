@@ -75,7 +75,17 @@ public class OslcLink extends Reference {
         add("url");
         add("description");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<>();
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("url");
+        add("link_type");
+        add("description");
+        add("of_main_object");
+        add("of_provider_connection");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isOslcLink(Object obj) { return (obj.getClass() == OslcLink.class); }
 
 }

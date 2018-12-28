@@ -136,7 +136,26 @@ public class DataRuleResults extends Reference {
         add("modified_by");
         add("modified_on");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("rule_results");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("start_time");
+        add("end_time");
+        add("number_of_records_tested");
+        add("number_of_records_met");
+        add("number_of_records_not_met");
+        add("benchmark");
+        add("rule_results");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isDataRuleResults(Object obj) { return (obj.getClass() == DataRuleResults.class); }
 
 }
