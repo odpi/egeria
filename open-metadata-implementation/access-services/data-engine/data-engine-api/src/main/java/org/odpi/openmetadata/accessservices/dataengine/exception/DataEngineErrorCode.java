@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.exception;
 
-import lombok.Getter;
 
 import java.text.MessageFormat;
 
@@ -25,7 +24,7 @@ import java.text.MessageFormat;
  * <li>UserAction - describes how a AssetConsumerInterface should correct the error</li>
  * </ul>
  */
-@Getter
+
 public enum DataEngineErrorCode {
     OMRS_NOT_INITIALIZED(404, "OMAS-DATA-ENGINE-404-001 ",
             "The open metadata repository services are not initialized for server {0}",
@@ -84,6 +83,26 @@ public enum DataEngineErrorCode {
     public String getFormattedErrorMessage(String... params) {
         MessageFormat mf = new MessageFormat(errorMessage);
         return mf.format(params);
+    }
+
+    public int getHttpErrorCode() {
+        return httpErrorCode;
+    }
+
+    public String getErrorMessageId() {
+        return errorMessageId;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public String getSystemAction() {
+        return systemAction;
+    }
+
+    public String getUserAction() {
+        return userAction;
     }
 }
 

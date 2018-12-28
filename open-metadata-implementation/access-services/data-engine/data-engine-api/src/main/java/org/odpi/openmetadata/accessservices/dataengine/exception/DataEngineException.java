@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.exception;
 
-import lombok.Getter;
 
 /**
  * DataEngineException provides a checked exception for reporting errors found when using the Data Engine OMAS services.
@@ -10,7 +9,6 @@ import lombok.Getter;
  * The DataEngineErrorCode can be used with this exception to populate it with standard messages.
  * The aim is to be able to uniquely identify the cause and remedy for the error.
  */
-@Getter
 public class DataEngineException extends Exception {
     /*
      * These default values are only seen if this exception is initialized using one of its superclass constructors.
@@ -21,8 +19,7 @@ public class DataEngineException extends Exception {
     private String reportedErrorMessage;
     private String reportedSystemAction;
     private String reportedUserAction;
-    private Throwable reportedCaughtException = null;
-
+    private Throwable reportedCaughtException;
 
     /**
      * This is the typical constructor used for creating a DataEngineException.
@@ -67,5 +64,33 @@ public class DataEngineException extends Exception {
         this.reportedSystemAction = systemAction;
         this.reportedUserAction = userAction;
         this.reportedCaughtException = caughtError;
+    }
+
+    public int getReportedHTTPCode() {
+        return reportedHTTPCode;
+    }
+
+    public String getReportingClassName() {
+        return reportingClassName;
+    }
+
+    public String getReportingActionDescription() {
+        return reportingActionDescription;
+    }
+
+    public String getReportedErrorMessage() {
+        return reportedErrorMessage;
+    }
+
+    public String getReportedSystemAction() {
+        return reportedSystemAction;
+    }
+
+    public String getReportedUserAction() {
+        return reportedUserAction;
+    }
+
+    public Throwable getReportedCaughtException() {
+        return reportedCaughtException;
     }
 }

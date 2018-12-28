@@ -37,6 +37,8 @@ class ProcessHandler {
     private static final String OWNER_PROPERTY_NAME = "owner";
     private static final String LATEST_CHANGE_PROPERTY_NAME = "latestChange";
     private static final String DESCRIPTION_PROPERTY_NAME = "description";
+    private static final String DISPLAY_NAME_PROPERTY_NAME = "displayName";
+    private static final String PARENT_PROCESS_GUID_PROPERTY_NAME = "parentProcessGuid";
 
     private OMRSMetadataCollection metadataCollection;
     private DataEngineErrorHandler errorHandler;
@@ -71,7 +73,7 @@ class ProcessHandler {
      * @param latestChange    the description for the latest change done for the asset
      * @param zoneMembership  the zone membership of the process
      * @param displayName     the display name of the process
-     * @param parentProcessId the parent process Guid, null if no parent present
+     * @param parentProcessGuid the parent process Guid, null if no parent present
      * @return the guid of the created process
      * @throws UserNotAuthorizedException                                                         the requesting user is not authorized to issue this request.
      * @throws TypeErrorException                                                                 unknown or invalid type
@@ -84,7 +86,7 @@ class ProcessHandler {
      * @throws PropertyErrorException                                                             there is a problem with one of the other parameters.
      */
     String createProcess(String userId, String processName, String description, String latestChange,
-                         String zoneMembership, String displayName, String parentProcessId)
+                         String zoneMembership, String displayName, String parentProcessGuid)
             throws UserNotAuthorizedException, TypeErrorException, ClassificationErrorException,
             StatusNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
             InvalidParameterException, RepositoryErrorException, PropertyErrorException {
@@ -98,7 +100,7 @@ class ProcessHandler {
 
 
         InstanceProperties instanceProperties = createProcessProperties(userId, processName, description, latestChange,
-                zoneMembership, displayName, parentProcessId);
+                zoneMembership, displayName, parentProcessGuid);
 
         EntityDetail createdEntity = metadataCollection.addEntity(userId, entity.getType().getTypeDefGUID(),
                 instanceProperties, entity.getClassifications(), entity.getStatus());
@@ -114,12 +116,12 @@ class ProcessHandler {
      * @param latestChange    the description for the latest change done for the asset
      * @param zoneMembership  the zone membership of the process
      * @param displayName     the display name of the process
-     * @param parentProcessId the parent process Guid, null if no parent present
+     * @param parentProcessGuid the parent process Guid, null if no parent present
      * @return instance properties object
      */
     private InstanceProperties createProcessProperties(String userId, String processName, String description,
                                                        String latestChange, String zoneMembership, String displayName,
-                                                       String parentProcessId) {
+                                                       String parentProcessGuid) {
 
         final String methodName = "createProcessProperties";
 
@@ -140,6 +142,11 @@ class ProcessHandler {
         properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OWNER_PROPERTY_NAME,
                 userId, methodName);
 
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, DISPLAY_NAME_PROPERTY_NAME,
+                displayName, methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties,
+                PARENT_PROCESS_GUID_PROPERTY_NAME, parentProcessGuid, methodName);
         return properties;
     }
 
