@@ -486,7 +486,87 @@ public class Dsjob extends Reference {
         add("modified_by");
         add("modified_on");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("stages");
+        add("references_local_or_shared_containers");
+        add("reads_from_(static)");
+        add("writes_to_(static)");
+        add("reads_from_(design)");
+        add("writes_to_(design)");
+        add("reads_from_(operational)");
+        add("writes_to_(operational)");
+        add("reads_from_(user_defined)");
+        add("writes_to_(user_defined)");
+        add("impacted_by");
+        add("impacts_on");
+        add("design_parameters");
+        add("parameter_sets");
+        add("references_table_definitions");
+        add("optimizes_job");
+        add("optimized_by_jobs");
+        add("sequenced_by_jobs");
+        add("job_runs");
+        add("mapping_specifications");
+        add("information_services_operations");
+        add("in_collections");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("transformation_project");
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("stages");
+        add("references_local_or_shared_containers");
+        add("type");
+        add("annotations");
+        add("folder");
+        add("reads_from_(static)");
+        add("writes_to_(static)");
+        add("reads_from_(design)");
+        add("writes_to_(design)");
+        add("reads_from_(operational)");
+        add("writes_to_(operational)");
+        add("reads_from_(user_defined)");
+        add("writes_to_(user_defined)");
+        add("impacted_by");
+        add("impacts_on");
+        add("design_parameters");
+        add("parameter_sets");
+        add("references_table_definitions");
+        add("runtime_column_propagation");
+        add("optimizes_job");
+        add("optimized_by_jobs");
+        add("sequenced_by_jobs");
+        add("job_runs");
+        add("include_for_lineage");
+        add("include_for_lineage__edit");
+        add("include_for_lineage_description");
+        add("inherits_lineage_setting_from_transformation_project");
+        add("lineage_service_last_run_date");
+        add("lineage_service_status");
+        add("lineage_service_information");
+        add("mapping_specifications");
+        add("web_service_enabled");
+        add("information_services_operations");
+        add("in_collections");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isDsjob(Object obj) { return (obj.getClass() == Dsjob.class); }
 
 }

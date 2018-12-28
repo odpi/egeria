@@ -36,7 +36,13 @@ public class Lineagefilter extends Reference {
     public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
         add("name");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<>();
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isLineagefilter(Object obj) { return (obj.getClass() == Lineagefilter.class); }
 
 }

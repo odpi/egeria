@@ -161,7 +161,32 @@ public class Array extends Reference {
         add("maximum_size");
         add("minimum_size");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("next_array");
+        add("lower_bound");
+        add("previous_array");
+        add("belonging_to_data_item");
+        add("maximum_size");
+        add("minimum_size");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isArray(Object obj) { return (obj.getClass() == Array.class); }
 
 }

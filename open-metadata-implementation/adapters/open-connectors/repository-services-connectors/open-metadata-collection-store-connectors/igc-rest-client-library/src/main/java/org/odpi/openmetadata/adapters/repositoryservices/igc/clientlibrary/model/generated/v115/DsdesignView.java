@@ -268,7 +268,45 @@ public class DsdesignView extends Reference {
         add("stage_x_size");
         add("internal_id");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("has_canvas_annotation");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("has_canvas_annotation");
+        add("output_pins");
+        add("input_pins");
+        add("stage_types");
+        add("of_job");
+        add("next_id");
+        add("next_stage_id");
+        add("is_top_level");
+        add("snap_to_grid");
+        add("stage_x_pos");
+        add("grid_lines");
+        add("zoom_value");
+        add("container_view_sizing");
+        add("stage_list");
+        add("stage_y_pos");
+        add("stage_y_size");
+        add("stage_x_size");
+        add("internal_id");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isDsdesignView(Object obj) { return (obj.getClass() == DsdesignView.class); }
 
 }

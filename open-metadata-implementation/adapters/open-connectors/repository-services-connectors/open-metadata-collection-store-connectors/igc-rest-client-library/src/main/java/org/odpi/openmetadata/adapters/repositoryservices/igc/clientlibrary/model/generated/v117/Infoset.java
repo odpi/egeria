@@ -318,7 +318,51 @@ public class Infoset extends Reference {
         add("modified_by");
         add("modified_on");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("applied_data_classes");
+        add("contributing_volumes");
+        add("contributing_operations");
+        add("in_collections");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("instance");
+        add("short_description");
+        add("long_description");
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("sync_type");
+        add("type");
+        add("composition");
+        add("object_count");
+        add("size");
+        add("creator");
+        add("created");
+        add("applied_data_classes");
+        add("tool_id");
+        add("sync_state");
+        add("url");
+        add("contributing_volumes");
+        add("created_with");
+        add("contributing_operations");
+        add("alias_(business_name)");
+        add("in_collections");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isInfoset(Object obj) { return (obj.getClass() == Infoset.class); }
 
 }

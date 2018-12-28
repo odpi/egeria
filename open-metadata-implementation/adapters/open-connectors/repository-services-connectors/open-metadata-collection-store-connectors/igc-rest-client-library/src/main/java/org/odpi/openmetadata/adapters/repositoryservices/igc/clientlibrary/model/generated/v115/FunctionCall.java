@@ -100,7 +100,19 @@ public class FunctionCall extends Reference {
         add("stage_trigger");
         add("call_context");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<>();
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("function_name");
+        add("for_transforms");
+        add("stage_trigger");
+        add("call_context");
+        add("executes_function");
+        add("used_in_function");
+        add("used_in_filter_constraint");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isFunctionCall(Object obj) { return (obj.getClass() == FunctionCall.class); }
 
 }

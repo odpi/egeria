@@ -228,7 +228,42 @@ public class Metric extends Reference {
         add("modified_by");
         add("modified_on");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("references_data_rules_or_data_rule_sets");
+        add("execution_history");
+        add("data_policies");
+        add("in_collections");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("project");
+        add("status");
+        add("measure");
+        add("references_data_rules_or_data_rule_sets");
+        add("benchmark");
+        add("execution_history");
+        add("data_policies");
+        add("in_collections");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isMetric(Object obj) { return (obj.getClass() == Metric.class); }
 
 }

@@ -314,7 +314,60 @@ public class XmlSchemaDefinition extends Reference {
         add("modified_by");
         add("modified_on");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("xml_schema_library");
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("contains_xsd_elements");
+        add("contains_xsd_attributes");
+        add("contains_xsd_simple_types");
+        add("contains_xsd_complex_types");
+        add("contains_xsd_element_groups");
+        add("contains_xsd_attribute_groups");
+        add("includes_xsd_schemas");
+        add("imports_xsd_schemas");
+        add("redefines_xsd_schemas");
+        add("overrides_xsd_schemas");
+        add("in_collections");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("target_namespace");
+        add("xml_schema_library");
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("contains_xsd_elements");
+        add("contains_xsd_attributes");
+        add("contains_xsd_simple_types");
+        add("contains_xsd_complex_types");
+        add("contains_xsd_element_groups");
+        add("contains_xsd_attribute_groups");
+        add("includes_xsd_schemas");
+        add("imports_xsd_schemas");
+        add("redefines_xsd_schemas");
+        add("overrides_xsd_schemas");
+        add("id");
+        add("xpath");
+        add("default_namespace");
+        add("language");
+        add("version");
+        add("in_collections");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isXmlSchemaDefinition(Object obj) { return (obj.getClass() == XmlSchemaDefinition.class); }
 
 }

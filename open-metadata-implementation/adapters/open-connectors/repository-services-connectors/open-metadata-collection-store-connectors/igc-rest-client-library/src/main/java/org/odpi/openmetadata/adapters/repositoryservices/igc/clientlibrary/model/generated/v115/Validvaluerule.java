@@ -128,7 +128,26 @@ public class Validvaluerule extends Reference {
         add("modified_by");
         add("modified_on");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("valid_value_list_of_contains_valid_values_inverse");
+        add("custom_attribute_def_of_has_valid_values_inverse");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("rule_code");
+        add("rule_type");
+        add("valid_value_list_of_contains_valid_values_inverse");
+        add("is_not");
+        add("sequence");
+        add("is_case_sensitive");
+        add("custom_attribute_def_of_has_valid_values_inverse");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isValidvaluerule(Object obj) { return (obj.getClass() == Validvaluerule.class); }
 
 }

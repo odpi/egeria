@@ -146,7 +146,26 @@ public class ReferencedContainer extends Reference {
         add("modified_by");
         add("modified_on");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("stages");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("type");
+        add("version");
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("stages");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+        add("local_containers");
+        add("shared_containers");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isReferencedContainer(Object obj) { return (obj.getClass() == ReferencedContainer.class); }
 
 }

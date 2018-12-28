@@ -212,7 +212,35 @@ public class TableAnalysisSummary extends Reference {
         add("inferred_foreign_keys");
         add("foreign_key_violations");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("assigned_to_terms");
+        add("steward");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("short_&_long_description");
+        add("short_description");
+        add("long_description");
+        add("assigned_to_terms");
+        add("steward");
+        add("analyzed_table");
+        add("project_name");
+        add("review_date");
+        add("promoted_by_principal");
+        add("reviewed_by_principal");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+        add("number_of_fields");
+        add("number_of_rows");
+        add("inferred_primary_keys");
+        add("primary_key_duplicates");
+        add("inferred_foreign_keys");
+        add("foreign_key_violations");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isTableAnalysisSummary(Object obj) { return (obj.getClass() == TableAnalysisSummary.class); }
 
 }

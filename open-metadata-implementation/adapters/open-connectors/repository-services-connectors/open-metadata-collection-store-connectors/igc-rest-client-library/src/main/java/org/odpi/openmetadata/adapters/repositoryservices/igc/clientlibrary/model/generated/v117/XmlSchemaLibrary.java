@@ -130,7 +130,28 @@ public class XmlSchemaLibrary extends Reference {
         add("modified_by");
         add("modified_on");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("implements_rules");
+        add("governed_by_rules");
+        add("xml_schema_definitions");
+        add("in_collections");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("description");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("xml_schema_definitions");
+        add("id");
+        add("in_collections");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isXmlSchemaLibrary(Object obj) { return (obj.getClass() == XmlSchemaLibrary.class); }
 
 }

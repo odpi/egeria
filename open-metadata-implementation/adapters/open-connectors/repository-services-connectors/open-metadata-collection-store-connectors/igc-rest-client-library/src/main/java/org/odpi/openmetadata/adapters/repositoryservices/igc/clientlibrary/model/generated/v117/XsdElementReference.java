@@ -85,7 +85,18 @@ public class XsdElementReference extends Reference {
         add("min_occurs");
         add("max_occurs");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<>();
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("min_occurs");
+        add("max_occurs");
+        add("xsd_element");
+        add("xsd_complex_type");
+        add("xsd_element_group");
+        add("referenced_xsd_element");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isXsdElementReference(Object obj) { return (obj.getClass() == XsdElementReference.class); }
 
 }

@@ -135,7 +135,25 @@ public class BiReportSection extends Reference {
         add("short_description");
         add("sequence");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("bi_report_fields");
+        add("contains_sub_section");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("alias_(business_name)");
+        add("type");
+        add("label");
+        add("short_description");
+        add("sequence");
+        add("bi_report");
+        add("bi_report_fields");
+        add("contains_sub_section");
+        add("contained_in_report_section");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isBiReportSection(Object obj) { return (obj.getClass() == BiReportSection.class); }
 
 }

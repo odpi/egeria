@@ -402,7 +402,75 @@ public class Database extends Reference {
         add("modified_by");
         add("modified_on");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("database_schemas");
+        add("data_connections");
+        add("data_connection_mappings");
+        add("mapped_to_mdm_models");
+        add("read_by_(static)");
+        add("written_by_(static)");
+        add("read_by_(design)");
+        add("written_by_(design)");
+        add("read_by_(operational)");
+        add("written_by_(operational)");
+        add("read_by_(user_defined)");
+        add("written_by_(user_defined)");
+        add("impacted_by");
+        add("impacts_on");
+        add("bi_reports");
+        add("bi_models");
+        add("suggested_term_assignments");
+        add("in_collections");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("host");
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("database_schemas");
+        add("alias_(business_name)");
+        add("location");
+        add("dbms");
+        add("dbms_server_instance");
+        add("dbms_vendor");
+        add("dbms_version");
+        add("database_type");
+        add("imported_from");
+        add("data_connections");
+        add("data_connection_mappings");
+        add("mapped_to_mdm_models");
+        add("read_by_(static)");
+        add("written_by_(static)");
+        add("read_by_(design)");
+        add("written_by_(design)");
+        add("read_by_(operational)");
+        add("written_by_(operational)");
+        add("read_by_(user_defined)");
+        add("written_by_(user_defined)");
+        add("impacted_by");
+        add("impacts_on");
+        add("bi_reports");
+        add("bi_models");
+        add("suggested_term_assignments");
+        add("in_collections");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isDatabase(Object obj) { return (obj.getClass() == Database.class); }
 
 }

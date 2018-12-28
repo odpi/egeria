@@ -181,7 +181,35 @@ public class SystemRole extends Reference {
         add("role_type");
         add("role_id");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("of_principal");
+        add("of_acl_entry");
+        add("defines_role_assignment");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("product");
+        add("of_principal");
+        add("of_acl_entry");
+        add("role_type");
+        add("role_id");
+        add("defines_role_assignment");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isSystemRole(Object obj) { return (obj.getClass() == SystemRole.class); }
 
 }

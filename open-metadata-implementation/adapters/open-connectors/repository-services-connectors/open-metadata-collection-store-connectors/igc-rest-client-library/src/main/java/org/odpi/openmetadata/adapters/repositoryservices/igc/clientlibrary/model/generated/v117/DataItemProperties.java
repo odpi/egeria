@@ -201,7 +201,31 @@ public class DataItemProperties extends Reference {
         add("sign_option");
         add("pad_char");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<>();
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("belonging_to_parameter_definition");
+        add("flow_variable");
+        add("column_definition");
+        add("filler_parents");
+        add("nls_map");
+        add("sync_indicator");
+        add("redefined_field");
+        add("association");
+        add("depend_field");
+        add("scd_purpose");
+        add("field_type");
+        add("date_mask");
+        add("apt_field_prop");
+        add("has_sign_indicator");
+        add("usage");
+        add("scale");
+        add("is_u_string");
+        add("sign_option");
+        add("pad_char");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isDataItemProperties(Object obj) { return (obj.getClass() == DataItemProperties.class); }
 
 }

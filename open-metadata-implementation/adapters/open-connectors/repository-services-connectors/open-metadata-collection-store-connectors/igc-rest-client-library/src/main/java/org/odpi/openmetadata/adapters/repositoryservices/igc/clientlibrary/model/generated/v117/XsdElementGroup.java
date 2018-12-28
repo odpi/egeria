@@ -226,7 +226,44 @@ public class XsdElementGroup extends Reference {
         add("modified_by");
         add("modified_on");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("contains_xsd_elements");
+        add("references_xsd_elements");
+        add("references_xsd_element_groups");
+        add("references_by_xsd_elements");
+        add("referenced_by_xsd_element_groups");
+        add("in_collections");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("xsd_schema");
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("contains_xsd_elements");
+        add("references_xsd_elements");
+        add("references_xsd_element_groups");
+        add("references_by_xsd_elements");
+        add("referenced_by_xsd_element_groups");
+        add("type");
+        add("in_collections");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isXsdElementGroup(Object obj) { return (obj.getClass() == XsdElementGroup.class); }
 
 }

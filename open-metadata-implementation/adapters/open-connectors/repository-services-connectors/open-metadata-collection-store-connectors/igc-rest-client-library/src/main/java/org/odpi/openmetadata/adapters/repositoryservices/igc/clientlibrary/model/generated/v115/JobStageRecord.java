@@ -187,7 +187,36 @@ public class JobStageRecord extends Reference {
         add("record_name");
         add("record_id_name_value_relation");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("has_ds_flow_variable");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("record_id_name");
+        add("a_xmeta_locking_root");
+        add("other_records_initialization_flag");
+        add("of_ds_stage");
+        add("has_ds_flow_variable");
+        add("record_id_value");
+        add("internal_id");
+        add("record_name");
+        add("record_id_name_value_relation");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isJobStageRecord(Object obj) { return (obj.getClass() == JobStageRecord.class); }
 
 }

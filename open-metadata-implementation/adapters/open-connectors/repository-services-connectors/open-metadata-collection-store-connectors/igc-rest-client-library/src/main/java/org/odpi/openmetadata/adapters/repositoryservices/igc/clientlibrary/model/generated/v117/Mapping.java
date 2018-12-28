@@ -194,7 +194,36 @@ public class Mapping extends Reference {
         add("modified_by");
         add("modified_on");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("mapping_specification");
+        add("source_columns");
+        add("source_terms");
+        add("target_columns");
+        add("target_terms");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("description");
+        add("mapping_specification");
+        add("source_column_names");
+        add("source_columns");
+        add("source_terms");
+        add("target_column_names");
+        add("target_columns");
+        add("target_terms");
+        add("status");
+        add("tags");
+        add("rule_description");
+        add("rule_expression");
+        add("last_update_description");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isMapping(Object obj) { return (obj.getClass() == Mapping.class); }
 
 }

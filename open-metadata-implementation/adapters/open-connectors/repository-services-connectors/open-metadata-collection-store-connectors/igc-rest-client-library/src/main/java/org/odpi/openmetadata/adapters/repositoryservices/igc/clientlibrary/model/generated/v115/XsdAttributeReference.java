@@ -76,7 +76,21 @@ public class XsdAttributeReference extends Reference {
     public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
         add("usage");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("xsd_element");
+        add("xsd_attribute_group");
+        add("xsd_complex_type");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("usage");
+        add("xsd_element");
+        add("xsd_attribute_group");
+        add("xsd_complex_type");
+        add("references_xsd_attribute");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isXsdAttributeReference(Object obj) { return (obj.getClass() == XsdAttributeReference.class); }
 
 }

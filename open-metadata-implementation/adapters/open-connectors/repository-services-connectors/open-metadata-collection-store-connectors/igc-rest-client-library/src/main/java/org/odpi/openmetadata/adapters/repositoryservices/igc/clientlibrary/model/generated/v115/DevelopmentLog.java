@@ -81,7 +81,18 @@ public class DevelopmentLog extends Reference {
         add("person");
         add("comment");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<>();
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("date");
+        add("workflow_task");
+        add("activity");
+        add("new_state");
+        add("person");
+        add("comment");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isDevelopmentLog(Object obj) { return (obj.getClass() == DevelopmentLog.class); }
 
 }

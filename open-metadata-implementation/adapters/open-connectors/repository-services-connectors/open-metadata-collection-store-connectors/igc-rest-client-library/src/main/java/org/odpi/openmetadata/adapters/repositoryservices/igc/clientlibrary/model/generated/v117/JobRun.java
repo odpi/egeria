@@ -146,7 +146,27 @@ public class JobRun extends Reference {
         add("modified_by");
         add("modified_on");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("parameters");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("translated_summary");
+        add("job");
+        add("invocation_id");
+        add("wave_number");
+        add("omd_file_name");
+        add("starting_date");
+        add("ending_date");
+        add("translated_status_code");
+        add("parameters");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isJobRun(Object obj) { return (obj.getClass() == JobRun.class); }
 
 }

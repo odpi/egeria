@@ -380,7 +380,61 @@ public class XsdAttribute extends Reference {
         add("modified_by");
         add("modified_on");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("context");
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("referenced_by_xsd_elements");
+        add("referenced_by_xsd_complex_type");
+        add("referenced_by_xsd_attribute_groups");
+        add("in_collections");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("context");
+        add("namespace");
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("referenced_by_xsd_elements");
+        add("referenced_by_xsd_complex_type");
+        add("referenced_by_xsd_attribute_groups");
+        add("xsd_simple_type_definition");
+        add("data_type");
+        add("default_value");
+        add("usage");
+        add("inheritable");
+        add("fixed_value");
+        add("length");
+        add("max_length");
+        add("min_length");
+        add("fraction_digits");
+        add("total_digits");
+        add("white_space");
+        add("timezone");
+        add("name_form");
+        add("pattern_expression");
+        add("minimum_range");
+        add("is_minimum_range_inclusive");
+        add("maximum_range");
+        add("is_maximum_range_inclusive");
+        add("enumeration_value");
+        add("in_collections");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isXsdAttribute(Object obj) { return (obj.getClass() == XsdAttribute.class); }
 
 }

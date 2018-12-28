@@ -228,7 +228,33 @@ public class Dsmetabag extends Reference {
         add("modified_by");
         add("modified_on");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<>();
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("of_ds_table_definition");
+        add("of_ds_job_def");
+        add("of_ds_routine");
+        add("of_ds_stage");
+        add("of_ds_input_pin");
+        add("values");
+        add("of_ds_data_connection");
+        add("of_ds_data_quality_spec");
+        add("of_ds_data_element");
+        add("a_xmeta_locking_root");
+        add("of_ds_design_view");
+        add("of_ds_stage_type");
+        add("owners");
+        add("names");
+        add("of_ds_transform");
+        add("of_ds_output_pin");
+        add("conditions");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isDsmetabag(Object obj) { return (obj.getClass() == Dsmetabag.class); }
 
 }

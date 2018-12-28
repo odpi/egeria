@@ -159,7 +159,28 @@ public class InvDataRuleSet extends Reference {
         add("modified_by");
         add("modified_on");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("steward");
+        add("assigned_to_terms");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_&_long_description");
+        add("short_description");
+        add("long_description");
+        add("project");
+        add("status");
+        add("steward");
+        add("assigned_to_terms");
+        add("data_rule_set_definitions");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isInvDataRuleSet(Object obj) { return (obj.getClass() == InvDataRuleSet.class); }
 
 }

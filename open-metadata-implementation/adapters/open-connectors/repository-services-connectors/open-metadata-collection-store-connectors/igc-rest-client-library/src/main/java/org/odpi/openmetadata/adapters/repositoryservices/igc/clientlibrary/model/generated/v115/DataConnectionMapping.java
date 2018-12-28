@@ -94,7 +94,22 @@ public class DataConnectionMapping extends Reference {
         add("host_(engine)_name");
         add("type");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("used_by");
+        add("same_as_data_connections");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("host_(engine)_name");
+        add("type");
+        add("used_by");
+        add("same_as_data_connections");
+        add("preferred_data_connection");
+        add("bound_to_database");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isDataConnectionMapping(Object obj) { return (obj.getClass() == DataConnectionMapping.class); }
 
 }

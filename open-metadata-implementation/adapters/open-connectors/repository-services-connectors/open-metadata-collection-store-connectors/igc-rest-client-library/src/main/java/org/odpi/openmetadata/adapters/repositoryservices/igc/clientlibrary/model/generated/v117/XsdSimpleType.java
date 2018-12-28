@@ -385,7 +385,64 @@ public class XsdSimpleType extends Reference {
         add("modified_by");
         add("modified_on");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("defines_xsd_elements");
+        add("defines_xsd_attributes");
+        add("extended_by_xsd_simple_type");
+        add("restricted_by_xsd_simple_type");
+        add("extends_xsd_element");
+        add("restricts_xsd_element");
+        add("extended_by_xsd_complex_type");
+        add("in_collections");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("xsd_schema");
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("defines_xsd_elements");
+        add("defines_xsd_attributes");
+        add("extends_xsd_simple_type");
+        add("extended_by_xsd_simple_type");
+        add("restricts_xsd_simple_type");
+        add("restricted_by_xsd_simple_type");
+        add("extends_xsd_element");
+        add("restricts_xsd_element");
+        add("extended_by_xsd_complex_type");
+        add("base_type");
+        add("length");
+        add("max_length");
+        add("min_length");
+        add("fraction");
+        add("total_digits");
+        add("whitespace");
+        add("timezone");
+        add("final");
+        add("restriction_pattern");
+        add("restriction_minimum_value");
+        add("restriction_minimum_inclusive");
+        add("restriction_maximum_value");
+        add("restriction_maximum_inclusive");
+        add("restriction_enumeration_values");
+        add("in_collections");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isXsdSimpleType(Object obj) { return (obj.getClass() == XsdSimpleType.class); }
 
 }

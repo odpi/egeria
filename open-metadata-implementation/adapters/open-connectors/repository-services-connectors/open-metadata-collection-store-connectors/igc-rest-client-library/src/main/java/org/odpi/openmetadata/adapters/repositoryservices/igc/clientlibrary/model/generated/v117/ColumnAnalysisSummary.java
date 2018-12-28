@@ -373,7 +373,50 @@ public class ColumnAnalysisSummary extends Reference {
         add("inferred_scale");
         add("inferred_precision");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("assigned_to_terms");
+        add("steward");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("short_&_long_description");
+        add("short_description");
+        add("long_description");
+        add("assigned_to_terms");
+        add("steward");
+        add("analyzed_column");
+        add("project_name");
+        add("review_date");
+        add("promoted_by_principal");
+        add("reviewed_by_principal");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+        add("allow_null_values");
+        add("require_unique_values");
+        add("number_values");
+        add("number_of_complete_values");
+        add("number_of_valid_values");
+        add("number_of_empty_values");
+        add("number_of_null_values");
+        add("number_of_distinct_values");
+        add("number_of_distinct_patterns");
+        add("number_of_distinct_formats");
+        add("inferred_data_type");
+        add("inferred_format");
+        add("mask");
+        add("constant");
+        add("domain_type");
+        add("average_length");
+        add("longest_length");
+        add("shortest_length");
+        add("inferred_length");
+        add("inferred_scale");
+        add("inferred_precision");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isColumnAnalysisSummary(Object obj) { return (obj.getClass() == ColumnAnalysisSummary.class); }
 
 }

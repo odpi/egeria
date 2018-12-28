@@ -253,7 +253,37 @@ public class TableDefinitionProperties extends Reference {
         add("modified_by");
         add("modified_on");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<>();
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("of_ds_table_definition");
+        add("seq_col_space");
+        add("seq_fixed_width");
+        add("seq_delimiter");
+        add("seq_quote_char");
+        add("locator");
+        add("access_type");
+        add("apt_record_prop");
+        add("seq_col_headers");
+        add("import_location");
+        add("nls_map_name");
+        add("seq_omit_new_line");
+        add("platform_type");
+        add("version");
+        add("a_xmeta_locking_root");
+        add("registration_timestamp");
+        add("allow_column_mapping");
+        add("sp_error_codes");
+        add("seq_null_string");
+        add("multivalued");
+        add("pad_char");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isTableDefinitionProperties(Object obj) { return (obj.getClass() == TableDefinitionProperties.class); }
 
 }

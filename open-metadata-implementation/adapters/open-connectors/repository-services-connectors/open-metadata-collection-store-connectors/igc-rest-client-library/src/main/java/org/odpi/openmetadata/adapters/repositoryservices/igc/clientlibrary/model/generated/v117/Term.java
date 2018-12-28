@@ -437,7 +437,71 @@ public class Term extends Reference {
         add("modified_by");
         add("modified_on");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("category_path");
+        add("referencing_categories");
+        add("labels");
+        add("stewards");
+        add("governed_by_rules");
+        add("translations");
+        add("is_a_type_of");
+        add("has_types");
+        add("is_of");
+        add("has_a_term");
+        add("synonyms");
+        add("related_terms");
+        add("replaces");
+        add("assigned_terms");
+        add("assigned_to_terms");
+        add("assigned_assets");
+        add("Automation_Rules");
+        add("in_collections");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("parent_category");
+        add("category_path");
+        add("referencing_categories");
+        add("labels");
+        add("stewards");
+        add("status");
+        add("governed_by_rules");
+        add("language");
+        add("abbreviation");
+        add("additional_abbreviation");
+        add("example");
+        add("usage");
+        add("is_modifier");
+        add("type");
+        add("translations");
+        add("is_a_type_of");
+        add("has_types");
+        add("is_of");
+        add("has_a");
+        add("has_a_term");
+        add("synonyms");
+        add("preferred_synonym");
+        add("related_terms");
+        add("replaces");
+        add("replaced_by");
+        add("assigned_terms");
+        add("assigned_to_terms");
+        add("assigned_assets");
+        add("Automation_Rules");
+        add("in_collections");
+        add("workflow_current_state");
+        add("workflow_stored_state");
+        add("glossary_type");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isTerm(Object obj) { return (obj.getClass() == Term.class); }
 
 }

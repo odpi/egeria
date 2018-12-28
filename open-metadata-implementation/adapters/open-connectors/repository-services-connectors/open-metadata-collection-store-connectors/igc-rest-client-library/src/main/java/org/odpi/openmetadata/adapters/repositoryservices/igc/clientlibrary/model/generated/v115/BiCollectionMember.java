@@ -365,7 +365,69 @@ public class BiCollectionMember extends Reference {
         add("modified_by");
         add("modified_on");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("references_bi_members");
+        add("referenced_by_bi_members");
+        add("used_by_bi_report_query_items");
+        add("used_by_bi_cubes");
+        add("uses_database_columns");
+        add("read_by_(static)");
+        add("written_by_(static)");
+        add("read_by_(design)");
+        add("written_by_(design)");
+        add("read_by_(operational)");
+        add("written_by_(operational)");
+        add("read_by_(user_defined)");
+        add("written_by_(user_defined)");
+        add("impacted_by");
+        add("impacts_on");
+        add("in_collections");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("type");
+        add("namespace");
+        add("bi_collection");
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("type_definition");
+        add("data_type");
+        add("expression");
+        add("details");
+        add("references_bi_members");
+        add("referenced_by_bi_members");
+        add("used_by_bi_report_query_items");
+        add("used_by_bi_cubes");
+        add("uses_database_columns");
+        add("read_by_(static)");
+        add("written_by_(static)");
+        add("read_by_(design)");
+        add("written_by_(design)");
+        add("read_by_(operational)");
+        add("written_by_(operational)");
+        add("read_by_(user_defined)");
+        add("written_by_(user_defined)");
+        add("impacted_by");
+        add("impacts_on");
+        add("in_collections");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isBiCollectionMember(Object obj) { return (obj.getClass() == BiCollectionMember.class); }
 
 }

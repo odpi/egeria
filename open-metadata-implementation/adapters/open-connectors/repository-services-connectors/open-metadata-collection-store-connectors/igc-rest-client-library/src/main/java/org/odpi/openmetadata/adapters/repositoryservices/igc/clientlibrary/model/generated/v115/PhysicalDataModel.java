@@ -322,7 +322,59 @@ public class PhysicalDataModel extends Reference {
         add("modified_by");
         add("modified_on");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("contains_physical_models");
+        add("implements_logical_data_models");
+        add("implemented_by_data_files");
+        add("implemented_by_database_schemas");
+        add("contains_design_tables");
+        add("contains_design_views");
+        add("contains_design_stored_procedures");
+        add("physical_domains");
+        add("blueprint_elements");
+        add("in_collections");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("physical_model");
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("contains_physical_models");
+        add("implements_logical_data_models");
+        add("implemented_by_data_files");
+        add("implemented_by_database_schemas");
+        add("contains_design_tables");
+        add("contains_design_views");
+        add("contains_design_stored_procedures");
+        add("alias_(business_name)");
+        add("author");
+        add("target_database");
+        add("target_dbms");
+        add("native_id");
+        add("package");
+        add("namespace");
+        add("imported_from");
+        add("physical_domains");
+        add("blueprint_elements");
+        add("in_collections");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isPhysicalDataModel(Object obj) { return (obj.getClass() == PhysicalDataModel.class); }
 
 }

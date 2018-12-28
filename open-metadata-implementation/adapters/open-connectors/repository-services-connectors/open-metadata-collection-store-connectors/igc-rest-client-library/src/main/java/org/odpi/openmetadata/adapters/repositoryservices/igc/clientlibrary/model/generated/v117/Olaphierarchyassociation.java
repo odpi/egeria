@@ -162,7 +162,33 @@ public class Olaphierarchyassociation extends Reference {
         add("sequence");
         add("business_name");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("x_of_olap_level");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("of_olap_hierarchy_member");
+        add("has_parent_olap_level");
+        add("has_child_olap_level");
+        add("x_of_olap_level");
+        add("sequence");
+        add("business_name");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isOlaphierarchyassociation(Object obj) { return (obj.getClass() == Olaphierarchyassociation.class); }
 
 }

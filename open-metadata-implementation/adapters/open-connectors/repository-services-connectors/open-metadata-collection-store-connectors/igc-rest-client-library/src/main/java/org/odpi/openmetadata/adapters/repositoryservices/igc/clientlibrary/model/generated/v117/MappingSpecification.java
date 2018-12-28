@@ -252,7 +252,48 @@ public class MappingSpecification extends Reference {
         add("modified_by");
         add("modified_on");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("mapping_project");
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("mappings");
+        add("source_database_tables_or_views");
+        add("target_database_tables_or_views");
+        add("joins");
+        add("filters");
+        add("generated_jobs");
+        add("in_collections");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("description");
+        add("mapping_project");
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("mappings");
+        add("source_database_tables_or_views");
+        add("target_database_tables_or_views");
+        add("status");
+        add("owner");
+        add("include_for_lineage");
+        add("joins");
+        add("filters");
+        add("generated_jobs");
+        add("in_collections");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isMappingSpecification(Object obj) { return (obj.getClass() == MappingSpecification.class); }
 
 }

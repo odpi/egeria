@@ -66,7 +66,19 @@ public class BiReportDataItemSource extends Reference {
     public static final Boolean canBeCreated() { return false; }
     public static final Boolean includesModificationDetails() { return false; }
     public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<>();
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("defined_of_report_field");
+        add("defined_by_data_field");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("defined_of_report_field");
+        add("defined_in_report_data_item");
+        add("defined_by_data_field");
+        add("defined_by_olap_member");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isBiReportDataItemSource(Object obj) { return (obj.getClass() == BiReportDataItemSource.class); }
 
 }

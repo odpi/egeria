@@ -195,7 +195,37 @@ public class Category extends Reference {
         add("modified_by");
         add("modified_on");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("category_path");
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("subcategories");
+        add("terms");
+        add("in_collections");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("parent_category");
+        add("category_path");
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("language");
+        add("subcategories");
+        add("terms");
+        add("in_collections");
+        add("workflow_current_state");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isCategory(Object obj) { return (obj.getClass() == Category.class); }
 
 }

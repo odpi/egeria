@@ -65,7 +65,18 @@ public class LineageReportTemplate extends Reference {
         add("name");
         add("long_description");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("uses_lineage_filter");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("long_description");
+        add("uses_lineage_filter");
+        add("asset_display_properties");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isLineageReportTemplate(Object obj) { return (obj.getClass() == LineageReportTemplate.class); }
 
 }

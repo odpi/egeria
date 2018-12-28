@@ -380,7 +380,69 @@ public class AmazonS3DataFileRecord extends Reference {
         add("modified_by");
         add("modified_on");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("amazon_s_3_data_file_fields");
+        add("implements_logical_entities");
+        add("implements_design_tables_or_views");
+        add("read_by_(static)");
+        add("written_by_(static)");
+        add("read_by_(design)");
+        add("written_by_(design)");
+        add("read_by_(operational)");
+        add("written_by_(operational)");
+        add("read_by_(user_defined)");
+        add("written_by_(user_defined)");
+        add("impacted_by");
+        add("impacts_on");
+        add("in_collections");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("amazon_s3_data_file");
+        add("qualityScore");
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("amazon_s_3_data_file_fields");
+        add("implements_logical_entities");
+        add("implements_design_tables_or_views");
+        add("alias_(business_name)");
+        add("include_for_business_lineage");
+        add("imported_from");
+        add("reviewDate");
+        add("fieldCount");
+        add("rowCount");
+        add("PKDuplicateCount");
+        add("FKViolationCount");
+        add("nbRecordTested");
+        add("read_by_(static)");
+        add("written_by_(static)");
+        add("read_by_(design)");
+        add("written_by_(design)");
+        add("read_by_(operational)");
+        add("written_by_(operational)");
+        add("read_by_(user_defined)");
+        add("written_by_(user_defined)");
+        add("impacted_by");
+        add("impacts_on");
+        add("in_collections");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isAmazonS3DataFileRecord(Object obj) { return (obj.getClass() == AmazonS3DataFileRecord.class); }
 
 }

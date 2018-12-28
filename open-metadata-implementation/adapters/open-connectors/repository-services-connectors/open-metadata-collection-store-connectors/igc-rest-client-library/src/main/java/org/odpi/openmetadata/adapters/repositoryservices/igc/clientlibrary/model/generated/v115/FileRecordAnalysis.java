@@ -194,7 +194,35 @@ public class FileRecordAnalysis extends Reference {
         add("modified_by");
         add("modified_on");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("selected_primary_key");
+        add("selected_foreign_key");
+        add("selected_natural_key");
+        add("quality_score_problems");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("project");
+        add("data_file_record");
+        add("review_date");
+        add("number_of_fields");
+        add("number_of_rows");
+        add("primary_key_duplicates");
+        add("foreign_key_violations");
+        add("selected_primary_key");
+        add("selected_foreign_key");
+        add("selected_natural_key");
+        add("quality_score_percent");
+        add("nb_record_tested");
+        add("quality_score_problems");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isFileRecordAnalysis(Object obj) { return (obj.getClass() == FileRecordAnalysis.class); }
 
 }

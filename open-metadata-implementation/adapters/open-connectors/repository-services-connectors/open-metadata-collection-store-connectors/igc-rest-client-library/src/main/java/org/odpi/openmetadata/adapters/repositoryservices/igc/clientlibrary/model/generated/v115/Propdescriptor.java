@@ -136,7 +136,24 @@ public class Propdescriptor extends Reference {
         add("modified_by");
         add("modified_on");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<>();
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("value_expression");
+        add("of_class_descriptor");
+        add("description");
+        add("is_attribute");
+        add("value_type");
+        add("attribute_name");
+        add("display_name");
+        add("name");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isPropdescriptor(Object obj) { return (obj.getClass() == Propdescriptor.class); }
 
 }

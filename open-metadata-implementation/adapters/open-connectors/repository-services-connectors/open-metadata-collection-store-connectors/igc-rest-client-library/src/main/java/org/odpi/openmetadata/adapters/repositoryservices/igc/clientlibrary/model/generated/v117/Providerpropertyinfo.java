@@ -173,7 +173,31 @@ public class Providerpropertyinfo extends Reference {
         add("modified_by");
         add("modified_on");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("has_provider_property_info_extended");
+        add("has_directory_provider_property");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("property_data_type");
+        add("has_provider_property_info_extended");
+        add("is_searchable");
+        add("complex_attribute_source");
+        add("description");
+        add("is_complex_attribute");
+        add("name");
+        add("is_required");
+        add("display_name");
+        add("has_directory_provider_property");
+        add("is_editable");
+        add("default_value");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isProviderpropertyinfo(Object obj) { return (obj.getClass() == Providerpropertyinfo.class); }
 
 }

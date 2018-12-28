@@ -84,7 +84,18 @@ public class BiOlapLevelElement extends Reference {
         add("business_name");
         add("short_description");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<>();
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("business_name");
+        add("short_description");
+        add("defined_in_level");
+        add("key_level");
+        add("defined_as_an_olap_member");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isBiOlapLevelElement(Object obj) { return (obj.getClass() == BiOlapLevelElement.class); }
 
 }

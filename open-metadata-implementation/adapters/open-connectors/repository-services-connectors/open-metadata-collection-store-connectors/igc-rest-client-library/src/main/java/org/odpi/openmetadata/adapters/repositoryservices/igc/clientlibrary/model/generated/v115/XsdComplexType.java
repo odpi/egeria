@@ -361,7 +361,64 @@ public class XsdComplexType extends Reference {
         add("modified_by");
         add("modified_on");
     }};
+    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("contains_xsd_attributes");
+        add("contains_xsd_elements");
+        add("defines_xsd_elements");
+        add("references_xsd_elements");
+        add("references_xsd_attributes");
+        add("references_xsd_element_group");
+        add("references_xsd_attribute_groups");
+        add("extended_by_xsd_complex_type");
+        add("restricted_by_xsd_complex_type");
+        add("extends_xsd_element");
+        add("restricts_xsd_element");
+        add("in_collections");
+    }};
+    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
+        add("name");
+        add("short_description");
+        add("long_description");
+        add("xsd_schema");
+        add("labels");
+        add("stewards");
+        add("assigned_to_terms");
+        add("implements_rules");
+        add("governed_by_rules");
+        add("contains_xsd_attributes");
+        add("contains_xsd_elements");
+        add("defines_xsd_elements");
+        add("references_xsd_elements");
+        add("references_xsd_attributes");
+        add("references_xsd_element_group");
+        add("references_xsd_attribute_groups");
+        add("extends_xsd_complex_type");
+        add("extended_by_xsd_complex_type");
+        add("restricts_xsd_complex_type");
+        add("restricted_by_xsd_complex_type");
+        add("extends_xsd_simple_type");
+        add("extends_xsd_element");
+        add("restricts_xsd_element");
+        add("type");
+        add("base_type");
+        add("abstract");
+        add("mixed");
+        add("default");
+        add("block");
+        add("in_collections");
+        add("created_by");
+        add("created_on");
+        add("modified_by");
+        add("modified_on");
+    }};
     public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isXsdComplexType(Object obj) { return (obj.getClass() == XsdComplexType.class); }
 
 }
