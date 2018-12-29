@@ -7,6 +7,7 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.ReferenceList;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.AttributeForSchemaMapper_TableColumn;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.ForeignKeyMapper;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.SchemaAttributeTypeMapper_DatabaseColumn;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -16,7 +17,7 @@ import org.slf4j.LoggerFactory;
 
 public class RelationalColumnMapper extends ReferenceableMapper {
 
-    private static final Logger log = LoggerFactory.getLogger(org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.RelationalColumnMapper.class);
+    private static final Logger log = LoggerFactory.getLogger(RelationalColumnMapper.class);
 
     private static final String T_RELATIONAL_COLUMN = "RelationalColumn";
     private static final String C_PRIMARY_KEY = "PrimaryKey";
@@ -43,47 +44,8 @@ public class RelationalColumnMapper extends ReferenceableMapper {
 
         // The list of relationships that should be mapped
         addRelationshipMapper(AttributeForSchemaMapper_TableColumn.getInstance());
-/*        addSimpleRelationshipMapping(
-                "database_table_or_view",
-                "AttributeForSchema",
-                "attributes",
-                "parentSchemas",
-                null,
-                RelationalTableTypeMapper.IGC_RID_PREFIX
-        );*/
         addRelationshipMapper(SchemaAttributeTypeMapper_DatabaseColumn.getInstance());
-/*        addSimpleRelationshipMapping(
-                RelationshipMappingSet.SELF_REFERENCE_SENTINEL,
-                "SchemaAttributeType",
-                "usedInSchemas",
-                "type",
-                null,
-                RelationalColumnTypeMapper.IGC_RID_PREFIX
-        ); */
-/*        addSimpleRelationshipMapping(
-                "defined_foreign_key_references",
-                R_FOREIGN_KEY,
-                P_FOREIGN_KEY,
-                P_PRIMARY_KEY
-        );
-        addSimpleRelationshipMapping(
-                "defined_foreign_key_referenced",
-                R_FOREIGN_KEY,
-                P_PRIMARY_KEY,
-                P_FOREIGN_KEY
-        );
-        addSimpleRelationshipMapping(
-                "selected_foreign_key_references",
-                R_FOREIGN_KEY,
-                P_FOREIGN_KEY,
-                P_PRIMARY_KEY
-        );
-        addSimpleRelationshipMapping(
-                "selected_foreign_key_referenced",
-                R_FOREIGN_KEY,
-                P_PRIMARY_KEY,
-                P_FOREIGN_KEY
-        );*/
+        addRelationshipMapper(ForeignKeyMapper.getInstance());
 
         // Finally list any properties that will be used to map Classifications
         // (to do the actual mapping, implement the 'getMappedClassifications' function -- example below)

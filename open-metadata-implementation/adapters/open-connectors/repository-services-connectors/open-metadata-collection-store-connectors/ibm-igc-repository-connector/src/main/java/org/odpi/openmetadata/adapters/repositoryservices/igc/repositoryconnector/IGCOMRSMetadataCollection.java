@@ -682,26 +682,6 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
     }
 
     /**
-     * Retrieve the relationship mappings from the mapping.
-     *
-     * @param mapping the mapping from which to retrieve relationship mappings
-     * @param userId the userId making the request
-     * @return RelationshipMappingSet
-     */
-    private RelationshipMappingSet getRelationshipsFromMapping(EntityMappingSet.EntityMapping mapping, String userId) {
-        RelationshipMappingSet relationshipMappingSet = null;
-        if (mapping != null) {
-            Class mappingClass = mapping.getMappingClass();
-            relationshipMappingSet = ReferenceMapper.getRelationshipsFromMapping(
-                    mappingClass,
-                    (IGCOMRSRepositoryConnector)parentConnector,
-                    userId
-            );
-        }
-        return relationshipMappingSet;
-    }
-
-    /**
      * Setup paging properties of the IGC search.
      *
      * @param igcSearch the IGC search object to which to add the criteria

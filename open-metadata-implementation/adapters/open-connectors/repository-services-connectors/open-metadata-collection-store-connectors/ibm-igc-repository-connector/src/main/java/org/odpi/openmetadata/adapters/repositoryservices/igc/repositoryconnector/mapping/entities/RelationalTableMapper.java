@@ -24,23 +24,7 @@ public class RelationalTableMapper extends ReferenceableMapper {
 
         // The list of relationships that should be mapped
         addRelationshipMapper(AttributeForSchemaMapper_TableSchema.getInstance());
-        /*addSimpleRelationshipMapping(
-                "database_schema",
-                "AttributeForSchema",
-                "attributes",
-                "parentSchemas",
-                null,
-                RelationalDBSchemaTypeMapper.IGC_RID_PREFIX
-        );*/
         addRelationshipMapper(SchemaAttributeTypeMapper_DatabaseTable.getInstance());
-        /*addSimpleRelationshipMapping(
-                RelationshipMappingSet.SELF_REFERENCE_SENTINEL,
-                "SchemaAttributeType",
-                "usedInSchemas",
-                "type",
-                null,
-                RelationalTableTypeMapper.IGC_RID_PREFIX
-        );*/
 
     }
 

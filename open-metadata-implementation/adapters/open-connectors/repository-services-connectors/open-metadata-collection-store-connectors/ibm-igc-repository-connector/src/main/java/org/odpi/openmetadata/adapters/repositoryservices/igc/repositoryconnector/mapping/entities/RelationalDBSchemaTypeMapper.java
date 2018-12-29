@@ -28,27 +28,7 @@ public class RelationalDBSchemaTypeMapper extends ReferenceableMapper {
 
         // The list of relationships that should be mapped
         addRelationshipMapper(AssetSchemaTypeMapper.getInstance());
-        /*addSimpleRelationshipMapping(
-                RelationshipMappingSet.SELF_REFERENCE_SENTINEL,
-                "AssetSchemaType",
-                "schema",
-                "describesAssets",
-                IGC_RID_PREFIX,
-                null
-        );*/
         addRelationshipMapper(AttributeForSchemaMapper_TableSchema.getInstance());
-
-/*        // Given a schema may have many tables, this is likely to be more optimal way to retrieve these
-        // relationships
-        addInvertedRelationshipMapping(
-                "database_table",
-                "database_schema",
-                "AttributeForSchema",
-                "attributes",
-                "parentSchemas",
-                null,
-                IGC_RID_PREFIX
-        );*/
 
     }
 

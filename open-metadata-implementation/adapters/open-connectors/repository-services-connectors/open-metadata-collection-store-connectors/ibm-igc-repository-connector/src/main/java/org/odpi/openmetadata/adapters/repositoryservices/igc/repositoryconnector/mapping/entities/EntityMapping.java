@@ -213,27 +213,6 @@ public abstract class EntityMapping {
     public PropertyMappingSet getPropertyMappings() { return this.propertyMappings; }
 
     /**
-     * Retrieve a listing of the IGC property names that have already been mapped.
-     *
-     * @return List<String>
-     */
-    //protected List<String> getAlreadyMappedIgcProperties() { return this.alreadyMappedIgcProperties; }
-
-    /**
-     * Add the provided IGC property name to the list of those that have already been mapped.
-     *
-     * @param propertyName the already-mapped IGC property name
-     */
-    //protected void addAlreadyMappedIgcProperty(String propertyName) { this.alreadyMappedIgcProperties.add(propertyName); }
-
-    /**
-     * Adds the provided set of IGC property names to the list of those that have already been mapped.
-     *
-     * @param propertyNames the already-mapped IGC property names
-     */
-    //protected void addAlreadyMappedIgcProperties(Set<String> propertyNames) { this.alreadyMappedIgcProperties.addAll(propertyNames); }
-
-    /**
      * Note the provided IGC property name as one to be used in setting up classifications for the OMRS entity.
      *
      * @param igcPropertyName the IGC property name
@@ -384,6 +363,29 @@ public abstract class EntityMapping {
         }
         log.debug(" ... succeeded to {}", sb.toString());
         return sb.toString();
+    }
+
+    /**
+     * Merge together the values of all the provided arrays.
+     * (From: https://stackoverflow.com/questions/80476/how-can-i-concatenate-two-arrays-in-java)
+     *
+     * @param first first array to merge
+     * @param rest subsequent arrays to merge
+     * @return T[]
+     */
+    @SafeVarargs
+    public static <T> T[] concatAll(T[] first, T[]... rest) {
+        int totalLength = first.length;
+        for (T[] array : rest) {
+            totalLength += array.length;
+        }
+        T[] result = Arrays.copyOf(first, totalLength);
+        int offset = first.length;
+        for (T[] array : rest) {
+            System.arraycopy(array, 0, result, offset, array.length);
+            offset += array.length;
+        }
+        return result;
     }
 
 }
