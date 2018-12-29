@@ -37,14 +37,14 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Reference extends ObjectPrinter {
 
-    private static final Logger log = LoggerFactory.getLogger(Reference.class);
+    @JsonIgnore private static final Logger log = LoggerFactory.getLogger(Reference.class);
 
-    public static final String MOD_CREATED_BY = "created_by";
-    public static final String MOD_CREATED_ON = "created_on";
-    public static final String MOD_MODIFIED_BY = "modified_by";
-    public static final String MOD_MODIFIED_ON = "modified_on";
+    @JsonIgnore public static final String MOD_CREATED_BY = "created_by";
+    @JsonIgnore public static final String MOD_CREATED_ON = "created_on";
+    @JsonIgnore public static final String MOD_MODIFIED_BY = "modified_by";
+    @JsonIgnore public static final String MOD_MODIFIED_ON = "modified_on";
 
-    protected static final String[] MODIFICATION_DETAILS = new String[] {
+    @JsonIgnore protected static final String[] MODIFICATION_DETAILS = new String[] {
             MOD_CREATED_BY,
             MOD_CREATED_ON,
             MOD_MODIFIED_BY,
@@ -55,6 +55,11 @@ public class Reference extends ObjectPrinter {
      * Used to uniquely identify the object without relying on its ID (RID) remaining static.
      */
     @JsonIgnore private Identity identity = null;
+
+    /**
+     * Used to indicate whether this asset has been fully retrieved already (true) or not (false).
+     */
+    @JsonIgnore private boolean fullyRetrieved = false;
 
     /**
      * Provides the context to the unique identity of this asset. Note that while this will exist on
@@ -104,6 +109,9 @@ public class Reference extends ObjectPrinter {
     /** @see #_url */ @JsonProperty("_url") public String getUrl() { return this._url; }
     /** @see #_url */ @JsonProperty("_url") public void setUrl(String _url) { this._url = _url; }
 
+    public boolean isFullyRetrieved() { return this.fullyRetrieved; }
+    public void setFullyRetrieved() { this.fullyRetrieved = true; }
+
     /**
      * This will generally be the most performant method by which to retrieve asset information, when only
      * some subset of properties is required
@@ -122,7 +130,9 @@ public class Reference extends ObjectPrinter {
         IGCSearchCondition idOnly = new IGCSearchCondition("_id", "=", this._id);
         IGCSearchConditionSet idOnlySet = new IGCSearchConditionSet(idOnly);
         IGCSearch igcSearch = new IGCSearch(Reference.getAssetTypeForSearch(this), properties, idOnlySet);
-        igcSearch.setPageSize(pageSize);
+        if (pageSize > 0) {
+            igcSearch.setPageSize(pageSize);
+        }
         if (sorting != null) {
             igcSearch.addSortingCriteria(sorting);
         }
@@ -187,9 +197,10 @@ public class Reference extends ObjectPrinter {
      * @return Reference - the object including all of its details and relationships
      */
     public Reference getFullAssetDetails(IGCRestClient igcrest) {
-        Reference asset = this.getAssetDetails(igcrest);
+
+        Reference asset = igcrest.getAssetById(this.getId());
         try {
-            for (Field f : getClass().getFields()) {
+            for (Field f : asset.getClass().getFields()) {
                 Class fieldClass = f.getType();
                 if (fieldClass == ReferenceList.class) {
                     // Uses reflection to call getAllPages on any ReferenceList fields
@@ -203,6 +214,7 @@ public class Reference extends ObjectPrinter {
             log.error("Unable to access field.", e);
         }
         return asset;
+
     }
 
     /**
@@ -490,6 +502,60 @@ public class Reference extends ObjectPrinter {
             log.error("Unable to retrieve non-relationship properties from IGC POJO: {}", pojoClass, e);
         }
         return list;
+    }
+
+    /**
+     * Retrieves the list of all property names for the asset.
+     *
+     * @param pojoClass the POJO for which to retrieve all property names
+     * @return List<String>
+     */
+    public static List<String> getAllPropertiesFromPOJO(Class pojoClass) {
+        List<String> list = null;
+        try {
+            Method getAllProperties = pojoClass.getMethod("getAllProperties");
+            list = (List<String>) getAllProperties.invoke(null);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            log.error("Unable to retrieve all properties from IGC POJO: {}", pojoClass, e);
+        }
+        return list;
+    }
+
+    /**
+     * Retrieves the list of all paged relationship property names for the asset.
+     *
+     * @param pojoClass the POJO for which to retrieve the paged relationship property names
+     * @return List<String>
+     */
+    public static List<String> getPagedRelationalPropertiesFromPOJO(Class pojoClass) {
+        List<String> list = null;
+        try {
+            Method getPagedProperties = pojoClass.getMethod("getPagedRelationshipProperties");
+            list = (List<String>) getPagedProperties.invoke(null);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            log.error("Unable to retrieve paged relationship properties from IGC POJO: {}", pojoClass, e);
+        }
+        return list;
+    }
+
+    /**
+     * Indicates whether assets of this type include modification details (true) or not (false).
+     *
+     * @param pojoClass the POJO for which to check for modification details
+     * @return boolean
+     */
+    public static boolean hasModificationDetails(Class pojoClass) {
+        boolean hasModDetails = false;
+        if (pojoClass != null) {
+            try {
+                Method hasModificationDetails = pojoClass.getMethod("includesModificationDetails");
+                Boolean bHasModificationDetails = (Boolean) hasModificationDetails.invoke(null);
+                hasModDetails = (bHasModificationDetails != null && bHasModificationDetails);
+            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                log.info("Unable to find modification details for class {}", pojoClass);
+            }
+        }
+        return hasModDetails;
     }
 
     /**

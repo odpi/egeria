@@ -1,0 +1,27 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships;
+
+/**
+ * Singleton to represent the Synonym relationship in OMRS.
+ */
+public class SynonymMapper extends RelationshipMapping {
+
+    private static SynonymMapper instance = new SynonymMapper();
+    public static SynonymMapper getInstance() { return instance; }
+
+    private static final String P_SYNONYMS = "synonyms";
+
+    private SynonymMapper() {
+        super(
+                "term",
+                "term",
+                P_SYNONYMS,
+                P_SYNONYMS,
+                "Synonym",
+                P_SYNONYMS,
+                P_SYNONYMS
+        );
+    }
+
+}
