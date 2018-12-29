@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
@@ -339,84 +340,84 @@ public class ColumnAnalysisSummary extends Reference {
     /** @see #inferred_precision */ @JsonProperty("inferred_precision")  public Number getInferredPrecision() { return this.inferred_precision; }
     /** @see #inferred_precision */ @JsonProperty("inferred_precision")  public void setInferredPrecision(Number inferred_precision) { this.inferred_precision = inferred_precision; }
 
-    public static final Boolean canBeCreated() { return false; }
-    public static final Boolean includesModificationDetails() { return true; }
-    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
-        add("short_&_long_description");
-        add("short_description");
-        add("long_description");
-        add("project_name");
-        add("review_date");
-        add("created_by");
-        add("created_on");
-        add("modified_by");
-        add("modified_on");
-        add("allow_null_values");
-        add("require_unique_values");
-        add("number_values");
-        add("number_of_complete_values");
-        add("number_of_valid_values");
-        add("number_of_empty_values");
-        add("number_of_null_values");
-        add("number_of_distinct_values");
-        add("number_of_distinct_patterns");
-        add("number_of_distinct_formats");
-        add("inferred_data_type");
-        add("inferred_format");
-        add("mask");
-        add("constant");
-        add("domain_type");
-        add("average_length");
-        add("longest_length");
-        add("shortest_length");
-        add("inferred_length");
-        add("inferred_scale");
-        add("inferred_precision");
-    }};
-    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
-        add("assigned_to_terms");
-        add("steward");
-    }};
-    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
-        add("short_&_long_description");
-        add("short_description");
-        add("long_description");
-        add("assigned_to_terms");
-        add("steward");
-        add("analyzed_column");
-        add("project_name");
-        add("review_date");
-        add("promoted_by_principal");
-        add("reviewed_by_principal");
-        add("created_by");
-        add("created_on");
-        add("modified_by");
-        add("modified_on");
-        add("allow_null_values");
-        add("require_unique_values");
-        add("number_values");
-        add("number_of_complete_values");
-        add("number_of_valid_values");
-        add("number_of_empty_values");
-        add("number_of_null_values");
-        add("number_of_distinct_values");
-        add("number_of_distinct_patterns");
-        add("number_of_distinct_formats");
-        add("inferred_data_type");
-        add("inferred_format");
-        add("mask");
-        add("constant");
-        add("domain_type");
-        add("average_length");
-        add("longest_length");
-        add("shortest_length");
-        add("inferred_length");
-        add("inferred_scale");
-        add("inferred_precision");
-    }};
-    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
-    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
-    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
-    public static final Boolean isColumnAnalysisSummary(Object obj) { return (obj.getClass() == ColumnAnalysisSummary.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return true; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "short_&_long_description",
+        "short_description",
+        "long_description",
+        "project_name",
+        "review_date",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on",
+        "allow_null_values",
+        "require_unique_values",
+        "number_values",
+        "number_of_complete_values",
+        "number_of_valid_values",
+        "number_of_empty_values",
+        "number_of_null_values",
+        "number_of_distinct_values",
+        "number_of_distinct_patterns",
+        "number_of_distinct_formats",
+        "inferred_data_type",
+        "inferred_format",
+        "mask",
+        "constant",
+        "domain_type",
+        "average_length",
+        "longest_length",
+        "shortest_length",
+        "inferred_length",
+        "inferred_scale",
+        "inferred_precision"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "assigned_to_terms",
+        "steward"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "short_&_long_description",
+        "short_description",
+        "long_description",
+        "assigned_to_terms",
+        "steward",
+        "analyzed_column",
+        "project_name",
+        "review_date",
+        "promoted_by_principal",
+        "reviewed_by_principal",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on",
+        "allow_null_values",
+        "require_unique_values",
+        "number_values",
+        "number_of_complete_values",
+        "number_of_valid_values",
+        "number_of_empty_values",
+        "number_of_null_values",
+        "number_of_distinct_values",
+        "number_of_distinct_patterns",
+        "number_of_distinct_formats",
+        "inferred_data_type",
+        "inferred_format",
+        "mask",
+        "constant",
+        "domain_type",
+        "average_length",
+        "longest_length",
+        "shortest_length",
+        "inferred_length",
+        "inferred_scale",
+        "inferred_precision"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isColumnAnalysisSummary(Object obj) { return (obj.getClass() == ColumnAnalysisSummary.class); }
 
 }

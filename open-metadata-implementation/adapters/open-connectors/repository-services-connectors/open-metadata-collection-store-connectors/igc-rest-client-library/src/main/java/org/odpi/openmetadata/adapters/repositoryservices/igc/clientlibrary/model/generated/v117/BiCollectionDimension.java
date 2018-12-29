@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
@@ -143,40 +144,40 @@ public class BiCollectionDimension extends Reference {
     /** @see #sequence */ @JsonProperty("sequence")  public Number getSequence() { return this.sequence; }
     /** @see #sequence */ @JsonProperty("sequence")  public void setSequence(Number sequence) { this.sequence = sequence; }
 
-    public static final Boolean canBeCreated() { return false; }
-    public static final Boolean includesModificationDetails() { return false; }
-    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
-        add("name");
-        add("short_description");
-        add("long_description");
-        add("business_name");
-        add("sequence");
-    }};
-    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
-        add("labels");
-        add("stewards");
-        add("assigned_to_terms");
-        add("implements_rules");
-        add("governed_by_rules");
-    }};
-    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
-        add("name");
-        add("short_description");
-        add("long_description");
-        add("bi_cube");
-        add("labels");
-        add("stewards");
-        add("assigned_to_terms");
-        add("implements_rules");
-        add("governed_by_rules");
-        add("references_bi_collection");
-        add("uses_olap_hierarchy");
-        add("business_name");
-        add("sequence");
-    }};
-    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
-    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
-    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
-    public static final Boolean isBiCollectionDimension(Object obj) { return (obj.getClass() == BiCollectionDimension.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return false; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "business_name",
+        "sequence"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "bi_cube",
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "references_bi_collection",
+        "uses_olap_hierarchy",
+        "business_name",
+        "sequence"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isBiCollectionDimension(Object obj) { return (obj.getClass() == BiCollectionDimension.class); }
 
 }

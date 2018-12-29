@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
@@ -367,91 +368,91 @@ public class AmazonS3DataFile extends Reference {
     /** @see #modified_on */ @JsonProperty("modified_on")  public Date getModifiedOn() { return this.modified_on; }
     /** @see #modified_on */ @JsonProperty("modified_on")  public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
-    public static final Boolean canBeCreated() { return false; }
-    public static final Boolean includesModificationDetails() { return true; }
-    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
-        add("name");
-        add("short_description");
-        add("long_description");
-        add("alias_(business_name)");
-        add("path");
-        add("imported_from");
-        add("content_type");
-        add("compression");
-        add("size");
-        add("url");
-        add("version");
-        add("source_creation_date");
-        add("source_modification_date");
-        add("include_for_business_lineage");
-        add("created_by");
-        add("created_on");
-        add("modified_by");
-        add("modified_on");
-    }};
-    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
-        add("labels");
-        add("stewards");
-        add("assigned_to_terms");
-        add("implements_rules");
-        add("governed_by_rules");
-        add("data_file_records");
-        add("read_by_(static)");
-        add("written_by_(static)");
-        add("read_by_(design)");
-        add("written_by_(design)");
-        add("read_by_(operational)");
-        add("written_by_(operational)");
-        add("read_by_(user_defined)");
-        add("written_by_(user_defined)");
-        add("impacted_by");
-        add("impacts_on");
-        add("blueprint_elements");
-        add("in_collections");
-    }};
-    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
-        add("name");
-        add("short_description");
-        add("long_description");
-        add("parent_folder");
-        add("labels");
-        add("stewards");
-        add("assigned_to_terms");
-        add("implements_rules");
-        add("governed_by_rules");
-        add("data_file_records");
-        add("implements_data_file_definition");
-        add("alias_(business_name)");
-        add("path");
-        add("imported_from");
-        add("content_type");
-        add("compression");
-        add("size");
-        add("url");
-        add("version");
-        add("source_creation_date");
-        add("source_modification_date");
-        add("read_by_(static)");
-        add("written_by_(static)");
-        add("read_by_(design)");
-        add("written_by_(design)");
-        add("read_by_(operational)");
-        add("written_by_(operational)");
-        add("read_by_(user_defined)");
-        add("written_by_(user_defined)");
-        add("impacted_by");
-        add("impacts_on");
-        add("include_for_business_lineage");
-        add("blueprint_elements");
-        add("in_collections");
-        add("created_by");
-        add("created_on");
-        add("modified_by");
-        add("modified_on");
-    }};
-    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
-    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
-    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
-    public static final Boolean isAmazonS3DataFile(Object obj) { return (obj.getClass() == AmazonS3DataFile.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return true; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "alias_(business_name)",
+        "path",
+        "imported_from",
+        "content_type",
+        "compression",
+        "size",
+        "url",
+        "version",
+        "source_creation_date",
+        "source_modification_date",
+        "include_for_business_lineage",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "data_file_records",
+        "read_by_(static)",
+        "written_by_(static)",
+        "read_by_(design)",
+        "written_by_(design)",
+        "read_by_(operational)",
+        "written_by_(operational)",
+        "read_by_(user_defined)",
+        "written_by_(user_defined)",
+        "impacted_by",
+        "impacts_on",
+        "blueprint_elements",
+        "in_collections"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "parent_folder",
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "data_file_records",
+        "implements_data_file_definition",
+        "alias_(business_name)",
+        "path",
+        "imported_from",
+        "content_type",
+        "compression",
+        "size",
+        "url",
+        "version",
+        "source_creation_date",
+        "source_modification_date",
+        "read_by_(static)",
+        "written_by_(static)",
+        "read_by_(design)",
+        "written_by_(design)",
+        "read_by_(operational)",
+        "written_by_(operational)",
+        "read_by_(user_defined)",
+        "written_by_(user_defined)",
+        "impacted_by",
+        "impacts_on",
+        "include_for_business_lineage",
+        "blueprint_elements",
+        "in_collections",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isAmazonS3DataFile(Object obj) { return (obj.getClass() == AmazonS3DataFile.class); }
 
 }

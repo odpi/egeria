@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
@@ -77,25 +78,25 @@ public class Olapjoinref extends Reference {
     /** @see #sequence */ @JsonProperty("sequence")  public Number getSequence() { return this.sequence; }
     /** @see #sequence */ @JsonProperty("sequence")  public void setSequence(Number sequence) { this.sequence = sequence; }
 
-    public static final Boolean canBeCreated() { return false; }
-    public static final Boolean includesModificationDetails() { return false; }
-    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
-        add("cardinality");
-        add("sequence");
-    }};
-    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
-        add("joins_olap_collection");
-    }};
-    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
-        add("joins_olap_collection");
-        add("joins_database_table");
-        add("alias");
-        add("cardinality");
-        add("sequence");
-    }};
-    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
-    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
-    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
-    public static final Boolean isOlapjoinref(Object obj) { return (obj.getClass() == Olapjoinref.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return false; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "cardinality",
+        "sequence"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "joins_olap_collection"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "joins_olap_collection",
+        "joins_database_table",
+        "alias",
+        "cardinality",
+        "sequence"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isOlapjoinref(Object obj) { return (obj.getClass() == Olapjoinref.class); }
 
 }

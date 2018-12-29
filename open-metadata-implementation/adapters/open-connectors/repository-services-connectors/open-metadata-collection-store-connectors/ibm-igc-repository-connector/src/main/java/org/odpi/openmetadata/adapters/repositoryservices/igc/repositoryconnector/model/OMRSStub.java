@@ -5,7 +5,7 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.MainObject;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class OMRSStub extends MainObject {
@@ -47,18 +47,18 @@ public class OMRSStub extends MainObject {
 
     public static Boolean canBeCreated() { return true; }
     public static Boolean includesModificationDetails() { return true; }
-    public static ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
-        add("name");
-        add("short_description");
-        add("long_description");
-        add("created_by");
-        add("created_on");
-        add("modified_by");
-        add("modified_on");
-        add("$sourceType");
-        add("$sourceRID");
-        add("$payload");
-    }};
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+            "name",
+            "short_description",
+            "long_description",
+            "created_by",
+            "created_on",
+            "modified_by",
+            "modified_on",
+            "$sourceType",
+            "$sourceRID",
+            "$payload"
+    );
     public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
     public static final Boolean isOMRSStub(Object obj) { return (obj.getClass() == OMRSStub.class); }
 

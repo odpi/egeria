@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
@@ -599,140 +600,140 @@ public class View extends Reference {
     /** @see #modified_on */ @JsonProperty("modified_on")  public Date getModifiedOn() { return this.modified_on; }
     /** @see #modified_on */ @JsonProperty("modified_on")  public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
-    public static final Boolean canBeCreated() { return false; }
-    public static final Boolean includesModificationDetails() { return true; }
-    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
-        add("name");
-        add("short_description");
-        add("long_description");
-        add("qualityScore");
-        add("alias_(business_name)");
-        add("expression");
-        add("imported_from");
-        add("multi_column_analysis");
-        add("reviewDate");
-        add("fieldCount");
-        add("Row Count");
-        add("PKDuplicateCount");
-        add("FKViolationCount");
-        add("nbRecordTested");
-        add("qualityScore_bubble");
-        add("lineage_service_last_run_date");
-        add("lineage_service_status");
-        add("lineage_service_information");
-        add("created_by");
-        add("created_on");
-        add("modified_by");
-        add("modified_on");
-    }};
-    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
-        add("labels");
-        add("stewards");
-        add("assigned_to_terms");
-        add("implements_rules");
-        add("governed_by_rules");
-        add("database_columns");
-        add("implements_logical_entities");
-        add("implements_design_tables_or_views");
-        add("same_as_data_sources");
-        add("database_aliases");
-        add("based_upon_database_tables");
-        add("referenced_by_views");
-        add("defined_primary_key");
-        add("defined_non_primary_key");
-        add("selected_primary_key");
-        add("defined_foreign_key");
-        add("selected_foreign_key");
-        add("selected_natural_key");
-        add("database_indexes");
-        add("quality_dimension");
-        add("table_definitions");
-        add("mapped_to_physical_objects");
-        add("read_by_(static)");
-        add("written_by_(static)");
-        add("read_by_(design)");
-        add("written_by_(design)");
-        add("read_by_(operational)");
-        add("written_by_(operational)");
-        add("read_by_(user_defined)");
-        add("written_by_(user_defined)");
-        add("impacted_by");
-        add("impacts_on");
-        add("bi_report_queries");
-        add("bi_model_collections");
-        add("source_mapping_specifications");
-        add("target_mapping_specifications");
-        add("data_policies");
-        add("in_collections");
-        add("suggested_term_assignments");
-    }};
-    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
-        add("name");
-        add("short_description");
-        add("long_description");
-        add("database_schema");
-        add("qualityScore");
-        add("labels");
-        add("stewards");
-        add("assigned_to_terms");
-        add("implements_rules");
-        add("governed_by_rules");
-        add("database_columns");
-        add("implements_logical_entities");
-        add("implements_design_tables_or_views");
-        add("alias_(business_name)");
-        add("same_as_data_sources");
-        add("database_aliases");
-        add("based_upon_database_tables");
-        add("referenced_by_views");
-        add("expression");
-        add("imported_from");
-        add("defined_primary_key");
-        add("defined_non_primary_key");
-        add("selected_primary_key");
-        add("defined_foreign_key");
-        add("selected_foreign_key");
-        add("selected_natural_key");
-        add("multi_column_analysis");
-        add("database_indexes");
-        add("reviewDate");
-        add("fieldCount");
-        add("Row Count");
-        add("PKDuplicateCount");
-        add("FKViolationCount");
-        add("nbRecordTested");
-        add("qualityScore_bubble");
-        add("quality_dimension");
-        add("table_definitions");
-        add("mapped_to_physical_objects");
-        add("read_by_(static)");
-        add("written_by_(static)");
-        add("read_by_(design)");
-        add("written_by_(design)");
-        add("read_by_(operational)");
-        add("written_by_(operational)");
-        add("read_by_(user_defined)");
-        add("written_by_(user_defined)");
-        add("impacted_by");
-        add("impacts_on");
-        add("lineage_service_last_run_date");
-        add("lineage_service_status");
-        add("lineage_service_information");
-        add("bi_report_queries");
-        add("bi_model_collections");
-        add("source_mapping_specifications");
-        add("target_mapping_specifications");
-        add("data_policies");
-        add("in_collections");
-        add("suggested_term_assignments");
-        add("created_by");
-        add("created_on");
-        add("modified_by");
-        add("modified_on");
-    }};
-    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
-    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
-    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
-    public static final Boolean isView(Object obj) { return (obj.getClass() == View.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return true; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "qualityScore",
+        "alias_(business_name)",
+        "expression",
+        "imported_from",
+        "multi_column_analysis",
+        "reviewDate",
+        "fieldCount",
+        "Row Count",
+        "PKDuplicateCount",
+        "FKViolationCount",
+        "nbRecordTested",
+        "qualityScore_bubble",
+        "lineage_service_last_run_date",
+        "lineage_service_status",
+        "lineage_service_information",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "database_columns",
+        "implements_logical_entities",
+        "implements_design_tables_or_views",
+        "same_as_data_sources",
+        "database_aliases",
+        "based_upon_database_tables",
+        "referenced_by_views",
+        "defined_primary_key",
+        "defined_non_primary_key",
+        "selected_primary_key",
+        "defined_foreign_key",
+        "selected_foreign_key",
+        "selected_natural_key",
+        "database_indexes",
+        "quality_dimension",
+        "table_definitions",
+        "mapped_to_physical_objects",
+        "read_by_(static)",
+        "written_by_(static)",
+        "read_by_(design)",
+        "written_by_(design)",
+        "read_by_(operational)",
+        "written_by_(operational)",
+        "read_by_(user_defined)",
+        "written_by_(user_defined)",
+        "impacted_by",
+        "impacts_on",
+        "bi_report_queries",
+        "bi_model_collections",
+        "source_mapping_specifications",
+        "target_mapping_specifications",
+        "data_policies",
+        "in_collections",
+        "suggested_term_assignments"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "database_schema",
+        "qualityScore",
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "database_columns",
+        "implements_logical_entities",
+        "implements_design_tables_or_views",
+        "alias_(business_name)",
+        "same_as_data_sources",
+        "database_aliases",
+        "based_upon_database_tables",
+        "referenced_by_views",
+        "expression",
+        "imported_from",
+        "defined_primary_key",
+        "defined_non_primary_key",
+        "selected_primary_key",
+        "defined_foreign_key",
+        "selected_foreign_key",
+        "selected_natural_key",
+        "multi_column_analysis",
+        "database_indexes",
+        "reviewDate",
+        "fieldCount",
+        "Row Count",
+        "PKDuplicateCount",
+        "FKViolationCount",
+        "nbRecordTested",
+        "qualityScore_bubble",
+        "quality_dimension",
+        "table_definitions",
+        "mapped_to_physical_objects",
+        "read_by_(static)",
+        "written_by_(static)",
+        "read_by_(design)",
+        "written_by_(design)",
+        "read_by_(operational)",
+        "written_by_(operational)",
+        "read_by_(user_defined)",
+        "written_by_(user_defined)",
+        "impacted_by",
+        "impacts_on",
+        "lineage_service_last_run_date",
+        "lineage_service_status",
+        "lineage_service_information",
+        "bi_report_queries",
+        "bi_model_collections",
+        "source_mapping_specifications",
+        "target_mapping_specifications",
+        "data_policies",
+        "in_collections",
+        "suggested_term_assignments",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isView(Object obj) { return (obj.getClass() == View.class); }
 
 }

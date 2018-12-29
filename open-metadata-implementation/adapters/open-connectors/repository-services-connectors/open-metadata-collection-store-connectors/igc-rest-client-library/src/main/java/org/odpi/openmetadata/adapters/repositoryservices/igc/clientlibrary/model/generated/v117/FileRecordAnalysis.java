@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
@@ -177,52 +178,52 @@ public class FileRecordAnalysis extends Reference {
     /** @see #modified_on */ @JsonProperty("modified_on")  public Date getModifiedOn() { return this.modified_on; }
     /** @see #modified_on */ @JsonProperty("modified_on")  public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
-    public static final Boolean canBeCreated() { return false; }
-    public static final Boolean includesModificationDetails() { return true; }
-    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
-        add("name");
-        add("project");
-        add("review_date");
-        add("number_of_fields");
-        add("number_of_rows");
-        add("primary_key_duplicates");
-        add("foreign_key_violations");
-        add("quality_score_percent");
-        add("nb_record_tested");
-        add("created_by");
-        add("created_on");
-        add("modified_by");
-        add("modified_on");
-    }};
-    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
-        add("selected_primary_key");
-        add("selected_foreign_key");
-        add("selected_natural_key");
-        add("quality_score_problems");
-    }};
-    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
-        add("name");
-        add("project");
-        add("data_file_record");
-        add("review_date");
-        add("number_of_fields");
-        add("number_of_rows");
-        add("primary_key_duplicates");
-        add("foreign_key_violations");
-        add("selected_primary_key");
-        add("selected_foreign_key");
-        add("selected_natural_key");
-        add("quality_score_percent");
-        add("nb_record_tested");
-        add("quality_score_problems");
-        add("created_by");
-        add("created_on");
-        add("modified_by");
-        add("modified_on");
-    }};
-    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
-    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
-    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
-    public static final Boolean isFileRecordAnalysis(Object obj) { return (obj.getClass() == FileRecordAnalysis.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return true; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "name",
+        "project",
+        "review_date",
+        "number_of_fields",
+        "number_of_rows",
+        "primary_key_duplicates",
+        "foreign_key_violations",
+        "quality_score_percent",
+        "nb_record_tested",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "selected_primary_key",
+        "selected_foreign_key",
+        "selected_natural_key",
+        "quality_score_problems"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "name",
+        "project",
+        "data_file_record",
+        "review_date",
+        "number_of_fields",
+        "number_of_rows",
+        "primary_key_duplicates",
+        "foreign_key_violations",
+        "selected_primary_key",
+        "selected_foreign_key",
+        "selected_natural_key",
+        "quality_score_percent",
+        "nb_record_tested",
+        "quality_score_problems",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isFileRecordAnalysis(Object obj) { return (obj.getClass() == FileRecordAnalysis.class); }
 
 }

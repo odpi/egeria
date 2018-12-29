@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
@@ -393,89 +394,89 @@ public class Term extends Reference {
     /** @see #modified_on */ @JsonProperty("modified_on")  public Date getModifiedOn() { return this.modified_on; }
     /** @see #modified_on */ @JsonProperty("modified_on")  public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
-    public static final Boolean canBeCreated() { return true; }
-    public static final Boolean includesModificationDetails() { return true; }
-    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
-        add("name");
-        add("short_description");
-        add("long_description");
-        add("status");
-        add("language");
-        add("abbreviation");
-        add("additional_abbreviation");
-        add("example");
-        add("usage");
-        add("is_modifier");
-        add("type");
-        add("workflow_current_state");
-        add("created_by");
-        add("created_on");
-        add("modified_by");
-        add("modified_on");
-    }};
-    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
-        add("category_path");
-        add("referencing_categories");
-        add("labels");
-        add("stewards");
-        add("governed_by_rules");
-        add("translations");
-        add("is_a_type_of");
-        add("has_types");
-        add("is_of");
-        add("has_a_term");
-        add("synonyms");
-        add("related_terms");
-        add("replaces");
-        add("assigned_terms");
-        add("assigned_to_terms");
-        add("assigned_assets");
-        add("blueprint_elements");
-        add("in_collections");
-    }};
-    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
-        add("name");
-        add("short_description");
-        add("long_description");
-        add("parent_category");
-        add("category_path");
-        add("referencing_categories");
-        add("labels");
-        add("stewards");
-        add("status");
-        add("governed_by_rules");
-        add("language");
-        add("abbreviation");
-        add("additional_abbreviation");
-        add("example");
-        add("usage");
-        add("is_modifier");
-        add("type");
-        add("translations");
-        add("is_a_type_of");
-        add("has_types");
-        add("is_of");
-        add("has_a");
-        add("has_a_term");
-        add("synonyms");
-        add("preferred_synonym");
-        add("related_terms");
-        add("replaces");
-        add("replaced_by");
-        add("assigned_terms");
-        add("assigned_to_terms");
-        add("assigned_assets");
-        add("blueprint_elements");
-        add("in_collections");
-        add("workflow_current_state");
-        add("created_by");
-        add("created_on");
-        add("modified_by");
-        add("modified_on");
-    }};
-    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
-    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
-    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
-    public static final Boolean isTerm(Object obj) { return (obj.getClass() == Term.class); }
+    public static Boolean canBeCreated() { return true; }
+    public static Boolean includesModificationDetails() { return true; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "status",
+        "language",
+        "abbreviation",
+        "additional_abbreviation",
+        "example",
+        "usage",
+        "is_modifier",
+        "type",
+        "workflow_current_state",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "category_path",
+        "referencing_categories",
+        "labels",
+        "stewards",
+        "governed_by_rules",
+        "translations",
+        "is_a_type_of",
+        "has_types",
+        "is_of",
+        "has_a_term",
+        "synonyms",
+        "related_terms",
+        "replaces",
+        "assigned_terms",
+        "assigned_to_terms",
+        "assigned_assets",
+        "blueprint_elements",
+        "in_collections"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "parent_category",
+        "category_path",
+        "referencing_categories",
+        "labels",
+        "stewards",
+        "status",
+        "governed_by_rules",
+        "language",
+        "abbreviation",
+        "additional_abbreviation",
+        "example",
+        "usage",
+        "is_modifier",
+        "type",
+        "translations",
+        "is_a_type_of",
+        "has_types",
+        "is_of",
+        "has_a",
+        "has_a_term",
+        "synonyms",
+        "preferred_synonym",
+        "related_terms",
+        "replaces",
+        "replaced_by",
+        "assigned_terms",
+        "assigned_to_terms",
+        "assigned_assets",
+        "blueprint_elements",
+        "in_collections",
+        "workflow_current_state",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isTerm(Object obj) { return (obj.getClass() == Term.class); }
 
 }

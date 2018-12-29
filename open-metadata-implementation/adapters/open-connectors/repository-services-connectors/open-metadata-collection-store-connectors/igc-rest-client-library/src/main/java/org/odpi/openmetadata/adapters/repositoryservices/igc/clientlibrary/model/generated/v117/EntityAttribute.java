@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
@@ -293,73 +294,73 @@ public class EntityAttribute extends Reference {
     /** @see #modified_on */ @JsonProperty("modified_on")  public Date getModifiedOn() { return this.modified_on; }
     /** @see #modified_on */ @JsonProperty("modified_on")  public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
-    public static final Boolean canBeCreated() { return false; }
-    public static final Boolean includesModificationDetails() { return true; }
-    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
-        add("name");
-        add("short_description");
-        add("long_description");
-        add("primary_key");
-        add("physical_name");
-        add("native_type");
-        add("data_type");
-        add("length");
-        add("scale");
-        add("required");
-        add("sequence");
-        add("created_by");
-        add("created_on");
-        add("modified_by");
-        add("modified_on");
-    }};
-    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
-        add("labels");
-        add("stewards");
-        add("assigned_to_terms");
-        add("implements_rules");
-        add("governed_by_rules");
-        add("implemented_by_design_columns");
-        add("implemented_by_database_columns");
-        add("logical_keys");
-        add("parent_logical_foreignKey");
-        add("child_logical_foreign_keys");
-        add("in_collections");
-    }};
-    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
-        add("name");
-        add("short_description");
-        add("long_description");
-        add("logical_entity");
-        add("labels");
-        add("stewards");
-        add("assigned_to_terms");
-        add("implements_rules");
-        add("governed_by_rules");
-        add("implemented_by_design_columns");
-        add("implemented_by_database_columns");
-        add("primary_key");
-        add("logical_keys");
-        add("parent_logical_foreignKey");
-        add("child_logical_foreign_keys");
-        add("validation_rule");
-        add("validation_range");
-        add("validation_list");
-        add("physical_name");
-        add("native_type");
-        add("data_type");
-        add("length");
-        add("scale");
-        add("required");
-        add("sequence");
-        add("in_collections");
-        add("created_by");
-        add("created_on");
-        add("modified_by");
-        add("modified_on");
-    }};
-    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
-    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
-    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
-    public static final Boolean isEntityAttribute(Object obj) { return (obj.getClass() == EntityAttribute.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return true; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "primary_key",
+        "physical_name",
+        "native_type",
+        "data_type",
+        "length",
+        "scale",
+        "required",
+        "sequence",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "implemented_by_design_columns",
+        "implemented_by_database_columns",
+        "logical_keys",
+        "parent_logical_foreignKey",
+        "child_logical_foreign_keys",
+        "in_collections"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "logical_entity",
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "implemented_by_design_columns",
+        "implemented_by_database_columns",
+        "primary_key",
+        "logical_keys",
+        "parent_logical_foreignKey",
+        "child_logical_foreign_keys",
+        "validation_rule",
+        "validation_range",
+        "validation_list",
+        "physical_name",
+        "native_type",
+        "data_type",
+        "length",
+        "scale",
+        "required",
+        "sequence",
+        "in_collections",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isEntityAttribute(Object obj) { return (obj.getClass() == EntityAttribute.class); }
 
 }

@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
@@ -349,85 +350,85 @@ public class BiCollectionMember extends Reference {
     /** @see #modified_on */ @JsonProperty("modified_on")  public Date getModifiedOn() { return this.modified_on; }
     /** @see #modified_on */ @JsonProperty("modified_on")  public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
-    public static final Boolean canBeCreated() { return false; }
-    public static final Boolean includesModificationDetails() { return true; }
-    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
-        add("name");
-        add("short_description");
-        add("long_description");
-        add("type");
-        add("namespace");
-        add("type_definition");
-        add("data_type");
-        add("expression");
-        add("created_by");
-        add("created_on");
-        add("modified_by");
-        add("modified_on");
-    }};
-    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
-        add("labels");
-        add("stewards");
-        add("assigned_to_terms");
-        add("implements_rules");
-        add("governed_by_rules");
-        add("references_bi_members");
-        add("referenced_by_bi_members");
-        add("used_by_bi_report_query_items");
-        add("used_by_bi_cubes");
-        add("uses_database_columns");
-        add("read_by_(static)");
-        add("written_by_(static)");
-        add("read_by_(design)");
-        add("written_by_(design)");
-        add("read_by_(operational)");
-        add("written_by_(operational)");
-        add("read_by_(user_defined)");
-        add("written_by_(user_defined)");
-        add("impacted_by");
-        add("impacts_on");
-        add("in_collections");
-    }};
-    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
-        add("name");
-        add("short_description");
-        add("long_description");
-        add("type");
-        add("namespace");
-        add("bi_collection");
-        add("labels");
-        add("stewards");
-        add("assigned_to_terms");
-        add("implements_rules");
-        add("governed_by_rules");
-        add("type_definition");
-        add("data_type");
-        add("expression");
-        add("details");
-        add("references_bi_members");
-        add("referenced_by_bi_members");
-        add("used_by_bi_report_query_items");
-        add("used_by_bi_cubes");
-        add("uses_database_columns");
-        add("read_by_(static)");
-        add("written_by_(static)");
-        add("read_by_(design)");
-        add("written_by_(design)");
-        add("read_by_(operational)");
-        add("written_by_(operational)");
-        add("read_by_(user_defined)");
-        add("written_by_(user_defined)");
-        add("impacted_by");
-        add("impacts_on");
-        add("in_collections");
-        add("created_by");
-        add("created_on");
-        add("modified_by");
-        add("modified_on");
-    }};
-    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
-    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
-    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
-    public static final Boolean isBiCollectionMember(Object obj) { return (obj.getClass() == BiCollectionMember.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return true; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "type",
+        "namespace",
+        "type_definition",
+        "data_type",
+        "expression",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "references_bi_members",
+        "referenced_by_bi_members",
+        "used_by_bi_report_query_items",
+        "used_by_bi_cubes",
+        "uses_database_columns",
+        "read_by_(static)",
+        "written_by_(static)",
+        "read_by_(design)",
+        "written_by_(design)",
+        "read_by_(operational)",
+        "written_by_(operational)",
+        "read_by_(user_defined)",
+        "written_by_(user_defined)",
+        "impacted_by",
+        "impacts_on",
+        "in_collections"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "type",
+        "namespace",
+        "bi_collection",
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "type_definition",
+        "data_type",
+        "expression",
+        "details",
+        "references_bi_members",
+        "referenced_by_bi_members",
+        "used_by_bi_report_query_items",
+        "used_by_bi_cubes",
+        "uses_database_columns",
+        "read_by_(static)",
+        "written_by_(static)",
+        "read_by_(design)",
+        "written_by_(design)",
+        "read_by_(operational)",
+        "written_by_(operational)",
+        "read_by_(user_defined)",
+        "written_by_(user_defined)",
+        "impacted_by",
+        "impacts_on",
+        "in_collections",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isBiCollectionMember(Object obj) { return (obj.getClass() == BiCollectionMember.class); }
 
 }

@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
@@ -87,29 +88,29 @@ public class DataConnectionMapping extends Reference {
     /** @see #bound_to_database */ @JsonProperty("bound_to_database")  public Reference getBoundToDatabase() { return this.bound_to_database; }
     /** @see #bound_to_database */ @JsonProperty("bound_to_database")  public void setBoundToDatabase(Reference bound_to_database) { this.bound_to_database = bound_to_database; }
 
-    public static final Boolean canBeCreated() { return false; }
-    public static final Boolean includesModificationDetails() { return false; }
-    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
-        add("name");
-        add("host_(engine)_name");
-        add("type");
-    }};
-    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
-        add("used_by");
-        add("same_as_data_connections");
-    }};
-    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
-        add("name");
-        add("host_(engine)_name");
-        add("type");
-        add("used_by");
-        add("same_as_data_connections");
-        add("preferred_data_connection");
-        add("bound_to_database");
-    }};
-    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
-    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
-    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
-    public static final Boolean isDataConnectionMapping(Object obj) { return (obj.getClass() == DataConnectionMapping.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return false; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "name",
+        "host_(engine)_name",
+        "type"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "used_by",
+        "same_as_data_connections"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "name",
+        "host_(engine)_name",
+        "type",
+        "used_by",
+        "same_as_data_connections",
+        "preferred_data_connection",
+        "bound_to_database"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isDataConnectionMapping(Object obj) { return (obj.getClass() == DataConnectionMapping.class); }
 
 }

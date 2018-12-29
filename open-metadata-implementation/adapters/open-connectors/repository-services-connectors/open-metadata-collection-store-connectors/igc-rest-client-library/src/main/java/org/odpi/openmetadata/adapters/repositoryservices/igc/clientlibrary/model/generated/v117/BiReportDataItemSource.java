@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
@@ -63,22 +64,22 @@ public class BiReportDataItemSource extends Reference {
     /** @see #defined_by_olap_member */ @JsonProperty("defined_by_olap_member")  public Reference getDefinedByOlapMember() { return this.defined_by_olap_member; }
     /** @see #defined_by_olap_member */ @JsonProperty("defined_by_olap_member")  public void setDefinedByOlapMember(Reference defined_by_olap_member) { this.defined_by_olap_member = defined_by_olap_member; }
 
-    public static final Boolean canBeCreated() { return false; }
-    public static final Boolean includesModificationDetails() { return false; }
-    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<>();
-    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
-        add("defined_of_report_field");
-        add("defined_by_data_field");
-    }};
-    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
-        add("defined_of_report_field");
-        add("defined_in_report_data_item");
-        add("defined_by_data_field");
-        add("defined_by_olap_member");
-    }};
-    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
-    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
-    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
-    public static final Boolean isBiReportDataItemSource(Object obj) { return (obj.getClass() == BiReportDataItemSource.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return false; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = new ArrayList<>();
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "defined_of_report_field",
+        "defined_by_data_field"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "defined_of_report_field",
+        "defined_in_report_data_item",
+        "defined_by_data_field",
+        "defined_by_olap_member"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isBiReportDataItemSource(Object obj) { return (obj.getClass() == BiReportDataItemSource.class); }
 
 }

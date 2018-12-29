@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
@@ -193,54 +194,54 @@ public class TableAnalysisSummary extends Reference {
     /** @see #foreign_key_violations */ @JsonProperty("foreign_key_violations")  public Number getForeignKeyViolations() { return this.foreign_key_violations; }
     /** @see #foreign_key_violations */ @JsonProperty("foreign_key_violations")  public void setForeignKeyViolations(Number foreign_key_violations) { this.foreign_key_violations = foreign_key_violations; }
 
-    public static final Boolean canBeCreated() { return false; }
-    public static final Boolean includesModificationDetails() { return true; }
-    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
-        add("short_&_long_description");
-        add("short_description");
-        add("long_description");
-        add("project_name");
-        add("review_date");
-        add("created_by");
-        add("created_on");
-        add("modified_by");
-        add("modified_on");
-        add("number_of_fields");
-        add("number_of_rows");
-        add("inferred_primary_keys");
-        add("primary_key_duplicates");
-        add("inferred_foreign_keys");
-        add("foreign_key_violations");
-    }};
-    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
-        add("assigned_to_terms");
-        add("steward");
-    }};
-    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
-        add("short_&_long_description");
-        add("short_description");
-        add("long_description");
-        add("assigned_to_terms");
-        add("steward");
-        add("analyzed_table");
-        add("project_name");
-        add("review_date");
-        add("promoted_by_principal");
-        add("reviewed_by_principal");
-        add("created_by");
-        add("created_on");
-        add("modified_by");
-        add("modified_on");
-        add("number_of_fields");
-        add("number_of_rows");
-        add("inferred_primary_keys");
-        add("primary_key_duplicates");
-        add("inferred_foreign_keys");
-        add("foreign_key_violations");
-    }};
-    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
-    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
-    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
-    public static final Boolean isTableAnalysisSummary(Object obj) { return (obj.getClass() == TableAnalysisSummary.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return true; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "short_&_long_description",
+        "short_description",
+        "long_description",
+        "project_name",
+        "review_date",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on",
+        "number_of_fields",
+        "number_of_rows",
+        "inferred_primary_keys",
+        "primary_key_duplicates",
+        "inferred_foreign_keys",
+        "foreign_key_violations"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "assigned_to_terms",
+        "steward"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "short_&_long_description",
+        "short_description",
+        "long_description",
+        "assigned_to_terms",
+        "steward",
+        "analyzed_table",
+        "project_name",
+        "review_date",
+        "promoted_by_principal",
+        "reviewed_by_principal",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on",
+        "number_of_fields",
+        "number_of_rows",
+        "inferred_primary_keys",
+        "primary_key_duplicates",
+        "inferred_foreign_keys",
+        "foreign_key_violations"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isTableAnalysisSummary(Object obj) { return (obj.getClass() == TableAnalysisSummary.class); }
 
 }
