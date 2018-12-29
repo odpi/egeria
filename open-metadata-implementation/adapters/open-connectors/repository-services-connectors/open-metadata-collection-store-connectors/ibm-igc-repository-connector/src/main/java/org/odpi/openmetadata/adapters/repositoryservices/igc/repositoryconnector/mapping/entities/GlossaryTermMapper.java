@@ -7,9 +7,7 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.ReferenceList;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
-import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.RelatedTermMapper;
-import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.SynonymMapper;
-import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.TermCategorizationMapper;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -48,58 +46,11 @@ public class GlossaryTermMapper extends ReferenceableMapper {
         addRelationshipMapper(TermCategorizationMapper.getInstance());
         addRelationshipMapper(SynonymMapper.getInstance());
         addRelationshipMapper(RelatedTermMapper.getInstance());
-
-        // TODO: implement relationship classes for all of these...
-/*
-        addSimpleRelationshipMapping(
-                "replaces",
-                "ReplacementTerm",
-                "replacementTerms",
-                "replacedTerms"
-        );
-        addSimpleRelationshipMapping(
-                "replaced_by",
-                "ReplacementTerm",
-                "replacedTerms",
-                "replacementTerms"
-        );
-        addSimpleRelationshipMapping(
-                P_TRANSLATIONS,
-                "Translation",
-                P_TRANSLATIONS,
-                P_TRANSLATIONS
-        );
-        addSimpleRelationshipMapping(
-                "assigned_assets",
-                "SemanticAssignment",
-                "meaning",
-                "assignedElements"
-        );
-        addSimpleRelationshipMapping(
-                "has_a",
-                "TermHASARelationship",
-                "objects",
-                "attributes"
-        );
-        addSimpleRelationshipMapping(
-                "is_of",
-                "TermHASARelationship",
-                "attributes",
-                "objects"
-        );
-        addSimpleRelationshipMapping(
-                "is_a_type_of",
-                "TermISATypeOFRelationship",
-                "subtypes",
-                "supertypes"
-        );
-        addSimpleRelationshipMapping(
-                "has_types",
-                "TermISATypeOFRelationship",
-                "supertypes",
-                "subtypes"
-        ); */
-
+        addRelationshipMapper(ReplacementTermMapper.getInstance());
+        addRelationshipMapper(TranslationMapper.getInstance());
+        addRelationshipMapper(TermHASARelationshipMapper.getInstance());
+        addRelationshipMapper(TermISATypeOFRelationshipMapper.getInstance());
+        
         // Finally list any properties that will be used to map Classifications
         // (to do the actual mapping, implement the 'getMappedClassifications' function -- example below)
         addComplexIgcClassification("assigned_to_terms");
