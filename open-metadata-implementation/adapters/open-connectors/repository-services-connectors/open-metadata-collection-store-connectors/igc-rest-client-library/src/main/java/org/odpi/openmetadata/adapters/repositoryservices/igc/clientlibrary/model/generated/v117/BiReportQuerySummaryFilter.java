@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
@@ -283,72 +284,72 @@ public class BiReportQuerySummaryFilter extends Reference {
     /** @see #modified_on */ @JsonProperty("modified_on")  public Date getModifiedOn() { return this.modified_on; }
     /** @see #modified_on */ @JsonProperty("modified_on")  public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
-    public static final Boolean canBeCreated() { return false; }
-    public static final Boolean includesModificationDetails() { return true; }
-    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
-        add("expression_in_title");
-        add("short_description");
-        add("long_description");
-        add("type");
-        add("namespace");
-        add("expression");
-        add("created_by");
-        add("created_on");
-        add("modified_by");
-        add("modified_on");
-    }};
-    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
-        add("implements_rules");
-        add("governed_by_rules");
-        add("contains_bi_report_query_items");
-        add("src_contains_bi_report_query_items");
-        add("uses_database_columns");
-        add("uses_bi_collection_members");
-        add("read_by_(static)");
-        add("written_by_(static)");
-        add("read_by_(design)");
-        add("written_by_(design)");
-        add("read_by_(operational)");
-        add("written_by_(operational)");
-        add("read_by_(user_defined)");
-        add("written_by_(user_defined)");
-        add("impacted_by");
-        add("impacts_on");
-        add("in_collections");
-    }};
-    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
-        add("expression_in_title");
-        add("short_description");
-        add("long_description");
-        add("type");
-        add("namespace");
-        add("bi_report_query");
-        add("implements_rules");
-        add("governed_by_rules");
-        add("expression");
-        add("contains_bi_report_query_items");
-        add("src_contains_bi_report_query_items");
-        add("uses_database_columns");
-        add("uses_bi_collection_members");
-        add("read_by_(static)");
-        add("written_by_(static)");
-        add("read_by_(design)");
-        add("written_by_(design)");
-        add("read_by_(operational)");
-        add("written_by_(operational)");
-        add("read_by_(user_defined)");
-        add("written_by_(user_defined)");
-        add("impacted_by");
-        add("impacts_on");
-        add("in_collections");
-        add("created_by");
-        add("created_on");
-        add("modified_by");
-        add("modified_on");
-    }};
-    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
-    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
-    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
-    public static final Boolean isBiReportQuerySummaryFilter(Object obj) { return (obj.getClass() == BiReportQuerySummaryFilter.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return true; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "expression_in_title",
+        "short_description",
+        "long_description",
+        "type",
+        "namespace",
+        "expression",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "implements_rules",
+        "governed_by_rules",
+        "contains_bi_report_query_items",
+        "src_contains_bi_report_query_items",
+        "uses_database_columns",
+        "uses_bi_collection_members",
+        "read_by_(static)",
+        "written_by_(static)",
+        "read_by_(design)",
+        "written_by_(design)",
+        "read_by_(operational)",
+        "written_by_(operational)",
+        "read_by_(user_defined)",
+        "written_by_(user_defined)",
+        "impacted_by",
+        "impacts_on",
+        "in_collections"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "expression_in_title",
+        "short_description",
+        "long_description",
+        "type",
+        "namespace",
+        "bi_report_query",
+        "implements_rules",
+        "governed_by_rules",
+        "expression",
+        "contains_bi_report_query_items",
+        "src_contains_bi_report_query_items",
+        "uses_database_columns",
+        "uses_bi_collection_members",
+        "read_by_(static)",
+        "written_by_(static)",
+        "read_by_(design)",
+        "written_by_(design)",
+        "read_by_(operational)",
+        "written_by_(operational)",
+        "read_by_(user_defined)",
+        "written_by_(user_defined)",
+        "impacted_by",
+        "impacts_on",
+        "in_collections",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isBiReportQuerySummaryFilter(Object obj) { return (obj.getClass() == BiReportQuerySummaryFilter.class); }
 
 }

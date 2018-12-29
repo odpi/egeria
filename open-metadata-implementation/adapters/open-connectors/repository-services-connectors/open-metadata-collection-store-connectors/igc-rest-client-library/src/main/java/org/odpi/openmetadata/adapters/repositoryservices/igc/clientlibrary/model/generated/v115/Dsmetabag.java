@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
@@ -215,46 +216,46 @@ public class Dsmetabag extends Reference {
     /** @see #modified_on */ @JsonProperty("modified_on")  public Date getModifiedOn() { return this.modified_on; }
     /** @see #modified_on */ @JsonProperty("modified_on")  public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
-    public static final Boolean canBeCreated() { return false; }
-    public static final Boolean includesModificationDetails() { return true; }
-    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
-        add("values");
-        add("a_xmeta_locking_root");
-        add("owners");
-        add("names");
-        add("conditions");
-        add("created_by");
-        add("created_on");
-        add("modified_by");
-        add("modified_on");
-    }};
-    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<>();
-    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
-        add("of_ds_table_definition");
-        add("of_ds_job_def");
-        add("of_ds_routine");
-        add("of_ds_stage");
-        add("of_ds_input_pin");
-        add("values");
-        add("of_ds_data_connection");
-        add("of_ds_data_quality_spec");
-        add("of_ds_data_element");
-        add("a_xmeta_locking_root");
-        add("of_ds_design_view");
-        add("of_ds_stage_type");
-        add("owners");
-        add("names");
-        add("of_ds_transform");
-        add("of_ds_output_pin");
-        add("conditions");
-        add("created_by");
-        add("created_on");
-        add("modified_by");
-        add("modified_on");
-    }};
-    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
-    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
-    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
-    public static final Boolean isDsmetabag(Object obj) { return (obj.getClass() == Dsmetabag.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return true; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "values",
+        "a_xmeta_locking_root",
+        "owners",
+        "names",
+        "conditions",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<>();
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "of_ds_table_definition",
+        "of_ds_job_def",
+        "of_ds_routine",
+        "of_ds_stage",
+        "of_ds_input_pin",
+        "values",
+        "of_ds_data_connection",
+        "of_ds_data_quality_spec",
+        "of_ds_data_element",
+        "a_xmeta_locking_root",
+        "of_ds_design_view",
+        "of_ds_stage_type",
+        "owners",
+        "names",
+        "of_ds_transform",
+        "of_ds_output_pin",
+        "conditions",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isDsmetabag(Object obj) { return (obj.getClass() == Dsmetabag.class); }
 
 }

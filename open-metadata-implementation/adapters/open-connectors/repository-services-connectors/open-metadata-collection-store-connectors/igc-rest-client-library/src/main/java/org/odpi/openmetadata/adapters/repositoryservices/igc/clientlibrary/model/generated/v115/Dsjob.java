@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
@@ -474,111 +475,111 @@ public class Dsjob extends Reference {
     /** @see #modified_on */ @JsonProperty("modified_on")  public Date getModifiedOn() { return this.modified_on; }
     /** @see #modified_on */ @JsonProperty("modified_on")  public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
-    public static final Boolean canBeCreated() { return false; }
-    public static final Boolean includesModificationDetails() { return true; }
-    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
-        add("name");
-        add("short_description");
-        add("long_description");
-        add("type");
-        add("annotations");
-        add("runtime_column_propagation");
-        add("include_for_lineage");
-        add("include_for_lineage__edit");
-        add("include_for_lineage_description");
-        add("inherits_lineage_setting_from_transformation_project");
-        add("lineage_service_last_run_date");
-        add("lineage_service_status");
-        add("lineage_service_information");
-        add("web_service_enabled");
-        add("created_by");
-        add("created_on");
-        add("modified_by");
-        add("modified_on");
-    }};
-    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
-        add("labels");
-        add("stewards");
-        add("assigned_to_terms");
-        add("implements_rules");
-        add("governed_by_rules");
-        add("stages");
-        add("references_local_or_shared_containers");
-        add("reads_from_(static)");
-        add("writes_to_(static)");
-        add("reads_from_(design)");
-        add("writes_to_(design)");
-        add("reads_from_(operational)");
-        add("writes_to_(operational)");
-        add("reads_from_(user_defined)");
-        add("writes_to_(user_defined)");
-        add("impacted_by");
-        add("impacts_on");
-        add("design_parameters");
-        add("parameter_sets");
-        add("references_table_definitions");
-        add("optimizes_job");
-        add("optimized_by_jobs");
-        add("sequenced_by_jobs");
-        add("job_runs");
-        add("mapping_specifications");
-        add("information_services_operations");
-        add("blueprint_elements");
-        add("in_collections");
-    }};
-    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
-        add("name");
-        add("short_description");
-        add("long_description");
-        add("transformation_project");
-        add("labels");
-        add("stewards");
-        add("assigned_to_terms");
-        add("implements_rules");
-        add("governed_by_rules");
-        add("stages");
-        add("references_local_or_shared_containers");
-        add("type");
-        add("annotations");
-        add("folder");
-        add("reads_from_(static)");
-        add("writes_to_(static)");
-        add("reads_from_(design)");
-        add("writes_to_(design)");
-        add("reads_from_(operational)");
-        add("writes_to_(operational)");
-        add("reads_from_(user_defined)");
-        add("writes_to_(user_defined)");
-        add("impacted_by");
-        add("impacts_on");
-        add("design_parameters");
-        add("parameter_sets");
-        add("references_table_definitions");
-        add("runtime_column_propagation");
-        add("optimizes_job");
-        add("optimized_by_jobs");
-        add("sequenced_by_jobs");
-        add("job_runs");
-        add("include_for_lineage");
-        add("include_for_lineage__edit");
-        add("include_for_lineage_description");
-        add("inherits_lineage_setting_from_transformation_project");
-        add("lineage_service_last_run_date");
-        add("lineage_service_status");
-        add("lineage_service_information");
-        add("mapping_specifications");
-        add("web_service_enabled");
-        add("information_services_operations");
-        add("blueprint_elements");
-        add("in_collections");
-        add("created_by");
-        add("created_on");
-        add("modified_by");
-        add("modified_on");
-    }};
-    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
-    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
-    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
-    public static final Boolean isDsjob(Object obj) { return (obj.getClass() == Dsjob.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return true; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "type",
+        "annotations",
+        "runtime_column_propagation",
+        "include_for_lineage",
+        "include_for_lineage__edit",
+        "include_for_lineage_description",
+        "inherits_lineage_setting_from_transformation_project",
+        "lineage_service_last_run_date",
+        "lineage_service_status",
+        "lineage_service_information",
+        "web_service_enabled",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "stages",
+        "references_local_or_shared_containers",
+        "reads_from_(static)",
+        "writes_to_(static)",
+        "reads_from_(design)",
+        "writes_to_(design)",
+        "reads_from_(operational)",
+        "writes_to_(operational)",
+        "reads_from_(user_defined)",
+        "writes_to_(user_defined)",
+        "impacted_by",
+        "impacts_on",
+        "design_parameters",
+        "parameter_sets",
+        "references_table_definitions",
+        "optimizes_job",
+        "optimized_by_jobs",
+        "sequenced_by_jobs",
+        "job_runs",
+        "mapping_specifications",
+        "information_services_operations",
+        "blueprint_elements",
+        "in_collections"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "transformation_project",
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "stages",
+        "references_local_or_shared_containers",
+        "type",
+        "annotations",
+        "folder",
+        "reads_from_(static)",
+        "writes_to_(static)",
+        "reads_from_(design)",
+        "writes_to_(design)",
+        "reads_from_(operational)",
+        "writes_to_(operational)",
+        "reads_from_(user_defined)",
+        "writes_to_(user_defined)",
+        "impacted_by",
+        "impacts_on",
+        "design_parameters",
+        "parameter_sets",
+        "references_table_definitions",
+        "runtime_column_propagation",
+        "optimizes_job",
+        "optimized_by_jobs",
+        "sequenced_by_jobs",
+        "job_runs",
+        "include_for_lineage",
+        "include_for_lineage__edit",
+        "include_for_lineage_description",
+        "inherits_lineage_setting_from_transformation_project",
+        "lineage_service_last_run_date",
+        "lineage_service_status",
+        "lineage_service_information",
+        "mapping_specifications",
+        "web_service_enabled",
+        "information_services_operations",
+        "blueprint_elements",
+        "in_collections",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isDsjob(Object obj) { return (obj.getClass() == Dsjob.class); }
 
 }

@@ -502,9 +502,9 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
             // If we can't retrieve the asset by RID, it no longer exists -- so send a delete event
             sendPurgedEntity(assetType, rid);
             // Find any mapper(s) for this type that use a prefix and send a purge for the prefixed entity as well
-            List<ReferenceableMapper> mappers = igcomrsMetadataCollection.getMappers(assetType, localServerUserId);
-            for (ReferenceableMapper mapper : mappers) {
-                List<RelationshipMapping> relationshipMappings = mapper.getRelationshipMappers();
+            List<ReferenceableMapper> referenceableMappers = igcomrsMetadataCollection.getMappers(assetType, localServerUserId);
+            for (ReferenceableMapper referenceableMapper : referenceableMappers) {
+                List<RelationshipMapping> relationshipMappings = referenceableMapper.getRelationshipMappers();
                 for (RelationshipMapping relationshipMapping : relationshipMappings) {
                     String prefixOne = relationshipMapping.getProxyOneMapping().getIgcRidPrefix();
                     String prefixTwo = relationshipMapping.getProxyTwoMapping().getIgcRidPrefix();
@@ -740,9 +740,9 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
             );
 
             // See if there are any generated entities to send an event for (ie. *Type)
-            List<ReferenceableMapper> mappers = igcomrsMetadataCollection.getMappers(asset.getType(), localServerUserId);
-            for (ReferenceableMapper mapper : mappers) {
-                List<RelationshipMapping> relationshipMappings = mapper.getRelationshipMappers();
+            List<ReferenceableMapper> referenceableMappers = igcomrsMetadataCollection.getMappers(asset.getType(), localServerUserId);
+            for (ReferenceableMapper referenceableMapper : referenceableMappers) {
+                List<RelationshipMapping> relationshipMappings = referenceableMapper.getRelationshipMappers();
                 for (RelationshipMapping relationshipMapping : relationshipMappings) {
                     EntityDetail genDetail = null;
                     String prefixOne = relationshipMapping.getProxyOneMapping().getIgcRidPrefix();
@@ -799,9 +799,9 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
             );
 
             // See if there are any generated entities to send an event for (ie. *Type)
-            List<ReferenceableMapper> mappers = igcomrsMetadataCollection.getMappers(latestVersion.getType(), localServerUserId);
-            for (ReferenceableMapper mapper : mappers) {
-                List<RelationshipMapping> relationshipMappings = mapper.getRelationshipMappers();
+            List<ReferenceableMapper> referenceableMappers = igcomrsMetadataCollection.getMappers(latestVersion.getType(), localServerUserId);
+            for (ReferenceableMapper referenceableMapper : referenceableMappers) {
+                List<RelationshipMapping> relationshipMappings = referenceableMapper.getRelationshipMappers();
                 for (RelationshipMapping relationshipMapping : relationshipMappings) {
                     String prefixOne = relationshipMapping.getProxyOneMapping().getIgcRidPrefix();
                     String prefixTwo = relationshipMapping.getProxyTwoMapping().getIgcRidPrefix();

@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
@@ -115,39 +116,39 @@ public class Validvaluerule extends Reference {
     /** @see #modified_on */ @JsonProperty("modified_on")  public Date getModifiedOn() { return this.modified_on; }
     /** @see #modified_on */ @JsonProperty("modified_on")  public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
-    public static final Boolean canBeCreated() { return false; }
-    public static final Boolean includesModificationDetails() { return true; }
-    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
-        add("rule_code");
-        add("rule_type");
-        add("is_not");
-        add("sequence");
-        add("is_case_sensitive");
-        add("created_by");
-        add("created_on");
-        add("modified_by");
-        add("modified_on");
-    }};
-    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
-        add("valid_value_list_of_contains_valid_values_inverse");
-        add("custom_attribute_def_of_has_valid_values_inverse");
-    }};
-    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
-        add("rule_code");
-        add("rule_type");
-        add("valid_value_list_of_contains_valid_values_inverse");
-        add("is_not");
-        add("sequence");
-        add("is_case_sensitive");
-        add("custom_attribute_def_of_has_valid_values_inverse");
-        add("created_by");
-        add("created_on");
-        add("modified_by");
-        add("modified_on");
-    }};
-    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
-    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
-    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
-    public static final Boolean isValidvaluerule(Object obj) { return (obj.getClass() == Validvaluerule.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return true; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "rule_code",
+        "rule_type",
+        "is_not",
+        "sequence",
+        "is_case_sensitive",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "valid_value_list_of_contains_valid_values_inverse",
+        "custom_attribute_def_of_has_valid_values_inverse"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "rule_code",
+        "rule_type",
+        "valid_value_list_of_contains_valid_values_inverse",
+        "is_not",
+        "sequence",
+        "is_case_sensitive",
+        "custom_attribute_def_of_has_valid_values_inverse",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isValidvaluerule(Object obj) { return (obj.getClass() == Validvaluerule.class); }
 
 }

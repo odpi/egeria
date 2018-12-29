@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
@@ -183,51 +184,51 @@ public class ApplicationInstall extends Reference {
     /** @see #release_number */ @JsonProperty("release_number")  public String getReleaseNumber() { return this.release_number; }
     /** @see #release_number */ @JsonProperty("release_number")  public void setReleaseNumber(String release_number) { this.release_number = release_number; }
 
-    public static final Boolean canBeCreated() { return false; }
-    public static final Boolean includesModificationDetails() { return false; }
-    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
-        add("name");
-        add("short_description");
-        add("long_description");
-        add("vendor_name");
-        add("instance_name");
-        add("location_name");
-        add("installation_date");
-        add("platform_identifier");
-        add("installation_path");
-        add("release_number");
-    }};
-    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
-        add("labels");
-        add("stewards");
-        add("assigned_to_terms");
-        add("implements_rules");
-        add("governed_by_rules");
-        add("has_credential");
-    }};
-    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
-        add("name");
-        add("short_description");
-        add("long_description");
-        add("labels");
-        add("stewards");
-        add("assigned_to_terms");
-        add("implements_rules");
-        add("governed_by_rules");
-        add("vendor_name");
-        add("instance_name");
-        add("default_credential");
-        add("location_name");
-        add("installation_date");
-        add("platform_identifier");
-        add("has_credential");
-        add("installed_on_host");
-        add("installation_path");
-        add("release_number");
-    }};
-    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
-    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
-    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
-    public static final Boolean isApplicationInstall(Object obj) { return (obj.getClass() == ApplicationInstall.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return false; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "vendor_name",
+        "instance_name",
+        "location_name",
+        "installation_date",
+        "platform_identifier",
+        "installation_path",
+        "release_number"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "has_credential"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "vendor_name",
+        "instance_name",
+        "default_credential",
+        "location_name",
+        "installation_date",
+        "platform_identifier",
+        "has_credential",
+        "installed_on_host",
+        "installation_path",
+        "release_number"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isApplicationInstall(Object obj) { return (obj.getClass() == ApplicationInstall.class); }
 
 }

@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
@@ -69,23 +70,23 @@ public class OslcLink extends Reference {
     /** @see #of_provider_connection */ @JsonProperty("of_provider_connection")  public Reference getOfProviderConnection() { return this.of_provider_connection; }
     /** @see #of_provider_connection */ @JsonProperty("of_provider_connection")  public void setOfProviderConnection(Reference of_provider_connection) { this.of_provider_connection = of_provider_connection; }
 
-    public static final Boolean canBeCreated() { return false; }
-    public static final Boolean includesModificationDetails() { return false; }
-    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
-        add("url");
-        add("description");
-    }};
-    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<>();
-    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
-        add("url");
-        add("link_type");
-        add("description");
-        add("of_main_object");
-        add("of_provider_connection");
-    }};
-    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
-    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
-    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
-    public static final Boolean isOslcLink(Object obj) { return (obj.getClass() == OslcLink.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return false; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "url",
+        "description"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<>();
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "url",
+        "link_type",
+        "description",
+        "of_main_object",
+        "of_provider_connection"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isOslcLink(Object obj) { return (obj.getClass() == OslcLink.class); }
 
 }

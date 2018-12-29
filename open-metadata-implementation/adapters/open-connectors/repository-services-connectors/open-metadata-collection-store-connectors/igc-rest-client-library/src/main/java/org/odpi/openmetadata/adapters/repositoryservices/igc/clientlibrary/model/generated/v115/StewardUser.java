@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
@@ -203,61 +204,61 @@ public class StewardUser extends Reference {
     /** @see #modified_on */ @JsonProperty("modified_on")  public Date getModifiedOn() { return this.modified_on; }
     /** @see #modified_on */ @JsonProperty("modified_on")  public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
-    public static final Boolean canBeCreated() { return false; }
-    public static final Boolean includesModificationDetails() { return true; }
-    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
-        add("full_name");
-        add("job_title");
-        add("email_address");
-        add("office_phone_number");
-        add("mobile_phone_number");
-        add("principal_id");
-        add("given_name");
-        add("surname");
-        add("courtesy_title");
-        add("organization");
-        add("location");
-        add("business_address");
-        add("home_phone_number");
-        add("fax_number");
-        add("pager_number");
-        add("instant_message_id");
-        add("created_by");
-        add("created_on");
-        add("modified_by");
-        add("modified_on");
-    }};
-    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
-        add("managed_assets");
-        add("managed_assets_basic");
-    }};
-    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
-        add("full_name");
-        add("job_title");
-        add("email_address");
-        add("office_phone_number");
-        add("mobile_phone_number");
-        add("principal_id");
-        add("given_name");
-        add("surname");
-        add("courtesy_title");
-        add("organization");
-        add("location");
-        add("business_address");
-        add("home_phone_number");
-        add("fax_number");
-        add("pager_number");
-        add("instant_message_id");
-        add("managed_assets");
-        add("managed_assets_basic");
-        add("created_by");
-        add("created_on");
-        add("modified_by");
-        add("modified_on");
-    }};
-    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
-    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
-    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
-    public static final Boolean isStewardUser(Object obj) { return (obj.getClass() == StewardUser.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return true; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "full_name",
+        "job_title",
+        "email_address",
+        "office_phone_number",
+        "mobile_phone_number",
+        "principal_id",
+        "given_name",
+        "surname",
+        "courtesy_title",
+        "organization",
+        "location",
+        "business_address",
+        "home_phone_number",
+        "fax_number",
+        "pager_number",
+        "instant_message_id",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "managed_assets",
+        "managed_assets_basic"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "full_name",
+        "job_title",
+        "email_address",
+        "office_phone_number",
+        "mobile_phone_number",
+        "principal_id",
+        "given_name",
+        "surname",
+        "courtesy_title",
+        "organization",
+        "location",
+        "business_address",
+        "home_phone_number",
+        "fax_number",
+        "pager_number",
+        "instant_message_id",
+        "managed_assets",
+        "managed_assets_basic",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isStewardUser(Object obj) { return (obj.getClass() == StewardUser.class); }
 
 }

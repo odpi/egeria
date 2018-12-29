@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
@@ -183,52 +184,52 @@ public class JobInputPin extends Reference {
     /** @see #modified_on */ @JsonProperty("modified_on")  public Date getModifiedOn() { return this.modified_on; }
     /** @see #modified_on */ @JsonProperty("modified_on")  public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
-    public static final Boolean canBeCreated() { return false; }
-    public static final Boolean includesModificationDetails() { return true; }
-    public static final ArrayList<String> NON_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
-        add("condition_not_met");
-        add("partner");
-        add("a_xmeta_locking_root");
-        add("pin_type");
-        add("lookup_fail");
-        add("internal_id");
-        add("transaction_size");
-        add("link_type");
-        add("txn_behaviour");
-        add("enable_tx_group");
-        add("sequence");
-        add("created_by");
-        add("created_on");
-        add("modified_by");
-        add("modified_on");
-    }};
-    public static final ArrayList<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<String>() {{
-        add("has_dsmf_column_info");
-    }};
-    public static final ArrayList<String> ALL_PROPERTIES = new ArrayList<String>() {{
-        add("condition_not_met");
-        add("partner");
-        add("a_xmeta_locking_root");
-        add("has_ds_meta_bag");
-        add("pin_type");
-        add("has_dsmf_column_info");
-        add("lookup_fail");
-        add("internal_id");
-        add("transaction_size");
-        add("link_type");
-        add("txn_behaviour");
-        add("enable_tx_group");
-        add("of_job_component");
-        add("is_target_of_link");
-        add("sequence");
-        add("created_by");
-        add("created_on");
-        add("modified_by");
-        add("modified_on");
-    }};
-    public static final List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
-    public static final List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
-    public static final List<String> getAllProperties() { return ALL_PROPERTIES; }
-    public static final Boolean isJobInputPin(Object obj) { return (obj.getClass() == JobInputPin.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return true; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "condition_not_met",
+        "partner",
+        "a_xmeta_locking_root",
+        "pin_type",
+        "lookup_fail",
+        "internal_id",
+        "transaction_size",
+        "link_type",
+        "txn_behaviour",
+        "enable_tx_group",
+        "sequence",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "has_dsmf_column_info"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "condition_not_met",
+        "partner",
+        "a_xmeta_locking_root",
+        "has_ds_meta_bag",
+        "pin_type",
+        "has_dsmf_column_info",
+        "lookup_fail",
+        "internal_id",
+        "transaction_size",
+        "link_type",
+        "txn_behaviour",
+        "enable_tx_group",
+        "of_job_component",
+        "is_target_of_link",
+        "sequence",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isJobInputPin(Object obj) { return (obj.getClass() == JobInputPin.class); }
 
 }
