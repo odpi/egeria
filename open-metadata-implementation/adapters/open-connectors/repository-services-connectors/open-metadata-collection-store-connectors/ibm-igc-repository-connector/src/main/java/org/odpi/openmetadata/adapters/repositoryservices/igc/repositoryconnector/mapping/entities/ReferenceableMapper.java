@@ -10,7 +10,6 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.searc
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchSorting;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSMetadataCollection;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
-import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.ReferenceMapper;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.AttachedTagMapper;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.RelationshipMapping;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.SemanticAssignmentMapper;
@@ -29,7 +28,7 @@ import java.util.*;
 
 public class ReferenceableMapper extends EntityMapping {
 
-    private static final Logger log = LoggerFactory.getLogger(org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.ReferenceableMapper.class);
+    private static final Logger log = LoggerFactory.getLogger(ReferenceableMapper.class);
 
     // By default (if no IGC type or OMRS type defined), map between 'main_object' (IGC) and Referenceable (OMRS)
     public ReferenceableMapper(IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {
@@ -203,7 +202,7 @@ public class ReferenceableMapper extends EntityMapping {
     protected void mapIGCToOMRSEntitySummary(Set<String> classificationProperties) {
 
         // Merge together all the properties we want to map
-        String[] allProps = ReferenceMapper.concatAll(
+        String[] allProps = concatAll(
                 classificationProperties.toArray(new String[0]),
                 getPropertyMappings().getAllMappedIgcProperties().toArray(new String[0])
         );
@@ -236,7 +235,7 @@ public class ReferenceableMapper extends EntityMapping {
         List<String> nonRelationshipProperties = Reference.getNonRelationshipPropertiesFromPOJO(igcEntity.getClass());
 
         // Merge the detailed properties together (generic and more specific POJO mappings that were passed in)
-        String[] allProps = ReferenceMapper.concatAll(
+        String[] allProps = concatAll(
                 propertyMap.getAllMappedIgcProperties().toArray(new String[0]),
                 classificationProperties.toArray(new String[0]),
                 nonRelationshipProperties.toArray(new String[0])
@@ -409,10 +408,6 @@ public class ReferenceableMapper extends EntityMapping {
                                         SequencingOrder          sequencingOrder,
                                         int                      pageSize) {
 
-        // Start off by marking that any properties used for classifications should not be used again
-        // for relationships
-        //addAlreadyMappedIgcProperties(getIgcClassificationProperties());
-
         // TODO: handle multi-page results with different starting points (ie. fromRelationshipElement != 0)
 
         // Retrieve the full details we'll require for the relationships
@@ -424,7 +419,7 @@ public class ReferenceableMapper extends EntityMapping {
                 log.debug("Adding properties from mapping: {}", mapping);
                 relationshipProperties.addAll(mapping.getIgcRelationshipPropertiesForType(igcEntity.getType()));
             }
-            String[] allProps = ReferenceMapper.concatAll(
+            String[] allProps = concatAll(
                     relationshipProperties.toArray(new String[0]),
                     MODIFICATION_DETAILS
             );
@@ -493,41 +488,31 @@ public class ReferenceableMapper extends EntityMapping {
 
     private void addDirectRelationship(RelationshipMapping mapping) {
 
-        //List<String> alreadyUsedProperties = getAlreadyMappedIgcProperties();
-
         // If we already have all info about the entity, optimal path to retrieve relationships is to use
         // the ones that are already in-memory -- though if it is also not optimal (or possible) to retrieve
         // from a search (see below) we must also resort to this property-based retrieval
         for (String igcRelationshipName : mapping.getIgcRelationshipPropertiesForType(igcEntity.getType())) {
 
-            //if (!alreadyUsedProperties.contains(igcRelationshipName)) {
+            Object relationships = igcEntity.getPropertyByName(igcRelationshipName);
 
-                Object relationships = igcEntity.getPropertyByName(igcRelationshipName);
+            // Handle single instance relationship one way
+            if (relationships != null && Reference.isReference(relationships)) {
 
-                // Handle single instance relationship one way
-                if (relationships != null && Reference.isReference(relationships)) {
-
-                    addSingleMappedRelationship(
-                            mapping,
-                            (Reference) relationships
+                addSingleMappedRelationship(
+                        mapping,
+                        (Reference) relationships
                     );
-                    //addAlreadyMappedIgcProperty(igcRelationshipName);
 
-                } else if (relationships != null && Reference.isReferenceList(relationships)) { // and list of relationships another
+            } else if (relationships != null && Reference.isReferenceList(relationships)) { // and list of relationships another
 
-                    addListOfMappedRelationships(
-                            mapping,
-                            (ReferenceList) relationships
-                    );
-                    //addAlreadyMappedIgcProperty(igcRelationshipName);
+                addListOfMappedRelationships(
+                        mapping,
+                        (ReferenceList) relationships
+                );
 
-                } else {
-                    log.debug(" ... skipping relationship {}, either empty or neither reference or list {}", igcRelationshipName, relationships);
-                }
-
-            //} else {
-            //    log.info(" ... skipping relationship {}, already mapped.", igcRelationshipName);
-            //}
+            } else {
+                log.debug(" ... skipping relationship {}, either empty or neither reference or list {}", igcRelationshipName, relationships);
+            }
 
         }
 
@@ -535,7 +520,6 @@ public class ReferenceableMapper extends EntityMapping {
 
     private void addInvertedRelationship(RelationshipMapping mapping) {
 
-        //List<String> alreadyUsedProperties = getAlreadyMappedIgcProperties();
         String assetType = igcEntity.getType();
 
         log.debug("Adding inverted relationship for mapping: {}", mapping);
@@ -546,16 +530,13 @@ public class ReferenceableMapper extends EntityMapping {
             // properties and add both sets of relationships
             List<String> igcProperties = mapping.getIgcRelationshipPropertiesForType(assetType);
             for (String igcRelationshipName : igcProperties) {
-                //if (!alreadyUsedProperties.contains(igcRelationshipName)) {
-                    IGCSearchCondition condition = new IGCSearchCondition(igcRelationshipName, "=", igcEntity.getId());
-                    IGCSearchConditionSet igcSearchConditionSet = new IGCSearchConditionSet(condition);
-                    addSearchResultsToRelationships(
-                            mapping,
-                            igcSearchConditionSet,
-                            assetType
-                    );
-                //    addAlreadyMappedIgcProperty(igcRelationshipName);
-                //}
+                IGCSearchCondition condition = new IGCSearchCondition(igcRelationshipName, "=", igcEntity.getId());
+                IGCSearchConditionSet igcSearchConditionSet = new IGCSearchConditionSet(condition);
+                addSearchResultsToRelationships(
+                        mapping,
+                        igcSearchConditionSet,
+                        assetType
+                );
             }
 
         } else {
@@ -565,26 +546,19 @@ public class ReferenceableMapper extends EntityMapping {
             log.debug(" ... found other proxy: {}", otherSide);
             RelationshipMapping.ProxyMapping thisSide = mapping.getProxyFromType(assetType);
             log.debug(" ... found this proxy: {}", thisSide);
-            // TODO: using the direct relationship name for consistency, but should probably replace with either OMRS
-            //  relationship type name, or remove this 'aready mapped' check altogether (?)
-            //String mappedPropertyName = thisSide.getIgcRelationshipProperties().get(0);
 
-            //if (!alreadyUsedProperties.contains(mappedPropertyName)) {
-                // ... and use those details to run a search specifically for those relationships
-                IGCSearchConditionSet igcSearchConditionSet = new IGCSearchConditionSet();
-                igcSearchConditionSet.setMatchAnyCondition(true);
-                for (String igcRelationshipName : otherSide.getIgcRelationshipProperties()) {
-                    IGCSearchCondition condition = new IGCSearchCondition(igcRelationshipName, "=", igcEntity.getId());
-                    igcSearchConditionSet.addCondition(condition);
-                }
-                String sourceAssetType = otherSide.getIgcAssetType();
-                addSearchResultsToRelationships(
-                        mapping,
-                        igcSearchConditionSet,
-                        sourceAssetType
-                );
-                //addAlreadyMappedIgcProperty(mappedPropertyName);
-            //}
+            IGCSearchConditionSet igcSearchConditionSet = new IGCSearchConditionSet();
+            igcSearchConditionSet.setMatchAnyCondition(true);
+            for (String igcRelationshipName : otherSide.getIgcRelationshipProperties()) {
+                IGCSearchCondition condition = new IGCSearchCondition(igcRelationshipName, "=", igcEntity.getId());
+                igcSearchConditionSet.addCondition(condition);
+            }
+            String sourceAssetType = otherSide.getIgcAssetType();
+            addSearchResultsToRelationships(
+                    mapping,
+                    igcSearchConditionSet,
+                    sourceAssetType
+            );
 
         }
 

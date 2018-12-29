@@ -28,14 +28,6 @@ public class RelationalColumnTypeMapper extends ReferenceableMapper {
 
         // The list of relationships that should be mapped
         addRelationshipMapper(SchemaAttributeTypeMapper_DatabaseColumn.getInstance());
-        /*addSimpleRelationshipMapping(
-                RelationshipMappingSet.SELF_REFERENCE_SENTINEL,
-                "SchemaAttributeType",
-                "usedInSchemas",
-                "type",
-                null,
-                IGC_RID_PREFIX
-        );*/
 
     }
 

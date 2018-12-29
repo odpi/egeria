@@ -9,7 +9,6 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.searc
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchCondition;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchConditionSet;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
-import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.ReferenceMapper;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.DataClassAssignmentMapper;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.DataClassHierarchyMapper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
@@ -102,7 +101,7 @@ public class DataClassMapper extends ReferenceableMapper {
         }
         instanceProperties.setProperty(
                 "dataType",
-                ReferenceMapper.getPrimitivePropertyValue(dataType)
+                getPrimitivePropertyValue(dataType)
         );
 
         /*
@@ -111,7 +110,7 @@ public class DataClassMapper extends ReferenceableMapper {
         String dataClassType = (String) igcEntity.getPropertyByName("data_class_type_single");
         instanceProperties.setProperty(
                 "specificationDetails",
-                ReferenceMapper.getPrimitivePropertyValue(dataClassType)
+                getPrimitivePropertyValue(dataClassType)
         );
 
         /*
@@ -152,7 +151,7 @@ public class DataClassMapper extends ReferenceableMapper {
         }
         instanceProperties.setProperty(
                 "specification",
-                ReferenceMapper.getPrimitivePropertyValue(dataClassDetails)
+                getPrimitivePropertyValue(dataClassDetails)
         );
 
         /*
@@ -163,7 +162,7 @@ public class DataClassMapper extends ReferenceableMapper {
             String provider = (String) igcEntity.getPropertyByName("provider");
             instanceProperties.setProperty(
                     "userDefined",
-                    ReferenceMapper.getPrimitivePropertyValue( (provider == null || !provider.equals("IBM")) )
+                    getPrimitivePropertyValue( (provider == null || !provider.equals("IBM")) )
             );
         }
 
@@ -223,20 +222,20 @@ public class DataClassMapper extends ReferenceableMapper {
                      * we have in IGC from the 'classification' object. */
                     relationshipProperties.setProperty(
                             "confidence",
-                            ReferenceMapper.getPrimitivePropertyValue(confidence.intValue())
+                            getPrimitivePropertyValue(confidence.intValue())
                     );
                     relationshipProperties.setProperty(
                             P_THRESHOLD,
-                            ReferenceMapper.getPrimitivePropertyValue(detectedClassification.getPropertyByName(P_THRESHOLD))
+                            getPrimitivePropertyValue(detectedClassification.getPropertyByName(P_THRESHOLD))
                     );
                     relationshipProperties.setProperty(
                             "partialMatch",
-                            ReferenceMapper.getPrimitivePropertyValue((confidence.intValue() < 100))
+                            getPrimitivePropertyValue((confidence.intValue() < 100))
                     );
                     if (!igcomrsRepositoryConnector.getIGCVersion().equals("v115")) {
                         relationshipProperties.setProperty(
                                 "valueFrequency",
-                                ReferenceMapper.getPrimitivePropertyValue(detectedClassification.getPropertyByName("value_frequency"))
+                                getPrimitivePropertyValue(detectedClassification.getPropertyByName("value_frequency"))
                         );
                     }
                     EnumPropertyValue status = new EnumPropertyValue();
