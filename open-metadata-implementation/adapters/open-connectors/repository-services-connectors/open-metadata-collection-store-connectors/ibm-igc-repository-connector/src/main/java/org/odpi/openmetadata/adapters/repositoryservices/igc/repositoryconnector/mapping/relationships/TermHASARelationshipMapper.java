@@ -14,11 +14,15 @@ public class TermHASARelationshipMapper extends RelationshipMapping {
         return Singleton.INSTANCE;
     }
 
+    // TODO: has_a_term is necessary for search, but may not reveal inherited locations
+    //  (only possible via has_a, which is not searchable)
+    //  - if we need inherited locations this will likely need to become a custom mapping
+
     private TermHASARelationshipMapper() {
         super(
                 "term",
                 "term",
-                "has_a",
+                "has_a_term",
                 "is_of",
                 "TermHASARelationship",
                 "objects",
