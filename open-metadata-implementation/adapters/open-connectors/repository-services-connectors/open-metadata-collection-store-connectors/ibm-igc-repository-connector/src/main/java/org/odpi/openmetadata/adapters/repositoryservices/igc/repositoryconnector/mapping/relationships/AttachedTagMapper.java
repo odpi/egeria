@@ -7,8 +7,12 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
  */
 public class AttachedTagMapper extends RelationshipMapping {
 
-    private static AttachedTagMapper instance = new AttachedTagMapper();
-    public static AttachedTagMapper getInstance() { return instance; }
+    private static class Singleton {
+        private static final AttachedTagMapper INSTANCE = new AttachedTagMapper();
+    }
+    public static AttachedTagMapper getInstance() {
+        return Singleton.INSTANCE;
+    }
 
     private AttachedTagMapper() {
         super(

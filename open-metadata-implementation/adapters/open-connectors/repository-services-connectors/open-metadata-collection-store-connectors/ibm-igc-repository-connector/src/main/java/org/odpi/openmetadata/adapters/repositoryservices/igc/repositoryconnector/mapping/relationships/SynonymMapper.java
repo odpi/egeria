@@ -7,8 +7,12 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
  */
 public class SynonymMapper extends RelationshipMapping {
 
-    private static SynonymMapper instance = new SynonymMapper();
-    public static SynonymMapper getInstance() { return instance; }
+    private static class Singleton {
+        private static final SynonymMapper INSTANCE = new SynonymMapper();
+    }
+    public static SynonymMapper getInstance() {
+        return Singleton.INSTANCE;
+    }
 
     private static final String P_SYNONYMS = "synonyms";
 

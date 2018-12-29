@@ -7,8 +7,12 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
  */
 public class TermCategorizationMapper extends RelationshipMapping {
 
-    private static TermCategorizationMapper instance = new TermCategorizationMapper();
-    public static TermCategorizationMapper getInstance() { return instance; }
+    private static class Singleton {
+        private static final TermCategorizationMapper INSTANCE = new TermCategorizationMapper();
+    }
+    public static TermCategorizationMapper getInstance() {
+        return Singleton.INSTANCE;
+    }
 
     private TermCategorizationMapper() {
         super(

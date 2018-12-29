@@ -7,8 +7,12 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
  */
 public class SemanticAssignmentMapper extends RelationshipMapping {
 
-    private static SemanticAssignmentMapper instance = new SemanticAssignmentMapper();
-    public static SemanticAssignmentMapper getInstance() { return instance; }
+    private static class Singleton {
+        private static final SemanticAssignmentMapper INSTANCE = new SemanticAssignmentMapper();
+    }
+    public static SemanticAssignmentMapper getInstance() {
+        return Singleton.INSTANCE;
+    }
 
     private SemanticAssignmentMapper() {
         super(

@@ -7,8 +7,12 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
  */
 public class CategoryHierarchyLinkMapper extends RelationshipMapping {
 
-    private static CategoryHierarchyLinkMapper instance = new CategoryHierarchyLinkMapper();
-    public static CategoryHierarchyLinkMapper getInstance() { return instance; }
+    private static class Singleton {
+        private static final CategoryHierarchyLinkMapper INSTANCE = new CategoryHierarchyLinkMapper();
+    }
+    public static CategoryHierarchyLinkMapper getInstance() {
+        return Singleton.INSTANCE;
+    }
 
     private CategoryHierarchyLinkMapper() {
         // TODO: ensure that in cases like these where the 'type' is the same for both ends of the proxy, that

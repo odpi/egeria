@@ -4,8 +4,12 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
 
 public class AttributeForSchemaMapper extends RelationshipMapping {
 
-    private static AttributeForSchemaMapper instance = new AttributeForSchemaMapper();
-    public static AttributeForSchemaMapper getInstance() { return instance; }
+    private static class Singleton {
+        private static final AttributeForSchemaMapper INSTANCE = new AttributeForSchemaMapper();
+    }
+    public static AttributeForSchemaMapper getInstance() {
+        return Singleton.INSTANCE;
+    }
 
     private AttributeForSchemaMapper() {
         super(

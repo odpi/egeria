@@ -7,8 +7,12 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
  */
 public class RelatedTermMapper extends RelationshipMapping {
 
-    private static RelatedTermMapper instance = new RelatedTermMapper();
-    public static RelatedTermMapper getInstance() { return instance; }
+    private static class Singleton {
+        private static final RelatedTermMapper INSTANCE = new RelatedTermMapper();
+    }
+    public static RelatedTermMapper getInstance() {
+        return Singleton.INSTANCE;
+    }
 
     private RelatedTermMapper() {
         super(
