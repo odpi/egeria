@@ -7,8 +7,12 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
  */
 public class ConnectionEndpointMapper extends RelationshipMapping {
 
-    private static ConnectionEndpointMapper instance = new ConnectionEndpointMapper();
-    public static ConnectionEndpointMapper getInstance() { return instance; }
+    private static class Singleton {
+        private static final ConnectionEndpointMapper INSTANCE = new ConnectionEndpointMapper();
+    }
+    public static ConnectionEndpointMapper getInstance() {
+        return Singleton.INSTANCE;
+    }
 
     private ConnectionEndpointMapper() {
         super(

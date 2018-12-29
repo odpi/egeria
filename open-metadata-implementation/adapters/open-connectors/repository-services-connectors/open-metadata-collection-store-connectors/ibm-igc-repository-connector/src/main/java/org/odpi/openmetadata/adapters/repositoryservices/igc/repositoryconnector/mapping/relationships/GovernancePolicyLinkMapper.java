@@ -4,8 +4,12 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
 
 public class GovernancePolicyLinkMapper extends RelationshipMapping {
 
-    private static GovernancePolicyLinkMapper instance = new GovernancePolicyLinkMapper();
-    public static GovernancePolicyLinkMapper getInstance() { return instance; }
+    private static class Singleton {
+        private static final GovernancePolicyLinkMapper INSTANCE = new GovernancePolicyLinkMapper();
+    }
+    public static GovernancePolicyLinkMapper getInstance() {
+        return Singleton.INSTANCE;
+    }
 
     private GovernancePolicyLinkMapper() {
         super(

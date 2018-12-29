@@ -7,8 +7,12 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
  */
 public class ConnectionConnectorTypeMapper extends RelationshipMapping {
 
-    private static ConnectionConnectorTypeMapper instance = new ConnectionConnectorTypeMapper();
-    public static ConnectionConnectorTypeMapper getInstance() { return instance; }
+    private static class Singleton {
+        private static final ConnectionConnectorTypeMapper INSTANCE = new ConnectionConnectorTypeMapper();
+    }
+    public static ConnectionConnectorTypeMapper getInstance() {
+        return Singleton.INSTANCE;
+    }
 
     private ConnectionConnectorTypeMapper() {
         super(

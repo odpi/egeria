@@ -6,8 +6,12 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector
 
 public class SchemaAttributeTypeMapper_DatabaseColumn extends RelationshipMapping {
 
-    private static SchemaAttributeTypeMapper_DatabaseColumn instance = new SchemaAttributeTypeMapper_DatabaseColumn();
-    public static SchemaAttributeTypeMapper_DatabaseColumn getInstance() { return instance; }
+    private static class Singleton {
+        private static final SchemaAttributeTypeMapper_DatabaseColumn INSTANCE = new SchemaAttributeTypeMapper_DatabaseColumn();
+    }
+    public static SchemaAttributeTypeMapper_DatabaseColumn getInstance() {
+        return Singleton.INSTANCE;
+    }
 
     private SchemaAttributeTypeMapper_DatabaseColumn() {
         super(

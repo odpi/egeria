@@ -4,8 +4,12 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
 
 public class ForeignKeyMapper extends RelationshipMapping {
 
-    private static ForeignKeyMapper instance = new ForeignKeyMapper();
-    public static ForeignKeyMapper getInstance() { return instance; }
+    private static class Singleton {
+        private static final ForeignKeyMapper INSTANCE = new ForeignKeyMapper();
+    }
+    public static ForeignKeyMapper getInstance() {
+        return Singleton.INSTANCE;
+    }
 
     private ForeignKeyMapper() {
         super(

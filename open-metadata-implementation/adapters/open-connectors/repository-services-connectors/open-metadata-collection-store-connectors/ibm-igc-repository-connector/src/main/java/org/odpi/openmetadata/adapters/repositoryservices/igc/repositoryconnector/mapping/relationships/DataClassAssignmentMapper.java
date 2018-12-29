@@ -7,8 +7,12 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
  */
 public class DataClassAssignmentMapper extends RelationshipMapping {
 
-    private static DataClassAssignmentMapper instance = new DataClassAssignmentMapper();
-    public static DataClassAssignmentMapper getInstance() { return instance; }
+    private static class Singleton {
+        private static final DataClassAssignmentMapper INSTANCE = new DataClassAssignmentMapper();
+    }
+    public static DataClassAssignmentMapper getInstance() {
+        return Singleton.INSTANCE;
+    }
 
     private DataClassAssignmentMapper() {
         super(

@@ -7,8 +7,12 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
  */
 public class DataClassHierarchyMapper extends RelationshipMapping {
 
-    private static DataClassHierarchyMapper instance = new DataClassHierarchyMapper();
-    public static DataClassHierarchyMapper getInstance() { return instance; }
+    private static class Singleton {
+        private static final DataClassHierarchyMapper INSTANCE = new DataClassHierarchyMapper();
+    }
+    public static DataClassHierarchyMapper getInstance() {
+        return Singleton.INSTANCE;
+    }
 
     private DataClassHierarchyMapper() {
         super(

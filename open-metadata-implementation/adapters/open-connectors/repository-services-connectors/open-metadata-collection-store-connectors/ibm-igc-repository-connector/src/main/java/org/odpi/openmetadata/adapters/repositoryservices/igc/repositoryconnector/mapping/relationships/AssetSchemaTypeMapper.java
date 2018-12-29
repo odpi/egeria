@@ -6,8 +6,12 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector
 
 public class AssetSchemaTypeMapper extends RelationshipMapping {
 
-    private static AssetSchemaTypeMapper instance = new AssetSchemaTypeMapper();
-    public static AssetSchemaTypeMapper getInstance() { return instance; }
+    private static class Singleton {
+        private static final AssetSchemaTypeMapper INSTANCE = new AssetSchemaTypeMapper();
+    }
+    public static AssetSchemaTypeMapper getInstance() {
+        return Singleton.INSTANCE;
+    }
 
     private AssetSchemaTypeMapper() {
         super(

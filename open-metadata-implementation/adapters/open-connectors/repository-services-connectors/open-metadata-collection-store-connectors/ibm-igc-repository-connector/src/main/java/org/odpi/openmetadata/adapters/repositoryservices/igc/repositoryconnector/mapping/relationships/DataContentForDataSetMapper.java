@@ -4,8 +4,12 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
 
 public class DataContentForDataSetMapper extends RelationshipMapping {
 
-    private static DataContentForDataSetMapper instance = new DataContentForDataSetMapper();
-    public static DataContentForDataSetMapper getInstance() { return instance; }
+    private static class Singleton {
+        private static final DataContentForDataSetMapper INSTANCE = new DataContentForDataSetMapper();
+    }
+    public static DataContentForDataSetMapper getInstance() {
+        return Singleton.INSTANCE;
+    }
 
     private DataContentForDataSetMapper() {
         super(
