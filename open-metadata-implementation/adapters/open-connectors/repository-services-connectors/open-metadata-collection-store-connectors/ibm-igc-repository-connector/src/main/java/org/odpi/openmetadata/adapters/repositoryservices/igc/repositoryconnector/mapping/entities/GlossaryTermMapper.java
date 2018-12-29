@@ -50,7 +50,7 @@ public class GlossaryTermMapper extends ReferenceableMapper {
         addRelationshipMapper(TranslationMapper.getInstance());
         addRelationshipMapper(TermHASARelationshipMapper.getInstance());
         addRelationshipMapper(TermISATypeOFRelationshipMapper.getInstance());
-        
+
         // Finally list any properties that will be used to map Classifications
         // (to do the actual mapping, implement the 'getMappedClassifications' function -- example below)
         addComplexIgcClassification("assigned_to_terms");
