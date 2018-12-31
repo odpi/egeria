@@ -67,10 +67,12 @@ public class EndpointMapper extends ReferenceableMapper {
                     log.debug("Retrieved connection: {}", dataConnection);
 
                     Relationship relationship = getMappedRelationship(
+                            ConnectionEndpointMapper.getInstance(),
                             (RelationshipDef) igcomrsRepositoryConnector.getRepositoryHelper().getTypeDefByName(SOURCE_NAME,
                                     "ConnectionEndpoint"),
                             igcEntity,
-                            dataConnection
+                            dataConnection,
+                            "data_connections"
                     );
 
                     omrsRelationships.add(relationship);

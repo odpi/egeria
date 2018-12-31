@@ -7,6 +7,7 @@ import org.apache.kafka.clients.consumer.*;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestClient;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.ReferenceList;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.eventmapper.model.*;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSMetadataCollection;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
@@ -297,12 +298,12 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
 
         // Start by creating any entities needed by the new RIDs
         for (String rid : createdRIDs) {
-            processAsset(rid, null);
+            processAsset(rid, null, null);
         }
 
         // Then iterate through any updated entities
         for (String rid : updatedRIDs) {
-            processAsset(rid, null);
+            processAsset(rid, null, null);
         }
 
         if (!deletedRIDs.isEmpty()) {
@@ -321,10 +322,10 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
 
         switch(action) {
             case InfosphereEventsDCEvent.ACTION_CREATE:
-                processAsset(event.getCreatedRID(), "data_connection");
+                processAsset(event.getCreatedRID(), "data_connection", null);
                 break;
             case InfosphereEventsDCEvent.ACTION_MODIFY:
-                processAsset(event.getMergedRID(), "data_connection");
+                processAsset(event.getMergedRID(), "data_connection", null);
                 break;
             default:
                 log.warn("Found unhandled action type for data connection: {}", action);
@@ -348,7 +349,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
             case InfosphereEventsAssetEvent.ACTION_CREATE:
             case InfosphereEventsAssetEvent.ACTION_MODIFY:
             case InfosphereEventsAssetEvent.ACTION_DELETE:
-                processAsset(assetRid, event.getAssetType());
+                processAsset(assetRid, event.getAssetType(), null);
                 break;
             case InfosphereEventsAssetEvent.ACTION_ASSIGNED_RELATIONSHIP:
                 log.debug("Ignoring ASSIGNED_RELATIONSHIP event -- should be handled already by an earlier CREATE or MODIFY event: {}", event);
@@ -491,8 +492,10 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
      *
      * @param rid the Repository ID (RID) of the asset in question
      * @param assetType the type of asset (ie. if provided in the event payload)
+     * @param relationshipGUID the relationship GUID that triggered this asset to be processed (or null if not triggered
+     *                         by relationship being processed)
      */
-    private void processAsset(String rid, String assetType) {
+    private void processAsset(String rid, String assetType, String relationshipGUID) {
 
         log.debug("processAsset called with rid {} and type {}", rid, assetType);
 
@@ -521,31 +524,37 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
             // Otherwise see if there's a stub...
             OMRSStub stub = igcomrsMetadataCollection.getOMRSStubForAsset(latestVersion);
 
+            // Calculate the delta between the latest version and the previous saved stub
+            ChangeSet changeSet = new ChangeSet(igcRestClient, latestVersion, stub);
+            Set<String> changedProperties = changeSet.getChangedProperties();
+
             if (stub == null) {
                 // If there is no stub, we need to treat this as a new entity
                 sendNewEntity(latestVersion);
-            } else {
-                // Otherwise, it should be treated as an updated entity
+            } else if (!changedProperties.isEmpty()) {
+                // Otherwise, it should be treated as an updated entity, but only if there was some change
                 sendUpdatedEntity(latestVersion, stub);
+            } else {
+                log.info("Skipping asset - no changes detected: {}", latestVersion.getId());
             }
 
-            // Retrieve the mapping from IGC property name to OMRS relationship type
-            Map<String, RelationshipMapping> relationshipMap = igcomrsMetadataCollection.getIgcPropertiesToRelationshipMappings(
-                    latestVersion.getType(),
-                    localServerUserId
-            );
-            log.debug(" ... found mappings: {}", relationshipMap);
+            // Only bother looking up all of the mapping details if there are actually any changes to process
+            if (!changedProperties.isEmpty()) {
+                // Retrieve the mapping from IGC property name to OMRS relationship type
+                Map<String, RelationshipMapping> relationshipMap = igcomrsMetadataCollection.getIgcPropertiesToRelationshipMappings(
+                        latestVersion.getType(),
+                        localServerUserId
+                );
+                log.debug(" ... found mappings: {}", relationshipMap);
 
-            // Calculate the delta between the latest version and the previous saved stub
-            ChangeSet changeSet = new ChangeSet(igcRestClient, latestVersion, stub);
-
-            // Iterate through the properties that differ, looking for any that represent a mapped relationship
-            for (String igcProperty : changeSet.getChangedProperties()) {
-                log.debug(" ... checking for any relationship on: {}", igcProperty);
-                if (relationshipMap.containsKey(igcProperty)) {
-                    List<ChangeSet.Change> changesForProperty = changeSet.getChangesForProperty(igcProperty);
-                    log.debug(" ...... found differences for property: {}", changesForProperty);
-                    processRelationship(relationshipMap.get(igcProperty), latestVersion, changesForProperty);
+                // Iterate through the properties that differ, looking for any that represent a mapped relationship
+                for (String igcProperty : changeSet.getChangedProperties()) {
+                    log.debug(" ... checking for any relationship on: {}", igcProperty);
+                    if (relationshipMap.containsKey(igcProperty)) {
+                        List<ChangeSet.Change> changesForProperty = changeSet.getChangesForProperty(igcProperty);
+                        log.debug(" ...... found differences for property: {}", changesForProperty);
+                        processRelationships(relationshipMap.get(igcProperty), latestVersion, changesForProperty, relationshipGUID);
+                    }
                 }
             }
 
@@ -561,54 +570,91 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
      * @param relationshipMapping the relationship mapping defining the IGC and OMRS properties and relationship type
      * @param latestVersion the latest version of the IGC asset from which to get the relationship(s)
      * @param changesForProperty the list of changes for the IGC relationship property being processed
+     * @param relationshipTriggerGUID the GUID of the relationship that triggered this processing (or null if not
+     *                                triggered initially by the processing of another relationship)
      */
-    private void processRelationship(RelationshipMapping relationshipMapping,
-                                     Reference latestVersion,
-                                     List<ChangeSet.Change> changesForProperty) {
+    private void processRelationships(RelationshipMapping relationshipMapping,
+                                      Reference latestVersion,
+                                      List<ChangeSet.Change> changesForProperty,
+                                      String relationshipTriggerGUID) {
 
-        log.debug("processRelationship called with relationshipMapping {}, reference {} and changes {}", relationshipMapping, latestVersion, changesForProperty);
-
-        String omrsRelationshipType = relationshipMapping.getOmrsRelationshipType();
-        String latestVersionRID = latestVersion.getId();
-        String prefixOne = relationshipMapping.getProxyOneMapping().getIgcRidPrefix();
-        String prefixTwo = relationshipMapping.getProxyTwoMapping().getIgcRidPrefix();
+        log.debug("processRelationships called with relationshipMapping {}, reference {} and changes {}", relationshipMapping, latestVersion, changesForProperty);
 
         for (ChangeSet.Change change : changesForProperty) {
 
-            Reference relatedAsset = (Reference) change.getNewValue();
-            String relatedRID = relatedAsset.getId();
-            String relationshipGUID = null;
+            Object relatedValue = change.getNewValue();
+            if (Reference.isReferenceList(relatedValue)) {
 
-            // Only proceed if there is actually some related RID (ie. it wasn't just an empty list of relationships)
-            if (relatedRID != null && !relatedRID.equals("null")) {
-
-                RelationshipMapping.ProxyMapping pmOne = relationshipMapping.getProxyOneMapping();
-
-                if (relationshipMapping.sameTypeOnBothEnds() || pmOne.getIgcAssetType().equals(relatedAsset.getType())) {
-                    // If mapping is same on both ends, its relationships were retrieved by inverted searches,
-                    // so invert the assets when sending for relationship
-                    relationshipGUID = RelationshipMapping.getRelationshipGUID(
-                            relatedRID,
-                            latestVersionRID,
-                            omrsRelationshipType,
-                            prefixOne,
-                            prefixTwo,
-                            null
+                ReferenceList related = (ReferenceList) relatedValue;
+                for (Reference relatedAsset : related.getItems()) {
+                    processSingleRelationship(
+                            relationshipMapping,
+                            latestVersion,
+                            relatedAsset,
+                            change,
+                            relationshipTriggerGUID
                     );
-                } else if (pmOne.getIgcAssetType().equals(latestVersion.getType())) {
-                    relationshipGUID = RelationshipMapping.getRelationshipGUID(
-                            latestVersionRID,
-                            relatedRID,
-                            omrsRelationshipType,
-                            prefixOne,
-                            prefixTwo,
-                            null
-                    );
-                } else {
-                    log.error("Unable to determine ends of relationship: {}", relationshipMapping.getOmrsRelationshipType());
                 }
-                log.debug(" ... calculated relationship GUID: {}", relationshipGUID);
 
+            } else if (Reference.isReference(relatedValue)) {
+                Reference relatedAsset = (Reference) relatedValue;
+                processSingleRelationship(
+                        relationshipMapping,
+                        latestVersion,
+                        relatedAsset,
+                        change,
+                        relationshipTriggerGUID
+                );
+            } else if (change.getIgcPropertyPath().endsWith("_id") && Reference.isSimpleType(relatedValue)) {
+                // In cases where a single object has been replaced, the JSON Patch may only show each property
+                // as needing replacement rather than the object as a whole -- so just watch for any changes to '_id'
+                // and if found pull back a new asset reference for the related asset to use
+                Reference relatedAsset = igcRestClient.getAssetRefById((String)relatedValue);
+                processSingleRelationship(
+                        relationshipMapping,
+                        latestVersion,
+                        relatedAsset,
+                        change,
+                        relationshipTriggerGUID
+                );
+            } else {
+                log.warn("Expected relationship but found neither Reference nor ReferenceList: {}", relatedValue);
+            }
+
+        }
+
+    }
+
+    private void processSingleRelationship(RelationshipMapping relationshipMapping,
+                                           Reference latestVersion,
+                                           Reference relatedAsset,
+                                           ChangeSet.Change change,
+                                           String relationshipTriggerGUID) {
+
+        String omrsRelationshipType = relationshipMapping.getOmrsRelationshipType();
+        String latestVersionRID = latestVersion.getId();
+
+        String relatedRID = relatedAsset.getId();
+
+        // Only proceed if there is actually some related RID (ie. it wasn't just an empty list of relationships)
+        if (relatedRID != null && !relatedRID.equals("null")) {
+
+            log.debug("processSingleRelationship processing between {} and {} for type: {}", latestVersionRID, relatedRID, omrsRelationshipType);
+
+            RelationshipMapping.ProxyMapping pmOne = relationshipMapping.getProxyOneMapping();
+            RelationshipMapping.ProxyMapping pmTwo = relationshipMapping.getProxyTwoMapping();
+
+            String relationshipGUID = RelationshipMapping.getRelationshipGUID(
+                    relationshipMapping,
+                    latestVersion,
+                    relatedAsset,
+                    change.getIgcPropertyName(),
+                    null
+            );
+            log.debug(" ... calculated relationship GUID: {}", relationshipGUID);
+
+            // Only continue if this relationship is different from the one that triggered the processing in the first place
+            if (relationshipTriggerGUID == null || !relationshipTriggerGUID.equals(relationshipGUID)) {
                 String changeType = change.getOp();
                 log.debug(" ... change action: {}", changeType);
 
@@ -632,7 +678,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
 
                         // Recursively call processAsset(rid, null) on any non-deletion events
                         // (do this first: so relationship comes after on unwinding from recursion)
-                        processAsset(relatedRID, relatedAsset.getType());
+                        processAsset(relatedRID, relatedAsset.getType(), relationshipGUID);
 
                         // Send the appropriate patch-defined action
                         switch (changeType) {
@@ -655,7 +701,6 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
                         log.error("User not authorized to retrieve relationship: {}", relationshipGUID, e);
                     }
                 }
-
             }
 
         }

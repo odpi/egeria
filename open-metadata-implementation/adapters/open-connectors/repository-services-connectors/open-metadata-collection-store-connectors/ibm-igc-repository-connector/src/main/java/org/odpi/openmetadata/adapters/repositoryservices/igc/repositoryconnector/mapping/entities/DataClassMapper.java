@@ -209,10 +209,12 @@ public class DataClassMapper extends ReferenceableMapper {
 
                     // Use 'classification' object to put RID of classification on the 'detected classification' relationships
                     Relationship relationship = getMappedRelationship(
+                            DataClassAssignmentMapper.getInstance(),
                             (RelationshipDef) igcomrsRepositoryConnector.getRepositoryHelper().getTypeDefByName(SOURCE_NAME,
                                     R_DATA_CLASS_ASSIGNMENT),
                             classifiedObj,
                             igcEntity,
+                            "detected_classifications",
                             detectedClassification.getId()
                     );
 
@@ -282,11 +284,12 @@ public class DataClassMapper extends ReferenceableMapper {
 
                 // Use 'data_class' object to put RID of data_class itself on the 'selected classification' relationships
                 Relationship relationship = getMappedRelationship(
+                        DataClassAssignmentMapper.getInstance(),
                         (RelationshipDef) igcomrsRepositoryConnector.getRepositoryHelper().getTypeDefByName(SOURCE_NAME,
                                 R_DATA_CLASS_ASSIGNMENT),
                         assetWithSelected,
                         igcEntity,
-                        null
+                        "selected_classification"
                 );
 
                 EnumPropertyValue status = new EnumPropertyValue();

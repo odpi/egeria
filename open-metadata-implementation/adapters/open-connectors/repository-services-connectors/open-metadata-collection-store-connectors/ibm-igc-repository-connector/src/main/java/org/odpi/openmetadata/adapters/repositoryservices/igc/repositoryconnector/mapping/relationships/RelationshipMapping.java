@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 public abstract class RelationshipMapping {
@@ -118,6 +119,17 @@ public abstract class RelationshipMapping {
      */
     public boolean sameTypeOnBothEnds() {
         return one.getIgcAssetType().equals(two.getIgcAssetType());
+    }
+
+    /**
+     * Indicates whether the same relationship properties are used on both ends of the relationship (true) or not (false).
+     *
+     * @return boolean
+     */
+    public boolean samePropertiesOnBothEnds() {
+        List<String> pOneProperties = one.getIgcRelationshipProperties();
+        List<String> pTwoProperties = two.getIgcRelationshipProperties();
+        return new HashSet<>(pOneProperties).equals(new HashSet<>(pTwoProperties));
     }
 
     /**
@@ -255,6 +267,10 @@ public abstract class RelationshipMapping {
 
         public boolean isSelfReferencing() { return this.igcRelationshipProperties.contains(SELF_REFERENCE_SENTINEL); }
 
+        public boolean matchesAssetType(String igcAssetType) {
+            return this.igcAssetType.equals(igcAssetType) || this.igcAssetType.equals(IGCOMRSMetadataCollection.DEFAULT_IGC_TYPE);
+        }
+
         @Override
         public String toString() {
             StringBuilder sb = new StringBuilder();
@@ -271,12 +287,112 @@ public abstract class RelationshipMapping {
 
     }
 
-    public static String getRelationshipGUID(String proxyOneRid,
-                                             String proxyTwoRid,
-                                             String omrsRelationshipName,
-                                             String proxyOnePrefix,
-                                             String proxyTwoPrefix,
+    /**
+     * Generates a unique relationship GUID based on the provided parameters. The method will check the provided
+     * candidate endpoints against the mapping provided to ensure that they are appropriately matched to endpoint 1
+     * and endpoint 2 of the OMRS relationship. (Therefore endOne and endTwo may not actually be proxyOne and proxyTwo
+     * of the OMRS relationship, but could be reversed.)
+     * <br><br>
+     * The intention of the method is to guarantee a unique, consistent GUID irrespective of the direction in which
+     * the relationship was traversed. For example: an IGC 'parent_category' relationship from B to A for a
+     * CategoryHierarchyLink should result in the same GUID as an IGC 'subcategories' relationship from A to B.
+     *
+     * @param relationshipMapping the relationship mapping defining how an IGC relationship maps to an OMRS relationship
+     * @param endOne the candidate to consider for endpoint 1 of the relationship
+     * @param endTwo the candidate to consider for endpoint 2 of the relationship
+     * @param igcPropertyName the name of the IGC property for which the relationship is being generated
+     * @param relationshipLevelRid the relationship-level RID (if any) within IGC (these are very rare)
+     * @return String - the unique GUID for the relationship
+     */
+    public static String getRelationshipGUID(RelationshipMapping relationshipMapping,
+                                             Reference endOne,
+                                             Reference endTwo,
+                                             String igcPropertyName,
                                              String relationshipLevelRid) {
+
+        String omrsRelationshipName = relationshipMapping.getOmrsRelationshipType();
+        // Lookup types via this helper function, to translate any alias types (eg. host_(engine) and host)
+        String endOneType = Reference.getAssetTypeForSearch(endOne);
+        String endTwoType = Reference.getAssetTypeForSearch(endTwo);
+
+        log.debug("Calculating relationship GUID from {} to {} via {} for {}", endOneType, endTwoType, igcPropertyName, omrsRelationshipName);
+
+        ProxyMapping pmOne = relationshipMapping.getProxyOneMapping();
+        ProxyMapping pmTwo = relationshipMapping.getProxyTwoMapping();
+        List<String> pmOneProperties = pmOne.getIgcRelationshipProperties();
+        List<String> pmTwoProperties = pmTwo.getIgcRelationshipProperties();
+
+        String proxyOneRid = null;
+        String proxyTwoRid = null;
+
+        if (relationshipMapping.sameTypeOnBothEnds()
+                && pmOne.matchesAssetType(endOneType)) {
+            if (relationshipMapping.samePropertiesOnBothEnds()) {
+                // If both the types and property names of both ends of the mapping are the same (eg. synonyms and
+                // translations on terms), then only option is to sort the RIDs themselves to give consistency
+                String endOneRid = endOne.getId();
+                String endTwoRid = endTwo.getId();
+                log.debug(" ... same types, same properties: alphabetically sorting RIDs.");
+                if (endOneRid.compareTo(endTwoRid) > 0) {
+                    proxyOneRid = endOneRid;
+                    proxyTwoRid = endTwoRid;
+                } else {
+                    proxyOneRid = endTwoRid;
+                    proxyTwoRid = endOneRid;
+                }
+            } else {
+                // Otherwise if only the types are the same on both ends, the property is key to determining which
+                // end is which, and also relies on the direction in which they were retrieved
+                switch (relationshipMapping.getOptimalStart()) {
+                    case OPPOSITE:
+                        if (pmOneProperties.contains(igcPropertyName)) {
+                            log.debug(" ... same types, opposite lookup, property matches one: reversing RIDs.");
+                            proxyOneRid = endTwo.getId();
+                            proxyTwoRid = endOne.getId();
+                        } else if (pmTwoProperties.contains(igcPropertyName)) {
+                            log.debug(" ... same types, opposite lookup, property matches two: keeping RID direction.");
+                            proxyOneRid = endOne.getId();
+                            proxyTwoRid = endTwo.getId();
+                        }
+                        break;
+                    default:
+                        if (pmOneProperties.contains(igcPropertyName)) {
+                            log.debug(" ... same types, direct lookup, property matches one: keeping RID direction.");
+                            proxyOneRid = endOne.getId();
+                            proxyTwoRid = endTwo.getId();
+                        } else if (pmTwoProperties.contains(igcPropertyName)) {
+                            log.debug(" ... same types, direct lookup, property matches two: reversing RIDs.");
+                            proxyOneRid = endTwo.getId();
+                            proxyTwoRid = endOne.getId();
+                        }
+                        break;
+                }
+            }
+        } else if (pmOne.matchesAssetType(endOneType)
+                && (pmOneProperties.contains(igcPropertyName) || pmTwoProperties.contains(igcPropertyName))
+                && pmTwo.matchesAssetType(endTwoType) ) {
+            // Otherwise if one aligns with one and two aligns with two, and property appears somewhere, go with those
+            // (this should also apply when the relationship is self-referencing)
+            log.debug(" ... one matches one, two matches two: keeping RID direction.");
+            proxyOneRid = endOne.getId();
+            proxyTwoRid = endTwo.getId();
+        } else if (pmTwo.matchesAssetType(endOneType)
+                && (pmOneProperties.contains(igcPropertyName) || pmTwoProperties.contains(igcPropertyName))
+                && pmOne.matchesAssetType(endTwoType) ) {
+            // Or if two aligns with one and one aligns with two, and property appears somewhere, reverse them
+            log.debug(" ... two matches one, one matches two: reversing RIDs.");
+            proxyOneRid = endTwo.getId();
+            proxyTwoRid = endOne.getId();
+        } else {
+            // Otherwise indicate something appears to be wrong
+            log.error("Unable to find matching ends for relationship {} from {} to {} via {}", omrsRelationshipName, endOne.getId(), endTwo.getId(), igcPropertyName);
+        }
+
+        String proxyOnePrefix = pmOne.getIgcRidPrefix();
+        String proxyTwoPrefix = pmTwo.getIgcRidPrefix();
+
+        // TODO: if for relationship-specific RIDs we only output the relationship RID, need to be sure properly handled
+        //  when reverse-looked up
         StringBuilder sbGUID = new StringBuilder();
         if (relationshipLevelRid != null) {
             sbGUID.append(relationshipLevelRid);

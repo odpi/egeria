@@ -262,20 +262,22 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
 
         String proxyOnePrefix = null;
         String proxyTwoPrefix = null;
+        String proxyOneIgcRid = proxyOneRid;
+        String proxyTwoIgcRid = proxyTwoRid;
 
         if (isGeneratedGUID(proxyOneRid)) {
             proxyOnePrefix = getPrefixFromGeneratedId(proxyOneRid);
-            proxyOneRid = getRidFromGeneratedId(proxyOneRid);
+            proxyOneIgcRid = getRidFromGeneratedId(proxyOneRid);
         }
         if (isGeneratedGUID(proxyTwoRid)) {
             proxyTwoPrefix = getPrefixFromGeneratedId(proxyTwoRid);
-            proxyTwoRid = getRidFromGeneratedId(proxyTwoRid);
+            proxyTwoIgcRid = getRidFromGeneratedId(proxyTwoRid);
         }
 
         log.debug("Looking up relationship: {}", guid);
 
-        Reference proxyOne = igcRestClient.getAssetRefById(proxyOneRid);
-        Reference proxyTwo = igcRestClient.getAssetRefById(proxyTwoRid);
+        Reference proxyOne = igcRestClient.getAssetRefById(proxyOneIgcRid);
+        Reference proxyTwo = igcRestClient.getAssetRefById(proxyTwoIgcRid);
 
         // Retrieve the mapper from the source information, prioritising any that use a prefix
         // (or just defaulting to the first endpoint otherwise)
@@ -288,20 +290,28 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
 
         Relationship found = null;
 
-        try {
+        RelationshipMapping relationshipMapping = getRelationshipMapper(omrsRelationshipName);
 
-            RelationshipDef omrsRelationshipDef = (RelationshipDef) getTypeDefByName(userId, omrsRelationshipName);
-            found = entityMapper.getMappedRelationship(
-                    omrsRelationshipDef,
-                    proxyOne,
-                    proxyTwo,
-                    proxyOnePrefix,
-                    proxyTwoPrefix,
-                    null
-            );
+        if (relationshipMapping != null) {
+            try {
 
-        } catch (TypeDefNotKnownException e) {
-            log.error("Unable to find RelationshipDef: {}", omrsRelationshipName);
+                RelationshipDef omrsRelationshipDef = (RelationshipDef) getTypeDefByName(userId, omrsRelationshipName);
+                // Since the ordering should be set by the GUID we're lookup up anyway, we'll simply set the property
+                // to one of the proxyOne properties
+                found = entityMapper.getMappedRelationship(
+                        relationshipMapping,
+                        omrsRelationshipDef,
+                        proxyOne,
+                        proxyTwo,
+                        relationshipMapping.getProxyOneMapping().getIgcRelationshipProperties().get(0),
+                        proxyOneRid.equals(proxyTwoRid) ? proxyOneRid : null
+                );
+
+            } catch (TypeDefNotKnownException e) {
+                log.error("Unable to find RelationshipDef: {}", omrsRelationshipName);
+            }
+        } else {
+            log.error("Unable to find any implemented relationship mapping for: {}", omrsRelationshipName);
         }
 
         return found;
@@ -633,13 +643,20 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         for (ReferenceableMapper mapper : mappers) {
             List<RelationshipMapping> relationshipMappings = mapper.getRelationshipMappers();
             for (RelationshipMapping relationshipMapping : relationshipMappings) {
-                List<String> relationshipNamesOne = relationshipMapping.getProxyOneMapping().getIgcRelationshipProperties();
-                List<String> relationshipNamesTwo = relationshipMapping.getProxyTwoMapping().getIgcRelationshipProperties();
-                for (String relationshipName : relationshipNamesOne) {
-                    map.put(relationshipName, relationshipMapping);
+                if (assetType.equals(relationshipMapping.getProxyOneMapping().getIgcAssetType())) {
+                    List<String> relationshipNamesOne = relationshipMapping.getProxyOneMapping().getIgcRelationshipProperties();
+                    for (String relationshipName : relationshipNamesOne) {
+                        map.put(relationshipName, relationshipMapping);
+                    }
                 }
-                for (String relationshipName : relationshipNamesTwo) {
-                    map.put(relationshipName, relationshipMapping);
+                if (assetType.equals(relationshipMapping.getProxyTwoMapping().getIgcAssetType())) {
+                    List<String> relationshipNamesTwo = relationshipMapping.getProxyTwoMapping().getIgcRelationshipProperties();
+                    for (String relationshipName : relationshipNamesTwo) {
+                        if (map.containsKey(relationshipName)) {
+                            log.warn("Overwriting existing mapping for property name {} from {} to {}", relationshipName, map.get(relationshipName), relationshipMapping);
+                        }
+                        map.put(relationshipName, relationshipMapping);
+                    }
                 }
             }
         }
@@ -1081,6 +1098,26 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             }
         }
         return mappers;
+    }
+
+    /**
+     * Retrieves a RelationshipMapping by OMRS relationship type from those that are listed as implemented.
+     *
+     * @param omrsRelationshipType the name of the OMRS relationship type for which to retrieve a mapping
+     * @return RelationshipMapping
+     */
+    public RelationshipMapping getRelationshipMapper(String omrsRelationshipType) {
+        RelationshipMapping found = null;
+        for (ImplementedMapping mapping : implementedMappings) {
+            RelationshipMapping candidate = mapping.getRelationshipMapping();
+            // If the mapping has a relationship mapping, and its type equals the one we're looking for,
+            // set it to found and short-circuit out of the loop
+            if (candidate != null && candidate.getOmrsRelationshipType().equals(omrsRelationshipType)) {
+                found = mapping.getRelationshipMapping();
+                break;
+            }
+        }
+        return found;
     }
 
     /**

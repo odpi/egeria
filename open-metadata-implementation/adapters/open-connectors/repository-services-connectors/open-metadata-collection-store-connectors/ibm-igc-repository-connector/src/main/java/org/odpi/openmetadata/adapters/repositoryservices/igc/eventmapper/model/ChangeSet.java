@@ -130,6 +130,10 @@ public class ChangeSet {
             }
         }
 
+        public String getIgcPropertyPath() {
+            return this.path;
+        }
+
         public Object getNewValue() {
 
             Object actualValue = null;
