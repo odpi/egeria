@@ -303,7 +303,7 @@ public class SubjectAreaTermImpl implements org.odpi.openmetadata.accessservices
         InputValidator.validateUserIdNotNull(className,methodName,userId);
         InputValidator.validateGUIDNotNull(className,methodName,guid,"guid");
 
-        final String urlTemplate = this.omasServerURL +BASE_URL+"/%s?isPurge=false";
+        final String urlTemplate = this.omasServerURL +BASE_URL+"/%s?isPurge=true";
         String url = String.format(urlTemplate,serverName,userId,guid);
 
         SubjectAreaOMASAPIResponse restResponse = RestCaller.issueDelete(className,methodName,url);
