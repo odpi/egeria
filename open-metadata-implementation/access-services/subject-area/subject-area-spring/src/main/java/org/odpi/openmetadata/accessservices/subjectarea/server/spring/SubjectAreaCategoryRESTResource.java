@@ -62,7 +62,6 @@ public class SubjectAreaCategoryRESTResource extends SubjectAreaRESTServicesInst
         return restAPI.createCategory(serverName,userId,suppliedCategory);
     }
 
-
     /**
      * Get a Category
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant

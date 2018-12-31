@@ -1,4 +1,4 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
 # Subject Area Open Metadata Access Service (OMAS)
@@ -47,7 +47,7 @@ JSON body:
 ```
 
 ### Get Glossary instance
- Get Glossary instance (where {user} is the guid in the Glossary create response and {user} is the userid )
+ Get Glossary instance (where {serverName} is the name of the server, {guid} is the guid in the Glossary create response and {user} is the userid )
 
 
 GET url: `localhost:8080/servers/{serverName}/open-metadata/access-services/subject-area/users/{user}/glossaries/{guid}`
@@ -56,7 +56,7 @@ GET url: `localhost:8080/servers/{serverName}/open-metadata/access-services/subj
 
 ### Delete Glossary instance
 
-Delete Glossary instance (where {user} is the guid in the Glossary create response and {user} is the userid )
+Delete Glossary instance (where {guid} is the guid in the Glossary create response and {user} is the userid )
 DELETE url : localhost:8080/open-metadata/access-services/subject-area/users/{user}/glossaries/{guid}
 
 ## The Subject Area OMAS philosophy
@@ -103,6 +103,10 @@ Category or Glossary object. This is to allow glossaries content to be 'messy' a
 range of the get operation at the time the get was processed.
 * create, update, delete restore and replace operations are exposed for relationships that appear as summary objects - so that their effectivity ranges can be managed
 by the subject area expert.
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
   
   
 
