@@ -80,10 +80,12 @@ public class ConnectionMapper extends ReferenceableMapper {
                     log.debug("Retrieved host: {}", host);
 
                     Relationship relationship = getMappedRelationship(
+                            ConnectionEndpointMapper.getInstance(),
                             (RelationshipDef) igcomrsRepositoryConnector.getRepositoryHelper().getTypeDefByName(SOURCE_NAME,
                                     "ConnectionEndpoint"),
                             host,
-                            igcEntity
+                            igcEntity,
+                            "data_connections"
                     );
 
                     omrsRelationships.add(relationship);
@@ -119,10 +121,12 @@ public class ConnectionMapper extends ReferenceableMapper {
                 try {
 
                     Relationship relationship = getMappedRelationship(
+                            ConnectionToAssetMapper.getInstance(),
                             (RelationshipDef) igcomrsRepositoryConnector.getRepositoryHelper().getTypeDefByName(SOURCE_NAME,
                                     "ConnectionToAsset"),
                             igcEntity,
-                            dataConnectionAsset
+                            dataConnectionAsset,
+                            "imports_database"
                     );
 
                     omrsRelationships.add(relationship);

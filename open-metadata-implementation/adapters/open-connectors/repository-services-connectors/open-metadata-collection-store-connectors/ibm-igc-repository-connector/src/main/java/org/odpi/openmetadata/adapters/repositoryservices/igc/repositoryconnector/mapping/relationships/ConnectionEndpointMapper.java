@@ -16,7 +16,7 @@ public class ConnectionEndpointMapper extends RelationshipMapping {
 
     private ConnectionEndpointMapper() {
         super(
-                "connector",
+                "host",
                 "data_connection",
                 "data_connections",
                 "data_connectors",

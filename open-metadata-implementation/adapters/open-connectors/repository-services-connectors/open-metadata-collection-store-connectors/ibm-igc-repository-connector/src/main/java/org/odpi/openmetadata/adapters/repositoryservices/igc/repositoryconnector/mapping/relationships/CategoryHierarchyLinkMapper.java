@@ -15,9 +15,6 @@ public class CategoryHierarchyLinkMapper extends RelationshipMapping {
     }
 
     private CategoryHierarchyLinkMapper() {
-        // TODO: ensure that in cases like these where the 'type' is the same for both ends of the proxy, that
-        //  we look at relationships in both directions from a given object of that type (ie. we use BOTH the
-        //  igcRelationshipPropertyFromOne and the igcRelationshipPropertyFromTwo properties)
         super(
                 "category",
                 "category",
