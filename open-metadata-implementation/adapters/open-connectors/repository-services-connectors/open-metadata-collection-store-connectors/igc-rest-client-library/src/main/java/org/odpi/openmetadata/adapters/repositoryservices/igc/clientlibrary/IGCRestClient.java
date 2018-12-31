@@ -2,12 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary;
 
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -558,6 +560,88 @@ public class IGCRestClient {
             success = uploadFile(baseURL + EP_BUNDLES, HttpMethod.POST, filePath);
         }
         return success;
+    }
+
+    /**
+     * Generates an OpenIGC bundle zip file from the provided directory path, and returns the temporary file it creates.
+     *
+     * @param directory the directory under which the OpenIGC bundle is defined (ie. including an
+     *                  'asset_type_descriptor.xml', an 'i18n' subdirectory and an 'icons' subdirectory)
+     * @return File - the temporary zip file containing the bundle
+     */
+    public File createOpenIgcBundleFile(File directory) {
+
+        File bundle = null;
+        try {
+
+            bundle = File.createTempFile("openigc", "zip");
+            FileOutputStream bundleOut = new FileOutputStream(bundle);
+            ZipOutputStream zipOutput = new ZipOutputStream(bundleOut);
+            if (!directory.isDirectory()) {
+                log.error("Provided bundle location is not a directory: {}", directory);
+            } else {
+                recursivelyZipFiles(directory, "", zipOutput);
+                zipOutput.close();
+                bundleOut.close();
+            }
+
+        } catch (IOException e) {
+            log.error("Unable to create temporary file needed for OpenIGC bundle from directory: {}", directory, e);
+        }
+        return bundle;
+
+    }
+
+    /**
+     * Recursively traverses the provided file to build up a zip file output in the provided ZipOutputStream.
+     *
+     * @param file the file from which to recursively process
+     * @param name the name of the file from which to recursively process
+     * @param zipOutput the zip output stream into which to write the entries
+     */
+    private void recursivelyZipFiles(File file, String name, ZipOutputStream zipOutput) {
+
+        if (file.isDirectory()) {
+
+            // Make sure the directory name ends with a separator
+            String directoryName = name;
+            if (!directoryName.equals("")) {
+                directoryName = directoryName.endsWith(File.separator) ? directoryName : directoryName + File.separator;
+            }
+
+            // Create an entry in the zip file for the directory, then recurse on the files within it
+            try {
+                if (!directoryName.equals("")) {
+                    zipOutput.putNextEntry(new ZipEntry(directoryName));
+                }
+                File[] files = file.listFiles();
+                for (File subFile : files) {
+                    recursivelyZipFiles(subFile, directoryName + subFile.getName(), zipOutput);
+                }
+            } catch (IOException e) {
+                log.error("Unable to create directory entry in zip file.", e);
+            }
+
+        } else {
+
+            try {
+                // Add an entry for the file into the zip file, and write its bytes into the zipfile output
+                zipOutput.putNextEntry(new ZipEntry(name));
+                FileInputStream fileInput = new FileInputStream(file);
+                byte[] buffer = new byte[1024];
+                int length;
+                while ((length = fileInput.read(buffer)) >= 0) {
+                    zipOutput.write(buffer, 0, length);
+                }
+                fileInput.close();
+            } catch (FileNotFoundException e) {
+                log.error("Unable to find file.", e);
+            } catch (IOException e) {
+                log.error("Unable to read/write file.", e);
+            }
+
+        }
+
     }
 
     /**

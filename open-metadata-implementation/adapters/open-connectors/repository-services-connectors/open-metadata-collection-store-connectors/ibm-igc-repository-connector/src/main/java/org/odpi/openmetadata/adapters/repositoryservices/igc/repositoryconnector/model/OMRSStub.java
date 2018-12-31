@@ -11,17 +11,17 @@ import java.util.List;
 public class OMRSStub extends MainObject {
 
     public static String getIgcTypeId() { return "$OMRS-Stub"; }
-    public static String getIgcTypeDisplayName() { return "Stub"; }
+    public static String getIgcTypeDisplayName() { return "OMRS Stub"; }
 
     /**
-     * The 'sourceType' property, displayed as 'Type' in the IGC UI.
+     * The 'sourceType' property, displayed as 'IGC Type' in the IGC UI.
      * <br><br>
      * Provides the type of asset for which this stub represents a shadow copy.
      */
     protected String $sourceType;
 
     /**
-     * The 'sourceRID' property, displayed as 'RID' in the IGC UI.
+     * The 'sourceRID' property, displayed as 'IGC RID' in the IGC UI.
      * <br><br>
      * Provides the Repository ID (RID) of the asset for which this stub represents a shadow copy.
      */
@@ -60,6 +60,6 @@ public class OMRSStub extends MainObject {
             "$payload"
     );
     public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
-    public static final Boolean isOMRSStub(Object obj) { return (obj.getClass() == OMRSStub.class); }
+    public static Boolean isOMRSStub(Object obj) { return (obj.getClass() == OMRSStub.class); }
 
 }
