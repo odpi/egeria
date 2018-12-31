@@ -20,21 +20,22 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
 
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
+import java.io.File;
+import java.io.IOException;
 import java.io.StringWriter;
+import java.net.URL;
 import java.util.*;
 
 public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
@@ -71,13 +72,127 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                                      String metadataCollectionId) {
         super(parentConnector, repositoryName, repositoryHelper, repositoryValidator, metadataCollectionId);
         this.igcRestClient = parentConnector.getIGCRestClient();
-        this.igcRestClient.upsertOpenIgcBundle(
-                "OMRS",
-                "open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/ibm-igc-repository-connector/src/main/resources/OMRS.zip"
-        );
+        upsertOMRSBundleZip();
         this.igcRestClient.registerPOJO(OMRSStub.class);
         this.igcVersion = parentConnector.getIGCVersion();
         this.xmlOutputFactory = XMLOutputFactory.newInstance();
+    }
+
+    /**
+     * Generates a zip file for the OMRS OpenIGC bundle, needed to enable change tracking for the event mapper.
+     */
+    private void upsertOMRSBundleZip() {
+
+        ClassPathResource bundleResource = new ClassPathResource("/bundleOMRS");
+        try {
+            File bundle = this.igcRestClient.createOpenIgcBundleFile(bundleResource.getFile());
+            if (bundle != null) {
+                this.igcRestClient.upsertOpenIgcBundle("OMRS", bundle.getAbsolutePath());
+            } else {
+                log.error("Unable to generate OMRS bundle.");
+            }
+        } catch (IOException e) {
+            log.error("Unable to open bundle resource for OMRS.", e);
+        }
+
+    }
+
+    /**
+     * Returns the list of different types of metadata organized into two groups.  The first are the
+     * attribute type definitions (AttributeTypeDefs).  These provide types for properties in full
+     * type definitions.  Full type definitions (TypeDefs) describe types for entities, relationships
+     * and classifications.
+     *
+     * @param userId unique identifier for requesting user.
+     * @return TypeDefGalleryResponse List of different categories of type definitions.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public TypeDefGallery getAllTypes(String   userId) throws RepositoryErrorException,
+            UserNotAuthorizedException
+    {
+        final String                       methodName = "getAllTypes";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+
+        /*
+         * Perform operation
+         */
+        TypeDefGallery typeDefGallery = new TypeDefGallery();
+        ArrayList<TypeDef> typeDefs = new ArrayList<>();
+        for (ImplementedMapping implementedMapping : implementedMappings) {
+            typeDefs.add(implementedMapping.getTypeDef());
+        }
+        typeDefGallery.setTypeDefs(typeDefs);
+
+        return typeDefGallery;
+    }
+
+    /**
+     * Return the TypeDef identified by the unique name.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param name String name of the TypeDef.
+     * @return TypeDef structure describing its category and properties.
+     * @throws InvalidParameterException the name is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws TypeDefNotKnownException the requested TypeDef is not found in the metadata collection.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public TypeDef getTypeDefByName(String    userId,
+                                    String    name) throws InvalidParameterException,
+            RepositoryErrorException,
+            TypeDefNotKnownException,
+            UserNotAuthorizedException
+    {
+        final String  methodName = "getTypeDefByName";
+        final String  nameParameterName = "name";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateTypeName(repositoryName, nameParameterName, name, methodName);
+
+        /*
+         * Perform operation
+         */
+        TypeDef typeDef = null;
+        for (ImplementedMapping implementedMapping : implementedMappings) {
+            if (implementedMapping.getTypeDef().getName().equals(name)) {
+                typeDef = implementedMapping.getTypeDef();
+                break;
+            }
+        }
+        if (typeDef == null) {
+            OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_NOT_KNOWN;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                    name,
+                    "unknown",
+                    nameParameterName,
+                    methodName,
+                    repositoryName);
+            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+        return typeDef;
+
     }
 
     /**
@@ -156,66 +271,6 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         }
 
         return bMapperExists;
-
-    }
-
-    /**
-     * Return the TypeDef identified by the unique name.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param name String name of the TypeDef.
-     * @return TypeDef structure describing its category and properties.
-     * @throws InvalidParameterException the name is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                  the metadata collection is stored.
-     * @throws TypeDefNotKnownException the requested TypeDef is not found in the metadata collection.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    @Override
-    public TypeDef getTypeDefByName(String    userId,
-                                    String    name) throws InvalidParameterException,
-            RepositoryErrorException,
-            TypeDefNotKnownException,
-            UserNotAuthorizedException
-    {
-        final String  methodName = "getTypeDefByName";
-        final String  nameParameterName = "name";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateTypeName(repositoryName, nameParameterName, name, methodName);
-
-        /*
-         * Perform operation
-         */
-        TypeDef typeDef = null;
-        for (ImplementedMapping implementedMapping : implementedMappings) {
-            if (implementedMapping.getTypeDef().getName().equals(name)) {
-                typeDef = implementedMapping.getTypeDef();
-                break;
-            }
-        }
-        if (typeDef == null) {
-            OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_NOT_KNOWN;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
-                    name,
-                    "unknown",
-                    nameParameterName,
-                    methodName,
-                    repositoryName);
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
-        }
-        return typeDef;
 
     }
 
@@ -1512,10 +1567,12 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             if (fullAsset != null) {
 
                 // Iterate through all the paged properties and retrieve all pages for each
-                List<String> allPaged = (List<String>) Reference.getPagedRelationalPropertiesFromPOJO(pojoClass);
+                List<String> allPaged = Reference.getPagedRelationalPropertiesFromPOJO(pojoClass);
                 for (String pagedProperty : allPaged) {
                     ReferenceList pagedValue = (ReferenceList)fullAsset.getPropertyByName(pagedProperty);
-                    pagedValue.getAllPages(igcRestClient);
+                    if (pagedValue != null) {
+                        pagedValue.getAllPages(igcRestClient);
+                    }
                 }
 
                 // Set the asset as fully retrieved, so we do not attempt to retrieve parts of it again
