@@ -59,25 +59,28 @@ public class TermFVT
     {
         Glossary glossary= glossaryFVT.createGlossary(DEFAULT_TEST_GLOSSARY_NAME);
         System.out.println("Create a term1 using glossary name");
-        Term term1 = createTermWithGlossaryName(DEFAULT_TEST_TERM_NAME, DEFAULT_TEST_GLOSSARY_NAME);
+        Term term1 = createTermWithGlossaryGuid(DEFAULT_TEST_TERM_NAME, glossary.getSystemAttributes().getGUID());
+        FVTUtils.validateNode(term1);
         System.out.println("Create a term2 using glossary guid");
         Term term2 = createTermWithGlossaryGuid(DEFAULT_TEST_TERM_NAME, glossary.getSystemAttributes().getGUID());
+        FVTUtils.validateNode(term2);
         Term termForUpdate = new Term();
         termForUpdate.setName(DEFAULT_TEST_TERM_NAME_UPDATED);
-
-        if (term1 != null)
-        {
-            System.out.println("Get the term1");
-            String guid = term1.getSystemAttributes().getGUID();
-            Term gotTerm = getTermByGUID(guid);
-            System.out.println("Update the term1");
-            Term updatedTerm = updateTerm(guid, termForUpdate);
-            System.out.println("Get the term1 again");
-            gotTerm = getTermByGUID(guid);
-            System.out.println("Delete the term1");
-            gotTerm = deleteTerm(guid);
-            System.out.println("Purge a term1");
-        }
+        System.out.println("Get the term1");
+        String guid = term1.getSystemAttributes().getGUID();
+        Term gotTerm = getTermByGUID(guid);
+        FVTUtils.validateNode(gotTerm);
+        System.out.println("Update the term1");
+        Term updatedTerm = updateTerm(guid, termForUpdate);
+        FVTUtils.validateNode(updatedTerm);
+        System.out.println("Get the term1 again");
+        gotTerm = getTermByGUID(guid);
+        FVTUtils.validateNode(gotTerm);
+        System.out.println("Delete the term1");
+        gotTerm = deleteTerm(guid);
+        FVTUtils.validateNode(gotTerm);
+        System.out.println("Purge a term1");
+        purgeTerm(guid);
     }
 
     public  Term createTermWithGlossaryGuid(String termName, String glossaryGuid) throws SubjectAreaCheckedExceptionBase
@@ -86,21 +89,6 @@ public class TermFVT
         term.setName(termName);
         GlossarySummary glossarySummary = new GlossarySummary();
         glossarySummary.setGuid(glossaryGuid);
-        term.setGlossary(glossarySummary);
-        Term newTerm = subjectAreaTerm.createTerm(serverName,FVTConstants.USERID, term);
-        if (newTerm != null)
-        {
-            System.out.println("Created Term " + newTerm.getName() + " with guid " + newTerm.getSystemAttributes().getGUID());
-        }
-        return newTerm;
-    }
-
-    public Term createTermWithGlossaryName(String termName, String glossaryName) throws SubjectAreaCheckedExceptionBase
-    {
-        Term term = new Term();
-        term.setName(termName);
-        GlossarySummary glossarySummary = new GlossarySummary();
-        glossarySummary.setName(glossaryName);
         term.setGlossary(glossarySummary);
         Term newTerm = subjectAreaTerm.createTerm(serverName,FVTConstants.USERID, term);
         if (newTerm != null)
