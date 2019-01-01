@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.informationview.server;
 
-import org.odpi.openmetadata.accessservices.informationview.contentmanager.ReportCreator;
+import org.odpi.openmetadata.accessservices.informationview.contentmanager.ReportHandler;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportRequestBody;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.PropertyServerException;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.ReportCreationException;
@@ -21,9 +21,8 @@ public class InformationViewRestServices {
 
         try {
 
-            ReportCreator   reportCreator = instanceHandler.getReportCreator(serverName);
-
-            reportCreator.createReportModel(requestBody);
+            ReportHandler reportCreator2 = instanceHandler.getReportCreator(serverName);
+            reportCreator2.submitReportModel(requestBody);
         }
         catch (ReportCreationException | PropertyServerException e) {
             response.setExceptionClassName(e.getReportingClassName());

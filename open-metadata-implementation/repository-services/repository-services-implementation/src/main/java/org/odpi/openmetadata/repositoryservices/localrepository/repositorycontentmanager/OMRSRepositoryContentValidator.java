@@ -2297,7 +2297,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
             if (instanceType != null)
             {
-                if (this.isActiveType(sourceName, instanceType.getTypeDefGUID(), instanceType.getTypeDefName()))
+                if (this.isKnownType(sourceName, instanceType.getTypeDefGUID(), instanceType.getTypeDefName()))
                 {
                     return;
                 }
