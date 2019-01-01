@@ -583,10 +583,22 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
         for (ChangeSet.Change change : changesForProperty) {
 
             Object relatedValue = change.getNewValue();
-            if (Reference.isReferenceList(relatedValue)) {
+            if (relatedValue != null) {
+                if (Reference.isReferenceList(relatedValue)) {
 
-                ReferenceList related = (ReferenceList) relatedValue;
-                for (Reference relatedAsset : related.getItems()) {
+                    ReferenceList related = (ReferenceList) relatedValue;
+                    for (Reference relatedAsset : related.getItems()) {
+                        processSingleRelationship(
+                                relationshipMapping,
+                                latestVersion,
+                                relatedAsset,
+                                change,
+                                relationshipTriggerGUID
+                        );
+                    }
+
+                } else if (Reference.isReference(relatedValue)) {
+                    Reference relatedAsset = (Reference) relatedValue;
                     processSingleRelationship(
                             relationshipMapping,
                             latestVersion,
@@ -594,37 +606,39 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
                             change,
                             relationshipTriggerGUID
                     );
+                } else if (change.getIgcPropertyPath().endsWith("_id") && Reference.isSimpleType(relatedValue)) {
+                    // In cases where a single object has been replaced, the JSON Patch may only show each property
+                    // as needing replacement rather than the object as a whole -- so just watch for any changes to '_id'
+                    // and if found pull back a new asset reference for the related asset to use
+                    Reference relatedAsset = igcRestClient.getAssetRefById((String) relatedValue);
+                    processSingleRelationship(
+                            relationshipMapping,
+                            latestVersion,
+                            relatedAsset,
+                            change,
+                            relationshipTriggerGUID
+                    );
+                } else {
+                    log.warn("Expected relationship but found neither Reference nor ReferenceList: {}", relatedValue);
                 }
-
-            } else if (Reference.isReference(relatedValue)) {
-                Reference relatedAsset = (Reference) relatedValue;
-                processSingleRelationship(
-                        relationshipMapping,
-                        latestVersion,
-                        relatedAsset,
-                        change,
-                        relationshipTriggerGUID
-                );
-            } else if (change.getIgcPropertyPath().endsWith("_id") && Reference.isSimpleType(relatedValue)) {
-                // In cases where a single object has been replaced, the JSON Patch may only show each property
-                // as needing replacement rather than the object as a whole -- so just watch for any changes to '_id'
-                // and if found pull back a new asset reference for the related asset to use
-                Reference relatedAsset = igcRestClient.getAssetRefById((String)relatedValue);
-                processSingleRelationship(
-                        relationshipMapping,
-                        latestVersion,
-                        relatedAsset,
-                        change,
-                        relationshipTriggerGUID
-                );
-            } else {
-                log.warn("Expected relationship but found neither Reference nor ReferenceList: {}", relatedValue);
             }
 
         }
 
     }
 
+    /**
+     * Processes a single relationship based on the provided mapping, IGC objects and JSON Patch entry. As part of the
+     * processing, will determine automatically which IGC object provided should be which end of the relationship,
+     * based on the provided mapping.
+     *
+     * @param relationshipMapping the relationship mapping through which to translate the relationship
+     * @param latestVersion the latest version (non-stub) for one end of the relationship
+     * @param relatedAsset the latest version (non-stub) for the other end of the relationship
+     * @param change the JSON Patch entry indicating a specific change
+     * @param relationshipTriggerGUID passthrough of GUID for relationship that triggered this process (if not triggered
+     *                                directly from an event), null if not triggered by another relationship
+     */
     private void processSingleRelationship(RelationshipMapping relationshipMapping,
                                            Reference latestVersion,
                                            Reference relatedAsset,
@@ -665,6 +679,9 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
                                 omrsRelationshipType
                         );
                         sendPurgedRelationship(relationshipDef, relationshipGUID);
+                        // TODO: should also recurse into 'processAsset' for each endpoint of the relationship, as
+                        //  that asset will also have been updated by the removal of this relationship (will be caught
+                        //  anyway on the next update to that asset, but should really be immediate here?)
                     } catch (InvalidParameterException | RepositoryErrorException | TypeDefNotKnownException e) {
                         log.error("Unable to retrieve relationship type definition: {}", omrsRelationshipType, e);
                     } catch (UserNotAuthorizedException e) {

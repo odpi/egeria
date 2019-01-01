@@ -5,11 +5,11 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSMetadataCollection;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.classifications.ClassificationMapping;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.RelationshipMapping;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,9 +28,8 @@ public abstract class EntityMapping {
     public static final String SOURCE_NAME = "IBM InfoSphere Information Governance Catalog";
     public static final String IGC_REST_COMMON_MODEL_PKG = "org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common";
     public static final String IGC_REST_GENERATED_MODEL_PKG = "org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated";
-    public static final String MAPPING_PKG_ENTITIES = "org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.entities";
 
-    protected static final String[] MODIFICATION_DETAILS = new String[] {
+    public static final String[] MODIFICATION_DETAILS = new String[] {
             Reference.MOD_CREATED_BY,
             Reference.MOD_CREATED_ON,
             Reference.MOD_MODIFIED_BY,
@@ -40,7 +39,6 @@ public abstract class EntityMapping {
     private String igcAssetType;
     private String igcAssetTypeDisplayName;
     private String omrsTypeDefName;
-    private TypeDef omrsTypeDef;
     private Class igcPOJO;
     private String igcRidPrefix;
 
@@ -49,9 +47,7 @@ public abstract class EntityMapping {
 
     private PropertyMappingSet propertyMappings;
     private ArrayList<RelationshipMapping> relationshipMappers;
-    private HashSet<String> classificationPropertiesIgc;
-    private HashSet<String> classificationTypesOmrs;
-    //private ArrayList<String> alreadyMappedIgcProperties;
+    private ArrayList<ClassificationMapping> classificationMappers;
 
     protected IGCOMRSRepositoryConnector igcomrsRepositoryConnector;
     protected IGCOMRSMetadataCollection igcomrsMetadataCollection;
@@ -61,23 +57,6 @@ public abstract class EntityMapping {
     protected EntityDetail omrsDetail;
     protected ArrayList<Classification> omrsClassifications;
     protected ArrayList<Relationship> omrsRelationships;
-
-    public EntityMapping(IGCOMRSRepositoryConnector igcomrsRepositoryConnector,
-                         String igcAssetType,
-                         String igcAssetTypeDisplayName,
-                         String omrsTypeDefName,
-                         String userId) {
-
-        this(
-                igcomrsRepositoryConnector,
-                igcAssetType,
-                igcAssetTypeDisplayName,
-                omrsTypeDefName,
-                userId,
-                null
-        );
-
-    }
 
     public EntityMapping(IGCOMRSRepositoryConnector igcomrsRepositoryConnector,
                          String igcAssetType,
@@ -96,14 +75,12 @@ public abstract class EntityMapping {
 
         this.propertyMappings = new PropertyMappingSet();
         this.relationshipMappers = new ArrayList<>();
-        this.classificationPropertiesIgc = new HashSet<>();
-        this.classificationTypesOmrs = new HashSet<>();
+        this.classificationMappers = new ArrayList<>();
 
         this.omrsRelationships = new ArrayList<>();
 
         this.otherIgcTypes = new ArrayList<>();
         this.otherPOJOs = new ArrayList<>();
-        //this.alreadyMappedIgcProperties = new ArrayList<>();
 
         StringBuilder sbPojoName = new StringBuilder();
         if (igcAssetType.equals(IGCOMRSMetadataCollection.DEFAULT_IGC_TYPE)) {
@@ -126,18 +103,6 @@ public abstract class EntityMapping {
 
     public String getIgcAssetType() { return this.igcAssetType; }
     public String getIgcAssetTypeDisplayName() { return this.igcAssetTypeDisplayName; }
-
-    public void setOmrsTypeDef(TypeDef typeDef) { this.omrsTypeDef = typeDef; }
-    public TypeDef getOmrsTypeDef() {
-        if (omrsTypeDef == null) {
-            omrsTypeDef = igcomrsRepositoryConnector.getRepositoryHelper().getTypeDefByName(
-                    igcomrsRepositoryConnector.getRepositoryName(),
-                    omrsTypeDefName
-            );
-        }
-        return omrsTypeDef;
-    }
-
     public Class getIgcPOJO() { return this.igcPOJO; }
     public boolean igcRidNeedsPrefix() { return (this.igcRidPrefix != null); }
     public String getIgcRidPrefix() { return this.igcRidPrefix; }
@@ -213,38 +178,6 @@ public abstract class EntityMapping {
     public PropertyMappingSet getPropertyMappings() { return this.propertyMappings; }
 
     /**
-     * Note the provided IGC property name as one to be used in setting up classifications for the OMRS entity.
-     *
-     * @param igcPropertyName the IGC property name
-     */
-    public final void addComplexIgcClassification(String igcPropertyName) {
-        classificationPropertiesIgc.add(igcPropertyName);
-    }
-
-    /**
-     * Note the provided OMRS classification type as one to be mapped by the Mapper.
-     *
-     * @param omrsClassificationType the OMRS classification type
-     */
-    public final void addComplexOmrsClassification(String omrsClassificationType) {
-        classificationTypesOmrs.add(omrsClassificationType);
-    }
-
-    /**
-     * Retrieve the set of IGC properties needed to determine classifications.
-     *
-     * @return Set<String>
-     */
-    public Set<String> getIgcClassificationProperties() { return this.classificationPropertiesIgc; }
-
-    /**
-     * Retrieve the set of OMRS classification types that are covered by the Mapper.
-     *
-     * @return Set<String>
-     */
-    public Set<String> getOmrsClassificationTypes() { return this.classificationTypesOmrs; }
-
-    /**
      * Add the provided relationship mapping as one that describes relationships for this entity.
      *
      * @param relationshipMapping
@@ -261,9 +194,20 @@ public abstract class EntityMapping {
     public List<RelationshipMapping> getRelationshipMappers() { return this.relationshipMappers; }
 
     /**
-     * This method needs to be implemented to provide implementation-specific classification logic, if any.
+     * Add the provided classification mapping as one that describes classifications for this entity.
+     *
+     * @param classificationMapping
      */
-    protected abstract void getMappedClassifications();
+    public final void addClassificationMapper(ClassificationMapping classificationMapping) {
+        classificationMappers.add(classificationMapping);
+    }
+
+    /**
+     * Retrieve the classification mappings for this entity.
+     *
+     * @return List<ClassificationMapping>
+     */
+    public List<ClassificationMapping> getClassificationMappers() { return this.classificationMappers; }
 
     /**
      * This method needs to be implemented to define any complex property mapping logic, if any.
@@ -276,13 +220,6 @@ public abstract class EntityMapping {
      * This method needs to be implemented to define any complex relationship mapping logic, if any.
      */
     protected abstract void complexRelationshipMappings();
-
-    /**
-     * These methods must be implemented to define how to construct the EntitySummary and EntityDetail objects from
-     * the provided mapping information.
-     */
-    protected abstract void mapIGCToOMRSEntitySummary(Set<String> classificationProperties);
-    protected abstract void mapIGCToOMRSEntityDetail(PropertyMappingSet mappings, Set<String> classificationProperties);
 
     /**
      * Utility function to initialize an EntitySummary object based on the initialized IGC entity.
@@ -363,29 +300,6 @@ public abstract class EntityMapping {
         }
         log.debug(" ... succeeded to {}", sb.toString());
         return sb.toString();
-    }
-
-    /**
-     * Merge together the values of all the provided arrays.
-     * (From: https://stackoverflow.com/questions/80476/how-can-i-concatenate-two-arrays-in-java)
-     *
-     * @param first first array to merge
-     * @param rest subsequent arrays to merge
-     * @return T[]
-     */
-    @SafeVarargs
-    public static <T> T[] concatAll(T[] first, T[]... rest) {
-        int totalLength = first.length;
-        for (T[] array : rest) {
-            totalLength += array.length;
-        }
-        T[] result = Arrays.copyOf(first, totalLength);
-        int offset = first.length;
-        for (T[] array : rest) {
-            System.arraycopy(array, 0, result, offset, array.length);
-            offset += array.length;
-        }
-        return result;
     }
 
 }

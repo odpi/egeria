@@ -26,14 +26,6 @@ public class GovernancePolicyMapper extends ReferenceableMapper {
         // The list of relationships that should be mapped
         addRelationshipMapper(GovernancePolicyLinkMapper.getInstance());
 
-        /*addInvertedRelationshipMapping(
-                "information_governance_rule",
-                "referencing_policies",
-                "GovernanceImplementation",
-                "implementations",
-                "policies"
-        );*/
-
     }
 
 }
