@@ -61,42 +61,48 @@ public class EffectiveDatesFVT
     {
         try
         {
-            glossaryFVT.createPastToGlossary(DEFAULT_TEST_PAST_GLOSSARY_NAME);
+            Glossary pastgloss = glossaryFVT.createPastToGlossary(DEFAULT_TEST_PAST_GLOSSARY_NAME);
+            FVTUtils.validateNode(pastgloss);
         } catch (InvalidParameterException e) {
             System.out.println("Expected creation of a Glossary with to in the past failed");
         }
         try
         {
-           glossaryFVT.createPastFromGlossary(DEFAULT_TEST_PAST_GLOSSARY_NAME);
+            Glossary pastgloss =glossaryFVT.createPastFromGlossary(DEFAULT_TEST_PAST_GLOSSARY_NAME);
+            FVTUtils.validateNode(pastgloss);
         } catch (InvalidParameterException e) {
             System.out.println("Expected creation of a Glossary with from in the past failed");
         }
         try
         {
-            glossaryFVT.createInvalidEffectiveDateGlossary(DEFAULT_TEST_PAST_GLOSSARY_NAME);
+           glossaryFVT.createInvalidEffectiveDateGlossary(DEFAULT_TEST_PAST_GLOSSARY_NAME);
         } catch (InvalidParameterException e) {
             System.out.println("Expected creation of a Glossary with invalid Effectivity dates failed");
         }
-        glossaryFVT.createFutureGlossary(DEFAULT_TEST_FUTURE_GLOSSARY_NAME);
-        Term term5 =termFVT.createTermWithGlossaryName(DEFAULT_TEST_TERM_NAME, DEFAULT_TEST_FUTURE_GLOSSARY_NAME);
-
+        Glossary futureGloss =glossaryFVT.createFutureGlossary(DEFAULT_TEST_FUTURE_GLOSSARY_NAME);
+        FVTUtils.validateNode(futureGloss);
+        Term term5 =termFVT.createTermWithGlossaryGuid(DEFAULT_TEST_TERM_NAME, futureGloss.getSystemAttributes().getGUID());
+        FVTUtils.validateNode(term5);
         if (term5.getGlossary()==null) {
             // error
             throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Term expected an associated future Glossary,  ", "", "");
         }
 
         Term gotTerm5 = termFVT.getTermByGUID(term5.getSystemAttributes().getGUID());
+        FVTUtils.validateNode(gotTerm5);
         if (gotTerm5.getGlossary()==null) {
             // error
             throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Term expected an associated future Glossary,  ", "", "");
         }
         // update the term so that its effective dates not longer are compatible with the glossary
         Term futureTerm = termFVT.updateTermToFuture(gotTerm5.getSystemAttributes().getGUID(),term5);
+        FVTUtils.validateNode(futureTerm);
         if (futureTerm.getGlossary()!=null) {
             // error
             throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Term expected associated future Glossary,  ", "", "");
         }
         futureTerm = termFVT.getTermByGUID(term5.getSystemAttributes().getGUID());
+        FVTUtils.validateNode(futureTerm);
         if (futureTerm.getGlossary()==null) {
             // error
             throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Term expected no associated future Glossary,  ", "", "");
