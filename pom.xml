@@ -122,7 +122,8 @@
         <surefire.plugin.version>3.0.0-M1</surefire.plugin.version>
         <maven-download.version>1.4.1</maven-download.version>
         <maven-antrun.version>1.8</maven-antrun.version>
-        <maven-install.version>3.0.0-M1</maven-install.version>
+	<maven-install.version>3.0.0-M1</maven-install.version>
+	<maven-shade.version>3.2.1</maven-shade.version>
     </properties>
 
 
@@ -264,6 +265,7 @@
                     <excludes>
                         <exclude>**/banner.txt</exclude>
                         <exclude>**/*.json</exclude>
+                        <exclude>**/*.patch</exclude>
                         <exclude>**/*.log</exclude>
                         <exclude>**/*.csv</exclude>
                         <exclude>**/*.iml</exclude>
@@ -281,6 +283,7 @@
                         <exclude>**/docs/**/*.xml</exclude>
                         <exclude>**/docs/**/*.svg</exclude>
                         <exclude>**/website/**/*.xml</exclude>
+                        <exclude>**/dependency-reduced-pom.xml</exclude>
                     </excludes>
                     <licenseFamilies>
                         <licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">
