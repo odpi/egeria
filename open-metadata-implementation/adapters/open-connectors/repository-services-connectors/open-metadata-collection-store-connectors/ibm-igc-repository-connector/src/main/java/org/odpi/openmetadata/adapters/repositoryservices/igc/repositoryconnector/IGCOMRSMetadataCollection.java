@@ -229,8 +229,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         repositoryValidator.validateUserId(repositoryName, userId, methodName);
         repositoryValidator.validateTypeDef(repositoryName, typeDefParameterName, typeDef, methodName);
 
-        // TODO: approach below will work for EntityDefs and RelationshipDefs, but not yet for ClassificationDef...
-        //  - consider separating out ClassificationDefs as well?
+        // TODO: just need to handle AttributeTypeDefs now?
 
         TypeDefCategory typeDefCategory = typeDef.getCategory();
         String omrsTypeDefName = typeDef.getName();
@@ -244,6 +243,9 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         switch(typeDefCategory) {
             case RELATIONSHIP_DEF:
                 sbMapperClassname.append("relationships.");
+                break;
+            case CLASSIFICATION_DEF:
+                sbMapperClassname.append("classifications.");
                 break;
             default:
                 sbMapperClassname.append("entities.");
@@ -315,17 +317,13 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         String proxyTwoRid = RelationshipMapping.getProxyTwoGUIDFromRelationshipGUID(guid);
         String omrsRelationshipName = RelationshipMapping.getRelationshipTypeFromRelationshipGUID(guid);
 
-        String proxyOnePrefix = null;
-        String proxyTwoPrefix = null;
         String proxyOneIgcRid = proxyOneRid;
         String proxyTwoIgcRid = proxyTwoRid;
 
         if (isGeneratedGUID(proxyOneRid)) {
-            proxyOnePrefix = getPrefixFromGeneratedId(proxyOneRid);
             proxyOneIgcRid = getRidFromGeneratedId(proxyOneRid);
         }
         if (isGeneratedGUID(proxyTwoRid)) {
-            proxyTwoPrefix = getPrefixFromGeneratedId(proxyTwoRid);
             proxyTwoIgcRid = getRidFromGeneratedId(proxyTwoRid);
         }
 
@@ -333,15 +331,6 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
 
         Reference proxyOne = igcRestClient.getAssetRefById(proxyOneIgcRid);
         Reference proxyTwo = igcRestClient.getAssetRefById(proxyTwoIgcRid);
-
-        // Retrieve the mapper from the source information, prioritising any that use a prefix
-        // (or just defaulting to the first endpoint otherwise)
-        ReferenceableMapper entityMapper = null;
-        if (proxyTwoPrefix != null) {
-            entityMapper = getMapperForParameters(proxyTwo, proxyTwoPrefix, userId);
-        } else {
-            entityMapper = getMapperForParameters(proxyOne, proxyOnePrefix, userId);
-        }
 
         Relationship found = null;
 
@@ -353,12 +342,14 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                 RelationshipDef omrsRelationshipDef = (RelationshipDef) getTypeDefByName(userId, omrsRelationshipName);
                 // Since the ordering should be set by the GUID we're lookup up anyway, we'll simply set the property
                 // to one of the proxyOne properties
-                found = entityMapper.getMappedRelationship(
+                found = RelationshipMapping.getMappedRelationship(
+                        (IGCOMRSRepositoryConnector)parentConnector,
                         relationshipMapping,
                         omrsRelationshipDef,
                         proxyOne,
                         proxyTwo,
                         relationshipMapping.getProxyOneMapping().getIgcRelationshipProperties().get(0),
+                        userId,
                         proxyOneRid.equals(proxyTwoRid) ? proxyOneRid : null
                 );
 
@@ -1466,6 +1457,14 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         xmlStreamWriter.writeEndElement(); // </attribute>
     }
 
+    /**
+     * Delete the OMRS asset stub for the provided asset details (cannot require the asset itself since it has
+     * already been removed).
+     *
+     * @param rid the Repository ID (RID) of the asset for which to delete the OMRS stub
+     * @param assetType the IGC asset type of the asset for which to delete the OMRS stub
+     * @return boolean - true on successful deletion, false otherwise
+     */
     public boolean deleteOMRSStubForAsset(String rid, String assetType) {
 
         String stubName = getStubNameForAsset(rid, assetType);

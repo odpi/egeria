@@ -4,17 +4,24 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestClient;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.ReferenceList;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearch;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchCondition;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchConditionSet;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchSorting;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSMetadataCollection;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.entities.EntityMapping;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
+import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.management.relation.Relation;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -100,16 +107,78 @@ public abstract class RelationshipMapping {
         this.optimalStart = OptimalStart.OPPOSITE;
     }
 
+    /**
+     * Must be implemented to define how to map the relationships defined by the mapper, if there are any complex
+     * custom mappings to be done for relationships. (Simple mappings are handled automatically by the class.)
+     *
+     * @param igcomrsRepositoryConnector
+     * @param relationships
+     * @param fromIgcObject
+     * @param userId
+     */
+    public void addMappedOMRSRelationships(IGCOMRSRepositoryConnector igcomrsRepositoryConnector,
+                                           List<Relationship> relationships,
+                                           Reference fromIgcObject,
+                                           String userId) {
+        // By default there are no complex / custom mappings
+    }
+
+    /**
+     * Retrieve the type of OMRS relationship this mapping handles.
+     *
+     * @return String
+     */
     public String getOmrsRelationshipType() { return this.omrsRelationshipType; }
+
+    /**
+     * Set the optimal starting point for traversing this relationship.
+     *
+     * @param optimalStart
+     */
     public void setOptimalStart(OptimalStart optimalStart) { this.optimalStart = optimalStart; }
+
+    /**
+     * Get the optimal starting point for traversing this relationship.
+     *
+     * @return
+     */
     public OptimalStart getOptimalStart() { return this.optimalStart; }
 
+    /**
+     * Add an alternative IGC property that can be used to traverse the relationship from proxy one to proxy two.
+     *
+     * @param property the name of the additional IGC relationship property
+     */
     public void addAlternativePropertyFromOne(String property) { this.one.addAlternativeIgcRelationshipProperty(property); }
+
+    /**
+     * Add an alternative IGC property that can be used to traverse the relationship from proxy two to proxy one.
+     *
+     * @param property the name of the additional IGC relationship property
+     */
     public void addAlternativePropertyFromTwo(String property) { this.two.addAlternativeIgcRelationshipProperty(property); }
 
+    /**
+     * Indicates whether the relationship references the same IGC object (true) or not (false). This is useful for
+     * determining if the relationship is actually to a type that will be generated for OMRS, but does not exist as a
+     * distinct instance within IGC.
+     *
+     * @return boolean
+     */
     public boolean isSelfReferencing() { return (this.one.isSelfReferencing() || this.two.isSelfReferencing()); }
 
+    /**
+     * Retrieves the mapping details for endpoint 1 (proxy 1) of the OMRS relationship.
+     *
+     * @return ProxyMapping
+     */
     public ProxyMapping getProxyOneMapping() { return this.one; }
+
+    /**
+     * Retrieves the mapping detals for endpoint 2 (proxy 2) of the OMRS relationship.
+     *
+     * @return ProxyMapping
+     */
     public ProxyMapping getProxyTwoMapping() { return this.two; }
 
     /**
@@ -239,6 +308,9 @@ public abstract class RelationshipMapping {
         }
     }
 
+    /**
+     * Class to represent each side of a relationship mapping, keeping the details of that side of the mapping together.
+     */
     public class ProxyMapping {
 
         private String igcAssetType;
@@ -259,14 +331,61 @@ public abstract class RelationshipMapping {
 
         }
 
+        /**
+         * Retrieve the type of IGC asset that is expected by this side of the relationship mapping.
+         *
+         * @return String
+         */
         public String getIgcAssetType() { return this.igcAssetType; }
+
+        /**
+         * Retrieve the list of IGC relationship properties that can be used from this side of the relationship
+         * mapping to traverse to the other side of the relationship. (In most cases this will just be a single
+         * relationship in the list.)
+         *
+         * @return List<String>
+         */
         public List<String> getIgcRelationshipProperties() { return this.igcRelationshipProperties; }
+
+        /**
+         * Add an alternative IGC relationship property to this side of the relationship, that can be additionally
+         * used to traverse to the other side of the relationship.
+         *
+         * @param igcRelationshipProperty the name of the additional IGC relationship property
+         */
         public void addAlternativeIgcRelationshipProperty(String igcRelationshipProperty) { this.igcRelationshipProperties.add(igcRelationshipProperty); }
+
+        /**
+         * Retrieve the name of the OMRS relationship property that represents this side of the relationship.
+         *
+         * @return String
+         */
         public String getOmrsRelationshipProperty() { return this.omrsRelationshipProperty; }
+
+        /**
+         * Retrieve the prefix that should be added to the IGC Repository ID (RID) in order to make this side of the
+         * relationship point to a generated IGC entity instance (ie. one that does not exist distinctly within IGC).
+         * If no such entity is required, this will be null.
+         *
+         * @return String
+         */
         public String getIgcRidPrefix() { return this.igcRidPrefix; }
 
+        /**
+         * Indicates whether this side of the relationship is self-referencing (true) or not (false). Generally when
+         * the relationship is self-referencing, at least one end of the relationship will require a prefix.
+         *
+         * @return boolean
+         */
         public boolean isSelfReferencing() { return this.igcRelationshipProperties.contains(SELF_REFERENCE_SENTINEL); }
 
+        /**
+         * Indicates whether this side of the relationship matches the provided IGC asset type: that is, this side of
+         * the relationship can be used to relate to the provided IGC asset type.
+         *
+         * @param igcAssetType the IGC asset type to check this side of the relationship against
+         * @return boolean
+         */
         public boolean matchesAssetType(String igcAssetType) {
             return this.igcAssetType.equals(igcAssetType) || this.igcAssetType.equals(IGCOMRSMetadataCollection.DEFAULT_IGC_TYPE);
         }
@@ -416,18 +535,42 @@ public abstract class RelationshipMapping {
         return sbGUID.toString();
     }
 
+    /**
+     * Retrieve the portion of the provided relationship GUID that represents the GUID for proxy one of the relationship.
+     *
+     * @param relationshipGUID the relationship GUID
+     * @return String - giving just the GUID for proxy one of the relationship
+     */
     public static String getProxyOneGUIDFromRelationshipGUID(String relationshipGUID) {
         return getRelationshipGUIDToken(relationshipGUID, 0);
     }
 
+    /**
+     * Retrieve the portion of the provided relationship GUID that represents the GUID for proxy two of the relationship.
+     *
+     * @param relationshipGUID the relationship GUID
+     * @return String - giving just the GUID for proxy two of the relationship
+     */
     public static String getProxyTwoGUIDFromRelationshipGUID(String relationshipGUID) {
         return getRelationshipGUIDToken(relationshipGUID, 2);
     }
 
+    /**
+     * Retrieve the portion of the provided relationship GUID that represents the OMRS relationship type.
+     * @param relationshipGUID the relationship GUID
+     * @return String - giving just the name of the OMRS relationship type
+     */
     public static String getRelationshipTypeFromRelationshipGUID(String relationshipGUID) {
         return getRelationshipGUIDToken(relationshipGUID, 1);
     }
 
+    /**
+     * Utility method to parse the different portions of a relationship GUID.
+     *
+     * @param relationshipGUID the relationship GUID
+     * @param index which token to retrieve from the relationship GUID
+     * @return String - the string at the token provided of the provided relationship GUID
+     */
     private static String getRelationshipGUIDToken(String relationshipGUID, int index) {
         String[] aTokens = relationshipGUID.split("::");
         if (aTokens.length != 3) {
@@ -507,6 +650,550 @@ public abstract class RelationshipMapping {
         }
 
         return entityProxy;
+
+    }
+
+    /**
+     * Utility function that actually does the Relationship object setup and addition to 'relationships' member.
+     *
+     * @param igcomrsRepositoryConnector connectivity to an IGC environment
+     * @param relationships the list of relationships to append to
+     * @param mappings the mappings to use for retrieving the relationships
+     * @param relationshipTypeGUID String GUID of the the type of relationship required (null for all).
+     * @param fromIgcObject the IGC object that is the source of the relationships
+     * @param userId
+     */
+    public static void getMappedRelationships(IGCOMRSRepositoryConnector igcomrsRepositoryConnector,
+                                              List<Relationship> relationships,
+                                              List<RelationshipMapping> mappings,
+                                              String relationshipTypeGUID,
+                                              Reference fromIgcObject,
+                                              String userId) {
+
+        // Iterate through the provided mappings to create a number of OMRS relationships
+        for (RelationshipMapping mapping : mappings) {
+
+            RelationshipDef omrsRelationshipDef = (RelationshipDef) igcomrsRepositoryConnector.getRepositoryHelper().getTypeDefByName(
+                    igcomrsRepositoryConnector.getRepositoryName(),
+                    mapping.getOmrsRelationshipType()
+            );
+
+            // Only continue with a given relationship if we are mapping all relationships or it matches the
+            // GUID of the relationship type we are mapping
+            if (relationshipTypeGUID == null || relationshipTypeGUID.equals(omrsRelationshipDef.getGUID())) {
+
+                RelationshipMapping.OptimalStart optimalStart = mapping.getOptimalStart();
+
+                if (mapping.isSelfReferencing()) {
+                    addSelfReferencingRelationship(igcomrsRepositoryConnector, mapping, relationships, fromIgcObject, userId);
+                } else if (!optimalStart.equals(RelationshipMapping.OptimalStart.CUSTOM)) {
+                    if (fromIgcObject.isFullyRetrieved() || !optimalStart.equals(RelationshipMapping.OptimalStart.OPPOSITE)) {
+                        addDirectRelationship(igcomrsRepositoryConnector, mapping, relationships, fromIgcObject, userId);
+                    } else if (optimalStart.equals(RelationshipMapping.OptimalStart.OPPOSITE)) {
+                        addInvertedRelationship(igcomrsRepositoryConnector, mapping, relationships, fromIgcObject, userId);
+                    } else {
+                        log.warn("Ran out of options for finding the relationship: {}", omrsRelationshipDef.getName());
+                    }
+                }
+
+                // Then call any complex / custom relationship mappings defined
+                mapping.addMappedOMRSRelationships(
+                        igcomrsRepositoryConnector,
+                        relationships,
+                        fromIgcObject,
+                        userId
+                );
+
+            }
+
+        }
+
+    }
+
+    /**
+     * Adds a self-referencing relationship based on the provided mapping information.
+     *
+     * @param mapping the mapping for the self-referencing relationship
+     * @param relationships the list of relationships to append to
+     * @param fromIgcObject the IGC object that is the source (and target) of the self-referencing relationship
+     * @param userId
+     */
+    private static void addSelfReferencingRelationship(IGCOMRSRepositoryConnector igcomrsRepositoryConnector,
+                                                       RelationshipMapping mapping,
+                                                       List<Relationship> relationships,
+                                                       Reference fromIgcObject,
+                                                       String userId) {
+        try {
+            Relationship relationship = getMappedRelationship(
+                    igcomrsRepositoryConnector,
+                    mapping,
+                    fromIgcObject,
+                    fromIgcObject,
+                    RelationshipMapping.SELF_REFERENCE_SENTINEL,
+                    userId
+            );
+            log.debug("addSelfReferencingRelationship - adding relationship: {}", relationship);
+            relationships.add(relationship);
+        } catch (RepositoryErrorException e) {
+            log.error("Unable to add self-referencing relationship for: {}", fromIgcObject, e);
+        }
+    }
+
+    /**
+     * Adds a relationship that is straightforward to lookup directly from the originating IGC asset.
+     *
+     * @param igcomrsRepositoryConnector connectivity to the IGC repository
+     * @param mapping the mapping for the direct relationship
+     * @param relationships the list of relationships to append to
+     * @param fromIgcObject the IGC object that is the source of the direct relationship
+     * @param userId
+     */
+    private static void addDirectRelationship(IGCOMRSRepositoryConnector igcomrsRepositoryConnector,
+                                              RelationshipMapping mapping,
+                                              List<Relationship> relationships,
+                                              Reference fromIgcObject,
+                                              String userId) {
+
+        // If we already have all info about the entity, optimal path to retrieve relationships is to use
+        // the ones that are already in-memory -- though if it is also not optimal (or possible) to retrieve
+        // from a search (see below) we must also resort to this property-based retrieval
+        for (String igcRelationshipName : mapping.getIgcRelationshipPropertiesForType(fromIgcObject.getType())) {
+
+            Object directRelationships = fromIgcObject.getPropertyByName(igcRelationshipName);
+
+            // Handle single instance relationship one way
+            if (directRelationships != null && Reference.isReference(directRelationships)) {
+
+                addSingleMappedRelationship(
+                        igcomrsRepositoryConnector,
+                        mapping,
+                        relationships,
+                        fromIgcObject,
+                        (Reference) directRelationships,
+                        igcRelationshipName,
+                        userId
+                );
+
+            } else if (directRelationships != null && Reference.isReferenceList(directRelationships)) { // and list of relationships another
+
+                addListOfMappedRelationships(
+                        igcomrsRepositoryConnector,
+                        mapping,
+                        relationships,
+                        fromIgcObject,
+                        (ReferenceList) directRelationships,
+                        igcRelationshipName,
+                        userId
+                );
+
+            } else {
+                log.debug(" ... skipping relationship {}, either empty or neither reference or list {}", igcRelationshipName, directRelationships);
+            }
+
+        }
+
+    }
+
+    /**
+     * Adds a relationship that is best looked-up in reverse (from target back to source asset).
+     *
+     * @param igcomrsRepositoryConnector connectivity to the IGC repository
+     * @param mapping the mapping for the inverted relationship
+     * @param relationships the list of relationships to append to
+     * @param fromIgcObject the IGC object that is the source of the inverted relationship (or really the target)
+     * @param userId
+     */
+    private static void addInvertedRelationship(IGCOMRSRepositoryConnector igcomrsRepositoryConnector,
+                                                RelationshipMapping mapping,
+                                                List<Relationship> relationships,
+                                                Reference fromIgcObject,
+                                                String userId) {
+
+        String assetType = fromIgcObject.getType();
+
+        log.debug("Adding inverted relationship for mapping: {}", mapping);
+
+        if (mapping.sameTypeOnBothEnds()) {
+
+            // If we have a hierarchical relationship, we need to run searches across both
+            // properties and add both sets of relationships
+            List<String> igcProperties = mapping.getIgcRelationshipPropertiesForType(assetType);
+            for (String igcRelationshipName : igcProperties) {
+                IGCSearchCondition condition = new IGCSearchCondition(igcRelationshipName, "=", fromIgcObject.getId());
+                IGCSearchConditionSet igcSearchConditionSet = new IGCSearchConditionSet(condition);
+                addSearchResultsToRelationships(
+                        igcomrsRepositoryConnector,
+                        mapping,
+                        relationships,
+                        fromIgcObject,
+                        igcSearchConditionSet,
+                        assetType,
+                        igcRelationshipName,
+                        userId
+                );
+            }
+
+        } else {
+
+            // Otherwise, use the optimal retrieval for the relationship (a search that will batch-retrieve _context)
+            RelationshipMapping.ProxyMapping otherSide = mapping.getOtherProxyFromType(assetType);
+            log.debug(" ... found other proxy: {}", otherSide);
+            RelationshipMapping.ProxyMapping thisSide = mapping.getProxyFromType(assetType);
+            log.debug(" ... found this proxy: {}", thisSide);
+
+            String anIgcRelationshipProperty = null;
+            IGCSearchConditionSet igcSearchConditionSet = new IGCSearchConditionSet();
+            igcSearchConditionSet.setMatchAnyCondition(true);
+            for (String igcRelationshipName : otherSide.getIgcRelationshipProperties()) {
+                IGCSearchCondition condition = new IGCSearchCondition(igcRelationshipName, "=", fromIgcObject.getId());
+                igcSearchConditionSet.addCondition(condition);
+                anIgcRelationshipProperty = igcRelationshipName;
+            }
+            String sourceAssetType = otherSide.getIgcAssetType();
+            addSearchResultsToRelationships(
+                    igcomrsRepositoryConnector,
+                    mapping,
+                    relationships,
+                    fromIgcObject,
+                    igcSearchConditionSet,
+                    sourceAssetType,
+                    anIgcRelationshipProperty,
+                    userId
+            );
+
+        }
+
+    }
+
+    /**
+     * Executes a search against the IGC repository based on the provided criteria, and adds all results to the list
+     * of relationships.
+     *
+     * @param igcomrsRepositoryConnector connectivity to the IGC repository
+     * @param mapping the mapping for the inverted relationship
+     * @param relationships the list of relationships to append to
+     * @param fromIgcObject the object that is the source of the IGC relationship
+     * @param igcSearchConditionSet the search criteria to use for the search
+     * @param assetType the type of IGC asset for which to search
+     * @param igcPropertyName the name of the IGC property to search against
+     * @param userId
+     */
+    private static void addSearchResultsToRelationships(IGCOMRSRepositoryConnector igcomrsRepositoryConnector,
+                                                        RelationshipMapping mapping,
+                                                        List<Relationship> relationships,
+                                                        Reference fromIgcObject,
+                                                        IGCSearchConditionSet igcSearchConditionSet,
+                                                        String assetType,
+                                                        String igcPropertyName,
+                                                        String userId) {
+
+        IGCSearch igcSearch = new IGCSearch(assetType, igcSearchConditionSet);
+        if (!assetType.equals(IGCOMRSMetadataCollection.DEFAULT_IGC_TYPE)) {
+            Class pojo = igcomrsRepositoryConnector.getIGCRestClient().getPOJOForType(assetType);
+            if (Reference.hasModificationDetails(pojo)) {
+                igcSearch.addProperties(EntityMapping.MODIFICATION_DETAILS);
+            }
+        }
+        ReferenceList foundRelationships = igcomrsRepositoryConnector.getIGCRestClient().search(igcSearch);
+        addListOfMappedRelationships(
+                igcomrsRepositoryConnector,
+                mapping,
+                relationships,
+                fromIgcObject,
+                foundRelationships,
+                igcPropertyName,
+                userId
+        );
+
+    }
+
+    /**
+     * Add the provided list of relationships as OMRS relationships.
+     *
+     * @param igcomrsRepositoryConnector connectivity to the IGC repository
+     * @param mapping the mapping to use in translating each relationship
+     * @param relationships the list of relationships to append to
+     * @param fromIgcObject the asset that is the source of the IGC relationship
+     * @param igcRelationships the list of IGC relationships
+     * @param igcPropertyName the name of the IGC relationship property
+     * @param userId
+     */
+    private static void addListOfMappedRelationships(IGCOMRSRepositoryConnector igcomrsRepositoryConnector,
+                                                     RelationshipMapping mapping,
+                                                     List<Relationship> relationships,
+                                                     Reference fromIgcObject,
+                                                     ReferenceList igcRelationships,
+                                                     String igcPropertyName,
+                                                     String userId) {
+
+        log.debug(" ... list of references: {}", mapping.getOmrsRelationshipType());
+
+        // TODO: paginate rather than always retrieving the full set
+        igcRelationships.getAllPages(igcomrsRepositoryConnector.getIGCRestClient());
+
+        // Iterate through all of the existing IGC relationships of that type to create an OMRS relationship
+        // for each one
+        for (Reference relation : igcRelationships.getItems()) {
+            addSingleMappedRelationship(
+                    igcomrsRepositoryConnector,
+                    mapping,
+                    relationships,
+                    fromIgcObject,
+                    relation,
+                    igcPropertyName,
+                    userId
+            );
+        }
+
+    }
+
+    /**
+     * Add the provided relationship as an OMRS relationship.
+     *
+     * @param igcomrsRepositoryConnector connectivity to the IGC repository
+     * @param mapping the mapping to use in translating each relationship
+     * @param relationships the list of relationships to append to
+     * @param fromIgcObject the asset that is the source of the IGC relationship
+     * @param igcRelationship the IGC relationship
+     * @param igcPropertyName the name of the IGC relationship property
+     * @param userId
+     */
+    private static void addSingleMappedRelationship(IGCOMRSRepositoryConnector igcomrsRepositoryConnector,
+                                                    RelationshipMapping mapping,
+                                                    List<Relationship> relationships,
+                                                    Reference fromIgcObject,
+                                                    Reference igcRelationship,
+                                                    String igcPropertyName,
+                                                    String userId) {
+
+        log.debug(" ... single reference: {}", igcRelationship);
+        if (igcRelationship != null
+                && igcRelationship.getType() != null
+                && !igcRelationship.getType().equals("null")) {
+
+            try {
+                Relationship omrsRelationship = getMappedRelationship(
+                        igcomrsRepositoryConnector,
+                        mapping,
+                        fromIgcObject,
+                        igcRelationship,
+                        igcPropertyName,
+                        userId
+                );
+                log.debug("addSingleMappedRelationship - adding relationship: {}", omrsRelationship);
+                relationships.add(omrsRelationship);
+            } catch (RepositoryErrorException e) {
+                log.error("Unable to add relationship {} for object {}", mapping.getOmrsRelationshipType(), igcRelationship);
+            }
+
+        }
+
+    }
+
+    /**
+     * Retrieve a Relationship instance based on the provided mapping information, automatically prefixing
+     * where needed.
+     *
+     * @param igcomrsRepositoryConnector connectivity to the IGC repository
+     * @param mapping the mapping details to use
+     * @param fromIgcObject the asset that is the source of the IGC relationship
+     * @param relation the related IGC object
+     * @param igcPropertyName the name of the IGC relationship property
+     * @param userId
+     * @return Relationship
+     * @throws RepositoryErrorException
+     */
+    private static Relationship getMappedRelationship(IGCOMRSRepositoryConnector igcomrsRepositoryConnector,
+                                                      RelationshipMapping mapping,
+                                                      Reference fromIgcObject,
+                                                      Reference relation,
+                                                      String igcPropertyName,
+                                                      String userId) throws RepositoryErrorException {
+
+        RelationshipDef omrsRelationshipDef = (RelationshipDef) igcomrsRepositoryConnector.getRepositoryHelper().getTypeDefByName(
+                igcomrsRepositoryConnector.getRepositoryName(),
+                mapping.getOmrsRelationshipType()
+        );
+
+        Relationship relationship = getMappedRelationship(
+                igcomrsRepositoryConnector,
+                mapping,
+                omrsRelationshipDef,
+                fromIgcObject,
+                relation,
+                igcPropertyName,
+                userId
+        );
+
+        return relationship;
+
+    }
+
+    /**
+     * Retrieve a Relationship instance based on the provided definition and endpoints.
+     *
+     * @param igcomrsRepositoryConnector connectivity to the IGC repository
+     * @param relationshipMapping the definition of how to map the relationship
+     * @param omrsRelationshipDef the OMRS relationship definition
+     * @param proxyOne the IGC asset to use for endpoint 1 of the relationship
+     * @param proxyTwo the IGC asset to use for endpoint 2 of the relationship
+     * @param igcPropertyName the name of the IGC relationship property
+     * @param userId
+     * @return Relationship
+     * @throws RepositoryErrorException
+     */
+    protected static Relationship getMappedRelationship(IGCOMRSRepositoryConnector igcomrsRepositoryConnector,
+                                                        RelationshipMapping relationshipMapping,
+                                                        RelationshipDef omrsRelationshipDef,
+                                                        Reference proxyOne,
+                                                        Reference proxyTwo,
+                                                        String igcPropertyName,
+                                                        String userId) throws RepositoryErrorException {
+        return getMappedRelationship(
+                igcomrsRepositoryConnector,
+                relationshipMapping,
+                omrsRelationshipDef,
+                proxyOne,
+                proxyTwo,
+                igcPropertyName,
+                userId,
+                null
+        );
+    }
+
+    /**
+     * Retrieve a Relationship instance based on the provided definition, endpoints, and optional prefixes.
+     *
+     * @param igcomrsRepositoryConnector connectivity to the IGC repository
+     * @param relationshipMapping the definition of how to map the relationship
+     * @param omrsRelationshipDef the OMRS relationship definition
+     * @param proxyOne the IGC asset to consider for endpoint 1 of the relationship
+     * @param proxyTwo the IGC asset to consider for endpoint 2 of the relationship
+     * @param igcPropertyName the name of the IGC relationship property
+     * @param userId
+     * @param relationshipLevelRid the IGC RID for the relationship itself (in rare instances where it exists)
+     * @return Relationship
+     * @throws RepositoryErrorException
+     */
+    public static Relationship getMappedRelationship(IGCOMRSRepositoryConnector igcomrsRepositoryConnector,
+                                                     RelationshipMapping relationshipMapping,
+                                                     RelationshipDef omrsRelationshipDef,
+                                                     Reference proxyOne,
+                                                     Reference proxyTwo,
+                                                     String igcPropertyName,
+                                                     String userId,
+                                                     String relationshipLevelRid) throws RepositoryErrorException {
+
+        final String methodName = "getMappedRelationship";
+        final String repositoryName = igcomrsRepositoryConnector.getRepositoryName();
+
+        String omrsRelationshipName = omrsRelationshipDef.getName();
+
+        Relationship relationship = new Relationship();
+
+        try {
+            InstanceType instanceType = igcomrsRepositoryConnector.getRepositoryHelper().getNewInstanceType(
+                    igcomrsRepositoryConnector.getRepositoryName(),
+                    omrsRelationshipDef
+            );
+            relationship.setType(instanceType);
+        } catch (TypeErrorException e) {
+            log.error("Unable to set instance type.", e);
+        }
+
+        if (proxyOne != null && proxyTwo != null) {
+
+            String relationshipGUID = RelationshipMapping.getRelationshipGUID(
+                    relationshipMapping,
+                    proxyOne,
+                    proxyTwo,
+                    igcPropertyName,
+                    relationshipLevelRid
+            );
+
+            if (relationshipGUID == null) {
+                log.error("Unable to construct relationship GUID -- skipping relationship: {}", omrsRelationshipName);
+            } else {
+                relationship.setGUID(relationshipGUID);
+            }
+
+            relationship.setMetadataCollectionId(igcomrsRepositoryConnector.getMetadataCollectionId());
+            relationship.setStatus(InstanceStatus.ACTIVE);
+
+            String guidForEP1 = RelationshipMapping.getProxyOneGUIDFromRelationshipGUID(relationshipGUID);
+            String guidForEP2 = RelationshipMapping.getProxyTwoGUIDFromRelationshipGUID(relationshipGUID);
+            String ridForEP1 = IGCOMRSMetadataCollection.getRidFromGeneratedId(guidForEP1);
+            String ridForEP2 = IGCOMRSMetadataCollection.getRidFromGeneratedId(guidForEP2);
+
+            EntityProxy ep1 = null;
+            EntityProxy ep2 = null;
+
+            if (relationshipLevelRid != null
+                    || (ridForEP1.equals(proxyOne.getId()) && ridForEP2.equals(proxyTwo.getId()))) {
+                ep1 = RelationshipMapping.getEntityProxyForObject(
+                        igcomrsRepositoryConnector,
+                        proxyOne,
+                        omrsRelationshipDef.getEndDef1().getEntityType().getName(),
+                        userId,
+                        relationshipMapping.getProxyOneMapping().getIgcRidPrefix()
+                );
+                ep2 = RelationshipMapping.getEntityProxyForObject(
+                        igcomrsRepositoryConnector,
+                        proxyTwo,
+                        omrsRelationshipDef.getEndDef2().getEntityType().getName(),
+                        userId,
+                        relationshipMapping.getProxyTwoMapping().getIgcRidPrefix()
+                );
+            } else if (ridForEP2.equals(proxyOne.getId()) && ridForEP1.equals(proxyTwo.getId())) {
+                ep1 = RelationshipMapping.getEntityProxyForObject(
+                        igcomrsRepositoryConnector,
+                        proxyTwo,
+                        omrsRelationshipDef.getEndDef1().getEntityType().getName(),
+                        userId,
+                        relationshipMapping.getProxyOneMapping().getIgcRidPrefix()
+                );
+                ep2 = RelationshipMapping.getEntityProxyForObject(
+                        igcomrsRepositoryConnector,
+                        proxyOne,
+                        omrsRelationshipDef.getEndDef2().getEntityType().getName(),
+                        userId,
+                        relationshipMapping.getProxyTwoMapping().getIgcRidPrefix()
+                );
+            } else {
+                log.error("Unable to determine both ends of the relationship {} from {} to {}", omrsRelationshipName, proxyOne.getId(), proxyTwo.getId());
+            }
+
+            // Set the the version of the relationship to the epoch time of whichever end of the relationship has
+            // modification details (they should be the same if both have modification details)
+            if (ep1 != null && ep1.getUpdateTime() != null) {
+                relationship.setVersion(ep1.getUpdateTime().getTime());
+            } else if (ep2 != null && ep2.getUpdateTime() != null) {
+                relationship.setVersion(ep2.getUpdateTime().getTime());
+            }
+
+            if (ep1 != null && ep2 != null) {
+                relationship.setEntityOneProxy(ep1);
+                relationship.setEntityTwoProxy(ep2);
+            }
+
+        } else {
+            String omrsEndOneProperty = omrsRelationshipDef.getEndDef1().getAttributeName();
+            String omrsEndTwoProperty = omrsRelationshipDef.getEndDef2().getAttributeName();
+            OMRSErrorCode errorCode = OMRSErrorCode.INVALID_RELATIONSHIP_ENDS;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                    repositoryName,
+                    omrsRelationshipName,
+                    omrsEndOneProperty,
+                    omrsEndTwoProperty);
+            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                    RelationshipMapping.class.getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+
+        return relationship;
 
     }
 

@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestClient;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.classifications.ClassificationMapping;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.entities.EntityMapping;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.RelationshipMapping;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
@@ -25,8 +26,9 @@ public class ImplementedMapping {
     private Type type;
     private EntityMapping entityMapping;
     private RelationshipMapping relationshipMapping;
+    private ClassificationMapping classificationMapping;
 
-    public enum Type { ENTITY, RELATIONSHIP }
+    public enum Type { ENTITY, RELATIONSHIP, CLASSIFICATION }
 
     public ImplementedMapping(TypeDef typeDef, Class mapper, IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {
 
@@ -41,6 +43,10 @@ public class ImplementedMapping {
                 this.relationshipMapping = getRelationshipMapper(mapper);
                 this.type = Type.RELATIONSHIP;
                 break;
+            case CLASSIFICATION_DEF:
+                this.classificationMapping = getClassificationMapper(mapper);
+                this.type = Type.CLASSIFICATION;
+                break;
         }
 
     }
@@ -48,6 +54,7 @@ public class ImplementedMapping {
     public TypeDef getTypeDef() { return this.typeDef; }
     public EntityMapping getEntityMapping() { return this.entityMapping; }
     public RelationshipMapping getRelationshipMapping() { return this.relationshipMapping; }
+    public ClassificationMapping getClassificationMapping() { return this.classificationMapping; }
 
     /**
      * Returns the IGC asset type, only for EntityMappings.
@@ -135,9 +142,7 @@ public class ImplementedMapping {
     }
 
     /**
-     * Introspect a mapping class to retrieve a Mapper of that type.
-     * (This Mapper can be introspected for its mappings, but won't be functional until
-     *  initialised with an IGC object.)
+     * Introspect a mapping class to retrieve a RelationshipMapping.
      *
      * @param mappingClass the mapping class to retrieve an instance of
      * @return RelationshipMapping
@@ -151,6 +156,23 @@ public class ImplementedMapping {
             log.error("Unable to find or instantiate RelationshipMapping class: {}", mappingClass, e);
         }
         return relationshipMapper;
+    }
+
+    /**
+     * Introspect a mapping class to retrieve a ClassificationMapping.
+     *
+     * @param mappingClass the mapping class to retrieve an instance of
+     * @return ClassificationMapping
+     */
+    private static final ClassificationMapping getClassificationMapper(Class mappingClass) {
+        ClassificationMapping classificationMapper = null;
+        try {
+            Method getInstance = mappingClass.getMethod("getInstance");
+            classificationMapper = (ClassificationMapping) getInstance.invoke(null);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            log.error("Unable to find or instantiate ClassificationMapping class: {}", mappingClass, e);
+        }
+        return classificationMapper;
     }
 
 }

@@ -118,8 +118,20 @@ public class ChangeSet {
             this.value = value;
         }
 
+        /**
+         * Retrieve the 'op'eration indicated by the JSON Patch entry. Will be one of "replace", "add" or "remove".
+         *
+         * @return String
+         */
         public String getOp() { return this.op; }
 
+        /**
+         * Retrieve the simple IGC property name indicated by the JSON Patch entry. The property name will be trimmed
+         * from the full path of the JSON Patch entry.
+         *
+         * @return String
+         * @see #getIgcPropertyPath()
+         */
         public String getIgcPropertyName() {
             String[] aTokens = this.path.split("/");
             if (aTokens.length > 1) {
@@ -130,10 +142,23 @@ public class ChangeSet {
             }
         }
 
+        /**
+         * Retrieve the full IGC property 'path' indicated by the JSON Patch entry. This will include the full path to
+         * the property, including any object sub-entries, array index notation, etc. In general you probably want just
+         * the IGC property name itself, accessible through the getIgcPropertyName method.
+         *
+         * @return String
+         * @see #getIgcPropertyName()
+         */
         public String getIgcPropertyPath() {
             return this.path;
         }
 
+        /**
+         * Retrieve the changed value indicated by the JSON Patch entry.
+         *
+         * @return Object
+         */
         public Object getNewValue() {
 
             Object actualValue = null;
@@ -141,10 +166,7 @@ public class ChangeSet {
             // Otherwise, look for a simple type
             JsonNodeType jsonType = this.value.getNodeType();
             switch (jsonType) {
-                case ARRAY:
-                    // TODO: how to translate an array?
-                    actualValue = "???";
-                    break;
+                // TODO: how to translate an array?
                 case BOOLEAN:
                     actualValue = this.value.asBoolean();
                     break;
