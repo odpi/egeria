@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs;
 
 
@@ -114,12 +115,12 @@ public class EnumDef extends AttributeTypeDef
     public String toString()
     {
         return "EnumDef{" +
-                "version=" + getVersion() +
+                "name='" + getName() + '\'' +
+                ", description='" + getDescription() + '\'' +
+                ", version=" + getVersion() +
                 ", versionName='" + getVersionName() + '\'' +
                 ", category=" + getCategory() +
                 ", GUID='" + getGUID() + '\'' +
-                ", name='" + getName() + '\'' +
-                ", description='" + getDescription() + '\'' +
                 ", descriptionGUID='" + getDescriptionGUID() + '\'' +
                 '}';
     }

@@ -18,7 +18,7 @@ public enum ResponseCategory {
     Project,
     Comment,
 
-    // relationships
+    // term to term relationship
     TermHASARelationship,
     RelatedTerm,
     SynonymRelationship,
@@ -31,11 +31,23 @@ public enum ResponseCategory {
     TermTYPEDBYRelationship,
     TermUsedInContextRelationship,
     ValidValueRelationship,
+    // term relationships
+    TermRelationships,
+    // external glossary relationships
+    LibraryCategoryReferenceRelationshipRelationship,
+    LibraryTermReferenceRelationshipRelationship,
+    // term to asset
+    SemanticAssignmentRelationship,
+    // category to term
+    TermCategorizationRelationship,
+    // category relationships
+    CategoryRelationships,
 
     // errors
     ClassificationException,
     EntityNotDeletedException,
     FunctionNotSupportedException,
+    GUIDNotDeletedException,
     GUIDNotPurgedException,
     InvalidParameterException,
     RelationshipNotDeletedException,

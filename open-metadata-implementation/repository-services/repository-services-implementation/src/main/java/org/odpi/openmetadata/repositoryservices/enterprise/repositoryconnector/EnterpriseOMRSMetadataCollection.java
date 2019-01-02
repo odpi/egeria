@@ -5588,13 +5588,6 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
         repositoryValidator.validateGUID(repositoryName, guidParameterName, deletedRelationshipGUID, methodName);
 
         /*
-         * Locate relationship
-         */
-        Relationship  relationship  = this.getRelationship(userId, deletedRelationshipGUID);
-
-        repositoryValidator.validateRelationshipIsDeleted(repositoryName, relationship, methodName);
-
-        /*
          * Validation is complete.  It is ok to restore the relationship.
          *
          * The list of cohort connectors are retrieved for each request to ensure that any changes in

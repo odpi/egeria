@@ -15,6 +15,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Map;
 
 
@@ -32,7 +33,7 @@ import java.util.Map;
 
                 // term to term relationship responses
                 @JsonSubTypes.Type(value = TermHASARelationship.class, name = "TermHASARelationship"),
-                @JsonSubTypes.Type(value = RelatedTermRelationship.class, name = "RelatedTermRelationship"),
+                @JsonSubTypes.Type(value = RelatedTerm.class, name = "RelatedTerm"),
                 @JsonSubTypes.Type(value = Synonym.class, name = "Synonym"),
                 @JsonSubTypes.Type(value = Antonym.class, name = "Antonym"),
                 @JsonSubTypes.Type(value = PreferredTerm.class, name = "PreferredTerm"),
@@ -49,18 +50,18 @@ import java.util.Map;
 public class Line implements Serializable {
     protected static final long serialVersionUID = 1L;
     private SystemAttributes systemAttributes = null;
+    private Date effectiveFromTime = null;
+    private Date effectiveToTime = null;
     private Map<String, Object> extraAttributes;
     protected String typeDefGuid;
     protected LineType lineType;
     protected String entity1Name;
     protected String entity1Type;
-    protected String entity1Guid;
     protected String entity1PropertyName;
     protected String entity1Label;
 
     protected String entity2Name;
     protected String entity2Type;
-    protected String entity2Guid;
     protected String entity2PropertyName;
     protected String entity2Label;
     protected String name;
@@ -70,14 +71,6 @@ public class Line implements Serializable {
      */
     public Line() {}
     public Line(Line template) {
-            this.setEntity1Guid(template.getEntity1Guid());
-            this.setEntity1Label(template.getEntity1Label());
-            this.setEntity1Name(template.getEntity1Name());
-            this.setEntity1PropertyName(template.getEntity1PropertyName());
-            this.setEntity2Guid(template.getEntity2Guid());
-            this.setEntity2Label(template.getEntity2Label());
-            this.setEntity2Name(template.getEntity2Name());
-            this.setEntity2PropertyName(template.getEntity2PropertyName());
             this.setExtraAttributes(template.getExtraAttributes());
             this.setSystemAttributes(template.getSystemAttributes());
             this.setGuid(template.getGuid());
@@ -107,13 +100,6 @@ public class Line implements Serializable {
         this.systemAttributes.setUpdatedBy(omrsRelationship.getUpdatedBy());
         this.systemAttributes.setVersion(omrsRelationship.getVersion());
 
-        this.entity1Name = omrsRelationship.getEntityOnePropertyName();
-        this.entity1Type = omrsRelationship.getEntityOneProxy().getType().getTypeDefName();
-        this.entity1Guid = omrsRelationship.getEntityOneProxy().getGUID();
-
-        this.entity2Name = omrsRelationship.getEntityTwoPropertyName();
-        this.entity2Type = omrsRelationship.getEntityTwoProxy().getType().getTypeDefName();
-        this.entity2Guid = omrsRelationship.getEntityTwoProxy().getGUID();
     }
 
     public String getTypeDefGuid() {
@@ -132,53 +118,6 @@ public class Line implements Serializable {
         this.lineType = lineType;
     }
 
-    public void setEntity1Name(String entity1Name) {
-        this.entity1Name = entity1Name;
-    }
-    public void setEntity1Type(String entity1Type) {
-        this.entity1Type = entity1Type;
-    }
-
-    public String getEntity1PropertyName() {
-        return entity1PropertyName;
-    }
-
-    public void setEntity1PropertyName(String entity1PropertyName) {
-        this.entity1PropertyName = entity1PropertyName;
-    }
-
-    public String getEntity1Label() {
-        return entity1Label;
-    }
-
-    public void setEntity1Label(String entity1Label) {
-        this.entity1Label = entity1Label;
-    }
-
-    public void setEntity2Name(String entity2Name) {
-        this.entity2Name = entity2Name;
-    }
-
-    public void setEntity2Type(String entity2Type) {
-        this.entity2Type = entity2Type;
-    }
-
-    public String getEntity2PropertyName() {
-        return entity2PropertyName;
-    }
-
-    public void setEntity2PropertyName(String entity2PropertyName) {
-        this.entity2PropertyName = entity2PropertyName;
-    }
-
-    public String getEntity2Label() {
-        return entity2Label;
-    }
-
-    public void setEntity2Label(String entity2Label) {
-        this.entity2Label = entity2Label;
-    }
-
     public SystemAttributes getSystemAttributes() {
         return systemAttributes;
     }
@@ -186,23 +125,28 @@ public class Line implements Serializable {
     public void setSystemAttributes(SystemAttributes systemAttributes) {
         this.systemAttributes = systemAttributes;
     }
-
-    public String getEntity1Guid() {
-        return entity1Guid;
+    /**
+     * Return the date/time that this line should start to be used (null means it can be used from creationTime).
+     * @return Date the line becomes effective.
+     */
+    public Date getEffectiveFromTime()
+    {
+        return effectiveFromTime;
     }
 
-    public void setEntity1Guid(String entity1Guid) {
-        this.entity1Guid = entity1Guid;
+    public void setEffectiveFromTime(Date effectiveFromTime)
+    {
+        this.effectiveFromTime = effectiveFromTime;
     }
-
-    public String getEntity2Guid() {
-        return entity2Guid;
+    /**
+     * Return the date/time that this line should no longer be used.
+     *
+     * @return Date the line stops being effective.
+     */
+    public Date getEffectiveToTime()
+    {
+        return effectiveToTime;
     }
-
-    public void setEntity2Guid(String entity2Guid) {
-        this.entity2Guid = entity2Guid;
-    }
-
     public String getGuid() {
         if (this.systemAttributes==null) {
             return null;
@@ -225,14 +169,6 @@ public class Line implements Serializable {
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
-    public String getEntity1Name() {
-        return entity1Name;
-    }
-    public String getEntity2Name() {
-        return entity2Name;
-    }
-    public String getEntity1Type() { return entity1Type; }
-    public String getEntity2Type() { return entity2Type; }
 
     /**
      * Get the extra attributes - ones that are in addition to the standard types.
@@ -256,8 +192,6 @@ public class Line implements Serializable {
         typeOfRelationship.setTypeDefName(line.getName());
         typeOfRelationship.setTypeDefGUID(line.getTypeDefGuid());
         omrsRelationship.setType(typeOfRelationship);
-
-
         SystemAttributes systemAttributes = line.getSystemAttributes();
         if (systemAttributes ==null) {
             systemAttributes = new SystemAttributes();
@@ -272,23 +206,6 @@ public class Line implements Serializable {
             omrsRelationship.setVersion(systemAttributes.getVersion());
         }
         line.setSystemAttributes(systemAttributes);
-        //set proxy 1
-        EntityProxy entityOne = new EntityProxy();
-        entityOne.setGUID(line.getEntity1Guid());
-        String type1 = line.getEntity1Type();
-        InstanceType instancetype1 = new InstanceType();
-        instancetype1.setTypeDefName(type1);
-        entityOne.setType(instancetype1);
-        //set proxy 2
-        EntityProxy entityTwo = new EntityProxy();
-        entityTwo.setGUID(line.getEntity2Guid());
-        String type2 = line.getEntity2Type();
-        InstanceType instancetype2 = new InstanceType();
-        instancetype2.setTypeDefName(type2);
-        entityTwo.setType(instancetype2);
-
-        omrsRelationship.setEntityOneProxy(entityOne);
-        omrsRelationship.setEntityTwoProxy(entityTwo);
         return omrsRelationship;
     }
 
@@ -300,17 +217,6 @@ public class Line implements Serializable {
         sb.append("Line{");
         sb.append("typeDefGuid="+typeDefGuid+",");
         sb.append("lineType=" + lineType.name()+",");
-        sb.append("entity1Name="+entity1Name+",");
-        sb.append("entity1Type="+entity1Type+",");
-        sb.append("entity1Guid="+entity1Guid+",");
-        sb.append("entity1PropertyName="+ entity1PropertyName+",");
-        sb.append("entity1Label="+ entity1Label+",");
-
-        sb.append("entity2Name="+entity2Name+",");
-        sb.append("entity2Type="+entity2Type+",");
-        sb.append("entity2Guid="+entity2Guid+",");
-        sb.append("entity2PropertyName="+ entity2PropertyName+",");
-        sb.append("entity2Label="+ entity2Label+",");
         sb.append("name=" + name);
         if (this.systemAttributes!=null)
         {

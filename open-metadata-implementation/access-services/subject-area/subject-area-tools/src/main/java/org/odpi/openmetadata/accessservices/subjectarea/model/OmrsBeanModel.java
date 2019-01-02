@@ -136,7 +136,8 @@ public class OmrsBeanModel {
 
             // add in any new parent entity attributes
             while (entityDef.getSuperType()!=null) {
-                entityDef = (EntityDef)entityDef.getSuperType();
+                TypeDefLink superType = entityDef.getSuperType();
+                entityDef = this.typeFilter.getEntityDef(superType.getName());
                 if (entityDef.getPropertiesDefinition()!= null){
                     for (TypeDefAttribute attr : entityDef.getPropertiesDefinition()) {
                         final String attributeName = attr.getAttributeName();
@@ -297,7 +298,7 @@ public class OmrsBeanModel {
                 entityOmrsBeanReferencesAsAttributes.add(omrsBeanAttribute);
                 omrsBeanReferencesAsAttributesByEntity.put(omrsBeanReference.myType, entityOmrsBeanReferencesAsAttributes);
             } else {
-                // generate 2 References
+                // generateClientSideRelationshipImpl 2 References
                 OmrsBeanReference omrsBeanReference1 = new OmrsBeanReference();
                 omrsBeanReference1.attrList = omrsBeanattributeList;
                 omrsBeanReference1.uReferenceName = GeneratorUtilities.uppercase1stLetter(end2Name);
@@ -369,7 +370,8 @@ public class OmrsBeanModel {
 
             // we could have null in deduplicatedAttributes if we do not have any attributes.
             while (entityDef.getSuperType()!= null) {
-                entityDef = (EntityDef)entityDef.getSuperType();
+                TypeDefLink  superType = entityDef.getSuperType();
+                entityDef = this.typeFilter.getEntityDef(superType.getName());
                 List<OmrsBeanAttribute> parentOmrsBeanAttributes = this.omrsBeanReferencesAsAttributesByEntity.get(entityDef.getName());
                 if (parentOmrsBeanAttributes !=null && parentOmrsBeanAttributes.size() >0) {
                     // parent has attributes

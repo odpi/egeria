@@ -1,6 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservice.assetcatalog.exception;
 
+/**
+ * The ClassificationNotFoundException is thrown by the Asset Catalog OMAS when the classification passed on a request
+ * is not found in the repository
+ */
 public class ClassificationNotFoundException extends AssetCatalogException {
 
     /**

@@ -304,7 +304,6 @@ class ConnectionHandler
         errorHandler.validateGUID(connectionGUID, guidParameter, methodName);
 
         OMRSMetadataCollection  metadataCollection = errorHandler.validateRepositoryConnector(methodName);
-        String                  assetGUID = null;
 
         try
         {
@@ -420,7 +419,7 @@ class ConnectionHandler
                                                serviceName);
         }
 
-        return assetGUID;
+        return null;
     }
 
 
@@ -447,31 +446,15 @@ class ConnectionHandler
         connection.setGUID(connectionEntity.getGUID());
         connection.setURL(connectionEntity.getInstanceURL());
         connection.setType(this.getElementType(connectionEntity));
-        connection.setQualifiedName(repositoryHelper.getStringProperty(serviceName,
-                                                                       qualifiedNamePropertyName,
-                                                                       connectionEntity.getProperties(),
-                                                                       methodName));
-        connection.setDisplayName(repositoryHelper.getStringProperty(serviceName,
-                                                                     displayNamePropertyName,
-                                                                     connectionEntity.getProperties(),
-                                                                     methodName));
-
-        connection.setDescription(repositoryHelper.getStringProperty(serviceName,
-                                                                     descriptionPropertyName,
-                                                                     connectionEntity.getProperties(),
-                                                                     methodName));
+        connection.setQualifiedName(repositoryHelper.getStringProperty(serviceName, qualifiedNamePropertyName, connectionEntity.getProperties(), methodName));
+        connection.setDisplayName(repositoryHelper.getStringProperty(serviceName, displayNamePropertyName, connectionEntity.getProperties(), methodName));
+        connection.setDescription(repositoryHelper.getStringProperty(serviceName, descriptionPropertyName, connectionEntity.getProperties(), methodName));
 
         connection.setConnectorType(connectorType);
         connection.setEndpoint(endpoint);
 
-
-        connection.setAdditionalProperties(this.getAdditionalPropertiesFromEntity(additionalPropertiesName,
-                                                                                  connectionEntity.getProperties(),
-                                                                                  methodName));
-
-        connection.setSecuredProperties(this.getAdditionalPropertiesFromEntity(securePropertiesName,
-                                                                               connectionEntity.getProperties(),
-                                                                               methodName));
+        connection.setAdditionalProperties(repositoryHelper.getMapFromProperty(serviceName, additionalPropertiesName, connectionEntity.getProperties(), methodName));
+        connection.setSecuredProperties(repositoryHelper.getMapFromProperty(serviceName, securePropertiesName, connectionEntity.getProperties(), methodName));
 
         return connection;
     }

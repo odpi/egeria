@@ -4,10 +4,10 @@ package org.odpi.openmetadata.accessservices.informationview.contentmanager;
 
 
 import org.odpi.openmetadata.accessservices.informationview.events.BusinessTerm;
-import org.odpi.openmetadata.accessservices.informationview.events.ColumnContextEvent;
-import org.odpi.openmetadata.accessservices.informationview.events.ColumnDetails;
-import org.odpi.openmetadata.accessservices.informationview.events.ConnectionDetails;
+import org.odpi.openmetadata.accessservices.informationview.events.TableContextEvent;
+import org.odpi.openmetadata.accessservices.informationview.events.DatabaseColumn;
 import org.odpi.openmetadata.accessservices.informationview.events.ForeignKey;
+import org.odpi.openmetadata.accessservices.informationview.events.TableSource;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesUtils;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
@@ -60,8 +60,8 @@ public class ColumnContextEventBuilder {
      * @throws InvalidParameterException
      * @throws EntityNotKnownException
      */
-    public List<ColumnContextEvent> buildEvents(String guidColumn) throws Exception {
-        List<ColumnContextEvent> allEvents = new ArrayList<>();
+    public List<TableContextEvent> buildEvents(String guidColumn) throws Exception {
+        List<TableContextEvent> allEvents = new ArrayList<>();
         String relationshipTypeGuid = enterpriseConnector.getMetadataCollection().getTypeDefByName(Constants.USER_ID, Constants.ATTRIBUTE_FOR_SCHEMA).getGUID();
 
         for (Relationship relationship : enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.USER_ID, guidColumn, relationshipTypeGuid, 0, null, null, null, null, 0)) {
@@ -83,20 +83,18 @@ public class ColumnContextEventBuilder {
      * @throws EntityNotKnownException
      * @throws UserNotAuthorizedException
      */
-    private List<ColumnContextEvent> getTableTypeDetails(String guidColumn, Relationship relationshipToParentType) throws Exception {
+    private List<TableContextEvent> getTableTypeDetails(String guidColumn, Relationship relationshipToParentType) throws Exception {
         log.debug("Load table type details for entity with guid {}", guidColumn);
         String tableTypeGuid = getOtherEntityGuid(guidColumn, relationshipToParentType);
         EntityDetail tableTypeDetail = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, tableTypeGuid);
-        List<ColumnDetails> allColumns = getAllColumnsOfTable(tableTypeGuid);
+        List<DatabaseColumn> allColumns = getAllColumnsOfTable(tableTypeGuid);
 
         String relationshipTypeGuid = enterpriseConnector.getMetadataCollection().getTypeDefByName(Constants.USER_ID, Constants.SCHEMA_ATTRIBUTE_TYPE).getGUID();
-        List<ColumnContextEvent> allEvents = new ArrayList<>();
+        List<TableContextEvent> allEvents = new ArrayList<>();
 
         for (Relationship parentTableRelationship : enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.USER_ID, tableTypeDetail.getGUID(), relationshipTypeGuid, 0, null, null, null, null, 0)) {
             allEvents.addAll(getRelationalTableDetails(tableTypeGuid, parentTableRelationship, allColumns));
         }
-        String tableTypeQualifiedName = EntityPropertiesUtils.getStringValueForProperty(tableTypeDetail.getProperties(), Constants.QUALIFIED_NAME);
-        allEvents = allEvents.stream().peek(e -> e.getTableContext().setTableTypeQualifiedName(tableTypeQualifiedName)).collect(Collectors.toList());
         return allEvents;
     }
 
@@ -113,9 +111,9 @@ public class ColumnContextEventBuilder {
      * @throws InvalidParameterException
      * @throws EntityNotKnownException
      */
-    private List<ColumnContextEvent> getRelationalTableDetails(String guid, Relationship relationship, List<ColumnDetails> allColumns) throws Exception {
+    private List<TableContextEvent> getRelationalTableDetails(String guid, Relationship relationship, List<DatabaseColumn> allColumns) throws Exception {
         log.debug("Load table details for entity with guid {}", guid);
-        List<ColumnContextEvent> allEvents = new ArrayList<>();
+        List<TableContextEvent> allEvents = new ArrayList<>();
         String tableGuid = getOtherEntityGuid(guid, relationship);
         EntityDetail tableEntity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, tableGuid);
         String relationshipTypeGuid = enterpriseConnector.getMetadataCollection().getTypeDefByName(Constants.USER_ID, Constants.ATTRIBUTE_FOR_SCHEMA).getGUID();
@@ -123,10 +121,9 @@ public class ColumnContextEventBuilder {
         String tableQualifiedName = EntityPropertiesUtils.getStringValueForProperty(tableEntity.getProperties(), Constants.QUALIFIED_NAME);
 
         for (Relationship schemaTypeRelationship : enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.USER_ID, tableEntity.getGUID(), relationshipTypeGuid, 0, null, null, null, null, 0)) {
-            List<ColumnContextEvent> events = getDbSchemaTypeDetails(tableGuid, schemaTypeRelationship);
+            List<TableContextEvent> events = getDbSchemaTypeDetails(tableGuid, schemaTypeRelationship);
             allEvents.addAll(events.stream().peek(e -> {
-                e.getTableContext().setTableName(tableName);
-                e.getTableContext().setTableQualifiedName(tableQualifiedName);
+                e.getTableSource().setTableName(tableName);
                 e.setTableColumns(allColumns);
             }).collect(Collectors.toList()));
         }
@@ -143,30 +140,29 @@ public class ColumnContextEventBuilder {
      * @throws InvalidParameterException
      * @throws EntityNotKnownException
      */
-    private List<ColumnDetails> getAllColumnsOfTable(String tableTypeGuid) throws UserNotAuthorizedException, RepositoryErrorException, InvalidParameterException, EntityNotKnownException, TypeDefNotKnownException, PropertyErrorException, FunctionNotSupportedException, PagingErrorException, EntityProxyOnlyException, RelationshipNotKnownException, TypeErrorException {
+    private List<DatabaseColumn> getAllColumnsOfTable(String tableTypeGuid) throws UserNotAuthorizedException, RepositoryErrorException, InvalidParameterException, EntityNotKnownException, TypeDefNotKnownException, PropertyErrorException, FunctionNotSupportedException, PagingErrorException, EntityProxyOnlyException, RelationshipNotKnownException, TypeErrorException {
         log.debug("Load table columns for entity with guid {}", tableTypeGuid);
         String relationshipTypeGuid = enterpriseConnector.getMetadataCollection().getTypeDefByName(Constants.USER_ID, Constants.ATTRIBUTE_FOR_SCHEMA).getGUID();
 
-        List<ColumnDetails> allColumns = new ArrayList<>();
+        List<DatabaseColumn> allColumns = new ArrayList<>();
         for (Relationship relationship : enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.USER_ID, tableTypeGuid, relationshipTypeGuid, 0, null, null, null, null, 0)) {
             EntityDetail columnEntity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, getOtherEntityGuid(tableTypeGuid, relationship));
-            ColumnDetails columnDetails = new ColumnDetails();
-            columnDetails.setAttributeName(EntityPropertiesUtils.getStringValueForProperty(columnEntity.getProperties(), Constants.ATTRIBUTE_NAME));
-            columnDetails.setPosition(EntityPropertiesUtils.getIntegerValueForProperty(columnEntity.getProperties(), Constants.ELEMENT_POSITION_NAME));
-            columnDetails.setGuid(columnEntity.getGUID());
-            columnDetails.setBusinessTerm(getBusinessTermAssociated(columnEntity));
-            columnDetails.setPrimaryKeyName(getPrimaryKeyClassification(columnEntity));//TODO
-            if (columnDetails.getPrimaryKeyName() != null && !columnDetails.getPrimaryKeyName().isEmpty()) {
-                columnDetails.setPrimaryKey(true);
+            DatabaseColumn databaseColumn = new DatabaseColumn();
+            databaseColumn.setName(EntityPropertiesUtils.getStringValueForProperty(columnEntity.getProperties(), Constants.ATTRIBUTE_NAME));
+            databaseColumn.setPosition(EntityPropertiesUtils.getIntegerValueForProperty(columnEntity.getProperties(), Constants.ELEMENT_POSITION_NAME));
+            databaseColumn.setGuid(columnEntity.getGUID());
+            databaseColumn.setBusinessTerm(getBusinessTermAssociated(columnEntity));
+            databaseColumn.setPrimaryKeyName(getPrimaryKeyClassification(columnEntity));//TODO
+            if (databaseColumn.getPrimaryKeyName() != null && !databaseColumn.getPrimaryKeyName().isEmpty()) {
+                databaseColumn.setPrimaryKey(true);
             }
-            columnDetails.setNullable(EntityPropertiesUtils.getBooleanValueForProperty(columnEntity.getProperties(), Constants.IS_NULLABLE));
-            columnDetails.setUnique(EntityPropertiesUtils.getBooleanValueForProperty(columnEntity.getProperties(), Constants.IS_UNIQUE));
-            columnDetails.setForeignKey(getForeignKey(columnEntity));
+            databaseColumn.setNullable(EntityPropertiesUtils.getBooleanValueForProperty(columnEntity.getProperties(), Constants.IS_NULLABLE));
+            databaseColumn.setUnique(EntityPropertiesUtils.getBooleanValueForProperty(columnEntity.getProperties(), Constants.IS_UNIQUE));
+            databaseColumn.setForeignKey(getForeignKey(columnEntity));
             EntityDetail columnTypeUniverse = getColumnType(columnEntity);
-            columnDetails.setType(EntityPropertiesUtils.getStringValueForProperty(columnTypeUniverse.getProperties(), Constants.DATA_TYPE));
-            columnDetails.setQualifiedNameColumnType(EntityPropertiesUtils.getStringValueForProperty(columnTypeUniverse.getProperties(), Constants.QUALIFIED_NAME));
-            columnDetails.setQualifiedName(EntityPropertiesUtils.getStringValueForProperty(columnEntity.getProperties(), Constants.QUALIFIED_NAME));
-            allColumns.add(columnDetails);
+            databaseColumn.setType(EntityPropertiesUtils.getStringValueForProperty(columnTypeUniverse.getProperties(), Constants.DATA_TYPE));
+            databaseColumn.setQualifiedName(EntityPropertiesUtils.getStringValueForProperty(columnEntity.getProperties(), Constants.QUALIFIED_NAME));
+            allColumns.add(databaseColumn);
         }
 
         return allColumns;
@@ -256,23 +252,10 @@ public class ColumnContextEventBuilder {
 
         List<Relationship> btRelationships = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.USER_ID, columnEntity.getGUID(), relationshipTypeGuid, 0, null, null, null, null, 0);
         if (btRelationships != null && btRelationships.size() != 0) {
-
             Relationship btRelationship = btRelationships.get(0);
             String btGuid = getOtherEntityGuid(columnEntity.getGUID(), btRelationship);
             EntityDetail btDetail = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, btGuid);
-            businessTerm = new BusinessTerm();
-
-            businessTerm.setGuid(btGuid);
-            businessTerm.setName(EntityPropertiesUtils.getStringValueForProperty(btDetail.getProperties(), Constants.DISPLAY_NAME));
-            businessTerm.setQuery(EntityPropertiesUtils.getStringValueForProperty(btDetail.getProperties(), Constants.QUERY));
-            businessTerm.setDisplayName(EntityPropertiesUtils.getStringValueForProperty(btDetail.getProperties(), Constants.DISPLAY_NAME));
-            businessTerm.setAbbreviation(EntityPropertiesUtils.getStringValueForProperty(btDetail.getProperties(), Constants.ABBREVIATION));
-            businessTerm.setExamples(EntityPropertiesUtils.getStringValueForProperty(btDetail.getProperties(), Constants.EXAMPLES));
-            businessTerm.setDescription(EntityPropertiesUtils.getStringValueForProperty(btDetail.getProperties(), Constants.DESCRIPTION));
-            businessTerm.setUsage(EntityPropertiesUtils.getStringValueForProperty(btDetail.getProperties(), Constants.USAGE));
-            businessTerm.setSummary(EntityPropertiesUtils.getStringValueForProperty(btDetail.getProperties(), Constants.SUMMARY));
-            businessTerm.setQualifiedName(EntityPropertiesUtils.getStringValueForProperty(btDetail.getProperties(), Constants.QUALIFIED_NAME));
-
+            businessTerm = buildBusinessTerm(btDetail);
         }
         return businessTerm;
     }
@@ -288,20 +271,19 @@ public class ColumnContextEventBuilder {
      * @throws InvalidParameterException
      * @throws EntityNotKnownException
      */
-    private List<ColumnContextEvent> getDbSchemaTypeDetails(String guid, Relationship relationalDbSchemaRelationship) throws Exception {
+    private List<TableContextEvent> getDbSchemaTypeDetails(String guid, Relationship relationalDbSchemaRelationship) throws Exception {
         log.debug("Load db schema type for entity with guid {}", guid);
-        List<ColumnContextEvent> allEvents = new ArrayList<>();
+        List<TableContextEvent> allEvents = new ArrayList<>();
         String relationshipTypeGuid = enterpriseConnector.getMetadataCollection().getTypeDefByName(Constants.USER_ID, Constants.ASSET_SCHEMA_TYPE).getGUID();
         String dbSchemaTypeGuid = getOtherEntityGuid(guid, relationalDbSchemaRelationship);
 
         List<Relationship> relationships = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.USER_ID, dbSchemaTypeGuid, relationshipTypeGuid, 0, null, null, null, null, 0);
         log.debug("Loaded AssetSchemaType relationships for {}", dbSchemaTypeGuid);
         for (Relationship relationship : relationships) {
-            List<ColumnContextEvent> events = getDeployedDatabaseSchemaDetails(dbSchemaTypeGuid, relationship);
+            List<TableContextEvent> events = getDeployedDatabaseSchemaDetails(dbSchemaTypeGuid, relationship);
             allEvents.addAll(events);
         }
         InstanceProperties dbSchemaTypeProperties = relationships.get(0).getEntityTwoProxy().getUniqueProperties();
-        allEvents.stream().peek(e -> e.getTableContext().setSchemaTypeQualifiedName(EntityPropertiesUtils.getStringValueForProperty(dbSchemaTypeProperties, Constants.QUALIFIED_NAME))).collect(Collectors.toList());
 
         return allEvents;
     }
@@ -317,9 +299,9 @@ public class ColumnContextEventBuilder {
      * @throws InvalidParameterException
      * @throws EntityNotKnownException
      */
-    private List<ColumnContextEvent> getDeployedDatabaseSchemaDetails(String guid, Relationship relationshipToDeployedDatabaseSchema) throws Exception {
+    private List<TableContextEvent> getDeployedDatabaseSchemaDetails(String guid, Relationship relationshipToDeployedDatabaseSchema) throws Exception {
         log.debug("Load deployed db schema for entity with guid {}", guid);
-        List<ColumnContextEvent> allEvents = new ArrayList<>();
+        List<TableContextEvent> allEvents = new ArrayList<>();
         String deployedDatabaseSchemaGuid = getOtherEntityGuid(guid, relationshipToDeployedDatabaseSchema);
         EntityDetail deployedDatabaseSchemaEntity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, deployedDatabaseSchemaGuid);
         InstanceProperties deployedDatabaseSchemaEntityProperties = deployedDatabaseSchemaEntity.getProperties();
@@ -328,10 +310,9 @@ public class ColumnContextEventBuilder {
         String relationshipTypeGuid = enterpriseConnector.getMetadataCollection().getTypeDefByName(Constants.USER_ID, Constants.DATA_CONTENT_FOR_DATASET).getGUID();
         List<Relationship> dbRelationships = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.USER_ID, deployedDatabaseSchemaGuid, relationshipTypeGuid, 0, null, null, null, null, 0);
         for (Relationship relationship : dbRelationships) {
-            List<ColumnContextEvent> events = getDatabaseDetails(deployedDatabaseSchemaGuid, relationship);
+            List<TableContextEvent> events = getDatabaseDetails(deployedDatabaseSchemaGuid, relationship);
             allEvents.addAll(events.stream().peek(e -> {
-                e.getTableContext().setSchemaName(schemaName);
-                e.getTableContext().setSchemaQualifiedName(schemaQualifiedName);
+                e.getTableSource().setSchemaName(schemaName);
             }).collect(Collectors.toList()));
 
         }
@@ -349,18 +330,17 @@ public class ColumnContextEventBuilder {
      * @throws InvalidParameterException
      * @throws EntityNotKnownException
      */
-    private List<ColumnContextEvent> getDatabaseDetails(String guid, Relationship dbRelationships) throws Exception {
+    private List<TableContextEvent> getDatabaseDetails(String guid, Relationship dbRelationships) throws Exception {
         log.debug("Load database details for entity with guid {}", guid);
-        List<ColumnContextEvent> allEvents = new ArrayList<>();
+        List<TableContextEvent> allEvents = new ArrayList<>();
         String databaseGuid = getOtherEntityGuid(guid, dbRelationships);
 
         String relationshipTypeGuid = enterpriseConnector.getMetadataCollection().getTypeDefByName(Constants.USER_ID, Constants.CONNECTION_TO_ASSET).getGUID();
         InstanceProperties databaseEntityProperties = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, databaseGuid).getProperties();
         List<Relationship> relationships = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.USER_ID, databaseGuid, relationshipTypeGuid, 0, null, null, null, null, 0);
         Relationship relationship = relationships.get(0);
-        ColumnContextEvent event = getConnectionDetails(databaseGuid, relationship);
-        event.getTableContext().setDatabaseName(EntityPropertiesUtils.getStringValueForProperty(databaseEntityProperties, Constants.NAME));
-        event.getTableContext().setDatabaseQualifiedName(EntityPropertiesUtils.getStringValueForProperty(databaseEntityProperties, Constants.QUALIFIED_NAME));
+        TableContextEvent event = getConnectionDetails(databaseGuid, relationship);
+        event.getTableSource().setDatabaseName(EntityPropertiesUtils.getStringValueForProperty(databaseEntityProperties, Constants.NAME));
         allEvents.add(event);
 
         return allEvents;
@@ -378,7 +358,7 @@ public class ColumnContextEventBuilder {
      * @throws InvalidParameterException
      * @throws EntityNotKnownException
      */
-    private ColumnContextEvent getConnectionDetails(String guid, Relationship relationship) throws Exception {
+    private TableContextEvent getConnectionDetails(String guid, Relationship relationship) throws Exception {
         log.debug("Load connection details for entity with guid {}", guid);
         String connectionEntityGUID = getOtherEntityGuid(guid, relationship);
         EntityDetail connectionEntity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, connectionEntityGUID);
@@ -388,11 +368,9 @@ public class ColumnContextEventBuilder {
         String endpointGuid = getOtherEntityGuid(connectionEntityGUID, relationshipToEndpoint);
 
 
-        ColumnContextEvent event = getEndpointDetails(endpointGuid);
+        TableContextEvent event = getEndpointDetails(endpointGuid);
         EntityDetail connectorTypeEntity = getConnectorTypeProviderName(connectionEntityGUID);
-        event.getConnectionDetails().setConnectorProviderName(EntityPropertiesUtils.getStringValueForProperty(connectorTypeEntity.getProperties(), Constants.CONNECTOR_PROVIDER_CLASSNAME));
-        event.getConnectionDetails().setConnectorProviderQualifiedName(EntityPropertiesUtils.getStringValueForProperty(connectorTypeEntity.getProperties(), Constants.QUALIFIED_NAME));
-        event.getConnectionDetails().setConnectionQualifiedName(EntityPropertiesUtils.getStringValueForProperty(connectionEntity.getProperties(), Constants.QUALIFIED_NAME));
+        event.getTableSource().setConnectorProviderName(EntityPropertiesUtils.getStringValueForProperty(connectorTypeEntity.getProperties(), Constants.CONNECTOR_PROVIDER_CLASSNAME));
         return event;
     }
 
@@ -420,24 +398,19 @@ public class ColumnContextEventBuilder {
      * @param endpointGuid - guid for endpoint
      * @return the context with connection details populated
      */
-    private ColumnContextEvent getEndpointDetails(String endpointGuid) throws Exception {
+    private TableContextEvent getEndpointDetails(String endpointGuid) throws Exception {
 
         log.debug("Load endpoint details for entity with guid {}", endpointGuid);
         EntityDetail endpointEntity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, endpointGuid);
-        ColumnContextEvent columnContextEvent = new ColumnContextEvent();
-        ConnectionDetails connectionDetails = new ConnectionDetails();
-        columnContextEvent.setConnectionDetails(connectionDetails);
+        TableContextEvent tableContextEvent = new TableContextEvent();
+        TableSource tableSource = new TableSource();
+        tableContextEvent.setTableSource(tableSource);
         String address = EntityPropertiesUtils.getStringValueForProperty(endpointEntity.getProperties(), Constants.NETWORK_ADDRESS);
 
-        connectionDetails.setNetworkAddress(address);
-        connectionDetails.setProtocol(EntityPropertiesUtils.getStringValueForProperty(endpointEntity.getProperties(), Constants.PROTOCOL));
-        connectionDetails.setEndpointQualifiedName(EntityPropertiesUtils.getStringValueForProperty(endpointEntity.getProperties(), Constants.QUALIFIED_NAME));
+        tableSource.setNetworkAddress(address);
+        tableSource.setProtocol(EntityPropertiesUtils.getStringValueForProperty(endpointEntity.getProperties(), Constants.PROTOCOL));
 
-//        MapPropertyValue additionalProperties = EntityPropertiesUtils.getMapValueForProperty(endpointEntity.getProperties(), Constants.ADDITIONAL_PROPERTIES);
-//        if (additionalProperties != null && additionalProperties.getMapValues() != null) {
-//            connectionDetails.setGaianNodeName(EntityPropertiesUtils.getStringValueForProperty(additionalProperties.getMapValues(), Constants.GAIAN_DB_NODE_NAME));
-//        }
-        return columnContextEvent;
+        return tableContextEvent;
     }
 
     /**
@@ -452,6 +425,25 @@ public class ColumnContextEventBuilder {
             return relationship.getEntityTwoProxy().getGUID();
         }
         return relationship.getEntityOneProxy().getGUID();
+    }
+
+    public EntityDetail getEntity(String guid) throws RepositoryErrorException, UserNotAuthorizedException, EntityProxyOnlyException, InvalidParameterException, EntityNotKnownException {
+        EntityDetail column = enterpriseConnector.getMetadataCollection().getEntityDetail("", guid);
+        return column;
+    }
+
+    public BusinessTerm buildBusinessTerm(EntityDetail businessTermEntity) {
+        BusinessTerm businessTerm = new BusinessTerm();
+        businessTerm.setGuid(businessTermEntity.getGUID());
+        businessTerm.setQualifiedName(EntityPropertiesUtils.getStringValueForProperty(businessTermEntity.getProperties(), Constants.QUALIFIED_NAME));
+        businessTerm.setSummary(EntityPropertiesUtils.getStringValueForProperty(businessTermEntity.getProperties(), Constants.SUMMARY));
+        businessTerm.setName(EntityPropertiesUtils.getStringValueForProperty(businessTermEntity.getProperties(), Constants.NAME));
+        businessTerm.setExamples(EntityPropertiesUtils.getStringValueForProperty(businessTermEntity.getProperties(), Constants.EXAMPLES));
+        businessTerm.setAbbreviation(EntityPropertiesUtils.getStringValueForProperty(businessTermEntity.getProperties(), Constants.ABBREVIATION));
+        businessTerm.setQuery(EntityPropertiesUtils.getStringValueForProperty(businessTermEntity.getProperties(), Constants.QUERY));
+        businessTerm.setDescription(EntityPropertiesUtils.getStringValueForProperty(businessTermEntity.getProperties(), Constants.DESCRIPTION));
+        businessTerm.setUsage(EntityPropertiesUtils.getStringValueForProperty(businessTermEntity.getProperties(), Constants.USAGE));
+        return businessTerm;
     }
 
 }

@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.connectedasset.server;
 import org.odpi.openmetadata.accessservices.connectedasset.ffdc.ConnectedAssetErrorCode;
 import org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions.UnrecognizedAssetGUIDException;
+import org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions.UnrecognizedConnectionGUIDException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
@@ -16,7 +17,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import java.util.*;
 
 /**
- * AssetHandler retrieves and caches basic information about an Asset and caches it to allow the
+ * AssetHandler retrieves basic information about an Asset and caches it to allow the
  * the ConnectedAssetRESTServices to retrieve all it needs.  Each instance serves a single REST request.
  *
  * The calls to the metadata repositories happen in the constructor.  Then getters are available to
@@ -47,6 +48,7 @@ class AssetHandler
 
     private EntityDetail         assetEntity;
     private List<Relationship>   assetRelationships;
+    private String               connectionGUID;
 
 
     /**
@@ -54,10 +56,15 @@ class AssetHandler
      * official name.  Then retrieve the asset and its relationships.
      *
      * @param serviceName  name of this service
-     * @param serverName  name of this service
+     * @param serverName  name of this server
      * @param repositoryConnector  connector to the property server.
      * @param userId        userId of user making request.
      * @param assetGUID     unique id for asset.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UnrecognizedAssetGUIDException the supplied GUID is not recognized by the metadata repository.
+     * @throws PropertyServerException there is a problem retrieving information from the property (metadata) server.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     AssetHandler(String                  serviceName,
                  String                  serverName,
@@ -73,13 +80,46 @@ class AssetHandler
         this.repositoryHelper = repositoryConnector.getRepositoryHelper();
         this.serverName = repositoryConnector.getServerName();
         this.errorHandler = new ErrorHandler(repositoryConnector);
-        this.assetEntity = getAssetEntity(userId, assetGUID);
-        this.assetRelationships = getAssetRelationships(userId, assetGUID);
+        this.assetEntity = retrieveAssetEntity(userId, assetGUID);
+        this.assetRelationships = retrieveAssetRelationships(userId, assetGUID);
     }
 
 
     /**
-     * Returns the connection object corresponding to the supplied connection GUID.
+     * Construct the asset handler with a link to the property server's connector and this access service's
+     * official name.  Then retrieve the asset and its relationships.
+     *
+     * @param serviceName  name of this service
+     * @param serverName  name of this server
+     * @param repositoryConnector  connector to the property server.
+     * @param userId        userId of user making request.
+     * @param assetGUID     unique id for asset.
+     * @param connectionGUID unique id for connection used to access asset.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UnrecognizedAssetGUIDException the supplied GUID is not recognized by the metadata repository.
+     * @throws UnrecognizedConnectionGUIDException the supplied GUID is not recognized by the metadata repository.
+     * @throws PropertyServerException there is a problem retrieving information from the property (metadata) server.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    AssetHandler(String                  serviceName,
+                 String                  serverName,
+                 OMRSRepositoryConnector repositoryConnector,
+                 String                  userId,
+                 String                  assetGUID,
+                 String                  connectionGUID) throws InvalidParameterException,
+                                                                UnrecognizedAssetGUIDException,
+                                                                UnrecognizedConnectionGUIDException,
+                                                                PropertyServerException,
+                                                                UserNotAuthorizedException
+    {
+        this(serviceName, serverName, repositoryConnector, userId, assetGUID);
+        this.connectionGUID = connectionGUID;
+    }
+
+
+    /**
+     * Returns the entity object corresponding to the supplied asset GUID.
      *
      * @param userId  String - userId of user making request.
      * @param assetGUID  the unique id for the connection within the property server.
@@ -90,13 +130,13 @@ class AssetHandler
      * @throws PropertyServerException there is a problem retrieving information from the property (metadata) server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    EntityDetail getAssetEntity(String     userId,
-                                String     assetGUID) throws InvalidParameterException,
-                                                             UnrecognizedAssetGUIDException,
-                                                             PropertyServerException,
-                                                             UserNotAuthorizedException
+    private EntityDetail retrieveAssetEntity(String     userId,
+                                             String     assetGUID) throws InvalidParameterException,
+                                                                          UnrecognizedAssetGUIDException,
+                                                                          PropertyServerException,
+                                                                          UserNotAuthorizedException
     {
-        final  String   methodName = "getAssetEntity";
+        final  String   methodName = "retrieveAssetEntity";
         final  String   guidParameter = "assetGUID";
 
         errorHandler.validateUserId(userId, methodName);
@@ -152,7 +192,7 @@ class AssetHandler
 
 
     /**
-     * Returns the list of relationships attached to the identified asset entity.
+     * Returns the list of relationships attached to the identified asset entity from the metadata collections.
      *
      * @param userId  String - userId of user making request.
      * @param assetGUID  the unique id for the connection within the property server.
@@ -163,13 +203,13 @@ class AssetHandler
      * @throws PropertyServerException there is a problem retrieving information from the property (metadata) server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    List<Relationship> getAssetRelationships(String     userId,
-                                             String     assetGUID) throws InvalidParameterException,
-                                                                          UnrecognizedAssetGUIDException,
-                                                                          PropertyServerException,
-                                                                          UserNotAuthorizedException
+    private List<Relationship> retrieveAssetRelationships(String     userId,
+                                                          String     assetGUID) throws InvalidParameterException,
+                                                                                       UnrecognizedAssetGUIDException,
+                                                                                       PropertyServerException,
+                                                                                       UserNotAuthorizedException
     {
-        final  String   methodName = "getAssetRelationships";
+        final  String   methodName = "retrieveAssetRelationships";
         final  String   guidParameter = "assetGUID";
 
         errorHandler.validateUserId(userId, methodName);
@@ -225,8 +265,8 @@ class AssetHandler
      * @param typeName relationship type name
      * @return list of selected relationships (or empty list)
      */
-    List<Relationship>  getRelationshipsOfACertainType(List<Relationship>  assetRelationships,
-                                                       String              typeName)
+    private List<Relationship>  getRelationshipsOfACertainType(List<Relationship>  assetRelationships,
+                                                               String              typeName)
     {
         List<Relationship>   results = new ArrayList<>();
 
@@ -352,35 +392,12 @@ class AssetHandler
 
                     if (propertyName != null)
                     {
-                        asset.setQualifiedName(repositoryHelper.getStringProperty(serviceName,
-                                                                                  qualifiedNamePropertyName,
-                                                                                  instanceProperties,
-                                                                                  methodName));
-                        asset.setDisplayName(repositoryHelper.getStringProperty(serviceName,
-                                                                                displayNamePropertyName,
-                                                                                instanceProperties,
-                                                                                methodName));
-
-                        asset.setDescription(repositoryHelper.getStringProperty(serviceName,
-                                                                                descriptionPropertyName,
-                                                                                instanceProperties,
-                                                                                methodName));
-
-                        asset.setOwner(repositoryHelper.getStringProperty(serviceName,
-                                                                          ownerPropertyName,
-                                                                          instanceProperties,
-                                                                          methodName));
-
-                    /* asset.setAdditionalProperties(repositoryHelper.getMapProperty(additionalPropertiesName,
-                                                                                         instanceProperties,
-                                                                                         methodName));
-
-                    asset.setZoneMembership(repositoryHelper.getArrayProperty(serviceName,
-                                                                                    ownerPropertyName,
-                                                                                    instanceProperties,
-                                                                                    methodName));
-                    protected List<String>        zoneMembership       = null;
-                    protected Map<String, Object> assetProperties      = null; */
+                        asset.setQualifiedName(repositoryHelper.getStringProperty(serviceName, qualifiedNamePropertyName, instanceProperties, methodName));
+                        asset.setDisplayName(repositoryHelper.getStringProperty(serviceName, displayNamePropertyName, instanceProperties, methodName));
+                        asset.setDescription(repositoryHelper.getStringProperty(serviceName, descriptionPropertyName, instanceProperties, methodName));
+                        asset.setOwner(repositoryHelper.getStringProperty(serviceName, ownerPropertyName, instanceProperties, methodName));
+                        asset.setAdditionalProperties(repositoryHelper.getMapFromProperty(serviceName, additionalPropertiesName, instanceProperties, methodName));
+                        asset.setZoneMembership(repositoryHelper.getStringArrayProperty(serviceName, ownerPropertyName, instanceProperties, methodName));
                     }
                 }
 

@@ -55,11 +55,14 @@ public class <$$uEntityName$$>Mapper {
                 systemAttributes.setGUID(omrsEntityDetail.getGUID());
                 <$$EntityName$$>.setSystemAttributes(systemAttributes);
 
-
                 // Set properties
                 InstanceProperties omrsEntityDetailProperties = omrsEntityDetail.getProperties();
-                Iterator omrsPropertyIterator = omrsEntityDetailProperties.getPropertyNames();
-                while (omrsPropertyIterator.hasNext()) {
+                if (omrsEntityDetailProperties!=null) {
+                  omrsEntityDetailProperties.setEffectiveFromTime(<$$EntityName$$>.getEffectiveFromTime());
+                  omrsEntityDetailProperties.setEffectiveToTime(<$$EntityName$$>.getEffectiveToTime());
+                  Iterator omrsPropertyIterator = omrsEntityDetailProperties.getPropertyNames();
+
+                  while (omrsPropertyIterator.hasNext()) {
                     String name = (String) omrsPropertyIterator.next();
                     //TODO check if this is a property we expect or whether the type has been added to.
                     // this is a property we expect
@@ -137,8 +140,8 @@ public class <$$uEntityName$$>Mapper {
                             break;
                     }
 
-                }   // end while
-
+                  }   // end while
+                }
                  // set classifications
                  List<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification> omrsclassifications = omrsEntityDetail.getClassifications() ;
                  if (omrsclassifications != null && !omrsclassifications.isEmpty()){
@@ -194,6 +197,8 @@ public class <$$uEntityName$$>Mapper {
             }
 
             InstanceProperties instanceProperties = new InstanceProperties();
+            instanceProperties.setEffectiveFromTime(<$$EntityName$$>.getEffectiveFromTime());
+            instanceProperties.setEffectiveToTime(<$$EntityName$$>.getEffectiveToTime());
             // primitives
 
             <$$Attr$$

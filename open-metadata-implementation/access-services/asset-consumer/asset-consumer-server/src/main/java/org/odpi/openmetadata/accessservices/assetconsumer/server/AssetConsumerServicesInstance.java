@@ -5,8 +5,11 @@ package org.odpi.openmetadata.accessservices.assetconsumer.server;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.AssetConsumerErrorCode;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions.PropertyServerException;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+
+import java.util.List;
 
 /**
  * AssetConsumerServicesInstance caches references to OMRS objects for a specific server.
@@ -14,18 +17,23 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 public class AssetConsumerServicesInstance
 {
-    private OMRSRepositoryConnector repositoryConnector = null;
-    private OMRSMetadataCollection  metadataCollection = null;
-    private String                  serverName = null;
+    private List<String>            supportedZones;
+    private OMRSRepositoryConnector repositoryConnector;
+    private OMRSMetadataCollection  metadataCollection;
+    private String                  serverName;
+    private OMRSAuditLog            auditLog;
 
 
     /**
      * Set up the local repository connector that will service the REST Calls.
      *
      * @param repositoryConnector link to the repository responsible for servicing the REST calls.
+     * @param supportedZones list of zones that AssetConsumer is allowed to serve Assets from.
      * @throws NewInstanceException a problem occurred during initialization
      */
-    public AssetConsumerServicesInstance(OMRSRepositoryConnector repositoryConnector) throws NewInstanceException
+    public AssetConsumerServicesInstance(OMRSRepositoryConnector repositoryConnector,
+                                         List<String>            supportedZones,
+                                         OMRSAuditLog            auditLog) throws NewInstanceException
     {
         final String methodName = "new ServiceInstance";
 
@@ -36,6 +44,8 @@ public class AssetConsumerServicesInstance
                 this.repositoryConnector = repositoryConnector;
                 this.serverName = repositoryConnector.getServerName();
                 this.metadataCollection = repositoryConnector.getMetadataCollection();
+                this.supportedZones = supportedZones;
+                this.auditLog = auditLog;
 
                 AssetConsumerServicesInstanceMap.setNewInstanceForJVM(serverName, this);
             }
@@ -70,6 +80,28 @@ public class AssetConsumerServicesInstance
 
 
     /**
+     * Return the list of zones that this instance of the Asset Consumer OMAS should support.
+     *
+     * @return list of zone names.
+     */
+    public List<String> getSupportedZones()
+    {
+        return supportedZones;
+    }
+
+
+    /**
+     * Return the audit log for this access service.
+     *
+     * @return audit log
+     */
+    public OMRSAuditLog getAuditLog()
+    {
+        return auditLog;
+    }
+
+
+    /**
      * Return the server name.
      *
      * @return serverName name of the server for this instance
@@ -86,7 +118,7 @@ public class AssetConsumerServicesInstance
         else
         {
             AssetConsumerErrorCode errorCode    = AssetConsumerErrorCode.OMRS_NOT_AVAILABLE;
-            String                errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
+            String                 errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
 
             throw new NewInstanceException(errorCode.getHTTPErrorCode(),
                                            this.getClass().getName(),

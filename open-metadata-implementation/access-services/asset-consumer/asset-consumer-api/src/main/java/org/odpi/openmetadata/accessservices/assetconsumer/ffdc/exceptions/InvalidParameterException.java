@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions;
 
-
 import java.util.Objects;
 
 /**

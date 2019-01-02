@@ -40,6 +40,8 @@ public class  <$$uname$$> implements Serializable {
     private static final Logger log = LoggerFactory.getLogger(<$$uname$$>.class);
     private static final String className = <$$uname$$>.class.getName();
     private SystemAttributes systemAttributes = null;
+    private Date effectiveFromTime = null;
+    private Date effectiveToTime = null;
     List<Classification> classifications = null;
 
     private Map<String, Object> extraAttributes =null;
@@ -141,6 +143,32 @@ public class  <$$uname$$> implements Serializable {
            this.<$$PropertyName$$> = <$$PropertyName$$>;
        }
    $$$>
+    /**
+     * Return the date/time that this <$$uname$$> should start to be used (null means it can be used from creationTime).
+     * @return Date the <$$uname$$> becomes effective.
+     */
+    public Date getEffectiveFromTime()
+    {
+        return effectiveFromTime;
+    }
+
+    public void setEffectiveFromTime(Date effectiveFromTime)
+    {
+        this.effectiveFromTime = effectiveFromTime;
+    }
+    /**
+     * Return the date/time that this <$$uname$$> should no longer be used.
+     *
+     * @return Date the <$$uname$$> stops being effective.
+     */
+    public Date getEffectiveToTime()
+    {
+        return effectiveToTime;
+    }
+    public void setEffectiveToTime(Date effectiveToTime)
+    {
+        this.effectiveToTime = effectiveToTime;
+    }
 
     public void setExtraAttributes(Map<String, Object> extraAttributes) {
         this.extraAttributes = extraAttributes;

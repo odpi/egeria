@@ -8,21 +8,18 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 
+import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventProcessor;
 import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEventProcessor;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveStoreConnector;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveInstanceStore;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveTypeStore;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentManager;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -139,6 +136,7 @@ public class OMRSArchiveManager
         repositoryContentManager.setOpenMetadataTypesOriginGUID(openMetadataTypesArchive.getArchiveGUID());
         processOpenMetadataArchive(openMetadataTypes, repositoryContentManager, localInstanceEventProcessor);
     }
+
 
     /**
      * Unpack and process the contents an open metadata archive , passing its contents to the local
@@ -349,8 +347,10 @@ public class OMRSArchiveManager
 
 
     /**
-     * The InstanceStore is in two parts: an optional list of entities followed by an optional list
-     * of relationships.  It is possible that this archive has been processed before
+     * The InstanceStore is in three parts: an optional list of entities followed by an optional list
+     * of relationships followed by an optional list of classifications.
+     *
+     * It is possible that this archive has been processed before
      * and so any duplicates detected are ignored.  However, conflicting instances are detected.
      * Any problems found in applying the archive contents are recorded on the audit log.
      *
@@ -364,22 +364,30 @@ public class OMRSArchiveManager
                                       OpenMetadataArchiveInstanceStore archiveInstanceStore,
                                       OMRSInstanceEventProcessor       instanceProcessor)
     {
-        List<EntityDetail> entities      = archiveInstanceStore.getEntities();
-        List<Relationship> relationships = archiveInstanceStore.getRelationships();
-        int                instanceCount = 0;
+        List<EntityDetail>                  entities        = archiveInstanceStore.getEntities();
+        List<Relationship>                  relationships   = archiveInstanceStore.getRelationships();
+        List<ClassificationEntityExtension> classifications = archiveInstanceStore.getClassifications();
+        int                                 instanceCount   = 0;
 
         if (instanceProcessor != null)
         {
-            String       sourceName = OMRSAuditingComponent.ARCHIVE_MANAGER.getComponentName();
-            String       originatorMetadataCollectionId = archiveProperties.getArchiveGUID();
-            String       originatorServerName = archiveProperties.getArchiveName();
-            String       originatorServerType = null;
-            String       originatorOrganizationName = archiveProperties.getOriginatorName();
+            String                 sourceName                 = OMRSAuditingComponent.ARCHIVE_MANAGER.getComponentName();
+            String                 homeMetadataCollectionId   = archiveProperties.getArchiveGUID();
+            String                 originatorServerName       = archiveProperties.getArchiveName();
+            String                 originatorServerType       = OpenMetadataArchiveType.CONTENT_PACK.getName();
+            InstanceProvenanceType provenanceType             = InstanceProvenanceType.CONTENT_PACK;
+            Date                   archiveCreationTime        = archiveProperties.getCreationDate();
+            String                 originatorName             = archiveProperties.getOriginatorName();
+            String                 originatorOrganizationName = archiveProperties.getOriginatorOrganization();
+            String                 originatorLicense          = archiveProperties.getOriginatorLicense();
 
-            if (archiveProperties.getArchiveType() != null)
+
+            if (archiveProperties.getArchiveType() == OpenMetadataArchiveType.METADATA_EXPORT)
             {
-                originatorServerType = archiveProperties.getArchiveType().getName();
+                provenanceType       = InstanceProvenanceType.EXPORT_ARCHIVE;
+                originatorServerType = OpenMetadataArchiveType.METADATA_EXPORT.getName();
             }
+
 
             if (entities != null)
             {
@@ -387,14 +395,22 @@ public class OMRSArchiveManager
                 {
                     if (entity != null)
                     {
+                        this.setInstanceAuditHeader(homeMetadataCollectionId,
+                                                    originatorServerName,
+                                                    originatorName,
+                                                    archiveCreationTime,
+                                                    provenanceType,
+                                                    originatorLicense,
+                                                    entity);
+
                         instanceProcessor.processNewEntityEvent(sourceName,
-                                                                originatorMetadataCollectionId,
+                                                                homeMetadataCollectionId,
                                                                 originatorServerName,
                                                                 originatorServerType,
                                                                 originatorOrganizationName,
                                                                 entity);
 
-                        instanceCount ++;
+                        instanceCount++;
                     }
                 }
             }
@@ -406,8 +422,16 @@ public class OMRSArchiveManager
                 {
                     if (relationship != null)
                     {
+                        this.setInstanceAuditHeader(homeMetadataCollectionId,
+                                                    originatorServerName,
+                                                    originatorName,
+                                                    archiveCreationTime,
+                                                    provenanceType,
+                                                    originatorLicense,
+                                                    relationship);
+
                         instanceProcessor.processNewRelationshipEvent(sourceName,
-                                                                      originatorMetadataCollectionId,
+                                                                      homeMetadataCollectionId,
                                                                       originatorServerName,
                                                                       originatorServerType,
                                                                       originatorOrganizationName,
@@ -417,8 +441,105 @@ public class OMRSArchiveManager
                     }
                 }
             }
+
+
+            if (classifications != null)
+            {
+                for (ClassificationEntityExtension classificationEntityExtension : classifications)
+                {
+                    if (classificationEntityExtension != null)
+                    {
+                        Classification classification = classificationEntityExtension.getClassification();
+
+                        this.setInstanceAuditHeader(homeMetadataCollectionId,
+                                                    originatorServerName,
+                                                    originatorName,
+                                                    archiveCreationTime,
+                                                    provenanceType,
+                                                    originatorLicense,
+                                                    classification);
+
+                        classificationEntityExtension.setClassification(classification);
+
+                        // Todo
+                        /* new method required
+                        instanceProcessor.processNewClassificationEvent(sourceName,
+                                                                        homeMetadataCollectionId,
+                                                                        originatorServerName,
+                                                                        originatorServerType,
+                                                                        originatorOrganizationName,
+                                                                        classificationEntityExtension);
+
+                        instanceCount ++;
+                        */
+                    }
+                }
+            }
         }
 
         return instanceCount;
+    }
+
+
+    /**
+     * Set up the header of an archive instance.
+     *
+     * @param metadataCollectionId home metadata collection id
+     * @param metadataConnectionName name of the metadata collection
+     * @param originatorName originator name
+     * @param creationTime creation time of archive
+     * @param provenanceType type of archive
+     * @param originatorLicense any license info
+     * @param instance instance to fill in
+     */
+    private void setInstanceAuditHeader(String                 metadataCollectionId,
+                                        String                 metadataConnectionName,
+                                        String                 originatorName,
+                                        Date                   creationTime,
+                                        InstanceProvenanceType provenanceType,
+                                        String                 originatorLicense,
+                                        InstanceAuditHeader    instance)
+    {
+        if (provenanceType == InstanceProvenanceType.EXPORT_ARCHIVE)
+        {
+            if (instance.getMetadataCollectionId() == null)
+            {
+                instance.setMetadataCollectionId(metadataCollectionId);
+            }
+
+            if (instance.getMetadataCollectionName() == null)
+            {
+                instance.setMetadataCollectionName(metadataConnectionName);
+            }
+
+            if (instance.getCreatedBy() == null)
+            {
+                instance.setCreatedBy(originatorName);
+            }
+
+            if (instance.getCreateTime() == null)
+            {
+                instance.setCreateTime(creationTime);
+            }
+
+            if (instance.getInstanceProvenanceType() == null)
+            {
+                instance.setInstanceProvenanceType(provenanceType);
+            }
+
+            if (instance.getInstanceLicense() == null)
+            {
+                instance.setInstanceLicense(originatorLicense);
+            }
+        }
+        else /* assume this is a content pack and set up instances consistently */
+        {
+            instance.setMetadataCollectionId(metadataCollectionId);
+            instance.setMetadataCollectionName(metadataConnectionName);
+            instance.setCreatedBy(originatorName);
+            instance.setCreateTime(creationTime);
+            instance.setInstanceProvenanceType(InstanceProvenanceType.CONTENT_PACK);
+            instance.setInstanceLicense(originatorLicense);
+        }
     }
 }

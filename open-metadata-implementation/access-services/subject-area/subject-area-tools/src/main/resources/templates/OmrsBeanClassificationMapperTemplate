@@ -58,8 +58,11 @@ public class <$$uClassificationName$$>Mapper {
 
                 // Set properties
                 InstanceProperties omrsClassificationProperties = omrsClassification.getProperties();
-                Iterator omrsPropertyIterator = omrsClassificationProperties.getPropertyNames();
-                while (omrsPropertyIterator.hasNext()) {
+                if (omrsClassificationProperties !=null) {
+                  omrsClassificationProperties.setEffectiveFromTime(<$$ClassificationName$$>.getEffectiveFromTime());
+                  omrsClassificationProperties.setEffectiveToTime(<$$ClassificationName$$>.getEffectiveToTime());
+                  Iterator omrsPropertyIterator = omrsClassificationProperties.getPropertyNames();
+                  while (omrsPropertyIterator.hasNext()) {
                     String name = (String) omrsPropertyIterator.next();
                     //TODO check if this is a property we expect or whether the type has been added to.
                     // this is a property we expect
@@ -137,9 +140,9 @@ public class <$$uClassificationName$$>Mapper {
                             break;
                     }
 
-                }   // end while
-
-                 return <$$ClassificationName$$>;
+                  }   // end while
+                }
+                return <$$ClassificationName$$>;
             } else {
                 // TODO wrong type
             }

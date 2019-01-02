@@ -1,8 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservice.assetcatalog.exception;
 
-import lombok.Getter;
-
 import java.text.MessageFormat;
 
 /**
@@ -24,7 +22,6 @@ import java.text.MessageFormat;
  * <li>UserAction - describes how a AssetConsumerInterface should correct the error</li>
  * </ul>
  */
-@Getter
 public enum AssetCatalogErrorCode {
 
     NO_SEARCH_RESULTS(204, "OMAS-ASSET-CATALOG-204-001 ",
@@ -129,7 +126,12 @@ public enum AssetCatalogErrorCode {
             "The system is unable to retrieve the classifications for the given asset.",
             "Check that the unique identifier for the asset is correct."),
 
-    SERVICE_NOT_INITIALIZED(503, "OMAS-ASSET-CATALOG-503-003 ",
+    METHOD_NOT_IMPLEMENTED(501, "OMAS-ASSET-CATALOG-501-001 ",
+            "The Asset Catalog OMAS method {0}({1}) is not implemented for server {2}",
+            "A method in Asset Catalog OMAS does not have a complete implementation.",
+            "Raise a Github issue to get this fixed."),
+
+    SERVICE_NOT_INITIALIZED(503, "OMAS-ASSET-CATALOG-503-001 ",
             "The access service has not been initialized for server {0} and can not support REST API calls",
             "The server has received a call to one of its open metadata access services but is unable to process it because the access service is not active for the requested server.",
             "If the server is supposed to have this access service activated, correct the server configuration and restart the server.");
@@ -151,5 +153,25 @@ public enum AssetCatalogErrorCode {
     public String getFormattedErrorMessage(String... params) {
         MessageFormat mf = new MessageFormat(errorMessage);
         return mf.format(params);
+    }
+
+    public int getHttpErrorCode() {
+        return httpErrorCode;
+    }
+
+    public String getErrorMessageId() {
+        return errorMessageId;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public String getSystemAction() {
+        return systemAction;
+    }
+
+    public String getUserAction() {
+        return userAction;
     }
 }

@@ -64,7 +64,7 @@ public class AssetCatalogAdmin implements AccessServiceAdmin {
                                auditCode.getSystemAction(),
                                auditCode.getUserAction());
         }
-        catch (Throwable  error) {
+        catch (Exception  error) {
             auditCode = AssetCatalogAuditCode.SERVICE_INSTANCE_FAILURE;
             auditLog.logRecord(actionDescription,
                                auditCode.getLogMessageId(),

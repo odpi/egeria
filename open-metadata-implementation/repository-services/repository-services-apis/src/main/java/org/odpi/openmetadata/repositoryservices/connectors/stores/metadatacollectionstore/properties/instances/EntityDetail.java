@@ -1,4 +1,5 @@
-/* SPDX-License-Identifier: Apache-2.0 */
+/* SPDX-License-Identifier: Apache 2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances;
 
 import com.fasterxml.jackson.annotation.*;
@@ -86,13 +87,15 @@ public class EntityDetail extends EntitySummary
     public String toString()
     {
         return "EntityDetail{" +
-                "entityProperties=" + entityProperties +
+                "type=" + getType() +
+                ", entityProperties=" + entityProperties +
                 ", classifications=" + getClassifications() +
-                ", type=" + getType() +
-                ", instanceProvenanceType=" + getInstanceProvenanceType() +
-                ", metadataCollectionId='" + getMetadataCollectionId() + '\'' +
                 ", instanceURL='" + getInstanceURL() + '\'' +
                 ", GUID='" + getGUID() + '\'' +
+                ", instanceProvenanceType=" + getInstanceProvenanceType() +
+                ", metadataCollectionId='" + getMetadataCollectionId() + '\'' +
+                ", metadataCollectionName='" + getMetadataCollectionName() + '\'' +
+                ", instanceLicense='" + getInstanceLicense() + '\'' +
                 ", status=" + getStatus() +
                 ", createdBy='" + getCreatedBy() + '\'' +
                 ", updatedBy='" + getUpdatedBy() + '\'' +
@@ -117,7 +120,7 @@ public class EntityDetail extends EntitySummary
         {
             return true;
         }
-        if (!(objectToCompare instanceof EntityDetail))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -130,6 +133,7 @@ public class EntityDetail extends EntitySummary
     }
 
 
+
     /**
      * Return a hash code based on the values of this object.
      *
@@ -138,7 +142,6 @@ public class EntityDetail extends EntitySummary
     @Override
     public int hashCode()
     {
-
         return Objects.hash(super.hashCode(), entityProperties);
     }
 }

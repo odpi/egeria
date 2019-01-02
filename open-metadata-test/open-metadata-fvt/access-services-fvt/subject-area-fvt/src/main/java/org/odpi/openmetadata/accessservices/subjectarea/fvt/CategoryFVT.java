@@ -19,161 +19,150 @@ import java.io.IOException;
  */
 public class CategoryFVT
 {
-    private static final String USERID = " Fred";
-    private static final String DEFAULT_URL = "http://localhost:8080/open-metadata/access-services/subject-area";
+
+
     private static final String DEFAULT_TEST_GLOSSARY_NAME = "Test Glossary for category sample";
     private static final String DEFAULT_TEST_CATEGORY_NAME = "Test category A";
     private static final String DEFAULT_TEST_CATEGORY_NAME_UPDATED = "Test category A updated";
     private static final String DEFAULT_TEST_CATEGORY_NAME2 = "Test category B";
     private static final String DEFAULT_TEST_CATEGORY_NAME3 = "Test category C";
-    private static SubjectAreaCategory subjectAreaCategory = null;
+    private SubjectAreaCategory subjectAreaCategory = null;
+    private GlossaryFVT glossaryFVT =null;
+    private String serverName = null;
 
     public static void main(String args[])
     {
         SubjectArea subjectArea = null;
+        String url = null;
         try
         {
-            String url = RunAllFVT.getUrl(args);
-            initialiseCategoryFVT(url);
-            System.out.println("Create a glossary");
-            GlossaryFVT.initialiseGlossaryFVT(url);
-            Glossary glossary = GlossaryFVT.createGlossary(DEFAULT_TEST_GLOSSARY_NAME);
-            System.out.println("Create a category1 using glossary name");
-            Category category1 = CategoryFVT.createCategoryWithGlossaryName(DEFAULT_TEST_CATEGORY_NAME, DEFAULT_TEST_GLOSSARY_NAME);
-            System.out.println("Create a category2 using glossary guid");
-            Category category2 = CategoryFVT.createCategoryWithGlossaryGuid(DEFAULT_TEST_CATEGORY_NAME2, glossary.getSystemAttributes().getGUID());
-
-
-            Category categoryForUpdate = new Category();
-            categoryForUpdate.setName(DEFAULT_TEST_CATEGORY_NAME_UPDATED);
-
-            if (category1 != null)
-            {
-                System.out.println("Get the category1");
-                String guid = category1.getSystemAttributes().getGUID();
-                Category gotCategory = getCategoryByGUID(guid);
-                System.out.println("Update the category1");
-                Category updatedCategory = updateCategory(guid, categoryForUpdate);
-                System.out.println("Get the category1 again");
-                gotCategory = getCategoryByGUID(guid);
-                System.out.println("Delete the category1");
-                gotCategory = deleteCategory(guid);
-                System.out.println("Purge a category1");
-
-                // create category DEFAULT_TEST_CATEGORY_NAME3 with parent
-                System.out.println("Create a category with a parent category");
-                Category category3 = CategoryFVT.createCategoryWithParentGlossaryName(DEFAULT_TEST_CATEGORY_NAME3, category2, DEFAULT_TEST_GLOSSARY_NAME);
-                System.out.println("Create a 2nd category with the same name and parent category - expect to fail");
-                // create 2nd category DEFAULT_TEST_CATEGORY_NAME3 with parent should fail.
-                try
-                {
-                    CategoryFVT.createCategoryWithParentGlossaryName(DEFAULT_TEST_CATEGORY_NAME3, category2, DEFAULT_TEST_GLOSSARY_NAME);
-                } catch (InvalidParameterException e)
-                {
-                    System.out.println("Creating category with same name as a sibling not allowed");
-                }
-            }
+            url = RunAllFVT.getUrl(args);
+           runit(url);
+        } catch (IOException e1)
+        {
+            System.out.println("Error getting user input");
         } catch (SubjectAreaCheckedExceptionBase e)
         {
             System.out.println("ERROR: " + e.getErrorMessage() + " Suggested action: " + e.getReportedUserAction());
-        } catch (IOException e)
-        {
-            System.out.println("Error getting user input");
         }
+
+    }
+    public static void runit(String url) throws SubjectAreaCheckedExceptionBase
+    {
+        CategoryFVT fvt =new CategoryFVT(url,FVTConstants.SERVER_NAME1);
+        fvt.run();
+        CategoryFVT fvt2 =new CategoryFVT(url,FVTConstants.SERVER_NAME2);
+        fvt2.run();
+    }
+    public CategoryFVT(String url,String serverName) throws InvalidParameterException
+    {
+        subjectAreaCategory = new SubjectAreaImpl(serverName,url).getSubjectAreaCategory();
+        glossaryFVT = new GlossaryFVT(url,serverName);
+        this.serverName=serverName;
     }
 
-    private static Category createCategoryWithParentGlossaryName(String categoryName, Category parent, String glossaryName) throws SubjectAreaCheckedExceptionBase
+    public void run() throws SubjectAreaCheckedExceptionBase
+    {
+
+        System.out.println("Create a glossary");
+        Glossary glossary = glossaryFVT.createGlossary(serverName+" "+DEFAULT_TEST_GLOSSARY_NAME);
+        System.out.println("Create a category1 using glossary name");
+        Category category1 = createCategoryWithGlossaryGuid(serverName+" "+DEFAULT_TEST_CATEGORY_NAME,glossary.getSystemAttributes().getGUID());
+        System.out.println("Create a category2 using glossary guid");
+        Category category2 = createCategoryWithGlossaryGuid(serverName+" "+DEFAULT_TEST_CATEGORY_NAME2, glossary.getSystemAttributes().getGUID());
+
+        FVTUtils.validateNode(category1);
+        FVTUtils.validateNode(category2);
+        FVTUtils.validateNode(category2);
+
+        Category categoryForUpdate = new Category();
+        categoryForUpdate.setName(serverName+" "+DEFAULT_TEST_CATEGORY_NAME_UPDATED);
+        System.out.println("Get the category1");
+        String guid = category1.getSystemAttributes().getGUID();
+        Category gotCategory = getCategoryByGUID(guid);
+        System.out.println("Update the category1");
+        Category updatedCategory = updateCategory(guid, categoryForUpdate);
+        System.out.println("Get the category1 again");
+        gotCategory = getCategoryByGUID(guid);
+        FVTUtils.validateNode(gotCategory);
+        System.out.println("Delete the category1");
+        gotCategory = deleteCategory(guid);
+        FVTUtils.validateNode(gotCategory);
+        System.out.println("Restore the category1");
+        gotCategory = restoreCategory(guid);
+        FVTUtils.validateNode(gotCategory);
+        System.out.println("Delete the category1");
+        gotCategory = deleteCategory(guid);
+        FVTUtils.validateNode(gotCategory);
+        System.out.println("Purge a category1");
+
+        // create category DEFAULT_TEST_CATEGORY_NAME3 with parent
+        System.out.println("Create a category with a parent category");
+        Category category3 = createCategoryWithParentGlossaryGuid(serverName, serverName + " " + DEFAULT_TEST_CATEGORY_NAME3,category2.getSystemAttributes().getGUID(), glossary.getSystemAttributes().getGUID());
+        FVTUtils.validateNode(category3);
+    }
+    private Category createCategoryWithParentGlossaryGuid(String serverName,String subjectAreaName, String parentGuid, String glossaryGuid) throws SubjectAreaCheckedExceptionBase
     {
         Category category = new Category();
-        category.setName(categoryName);
+        category.setName(subjectAreaName);
         GlossarySummary glossarySummary = new GlossarySummary();
-        glossarySummary.setName(glossaryName);
+        glossarySummary.setGuid(glossaryGuid);
         category.setGlossary(glossarySummary);
-        CategorySummary parentCategorysummary = new CategorySummary();
-        parentCategorysummary.setGuid(parent.getSystemAttributes().getGUID());
-        category.setParentCategory(parentCategorysummary);
-        Category newCategory = subjectAreaCategory.createCategory(USERID, category);
-        if (newCategory != null)
-        {
-            System.out.println("Created Category " + newCategory.getName() + " with guid " + newCategory.getSystemAttributes().getGUID());
-        }
+        CategorySummary parentCategory = new CategorySummary();
+        parentCategory.setGuid(parentGuid);
+        category.setParentCategory(parentCategory);
+        Category newCategory = subjectAreaCategory.createCategory(serverName,FVTConstants.USERID, category);
+        FVTUtils.validateNode(newCategory);
+
+        System.out.println("Created Category " + newCategory.getName() + " with glossaryGuid " + newCategory.getSystemAttributes().getGUID());
         return newCategory;
     }
-
-    public static Category createCategoryWithGlossaryGuid(String categoryName, String glossaryGuid) throws SubjectAreaCheckedExceptionBase
+    public Category createCategoryWithGlossaryGuid(String categoryName, String glossaryGuid) throws SubjectAreaCheckedExceptionBase
     {
         Category category = new Category();
         category.setName(categoryName);
         GlossarySummary glossarySummary = new GlossarySummary();
         glossarySummary.setGuid(glossaryGuid);
         category.setGlossary(glossarySummary);
-        Category newCategory = subjectAreaCategory.createCategory(USERID, category);
-        if (newCategory != null)
-        {
-            System.out.println("Created Category " + newCategory.getName() + " with guid " + newCategory.getSystemAttributes().getGUID());
-        }
+        Category newCategory = subjectAreaCategory.createCategory(serverName,FVTConstants.USERID, category);
+        FVTUtils.validateNode(newCategory);
+        System.out.println("Created Category " + newCategory.getName() + " with guid " + newCategory.getSystemAttributes().getGUID());
         return newCategory;
     }
 
-    public static Category createCategoryWithGlossaryName(String categoryName, String glossaryName) throws SubjectAreaCheckedExceptionBase
+    public Category getCategoryByGUID(String guid) throws SubjectAreaCheckedExceptionBase
     {
-        Category category = new Category();
-        category.setName(categoryName);
-        GlossarySummary glossarySummary = new GlossarySummary();
-        glossarySummary.setName(glossaryName);
-        category.setGlossary(glossarySummary);
-        Category newCategory = subjectAreaCategory.createCategory(USERID, category);
-        if (newCategory != null)
-        {
-            System.out.println("Created Category " + newCategory.getName() + " with guid " + newCategory.getSystemAttributes().getGUID());
-        }
-        return newCategory;
-    }
-
-    public static Category getCategoryByGUID(String guid) throws SubjectAreaCheckedExceptionBase
-    {
-        Category category = subjectAreaCategory.getCategoryByGuid(USERID, guid);
-        if (category != null)
-        {
-            System.out.println("Got Category " + category.getName() + " with guid " + category.getSystemAttributes().getGUID() + " and status " + category.getSystemAttributes().getStatus());
-        }
+        Category category = subjectAreaCategory.getCategoryByGuid(serverName,FVTConstants.USERID, guid);
+        FVTUtils.validateNode(category);
+        System.out.println("Got Category " + category.getName() + " with guid " + category.getSystemAttributes().getGUID() + " and status " + category.getSystemAttributes().getStatus());
         return category;
     }
 
-    public static Category updateCategory(String guid, Category category) throws SubjectAreaCheckedExceptionBase
+    public Category updateCategory(String guid, Category category) throws SubjectAreaCheckedExceptionBase
     {
-        Category updatedCategory = subjectAreaCategory.updateCategory(USERID, guid, category);
-        if (updatedCategory != null)
-        {
-            System.out.println("Updated Category name to " + updatedCategory.getName());
-        }
+        Category updatedCategory = subjectAreaCategory.updateCategory(serverName,FVTConstants.USERID, guid, category);
+        FVTUtils.validateNode(updatedCategory);
+        System.out.println("Updated Category name to " + updatedCategory.getName());
         return updatedCategory;
     }
 
-    public static Category deleteCategory(String guid) throws SubjectAreaCheckedExceptionBase
+    public Category deleteCategory(String guid) throws SubjectAreaCheckedExceptionBase
     {
-        Category deletedCategory = subjectAreaCategory.deleteCategory(USERID, guid);
-        if (deletedCategory != null)
-        {
-            System.out.println("Deleted Category name is " + deletedCategory.getName());
-        }
+        Category deletedCategory = subjectAreaCategory.deleteCategory(serverName,FVTConstants.USERID, guid);
+        System.out.println("Deleted Category name is " + deletedCategory.getName());
         return deletedCategory;
     }
-
-    public static void purgeCategory(String guid) throws SubjectAreaCheckedExceptionBase
+    public Category restoreCategory(String guid) throws SubjectAreaCheckedExceptionBase
     {
-        subjectAreaCategory.purgeCategory(USERID, guid);
-        System.out.println("Purge succeeded");
+        Category restoredCategory = subjectAreaCategory.restoreCategory(serverName,FVTConstants.USERID, guid);
+        FVTUtils.validateNode(restoredCategory);
+        System.out.println("restored Category name is " + restoredCategory.getName());
+        return restoredCategory;
     }
 
-    /**
-     * Call this to initialise the glossary FVT
-     *
-     * @param url supplied base url for the subject area OMAS
-     * @throws InvalidParameterException a parameter is null or an invalid value.
-     */
-    public static void initialiseCategoryFVT(String url) throws InvalidParameterException
+    public void purgeCategory(String guid) throws SubjectAreaCheckedExceptionBase
     {
-        subjectAreaCategory = new SubjectAreaImpl(url).getSubjectAreaCategory();
+        subjectAreaCategory.purgeCategory(serverName,FVTConstants.USERID, guid);
+        System.out.println("Purge succeeded");
     }
 }

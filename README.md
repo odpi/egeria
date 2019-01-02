@@ -1,6 +1,6 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
-  
+
 # Egeria - Open Metadata and Governance
   
 Egeria provides the Apache 2.0 licensed [open metadata and governance](open-metadata-publication/website/README.md)
@@ -18,7 +18,7 @@ value from data whilst ensuring it is properly governed.
 * **[How do I contribute to Egeria?](Community-Guide.md)**
 * **[How do I raise a bug or feature request?](Community-Guide.md#getting-a-jira-account-and-creating-an-issue)**
 * **[How do I enhance my product to support open metadata?](open-metadata-publication/website/open-metadata-integration-patterns/README.md)**
-* **[How do I test that a product is compliant with the open metadata standards?](open-metadata-compliance-suite/README.md)**
+* **[How do I test that a product is compliant with the open metadata standards?](open-metadata-conformance-suite/README.md)**
 
 ## Egeria content organization
   
@@ -77,7 +77,7 @@ The Egeria content is organized into the following modules:
   * **[user-interfaces](open-metadata-implementation/user-interfaces)** - browser based user interfaces.
     * **[access-services-user-interface](open-metadata-implementation/user-interfaces/access-services-user-interface)** - provides a user interface that supports the user-facing Open Metadata Access Services (OMASs).
     * **[server-configuration-user-interface](open-metadata-implementation/user-interfaces/server-configuration-user-interface)** - provides the administration user interface for an open metadata server.
-* **[open-metadata-compliance-suite](open-metadata-compliance-suite)** - implementation of the tests that determine if a vendor or open source technology is compliant with the open metadata and governance standards.
+* **[open-metadata-conformance-suite](open-metadata-conformance-suite)** - implementation of the tests that determine if a vendor or open source technology is compliant with the open metadata and governance standards.
 * **[open-metadata-distribution](open-metadata-distribution)** - contains scripts to extract the completed artifacts from the other modules and stores them together to make it easy to find them.
 * **[open-metadata-publication](open-metadata-publication)** - contains scripts that send artifacts collected together by the open-metadata-distribution module to external parties.
 * **[open-metadata-resources](open-metadata-resources)** - contains the open metadata demos and samples.
@@ -95,3 +95,9 @@ bound to any corporate affiliation.
 Participants are bound the ODPi's [Code of Conduct](https://github.com/odpi/specs/wiki/ODPi-Code-of-Conduct).
 The governance of the project is described in more detail in the
 [Egeria Operations](./Egeria-Operations.md).
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

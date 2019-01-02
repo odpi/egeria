@@ -13,22 +13,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * AssetConsumerEventType describes the different types of events produced by the Asset Consumer OMAS.
- * Each asset consumer (a person) can associate asset collections with their profile.  The notifications
- * they receive come from the assets that are members of these collections.  The asset consumer
- * may turn these notifications on and off either at the collection level or at the individual asset.
+ * Events are limited to assets that are in the zones listed in the supportedZones property
+ * passed to the Asset Consumer OMAS at start up (a null value here means all zones).
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum AssetConsumerEventType implements Serializable
 {
-    UNKNOWN_ASSET_CONSUMER_EVENT  (0,  "UnknownEvent",   "An event that is not recognized by the local server."),
-    NEW_ASSET_EVENT               (1,  "NewAsset",       "A new asset has been defined."),
-    UPDATED_ASSET_EVENT           (2,  "UpdatedAsset",   "An existing asset has been updated."),
-    DELETED_ASSET_EVENT           (3,  "DeletedAsset",   "An existing asset has been deleted."),
-    NEW_ASSET_MEMBER_EVENT        (4,  "NewAssetMember", "A new asset has been added to one of the asset consumer's collections.");
-
-
+    UNKNOWN_ASSET_CONSUMER_EVENT        (0,  "Unknown Event",  "An event that is not recognized by the local server."),
+    NEW_ASSET_EVENT                     (1,  "New Asset",      "A new asset has been added to one of the access point zones."),
+    UPDATED_ASSET_EVENT                 (2,  "Updated Asset",  "An existing asset has been updated or added to one of the access point zones.");
 
     private static final long     serialVersionUID = 1L;
 

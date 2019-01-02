@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.subjectarea.responses;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.LibraryTermReference;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -28,23 +29,28 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
                 // Relationships
 
-                // LibraryTermReferenceRelationship
-
                 // term to term relationship responses
                 @JsonSubTypes.Type(value = TermHASARelationshipResponse.class, name = "TermHASARelationshipResponse"),
-                @JsonSubTypes.Type(value = RelatedTermRelationshipResponse.class, name = "RelatedTermRelationshipResponse"),
+                @JsonSubTypes.Type(value = RelatedTermResponse.class, name = "RelatedTermResponse"),
                 @JsonSubTypes.Type(value = SynonymRelationshipResponse.class, name = "SynonymRelationshipResponse"),
                 @JsonSubTypes.Type(value = AntonymRelationshipResponse.class, name = "AntonymRelationshipResponse"),
                 @JsonSubTypes.Type(value = PreferredTermRelationshipResponse.class, name = "PreferredTermRelationshipResponse"),
-                @JsonSubTypes.Type(value = TermReplacementRelationshipResponse.class, name = "TermReplacementRelationshipResponse"),
-                @JsonSubTypes.Type(value = TermTranslationRelationshipResponse.class, name = "TermTranslationRelationshipResponse"),
-                @JsonSubTypes.Type(value = TermValidValueRelationshipResponse.class, name = "TermValidValueRelationshipResponse"),
-                @JsonSubTypes.Type(value = TermUsedInContextRelationshipResponse.class, name = "TermUsedInContextRelationshipResponse"),
+                @JsonSubTypes.Type(value = ReplacementRelationshipResponse.class, name = "ReplacementRelationshipResponse"),
+                @JsonSubTypes.Type(value = TranslationRelationshipResponse.class, name = "TranslationRelationshipResponse"),
+                @JsonSubTypes.Type(value = ValidValueRelationshipResponse.class, name = "ValidValueRelationshipResponse"),
+                @JsonSubTypes.Type(value = UsedInContextRelationshipResponse.class, name = "UsedInContextRelationshipResponse"),
                 @JsonSubTypes.Type(value = TermISATYPEOFRelationshipResponse.class, name = "TermISATYPEOFRelationshipResponse"),
                 @JsonSubTypes.Type(value = TermTYPEDBYRelationshipResponse.class, name = "TermTYPEDBYRelationshipResponse"),
-
+                @JsonSubTypes.Type(value = TermISARelationshipResponse.class,name = "TermISARelationshipResponse"),
+                // category to term response
+                @JsonSubTypes.Type(value = TermCategorizationRelationshipResponse.class, name = "TermCategorizationRelationshipResponse"),
+                // Term to asset response
+                @JsonSubTypes.Type(value = SemanticAssignementRelationshipResponse.class, name = "SemanticAssignementRelationshipResponse"),
+                // external glossary responses
+                @JsonSubTypes.Type(value = LibraryTermReference.class, name = "LibraryTermReference"),
+                @JsonSubTypes.Type(value = LibraryCategoryReferenceResponse.class, name = "LibraryCategoryReferenceResponse"),
                 /*
-                 Exception rest - note that each exception has the same 4 Exception orientated fields.
+                 Exception responses - note that each exception has the same 4 Exception orientated fields.
                  Ideally these should be in a superclass. Due to restrictions in the @JsonSubTypes processing it  is only possible to have
                  one level of inheritance at this time.
                  */

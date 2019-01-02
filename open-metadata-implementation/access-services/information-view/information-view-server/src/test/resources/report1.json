@@ -1,0 +1,66 @@
+{
+  "class": "ReportRequestBody",
+  "sources": [{
+    "@id": "0",
+    "class": "TableSource",
+    "networkAddress": "host",
+    "protocol": "",
+    "additionalProperties": {
+      "type": "live/import"
+    },
+    "tableName": "EMPLOYEE",
+    "schemaName": "HR",
+    "databaseName": "XE"
+  }
+  ],
+  "id": "report_number_35",
+  "createdTime": 1538988150715,
+  "author": "John Martin",
+  "reportName": "Employee35",
+  "reportPath": "/reports/employee35.xml",
+  "reportUrl": "http://powerbi-server/reports/rep35",
+  "lastModifier": "John Martin",
+  "lastModifiedTime": 1538988150715,
+  "reportElements": [{
+    "class": "ReportSection",
+    "name": "section1",
+    "elements": [{
+      "class": "ReportSection",
+      "name": "section1.1",
+      "elements": [{
+        "class": "ReportColumn",
+        "name": "Full Name",
+        "formula": "concat",
+        "sources": [{
+          "class": "DatabaseColumnSource",
+          "tableSource": "0",
+          "name": "FNAME"
+        }, {
+          "class": "DatabaseColumnSource",
+          "tableSource": "0",
+          "name": "LNAME"
+        }
+        ],
+        "businessTerm": {
+          "name": "Patient Full Name",
+          "glossaryCategory": {
+            "name": "Coco Pharmaceuticals"
+          }
+        }
+      }, {
+        "class": "ReportColumn",
+        "name": "Role of the employee",
+        "formula": "upper",
+        "sources": [{
+          "class": "DatabaseColumnSource",
+          "tableSource": "0",
+          "name": "ROLE"
+        }
+        ]
+      }
+      ]
+    }
+    ]
+  }
+  ]
+}

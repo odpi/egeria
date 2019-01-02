@@ -6,8 +6,14 @@ package org.odpi.openmetadata.accessservices.informationview.eventprocessor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.ColumnContextEventBuilder;
-import org.odpi.openmetadata.accessservices.informationview.events.ColumnContextEvent;
+import org.odpi.openmetadata.accessservices.informationview.events.DatabaseColumn;
+import org.odpi.openmetadata.accessservices.informationview.events.InformationViewHeader;
+import org.odpi.openmetadata.accessservices.informationview.events.SemanticAssignment;
+import org.odpi.openmetadata.accessservices.informationview.events.TableContextEvent;
+import org.odpi.openmetadata.accessservices.informationview.events.UpdatedEntityEvent;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
+import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
+import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesUtils;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopic;
@@ -64,9 +70,17 @@ public class EventPublisher implements OMRSInstanceEventProcessor {
                                           String originatorServerName,
                                           String originatorServerType,
                                           String originatorOrganizationName,
-                                          EntityDetail entity,
-                                          EntityDetail oldEntity) {
+                                          EntityDetail oldEntity,
+                                          EntityDetail entity) {
 
+        UpdatedEntityEvent updatedEntityEvent = new UpdatedEntityEvent();
+        updatedEntityEvent.setNewProperties(entity.getProperties());
+        if(oldEntity != null) {
+            updatedEntityEvent.setOldProperties(oldEntity.getProperties());
+        }
+        updatedEntityEvent.setType(entity.getType());
+        updatedEntityEvent.setGuid(entity.getGUID());
+        sendEvent(updatedEntityEvent);
     }
 
     public void processUndoneEntityEvent(String sourceName,
@@ -209,9 +223,27 @@ public class EventPublisher implements OMRSInstanceEventProcessor {
            return;
        }
 
+       try{
+           publishSemanticAssignment(relationship);
+       }
+       catch (Exception e) {
+
+           log.error("Exception building events", e);
+           InformationViewErrorCode auditCode = InformationViewErrorCode.PUBLISH_EVENT_EXCEPTION;
+
+           auditLog.logException("processNewRelationshipEvent",
+                   auditCode.getErrorMessageId(),
+                   OMRSAuditLogRecordSeverity.EXCEPTION,
+                   auditCode.getFormattedErrorMessage(SemanticAssignment.class.getName(), e.getMessage()),
+                   e.getMessage(),
+                   auditCode.getSystemAction(),
+                   auditCode.getUserAction(),
+                   e);
+       }
+
         String guid = relationship.getEntityOneProxy().getGUID();
 
-        List<ColumnContextEvent> events = new ArrayList<>();
+        List<TableContextEvent> events = new ArrayList<>();
         try {
             events = columnContextEventBuilder.buildEvents(guid);
         } catch (Exception e) {
@@ -231,6 +263,44 @@ public class EventPublisher implements OMRSInstanceEventProcessor {
 
         sendColumnContextEvents(events);
     }
+
+    private void publishSemanticAssignment(Relationship relationship) throws Exception {
+        SemanticAssignment semanticAssignment = new SemanticAssignment();
+        EntityDetail businessTerm = retrieveReferencedEntity(relationship.getEntityTwoProxy().getGUID());
+        semanticAssignment.setBusinessTerm(columnContextEventBuilder.buildBusinessTerm(businessTerm));
+        DatabaseColumn databaseColumn = new DatabaseColumn();
+        EntityDetail columnEntity = retrieveReferencedEntity(relationship.getEntityOneProxy().getGUID());
+        databaseColumn.setGuid(columnEntity.getGUID());
+        databaseColumn.setName(EntityPropertiesUtils.getStringValueForProperty(columnEntity.getProperties(), Constants.NAME));
+        databaseColumn.setQualifiedName(EntityPropertiesUtils.getStringValueForProperty(columnEntity.getProperties(), Constants.QUALIFIED_NAME));
+        semanticAssignment.setDatabaseColumn(databaseColumn);
+        sendEvent(semanticAssignment);
+    }
+
+    public EntityDetail retrieveReferencedEntity(String guid) throws Exception {
+        try {
+            EntityDetail entity = columnContextEventBuilder.getEntity(guid);
+            if (entity != null) {
+               return entity;
+            } else {
+                log.error("Entity with guid {} not found", guid);
+                throw new Exception(String.format("Entity with guid %s not found", guid));
+            }
+        } catch (Exception e) {
+            InformationViewErrorCode auditCode = InformationViewErrorCode.GET_ENTITY_EXCEPTION;
+            auditLog.logException("retrieveReferencedEntity",
+                    auditCode.getErrorMessageId(),
+                    OMRSAuditLogRecordSeverity.EXCEPTION,
+                    auditCode.getFormattedErrorMessage("guid: " + guid),
+                    auditCode.getSystemAction(),
+                    auditCode.getUserAction(),
+                    "",
+                    e);
+
+            throw new Exception(e);
+        }
+    }
+
 
     public void processUpdatedRelationshipEvent(String sourceName,
                                                 String originatorMetadataCollectionId,
@@ -366,10 +436,10 @@ public class EventPublisher implements OMRSInstanceEventProcessor {
      * @param eventList - list of column context events
      * @return true if all events were published, false otherwise
      */
-    private boolean sendColumnContextEvents(List<ColumnContextEvent> eventList) {
+    private boolean sendColumnContextEvents(List<TableContextEvent> eventList) {
         boolean allSuccessful = true;
-        for (ColumnContextEvent event : eventList) {
-            if (!sendInstanceEvent(event)) allSuccessful = false;
+        for (TableContextEvent event : eventList) {
+            if (!sendEvent(event)) allSuccessful = false;
         }
         return allSuccessful;
     }
@@ -380,13 +450,12 @@ public class EventPublisher implements OMRSInstanceEventProcessor {
      * @param event to be published
      * @return true/false based on the success of the operation
      */
-    private boolean sendInstanceEvent(ColumnContextEvent event) {
+    public boolean sendEvent(InformationViewHeader event) {
         String actionDescription = "Send New Event";
         boolean successFlag = false;
 
         log.info("Sending event to information view out topic");
-        log.info("topicConnector: ", informationViewTopicConnector);
-        log.info("event: ", event);
+        log.debug("event: ", event);
 
         try {
 
@@ -400,7 +469,7 @@ public class EventPublisher implements OMRSInstanceEventProcessor {
             auditLog.logException(actionDescription,
                     auditCode.getErrorMessageId(),
                     OMRSAuditLogRecordSeverity.EXCEPTION,
-                    auditCode.getErrorMessage(),
+                    auditCode.getFormattedErrorMessage(event.getClass().getName(), error.getMessage()),
                     "event {" + event.toString() + "}",
                     auditCode.getSystemAction(),
                     auditCode.getUserAction(),

@@ -25,9 +25,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes
         ({
                 @JsonSubTypes.Type(value = ConnectionResponse.class,           name = "ConnectionResponse"),
-                @JsonSubTypes.Type(value = AssetListResponse.class,            name = "AssetListResponse"),
                 @JsonSubTypes.Type(value = NoteLogResponse.class,              name = "NoteLogResponse"),
-                @JsonSubTypes.Type(value = CommentConversationResponse.class,  name = "CommentConversationResponse"),
+                @JsonSubTypes.Type(value = MeaningListResponse.class,          name = "MeaningListResponse"),
+                @JsonSubTypes.Type(value = MeaningResponse.class,              name = "MeaningResponse"),
                 @JsonSubTypes.Type(value = GUIDResponse.class,                 name = "GUIDResponse"),
                 @JsonSubTypes.Type(value = VoidResponse.class,                 name = "VoidResponse")
         })
