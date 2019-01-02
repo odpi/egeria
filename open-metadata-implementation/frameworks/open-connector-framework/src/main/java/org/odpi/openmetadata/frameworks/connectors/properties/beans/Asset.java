@@ -21,7 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *     <li>qualifiedName - The official (unique) name for the asset. This is often defined by the IT systems
  *     management organization and should be used (when available) on audit logs and error messages.
  *     (qualifiedName from Referenceable - model 0010)</li>
- *     <li>displayName - A consumable name for the endpoint.  Often a shortened form of the assetQualifiedName
+ *     <li>displayName - A consumable name for the asset.  Often a shortened form of the assetQualifiedName
  *     for use on user interfaces and messages.   The assetDisplayName should be only be used for audit logs and error
  *     messages if the assetQualifiedName is not set. (Sourced from attribute name within Asset - model 0010)</li>
  *     <li>shortDescription - short description about the asset.

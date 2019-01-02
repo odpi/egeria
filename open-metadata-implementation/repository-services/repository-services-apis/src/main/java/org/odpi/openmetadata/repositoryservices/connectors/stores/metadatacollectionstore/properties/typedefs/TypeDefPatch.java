@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -7,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -47,6 +49,29 @@ public class TypeDefPatch extends TypeDefElementHeader
      */
     public TypeDefPatch()
     {
+        super();
+    }
+
+
+    public TypeDefPatch(TypeDefPatch   template)
+    {
+        super(template);
+
+        if (template != null)
+        {
+            action = template.getAction();
+            typeDefGUID = template.getTypeDefGUID();
+            typeName = template.getTypeName();
+            applyToVersion = template.getApplyToVersion();
+            updateToVersion = template.getUpdateToVersion();
+            newVersionName = template.getNewVersionName();
+            description = template.getDescription();
+            descriptionGUID = template.getDescriptionGUID();
+            typeDefAttributes = template.getTypeDefAttributes();
+            typeDefOptions = template.getTypeDefOptions();
+            externalStandardMappings = template.getExternalStandardMappings();
+            validInstanceStatusList = template.getValidInstanceStatusList();
+        }
     }
 
 
@@ -221,7 +246,7 @@ public class TypeDefPatch extends TypeDefElementHeader
     /**
      * Return the list of typeDefAttributes that are either new or changing.
      *
-     * @return list of AttributeDefs
+     * @return list of TypeDefAttribute
      */
     public List<TypeDefAttribute> getTypeDefAttributes()
     {
@@ -229,9 +254,20 @@ public class TypeDefPatch extends TypeDefElementHeader
         {
             return null;
         }
+        else if (typeDefAttributes.isEmpty())
+        {
+            return null;
+        }
         else
         {
-            return new ArrayList<>(typeDefAttributes);
+            List<TypeDefAttribute>  clonedList = new ArrayList<>();
+
+            for (TypeDefAttribute  existingElement : typeDefAttributes)
+            {
+                clonedList.add(new TypeDefAttribute(existingElement));
+            }
+
+            return clonedList;
         }
     }
 
@@ -243,18 +279,7 @@ public class TypeDefPatch extends TypeDefElementHeader
      */
     public void setTypeDefAttributes(List<TypeDefAttribute> typeDefAttributes)
     {
-        if (typeDefAttributes == null)
-        {
-            this.typeDefAttributes = null;
-        }
-        else if (typeDefAttributes.isEmpty())
-        {
-            this.typeDefAttributes = null;
-        }
-        else
-        {
-            this.typeDefAttributes = new ArrayList<>(typeDefAttributes);
-        }
+        this.typeDefAttributes = typeDefAttributes;
     }
 
 
@@ -265,7 +290,18 @@ public class TypeDefPatch extends TypeDefElementHeader
      */
     public Map<String, String> getTypeDefOptions()
     {
-        return typeDefOptions;
+        if (typeDefOptions == null)
+        {
+            return null;
+        }
+        else if (typeDefOptions.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new HashMap<>(typeDefOptions);
+        }
     }
 
 
@@ -291,9 +327,20 @@ public class TypeDefPatch extends TypeDefElementHeader
         {
             return null;
         }
+        else if (externalStandardMappings.isEmpty())
+        {
+            return null;
+        }
         else
         {
-            return new ArrayList<>(externalStandardMappings);
+            List<ExternalStandardMapping>  clonedList = new ArrayList<>();
+
+            for (ExternalStandardMapping  existingElement : externalStandardMappings)
+            {
+                clonedList.add(new ExternalStandardMapping(existingElement));
+            }
+
+            return clonedList;
         }
     }
 
@@ -305,29 +352,22 @@ public class TypeDefPatch extends TypeDefElementHeader
      */
     public void setExternalStandardMappings(List<ExternalStandardMapping> externalStandardMappings)
     {
-        if (externalStandardMappings == null)
-        {
-            this.externalStandardMappings = null;
-        }
-        else if (externalStandardMappings.isEmpty())
-        {
-            this.externalStandardMappings = null;
-        }
-        else
-        {
-            this.externalStandardMappings = new ArrayList<>(externalStandardMappings);
-        }
+        this.externalStandardMappings = externalStandardMappings;
     }
 
 
     /**
-     * Return the list of valid statuses for an instance of this TypeDef.
+     * Return the list of valid statuses for an instance of this TypeDefPatch.
      *
      * @return list of valid statuses
      */
     public List<InstanceStatus> getValidInstanceStatusList()
     {
         if (validInstanceStatusList == null)
+        {
+            return null;
+        }
+        else if (validInstanceStatusList.isEmpty())
         {
             return null;
         }
@@ -345,18 +385,7 @@ public class TypeDefPatch extends TypeDefElementHeader
      */
     public void setValidInstanceStatusList(List<InstanceStatus> validInstanceStatusList)
     {
-        if (validInstanceStatusList == null)
-        {
-            this.validInstanceStatusList = null;
-        }
-        else if (validInstanceStatusList.isEmpty())
-        {
-            this.validInstanceStatusList = null;
-        }
-        else
-        {
-            this.validInstanceStatusList = new ArrayList<>(validInstanceStatusList);
-        }
+        this.validInstanceStatusList = validInstanceStatusList;
     }
 
 
@@ -369,9 +398,9 @@ public class TypeDefPatch extends TypeDefElementHeader
     public String toString()
     {
         return "TypeDefPatch{" +
-                "action=" + action +
+                "typeName='" + typeName + '\'' +
+                ", action=" + action +
                 ", typeDefGUID='" + typeDefGUID + '\'' +
-                ", typeName='" + typeName + '\'' +
                 ", applyToVersion=" + applyToVersion +
                 ", updateToVersion=" + updateToVersion +
                 ", newVersionName='" + newVersionName + '\'' +

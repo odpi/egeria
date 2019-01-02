@@ -20,7 +20,7 @@ public class SubjectAreaOmrsBeanGenerator {
     // This generator can be run in the top level Egeria folder - i.e. the folder you run git commands in. It is run automatically as part of the Maven build.
 
     // The API properties should not be generated as part of the normal build.
-    // Changes the API properties should be considered if the generate files change either due to the archive types changing or the generator or templates changing.
+    // Changes the API properties should be considered if the generateClientSideRelationshipImpl files change either due to the archive types changing or the generator or templates changing.
     // if the API classifications properties need to be changed in line with the generated files then set regenAPIFiles to true.
     private boolean regenAPIFiles = false;
     public static final String OPEN_METADATA_IMPLEMENTATION = "open-metadata-implementation";
@@ -57,8 +57,6 @@ public class SubjectAreaOmrsBeanGenerator {
 
     public static final String SUBJECTAREA_OMAS_API_CLASSIFICATION_FOLDER =  SUBJECTAREA_OMAS_API + SRC_SUBJECT_AREA + "properties/classifications";
     public static final String SUBJECTAREA_OMAS_API_ENUM_FOLDER =  SUBJECTAREA_OMAS_API + SRC_SUBJECT_AREA + "properties/enums";
-    public static final String SUBJECTAREA_OMAS_API_RELATIONSHIP_FOLDER =  SUBJECTAREA_OMAS_API + SRC_SUBJECT_AREA + "properties/relationships";
-
     public static final String SUBJECTAREA_OMAS_GEN_PKG_BASE = "org.odpi.openmetadata.accessservices.subjectarea.generated.";
     public static final String SUBJECTAREA_OMAS_API_PKG_BASE = "org.odpi.openmetadata.accessservices.subjectarea.properties.";
 
@@ -121,7 +119,7 @@ public class SubjectAreaOmrsBeanGenerator {
 
     /**
      * check that the current folder is as expected
-     * @return where we have a valid folder to be able to generate in
+     * @return where we have a valid folder to be able to generateClientSideRelationshipImpl in
      */
     private static boolean checkCurrentFolder() {
         // only run the generator if the current directory looks as expected.
@@ -187,23 +185,23 @@ public class SubjectAreaOmrsBeanGenerator {
 
         SubjectAreaOmrsBeanGenerator generator = new SubjectAreaOmrsBeanGenerator(omrsBeanModel);
 
-        // generate the enum files
+        // generateClientSideRelationshipImpl the enum files
         generator.generateEnumFiles();
-        // generate the classification files and their attributes
+        // generateClientSideRelationshipImpl the classification files and their attributes
         generator.generateClassificationFiles();
-        // generate the classification factory
+        // generateClientSideRelationshipImpl the classification factory
         generator.generateClassificationFactory();
-        // generate OMRSRelationshipToLines.
+        // generateClientSideRelationshipImpl OMRSRelationshipToLines.
         generator.generateOMRSRelationshipToLines();
-        // generate the entity and attribute files
+        // generateClientSideRelationshipImpl the entity and attribute files
         generator.generateEntityRelatedFiles(omrsBeanModel.getOmrsBeanEntityAttributeMap());
-        // generate relationships and their attributes
+        // generateClientSideRelationshipImpl relationships and their attributes
         generator.generateRelationshipFiles();
-        // generate the reference files
+        // generateClientSideRelationshipImpl the reference files
         generator.generateReferenceFiles();
-        // generate the omrs beans accessor file
+        // generateClientSideRelationshipImpl the omrs beans accessor file
         generator.generateOMRSBeansAccessorFile();
-        // generate the omrs beans test file
+        // generateClientSideRelationshipImpl the omrs beans test file
         generator.generateOMRSBeansAccessorTestFile();
     }
 
@@ -222,7 +220,7 @@ public class SubjectAreaOmrsBeanGenerator {
     private void repopulateAPIEnums(Set<String> enumNames) throws IOException {
         // delete all the files in the folder
         GeneratorUtilities.deleteFilesInFolder(SUBJECTAREA_OMAS_API_ENUM_FOLDER,"Status.java");
-        // generate the Classification files
+        // generateClientSideRelationshipImpl the Classification files
         Map<String, List<OmrsBeanEnumValue>> enumsMap = omrsBeanModel.getEnumsMap();
         for (String enumName : enumNames) {
             final String enumPropertyFileName = SUBJECTAREA_OMAS_API_ENUM_FOLDER + "/" + enumName + ".java";
@@ -243,7 +241,7 @@ public class SubjectAreaOmrsBeanGenerator {
             final String classificationFileName = outputFolder + "/" + classificationName + ".java";
             final String classificationMapperFileName = outputFolder + "/" + classificationName + "Mapper.java";
             generateClassificationFile(classificationName, classificationFileName,SUBJECTAREA_OMAS_GEN_PKG_CLASSIFICATIONS+"."+classificationName);
-            // generate the Classification files
+            // generateClientSideRelationshipImpl the Classification files
             if (this.regenAPIFiles) {
                 final String classificationPropertyFileName = SUBJECTAREA_OMAS_API_CLASSIFICATION_FOLDER + "/" + classificationName + ".java";
                 generateClassificationFile(classificationName, classificationPropertyFileName,SUBJECTAREA_OMAS_API_PKG_CLASSIFICATIONS);
@@ -252,94 +250,107 @@ public class SubjectAreaOmrsBeanGenerator {
         }
     }
     private void generateClassificationMapperFile(String classificationName, String fileName) throws IOException {
-        FileWriter outputFileWriter = new FileWriter(fileName);
-        List<String> loopEntityLines = new ArrayList();
-        BufferedReader reader = new BufferedReader(new FileReader(OMAS_CLASSIFICATION_MAPPER_TEMPLATE));
-        String line = reader.readLine();
-        while (line != null) {
-            loopEntityLines.add(line);
-            line = reader.readLine();
-        }
-        reader.close();
+        FileWriter outputFileWriter = null;
+        BufferedReader reader = null;
+        try {
+            outputFileWriter = new FileWriter(fileName);
+            List<String> loopEntityLines = new ArrayList();
+            reader = new BufferedReader(new FileReader(OMAS_CLASSIFICATION_MAPPER_TEMPLATE));
+            String line = reader.readLine();
+            while (line != null) {
+                loopEntityLines.add(line);
+                line = reader.readLine();
+            }
+            reader.close();
 
-        Map<String, String> replacementMap = new HashMap();
-        replacementMap.put("package", CLASSIFICATIONS + "." + classificationName);
-        mapOMRSToOMAS("Classification", replacementMap, outputFileWriter, loopEntityLines, classificationName);
-        outputFileWriter.close();
+            Map<String, String> replacementMap = new HashMap();
+            replacementMap.put("package", CLASSIFICATIONS + "." + classificationName);
+            mapOMRSToOMAS("Classification", replacementMap, outputFileWriter, loopEntityLines, classificationName);
+        } finally {
+            closeReaderAndFileWriter(outputFileWriter, reader);
+        }
     }
 
     private void generateClassificationFactory() throws IOException {
-        FileWriter outputFileWriter = new FileWriter(GENERATION_CLASSIFICATION_FACTORY_FILE_NAME);
-        BufferedReader reader = new BufferedReader(new FileReader(OMAS_CLASSIFICATION_FACTORY_TEMPLATE));
-        String line = reader.readLine();
-        while (line != null) {
-            List<String> loopLines = new ArrayList();
+        FileWriter outputFileWriter = null;
+        BufferedReader reader = null;
+        try {
+            outputFileWriter = new FileWriter(GENERATION_CLASSIFICATION_FACTORY_FILE_NAME);
+            reader = new BufferedReader(new FileReader(OMAS_CLASSIFICATION_FACTORY_TEMPLATE));
+            String line = reader.readLine();
+            while (line != null) {
+                List<String> loopLines = new ArrayList();
 
-            if (line.contains("<$$$")) {
-                // read all the lines in the loop
-                String loopline = reader.readLine();
-                while (loopline != null) {
-                    //stash the lines for the loop and spit them out for each entity
-                    if (loopline.contains("$$$>")) {
-                        break;
+                if (line.contains("<$$$")) {
+                    // read all the lines in the loop
+                    String loopline = reader.readLine();
+                    while (loopline != null) {
+                        //stash the lines for the loop and spit them out for each entity
+                        if (loopline.contains("$$$>")) {
+                            break;
+                        }
+                        loopLines.add(loopline);
+                        loopline = reader.readLine();
                     }
-                    loopLines.add(loopline);
-                    loopline = reader.readLine();
-                }
-                // for each classification write out the loop line
-                for (String classificationName : omrsBeanModel.getOmrsBeanClassificationAttributeMap().keySet()) {
-                    for (int loopCounter = 0; loopCounter < loopLines.size(); loopCounter++) {
-                        String newLine = loopLines.get(loopCounter);
-                        newLine = newLine.replaceAll(GeneratorUtilities.getRegexToken("uClassification"), GeneratorUtilities.uppercase1stLetter(classificationName));
-                        outputFileWriter.write(newLine + "\n");
+                    // for each classification write out the loop line
+                    for (String classificationName : omrsBeanModel.getOmrsBeanClassificationAttributeMap().keySet()) {
+                        for (int loopCounter = 0; loopCounter < loopLines.size(); loopCounter++) {
+                            String newLine = loopLines.get(loopCounter);
+                            newLine = newLine.replaceAll(GeneratorUtilities.getRegexToken("uClassification"), GeneratorUtilities.uppercase1stLetter(classificationName));
+                            outputFileWriter.write(newLine + "\n");
+                        }
                     }
+                } else {
+                    outputFileWriter.write(line + "\n");
                 }
-            } else {
-                outputFileWriter.write(line + "\n");
+                line = reader.readLine();
             }
-            line = reader.readLine();
-        }
-        reader.close();
 
-        outputFileWriter.close();
+        } finally {
+            closeReaderAndFileWriter(outputFileWriter, reader);
+        }
+
     }
 
 
     private void generateOMRSRelationshipToLines() throws IOException {
-        FileWriter outputFileWriter = new FileWriter(GENERATION_OMRS_RELATIONSHIP_TO_LINES_FILE_NAME);
-        BufferedReader reader = new BufferedReader(new FileReader(OMAS_RELATIONSHIP_TO_LINES_TEMPLATE));
-        String line = reader.readLine();
-        while (line != null) {
-            List<String> loopLines = new ArrayList();
+        FileWriter outputFileWriter = null;
+        BufferedReader reader = null;
+        try {
+            outputFileWriter = new FileWriter(GENERATION_OMRS_RELATIONSHIP_TO_LINES_FILE_NAME);
+            reader = new BufferedReader(new FileReader(OMAS_RELATIONSHIP_TO_LINES_TEMPLATE));
+            String line = reader.readLine();
+            while (line != null) {
+                List<String> loopLines = new ArrayList();
 
-            if (line.contains(" <$$RELATIONSHIP$")) {
-                // read all the lines in the loop
-                String loopline = reader.readLine();
-                while (loopline != null) {
-                    //stash the lines for the loop and spit them out for each relationship
-                    if (loopline.contains(" $$RELATIONSHIP$>")) {
-                        break;
+                if (line.contains(" <$$RELATIONSHIP$")) {
+                    // read all the lines in the loop
+                    String loopline = reader.readLine();
+                    while (loopline != null) {
+                        //stash the lines for the loop and spit them out for each relationship
+                        if (loopline.contains(" $$RELATIONSHIP$>")) {
+                            break;
+                        }
+                        loopLines.add(loopline);
+                        loopline = reader.readLine();
                     }
-                    loopLines.add(loopline);
-                    loopline = reader.readLine();
-                }
-                // for each relationship write out the loop line
-                for (String relationshipName : omrsBeanModel.getOmrsBeanRelationshipMap().keySet()) {
-                    for (int loopCounter = 0; loopCounter < loopLines.size(); loopCounter++) {
-                        String newLine = loopLines.get(loopCounter);
-                        newLine = newLine.replaceAll(GeneratorUtilities.getRegexToken("uRelationshipName"), GeneratorUtilities.uppercase1stLetter(relationshipName));
-                        newLine = newLine.replaceAll(GeneratorUtilities.getRegexToken("RelationshipName"), GeneratorUtilities.lowercase1stLetter(relationshipName));
-                        outputFileWriter.write(newLine + "\n");
+                    // for each relationship write out the loop line
+                    for (String relationshipName : omrsBeanModel.getOmrsBeanRelationshipMap().keySet()) {
+                        for (int loopCounter = 0; loopCounter < loopLines.size(); loopCounter++) {
+                            String newLine = loopLines.get(loopCounter);
+                            newLine = newLine.replaceAll(GeneratorUtilities.getRegexToken("uRelationshipName"), GeneratorUtilities.uppercase1stLetter(relationshipName));
+                            newLine = newLine.replaceAll(GeneratorUtilities.getRegexToken("RelationshipName"), GeneratorUtilities.lowercase1stLetter(relationshipName));
+                            outputFileWriter.write(newLine + "\n");
+                        }
                     }
+                } else {
+                    outputFileWriter.write(line + "\n");
                 }
-            } else {
-                outputFileWriter.write(line + "\n");
+                line = reader.readLine();
             }
-            line = reader.readLine();
+        } finally {
+            closeReaderAndFileWriter(outputFileWriter, reader);
         }
-        reader.close();
-
-        outputFileWriter.close();
     }
 
     private void generateRelationshipFiles() throws IOException {
@@ -351,13 +362,6 @@ public class SubjectAreaOmrsBeanGenerator {
             final String relationshipFileName = outputFolder + "/" + relationshipName + ".java";
             OmrsBeanRelationship omrsBeanRelationship = omrsBeanModel.getOmrsBeanRelationshipByName(relationshipName);
             generateRelationshipFile(omrsBeanRelationship, relationshipFileName,SUBJECTAREA_OMAS_GEN_PKG_RELATIONSHIPS +"."+relationshipName);
-            if (this.regenAPIFiles) {
-                //regenerate the API file if required.
-                final String relationshipPropertyFileName = SUBJECTAREA_OMAS_API_RELATIONSHIP_FOLDER + "/" + relationshipName + ".java";
-                generateRelationshipFile(omrsBeanRelationship,relationshipPropertyFileName,SUBJECTAREA_OMAS_API_PKG_RELATIONSHIPS);
-
-            }
-
             final String relationshipMapperFileName = outputFolder + "/" + relationshipName + "Mapper.java";
             generateRelationshipMapperFile(omrsBeanRelationship, relationshipMapperFileName);
         }
@@ -382,24 +386,23 @@ public class SubjectAreaOmrsBeanGenerator {
      * @throws IOException
      */
     private void generateTopReferenceFile(String entityName, List<OmrsBeanAttribute> omrsBeanAttributes, String topReferenceFileName) throws IOException {
-        FileWriter outputFileWriter = new FileWriter(topReferenceFileName);
-
-        if (GeneratorUtilities.uppercase1stLetter(entityName).equals("LicenseType")){
-            int t=11;
+        FileWriter outputFileWriter = null;
+        BufferedReader reader = null;
+        try {
+            outputFileWriter = new FileWriter(topReferenceFileName);
+            reader = new BufferedReader(new FileReader(OMAS_TOP_REFERENCE_TEMPLATE));
+            String line = reader.readLine();
+            while (line != null) {
+                Map<String, String> replacementMap = new HashMap();
+                replacementMap.put("package", ENTITIES + "." + entityName);
+                replacementMap.put("name", org.odpi.openmetadata.accessservices.subjectarea.utils.GeneratorUtilities.lowercase1stLetter(entityName));
+                replacementMap.put("uname", GeneratorUtilities.uppercase1stLetter(entityName));
+                writeTopReferenceAttributesToFile(omrsBeanAttributes, replacementMap, outputFileWriter, reader, line);
+                line = reader.readLine();
+            }
+        } finally {
+            closeReaderAndFileWriter(outputFileWriter, reader);
         }
-
-        BufferedReader reader = new BufferedReader(new FileReader(OMAS_TOP_REFERENCE_TEMPLATE));
-        String line = reader.readLine();
-        while (line != null) {
-            Map<String, String> replacementMap = new HashMap();
-            replacementMap.put("package", ENTITIES + "." + entityName);
-            replacementMap.put("name", org.odpi.openmetadata.accessservices.subjectarea.utils.GeneratorUtilities.lowercase1stLetter(entityName));
-            replacementMap.put("uname", GeneratorUtilities.uppercase1stLetter(entityName));
-            writeTopReferenceAttributesToFile(omrsBeanAttributes, replacementMap, outputFileWriter, reader, line);
-            line = reader.readLine();
-        }
-        reader.close();
-        outputFileWriter.close();
     }
 
     /**
@@ -410,23 +413,26 @@ public class SubjectAreaOmrsBeanGenerator {
      * @throws IOException
      */
     private void generateEnumFile(String enumName, List<OmrsBeanEnumValue> enumValues, String enumFileName,String pkg) throws IOException {
-        FileWriter outputFileWriter = new FileWriter(enumFileName);
+        FileWriter outputFileWriter = null;
+        BufferedReader reader = null;
+        try {
+            outputFileWriter =       new FileWriter(enumFileName);
 
-        BufferedReader reader = new BufferedReader(new FileReader(OMAS_ENUM_TEMPLATE));
-        String line = reader.readLine();
-        while (line != null) {
-            Map<String, String> replacementMap = new HashMap();
-            replacementMap.put("description", this.omrsBeanModel.getTypeDefDescription(GeneratorUtilities.uppercase1stLetter(enumName)));
-            replacementMap.put("package", pkg);
-            replacementMap.put("name", org.odpi.openmetadata.accessservices.subjectarea.utils.GeneratorUtilities.lowercase1stLetter(enumName));
-            replacementMap.put("uname", GeneratorUtilities.uppercase1stLetter(enumName));
-            //String enumName, List<OmrsBeanEnumValue> enumValues, Map<String, String> replacementMap,
-            writeEnumToFile(enumName, enumValues, replacementMap, outputFileWriter, reader, line);
-            line = reader.readLine();
+            reader = new BufferedReader(new FileReader(OMAS_ENUM_TEMPLATE));
+            String line = reader.readLine();
+            while (line != null) {
+                Map<String, String> replacementMap = new HashMap();
+                replacementMap.put("description", this.omrsBeanModel.getTypeDefDescription(GeneratorUtilities.uppercase1stLetter(enumName)));
+                replacementMap.put("package", pkg);
+                replacementMap.put("name", org.odpi.openmetadata.accessservices.subjectarea.utils.GeneratorUtilities.lowercase1stLetter(enumName));
+                replacementMap.put("uname", GeneratorUtilities.uppercase1stLetter(enumName));
+                //String enumName, List<OmrsBeanEnumValue> enumValues, Map<String, String> replacementMap,
+                writeEnumToFile(enumName, enumValues, replacementMap, outputFileWriter, reader, line);
+                line = reader.readLine();
+            }
+        } finally {
+            closeReaderAndFileWriter(outputFileWriter, reader);
         }
-        reader.close();
-        outputFileWriter.close();
-
     }
 
     /**
@@ -436,19 +442,25 @@ public class SubjectAreaOmrsBeanGenerator {
      * @throws IOException
      */
     private void generateEntityMapperFile(String entityName, String fileName) throws IOException {
-        FileWriter outputFileWriter = new FileWriter(fileName);
-        List<String> loopEntityLines = new ArrayList();
-        BufferedReader reader = new BufferedReader(new FileReader(OMAS_ENTITY_MAPPER_TEMPLATE));
-        String line = reader.readLine();
-        while (line != null) {
-            loopEntityLines.add(line);
-            line = reader.readLine();
+        FileWriter outputFileWriter = null;
+        BufferedReader reader = null;
+
+        try {
+            outputFileWriter = new FileWriter(fileName);
+            List<String> loopEntityLines = new ArrayList();
+            reader = new BufferedReader(new FileReader(OMAS_ENTITY_MAPPER_TEMPLATE));
+            String line = reader.readLine();
+            while (line != null) {
+                loopEntityLines.add(line);
+                line = reader.readLine();
+            }
+            reader.close();
+            Map<String, String> replacementMap = new HashMap();
+            replacementMap.put("package", ENTITIES + "." + entityName);
+            mapOMRSToOMAS("Entity", replacementMap, outputFileWriter, loopEntityLines, entityName);
+        } finally {
+            closeReaderAndFileWriter(outputFileWriter, reader);
         }
-        reader.close();
-        Map<String, String> replacementMap = new HashMap();
-        replacementMap.put("package", ENTITIES + "." + entityName);
-        mapOMRSToOMAS("Entity", replacementMap, outputFileWriter, loopEntityLines, entityName);
-        outputFileWriter.close();
 
     }
 
@@ -457,17 +469,21 @@ public class SubjectAreaOmrsBeanGenerator {
      * @throws IOException
      */
     private void generateOMRSBeansAccessorFile() throws IOException {
+        FileWriter outputFileWriter = null;
+        BufferedReader reader = null;
 
-        FileWriter outputFileWriter = new FileWriter(GENERATION_REST_FILE);
-        BufferedReader reader = new BufferedReader(new FileReader(OMRS_BEANS_TEMPLATE));
-        String line = reader.readLine();
-        while (line != null) {
-            Map<String, String> replacementMap = new HashMap();
-            writeOMRSBeansAccessorFile(replacementMap, outputFileWriter, reader, line);
-            line = reader.readLine();
+        try {
+            outputFileWriter =  new FileWriter(GENERATION_REST_FILE);
+            reader = new BufferedReader(new FileReader(OMRS_BEANS_TEMPLATE));
+            String line = reader.readLine();
+            while (line != null) {
+                Map<String, String> replacementMap = new HashMap();
+                writeOMRSBeansAccessorFile(replacementMap, outputFileWriter, reader, line);
+                line = reader.readLine();
+            }
+        } finally {
+            closeReaderAndFileWriter(outputFileWriter, reader);
         }
-        reader.close();
-        outputFileWriter.close();
     }
 
     /**
@@ -475,17 +491,22 @@ public class SubjectAreaOmrsBeanGenerator {
      * @throws IOException
      */
     private void generateOMRSBeansAccessorTestFile() throws IOException {
-        // for each entity create a test file
-        FileWriter outputFileWriter = new FileWriter(GENERATION_REST_TEST_FILE);
-        BufferedReader reader = new BufferedReader(new FileReader(OMRS_BEANS_TEST_TEMPLATE));
-        String line = reader.readLine();
-        while (line != null) {
-            Map<String, String> replacementMap = new HashMap();
-            writeOMRSBeansAccessorFile(replacementMap, outputFileWriter, reader, line);
-            line = reader.readLine();
+        FileWriter outputFileWriter = null;
+        BufferedReader reader = null;
+
+        try {
+            // for each entity create a test file
+            outputFileWriter = new FileWriter(GENERATION_REST_TEST_FILE);
+            reader = new BufferedReader(new FileReader(OMRS_BEANS_TEST_TEMPLATE));
+            String line = reader.readLine();
+            while (line != null) {
+                Map<String, String> replacementMap = new HashMap();
+                writeOMRSBeansAccessorFile(replacementMap, outputFileWriter, reader, line);
+                line = reader.readLine();
+            }
+        } finally {
+            closeReaderAndFileWriter(outputFileWriter, reader);
         }
-        reader.close();
-        outputFileWriter.close();
     }
 
     /**
@@ -881,97 +902,111 @@ public class SubjectAreaOmrsBeanGenerator {
 
     private void generateEntityFile(String entityName, String fileName) throws IOException {
 
-        FileWriter outputFileWriter = new FileWriter(fileName);
-        String uEntityName = GeneratorUtilities.uppercase1stLetter(entityName);
-        //ensure entityName is lower case
-        entityName = GeneratorUtilities.lowercase1stLetter(entityName);
-        List<OmrsBeanAttribute> attributeMap = omrsBeanModel.getOmrsBeanEntityAttributeMap().get(uEntityName);
-        BufferedReader reader= new BufferedReader(new FileReader(OMAS_ENTITY_TEMPLATE));
-        String line = reader.readLine();
-        while (line != null) {
-            Map<String, String> replacementMap = new HashMap();
-            replacementMap.put("uname", uEntityName);
-            replacementMap.put("name", entityName);
-            replacementMap.put("description", omrsBeanModel.getTypeDefDescription(uEntityName));
-            replacementMap.put("package", "entities." + uEntityName);
-            writeAttributesToFile(attributeMap, replacementMap, outputFileWriter, reader, line);
-            line = reader.readLine();
+        FileWriter outputFileWriter = null;
+        BufferedReader reader=null;
+        try {
+            outputFileWriter = new FileWriter(fileName);
+            String uEntityName = GeneratorUtilities.uppercase1stLetter(entityName);
+            //ensure entityName is lower case
+            entityName = GeneratorUtilities.lowercase1stLetter(entityName);
+            List<OmrsBeanAttribute> attributeMap = omrsBeanModel.getOmrsBeanEntityAttributeMap().get(uEntityName);
+            reader= new BufferedReader(new FileReader(OMAS_ENTITY_TEMPLATE));
+            String line = reader.readLine();
+            while (line != null) {
+                Map<String, String> replacementMap = new HashMap();
+                replacementMap.put("uname", uEntityName);
+                replacementMap.put("name", entityName);
+                replacementMap.put("description", omrsBeanModel.getTypeDefDescription(uEntityName));
+                replacementMap.put("package", "entities." + uEntityName);
+                writeAttributesToFile(attributeMap, replacementMap, outputFileWriter, reader, line);
+                line = reader.readLine();
+            }
+        } finally {
+            closeReaderAndFileWriter(outputFileWriter, reader);
         }
-        reader.close();
-        outputFileWriter.close();
     }
 
     private void generateClassificationFile(String classificationName, String fileName,String pkg) throws IOException {
+        FileWriter outputFileWriter = null;
+        BufferedReader reader=null;
+        try {
+            outputFileWriter = new FileWriter(fileName);
 
-        FileWriter outputFileWriter = new FileWriter(fileName);
-        classificationName = GeneratorUtilities.lowercase1stLetter(classificationName);
-        String uClassificationName = GeneratorUtilities.uppercase1stLetter(classificationName);
-        List<OmrsBeanAttribute> attrList = omrsBeanModel.getOmrsBeanClassificationAttributeMap().get(uClassificationName);
+            classificationName = GeneratorUtilities.lowercase1stLetter(classificationName);
+            String uClassificationName = GeneratorUtilities.uppercase1stLetter(classificationName);
+            List<OmrsBeanAttribute> attrList = omrsBeanModel.getOmrsBeanClassificationAttributeMap().get(uClassificationName);
 
-        BufferedReader reader = new BufferedReader(new FileReader(OMAS_CLASSIFICATION_TEMPLATE));
-        String line = reader.readLine();
-        while (line != null) {
-            Map<String, String> replacementMap = new HashMap();
+            reader = new BufferedReader(new FileReader(OMAS_CLASSIFICATION_TEMPLATE));
+            String line = reader.readLine();
+            while (line != null) {
+                Map<String, String> replacementMap = new HashMap();
 
-            replacementMap.put("uname", uClassificationName);
-            replacementMap.put("name",classificationName);
-            replacementMap.put("description", omrsBeanModel.getTypeDefDescription(uClassificationName));
-            replacementMap.put("package",pkg);
-            writeAttributesToFile(attrList, replacementMap, outputFileWriter, reader, line);
-            line = reader.readLine();
+                replacementMap.put("uname", uClassificationName);
+                replacementMap.put("name",classificationName);
+                replacementMap.put("description", omrsBeanModel.getTypeDefDescription(uClassificationName));
+                replacementMap.put("package",pkg);
+                writeAttributesToFile(attrList, replacementMap, outputFileWriter, reader, line);
+                line = reader.readLine();
+            }
+        } finally {
+            closeReaderAndFileWriter(outputFileWriter, reader);
         }
-        reader.close();
-        outputFileWriter.close();
     }
 
     private void generateRelationshipFile(OmrsBeanRelationship omrsBeanRelationship, String fileName,String pkg) throws IOException {
+        FileWriter outputFileWriter = null;
+        BufferedReader reader=null;
+        try {
+            outputFileWriter = new FileWriter(fileName);
+            String relationshipName = omrsBeanRelationship.label;
+            relationshipName = GeneratorUtilities.lowercase1stLetter(relationshipName);
+            String uRelationshipName = GeneratorUtilities.uppercase1stLetter(relationshipName);
+            reader = new BufferedReader(new FileReader(OMAS_RELATIONSHIP_TEMPLATE));
+            String line = reader.readLine();
+            while (line != null) {
+                Map<String, String> replacementMap = new HashMap();
+                List<OmrsBeanAttribute> attrList = omrsBeanModel.getOmrsBeanRelationshipAttributeMap().get(uRelationshipName);
+                replacementMap.put("uname", uRelationshipName);
+                replacementMap.put("description", this.omrsBeanModel.getTypeDefDescription(GeneratorUtilities.uppercase1stLetter(GeneratorUtilities.uppercase1stLetter(relationshipName))));
 
-        FileWriter outputFileWriter = new FileWriter(fileName);
-        String relationshipName = omrsBeanRelationship.label;
-        relationshipName = GeneratorUtilities.lowercase1stLetter(relationshipName);
-        String uRelationshipName = GeneratorUtilities.uppercase1stLetter(relationshipName);
+                replacementMap.put("name", relationshipName);
+                replacementMap.put("package",pkg);
+                replacementMap.put("entityProxy1Name", omrsBeanRelationship.entityProxy1Name);
+                replacementMap.put("entityProxy1Type", omrsBeanRelationship.entityProxy1Type);
+                replacementMap.put("entityProxy2Name", omrsBeanRelationship.entityProxy2Name);
+                replacementMap.put("entityProxy2Type", omrsBeanRelationship.entityProxy2Type);
+                replacementMap.put("typeDefGuid", omrsBeanRelationship.typeDefGuid);
 
-        BufferedReader reader = new BufferedReader(new FileReader(OMAS_RELATIONSHIP_TEMPLATE));
-        String line = reader.readLine();
-        while (line != null) {
-            Map<String, String> replacementMap = new HashMap();
-            List<OmrsBeanAttribute> attrList = omrsBeanModel.getOmrsBeanRelationshipAttributeMap().get(uRelationshipName);
-            replacementMap.put("uname", uRelationshipName);
-            replacementMap.put("description", this.omrsBeanModel.getTypeDefDescription(GeneratorUtilities.uppercase1stLetter(GeneratorUtilities.uppercase1stLetter(relationshipName))));
-
-            replacementMap.put("name", relationshipName);
-            replacementMap.put("package",pkg);
-            replacementMap.put("entityProxy1Name", omrsBeanRelationship.entityProxy1Name);
-            replacementMap.put("entityProxy1Type", omrsBeanRelationship.entityProxy1Type);
-            replacementMap.put("entityProxy2Name", omrsBeanRelationship.entityProxy2Name);
-            replacementMap.put("entityProxy2Type", omrsBeanRelationship.entityProxy2Type);
-            replacementMap.put("typeDefGuid", omrsBeanRelationship.typeDefGuid);
-
-            writeAttributesToFile(attrList, replacementMap, outputFileWriter, reader, line);
-            line = reader.readLine();
+                writeAttributesToFile(attrList, replacementMap, outputFileWriter, reader, line);
+                line = reader.readLine();
+            }
+        } finally {
+            closeReaderAndFileWriter(outputFileWriter, reader);
         }
-        reader.close();
-        outputFileWriter.close();
     }
 
     private void generateRelationshipMapperFile(OmrsBeanRelationship omrsBeanRelationship, String fileName) throws IOException {
+        FileWriter outputFileWriter = null;
+        BufferedReader reader=null;
+        try {
+            outputFileWriter = new FileWriter(fileName);
 
-        FileWriter outputFileWriter = new FileWriter(fileName);
-        String label = omrsBeanRelationship.label;
-        Map<String, String> replacementMap = new HashMap();
-        List<String> loopRelationshipLines = new ArrayList();
-        BufferedReader   reader = new BufferedReader(new FileReader(OMAS_RELATIONSHIP_MAPPER_TEMPLATE));
+            String label = omrsBeanRelationship.label;
+            Map<String, String> replacementMap = new HashMap();
+            List<String> loopRelationshipLines = new ArrayList();
+            reader = new BufferedReader(new FileReader(OMAS_RELATIONSHIP_MAPPER_TEMPLATE));
 
-        String line = reader.readLine();
-        while (line != null) {
-            replacementMap.put("uname", GeneratorUtilities.uppercase1stLetter(label));
-            replacementMap.put("name", GeneratorUtilities.lowercase1stLetter(label));
-            loopRelationshipLines.add(line);
-            line = reader.readLine();
+            String line = reader.readLine();
+            while (line != null) {
+                replacementMap.put("uname", GeneratorUtilities.uppercase1stLetter(label));
+                replacementMap.put("name", GeneratorUtilities.lowercase1stLetter(label));
+                loopRelationshipLines.add(line);
+                line = reader.readLine();
+            }
+            mapOMRSToOMAS("Relationship", replacementMap, outputFileWriter, loopRelationshipLines, label);
+        } finally {
+            closeReaderAndFileWriter(outputFileWriter, reader);
         }
-        reader.close();
-        mapOMRSToOMAS("Relationship", replacementMap, outputFileWriter, loopRelationshipLines, label);
-        outputFileWriter.close();
     }
 
     private void generateReferenceFiles() throws IOException {
@@ -981,40 +1016,41 @@ public class SubjectAreaOmrsBeanGenerator {
             // for each omrsBeanReference we need to create a java file in the right folder.
             String outputFolder = this.createReferenceJavaFolderIfRequired(omrsBeanReference);
             final String fileName = outputFolder + "/" + omrsBeanReference.uReferenceName + "Reference.java";
-            FileWriter outputFileWriter = new FileWriter(fileName);
-            BufferedReader reader;
+            FileWriter outputFileWriter = null;
+            BufferedReader reader =null;
+            try {
+                outputFileWriter = new FileWriter(fileName);
+                reader = new BufferedReader(new FileReader(OMAS_REFERENCE_TEMPLATE));
+                String line = reader.readLine();
+                while (line != null) {
+                    List<OmrsBeanAttribute> attrList = omrsBeanReference.attrList;
+                    Map<String, String> replacementMap = new HashMap();
+                    replacementMap.put("uname", omrsBeanReference.uReferenceName);
+                    replacementMap.put("mytype", omrsBeanReference.myType);
 
-            reader = new BufferedReader(new FileReader(OMAS_REFERENCE_TEMPLATE));
-            String line = reader.readLine();
-            while (line != null) {
-                List<OmrsBeanAttribute> attrList = omrsBeanReference.attrList;
-                Map<String, String> replacementMap = new HashMap();
-                replacementMap.put("uname", omrsBeanReference.uReferenceName);
-                replacementMap.put("mytype", omrsBeanReference.myType);
-
-                final String refPackage = GeneratorUtilities.getReferencePackage(omrsBeanReference.myType, omrsBeanReference.relatedEndType);
-                replacementMap.put("refpackage", refPackage);
-                replacementMap.put("name", omrsBeanReference.referenceName);
-                replacementMap.put("relationshiptype", omrsBeanReference.relationshipType);
-                replacementMap.put("relatedendtype",  GeneratorUtilities.lowercase1stLetter(omrsBeanReference.relatedEndType));
-                replacementMap.put("urelatedendtype",  GeneratorUtilities.uppercase1stLetter(omrsBeanReference.relatedEndType));
-                replacementMap.put("AttrDescription", omrsBeanReference.description);
-                writeAttributesToFile(attrList, replacementMap, outputFileWriter, reader, line);
-                line = reader.readLine();
+                    final String refPackage = GeneratorUtilities.getReferencePackage(omrsBeanReference.myType, omrsBeanReference.relatedEndType);
+                    replacementMap.put("refpackage", refPackage);
+                    replacementMap.put("name", omrsBeanReference.referenceName);
+                    replacementMap.put("relationshiptype", omrsBeanReference.relationshipType);
+                    replacementMap.put("relatedendtype", GeneratorUtilities.lowercase1stLetter(omrsBeanReference.relatedEndType));
+                    replacementMap.put("urelatedendtype", GeneratorUtilities.uppercase1stLetter(omrsBeanReference.relatedEndType));
+                    replacementMap.put("AttrDescription", omrsBeanReference.description);
+                    writeAttributesToFile(attrList, replacementMap, outputFileWriter, reader, line);
+                    line = reader.readLine();
+                }
+            } finally {
+                closeReaderAndFileWriter(outputFileWriter, reader);
             }
-            reader.close();
-            outputFileWriter.close();
-        }
-        //generate the top references file
-        Map<String, List<OmrsBeanAttribute>> omrsBeanReferencesAsAttributesByEntity = omrsBeanModel.getOmrsBeanReferencesAsAttributesByEntity();
+            //generateClientSideRelationshipImpl the top references file
+            Map<String, List<OmrsBeanAttribute>> omrsBeanReferencesAsAttributesByEntity = omrsBeanModel.getOmrsBeanReferencesAsAttributesByEntity();
 
-        final Set<String> entitiesWithRelationships = omrsBeanReferencesAsAttributesByEntity.keySet();
-        for (String entityName : entitiesWithRelationships) {
-
-            String outputFolder = this.createEntityJavaFolderIfRequired(entityName);
-            final String topReferenceFileName = outputFolder + "/" + entityName + "References.java";
-            final List<OmrsBeanAttribute> omrsBeanAttributes = omrsBeanReferencesAsAttributesByEntity.get(entityName);
-            generateTopReferenceFile(entityName, omrsBeanAttributes, topReferenceFileName);
+            final Set<String> entitiesWithRelationships = omrsBeanReferencesAsAttributesByEntity.keySet();
+            for (String entityName : entitiesWithRelationships) {
+                outputFolder = this.createEntityJavaFolderIfRequired(entityName);
+                final String topReferenceFileName = outputFolder + "/" + entityName + "References.java";
+                final List<OmrsBeanAttribute> omrsBeanAttributes = omrsBeanReferencesAsAttributesByEntity.get(entityName);
+                generateTopReferenceFile(entityName, omrsBeanAttributes, topReferenceFileName);
+            }
         }
     }
 
@@ -1371,7 +1407,7 @@ public class SubjectAreaOmrsBeanGenerator {
         }
     }
 
-    private String replaceTokensInLineFromMap(Map<String, String> referenceMap, String newLine) {
+    public static  String replaceTokensInLineFromMap(Map<String, String> referenceMap, String newLine) {
         if (referenceMap != null) {
             for (String key : referenceMap.keySet()) {
                 if (referenceMap.get(key) != null) {
@@ -1381,25 +1417,34 @@ public class SubjectAreaOmrsBeanGenerator {
         }
         return newLine;
     }
+    private static  void closeReaderAndFileWriter(FileWriter outputFileWriter, BufferedReader reader) throws IOException {
+        if (reader != null) {
+            reader.close();
+        }
+        if (outputFileWriter != null) {
+            outputFileWriter.close();
+        }
+    }
 
-    private String createReferenceJavaFolderIfRequired(OmrsBeanReference rgi) {
+    private static String createReferenceJavaFolderIfRequired(OmrsBeanReference rgi) {
         String outputpackage = rgi.myType + "To" + rgi.relatedEndType;
         File newFolder = GeneratorUtilities.writeFolder(GENERATION_REFERENCES_FOLDER + outputpackage + "/");
         return newFolder.getPath();
     }
 
-    private String createEntityJavaFolderIfRequired(String outputpackage) {
+    private static String createEntityJavaFolderIfRequired(String outputpackage) {
         File newFolder = GeneratorUtilities.writeFolder(GENERATION_ENTITIES_FOLDER + outputpackage + "/");
         return newFolder.getPath();
     }
 
-    private String createClassificationJavaFolderIfRequired(String outputpackage) {
+    private static String createClassificationJavaFolderIfRequired(String outputpackage) {
         File newFolder = GeneratorUtilities.writeFolder(GENERATION_CLASSIFICATIONS_FOLDER + outputpackage + "/");
         return newFolder.getPath();
     }
 
-    private String createRelationshipJavaFolderIfRequired(String outputpackage) {
+    private static String createRelationshipJavaFolderIfRequired(String outputpackage) {
         File newFolder = GeneratorUtilities.writeFolder(GENERATION_RELATIONSHIPS_FOLDER + outputpackage + "/");
         return newFolder.getPath();
     }
+
 }

@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions;
 
 
+import java.util.Objects;
+
 /**
  * NewInstanceException is thrown if the access service is not able to register a new instance
  * of itself in its instance map.
@@ -48,5 +50,25 @@ public class NewInstanceException extends AssetConsumerCheckedExceptionBase
                                 String userAction,
                                 Throwable caughtError) {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
+    }
+
+
+    /**
+     * JSON-style toString
+     *
+     * @return string of property names and values for this enum
+     */
+    @Override
+    public String toString()
+    {
+        return "NewInstanceException{" +
+                ", reportedHTTPCode=" + getReportedHTTPCode() +
+                ", reportingClassName='" + getReportingClassName() + '\'' +
+                ", reportingActionDescription='" + getReportingActionDescription() + '\'' +
+                ", errorMessage='" + getErrorMessage() + '\'' +
+                ", reportedSystemAction='" + getReportedSystemAction() + '\'' +
+                ", reportedUserAction='" + getReportedUserAction() + '\'' +
+                ", reportedCaughtException=" + getReportedCaughtException() +
+                '}';
     }
 }

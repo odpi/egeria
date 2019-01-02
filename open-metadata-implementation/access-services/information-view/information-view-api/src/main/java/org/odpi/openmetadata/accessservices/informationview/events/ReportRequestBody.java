@@ -16,23 +16,212 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ReportRequestBody {
-
-
-    private ConnectionDetails sourceConnectionDetails;
-    private ConnectionProperties ssasConnectionProperties;
-    private Map<String, Source> sources;
-
+public class ReportRequestBody extends InformationViewHeader {
+    private List<Source> sources;
     private String id;
-    private String createdTime;
+    private Long createdTime;
     private String author;
     private String reportName;
     private String reportPath;
     private String reportUrl;
     private String lastModifier;
-    private String lastModifiedTime;
-    private List<ReportColumn> reportColumns;
+    private Long lastModifiedTime;
+    private List<ReportElement> reportElements;
     private Map<String, Object> additionalProperties;
+
+    /**
+     * Default constructor
+     */
+    public ReportRequestBody() {
+
+    }
+
+    /**
+     *
+     * @return the unique identifier specific to BI tool for the report
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * set the id of the report
+     *
+     * @param id - unique identifier of the report
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    /**
+     *
+     * @return timestamp for the report creation time
+     */
+    public Long getCreatedTime() {
+        return createdTime;
+    }
+
+    /**
+     * set the createdTime
+     *
+     * @param createdTime - timestamp of the creation time of the report
+     */
+    public void setCreatedTime(Long createdTime) {
+        this.createdTime = createdTime;
+    }
+
+    /**
+     *
+     * @return the author of the report
+     */
+    public String getAuthor() {
+        return author;
+    }
+
+    /**
+     * set the report's author
+     *
+     * @param author - creator of the report
+     */
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    /**
+     *
+     * @return report name
+     */
+    public String getReportName() {
+        return reportName;
+    }
+
+    /**
+     * set the report name
+     *
+     * @param reportName - name of the report
+     */
+    public void setReportName(String reportName) {
+        this.reportName = reportName;
+    }
+
+    /**
+     *
+     * @return report path - location on server
+     */
+    public String getReportPath() {
+        return reportPath;
+    }
+
+    /**
+     * set the report path
+     *
+     * @param reportPath - path on server
+     */
+    public void setReportPath(String reportPath) {
+        this.reportPath = reportPath;
+    }
+
+    /**
+     *
+     * @return the url for accessing the report
+     */
+    public String getReportUrl() {
+        return reportUrl;
+    }
+
+    /**
+     * set set the url of the report
+     *
+     * @param reportUrl - url to access the report
+     */
+    public void setReportUrl(String reportUrl) {
+        this.reportUrl = reportUrl;
+    }
+
+    /**
+     *
+     * @return the last modifier
+     */
+    public String getLastModifier() {
+        return lastModifier;
+    }
+
+    /**
+     * set up the last modifier of the report
+     *
+     * @param lastModifier - last modifier of the report
+     */
+    public void setLastModifier(String lastModifier) {
+        this.lastModifier = lastModifier;
+    }
+
+    /**
+     *
+     * @return time of the last report modification
+     */
+    public Long getLastModifiedTime() {
+        return lastModifiedTime;
+    }
+
+    /**
+     *set the last time the report was modified
+     *
+     * @param lastModifiedTime - time of the last report modification
+     */
+    public void setLastModifiedTime(Long lastModifiedTime) {
+        this.lastModifiedTime = lastModifiedTime;
+    }
+
+    /**
+     *
+     * @return list of sources referenced by the report
+     */
+    public List<Source> getSources() {
+        return sources;
+    }
+
+    /**
+     * set the list of sources referenced by the report
+     *
+     * @param sources - list of sources referenced by the report
+     */
+    public void setSources(List<Source> sources) {
+        this.sources = sources;
+    }
+
+    /**
+     *
+     * @return additional properties of the report
+     */
+    public Map<String, Object> getAdditionalProperties() {
+        return additionalProperties;
+    }
+
+    /**
+     * set additional properties of the report that are not represented as basic report properties
+     *
+     * @param additionalProperties - additional properties of the report
+     */
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
+        this.additionalProperties = additionalProperties;
+    }
+
+    /**
+     *
+     * @return elemens composing the reports
+     */
+    public List<ReportElement> getReportElements() {
+        return reportElements;
+    }
+
+    /**
+     * set the elements of the report
+     *
+     * @param reportElements - elements composing the report
+     */
+    public void setReportElements(List<ReportElement> reportElements) {
+        this.reportElements = reportElements;
+    }
 
     /**
      * JSON-style toString.
@@ -42,134 +231,17 @@ public class ReportRequestBody {
     @Override
     public String toString() {
         return "ReportRequestBody{" +
-                "sourceConnectionDetails=" + sourceConnectionDetails +
-                ", ssasConnectionProperties=" + ssasConnectionProperties +
-                ", sources=" + sources +
+                "sources=" + sources +
                 ", id='" + id + '\'' +
-                ", createdTime='" + createdTime + '\'' +
+                ", createdTime=" + createdTime +
                 ", author='" + author + '\'' +
                 ", reportName='" + reportName + '\'' +
                 ", reportPath='" + reportPath + '\'' +
                 ", reportUrl='" + reportUrl + '\'' +
                 ", lastModifier='" + lastModifier + '\'' +
-                ", lastModifiedTime='" + lastModifiedTime + '\'' +
-                ", reportColumns=" + reportColumns +
+                ", lastModifiedTime=" + lastModifiedTime +
+                ", reportElements=" + reportElements +
                 ", additionalProperties=" + additionalProperties +
                 '}';
     }
-
-    /**
-     * Default constructor
-     */
-    public ReportRequestBody() {
-
-    }
-
-
-    public ConnectionDetails getSourceConnectionDetails() {
-        return sourceConnectionDetails;
-    }
-
-    public void setSourceConnectionDetails(ConnectionDetails sourceConnectionDetails) {
-        this.sourceConnectionDetails = sourceConnectionDetails;
-    }
-
-    public ConnectionProperties getSsasConnectionProperties() {
-        return ssasConnectionProperties;
-    }
-
-    public void setSsasConnectionProperties(ConnectionProperties ssasConnectionProperties) {
-        this.ssasConnectionProperties = ssasConnectionProperties;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getCreatedTime() {
-        return createdTime;
-    }
-
-    public void setCreatedTime(String createdTime) {
-        this.createdTime = createdTime;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public String getReportName() {
-        return reportName;
-    }
-
-    public void setReportName(String reportName) {
-        this.reportName = reportName;
-    }
-
-    public String getReportPath() {
-        return reportPath;
-    }
-
-    public void setReportPath(String reportPath) {
-        this.reportPath = reportPath;
-    }
-
-    public String getReportUrl() {
-        return reportUrl;
-    }
-
-    public void setReportUrl(String reportUrl) {
-        this.reportUrl = reportUrl;
-    }
-
-    public String getLastModifier() {
-        return lastModifier;
-    }
-
-    public void setLastModifier(String lastModifier) {
-        this.lastModifier = lastModifier;
-    }
-
-    public String getLastModifiedTime() {
-        return lastModifiedTime;
-    }
-
-    public void setLastModifiedTime(String lastModifiedTime) {
-        this.lastModifiedTime = lastModifiedTime;
-    }
-
-    public Map<String, Source> getSources() {
-        return sources;
-    }
-
-    public void setSources(Map<String, Source> sources) {
-        this.sources = sources;
-    }
-
-
-    public Map<String, Object> getAdditionalProperties() {
-        return additionalProperties;
-    }
-
-    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
-        this.additionalProperties = additionalProperties;
-    }
-
-    public List<ReportColumn> getReportColumns() {
-        return reportColumns;
-    }
-
-    public void setReportColumns(List<ReportColumn> reportColumns) {
-        this.reportColumns = reportColumns;
-    }
-
-
 }

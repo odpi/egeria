@@ -29,6 +29,7 @@ public final class Constants {
 
     //Relationships Type
     public static final String SCHEMA_ATTRIBUTE_TYPE = "SchemaAttributeType";
+    public static final String SCHEMA_ATTRIBUTE = "SchemaAttribute";
     public static final String ATTRIBUTE_FOR_SCHEMA = "AttributeForSchema";
     public static final String ASSET_SCHEMA_TYPE = "AssetSchemaType";
     public static final String CONNECTION_TO_ASSET = "ConnectionToAsset";
@@ -50,8 +51,9 @@ public final class Constants {
     public static final String ENCRYPTION_METHOD = "encryptionMethod";
     public static final String CONNECTOR_PROVIDER_CLASS_NAME = "connectorProviderClassName";
     public static final String SECURED_PROPERTIES = "securedProperties";
+    public static final String ADDITIONAL_PROPERTIES = "additionalProperties";
     public static final String MODIFIED_TIME = "modifiedTime";
-    public static final String TYPE = "type";
+    public static final String TYPE = "dataType";
     public static final String CREATE_TIME = "createTime";
     public static final String QUALIFIED_NAME = "qualifiedName";
     public static final String NAME = "name";

@@ -54,7 +54,7 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>igc-rest-connector</artifactId>
+            <artifactId>igc-rest-client-library</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
 

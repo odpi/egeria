@@ -2535,24 +2535,24 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
                                                                methodName);
             }
         }
-
         /*
-         * Perform operation
+         * timewarp the stores
          */
-        // todo
-        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+        Map<String, EntityDetail>   entityStore = repositoryStore.timeWarpEntityStore(asOfTime);
+        Map<String, Relationship>   relationshipStore = repositoryStore.timeWarpRelationshipStore(asOfTime);
 
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName, this.getClass().getName(), repositoryName);
-
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                                           this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+        InMemoryEntityNeighbourhood inMemoryEntityNeighbourhood = new InMemoryEntityNeighbourhood(
+                repositoryValidator,
+                entityStore,
+                relationshipStore,
+                entityGUID,
+                entityTypeGUIDs,
+                relationshipTypeGUIDs,
+                limitResultsByStatus,
+                limitResultsByClassification,
+                level);
+        return inMemoryEntityNeighbourhood.createInstanceGraph();
     }
-
-
     /**
      * Return the list of entities that are of the types listed in entityTypeGUIDs and are connected, either directly or
      * indirectly to the entity identified by startEntityGUID.
@@ -3957,6 +3957,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
         updatedRelationship.setStatus(InstanceStatus.DELETED);
 
         updatedRelationship = repositoryHelper.incrementVersion(userId, relationship, updatedRelationship);
+
         repositoryStore.updateRelationshipInStore(updatedRelationship);
 
         return updatedRelationship;
@@ -4063,8 +4064,9 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
         /*
          * Locate relationship
          */
-        Relationship  relationship  = this.getRelationship(userId, deletedRelationshipGUID);
+        Relationship  relationship  = repositoryStore.getRelationship(deletedRelationshipGUID);
 
+        repositoryValidator.validateRelationshipFromStore(repositoryName, deletedRelationshipGUID, relationship, methodName);
         repositoryValidator.validateRelationshipIsDeleted(repositoryName, relationship, methodName);
 
         /*

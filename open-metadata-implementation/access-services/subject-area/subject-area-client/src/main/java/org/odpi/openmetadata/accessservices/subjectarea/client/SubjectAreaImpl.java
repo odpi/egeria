@@ -18,31 +18,27 @@ public class SubjectAreaImpl implements SubjectArea
     private static final Logger log = LoggerFactory.getLogger(SubjectAreaImpl.class);
 
     private static final String className = SubjectAreaImpl.class.getName();
+    static final String SUBJECT_AREA_BASE_URL ="/servers/%s/open-metadata/access-services/subject-area/users/%s/";
 
     private final SubjectAreaTermImpl termAPI;
     private final SubjectAreaCategoryImpl categoryAPI;
     private final SubjectAreaGlossaryImpl glossaryAPI;
     public final  SubjectAreaRelationshipImpl relationshipAPI;
-    /*
-     * The URL of the server where OMAS is active
-     */
-    private String omasServerURL = null;
-
 
     /**
      * Default Constructor used once a connector is created.
      *
+     * @param serverName    serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param omasServerURL - unique id for the connector instance
-     * @throws InvalidParameterException            one of the parameters is null or invalid.
+     * @throws InvalidParameterException one of the parameters is null or invalid.
      */
-    public SubjectAreaImpl(String   omasServerURL) throws InvalidParameterException {
-       String methodName = "SubjectAreaImpl";
-        InputValidator.validateOMASServerURLNotNull(className,methodName,omasServerURL);
-        this.omasServerURL = omasServerURL;
-        this.glossaryAPI = new SubjectAreaGlossaryImpl(omasServerURL);
-        this.termAPI = new SubjectAreaTermImpl(omasServerURL);
-        this.categoryAPI = new SubjectAreaCategoryImpl(omasServerURL);
-        this.relationshipAPI = new SubjectAreaRelationshipImpl(omasServerURL);
+    public SubjectAreaImpl(String serverName,String omasServerURL ) throws InvalidParameterException {
+        String methodName = "SubjectAreaImpl";
+        InputValidator.validateOMASServerURLNotNull(className, methodName, omasServerURL);
+        this.glossaryAPI = new SubjectAreaGlossaryImpl(omasServerURL, serverName);
+        this.termAPI = new SubjectAreaTermImpl(omasServerURL, serverName);
+        this.categoryAPI = new SubjectAreaCategoryImpl(omasServerURL, serverName);
+        this.relationshipAPI = new SubjectAreaRelationshipImpl(omasServerURL, serverName);
     }
 
     /**

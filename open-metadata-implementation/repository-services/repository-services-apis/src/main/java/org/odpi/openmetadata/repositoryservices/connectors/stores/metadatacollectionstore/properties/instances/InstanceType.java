@@ -1,4 +1,5 @@
-/* SPDX-License-Identifier: Apache-2.0 */
+/* SPDX-License-Identifier: Apache 2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -335,9 +336,9 @@ public class InstanceType extends InstanceElementHeader
     public String toString()
     {
         return "InstanceType{" +
-                "typeDefCategory=" + typeDefCategory +
+                "typeDefName='" + typeDefName + '\'' +
+                ", typeDefCategory=" + typeDefCategory +
                 ", typeDefGUID='" + typeDefGUID + '\'' +
-                ", typeDefName='" + typeDefName + '\'' +
                 ", typeDefVersion=" + typeDefVersion +
                 ", typeDefDescription='" + typeDefDescription + '\'' +
                 ", typeDefDescriptionGUID='" + typeDefDescriptionGUID + '\'' +

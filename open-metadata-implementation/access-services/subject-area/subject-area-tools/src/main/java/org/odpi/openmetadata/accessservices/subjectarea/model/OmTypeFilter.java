@@ -40,7 +40,7 @@ public class OmTypeFilter {
             "DerivedSchemaAttribute", "GovernanceDefinition", "Host", "MediaUsage", "Process", "SchemaType", "VirtualContainer","Comment", "Endpoint",
             "GovernanceDriver", "HostCluster", "Meeting", "Project", "SoftwareComponent","DeployedSoftwareComponent"};
     private static String[] RELATIONSHIP_TYPES = {
-            "APIEndpoint", "BusinessCapabilityResponsibility", "ExternallySourcedGlossary", "LibraryCategoryReference", "ProfileIdentity", "ServerDeployment",
+            "APIEndpoint", "BusinessCapabilityResponsibility", "ExternallySourcedGlossary", "LibraryCategoryReference", "LibraryTermReference","ProfileIdentity", "ServerDeployment",
             "APIHeader", "CategoryAnchor", "FolderHierarchy", "License", "", "ProjectCharterLink", "ServerEndpoint", "APIOperations", "CategoryHierarchyLink",
             "GovernanceControlLink", "LinkedFile", "ProjectDependency", "ServerSupportedCapability", "APIRequest", "Certification", "GovernanceDefinitionMetric",
             "LinkedMedia", "ProjectHierarchy", "SoftwareComponentDeployment", "APIResponse", "CohortMemberMetadataCollection", "GovernanceImplementation",
@@ -69,7 +69,7 @@ public class OmTypeFilter {
      * <p>
      * The types relevant to this omas are define in the arrays above ENTITY_TYPES and RELATIONSHIP_TYPES. I suspect the scope of this is
      * too big - for example we have Host, because it has a relationship to Location and we have Location because we are generating an asset. In each of thee cases
-     * we would not be able to generate the entity reference files if the types were not included in the generation
+     * we would not be able to generateClientSideRelationshipImpl the entity reference files if the types were not included in the generation
      *
      * @param newTypeDefs all the Type defs
      * @param attributeTypeDefs all the attribute defs
@@ -121,7 +121,7 @@ public class OmTypeFilter {
     }
 
     // helper methods
-    private EntityDef getEntityDef(String typeName) {
+    public EntityDef getEntityDef(String typeName) {
         return this.allEntityTypedefs.get(typeName);
     }
     private ClassificationDef getClassificationDef(String typeName) {

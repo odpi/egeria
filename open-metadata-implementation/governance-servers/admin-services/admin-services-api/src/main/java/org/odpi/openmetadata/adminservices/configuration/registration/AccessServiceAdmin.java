@@ -15,6 +15,14 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 public interface AccessServiceAdmin
 {
+    /*
+     * These are standard property names that an access service may support.  They are passed in the
+     * AccessServiceConfig as the accessServicesOptions.  Individual access services may support
+     * additional properties.
+     */
+    String            supportedZonesPropertyName      = "SupportedZones";      /* All */
+    String            karmaPointThresholdPropertyName = "KarmaPointThreshold"; /* Community Profile OMAS */
+
     /**
      * Initialize the access service.
      *

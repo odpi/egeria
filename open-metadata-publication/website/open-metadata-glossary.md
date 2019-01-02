@@ -1,4 +1,5 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
 
 # Open Metadata Glossary
 
@@ -58,10 +59,10 @@ Below are links to common terms and concepts used in Egeria.
 * [Cohort Services (OMRS)](../../open-metadata-implementation/repository-services/docs/subsystem-descriptions/cohort-services.md)
 * [Community Guide](../../Community-Guide.md)
 * [Community Profile OMAS](../../open-metadata-implementation/access-services/community-profile)
-* [Compliance Test Suite](../../open-metadata-compliance-suite)
 * [Configuration User Interface](../../open-metadata-implementation/user-interfaces/server-configuration-user-interface)
 * [Configuration Store Connectors](../../open-metadata-implementation/adapters/open-connectors/configuration-store-connectors)
 * [Configuration Factory](../../open-metadata-implementation/adapters/open-connectors/connector-configuration-factory)
+* [Conformance Test Suite](../../open-metadata-conformance-suite)
 * [Connected Asset OMAS](../../open-metadata-implementation/access-services/connected-asset)
 * [Connectors](../../open-metadata-implementation/adapters/open-connectors)
   * [Access Services Connectors](../../open-metadata-implementation/adapters/open-connectors/access-services-connectors)
@@ -211,7 +212,7 @@ Below are links to common terms and concepts used in Egeria.
 * [Open Metadata Cohort Member](../../open-metadata-implementation/repository-services/docs/cohort-member.md)
 * [Open Metadata Archives](../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-archive-connectors)
 * [Open Metadata Collection Store Connectors](../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors)
-* [Open Metadata Compliance Suite](../../open-metadata-compliance-suite)
+* [Open Metadata Conformance Suite](../../open-metadata-conformance-suite)
 * [Open Metadata Implementation](../../open-metadata-implementation)
 * [Open Metadata Repository](../../open-metadata-implementation/repository-services/docs/open-metadata-repository.md)
 * [Open Metadata Repository Cohort](../../open-metadata-implementation/repository-services/docs/open-metadata-repository-cohort.md)
@@ -263,7 +264,7 @@ Below are links to common terms and concepts used in Egeria.
   * [open-discovery-framework](../../open-metadata-implementation/frameworks/open-discovery-framework)
   * [open-metadata-archive-connectors](../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-archive-connectors)
   * [open-metadata-collection-store-connectors](../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors)
-  * [open-metadata-compliance-suite](../../open-metadata-compliance-suite)
+  * [open-metadata-conformance-suite](../../open-metadata-conformance-suite)
   * [open-metadata-distribution](../../open-metadata-distribution)
   * [open-metadata-implementation](../../open-metadata-implementation)
   * [open-metadata-publication](../../open-metadata-publication)
@@ -346,4 +347,10 @@ Below are links to common terms and concepts used in Egeria.
 
 
 ## Z
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
 

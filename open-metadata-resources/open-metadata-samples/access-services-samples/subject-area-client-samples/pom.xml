@@ -18,7 +18,7 @@
 
     <name>Subject Area OMAS Samples</name>
     <description>
-        Sample for the Subject Area Open Metadata Access Service (OMAS) client samples.
+        Subject Area Open Metadata Access Service (OMAS) client samples.
     </description>
 
     <dependencies>

@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -98,10 +99,10 @@ public class PrimitiveDef extends AttributeTypeDef
     public String toString()
     {
         return "PrimitiveDef{" +
-                "primitiveDefCategory=" + primitiveDefCategory +
+                "name='" + name + '\'' +
+                ", primitiveDefCategory=" + primitiveDefCategory +
                 ", category=" + category +
                 ", guid='" + guid + '\'' +
-                ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", descriptionGUID='" + descriptionGUID + '\'' +
                 '}';

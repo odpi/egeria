@@ -144,6 +144,33 @@ public interface OMRSRepositoryHelper
 
 
     /**
+     * Validate that the type of an entity is of the expected/desired type.  The actual entity may be a subtype
+     * of the expected type of course.
+     *
+     * @param sourceName source of the request (used for logging)
+     * @param actualTypeName name of the entity type
+     * @param expectedTypeName name of the expected type
+     * @return boolean if they match (a null in either results in false)
+     */
+    boolean  isTypeOf(String   sourceName,
+                      String   actualTypeName,
+                      String   expectedTypeName);
+
+
+    /**
+     * Return the names of all of the properties in the supplied TypeDef and all of its super-types.
+     *
+     * @param sourceName name of caller.
+     * @param typeDef TypeDef to query.
+     * @param methodName calling method.
+     * @return list of property names.
+     */
+    List<TypeDefAttribute> getAllPropertiesForTypeDef(String  sourceName,
+                                                      TypeDef typeDef,
+                                                      String  methodName);
+
+
+    /**
      * Returns an updated TypeDef that has had the supplied patch applied.  It throws an exception if any part of
      * the patch is incompatible with the original TypeDef.  For example, if there is a mismatch between
      * the type or version that either represents.
@@ -506,19 +533,42 @@ public interface OMRSRepositoryHelper
 
 
     /**
-     * Return the requested property or null if property is not found.  If the property is not
-     * a map property then a logic exception is thrown.
+     * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
      *
      * @param sourceName source of call
-     * @param propertyName name of requested property
-     * @param properties properties from the instance.
+     * @param propertyName name of requested map property
+     * @param properties values of the property
      * @param methodName method of caller
-     * @return string property value or null
+     * @return map property value or null
      */
     Map<String, Object> getMapFromProperty(String             sourceName,
                                            String             propertyName,
                                            InstanceProperties properties,
                                            String             methodName);
+
+
+    /**
+     * Convert an instance properties object into a map.
+     *
+     * @param instanceProperties packed properties
+     * @return properties stored in Java map
+     */
+    Map<String, Object> getInstancePropertiesAsMap(InstanceProperties    instanceProperties);
+
+
+    /**
+     * Locates and extracts a string array property and extracts its values.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested map property
+     * @param properties all of the properties of the instance
+     * @param methodName method of caller
+     * @return array property value or null
+     */
+    List<String> getStringArrayProperty(String             sourceName,
+                                        String             propertyName,
+                                        InstanceProperties properties,
+                                        String             methodName);
 
 
     /**

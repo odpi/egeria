@@ -19,3 +19,9 @@ Thus **TermAssignmentStatus** defines how much the semantic assignment should be
 * DEPRECATED - this relationship is being phased out.  There may be another semantic relationship to the Referenceable that will ultimately replace this relationship.
 * OBSOLETE - this relationship is no longer in use.
 * OTHER - the status of the relationship does not match any of the other term status values.  The description field can be used to add details about the relationship.
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

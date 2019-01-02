@@ -9,10 +9,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.*;
-import java.io.Serializable;
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.*;
@@ -24,14 +21,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.LineType;
 
 /**
- * SemanticAssignment is a relationship between an entity of type Referenceable and an entity of type GlossaryTerm.
- * The ends of the relationship are stored as entity proxies, where there is a 'proxy' name by which the entity type is known.
- * The first entity proxy has assignedElements as the proxy name for entity type Referenceable.
- * The second entity proxy has meaning as the proxy name for entity type GlossaryTerm.
- *
- * Each entity proxy also stores the entities guid.
-
- Links a glossary term to another element such as an asset or schema element to define its meaning.
+ * Links a glossary term to another element such as an asset or schema element to define its meaning.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -77,6 +67,8 @@ public class SemanticAssignment extends Line {
       public static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES)));
       public static final java.util.Set<String> ENUM_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES)));
       public static final java.util.Set<String> MAP_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES)));
+      protected String assignedElementGuid;
+      protected String termGuid;
 
 
     public SemanticAssignment() {
@@ -116,6 +108,32 @@ public class SemanticAssignment extends Line {
            lineType = LineType.Other;
         }
     }
+    /**
+     * {@literal Get the guid of an assigned element, such as an asset or schema element, that is given meaning by the associated Term.}
+     * @return {@code String }
+     */
+    public String getAssignedElementGuid()
+    {
+        return assignedElementGuid;
+    }
+
+    public void setAssignedElementGuid(String assignedElementGuid)
+    {
+        this.assignedElementGuid = assignedElementGuid;
+    }
+    /**
+     * {@literal Get the guid of Term that gives meaning to the assigned element. }
+     * @return {@code String }
+     */
+    public String getTermGuid()
+    {
+        return termGuid;
+    }
+
+    public void setTermGuid(String termGuid)
+    {
+        this.termGuid = termGuid;
+    }
 
     InstanceProperties obtainInstanceProperties() {
           final String methodName = "obtainInstanceProperties";
@@ -132,27 +150,26 @@ public class SemanticAssignment extends Line {
           MapPropertyValue mapPropertyValue=null;
           PrimitivePropertyValue primitivePropertyValue=null;
           primitivePropertyValue = new PrimitivePropertyValue();
-          // TODO  description + change null to value
           primitivePropertyValue.setPrimitiveValue(null);
           instanceProperties.setProperty("description",primitivePropertyValue);
           primitivePropertyValue = new PrimitivePropertyValue();
-          // TODO  description + change null to value
+          
           primitivePropertyValue.setPrimitiveValue(null);
           instanceProperties.setProperty("expression",primitivePropertyValue);
           primitivePropertyValue = new PrimitivePropertyValue();
-          // TODO  description + change null to value
+          
           primitivePropertyValue.setPrimitiveValue(null);
           instanceProperties.setProperty("status",primitivePropertyValue);
           primitivePropertyValue = new PrimitivePropertyValue();
-          // TODO  description + change null to value
+          
           primitivePropertyValue.setPrimitiveValue(null);
           instanceProperties.setProperty("confidence",primitivePropertyValue);
           primitivePropertyValue = new PrimitivePropertyValue();
-          // TODO  description + change null to value
+          
           primitivePropertyValue.setPrimitiveValue(null);
           instanceProperties.setProperty("steward",primitivePropertyValue);
           primitivePropertyValue = new PrimitivePropertyValue();
-          // TODO  description + change null to value
+          
           primitivePropertyValue.setPrimitiveValue(null);
           instanceProperties.setProperty("source",primitivePropertyValue);
           if (log.isDebugEnabled()) {
@@ -183,15 +200,15 @@ public class SemanticAssignment extends Line {
          public void setExpression(String expression)  {
             this.expression = expression;
         }
-         private TermRelationshipStatus status;
+         private TermAssignmentStatus status;
         /**
             * {@literal The status of the relationship. }
-            * @return {@code TermRelationshipStatus }
+            * @return {@code TermAssignmentStatus }
             */
-         public TermRelationshipStatus getStatus() {
+         public TermAssignmentStatus getStatus() {
              return this.status;
          }
-         public void setStatus(TermRelationshipStatus status)  {
+         public void setStatus(TermAssignmentStatus status)  {
             this.status = status;
         }
          private Integer confidence;

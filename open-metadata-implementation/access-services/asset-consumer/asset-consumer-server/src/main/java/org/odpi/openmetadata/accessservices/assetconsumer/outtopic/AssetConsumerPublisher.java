@@ -1,344 +1,157 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.outtopic;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.odpi.openmetadata.accessservices.assetconsumer.events.AssetConsumerEventHeader;
+import org.odpi.openmetadata.accessservices.assetconsumer.events.NewAssetEvent;
+import org.odpi.openmetadata.accessservices.assetconsumer.events.UpdatedAssetEvent;
+import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.AssetConsumerErrorCode;
+import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
+import org.odpi.openmetadata.frameworks.connectors.Connector;
+import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.Asset;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
 
 /**
- * AssetConsumerPublisher is responsible for publishing events about assets.  It is called
- * when an interesting OMRS Event is added to the Enterprise OMRS Topic.  It adds events to the Asset Consumer OMAS
- * out topic.
+ * AssetConsumerPublisher is the connector responsible .
  */
 public class AssetConsumerPublisher
 {
-    private static final String assetTypeName                  = "Asset";
-    private static final String assetPropertyNameQualifiedName = "qualifiedName";
-    private static final String assetPropertyNameDisplayName   = "name";
-    private static final String assetPropertyNameOwner         = "owner";
-    private static final String assetPropertyNameDescription   = "description";
-
     private static final Logger log = LoggerFactory.getLogger(AssetConsumerPublisher.class);
 
-    private Connection              assetConsumerOutTopic;
-    private OMRSRepositoryHelper    repositoryHelper;
-    private OMRSRepositoryValidator repositoryValidator;
-    private String                  componentName;
+    private OpenMetadataTopicConnector  connector = null;
 
 
     /**
      * The constructor is given the connection to the out topic for Asset Consumer OMAS
      * along with classes for testing and manipulating instances.
      *
-     * @param assetConsumerOutTopic - connection to the out topic
-     * @param repositoryHelper - provides methods for working with metadata instances
-     * @param repositoryValidator - provides validation of metadata instance
-     * @param componentName - name of component
+     * @param assetConsumerOutTopic connection to the out topic
+     * @param auditLog log file for the connector.
      */
-    public AssetConsumerPublisher(Connection               assetConsumerOutTopic,
-                                  OMRSRepositoryHelper    repositoryHelper,
-                                  OMRSRepositoryValidator repositoryValidator,
-                                  String                  componentName)
+    public AssetConsumerPublisher(Connection              assetConsumerOutTopic,
+                                  OMRSAuditLog            auditLog) throws OMAGConfigurationErrorException
     {
-        this.assetConsumerOutTopic = assetConsumerOutTopic;
-        this.repositoryHelper = repositoryHelper;
-        this.repositoryValidator = repositoryValidator;
-        this.componentName = componentName;
-    }
-
-
-    /**
-     * Determine whether a new entity is an Asset.  If it is then publish an Asset Consumer Event about it.
-     *
-     * @param entity - entity object that has just been created.
-     */
-    public void processNewEntity(EntityDetail entity)
-    {
-        String assetType = getAssetType(entity);
-
-        if (assetType != null)
+        if (assetConsumerOutTopic != null)
         {
-            this.processNewAsset(this.getAsset(entity));
+            connector = this.getTopicConnector(assetConsumerOutTopic, auditLog);
         }
     }
 
 
     /**
-     * Determine whether an updated entity is an Asset.  If it is then publish an Asset Consumer Event about it.
+     * Output a new asset event.
      *
-     * @param entity - entity object that has just been updated.
+     * @param event event to send
      */
-    public void processUpdatedEntity(EntityDetail   entity)
+    public void publishNewAssetEvent(NewAssetEvent event)
     {
-        String assetType = getAssetType(entity);
-
-        if (assetType != null)
+        try
         {
-            this.processUpdatedAsset(this.getAsset(entity));
-        }
-    }
-
-
-    /**
-     * Determine whether an updated entity is an Asset.  If it is then publish an Asset Consumer Event about it.
-     *
-     * @param originalEntity - original values for entity object - available when basic property updates have
-     *                       occurred on the entity.
-     * @param newEntity - entity object that has just been updated.
-     */
-    public void processUpdatedEntity(EntityDetail   originalEntity,
-                                     EntityDetail   newEntity)
-    {
-        String assetType = getAssetType(newEntity);
-
-        if (assetType != null)
-        {
-            this.processUpdatedAsset(this.getAsset(originalEntity),
-                                     this.getAsset(newEntity));
-        }
-    }
-
-
-    /**
-     * Determine whether a deleted entity is an Asset.  If it is then publish an Asset Consumer Event about it.
-     *
-     * @param entity - entity object that has just been deleted.
-     */
-    public void processDeletedEntity(EntityDetail   entity)
-    {
-        String assetType = getAssetType(entity);
-
-        if (assetType != null)
-        {
-            this.processDeletedAsset(this.getAsset(entity));
-        }
-    }
-
-
-    /**
-     * Determine whether a restored entity is an Asset.  If it is then publish an Asset Consumer Event about it.
-     *
-     * @param entity - entity object that has just been restored.
-     */
-    public void processRestoredEntity(EntityDetail   entity)
-    {
-        String assetType = getAssetType(entity);
-
-        if (assetType != null)
-        {
-            this.processRestoredAsset(this.getAsset(entity));
-        }
-    }
-
-
-    /**
-     * Determine whether a new relationship is related to an Asset.
-     * If it is then publish an Asset Consumer Event about it.
-     *
-     * @param relationship - relationship object that has just been created.
-     */
-    public void processNewRelationship(Relationship relationship)
-    {
-        // todo
-    }
-
-
-    /**
-     * Determine whether an updated relationship is related to an Asset.
-     * If it is then publish an Asset Consumer Event about it.
-     *
-     * @param relationship - relationship object that has just been updated.
-     */
-    public void processUpdatedRelationship(Relationship   relationship)
-    {
-        // todo
-    }
-
-
-    /**
-     * Determine whether an updated relationship is related to an Asset.
-     * If it is then publish an Asset Consumer Event about it.
-     *
-     * @param originalRelationship  - original values of relationship.
-     * @param newRelationship - relationship object that has just been updated.
-     */
-    public void processUpdatedRelationship(Relationship   originalRelationship,
-                                           Relationship   newRelationship)
-    {
-        // todo
-    }
-
-
-    /**
-     * Determine whether a deleted relationship is related to an Asset.
-     * If it is then publish an Asset Consumer Event about it.
-     *
-     * @param relationship - relationship object that has just been deleted.
-     */
-    public void processDeletedRelationship(Relationship   relationship)
-    {
-        // todo
-    }
-
-
-    /**
-     * Determine whether a restored relationship is related to an Asset.
-     * If it is then publish an Asset Consumer Event about it.
-     *
-     * @param relationship - relationship object that has just been restored.
-     */
-    public void processRestoredRelationship(Relationship   relationship)
-    {
-        // todo
-    }
-
-
-    /**
-     * Return the name of the Asset type if this entity has a type that inherits from Asset.
-     *
-     * @param entity - entity to test
-     * @return String containing Asset type name, or null if not an Asset.
-     */
-    private String getAssetType(EntityDetail  entity)
-    {
-        final   String   methodName = "getAssetType";
-
-        if (repositoryValidator.isATypeOf(componentName, entity, assetTypeName, methodName))
-        {
-            InstanceType entityType = entity.getType();
-
-            if (entityType != null)
+            if (connector != null)
             {
-                return entityType.getTypeDefName();
+                connector.sendEvent(this.getJSONPayload(event));
             }
         }
-
-        return null;
+        catch (Throwable  error)
+        {
+            log.error("Unable to publish new asset event: " + event.toString() + "; error was " + error.toString());
+        }
     }
 
 
     /**
-     * Return an Asset object extracted from the supplied entity object
-     * @param entity - entity describing the asset
-     * @return Asset object
+     * Output an updated asset event.
+     *
+     * @param event event to send.
      */
-    private Asset getAsset(EntityDetail   entity)
+    public void publishUpdatedAssetEvent(UpdatedAssetEvent  event)
     {
-        Asset   asset = new Asset();
-
-        if (entity != null)
+        try
         {
-            asset.setGUID(entity.getGUID());
-
-            InstanceType  instanceType = entity.getType();
-            if (instanceType != null)
+            if (connector != null)
             {
-                asset.setTypeName(instanceType.getTypeDefName());
-                asset.setTypeDescription(instanceType.getTypeDefDescription());
-            }
-
-            InstanceProperties instanceProperties = entity.getProperties();
-
-            if (instanceProperties != null)
-            {
-                InstancePropertyValue instancePropertyValue;
-
-                instancePropertyValue = instanceProperties.getPropertyValue(assetPropertyNameQualifiedName);
-
-                if (instancePropertyValue != null)
-                {
-                    PrimitivePropertyValue  primitivePropertyValue = (PrimitivePropertyValue)instancePropertyValue;
-                    asset.setQualifiedName(primitivePropertyValue.toString());
-                }
-
-                instancePropertyValue = instanceProperties.getPropertyValue(assetPropertyNameDisplayName);
-
-                if (instancePropertyValue != null)
-                {
-                    PrimitivePropertyValue  primitivePropertyValue = (PrimitivePropertyValue)instancePropertyValue;
-                    asset.setDisplayName(primitivePropertyValue.toString());
-                }
-
-                instancePropertyValue = instanceProperties.getPropertyValue(assetPropertyNameOwner);
-
-                if (instancePropertyValue != null)
-                {
-                    PrimitivePropertyValue  primitivePropertyValue = (PrimitivePropertyValue)instancePropertyValue;
-                    asset.setOwner(primitivePropertyValue.toString());
-                }
-
-                instancePropertyValue = instanceProperties.getPropertyValue(assetPropertyNameDescription);
-
-                if (instancePropertyValue != null)
-                {
-                    PrimitivePropertyValue  primitivePropertyValue = (PrimitivePropertyValue)instancePropertyValue;
-                    asset.setDescription(primitivePropertyValue.toString());
-                }
+                connector.sendEvent(this.getJSONPayload(event));
             }
         }
-
-        return asset;
+        catch (Throwable  error)
+        {
+            log.error("Unable to publish undated asset event: " + event.toString() + "; error was " + error.toString());
+        }
     }
 
 
     /**
-     * Publish event about a new asset.
+     * Create the topic connector.
      *
-     * @param asset - asset to report on.
+     * @param topicConnection connection to create the connector
+     * @param auditLog audit log for the connector
+     * @return open metadata topic connector
      */
-    private void processNewAsset(Asset   asset)
+    private OpenMetadataTopicConnector getTopicConnector(Connection   topicConnection,
+                                                         OMRSAuditLog auditLog) throws OMAGConfigurationErrorException
     {
-        log.info("Asset Consumer Event => New Asset: " + asset.toString());
+        try
+        {
+            ConnectorBroker connectorBroker = new ConnectorBroker();
+            Connector       connector       = connectorBroker.getConnector(topicConnection);
+
+            OpenMetadataTopicConnector topicConnector  = (OpenMetadataTopicConnector)connector;
+
+            topicConnector.setAuditLog(auditLog);
+
+            topicConnector.start();
+
+            return topicConnector;
+        }
+        catch (Throwable   error)
+        {
+            String methodName = "getTopicConnector";
+
+            log.error("Unable to create topic connector: " + error.toString());
+
+            AssetConsumerErrorCode errorCode = AssetConsumerErrorCode.BAD_OUT_TOPIC_CONNECTION;
+            String                 errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(topicConnection.toString(), error.getClass().getName(), error.getMessage());
+
+            throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+                                                      this.getClass().getName(),
+                                                      methodName,
+                                                      errorMessage,
+                                                      errorCode.getSystemAction(),
+                                                      errorCode.getUserAction(),
+                                                      error);
+        }
     }
 
 
     /**
-     * Publish event about an updated asset.
+     * Return the event as a String where the field contents are encoded in JSON.   The event beans
+     * contain annotations that mean the whole event, down to the lowest subclass, is serialized.
      *
-     * @param asset - asset to report on.
+     * @return JSON payload (as String)
      */
-    private void processUpdatedAsset(Asset   asset)
+    private String getJSONPayload(AssetConsumerEventHeader    event)
     {
-        log.info("Asset Consumer Event => Updated Asset: " + asset.toString());
+        ObjectMapper objectMapper = new ObjectMapper();
+        String       jsonString   = null;
+
+        /*
+         * This class
+         */
+        try
+        {
+            jsonString = objectMapper.writeValueAsString(event);
+        }
+        catch (Throwable  error)
+        {
+            log.error("Unable to create event payload: " + error.toString());
+        }
+
+        return jsonString;
     }
 
-
-    /**
-     * Publish event about an updated asset.
-     *
-     * @param originalAsset - original values.
-     * @param newAsset - asset to report on.
-     */
-    private void processUpdatedAsset(Asset   originalAsset,
-                                     Asset   newAsset)
-    {
-        log.info("Asset Consumer Event => Original Asset: " + originalAsset.toString());
-        log.info("Asset Consumer Event => Updated Asset: "  + newAsset.toString());
-    }
-
-
-    /**
-     * Publish event about a deleted asset.
-     *
-     * @param asset - asset to report on.
-     */
-    private void processDeletedAsset(Asset   asset)
-    {
-        log.info("Asset Consumer Event => Deleted Asset: " + asset.toString());
-    }
-
-
-    /**
-     * Publish event about a restored asset.
-     *
-     * @param asset - asset to report on.
-     */
-    private void processRestoredAsset(Asset   asset)
-    {
-        log.info("Asset Consumer Event => Restored Asset: " + asset.toString());
-    }
 }
