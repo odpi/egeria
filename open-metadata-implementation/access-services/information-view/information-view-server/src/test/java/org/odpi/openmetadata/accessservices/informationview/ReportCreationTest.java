@@ -41,7 +41,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.io.File;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -224,7 +224,7 @@ public class ReportCreationTest {
         ReportRequestBody request = OBJECT_MAPPER.readValue(payload, ReportRequestBody.class);
         ReportColumn column = new ReportColumn();
         column.setName("test_column");
-        column.setSources(Arrays.asList(request.getSources().get(0)));
+        column.setSources(Collections.singletonList(request.getSources().get(0)));
         ((ReportSection)request.getReportElements().get(0)).getElements().add(column);
         reportHandler.submitReportModel(request);
         EntityDetail reportEntity = entitiesCreatorHelper.getEntity(Constants.DEPLOYED_REPORT, "powerbi-server.report_number_35");

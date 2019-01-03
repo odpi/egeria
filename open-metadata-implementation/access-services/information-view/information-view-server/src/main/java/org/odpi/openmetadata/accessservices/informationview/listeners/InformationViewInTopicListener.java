@@ -202,10 +202,10 @@ public class InformationViewInTopicListener implements OpenMetadataTopicListener
 
                 for (DerivedColumn derivedColumn : event.getDerivedColumns()) {
 
-                    String qualifiedNameColumnType = qualifiedNameForTable + "." + derivedColumn.getColumnName() + Constants.TYPE_SUFFIX;
+                    String qualifiedNameColumnType = qualifiedNameForTable + "." + derivedColumn.getName() + Constants.TYPE_SUFFIX;
                     InstanceProperties columnTypeProperties = new EntityPropertiesBuilder()
                             .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameColumnType)
-                            .withStringProperty(Constants.DISPLAY_NAME, derivedColumn.getColumnName() + Constants.TYPE_SUFFIX)
+                            .withStringProperty(Constants.DISPLAY_NAME, derivedColumn.getName() + Constants.TYPE_SUFFIX)
                             .withStringProperty(Constants.AUTHOR, "")
                             .withStringProperty(Constants.USAGE, "")
                             .withStringProperty(Constants.ENCODING_STANDARD, "")
@@ -215,10 +215,10 @@ public class InformationViewInTopicListener implements OpenMetadataTopicListener
                             qualifiedNameColumnType,
                             columnTypeProperties);
 
-                    String qualifiedNameForColumn = qualifiedNameForTable + "." + derivedColumn.getColumnName();
+                    String qualifiedNameForColumn = qualifiedNameForTable + "." + derivedColumn.getName();
                     InstanceProperties columnProperties = new EntityPropertiesBuilder()
                             .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForColumn)
-                            .withStringProperty(Constants.ATTRIBUTE_NAME, derivedColumn.getColumnName())
+                            .withStringProperty(Constants.ATTRIBUTE_NAME, derivedColumn.getName())
                             .withStringProperty(Constants.FORMULA, "")
                             .withIntegerProperty(Constants.ELEMENT_POSITION_NAME, derivedColumn.getPosition())
                             .build();

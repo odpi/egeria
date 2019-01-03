@@ -20,12 +20,17 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotDeletedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotDeletedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
@@ -63,7 +68,7 @@ public class EntitiesCreatorHelper {
                                    String typeName,
                                    InstanceProperties instanceProperties,
                                    List<Classification> classifications,
-                                   String sourceName) throws Exception {
+                                   String sourceName) throws ClassificationErrorException, StatusNotSupportedException, UserNotAuthorizedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException {
         EntityDetail entity;
         try {
             entity = enterpriseConnector.getRepositoryHelper()
@@ -90,7 +95,7 @@ public class EntitiesCreatorHelper {
                     auditCode.getSystemAction(),
                     auditCode.getUserAction(),
                     e);
-            throw new Exception(e);
+            throw e;
         }
     }
 
@@ -109,7 +114,7 @@ public class EntitiesCreatorHelper {
                                          String typeName,
                                          InstanceProperties initialProperties,
                                          String entityOneGUID,
-                                         String entityTwoGUID) throws Exception {
+                                         String entityTwoGUID) throws StatusNotSupportedException, UserNotAuthorizedException, EntityNotKnownException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException {
 
         Relationship relationship;
         try {
@@ -138,7 +143,7 @@ public class EntitiesCreatorHelper {
                     auditCode.getUserAction(),
                     e);
 
-            throw new Exception(e);
+            throw e;
         }
 
     }
@@ -151,7 +156,7 @@ public class EntitiesCreatorHelper {
      * @return the existing entity with the given qualified name or null if it doesn't exist
      * @throws Exception
      */
-    public EntityDetail getEntity(String typeName, String qualifiedName) throws Exception {
+    public EntityDetail getEntity(String typeName, String qualifiedName) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
         InstanceProperties matchProperties = buildMatchingInstanceProperties(Constants.QUALIFIED_NAME, qualifiedName);
         TypeDef typeDef = enterpriseConnector.getRepositoryHelper().getTypeDefByName(Constants.USER_ID, typeName);
         List<EntityDetail> existingEntities;
@@ -180,7 +185,7 @@ public class EntitiesCreatorHelper {
                     auditCode.getUserAction(),
                     e);
 
-            throw new Exception(e);
+            throw e;
         }
 
     }
@@ -214,7 +219,7 @@ public class EntitiesCreatorHelper {
      */
     private Relationship getRelationship(String relationshipType,
                                          String guid1,
-                                         String guid2) throws Exception {
+                                         String guid2) throws InvalidParameterException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, RepositoryErrorException {
         List<Relationship> relationships;
         try {
             relationships = getRelationships(relationshipType, guid2);
@@ -228,7 +233,7 @@ public class EntitiesCreatorHelper {
                     auditCode.getSystemAction(),
                     auditCode.getUserAction(),
                     e);
-            throw new Exception(e);
+            throw e;
         }
         if (relationships != null && !relationships.isEmpty())
             for (Relationship relationship : relationships) {
@@ -240,7 +245,7 @@ public class EntitiesCreatorHelper {
         return null;
     }
 
-    public List<Relationship> getRelationships(String relationshipType, String guid2) throws InvalidParameterException, RepositoryErrorException, TypeDefNotKnownException, UserNotAuthorizedException, TypeErrorException, EntityNotKnownException, PropertyErrorException, PagingErrorException, FunctionNotSupportedException {
+    public List<Relationship> getRelationships(String relationshipType, String guid2) throws InvalidParameterException, RepositoryErrorException, UserNotAuthorizedException, TypeErrorException, EntityNotKnownException, PropertyErrorException, PagingErrorException, FunctionNotSupportedException {
         List<Relationship> relationships;
         String relationshipTypeGuid = enterpriseConnector.getRepositoryHelper()
                 .getTypeDefByName(Constants.USER_ID, relationshipType)
@@ -283,7 +288,7 @@ public class EntitiesCreatorHelper {
      */
     public EntityDetail addEntity(String typeName,
                                   String qualifiedName,
-                                  InstanceProperties properties) throws Exception {
+                                  InstanceProperties properties) throws InvalidParameterException, PropertyErrorException, RepositoryErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, ClassificationErrorException, UserNotAuthorizedException, TypeErrorException, StatusNotSupportedException {
         return addEntity(typeName, qualifiedName, properties, null);
     }
 
@@ -300,7 +305,7 @@ public class EntitiesCreatorHelper {
     public EntityDetail addEntity(String typeName,
                                   String qualifiedName,
                                   InstanceProperties properties,
-                                  List<Classification> classifications) throws Exception {
+                                  List<Classification> classifications) throws InvalidParameterException, StatusNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeErrorException, FunctionNotSupportedException, PagingErrorException, ClassificationErrorException, UserNotAuthorizedException, RepositoryErrorException {
 
         EntityDetailWrapper wrapper = createOrUpdateEntity(typeName,
                 qualifiedName,
@@ -314,7 +319,7 @@ public class EntitiesCreatorHelper {
                                                     String qualifiedName,
                                                     InstanceProperties properties,
                                                     List<Classification> classifications,
-                                                    boolean update) throws Exception {
+                                                    boolean update) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, ClassificationErrorException, StatusNotSupportedException, EntityNotKnownException {
         EntityDetail entityDetail;
         EntityDetailWrapper wrapper;
         entityDetail = getEntity(typeName, qualifiedName);
@@ -336,7 +341,7 @@ public class EntitiesCreatorHelper {
         return wrapper;
     }
 
-    private EntityDetail updateEntity(EntityDetail entityDetail, String userId, InstanceProperties properties) throws Exception {
+    private EntityDetail updateEntity(EntityDetail entityDetail, String userId, InstanceProperties properties) throws RepositoryErrorException, UserNotAuthorizedException, InvalidParameterException, EntityNotKnownException, PropertyErrorException {
         //TODO add validation to new instance properties
         entityDetail = enterpriseConnector.getMetadataCollection().updateEntityProperties(userId, entityDetail.getGUID(), properties);
         return entityDetail;
@@ -357,7 +362,7 @@ public class EntitiesCreatorHelper {
                                         String guid1,
                                         String guid2,
                                         String source,
-                                        InstanceProperties properties) throws Exception {
+                                        InstanceProperties properties) throws InvalidParameterException, TypeErrorException, TypeDefNotKnownException, PropertyErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, UserNotAuthorizedException, RepositoryErrorException, StatusNotSupportedException {
         Relationship relationship;
 
         relationship = getRelationship(relationshipType, guid1, guid2);
@@ -388,7 +393,7 @@ public class EntitiesCreatorHelper {
         return instanceProperties;
     }
 
-    public Classification buildClassification(String classificationTypeName, String entityTypeName, InstanceProperties classificationProperties) throws Exception {
+    public Classification buildClassification(String classificationTypeName, String entityTypeName, InstanceProperties classificationProperties) throws TypeErrorException {
         try {
             Classification classification = enterpriseConnector.getRepositoryHelper()
                     .getSkeletonClassification("",
@@ -409,25 +414,27 @@ public class EntitiesCreatorHelper {
                     auditCode.getUserAction(),
                     e);
 
-            throw new Exception(e);
+            throw e;
         }
     }
 
-    public void purgeRelationship(Relationship relationship) throws Exception {
-        if (relationship == null) {
-            log.info("Null relationship passed for purge, nothing to purge");
+    public void purgeRelationship(Relationship relationship) throws RepositoryErrorException, UserNotAuthorizedException, InvalidParameterException, RelationshipNotDeletedException, RelationshipNotKnownException, FunctionNotSupportedException {
+        if (relationship == null || relationship.getGUID() == null || relationship.getType() == null) {
+            log.info("Nothing will be purged, invalid relationship passed as argument: {}", relationship);
+        } else {
+            log.info("Purge relationship with guid {}", relationship.getGUID());
+            enterpriseConnector.getMetadataCollection().deleteRelationship(Constants.USER_ID, relationship.getType().getTypeDefGUID(), relationship.getType().getTypeDefName(), relationship.getGUID());
+            enterpriseConnector.getMetadataCollection().purgeRelationship(Constants.USER_ID, relationship.getType().getTypeDefGUID(), relationship.getType().getTypeDefName(), relationship.getGUID());
         }
-        log.info("Purge relationship with guid {}", relationship.getGUID());
-        enterpriseConnector.getMetadataCollection().deleteRelationship(Constants.USER_ID, relationship.getType().getTypeDefGUID(), relationship.getType().getTypeDefName(), relationship.getGUID());
-        enterpriseConnector.getMetadataCollection().purgeRelationship(Constants.USER_ID, relationship.getType().getTypeDefGUID(), relationship.getType().getTypeDefName(), relationship.getGUID());
     }
 
-    public void purgeEntity(EntitySummary entitySummary) throws Exception {
-        if (entitySummary == null) {
-            log.info("Null entity passed for purge, nothing to purge");
+    public void purgeEntity(EntitySummary entitySummary) throws RepositoryErrorException, UserNotAuthorizedException, InvalidParameterException, EntityNotKnownException, EntityNotDeletedException, FunctionNotSupportedException {
+        if (entitySummary == null || entitySummary.getGUID() == null || entitySummary.getType() == null) {
+            log.info("Nothing will be purged, invalid entity passed as argument: {}", entitySummary);
+        } else {
+            log.info("Purge entity with guid {}", entitySummary.getGUID());
+            enterpriseConnector.getMetadataCollection().deleteEntity(Constants.USER_ID, entitySummary.getType().getTypeDefGUID(), entitySummary.getType().getTypeDefName(), entitySummary.getGUID());
+            enterpriseConnector.getMetadataCollection().purgeEntity(Constants.USER_ID, entitySummary.getType().getTypeDefGUID(), entitySummary.getType().getTypeDefName(), entitySummary.getGUID());
         }
-        log.info("Purge entity with guid {}", entitySummary.getGUID());
-        enterpriseConnector.getMetadataCollection().deleteEntity(Constants.USER_ID, entitySummary.getType().getTypeDefGUID(), entitySummary.getType().getTypeDefName(), entitySummary.getGUID());
-        enterpriseConnector.getMetadataCollection().purgeEntity(Constants.USER_ID, entitySummary.getType().getTypeDefGUID(), entitySummary.getType().getTypeDefName(), entitySummary.getGUID());
     }
 }

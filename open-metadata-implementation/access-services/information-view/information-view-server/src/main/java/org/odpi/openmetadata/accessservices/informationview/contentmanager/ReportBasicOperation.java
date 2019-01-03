@@ -15,10 +15,25 @@ import org.odpi.openmetadata.accessservices.informationview.utils.EntityProperti
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotDeletedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 public abstract class ReportBasicOperation {
@@ -51,11 +66,11 @@ public abstract class ReportBasicOperation {
             }
         } catch (Exception e) {
             log.error("Exception creating report element", e);
-            throw new RuntimeException(e);//TODO throw specific exception
+            throw new RuntimeException("Unable to create Report Element", e);//TODO throw specific exception
         }
     }
 
-    private void addReportSection(String qualifiedNameForParent, String parentGuid, ReportSection reportSection) throws Exception {
+    private void addReportSection(String qualifiedNameForParent, String parentGuid, ReportSection reportSection) throws InvalidParameterException, PropertyErrorException, TypeDefNotKnownException, RepositoryErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, ClassificationErrorException, UserNotAuthorizedException, TypeErrorException, StatusNotSupportedException {
         EntityDetail typeEntity = addSectionAndSectionType(qualifiedNameForParent, parentGuid, reportSection);
         String qualifiedNameForSection = EntityPropertiesUtils.getStringValueForProperty(typeEntity.getProperties(), Constants.QUALIFIED_NAME);
         qualifiedNameForSection = qualifiedNameForSection.substring(0, qualifiedNameForSection.lastIndexOf(Constants.TYPE_SUFFIX));
@@ -63,7 +78,7 @@ public abstract class ReportBasicOperation {
     }
 
 
-    protected EntityDetail addSectionAndSectionType(String qualifiedNameForParent, String parentGuid, ReportSection reportSection) throws Exception {
+    protected EntityDetail addSectionAndSectionType(String qualifiedNameForParent, String parentGuid, ReportSection reportSection) throws InvalidParameterException, StatusNotSupportedException, PropertyErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, ClassificationErrorException, UserNotAuthorizedException, TypeErrorException, RepositoryErrorException, TypeDefNotKnownException {
 
         String qualifiedNameForSection = qualifiedNameForParent + "." + reportSection.getName();
         InstanceProperties sectionProperties = new EntityPropertiesBuilder()
@@ -82,13 +97,11 @@ public abstract class ReportBasicOperation {
                 new InstanceProperties());
 
 
-        EntityDetail sectionType = addSchemaType(qualifiedNameForSection, sectionEntity, Constants.DOCUMENT_SCHEMA_TYPE);
-        return sectionType;
+        return addSchemaType(qualifiedNameForSection, sectionEntity, Constants.DOCUMENT_SCHEMA_TYPE);
     }
 
 
-
-    protected EntityDetail addReportColumn(String parentQualifiedName, String parentGuid, ReportColumn reportColumn) throws Exception {
+    protected EntityDetail addReportColumn(String parentQualifiedName, String parentGuid, ReportColumn reportColumn) throws InvalidParameterException, TypeErrorException, TypeDefNotKnownException, PropertyErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, ClassificationErrorException, UserNotAuthorizedException, RepositoryErrorException, StatusNotSupportedException {
 
         String qualifiedNameForColumn = parentQualifiedName + "." + reportColumn.getName();
 
@@ -114,7 +127,7 @@ public abstract class ReportBasicOperation {
         return derivedColumnEntity;
     }
 
-    protected EntityDetail addSchemaType(String qualifiedNameOfSchemaAttribute, EntityDetail schemaAttributeEntity, String schemaAttributeType) throws Exception {
+    protected EntityDetail addSchemaType(String qualifiedNameOfSchemaAttribute, EntityDetail schemaAttributeEntity, String schemaAttributeType) throws InvalidParameterException, StatusNotSupportedException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, RepositoryErrorException, ClassificationErrorException {
         String qualifiedNameForType = qualifiedNameOfSchemaAttribute + Constants.TYPE_SUFFIX;
 
         InstanceProperties typeProperties = new EntityPropertiesBuilder()
@@ -122,8 +135,8 @@ public abstract class ReportBasicOperation {
                 .build();
 
         EntityDetail schemaTypeEntity = entitiesCreatorHelper.addEntity(schemaAttributeType,
-                                                                        qualifiedNameForType,
-                                                                        typeProperties);
+                qualifiedNameForType,
+                typeProperties);
 
         entitiesCreatorHelper.addRelationship(Constants.SCHEMA_ATTRIBUTE_TYPE,
                 schemaAttributeEntity.getGUID(),
@@ -133,29 +146,18 @@ public abstract class ReportBasicOperation {
         return schemaTypeEntity;
     }
 
-    private void addBusinessTerm(ReportColumn reportColumn, EntityDetail derivedColumnEntity) throws Exception {
-        if (reportColumn.getBusinessTerm() != null) {
-            String businessTermGuid = reportColumn.getBusinessTerm().getGuid();
-            if (StringUtils.isEmpty(businessTermGuid)) {
-                EntityDetail businessTerm = entitiesCreatorHelper.getEntity(Constants.BUSINESS_TERM, reportColumn.getBusinessTerm().buildQualifiedName());
-                if (businessTerm != null) {
-                    businessTermGuid = businessTerm.getGUID();
-                }
-            }
-
+    private void addBusinessTerm(ReportColumn reportColumn, EntityDetail derivedColumnEntity) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, StatusNotSupportedException, TypeDefNotKnownException, EntityNotKnownException {
+        String businessTermGuid = findAssignedBusinessTermGuid(reportColumn);
             if (!StringUtils.isEmpty(businessTermGuid)) {
                 entitiesCreatorHelper.addRelationship(Constants.SEMANTIC_ASSIGNMENT,
                         derivedColumnEntity.getGUID(),
                         businessTermGuid,
                         Constants.INFORMATION_VIEW_OMAS_NAME,
                         new InstanceProperties());
-            } else {
-                log.error("business term associated to the report column not found, unable to add relationship " + reportColumn.getName());
             }
-        }
     }
 
-    private void addQueryTargets(ReportColumn reportColumn, EntityDetail derivedColumnEntity) throws Exception {
+    private void addQueryTargets(ReportColumn reportColumn, EntityDetail derivedColumnEntity) throws InvalidParameterException, StatusNotSupportedException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, RepositoryErrorException {
         for (Source source : reportColumn.getSources()) {
 
             String sourceColumnGUID = getSourceGuid(source);
@@ -172,13 +174,13 @@ public abstract class ReportBasicOperation {
                         schemaQueryImplProperties);
 
             } else {
-                log.error("source column not found, unable to add relationships for column " + source.toString());
+                log.error( MessageFormat.format("source column not found, unable to add relationship between column {0} and source {1}", reportColumn.getName(), source.toString()));
             }
         }
     }
 
 
-    protected EntityDetail addReportSchemaType(EntityDetail reportEntity, String qualifiedNameForComplexSchemaType, InstanceProperties complexSchemaTypeProperties) throws Exception {
+    protected EntityDetail addReportSchemaType(EntityDetail reportEntity, String qualifiedNameForComplexSchemaType, InstanceProperties complexSchemaTypeProperties) throws InvalidParameterException, StatusNotSupportedException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, RepositoryErrorException, ClassificationErrorException {
         EntityDetail complexSchemaTypeEntity;
         complexSchemaTypeEntity = entitiesCreatorHelper.addEntity(Constants.COMPLEX_SCHEMA_TYPE,
                 qualifiedNameForComplexSchemaType, complexSchemaTypeProperties, null);
@@ -192,8 +194,7 @@ public abstract class ReportBasicOperation {
     }
 
 
-
-    protected String getSourceGuid(Source source) throws Exception {
+    protected String getSourceGuid(Source source) throws UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
 
         if (!StringUtils.isEmpty(source.getGuid())) {
             return source.getGuid();
@@ -208,6 +209,34 @@ public abstract class ReportBasicOperation {
             return sourceColumn.getGUID();
         }
         return null;
+    }
+
+
+    protected void deleteRelationships(List<Relationship> existingAssignments) throws RepositoryErrorException, UserNotAuthorizedException, InvalidParameterException, RelationshipNotDeletedException, RelationshipNotKnownException, FunctionNotSupportedException {
+        if (existingAssignments != null && !existingAssignments.isEmpty()) {
+            for (Relationship relationship : existingAssignments) {
+                entitiesCreatorHelper.purgeRelationship(relationship);
+            }
+        } else {
+            log.info("No relationships to delete");
+        }
+    }
+
+    protected String findAssignedBusinessTermGuid(ReportColumn reportColumn) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
+        if (reportColumn.getBusinessTerm() == null) {
+           log.info("no business term is associated to the report column {0}", reportColumn.getName());
+            return null;
+        }
+        String businessTermGuid = reportColumn.getBusinessTerm().getGuid();
+        if (StringUtils.isEmpty(businessTermGuid)) {
+            EntityDetail businessTerm = entitiesCreatorHelper.getEntity(Constants.BUSINESS_TERM, reportColumn.getBusinessTerm().buildQualifiedName());
+            if (businessTerm != null) {
+                businessTermGuid = businessTerm.getGUID();
+            }else{
+                log.error(MessageFormat.format("business term associated to the report column {0} not found", reportColumn.getName()));
+            }
+        }
+        return businessTermGuid;
     }
 
 }
