@@ -29,7 +29,8 @@ public class DatabaseLookup extends EntityLookup<TableSource> {
     @Override
     public EntityDetail lookupEntity(TableSource source) throws Exception {
         EntityDetail endpointEntity = parentChain.lookupEntity(source);
-
+        if(endpointEntity == null)
+            return null;
         List<Relationship> relationships = entitiesCreatorHelper.getRelationships(Constants.CONNECTION_TO_ENDPOINT, endpointEntity.getGUID());
         List<String> allConnectionGuids = relationships.stream().map(e -> e.getEntityTwoProxy().getGUID()).collect(Collectors.toList());
         List<Relationship> allConnectionToDatabaseRelationships = allConnectionGuids.stream().flatMap(e -> {

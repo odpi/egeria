@@ -8,7 +8,7 @@ import org.odpi.openmetadata.accessservices.informationview.auditlog.Information
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.ColumnContextEventBuilder;
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.EntitiesCreatorHelper;
 import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
-import org.odpi.openmetadata.accessservices.informationview.contentmanager.ReportCreator;
+import org.odpi.openmetadata.accessservices.informationview.contentmanager.ReportHandler;
 import org.odpi.openmetadata.accessservices.informationview.eventprocessor.EventPublisher;
 import org.odpi.openmetadata.accessservices.informationview.listeners.InformationViewEnterpriseOmrsEventListener;
 import org.odpi.openmetadata.accessservices.informationview.listeners.InformationViewInTopicListener;
@@ -149,7 +149,7 @@ public class InformationViewAdmin implements AccessServiceAdmin {
         }
 
         lookupHelper = new LookupHelper(enterpriseConnector, entitiesCreatorHelper, auditLog);
-        instance = new InformationViewServicesInstance(new ReportCreator(entitiesCreatorHelper, lookupHelper, auditLog), serverName);
+        instance = new InformationViewServicesInstance(new ReportHandler(entitiesCreatorHelper, lookupHelper, auditLog), serverName);
 
         auditCode = InformationViewAuditCode.SERVICE_INITIALIZED;
         auditLog.logRecord(actionDescription,
