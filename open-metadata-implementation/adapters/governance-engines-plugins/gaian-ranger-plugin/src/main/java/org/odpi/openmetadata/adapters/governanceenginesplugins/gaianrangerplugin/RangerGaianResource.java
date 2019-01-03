@@ -52,15 +52,15 @@ public class RangerGaianResource extends RangerAccessResourceImpl {
     }
 
     public String getSchema() {
-        return getValue(SCHEMA_RESOURCE.toLowerCase());
+        return getValue(SCHEMA_RESOURCE.toLowerCase()).toString();
     }
 
     public String getTable() {
-        return getValue(TABLE_RESOURCE.toLowerCase());
+        return getValue(TABLE_RESOURCE.toLowerCase()).toString();
     }
 
     public String getColumn() {
-        return getValue(COLUMN_RESOURCE.toLowerCase());
+        return getValue(COLUMN_RESOURCE.toLowerCase()).toString();
     }
 
 }

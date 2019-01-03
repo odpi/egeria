@@ -52,7 +52,7 @@ public class <$$uname$$>Reference extends Reference implements Serializable {
     private static final Logger log = LoggerFactory.getLogger(<$$uname$$>Reference.class);
     private static final String className = <$$uname$$>Reference.class.getName();
 
-    protected String relationship_Type = "<$$relationshiptype$$>";
+    final static protected String relationship_Type = "<$$relationshiptype$$>";
     protected String name = "<$$name$$>";
     protected <$$urelatedendtype$$> <$$relatedendtype$$> =null;
 
