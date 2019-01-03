@@ -56,9 +56,6 @@ import org.springframework.web.client.RestTemplate;
  */
 public class IGCRestClient {
 
-    public static final String VERSION_115 = "v115";
-    public static final String VERSION_117 = "v117";
-
     private static final Logger log = LoggerFactory.getLogger(IGCRestClient.class);
 
     private String authorization;
@@ -116,12 +113,12 @@ public class IGCRestClient {
         // Register the non-generated types
         this.registerPOJO(Paging.class);
 
-        this.igcVersion = VERSION_115;
+        this.igcVersion = IGCRestConstants.VERSION_115;
         ArrayNode igcTypes = getTypes();
         for (JsonNode node : igcTypes) {
             // Check for a type that does not exist in v11.5
             if (node.path("_id").asText().equals("analytics_project")) {
-                this.igcVersion = VERSION_117;
+                this.igcVersion = IGCRestConstants.VERSION_117;
                 break;
             }
         }
@@ -592,20 +589,24 @@ public class IGCRestClient {
 
         File bundle = null;
         try {
-
             bundle = File.createTempFile("openigc", "zip");
-            FileOutputStream bundleOut = new FileOutputStream(bundle);
-            ZipOutputStream zipOutput = new ZipOutputStream(bundleOut);
-            if (!directory.isDirectory()) {
-                log.error("Provided bundle location is not a directory: {}", directory);
-            } else {
-                recursivelyZipFiles(directory, "", zipOutput);
-                zipOutput.close();
-                bundleOut.close();
-            }
-
         } catch (IOException e) {
             log.error("Unable to create temporary file needed for OpenIGC bundle from directory: {}", directory, e);
+        }
+        if (bundle != null) {
+            try (
+                    FileOutputStream bundleOut = new FileOutputStream(bundle);
+                    ZipOutputStream zipOutput = new ZipOutputStream(bundleOut)
+            ) {
+                if (!directory.isDirectory()) {
+                    log.error("Provided bundle location is not a directory: {}", directory);
+                } else {
+                    recursivelyZipFiles(directory, "", zipOutput);
+                }
+
+            } catch (IOException e) {
+                log.error("Unable to create temporary file needed for OpenIGC bundle from directory: {}", directory, e);
+            }
         }
         return bundle;
 
@@ -643,16 +644,14 @@ public class IGCRestClient {
 
         } else {
 
-            try {
+            try (FileInputStream fileInput = new FileInputStream(file)) {
                 // Add an entry for the file into the zip file, and write its bytes into the zipfile output
                 zipOutput.putNextEntry(new ZipEntry(name));
-                FileInputStream fileInput = new FileInputStream(file);
                 byte[] buffer = new byte[1024];
                 int length;
                 while ((length = fileInput.read(buffer)) >= 0) {
                     zipOutput.write(buffer, 0, length);
                 }
-                fileInput.close();
             } catch (FileNotFoundException e) {
                 log.error("Unable to find file.", e);
             } catch (IOException e) {

@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.entities;
 
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestConstants;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.ReferenceList;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearch;
@@ -149,7 +150,7 @@ public class ReferenceableMapper extends EntityMapping {
         }
 
         if (mapper.igcEntity != null && mapper.igcEntity.hasModificationDetails()) {
-            for (String property : MODIFICATION_DETAILS) {
+            for (String property : IGCRestConstants.getInstance().MODIFICATION_DETAILS()) {
                 mapper.addComplexIgcProperty(property);
             }
         }
@@ -244,10 +245,10 @@ public class ReferenceableMapper extends EntityMapping {
     private void setupEntityObj(EntitySummary omrsObj) {
 
         if (igcEntity.hasModificationDetails()) {
-            omrsObj.setCreatedBy((String)igcEntity.getPropertyByName(Reference.MOD_CREATED_BY));
-            omrsObj.setCreateTime((Date)igcEntity.getPropertyByName(Reference.MOD_CREATED_ON));
-            omrsObj.setUpdatedBy((String)igcEntity.getPropertyByName(Reference.MOD_MODIFIED_BY));
-            omrsObj.setUpdateTime((Date)igcEntity.getPropertyByName(Reference.MOD_MODIFIED_ON));
+            omrsObj.setCreatedBy((String)igcEntity.getPropertyByName(IGCRestConstants.MOD_CREATED_BY));
+            omrsObj.setCreateTime((Date)igcEntity.getPropertyByName(IGCRestConstants.MOD_CREATED_ON));
+            omrsObj.setUpdatedBy((String)igcEntity.getPropertyByName(IGCRestConstants.MOD_MODIFIED_BY));
+            omrsObj.setUpdateTime((Date)igcEntity.getPropertyByName(IGCRestConstants.MOD_MODIFIED_ON));
             if (omrsObj.getUpdateTime() != null) {
                 omrsObj.setVersion(omrsObj.getUpdateTime().getTime());
             }
@@ -376,7 +377,7 @@ public class ReferenceableMapper extends EntityMapping {
                 log.debug("Adding properties from mapping: {}", mapping);
                 allProperties.addAll(mapping.getIgcRelationshipPropertiesForType(igcEntity.getType()));
             }
-            allProperties.addAll(Arrays.asList(MODIFICATION_DETAILS));
+            allProperties.addAll(Arrays.asList(IGCRestConstants.getInstance().MODIFICATION_DETAILS()));
             IGCSearchSorting sort = IGCSearchSorting.sortFromNonPropertySequencingOrder(sequencingOrder);
             igcEntity = igcEntity.getAssetWithSubsetOfProperties(
                     igcomrsRepositoryConnector.getIGCRestClient(),

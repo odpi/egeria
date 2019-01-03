@@ -2,15 +2,16 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.eventmapper.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class InfosphereEventsIAEvent extends InfosphereEvents {
 
-    public static final String COL_CLASSIFIED = "IA_COLUMN_CLASSIFIED_EVENT";
-    public static final String COL_ANALYZED = "IA_COLUMN_ANALYZED_EVENT";
-    public static final String TBL_PUBLISHED = "IA_TABLE_RESULTS_PUBLISHED";
+    @JsonIgnore public static final String COL_CLASSIFIED = "IA_COLUMN_CLASSIFIED_EVENT";
+    @JsonIgnore public static final String COL_ANALYZED = "IA_COLUMN_ANALYZED_EVENT";
+    @JsonIgnore public static final String TBL_PUBLISHED = "IA_TABLE_RESULTS_PUBLISHED";
 
     /**
      * The 'projectRid' property indicates the Repository ID (RID) of the Information Analyzer project.

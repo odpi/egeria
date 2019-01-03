@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.entities;
 
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestConstants;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSMetadataCollection;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
@@ -23,16 +24,6 @@ public abstract class EntityMapping {
     private static final Logger log = LoggerFactory.getLogger(EntityMapping.class);
 
     private static final Pattern INVALID_NAMING_CHARS = Pattern.compile("[()/& ]");
-
-    public static final String IGC_REST_COMMON_MODEL_PKG = "org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common";
-    public static final String IGC_REST_GENERATED_MODEL_PKG = "org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated";
-
-    public static final String[] MODIFICATION_DETAILS = new String[] {
-            Reference.MOD_CREATED_BY,
-            Reference.MOD_CREATED_ON,
-            Reference.MOD_MODIFIED_BY,
-            Reference.MOD_MODIFIED_ON
-    };
 
     private String igcAssetType;
     private String igcAssetTypeDisplayName;
@@ -83,10 +74,10 @@ public abstract class EntityMapping {
 
         StringBuilder sbPojoName = new StringBuilder();
         if (igcAssetType.equals(IGCOMRSMetadataCollection.DEFAULT_IGC_TYPE)) {
-            sbPojoName.append(IGC_REST_COMMON_MODEL_PKG);
+            sbPojoName.append(IGCRestConstants.IGC_REST_COMMON_MODEL_PKG);
             sbPojoName.append(".MainObject");
         } else {
-            sbPojoName.append(IGC_REST_GENERATED_MODEL_PKG);
+            sbPojoName.append(IGCRestConstants.IGC_REST_GENERATED_MODEL_PKG);
             sbPojoName.append(".");
             sbPojoName.append(igcomrsRepositoryConnector.getIGCVersion());
             sbPojoName.append(".");
@@ -131,7 +122,7 @@ public abstract class EntityMapping {
     public void addOtherIGCAssetType(String igcAssetTypeName) {
         this.otherIgcTypes.add(igcAssetTypeName);
         StringBuilder sbPojoName = new StringBuilder();
-        sbPojoName.append(IGC_REST_GENERATED_MODEL_PKG);
+        sbPojoName.append(IGCRestConstants.IGC_REST_GENERATED_MODEL_PKG);
         sbPojoName.append(".");
         sbPojoName.append(igcomrsRepositoryConnector.getIGCVersion());
         sbPojoName.append(".");

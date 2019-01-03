@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.clients.consumer.*;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestClient;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestConstants;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.ReferenceList;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearch;
@@ -93,9 +94,9 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
         this.igcRestClient = igcomrsRepositoryConnector.getIGCRestClient();
 
         // Pick the best topic available based on the version of IGC
-        if (igcVersion.equals(IGCRestClient.VERSION_115)) {
+        if (igcVersion.equals(IGCRestConstants.VERSION_115)) {
             this.igcKafkaTopic = "InfosphereEvents";
-        } else if (igcVersion.equals(IGCRestClient.VERSION_117)) {
+        } else if (igcVersion.equals(IGCRestConstants.VERSION_117)) {
             this.igcKafkaTopic = "IgcUnifiedGovEvents";
         }
 
@@ -138,7 +139,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
         if (embeddedConnectors != null) {
 
             for (Connector  embeddedConnector : embeddedConnectors) {
-                if ((embeddedConnector != null) && (embeddedConnector instanceof OpenMetadataTopicConnector)) {
+                if (embeddedConnector instanceof OpenMetadataTopicConnector) {
                     /*
                      * Successfully found an event bus connector of the right type.
                      */
@@ -164,17 +165,15 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
         /*
          * OMRSTopicConnector needs at least one event bus connector to operate successfully.
          */
-        if (this.eventBusConnectors.isEmpty()) {
-            if (auditLog != null) {
-                OMRSAuditCode auditCode = OMRSAuditCode.EVENT_MAPPER_LISTENER_DEAF;
-                auditLog.logRecord(methodName,
-                        auditCode.getLogMessageId(),
-                        auditCode.getSeverity(),
-                        auditCode.getFormattedLogMessage(repositoryEventMapperName),
-                        this.getConnection().toString(),
-                        auditCode.getSystemAction(),
-                        auditCode.getUserAction());
-            }
+        if (this.eventBusConnectors.isEmpty() && auditLog != null) {
+            OMRSAuditCode auditCode = OMRSAuditCode.EVENT_MAPPER_LISTENER_DEAF;
+            auditLog.logRecord(methodName,
+                    auditCode.getLogMessageId(),
+                    auditCode.getSeverity(),
+                    auditCode.getFormattedLogMessage(repositoryEventMapperName),
+                    this.getConnection().toString(),
+                    auditCode.getSystemAction(),
+                    auditCode.getUserAction());
         }
 
         log.info("Starting consumption from IGC Kafka bus.");
@@ -236,13 +235,10 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
     @Override
     public void processEvent(String event) {
         log.debug("Processing event: {}", event);
-        switch(igcVersion) {
-            case IGCRestClient.VERSION_117:
-                processEventV117(event);
-                break;
-            default:
-                processEventV115(event);
-                break;
+        if (igcVersion.equals(IGCRestConstants.VERSION_117)) {
+            processEventV117(event);
+        } else {
+            processEventV115(event);
         }
     }
 
@@ -410,8 +406,8 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
                 IGCSearchConditionSet igcSearchConditionSet = new IGCSearchConditionSet(igcSearchCondition);
                 IGCSearch igcSearch = new IGCSearch(searchAssetType, new String[]{ searchProperty }, igcSearchConditionSet);
                 ReferenceList subAssets = igcRestClient.search(igcSearch);
-                subAssets.getAllPages(igcRestClient);
                 if (subAssets != null) {
+                    subAssets.getAllPages(igcRestClient);
                     log.debug("Processing {} child assets from IA publication: {}", subAssets.getPaging().getNumTotal(), containerRid);
                     for (Reference child : subAssets.getItems()) {
                         processAsset(child.getId(), child.getType(), null);

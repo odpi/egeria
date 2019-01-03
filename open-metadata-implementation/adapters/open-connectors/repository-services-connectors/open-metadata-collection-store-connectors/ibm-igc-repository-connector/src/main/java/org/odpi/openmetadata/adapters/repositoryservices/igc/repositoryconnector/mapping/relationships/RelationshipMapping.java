@@ -3,16 +3,15 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships;
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestClient;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestConstants;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.ReferenceList;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearch;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchCondition;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchConditionSet;
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchSorting;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSMetadataCollection;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.entities.EntityMapping;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
@@ -604,8 +603,7 @@ public abstract class RelationshipMapping {
         String proxyOnePrefix = pmOne.getIgcRidPrefix();
         String proxyTwoPrefix = pmTwo.getIgcRidPrefix();
 
-        // TODO: if for relationship-specific RIDs we only output the relationship RID, need to be sure properly handled
-        //  when reverse-looked up
+        // For relationship-specific RIDs (very rare) we'll output only the relationship-level RID
         StringBuilder sbGUID = new StringBuilder();
         if (relationshipLevelRid != null) {
             sbGUID.append(relationshipLevelRid);
@@ -729,10 +727,10 @@ public abstract class RelationshipMapping {
                 }
 
                 if (igcObj.hasModificationDetails()) {
-                    entityProxy.setCreatedBy((String)igcObj.getPropertyByName(Reference.MOD_CREATED_BY));
-                    entityProxy.setCreateTime((Date)igcObj.getPropertyByName(Reference.MOD_CREATED_ON));
-                    entityProxy.setUpdatedBy((String)igcObj.getPropertyByName(Reference.MOD_MODIFIED_BY));
-                    entityProxy.setUpdateTime((Date)igcObj.getPropertyByName(Reference.MOD_MODIFIED_ON));
+                    entityProxy.setCreatedBy((String)igcObj.getPropertyByName(IGCRestConstants.MOD_CREATED_BY));
+                    entityProxy.setCreateTime((Date)igcObj.getPropertyByName(IGCRestConstants.MOD_CREATED_ON));
+                    entityProxy.setUpdatedBy((String)igcObj.getPropertyByName(IGCRestConstants.MOD_MODIFIED_BY));
+                    entityProxy.setUpdateTime((Date)igcObj.getPropertyByName(IGCRestConstants.MOD_MODIFIED_ON));
                     if (entityProxy.getUpdateTime() != null) {
                         entityProxy.setVersion(entityProxy.getUpdateTime().getTime());
                     }
@@ -781,7 +779,9 @@ public abstract class RelationshipMapping {
                 if (mapping.isSelfReferencing()) {
                     addSelfReferencingRelationship(igcomrsRepositoryConnector, mapping, relationships, fromIgcObject, userId);
                 } else if (!optimalStart.equals(RelationshipMapping.OptimalStart.CUSTOM)) {
-                    if (fromIgcObject.isFullyRetrieved() || !optimalStart.equals(RelationshipMapping.OptimalStart.OPPOSITE)) {
+                    if (fromIgcObject == null) {
+                        log.error("Object received to lookup {} relationship was null, cannot proceed.", relationshipTypeGUID);
+                    } else if (fromIgcObject.isFullyRetrieved() || !optimalStart.equals(RelationshipMapping.OptimalStart.OPPOSITE)) {
                         addDirectRelationship(igcomrsRepositoryConnector, mapping, relationships, fromIgcObject, userId);
                     } else if (optimalStart.equals(RelationshipMapping.OptimalStart.OPPOSITE)) {
                         addInvertedRelationship(igcomrsRepositoryConnector, mapping, relationships, fromIgcObject, userId);
@@ -985,7 +985,7 @@ public abstract class RelationshipMapping {
         if (!assetType.equals(IGCOMRSMetadataCollection.DEFAULT_IGC_TYPE)) {
             Class pojo = igcomrsRepositoryConnector.getIGCRestClient().getPOJOForType(assetType);
             if (Reference.hasModificationDetails(pojo)) {
-                igcSearch.addProperties(EntityMapping.MODIFICATION_DETAILS);
+                igcSearch.addProperties(IGCRestConstants.getInstance().MODIFICATION_DETAILS());
             }
         }
         ReferenceList foundRelationships = igcomrsRepositoryConnector.getIGCRestClient().search(igcSearch);
@@ -1109,7 +1109,7 @@ public abstract class RelationshipMapping {
                 mapping.getOmrsRelationshipType()
         );
 
-        Relationship relationship = getMappedRelationship(
+        return getMappedRelationship(
                 igcomrsRepositoryConnector,
                 mapping,
                 omrsRelationshipDef,
@@ -1118,8 +1118,6 @@ public abstract class RelationshipMapping {
                 igcPropertyName,
                 userId
         );
-
-        return relationship;
 
     }
 

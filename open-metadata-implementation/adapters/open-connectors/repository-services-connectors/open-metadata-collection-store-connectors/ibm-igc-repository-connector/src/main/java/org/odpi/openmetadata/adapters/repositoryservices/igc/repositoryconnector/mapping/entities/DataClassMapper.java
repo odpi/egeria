@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.entities;
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestClient;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestConstants;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.ReferenceList;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
@@ -52,7 +53,7 @@ public class DataClassMapper extends ReferenceableMapper {
         addComplexOmrsProperty("specification");
 
         // Further expand the complex properties if we're on v11.7 (and these are then available)
-        if (igcomrsRepositoryConnector.getIGCVersion().equals(IGCRestClient.VERSION_117)) {
+        if (igcomrsRepositoryConnector.getIGCVersion().equals(IGCRestConstants.VERSION_117)) {
             addComplexIgcProperty("expression");
             addComplexIgcProperty("script");
             addComplexIgcProperty("provider");
