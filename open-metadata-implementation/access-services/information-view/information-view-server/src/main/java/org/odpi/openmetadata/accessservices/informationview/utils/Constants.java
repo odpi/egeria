@@ -75,4 +75,5 @@ public class Constants {
     public static final String LAST_MODIFIED_TIME = "lastModifiedTime";
     public static final String CREATE_TIME = "createdTime";
     public static final String SCHEMA_ATTRIBUTE = "SchemaAttribute";
+    public static final String SCHEMA_TYPE = "SchemaType";
 }
