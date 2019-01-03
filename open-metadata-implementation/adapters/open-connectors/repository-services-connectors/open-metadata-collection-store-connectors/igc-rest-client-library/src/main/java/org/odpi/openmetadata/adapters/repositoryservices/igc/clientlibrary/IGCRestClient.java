@@ -255,6 +255,22 @@ public class IGCRestClient {
     }
 
     /**
+     * Attempt to convert the JSON string into a ReferenceList.
+     *
+     * @param json the JSON string to convert
+     * @return ReferenceList
+     */
+    public ReferenceList readJSONIntoReferenceList(String json) {
+        ReferenceList referenceList = null;
+        try {
+            referenceList = this.mapper.readValue(json, ReferenceList.class);
+        } catch (IOException e) {
+            log.error("Unable to translate JSON into ReferenceList.", e);
+        }
+        return referenceList;
+    }
+
+    /**
      * Attempt to convert the provided IGC object into JSON, based on the registered POJOs.
      *
      * @param asset the IGC asset to convert
@@ -485,6 +501,9 @@ public class IGCRestClient {
         );
         IGCSearchConditionSet conditionSet = new IGCSearchConditionSet(condition);
         IGCSearch igcSearch = new IGCSearch("main_object", conditionSet);
+        // Add non-main_object types that might also be looked-up by RID
+        igcSearch.addType("classification");
+        igcSearch.addType("label");
         ReferenceList results = search(igcSearch);
         Reference reference = null;
         if (results.getPaging().getNumTotal() > 0) {

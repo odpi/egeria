@@ -24,8 +24,6 @@ public abstract class EntityMapping {
 
     private static final Pattern INVALID_NAMING_CHARS = Pattern.compile("[()/& ]");
 
-    // TODO: confirm whether to keep a static source name like this or take from repository name?
-    public static final String SOURCE_NAME = "IBM InfoSphere Information Governance Catalog";
     public static final String IGC_REST_COMMON_MODEL_PKG = "org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common";
     public static final String IGC_REST_GENERATED_MODEL_PKG = "org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated";
 
@@ -106,6 +104,7 @@ public abstract class EntityMapping {
     public Class getIgcPOJO() { return this.igcPOJO; }
     public boolean igcRidNeedsPrefix() { return (this.igcRidPrefix != null); }
     public String getIgcRidPrefix() { return this.igcRidPrefix; }
+    public String getOmrsTypeDefName() { return this.omrsTypeDefName; }
 
     /**
      * Add any other IGC asset type needed for this mapping.
@@ -217,17 +216,16 @@ public abstract class EntityMapping {
     protected abstract void complexPropertyMappings(InstanceProperties instanceProperties);
 
     /**
-     * This method needs to be implemented to define any complex relationship mapping logic, if any.
-     */
-    protected abstract void complexRelationshipMappings();
-
-    /**
      * Utility function to initialize an EntitySummary object based on the initialized IGC entity.
      */
     protected final void mapIGCToOMRSEntitySummary() {
         if (omrsSummary == null) {
             omrsSummary = new EntitySummary();
-            omrsSummary.setGUID(igcEntity.getId());
+            String guid = igcEntity.getId();
+            if (igcRidPrefix != null) {
+                guid = igcRidPrefix + guid;
+            }
+            omrsSummary.setGUID(guid);
             omrsSummary.setInstanceURL(igcEntity.getUrl());
         }
     }
@@ -239,14 +237,18 @@ public abstract class EntityMapping {
         if (omrsDetail == null) {
             try {
                 omrsDetail = igcomrsRepositoryConnector.getRepositoryHelper().getSkeletonEntity(
-                        SOURCE_NAME,
+                        igcomrsRepositoryConnector.getRepositoryName(),
                         igcomrsRepositoryConnector.getMetadataCollectionId(),
                         InstanceProvenanceType.LOCAL_COHORT,
                         userId,
                         omrsTypeDefName
                 );
                 omrsDetail.setStatus(InstanceStatus.ACTIVE);
-                omrsDetail.setGUID(igcEntity.getId());
+                String guid = igcEntity.getId();
+                if (igcRidPrefix != null) {
+                    guid = igcRidPrefix + guid;
+                }
+                omrsDetail.setGUID(guid);
                 omrsDetail.setInstanceURL(igcEntity.getUrl());
             } catch (TypeErrorException e) {
                 log.error("Unable to get skeleton detail entity.", e);

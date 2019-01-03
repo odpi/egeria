@@ -157,10 +157,6 @@ public class ReferenceableMapper extends EntityMapping {
         // (only modification details, but because we want those on EntitySummary as well they're handled elsewhere)
     }
 
-    protected void complexRelationshipMappings() {
-        // Nothing to do -- no complex relationships to handle by default
-    }
-
     /**
      * Map the IGC entity to an OMRS EntitySummary object.
      *

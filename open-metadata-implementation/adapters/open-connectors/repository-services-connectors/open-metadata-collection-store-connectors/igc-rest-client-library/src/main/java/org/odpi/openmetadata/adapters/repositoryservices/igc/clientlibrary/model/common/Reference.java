@@ -129,7 +129,7 @@ public class Reference extends ObjectPrinter {
         Reference assetWithProperties = null;
         IGCSearchCondition idOnly = new IGCSearchCondition("_id", "=", this._id);
         IGCSearchConditionSet idOnlySet = new IGCSearchConditionSet(idOnly);
-        IGCSearch igcSearch = new IGCSearch(Reference.getAssetTypeForSearch(this), properties, idOnlySet);
+        IGCSearch igcSearch = new IGCSearch(Reference.getAssetTypeForSearch(this.getType()), properties, idOnlySet);
         if (pageSize > 0) {
             igcSearch.setPageSize(pageSize);
         }
@@ -383,15 +383,14 @@ public class Reference extends ObjectPrinter {
 
         if (this._context.isEmpty()) {
 
-            String[] properties = new String[]{ "name" };
             boolean bHasModificationDetails = this.hasModificationDetails();
-            if (bHasModificationDetails) {
-                properties = Reference.MODIFICATION_DETAILS;
-            }
 
             IGCSearchCondition idOnly = new IGCSearchCondition("_id", "=", this.getId());
             IGCSearchConditionSet idOnlySet = new IGCSearchConditionSet(idOnly);
-            IGCSearch igcSearch = new IGCSearch(this.getType(), properties, idOnlySet);
+            IGCSearch igcSearch = new IGCSearch(this.getType(), idOnlySet);
+            if (bHasModificationDetails) {
+                igcSearch.addProperties(Reference.MODIFICATION_DETAILS);
+            }
             igcSearch.setPageSize(2);
             ReferenceList assetsWithCtx = igcrest.search(igcSearch);
             success = (!assetsWithCtx.getItems().isEmpty());
@@ -563,18 +562,17 @@ public class Reference extends ObjectPrinter {
      * This is necessary for certain types that are actually pseudo-aliases for other types, to ensure all
      * properties of that asset can be retrieved.
      *
-     * @param asset the asset for which to retrieve the search type
+     * @param assetType the asset type for which to retrieve the search type
      * @return String
      */
-    public static String getAssetTypeForSearch(Reference asset) {
-        String type = asset.getType();
+    public static String getAssetTypeForSearch(String assetType) {
         String typeForSearch = null;
-        switch(type) {
+        switch(assetType) {
             case "host_(engine)":
                 typeForSearch = "host";
                 break;
             default:
-                typeForSearch = type;
+                typeForSearch = assetType;
                 break;
         }
         return typeForSearch;

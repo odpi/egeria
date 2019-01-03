@@ -21,6 +21,8 @@ public class AttributeForSchemaMapper extends RelationshipMapping {
                 "parentSchemas",
                 "attributes"
         );
+        addSubType(AttributeForSchemaMapper_TableSchema.getInstance());
+        addSubType(AttributeForSchemaMapper_TableColumn.getInstance());
     }
 
 }
