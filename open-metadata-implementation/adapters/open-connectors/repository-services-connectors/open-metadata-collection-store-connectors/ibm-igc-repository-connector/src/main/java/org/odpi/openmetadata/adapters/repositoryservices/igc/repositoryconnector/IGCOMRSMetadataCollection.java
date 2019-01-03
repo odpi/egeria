@@ -334,7 +334,11 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
 
         Relationship found = null;
 
-        RelationshipMapping relationshipMapping = getRelationshipMapper(omrsRelationshipName);
+        RelationshipMapping relationshipMapping = getRelationshipMapper(
+                omrsRelationshipName,
+                proxyOne.getType(),
+                proxyTwo.getType()
+        );
 
         if (relationshipMapping != null) {
             try {
@@ -342,13 +346,15 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                 RelationshipDef omrsRelationshipDef = (RelationshipDef) getTypeDefByName(userId, omrsRelationshipName);
                 // Since the ordering should be set by the GUID we're lookup up anyway, we'll simply set the property
                 // to one of the proxyOne properties
+                String igcPropertyName = relationshipMapping.getProxyOneMapping().getIgcRelationshipProperties().get(0);
+                log.debug(" ... using property: {}", igcPropertyName);
                 found = RelationshipMapping.getMappedRelationship(
                         (IGCOMRSRepositoryConnector)parentConnector,
                         relationshipMapping,
                         omrsRelationshipDef,
                         proxyOne,
                         proxyTwo,
-                        relationshipMapping.getProxyOneMapping().getIgcRelationshipProperties().get(0),
+                        igcPropertyName,
                         userId,
                         proxyOneRid.equals(proxyTwoRid) ? proxyOneRid : null
                 );
@@ -689,13 +695,13 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         for (ReferenceableMapper mapper : mappers) {
             List<RelationshipMapping> relationshipMappings = mapper.getRelationshipMappers();
             for (RelationshipMapping relationshipMapping : relationshipMappings) {
-                if (assetType.equals(relationshipMapping.getProxyOneMapping().getIgcAssetType())) {
+                if (relationshipMapping.getProxyOneMapping().matchesAssetType(assetType)) {
                     List<String> relationshipNamesOne = relationshipMapping.getProxyOneMapping().getIgcRelationshipProperties();
                     for (String relationshipName : relationshipNamesOne) {
                         map.put(relationshipName, relationshipMapping);
                     }
                 }
-                if (assetType.equals(relationshipMapping.getProxyTwoMapping().getIgcAssetType())) {
+                if (relationshipMapping.getProxyTwoMapping().matchesAssetType(assetType)) {
                     List<String> relationshipNamesTwo = relationshipMapping.getProxyTwoMapping().getIgcRelationshipProperties();
                     for (String relationshipName : relationshipNamesTwo) {
                         if (map.containsKey(relationshipName)) {
@@ -788,13 +794,16 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
 
                 List<ReferenceableMapper> mappers = getMappers(reference.getType(), userId);
                 for (ReferenceableMapper mapper : mappers) {
+                    log.debug("processResults with mapper: {}", mapper.getClass().getCanonicalName());
                     try {
                         if (mapper.igcRidNeedsPrefix()) {
-                            ed = getEntityDetail(userId, mapper.getIgcRidPrefix() + reference.getId());
+                            log.debug(" ... prefix required, getEntityDetail with: {}", mapper.getIgcRidPrefix() + reference.getId());
+                            ed = getEntityDetail(userId, mapper.getIgcRidPrefix() + reference.getId(), reference);
                         } else {
-                            ed = getEntityDetail(userId, reference.getId());
+                            log.debug(" ... no prefix required, getEntityDetail with: {}", reference.getId());
+                            ed = getEntityDetail(userId, reference.getId(), reference);
                         }
-                    } catch (EntityNotKnownException | EntityProxyOnlyException | InvalidParameterException | RepositoryErrorException | UserNotAuthorizedException e) {
+                    } catch (RepositoryErrorException e) {
                         log.error("Unable to retrieve entity details.", e);
                     }
                     if (ed != null) {
@@ -1019,6 +1028,8 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
 
         final String  methodName        = "getEntityDetail";
 
+        log.debug("getEntityDetail with guid = {}", guid);
+
         EntityDetail detail = null;
         String prefix = getPrefixFromGeneratedId(guid);
 
@@ -1152,18 +1163,55 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
      * @param omrsRelationshipType the name of the OMRS relationship type for which to retrieve a mapping
      * @return RelationshipMapping
      */
-    public RelationshipMapping getRelationshipMapper(String omrsRelationshipType) {
+    public RelationshipMapping getRelationshipMapper(String omrsRelationshipType,
+                                                     String proxyOneType,
+                                                     String proxyTwoType) {
         RelationshipMapping found = null;
         for (ImplementedMapping mapping : implementedMappings) {
             RelationshipMapping candidate = mapping.getRelationshipMapping();
             // If the mapping has a relationship mapping, and its type equals the one we're looking for,
             // set it to found and short-circuit out of the loop
-            if (candidate != null && candidate.getOmrsRelationshipType().equals(omrsRelationshipType)) {
-                found = mapping.getRelationshipMapping();
-                break;
+            if (candidate != null) {
+                if (matchingRelationshipMapper(candidate, omrsRelationshipType, proxyOneType, proxyTwoType)) {
+                    found = candidate;
+                    break;
+                } else if (candidate.hasSubTypes()) {
+                    for (RelationshipMapping subMapping : candidate.getSubTypes()) {
+                        if (matchingRelationshipMapper(subMapping, omrsRelationshipType, proxyOneType, proxyTwoType)) {
+                            found = subMapping;
+                            break;
+                        }
+                    }
+                } else if (candidate.hasRelationshipLevelAsset()) {
+                    String relationshipLevelAssetType = candidate.getRelationshipLevelIgcAsset();
+                    if (proxyOneType.equals(relationshipLevelAssetType) && proxyTwoType.equals(relationshipLevelAssetType)) {
+                        found = candidate;
+                        break;
+                    }
+                }
+
             }
         }
         return found;
+    }
+
+    /**
+     * Indicates whether the provided relationship mapping matches the provided criteria.
+     *
+     * @param candidate the relationship mapping to check
+     * @param omrsRelationshipType the OMRS relationship type to confirm
+     * @param proxyOneType the asset type of endpoint 1 of the relationship to confirm
+     * @param proxyTwoType the asset type of endpoint 2 of the relationship to confirm
+     * @return
+     */
+    private boolean matchingRelationshipMapper(RelationshipMapping candidate,
+                                               String omrsRelationshipType,
+                                               String proxyOneType,
+                                               String proxyTwoType) {
+        return (candidate != null
+                && candidate.getOmrsRelationshipType().equals(omrsRelationshipType)
+                && candidate.getProxyOneMapping().matchesAssetType(proxyOneType)
+                && candidate.getProxyTwoMapping().matchesAssetType(proxyTwoType));
     }
 
     /**
@@ -1180,6 +1228,24 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             }
         }
         return typeDefs;
+    }
+
+    /**
+     * Retrieves the IGC asset type from the provided IGC asset display name (only for those assets that have
+     * a mapping implemented). If none is found, will return null.
+     *
+     * @param igcAssetName the display name of the IGC asset type
+     * @return String
+     */
+    public String getIgcAssetTypeForAssetName(String igcAssetName) {
+        String assetType = null;
+        for (ImplementedMapping mapping : implementedMappings) {
+            if (igcAssetName.equals(mapping.getIgcAssetTypeDisplayName())) {
+                assetType = mapping.getIgcAssetType();
+                break;
+            }
+        }
+        return assetType;
     }
 
     /**

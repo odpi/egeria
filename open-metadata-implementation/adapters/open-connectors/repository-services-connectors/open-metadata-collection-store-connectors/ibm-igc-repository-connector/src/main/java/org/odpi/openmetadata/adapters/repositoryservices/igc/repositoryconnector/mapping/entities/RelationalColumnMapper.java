@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.classifications.PrimaryKeyMapper;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.AttributeForSchemaMapper_TableColumn;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.DataClassAssignmentMapper;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.ForeignKeyMapper;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.SchemaAttributeTypeMapper_DatabaseColumn;
 
@@ -34,6 +35,7 @@ public class RelationalColumnMapper extends ReferenceableMapper {
         addRelationshipMapper(AttributeForSchemaMapper_TableColumn.getInstance());
         addRelationshipMapper(SchemaAttributeTypeMapper_DatabaseColumn.getInstance());
         addRelationshipMapper(ForeignKeyMapper.getInstance());
+        addRelationshipMapper(DataClassAssignmentMapper.getInstance());
 
         // The list of classifications that should be mapped
         addClassificationMapper(PrimaryKeyMapper.getInstance());

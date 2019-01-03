@@ -37,6 +37,9 @@ public abstract class RelationshipMapping {
     private String omrsRelationshipType;
     private OptimalStart optimalStart;
 
+    private List<RelationshipMapping> subtypes;
+    private String relationshipLevelIgcAsset;
+
     /**
      * The optimal endpoint from which to retrieve the relationship:
      *  - ONE = from ProxyOne
@@ -63,12 +66,12 @@ public abstract class RelationshipMapping {
     }
 
     protected RelationshipMapping(String igcAssetTypeProxyOne,
-                               String igcAssetTypeProxyTwo,
-                               String igcRelationshipPropertyFromOne,
-                               String igcRelationshipPropertyFromTwo,
-                               String omrsRelationshipType,
-                               String omrsRelationshipProxyOneProperty,
-                               String omrsRelationshipProxyTwoProperty) {
+                                  String igcAssetTypeProxyTwo,
+                                  String igcRelationshipPropertyFromOne,
+                                  String igcRelationshipPropertyFromTwo,
+                                  String omrsRelationshipType,
+                                  String omrsRelationshipProxyOneProperty,
+                                  String omrsRelationshipProxyTwoProperty) {
         this(
                 igcAssetTypeProxyOne,
                 igcAssetTypeProxyTwo,
@@ -83,14 +86,14 @@ public abstract class RelationshipMapping {
     }
 
     protected RelationshipMapping(String igcAssetTypeProxyOne,
-                               String igcAssetTypeProxyTwo,
-                               String igcRelationshipPropertyFromOne,
-                               String igcRelationshipPropertyFromTwo,
-                               String omrsRelationshipType,
-                               String omrsRelationshipProxyOneProperty,
-                               String omrsRelationshipProxyTwoProperty,
-                               String igcProxyOneRidPrefix,
-                               String igcProxyTwoRidPrefix) {
+                                  String igcAssetTypeProxyTwo,
+                                  String igcRelationshipPropertyFromOne,
+                                  String igcRelationshipPropertyFromTwo,
+                                  String omrsRelationshipType,
+                                  String omrsRelationshipProxyOneProperty,
+                                  String omrsRelationshipProxyTwoProperty,
+                                  String igcProxyOneRidPrefix,
+                                  String igcProxyTwoRidPrefix) {
         this.one = new ProxyMapping(
                 igcAssetTypeProxyOne,
                 igcRelationshipPropertyFromOne,
@@ -105,7 +108,58 @@ public abstract class RelationshipMapping {
         );
         this.omrsRelationshipType = omrsRelationshipType;
         this.optimalStart = OptimalStart.OPPOSITE;
+        this.subtypes = new ArrayList<>();
     }
+
+    /**
+     * Sets a relationship-level IGC asset type (these very rarely exist, only known example is 'classification').
+     *
+     * @param igcAssetType the name of the IGC asset that represents this relationship in IGC
+     */
+    public void setRelationshipLevelIgcAsset(String igcAssetType) { this.relationshipLevelIgcAsset = igcAssetType; }
+
+    /**
+     * Indicates whether this mapping has an IGC asset that represents the relationship directly (true) or not (false).
+     *
+     * @return boolean
+     */
+    public boolean hasRelationshipLevelAsset() { return this.relationshipLevelIgcAsset != null; }
+
+    /**
+     * Retrieve the name of the IGC asset type that represents the relationship itself.
+     *
+     * @return String
+     */
+    public String getRelationshipLevelIgcAsset() { return this.relationshipLevelIgcAsset; }
+
+    /**
+     * Indicates whether this relationship mapping has subtypes (true) or not (false).
+     * Subtypes can be used where the same relationship may represent relationships between a number of different
+     * IGC objects and each needs to be distinguished to appropriately apply a mapping.
+     *
+     * @return boolean
+     */
+    public boolean hasSubTypes() { return !this.subtypes.isEmpty(); }
+
+    /**
+     * Adds a subtype to this relationship mapping.
+     * Subtypes can be used where the same relationship may represent relationships between a number of different
+     * IGC objects and each needs to be distinguished to appropriately apply a mapping.
+     *
+     * @param subRelationshipMapping the relationship mapping that defines a subtype of this mapping
+     */
+    public void addSubType(RelationshipMapping subRelationshipMapping) {
+        this.subtypes.add(subRelationshipMapping);
+    }
+
+    /**
+     * Retrieve the listing of sub-relationship mappings of this mapping.
+     * Subtypes can be used where the same relationship may represent relationships between a number of different
+     * IGC objects and each needs to be distinguished to appropriately apply a mapping.
+     *
+     * @return List<RelationshipMapping>
+     */
+    public List<RelationshipMapping> getSubTypes() { return this.subtypes; }
 
     /**
      * Must be implemented to define how to map the relationships defined by the mapper, if there are any complex
@@ -387,7 +441,12 @@ public abstract class RelationshipMapping {
          * @return boolean
          */
         public boolean matchesAssetType(String igcAssetType) {
-            return this.igcAssetType.equals(igcAssetType) || this.igcAssetType.equals(IGCOMRSMetadataCollection.DEFAULT_IGC_TYPE);
+            log.debug("checking for matching asset between {} and {}", this.igcAssetType, Reference.getAssetTypeForSearch(igcAssetType));
+            return (
+                    this.igcAssetType.equals(igcAssetType)
+                    || this.igcAssetType.equals(IGCOMRSMetadataCollection.DEFAULT_IGC_TYPE)
+                    || this.igcAssetType.equals(Reference.getAssetTypeForSearch(igcAssetType))
+            );
         }
 
         @Override
@@ -431,10 +490,21 @@ public abstract class RelationshipMapping {
 
         String omrsRelationshipName = relationshipMapping.getOmrsRelationshipType();
         // Lookup types via this helper function, to translate any alias types (eg. host_(engine) and host)
-        String endOneType = Reference.getAssetTypeForSearch(endOne);
-        String endTwoType = Reference.getAssetTypeForSearch(endTwo);
+        String endOneType = Reference.getAssetTypeForSearch(endOne.getType());
+        String endTwoType = Reference.getAssetTypeForSearch(endTwo.getType());
 
-        log.debug("Calculating relationship GUID from {} to {} via {} for {}", endOneType, endTwoType, igcPropertyName, omrsRelationshipName);
+        log.debug("Calculating relationship GUID from {} to {} via {} for {} (with mapper: {})", endOneType, endTwoType, igcPropertyName, omrsRelationshipName, relationshipMapping.getClass().getCanonicalName());
+
+        // If the relationship mapping includes a relationship-level asset, check if either provided endpoint is one
+        // (and if so, setup the relationshipLevelRid based on its ID)
+        if (relationshipMapping.hasRelationshipLevelAsset()) {
+            String relationshipLevelType = relationshipMapping.getRelationshipLevelIgcAsset();
+            if (endOneType.equals(relationshipLevelType)) {
+                relationshipLevelRid = endOne.getId();
+            } else if (endTwoType.equals(relationshipLevelType)) {
+                relationshipLevelRid = endTwo.getId();
+            }
+        }
 
         ProxyMapping pmOne = relationshipMapping.getProxyOneMapping();
         ProxyMapping pmTwo = relationshipMapping.getProxyTwoMapping();
@@ -502,7 +572,7 @@ public abstract class RelationshipMapping {
             log.debug(" ... two matches one, one matches two: reversing RIDs.");
             proxyOneRid = endTwo.getId();
             proxyTwoRid = endOne.getId();
-        } else {
+        } else if (relationshipLevelRid == null) {
             // Otherwise indicate something appears to be wrong
             log.error("Unable to find matching ends for relationship {} from {} to {} via {}", omrsRelationshipName, endOne.getId(), endTwo.getId(), igcPropertyName);
         }

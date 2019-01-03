@@ -157,9 +157,10 @@ public class ChangeSet {
         /**
          * Retrieve the changed value indicated by the JSON Patch entry.
          *
+         * @param referenceListProperties list of properties of the changed asset that are reference lists
          * @return Object
          */
-        public Object getNewValue() {
+        public Object getNewValue(List<String> referenceListProperties) {
 
             Object actualValue = null;
 
@@ -174,8 +175,12 @@ public class ChangeSet {
                     actualValue = this.value.asDouble();
                     break;
                 case OBJECT:
-                    // If an object, must be a reference -- read it in as one
-                    actualValue = igcRestClient.readJSONIntoPOJO(this.value.toString());
+                    // If an object, must be a Reference (or ReferenceList) -- read it in as one
+                    if (referenceListProperties.contains(getIgcPropertyName())) {
+                        actualValue = igcRestClient.readJSONIntoReferenceList(this.value.toString());
+                    } else {
+                        actualValue = igcRestClient.readJSONIntoPOJO(this.value.toString());
+                    }
                     break;
                 case STRING:
                     actualValue = this.value.asText();
@@ -187,6 +192,20 @@ public class ChangeSet {
 
             return actualValue;
 
+        }
+
+        @Override
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+            sb.append("Change: {");
+            sb.append(" op=");
+            sb.append(this.op);
+            sb.append(", path=");
+            sb.append(this.path);
+            sb.append(", value=");
+            sb.append(this.value.toString());
+            sb.append("}");
+            return sb.toString();
         }
 
     }

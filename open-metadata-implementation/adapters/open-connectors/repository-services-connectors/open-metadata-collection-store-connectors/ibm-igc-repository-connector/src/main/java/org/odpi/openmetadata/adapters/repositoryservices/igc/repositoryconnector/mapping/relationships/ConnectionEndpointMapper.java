@@ -36,7 +36,7 @@ public class ConnectionEndpointMapper extends RelationshipMapping {
                 "host",
                 "data_connection",
                 "data_connections",
-                "data_connectors",
+                "data_connectors.host",
                 "ConnectionEndpoint",
                 "connectionEndpoint",
                 "connections"
@@ -60,9 +60,9 @@ public class ConnectionEndpointMapper extends RelationshipMapping {
                                            Reference fromIgcObject,
                                            String userId) {
 
-        String assetType = fromIgcObject.getType();
+        String assetType = Reference.getAssetTypeForSearch(fromIgcObject.getType());
 
-        if (assetType.equals("host") || assetType.equals("host_(engine)")) {
+        if (assetType.equals("host")) {
             addMappedRelationshipsForIgcHost(
                     igcomrsRepositoryConnector,
                     relationships,

@@ -2,11 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships;
 
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestClient;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.ReferenceList;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearch;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchCondition;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchConditionSet;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSMetadataCollection;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.entities.DataClassMapper;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.entities.EntityMapping;
@@ -39,7 +41,7 @@ public class DataClassAssignmentMapper extends RelationshipMapping {
 
     private DataClassAssignmentMapper() {
         super(
-                "main_object",
+                IGCOMRSMetadataCollection.DEFAULT_IGC_TYPE,
                 "data_class",
                 "detected_classifications",
                 "classified_assets_detected",
@@ -50,6 +52,7 @@ public class DataClassAssignmentMapper extends RelationshipMapping {
         setOptimalStart(OptimalStart.CUSTOM);
         addAlternativePropertyFromOne("selected_classification");
         addAlternativePropertyFromTwo("classifications_selected");
+        setRelationshipLevelIgcAsset("classification");
     }
 
     /**
@@ -68,29 +71,47 @@ public class DataClassAssignmentMapper extends RelationshipMapping {
                                            Reference fromIgcObject,
                                            String userId) {
 
-        complexMapDetectedClassifications(
-                igcomrsRepositoryConnector,
-                relationships,
-                fromIgcObject,
-                userId);
+        String assetType = Reference.getAssetTypeForSearch(fromIgcObject.getType());
 
-        complexMapSelectedClassifications(
-                igcomrsRepositoryConnector,
-                relationships,
-                fromIgcObject,
-                userId
-        );
+        if (assetType.equals("data_class")) {
+            mapDetectedClassifications_fromDataClass(
+                    igcomrsRepositoryConnector,
+                    relationships,
+                    fromIgcObject,
+                    userId
+            );
+            mapSelectedClassifications_fromDataClass(
+                    igcomrsRepositoryConnector,
+                    relationships,
+                    fromIgcObject,
+                    userId
+            );
+        } else {
+            mapDetectedClassifications_toDataClass(
+                    igcomrsRepositoryConnector,
+                    relationships,
+                    fromIgcObject,
+                    userId
+            );
+            mapSelectedClassifications_toDataClass(
+                    igcomrsRepositoryConnector,
+                    relationships,
+                    fromIgcObject,
+                    userId
+            );
+        }
 
     }
 
     /**
+     * Map the detected classifications for objects classified by the provided data_class object.
      *
      * @param igcomrsRepositoryConnector
      * @param relationships
-     * @param fromIgcObject
+     * @param fromIgcObject the data_class object
      * @param userId
      */
-    private void complexMapDetectedClassifications(IGCOMRSRepositoryConnector igcomrsRepositoryConnector,
+    private void mapDetectedClassifications_fromDataClass(IGCOMRSRepositoryConnector igcomrsRepositoryConnector,
                                                    List<Relationship> relationships,
                                                    Reference fromIgcObject,
                                                    String userId) {
@@ -105,7 +126,7 @@ public class DataClassAssignmentMapper extends RelationshipMapping {
                 P_THRESHOLD
         };
         IGCSearch igcSearch = new IGCSearch("classification", classificationProperties, igcSearchConditionSet);
-        if (!igcomrsRepositoryConnector.getIGCVersion().equals("v115")) {
+        if (!igcomrsRepositoryConnector.getIGCVersion().equals(IGCRestClient.VERSION_115)) {
             igcSearch.addProperty("value_frequency");
         }
         ReferenceList detectedClassifications = igcomrsRepositoryConnector.getIGCRestClient().search(igcSearch);
@@ -121,7 +142,7 @@ public class DataClassAssignmentMapper extends RelationshipMapping {
             /* Only proceed with the classified object if it is not a 'main_object' asset
              * (in this scenario, 'main_object' represents ColumnAnalysisMaster objects that are not accessible
              *  and will throw bad request (400) REST API errors) */
-            if (classifiedObj != null && !classifiedObj.getType().equals("main_object")) {
+            if (classifiedObj != null && !classifiedObj.getType().equals(IGCOMRSMetadataCollection.DEFAULT_IGC_TYPE)) {
                 try {
 
                     // Use 'classification' object to put RID of classification on the 'detected classification' relationships
@@ -154,7 +175,7 @@ public class DataClassAssignmentMapper extends RelationshipMapping {
                             "partialMatch",
                             EntityMapping.getPrimitivePropertyValue((confidence.intValue() < 100))
                     );
-                    if (!igcomrsRepositoryConnector.getIGCVersion().equals("v115")) {
+                    if (!igcomrsRepositoryConnector.getIGCVersion().equals(IGCRestClient.VERSION_115)) {
                         relationshipProperties.setProperty(
                                 "valueFrequency",
                                 EntityMapping.getPrimitivePropertyValue(detectedClassification.getPropertyByName("value_frequency"))
@@ -169,7 +190,7 @@ public class DataClassAssignmentMapper extends RelationshipMapping {
                     );
 
                     relationship.setProperties(relationshipProperties);
-                    log.debug("complexMapDetectedClassifications - adding relationship: {}", relationship);
+                    log.debug("mapDetectedClassifications_fromDataClass - adding relationship: {}", relationship);
                     relationships.add(relationship);
 
                 } catch (RepositoryErrorException e) {
@@ -180,7 +201,15 @@ public class DataClassAssignmentMapper extends RelationshipMapping {
 
     }
 
-    private void complexMapSelectedClassifications(IGCOMRSRepositoryConnector igcomrsRepositoryConnector,
+    /**
+     * Map the selected classifications for objects classified by the provided data_class object.
+     *
+     * @param igcomrsRepositoryConnector
+     * @param relationships
+     * @param fromIgcObject the data_class object
+     * @param userId
+     */
+    private void mapSelectedClassifications_fromDataClass(IGCOMRSRepositoryConnector igcomrsRepositoryConnector,
                                                    List<Relationship> relationships,
                                                    Reference fromIgcObject,
                                                    String userId) {
@@ -227,13 +256,174 @@ public class DataClassAssignmentMapper extends RelationshipMapping {
                 );
 
                 relationship.setProperties(relationshipProperties);
-                log.debug("complexMapSelectedClassifications - adding relationship: {}", relationship);
+                log.debug("mapSelectedClassifications_fromDataClass - adding relationship: {}", relationship);
                 relationships.add(relationship);
 
             } catch (RepositoryErrorException e) {
                 log.error("Unable to map relationship.", e);
             }
 
+        }
+
+    }
+
+    /**
+     * Map the provided main_object object to its detected data classes.
+     *
+     * @param igcomrsRepositoryConnector
+     * @param relationships
+     * @param fromIgcObject the main_object object
+     * @param userId
+     */
+    private void mapDetectedClassifications_toDataClass(IGCOMRSRepositoryConnector igcomrsRepositoryConnector,
+                                                          List<Relationship> relationships,
+                                                          Reference fromIgcObject,
+                                                          String userId) {
+
+        // One of the few relationships in IGC that actually has properties of its own!
+        // So we need to retrieve this relationship linking object (IGC type 'classification')
+        IGCSearchCondition igcSearchCondition = new IGCSearchCondition("classifies_asset", "=", fromIgcObject.getId());
+        IGCSearchConditionSet igcSearchConditionSet = new IGCSearchConditionSet(igcSearchCondition);
+        String[] classificationProperties = new String[]{
+                "data_class",
+                "confidencePercent",
+                P_THRESHOLD
+        };
+        IGCSearch igcSearch = new IGCSearch("classification", classificationProperties, igcSearchConditionSet);
+        if (!igcomrsRepositoryConnector.getIGCVersion().equals(IGCRestClient.VERSION_115)) {
+            igcSearch.addProperty("value_frequency");
+        }
+        ReferenceList detectedClassifications = igcomrsRepositoryConnector.getIGCRestClient().search(igcSearch);
+
+        detectedClassifications.getAllPages(igcomrsRepositoryConnector.getIGCRestClient());
+
+        // For each of the detected classifications, create a new DataClassAssignment relationship
+        for (Reference detectedClassification : detectedClassifications.getItems()) {
+
+            Reference dataClassObj = (Reference) detectedClassification.getPropertyByName("data_class");
+            InstanceProperties relationshipProperties = new InstanceProperties();
+
+            /* Only proceed with the classified object if it is not a 'main_object' asset
+             * (in this scenario, 'main_object' represents ColumnAnalysisMaster objects that are not accessible
+             *  and will throw bad request (400) REST API errors) */
+            if (dataClassObj != null && !dataClassObj.getType().equals(IGCOMRSMetadataCollection.DEFAULT_IGC_TYPE)) {
+                try {
+
+                    // Use 'classification' object to put RID of classification on the 'detected classification' relationships
+                    Relationship relationship = getMappedRelationship(
+                            igcomrsRepositoryConnector,
+                            DataClassAssignmentMapper.getInstance(),
+                            (RelationshipDef) igcomrsRepositoryConnector.getRepositoryHelper().getTypeDefByName(
+                                    igcomrsRepositoryConnector.getRepositoryName(),
+                                    R_DATA_CLASS_ASSIGNMENT),
+                            fromIgcObject,
+                            dataClassObj,
+                            "detected_classifications",
+                            userId,
+                            detectedClassification.getId()
+                    );
+
+                    Number confidence = (Number) detectedClassification.getPropertyByName("confidencePercent");
+
+                    /* Before adding to the overall set of relationships, setup the relationship properties
+                     * we have in IGC from the 'classification' object. */
+                    relationshipProperties.setProperty(
+                            "confidence",
+                            EntityMapping.getPrimitivePropertyValue(confidence.intValue())
+                    );
+                    relationshipProperties.setProperty(
+                            P_THRESHOLD,
+                            EntityMapping.getPrimitivePropertyValue(detectedClassification.getPropertyByName(P_THRESHOLD))
+                    );
+                    relationshipProperties.setProperty(
+                            "partialMatch",
+                            EntityMapping.getPrimitivePropertyValue((confidence.intValue() < 100))
+                    );
+                    if (!igcomrsRepositoryConnector.getIGCVersion().equals(IGCRestClient.VERSION_115)) {
+                        relationshipProperties.setProperty(
+                                "valueFrequency",
+                                EntityMapping.getPrimitivePropertyValue(detectedClassification.getPropertyByName("value_frequency"))
+                        );
+                    }
+                    EnumPropertyValue status = new EnumPropertyValue();
+                    status.setSymbolicName("Discovered");
+                    status.setOrdinal(0);
+                    relationshipProperties.setProperty(
+                            "status",
+                            status
+                    );
+
+                    relationship.setProperties(relationshipProperties);
+                    log.debug("mapDetectedClassifications_toDataClass - adding relationship: {}", relationship);
+                    relationships.add(relationship);
+
+                } catch (RepositoryErrorException e) {
+                    log.error("Unable to map relationship.", e);
+                }
+            }
+        }
+
+    }
+
+    /**
+     * Map the provided main_object object to its selected classification.
+     *
+     * @param igcomrsRepositoryConnector
+     * @param relationships
+     * @param fromIgcObject the main_object object
+     * @param userId
+     */
+    private void mapSelectedClassifications_toDataClass(IGCOMRSRepositoryConnector igcomrsRepositoryConnector,
+                                                          List<Relationship> relationships,
+                                                          Reference fromIgcObject,
+                                                          String userId) {
+
+        if (fromIgcObject.hasProperty("selected_classification")) {
+
+            Reference withSelectedClassification = fromIgcObject.getAssetWithSubsetOfProperties(
+                    igcomrsRepositoryConnector.getIGCRestClient(),
+                    new String[]{ "selected_classification" });
+
+            Reference selectedClassification = (Reference)withSelectedClassification.getPropertyByName("selected_classification");
+
+            if (selectedClassification != null) {
+                try {
+
+                    InstanceProperties relationshipProperties = new InstanceProperties();
+
+                    Relationship relationship = getMappedRelationship(
+                            igcomrsRepositoryConnector,
+                            DataClassAssignmentMapper.getInstance(),
+                            (RelationshipDef) igcomrsRepositoryConnector.getRepositoryHelper().getTypeDefByName(
+                                    igcomrsRepositoryConnector.getRepositoryName(),
+                                    R_DATA_CLASS_ASSIGNMENT),
+                            fromIgcObject,
+                            (Reference) withSelectedClassification.getPropertyByName("selected_classification"),
+                            "selected_classification",
+                            userId
+                    );
+
+                    EnumPropertyValue status = new EnumPropertyValue();
+                    status.setSymbolicName("Proposed");
+                    status.setOrdinal(1);
+                    relationshipProperties.setProperty(
+                            "status",
+                            status
+                    );
+
+                    relationship.setProperties(relationshipProperties);
+                    log.debug("mapSelectedClassifications_toDataClass - adding relationship: {}", relationship);
+                    relationships.add(relationship);
+
+                } catch (RepositoryErrorException e) {
+                    log.error("Unable to map relationship.", e);
+                }
+            } else {
+                log.debug("No selected_classification set for asset -- skipping.");
+            }
+
+        } else {
+            log.info("Provided asset has no selected_classification property: {}", fromIgcObject.getId());
         }
 
     }
