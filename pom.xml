@@ -284,6 +284,8 @@
                         <exclude>**/docs/**/*.svg</exclude>
                         <exclude>**/website/**/*.xml</exclude>
                         <exclude>**/dependency-reduced-pom.xml</exclude>
+                        <exclude>**/.classpath</exclude>
+                        <exclude>**/.project</exclude>
                     </excludes>
                     <licenseFamilies>
                         <licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">

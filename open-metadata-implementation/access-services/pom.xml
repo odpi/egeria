@@ -43,6 +43,7 @@
         <module>stewardship-action</module>
         <module>subject-area</module>
         <module>data-privacy</module>
+        <module>data-engine</module>
 
     </modules>
 

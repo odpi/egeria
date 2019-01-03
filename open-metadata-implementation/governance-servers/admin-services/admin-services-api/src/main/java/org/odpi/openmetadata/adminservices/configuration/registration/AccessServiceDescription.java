@@ -22,6 +22,8 @@ public enum AccessServiceDescription implements Serializable
                                               "https://odpi.github.io/egeria/open-metadata-implementation/access-services/connected-asset/"),
     DATA_INFRASTRUCTURE_OMAS         (1010,   "DataInfrastructure", "Manage information about the deployed IT infrastructure",
                                               "https://odpi.github.io/egeria/open-metadata-implementation/access-services/data-infrastructure/"),
+     DATA_ENGINE_OMAS                (1021,   "DataEngine", "Create processes for lineage",
+                                              "https://odpi.github.io/egeria/open-metadata-implementation/access-services/data-engine/"),
     DATA_PLATFORM_OMAS               (1005,   "DataPlatform", "Capture changes to the data stores and data set managed by a data platform",
                                               "https://odpi.github.io/egeria/open-metadata-implementation/access-services/data-platform/"),
     DATA_PRIVACY_OMAS                (1016,   "DataPrivacy", "Manage governance of privacy",
