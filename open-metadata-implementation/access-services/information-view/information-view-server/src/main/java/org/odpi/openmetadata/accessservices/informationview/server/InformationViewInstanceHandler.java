@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.informationview.server;
 
-import org.odpi.openmetadata.accessservices.informationview.contentmanager.ReportCreator;
+import org.odpi.openmetadata.accessservices.informationview.contentmanager.ReportHandler;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.PropertyServerException;
 
@@ -30,11 +30,11 @@ class InformationViewInstanceHandler
      * @return reportCreator for exclusive use by the requested instance
      * @throws PropertyServerException no instance for this server
      */
-    ReportCreator getReportCreator(String serverName) throws PropertyServerException {
+    ReportHandler getReportCreator(String serverName) throws PropertyServerException {
         InformationViewServicesInstance instance = instanceMap.getInstance(serverName);
 
         if (instance != null) {
-            return instance.getReportCreator();
+            return instance.getReportHandler();
         } else {
             final String methodName = "getReportCreator";
 
