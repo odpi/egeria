@@ -116,6 +116,16 @@ public class InformationViewEnterpriseOmrsEventListener implements OMRSTopicList
                                 instanceEvent.getRelationship());
                         break;
 
+                    case UPDATED_ENTITY_EVENT:
+                        instanceEventProcessor.processUpdatedEntityEvent("EnterpriseOMRSTopic",
+                                instanceEventOriginator.getMetadataCollectionId(),
+                                instanceEventOriginator.getServerName(),
+                                instanceEventOriginator.getServerType(),
+                                instanceEventOriginator.getOrganizationName(),
+                                instanceEvent.getOriginalEntity(),
+                                instanceEvent.getEntity());
+                        break;
+
                 }
             } else {
                 log.debug("Ignored instance event - null type");
