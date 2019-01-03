@@ -20,9 +20,8 @@ public class InformationViewRestServices {
         VoidResponse  response = new VoidResponse();
 
         try {
-
-            ReportHandler reportCreator2 = instanceHandler.getReportCreator(serverName);
-            reportCreator2.submitReportModel(requestBody);
+            ReportHandler reportCreator = instanceHandler.getReportCreator(serverName);
+            reportCreator.submitReportModel(requestBody);
         }
         catch (ReportCreationException | PropertyServerException e) {
             response.setExceptionClassName(e.getReportingClassName());

@@ -30,13 +30,6 @@ public class ReportRequestBody extends InformationViewHeader {
     private Map<String, Object> additionalProperties;
 
     /**
-     * Default constructor
-     */
-    public ReportRequestBody() {
-
-    }
-
-    /**
      *
      * @return the unique identifier specific to BI tool for the report
      */
@@ -208,7 +201,7 @@ public class ReportRequestBody extends InformationViewHeader {
 
     /**
      *
-     * @return elemens composing the reports
+     * @return elements composing the reports
      */
     public List<ReportElement> getReportElements() {
         return reportElements;
