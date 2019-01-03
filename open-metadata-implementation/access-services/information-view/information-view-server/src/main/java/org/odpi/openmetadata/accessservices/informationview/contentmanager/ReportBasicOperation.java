@@ -86,15 +86,15 @@ public abstract class ReportBasicOperation {
                 .withStringProperty(Constants.ATTRIBUTE_NAME, reportSection.getName())
                 .build();
         EntityDetail sectionEntity = entitiesCreatorHelper.addEntity(Constants.DOCUMENT_SCHEMA_ATTRIBUTE,
-                qualifiedNameForSection,
-                sectionProperties);
+                                                                    qualifiedNameForSection,
+                                                                    sectionProperties);
 
 
         entitiesCreatorHelper.addRelationship(Constants.ATTRIBUTE_FOR_SCHEMA,
-                parentGuid,
-                sectionEntity.getGUID(),
-                Constants.INFORMATION_VIEW_OMAS_NAME,
-                new InstanceProperties());
+                                            parentGuid,
+                                            sectionEntity.getGUID(),
+                                            Constants.INFORMATION_VIEW_OMAS_NAME,
+                                            new InstanceProperties());
 
 
         return addSchemaType(qualifiedNameForSection, sectionEntity, Constants.DOCUMENT_SCHEMA_TYPE);
@@ -131,18 +131,18 @@ public abstract class ReportBasicOperation {
         String qualifiedNameForType = qualifiedNameOfSchemaAttribute + Constants.TYPE_SUFFIX;
 
         InstanceProperties typeProperties = new EntityPropertiesBuilder()
-                .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForType)
-                .build();
+                                                .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForType)
+                                                .build();
 
         EntityDetail schemaTypeEntity = entitiesCreatorHelper.addEntity(schemaAttributeType,
-                qualifiedNameForType,
-                typeProperties);
+                                                                        qualifiedNameForType,
+                                                                        typeProperties);
 
         entitiesCreatorHelper.addRelationship(Constants.SCHEMA_ATTRIBUTE_TYPE,
-                schemaAttributeEntity.getGUID(),
-                schemaTypeEntity.getGUID(),
-                Constants.INFORMATION_VIEW_OMAS_NAME,
-                new InstanceProperties());
+                                            schemaAttributeEntity.getGUID(),
+                                            schemaTypeEntity.getGUID(),
+                                            Constants.INFORMATION_VIEW_OMAS_NAME,
+                                            new InstanceProperties());
         return schemaTypeEntity;
     }
 
@@ -165,13 +165,13 @@ public abstract class ReportBasicOperation {
                 log.info("source {} for report column {} found.", source, reportColumn.getName());
 
                 InstanceProperties schemaQueryImplProperties = new EntityPropertiesBuilder()
-                        .withStringProperty(Constants.QUERY, "")
-                        .build();
+                                                                .withStringProperty(Constants.QUERY, "")
+                                                                .build();
                 entitiesCreatorHelper.addRelationship(Constants.SCHEMA_QUERY_IMPLEMENTATION,
-                        derivedColumnEntity.getGUID(),
-                        sourceColumnGUID,
-                        Constants.INFORMATION_VIEW_OMAS_NAME,
-                        schemaQueryImplProperties);
+                                                    derivedColumnEntity.getGUID(),
+                                                    sourceColumnGUID,
+                                                    Constants.INFORMATION_VIEW_OMAS_NAME,
+                                                    schemaQueryImplProperties);
 
             } else {
                 log.error( MessageFormat.format("source column not found, unable to add relationship between column {0} and source {1}", reportColumn.getName(), source.toString()));
@@ -183,13 +183,15 @@ public abstract class ReportBasicOperation {
     protected EntityDetail addReportSchemaType(EntityDetail reportEntity, String qualifiedNameForComplexSchemaType, InstanceProperties complexSchemaTypeProperties) throws InvalidParameterException, StatusNotSupportedException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, RepositoryErrorException, ClassificationErrorException {
         EntityDetail complexSchemaTypeEntity;
         complexSchemaTypeEntity = entitiesCreatorHelper.addEntity(Constants.COMPLEX_SCHEMA_TYPE,
-                qualifiedNameForComplexSchemaType, complexSchemaTypeProperties, null);
+                                                                  qualifiedNameForComplexSchemaType,
+                                                                  complexSchemaTypeProperties,
+                                                       null);
 
         entitiesCreatorHelper.addRelationship(Constants.ASSET_SCHEMA_TYPE,
-                reportEntity.getGUID(),
-                complexSchemaTypeEntity.getGUID(),
-                Constants.INFORMATION_VIEW_OMAS_NAME,
-                new InstanceProperties());
+                                                reportEntity.getGUID(),
+                                                complexSchemaTypeEntity.getGUID(),
+                                                Constants.INFORMATION_VIEW_OMAS_NAME,
+                                                new InstanceProperties());
         return complexSchemaTypeEntity;
     }
 
