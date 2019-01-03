@@ -15,6 +15,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -111,6 +112,14 @@ public class Reference extends ObjectPrinter {
 
     public boolean isFullyRetrieved() { return this.fullyRetrieved; }
     public void setFullyRetrieved() { this.fullyRetrieved = true; }
+
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+            "_name",
+            "_type",
+            "_id",
+            "_url"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
 
     /**
      * This will generally be the most performant method by which to retrieve asset information, when only

@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.classifications;
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSMetadataCollection;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ClassificationOrigin;
@@ -44,6 +45,22 @@ public abstract class ClassificationMapping {
                                                       List<Classification> classifications,
                                                       Reference fromIgcObject,
                                                       String userId);
+
+    /**
+     * Indicates whether this classification mapping matches the provided IGC asset type: that is, this mapping
+     * can be used to translate to the provided IGC asset type.
+     *
+     * @param igcAssetType the IGC asset type to check the mapping against
+     * @return boolean
+     */
+    public boolean matchesAssetType(String igcAssetType) {
+        log.debug("checking for matching asset between {} and {}", this.igcAssetType, Reference.getAssetTypeForSearch(igcAssetType));
+        return (
+                this.igcAssetType.equals(igcAssetType)
+                        || this.igcAssetType.equals(IGCOMRSMetadataCollection.DEFAULT_IGC_TYPE)
+                        || this.igcAssetType.equals(Reference.getAssetTypeForSearch(igcAssetType))
+        );
+    }
 
     /**
      * Retrieve a Classification instance based on the provided information.

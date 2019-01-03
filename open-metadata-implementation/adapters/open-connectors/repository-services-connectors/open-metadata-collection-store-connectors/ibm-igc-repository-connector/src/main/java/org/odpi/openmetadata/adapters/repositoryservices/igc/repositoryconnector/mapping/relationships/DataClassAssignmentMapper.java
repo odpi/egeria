@@ -56,6 +56,46 @@ public class DataClassAssignmentMapper extends RelationshipMapping {
     }
 
     /**
+     * Retrieve the main_object asset expected from a classification asset.
+     *
+     * @param relationshipAsset the classification asset to translate into a main_object asset
+     * @param igcRestClient REST connectivity to the IGC environment
+     * @return Reference - the main_object asset
+     */
+    @Override
+    public Reference getProxyOneAssetFromRelationshipAsset(Reference relationshipAsset, IGCRestClient igcRestClient) {
+        String otherAssetType = relationshipAsset.getType();
+        if (otherAssetType.equals("classification")) {
+            Reference withDataClass = relationshipAsset.getAssetWithSubsetOfProperties(igcRestClient,
+                    new String[]{ "data_class", "classifies_asset" });
+            return (Reference) withDataClass.getPropertyByName("classifies_asset");
+        } else {
+            log.debug("Not a classification asset, just returning as-is: {}", relationshipAsset);
+            return relationshipAsset;
+        }
+    }
+
+    /**
+     * Retrieve the data_class asset expected from a classification asset.
+     *
+     * @param relationshipAsset the classification asset to translate into a data_class asset
+     * @param igcRestClient REST connectivity to the IGC environment
+     * @return Reference - the data_class asset
+     */
+    @Override
+    public Reference getProxyTwoAssetFromRelationshipAsset(Reference relationshipAsset, IGCRestClient igcRestClient) {
+        String otherAssetType = relationshipAsset.getType();
+        if (otherAssetType.equals("classification")) {
+            Reference withAsset = relationshipAsset.getAssetWithSubsetOfProperties(igcRestClient,
+                    new String[]{ "data_class", "classifies_asset" });
+            return (Reference) withAsset.getPropertyByName("data_class");
+        } else {
+            log.debug("Not a classification asset, just returning as-is: {}", relationshipAsset);
+            return relationshipAsset;
+        }
+    }
+
+    /**
      * Custom implementation of the relationship between an a DataClass (data_class) and a Referenceable (main_object).
      * This is one of the few relationships in IGC that has relationship-specific properties handled by a separate
      * 'classification' object, so it must be handled using custom logic.

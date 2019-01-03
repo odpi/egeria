@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping;
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestClient;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSMetadataCollection;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.classifications.ClassificationMapping;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.entities.EntityMapping;
@@ -55,6 +57,28 @@ public class ImplementedMapping {
     public EntityMapping getEntityMapping() { return this.entityMapping; }
     public RelationshipMapping getRelationshipMapping() { return this.relationshipMapping; }
     public ClassificationMapping getClassificationMapping() { return this.classificationMapping; }
+
+    /**
+     * Indicates whether the implemented mapping matches the provided IGC asset type: that is, whether the mapping
+     * can be used to translate to the provided IGC asset type.
+     *
+     * @param igcAssetType the IGC asset type to check the mapping against
+     * @return boolean
+     */
+    public boolean matchesAssetType(String igcAssetType) {
+        switch(typeDef.getCategory()) {
+            case ENTITY_DEF:
+                return entityMapping.matchesAssetType(igcAssetType);
+            case RELATIONSHIP_DEF:
+                return (relationshipMapping.getProxyOneMapping().matchesAssetType(igcAssetType)
+                        || relationshipMapping.getProxyTwoMapping().matchesAssetType(igcAssetType));
+            case CLASSIFICATION_DEF:
+                return classificationMapping.matchesAssetType(igcAssetType);
+            default:
+                log.warn("Unable to determine asset type for this category: {}", typeDef.getCategory());
+                return false;
+        }
+    }
 
     /**
      * Returns the IGC asset type, only for EntityMappings.
