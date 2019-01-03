@@ -101,12 +101,6 @@ $$$>
         this(null, relatedEndType, uniqueAttributes);
     }
 
-    public <$$uname$$>Reference(String relatedEndType, final String attrName, final Object attrValue) {
-        this(null, relatedEndType, new HashMap<String, Object>() {{
-            put(attrName, attrValue);
-        }});
-    }
-
     public <$$uname$$>Reference(String guid, String relatedEndType, Map<String, Object> uniqueAttributes) {
         setRelationshipGuid(guid);
         setRelatedEndType(relatedEndType);
