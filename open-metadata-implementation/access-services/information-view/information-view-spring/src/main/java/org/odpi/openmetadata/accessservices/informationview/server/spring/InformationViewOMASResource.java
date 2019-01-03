@@ -25,7 +25,13 @@ public class InformationViewOMASResource {
         registration = new InformationViewOMASRegistration();
     }
 
-
+    /**
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId the unique identifier for the user
+     * @param requestBody The json representing the structure of the report and basic report properties
+     * @return
+     */
     @RequestMapping(method = RequestMethod.POST, path = "/report")
     public VoidResponse submitReport(@PathVariable("serverName") String serverName,
                                      @PathVariable("userId") String userId,
