@@ -620,16 +620,29 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
 
             String assetType = latestVersion.getType();
             Class pojo = igcRestClient.getPOJOForType(assetType);
-            List<String> referenceListProperties = Reference.getPagedRelationalPropertiesFromPOJO(pojo);
+            if (pojo != null) {
+                List<String> referenceListProperties = Reference.getPagedRelationalPropertiesFromPOJO(pojo);
 
-            Object relatedValue = change.getNewValue(referenceListProperties);
-            log.debug(" ... found value: {}", relatedValue);
-            if (relatedValue != null) {
-                if (Reference.isReferenceList(relatedValue)) {
+                Object relatedValue = change.getNewValue(referenceListProperties);
+                log.debug(" ... found value: {}", relatedValue);
+                if (relatedValue != null) {
+                    if (Reference.isReferenceList(relatedValue)) {
 
-                    log.debug(" ... found ReferenceList, processing each item");
-                    ReferenceList related = (ReferenceList) relatedValue;
-                    for (Reference relatedAsset : related.getItems()) {
+                        log.debug(" ... found ReferenceList, processing each item");
+                        ReferenceList related = (ReferenceList) relatedValue;
+                        for (Reference relatedAsset : related.getItems()) {
+                            processSingleRelationship(
+                                    relationshipMapping,
+                                    latestVersion,
+                                    relatedAsset,
+                                    change,
+                                    relationshipTriggerGUID
+                            );
+                        }
+
+                    } else if (Reference.isReference(relatedValue)) {
+                        log.debug(" ... found single Reference, processing it");
+                        Reference relatedAsset = (Reference) relatedValue;
                         processSingleRelationship(
                                 relationshipMapping,
                                 latestVersion,
@@ -637,36 +650,27 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
                                 change,
                                 relationshipTriggerGUID
                         );
+                    } else if (change.getIgcPropertyPath().endsWith("_id") && Reference.isSimpleType(relatedValue)) {
+                        // In cases where a single object has been replaced, the JSON Patch may only show each property
+                        // as needing replacement rather than the object as a whole -- so just watch for any changes to '_id'
+                        // and if found pull back a new asset reference for the related asset to use
+                        log.debug(" ... found single Reference by '_id', processing it");
+                        Reference relatedAsset = igcRestClient.getAssetRefById((String) relatedValue);
+                        processSingleRelationship(
+                                relationshipMapping,
+                                latestVersion,
+                                relatedAsset,
+                                change,
+                                relationshipTriggerGUID
+                        );
+                    } else {
+                        log.warn("Expected relationship but found neither Reference nor ReferenceList: {}", relatedValue);
                     }
-
-                } else if (Reference.isReference(relatedValue)) {
-                    log.debug(" ... found single Reference, processing it");
-                    Reference relatedAsset = (Reference) relatedValue;
-                    processSingleRelationship(
-                            relationshipMapping,
-                            latestVersion,
-                            relatedAsset,
-                            change,
-                            relationshipTriggerGUID
-                    );
-                } else if (change.getIgcPropertyPath().endsWith("_id") && Reference.isSimpleType(relatedValue)) {
-                    // In cases where a single object has been replaced, the JSON Patch may only show each property
-                    // as needing replacement rather than the object as a whole -- so just watch for any changes to '_id'
-                    // and if found pull back a new asset reference for the related asset to use
-                    log.debug(" ... found single Reference by '_id', processing it");
-                    Reference relatedAsset = igcRestClient.getAssetRefById((String) relatedValue);
-                    processSingleRelationship(
-                            relationshipMapping,
-                            latestVersion,
-                            relatedAsset,
-                            change,
-                            relationshipTriggerGUID
-                    );
                 } else {
-                    log.warn("Expected relationship but found neither Reference nor ReferenceList: {}", relatedValue);
+                    log.warn("Expected relationship but found nothing: {}", relatedValue);
                 }
             } else {
-                log.warn("Expected relationship but found nothing: {}", relatedValue);
+                log.warn("No registered POJO to translate asset type {} -- skipping its relationships.", assetType);
             }
 
         }

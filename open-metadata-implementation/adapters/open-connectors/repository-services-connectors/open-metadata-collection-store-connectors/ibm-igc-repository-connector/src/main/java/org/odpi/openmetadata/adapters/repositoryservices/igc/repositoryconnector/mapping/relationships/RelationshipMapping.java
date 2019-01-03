@@ -984,7 +984,7 @@ public abstract class RelationshipMapping {
         IGCSearch igcSearch = new IGCSearch(assetType, igcSearchConditionSet);
         if (!assetType.equals(IGCOMRSMetadataCollection.DEFAULT_IGC_TYPE)) {
             Class pojo = igcomrsRepositoryConnector.getIGCRestClient().getPOJOForType(assetType);
-            if (Reference.hasModificationDetails(pojo)) {
+            if (pojo != null && Reference.hasModificationDetails(pojo)) {
                 igcSearch.addProperties(IGCRestConstants.getInstance().MODIFICATION_DETAILS());
             }
         }

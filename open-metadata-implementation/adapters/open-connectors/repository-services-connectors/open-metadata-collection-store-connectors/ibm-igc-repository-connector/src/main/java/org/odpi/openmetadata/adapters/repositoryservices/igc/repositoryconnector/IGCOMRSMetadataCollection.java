@@ -1642,30 +1642,35 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
 
             // Introspect the full list of properties from the POJO of the asset
             Class pojoClass = igcRestClient.getPOJOForType(assetRef.getType());
-            List<String> allProps = Reference.getAllPropertiesFromPOJO(pojoClass);
+            if (pojoClass != null) {
+                List<String> allProps = Reference.getAllPropertiesFromPOJO(pojoClass);
 
-            // Retrieve all asset properties, via search, as this will allow larger page
-            // retrievals (and therefore be overall more efficient) than going by the GET of the asset
-            fullAsset = assetRef.getAssetWithSubsetOfProperties(
-                    igcRestClient,
-                    allProps.toArray(new String[0]),
-                    igcRestClient.getDefaultPageSize()
-            );
+                // Retrieve all asset properties, via search, as this will allow larger page
+                // retrievals (and therefore be overall more efficient) than going by the GET of the asset
+                fullAsset = assetRef.getAssetWithSubsetOfProperties(
+                        igcRestClient,
+                        allProps.toArray(new String[0]),
+                        igcRestClient.getDefaultPageSize()
+                );
 
-            if (fullAsset != null) {
+                if (fullAsset != null) {
 
-                // Iterate through all the paged properties and retrieve all pages for each
-                List<String> allPaged = Reference.getPagedRelationalPropertiesFromPOJO(pojoClass);
-                for (String pagedProperty : allPaged) {
-                    ReferenceList pagedValue = (ReferenceList)fullAsset.getPropertyByName(pagedProperty);
-                    if (pagedValue != null) {
-                        pagedValue.getAllPages(igcRestClient);
+                    // Iterate through all the paged properties and retrieve all pages for each
+                    List<String> allPaged = Reference.getPagedRelationalPropertiesFromPOJO(pojoClass);
+                    for (String pagedProperty : allPaged) {
+                        ReferenceList pagedValue = (ReferenceList) fullAsset.getPropertyByName(pagedProperty);
+                        if (pagedValue != null) {
+                            pagedValue.getAllPages(igcRestClient);
+                        }
                     }
+
+                    // Set the asset as fully retrieved, so we do not attempt to retrieve parts of it again
+                    fullAsset.setFullyRetrieved();
+
                 }
-
-                // Set the asset as fully retrieved, so we do not attempt to retrieve parts of it again
-                fullAsset.setFullyRetrieved();
-
+            } else {
+                log.debug("No registered POJO for asset type {} -- returning basic reference.", assetRef.getType());
+                fullAsset = assetRef;
             }
 
         } else {
