@@ -135,13 +135,18 @@ public class ReferenceableMapper extends EntityMapping {
      * Initialize the mapper with an IGC object to be mapped.
      * This method MUST be called before any of the subsequent mapping functions!
      *
-     * @param igcObject the IGC object to be mapped into an OMRS entity
+     * @param baseObject the IGC object to be mapped into an OMRS entity
+     * @param receivedObject the IGC object actually looked up (if different from baseObject, null otherwise)
      * @return ReferenceableMapper initialised with the provided object
      */
-    public ReferenceableMapper initialize(Reference igcObject) {
+    public ReferenceableMapper initialize(Reference baseObject, Reference receivedObject) {
 
         ReferenceableMapper mapper = getNewInstance();
-        mapper.igcEntity = igcObject;
+        mapper.igcEntity = baseObject;
+
+        if (receivedObject != null && !baseObject.equals(receivedObject)) {
+            mapper.igcEntityAlternative = receivedObject;
+        }
 
         if (mapper.igcEntity != null && mapper.igcEntity.hasModificationDetails()) {
             for (String property : MODIFICATION_DETAILS) {

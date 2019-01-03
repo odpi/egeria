@@ -329,16 +329,31 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
 
         log.debug("Looking up relationship: {}", guid);
 
-        Reference proxyOne = igcRestClient.getAssetRefById(proxyOneIgcRid);
-        Reference proxyTwo = igcRestClient.getAssetRefById(proxyTwoIgcRid);
+        String relationshipLevelRid = (proxyOneRid.equals(proxyTwoRid)) ? proxyOneRid : null;
+        Reference proxyOne;
+        Reference proxyTwo;
+        RelationshipMapping relationshipMapping;
+        if (relationshipLevelRid != null) {
+            Reference relationshipAsset = igcRestClient.getAssetRefById(proxyOneIgcRid);
+            String relationshipAssetType = relationshipAsset.getType();
+            relationshipMapping = getRelationshipMapper(
+                    omrsRelationshipName,
+                    relationshipAssetType,
+                    relationshipAssetType
+            );
+            proxyOne = relationshipMapping.getProxyOneAssetFromRelationshipAsset(relationshipAsset, igcRestClient);
+            proxyTwo = relationshipMapping.getProxyTwoAssetFromRelationshipAsset(relationshipAsset, igcRestClient);
+        } else {
+            proxyOne = igcRestClient.getAssetRefById(proxyOneIgcRid);
+            proxyTwo = igcRestClient.getAssetRefById(proxyTwoIgcRid);
+            relationshipMapping = getRelationshipMapper(
+                    omrsRelationshipName,
+                    proxyOne.getType(),
+                    proxyTwo.getType()
+            );
+        }
 
         Relationship found = null;
-
-        RelationshipMapping relationshipMapping = getRelationshipMapper(
-                omrsRelationshipName,
-                proxyOne.getType(),
-                proxyTwo.getType()
-        );
 
         if (relationshipMapping != null) {
             try {
@@ -356,7 +371,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                         proxyTwo,
                         igcPropertyName,
                         userId,
-                        proxyOneRid.equals(proxyTwoRid) ? proxyOneRid : null
+                        relationshipLevelRid
                 );
 
             } catch (TypeDefNotKnownException e) {
@@ -1112,7 +1127,11 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         ReferenceableMapper referenceMapper = null;
         if (candidateMapper != null) {
             log.debug("Found mapper class: {}", candidateMapper.getClass().getCanonicalName());
-            referenceMapper = candidateMapper.initialize(igcObject);
+            // Translate the provided asset to a base asset type for the mapper, if needed
+            // (if not needed the 'getBaseIgcAssetFromAlternative' is effecitively a NOOP and gives back same object)
+            referenceMapper = candidateMapper.initialize(
+                    candidateMapper.getBaseIgcAssetFromAlternative(igcObject),
+                    igcObject);
         } else {
             log.debug("No mapper class found!");
         }
@@ -1130,12 +1149,16 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         ArrayList<ReferenceableMapper> mappers = new ArrayList<>();
         for (ImplementedMapping mapping : implementedMappings) {
             String mappingAssetType = mapping.getIgcAssetType();
-            if (mappingAssetType != null) {
-                if (igcAssetType.equals(mappingAssetType)) {
+            // For now skip over the default Referenceable mapping, if no other candidate is found we will add
+            // this default mapping back in below
+            if (mappingAssetType != null && !mappingAssetType.equals(IGCOMRSMetadataCollection.DEFAULT_IGC_TYPE)) {
+                if (mapping.matchesAssetType(igcAssetType)) {
+                    log.debug(" ... adding candidate: {}", mapping.getEntityMapping().getClass().getCanonicalName());
                     mappers.add((ReferenceableMapper) mapping.getEntityMapping());
                 } else {
                     for (String otherType : mapping.getOtherIgcAssetTypes()) {
                         if (igcAssetType.equals(otherType)) {
+                            log.debug(" ... adding other candidate: {}", mapping.getEntityMapping().getClass().getCanonicalName());
                             mappers.add((ReferenceableMapper) mapping.getEntityMapping());
                         }
                     }

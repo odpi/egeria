@@ -51,6 +51,7 @@ public abstract class EntityMapping {
     protected IGCOMRSMetadataCollection igcomrsMetadataCollection;
     protected String userId;
     protected Reference igcEntity;
+    protected Reference igcEntityAlternative;
     protected EntitySummary omrsSummary;
     protected EntityDetail omrsDetail;
     protected ArrayList<Classification> omrsClassifications;
@@ -107,6 +108,22 @@ public abstract class EntityMapping {
     public String getOmrsTypeDefName() { return this.omrsTypeDefName; }
 
     /**
+     * Indicates whether this entity mapping matches the provided IGC asset type: that is, this mapping
+     * can be used to translate to the provided IGC asset type.
+     *
+     * @param igcAssetType the IGC asset type to check the mapping against
+     * @return boolean
+     */
+    public boolean matchesAssetType(String igcAssetType) {
+        String matchType = Reference.getAssetTypeForSearch(igcAssetType);
+        log.debug("checking for matching asset between {} and {}", this.igcAssetType, matchType);
+        return (
+                this.igcAssetType.equals(matchType)
+                        || this.igcAssetType.equals(IGCOMRSMetadataCollection.DEFAULT_IGC_TYPE)
+        );
+    }
+
+    /**
      * Add any other IGC asset type needed for this mapping.
      *
      * @param igcAssetTypeName name of additional IGC asset
@@ -140,6 +157,18 @@ public abstract class EntityMapping {
      * @return List<Class>
      */
     public List<Class> getOtherIGCPOJOs() { return this.otherPOJOs; }
+
+    /**
+     * Retrieve the base IGC asset expected for the mapper from one of its alternative assets. By default, and in the
+     * vast majority of cases, there are no alternatives so will simply return the asset as-is. Override this method
+     * in any mappers where alternative assets are defined.
+     *
+     * @param otherAsset the alternative asset to translate into a base asset
+     * @return Reference - the base asset
+     */
+    public Reference getBaseIgcAssetFromAlternative(Reference otherAsset) {
+        return otherAsset;
+    }
 
     /**
      * Add a simple one-to-one property mapping between an IGC property and an OMRS property.

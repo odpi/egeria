@@ -133,6 +133,30 @@ public abstract class RelationshipMapping {
     public String getRelationshipLevelIgcAsset() { return this.relationshipLevelIgcAsset; }
 
     /**
+     * By default, return the asset itself. Override this method if the relationship mapping has a relationship-level
+     * asset, to translate from that relationship-level asset to asset for the first endpoint of the relationship in IGC.
+     *
+     * @param relationshipAsset the relationship-level asset in IGC
+     * @param igcRestClient REST API connectivity
+     * @return Reference - the asset to be used for endpoint one of the relationship
+     */
+    public Reference getProxyOneAssetFromRelationshipAsset(Reference relationshipAsset, IGCRestClient igcRestClient) {
+        return relationshipAsset;
+    }
+
+    /**
+     * By default, return the asset itself. Override this method if the relationship mapping has a relationship-level
+     * asset, to translate from that relationship-level asset to asset for the second endpoint of the relationship in IGC.
+     *
+     * @param relationshipAsset the relationship-level asset in IGC
+     * @param igcRestClient REST API connectivity
+     * @return Reference - the asset to be used for endpoint two of the relationship
+     */
+    public Reference getProxyTwoAssetFromRelationshipAsset(Reference relationshipAsset, IGCRestClient igcRestClient) {
+        return relationshipAsset;
+    }
+
+    /**
      * Indicates whether this relationship mapping has subtypes (true) or not (false).
      * Subtypes can be used where the same relationship may represent relationships between a number of different
      * IGC objects and each needs to be distinguished to appropriately apply a mapping.

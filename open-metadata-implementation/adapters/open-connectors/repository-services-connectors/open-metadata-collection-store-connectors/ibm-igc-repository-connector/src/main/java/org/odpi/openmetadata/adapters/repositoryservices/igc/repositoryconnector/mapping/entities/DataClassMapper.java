@@ -9,10 +9,14 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.DataClassAssignmentMapper;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.DataClassHierarchyMapper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 
 public class DataClassMapper extends ReferenceableMapper {
+
+    private static final Logger log = LoggerFactory.getLogger(DataClassMapper.class);
 
     public DataClassMapper(IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {
 
@@ -63,6 +67,18 @@ public class DataClassMapper extends ReferenceableMapper {
     }
 
     /**
+     * Retrieve the base data_class asset expected for the mapper from a classification asset.
+     *
+     * @param otherAsset the classification asset to translate into a data_class asset
+     * @return Reference - the data_class asset
+     */
+    @Override
+    public Reference getBaseIgcAssetFromAlternative(Reference otherAsset) {
+        return DataClassAssignmentMapper.getInstance().getProxyTwoAssetFromRelationshipAsset(
+                otherAsset, igcomrsRepositoryConnector.getIGCRestClient());
+    }
+
+    /**
      * Implement any complex property mappings that cannot be simply mapped one-to-one.
      */
     @Override
@@ -109,9 +125,11 @@ public class DataClassMapper extends ReferenceableMapper {
                 dataClassDetails = (String) igcEntity.getPropertyByName("regular_expression_single");
                 break;
             case "ValidValues":
-                dataClassDetails = (String) igcEntity.getPropertyByName("valid_value_strings");
-                if (dataClassDetails == null || dataClassDetails.equals("null") || dataClassDetails.equals("")) {
+                ArrayList<String> validValues = (ArrayList<String>) igcEntity.getPropertyByName("valid_value_strings");
+                if (validValues == null || validValues.isEmpty()) {
                     dataClassDetails = (String) igcEntity.getPropertyByName("validValueReferenceFile");
+                } else {
+                    dataClassDetails = String.join(", ", validValues);
                 }
                 break;
             case "Script":
