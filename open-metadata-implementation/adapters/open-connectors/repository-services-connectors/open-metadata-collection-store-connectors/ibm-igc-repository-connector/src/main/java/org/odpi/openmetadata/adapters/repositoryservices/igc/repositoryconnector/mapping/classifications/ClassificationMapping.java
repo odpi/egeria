@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.classifications;
 
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestConstants;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSMetadataCollection;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
@@ -96,10 +97,10 @@ public abstract class ClassificationMapping {
             // If modification details are available on the IGC object, add these to the classification,
             // including setting its version number based on the last update time
             if (fromIgcObject.hasModificationDetails()) {
-                classification.setCreatedBy((String)fromIgcObject.getPropertyByName(Reference.MOD_CREATED_BY));
-                classification.setCreateTime((Date)fromIgcObject.getPropertyByName(Reference.MOD_CREATED_ON));
-                classification.setUpdateTime((Date)fromIgcObject.getPropertyByName(Reference.MOD_MODIFIED_ON));
-                classification.setUpdatedBy((String)fromIgcObject.getPropertyByName(Reference.MOD_MODIFIED_BY));
+                classification.setCreatedBy((String)fromIgcObject.getPropertyByName(IGCRestConstants.MOD_CREATED_BY));
+                classification.setCreateTime((Date)fromIgcObject.getPropertyByName(IGCRestConstants.MOD_CREATED_ON));
+                classification.setUpdateTime((Date)fromIgcObject.getPropertyByName(IGCRestConstants.MOD_MODIFIED_ON));
+                classification.setUpdatedBy((String)fromIgcObject.getPropertyByName(IGCRestConstants.MOD_MODIFIED_BY));
                 if (classification.getUpdateTime() != null) {
                     classification.setVersion(classification.getUpdateTime().getTime());
                 }

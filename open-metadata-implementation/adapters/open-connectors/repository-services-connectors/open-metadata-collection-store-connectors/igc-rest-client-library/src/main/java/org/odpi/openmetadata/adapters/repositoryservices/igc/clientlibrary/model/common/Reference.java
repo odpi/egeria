@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestClient;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestConstants;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearch;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchCondition;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchConditionSet;
@@ -39,18 +40,6 @@ import java.util.List;
 public class Reference extends ObjectPrinter {
 
     @JsonIgnore private static final Logger log = LoggerFactory.getLogger(Reference.class);
-
-    @JsonIgnore public static final String MOD_CREATED_BY = "created_by";
-    @JsonIgnore public static final String MOD_CREATED_ON = "created_on";
-    @JsonIgnore public static final String MOD_MODIFIED_BY = "modified_by";
-    @JsonIgnore public static final String MOD_MODIFIED_ON = "modified_on";
-
-    @JsonIgnore protected static final String[] MODIFICATION_DETAILS = new String[] {
-            MOD_CREATED_BY,
-            MOD_CREATED_ON,
-            MOD_MODIFIED_BY,
-            MOD_MODIFIED_ON
-    };
 
     /**
      * Used to uniquely identify the object without relying on its ID (RID) remaining static.
@@ -398,7 +387,7 @@ public class Reference extends ObjectPrinter {
             IGCSearchConditionSet idOnlySet = new IGCSearchConditionSet(idOnly);
             IGCSearch igcSearch = new IGCSearch(this.getType(), idOnlySet);
             if (bHasModificationDetails) {
-                igcSearch.addProperties(Reference.MODIFICATION_DETAILS);
+                igcSearch.addProperties(IGCRestConstants.getInstance().MODIFICATION_DETAILS());
             }
             igcSearch.setPageSize(2);
             ReferenceList assetsWithCtx = igcrest.search(igcSearch);
@@ -409,10 +398,10 @@ public class Reference extends ObjectPrinter {
                 this._context = new ArrayList(assetWithCtx.getContext());
 
                 if (bHasModificationDetails) {
-                    this.setPropertyByName(MOD_CREATED_ON, assetWithCtx.getPropertyByName(MOD_CREATED_ON));
-                    this.setPropertyByName(MOD_CREATED_BY, assetWithCtx.getPropertyByName(MOD_CREATED_BY));
-                    this.setPropertyByName(MOD_MODIFIED_ON, assetWithCtx.getPropertyByName(MOD_MODIFIED_ON));
-                    this.setPropertyByName(MOD_MODIFIED_BY, assetWithCtx.getPropertyByName(MOD_MODIFIED_BY));
+                    this.setPropertyByName(IGCRestConstants.MOD_CREATED_ON, assetWithCtx.getPropertyByName(IGCRestConstants.MOD_CREATED_ON));
+                    this.setPropertyByName(IGCRestConstants.MOD_CREATED_BY, assetWithCtx.getPropertyByName(IGCRestConstants.MOD_CREATED_BY));
+                    this.setPropertyByName(IGCRestConstants.MOD_MODIFIED_ON, assetWithCtx.getPropertyByName(IGCRestConstants.MOD_MODIFIED_ON));
+                    this.setPropertyByName(IGCRestConstants.MOD_MODIFIED_BY, assetWithCtx.getPropertyByName(IGCRestConstants.MOD_MODIFIED_BY));
                 }
 
             }
