@@ -33,18 +33,42 @@ public class ConnectionEndpointMapper extends RelationshipMapping {
         return Singleton.INSTANCE;
     }
 
+    // Note that we need to use the 'data_connectors' link because the 'host' attribute on data_connection assets
+    // is always empty (it is through the 'data_connectors' relationship that we'll determine the host)
     private ConnectionEndpointMapper() {
         super(
                 "host",
                 "data_connection",
                 "data_connections",
-                "host",
+                "data_connectors",
                 "ConnectionEndpoint",
                 "connectionEndpoint",
                 "connections"
         );
         setOptimalStart(OptimalStart.CUSTOM);
         setLinkingAssetType("connector");
+    }
+
+    /**
+     * Retrieve the host asset expected from a connector asset.
+     *
+     * @param connectorAsset the connector asset to translate into a host asset
+     * @param igcRestClient REST connectivity to the IGC environment
+     * @return Reference - the host asset
+     */
+    @Override
+    public List<Reference> getProxyOneAssetFromAsset(Reference connectorAsset, IGCRestClient igcRestClient) {
+        String otherAssetType = connectorAsset.getType();
+        ArrayList<Reference> asList = new ArrayList<>();
+        if (otherAssetType.equals("connector")) {
+            Reference withHost = connectorAsset.getAssetWithSubsetOfProperties(igcRestClient,
+                    new String[]{ "host", "data_connections" });
+            asList.add((Reference) withHost.getPropertyByName("host"));
+        } else {
+            log.debug("Not a connector asset, just returning as-is: {}", connectorAsset);
+            asList.add(connectorAsset);
+        }
+        return asList;
     }
 
     /**
