@@ -29,7 +29,8 @@ public class TableLookup extends EntityLookup<TableSource> {
     @Override
     public EntityDetail lookupEntity(TableSource source) throws Exception {
         EntityDetail schemaDatabase = parentChain.lookupEntity(source);
-
+        if(schemaDatabase == null)
+            return null;
         List<Relationship> relationships = entitiesCreatorHelper.getRelationships(Constants.ASSET_SCHEMA_TYPE, schemaDatabase.getGUID());
         List<String> allSchemaTypeGuids = relationships.stream().map(e -> e.getEntityTwoProxy().getGUID()).collect(Collectors.toList());
 
