@@ -93,57 +93,59 @@ public class SubjectAreaDefinitionSample
         /*
          * create Organisation subject areas
          */
-        SubjectAreaDefinition organisation = createTopSubjectAreaDefinition(ORGANIZATION,GLOSSARY_NAME);
-        SubjectAreaDefinition hospital= createChildSubjectAreaDefinition(HOSPITAL,organisation,GLOSSARY_NAME);
-        SubjectAreaDefinition supplier= createChildSubjectAreaDefinition(SUPPLIER,organisation,GLOSSARY_NAME);
+
+        String glossaryGuid =  glossary.getSystemAttributes().getGUID();
+        SubjectAreaDefinition organisation = createTopSubjectAreaDefinition(ORGANIZATION,glossaryGuid);
+        SubjectAreaDefinition hospital= createChildSubjectAreaDefinition(HOSPITAL,organisation,glossaryGuid);
+        SubjectAreaDefinition supplier= createChildSubjectAreaDefinition(SUPPLIER,organisation,glossaryGuid);
         /*
          * create Person subject areas
          */
-        SubjectAreaDefinition person = createTopSubjectAreaDefinition(PERSON,GLOSSARY_NAME);
-        SubjectAreaDefinition patient= createChildSubjectAreaDefinition(PATIENT,person,GLOSSARY_NAME);
-        SubjectAreaDefinition clinician= createChildSubjectAreaDefinition(CLINICIAN,person,GLOSSARY_NAME);
-        SubjectAreaDefinition employee= createChildSubjectAreaDefinition(EMPLOYEE,person,GLOSSARY_NAME);
-        SubjectAreaDefinition collaborator= createChildSubjectAreaDefinition(COLLABORATOR,person,GLOSSARY_NAME);
+        SubjectAreaDefinition person = createTopSubjectAreaDefinition(PERSON,glossaryGuid);
+        SubjectAreaDefinition patient= createChildSubjectAreaDefinition(PATIENT,person,glossaryGuid);
+        SubjectAreaDefinition clinician= createChildSubjectAreaDefinition(CLINICIAN,person,glossaryGuid);
+        SubjectAreaDefinition employee= createChildSubjectAreaDefinition(EMPLOYEE,person,glossaryGuid);
+        SubjectAreaDefinition collaborator= createChildSubjectAreaDefinition(COLLABORATOR,person,glossaryGuid);
         /*
          * create Clinical subject areas
          */
-        SubjectAreaDefinition clinical = createTopSubjectAreaDefinition(CLINICAL,GLOSSARY_NAME);
-        SubjectAreaDefinition symptom= createChildSubjectAreaDefinition(SYMPTOM,clinical,GLOSSARY_NAME);
-        SubjectAreaDefinition measurement= createChildSubjectAreaDefinition(MEASUREMENT,clinical,GLOSSARY_NAME);
-        SubjectAreaDefinition prescription= createChildSubjectAreaDefinition(PRESCRIPTION,clinical,GLOSSARY_NAME);
-        SubjectAreaDefinition outcome= createChildSubjectAreaDefinition(OUTCOME,clinical,GLOSSARY_NAME);
+        SubjectAreaDefinition clinical = createTopSubjectAreaDefinition(CLINICAL,glossaryGuid);
+        SubjectAreaDefinition symptom= createChildSubjectAreaDefinition(SYMPTOM,clinical,glossaryGuid);
+        SubjectAreaDefinition measurement= createChildSubjectAreaDefinition(MEASUREMENT,clinical,glossaryGuid);
+        SubjectAreaDefinition prescription= createChildSubjectAreaDefinition(PRESCRIPTION,clinical,glossaryGuid);
+        SubjectAreaDefinition outcome= createChildSubjectAreaDefinition(OUTCOME,clinical,glossaryGuid);
         /*
          * create Treatment subject areas
          */
-        SubjectAreaDefinition treatment = createTopSubjectAreaDefinition(TREATMENT,GLOSSARY_NAME);
-        SubjectAreaDefinition product= createChildSubjectAreaDefinition(PRODUCT,treatment,GLOSSARY_NAME);
-        SubjectAreaDefinition order= createChildSubjectAreaDefinition(ORDER,treatment,GLOSSARY_NAME);
-        SubjectAreaDefinition recipe= createChildSubjectAreaDefinition(RECIPE,treatment,GLOSSARY_NAME);
+        SubjectAreaDefinition treatment = createTopSubjectAreaDefinition(TREATMENT,glossaryGuid);
+        SubjectAreaDefinition product= createChildSubjectAreaDefinition(PRODUCT,treatment,glossaryGuid);
+        SubjectAreaDefinition order= createChildSubjectAreaDefinition(ORDER,treatment,glossaryGuid);
+        SubjectAreaDefinition recipe= createChildSubjectAreaDefinition(RECIPE,treatment,glossaryGuid);
         /*
          * create Service Quality subject areas
          */
-        SubjectAreaDefinition serviceQuality = createTopSubjectAreaDefinition(SERVICE_QUALITY,GLOSSARY_NAME);
-        SubjectAreaDefinition contract= createChildSubjectAreaDefinition(CONTRACT,serviceQuality,GLOSSARY_NAME);
-        SubjectAreaDefinition stock= createChildSubjectAreaDefinition(STOCK,serviceQuality,GLOSSARY_NAME);
-        SubjectAreaDefinition distribution= createChildSubjectAreaDefinition(DISTRIBUTION,serviceQuality,GLOSSARY_NAME);
-        SubjectAreaDefinition invoice= createChildSubjectAreaDefinition(INVOICE,serviceQuality,GLOSSARY_NAME);
+        SubjectAreaDefinition serviceQuality = createTopSubjectAreaDefinition(SERVICE_QUALITY,glossaryGuid);
+        SubjectAreaDefinition contract= createChildSubjectAreaDefinition(CONTRACT,serviceQuality,glossaryGuid);
+        SubjectAreaDefinition stock= createChildSubjectAreaDefinition(STOCK,serviceQuality,glossaryGuid);
+        SubjectAreaDefinition distribution= createChildSubjectAreaDefinition(DISTRIBUTION,serviceQuality,glossaryGuid);
+        SubjectAreaDefinition invoice= createChildSubjectAreaDefinition(INVOICE,serviceQuality,glossaryGuid);
     }
 
     /**
      * Create a top level subject area definition - this means a Subject Area Definition that does not have a superCategory.
      * @param name name of the Subject Area Definition to create
-     * @param glossaryName name of the glossary to associate the Subject Area with.
+     * @param glossaryGuid guid of the glossary to associate the Subject Area with.
      * @return SubjectAreaDefinition the created Subject Area Definition
      * @throws  SubjectAreaCheckedExceptionBase error
      */
-    private SubjectAreaDefinition createTopSubjectAreaDefinition( String name,String glossaryName)  throws SubjectAreaCheckedExceptionBase
+    private SubjectAreaDefinition createTopSubjectAreaDefinition( String name, String glossaryGuid)  throws SubjectAreaCheckedExceptionBase
     {
         System.out.println("----------------------------");
         System.out.println("Creating a top level Subject Area Definition called " + name);
         SubjectAreaDefinition subjectAreaDefinition = new SubjectAreaDefinition();
         subjectAreaDefinition.setName(name);
         GlossarySummary glossarySummary = new GlossarySummary();
-        glossarySummary.setName(glossaryName);
+        glossarySummary.setGuid(glossaryGuid);
         subjectAreaDefinition.setGlossary(glossarySummary);
         return subjectAreaCategory.createSubjectAreaDefinition(SERVER_NAME,USERID,subjectAreaDefinition);
     }
@@ -152,16 +154,16 @@ public class SubjectAreaDefinitionSample
      * Create a child Subject Area Definition - this means a Subject Area Definition that has a superCategory.
      * @param name name of the Subject Area Definition to create
      * @param parent parent Category
-     * @param glossaryName name of the glossary to associate the Subject Area with.
+     * @param glossaryGuid guid of the glossary to associate the Subject Area with.
      * @return SubjectAreaDefinition the created Subject Area Definition
      * @throws SubjectAreaCheckedExceptionBase error
      */
-    private SubjectAreaDefinition createChildSubjectAreaDefinition(String name, SubjectAreaDefinition parent, String glossaryName) throws SubjectAreaCheckedExceptionBase
+    private SubjectAreaDefinition createChildSubjectAreaDefinition(String name, SubjectAreaDefinition parent, String glossaryGuid) throws SubjectAreaCheckedExceptionBase
     {
         SubjectAreaDefinition subjectAreaDefinition = new SubjectAreaDefinition();
         subjectAreaDefinition.setName(name);
         GlossarySummary glossarySummary = new GlossarySummary();
-        glossarySummary.setName(glossaryName);
+        glossarySummary.setGuid(glossaryGuid);
         subjectAreaDefinition.setGlossary(glossarySummary);
         CategorySummary parentCategorysummary = new CategorySummary();
         parentCategorysummary.setGuid(parent.getSystemAttributes().getGUID());
