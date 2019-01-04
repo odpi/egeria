@@ -705,9 +705,9 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
      * @param userId the userId making the request
      * @return Map<String, RelationshipMapping> - keyed by IGC asset type with values of the RelationshipMappings
      */
-    public Map<String, RelationshipMapping> getIgcPropertiesToRelationshipMappings(String assetType, String userId) {
+    public Map<String, List<RelationshipMapping>> getIgcPropertiesToRelationshipMappings(String assetType, String userId) {
 
-        HashMap<String, RelationshipMapping> map = new HashMap<>();
+        HashMap<String, List<RelationshipMapping>> map = new HashMap<>();
 
         List<ReferenceableMapper> mappers = getMappers(assetType, userId);
         for (ReferenceableMapper mapper : mappers) {
@@ -716,16 +716,23 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                 if (relationshipMapping.getProxyOneMapping().matchesAssetType(assetType)) {
                     List<String> relationshipNamesOne = relationshipMapping.getProxyOneMapping().getIgcRelationshipProperties();
                     for (String relationshipName : relationshipNamesOne) {
-                        map.put(relationshipName, relationshipMapping);
+                        if (!map.containsKey(relationshipName)) {
+                            map.put(relationshipName, new ArrayList<>());
+                        }
+                        if (!map.get(relationshipName).contains(relationshipMapping)) {
+                            map.get(relationshipName).add(relationshipMapping);
+                        }
                     }
                 }
                 if (relationshipMapping.getProxyTwoMapping().matchesAssetType(assetType)) {
                     List<String> relationshipNamesTwo = relationshipMapping.getProxyTwoMapping().getIgcRelationshipProperties();
                     for (String relationshipName : relationshipNamesTwo) {
-                        if (map.containsKey(relationshipName)) {
-                            log.warn("Overwriting existing mapping for property name {} from {} to {}", relationshipName, map.get(relationshipName), relationshipMapping);
+                        if (!map.containsKey(relationshipName)) {
+                            map.put(relationshipName, new ArrayList<>());
                         }
-                        map.put(relationshipName, relationshipMapping);
+                        if (!map.get(relationshipName).contains(relationshipMapping)) {
+                            map.get(relationshipName).add(relationshipMapping);
+                        }
                     }
                 }
             }
