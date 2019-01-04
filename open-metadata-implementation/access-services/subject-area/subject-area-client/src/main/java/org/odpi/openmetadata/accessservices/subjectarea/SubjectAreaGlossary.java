@@ -14,14 +14,9 @@ public interface SubjectAreaGlossary
     /**
      * Create a Glossary. There are specializations of glossaries that can also be created using this operation.
      * To create a specialization, you should specify a nodeType other than Glossary in the supplied glossary.
-     * <p>
-     * Valid nodeTypes for this request are:
-     * <ul>
-     *     <li>Taxonomy to create a Taxonomy </li>
-     *     <li>CanonicalGlossary to create a canonical glossary </li>
-     *     <li>TaxonomyAndCanonicalGlossary to create a glossary that is both a taxonomy and a canonical glosary </li>
-     *     <li>Glossary to create a glossary that is not a taxonomy or a canonical glossary</li>
-     * </ul>
+     *
+     * Glossaries with the same name can be confusing. Best practise is to createGlossaries that have unique names.
+     * This Create call does not police that glossary names are unique. So it is possible to create Glossaries with the same name as each other.
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param suppliedGlossary Glossary to create
@@ -59,31 +54,7 @@ public interface SubjectAreaGlossary
      */
 
     public  Glossary getGlossaryByGuid(String serverName, String userId, String guid) throws MetadataServerUncontactableException, UnrecognizedGUIDException, UserNotAuthorizedException, InvalidParameterException, FunctionNotSupportedException, UnexpectedResponseException ;
-    /**
-     * Get a Glossary by name
-     *
-     * Glossaries should have unique names. If repositories were not able to contact each other on the network, it is possible that glossaries of the same
-     * name might be added. If this has occured this operation may not retun the glossary you are interested in. The guid of the glossary is the way to
-     * uniquely identify a glossary; a get for glossary by guid can be issued to find glossaries with particular guids.
-     *
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId userId under which the request is performed
-     * @param name name of the glossary to get
-     * @return the requested glossary.
-     *
-     * Exceptions returned by the server
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     *
-     * Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException an unexpected response was returned from the server
-     */
 
-    public  Glossary getGlossaryByName(String serverName, String userId, String name) throws MetadataServerUncontactableException,
-                                                                                             UserNotAuthorizedException,
-                                                                                             InvalidParameterException,
-                                                                                             UnexpectedResponseException ;
     /**
      * Replace a Glossary. This means to override all the existing attributes with the supplied attributes.
      * <p>
