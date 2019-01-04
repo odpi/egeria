@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships;
 
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestClient;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.ReferenceList;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearch;
@@ -15,6 +16,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorEx
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,62 +38,101 @@ public class ConnectionEndpointMapper extends RelationshipMapping {
                 "host",
                 "data_connection",
                 "data_connections",
-                "data_connectors.host",
+                "host",
                 "ConnectionEndpoint",
                 "connectionEndpoint",
                 "connections"
         );
         setOptimalStart(OptimalStart.CUSTOM);
+        setLinkingAssetType("connector");
+    }
+
+    /**
+     * Retrieve the data_connection asset expected from a connector asset.
+     *
+     * @param connectorAsset the connector asset to translate into a data_connection asset
+     * @param igcRestClient REST connectivity to the IGC environment
+     * @return Reference - the data_connection asset
+     */
+    @Override
+    public List<Reference> getProxyTwoAssetFromAsset(Reference connectorAsset, IGCRestClient igcRestClient) {
+        String otherAssetType = connectorAsset.getType();
+        if (otherAssetType.equals("connector")) {
+            Reference withDataConnections = connectorAsset.getAssetWithSubsetOfProperties(igcRestClient,
+                    new String[]{ "host", "data_connections" });
+            ReferenceList dataConnections = (ReferenceList) withDataConnections.getPropertyByName("data_connections");
+            dataConnections.getAllPages(igcRestClient);
+            return dataConnections.getItems();
+        } else {
+            log.debug("Not a connector asset, just returning as-is: {}", connectorAsset);
+            ArrayList<Reference> referenceAsList = new ArrayList<>();
+            referenceAsList.add(connectorAsset);
+            return referenceAsList;
+        }
     }
 
     /**
      * Custom implementation of the relationship between an Endpoint (host) and a Connection (data_connection).
-     * The relationship itself in IGC is complicated, from one end it requires multiple hops and from the other
-     * it doesn't, so the mapping is done based on the type of asset received.
+     * The relationship itself in IGC is complicated, from the host end it requires multiple hops (as the
+     * 'data_connections' property on the host actually points to 'connector' assets, not 'data_connection' assets).
      *
      * @param igcomrsRepositoryConnector
      * @param relationships
-     * @param fromIgcObject
+     * @param fromIgcObject the host asset for which to create the relationship
      * @param userId
      */
     @Override
     public void addMappedOMRSRelationships(IGCOMRSRepositoryConnector igcomrsRepositoryConnector,
-                                           List<Relationship> relationships,
-                                           Reference fromIgcObject,
-                                           String userId) {
+                                                 List<Relationship> relationships,
+                                                 Reference fromIgcObject,
+                                                 String userId) {
 
         String assetType = Reference.getAssetTypeForSearch(fromIgcObject.getType());
 
         if (assetType.equals("host")) {
-            addMappedRelationshipsForIgcHost(
+            addMappedOMRSRelationships_host(
                     igcomrsRepositoryConnector,
                     relationships,
                     fromIgcObject,
                     userId
             );
         } else if (assetType.equals("data_connection")) {
-            addMappedRelationshipsForIgcConnection(
+            addMappedOMRSRelationships_connection(
                     igcomrsRepositoryConnector,
                     relationships,
                     fromIgcObject,
                     userId
             );
+        } else if (assetType.equals("connector")) {
+            List<Reference> connections = getProxyTwoAssetFromAsset(fromIgcObject, igcomrsRepositoryConnector.getIGCRestClient());
+            for (Reference connection : connections) {
+                addMappedOMRSRelationships_connection(
+                        igcomrsRepositoryConnector,
+                        relationships,
+                        connection,
+                        userId
+                );
+            }
+        } else {
+            log.warn("Found unexpected asset type during relationship mapping: {}", fromIgcObject);
         }
 
     }
 
     /**
-     * Mapping from an IGC host asset to the data connection.
+     * Custom implementation of the relationship between an Endpoint (host) and a Connection (data_connection).
+     * The relationship itself in IGC is complicated, from the host end it requires multiple hops (as the
+     * 'data_connections' property on the host actually points to 'connector' assets, not 'data_connection' assets).
      *
      * @param igcomrsRepositoryConnector
      * @param relationships
-     * @param fromIgcObject
+     * @param fromIgcObject the host asset for which to create the relationship
      * @param userId
      */
-    private void addMappedRelationshipsForIgcHost(IGCOMRSRepositoryConnector igcomrsRepositoryConnector,
-                                                  List<Relationship> relationships,
-                                                  Reference fromIgcObject,
-                                                  String userId) {
+    private void addMappedOMRSRelationships_host(IGCOMRSRepositoryConnector igcomrsRepositoryConnector,
+                                           List<Relationship> relationships,
+                                           Reference fromIgcObject,
+                                           String userId) {
 
         IGCSearchCondition igcSearchCondition = new IGCSearchCondition("data_connectors.host", "=", fromIgcObject.getId());
         IGCSearchConditionSet igcSearchConditionSet = new IGCSearchConditionSet(igcSearchCondition);
@@ -135,17 +176,20 @@ public class ConnectionEndpointMapper extends RelationshipMapping {
     }
 
     /**
-     * Mapping from an IGC data_connection asset to the host.
+     * Custom implementation of the relationship between an Endpoint (host) and a Connection (data_connection).
+     * The relationship itself in IGC is complicated, from this end it requires retrieving the host details from
+     * the 'connector' object related through the 'data_connectors' property, as the 'host' property on'data_connection'
+     * itself is inevitably blank.
      *
      * @param igcomrsRepositoryConnector
      * @param relationships
-     * @param fromIgcObject
+     * @param fromIgcObject the data_connection object for which to create the relationship
      * @param userId
      */
-    private void addMappedRelationshipsForIgcConnection(IGCOMRSRepositoryConnector igcomrsRepositoryConnector,
-                                                        List<Relationship> relationships,
-                                                        Reference fromIgcObject,
-                                                        String userId) {
+    private void addMappedOMRSRelationships_connection(IGCOMRSRepositoryConnector igcomrsRepositoryConnector,
+                                           List<Relationship> relationships,
+                                           Reference fromIgcObject,
+                                           String userId) {
 
         IGCSearchCondition igcSearchCondition = new IGCSearchCondition("data_connections", "=", fromIgcObject.getId());
         IGCSearchConditionSet igcSearchConditionSet = new IGCSearchConditionSet(igcSearchCondition);
@@ -160,7 +204,7 @@ public class ConnectionEndpointMapper extends RelationshipMapping {
             /* Only proceed with the connector object if it is not a 'main_object' asset
              * (in this scenario, 'main_object' represents ColumnAnalysisMaster objects that are not accessible
              *  and will throw bad request (400) REST API errors) */
-            if (dataConnector != null && !dataConnector.getType().equals("main_object")) {
+            if (dataConnector != null && !dataConnector.getType().equals(IGCOMRSMetadataCollection.DEFAULT_IGC_TYPE)) {
                 try {
 
                     log.debug("Retrieved connector: {}", dataConnector);

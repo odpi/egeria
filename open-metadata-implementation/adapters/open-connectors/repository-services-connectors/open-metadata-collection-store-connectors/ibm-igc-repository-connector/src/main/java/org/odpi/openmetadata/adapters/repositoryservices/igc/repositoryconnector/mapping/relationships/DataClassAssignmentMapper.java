@@ -21,6 +21,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorEx
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -64,16 +65,19 @@ public class DataClassAssignmentMapper extends RelationshipMapping {
      * @return Reference - the main_object asset
      */
     @Override
-    public Reference getProxyOneAssetFromRelationshipAsset(Reference relationshipAsset, IGCRestClient igcRestClient) {
+    public List<Reference> getProxyOneAssetFromAsset(Reference relationshipAsset, IGCRestClient igcRestClient) {
         String otherAssetType = relationshipAsset.getType();
+        ArrayList<Reference> asList = new ArrayList<>();
         if (otherAssetType.equals("classification")) {
             Reference withDataClass = relationshipAsset.getAssetWithSubsetOfProperties(igcRestClient,
                     new String[]{ "data_class", "classifies_asset" });
-            return (Reference) withDataClass.getPropertyByName("classifies_asset");
+            Reference classifiedObj = (Reference) withDataClass.getPropertyByName("classifies_asset");
+            asList.add(classifiedObj);
         } else {
             log.debug("Not a classification asset, just returning as-is: {}", relationshipAsset);
-            return relationshipAsset;
+            asList.add(relationshipAsset);
         }
+        return asList;
     }
 
     /**
@@ -84,16 +88,19 @@ public class DataClassAssignmentMapper extends RelationshipMapping {
      * @return Reference - the data_class asset
      */
     @Override
-    public Reference getProxyTwoAssetFromRelationshipAsset(Reference relationshipAsset, IGCRestClient igcRestClient) {
+    public List<Reference> getProxyTwoAssetFromAsset(Reference relationshipAsset, IGCRestClient igcRestClient) {
         String otherAssetType = relationshipAsset.getType();
+        ArrayList<Reference> asList = new ArrayList<>();
         if (otherAssetType.equals("classification")) {
             Reference withAsset = relationshipAsset.getAssetWithSubsetOfProperties(igcRestClient,
                     new String[]{ "data_class", "classifies_asset" });
-            return (Reference) withAsset.getPropertyByName("data_class");
+            Reference dataClass = (Reference) withAsset.getPropertyByName("data_class");
+            asList.add(dataClass);
         } else {
             log.debug("Not a classification asset, just returning as-is: {}", relationshipAsset);
-            return relationshipAsset;
+            asList.add(relationshipAsset);
         }
+        return asList;
     }
 
     /**

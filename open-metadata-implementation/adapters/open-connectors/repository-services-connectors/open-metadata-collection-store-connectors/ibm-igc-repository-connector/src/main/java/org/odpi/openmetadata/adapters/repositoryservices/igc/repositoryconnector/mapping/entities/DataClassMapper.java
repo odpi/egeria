@@ -75,8 +75,8 @@ public class DataClassMapper extends ReferenceableMapper {
      */
     @Override
     public Reference getBaseIgcAssetFromAlternative(Reference otherAsset) {
-        return DataClassAssignmentMapper.getInstance().getProxyTwoAssetFromRelationshipAsset(
-                otherAsset, igcomrsRepositoryConnector.getIGCRestClient());
+        return DataClassAssignmentMapper.getInstance().getProxyTwoAssetFromAsset(
+                otherAsset, igcomrsRepositoryConnector.getIGCRestClient()).get(0);
     }
 
     /**
