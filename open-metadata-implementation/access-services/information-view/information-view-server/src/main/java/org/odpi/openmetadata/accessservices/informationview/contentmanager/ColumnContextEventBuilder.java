@@ -252,22 +252,10 @@ public class ColumnContextEventBuilder {
 
         List<Relationship> btRelationships = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.USER_ID, columnEntity.getGUID(), relationshipTypeGuid, 0, null, null, null, null, 0);
         if (btRelationships != null && btRelationships.size() != 0) {
-
             Relationship btRelationship = btRelationships.get(0);
             String btGuid = getOtherEntityGuid(columnEntity.getGUID(), btRelationship);
             EntityDetail btDetail = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, btGuid);
-            businessTerm = new BusinessTerm();
-
-            businessTerm.setGuid(btGuid);
-            businessTerm.setName(EntityPropertiesUtils.getStringValueForProperty(btDetail.getProperties(), Constants.DISPLAY_NAME));
-            businessTerm.setQuery(EntityPropertiesUtils.getStringValueForProperty(btDetail.getProperties(), Constants.QUERY));
-            businessTerm.setDisplayName(EntityPropertiesUtils.getStringValueForProperty(btDetail.getProperties(), Constants.DISPLAY_NAME));
-            businessTerm.setAbbreviation(EntityPropertiesUtils.getStringValueForProperty(btDetail.getProperties(), Constants.ABBREVIATION));
-            businessTerm.setExamples(EntityPropertiesUtils.getStringValueForProperty(btDetail.getProperties(), Constants.EXAMPLES));
-            businessTerm.setDescription(EntityPropertiesUtils.getStringValueForProperty(btDetail.getProperties(), Constants.DESCRIPTION));
-            businessTerm.setUsage(EntityPropertiesUtils.getStringValueForProperty(btDetail.getProperties(), Constants.USAGE));
-            businessTerm.setSummary(EntityPropertiesUtils.getStringValueForProperty(btDetail.getProperties(), Constants.SUMMARY));
-
+            businessTerm = buildBusinessTerm(btDetail);
         }
         return businessTerm;
     }
@@ -437,6 +425,25 @@ public class ColumnContextEventBuilder {
             return relationship.getEntityTwoProxy().getGUID();
         }
         return relationship.getEntityOneProxy().getGUID();
+    }
+
+    public EntityDetail getEntity(String guid) throws RepositoryErrorException, UserNotAuthorizedException, EntityProxyOnlyException, InvalidParameterException, EntityNotKnownException {
+        EntityDetail column = enterpriseConnector.getMetadataCollection().getEntityDetail("", guid);
+        return column;
+    }
+
+    public BusinessTerm buildBusinessTerm(EntityDetail businessTermEntity) {
+        BusinessTerm businessTerm = new BusinessTerm();
+        businessTerm.setGuid(businessTermEntity.getGUID());
+        businessTerm.setQualifiedName(EntityPropertiesUtils.getStringValueForProperty(businessTermEntity.getProperties(), Constants.QUALIFIED_NAME));
+        businessTerm.setSummary(EntityPropertiesUtils.getStringValueForProperty(businessTermEntity.getProperties(), Constants.SUMMARY));
+        businessTerm.setName(EntityPropertiesUtils.getStringValueForProperty(businessTermEntity.getProperties(), Constants.NAME));
+        businessTerm.setExamples(EntityPropertiesUtils.getStringValueForProperty(businessTermEntity.getProperties(), Constants.EXAMPLES));
+        businessTerm.setAbbreviation(EntityPropertiesUtils.getStringValueForProperty(businessTermEntity.getProperties(), Constants.ABBREVIATION));
+        businessTerm.setQuery(EntityPropertiesUtils.getStringValueForProperty(businessTermEntity.getProperties(), Constants.QUERY));
+        businessTerm.setDescription(EntityPropertiesUtils.getStringValueForProperty(businessTermEntity.getProperties(), Constants.DESCRIPTION));
+        businessTerm.setUsage(EntityPropertiesUtils.getStringValueForProperty(businessTermEntity.getProperties(), Constants.USAGE));
+        return businessTerm;
     }
 
 }
