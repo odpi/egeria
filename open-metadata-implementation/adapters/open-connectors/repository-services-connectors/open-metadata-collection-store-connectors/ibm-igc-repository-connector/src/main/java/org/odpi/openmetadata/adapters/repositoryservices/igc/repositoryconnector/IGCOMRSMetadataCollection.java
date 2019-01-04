@@ -329,6 +329,8 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
 
         log.debug("Looking up relationship: {}", guid);
 
+        // Should not need to translate from proxyone / proxytwo to alternative assets, as the RIDs provided
+        // in the relationship GUID should already be pointing to the correct assets
         String relationshipLevelRid = (proxyOneRid.equals(proxyTwoRid)) ? proxyOneRid : null;
         Reference proxyOne;
         Reference proxyTwo;
@@ -341,8 +343,9 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                     relationshipAssetType,
                     relationshipAssetType
             );
-            proxyOne = relationshipMapping.getProxyOneAssetFromRelationshipAsset(relationshipAsset, igcRestClient);
-            proxyTwo = relationshipMapping.getProxyTwoAssetFromRelationshipAsset(relationshipAsset, igcRestClient);
+            // Only need to translate if the RIDs are relationship-level RIDs
+            proxyOne = relationshipMapping.getProxyOneAssetFromAsset(relationshipAsset, igcRestClient).get(0);
+            proxyTwo = relationshipMapping.getProxyTwoAssetFromAsset(relationshipAsset, igcRestClient).get(0);
         } else {
             proxyOne = igcRestClient.getAssetRefById(proxyOneIgcRid);
             proxyTwo = igcRestClient.getAssetRefById(proxyTwoIgcRid);

@@ -20,7 +20,6 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorExceptio
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.management.relation.Relation;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -38,6 +37,7 @@ public abstract class RelationshipMapping {
 
     private List<RelationshipMapping> subtypes;
     private String relationshipLevelIgcAsset;
+    private String linkingAssetType;
 
     /**
      * The optimal endpoint from which to retrieve the relationship:
@@ -131,28 +131,40 @@ public abstract class RelationshipMapping {
      */
     public String getRelationshipLevelIgcAsset() { return this.relationshipLevelIgcAsset; }
 
+    public void setLinkingAssetType(String igcAssetType) { this.linkingAssetType = igcAssetType; }
+
+    public boolean hasLinkingAsset() { return this.linkingAssetType != null; }
+
+    public String getLinkingAssetType() { return this.linkingAssetType; }
+
     /**
      * By default, return the asset itself. Override this method if the relationship mapping has a relationship-level
-     * asset, to translate from that relationship-level asset to asset for the first endpoint of the relationship in IGC.
+     * asset, or other complexity (multi-hops) to translate from a provided asset to the actual asset for the
+     * first endpoint of the relationship in IGC.
      *
-     * @param relationshipAsset the relationship-level asset in IGC
+     * @param relationshipAsset the asset to use to lookup the actual first endpoint in IGC
      * @param igcRestClient REST API connectivity
      * @return Reference - the asset to be used for endpoint one of the relationship
      */
-    public Reference getProxyOneAssetFromRelationshipAsset(Reference relationshipAsset, IGCRestClient igcRestClient) {
-        return relationshipAsset;
+    public List<Reference> getProxyOneAssetFromAsset(Reference relationshipAsset, IGCRestClient igcRestClient) {
+        ArrayList<Reference> referenceAsList = new ArrayList<>();
+        referenceAsList.add(relationshipAsset);
+        return referenceAsList;
     }
 
     /**
      * By default, return the asset itself. Override this method if the relationship mapping has a relationship-level
-     * asset, to translate from that relationship-level asset to asset for the second endpoint of the relationship in IGC.
+     * asset, or other complexity (multi-hops) to translate from a provided asset to the actual asset for the
+     * second endpoint of the relationship in IGC.
      *
-     * @param relationshipAsset the relationship-level asset in IGC
+     * @param relationshipAsset the asset to use to lookup the actual second endpoint in IGC
      * @param igcRestClient REST API connectivity
      * @return Reference - the asset to be used for endpoint two of the relationship
      */
-    public Reference getProxyTwoAssetFromRelationshipAsset(Reference relationshipAsset, IGCRestClient igcRestClient) {
-        return relationshipAsset;
+    public List<Reference> getProxyTwoAssetFromAsset(Reference relationshipAsset, IGCRestClient igcRestClient) {
+        ArrayList<Reference> referenceAsList = new ArrayList<>();
+        referenceAsList.add(relationshipAsset);
+        return referenceAsList;
     }
 
     /**
@@ -469,6 +481,7 @@ public abstract class RelationshipMapping {
                     this.igcAssetType.equals(igcAssetType)
                     || this.igcAssetType.equals(IGCOMRSMetadataCollection.DEFAULT_IGC_TYPE)
                     || this.igcAssetType.equals(Reference.getAssetTypeForSearch(igcAssetType))
+                    || (hasLinkingAsset() && igcAssetType.equals(getLinkingAssetType()))
             );
         }
 

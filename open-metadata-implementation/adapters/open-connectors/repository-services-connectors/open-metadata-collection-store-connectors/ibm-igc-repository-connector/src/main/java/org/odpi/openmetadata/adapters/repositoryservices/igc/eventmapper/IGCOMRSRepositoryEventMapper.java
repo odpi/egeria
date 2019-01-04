@@ -631,7 +631,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
                         log.debug(" ... found ReferenceList, processing each item");
                         ReferenceList related = (ReferenceList) relatedValue;
                         for (Reference relatedAsset : related.getItems()) {
-                            processSingleRelationship(
+                            processOneOrMoreRelationships(
                                     relationshipMapping,
                                     latestVersion,
                                     relatedAsset,
@@ -643,7 +643,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
                     } else if (Reference.isReference(relatedValue)) {
                         log.debug(" ... found single Reference, processing it");
                         Reference relatedAsset = (Reference) relatedValue;
-                        processSingleRelationship(
+                        processOneOrMoreRelationships(
                                 relationshipMapping,
                                 latestVersion,
                                 relatedAsset,
@@ -656,7 +656,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
                         // and if found pull back a new asset reference for the related asset to use
                         log.debug(" ... found single Reference by '_id', processing it");
                         Reference relatedAsset = igcRestClient.getAssetRefById((String) relatedValue);
-                        processSingleRelationship(
+                        processOneOrMoreRelationships(
                                 relationshipMapping,
                                 latestVersion,
                                 relatedAsset,
@@ -673,6 +673,74 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
                 log.warn("No registered POJO to translate asset type {} -- skipping its relationships.", assetType);
             }
 
+        }
+
+    }
+
+    /**
+     * Maps the received assets to one or more assets that ultimately represent relationships of this type. In most
+     * cases, this will simply be a one-to-one mapping, but this method ensures for the rare cases where the mapping
+     * is one-to-many or many-to-many that all such relationships are processed.
+     *
+     * @param relationshipMapping the relationship mapping through which to translate the relationship
+     * @param latestVersion the latest version (non-stub) for one end of the relationship
+     * @param relatedAsset the latest version (non-stub) for the other end of the relationship
+     * @param change the JSON Patch entry indicating a specific change
+     * @param relationshipTriggerGUID passthrough of GUID for relationship that triggered this process (if not triggered
+     *                                directly from an event), null if not triggered by another relationship
+     */
+    private void processOneOrMoreRelationships(RelationshipMapping relationshipMapping,
+                                               Reference latestVersion,
+                                               Reference relatedAsset,
+                                               ChangeSet.Change change,
+                                               String relationshipTriggerGUID) {
+
+        String omrsRelationshipType = relationshipMapping.getOmrsRelationshipType();
+        String latestVersionRID = latestVersion.getId();
+
+        String relatedRID = relatedAsset.getId();
+
+        // Only proceed if there is actually some related RID (ie. it wasn't just an empty list of relationships)
+        if (relatedRID != null && !relatedRID.equals("null")) {
+
+            log.debug("processOneOrMoreRelationships processing between {} and {} for type: {}", latestVersionRID, relatedRID, omrsRelationshipType);
+
+            RelationshipMapping.ProxyMapping pmOne = relationshipMapping.getProxyOneMapping();
+            RelationshipMapping.ProxyMapping pmTwo = relationshipMapping.getProxyTwoMapping();
+
+            // Translate the provided assets into the actual assets needed for the relationship
+            String latestVersionType = latestVersion.getType();
+            String relatedAssetType = relatedAsset.getType();
+            List<Reference> proxyOnes = new ArrayList<>();
+            List<Reference> proxyTwos = new ArrayList<>();
+            if (pmOne.matchesAssetType(latestVersionType) && pmTwo.matchesAssetType(relatedAssetType)) {
+                proxyOnes = relationshipMapping.getProxyOneAssetFromAsset(latestVersion, igcRestClient);
+                proxyTwos = relationshipMapping.getProxyTwoAssetFromAsset(relatedAsset, igcRestClient);
+            } else if (pmTwo.matchesAssetType(latestVersionType) && pmOne.matchesAssetType(relatedAssetType)) {
+                proxyOnes = relationshipMapping.getProxyOneAssetFromAsset(relatedAsset, igcRestClient);
+                proxyTwos = relationshipMapping.getProxyTwoAssetFromAsset(latestVersion, igcRestClient);
+            } else if (relationshipMapping.hasLinkingAsset()) {
+
+            } else {
+                log.warn("Unable to match assets to proxies for any asset translation -- skipped, but this is likely indicative of a problem with the mapping.");
+                proxyOnes.add(latestVersion);
+                proxyTwos.add(relatedAsset);
+            }
+
+            for (Reference proxyOne : proxyOnes) {
+                for (Reference proxyTwo : proxyTwos) {
+                    processSingleRelationship(
+                            relationshipMapping,
+                            proxyOne,
+                            proxyTwo,
+                            change,
+                            relationshipTriggerGUID
+                    );
+                }
+            }
+
+        } else {
+            log.warn("Related RID was null: {}", relatedAsset);
         }
 
     }
