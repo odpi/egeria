@@ -103,10 +103,7 @@ public class Reference extends ObjectPrinter {
     public void setFullyRetrieved() { this.fullyRetrieved = true; }
 
     private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
-            "_name",
-            "_type",
-            "_id",
-            "_url"
+            "name"
     );
     public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
 
