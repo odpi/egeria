@@ -168,6 +168,9 @@ public class ChangeSet {
             JsonNodeType jsonType = this.value.getNodeType();
             switch (jsonType) {
                 // TODO: how to translate an array?
+                case NULL:
+                    actualValue = null;
+                    break;
                 case BOOLEAN:
                     actualValue = this.value.asBoolean();
                     break;
