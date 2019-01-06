@@ -80,7 +80,7 @@ class PersonalProfileHandler
                                                                String              knownName,
                                                                String              jobTitle,
                                                                String              jobRoleDescription,
-                                                               Map<String, Object> additionalProperties) throws InvalidParameterException
+                                                               Map<String, String> additionalProperties) throws InvalidParameterException
     {
         errorHandler.validateName(employeeNumber, employeeNumberParameterName, methodName);
         errorHandler.validateName(knownName, knownNameParameterName, methodName);
@@ -166,7 +166,7 @@ class PersonalProfileHandler
                 personalProfile.setKnownName(repositoryHelper.getStringProperty(serviceName, knownNamePropertyName, instanceProperties, methodName));
                 personalProfile.setJobTitle(repositoryHelper.getStringProperty(serviceName, jobTitlePropertyName, instanceProperties, methodName));
                 personalProfile.setJobRoleDescription(repositoryHelper.getStringProperty(serviceName, jobDescriptionPropertyName, instanceProperties, methodName));
-                personalProfile.setAdditionalProperties(repositoryHelper.getMapFromProperty(serviceName, additionalPropertiesName, instanceProperties, methodName));
+                personalProfile.setAdditionalProperties(repositoryHelper.getStringMapFromProperty(serviceName, additionalPropertiesName, instanceProperties, methodName));
             }
 
             log.debug("Personal details: " + personalProfile.toString());
@@ -204,7 +204,7 @@ class PersonalProfileHandler
                                  String              knownName,
                                  String              jobTitle,
                                  String              jobRoleDescription,
-                                 Map<String, Object> additionalProperties) throws InvalidParameterException,
+                                 Map<String, String> additionalProperties) throws InvalidParameterException,
                                                                                   PropertyServerException,
                                                                                   UserNotAuthorizedException
     {
@@ -275,7 +275,7 @@ class PersonalProfileHandler
                                  String              knownName,
                                  String              jobTitle,
                                  String              jobRoleDescription,
-                                 Map<String, Object> additionalProperties) throws UnrecognizedGUIDException,
+                                 Map<String, String> additionalProperties) throws UnrecognizedGUIDException,
                                                                                   InvalidParameterException,
                                                                                   PropertyServerException,
                                                                                   UserNotAuthorizedException

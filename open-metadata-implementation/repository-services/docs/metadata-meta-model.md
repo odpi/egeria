@@ -280,12 +280,12 @@ detail.setProperties(instanceProperties);
 
 // CLASSIFICATION
 
-InstanceProperties classificationProperties = new InstanceProperties();
+InstanceProperties properties = new InstanceProperties();
 
 // The "Sensitive" level for the classification
 EnumPropertyValue level = new EnumPropertyValue();
 level.setSymbolicName("Sensitive");
-classificationProperties.setProperty("level", level);
+properties.setProperty("level", level);
 
 // Creating a new classification, of "Confidentiality", applying to "Referenceable", with
 // the "Sensitive" level defined above
@@ -296,7 +296,7 @@ Classification classification = omrsRepositoryConnector.getRepositoryHelper().ge
         "Referenceable",
         ClassificationOrigin.ASSIGNED,
         null,
-        classificationProperties
+        properties
 );
 
 ArrayList<Classificaton> classifications = new ArrayList<>();

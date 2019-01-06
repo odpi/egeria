@@ -542,7 +542,7 @@ public class OMRSRepositoryResource
      * FunctionNotSupportedException the repository does not support this call or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/types/typedef/{guid}")
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/types/typedef/{guid}/delete")
 
     public VoidResponse deleteTypeDef(@PathVariable String    serverName,
                                       @PathVariable String    userId,
@@ -573,7 +573,7 @@ public class OMRSRepositoryResource
      * FunctionNotSupportedException the repository does not support this call or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/types/attribute-typedef/{guid}")
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/types/attribute-typedef/{guid}/delete")
 
     public VoidResponse deleteAttributeTypeDef(@PathVariable String    serverName,
                                                @PathVariable String    userId,

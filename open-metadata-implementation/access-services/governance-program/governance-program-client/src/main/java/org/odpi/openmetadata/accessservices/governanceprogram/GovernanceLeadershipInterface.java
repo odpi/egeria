@@ -38,7 +38,7 @@ public interface GovernanceLeadershipInterface
                                    String                     appointmentId,
                                    String                     appointmentContext,
                                    String                     title,
-                                   Map<String, Object>        additionalProperties,
+                                   Map<String, String>        additionalProperties,
                                    List<ExternalReference>    externalReferences)  throws InvalidParameterException,
                                                                                           PropertyServerException,
                                                                                           UserNotAuthorizedException;
@@ -69,7 +69,7 @@ public interface GovernanceLeadershipInterface
                                    String                     appointmentId,
                                    String                     appointmentContext,
                                    String                     title,
-                                   Map<String, Object>        additionalProperties,
+                                   Map<String, String>        additionalProperties,
                                    List<ExternalReference>    externalReferences)  throws UnrecognizedGUIDException,
                                                                                           InvalidParameterException,
                                                                                           PropertyServerException,
