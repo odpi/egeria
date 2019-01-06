@@ -768,7 +768,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                    UserNotAuthorizedException
     {
         final String methodName  = "updateTypeDef";
-        final String urlTemplate = "users/{0}/types/typedef";
+        final String urlTemplate = "users/{0}/types/typedef/update";
 
         TypeDefResponse restResult = this.callTypeDefPostRESTCall(methodName,
                                                                    restURLRoot + urlTemplate,
@@ -813,7 +813,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                     UserNotAuthorizedException
     {
         final String methodName  = "deleteTypeDef";
-        final String urlTemplate = "users/{0}/types/typedef/{1}";
+        final String urlTemplate = "users/{0}/types/typedef/{1}/delete";
 
         TypeDefDeleteRequest requestBody = new TypeDefDeleteRequest();
         requestBody.setObsoleteTypeDefName(obsoleteTypeDefName);
@@ -860,7 +860,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                              UserNotAuthorizedException
     {
         final String methodName  = "deleteAttributeTypeDef";
-        final String urlTemplate = "users/{0}/types/attribute-typedef/{1}";
+        final String urlTemplate = "users/{0}/types/attribute-typedef/{1}/delete";
 
         TypeDefDeleteRequest requestBody = new TypeDefDeleteRequest();
         requestBody.setObsoleteTypeDefName(obsoleteTypeDefName);

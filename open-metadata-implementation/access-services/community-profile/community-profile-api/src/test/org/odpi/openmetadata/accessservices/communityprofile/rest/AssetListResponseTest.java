@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.communityprofile.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.Asset;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.AssetCollectionMember;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -19,8 +19,8 @@ import static org.testng.Assert.assertTrue;
  */
 public class AssetListResponseTest
 {
-    private List<Asset>         assets               = new ArrayList<>();
-    private Map<String, Object> additionalProperties = new HashMap<>();
+    private List<AssetCollectionMember> assets               = new ArrayList<>();
+    private Map<String, Object>         additionalProperties = new HashMap<>();
 
 
     /**
@@ -28,7 +28,7 @@ public class AssetListResponseTest
      */
     public AssetListResponseTest()
     {
-        Asset asset = new Asset();
+        AssetCollectionMember asset = new AssetCollectionMember();
         assets.add(asset);
     }
 

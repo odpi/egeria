@@ -6,7 +6,9 @@
 The Community Profile OMAS supports a REST API for requests and an event-based
 interface for asynchronous integration.  This client
 package provides language-specific client packages to make it easier
-for data tools and applications to call these interfaces.
+for data tools and applications to call the REST API.
+
+
 
 
 
