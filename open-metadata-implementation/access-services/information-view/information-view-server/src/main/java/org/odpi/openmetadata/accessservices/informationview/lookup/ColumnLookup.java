@@ -28,7 +28,8 @@ public class ColumnLookup extends EntityLookup<DatabaseColumnSource> {
     @Override
     public EntityDetail lookupEntity(DatabaseColumnSource source) throws Exception {
         EntityDetail tableEntity = parentChain.lookupEntity(source.getTableSource());
-
+        if(tableEntity == null)
+            return null;
         List<Relationship> relationships = entitiesCreatorHelper.getRelationships(Constants.SCHEMA_ATTRIBUTE_TYPE, tableEntity.getGUID());
         List<String> allTableTypeGuids = relationships.stream().map(e -> e.getEntityTwoProxy().getGUID()).collect(Collectors.toList());
 

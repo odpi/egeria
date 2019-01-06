@@ -16,3 +16,7 @@ The Subject Area OMAS server-side support is organized in the following top leve
 * server - server services
 * utilities - utilities - including helper methods
 * validators - methods to do validation
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

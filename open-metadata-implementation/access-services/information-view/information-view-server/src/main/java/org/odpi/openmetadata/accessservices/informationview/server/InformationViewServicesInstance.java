@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.informationview.server;
 
 
-import org.odpi.openmetadata.accessservices.informationview.contentmanager.ReportCreator;
+import org.odpi.openmetadata.accessservices.informationview.contentmanager.ReportHandler;
 
 
 /**
@@ -12,18 +12,18 @@ import org.odpi.openmetadata.accessservices.informationview.contentmanager.Repor
  */
 public class InformationViewServicesInstance
 {
-    private ReportCreator          reportCreator;
+    private ReportHandler reportHandler;
     private String                 serverName;
 
 
     /**
      * Set up the local repository connector that will service the REST Calls.
      *
-     * @param reportCreator link to the repository responsible for servicing the REST calls.
+     * @param reportHandler link to the repository responsible for servicing the REST calls.
      */
-    public InformationViewServicesInstance(ReportCreator reportCreator,
+    public InformationViewServicesInstance(ReportHandler reportHandler,
                                            String        serverName)  {
-        this.reportCreator = reportCreator;
+        this.reportHandler = reportHandler;
         this.serverName    = serverName;
 
         InformationViewServicesInstanceMap.setNewInstanceForJVM(serverName, this);
@@ -35,8 +35,8 @@ public class InformationViewServicesInstance
      *
      * @return ReportCreator object
      */
-    public ReportCreator getReportCreator()  {
-        return this.reportCreator;
+    public ReportHandler getReportHandler()  {
+        return this.reportHandler;
     }
 
 
