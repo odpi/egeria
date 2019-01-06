@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.handlers;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
 import org.testng.annotations.Test;
 
-;
 import static org.testng.Assert.assertFalse;
 
 public class TestErrorHandler
