@@ -1,8 +1,22 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
 # Subject Area Open Metadata Access Service (OMAS) server-side implementation
 
-The Subject Area OMAS server-side support is organized as follows ...
+The Subject Area OMAS server-side support is organized in the following top level packages 
 
-_... add design info here ..._
+* admin -  The SubjectAreaAdmin controls this OMAS's lifecycle. It is initalised here receiving the access service configuration. It is shutdown here.
+* auditlog - this is a list of the autid log messages
+* constraints 
+* generated - generated code 
+* initialization
+* listener
+* outtopic 
+* publisher - messaginbg publishing
+* server - server services
+* utilities - utilities - including helper methods
+* validators - methods to do validation
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

@@ -59,8 +59,7 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
      * Get a glossary.
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId userId under which the request is performed
-     * @param id id of the glossary to get, this can be a name or a guid depending on the
-     * @param idIsName When set this indicates that the id is a name
+     * @param guid guid of the glossary to get
      * @return response which when successful contains the glossary with the requested guid
      *  when not successful the following Exception responses can occur
      * <ul>
@@ -72,13 +71,9 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
      * <li> FunctionNotSupportedException   Function not supported</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/glossaries/{id}")
-    public  SubjectAreaOMASAPIResponse getGlossary(@PathVariable String serverName,@PathVariable String userId, @PathVariable String id,@RequestParam(value = "idIsName", required=false) Boolean idIsName) {
-        if (idIsName == null || !idIsName) {
-            return restAPI.getGlossaryByGuid(serverName, userId,id);
-        } else {
-            return restAPI.getGlossaryByName(serverName, userId,id);
-        }
+    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/glossaries/{guid}")
+    public  SubjectAreaOMASAPIResponse getGlossary(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid) {
+            return restAPI.getGlossaryByGuid(serverName, userId,guid);
     }
     /**
      * Update a Glossary
@@ -145,5 +140,27 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
             isPurge = false;
         }
         return restAPI.deleteGlossary(serverName, userId,guid,isPurge);
+    }
+    /**
+     * Restore a Glossary
+     *
+     * Restore allows the deleted Glossary to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the glossary to restore
+     * @return response which when successful contains the restored glossary
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * </ul>
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/glossaries/{guid}")
+    public SubjectAreaOMASAPIResponse restoreGlossary(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)
+    {
+        return restAPI.restoreGlossary(serverName, userId,guid);
     }
 }
