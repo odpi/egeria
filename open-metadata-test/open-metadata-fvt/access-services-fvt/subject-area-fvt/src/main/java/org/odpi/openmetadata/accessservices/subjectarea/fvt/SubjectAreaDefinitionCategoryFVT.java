@@ -59,7 +59,7 @@ public class SubjectAreaDefinitionCategoryFVT
         Glossary glossary = glossaryFVT.createGlossary(DEFAULT_TEST_GLOSSARY_NAME);
         FVTUtils.validateNode(glossary);
         System.out.println("Create a subjectArea1  using glossary name");
-        SubjectAreaDefinition subjectArea1  = createSubjectAreaDefinitionWithGlossaryName(DEFAULT_TEST_CATEGORY_NAME, DEFAULT_TEST_GLOSSARY_NAME);
+        SubjectAreaDefinition subjectArea1  = createSubjectAreaDefinitionWithGlossaryGuid(DEFAULT_TEST_CATEGORY_NAME, glossary.getSystemAttributes().getGUID());
         FVTUtils.validateNode(subjectArea1);
         System.out.println("Create a subjectArea2 using glossary guid");
         SubjectAreaDefinition subjectArea2 = createSubjectAreaDefinitionWithGlossaryGuid(DEFAULT_TEST_CATEGORY_NAME2, glossary.getSystemAttributes().getGUID());
@@ -133,20 +133,6 @@ public class SubjectAreaDefinitionCategoryFVT
         return newSubjectAreaDefinition;
     }
 
-    public  SubjectAreaDefinition createSubjectAreaDefinitionWithGlossaryName(String subjectAreaName, String glossaryName) throws SubjectAreaCheckedExceptionBase
-    {
-        SubjectAreaDefinition subjectArea = new SubjectAreaDefinition();
-        subjectArea.setName(subjectAreaName);
-        GlossarySummary glossarySummary = new GlossarySummary();
-        glossarySummary.setName(glossaryName);
-        subjectArea.setGlossary(glossarySummary);
-        SubjectAreaDefinition newSubjectAreaDefinition = subjectAreaCategory.createSubjectAreaDefinition(FVTConstants.SERVER_NAME1,FVTConstants.USERID, subjectArea);
-        if (newSubjectAreaDefinition != null)
-        {
-            System.out.println("Created SubjectAreaDefinition " + newSubjectAreaDefinition.getName() + " with guid " + newSubjectAreaDefinition.getSystemAttributes().getGUID());
-        }
-        return newSubjectAreaDefinition;
-    }
 
     public  SubjectAreaDefinition getSubjectAreaDefinitionByGUID(String guid) throws SubjectAreaCheckedExceptionBase
     {
