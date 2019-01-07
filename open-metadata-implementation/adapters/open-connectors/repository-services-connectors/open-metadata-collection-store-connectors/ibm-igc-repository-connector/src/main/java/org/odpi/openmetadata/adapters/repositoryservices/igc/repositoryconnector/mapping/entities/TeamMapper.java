@@ -5,6 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.ContactThroughMapper_Team;
 
+/**
+ * Defines the mapping to the OMRS "Team" entity.
+ */
 public class TeamMapper extends ReferenceableMapper {
 
     public TeamMapper(IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {

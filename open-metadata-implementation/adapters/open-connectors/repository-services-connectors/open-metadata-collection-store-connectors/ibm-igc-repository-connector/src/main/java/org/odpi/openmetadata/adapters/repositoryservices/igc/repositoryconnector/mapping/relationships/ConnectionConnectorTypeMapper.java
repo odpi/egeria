@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships;
 
 /**
- * Singleton to represent the ConnectionConnectorType relationship in OMRS.
+ * Singleton to map the OMRS "ConnectionConnectorType" relationship between IGC "data_connection" and "connector" assets.
  */
 public class ConnectionConnectorTypeMapper extends RelationshipMapping {
 

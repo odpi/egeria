@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships;
 
 /**
- * Singleton to represent the DataClassHierarchy relationship in OMRS.
+ * Singleton to map the OMRS "DataClassHierarchy" relationship for IGC "data_class" assets.
  */
 public class DataClassHierarchyMapper extends RelationshipMapping {
 

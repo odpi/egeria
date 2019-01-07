@@ -6,6 +6,9 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.classifications.PrimaryKeyMapper;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.*;
 
+/**
+ * Defines the mapping to the OMRS "TabularColumn" entity.
+ */
 public class TabularColumnMapper extends ReferenceableMapper {
 
     public TabularColumnMapper(IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {

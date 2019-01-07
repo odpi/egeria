@@ -2,6 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships;
 
+/**
+ * Singleton to map the OMRS "NestedFile" relationship between IGC "data_file_folder" and "data_file" assets.
+ */
 public class NestedFileMapper extends RelationshipMapping {
 
     private static class Singleton {

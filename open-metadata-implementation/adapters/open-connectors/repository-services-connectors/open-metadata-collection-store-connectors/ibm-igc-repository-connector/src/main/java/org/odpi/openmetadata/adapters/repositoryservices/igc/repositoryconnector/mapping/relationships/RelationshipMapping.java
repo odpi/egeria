@@ -20,11 +20,12 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorExceptio
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
+/**
+ * Provides the base class for all relationship mappings, as well as base methods for calculating the transformed
+ * relationships.
+ */
 public abstract class RelationshipMapping {
 
     private static final Logger log = LoggerFactory.getLogger(RelationshipMapping.class);
@@ -131,10 +132,25 @@ public abstract class RelationshipMapping {
      */
     public String getRelationshipLevelIgcAsset() { return this.relationshipLevelIgcAsset; }
 
+    /**
+     * Define an IGC asset type as linking together the two endpoints of the relationship translated by this mapping.
+     *
+     * @param igcAssetType the IGC asset type that links together the two endpoints of the relationship
+     */
     public void setLinkingAssetType(String igcAssetType) { this.linkingAssetType = igcAssetType; }
 
+    /**
+     * Indicates whether this mapping needs an IGC asset linking the endpoints (true) or not (false).
+     *
+     * @return boolean
+     */
     public boolean hasLinkingAsset() { return this.linkingAssetType != null; }
 
+    /**
+     * Retrieve the name of the asset type needed to link together the two endpoints of the relationship (if any), or null.
+     *
+     * @return String
+     */
     public String getLinkingAssetType() { return this.linkingAssetType; }
 
     /**
@@ -303,16 +319,17 @@ public abstract class RelationshipMapping {
         if (igcAssetType == null) {
             log.error("No asset type provided: {}", igcAssetType);
         } else {
-            if (igcAssetType.equals(one.getIgcAssetType())) {
+            String simpleType = Reference.getAssetTypeForSearch(igcAssetType);
+            if (simpleType.equals(one.getIgcAssetType())) {
                 same = this.one;
-            } else if (igcAssetType.equals(two.getIgcAssetType())) {
+            } else if (simpleType.equals(two.getIgcAssetType())) {
                 same = this.two;
-            } else if (one.getIgcAssetType().equals(IGCOMRSMetadataCollection.DEFAULT_IGC_TYPE)) {
+            } else if (one.getIgcAssetType().equals(IGCOMRSMetadataCollection.DEFAULT_IGC_TYPE) && !one.excludeIgcAssetType.contains(simpleType)) {
                 same = this.one;
-            } else if (two.getIgcAssetType().equals(IGCOMRSMetadataCollection.DEFAULT_IGC_TYPE)) {
+            } else if (two.getIgcAssetType().equals(IGCOMRSMetadataCollection.DEFAULT_IGC_TYPE) && !two.excludeIgcAssetType.contains(simpleType)) {
                 same = this.two;
             } else {
-                log.error("getProxyFromType - Provided asset type does not match either proxy type: {}", igcAssetType);
+                log.error("getProxyFromType - Provided asset type does not match either proxy type (or was explicitly excluded): {}", simpleType);
             }
         }
 
@@ -333,16 +350,17 @@ public abstract class RelationshipMapping {
         if (igcAssetType == null) {
             log.error("No asset type provided: {}", igcAssetType);
         } else {
-            if (igcAssetType.equals(one.getIgcAssetType())) {
+            String simpleType = Reference.getAssetTypeForSearch(igcAssetType);
+            if (simpleType.equals(one.getIgcAssetType())) {
                 other = this.two;
-            } else if (igcAssetType.equals(two.getIgcAssetType())) {
+            } else if (simpleType.equals(two.getIgcAssetType())) {
                 other = this.one;
-            } else if (one.getIgcAssetType().equals(IGCOMRSMetadataCollection.DEFAULT_IGC_TYPE)) {
+            } else if (one.getIgcAssetType().equals(IGCOMRSMetadataCollection.DEFAULT_IGC_TYPE) && !one.excludeIgcAssetType.contains(simpleType)) {
                 other = this.two;
-            } else if (two.getIgcAssetType().equals(IGCOMRSMetadataCollection.DEFAULT_IGC_TYPE)) {
+            } else if (two.getIgcAssetType().equals(IGCOMRSMetadataCollection.DEFAULT_IGC_TYPE) && !two.excludeIgcAssetType.contains(simpleType)) {
                 other = this.one;
             } else {
-                log.error("getOtherProxyFromType - Provided asset type does not match either proxy type: {}", igcAssetType);
+                log.error("getOtherProxyFromType - Provided asset type does not match either proxy type (or was explicitly excluded): {}", simpleType);
             }
         }
 
@@ -363,19 +381,20 @@ public abstract class RelationshipMapping {
         if (igcAssetType == null) {
             log.error("No asset type provided: {}", igcAssetType);
         } else {
-            if (sameTypeOnBothEnds() && igcAssetType.equals(one.getIgcAssetType())) {
+            String simpleType = Reference.getAssetTypeForSearch(igcAssetType);
+            if (sameTypeOnBothEnds() && simpleType.equals(one.getIgcAssetType())) {
                 addRealPropertiesToList(one.getIgcRelationshipProperties(), properties);
                 addRealPropertiesToList(two.getIgcRelationshipProperties(), properties);
-            } else if (igcAssetType.equals(one.getIgcAssetType())) {
+            } else if (simpleType.equals(one.getIgcAssetType())) {
                 addRealPropertiesToList(one.getIgcRelationshipProperties(), properties);
-            } else if (igcAssetType.equals(two.getIgcAssetType())) {
+            } else if (simpleType.equals(two.getIgcAssetType())) {
                 addRealPropertiesToList(two.getIgcRelationshipProperties(), properties);
-            } else if (one.getIgcAssetType().equals(IGCOMRSMetadataCollection.DEFAULT_IGC_TYPE)) {
+            } else if (one.getIgcAssetType().equals(IGCOMRSMetadataCollection.DEFAULT_IGC_TYPE) && !one.excludeIgcAssetType.contains(simpleType)) {
                 addRealPropertiesToList(one.getIgcRelationshipProperties(), properties);
-            } else if (two.getIgcAssetType().equals(IGCOMRSMetadataCollection.DEFAULT_IGC_TYPE)) {
+            } else if (two.getIgcAssetType().equals(IGCOMRSMetadataCollection.DEFAULT_IGC_TYPE) && !two.excludeIgcAssetType.contains(simpleType)) {
                 addRealPropertiesToList(two.getIgcRelationshipProperties(), properties);
             } else {
-                log.warn("getIgcRelationshipPropertiesForType - Provided asset type does not match either proxy type: {}", igcAssetType);
+                log.warn("getIgcRelationshipPropertiesForType - Provided asset type does not match either proxy type (or was explicitly excluded): {}", simpleType);
             }
         }
 
@@ -406,6 +425,7 @@ public abstract class RelationshipMapping {
         private ArrayList<String> igcRelationshipProperties;
         private String omrsRelationshipProperty;
         private String igcRidPrefix;
+        private Set<String> excludeIgcAssetType;
 
         public ProxyMapping(String igcAssetType,
                             String igcRelationshipProperty,
@@ -417,6 +437,7 @@ public abstract class RelationshipMapping {
             this.igcRelationshipProperties.add(igcRelationshipProperty);
             this.omrsRelationshipProperty = omrsRelationshipProperty;
             this.igcRidPrefix = igcRidPrefix;
+            this.excludeIgcAssetType = new HashSet<>();
 
         }
 
@@ -469,6 +490,14 @@ public abstract class RelationshipMapping {
         public boolean isSelfReferencing() { return this.igcRelationshipProperties.contains(SELF_REFERENCE_SENTINEL); }
 
         /**
+         * When the asset this applies to is a 'main_object', use this method to add any objects that should NOT be
+         * included under that umbrella.
+         *
+         * @param igcAssetType the IGC asset type to exclude from 'main_object' consideration
+         */
+        public void addExcludedIgcAssetType(String igcAssetType) { this.excludeIgcAssetType.add(igcAssetType); }
+
+        /**
          * Indicates whether this side of the relationship matches the provided IGC asset type: that is, this side of
          * the relationship can be used to relate to the provided IGC asset type.
          *
@@ -476,12 +505,12 @@ public abstract class RelationshipMapping {
          * @return boolean
          */
         public boolean matchesAssetType(String igcAssetType) {
-            log.debug("checking for matching asset between {} and {}", this.igcAssetType, Reference.getAssetTypeForSearch(igcAssetType));
+            String simplifiedType = Reference.getAssetTypeForSearch(igcAssetType);
+            log.debug("checking for matching asset between {} and {}", this.igcAssetType, simplifiedType);
             return (
-                    this.igcAssetType.equals(igcAssetType)
-                    || this.igcAssetType.equals(IGCOMRSMetadataCollection.DEFAULT_IGC_TYPE)
-                    || this.igcAssetType.equals(Reference.getAssetTypeForSearch(igcAssetType))
-                    || (hasLinkingAsset() && igcAssetType.equals(getLinkingAssetType()))
+                    this.igcAssetType.equals(simplifiedType)
+                    || (this.igcAssetType.equals(IGCOMRSMetadataCollection.DEFAULT_IGC_TYPE) && !this.excludeIgcAssetType.contains(simplifiedType))
+                    || (hasLinkingAsset() && simplifiedType.equals(getLinkingAssetType()))
             );
         }
 

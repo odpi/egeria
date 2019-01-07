@@ -9,6 +9,9 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.ForeignKeyMapper;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.SchemaAttributeTypeMapper_DatabaseColumn;
 
+/**
+ * Defines the mapping to the OMRS "RelationalColumn" entity.
+ */
 public class RelationalColumnMapper extends ReferenceableMapper {
 
     public RelationalColumnMapper(IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {

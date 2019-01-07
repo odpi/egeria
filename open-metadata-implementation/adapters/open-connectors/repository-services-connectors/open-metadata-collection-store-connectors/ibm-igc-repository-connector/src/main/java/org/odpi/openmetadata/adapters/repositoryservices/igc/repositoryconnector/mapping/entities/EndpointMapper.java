@@ -12,6 +12,9 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Defines the mapping to the OMRS "Endpoint" entity.
+ */
 public class EndpointMapper extends ReferenceableMapper {
 
     private static final Logger log = LoggerFactory.getLogger(EndpointMapper.class);

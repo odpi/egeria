@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships;
 
 /**
- * Singleton to represent the Synonym relationship in OMRS.
+ * Singleton to map the OMRS "Synonym" relationship for IGC "term" assets.
  */
 public class SynonymMapper extends RelationshipMapping {
 

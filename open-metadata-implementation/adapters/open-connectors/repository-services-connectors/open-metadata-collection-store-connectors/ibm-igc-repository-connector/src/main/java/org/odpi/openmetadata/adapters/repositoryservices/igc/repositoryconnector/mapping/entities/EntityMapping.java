@@ -19,6 +19,9 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Provides the base class for all entity mappings.
+ */
 public abstract class EntityMapping {
 
     private static final Logger log = LoggerFactory.getLogger(EntityMapping.class);
@@ -91,11 +94,52 @@ public abstract class EntityMapping {
 
     }
 
+    /**
+     * Retrieve the primary IGC asset type used by this mapping.
+     *
+     * @return String
+     */
     public String getIgcAssetType() { return this.igcAssetType; }
+
+    /**
+     * Retrieve the display name of the primary IGC asset type used by this mapping. (The display name is also the name
+     * used by the InfosphereEvents topic of the event mapper.)
+     *
+     * @return String
+     */
     public String getIgcAssetTypeDisplayName() { return this.igcAssetTypeDisplayName; }
+
+    /**
+     * Retrieve the POJO used to translate the IGC REST API's JSON representation into a Java object.
+     *
+     * @return Class
+     */
     public Class getIgcPOJO() { return this.igcPOJO; }
+
+    /**
+     * Indicates whether the IGC Repository ID (RID) requires a prefix (true) or not (false). A prefix is typically
+     * required when the entity represented by the RID does not actually exist as a distinct entity in IGC, but is
+     * rather a subset of properties, relationships and classifications from another IGC asset type. (The prefix allows
+     * us to effectively split such a singular IGC object into multiple OMRS entities.)
+     *
+     * @return boolean
+     * @see #getIgcRidPrefix()
+     */
     public boolean igcRidNeedsPrefix() { return (this.igcRidPrefix != null); }
+
+    /**
+     * Retrieves the IGC Repository ID (RID) prefix required by this entity, if any (or null if none is needed).
+     *
+     * @return String
+     * @see #igcRidNeedsPrefix()
+     */
     public String getIgcRidPrefix() { return this.igcRidPrefix; }
+
+    /**
+     * Retrieves the name of the OMRS TypeDef that this mapping translates IGC objects into.
+     *
+     * @return String
+     */
     public String getOmrsTypeDefName() { return this.omrsTypeDefName; }
 
     /**

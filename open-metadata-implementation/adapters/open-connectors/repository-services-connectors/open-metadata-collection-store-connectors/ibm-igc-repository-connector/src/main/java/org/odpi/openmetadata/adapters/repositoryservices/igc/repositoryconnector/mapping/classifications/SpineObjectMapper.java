@@ -12,6 +12,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+/**
+ * Singleton defining the mapping to the OMRS "SpineObject" classification.
+ */
 public class SpineObjectMapper extends ClassificationMapping {
 
     private static final Logger log = LoggerFactory.getLogger(SpineObjectMapper.class);

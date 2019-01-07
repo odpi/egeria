@@ -38,7 +38,8 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * IGCOMRSRepositoryEventMapper supports the event mapper function for the IBM InfoSphere Information Governance Catalog
+ * IGCOMRSRepositoryEventMapper supports the event mapper function for the IBM Information Server suite
+ * (IBM InfoSphere Information Governance Catalog, Metadata Asset Manager, and Information Analyzer)
  * when used as an open metadata repository.
  */
 public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase

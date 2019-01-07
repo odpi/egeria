@@ -20,7 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Singleton to represent the ConnectionEndpoint relationship in OMRS.
+ * Singleton to map the OMRS "ConnectionEndpoint" relationship between IGC "host" and "data_connection" assets
+ * (via "connector" assets where needed).
  */
 public class ConnectionEndpointMapper extends RelationshipMapping {
 

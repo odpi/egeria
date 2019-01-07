@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships;
 
 /**
- * Singleton to represent the SemanticAssignment relationship in OMRS.
+ * Singleton to map the OMRS "TermHASARelationship" relationship for IGC "term" assets.
  */
 public class TermHASARelationshipMapper extends RelationshipMapping {
 

@@ -5,6 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.ConnectionConnectorTypeMapper;
 
+/**
+ * Defines the mapping to the OMRS "ConnectorType" entity.
+ */
 public class ConnectorTypeMapper extends ReferenceableMapper {
 
     public ConnectorTypeMapper(IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {

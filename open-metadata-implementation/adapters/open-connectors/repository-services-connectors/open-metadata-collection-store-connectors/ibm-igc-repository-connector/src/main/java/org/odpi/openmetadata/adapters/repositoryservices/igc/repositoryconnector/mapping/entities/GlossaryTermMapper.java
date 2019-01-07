@@ -7,6 +7,9 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.classifications.SpineObjectMapper;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.*;
 
+/**
+ * Defines the mapping to the OMRS "GlossaryTerm" entity.
+ */
 public class GlossaryTermMapper extends ReferenceableMapper {
 
     public GlossaryTermMapper(IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {

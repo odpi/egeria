@@ -2,6 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships;
 
+/**
+ * Singleton to map the OMRS "Translation" relationship for IGC "term" assets.
+ */
 public class TranslationMapper extends RelationshipMapping {
 
     private static class Singleton {

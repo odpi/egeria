@@ -25,7 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Singleton to represent the DataClassAssignment relationship in OMRS.
+ * Singleton to map the OMRS "DataClassAssignment" relationship for IGC "data_class" assets, including both
+ * detected and selected classifications, and the additional details on IGC "classification" assets.
  */
 public class DataClassAssignmentMapper extends RelationshipMapping {
 

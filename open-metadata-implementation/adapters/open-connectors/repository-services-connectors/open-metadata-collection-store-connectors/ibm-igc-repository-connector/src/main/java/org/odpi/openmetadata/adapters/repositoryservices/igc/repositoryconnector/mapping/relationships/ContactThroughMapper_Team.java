@@ -4,6 +4,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.entities.ContactDetailsMapper;
 
+/**
+ * Singleton to map the OMRS "ContactThrough" relationship for IGC "group" assets.
+ */
 public class ContactThroughMapper_Team extends RelationshipMapping {
 
     private static class Singleton {

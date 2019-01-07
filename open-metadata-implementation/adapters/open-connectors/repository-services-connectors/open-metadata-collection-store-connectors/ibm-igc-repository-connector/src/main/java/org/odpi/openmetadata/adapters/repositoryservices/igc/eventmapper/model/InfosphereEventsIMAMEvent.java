@@ -5,6 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.eventmapper.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * The payload contents of all Metadata Asset Manager-specific events on the InfosphereEvents topic.
+ */
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class InfosphereEventsIMAMEvent extends InfosphereEvents {
 

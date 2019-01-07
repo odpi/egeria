@@ -20,6 +20,9 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Captures the details of an implemented TypeDef (mapping) between OMRS and IGC.
+ */
 public class ImplementedMapping {
 
     private static final Logger log = LoggerFactory.getLogger(ImplementedMapping.class);
@@ -53,9 +56,32 @@ public class ImplementedMapping {
 
     }
 
+    /**
+     * Retrieve the OMRS TypeDef processed by the implemented mapping.
+     *
+     * @return TypeDef
+     */
     public TypeDef getTypeDef() { return this.typeDef; }
+
+    /**
+     * Retrieve the Java object capable of translating between IGC objects and an OMRS Entities (instances).
+     *
+     * @return EntityMapping
+     */
     public EntityMapping getEntityMapping() { return this.entityMapping; }
+
+    /**
+     * Retrieve the Java object capable of translating between IGC object relationships and OMRS Relationships (instances).
+     *
+     * @return RelationshipMapping
+     */
     public RelationshipMapping getRelationshipMapping() { return this.relationshipMapping; }
+
+    /**
+     * Retrieve the Java object capable of translating between IGC object relationships and OMRS Classifications (instances).
+     *
+     * @return ClassificationMapping
+     */
     public ClassificationMapping getClassificationMapping() { return this.classificationMapping; }
 
     /**

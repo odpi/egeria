@@ -2,6 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships;
 
+/**
+ * Singleton to map the OMRS "ContactThrough" relationship.
+ * @see ContactThroughMapper_Person
+ * @see ContactThroughMapper_Team
+ */
 public class ContactThroughMapper extends RelationshipMapping {
 
     private static class Singleton {

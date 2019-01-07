@@ -2,6 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships;
 
+/**
+ * Singleton to map the OMRS "ForeignKey" relationship for IGC "database_column" assets.
+ */
 public class ForeignKeyMapper extends RelationshipMapping {
 
     private static class Singleton {

@@ -5,6 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.GovernancePolicyLinkMapper;
 
+/**
+ * Defines the mapping to the OMRS "GlossaryPolicy" entity.
+ */
 public class GovernancePolicyMapper extends ReferenceableMapper {
 
     public GovernancePolicyMapper(IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {

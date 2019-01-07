@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships;
 
 /**
- * Singleton to represent the CategoryHierarchyLink relationship in OMRS.
+ * Singleton to map the OMRS "CategoryHierarchyLink" relationship for IGC "category" assets.
  */
 public class CategoryHierarchyLinkMapper extends RelationshipMapping {
 
