@@ -15,9 +15,9 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Asset Consumer OMAS with Spring</name>
+    <name>Asset Catalog OMAS with Spring</name>
     <description>
-        Spring-based REST API for the Asset Consumer Open Metadata Access Service (OMAS).
+        Spring-based REST API for the Asset Catalog Open Metadata Access Service (OMAS).
     </description>
 
     <artifactId>asset-catalog-spring</artifactId>
