@@ -179,7 +179,10 @@ public class ChangeSet {
                     break;
                 case OBJECT:
                     // If an object, must be a Reference (or ReferenceList) -- read it in as one
-                    if (referenceListProperties.contains(getIgcPropertyName())) {
+                    // Note that if the change path ends with /items/0 then we should only read a Reference, not
+                    // a list, as the JSON Patch is only giving us a singular Reference (the paging we need for
+                    // the list is split off on other change operations)
+                    if (referenceListProperties.contains(getIgcPropertyName()) && !this.path.contains("/items/")) {
                         actualValue = igcRestClient.readJSONIntoReferenceList(this.value.toString());
                     } else {
                         actualValue = igcRestClient.readJSONIntoPOJO(this.value.toString());
