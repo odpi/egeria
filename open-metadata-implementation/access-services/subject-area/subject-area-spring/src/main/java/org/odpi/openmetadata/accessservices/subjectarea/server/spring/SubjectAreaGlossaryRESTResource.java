@@ -59,8 +59,7 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
      * Get a glossary.
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId userId under which the request is performed
-     * @param id id of the glossary to get, this can be a name or a guid depending on the
-     * @param idIsName When set this indicates that the id is a name
+     * @param guid guid of the glossary to get
      * @return response which when successful contains the glossary with the requested guid
      *  when not successful the following Exception responses can occur
      * <ul>
@@ -72,13 +71,9 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
      * <li> FunctionNotSupportedException   Function not supported</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/glossaries/{id}")
-    public  SubjectAreaOMASAPIResponse getGlossary(@PathVariable String serverName,@PathVariable String userId, @PathVariable String id,@RequestParam(value = "idIsName", required=false) Boolean idIsName) {
-        if (idIsName == null || !idIsName) {
-            return restAPI.getGlossaryByGuid(serverName, userId,id);
-        } else {
-            return restAPI.getGlossaryByName(serverName, userId,id);
-        }
+    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/glossaries/{guid}")
+    public  SubjectAreaOMASAPIResponse getGlossary(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid) {
+            return restAPI.getGlossaryByGuid(serverName, userId,guid);
     }
     /**
      * Update a Glossary

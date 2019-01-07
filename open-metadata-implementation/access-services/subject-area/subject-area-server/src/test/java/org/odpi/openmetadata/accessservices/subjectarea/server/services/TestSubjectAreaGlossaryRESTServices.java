@@ -147,62 +147,6 @@ public class TestSubjectAreaGlossaryRESTServices {
         assertTrue(invalidExResponse.getExceptionErrorMessage().contains("OMAS-SUBJECTAREA-400-060"));
     }
 
-    @Test
-    public void testCreateGlossaryAlreadyExists() throws Exception {
-        String testuserid = "userid1";
-        String testguid1 = "glossary-guid-1";
-
-        final String testGlossaryName = "TestGlossary";
-        SubjectAreaGlossaryRESTServices subjectAreaGlossaryOmasREST = new SubjectAreaGlossaryRESTServices();
-        subjectAreaGlossaryOmasREST.setOMRSAPIHelper(oMRSAPIHelper);
-        String displayName = "string0";
-        String usage = "string1";
-        String description = "string2 fsdgsdg";
-        String qualifiedName = "test qname";
-        // set up the mocks
-        EntityDetail mockEntityGet = createMockGlossary(displayName,usage,description,testguid1,qualifiedName);
-        OMRSMetadataCollection  mockMetadataCollection = getMockOmrsMetadataCollection();
-        when(repositoryConnector.getMetadataCollection()).thenReturn(mockMetadataCollection);
-        when(repositoryConnector.getServerName()).thenReturn(TEST_SERVER_NAME);
-        // initialise the map
-        new SubjectAreaServicesInstance(repositoryConnector);
-        List<EntityDetail> mockGlossaryList = new ArrayList<>();
-        mockGlossaryList.add(mockEntityGet);
-        // initialise the map
-        new SubjectAreaServicesInstance(repositoryConnector);
-
-
-        // mock out the get the glossary by name
-        when( oMRSAPIHelper.callFindEntitiesByProperty(
-                any(),
-                any(),
-                any(),
-                any(),
-                anyInt(),
-                any(),
-                any(),
-                any(),
-                any(),
-                any(),
-                anyInt()
-
-        )).thenReturn(mockGlossaryList);
-        new SubjectAreaServicesInstance(repositoryConnector);
-
-
-        // set the mock omrs in to the rest file.
-        Glossary requestedGlossary = new Glossary();
-        requestedGlossary.setName(displayName);
-        requestedGlossary.setUsage(usage);
-        requestedGlossary.setDescription(description);
-
-
-        SubjectAreaOMASAPIResponse response = subjectAreaGlossaryOmasREST.createGlossary(TEST_SERVER_NAME, testuserid, requestedGlossary);
-        assertTrue(response.getResponseCategory().equals(ResponseCategory.InvalidParameterException));
-        InvalidParameterExceptionResponse invalidExResponse = (InvalidParameterExceptionResponse)response;
-        assertTrue(invalidExResponse.getExceptionErrorMessage().contains("OMAS-SUBJECTAREA-400-032"));
-
-    }
 
     @Test
     public void testGetGlossaryByGuid() throws Exception {
