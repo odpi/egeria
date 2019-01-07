@@ -15,6 +15,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+/**
+ * Singleton defining the mapping to the OMRS "SubjectArea" classification.
+ */
 public class SubjectAreaMapper extends ClassificationMapping {
 
     private static final Logger log = LoggerFactory.getLogger(SubjectAreaMapper.class);

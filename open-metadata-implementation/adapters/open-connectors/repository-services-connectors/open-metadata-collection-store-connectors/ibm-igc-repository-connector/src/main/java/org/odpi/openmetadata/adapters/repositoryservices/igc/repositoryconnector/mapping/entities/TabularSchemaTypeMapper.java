@@ -6,6 +6,9 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.AssetSchemaTypeMapper_FileRecord;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.AttributeForSchemaMapper_RecordField;
 
+/**
+ * Defines the mapping to the OMRS "TabularSchemaType" entity.
+ */
 public class TabularSchemaTypeMapper extends ReferenceableMapper {
 
     public TabularSchemaTypeMapper(IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {

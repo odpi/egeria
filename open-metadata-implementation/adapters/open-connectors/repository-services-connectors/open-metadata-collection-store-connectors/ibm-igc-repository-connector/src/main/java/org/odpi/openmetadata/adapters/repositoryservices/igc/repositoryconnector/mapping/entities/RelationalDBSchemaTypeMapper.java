@@ -8,6 +8,9 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.AssetSchemaTypeMapper_DatabaseSchema;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.AttributeForSchemaMapper_TableSchema;
 
+/**
+ * Defines the mapping to the OMRS "RelationalDBSchemaType" entity.
+ */
 public class RelationalDBSchemaTypeMapper extends ReferenceableMapper {
 
     public static final String IGC_RID_PREFIX = IGCOMRSMetadataCollection.generateTypePrefix("RDBST");

@@ -4,6 +4,10 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.eventmapper.model;
 
 import com.fasterxml.jackson.annotation.*;
 
+/**
+ * The base class of all InfosphereEvents topic messages from IBM Information Server, including
+ * Information Governance Catalog, Metadata Asset Manager and Information Analyzer.
+ */
 @JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.PROPERTY, property="eventType", visible=true, defaultImpl=InfosphereEventsAssetEvent.class)
 @JsonSubTypes({
         @JsonSubTypes.Type(value = InfosphereEventsIMAMEvent.class, name = "IMAM_SHARE_EVENT"),

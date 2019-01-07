@@ -15,10 +15,11 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorExceptio
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
+/**
+ * The base class for all mappings between OMRS Classification TypeDefs and IGC assets.
+ */
 public abstract class ClassificationMapping {
 
     private static final Logger log = LoggerFactory.getLogger(ClassificationMapping.class);
@@ -26,6 +27,7 @@ public abstract class ClassificationMapping {
     private String igcAssetType;
     private List<String> igcRelationshipProperties;
     private String omrsClassificationType;
+    private Set<String> excludeIgcAssetType;
 
     public ClassificationMapping(String igcAssetType,
                                  String igcRelationshipProperty,
@@ -34,14 +36,55 @@ public abstract class ClassificationMapping {
         this.igcRelationshipProperties = new ArrayList<>();
         this.igcRelationshipProperties.add(igcRelationshipProperty);
         this.omrsClassificationType = omrsClassificationType;
+        this.excludeIgcAssetType = new HashSet<>();
     }
 
+    /**
+     * Retrieve the IGC asset type to which this classification mapping applies.
+     *
+     * @return String
+     */
     public String getIgcAssetType() { return this.igcAssetType; }
+
+    /**
+     * Retrieve the list of IGC properties used to apply this classification mapping.
+     *
+     * @return List<String>
+     */
     public List<String> getIgcRelationshipProperties() { return this.igcRelationshipProperties; }
+
+    /**
+     * Retrieve the name of the OMRS ClassificationDef represented by this mapping.
+     *
+     * @return String
+     */
     public String getOmrsClassificationType() { return this.omrsClassificationType; }
 
+    /**
+     * When the asset this applies to is a 'main_object', use this method to add any objects that should NOT be
+     * included under that umbrella.
+     *
+     * @param igcAssetType the IGC asset type to exclude from 'main_object' consideration
+     */
+    public void addExcludedIgcAssetType(String igcAssetType) { this.excludeIgcAssetType.add(igcAssetType); }
+
+    /**
+     * Add the provided property as one of the IGC properties needed to setup this classification.
+     *
+     * @param property the IGC asset's property name
+     */
     public void addIgcRelationshipProperty(String property) { this.igcRelationshipProperties.add(property); }
 
+    /**
+     * Implement this method to actually define the logic for the classification. (Since IGC has no actual concept
+     * of classification, this is left as a method to-be-implemented depending on how the implementation desires the
+     * classification to be represented within IGC.)
+     *
+     * @param igcomrsRepositoryConnector connectivity to the IGC repository via OMRS connector
+     * @param classifications the list of classifications to which new classifications should be added
+     * @param fromIgcObject the IGC object from which to determine the classifications
+     * @param userId the user requesting the classifications (currently unused)
+     */
     public abstract void addMappedOMRSClassifications(IGCOMRSRepositoryConnector igcomrsRepositoryConnector,
                                                       List<Classification> classifications,
                                                       Reference fromIgcObject,
@@ -55,11 +98,11 @@ public abstract class ClassificationMapping {
      * @return boolean
      */
     public boolean matchesAssetType(String igcAssetType) {
-        log.debug("checking for matching asset between {} and {}", this.igcAssetType, Reference.getAssetTypeForSearch(igcAssetType));
+        String simplifiedType = Reference.getAssetTypeForSearch(igcAssetType);
+        log.debug("checking for matching asset between {} and {}", this.igcAssetType, simplifiedType);
         return (
-                this.igcAssetType.equals(igcAssetType)
-                        || this.igcAssetType.equals(IGCOMRSMetadataCollection.DEFAULT_IGC_TYPE)
-                        || this.igcAssetType.equals(Reference.getAssetTypeForSearch(igcAssetType))
+                this.igcAssetType.equals(simplifiedType)
+                        || (this.igcAssetType.equals(IGCOMRSMetadataCollection.DEFAULT_IGC_TYPE) && !this.excludeIgcAssetType.contains(simplifiedType))
         );
     }
 

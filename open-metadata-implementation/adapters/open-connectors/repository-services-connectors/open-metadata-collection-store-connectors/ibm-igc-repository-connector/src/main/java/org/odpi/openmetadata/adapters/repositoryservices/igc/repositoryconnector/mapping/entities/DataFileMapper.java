@@ -5,6 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.*;
 
+/**
+ * Defines the mapping to the OMRS "DataFile" entity.
+ */
 public class DataFileMapper extends ReferenceableMapper {
 
     public DataFileMapper(IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {

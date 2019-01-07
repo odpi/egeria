@@ -7,6 +7,9 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.AttributeForSchemaMapper_TableColumn;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.SchemaAttributeTypeMapper_DatabaseTable;
 
+/**
+ * Defines the mapping to the OMRS "RelationalTableType" entity.
+ */
 public class RelationalTableTypeMapper extends ReferenceableMapper {
 
     public static final String IGC_RID_PREFIX = IGCOMRSMetadataCollection.generateTypePrefix("RTT");

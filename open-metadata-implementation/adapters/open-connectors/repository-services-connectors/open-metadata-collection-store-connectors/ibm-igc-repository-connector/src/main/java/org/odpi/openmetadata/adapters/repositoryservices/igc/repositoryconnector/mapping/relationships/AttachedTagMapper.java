@@ -2,8 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships;
 
+import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSMetadataCollection;
+
 /**
- * Singleton to represent the AttachedTag relationship in OMRS.
+ * Singleton to map the OMRS "AttachedTag" relationship for IGC "label" assets.
  */
 public class AttachedTagMapper extends RelationshipMapping {
 
@@ -16,7 +18,7 @@ public class AttachedTagMapper extends RelationshipMapping {
 
     private AttachedTagMapper() {
         super(
-                "main_object",
+                IGCOMRSMetadataCollection.DEFAULT_IGC_TYPE,
                 "label",
                 "labels",
                 "labeled_assets",

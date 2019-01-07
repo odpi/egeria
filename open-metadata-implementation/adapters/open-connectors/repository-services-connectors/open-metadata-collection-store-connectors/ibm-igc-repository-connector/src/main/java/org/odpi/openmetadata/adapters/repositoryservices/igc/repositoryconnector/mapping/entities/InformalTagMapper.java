@@ -5,6 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.AttachedTagMapper;
 
+/**
+ * Defines the mapping to the OMRS "InformalTag" entity.
+ */
 public class InformalTagMapper extends ReferenceableMapper {
 
     public InformalTagMapper(IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {

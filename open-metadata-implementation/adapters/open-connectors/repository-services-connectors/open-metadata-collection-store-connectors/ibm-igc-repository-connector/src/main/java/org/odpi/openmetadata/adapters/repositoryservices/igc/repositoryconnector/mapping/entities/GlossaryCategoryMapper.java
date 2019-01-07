@@ -7,6 +7,9 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.CategoryHierarchyLinkMapper;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.TermCategorizationMapper;
 
+/**
+ * Defines the mapping to the OMRS "GlossaryCategory" entity.
+ */
 public class GlossaryCategoryMapper extends ReferenceableMapper {
 
     public GlossaryCategoryMapper(IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {

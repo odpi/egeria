@@ -6,6 +6,7 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRe
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Identity;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.ReferenceList;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSMetadataCollection;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
@@ -16,6 +17,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+/**
+ * Singleton defining the mapping to the OMRS "Confidentiality" classification.
+ */
 public class ConfidentialityMapper extends ClassificationMapping {
 
     private static final Logger log = LoggerFactory.getLogger(ConfidentialityMapper.class);
@@ -29,14 +33,14 @@ public class ConfidentialityMapper extends ClassificationMapping {
 
     private ConfidentialityMapper() {
         super(
-                "main_object",
+                IGCOMRSMetadataCollection.DEFAULT_IGC_TYPE,
                 "assigned_to_terms",
                 "Confidentiality"
         );
     }
 
     /**
-     * Implement the "Confidentiality" classification for IGC objects (by default we only apply to terms, but could
+     * Implements the "Confidentiality" classification for IGC objects (by default we only apply to terms, but could
      * apply to any IGC asset type). We use the 'assigned_to_term' relationship from one term to any term
      * within a "Confidentiality" parent category to represent the "Confidentiality" classification in OMRS.
      * Therefore, any 'assigned_to_term' relationship on a term, where the assigned term is within a "Confidentiality"
@@ -72,7 +76,6 @@ public class ConfidentialityMapper extends ClassificationMapping {
 
                 InstanceProperties classificationProperties = new InstanceProperties();
 
-                // TODO: setup dynamically from matching ordinal value in IGC?
                 EnumPropertyValue level = new EnumPropertyValue();
                 String confidentialityName = assignedTerm.getName();
                 switch(confidentialityName) {

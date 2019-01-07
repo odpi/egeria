@@ -7,6 +7,9 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.FolderHierarchyMapper;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.NestedFileMapper;
 
+/**
+ * Defines the mapping to the OMRS "FileFolder" entity.
+ */
 public class FileFolderMapper extends ReferenceableMapper {
 
     public FileFolderMapper(IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {

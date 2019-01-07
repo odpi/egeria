@@ -4,6 +4,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.entities.RelationalDBSchemaTypeMapper;
 
+/**
+ * Singleton to map the OMRS "AssetSchemaType" relationship for IGC "database_schema" assets.
+ */
 public class AssetSchemaTypeMapper_DatabaseSchema extends RelationshipMapping {
 
     private static class Singleton {

@@ -2,6 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships;
 
+/**
+ * Singleton to map the OMRS "AssetSchemaType" relationship between IGC "data_file" and "data_file_record" objects.
+ */
 public class AssetSchemaTypeMapper_FileRecord extends RelationshipMapping {
 
     private static class Singleton {

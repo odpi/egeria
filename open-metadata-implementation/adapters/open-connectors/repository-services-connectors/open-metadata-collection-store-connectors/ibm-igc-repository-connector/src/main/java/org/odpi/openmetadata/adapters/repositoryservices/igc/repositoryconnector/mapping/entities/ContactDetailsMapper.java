@@ -9,6 +9,9 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 
+/**
+ * Defines the mapping to the OMRS "ContactDetails" entity.
+ */
 public class ContactDetailsMapper extends ReferenceableMapper {
 
     public static final String IGC_RID_PREFIX = IGCOMRSMetadataCollection.generateTypePrefix("CD");

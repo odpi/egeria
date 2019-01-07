@@ -15,6 +15,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+/**
+ * Singleton defining the mapping to the OMRS "PrimaryKey" classification.
+ */
 public class PrimaryKeyMapper extends ClassificationMapping {
 
     private static final Logger log = LoggerFactory.getLogger(ConfidentialityMapper.class);
@@ -39,7 +42,7 @@ public class PrimaryKeyMapper extends ClassificationMapping {
     }
 
     /**
-     * Implement the "PrimaryKey" OMRS classification for IGC database_column assets.
+     * Implements the "PrimaryKey" OMRS classification for IGC database_column assets.
      *
      * @param igcomrsRepositoryConnector
      * @param classifications

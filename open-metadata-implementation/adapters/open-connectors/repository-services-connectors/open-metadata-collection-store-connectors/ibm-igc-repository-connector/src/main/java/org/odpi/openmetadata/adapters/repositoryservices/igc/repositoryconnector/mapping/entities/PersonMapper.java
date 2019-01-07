@@ -5,6 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.ContactThroughMapper_Person;
 
+/**
+ * Defines the mapping to the OMRS "Person" entity.
+ */
 public class PersonMapper extends ReferenceableMapper {
 
     public PersonMapper(IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {

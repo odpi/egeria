@@ -2,8 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships;
 
+import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSMetadataCollection;
+
 /**
- * Singleton to represent the SemanticAssignment relationship in OMRS.
+ * Singleton to map the OMRS "SemanticAssignment" relationship for IGC "term" assets.
  */
 public class SemanticAssignmentMapper extends RelationshipMapping {
 
@@ -16,7 +18,7 @@ public class SemanticAssignmentMapper extends RelationshipMapping {
 
     private SemanticAssignmentMapper() {
         super(
-                "main_object",
+                IGCOMRSMetadataCollection.DEFAULT_IGC_TYPE,
                 "term",
                 "assigned_to_terms",
                 "assigned_assets",
@@ -24,6 +26,10 @@ public class SemanticAssignmentMapper extends RelationshipMapping {
                 "assignedElements",
                 "meaning"
         );
+        // We will explicitly exclude terms from being applied a SemanticAssignment, as it would overlap with
+        // classifications like Confidentiality (and is probably better done via other more meaningful
+        // term-to-term relationships)
+        getProxyOneMapping().addExcludedIgcAssetType("term");
     }
 
 }

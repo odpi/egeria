@@ -7,6 +7,9 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.ConnectionToAssetMapper_Database;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.DataContentForDataSetMapper;
 
+/**
+ * Define sthe mapping to the OMRS "Database" entity.
+ */
 public class DatabaseMapper extends ReferenceableMapper {
 
     public DatabaseMapper(IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {

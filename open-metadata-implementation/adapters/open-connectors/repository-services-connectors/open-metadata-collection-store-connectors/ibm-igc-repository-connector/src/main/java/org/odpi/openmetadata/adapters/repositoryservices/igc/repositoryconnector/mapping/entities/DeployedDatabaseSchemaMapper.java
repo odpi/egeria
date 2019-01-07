@@ -7,6 +7,9 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.AssetSchemaTypeMapper_DatabaseSchema;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.DataContentForDataSetMapper;
 
+/**
+ * Defines the mapping to the OMRS "DeployedDatabaseSchema" entity.
+ */
 public class DeployedDatabaseSchemaMapper extends ReferenceableMapper {
 
     public DeployedDatabaseSchemaMapper(IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {

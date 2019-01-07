@@ -6,6 +6,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * The payload contents of all Information Analyzer-specific events on the InfosphereEvents topic.
+ */
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class InfosphereEventsIAEvent extends InfosphereEvents {
 

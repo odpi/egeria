@@ -2,6 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships;
 
+/**
+ * Singleton to map the OMRS "FolderHierarchy" relationship for IGC "data_file_folder" assets.
+ */
 public class FolderHierarchyMapper extends RelationshipMapping {
 
     private static class Singleton {

@@ -4,6 +4,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.entities.TabularColumnTypeMapper;
 
+/**
+ * Singleton to map the OMRS "SchemaAttributeType" relationship for IGC "data_file_field" assets.
+ */
 public class SchemaAttributeTypeMapper_FileField extends RelationshipMapping {
 
     private static class Singleton {

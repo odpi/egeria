@@ -6,6 +6,9 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.AttributeForSchemaMapper_TableSchema;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.SchemaAttributeTypeMapper_DatabaseTable;
 
+/**
+ * Defines the mapping to the OMRS "RelationalTable" entity.
+ */
 public class RelationalTableMapper extends ReferenceableMapper {
 
     public RelationalTableMapper(IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {

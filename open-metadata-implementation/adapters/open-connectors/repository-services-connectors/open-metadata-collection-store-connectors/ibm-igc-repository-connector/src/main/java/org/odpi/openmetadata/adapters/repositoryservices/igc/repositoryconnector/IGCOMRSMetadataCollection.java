@@ -38,6 +38,9 @@ import java.io.StringWriter;
 import java.net.URL;
 import java.util.*;
 
+/**
+ * Provides the OMRSMetadataCollection implementation for IBM InfoSphere Information Governance Catalog ("IGC").
+ */
 public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
 
     private static final Logger log = LoggerFactory.getLogger(IGCOMRSMetadataCollection.class);
@@ -102,6 +105,8 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
      * attribute type definitions (AttributeTypeDefs).  These provide types for properties in full
      * type definitions.  Full type definitions (TypeDefs) describe types for entities, relationships
      * and classifications.
+     *
+     * (Currently only full type definitions (TypeDefs) are implemented.)
      *
      * @param userId unique identifier for requesting user.
      * @return TypeDefGalleryResponse List of different categories of type definitions.
@@ -277,7 +282,8 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
     }
 
     /**
-     * Return a requested relationship.
+     * Return a requested relationship. Note that currently this will only work for relationships known to
+     * (originated within) IGC.
      *
      * @param userId unique identifier for requesting user.
      * @param guid String unique identifier for the relationship.
@@ -389,7 +395,8 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
     }
 
     /**
-     * Return the relationships for a specific entity.
+     * Return the relationships for a specific entity. Note that currently this will only work for relationships known
+     * to (originated within) IGC, and that not all parameters are (yet) implemented.
      *
      * @param userId unique identifier for requesting user.
      * @param entityGUID String unique identifier for the entity.
@@ -1040,7 +1047,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
     }
 
     /**
-     * Return the header, classifications and properties of a specific entity.
+     * Return the header, classifications and properties of a specific entity, using the provided IGC asset.
      *
      * @param userId unique identifier for requesting user.
      * @param guid String unique identifier for the entity.
@@ -1284,11 +1291,11 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
     /**
      * Adds the provided value to the search criteria for IGC.
      *
-     * @param igcSearchConditionSet
-     * @param omrsPropertyName
-     * @param igcProperties
-     * @param propertyMappingSet
-     * @param value
+     * @param igcSearchConditionSet the search conditions to which to add the criteria
+     * @param omrsPropertyName the OMRS property name to search
+     * @param igcProperties the list of IGC properties to which to add for inclusion in the IGC search
+     * @param propertyMappingSet the property mappings
+     * @param value the value for which to search
      */
     public void addSearchConditionFromValue(IGCSearchConditionSet igcSearchConditionSet,
                                             String omrsPropertyName,

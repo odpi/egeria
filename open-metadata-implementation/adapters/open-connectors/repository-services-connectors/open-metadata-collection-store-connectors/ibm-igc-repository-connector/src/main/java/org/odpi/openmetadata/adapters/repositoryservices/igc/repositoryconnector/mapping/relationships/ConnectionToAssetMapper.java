@@ -2,6 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships;
 
+/**
+ * Singleton to map the OMRS "ConnectionToAsset" relationship.
+ * @see ConnectionToAssetMapper_Database
+ * @see ConnectionToAssetMapper_FileFolder
+ */
 public class ConnectionToAssetMapper extends RelationshipMapping {
 
     private static class Singleton {

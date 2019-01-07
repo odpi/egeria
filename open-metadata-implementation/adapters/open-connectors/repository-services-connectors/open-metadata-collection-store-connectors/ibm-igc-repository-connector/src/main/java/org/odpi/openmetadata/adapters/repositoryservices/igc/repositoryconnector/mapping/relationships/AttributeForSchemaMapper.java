@@ -2,6 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships;
 
+/**
+ * Singleton to map the OMRS "AttributeForSchemaMapper" relationship.
+ * @see AttributeForSchemaMapper_RecordField
+ * @see AttributeForSchemaMapper_TableColumn
+ * @see AttributeForSchemaMapper_TableSchema
+ */
 public class AttributeForSchemaMapper extends RelationshipMapping {
 
     private static class Singleton {

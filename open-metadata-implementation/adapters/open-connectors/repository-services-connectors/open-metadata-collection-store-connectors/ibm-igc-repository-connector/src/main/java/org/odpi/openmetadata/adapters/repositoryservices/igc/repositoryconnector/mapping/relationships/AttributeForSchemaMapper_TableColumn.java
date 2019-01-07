@@ -4,6 +4,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.entities.RelationalTableTypeMapper;
 
+/**
+ * Singleton to map the OMRS "AttributeForSchema" relationship between IGC "database_table" and "database_column" assets.
+ */
 public class AttributeForSchemaMapper_TableColumn extends RelationshipMapping {
 
     private static class Singleton {

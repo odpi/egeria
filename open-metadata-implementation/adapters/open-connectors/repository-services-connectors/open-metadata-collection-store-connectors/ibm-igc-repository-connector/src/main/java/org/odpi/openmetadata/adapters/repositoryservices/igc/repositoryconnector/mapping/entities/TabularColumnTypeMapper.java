@@ -7,6 +7,9 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.SchemaAttributeTypeMapper_DatabaseColumn;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.SchemaAttributeTypeMapper_FileField;
 
+/**
+ * Defines the mapping to the OMRS "TabularColumnType" entity.
+ */
 public class TabularColumnTypeMapper extends ReferenceableMapper {
 
     public static final String IGC_RID_PREFIX = IGCOMRSMetadataCollection.generateTypePrefix("TCT");
