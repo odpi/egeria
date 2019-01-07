@@ -14,9 +14,6 @@ public class RelatedTermMapper extends RelationshipMapping {
         return Singleton.INSTANCE;
     }
 
-    // TODO: this seems to result in an infinite loop of events -- probably the same for all such examples
-    //  where the types and properties match each other?  (Or was this a left-over from ignoring assigned_to_terms
-    //  when initially loading the environment? Reload a fresh environment and re-test...)
     private RelatedTermMapper() {
         super(
                 "term",
