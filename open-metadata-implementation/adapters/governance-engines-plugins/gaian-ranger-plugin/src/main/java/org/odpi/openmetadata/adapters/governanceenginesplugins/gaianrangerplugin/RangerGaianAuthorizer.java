@@ -4,7 +4,7 @@ package org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugi
 
 import com.ibm.gaiandb.Logger;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ranger.authorization.hadoop.config.RangerConfiguration;
 import org.apache.ranger.plugin.audit.RangerDefaultAuditHandler;
 import org.apache.ranger.plugin.model.RangerPolicy;
