@@ -6,9 +6,18 @@ import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicConnector;
+import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
+import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSConfigErrorException;
 import org.odpi.openmetadata.virtualdataconnector.virtualiser.gaian.GaianQueryConstructor;
 import org.odpi.openmetadata.virtualdataconnector.virtualiser.kafka.KafkaVirtualiserConsumer;
 import org.odpi.openmetadata.virtualdataconnector.virtualiser.views.ViewsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -38,6 +47,14 @@ public class KafkaVirtualiser{
     @Autowired
     private GaianQueryConstructor gaianQueryConstructor;
 
+    //TODO: Load the Access Service Configuration from somewhere
+    private AccessServiceConfig virtualiserKafkaConfig;
+
+    private KafkaOpenMetadataTopicConnector inTopicKafkaConnector;
+    private KafkaOpenMetadataTopicConnector outTopicKafkaConnector;
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
     /**
      * use Kafka consumer to listen to Information View Out Topic
@@ -59,6 +76,50 @@ public class KafkaVirtualiser{
         Thread thread = new Thread(kafkaVirtualiserConsumer);
         thread.start();
 
+    }
+
+    @PostConstruct
+    public void initializeKafkaConnector() {
+        final String actionDescription = "initialize in and out topic Kafka connectors";
+        inTopicKafkaConnector = initializeTopicConnector(virtualiserKafkaConfig.getAccessServiceInTopic());
+        outTopicKafkaConnector = initializeTopicConnector(virtualiserKafkaConfig.getAccessServiceOutTopic());
+
+        try {
+            inTopicKafkaConnector.start();
+        } catch (ConnectorCheckedException e){
+            logger.error("Cannot initialize the in-topic connector", e);
+        }
+
+        try {
+            outTopicKafkaConnector.start();
+        } catch (ConnectorCheckedException e){
+            logger.error("Cannot initialize the out-topic connector", e);
+        }
+    }
+
+    private KafkaOpenMetadataTopicConnector initializeTopicConnector(Connection topicConnection) {
+        if (topicConnection != null){
+            try {
+                ConnectorBroker connectorBroker = new ConnectorBroker();
+                KafkaOpenMetadataTopicConnector topicConnector = (KafkaOpenMetadataTopicConnector) connectorBroker.getConnector(topicConnection);
+                return topicConnector;
+            } catch (Throwable error) {
+                String methodName = "getTopicConnector";
+                OMRSErrorCode errorCode = OMRSErrorCode.NULL_TOPIC_CONNECTOR;
+                String errorMessage = errorCode.getErrorMessageId()
+                        + errorCode.getFormattedErrorMessage("getTopicConnector");
+
+                throw new OMRSConfigErrorException(errorCode.getHTTPErrorCode(),
+                        this.getClass().getName(),
+                        methodName,
+                        errorMessage,
+                        errorCode.getSystemAction(),
+                        errorCode.getUserAction(),
+                        error);
+
+            }
+        }
+        return null;
     }
 
 
