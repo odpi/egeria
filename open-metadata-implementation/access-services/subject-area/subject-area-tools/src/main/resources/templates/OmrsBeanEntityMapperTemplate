@@ -55,92 +55,93 @@ public class <$$uEntityName$$>Mapper {
                 systemAttributes.setGUID(omrsEntityDetail.getGUID());
                 <$$EntityName$$>.setSystemAttributes(systemAttributes);
 
-
                 // Set properties
                 InstanceProperties omrsEntityDetailProperties = omrsEntityDetail.getProperties();
-                if (omrsEntityDetailProperties != null) {
-                    Iterator omrsPropertyIterator = omrsEntityDetailProperties.getPropertyNames();
-                    while (omrsPropertyIterator.hasNext()) {
-                        String name = (String) omrsPropertyIterator.next();
-                        //TODO check if this is a property we expect or whether the type has been added to.
-                        // this is a property we expect
-                        InstancePropertyValue value = omrsEntityDetailProperties.getPropertyValue(name);
+                if (omrsEntityDetailProperties!=null) {
+                  omrsEntityDetailProperties.setEffectiveFromTime(<$$EntityName$$>.getEffectiveFromTime());
+                  omrsEntityDetailProperties.setEffectiveToTime(<$$EntityName$$>.getEffectiveToTime());
+                  Iterator omrsPropertyIterator = omrsEntityDetailProperties.getPropertyNames();
 
-                        // supplied guid matches the expected type
+                  while (omrsPropertyIterator.hasNext()) {
+                    String name = (String) omrsPropertyIterator.next();
+                    //TODO check if this is a property we expect or whether the type has been added to.
+                    // this is a property we expect
+                    InstancePropertyValue value = omrsEntityDetailProperties.getPropertyValue(name);
 
-                        Object actualValue;
-                        switch (value.getInstancePropertyCategory()) {
-                            case PRIMITIVE:
-                                PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) value;
-                                actualValue = primitivePropertyValue.getPrimitiveValue();
-                                if (<$$EntityName$$>.ATTRIBUTE_NAMES_SET.contains(name)) {
-                                   <$$Attr$$
-                                   if (name.equals("<$$AttrName$$>")) {
-                                       <$$EntityName$$>.set<$$uAttrName$$>((<$$AttrType$$>)actualValue);
-                                   }
-                                   $$Attr$$>
+                    // supplied guid matches the expected type
 
-                                } else {
-                                    // put out the omrs value object
-                                    if (null==<$$EntityName$$>.getExtraAttributes())  {
-                                         <$$EntityName$$>.setExtraAttributes(new HashMap<String, Object>());
-                                    }
-                                   <$$EntityName$$>.getExtraAttributes().put(name, primitivePropertyValue);
+                    Object actualValue;
+                    switch (value.getInstancePropertyCategory()) {
+                        case PRIMITIVE:
+                            PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) value;
+                            actualValue = primitivePropertyValue.getPrimitiveValue();
+                            if (<$$EntityName$$>.ATTRIBUTE_NAMES_SET.contains(name)) {
+                               <$$Attr$$
+                               if (name.equals("<$$AttrName$$>")) {
+                                   <$$EntityName$$>.set<$$uAttrName$$>((<$$AttrType$$>)actualValue);
+                               }
+                               $$Attr$$>
+
+                            } else {
+                                // put out the omrs value object
+                                if (null==<$$EntityName$$>.getExtraAttributes())  {
+                                     <$$EntityName$$>.setExtraAttributes(new HashMap<String, Object>());
                                 }
-                                break;
-                            case ENUM:
-                                EnumPropertyValue enumPropertyValue = (EnumPropertyValue) value;
-                                String symbolicName = enumPropertyValue.getSymbolicName();
-                                if (<$$EntityName$$>.ENUM_NAMES_SET.contains(name)) {
-                                    <$$Enum$$
-                                     if (name.equals("<$$EnumName$$>")) {
-                                           org.odpi.openmetadata.accessservices.subjectarea.properties.enums.<$$uEnumType$$> <$$EnumName$$> = org.odpi.openmetadata.accessservices.subjectarea.properties.enums.<$$uEnumType$$>.valueOf(symbolicName);
-                                          <$$EntityName$$>.set<$$uEnumName$$>(<$$EnumName$$>);
-                                     }
-                                    $$Enum$$>
-
-                                } else {
-                                    // put out the omrs value object
-                                    if (null==<$$EntityName$$>.getExtraAttributes())  {
-                                         <$$EntityName$$>.setExtraAttributes(new HashMap<String, Object>());
-                                    }
-                                     <$$EntityName$$>.getExtraAttributes().put(name, enumPropertyValue);
+                               <$$EntityName$$>.getExtraAttributes().put(name, primitivePropertyValue);
+                            }
+                            break;
+                        case ENUM:
+                            EnumPropertyValue enumPropertyValue = (EnumPropertyValue) value;
+                            String symbolicName = enumPropertyValue.getSymbolicName();
+                            if (<$$EntityName$$>.ENUM_NAMES_SET.contains(name)) {
+                                <$$Enum$$
+                                 if (name.equals("<$$EnumName$$>")) {
+                                       org.odpi.openmetadata.accessservices.subjectarea.properties.enums.<$$uEnumType$$> <$$EnumName$$> = org.odpi.openmetadata.accessservices.subjectarea.properties.enums.<$$uEnumType$$>.valueOf(symbolicName);
+                                      <$$EntityName$$>.set<$$uEnumName$$>(<$$EnumName$$>);
                                  }
+                                $$Enum$$>
 
-                                break;
-                            case MAP:
-                                if (<$$EntityName$$>.MAP_NAMES_SET.contains(name)) {
-                                     MapPropertyValue mapPropertyValue = (MapPropertyValue) value;
-                                     InstanceProperties instancePropertyForMap = (InstanceProperties) mapPropertyValue.getMapValues();
+                            } else {
+                                // put out the omrs value object
+                                if (null==<$$EntityName$$>.getExtraAttributes())  {
+                                     <$$EntityName$$>.setExtraAttributes(new HashMap<String, Object>());
+                                }
+                                 <$$EntityName$$>.getExtraAttributes().put(name, enumPropertyValue);
+                             }
 
-                                     <$$Map$$
-                                     if (name.equals("<$$MapName$$>")) {
+                            break;
+                        case MAP:
+                            if (<$$EntityName$$>.MAP_NAMES_SET.contains(name)) {
+                                 MapPropertyValue mapPropertyValue = (MapPropertyValue) value;
+                                 InstanceProperties instancePropertyForMap = (InstanceProperties) mapPropertyValue.getMapValues();
 
-                                           // Only support Map<String,String> as that is what is in the archive types at this time.
-                                           Map<String, String> actualMap = new HashMap();
-                                           Iterator iter = instancePropertyForMap.getPropertyNames();
-                                           while (iter.hasNext()) {
-                                               String mapkey = (String) iter.next();
-                                               PrimitivePropertyValue primitivePropertyMapValue = (PrimitivePropertyValue) instancePropertyForMap.getPropertyValue(mapkey);
-                                               String mapvalue = (String) primitivePropertyMapValue.getPrimitiveValue();
-                                               actualMap.put(mapkey, mapvalue);
-                                           }
-                                           <$$EntityName$$>.set<$$uMapName$$>(actualMap);
-                                     }
-                                     $$Map$$>
+                                 <$$Map$$
+                                 if (name.equals("<$$MapName$$>")) {
 
-                                   }
-                                   break;
-                            case ARRAY:
-                            case STRUCT:
-                            case UNKNOWN:
-                                // error
-                                break;
-                        }
+                                       // Only support Map<String,String> as that is what is in the archive types at this time.
+                                       Map<String, String> actualMap = new HashMap();
+                                       Iterator iter = instancePropertyForMap.getPropertyNames();
+                                       while (iter.hasNext()) {
+                                           String mapkey = (String) iter.next();
+                                           PrimitivePropertyValue primitivePropertyMapValue = (PrimitivePropertyValue) instancePropertyForMap.getPropertyValue(mapkey);
+                                           String mapvalue = (String) primitivePropertyMapValue.getPrimitiveValue();
+                                           actualMap.put(mapkey, mapvalue);
+                                       }
+                                       <$$EntityName$$>.set<$$uMapName$$>(actualMap);
+                                 }
+                                 $$Map$$>
 
-                    }   // end while
+                               }
+                               break;
+                        case ARRAY:
+                        case STRUCT:
+                        case UNKNOWN:
+                            // error
+                            break;
+                    }
+
+                  }   // end while
                 }
-
                  // set classifications
                  List<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification> omrsclassifications = omrsEntityDetail.getClassifications() ;
                  if (omrsclassifications != null && !omrsclassifications.isEmpty()){
@@ -196,6 +197,8 @@ public class <$$uEntityName$$>Mapper {
             }
 
             InstanceProperties instanceProperties = new InstanceProperties();
+            instanceProperties.setEffectiveFromTime(<$$EntityName$$>.getEffectiveFromTime());
+            instanceProperties.setEffectiveToTime(<$$EntityName$$>.getEffectiveToTime());
             // primitives
 
             <$$Attr$$

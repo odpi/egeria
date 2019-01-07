@@ -30,7 +30,7 @@ public class SubjectAreaCategoryImpl implements org.odpi.openmetadata.accessserv
     /*
      * The URL of the server where OMAS is active
      */
-    private String                    omasServerURL = null;
+    private String omasServerURL = null;
     /*
      * serverName is a name that picks out a specific named running instance on the server.
      */
@@ -307,6 +307,50 @@ public class SubjectAreaCategoryImpl implements org.odpi.openmetadata.accessserv
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
     }
+    /**
+     * Restore a Category
+     *
+     * Restore allows the deleted Category to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the category to restore
+     * @return the restored category
+     * @throws UnrecognizedGUIDException the supplied guid was not recognised
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws FunctionNotSupportedException   Function not supported this indicates that a soft delete was issued but the repository does not support it.
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+    public  Category restoreCategory(String serverName, String userId,String guid) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            MetadataServerUncontactableException,
+            UnrecognizedGUIDException,
+            FunctionNotSupportedException,
+            UnexpectedResponseException {
+        final String methodName = "restoreCategory";
+        if (log.isDebugEnabled()) {
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
+        }
+        InputValidator.validateUserIdNotNull(className,methodName,userId);
+        InputValidator.validateGUIDNotNull(className,methodName,guid,"guid");
+
+        final String urlTemplate = this.omasServerURL +BASE_URL+"/%s";
+        String url = String.format(urlTemplate,serverName,userId,guid);
+
+        SubjectAreaOMASAPIResponse restResponse = RestCaller.issuePostNoBody(className,methodName,url);
+        DetectUtils.detectAndThrowUserNotAuthorizedException(methodName,restResponse);
+        DetectUtils.detectAndThrowInvalidParameterException(methodName,restResponse);
+        DetectUtils.detectAndThrowUnrecognizedGUIDException(methodName,restResponse);
+        DetectUtils.detectAndThrowFunctionNotSupportedException(methodName,restResponse);
+        Category category = DetectUtils.detectAndReturnCategory(methodName,restResponse);
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId="+userId );
+        }
+        return category;
+    }
+
 
     /**
      * Create a SubjectAreaDefinition
@@ -556,6 +600,50 @@ public class SubjectAreaCategoryImpl implements org.odpi.openmetadata.accessserv
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
     }
+    /**
+     * Restore a SubjectAreaDefinition
+     *
+     * Restore allows the deleted SubjectArea to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the term to restore
+     * @return the restored term
+     * @throws UnrecognizedGUIDException the supplied guid was not recognised
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws FunctionNotSupportedException   Function not supported this indicates that a soft delete was issued but the repository does not support it.
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+    public  SubjectAreaDefinition restoreSubjectAreaDefinition(String serverName, String userId,String guid) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            MetadataServerUncontactableException,
+            UnrecognizedGUIDException,
+            FunctionNotSupportedException,
+            UnexpectedResponseException {
+        final String methodName = "restoreSubjectArea";
+        if (log.isDebugEnabled()) {
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
+        }
+        InputValidator.validateUserIdNotNull(className,methodName,userId);
+        InputValidator.validateGUIDNotNull(className,methodName,guid,"guid");
+
+        final String urlTemplate = this.omasServerURL +BASE_URL+"/%s";
+        String url = String.format(urlTemplate,serverName,userId,guid);
+
+        SubjectAreaOMASAPIResponse restResponse = RestCaller.issuePostNoBody(className,methodName,url);
+        DetectUtils.detectAndThrowUserNotAuthorizedException(methodName,restResponse);
+        DetectUtils.detectAndThrowInvalidParameterException(methodName,restResponse);
+        DetectUtils.detectAndThrowUnrecognizedGUIDException(methodName,restResponse);
+        DetectUtils.detectAndThrowFunctionNotSupportedException(methodName,restResponse);
+        SubjectAreaDefinition subjectArea = DetectUtils.detectAndReturnSubjectAreaDefinition(methodName,restResponse);
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId="+userId );
+        }
+        return subjectArea;
+    }
+
     /*
      *  Update Category.
      *

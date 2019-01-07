@@ -13,6 +13,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
@@ -20,7 +21,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
@@ -185,6 +185,12 @@ public class EntitiesCreatorHelper {
 
     }
 
+
+    public EntityDetail getEntityByGuid(String guid) throws Exception {
+        return enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, guid);
+
+    }
+
     /**
      * Returns the entity filtered out from entities list based on qualified name
      *
@@ -295,19 +301,44 @@ public class EntitiesCreatorHelper {
                                   String qualifiedName,
                                   InstanceProperties properties,
                                   List<Classification> classifications) throws Exception {
-        EntityDetail entityDetail;
 
+        EntityDetailWrapper wrapper = createOrUpdateEntity(typeName,
+                qualifiedName,
+                properties,
+                classifications,
+                false);
+        return wrapper != null ? wrapper.getEntityDetail() : null;
+    }
+
+    public EntityDetailWrapper createOrUpdateEntity(String typeName,
+                                                    String qualifiedName,
+                                                    InstanceProperties properties,
+                                                    List<Classification> classifications,
+                                                    boolean update) throws Exception {
+        EntityDetail entityDetail;
+        EntityDetailWrapper wrapper;
         entityDetail = getEntity(typeName, qualifiedName);
         if (entityDetail == null) {
             entityDetail = addEntity("", Constants.USER_ID, typeName, properties, classifications, Constants.INFORMATION_VIEW_OMAS_NAME);
             log.info("Entity with qualified name {} added", qualifiedName);
             log.info("Entity: {}", entityDetail);
+            wrapper = new EntityDetailWrapper(entityDetail, EntityDetailWrapper.EntityStatus.NEW);
         } else {
             log.info("Entity with qualified name {} already exists", qualifiedName);
             log.info("Entity: {}", entityDetail);
+            if (update && !EntityPropertiesUtils.matchExactlyInstanceProperties(entityDetail.getProperties(), properties)) {//TODO should add validation
+                log.info("Updating entity with qualified name {} ", qualifiedName);
+                entityDetail = updateEntity(entityDetail, Constants.USER_ID, properties);
+            }
+            wrapper = new EntityDetailWrapper(entityDetail, EntityDetailWrapper.EntityStatus.UPDATED);
         }
 
+        return wrapper;
+    }
 
+    private EntityDetail updateEntity(EntityDetail entityDetail, String userId, InstanceProperties properties) throws Exception {
+        //TODO add validation to new instance properties
+        entityDetail = enterpriseConnector.getMetadataCollection().updateEntityProperties(userId, entityDetail.getGUID(), properties);
         return entityDetail;
     }
 
@@ -341,6 +372,7 @@ public class EntitiesCreatorHelper {
 
         return relationship;
     }
+
 
     /**
      * Returns the properties object for the given pair of key - value that can be used for retrieving
@@ -381,10 +413,21 @@ public class EntitiesCreatorHelper {
         }
     }
 
-    public EntityDetail getEntity(String guid) throws RepositoryErrorException, UserNotAuthorizedException, EntityProxyOnlyException, InvalidParameterException, EntityNotKnownException {
-
-        return enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, guid);
-
+    public void purgeRelationship(Relationship relationship) throws Exception {
+        if (relationship == null) {
+            log.info("Null relationship passed for purge, nothing to purge");
+        }
+        log.info("Purge relationship with guid {}", relationship.getGUID());
+        enterpriseConnector.getMetadataCollection().deleteRelationship(Constants.USER_ID, relationship.getType().getTypeDefGUID(), relationship.getType().getTypeDefName(), relationship.getGUID());
+        enterpriseConnector.getMetadataCollection().purgeRelationship(Constants.USER_ID, relationship.getType().getTypeDefGUID(), relationship.getType().getTypeDefName(), relationship.getGUID());
     }
 
+    public void purgeEntity(EntitySummary entitySummary) throws Exception {
+        if (entitySummary == null) {
+            log.info("Null entity passed for purge, nothing to purge");
+        }
+        log.info("Purge entity with guid {}", entitySummary.getGUID());
+        enterpriseConnector.getMetadataCollection().deleteEntity(Constants.USER_ID, entitySummary.getType().getTypeDefGUID(), entitySummary.getType().getTypeDefName(), entitySummary.getGUID());
+        enterpriseConnector.getMetadataCollection().purgeEntity(Constants.USER_ID, entitySummary.getType().getTypeDefGUID(), entitySummary.getType().getTypeDefName(), entitySummary.getGUID());
+    }
 }

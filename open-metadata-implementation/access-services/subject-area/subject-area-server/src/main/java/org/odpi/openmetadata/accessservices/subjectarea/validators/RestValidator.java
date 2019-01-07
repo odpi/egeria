@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.validators;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.MetadataServerUncontactableException;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.classifications.SubjectArea.SubjectArea;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.CategorySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.GlossaryResponse;
@@ -77,12 +78,12 @@ public class RestValidator {
         String guid =null;
         String relationshipGuid =null;
         /*
-             * There needs to be an associated glossary supplied
-             * The glossary could be of NodeType Glossary, Taxonomy , Canonical glossary or canonical and taxonomy.
-             * The Glossary summary contains 4 identifying fields. We only require one of these fields to be supplied.
-             * If more than one is supplied then we look for a glossary matching the supplied guid then matching the name.
-             * Note if a relationship guid is supplied - then we reject this request - as the relationship cannot exist before one of its ends exists.
-             */
+         * There needs to be an associated glossary supplied
+         * The glossary could be of NodeType Glossary, Taxonomy , Canonical glossary or canonical and taxonomy.
+         * The Glossary summary contains 4 identifying fields. We only require one of these fields to be supplied.
+         * If more than one is supplied then we look for a glossary matching the supplied guid then matching the name.
+         * Note if a relationship guid is supplied - then we reject this request - as the relationship cannot exist before one of its ends exists.
+         */
 
         if (suppliedGlossary == null ) {
             // error - glossary is mandatory
@@ -98,84 +99,49 @@ public class RestValidator {
                     errorCode.getSystemAction(),
                     errorCode.getUserAction());
             response = OMASExceptionToResponse.convertInvalidParameterException(e);
-        } else {
+        } else
+        {
             guid = suppliedGlossary.getGuid();
             relationshipGuid = suppliedGlossary.getRelationshipguid();
-            String glossaryName = suppliedGlossary.getName();
-
-            if (relationshipGuid !=null) {
-
+            if (relationshipGuid != null)
+            {
                 // glossary relationship cannot exist before the Term exists.
                 SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.CREATE_WITH_GLOSSARY_RELATIONSHIP;
-                String errorMessage = errorCode.getErrorMessageId()
-                        + errorCode.getFormattedErrorMessage(className,
-                        methodName, relationshipGuid);
+                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(className, methodName, relationshipGuid);
                 log.error(errorMessage);
-                InvalidParameterException e = new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                        className,
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
+                InvalidParameterException e = new InvalidParameterException(errorCode.getHTTPErrorCode(), className, methodName, errorMessage, errorCode.getSystemAction(), errorCode.getUserAction());
                 response = OMASExceptionToResponse.convertInvalidParameterException(e);
             }
-
-            if (guid==null && glossaryName ==null) {
-                // error -  glossary is mandatory
-                SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.CREATE_WITHOUT_GLOSSARY;
-                String errorMessage = errorCode.getErrorMessageId()
-                        + errorCode.getFormattedErrorMessage(className,
-                        methodName);
-                log.error(errorMessage);
-                InvalidParameterException e = new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                        className,
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
-                response = OMASExceptionToResponse.convertInvalidParameterException(e);
-            }
-
-
-            if (response ==null && guid!=null ) {
-                SubjectAreaOMASAPIResponse glossaryResponse = glossaryRESTServices.getGlossaryByGuid(serverName,userId,guid);
-                if (glossaryResponse.getResponseCategory().equals(ResponseCategory.Category.Glossary)) {
-                    return glossaryResponse;
-                } else {
-                    // glossary not found
+            if (response == null)
+            {
+                if (guid == null)
+                {
+                    // error -  glossary guid is mandatory
+                    SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.CREATE_WITHOUT_GLOSSARY;
+                    String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(className, methodName);
+                    log.error(errorMessage);
+                    InvalidParameterException e = new InvalidParameterException(errorCode.getHTTPErrorCode(), className, methodName, errorMessage, errorCode.getSystemAction(), errorCode.getUserAction());
+                    response = OMASExceptionToResponse.convertInvalidParameterException(e);
+                } else
+                {
+                    // find by guid
+                    response = glossaryRESTServices.getGlossaryByGuid(serverName, userId, guid);
+                    // set error code in case we failed
                     SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.CREATE_WITH_NON_EXISTANT_GLOSSARY_GUID;
-                    String errorMessage = errorCode.getErrorMessageId()
-                            + errorCode.getFormattedErrorMessage(className,
-                            methodName, glossaryName);
-                    log.error(errorMessage);
-                    InvalidParameterException e = new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                            className,
-                            methodName,
-                            errorMessage,
-                            errorCode.getSystemAction(),
-                            errorCode.getUserAction());
-                    response = OMASExceptionToResponse.convertInvalidParameterException(e);
-                }
-            }
-            //  try finding by name.
-            if (response ==null && guid==null && glossaryName!=null) {
-                SubjectAreaOMASAPIResponse glossaryResponse = glossaryRESTServices.getGlossaryByName(serverName,userId, glossaryName);
-                if (glossaryResponse.getResponseCategory().equals(ResponseCategory.Category.Glossary)) {
-                    response = glossaryResponse;
-                } else {
-                    // glossary not found
-                    SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.CREATE_WITH_NON_EXISTANT_GLOSSARY_NAME;
-                    String errorMessage = errorCode.getErrorMessageId()
-                            + errorCode.getFormattedErrorMessage(className,
-                            methodName, glossaryName);
-                    log.error(errorMessage);
-                    InvalidParameterException e = new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                            className,
-                            methodName,
-                            errorMessage,
-                            errorCode.getSystemAction(),
-                            errorCode.getUserAction());
-                    response = OMASExceptionToResponse.convertInvalidParameterException(e);
+                    if (response.getResponseCategory()!= ResponseCategory.Glossary) {
+                        // glossary relationship cannot exist before the Term exists.
+                        String errorMessage = errorCode.getErrorMessageId()
+                                + errorCode.getFormattedErrorMessage(className,
+                                methodName, relationshipGuid);
+                        log.error(errorMessage);
+                        InvalidParameterException e = new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                                className,
+                                methodName,
+                                errorMessage,
+                                errorCode.getSystemAction(),
+                                errorCode.getUserAction());
+                        response = OMASExceptionToResponse.convertInvalidParameterException(e);
+                    }
                 }
             }
         }
@@ -249,13 +215,10 @@ public class RestValidator {
             }
 
             if (response ==null && guid!=null ) {
-                SubjectAreaOMASAPIResponse glossaryResponse = categoryRESTServices.getCategory(serverName, userId,guid);
-                if (glossaryResponse.getResponseCategory().equals(ResponseCategory.Category.Category)) {
-                    GlossaryResponse typedGlossaryResponse = (GlossaryResponse)glossaryResponse;
-                    guid = typedGlossaryResponse.getGlossary().getSystemAttributes().getGUID();
-                } else {
+                response = categoryRESTServices.getCategory(serverName, userId,guid);
+                if (!response.getResponseCategory().equals(ResponseCategory.Category.Category)) {
                     // category not found
-                    SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.CREATE_WITH_NON_EXISTANT_GLOSSARY_GUID;
+                    SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.CREATE_WITH_NON_EXISTANT_CATEGORY_GUID;
                     String errorMessage = errorCode.getErrorMessageId()
                             + errorCode.getFormattedErrorMessage(className,
                             methodName, name);
