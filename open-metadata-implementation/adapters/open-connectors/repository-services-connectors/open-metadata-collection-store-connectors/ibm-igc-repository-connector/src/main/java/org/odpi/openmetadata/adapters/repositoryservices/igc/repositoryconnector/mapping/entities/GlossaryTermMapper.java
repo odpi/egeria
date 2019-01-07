@@ -12,16 +12,13 @@ public class GlossaryTermMapper extends ReferenceableMapper {
     public GlossaryTermMapper(IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {
 
         // Start by calling the superclass's constructor to initialise the Mapper
-        // (We will skip default relationships because we override assigned_to_terms to be Confidentiality rather than
-        //  SemanticAssignment. For labels, we'll manually add AttachedTag to the list of relationships below.)
         super(
                 igcomrsRepositoryConnector,
                 "term",
                 "Term",
                 "GlossaryTerm",
                 userId,
-                null,
-                false
+                null
         );
 
         // The list of properties that should be mapped
@@ -33,7 +30,6 @@ public class GlossaryTermMapper extends ReferenceableMapper {
         addSimplePropertyMapping("usage", "usage");
 
         // The classes to use for mapping any relationships
-        addRelationshipMapper(AttachedTagMapper.getInstance());
         addRelationshipMapper(TermCategorizationMapper.getInstance());
         addRelationshipMapper(SynonymMapper.getInstance());
         addRelationshipMapper(RelatedTermMapper.getInstance());

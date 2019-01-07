@@ -566,6 +566,10 @@ public class Reference extends ObjectPrinter {
             case "host_(engine)":
                 typeForSearch = "host";
                 break;
+            case "non_steward_user":
+            case "steward_user":
+                typeForSearch = "user";
+                break;
             default:
                 typeForSearch = assetType;
                 break;

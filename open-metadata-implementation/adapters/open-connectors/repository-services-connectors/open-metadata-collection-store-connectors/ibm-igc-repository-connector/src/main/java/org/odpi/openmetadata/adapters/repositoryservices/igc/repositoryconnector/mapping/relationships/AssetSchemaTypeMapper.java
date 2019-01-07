@@ -2,8 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships;
 
-import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.entities.RelationalDBSchemaTypeMapper;
-
 public class AssetSchemaTypeMapper extends RelationshipMapping {
 
     private static class Singleton {
@@ -15,16 +13,16 @@ public class AssetSchemaTypeMapper extends RelationshipMapping {
 
     private AssetSchemaTypeMapper() {
         super(
-                "database_schema",
-                "database_schema",
-                SELF_REFERENCE_SENTINEL,
-                SELF_REFERENCE_SENTINEL,
+                "",
+                "",
+                "",
+                "",
                 "AssetSchemaType",
                 "describesAssets",
-                "schema",
-                null,
-                RelationalDBSchemaTypeMapper.IGC_RID_PREFIX
+                "schema"
         );
+        addSubType(AssetSchemaTypeMapper_DatabaseSchema.getInstance());
+        addSubType(AssetSchemaTypeMapper_FileRecord.getInstance());
     }
 
 }

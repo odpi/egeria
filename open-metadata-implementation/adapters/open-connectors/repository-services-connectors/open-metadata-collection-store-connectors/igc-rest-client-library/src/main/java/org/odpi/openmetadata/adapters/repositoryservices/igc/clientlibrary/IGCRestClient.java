@@ -501,6 +501,8 @@ public class IGCRestClient {
         // Add non-main_object types that might also be looked-up by RID
         igcSearch.addType("classification");
         igcSearch.addType("label");
+        igcSearch.addType("user");
+        igcSearch.addType("group");
         ReferenceList results = search(igcSearch);
         Reference reference = null;
         if (results.getPaging().getNumTotal() > 0) {

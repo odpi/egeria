@@ -391,7 +391,7 @@ public abstract class RelationshipMapping {
      */
     private void addRealPropertiesToList(List<String> candidates, List<String> realProperties) {
         for (String propertyName : candidates) {
-            if (!propertyName.equals(SELF_REFERENCE_SENTINEL) && !realProperties.contains(propertyName)) {
+            if (!propertyName.equals(SELF_REFERENCE_SENTINEL) && !propertyName.equals("") && !realProperties.contains(propertyName)) {
                 realProperties.add(propertyName);
             }
         }
@@ -788,15 +788,22 @@ public abstract class RelationshipMapping {
             if (relationshipTypeGUID == null || relationshipTypeGUID.equals(omrsRelationshipDef.getGUID())) {
 
                 RelationshipMapping.OptimalStart optimalStart = mapping.getOptimalStart();
+                String fromAssetType = fromIgcObject.getType();
+                ProxyMapping pmOne = mapping.getProxyOneMapping();
+                ProxyMapping pmTwo = mapping.getProxyTwoMapping();
 
                 if (mapping.isSelfReferencing()) {
                     addSelfReferencingRelationship(igcomrsRepositoryConnector, mapping, relationships, fromIgcObject, userId);
                 } else if (!optimalStart.equals(RelationshipMapping.OptimalStart.CUSTOM)) {
                     if (fromIgcObject == null) {
                         log.error("Object received to lookup {} relationship was null, cannot proceed.", relationshipTypeGUID);
-                    } else if (fromIgcObject.isFullyRetrieved() || !optimalStart.equals(RelationshipMapping.OptimalStart.OPPOSITE)) {
+                    } else if (fromIgcObject.isFullyRetrieved()
+                            || (optimalStart.equals(OptimalStart.ONE) && pmOne.matchesAssetType(fromAssetType) )
+                            || (optimalStart.equals(OptimalStart.TWO) && pmTwo.matchesAssetType(fromAssetType)) ) {
                         addDirectRelationship(igcomrsRepositoryConnector, mapping, relationships, fromIgcObject, userId);
-                    } else if (optimalStart.equals(RelationshipMapping.OptimalStart.OPPOSITE)) {
+                    } else if (optimalStart.equals(OptimalStart.OPPOSITE)
+                            || (optimalStart.equals(OptimalStart.TWO) && pmOne.matchesAssetType(fromAssetType))
+                            || (optimalStart.equals(OptimalStart.ONE) && pmTwo.matchesAssetType(fromAssetType)) ) {
                         addInvertedRelationship(igcomrsRepositoryConnector, mapping, relationships, fromIgcObject, userId);
                     } else {
                         log.warn("Ran out of options for finding the relationship: {}", omrsRelationshipDef.getName());

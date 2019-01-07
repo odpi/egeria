@@ -23,6 +23,7 @@ public class SchemaAttributeTypeMapper extends RelationshipMapping {
         );
         addSubType(SchemaAttributeTypeMapper_DatabaseTable.getInstance());
         addSubType(SchemaAttributeTypeMapper_DatabaseTable.getInstance());
+        addSubType(SchemaAttributeTypeMapper_FileField.getInstance());
     }
 
 }
