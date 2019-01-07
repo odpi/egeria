@@ -23,6 +23,7 @@ public class AttributeForSchemaMapper extends RelationshipMapping {
         );
         addSubType(AttributeForSchemaMapper_TableSchema.getInstance());
         addSubType(AttributeForSchemaMapper_TableColumn.getInstance());
+        addSubType(AttributeForSchemaMapper_RecordField.getInstance());
     }
 
 }

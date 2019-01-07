@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.ConnectionToAssetMapper;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.ConnectionToAssetMapper_Database;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.DataContentForDataSetMapper;
 
 public class DatabaseMapper extends ReferenceableMapper {
@@ -31,7 +32,7 @@ public class DatabaseMapper extends ReferenceableMapper {
 
         // The list of relationships that should be mapped
         addRelationshipMapper(DataContentForDataSetMapper.getInstance());
-        addRelationshipMapper(ConnectionToAssetMapper.getInstance());
+        addRelationshipMapper(ConnectionToAssetMapper_Database.getInstance());
 
     }
 

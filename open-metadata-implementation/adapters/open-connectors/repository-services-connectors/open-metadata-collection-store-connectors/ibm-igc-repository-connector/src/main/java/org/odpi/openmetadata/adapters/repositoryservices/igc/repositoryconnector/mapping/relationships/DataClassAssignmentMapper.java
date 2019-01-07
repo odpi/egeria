@@ -434,7 +434,8 @@ public class DataClassAssignmentMapper extends RelationshipMapping {
 
             Reference selectedClassification = (Reference)withSelectedClassification.getPropertyByName("selected_classification");
 
-            if (selectedClassification != null) {
+            // If the reference itself (or its type) are null the relationship does not exist
+            if (selectedClassification != null && selectedClassification.getType() != null) {
                 try {
 
                     InstanceProperties relationshipProperties = new InstanceProperties();

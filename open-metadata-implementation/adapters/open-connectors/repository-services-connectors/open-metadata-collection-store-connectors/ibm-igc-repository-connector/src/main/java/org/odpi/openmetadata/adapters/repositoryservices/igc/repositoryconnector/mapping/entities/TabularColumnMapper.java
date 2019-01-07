@@ -3,32 +3,30 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.entities;
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.classifications.PrimaryKeyMapper;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.*;
 
-public class ConnectionMapper extends ReferenceableMapper {
+public class TabularColumnMapper extends ReferenceableMapper {
 
-    public ConnectionMapper(IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {
+    public TabularColumnMapper(IGCOMRSRepositoryConnector igcomrsRepositoryConnector, String userId) {
 
         // Start by calling the superclass's constructor to initialise the Mapper
         super(
                 igcomrsRepositoryConnector,
-                "data_connection",
-                "Data Connection",
-                "Connection",
-                userId,
-                null,
-                false
+                "data_file_field",
+                "Data File Field",
+                "TabularColumn",
+                userId
         );
 
         // The list of properties that should be mapped
         addSimplePropertyMapping("name", "name");
-        addSimplePropertyMapping("short_description", "description");
+        addSimplePropertyMapping("position", "position");
 
         // The list of relationships that should be mapped
-        addRelationshipMapper(ConnectionToAssetMapper_Database.getInstance());
-        addRelationshipMapper(ConnectionToAssetMapper_FileFolder.getInstance());
-        addRelationshipMapper(ConnectionConnectorTypeMapper.getInstance());
-        addRelationshipMapper(ConnectionEndpointMapper.getInstance());
+        addRelationshipMapper(AttributeForSchemaMapper_RecordField.getInstance());
+        addRelationshipMapper(SchemaAttributeTypeMapper_FileField.getInstance());
+        addRelationshipMapper(DataClassAssignmentMapper.getInstance());
 
     }
 

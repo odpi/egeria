@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.AssetSchemaTypeMapper;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.AssetSchemaTypeMapper_DatabaseSchema;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.DataContentForDataSetMapper;
 
 public class DeployedDatabaseSchemaMapper extends ReferenceableMapper {
@@ -24,7 +25,7 @@ public class DeployedDatabaseSchemaMapper extends ReferenceableMapper {
         addSimplePropertyMapping("short_description", "description");
 
         // The list of relationships that should be mapped
-        addRelationshipMapper(AssetSchemaTypeMapper.getInstance());
+        addRelationshipMapper(AssetSchemaTypeMapper_DatabaseSchema.getInstance());
         addRelationshipMapper(DataContentForDataSetMapper.getInstance());
 
     }
