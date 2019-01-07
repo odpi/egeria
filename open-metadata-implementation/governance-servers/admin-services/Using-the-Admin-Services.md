@@ -266,6 +266,15 @@ The OMRS then distributes this new metadata.
 POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository/event-mapper-details?connectorProvider={javaClassName}&eventSource={resourceName}
 ```
 
+For example, to enable the IBM Information Governance Catalog event mapper,
+POST the following (where `igc.hostname.somewhere.com` is the hostname of the
+domain (services) tier of the environment, and `59092` is the port on which
+its Kafka bus can be accessed):
+
+```
+POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository/event-mapper-details?connectorProvider=org.odpi.openmetadata.adapters.repositoryservices.igc.eventmapper.IGCOMRSRepositoryEventMapperProvider&eventSource=igc.hostname.somewhere.com:59092
+```
+
 #### Remove the local repository
 
 This command removes all configuration for the local repository.
