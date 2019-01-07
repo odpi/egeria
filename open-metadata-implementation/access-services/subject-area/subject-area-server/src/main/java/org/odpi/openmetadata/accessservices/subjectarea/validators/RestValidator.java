@@ -78,12 +78,12 @@ public class RestValidator {
         String guid =null;
         String relationshipGuid =null;
         /*
-             * There needs to be an associated glossary supplied
-             * The glossary could be of NodeType Glossary, Taxonomy , Canonical glossary or canonical and taxonomy.
-             * The Glossary summary contains 4 identifying fields. We only require one of these fields to be supplied.
-             * If more than one is supplied then we look for a glossary matching the supplied guid then matching the name.
-             * Note if a relationship guid is supplied - then we reject this request - as the relationship cannot exist before one of its ends exists.
-             */
+         * There needs to be an associated glossary supplied
+         * The glossary could be of NodeType Glossary, Taxonomy , Canonical glossary or canonical and taxonomy.
+         * The Glossary summary contains 4 identifying fields. We only require one of these fields to be supplied.
+         * If more than one is supplied then we look for a glossary matching the supplied guid then matching the name.
+         * Note if a relationship guid is supplied - then we reject this request - as the relationship cannot exist before one of its ends exists.
+         */
 
         if (suppliedGlossary == null ) {
             // error - glossary is mandatory
@@ -103,7 +103,6 @@ public class RestValidator {
         {
             guid = suppliedGlossary.getGuid();
             relationshipGuid = suppliedGlossary.getRelationshipguid();
-            String glossaryName = suppliedGlossary.getName();
             if (relationshipGuid != null)
             {
                 // glossary relationship cannot exist before the Term exists.
@@ -115,9 +114,9 @@ public class RestValidator {
             }
             if (response == null)
             {
-                if (guid == null && glossaryName == null)
+                if (guid == null)
                 {
-                    // error -  glossary is mandatory
+                    // error -  glossary guid is mandatory
                     SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.CREATE_WITHOUT_GLOSSARY;
                     String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(className, methodName);
                     log.error(errorMessage);
@@ -125,20 +124,10 @@ public class RestValidator {
                     response = OMASExceptionToResponse.convertInvalidParameterException(e);
                 } else
                 {
-                    SubjectAreaErrorCode errorCode =null;
-                    if (guid == null)
-                    {
-                        // find by name.
-                        response = glossaryRESTServices.getGlossaryByName(serverName, userId, glossaryName);
-                        // set error code in case we failed
-                        errorCode = SubjectAreaErrorCode.CREATE_WITH_NON_EXISTANT_GLOSSARY_NAME;
-                    } else
-                    {
-                        // find by guid
-                        response = glossaryRESTServices.getGlossaryByGuid(serverName, userId, guid);
-                        // set error code in case we failed
-                        errorCode = SubjectAreaErrorCode.CREATE_WITH_NON_EXISTANT_GLOSSARY_GUID;
-                    }
+                    // find by guid
+                    response = glossaryRESTServices.getGlossaryByGuid(serverName, userId, guid);
+                    // set error code in case we failed
+                    SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.CREATE_WITH_NON_EXISTANT_GLOSSARY_GUID;
                     if (response.getResponseCategory()!= ResponseCategory.Glossary) {
                         // glossary relationship cannot exist before the Term exists.
                         String errorMessage = errorCode.getErrorMessageId()
@@ -156,8 +145,8 @@ public class RestValidator {
                 }
             }
         }
-                return response;
-            }
+        return response;
+    }
     /**
      * This method validated for creation.
      * TODO need another method for update where we could use the relationship guid.
