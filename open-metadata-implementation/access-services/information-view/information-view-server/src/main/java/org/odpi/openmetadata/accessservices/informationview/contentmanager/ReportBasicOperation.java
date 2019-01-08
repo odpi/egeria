@@ -226,7 +226,7 @@ public abstract class ReportBasicOperation {
 
     protected String findAssignedBusinessTermGuid(ReportColumn reportColumn) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
         if (reportColumn.getBusinessTerm() == null) {
-           log.info("no business term is associated to the report column {0}", reportColumn.getName());
+           log.info("no business term is associated to the report column {}", reportColumn.getName());
             return null;
         }
         String businessTermGuid = reportColumn.getBusinessTerm().getGuid();
