@@ -30,7 +30,7 @@ public class SubjectAreaCategoryImpl implements org.odpi.openmetadata.accessserv
     /*
      * The URL of the server where OMAS is active
      */
-    private String                    omasServerURL = null;
+    private String omasServerURL = null;
     /*
      * serverName is a name that picks out a specific named running instance on the server.
      */
