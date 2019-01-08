@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.SequenceOrderType;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.Status;
 
+import java.io.Serializable;
 import java.util.List;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -18,8 +19,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SearchParameters {
+public class SearchParameters implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+    
     private Integer limit = 0;
     private Integer offset = 0;
     private String orderProperty;
