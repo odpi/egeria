@@ -95,7 +95,7 @@ public class ReportUpdater extends ReportBasicOperation {
                 EntityDetail entity = entitiesCreatorHelper.getEntityByGuid(entity2Guid);
                 if (isReportElementDeleted(reportElements, entity.getProperties())) {
                     entitiesCreatorHelper.purgeRelationship(relationship);
-                    entitiesCreatorHelper.purgeEntity(relationship.getEntityTwoProxy());
+                    entitiesCreatorHelper.purgeEntity(relationship.getEntityTwoProxy());//TODO purge also type entity
                 } else {
                     matchingEntities.add(entity);
                 }
@@ -229,8 +229,8 @@ public class ReportUpdater extends ReportBasicOperation {
             String businessTermAssignedToColumnGuid = findAssignedBusinessTermGuid(reportColumn);
             List<Relationship> matchingRelationship = new ArrayList<>();
             if (existingAssignments != null && !existingAssignments.isEmpty()) {
-                matchingRelationship = existingAssignments.stream().filter(e -> e.getGUID().equals(businessTermAssignedToColumnGuid)).collect(Collectors.toList());
-                deleteRelationships(existingAssignments.stream().filter(e -> !e.getGUID().equals(businessTermAssignedToColumnGuid)).collect(Collectors.toList()));
+                matchingRelationship = existingAssignments.stream().filter(e -> e.getEntityTwoProxy().getGUID().equals(businessTermAssignedToColumnGuid)).collect(Collectors.toList());
+                deleteRelationships(existingAssignments.stream().filter(e -> !e.getEntityTwoProxy().getGUID().equals(businessTermAssignedToColumnGuid)).collect(Collectors.toList()));
             }
 
             if ((matchingRelationship == null || matchingRelationship.isEmpty()) && !StringUtils.isEmpty(businessTermAssignedToColumnGuid)) {

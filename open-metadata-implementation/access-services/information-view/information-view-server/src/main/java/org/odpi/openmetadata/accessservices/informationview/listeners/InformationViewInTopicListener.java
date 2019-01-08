@@ -258,7 +258,7 @@ public class InformationViewInTopicListener implements OpenMetadataTopicListener
                 auditLog.logException("processEvent",
                         auditCode.getErrorMessageId(),
                         OMRSAuditLogRecordSeverity.EXCEPTION,
-                        auditCode.getFormattedErrorMessage(eventAsString),
+                        auditCode.getFormattedErrorMessage(eventAsString, e.getMessage()),
                         e.getMessage(),
                         auditCode.getSystemAction(),
                         auditCode.getUserAction(),
