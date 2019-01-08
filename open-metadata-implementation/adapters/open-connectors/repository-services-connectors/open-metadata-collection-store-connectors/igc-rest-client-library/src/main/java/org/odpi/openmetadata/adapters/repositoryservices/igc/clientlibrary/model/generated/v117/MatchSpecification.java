@@ -170,8 +170,8 @@ public class MatchSpecification extends Reference {
     /** @see #data_quality_specifications */ @JsonProperty("data_quality_specifications")  public ReferenceList getDataQualitySpecifications() { return this.data_quality_specifications; }
     /** @see #data_quality_specifications */ @JsonProperty("data_quality_specifications")  public void setDataQualitySpecifications(ReferenceList data_quality_specifications) { this.data_quality_specifications = data_quality_specifications; }
 
-    /** @see #dataFields */ @JsonProperty("dataFields")  public ArrayList<String> getDataFields() { return this.dataFields; }
-    /** @see #dataFields */ @JsonProperty("dataFields")  public void setDataFields(ArrayList<String> dataFields) { this.dataFields = dataFields; }
+    /** @see #dataFields */ @JsonProperty("dataFields")  public ArrayList<String> getDatafields() { return this.dataFields; }
+    /** @see #dataFields */ @JsonProperty("dataFields")  public void setDatafields(ArrayList<String> dataFields) { this.dataFields = dataFields; }
 
     /** @see #in_collections */ @JsonProperty("in_collections")  public ReferenceList getInCollections() { return this.in_collections; }
     /** @see #in_collections */ @JsonProperty("in_collections")  public void setInCollections(ReferenceList in_collections) { this.in_collections = in_collections; }

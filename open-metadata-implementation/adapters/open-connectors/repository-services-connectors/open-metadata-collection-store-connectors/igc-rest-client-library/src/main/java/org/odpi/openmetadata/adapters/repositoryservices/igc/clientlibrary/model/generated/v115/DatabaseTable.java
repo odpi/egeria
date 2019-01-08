@@ -401,8 +401,8 @@ public class DatabaseTable extends Reference {
     /** @see #database_schema */ @JsonProperty("database_schema")  public Reference getDatabaseSchema() { return this.database_schema; }
     /** @see #database_schema */ @JsonProperty("database_schema")  public void setDatabaseSchema(Reference database_schema) { this.database_schema = database_schema; }
 
-    /** @see #qualityScore */ @JsonProperty("qualityScore")  public String getQualityScore() { return this.qualityScore; }
-    /** @see #qualityScore */ @JsonProperty("qualityScore")  public void setQualityScore(String qualityScore) { this.qualityScore = qualityScore; }
+    /** @see #qualityScore */ @JsonProperty("qualityScore")  public String getQualityscore() { return this.qualityScore; }
+    /** @see #qualityScore */ @JsonProperty("qualityScore")  public void setQualityscore(String qualityScore) { this.qualityScore = qualityScore; }
 
     /** @see #labels */ @JsonProperty("labels")  public ReferenceList getLabels() { return this.labels; }
     /** @see #labels */ @JsonProperty("labels")  public void setLabels(ReferenceList labels) { this.labels = labels; }
@@ -470,23 +470,23 @@ public class DatabaseTable extends Reference {
     /** @see #indexes */ @JsonProperty("indexes")  public ReferenceList getIndexes() { return this.indexes; }
     /** @see #indexes */ @JsonProperty("indexes")  public void setIndexes(ReferenceList indexes) { this.indexes = indexes; }
 
-    /** @see #reviewDate */ @JsonProperty("reviewDate")  public ArrayList<Date> getReviewDate() { return this.reviewDate; }
-    /** @see #reviewDate */ @JsonProperty("reviewDate")  public void setReviewDate(ArrayList<Date> reviewDate) { this.reviewDate = reviewDate; }
+    /** @see #reviewDate */ @JsonProperty("reviewDate")  public ArrayList<Date> getReviewdate() { return this.reviewDate; }
+    /** @see #reviewDate */ @JsonProperty("reviewDate")  public void setReviewdate(ArrayList<Date> reviewDate) { this.reviewDate = reviewDate; }
 
-    /** @see #fieldCount */ @JsonProperty("fieldCount")  public ArrayList<Number> getFieldCount() { return this.fieldCount; }
-    /** @see #fieldCount */ @JsonProperty("fieldCount")  public void setFieldCount(ArrayList<Number> fieldCount) { this.fieldCount = fieldCount; }
+    /** @see #fieldCount */ @JsonProperty("fieldCount")  public ArrayList<Number> getFieldcount() { return this.fieldCount; }
+    /** @see #fieldCount */ @JsonProperty("fieldCount")  public void setFieldcount(ArrayList<Number> fieldCount) { this.fieldCount = fieldCount; }
 
-    /** @see #rowCount */ @JsonProperty("rowCount")  public ArrayList<Number> getRowCount() { return this.rowCount; }
-    /** @see #rowCount */ @JsonProperty("rowCount")  public void setRowCount(ArrayList<Number> rowCount) { this.rowCount = rowCount; }
+    /** @see #rowCount */ @JsonProperty("rowCount")  public ArrayList<Number> getRowcount() { return this.rowCount; }
+    /** @see #rowCount */ @JsonProperty("rowCount")  public void setRowcount(ArrayList<Number> rowCount) { this.rowCount = rowCount; }
 
-    /** @see #PKDuplicateCount */ @JsonProperty("PKDuplicateCount")  public ArrayList<Number> getPkDuplicateCount() { return this.PKDuplicateCount; }
-    /** @see #PKDuplicateCount */ @JsonProperty("PKDuplicateCount")  public void setPkDuplicateCount(ArrayList<Number> PKDuplicateCount) { this.PKDuplicateCount = PKDuplicateCount; }
+    /** @see #PKDuplicateCount */ @JsonProperty("PKDuplicateCount")  public ArrayList<Number> getPkduplicatecount() { return this.PKDuplicateCount; }
+    /** @see #PKDuplicateCount */ @JsonProperty("PKDuplicateCount")  public void setPkduplicatecount(ArrayList<Number> PKDuplicateCount) { this.PKDuplicateCount = PKDuplicateCount; }
 
-    /** @see #FKViolationCount */ @JsonProperty("FKViolationCount")  public ArrayList<Number> getFkViolationCount() { return this.FKViolationCount; }
-    /** @see #FKViolationCount */ @JsonProperty("FKViolationCount")  public void setFkViolationCount(ArrayList<Number> FKViolationCount) { this.FKViolationCount = FKViolationCount; }
+    /** @see #FKViolationCount */ @JsonProperty("FKViolationCount")  public ArrayList<Number> getFkviolationcount() { return this.FKViolationCount; }
+    /** @see #FKViolationCount */ @JsonProperty("FKViolationCount")  public void setFkviolationcount(ArrayList<Number> FKViolationCount) { this.FKViolationCount = FKViolationCount; }
 
-    /** @see #nbRecordTested */ @JsonProperty("nbRecordTested")  public ArrayList<Number> getNbRecordTested() { return this.nbRecordTested; }
-    /** @see #nbRecordTested */ @JsonProperty("nbRecordTested")  public void setNbRecordTested(ArrayList<Number> nbRecordTested) { this.nbRecordTested = nbRecordTested; }
+    /** @see #nbRecordTested */ @JsonProperty("nbRecordTested")  public ArrayList<Number> getNbrecordtested() { return this.nbRecordTested; }
+    /** @see #nbRecordTested */ @JsonProperty("nbRecordTested")  public void setNbrecordtested(ArrayList<Number> nbRecordTested) { this.nbRecordTested = nbRecordTested; }
 
     /** @see #table_definitions */ @JsonProperty("table_definitions")  public ReferenceList getTableDefinitions() { return this.table_definitions; }
     /** @see #table_definitions */ @JsonProperty("table_definitions")  public void setTableDefinitions(ReferenceList table_definitions) { this.table_definitions = table_definitions; }

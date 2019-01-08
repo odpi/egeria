@@ -64,14 +64,14 @@ public class RuleExecutionResult extends Reference {
     protected Date modified_on;
 
 
-    /** @see #nbRecordsTested */ @JsonProperty("nbRecordsTested")  public Number getNbRecordsTested() { return this.nbRecordsTested; }
-    /** @see #nbRecordsTested */ @JsonProperty("nbRecordsTested")  public void setNbRecordsTested(Number nbRecordsTested) { this.nbRecordsTested = nbRecordsTested; }
+    /** @see #nbRecordsTested */ @JsonProperty("nbRecordsTested")  public Number getNbrecordstested() { return this.nbRecordsTested; }
+    /** @see #nbRecordsTested */ @JsonProperty("nbRecordsTested")  public void setNbrecordstested(Number nbRecordsTested) { this.nbRecordsTested = nbRecordsTested; }
 
-    /** @see #nbPassed */ @JsonProperty("nbPassed")  public Number getNbPassed() { return this.nbPassed; }
-    /** @see #nbPassed */ @JsonProperty("nbPassed")  public void setNbPassed(Number nbPassed) { this.nbPassed = nbPassed; }
+    /** @see #nbPassed */ @JsonProperty("nbPassed")  public Number getNbpassed() { return this.nbPassed; }
+    /** @see #nbPassed */ @JsonProperty("nbPassed")  public void setNbpassed(Number nbPassed) { this.nbPassed = nbPassed; }
 
-    /** @see #nbFailed */ @JsonProperty("nbFailed")  public Number getNbFailed() { return this.nbFailed; }
-    /** @see #nbFailed */ @JsonProperty("nbFailed")  public void setNbFailed(Number nbFailed) { this.nbFailed = nbFailed; }
+    /** @see #nbFailed */ @JsonProperty("nbFailed")  public Number getNbfailed() { return this.nbFailed; }
+    /** @see #nbFailed */ @JsonProperty("nbFailed")  public void setNbfailed(Number nbFailed) { this.nbFailed = nbFailed; }
 
     /** @see #benchmark */ @JsonProperty("benchmark")  public ArrayList<String> getBenchmark() { return this.benchmark; }
     /** @see #benchmark */ @JsonProperty("benchmark")  public void setBenchmark(ArrayList<String> benchmark) { this.benchmark = benchmark; }

@@ -284,11 +284,11 @@ public class DataClass extends Reference {
     /** @see #valid_values_case_sensitive */ @JsonProperty("valid_values_case_sensitive")  public Boolean getValidValuesCaseSensitive() { return this.valid_values_case_sensitive; }
     /** @see #valid_values_case_sensitive */ @JsonProperty("valid_values_case_sensitive")  public void setValidValuesCaseSensitive(Boolean valid_values_case_sensitive) { this.valid_values_case_sensitive = valid_values_case_sensitive; }
 
-    /** @see #squeezeConsecutiveWhiteSpaces */ @JsonProperty("squeezeConsecutiveWhiteSpaces")  public Boolean getSqueezeConsecutiveWhiteSpaces() { return this.squeezeConsecutiveWhiteSpaces; }
-    /** @see #squeezeConsecutiveWhiteSpaces */ @JsonProperty("squeezeConsecutiveWhiteSpaces")  public void setSqueezeConsecutiveWhiteSpaces(Boolean squeezeConsecutiveWhiteSpaces) { this.squeezeConsecutiveWhiteSpaces = squeezeConsecutiveWhiteSpaces; }
+    /** @see #squeezeConsecutiveWhiteSpaces */ @JsonProperty("squeezeConsecutiveWhiteSpaces")  public Boolean getSqueezeconsecutivewhitespaces() { return this.squeezeConsecutiveWhiteSpaces; }
+    /** @see #squeezeConsecutiveWhiteSpaces */ @JsonProperty("squeezeConsecutiveWhiteSpaces")  public void setSqueezeconsecutivewhitespaces(Boolean squeezeConsecutiveWhiteSpaces) { this.squeezeConsecutiveWhiteSpaces = squeezeConsecutiveWhiteSpaces; }
 
-    /** @see #columnNameMatch */ @JsonProperty("columnNameMatch")  public String getColumnNameMatch() { return this.columnNameMatch; }
-    /** @see #columnNameMatch */ @JsonProperty("columnNameMatch")  public void setColumnNameMatch(String columnNameMatch) { this.columnNameMatch = columnNameMatch; }
+    /** @see #columnNameMatch */ @JsonProperty("columnNameMatch")  public String getColumnnamematch() { return this.columnNameMatch; }
+    /** @see #columnNameMatch */ @JsonProperty("columnNameMatch")  public void setColumnnamematch(String columnNameMatch) { this.columnNameMatch = columnNameMatch; }
 
     /** @see #example */ @JsonProperty("example")  public String getExample() { return this.example; }
     /** @see #example */ @JsonProperty("example")  public void setExample(String example) { this.example = example; }
@@ -299,8 +299,8 @@ public class DataClass extends Reference {
     /** @see #class_code */ @JsonProperty("class_code")  public String getClassCode() { return this.class_code; }
     /** @see #class_code */ @JsonProperty("class_code")  public void setClassCode(String class_code) { this.class_code = class_code; }
 
-    /** @see #validValueReferenceFile */ @JsonProperty("validValueReferenceFile")  public String getValidValueReferenceFile() { return this.validValueReferenceFile; }
-    /** @see #validValueReferenceFile */ @JsonProperty("validValueReferenceFile")  public void setValidValueReferenceFile(String validValueReferenceFile) { this.validValueReferenceFile = validValueReferenceFile; }
+    /** @see #validValueReferenceFile */ @JsonProperty("validValueReferenceFile")  public String getValidvaluereferencefile() { return this.validValueReferenceFile; }
+    /** @see #validValueReferenceFile */ @JsonProperty("validValueReferenceFile")  public void setValidvaluereferencefile(String validValueReferenceFile) { this.validValueReferenceFile = validValueReferenceFile; }
 
     /** @see #in_collections */ @JsonProperty("in_collections")  public ReferenceList getInCollections() { return this.in_collections; }
     /** @see #in_collections */ @JsonProperty("in_collections")  public void setInCollections(ReferenceList in_collections) { this.in_collections = in_collections; }

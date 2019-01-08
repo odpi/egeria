@@ -402,14 +402,14 @@ public class DataClass extends Reference {
     /** @see #valid_values_case_sensitive */ @JsonProperty("valid_values_case_sensitive")  public Boolean getValidValuesCaseSensitive() { return this.valid_values_case_sensitive; }
     /** @see #valid_values_case_sensitive */ @JsonProperty("valid_values_case_sensitive")  public void setValidValuesCaseSensitive(Boolean valid_values_case_sensitive) { this.valid_values_case_sensitive = valid_values_case_sensitive; }
 
-    /** @see #allowSubstringMatch */ @JsonProperty("allowSubstringMatch")  public Boolean getAllowSubstringMatch() { return this.allowSubstringMatch; }
-    /** @see #allowSubstringMatch */ @JsonProperty("allowSubstringMatch")  public void setAllowSubstringMatch(Boolean allowSubstringMatch) { this.allowSubstringMatch = allowSubstringMatch; }
+    /** @see #allowSubstringMatch */ @JsonProperty("allowSubstringMatch")  public Boolean getAllowsubstringmatch() { return this.allowSubstringMatch; }
+    /** @see #allowSubstringMatch */ @JsonProperty("allowSubstringMatch")  public void setAllowsubstringmatch(Boolean allowSubstringMatch) { this.allowSubstringMatch = allowSubstringMatch; }
 
-    /** @see #squeezeConsecutiveWhiteSpaces */ @JsonProperty("squeezeConsecutiveWhiteSpaces")  public Boolean getSqueezeConsecutiveWhiteSpaces() { return this.squeezeConsecutiveWhiteSpaces; }
-    /** @see #squeezeConsecutiveWhiteSpaces */ @JsonProperty("squeezeConsecutiveWhiteSpaces")  public void setSqueezeConsecutiveWhiteSpaces(Boolean squeezeConsecutiveWhiteSpaces) { this.squeezeConsecutiveWhiteSpaces = squeezeConsecutiveWhiteSpaces; }
+    /** @see #squeezeConsecutiveWhiteSpaces */ @JsonProperty("squeezeConsecutiveWhiteSpaces")  public Boolean getSqueezeconsecutivewhitespaces() { return this.squeezeConsecutiveWhiteSpaces; }
+    /** @see #squeezeConsecutiveWhiteSpaces */ @JsonProperty("squeezeConsecutiveWhiteSpaces")  public void setSqueezeconsecutivewhitespaces(Boolean squeezeConsecutiveWhiteSpaces) { this.squeezeConsecutiveWhiteSpaces = squeezeConsecutiveWhiteSpaces; }
 
-    /** @see #columnNameMatch */ @JsonProperty("columnNameMatch")  public String getColumnNameMatch() { return this.columnNameMatch; }
-    /** @see #columnNameMatch */ @JsonProperty("columnNameMatch")  public void setColumnNameMatch(String columnNameMatch) { this.columnNameMatch = columnNameMatch; }
+    /** @see #columnNameMatch */ @JsonProperty("columnNameMatch")  public String getColumnnamematch() { return this.columnNameMatch; }
+    /** @see #columnNameMatch */ @JsonProperty("columnNameMatch")  public void setColumnnamematch(String columnNameMatch) { this.columnNameMatch = columnNameMatch; }
 
     /** @see #expression */ @JsonProperty("expression")  public String getExpression() { return this.expression; }
     /** @see #expression */ @JsonProperty("expression")  public void setExpression(String expression) { this.expression = expression; }
@@ -435,8 +435,8 @@ public class DataClass extends Reference {
     /** @see #class_code */ @JsonProperty("class_code")  public String getClassCode() { return this.class_code; }
     /** @see #class_code */ @JsonProperty("class_code")  public void setClassCode(String class_code) { this.class_code = class_code; }
 
-    /** @see #validValueReferenceFile */ @JsonProperty("validValueReferenceFile")  public String getValidValueReferenceFile() { return this.validValueReferenceFile; }
-    /** @see #validValueReferenceFile */ @JsonProperty("validValueReferenceFile")  public void setValidValueReferenceFile(String validValueReferenceFile) { this.validValueReferenceFile = validValueReferenceFile; }
+    /** @see #validValueReferenceFile */ @JsonProperty("validValueReferenceFile")  public String getValidvaluereferencefile() { return this.validValueReferenceFile; }
+    /** @see #validValueReferenceFile */ @JsonProperty("validValueReferenceFile")  public void setValidvaluereferencefile(String validValueReferenceFile) { this.validValueReferenceFile = validValueReferenceFile; }
 
     /** @see #active */ @JsonProperty("active")  public Boolean getActive() { return this.active; }
     /** @see #active */ @JsonProperty("active")  public void setActive(Boolean active) { this.active = active; }

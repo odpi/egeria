@@ -243,8 +243,8 @@ public class EntityAttribute extends Reference {
     /** @see #logical_keys */ @JsonProperty("logical_keys")  public ReferenceList getLogicalKeys() { return this.logical_keys; }
     /** @see #logical_keys */ @JsonProperty("logical_keys")  public void setLogicalKeys(ReferenceList logical_keys) { this.logical_keys = logical_keys; }
 
-    /** @see #parent_logical_foreignKey */ @JsonProperty("parent_logical_foreignKey")  public ReferenceList getParentLogicalForeignKey() { return this.parent_logical_foreignKey; }
-    /** @see #parent_logical_foreignKey */ @JsonProperty("parent_logical_foreignKey")  public void setParentLogicalForeignKey(ReferenceList parent_logical_foreignKey) { this.parent_logical_foreignKey = parent_logical_foreignKey; }
+    /** @see #parent_logical_foreignKey */ @JsonProperty("parent_logical_foreignKey")  public ReferenceList getParentLogicalForeignkey() { return this.parent_logical_foreignKey; }
+    /** @see #parent_logical_foreignKey */ @JsonProperty("parent_logical_foreignKey")  public void setParentLogicalForeignkey(ReferenceList parent_logical_foreignKey) { this.parent_logical_foreignKey = parent_logical_foreignKey; }
 
     /** @see #child_logical_foreign_keys */ @JsonProperty("child_logical_foreign_keys")  public ReferenceList getChildLogicalForeignKeys() { return this.child_logical_foreign_keys; }
     /** @see #child_logical_foreign_keys */ @JsonProperty("child_logical_foreign_keys")  public void setChildLogicalForeignKeys(ReferenceList child_logical_foreign_keys) { this.child_logical_foreign_keys = child_logical_foreign_keys; }

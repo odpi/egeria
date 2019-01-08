@@ -24,7 +24,7 @@ public class ColumnAnalysisSummary extends Reference {
     public static String getIgcTypeDisplayName() { return "Column Analysis Summary"; }
 
     /**
-     * The 'short_&amp;_long_description' property, displayed as 'Short &amp; Long Description' in the IGC UI.
+     * The 'short_&_long_description' property, displayed as 'Short & Long Description' in the IGC UI.
      */
     @JsonProperty("short_&_long_description") protected String short___long_description;
 
