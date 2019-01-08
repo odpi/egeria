@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestClient;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestConstants;
 import org.odpi.openmetadata.http.HttpHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,13 +16,13 @@ import org.springframework.http.MediaType;
 import java.io.*;
 import java.util.*;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
+/**
+ * Utility class to generate the IGC POJO classes that can be used for (de-)serialising the IGC REST API JSON payloads.
+ */
 public class IGCRestModelGenerator {
 
     private static final Logger log = LoggerFactory.getLogger(IGCRestModelGenerator.class);
-
-    public static final String PKG_NAME = "org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated";
 
     public static void main(String[] args) {
 
@@ -43,12 +44,10 @@ public class IGCRestModelGenerator {
         System.out.println("  IGCRestModelGenerator hostname port username password directory");
     }
 
-    private static final Pattern INVALID_NAMING_CHARS = Pattern.compile("[()/&$\\- ]");
     private Set<String> IGNORE_TYPES;
     private Set<String> IGNORE_PROPERTIES;
     private Set<String> RESERVED_WORDS;
     private Set<String> QUALIFY_PROPERTIES;
-    private Map<String, String> NON_UNIQUE_CLASSNAMES;
     private Map<String, String> ALIAS_OBJECTS;
     private Map<String, String> BASIC_TYPE_TO_JAVA_TYPE;
 
@@ -78,15 +77,6 @@ public class IGCRestModelGenerator {
         QUALIFY_PROPERTIES.add("url");
         QUALIFY_PROPERTIES.add("id");
         QUALIFY_PROPERTIES.add("context");
-        NON_UNIQUE_CLASSNAMES = new HashMap<>();
-        NON_UNIQUE_CLASSNAMES.put("valid_value_list", "ValidValueList");
-        NON_UNIQUE_CLASSNAMES.put("validvaluelist", "ValidValueList2");
-        NON_UNIQUE_CLASSNAMES.put("valid_value_range", "ValidValueRange");
-        NON_UNIQUE_CLASSNAMES.put("validvaluerange", "ValidValueRange2");
-        NON_UNIQUE_CLASSNAMES.put("parameter_set", "ParameterSet");
-        NON_UNIQUE_CLASSNAMES.put("parameterset", "ParameterSet2");
-        NON_UNIQUE_CLASSNAMES.put("function_call", "FunctionCall");
-        NON_UNIQUE_CLASSNAMES.put("functioncall", "FunctionCall2");
         ALIAS_OBJECTS = new HashMap<>();
         ALIAS_OBJECTS.put("host_(engine)", "host");
         BASIC_TYPE_TO_JAVA_TYPE = new HashMap<>();
@@ -132,10 +122,10 @@ public class IGCRestModelGenerator {
             sb.append("     * <br><br>");
             sb.append(System.lineSeparator());
             if (javaType.equals("ReferenceList")) {
-                sb.append("     * Will be a {@link ReferenceList} of {@link " + getClassName(typeName) + "} objects.");
+                sb.append("     * Will be a {@link ReferenceList} of {@link " + IGCRestConstants.getClassNameForAssetType(typeName) + "} objects.");
                 sb.append(System.lineSeparator());
             } else if (javaType.equals("Reference")) {
-                sb.append("     * Will be a single {@link Reference} to a {@link " + getClassName(typeName) + "} object.");
+                sb.append("     * Will be a single {@link Reference} to a {@link " + IGCRestConstants.getClassNameForAssetType(typeName) + "} object.");
                 sb.append(System.lineSeparator());
             }
         } else if (typeName.equals("enum")) {
@@ -195,7 +185,7 @@ public class IGCRestModelGenerator {
 
         String propName = name;
         StringBuilder declMember = getPropertyHeading(name, displayName, typeObj, javaType);
-        Matcher m = INVALID_NAMING_CHARS.matcher(propName);
+        Matcher m = IGCRestConstants.INVALID_NAMING_CHARS.matcher(propName);
         if (m.find()) {
             propName = m.replaceAll("_");
             declMember.append("    @JsonProperty(\"" + name + "\") protected " + javaType + " " + propName + ";");
@@ -210,9 +200,9 @@ public class IGCRestModelGenerator {
         }
         detail.setMember(declMember.toString());
 
-        String ccName = getCamelCase(propName);
+        String ccName = IGCRestConstants.getCamelCase(propName);
         if (QUALIFY_PROPERTIES.contains(propName)) {
-            ccName = getCamelCase("the_" + propName);
+            ccName = IGCRestConstants.getCamelCase("the_" + propName);
         }
 
         StringBuilder getSetter = new StringBuilder();
@@ -276,7 +266,7 @@ public class IGCRestModelGenerator {
 
     private void createPOJOForType(JsonNode jsonProps, String directory, String version) {
 
-        String packageName = PKG_NAME + "." + version;
+        String packageName = IGCRestConstants.IGC_REST_GENERATED_MODEL_PKG + "." + version;
 
         String id   = jsonProps.path("_id").asText();
         String name = jsonProps.path("_name").asText();
@@ -284,7 +274,7 @@ public class IGCRestModelGenerator {
 
         if (!IGNORE_TYPES.contains(id)) {
 
-            String className = getClassName(id);
+            String className = IGCRestConstants.getClassNameForAssetType(id);
             String filename = directory + File.separator + className + ".java";
 
             try (BufferedWriter fs = new BufferedWriter(new FileWriter(filename))) {
@@ -320,7 +310,7 @@ public class IGCRestModelGenerator {
                 fs.append(System.lineSeparator());
 
                 if (ALIAS_OBJECTS.containsKey(id)) {
-                    fs.append("public class " + className + " extends " + getClassName(ALIAS_OBJECTS.get(id)) + " {");
+                    fs.append("public class " + className + " extends " + IGCRestConstants.getClassNameForAssetType(ALIAS_OBJECTS.get(id)) + " {");
                     fs.append(System.lineSeparator() + System.lineSeparator());
                 } else {
                     fs.append("public class " + className + " extends Reference {");
@@ -440,14 +430,6 @@ public class IGCRestModelGenerator {
         return sb.toString();
     }
 
-    private String getClassName(String fromName) {
-        if (NON_UNIQUE_CLASSNAMES.containsKey(fromName)) {
-            return NON_UNIQUE_CLASSNAMES.get(fromName);
-        } else {
-            return getCamelCase(fromName);
-        }
-    }
-
     protected class PropertyList {
 
         private List<String> members;
@@ -497,28 +479,6 @@ public class IGCRestModelGenerator {
         public String getGetSet() { return this.getSet; }
         public String getJavaType() { return this.javaType; }
 
-    }
-
-    /**
-     * Converts an IGC type or property (something_like_this) into a camelcase class name (SomethingLikeThis).
-     *
-     * @param input
-     * @return String
-     */
-    public static final String getCamelCase(String input) {
-        log.debug("Attempting to camelCase from {}", input);
-        Matcher m = INVALID_NAMING_CHARS.matcher(input);
-        String invalidsRemoved = m.replaceAll("_");
-        StringBuilder sb = new StringBuilder(invalidsRemoved.length());
-        for (String token : invalidsRemoved.split("_")) {
-            if (token.length() > 0) {
-                sb.append(token.substring(0, 1).toUpperCase());
-                sb.append(token.substring(1).toLowerCase());
-            }
-        }
-        String result = sb.toString();
-        log.debug(" ... succeeded to {}", result);
-        return result;
     }
 
 }
