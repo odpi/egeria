@@ -45,7 +45,7 @@ public class Asset implements Serializable {
     /**
      * Set up the unique identifier of the asset
      *
-     * @param guid the asset's unique identifier
+     * @param guid of the asset
      */
     public void setGuid(String guid) {
         this.guid = guid;
