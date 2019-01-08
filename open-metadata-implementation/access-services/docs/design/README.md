@@ -198,9 +198,9 @@ implementing the OMAS one scenario at a time.
   Where an OMAS supports the OCF, the client-side has additional methods to manage connectors through the
   connector broker.
   
-  The clients make calls 
+  The clients make calls to the REST APIs.
   
-  Document the REST API operations in 
+  Document the REST API operations in ***omas-name*/*omas-name*-server/docs/user**
   
   Link to the the top-level README.md for the OMAS's server module (***omas-name*/*omas-name*-server/README.md**).
 
