@@ -25,8 +25,8 @@ Different technologies have different naming rules so the name of the OMAS is co
 
 The implementation of the OMAS is typically divided into 4 modules:
 
-* ***omas-name*-api** - a module containing the objects passed on the API, in the event payloads and the exceptions.
-* ***omas-name*-client** - a module containing the client interface definition and implementation.
+* ***omas-name*-api** - a module containing the APIs, objects passed on the API, in the event payloads and the exceptions.
+* ***omas-name*-client** - a module containing the client implementation(s).
 There may be client interfaces and implementations for different programming languages.
 Typically Java is supported and this is assumed in the descriptions that follow.
 * ***omas-name*-server** - a module containing the server-side implementation of the OMAS.
@@ -56,7 +56,7 @@ The java package name root to use for all of the Java implementation of the OMAS
 
 The REST URL naming convention for OMAS URLs is:
  
-> *serverURL*`/servers/{serverName}/open-metadata/access-services/community-profile/users/{userId}/...`
+> *serverURL*`/servers/{serverName}/open-metadata/access-services/*omas-name*/users/{userId}/...`
 
 where:
 
@@ -75,6 +75,7 @@ implementing the OMAS one scenario at a time.
   repository and the tasks they need to perform on that metadata.   Ideally pick one or two appropriate persona
   from [Coco Pharmaceuticals](https://odpi.github.io/data-governance/coco-pharmaceuticals/personas/) to help
   clarify who the consumer is if it is a person.
+  
   Use the vocabulary that is familiar to the consumer community in your description, rather than the vocabulary used in the
   [open metadata types](../../../../open-metadata-publication/website/open-metadata-types) (mapping to the open metadata types comes later).
  
@@ -87,8 +88,8 @@ implementing the OMAS one scenario at a time.
   
    * Add a link to each of the core concepts descriptions in the [open metadata glossary](../../../../open-metadata-publication/website/open-metadata-glossary.md) markdown file.
   
-* Think about the typical situations where the consumer would use the OMAS and defined the typical scenarios they would follow.  This
-  process often causes you to add more core concepts to the list defined above.
+* Think about the typical situations where the consumer would use the OMAS and define the typical scenarios they would follow.
+  This process often causes you to add more core concepts to the list defined above.
 
    * Document a summary of these scenarios in the README.md for the OMAS's user documentation (***omas-name*/docs/user/README.md**)
      with a link to the full list of scenarios in ***omas-name*/docs/scenarios/README.md** (see next bullet).
@@ -102,53 +103,107 @@ implementing the OMAS one scenario at a time.
   
 * Create the directories for the *omas-name*-api and *omas-name*-client module.
 
-* Design the client API and the beans that are passed.
+* Design the client interface and the beans that are passed.
 
-   * Document the list of API operations in the top-level README.md for the OMAS's client module (***omas-name*/*omas-name*-client/README.md**)
+   * Divide the scenarios into logical groups, which become the client interfaces.
+   
+   * Create the programming language (typically Java) interface for the API
+     (located in *omas-name*/*omas-name*-client/src/main/org/odpi/openmetadata/accessservices/*omasname*)
+     Document each interface and its purpose in the *omas-name*-api/docs/interface folder.
+     
+   * Create the bean implementations that are needed for the client API in the OMAS's api module
+     (located in *omas-name*/*omas-name*-client/src/main/org/odpi/openmetadata/accessservices/*omasname*/properties)
+       
+   * Create the exception implementations that are needed for the client API in the OMAS's api module
+     (located in *omas-name*/*omas-name*-client/src/main/org/odpi/openmetadata/accessservices/*omasname*/ffdc/exceptions)
+       
+   * Create the initial error code list that are needed to distinguish different situations where each exception is thrown
+     by the API.  This is only an initial list but it is a helpful exercise to start to think through the different cases.
+     (located in *omas-name*/*omas-name*-client/src/main/org/odpi/openmetadata/accessservices/*omasname*/ffdc/*OmasName*ErrorCode.java)
+
+   * Design and document each of the operations in the *omas-name*-client/docs/user folder and link them
+     to the interface description.
+     
+   * Document the list of clients in the top-level README.md for the OMAS's client module (***omas-name*/*omas-name*-client/README.md**)
      These operations should map to the scenarios defined above.
   
    * Document the beans in the top-level README.md for the OMAS's client module (***omas-name*/*omas-name*-client/README.md**).
   
-  Document the API operations used to achieve each of the scenarios described in the OMAS's top-level README.md.
-  This description should go in the user directory of the 
-  OMAS's client module (***omas-name*/*omas-name*-client/docs/user**).
-  There should be a top level README.md that lists each scenario with a link to a separate markdown file for each
-  scenario.  The descriptions of the scenarios should be linked to from the OMAS's user documentation README (***omas-name*/docs/user/README.md**))
-  
-  Create the programming language (typically Java) interface for the API
-  (located in *omas-ame*/*omas-name*-client/src/main/org/odpi/openmetadata/accessservices/*omasname*)
-  
-  Create the bean implementations that are needed for the client API in the OMAS's api module
-  (located in *omas-name*/*omas-name*-client/src/main/org/odpi/openmetadata/accessservices/*omasname*/properties)
-  
-  Create the exception implementations that are needed for the client API in the OMAS's api module
-  (located in *omas-name*/*omas-name*-client/src/main/org/odpi/openmetadata/accessservices/*omasname*/ffdc/exceptions)
-  
-  Create the initial error code list that are needed to distinguish different situations where each exception is thrown
-  by the API.  This is only an initial list but it is a helpful exercise to start to think through the different cases.
-  (located in *omas-name*/*omas-name*-client/src/main/org/odpi/openmetadata/accessservices/*omasname*/ffdc/*OmasName*ErrorCode.java)
+   * Document the interface operations used to achieve each of the scenarios described in the OMAS's top-level README.md.
+     This description should go in the user directory of the 
+     OMAS's client module (***omas-name*/*omas-name*-client/docs/user**).
+     There should be a top level README.md that lists each scenario with a link to a separate markdown file for each
+     scenario.  The descriptions of the scenarios should be linked to from the OMAS's user documentation README (***omas-name*/docs/user/README.md**))
+   
+* Design the FVT tests for the interface.
 
-* Design the FVT tests for the API.
+  FVT stands for functional verification test.  FVTs test the whole OMAS working with the repository services.
+  They should exercise each part of the API including passing bad parameters and testing the exceptions
+  format the messages properly.  They should also verify that the audit log messages format properly too.
+  
+  The FVTs should run with little manual intervention and include instructions so that anyone can run them.
+  Ultimately, they will run as part of the centralized build.
  
 * Design the event payloads that are sent and received through the OMAS's 
   [OutTopic](../concepts/out-topic.md) and [InTopic](../concepts/in-topic.md) respectively.
 
 * Design the FVT test for the Events.
 
-* Create the directories for the *omas-name*-spring and *omas-name*-server module.
-
-* Design and implement the REST API - both client and server-side.
-
-  Document the REST API operations in the top-level README.md for the OMAS's server module (***omas-name*/*omas-name*-server/README.md**).
+* Create the directories for the *omas-name*-server module.
 
 * Implement the server-side framework.
 
+  Each OMAS needs to implement the AccessServiceAdmin interface and register the presence of an OMAS in the
+  server.  This registration provides the class name of the OMAS's admin implementation that is used
+  by the admin services to initialize and terminate the OMAS in the server.
+  
+  Implementing the admin interface requires you to know if the OMAS supports (1) receiving events from
+  the repository services, (2) receiving events from external application through the OMAS's InTopic and/or (3)
+  sending events on the OMAS's OutTopic.
+  
+  Create the skeleton classes for the listeners and publisher as necessary.
+  
   Document the server-side components in one or more markdown files in the design directory of the 
   OMAS's server module (***omas-name*/*omas-name*-server/docs/design**).
 
-* Design and implement converters.
+* Design and implement converters and mappers.  
 
+  The mappers are classes that define the statics that map from the bean properties to the open metadata
+  types.  The converters build the beans from repository services entities, classifications and relationships.
+  They are used to build the values returned on methods.
+  
+  This step allows you to confirm that the design for the beans and the open metadata types are consistent
+  and sufficient for the needs of the OMAS.
+
+* Design and implement the builders.
+
+  Builder classes create repository services entities, classifications and relationships from properties
+  passed as parameters on the methods, typically for create, update and find methods.  The results of the
+  builder classes are passed to the repository services by the handlers.
+  
 * Design and implement the handlers.
+
+  The handlers implement the client APIs but run on the server side and implement the calls to the
+  repository services.
+  
+* Create the directories for the *omas-name*-spring module.
+
+* Design and implement the REST API - both client and server-side.
+
+  The clients are java classes that implement the OMAS interfaces.
+  With the exception of OMASs that support APIs for the open connector framework (OCF), the REST API is
+  one-to-one with the client interfaces.  This means there is one REST operation for each Java method on each
+  API.
+  
+  Where an OMAS supports the OCF, the client-side has additional methods to manage connectors through the
+  connector broker.
+  
+  The clients make calls 
+  
+  Document the REST API operations in 
+  
+  Link to the the top-level README.md for the OMAS's server module (***omas-name*/*omas-name*-server/README.md**).
+
 
 * Design and implement the event handling.
 
