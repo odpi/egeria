@@ -1,0 +1,331 @@
+{
+	"info": {
+		"_postman_id": "c7a3df99-e938-4534-9142-489cb1d37964",
+		"name": "IGC Connector Startup",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "01.1 - Configure event bus",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7008e39f-c266-454f-8e83-a25a7abb8d8f",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"producer\": {\n\t\t\"bootstrap.servers\":\"{{kafkaep}}\",\n\t\t\"acks\":\"all\",\n\t\t\"retries\":\"0\",\n\t\t\"batch.size\":\"16384\",\n\t\t\"linger.ms\":\"1\",\n\t\t\"buffer.memory\":\"33554432\",\n\t\t\"max.request.size\":\"10485760\",\n\t\t\"key.serializer\":\"org.apache.kafka.common.serialization.StringSerializer\",\n\t\t\"value.serializer\":\"org.apache.kafka.common.serialization.StringSerializer\",\n\t\t\"kafka.omrs.topic.id\":\"{{cohort}}\"\n\t},\n\t\"consumer\": {\n   \t\t\"bootstrap.servers\":\"{{kafkaep}}\",\n   \t\t\"zookeeper.session.timeout.ms\":\"400\",\n   \t\t\"zookeeper.sync.time.ms\":\"200\",\n   \t\t\"fetch.message.max.bytes\":\"10485760\",\n   \t\t\"max.partition.fetch.bytes\":\"10485760\",\n   \t\t\"key.deserializer\":\"org.apache.kafka.common.serialization.StringDeserializer\",\n   \t\t\"value.deserializer\":\"org.apache.kafka.common.serialization.StringDeserializer\",\n   \t\t\"kafka.omrs.topic.id\":\"{{cohort}}\"\n\t}\n}"
+				},
+				"url": {
+					"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/event-bus?connectorProvider=org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider&topicURLRoot=OMRSTopic",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"open-metadata",
+						"admin-services",
+						"users",
+						"{{user}}",
+						"servers",
+						"{{server}}",
+						"event-bus"
+					],
+					"query": [
+						{
+							"key": "connectorProvider",
+							"value": "org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider"
+						},
+						{
+							"key": "topicURLRoot",
+							"value": "OMRSTopic"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "01.2 - Cohort configuration",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7008e39f-c266-454f-8e83-a25a7abb8d8f",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/cohorts/{{cohort}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"open-metadata",
+						"admin-services",
+						"users",
+						"{{user}}",
+						"servers",
+						"{{server}}",
+						"cohorts",
+						"{{cohort}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "01.3 - Set IGC mode",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7008e39f-c266-454f-8e83-a25a7abb8d8f",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"igcBaseURL\": \"https://{{host}}:{{port}}\",\n\t\"igcAuthorization\": \"aXNhZG1pbjppc2FkbWlu\"\n}"
+				},
+				"url": {
+					"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/local-repository/mode/ibm-igc/details",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"open-metadata",
+						"admin-services",
+						"users",
+						"{{user}}",
+						"servers",
+						"{{server}}",
+						"local-repository",
+						"mode",
+						"ibm-igc",
+						"details"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "01.4 - Configure event mapper",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7008e39f-c266-454f-8e83-a25a7abb8d8f",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/local-repository/event-mapper-details?connectorProvider=org.odpi.openmetadata.adapters.repositoryservices.igc.eventmapper.IGCOMRSRepositoryEventMapperProvider&eventSource={{host}}:59092",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"open-metadata",
+						"admin-services",
+						"users",
+						"{{user}}",
+						"servers",
+						"{{server}}",
+						"local-repository",
+						"event-mapper-details"
+					],
+					"query": [
+						{
+							"key": "connectorProvider",
+							"value": "org.odpi.openmetadata.adapters.repositoryservices.igc.eventmapper.IGCOMRSRepositoryEventMapperProvider"
+						},
+						{
+							"key": "eventSource",
+							"value": "{{host}}:59092"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "02 - Query Configuration",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "cd4e2e25-7bf9-4cbb-9da5-1955f579d834",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"IGC endpoint configured\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.omagserverConfig.repositoryServicesConfig.localRepositoryConfig.localRepositoryLocalConnection.qualifiedName).to.equal(\"IBMIGCRepository.Connection.myserver\");",
+							"    pm.expect(jsonData.omagserverConfig.repositoryServicesConfig.localRepositoryConfig.localRepositoryLocalConnection.additionalProperties.igcBaseURL).to.equal(host + \":\" + port);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/configuration/",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"open-metadata",
+						"admin-services",
+						"users",
+						"{{user}}",
+						"servers",
+						"{{server}}",
+						"configuration",
+						""
+					]
+				},
+				"description": "Query Current Configuration"
+			},
+			"response": []
+		},
+		{
+			"name": "03 - Start Server",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "bdfce345-26b1-4f34-a5fb-511b245ef3d9",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/instance",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"open-metadata",
+						"admin-services",
+						"users",
+						"{{user}}",
+						"servers",
+						"{{server}}",
+						"instance"
+					]
+				},
+				"description": "Query Current Configuration"
+			},
+			"response": []
+		}
+	]
+}
