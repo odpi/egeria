@@ -98,11 +98,11 @@ public class Classification extends Reference {
     /** @see #detected */ @JsonProperty("detected")  public Boolean getDetected() { return this.detected; }
     /** @see #detected */ @JsonProperty("detected")  public void setDetected(Boolean detected) { this.detected = detected; }
 
-    /** @see #detectedState */ @JsonProperty("detectedState")  public String getDetectedState() { return this.detectedState; }
-    /** @see #detectedState */ @JsonProperty("detectedState")  public void setDetectedState(String detectedState) { this.detectedState = detectedState; }
+    /** @see #detectedState */ @JsonProperty("detectedState")  public String getDetectedstate() { return this.detectedState; }
+    /** @see #detectedState */ @JsonProperty("detectedState")  public void setDetectedstate(String detectedState) { this.detectedState = detectedState; }
 
-    /** @see #confidencePercent */ @JsonProperty("confidencePercent")  public Number getConfidencePercent() { return this.confidencePercent; }
-    /** @see #confidencePercent */ @JsonProperty("confidencePercent")  public void setConfidencePercent(Number confidencePercent) { this.confidencePercent = confidencePercent; }
+    /** @see #confidencePercent */ @JsonProperty("confidencePercent")  public Number getConfidencepercent() { return this.confidencePercent; }
+    /** @see #confidencePercent */ @JsonProperty("confidencePercent")  public void setConfidencepercent(Number confidencePercent) { this.confidencePercent = confidencePercent; }
 
     /** @see #threshold */ @JsonProperty("threshold")  public Number getThreshold() { return this.threshold; }
     /** @see #threshold */ @JsonProperty("threshold")  public void setThreshold(Number threshold) { this.threshold = threshold; }

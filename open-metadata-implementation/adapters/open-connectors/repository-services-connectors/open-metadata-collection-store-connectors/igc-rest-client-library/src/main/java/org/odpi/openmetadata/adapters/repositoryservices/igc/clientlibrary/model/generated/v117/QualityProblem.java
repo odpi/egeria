@@ -84,11 +84,11 @@ public class QualityProblem extends Reference {
     protected Date modified_on;
 
 
-    /** @see #qualityScore */ @JsonProperty("qualityScore")  public Number getQualityScore() { return this.qualityScore; }
-    /** @see #qualityScore */ @JsonProperty("qualityScore")  public void setQualityScore(Number qualityScore) { this.qualityScore = qualityScore; }
+    /** @see #qualityScore */ @JsonProperty("qualityScore")  public Number getQualityscore() { return this.qualityScore; }
+    /** @see #qualityScore */ @JsonProperty("qualityScore")  public void setQualityscore(Number qualityScore) { this.qualityScore = qualityScore; }
 
-    /** @see #QualityProblemTypeName */ @JsonProperty("QualityProblemTypeName")  public String getQualityProblemTypeName() { return this.QualityProblemTypeName; }
-    /** @see #QualityProblemTypeName */ @JsonProperty("QualityProblemTypeName")  public void setQualityProblemTypeName(String QualityProblemTypeName) { this.QualityProblemTypeName = QualityProblemTypeName; }
+    /** @see #QualityProblemTypeName */ @JsonProperty("QualityProblemTypeName")  public String getQualityproblemtypename() { return this.QualityProblemTypeName; }
+    /** @see #QualityProblemTypeName */ @JsonProperty("QualityProblemTypeName")  public void setQualityproblemtypename(String QualityProblemTypeName) { this.QualityProblemTypeName = QualityProblemTypeName; }
 
     /** @see #details */ @JsonProperty("details")  public String getDetails() { return this.details; }
     /** @see #details */ @JsonProperty("details")  public void setDetails(String details) { this.details = details; }
@@ -102,8 +102,8 @@ public class QualityProblem extends Reference {
     /** @see #percent_occurrences */ @JsonProperty("percent_occurrences")  public Number getPercentOccurrences() { return this.percent_occurrences; }
     /** @see #percent_occurrences */ @JsonProperty("percent_occurrences")  public void setPercentOccurrences(Number percent_occurrences) { this.percent_occurrences = percent_occurrences; }
 
-    /** @see #QualityProblemTypeDescription */ @JsonProperty("QualityProblemTypeDescription")  public String getQualityProblemTypeDescription() { return this.QualityProblemTypeDescription; }
-    /** @see #QualityProblemTypeDescription */ @JsonProperty("QualityProblemTypeDescription")  public void setQualityProblemTypeDescription(String QualityProblemTypeDescription) { this.QualityProblemTypeDescription = QualityProblemTypeDescription; }
+    /** @see #QualityProblemTypeDescription */ @JsonProperty("QualityProblemTypeDescription")  public String getQualityproblemtypedescription() { return this.QualityProblemTypeDescription; }
+    /** @see #QualityProblemTypeDescription */ @JsonProperty("QualityProblemTypeDescription")  public void setQualityproblemtypedescription(String QualityProblemTypeDescription) { this.QualityProblemTypeDescription = QualityProblemTypeDescription; }
 
     /** @see #Column */ @JsonProperty("Column")  public String getColumn() { return this.Column; }
     /** @see #Column */ @JsonProperty("Column")  public void setColumn(String Column) { this.Column = Column; }

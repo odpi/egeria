@@ -268,8 +268,8 @@ public class AmazonS3DataFileRecord extends Reference {
     /** @see #amazon_s3_data_file */ @JsonProperty("amazon_s3_data_file")  public Reference getAmazonS3DataFile() { return this.amazon_s3_data_file; }
     /** @see #amazon_s3_data_file */ @JsonProperty("amazon_s3_data_file")  public void setAmazonS3DataFile(Reference amazon_s3_data_file) { this.amazon_s3_data_file = amazon_s3_data_file; }
 
-    /** @see #qualityScore */ @JsonProperty("qualityScore")  public String getQualityScore() { return this.qualityScore; }
-    /** @see #qualityScore */ @JsonProperty("qualityScore")  public void setQualityScore(String qualityScore) { this.qualityScore = qualityScore; }
+    /** @see #qualityScore */ @JsonProperty("qualityScore")  public String getQualityscore() { return this.qualityScore; }
+    /** @see #qualityScore */ @JsonProperty("qualityScore")  public void setQualityscore(String qualityScore) { this.qualityScore = qualityScore; }
 
     /** @see #labels */ @JsonProperty("labels")  public ReferenceList getLabels() { return this.labels; }
     /** @see #labels */ @JsonProperty("labels")  public void setLabels(ReferenceList labels) { this.labels = labels; }
@@ -304,23 +304,23 @@ public class AmazonS3DataFileRecord extends Reference {
     /** @see #imported_from */ @JsonProperty("imported_from")  public String getImportedFrom() { return this.imported_from; }
     /** @see #imported_from */ @JsonProperty("imported_from")  public void setImportedFrom(String imported_from) { this.imported_from = imported_from; }
 
-    /** @see #reviewDate */ @JsonProperty("reviewDate")  public ArrayList<Date> getReviewDate() { return this.reviewDate; }
-    /** @see #reviewDate */ @JsonProperty("reviewDate")  public void setReviewDate(ArrayList<Date> reviewDate) { this.reviewDate = reviewDate; }
+    /** @see #reviewDate */ @JsonProperty("reviewDate")  public ArrayList<Date> getReviewdate() { return this.reviewDate; }
+    /** @see #reviewDate */ @JsonProperty("reviewDate")  public void setReviewdate(ArrayList<Date> reviewDate) { this.reviewDate = reviewDate; }
 
-    /** @see #fieldCount */ @JsonProperty("fieldCount")  public ArrayList<Number> getFieldCount() { return this.fieldCount; }
-    /** @see #fieldCount */ @JsonProperty("fieldCount")  public void setFieldCount(ArrayList<Number> fieldCount) { this.fieldCount = fieldCount; }
+    /** @see #fieldCount */ @JsonProperty("fieldCount")  public ArrayList<Number> getFieldcount() { return this.fieldCount; }
+    /** @see #fieldCount */ @JsonProperty("fieldCount")  public void setFieldcount(ArrayList<Number> fieldCount) { this.fieldCount = fieldCount; }
 
-    /** @see #rowCount */ @JsonProperty("rowCount")  public ArrayList<Number> getRowCount() { return this.rowCount; }
-    /** @see #rowCount */ @JsonProperty("rowCount")  public void setRowCount(ArrayList<Number> rowCount) { this.rowCount = rowCount; }
+    /** @see #rowCount */ @JsonProperty("rowCount")  public ArrayList<Number> getRowcount() { return this.rowCount; }
+    /** @see #rowCount */ @JsonProperty("rowCount")  public void setRowcount(ArrayList<Number> rowCount) { this.rowCount = rowCount; }
 
-    /** @see #PKDuplicateCount */ @JsonProperty("PKDuplicateCount")  public ArrayList<Number> getPkDuplicateCount() { return this.PKDuplicateCount; }
-    /** @see #PKDuplicateCount */ @JsonProperty("PKDuplicateCount")  public void setPkDuplicateCount(ArrayList<Number> PKDuplicateCount) { this.PKDuplicateCount = PKDuplicateCount; }
+    /** @see #PKDuplicateCount */ @JsonProperty("PKDuplicateCount")  public ArrayList<Number> getPkduplicatecount() { return this.PKDuplicateCount; }
+    /** @see #PKDuplicateCount */ @JsonProperty("PKDuplicateCount")  public void setPkduplicatecount(ArrayList<Number> PKDuplicateCount) { this.PKDuplicateCount = PKDuplicateCount; }
 
-    /** @see #FKViolationCount */ @JsonProperty("FKViolationCount")  public ArrayList<Number> getFkViolationCount() { return this.FKViolationCount; }
-    /** @see #FKViolationCount */ @JsonProperty("FKViolationCount")  public void setFkViolationCount(ArrayList<Number> FKViolationCount) { this.FKViolationCount = FKViolationCount; }
+    /** @see #FKViolationCount */ @JsonProperty("FKViolationCount")  public ArrayList<Number> getFkviolationcount() { return this.FKViolationCount; }
+    /** @see #FKViolationCount */ @JsonProperty("FKViolationCount")  public void setFkviolationcount(ArrayList<Number> FKViolationCount) { this.FKViolationCount = FKViolationCount; }
 
-    /** @see #nbRecordTested */ @JsonProperty("nbRecordTested")  public ArrayList<Number> getNbRecordTested() { return this.nbRecordTested; }
-    /** @see #nbRecordTested */ @JsonProperty("nbRecordTested")  public void setNbRecordTested(ArrayList<Number> nbRecordTested) { this.nbRecordTested = nbRecordTested; }
+    /** @see #nbRecordTested */ @JsonProperty("nbRecordTested")  public ArrayList<Number> getNbrecordtested() { return this.nbRecordTested; }
+    /** @see #nbRecordTested */ @JsonProperty("nbRecordTested")  public void setNbrecordtested(ArrayList<Number> nbRecordTested) { this.nbRecordTested = nbRecordTested; }
 
     /** @see #read_by__static_ */ @JsonProperty("read_by_(static)")  public ReferenceList getReadByStatic() { return this.read_by__static_; }
     /** @see #read_by__static_ */ @JsonProperty("read_by_(static)")  public void setReadByStatic(ReferenceList read_by__static_) { this.read_by__static_ = read_by__static_; }

@@ -308,8 +308,8 @@ public class DesignColumn extends Reference {
     /** @see #included_in_design_key */ @JsonProperty("included_in_design_key")  public ReferenceList getIncludedInDesignKey() { return this.included_in_design_key; }
     /** @see #included_in_design_key */ @JsonProperty("included_in_design_key")  public void setIncludedInDesignKey(ReferenceList included_in_design_key) { this.included_in_design_key = included_in_design_key; }
 
-    /** @see #parent_design_foreignKey */ @JsonProperty("parent_design_foreignKey")  public ReferenceList getParentDesignForeignKey() { return this.parent_design_foreignKey; }
-    /** @see #parent_design_foreignKey */ @JsonProperty("parent_design_foreignKey")  public void setParentDesignForeignKey(ReferenceList parent_design_foreignKey) { this.parent_design_foreignKey = parent_design_foreignKey; }
+    /** @see #parent_design_foreignKey */ @JsonProperty("parent_design_foreignKey")  public ReferenceList getParentDesignForeignkey() { return this.parent_design_foreignKey; }
+    /** @see #parent_design_foreignKey */ @JsonProperty("parent_design_foreignKey")  public void setParentDesignForeignkey(ReferenceList parent_design_foreignKey) { this.parent_design_foreignKey = parent_design_foreignKey; }
 
     /** @see #included_in_design_foreign_key */ @JsonProperty("included_in_design_foreign_key")  public ReferenceList getIncludedInDesignForeignKey() { return this.included_in_design_foreign_key; }
     /** @see #included_in_design_foreign_key */ @JsonProperty("included_in_design_foreign_key")  public void setIncludedInDesignForeignKey(ReferenceList included_in_design_foreign_key) { this.included_in_design_foreign_key = included_in_design_foreign_key; }

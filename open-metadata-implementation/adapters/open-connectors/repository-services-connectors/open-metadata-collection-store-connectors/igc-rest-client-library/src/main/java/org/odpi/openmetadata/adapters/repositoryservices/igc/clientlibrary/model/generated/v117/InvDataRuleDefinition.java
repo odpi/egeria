@@ -29,7 +29,7 @@ public class InvDataRuleDefinition extends Reference {
     protected String name;
 
     /**
-     * The 'short_&amp;_long_description' property, displayed as 'Short &amp; Long Description' in the IGC UI.
+     * The 'short_&_long_description' property, displayed as 'Short & Long Description' in the IGC UI.
      */
     @JsonProperty("short_&_long_description") protected String short___long_description;
 
