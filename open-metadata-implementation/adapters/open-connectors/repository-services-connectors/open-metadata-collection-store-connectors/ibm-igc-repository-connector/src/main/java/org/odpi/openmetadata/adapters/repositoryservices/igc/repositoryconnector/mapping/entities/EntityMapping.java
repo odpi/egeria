@@ -26,8 +26,6 @@ public abstract class EntityMapping {
 
     private static final Logger log = LoggerFactory.getLogger(EntityMapping.class);
 
-    private static final Pattern INVALID_NAMING_CHARS = Pattern.compile("[()/& ]");
-
     private String igcAssetType;
     private String igcAssetTypeDisplayName;
     private String omrsTypeDefName;
@@ -84,7 +82,7 @@ public abstract class EntityMapping {
             sbPojoName.append(".");
             sbPojoName.append(igcomrsRepositoryConnector.getIGCVersion());
             sbPojoName.append(".");
-            sbPojoName.append(getCamelCase(igcAssetType));
+            sbPojoName.append(IGCRestConstants.getClassNameForAssetType(igcAssetType));
         }
         try {
             this.igcPOJO = Class.forName(sbPojoName.toString());
@@ -170,7 +168,7 @@ public abstract class EntityMapping {
         sbPojoName.append(".");
         sbPojoName.append(igcomrsRepositoryConnector.getIGCVersion());
         sbPojoName.append(".");
-        sbPojoName.append(getCamelCase(igcAssetTypeName));
+        sbPojoName.append(IGCRestConstants.getClassNameForAssetType(igcAssetTypeName));
         try {
             Class pojo = Class.forName(sbPojoName.toString());
             this.otherPOJOs.add(pojo);
@@ -345,27 +343,6 @@ public abstract class EntityMapping {
         propertyValue.setTypeGUID(primitiveDef.getGUID());
         propertyValue.setTypeName(primitiveDef.getName());
         return propertyValue;
-    }
-
-    /**
-     * Converts an IGC type or property (something_like_this) into a camelcase class name (SomethingLikeThis).
-     *
-     * @param input
-     * @return String
-     */
-    public static final String getCamelCase(String input) {
-        log.debug("Attempting to camelCase from {}", input);
-        Matcher m = INVALID_NAMING_CHARS.matcher(input);
-        String invalidsRemoved = m.replaceAll("_");
-        StringBuilder sb = new StringBuilder(invalidsRemoved.length());
-        for (String token : invalidsRemoved.split("_")) {
-            if (token.length() > 0) {
-                sb.append(token.substring(0, 1).toUpperCase());
-                sb.append(token.substring(1).toLowerCase());
-            }
-        }
-        log.debug(" ... succeeded to {}", sb.toString());
-        return sb.toString();
     }
 
 }
