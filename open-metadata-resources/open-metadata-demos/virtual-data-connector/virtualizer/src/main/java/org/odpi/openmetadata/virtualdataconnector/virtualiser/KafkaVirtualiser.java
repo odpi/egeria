@@ -81,19 +81,22 @@ public class KafkaVirtualiser{
     @PostConstruct
     public void initializeKafkaConnector() {
         final String actionDescription = "initialize in and out topic Kafka connectors";
-        inTopicKafkaConnector = initializeTopicConnector(virtualiserKafkaConfig.getAccessServiceInTopic());
-        outTopicKafkaConnector = initializeTopicConnector(virtualiserKafkaConfig.getAccessServiceOutTopic());
-
         try {
+            inTopicKafkaConnector = initializeTopicConnector(virtualiserKafkaConfig.getAccessServiceInTopic());
             inTopicKafkaConnector.start();
         } catch (ConnectorCheckedException e){
             logger.error("Cannot initialize the in-topic connector", e);
+        } catch (NullPointerException e) {
+            logger.error("Configuration is invalid!", e);
         }
 
         try {
+            outTopicKafkaConnector = initializeTopicConnector(virtualiserKafkaConfig.getAccessServiceOutTopic());
             outTopicKafkaConnector.start();
         } catch (ConnectorCheckedException e){
             logger.error("Cannot initialize the out-topic connector", e);
+        } catch (NullPointerException e) {
+            logger.error("Configuration is invalid!", e);
         }
     }
 
