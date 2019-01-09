@@ -2,17 +2,18 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary;
 
-import javax.net.ssl.*;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.NamedType;
@@ -25,12 +26,11 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.searc
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchConditionSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.*;
 import org.springframework.util.Base64Utils;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
@@ -56,9 +56,6 @@ import org.springframework.web.client.RestTemplate;
  */
 public class IGCRestClient {
 
-    public static final String VERSION_115 = "v115";
-    public static final String VERSION_117 = "v117";
-
     private static final Logger log = LoggerFactory.getLogger(IGCRestClient.class);
 
     private String authorization;
@@ -67,6 +64,7 @@ public class IGCRestClient {
     private List<String> cookies = null;
 
     private String igcVersion;
+    private HashMap<String, Class> registeredPojosByType;
 
     private int defaultPageSize = 100;
 
@@ -76,8 +74,9 @@ public class IGCRestClient {
     public static final String EP_ASSET = "/ibm/iis/igc-rest/v1/assets";
     public static final String EP_SEARCH = "/ibm/iis/igc-rest/v1/search";
     public static final String EP_LOGOUT  = "/ibm/iis/igc-rest/v1/logout";
+    public static final String EP_BUNDLES = "/ibm/iis/igc-rest/v1/bundles";
+    public static final String EP_BUNDLE_ASSETS = EP_BUNDLES + "/assets";
 
-    // TODO: pickup the URL and authorization information from a properties file, by default
     public IGCRestClient() {
         this(null, null);
     }
@@ -97,6 +96,7 @@ public class IGCRestClient {
         this.authorization = authorization;
         this.mapper = new ObjectMapper();
         this.mapper.enableDefaultTyping();
+        this.registeredPojosByType = new HashMap<>();
 
         // Run a simple initial query to obtain a session and setup the cookies
         if (this.baseURL != null && this.authorization != null) {
@@ -113,18 +113,25 @@ public class IGCRestClient {
         // Register the non-generated types
         this.registerPOJO(Paging.class);
 
-        this.igcVersion = VERSION_115;
+        this.igcVersion = IGCRestConstants.VERSION_115;
         ArrayNode igcTypes = getTypes();
         for (JsonNode node : igcTypes) {
             // Check for a type that does not exist in v11.5
             if (node.path("_id").asText().equals("analytics_project")) {
-                this.igcVersion = VERSION_117;
+                this.igcVersion = IGCRestConstants.VERSION_117;
                 break;
             }
         }
 
     }
 
+    /**
+     * Setup the HTTP headers of a request based on either session reuse (forceLogin = false) or forcing a new
+     * session (forceLogin = true).
+     *
+     * @param forceLogin indicates whether to create a new session by forcing login (true), or reuse existing session (false)
+     * @return
+     */
     private HttpHeaders getHttpHeaders(boolean forceLogin) {
 
         HttpHeaders headers = new HttpHeaders();
@@ -144,8 +151,21 @@ public class IGCRestClient {
 
     }
 
+    /**
+     * Attempts to open a new session while sending the provided request. If the alreadyTriedNewSession is true,
+     * and we are unable to open a new session with this attempt, will give up. If the alreadyTriedNewSession is false,
+     * will attempt to re-send this request to open a new session precisely once before giving up.
+     *
+     * @param endpoint the endpoint to which to send the request
+     * @param method the HTTP method to use in sending the request
+     * @param contentType the type of content to expect in the payload (if any)
+     * @param payload the payload (if any) for the request
+     * @param alreadyTriedNewSession indicates whether a new session was already attempted (true) or not (false)
+     * @return ResponseEntity<String>
+     */
     private ResponseEntity<String> openNewSessionWithRequest(String endpoint,
                                                              HttpMethod method,
+                                                             MediaType contentType,
                                                              String payload,
                                                              boolean alreadyTriedNewSession) {
         if (alreadyTriedNewSession) {
@@ -155,10 +175,42 @@ public class IGCRestClient {
             log.info("Session appears to have timed out -- starting a new session and re-trying the request.");
             // By removing cookies, we'll force a login
             this.cookies = null;
-            return makeRequest(endpoint, method, payload, true);
+            return makeRequest(endpoint, method, contentType, payload, true);
         }
     }
 
+    /**
+     * Attempts to open a new session while uploading the provided file. If the alreadyTriedNewSession is true,
+     * and we are unable to open a new session with this attempt, will give up. If the alreadyTriedNewSession is false,
+     * will attempt to re-upload the file to open a new session precisely once before giving up.
+     *
+     * @param endpoint the endpoint to which to upload the file
+     * @param method the HTTP method to use in sending the request
+     * @param filePath the location of the file on the local filesystem
+     * @param alreadyTriedNewSession indicates whether a new session was already attempted (true) or not (false)
+     * @return ResponseEntity<String>
+     */
+    private ResponseEntity<String> openNewSessionWithUpload(String endpoint,
+                                                            HttpMethod method,
+                                                            String filePath,
+                                                            boolean alreadyTriedNewSession) {
+        if (alreadyTriedNewSession) {
+            log.error("Opening a new session already attempted without success -- giving up.");
+            return null;
+        } else {
+            log.info("Session appears to have timed out -- starting a new session and re-trying the upload.");
+            // By removing cookies, we'll force a login
+            this.cookies = null;
+            return uploadFile(endpoint, method, filePath, true);
+        }
+    }
+
+    /**
+     * Adds the cookies from a response into subsequent headers, so that we re-use the session indicated by those
+     * cookies.
+     *
+     * @param response the response from which to obtain the cookies
+     */
     private void setCookiesFromResponse(ResponseEntity<String> response) {
 
         // If we had a successful response, setup the cookies
@@ -180,13 +232,55 @@ public class IGCRestClient {
      * @return Reference - an IGC object
      */
     protected Reference readJSONIntoPOJO(JsonNode jsonNode) {
+        return readJSONIntoPOJO(jsonNode.toString());
+    }
+
+    /**
+     * Attempt to convert the JSON string into a Java object, based on the registered POJOs.
+     *
+     * @param json the JSON string to convert
+     * @return Reference - an IGC object
+     */
+    public Reference readJSONIntoPOJO(String json) {
         Reference reference = null;
         try {
-            reference = this.mapper.readValue(jsonNode.toString(), Reference.class);
+            reference = this.mapper.readValue(json, Reference.class);
         } catch (IOException e) {
             log.error("Unable to translate JSON into POJO.", e);
         }
         return reference;
+    }
+
+    /**
+     * Attempt to convert the JSON string into a ReferenceList.
+     *
+     * @param json the JSON string to convert
+     * @return ReferenceList
+     */
+    public ReferenceList readJSONIntoReferenceList(String json) {
+        ReferenceList referenceList = null;
+        try {
+            referenceList = this.mapper.readValue(json, ReferenceList.class);
+        } catch (IOException e) {
+            log.error("Unable to translate JSON into ReferenceList.", e);
+        }
+        return referenceList;
+    }
+
+    /**
+     * Attempt to convert the provided IGC object into JSON, based on the registered POJOs.
+     *
+     * @param asset the IGC asset to convert
+     * @return String of JSON representing the asset
+     */
+    public String getValueAsJSON(Reference asset) {
+        String payload = null;
+        try {
+            payload = this.mapper.writeValueAsString(asset);
+        } catch (JsonProcessingException e) {
+            log.error("Unable to translate asset into JSON: {}", asset, e);
+        }
+        return payload;
     }
 
     /**
@@ -229,18 +323,81 @@ public class IGCRestClient {
     }
 
     /**
+     * Internal utility for making potentially repeat requests (if session expires and needs to be re-opened),
+     * to upload a file to a given endpoint.
+     *
+     * @param endpoint the URL against which to POST the upload
+     * @param filePath the location of the file on the local filesystem
+     * @param forceLogin a boolean indicating whether login should be forced (true) or session reused (false)
+     * @return ResponseEntity<String>
+     */
+    private ResponseEntity<String> uploadFile(String endpoint, HttpMethod method, String filePath, boolean forceLogin) {
+
+        HttpHeaders headers = getHttpHeaders(forceLogin);
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        ResponseEntity<String> response;
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        body.add("file", new FileSystemResource(filePath));
+
+        HttpEntity<MultiValueMap<String, Object>> toSend = new HttpEntity<>(body, headers);
+
+        try {
+            response = new RestTemplate().exchange(
+                    endpoint,
+                    method,
+                    toSend,
+                    String.class
+            );
+        } catch (HttpClientErrorException e) {
+            // If the response was forbidden (fails with exception), the session may have expired -- create a new one
+            response = openNewSessionWithUpload(
+                    endpoint,
+                    method,
+                    filePath,
+                    forceLogin
+            );
+        }
+
+        return response;
+
+    }
+
+    /**
+     * General utility for uploading binary files.
+     *
+     * @param endpoint the URL against which to upload the file
+     * @param method HttpMethod (POST, PUT, etc)
+     * @param filePath the location of the file on the local filesystem
+     * @return boolean - indicates success (true) or failure (false)
+     */
+    public boolean uploadFile(String endpoint, HttpMethod method, String filePath) {
+        ResponseEntity<String> response = uploadFile(endpoint, method, filePath, false);
+        return (response.getStatusCode() == HttpStatus.OK);
+    }
+
+    /**
      * Internal utility for making potentially repeat requests (if session expires and needs to be re-opened).
      *
      * @param endpoint the URL against which to make the request
      * @param method HttpMethod (GET, POST, etc)
+     * @param contentType the type of content to expect in the payload (if any)
      * @param payload if POSTing some content, the JSON structure providing what should be POSTed
      * @param forceLogin a boolean indicating whether login should be forced (true) or session reused (false)
      * @return ResponseEntity<String>
      */
-    private ResponseEntity<String> makeRequest(String endpoint, HttpMethod method, String payload, boolean forceLogin) {
-        HttpEntity<String> toSend = new HttpEntity<>(getHttpHeaders(forceLogin));
+    private ResponseEntity<String> makeRequest(String endpoint,
+                                               HttpMethod method,
+                                               MediaType contentType,
+                                               String payload,
+                                               boolean forceLogin) {
+        HttpHeaders headers = getHttpHeaders(forceLogin);
+        HttpEntity<String> toSend;
         if (payload != null) {
-            toSend = new HttpEntity<>(payload, getHttpHeaders(forceLogin));
+            headers.setContentType(contentType);
+            toSend = new HttpEntity<>(payload, headers);
+        } else {
+            toSend = new HttpEntity<>(headers);
         }
         ResponseEntity<String> response;
         try {
@@ -255,6 +412,7 @@ public class IGCRestClient {
             response = openNewSessionWithRequest(
                     endpoint,
                     method,
+                    contentType,
                     payload,
                     forceLogin
             );
@@ -267,14 +425,16 @@ public class IGCRestClient {
      *
      * @param endpoint the URL against which to make the request
      * @param method HttpMethod (GET, POST, etc)
+     * @param contentType the type of content to expect in the payload (if any)
      * @param payload if POSTing some content, the JSON structure providing what should be POSTed
      * @return JsonNode - JSON structure of the response
      */
-    public JsonNode makeRequest(String endpoint, HttpMethod method, JsonNode payload) {
+    public JsonNode makeRequest(String endpoint, HttpMethod method, MediaType contentType, String payload) {
         ResponseEntity<String> response = makeRequest(
                 endpoint,
                 method,
-                payload != null ? payload.toString() : null,
+                contentType,
+                payload,
                 false
         );
         JsonNode jsonNode = null;
@@ -294,7 +454,7 @@ public class IGCRestClient {
      * @return ArrayNode the list of types supported by IGC, as a JSON structure
      */
     public ArrayNode getTypes() {
-        return (ArrayNode) makeRequest(baseURL + EP_TYPES, HttpMethod.GET, null);
+        return (ArrayNode) makeRequest(baseURL + EP_TYPES, HttpMethod.GET, null,null);
     }
 
     /**
@@ -304,7 +464,7 @@ public class IGCRestClient {
      * @return JsonNode - the JSON response of the retrieval
      */
     public JsonNode getJsonAssetById(String rid) {
-        return makeRequest(baseURL + EP_ASSET + "/" + rid, HttpMethod.GET, null);
+        return makeRequest(baseURL + EP_ASSET + "/" + rid, HttpMethod.GET, null,null);
     }
 
     /**
@@ -338,9 +498,17 @@ public class IGCRestClient {
         );
         IGCSearchConditionSet conditionSet = new IGCSearchConditionSet(condition);
         IGCSearch igcSearch = new IGCSearch("main_object", conditionSet);
+        // Add non-main_object types that might also be looked-up by RID
+        igcSearch.addType("classification");
+        igcSearch.addType("label");
+        igcSearch.addType("user");
+        igcSearch.addType("group");
         ReferenceList results = search(igcSearch);
         Reference reference = null;
         if (results.getPaging().getNumTotal() > 0) {
+            if (results.getPaging().getNumTotal() > 1) {
+                log.warn("Found multiple assets for RID, taking only the first: {}", rid);
+            }
             reference = results.getItems().get(0);
         }
 
@@ -355,7 +523,7 @@ public class IGCRestClient {
      * @return JsonNode - the first JSON page of results from the search
      */
     public JsonNode searchJson(JsonNode query) {
-        return makeRequest(baseURL + EP_SEARCH, HttpMethod.POST, query);
+        return makeRequest(baseURL + EP_SEARCH, HttpMethod.POST, MediaType.APPLICATION_JSON, query.toString());
     }
 
     /**
@@ -391,7 +559,148 @@ public class IGCRestClient {
      * @return JsonNode - the JSON structure indicating the updated asset's RID and updates made
      */
     public JsonNode updateJson(String rid, JsonNode value) {
-        return makeRequest(baseURL + EP_ASSET, HttpMethod.PUT, value);
+        return makeRequest(baseURL + EP_ASSET, HttpMethod.PUT, MediaType.APPLICATION_JSON, value.toString());
+    }
+
+    /**
+     * Upload the specified bundle, creating it if it does not already exist or updating it if it does.
+     *
+     * @param name the bundleId of the bundle
+     * @param filePath the location of the zip file containing the bundle
+     * @return boolean - indication of success (true) or failure (false)
+     */
+    public boolean upsertOpenIgcBundle(String name, String filePath) {
+        boolean success;
+        List<String> existingBundles = getOpenIgcBundles();
+        if (existingBundles.contains(name)) {
+            success = uploadFile(baseURL + EP_BUNDLES, HttpMethod.PUT, filePath);
+        } else {
+            success = uploadFile(baseURL + EP_BUNDLES, HttpMethod.POST, filePath);
+        }
+        return success;
+    }
+
+    /**
+     * Generates an OpenIGC bundle zip file from the provided directory path, and returns the temporary file it creates.
+     *
+     * @param directory the directory under which the OpenIGC bundle is defined (ie. including an
+     *                  'asset_type_descriptor.xml', an 'i18n' subdirectory and an 'icons' subdirectory)
+     * @return File - the temporary zip file containing the bundle
+     */
+    public File createOpenIgcBundleFile(File directory) {
+
+        File bundle = null;
+        try {
+            bundle = File.createTempFile("openigc", "zip");
+        } catch (IOException e) {
+            log.error("Unable to create temporary file needed for OpenIGC bundle from directory: {}", directory, e);
+        }
+        if (bundle != null) {
+            try (
+                    FileOutputStream bundleOut = new FileOutputStream(bundle);
+                    ZipOutputStream zipOutput = new ZipOutputStream(bundleOut)
+            ) {
+                if (!directory.isDirectory()) {
+                    log.error("Provided bundle location is not a directory: {}", directory);
+                } else {
+                    recursivelyZipFiles(directory, "", zipOutput);
+                }
+
+            } catch (IOException e) {
+                log.error("Unable to create temporary file needed for OpenIGC bundle from directory: {}", directory, e);
+            }
+        }
+        return bundle;
+
+    }
+
+    /**
+     * Recursively traverses the provided file to build up a zip file output in the provided ZipOutputStream.
+     *
+     * @param file the file from which to recursively process
+     * @param name the name of the file from which to recursively process
+     * @param zipOutput the zip output stream into which to write the entries
+     */
+    private void recursivelyZipFiles(File file, String name, ZipOutputStream zipOutput) {
+
+        if (file.isDirectory()) {
+
+            // Make sure the directory name ends with a separator
+            String directoryName = name;
+            if (!directoryName.equals("")) {
+                directoryName = directoryName.endsWith(File.separator) ? directoryName : directoryName + File.separator;
+            }
+
+            // Create an entry in the zip file for the directory, then recurse on the files within it
+            try {
+                if (!directoryName.equals("")) {
+                    zipOutput.putNextEntry(new ZipEntry(directoryName));
+                }
+                File[] files = file.listFiles();
+                for (File subFile : files) {
+                    recursivelyZipFiles(subFile, directoryName + subFile.getName(), zipOutput);
+                }
+            } catch (IOException e) {
+                log.error("Unable to create directory entry in zip file.", e);
+            }
+
+        } else {
+
+            try (FileInputStream fileInput = new FileInputStream(file)) {
+                // Add an entry for the file into the zip file, and write its bytes into the zipfile output
+                zipOutput.putNextEntry(new ZipEntry(name));
+                byte[] buffer = new byte[1024];
+                int length;
+                while ((length = fileInput.read(buffer)) >= 0) {
+                    zipOutput.write(buffer, 0, length);
+                }
+            } catch (FileNotFoundException e) {
+                log.error("Unable to find file.", e);
+            } catch (IOException e) {
+                log.error("Unable to read/write file.", e);
+            }
+
+        }
+
+    }
+
+    /**
+     * Retrieve the set of OpenIGC bundles already defined in the environment.
+     *
+     * @return List<String>
+     */
+    public List<String> getOpenIgcBundles() {
+        JsonNode bundles = makeRequest(baseURL + EP_BUNDLES, HttpMethod.GET, null,null);
+        ArrayList<String> alBundles = new ArrayList<>();
+        try {
+            String[] aBundles = mapper.readValue(bundles.toString(), String[].class);
+            for (String bundleName : aBundles) {
+                alBundles.add(bundleName);
+            }
+        } catch (IOException e) {
+            log.error("Unable to parse bundle response: {}", bundles.toString(), e);
+        }
+        return alBundles;
+    }
+
+    /**
+     * Upload the provided OpenIGC asset XML: creating the asset(s) if they do not exist, updating if they do.
+     *
+     * @param assetXML the XML string defining the OpenIGC asset
+     * @return JsonNode - the JSON structure indicating the updated assets' RID(s)
+     */
+    public JsonNode upsertOpenIgcAsset(String assetXML) {
+        return makeRequest(baseURL + EP_BUNDLE_ASSETS, HttpMethod.POST, MediaType.APPLICATION_XML, assetXML);
+    }
+
+    /**
+     * Delete using the provided OpenIGC asset XML: deleting the asset(s) specified within it.
+     *
+     * @param assetXML the XML string defining the OpenIGC asset deletion
+     * @return boolean - true on success, false on failure
+     */
+    public boolean deleteOpenIgcAsset(String assetXML) {
+        return (makeRequest(baseURL + EP_BUNDLE_ASSETS, HttpMethod.DELETE, MediaType.APPLICATION_XML, assetXML) == null);
     }
 
     /**
@@ -412,7 +721,7 @@ public class IGCRestClient {
                     if (this.workflowEnabled && !sNextURL.contains("workflowMode=draft")) {
                         sNextURL += "&workflowMode=draft";
                     }
-                    nextPage = makeRequest(sNextURL, HttpMethod.GET, null);
+                    nextPage = makeRequest(sNextURL, HttpMethod.GET, null, null);
                     // If the page is part of an ASSET retrieval, we need to strip off the attribute
                     // name of the relationship for proper multi-page composition
                     if (sNextURL.contains(EP_ASSET)) {
@@ -488,7 +797,7 @@ public class IGCRestClient {
      * Disconnect from IGC REST API and invalidate the session.
      */
     public void disconnect() {
-        makeRequest(baseURL + EP_LOGOUT, HttpMethod.GET, null);
+        makeRequest(baseURL + EP_LOGOUT, HttpMethod.GET, null,null);
     }
 
     /**
@@ -505,6 +814,7 @@ public class IGCRestClient {
      * it would be "term"). See the generated POJOs for examples.
      *
      * @param clazz the Java Class (POJO) object to register
+     * @see #getPOJOForType(String)
      */
     public void registerPOJO(Class clazz) {
         try {
@@ -512,11 +822,26 @@ public class IGCRestClient {
             Method getTypeId = clazz.getMethod("getIgcTypeId");
             String typeId = (String) getTypeId.invoke(null);
             this.mapper.registerSubtypes(new NamedType(clazz, typeId));
+            this.registeredPojosByType.put(typeId, clazz);
+            log.debug("Registered IGC type {} to be handled by handle class: {}", typeId, clazz.getCanonicalName());
         } catch (NoSuchMethodException e) {
             log.error("Unable to find 'getIgcTypeId' method.", e);
         } catch (InvocationTargetException | IllegalAccessException e) {
             log.error("Unable to access or invoke 'getIgcTypeId' method.", e);
         }
+    }
+
+    /**
+     * Returns the POJO that is registered to serde the provided IGC asset type.
+     * <br><br>
+     * Note that the POJO must first be registered via registerPOJO!
+     *
+     * @param typeName name of the IGC asset
+     * @return Class
+     * @see #registerPOJO(Class)
+     */
+    public Class getPOJOForType(String typeName) {
+        return this.registeredPojosByType.get(typeName);
     }
 
     /**

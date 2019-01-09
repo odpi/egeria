@@ -5,7 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class TransformationProject extends Reference {
 
     public static String getIgcTypeId() { return "transformation_project"; }
+    public static String getIgcTypeDisplayName() { return "Transformation Project"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -233,6 +236,60 @@ public class TransformationProject extends Reference {
     /** @see #modified_on */ @JsonProperty("modified_on")  public Date getModifiedOn() { return this.modified_on; }
     /** @see #modified_on */ @JsonProperty("modified_on")  public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
-    public static final Boolean isTransformationProject(Object obj) { return (obj.getClass() == TransformationProject.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return true; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "name",
+        "include_for_lineage",
+        "include_for_lineage_desc",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "implements_rules",
+        "governed_by_rules",
+        "folders",
+        "jobs",
+        "containers",
+        "stage_types",
+        "table_definitions",
+        "standardization_rule_sets",
+        "match_specifications",
+        "parameter_sets",
+        "transforms",
+        "routines",
+        "machine_profiles",
+        "in_collections"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "name",
+        "host_(engine)",
+        "implements_rules",
+        "governed_by_rules",
+        "include_for_lineage",
+        "include_for_lineage_desc",
+        "folders",
+        "jobs",
+        "containers",
+        "stage_types",
+        "table_definitions",
+        "standardization_rule_sets",
+        "match_specifications",
+        "parameter_sets",
+        "transforms",
+        "routines",
+        "machine_profiles",
+        "in_collections",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isTransformationProject(Object obj) { return (obj.getClass() == TransformationProject.class); }
 
 }

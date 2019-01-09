@@ -5,7 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class VolumeContribution extends Reference {
 
     public static String getIgcTypeId() { return "volume_contribution"; }
+    public static String getIgcTypeDisplayName() { return "Volume Contribution"; }
 
     /**
      * The 'infoset' property, displayed as 'Infoset' in the IGC UI.
@@ -57,6 +60,22 @@ public class VolumeContribution extends Reference {
     /** @see #size */ @JsonProperty("size")  public Number getSize() { return this.size; }
     /** @see #size */ @JsonProperty("size")  public void setSize(Number size) { this.size = size; }
 
-    public static final Boolean isVolumeContribution(Object obj) { return (obj.getClass() == VolumeContribution.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return false; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "object_count",
+        "size"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<>();
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "infoset",
+        "volume",
+        "object_count",
+        "size"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isVolumeContribution(Object obj) { return (obj.getClass() == VolumeContribution.class); }
 
 }
