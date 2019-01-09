@@ -105,7 +105,7 @@ class ProcessHandler {
 
 
         InstanceProperties instanceProperties = createProcessProperties(userId, processName, description, latestChange,
-                zoneMembership, displayName, parentProcessGuid);
+                zoneMembership, displayName);
 
         EntityDetail createdEntity = metadataCollection.addEntity(userId, entity.getType().getTypeDefGUID(),
                 instanceProperties, entity.getClassifications(), entity.getStatus());
@@ -116,17 +116,16 @@ class ProcessHandler {
     /**
      * Create an instance properties object for a process asset
      *
-     * @param processName       the name of the process
-     * @param description       the description of the process
-     * @param latestChange      the description for the latest change done for the asset
-     * @param zoneMembership    the list of zoness of the process
-     * @param displayName       the display name of the process
-     * @param parentProcessGuid the parent process Guid, null if no parent present
+     * @param processName    the name of the process
+     * @param description    the description of the process
+     * @param latestChange   the description for the latest change done for the asset
+     * @param zoneMembership the list of zoness of the process
+     * @param displayName    the display name of the process
      * @return instance properties object
      */
     private InstanceProperties createProcessProperties(String userId, String processName, String description,
                                                        String latestChange, List<String> zoneMembership,
-                                                       String displayName, String parentProcessGuid) {
+                                                       String displayName) {
 
         final String methodName = "createProcessProperties";
 
@@ -149,9 +148,6 @@ class ProcessHandler {
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, DISPLAY_NAME_PROPERTY_NAME,
                 displayName, methodName);
-
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties,
-                PARENT_PROCESS_GUID_PROPERTY_NAME, parentProcessGuid, methodName);
 
         addZoneMembershipToInstance(zoneMembership, properties);
         return properties;
