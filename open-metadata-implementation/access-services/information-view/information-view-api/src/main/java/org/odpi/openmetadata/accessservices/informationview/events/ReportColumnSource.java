@@ -47,6 +47,6 @@ public class ReportColumnSource extends Source {
 
     @Override
     public String buildQualifiedName() {
-        return parentReportSection != null ? parentReportSection.getQualifiedName() + "." + this.getName() : this.getName();
+        return parentReportSection != null ? parentReportSection.buildQualifiedName() + "." + this.getName() : this.getName();
     }
 }

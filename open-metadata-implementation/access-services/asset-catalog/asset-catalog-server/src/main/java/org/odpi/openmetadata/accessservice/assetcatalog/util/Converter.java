@@ -337,7 +337,7 @@ public class Converter {
         return null;
     }
 
-    public DataType getDataTypeDef(PrimitiveDefCategory primitiveValue) {
+    private DataType getDataTypeDef(PrimitiveDefCategory primitiveValue) {
         if (primitiveValue == null || !dataTypes.containsKey(primitiveValue.getJavaClassName())) {
             return null;
         }
@@ -346,20 +346,20 @@ public class Converter {
     }
 
     private HashMap<String, DataType> getDataTypeMap() {
-        HashMap<String, DataType> dataTypes = new HashMap<>();
-        dataTypes.put("java.lang.Boolean", DataType.BOOLEAN);
-        dataTypes.put("java.lang.Byte", DataType.BYTE);
-        dataTypes.put("java.Lang.Char", DataType.CHAR);
-        dataTypes.put("java.lang.Short", DataType.SHORT);
-        dataTypes.put("java.lang.Integer", DataType.INT);
-        dataTypes.put("java.lang.Long", DataType.LONG);
-        dataTypes.put("java.lang.Float", DataType.FLOAT);
-        dataTypes.put("java.lang.Double", DataType.DOUBLE);
-        dataTypes.put("java.math.BigInteger", DataType.BIG_INTEGER);
-        dataTypes.put("java.math.BigDecimal", DataType.BIG_DECIMAL);
-        dataTypes.put("java.lang.String", DataType.STRING);
-        dataTypes.put("java.util.Date", DataType.DATE);
-        return dataTypes;
+        HashMap<String, DataType> dataTypesMap = new HashMap<>();
+        dataTypesMap.put("java.lang.Boolean", DataType.BOOLEAN);
+        dataTypesMap.put("java.lang.Byte", DataType.BYTE);
+        dataTypesMap.put("java.Lang.Char", DataType.CHAR);
+        dataTypesMap.put("java.lang.Short", DataType.SHORT);
+        dataTypesMap.put("java.lang.Integer", DataType.INT);
+        dataTypesMap.put("java.lang.Long", DataType.LONG);
+        dataTypesMap.put("java.lang.Float", DataType.FLOAT);
+        dataTypesMap.put("java.lang.Double", DataType.DOUBLE);
+        dataTypesMap.put("java.math.BigInteger", DataType.BIG_INTEGER);
+        dataTypesMap.put("java.math.BigDecimal", DataType.BIG_DECIMAL);
+        dataTypesMap.put("java.lang.String", DataType.STRING);
+        dataTypesMap.put("java.util.Date", DataType.DATE);
+        return dataTypesMap;
     }
 
     public Map<String, Object> getAdditionalPropertiesFromEntity(InstanceProperties properties, String propertyName, OMRSRepositoryHelper helper) {
@@ -396,13 +396,12 @@ public class Converter {
     }
 
     private Object getPrimitivePropertyValue(InstancePropertyValue additionalPropertyValue) {
-        if (additionalPropertyValue != null) {
-
-            if (additionalPropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.PRIMITIVE) {
-                PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) additionalPropertyValue;
-                return primitivePropertyValue.getPrimitiveValue();
-            }
+        if (additionalPropertyValue != null &&
+                additionalPropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.PRIMITIVE) {
+            PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) additionalPropertyValue;
+            return primitivePropertyValue.getPrimitiveValue();
         }
+
         return null;
     }
 }

@@ -5,7 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class Classification extends Reference {
 
     public static String getIgcTypeId() { return "classification"; }
+    public static String getIgcTypeDisplayName() { return "Classification"; }
 
     /**
      * The 'data_class' property, displayed as 'Data Class' in the IGC UI.
@@ -90,11 +93,11 @@ public class Classification extends Reference {
     /** @see #detected */ @JsonProperty("detected")  public Boolean getDetected() { return this.detected; }
     /** @see #detected */ @JsonProperty("detected")  public void setDetected(Boolean detected) { this.detected = detected; }
 
-    /** @see #detectedState */ @JsonProperty("detectedState")  public String getDetectedState() { return this.detectedState; }
-    /** @see #detectedState */ @JsonProperty("detectedState")  public void setDetectedState(String detectedState) { this.detectedState = detectedState; }
+    /** @see #detectedState */ @JsonProperty("detectedState")  public String getDetectedstate() { return this.detectedState; }
+    /** @see #detectedState */ @JsonProperty("detectedState")  public void setDetectedstate(String detectedState) { this.detectedState = detectedState; }
 
-    /** @see #confidencePercent */ @JsonProperty("confidencePercent")  public Number getConfidencePercent() { return this.confidencePercent; }
-    /** @see #confidencePercent */ @JsonProperty("confidencePercent")  public void setConfidencePercent(Number confidencePercent) { this.confidencePercent = confidencePercent; }
+    /** @see #confidencePercent */ @JsonProperty("confidencePercent")  public Number getConfidencepercent() { return this.confidencePercent; }
+    /** @see #confidencePercent */ @JsonProperty("confidencePercent")  public void setConfidencepercent(Number confidencePercent) { this.confidencePercent = confidencePercent; }
 
     /** @see #threshold */ @JsonProperty("threshold")  public Number getThreshold() { return this.threshold; }
     /** @see #threshold */ @JsonProperty("threshold")  public void setThreshold(Number threshold) { this.threshold = threshold; }
@@ -105,6 +108,33 @@ public class Classification extends Reference {
     /** @see #column_analysis */ @JsonProperty("column_analysis")  public ReferenceList getColumnAnalysis() { return this.column_analysis; }
     /** @see #column_analysis */ @JsonProperty("column_analysis")  public void setColumnAnalysis(ReferenceList column_analysis) { this.column_analysis = column_analysis; }
 
-    public static final Boolean isClassification(Object obj) { return (obj.getClass() == Classification.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return false; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "selected",
+        "detected",
+        "detectedState",
+        "confidencePercent",
+        "threshold",
+        "date"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "column_analysis"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "data_class",
+        "classifies_asset",
+        "selected",
+        "detected",
+        "detectedState",
+        "confidencePercent",
+        "threshold",
+        "date",
+        "column_analysis"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isClassification(Object obj) { return (obj.getClass() == Classification.class); }
 
 }

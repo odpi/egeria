@@ -5,7 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class XsdElementReference extends Reference {
 
     public static String getIgcTypeId() { return "xsd_element_reference"; }
+    public static String getIgcTypeDisplayName() { return "XSD Element Reference"; }
 
     /**
      * The 'min_occurs' property, displayed as 'Minimum Occurrence' in the IGC UI.
@@ -77,6 +80,24 @@ public class XsdElementReference extends Reference {
     /** @see #referenced_xsd_element */ @JsonProperty("referenced_xsd_element")  public Reference getReferencedXsdElement() { return this.referenced_xsd_element; }
     /** @see #referenced_xsd_element */ @JsonProperty("referenced_xsd_element")  public void setReferencedXsdElement(Reference referenced_xsd_element) { this.referenced_xsd_element = referenced_xsd_element; }
 
-    public static final Boolean isXsdElementReference(Object obj) { return (obj.getClass() == XsdElementReference.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return false; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "min_occurs",
+        "max_occurs"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<>();
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "min_occurs",
+        "max_occurs",
+        "xsd_element",
+        "xsd_complex_type",
+        "xsd_element_group",
+        "referenced_xsd_element"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isXsdElementReference(Object obj) { return (obj.getClass() == XsdElementReference.class); }
 
 }

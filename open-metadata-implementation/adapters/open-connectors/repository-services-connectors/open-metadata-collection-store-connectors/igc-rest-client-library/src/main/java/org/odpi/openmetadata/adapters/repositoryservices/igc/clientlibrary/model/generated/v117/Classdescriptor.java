@@ -5,7 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class Classdescriptor extends Reference {
 
     public static String getIgcTypeId() { return "classdescriptor"; }
+    public static String getIgcTypeDisplayName() { return "ClassDescriptor"; }
 
     /**
      * The 'identifier_attribute' property, displayed as 'Identifier Attribute' in the IGC UI.
@@ -151,6 +154,47 @@ public class Classdescriptor extends Reference {
     /** @see #modified_on */ @JsonProperty("modified_on")  public Date getModifiedOn() { return this.modified_on; }
     /** @see #modified_on */ @JsonProperty("modified_on")  public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
-    public static final Boolean isClassdescriptor(Object obj) { return (obj.getClass() == Classdescriptor.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return true; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "identifier_attribute",
+        "class_name",
+        "long_description_attribute",
+        "model_name",
+        "model_uri",
+        "short_description_attribute",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "used_in_application_function",
+        "has_navigation_descriptor",
+        "has_prop_descriptor",
+        "has_custom_attribute_def",
+        "has_action_descriptor"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "identifier_attribute",
+        "class_name",
+        "used_in_application_function",
+        "long_description_attribute",
+        "has_navigation_descriptor",
+        "has_prop_descriptor",
+        "model_name",
+        "has_custom_attribute_def",
+        "model_uri",
+        "short_description_attribute",
+        "has_action_descriptor",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isClassdescriptor(Object obj) { return (obj.getClass() == Classdescriptor.class); }
 
 }
