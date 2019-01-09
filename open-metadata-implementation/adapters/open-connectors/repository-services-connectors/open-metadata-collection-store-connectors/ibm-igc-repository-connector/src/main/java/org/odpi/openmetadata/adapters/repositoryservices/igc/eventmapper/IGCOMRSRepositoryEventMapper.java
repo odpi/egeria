@@ -24,7 +24,9 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
@@ -36,6 +38,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * IGCOMRSRepositoryEventMapper supports the event mapper function for the IBM Information Server suite
@@ -98,7 +102,8 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
         if (igcVersion.equals(IGCRestConstants.VERSION_115)) {
             this.igcKafkaTopic = "InfosphereEvents";
         } else if (igcVersion.equals(IGCRestConstants.VERSION_117)) {
-            this.igcKafkaTopic = "IgcUnifiedGovEvents";
+            // TODO: switch to IgcUnifiedGovEvents once implemented
+            this.igcKafkaTopic = "InfosphereEvents";
         }
 
         // Retrieve connection details to configure Kafka connectivity
@@ -1005,6 +1010,12 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
                     detail
             );
 
+            // TODO: for now this sends the same set of classifications every time, known design issue with how
+            //  classifications are currently handled (to be changed once classifications are reworked)
+            for (Classification classification : detail.getClassifications()) {
+                sendNewClassification(detail);
+            }
+
             // See if there are any generated entities to send an event for (ie. *Type)
             List<ReferenceableMapper> referenceableMappers = igcomrsMetadataCollection.getMappers(asset.getType(), localServerUserId);
             for (ReferenceableMapper referenceableMapper : referenceableMappers) {
@@ -1021,6 +1032,11 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
                                 null,
                                 genDetail
                         );
+                        // TODO: for now this sends the same set of classifications every time, known design issue with how
+                        //  classifications are currently handled (to be changed once classifications are reworked)
+                        for (Classification classification : genDetail.getClassifications()) {
+                            sendNewClassification(genDetail);
+                        }
                     } else {
                         log.warn("Unable to generate new entity for asset type {} with prefix {} and RID: {}", asset.getType(), ridPrefix, asset.getId());
                     }
@@ -1062,6 +1078,8 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
                     latest
             );
 
+            processClassifications(latest, latest.getClassifications(), last.getClassifications());
+
             // See if there are any generated entities to send an event for (ie. *Type)
             List<ReferenceableMapper> referenceableMappers = igcomrsMetadataCollection.getMappers(latestVersion.getType(), localServerUserId);
             for (ReferenceableMapper referenceableMapper : referenceableMappers) {
@@ -1081,6 +1099,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
                                 genLast,
                                 genDetail
                         );
+                        processClassifications(genDetail, genDetail.getClassifications(), genLast.getClassifications());
                     } else {
                         log.warn("Unable to generate updated entity for asset type {} with prefix {} and RID: {}", latestVersion.getType(), ridPrefix, latestVersion.getId());
                     }
@@ -1097,6 +1116,114 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
             log.error("Latest EntityDetail could not be retrieved for RID: {}", latestVersion.getId());
         }
 
+    }
+
+    /**
+     * Determine differences in classifications in order to send appropriate new, changed or remove events.
+     *
+     * @param detail the latest detail of the entity
+     * @param latestClassifications the latest set of classifications for the entity
+     * @param lastClassifications the set of classifications for the entity from its previous version
+     */
+    private void processClassifications(EntityDetail detail,
+                                        List<Classification> latestClassifications,
+                                        List<Classification> lastClassifications) {
+
+        Map<String, Classification> latestClassificationByGUID = getClassificationMapFromList(latestClassifications);
+        Map<String, Classification> lastClassificationByGUID = getClassificationMapFromList(lastClassifications);
+
+        // First iterate through to see if there are any new classifications, keeping track of each classification
+        // of the same type between the two lists
+        ArrayList<String> matchingGUIDs = new ArrayList<>();
+        for (String guid : latestClassificationByGUID.keySet()) {
+            if (!lastClassificationByGUID.containsKey(guid)) {
+                sendNewClassification(detail);
+            } else {
+                matchingGUIDs.add(guid);
+            }
+        }
+        // Then iterate through the last version, to find any removed classifications
+        for (String guid : lastClassificationByGUID.keySet()) {
+            if (!latestClassificationByGUID.containsKey(guid)) {
+                sendRemovedClassification(detail);
+            }
+        }
+        // Finally, iterate through the classifications that are the same type and see if there are any changes
+        for (String matchingGUID : matchingGUIDs) {
+            Classification latest = latestClassificationByGUID.get(matchingGUID);
+            Classification last = lastClassificationByGUID.get(matchingGUID);
+            if (!latest.equals(last)) {
+                sendChangedClassification(detail);
+            }
+        }
+
+    }
+
+    /**
+     * Translate a list of classifications in to a Map keyed by the classification type's GUID.
+     * (Note that this assumes a given classification type will only have one instance in the list!)
+     *
+     * @param classifications
+     * @return
+     */
+    private Map<String, Classification> getClassificationMapFromList(List<Classification> classifications) {
+        HashMap<String, Classification> map = new HashMap<>();
+        for (Classification classification : classifications) {
+            String typeGUID = classification.getType().getTypeDefGUID();
+            if (map.containsKey(typeGUID)) {
+                log.warn("Found multiple classifications of type {} -- clobbering!", typeGUID);
+            }
+            map.put(typeGUID, classification);
+        }
+        return map;
+    }
+
+    /**
+     * Send an event for a new classification being added to the entity's detail.
+     *
+     * @param detail
+     */
+    private void sendNewClassification(EntityDetail detail) {
+        repositoryEventProcessor.processClassifiedEntityEvent(
+                sourceName,
+                metadataCollectionId,
+                originatorServerName,
+                originatorServerType,
+                null,
+                detail
+        );
+    }
+
+    /**
+     * Send an event for an existing classification being changed on an entity's detail.
+     *
+     * @param detail
+     */
+    private void sendChangedClassification(EntityDetail detail) {
+        repositoryEventProcessor.processReclassifiedEntityEvent(
+                sourceName,
+                metadataCollectionId,
+                originatorServerName,
+                originatorServerType,
+                null,
+                detail
+        );
+    }
+
+    /**
+     * Send an event for a classification having been removed from an entity's detail.
+     *
+     * @param detail
+     */
+    private void sendRemovedClassification(EntityDetail detail) {
+        repositoryEventProcessor.processDeclassifiedEntityEvent(
+                sourceName,
+                metadataCollectionId,
+                originatorServerName,
+                originatorServerType,
+                null,
+                detail
+        );
     }
 
     /**
@@ -1152,7 +1279,8 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
      */
     private void processEventV117(String event) {
         // TODO: implement processEventV117
-        log.info("Not yet implemented -- skipping event: {}", event);
+        log.info("Not yet implemented as v11.7-specific -- backing to v11.5 processing: {}", event);
+        processEventV115(event);
     }
 
     /**
