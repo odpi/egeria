@@ -26,7 +26,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.Ope
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
@@ -38,8 +37,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * IGCOMRSRepositoryEventMapper supports the event mapper function for the IBM Information Server suite
@@ -1078,7 +1075,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
                     latest
             );
 
-            processClassifications(latest, latest.getClassifications(), last.getClassifications());
+            processClassifications(latest, latest.getClassifications(), last == null ? new ArrayList<>() : last.getClassifications());
 
             // See if there are any generated entities to send an event for (ie. *Type)
             List<ReferenceableMapper> referenceableMappers = igcomrsMetadataCollection.getMappers(latestVersion.getType(), localServerUserId);
@@ -1099,7 +1096,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
                                 genLast,
                                 genDetail
                         );
-                        processClassifications(genDetail, genDetail.getClassifications(), genLast.getClassifications());
+                        processClassifications(genDetail, genDetail.getClassifications(), genLast == null ? new ArrayList<>() : genLast.getClassifications());
                     } else {
                         log.warn("Unable to generate updated entity for asset type {} with prefix {} and RID: {}", latestVersion.getType(), ridPrefix, latestVersion.getId());
                     }
